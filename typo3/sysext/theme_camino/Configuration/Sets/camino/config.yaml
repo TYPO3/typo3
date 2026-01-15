@@ -1,0 +1,7 @@
+name: typo3/theme-camino
+label: "Theme: Camino"
+optionalDependencies:
+  - typo3/felogin
+  - typo3/indexed-search
+  - typo3/form
+  - typo3/seo-sitemap

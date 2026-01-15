@@ -1,0 +1,30 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:comment>
+    <!--
+        default figure with image element, description, and copyright
+    -->
+</f:comment>
+
+<figure class="figure">
+    <f:switch expression="{type}">
+        <f:case value="4">
+            <f:render partial="Atoms/Video" arguments="{_all}"/>
+        </f:case>
+        <f:defaultCase>
+            <f:render partial="Atoms/Image" arguments="{_all}"/>
+        </f:defaultCase>
+    </f:switch>
+
+    <f:if condition="{copyright} || {description}">
+        <figcaption class="figure__caption">{description}
+            <f:if condition="{description} && {copyright}"><br></f:if>
+            <f:if condition="{copyright}">&copy; {copyright}</f:if>
+        </figcaption>
+    </f:if>
+</figure>
+
+</html>

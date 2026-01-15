@@ -1,0 +1,41 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:render section="Configuration" optional="true"/>
+
+<f:if condition="{inlineElement}">
+    <f:then>
+        <f:variable name="frame" value=""/>
+    </f:then>
+    <f:else>
+        <f:switch expression="{data.frame_class}">
+            <f:case value="bg-10"><f:variable name="frame" value="bg-10"/></f:case>
+            <f:case value="bg-80"><f:variable name="frame" value="bg-80"/></f:case>
+            <f:case value="bg-100"><f:variable name="frame" value="bg-100"/></f:case>
+        </f:switch>
+    </f:else>
+</f:if>
+
+<f:render section="Before" optional="true"/>
+
+<f:render partial="Wrapper/Component" arguments="{frame: frame}" contentAs="content" optional="true">
+    <f:render section="Anchor" optional="true">
+        <f:render partial="Wrapper/Anchor" arguments="{data: data}"/>
+    </f:render>
+
+    <f:render section="Header" optional="true">
+        <f:render partial="Header/Header" arguments="{
+            header: data.header,
+            layout: data.tx_themecamino_header_style,
+            tag: data.header_layout,
+        }"/>
+    </f:render>
+
+    <f:render section="Main" optional="true"/>
+</f:render>
+
+<f:render section="After" optional="true"/>
+
+</html>

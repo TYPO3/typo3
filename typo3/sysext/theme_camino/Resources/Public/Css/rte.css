@@ -1,0 +1,32 @@
+/*
+ * Note: RTE content in TYPO3 is dark/light-mode aware. We define a minimal
+ * set of paddings and margins and fonts only. To keep it simple, no CSS variables here.
+ */
+@import '_fonts.css';
+
+body {
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+p,
+ul,
+ol {
+    margin: 1em 0em;
+    padding-inline-start:  0;
+    max-width: 784px;
+}
+
+ul,
+ol {
+    li {
+        margin-inline-start: 20px;
+    }
+
+    ul, ol {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}

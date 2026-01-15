@@ -1,0 +1,59 @@
+# For use in Fluid to render "specific" areas of content
+lib.dynamicContent = CONTENT
+lib.dynamicContent {
+  table = tt_content
+  select {
+    orderBy = sorting
+    where = {#colPos}={field:colPos}
+    where.insertData = 1
+  }
+  slide.field = slide
+}
+
+# Definition of the rendering of a single content element
+# This is used for system-wide settings, so needs to be defined at all times!
+lib.contentElement = FLUIDTEMPLATE
+lib.contentElement {
+  layoutRootPaths.10 = EXT:theme_camino/Resources/Private/Templates/Layouts/
+  partialRootPaths.10 = EXT:theme_camino/Resources/Private/Templates/Partials/
+  templateRootPaths.10 = EXT:theme_camino/Resources/Private/Templates/Content/
+
+  # Allows custom template file names to be overridden for additional content elements
+  templateName >
+  templateName.ifEmpty.cObject = TEXT
+  templateName.ifEmpty.cObject {
+    field = CType
+    required = 1
+    case = uppercamelcase
+  }
+
+  dataProcessing.1421884800 = record-transformation
+}
+
+# use the "default" for our own content elements
+tt_content = CASE
+tt_content.default =< lib.contentElement
+
+# adaptations for rendering Rich-Text-Editor-related content, adding custom CSS classes
+lib.parseFunc_RTE {
+  externalBlocks := addToList(ol,ul)
+  externalBlocks {
+    ol {
+      stripNL = 1
+      callRecursive = 1
+      callRecursive.tagStdWrap {
+        HTMLparser = 1
+        HTMLparser.tags.ol.fixAttrib.class.default = list list--ordered
+      }
+    }
+
+    ul {
+      stripNL = 1
+      callRecursive = 1
+      callRecursive.tagStdWrap {
+        HTMLparser = 1
+        HTMLparser.tags.ul.fixAttrib.class.default = list list--unordered
+      }
+    }
+  }
+}

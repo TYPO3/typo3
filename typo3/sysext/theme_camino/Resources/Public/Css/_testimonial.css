@@ -1,0 +1,29 @@
+[class*='--bg-80'] ,
+[class*='--bg-100'] {
+    --testimonal-quote-icon-color: var(--color-neutral-0);
+}
+
+.testimonial {
+    --icon-color: var(--testimonal-quote-icon-color, var(--color-primary-100));
+    --image-border-radius: 80px;
+    --margin-top-paragraph: 0;
+    --margin-bottom-paragraph: 24px;
+    --person-image-size: 80px;
+    --person-with-image-grid-template-columns: 80px 1fr;
+
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    grid-gap: var(--spacing-m);
+}
+
+.testimonial__content {
+    max-width: var(--max-width-paragraph);
+}
+
+.testimonial__text {
+    font-family: var(--headline-small-family);
+    font-size: var(--headline-small-size);
+    font-weight: var(--headline-small-weight);
+    line-height: var(--headline-small-line-height);
+    letter-spacing: var(--headline-small-letter-spacing);
+}

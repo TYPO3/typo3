@@ -1,0 +1,176 @@
+:root {
+    --textmedia-teaser-collapsed-border-radius: var(--corners-l) 0 0 var(--corners-l);
+    --textmedia-teaser-collapsed-display: grid;
+    --textmedia-teaser-collapsed-image-width: 344px;
+}
+
+body {
+    --textmedia-teaser-background: var(--color-neutral-10);
+}
+
+[class*='--bg-10'] {
+    --textmedia-teaser-background: var(--color-neutral-0);
+}
+
+.textmedia-teaser {
+    --textmedia-meta-color: var(--color-neutral-70);
+    --textmedia-text-color: var(--color-neutral-90);
+    --textmedia-teaser-border-color-focus: var(--color-neutral-10);
+    --textmedia-teaser-outline-focus: var(--color-neutral-70);
+    --textmedia-teaser-background-color-focus: var(--color-neutral-100);
+
+    --image-border-radius: var(--corners-l) var(--corners-l) 0 0;
+    --image-object-fit: cover;
+    --headline-margin-bottom: 8px;
+    --button-margin: 24px 0 0;
+
+    /* default colors for buttons independent of background */
+    --button-primary-color: var(--color-primary-100);
+    --button-primary-color-hover: var(--color-neutral-70);
+    --button-primary-color-focus: var(--color-neutral-70);
+    --button-primary-color-pressed: var(--color-neutral-70);
+    --button-primary-content-color: var(--color-neutral-0);
+    --button-primary-content-color-hover: var(--color-neutral-0);
+    --button-primary-content-color-pressed: var(--color-neutral-0);
+    --button-primary-border-color: var(--button-primary-color);
+    --button-primary-border-color-hover: var(--button-primary-color-hover);
+    --button-primary-border-color-pressed: var(--button-primary-color-pressed);
+    --button-primary-content-border-bottom-color: transparent;
+    --button-primary-content-border-bottom-color-hover: transparent;
+
+    background: var(--textmedia-teaser-background);
+    border-radius: var(--corners-l);
+    display: block;
+    width: var(--textmedia-teaser-width);
+    min-width: var(--textmedia-teaser-width);
+    overflow: hidden;
+    position: relative;
+}
+
+.textmedia-teaser--highlight {
+    --textmedia-teaser-background: var(--color-neutral-70);
+    --textmedia-meta-color: var(--color-neutral-10);
+    --textmedia-text-color: var(--color-neutral-0);
+
+    /* use the configuration for dark background for all "highlight" teasers */
+    --button-primary-color: var(--color-neutral-10);
+    --button-primary-color-hover: var(--color-neutral-20);
+    --button-primary-color-focus: var(--color-neutral-20);
+    --button-primary-color-pressed: var(--color-neutral-20);
+    --button-primary-content-color: var(--color-primary-100);
+    --button-primary-content-color-hover: var(--color-neutral-80);
+    --button-primary-content-color-pressed: var(--color-neutral-80);
+    --button-primary-border-color: var(--color-neutral-10);
+    --button-primary-border-color-hover: var(--color-neutral-20);
+    --button-primary-border-color-pressed: var(--color-neutral-20);
+    --button-primary-content-border-bottom-color: transparent;
+    --button-primary-content-border-bottom-color-hover: transparent;
+}
+
+.textmedia-teaser__content {
+    --text-color: var(--textmedia-text-color);
+
+    padding: 24px;
+
+    &:has(.button) {
+        --button-position: absolute;
+        --button-bottom: 24px;
+
+        padding-bottom: calc(24px + 72px);
+    }
+}
+
+.textmedia-teaser__meta {
+    --margin-top-paragraph: 0;
+    --margin-bottom-paragraph: 0;
+    --paragraph-font-size: var(--body-small-size);
+    --paragraph-letter-spacing: var(--body-small-letter-spacing);
+
+    color: var(--textmedia-meta-color);
+}
+
+.textmedia-teaser__media {
+    overflow: hidden;
+}
+
+.textmedia-teaser__text {
+    --margin-top-paragraph: 16px;
+    --margin-bottom-paragraph: 0;
+}
+
+.textmedia-teaser--link {
+    &:hover,
+    &:focus-within,
+    &:active {
+        --image-transform: var(--effect-image-scale);
+
+        .button {
+            --button-content-color: var(--button-content-color-hover);
+            --button-content-border-bottom-color: var(--button-content-border-bottom-color-hover);
+            --button-color: var(--button-color-hover);
+            --button-border-color: var(--button-border-color-hover);
+        }
+    }
+
+    &:focus-visible {
+        background: var(--textmedia-teaser-background-color-focus);
+        border-color: var(--textmedia-teaser-border-color-focus);
+        border-radius: var(--corners-l);
+        outline: 2px solid var(--textmedia-teaser-outline-focus);
+
+        .button {
+            border-radius: 10px;
+            border-color: var(--button-border-color);
+            outline: 2px solid var(--button-secondary-color-focus);
+            background: var(--button-color-focus);
+        }
+    }
+}
+
+/**
+ * Viewports
+ */
+
+/* Small */
+@media (min-width: 768px) {
+    .textmedia-teaser {
+        width: auto;
+        min-width: auto;
+
+        * > &:only-child {
+            --image-border-radius: var(--textmedia-teaser-collapsed-border-radius);
+
+            display: var(--textmedia-teaser-collapsed-display);
+            grid-template-columns: var(--textmedia-teaser-collapsed-image-width) 1fr;
+        }
+    }
+}
+
+/* Medium */
+@media (min-width: 1024px) {
+    :root {
+        --textmedia-teaser-collapsed-image-width: 304px;
+    }
+}
+
+/* Large */
+@media (min-width: 1280px) {
+    :root {
+        --textmedia-teaser-collapsed-image-width: 392px;
+    }
+}
+
+/*
+    show a collapsed version of the teaser in the sidebar of blog posts
+    when the sidebar collapses underneath the main content
+*/
+@container aside (width > 767px) {
+    .textmedia-teaser {
+        --image-border-radius: var(--textmedia-teaser-collapsed-border-radius);
+
+        width: auto;
+        min-width: auto;
+        display: var(--textmedia-teaser-collapsed-display);
+        grid-template-columns: var(--textmedia-teaser-collapsed-image-width) 1fr;
+    }
+}

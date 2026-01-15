@@ -1,0 +1,120 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:switch expression="{data.imageorient}">
+    <f:case value="0">
+        <f:variable name="cssModifier" value="above"/>
+        <f:variable name="imageSize" value="full"/>
+    </f:case>
+    <f:case value="8">
+        <f:variable name="cssModifier" value="below"/>
+        <f:variable name="imageSize" value="full"/>
+    </f:case>
+    <f:case value="26">
+        <f:variable name="cssModifier" value="left"/>
+        <f:variable name="imageSize" value="half"/>
+    </f:case>
+    <f:case value="27">
+        <f:variable name="cssModifier" value="right-third"/>
+        <f:variable name="imageSize" value="small"/>
+    </f:case>
+    <f:case value="28">
+        <f:variable name="cssModifier" value="left-third"/>
+        <f:variable name="imageSize" value="small"/>
+    </f:case>
+    <f:defaultCase>
+        <f:comment><!-- imageorient = 25 --></f:comment>
+        <f:variable name="cssModifier" value="right"/>
+        <f:variable name="imageSize" value="half"/>
+    </f:defaultCase>
+</f:switch>
+
+<f:if condition="{data.CType} != 'text' && {files.0}">
+    <f:variable name="additionalCssClass" value="textpic--{cssModifier}"/>
+</f:if>
+
+<div class="textpic {additionalCssClass}">
+    <f:comment><!-- do not render image if text-only --></f:comment>
+    <f:if condition="{files.0}">
+        <div class="textpic__media">
+            <f:switch expression="{files.0.properties.type}">
+                <f:case value="4">
+                    <f:render partial="Components/Figure" arguments="{
+                        video: files.0,
+                        type: files.0.properties.type,
+                        description: files.0.description,
+                        copyright: files.0.copyright,
+                    }"/>
+                </f:case>
+                <f:defaultCase>
+                    <f:switch expression="{imageSize}">
+                        <f:case value="full">
+                            <f:render partial="Components/Figure" arguments="{
+                                image: files.0,
+                                width: 450,
+                                sources: {
+                                    md: {width: 1244},
+                                    sm: {width: 968},
+                                    xs: {width: 738},
+                                },
+                                description: files.0.description,
+                                copyright: files.0.copyright,
+                            }"/>
+                        </f:case>
+
+                        <f:case value="half">
+                            <f:render partial="Components/Figure" arguments="{
+                                image: files.0,
+                                width: 450,
+                                sources: {
+                                    lg: {width: 600},
+                                    md: {width: 464},
+                                    sm: {width: 472},
+                                    xs: {width: 738},
+                                },
+                                description: files.0.description,
+                                copyright: files.0.copyright,
+                            }"/>
+                        </f:case>
+
+                        <f:defaultCase>
+                            <f:render partial="Components/Figure" arguments="{
+                                image: files.0,
+                                width: 450,
+                                sources: {
+                                    lg: {width: 288},
+                                    md: {width: 464},
+                                    sm: {width: 472},
+                                    xs: {width: 738},
+                                },
+                                description: files.0.description,
+                                copyright: files.0.copyright,
+                            }"/>
+                        </f:defaultCase>
+                    </f:switch>
+                </f:defaultCase>
+            </f:switch>
+        </div>
+    </f:if>
+
+    <f:if condition="{data.header} || {data.bodytext}">
+        <div class="textpic__text">
+            <f:render partial="Components/Intro" arguments="{
+                header: data.header,
+                subheader: data.subheader,
+                headertag: data.header_layout,
+                layout: data.tx_themecamino_header_style,
+                text: data.bodytext,
+                textHtml: 1,
+                link: data.tx_themecamino_link,
+                label: data.tx_themecamino_link_label,
+                icon: data.tx_themecamino_link_icon,
+                config: data.tx_themecamino_link_config,
+            }"/>
+        </div>
+    </f:if>
+</div>
+
+</html>

@@ -1,0 +1,9 @@
+.button-wrapper {
+    display: inline-flex;
+    gap: var(--spacing-m);
+    flex-wrap: wrap;
+}
+
+.button-wrapper__p {
+    --margin-top-paragraph: var(--spacing-l);
+}

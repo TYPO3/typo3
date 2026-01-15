@@ -1,0 +1,31 @@
+# Load default processing options
+imports:
+  - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Processing.yaml' }
+  - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml' }
+  - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml' }
+
+editor:
+  config:
+    contentsCss:
+      - "EXT:theme_camino/Resources/Public/Css/rte.css"
+
+    toolbar:
+      items:
+        - bold
+        - italic
+        - subscript
+        - superscript
+        - softhyphen
+        - '|'
+        - bulletedList
+        - numberedList
+        - '|'
+        - findAndReplace
+        - link
+        - '|'
+        - removeFormat
+        - undo
+        - redo
+        - '|'
+        - specialCharacters
+        - sourceEditing

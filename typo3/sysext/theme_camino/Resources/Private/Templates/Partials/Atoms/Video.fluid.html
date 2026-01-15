@@ -1,0 +1,17 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{video.properties.width} && {video.properties.height}">
+    <f:variable name="aspect-ratio" value="{video.properties.width}/{video.properties.height}"/>
+</f:if>
+<f:media
+    file="{video}"
+    width="{video.properties.width}"
+    height="{video.properties.height}"
+    style="aspect-ratio: {aspect-ratio}"
+    class="video"
+/>
+
+</html>

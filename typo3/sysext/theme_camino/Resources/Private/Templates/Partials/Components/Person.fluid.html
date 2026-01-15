@@ -1,0 +1,35 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:comment>
+    <!--
+        Markup for showing a person with image, name, position/subtitle
+        Used in testimonials and author cards
+    -->
+</f:comment>
+
+<f:if condition="{image.uid} || {name} || {position}">
+    <div class="person {f:if(condition: image.uid, then: 'person--with-image')}">
+        <f:if condition="{image.uid}">
+            <f:if condition="!{size}">
+                <f:variable name="size" value="128c"/>
+            </f:if>
+
+            <f:render partial="Atoms/Image" arguments="{image: image, width: size, height: size}"/>
+        </f:if>
+
+        <f:if condition="{name} || {position}">
+            <p class="person__text">
+                <f:if condition="{name}">
+                    <span class="person__name">{name}</span>
+                </f:if>
+
+                <f:if condition="{position}">
+                    <span class="person__position">{position}</span>
+                </f:if>
+            </p>
+        </f:if>
+    </div>
+</f:if>

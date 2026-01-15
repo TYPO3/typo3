@@ -1,0 +1,56 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Content/Default"/>
+
+<f:section name="Header"/>
+
+<f:section name="Main">
+    <div class="textmedia-teaser-grid">
+        <f:if condition="{data.header} || {data.bodytext} || {data.subheader}">
+            <div class="textmedia-teaser-grid__intro">
+                <f:render
+                    partial="Components/Intro"
+                    arguments="{
+                        header: data.header,
+                        subheader: data.subheader,
+                        headertag: data.headertag,
+                        layout: data.header_layout,
+                        text: data.bodytext,
+                        textHtml: 1,
+                        link: data.tx_themecamino_link,
+                        label: data.tx_themecamino_link_label,
+                        config: data.tx_themecamino_link_config,
+                        icon: data.tx_themecamino_link_icon,
+                    }"
+                />
+            </div>
+        </f:if>
+        <f:if condition="{record.tx_themecamino_list_elements}">
+            <f:render partial="Wrapper/Teaserscroller" contentAs="content">
+                <div class="textmedia-teaser-grid__grid">
+                    <f:for each="{record.tx_themecamino_list_elements}" as="item">
+                        <f:render
+                            partial="Components/Textmediateaser"
+                            arguments="{
+                                image: item.images.0,
+                                header: item.header,
+                                text: item.text,
+                                date: item.date,
+                                category: item.category,
+                                link: item.link,
+                                label: item.link_label,
+                                icon: item.link_icon,
+                                layout: data.layout,
+                            }"
+                        />
+                    </f:for>
+                </div>
+            </f:render>
+        </f:if>
+    </div>
+</f:section>
+
+</html>

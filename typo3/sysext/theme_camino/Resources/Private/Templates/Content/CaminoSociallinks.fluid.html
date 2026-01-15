@@ -1,0 +1,26 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Content/Unwrapped"/>
+
+<f:section name="Main">
+    <f:if condition="{record.tx_themecamino_list_elements}">
+        <ul class="sociallinks">
+            <f:for each="{record.tx_themecamino_list_elements}" as="item">
+                <f:variable name="linkUrl" value="{f:uri.typolink(parameter: item.link)}" />
+                <f:variable name="linkIcon">{f:render(partial: 'LinkIcon', arguments: '{url: linkUrl}') -> f:spaceless()}</f:variable>
+                <f:if condition="{linkIcon}">
+                    <li class="sociallinks__item">
+                        <f:link.typolink parameter="{item.link}" title="{item.link_label}">
+                            {linkIcon -> f:format.raw()}
+                        </f:link.typolink>
+                    </li>
+                </f:if>
+            </f:for>
+        </ul>
+    </f:if>
+</f:section>
+
+</html>

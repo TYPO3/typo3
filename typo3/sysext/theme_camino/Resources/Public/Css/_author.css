@@ -1,0 +1,84 @@
+.author {
+    --person-text-align: center;
+    --person-picture-justify-content: center;
+
+    margin: var(--component-margin-vertical) 0;
+    display: grid;
+    gap: 35px;
+
+    .article__aside .component:first-child & {
+        margin-top: var(--component-margin-top-first-child);
+    }
+}
+
+.author__image {
+    align-self: center;
+}
+
+.author__content {
+    --paragraph-font-size: var(--body-small-size);
+    --paragraph-letter-spacing: var(--body-small-letter-spacing);
+    --icon-size: 24px;
+    --link-letter-spacing: 0.2px;
+    --link-size: var(--label-medium-size);
+    --background: var(--color-neutral-10);
+    --before-content-height: 22px;
+    --before-content-width: 32px;
+
+    background: var(--background);
+    padding: 16px;
+    border-radius: var(--corners-s);
+    position: relative;
+    contain: inline-size;
+
+    &:before {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        width: 32px;
+        height: var(--before-content-height);
+        transform: translateX(-50%);
+        background:
+            radial-gradient(farthest-side at top left , transparent 98%, var(--background) 100%) left,
+            radial-gradient(farthest-side at top right, transparent 98%, var(--background) 100%) right;
+        background-size: 50.2% 100%;
+        background-repeat: no-repeat;
+    }
+}
+
+.author__listitem,
+.author__listitem_link {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: .5rem;
+    align-items: center;
+    width: 100%;
+}
+
+.author__listlitem_icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.author__listlitem_text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) and (max-width: 1280px) {
+    .author {
+        grid-template-columns: 200px 1fr;
+    }
+
+    .author__content {
+        &:before {
+            left: calc(var(--before-content-height) / 2 * -1);
+            top: calc(50% - var(--before-content-width)/2);
+            transform-origin: 100% 50%;
+            transform: translate(-100%, -50%) rotate(-90deg);
+        }
+    }
+}

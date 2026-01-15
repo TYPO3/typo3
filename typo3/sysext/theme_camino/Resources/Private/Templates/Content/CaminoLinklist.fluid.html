@@ -1,0 +1,36 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Content/Unwrapped"/>
+
+<f:section name="Main">
+    <f:switch expression="{data.colPos}">
+        <f:case value="10">
+            <f:variable name="type" value="inline"/>
+        </f:case>
+        <f:defaultCase>
+            <f:variable name="icon" value="arrow-right"/>
+        </f:defaultCase>
+    </f:switch>
+
+    <f:if condition="{record.tx_themecamino_list_elements}">
+        <ul class="linklist {f:if(condition: type, then: 'linklist--{type}')}">
+            <f:for each="{record.tx_themecamino_list_elements}" as="item">
+                <f:if condition="{f:link.typolink(parameter: item.link)}">
+                    <li class="linklist__item">
+                        <f:render partial="Button" arguments="{
+                            label: item.link_label,
+                            link: item.link,
+                            config: 'text',
+                            icon: icon,
+                        }"/>
+                    </li>
+                </f:if>
+            </f:for>
+        </ul>
+    </f:if>
+</f:section>
+
+</html>

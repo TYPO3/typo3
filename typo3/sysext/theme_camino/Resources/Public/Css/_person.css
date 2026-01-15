@@ -1,0 +1,36 @@
+.person--with-image {
+    --picture-justify-content: var(--person-picture-justify-content);
+    --image-width: var(--person-image-size, 128px);
+    --image-height: var(--person-image-size, 128px);
+    --image-border-radius: var(--person-image-size, 128px);
+
+    display: grid;
+    grid-template-columns: var(--person-with-image-grid-template-columns);
+    grid-gap: var(--spacing-m);
+    text-align: var(--person-text-align, inherit);
+
+    img {
+        margin: 0 auto;
+    }
+}
+
+.person__text {
+    align-self: center;
+}
+
+.person__name {
+    display: block;
+    font-size: var(--title-large-size);
+    font-weight: var(--title-large-weight);
+    letter-spacing: var(--title-letter-spacing);
+    line-height: var(--title-line-height);
+}
+
+.person__position {
+    display: block;
+    color: var(--text-color-highlight);
+    font-size: var(--subline-small-size);
+    font-weight: var(--subline-small-weight);
+    letter-spacing: var(--subline-letter-spacing);
+    line-height: var(--subline-line-height);
+}

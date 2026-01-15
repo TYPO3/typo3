@@ -1,0 +1,69 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:argument name="image" type="TYPO3\CMS\Core\Resource\FileReference" description="FAL file reference"/>
+<f:argument name="width" type="string" optional="1" description="Width of the fallback image"/>
+<f:argument name="height" type="string" optional="1" description="Height of the fallback image"/>
+<f:argument name="sources" type="array" optional="1" description="Responsive sources keyed by breakpoint (xs, sm, md, lg, xl, xxl)"/>
+<f:argument name="loading" type="string" optional="1" default="lazy" description="Loading attribute: lazy, eager, or auto"/>
+
+<f:variable name="mimeType" value="{image.properties.mime_type}"/>
+<f:variable name="fileExtension" value="{f:if(condition: '{mimeType} == \'image/jpeg\' || {mimeType} == \'image/png\'', then: 'webp')}"/>
+
+<f:if condition="{image}">
+    <f:if condition="{sources}">
+        <f:then>
+            <picture class="image__picture">
+                <f:for each="{sources}" as="sourceConfig" key="breakpointKey">
+                    <f:switch expression="{breakpointKey}">
+                        <f:case value="xxl"><f:variable name="minWidth" value="1920"/></f:case>
+                        <f:case value="xl"><f:variable name="minWidth" value="1440"/></f:case>
+                        <f:case value="lg"><f:variable name="minWidth" value="1280"/></f:case>
+                        <f:case value="md"><f:variable name="minWidth" value="1024"/></f:case>
+                        <f:case value="sm"><f:variable name="minWidth" value="768"/></f:case>
+                        <f:case value="xs"><f:variable name="minWidth" value="480"/></f:case>
+                        <f:defaultCase><f:variable name="minWidth" value="0"/></f:defaultCase>
+                    </f:switch>
+
+                    <f:if condition="{minWidth}">
+                        <source
+                            srcset="{f:uri.image(
+                                image: image,
+                                width: sourceConfig.width,
+                                height: sourceConfig.height,
+                                cropVariant: '{sourceConfig.cropVariant ? sourceConfig.cropVariant : \'default\'}',
+                                fileExtension: fileExtension
+                            )}"
+                            media="(min-width: {minWidth}px)"
+                        />
+                    </f:if>
+                </f:for>
+
+                <f:image
+                    image="{image}"
+                    width="{width}"
+                    height="{height}"
+                    cropVariant="default"
+                    fileExtension="{fileExtension}"
+                    loading="{loading}"
+                    class="image"
+                />
+            </picture>
+        </f:then>
+        <f:else>
+            <f:image
+                image="{image}"
+                width="{width}"
+                height="{height}"
+                cropVariant="default"
+                fileExtension="{fileExtension}"
+                loading="{loading}"
+                class="image"
+            />
+        </f:else>
+    </f:if>
+</f:if>
+
+</html>

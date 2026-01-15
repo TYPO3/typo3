@@ -1,0 +1,41 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:argument name="url" type="string" description="URL to match against for icon detection" />
+
+<f:if condition="{f:contains(value: 'linkedin', subject: url)}">
+    <f:then>
+        <f:render partial="Icon" arguments="{icon: 'social-linkedin'}" />
+    </f:then>
+    <f:else if="{f:contains(value: 'facebook', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'social-facebook'}" />
+    </f:else>
+    <f:else if="{f:contains(value: 'instagram', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'social-instagram'}" />
+    </f:else>
+    <f:else if="{f:contains(value: 'youtube', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'social-youtube'}" />
+    </f:else>
+    <f:else if="{f:contains(value: 'x.com', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'social-x'}" />
+    </f:else>
+    <f:else if="{f:contains(value: 'twitter', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'social-x'}" />
+    </f:else>
+    <f:else if="{f:contains(value: 'xing', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'social-xing'}" />
+    </f:else>
+    <f:else if="{f:startsWith(search: 'mailto:', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'mail'}" />
+    </f:else>
+    <f:else if="{f:startsWith(search: 'tel:', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'phone'}" />
+    </f:else>
+    <f:else>
+        <f:render partial="Icon" arguments="{icon: 'globe'}" />
+    </f:else>
+</f:if>
+
+</html>

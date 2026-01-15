@@ -1,0 +1,86 @@
+:root {
+    --camino-preview-color-error-text: var(--typo3-badge-danger-color);
+    --camino-preview-color-error-bg: var(--typo3-badge-danger-bg);
+    --camino-preview-color-warning-text: var(--typo3-badge-warning-color);
+    --camino-preview-color-warning-bg: var(--typo3-badge-warning-bg);
+
+    --camino-preview-tiles-width: 300px;
+    --camino-preview-opacity-hidden: 0.5;
+    --camino-preview-spacing-image: 10px;
+    --camino-preview-spacing-warning: 10px;
+}
+
+[class^="camino_preview_"][class$="--hidden"],
+[class*="camino_preview_"][class*="--hidden "] {
+    opacity: var(--camino-preview-opacity-hidden);
+}
+
+[class^="camino_preview_"][class$="--section"],
+[class*="camino_preview_"][class*="--section "] {
+    margin-top: .5em;
+}
+
+.camino_preview_label {
+    font-weight: bold;
+}
+
+.camino_preview_header {
+    font-weight: bold;
+}
+
+.camino_preview_image {
+    margin-inline-end: var(--camino-preview-spacing-image);
+    margin-top: var(--camino-preview-spacing-image);
+}
+
+.camino_preview_tiles {
+    width: var(--camino-preview-tiles-width);
+    display: inline-block;
+    vertical-align: top;
+}
+
+.camino_preview_warning {
+    margin-top: var(--camino-preview-spacing-warning);
+    background-color: var(--camino-preview-color-warning-bg);
+    color: var(--camino-preview-color-warning-text);
+    padding: 3px;
+}
+
+.camino_preview_warning--error {
+    background-color: var(--camino-preview-color-error-bg);
+    color: var(--camino-preview-color-error-text);
+}
+
+.camino_preview_ul {
+    padding-inline-start: 1.5em;
+    margin-bottom: 0;
+}
+
+.camino_preview_images + * {
+    margin-top: var(--camino-preview-spacing-image);
+}
+
+.camino_preview_listgroup {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    grid-gap: 30px 20px;
+}
+
+.camino_preview_listgroup:first-child:last-child {
+    margin-top: 0;
+}
+
+.camino_preview_text ul, .camino_preview_text li {
+    padding-inline-start: 1.5em;
+    margin-bottom: 0;
+}
+
+.camino_preview_text li {
+    padding-left: 0;
+}
+
+.camino_preview_text ul ~ br, .camino_preview_text ol ~ br {
+    display: none;
+}

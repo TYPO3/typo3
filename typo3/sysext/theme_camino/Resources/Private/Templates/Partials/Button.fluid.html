@@ -1,0 +1,125 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:switch expression="{config}">
+    <f:case value="secondary">
+        <f:variable name="modifier" value="secondary"/>
+    </f:case>
+    <f:case value="soft">
+        <f:variable name="modifier" value="soft"/>
+    </f:case>
+    <f:case value="text">
+        <f:variable name="modifier" value="text"/>
+    </f:case>
+    <f:case value="inverted">
+        <f:variable name="position" value="inverted"/>
+    </f:case>
+    <f:case value="inverted-secondary">
+        <f:variable name="position" value="inverted"/>
+        <f:variable name="modifier" value="secondary"/>
+    </f:case>
+    <f:case value="inverted-soft">
+        <f:variable name="position" value="inverted"/>
+        <f:variable name="modifier" value="soft"/>
+    </f:case>
+    <f:case value="inverted-text">
+        <f:variable name="position" value="inverted"/>
+        <f:variable name="modifier" value="text"/>
+    </f:case>
+</f:switch>
+
+<f:if condition="!{label} && {showButton}">
+    <f:variable name="additionalModifier" value="icon-only"/>
+</f:if>
+
+<f:variable name="cssClass" value="button {f:if(condition: modifier, then: 'button--{modifier}')} {f:if(condition: additionalModifier, then: 'button--{additionalModifier}')}"/>
+<f:if condition="{jsClass}">
+    <f:variable name="cssClass" value="{cssClass} {jsClass}"/>
+</f:if>
+
+<f:if condition="{link}">
+    <f:then>
+        <f:if condition="{label}">
+            <f:then>
+                <f:link.typolink parameter="{link}" class="{cssClass}">
+                    <f:render section="Content" arguments="{_all}"/>
+                </f:link.typolink>
+            </f:then>
+            <f:else>
+                <f:comment><!-- Fallback: Render title of link target --></f:comment>
+                <f:variable name="textWrap">
+                    <span class="button__content">
+                        <f:if condition="{position} == 'inverted'">
+                            <f:then>
+                                <f:render partial="Icon" arguments="{icon: icon}"/><span class="button__text">|</span>
+                            </f:then>
+                            <f:else>
+                                <span class="button__text">|</span><f:render partial="Icon" arguments="{icon: icon}"/>
+                            </f:else>
+                        </f:if>
+                    </span>
+                    <f:if condition="{srOnlyLabel}">
+                        <span class="sr-only">{srOnlyLabel}</span>
+                    </f:if>
+                </f:variable>
+                <f:link.typolink parameter="{link}" class="{cssClass}" textWrap="{textWrap -> f:spaceless()}"/>
+            </f:else>
+        </f:if>
+    </f:then>
+    <f:else if="{showButton}">
+        <f:for each="{data}" key="key" as="value">
+            <f:variable name="dataString">{dataString} data-{key}="{value}"</f:variable>
+        </f:for>
+
+        <f:if condition="{resetTabindex}">
+            <f:variable name="tabindexReset">tabindex="-1"</f:variable>
+        </f:if>
+
+        <button class="{cssClass}" {dataString -> f:format.raw()} {tabindexReset -> f:format.raw()}>
+            <f:render section="Content" arguments="{_all}"/>
+        </button>
+    </f:else>
+    <f:else>
+        <span class="{cssClass}">
+            <f:render section="Content" arguments="{_all}"/>
+        </span>
+    </f:else>
+</f:if>
+
+<f:section name="Content">
+    <span class="button__content">
+        <f:if condition="{position} == 'inverted'">
+            <f:then>
+                <f:render partial="Icon" arguments="{icon: icon}"/>
+                <span class="button__text">
+                    <f:render section="Label" arguments="{_all}"/>
+                </span>
+            </f:then>
+            <f:else>
+                <span class="button__text">
+                    <f:render section="Label" arguments="{_all}"/>
+                </span>
+                <f:render partial="Icon" arguments="{icon: icon}"/>
+            </f:else>
+        </f:if>
+    </span>
+
+    <f:if condition="{srOnlyLabel}">
+        <span class="sr-only">{srOnlyLabel}</span>
+    </f:if>
+</f:section>
+
+<f:section name="Label">
+    <f:if condition="{richLabel}">
+        <f:then>
+            {label -> f:format.raw()}
+        </f:then>
+        <f:else>
+            {label}
+        </f:else>
+    </f:if>
+</f:section>
+
+</html>

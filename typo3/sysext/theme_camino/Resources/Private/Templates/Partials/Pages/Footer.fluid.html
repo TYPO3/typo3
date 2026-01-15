@@ -1,0 +1,52 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:comment>
+    Content on the page is customizable using content elements in content areas on the start page.
+    If any or all of the content in the footer should be static, add a partial file to your
+    site's setup.
+</f:comment>
+
+<footer class="component component--bg-100 component--page-area component--page-footer">
+    <div class="component__content">
+        <div class="footer">
+            <div class="footer__col footer__col--1">
+                <f:render partial="StaticContent/Footer-Col-1" optional="true" arguments="{_all}">
+                    <f:link.typolink parameter="{breadcrumb.0.link}" class="footer__logo">
+                        <f:render partial="Logo/Logo" arguments="{startpage: breadcrumb.0}"/>
+                    </f:link.typolink>
+
+                    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 11, slide: '-1'}"/>
+                </f:render>
+            </div>
+
+            <div class="footer__col footer__col--2">
+                <f:render partial="StaticContent/Footer-Col-2" optional="true" arguments="{_all}">
+                    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 12, slide: '-1'}"/>
+                </f:render>
+            </div>
+
+            <div class="footer__col footer__col--3">
+                <f:render partial="StaticContent/Footer-Col-3" optional="true" arguments="{_all}">
+                    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 13, slide: '-1'}"/>
+                </f:render>
+            </div>
+
+            <div class="footer__col footer__col--4">
+                <f:render partial="StaticContent/Footer-Col-4" optional="true" arguments="{_all}">
+                    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 14, slide: '-1'}"/>
+                </f:render>
+            </div>
+        </div>
+
+        <div class="footer__meta">
+            <f:render partial="StaticContent/Footer-Meta" optional="true" arguments="{_all}">
+                <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 10, slide: '-1'}"/>
+            </f:render>
+        </div>
+    </div>
+</footer>
+
+</html>

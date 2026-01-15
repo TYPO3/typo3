@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_fields.xlf" date="2026-01-13T15:46:30Z" product-name="theme_camino">
+    <header/>
+    <body>
+      <!-- General: Image crop variants -->
+      <trans-unit id="cropVariants.default">
+        <source>Default</source>
+      </trans-unit>
+      <trans-unit id="cropVariants.sm">
+        <source>SM (&gt; 768px)</source>
+      </trans-unit>
+      <trans-unit id="cropVariants.md">
+        <source>MD (&gt; 1024px)</source>
+      </trans-unit>
+      <trans-unit id="cropVariants.lg">
+        <source>LG (&gt; 1280px)</source>
+      </trans-unit>
+      <trans-unit id="cropVariants.xl">
+        <source>XL (&gt; 1440px)</source>
+      </trans-unit>
+      <trans-unit id="cropVariants.xxl">
+        <source>XXL (&gt; 1920px)</source>
+      </trans-unit>
+      <!-- pages -->
+      <trans-unit id="pages.tx_themecamino_logo">
+        <source>Logo</source>
+      </trans-unit>
+      <trans-unit id="pages.tx_themecamino_logo.description">
+        <source>The selected file is displayed both in the header next to the main menu and in the footer.</source>
+      </trans-unit>
+      <!-- tt_content -->
+      <trans-unit id="tt_content.group.camino_hero">
+        <source>Hero</source>
+      </trans-unit>
+      <trans-unit id="tt_content.group.camino_teaser">
+        <source>Teaser</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tabs.teaser">
+        <source>Teaser items</source>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabel">
+        <source>Link / Call to Action (CTA)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabelconfig">
+        <source>Link / Call to Action (CTA)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabelicon">
+        <source>Link / Call to Action (CTA)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_linklabeliconconfig">
+        <source>Link / Call to Action (CTA)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.palettes.camino_person">
+        <source>Personal details</source>
+      </trans-unit>
+      <trans-unit id="tt_content.bodytext.types.person-palette.label">
+        <source>Quote / Testimonial</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header.types.person-palette.label">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="tt_content.subheader.types.person-palette.label">
+        <source>Position / Title of the person</source>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.label">
+        <source>Background color</source>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.default">
+        <source>None</source>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.bg-10">
+        <source>Light</source>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.bg-80">
+        <source>Dark</source>
+      </trans-unit>
+      <trans-unit id="tt_content.frame_class.I.bg-100">
+        <source>Primary color</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header.label.ALT">
+        <source>Name (not visible in frontend)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header.description.ALT">
+        <source>The name won't be displayed as header above the element, but will be used as reference in menus.</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.label">
+        <source>Rank / Hierarchy</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.0">
+        <source>Default (P)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.1">
+        <source>H1</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.2">
+        <source>H2</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.3">
+        <source>H3</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.4">
+        <source>H4</source>
+      </trans-unit>
+      <trans-unit id="tt_content.header_layout.option.5">
+        <source>H5</source>
+      </trans-unit>
+      <trans-unit id="tt_content.imageorient.I.27">
+        <source>Beside text, Right (small)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.imageorient.I.28">
+        <source>Beside Text, Left (small)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style">
+        <source>Style</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style.option.default">
+        <source>Default</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style.option.large">
+        <source>Large</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_header_style.option.small">
+        <source>Small</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link">
+        <source>Link</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config">
+        <source>Link configuration</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.itemgroup.inverted">
+        <source>Icon before text</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.0">
+        <source>Primary button</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.secondary">
+        <source>Secondary button</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.soft">
+        <source>Soft button</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.text">
+        <source>Text only button</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted">
+        <source>Primary button, icon before text</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted-secondary">
+        <source>Secondary button, icon before text</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted-soft">
+        <source>Soft button, icon before text</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_config.I.inverted-text">
+        <source>Text only button, icon before text</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_icon">
+        <source>Link icon</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.none">
+        <source>No Icon</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.arrow-left">
+        <source>Arrow, left</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.arrow-right">
+        <source>Arrow, right</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron">
+        <source>Chevron</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-double-left">
+        <source>Chevron, double left</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-double-right">
+        <source>Chevron, double right</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-left">
+        <source>Chevron, left</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.chevron-right">
+        <source>Chevron, right</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.download">
+        <source>Download</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.globe">
+        <source>Globe</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.launch">
+        <source>Launch</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.mail">
+        <source>Mail</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.menu">
+        <source>Menu</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.phone">
+        <source>Phone</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.play">
+        <source>Play</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.search">
+        <source>Search</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-facebook">
+        <source>Facebook</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-instagram">
+        <source>Instagram</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-linkedin">
+        <source>LinkedIn</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-x">
+        <source>X (Twitter)</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-xing">
+        <source>Xing</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.social-youtube">
+        <source>YouTube</source>
+      </trans-unit>
+      <trans-unit id="tx_camino.icon.zoom">
+        <source>Zoom</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_link_label">
+        <source>Link label</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements">
+        <source>List items</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.appearance.newRecordLinkTitle">
+        <source>Add item</source>
+      </trans-unit>
+      <!-- CType 'camino_author' -->
+      <trans-unit id="tt_content.CType.camino_author.label">
+        <source>Author card</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_author.description">
+        <source>Insert an author card.</source>
+      </trans-unit>
+      <trans-unit id="tt_content.bodytext.types.camino_author.label">
+        <source>Description</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_author.label">
+        <source>Contact details</source>
+      </trans-unit>
+      <!-- CType 'camino_hero' -->
+      <trans-unit id="tt_content.CType.camino_hero.label">
+        <source>Hero / Page header</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero.description">
+        <source>Insert a Hero / Page header element.</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_small.label">
+        <source>Hero / Page header (small)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_small.description">
+        <source>Insert a Hero / Page header element (smaller version).</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_text_only.label">
+        <source>Hero / Page header (text-only)</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_hero_text_only.description">
+        <source>Insert a Hero / Page header element (text-only version).</source>
+      </trans-unit>
+      <!-- CType 'camino_linklist' -->
+      <trans-unit id="tt_content.CType.camino_linklist.label">
+        <source>Link list</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_linklist.description">
+        <source>Insert a list of links, used for link lists / menu in the footer.</source>
+      </trans-unit>
+      <!-- CType 'camino_sociallinks' -->
+      <trans-unit id="tt_content.CType.camino_sociallinks.label">
+        <source>Social media icons</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_sociallinks.description">
+        <source>Insert a list of links to social media platforms.</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_sociallinks.label">
+        <source>Links</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_sociallinks.description">
+        <source>Icons are automatically set according to the link target. The following platforms are available for the link type "External URL": Facebook, Instagram, LinkedIn, X (Twitter) and YouTube. Links to other platforms are not supported and will use a generic icon.</source>
+      </trans-unit>
+      <!-- CType 'camino_testimonial' -->
+      <trans-unit id="tt_content.CType.camino_testimonial.label">
+        <source>Testimonial</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_testimonial.description">
+        <source>Insert a testimonial, with a quote and an optional picture of the person.</source>
+      </trans-unit>
+      <!-- CType 'camino_textmedia_teaser' -->
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser.label">
+        <source>Text-Media Teaser</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser.description">
+        <source>Add a teaser to link to articles, pages, and other content on your site.</source>
+      </trans-unit>
+      <trans-unit id="tt_content.subheader.types.camino_textmedia_teaser.label">
+        <source>Category</source>
+      </trans-unit>
+      <!-- CType 'camino_textmedia_teaser_grid' -->
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser_grid.label">
+        <source>Text-Media Teaser Grid</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_textmedia_teaser_grid.description">
+        <source>Add a grid of teasers to link to articles, pages, and other content on your site.</source>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_textmedia_teaser_grid.label">
+        <source>Teaser items</source>
+      </trans-unit>
+      <!-- CType 'camino_textteaser' -->
+      <trans-unit id="tt_content.CType.camino_textteaser.label">
+        <source>Text teaser</source>
+      </trans-unit>
+      <trans-unit id="tt_content.CType.camino_textteaser.description">
+        <source>Insert a text teaser with a CTA.</source>
+      </trans-unit>
+      <!-- List item -->
+      <trans-unit id="tx_themecamino_list_item">
+        <source>List item</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.palettes.linklabelicon">
+        <source>Link / Call to Action (CTA)</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.palettes.linklabeliconconfig">
+        <source>Link / Call to Action (CTA)</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.sorting_foreign">
+        <source>Sorting</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.tablename">
+        <source>Reference: Database table</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.fieldname">
+        <source>Reference: Database field</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.uid_foreign">
+        <source>Foreign table element reference</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.category">
+        <source>Category</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.date">
+        <source>Date</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.header">
+        <source>Header</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.images">
+        <source>Images</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.images.addFileReference">
+        <source>Add image</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link">
+        <source>Link</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link_config">
+        <source>Link configuration</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link_icon">
+        <source>Link icon</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.link_label">
+        <source>Label for Link</source>
+      </trans-unit>
+      <trans-unit id="tx_themecamino_list_item.text">
+        <source>Text</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

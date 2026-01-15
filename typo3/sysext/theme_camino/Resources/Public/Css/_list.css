@@ -1,0 +1,13 @@
+.list {
+    li {
+        --margin-bottom-list-item: 0;
+        --margin-top-list-item: 0;
+
+        margin-left: 20px;
+    }
+}
+
+
+.list--unordered {
+    list-style-type: unset;
+}

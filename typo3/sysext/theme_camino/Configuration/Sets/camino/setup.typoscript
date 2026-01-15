@@ -1,0 +1,12 @@
+@import './TypoScript/*.typoscript'
+
+page = PAGE
+page {
+  # set color-scheme class to body tag
+  bodyTagCObject = TEXT
+  bodyTagCObject {
+    data = sitesettings:camino.colorScheme
+    wrap = <body class=" | ">
+  }
+  10 =< lib.fluidPage
+}

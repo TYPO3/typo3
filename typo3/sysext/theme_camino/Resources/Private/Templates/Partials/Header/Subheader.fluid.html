@@ -1,0 +1,10 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{subheader}">
+    <f:render partial="Header/HeaderTag" arguments="{type: 'subheader', tag: tag, class: class, text: subheader, layout: layout, size: size}"/>
+</f:if>
+
+</html>

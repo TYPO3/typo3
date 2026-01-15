@@ -1,0 +1,25 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+
+<f:page.meta property="viewport">width=device-width, initial-scale=1.0</f:page.meta>
+<f:asset.css href="EXT:theme_camino/Resources/Public/Css/main.css" identifier="camino-main" media="all" />
+<f:asset.script src="EXT:theme_camino/Resources/Public/JavaScript/main.js" identifier="camino-main" type="module" />
+
+<f:render partial="Pages/Header" arguments="{_all}"/>
+
+<f:render section="Stage" optional="true">
+    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 2}"/>
+</f:render>
+
+<main class="page__content {f:if(condition: '{site.configuration.settings.camino.header.fixedPosition}', then: 'page__content--fixed')}">
+    <f:render section="Main" optional="true">
+        <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 0}"/>
+    </f:render>
+</main>
+
+<f:render partial="Pages/Footer" arguments="{_all}"/>
+
+</html>

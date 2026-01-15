@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_layouts.xlf" date="2026-01-14T12:00:00Z" product-name="theme_camino">
+    <header/>
+    <body>
+      <!-- Backend layouts -->
+      <trans-unit id="backend_layout.colPos.0.name">
+        <source>Content area</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.1.name">
+        <source>Sidebar</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.2.name">
+        <source>Hero area</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.10.name">
+        <source>Footer: Meta navigation</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.11.name">
+        <source>Footer: Column 1 (Logo)</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.12.name">
+        <source>Footer: Column 2 (Menu)</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.13.name">
+        <source>Footer: Column 3 (Menu)</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.colPos.14.name">
+        <source>Footer: Column 4 (Menu)</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_startpage.title">
+        <source>Camino: Start page</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_contentpage.title">
+        <source>Camino: Content page (full-width)</source>
+      </trans-unit>
+      <trans-unit id="backend_layout.camino_contentpage_sidebar.title">
+        <source>Camino: Content page (with sidebar)</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

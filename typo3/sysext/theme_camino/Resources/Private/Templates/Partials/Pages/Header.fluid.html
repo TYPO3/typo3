@@ -1,0 +1,70 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<header class="header {f:if(condition: '{site.configuration.settings.camino.header.fixedPosition}', then: 'header--fixed')}">
+    <div class="header__content">
+        <f:link.typolink parameter="{breadcrumb.0.link}" class="header__logo">
+            <f:render partial="Logo/Logo" arguments="{startpage: breadcrumb.0}"/>
+        </f:link.typolink>
+
+        <div class="header__menu-button">
+            <f:variable name="buttonLabelAndIcons">
+                <f:translate domain="theme_camino.messages" key="menu.label"/>
+                <f:render partial="Icon" arguments="{icon: 'menu'}"/>
+                <f:render partial="Icon" arguments="{icon: 'close'}"/>
+            </f:variable>
+
+            <f:render partial="Button" arguments="{label: buttonLabelAndIcons, jsClass: 'JS_header-menu-button', richLabel: 1}"/>
+        </div>
+
+        <div class="header__menu" id="navigation" >
+            <nav class="header__nav" aria-label="{f:translate(domain: 'theme_camino.messages', key: 'menu.main.label')}">
+                <f:if condition="{mainMenu}">
+                    <ul class="header__nav-list">
+                        <f:for each="{mainMenu}" as="item">
+                            <f:render section="MainMenuItem" arguments="{item: item}"/>
+                        </f:for>
+                    </ul>
+                </f:if>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<f:section name="MainMenuItem">
+    <li class="header__nav-list-item JS_header-nav-list-item">
+        <f:link.typolink
+            parameter="{item.link}"
+            class="header__nav-item {f:if(condition: '{item.active}', then: 'header__nav-item--active')} {f:if(condition: item.hasSubpages, then: 'header__nav-item--has-subnav JS_header_subnav_link')}"
+            additionalAttributes="{f:if(condition: item.hasSubpages, then: {data-target: 'subnavigation-{item.data.uid}'})}"
+        >
+            {item.title}
+            <f:if condition="{item.hasSubpages}">
+                <f:render partial="Icon" arguments="{icon: 'chevron'}"/>
+            </f:if>
+        </f:link.typolink>
+
+        <f:if condition="{item.hasSubpages}">
+            <ul class="header__subnav JS_header-subnav" id="subnavigation-{item.data.uid}">
+                <li class="header__subnav-list-item header__subnav-list-item--back">
+                    <button class="header__subnav-item header__subnav-item--back JS_header-nav-back">
+                        <f:render partial="Icon" arguments="{icon: 'arrow-left'}"/>
+                        {item.title}
+                    </button>
+                </li>
+
+                <f:for each="{item.children}" as="subitem" iteration="iterator">
+                    <li class="header__subnav-list-item">
+                        <f:link.typolink parameter="{subitem.link}" class="header__subnav-item">
+                            {subitem.title}
+                        </f:link.typolink>
+                    </li>
+                </f:for>
+            </ul>
+        </f:if>
+    </li>
+</f:section>
+
+</html>

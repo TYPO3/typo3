@@ -1,0 +1,18 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{tag} == 100">
+    <f:then>
+        <f:comment><!-- hidden --></f:comment>
+    </f:then>
+
+    <f:else>
+        <f:if condition="{header}">
+            <f:render partial="Header/HeaderTag" arguments="{tag: tag, class: class, text: header, layout: layout, size: size}"/>
+        </f:if>
+    </f:else>
+</f:if>
+
+</html>

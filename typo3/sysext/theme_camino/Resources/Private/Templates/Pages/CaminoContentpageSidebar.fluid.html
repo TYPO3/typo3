@@ -1,0 +1,22 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Pages/Default"/>
+
+<f:section name="Main">
+    <f:render partial="Wrapper/Component" arguments="{modifier: 'page-area'}" contentAs="content" optional="true">
+        <div class="article">
+            <div class="article__content">
+                <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 0}"/>
+            </div>
+
+            <div class="article__aside">
+                <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 1}"/>
+            </div>
+        </div>
+    </f:render>
+</f:section>
+
+</html>

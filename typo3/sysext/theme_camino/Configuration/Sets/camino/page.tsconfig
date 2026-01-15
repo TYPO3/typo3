@@ -1,0 +1,145 @@
+@import 'EXT:theme_camino/Configuration/BackendLayouts/*.tsconfig'
+
+RTE.default.preset = camino_default
+
+TCEMAIN.default.disablePrependAtCopy = 1
+
+TCEFORM {
+  pages {
+    subtitle.disabled = 1
+    newUntil.disabled = 1
+    content_from_pid.disabled = 1
+    php_tree_stop.disabled = 1
+    module.disabled = 1
+    media.disabled = 1
+    tsconfig_includes.disabled = 1
+    TSconfig.disabled = 1
+    categories.disabled = 1
+    layout.disabled = 1
+    doktype.removeItems = 7,199
+    backend_layout.removeItems = -1
+    backend_layout_next_level.removeItems = -1
+    tx_themecamino_logo.disabled = 0
+  }
+
+  tt_content {
+    # restore camino specific elements and fields
+    CType.removeItems := removeFromList(camino_hero)
+    CType.removeItems := removeFromList(camino_hero_small)
+    CType.removeItems := removeFromList(camino_hero_text_only)
+    CType.removeItems := removeFromList(camino_textteaser)
+    CType.removeItems := removeFromList(camino_testimonial)
+    CType.removeItems := removeFromList(camino_author)
+    CType.removeItems := removeFromList(camino_textmedia_teaser)
+    CType.removeItems := removeFromList(camino_textmedia_teaser_grid)
+    CType.removeItems := removeFromList(camino_linklist)
+    CType.removeItems := removeFromList(camino_sociallinks)
+    tx_themecamino_header_style.disabled = 0
+    tx_themecamino_link.disabled = 0
+    tx_themecamino_link_label.disabled = 0
+    tx_themecamino_link_config.disabled = 0
+    tx_themecamino_link_icon.disabled = 0
+
+    # remove defualt content elements that are not supported
+    CType.removeItems := addToList(bullets)
+    CType.removeItems := addToList(table)
+    CType.removeItems := addToList(uploads)
+    CType.removeItems := addToList(html)
+    CType.removeItems := addToList(shortcut)
+    CType.removeItems := addToList(div)
+    CType.removeItems := addToList(header)
+    CType.removeItems := addToList(image)
+    CType.removeItems := addToList(textmedia)
+    CType.removeItems := addToList(menu_abstract)
+    CType.removeItems := addToList(menu_categorized_content)
+    CType.removeItems := addToList(menu_categorized_pages)
+    CType.removeItems := addToList(menu_pages)
+    CType.removeItems := addToList(menu_subpages)
+    CType.removeItems := addToList(menu_related_pages)
+    CType.removeItems := addToList(menu_recently_updated)
+    CType.removeItems := addToList(menu_section)
+    CType.removeItems := addToList(menu_section_pages)
+    CType.removeItems := addToList(menu_sitemap)
+    CType.removeItems := addToList(menu_sitemap_pages)
+
+    # remove fields we generally do not use in this theme
+    categories.disabled = 1
+    date.disabled = 1
+    header_position.disabled = 1
+    header_link.disabled = 1
+    imagecols.disabled = 1
+    imageborder.disabled = 1
+    imageheight.disabled = 1
+    imagewidth.disabled = 1
+    image_zoom.disabled = 1
+    layout.disabled = 1
+    linkToTop.disabled = 1
+    sectionIndex.disabled = 1
+    space_after_class.disabled = 1
+    space_before_class.disabled = 1
+    rowDescription.disabled = 1
+
+    # manipulate field values
+    # -----------------------
+    frame_class.label = LLL:theme_camino.backend_fields:tt_content.frame_class.label
+    frame_class.keepItems = default,bg-10,bg-80,bg-100
+    frame_class.altLabels.default = LLL:theme_camino.backend_fields:tt_content.frame_class.I.default
+    frame_class.addItems.bg-10 = LLL:theme_camino.backend_fields:tt_content.frame_class.I.bg-10
+    frame_class.addItems.bg-80 = LLL:theme_camino.backend_fields:tt_content.frame_class.I.bg-80
+    frame_class.addItems.bg-100 = LLL:theme_camino.backend_fields:tt_content.frame_class.I.bg-100
+
+    header_layout.label = LLL:theme_camino.backend_fields:tt_content.header_layout.label
+    header_layout.altLabels.0 = LLL:theme_camino.backend_fields:tt_content.header_layout.option.0
+    header_layout.altLabels.1 = LLL:theme_camino.backend_fields:tt_content.header_layout.option.1
+    header_layout.altLabels.2 = LLL:theme_camino.backend_fields:tt_content.header_layout.option.2
+    header_layout.altLabels.3 = LLL:theme_camino.backend_fields:tt_content.header_layout.option.3
+    header_layout.altLabels.4 = LLL:theme_camino.backend_fields:tt_content.header_layout.option.4
+    header_layout.altLabels.5 = LLL:theme_camino.backend_fields:tt_content.header_layout.option.5
+
+    imageorient.addItems.27 = LLL:theme_camino.backend_fields:tt_content.imageorient.I.27
+    imageorient.addItems.27.icon = content-beside-text-img-right
+    imageorient.addItems.28 = LLL:theme_camino.backend_fields:tt_content.imageorient.I.28
+    imageorient.addItems.28.icon = content-beside-text-img-left
+    imageorient.keepItems = 0,8,25,26,27,28
+
+    # type-specific configuration
+    # ---------------------------
+    header_layout.types.camino_hero.disabled = 1
+    header_layout.types.camino_hero_small.disabled = 1
+    header_layout.types.camino_hero_text_only.disabled = 1
+
+    date.types.camino_textmedia_teaser.disabled = 0
+
+    frame_class.types.camino_textteaser.keepItems = bg-10,bg-80,bg-100
+  }
+}
+
+# @todo remove once it is possible to select files in Site Settings
+# remove certain fields that are only supposed to be editable on the start page (for site-wide configuration)
+[traverse(page, "is_siteroot") != "1"]
+  TCEFORM.pages {
+    tx_themecamino_logo.disabled = 1
+  }
+[END]
+
+# @todo remove once no longer needed
+mod.web_layout {
+  tt_content {
+    preview {
+      camino_author = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Author.fluid.html
+      camino_hero = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Hero.fluid.html
+      camino_hero_small = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Hero.fluid.html
+      camino_hero_text_only = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Hero.fluid.html
+      camino_linklist = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Linklist.fluid.html
+      camino_sociallinks = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Linklist.fluid.html
+      camino_testimonial = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Testimonial.fluid.html
+      camino_textmedia_teaser = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/TextmediaTeaser.fluid.html
+      camino_textmedia_teaser_grid = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/TextmediaTeaserGrid.fluid.html
+      camino_textteaser = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Textteaser.fluid.html
+      text = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Textmedia.fluid.html
+      textmedia = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Textmedia.fluid.html
+      textpic = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Textmedia.fluid.html
+    }
+  }
+}
+

@@ -1,0 +1,83 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:asset.css identifier="theme_camino_backend_previews" href="EXT:theme_camino/Resources/Public/Css/previews.css"/>
+
+<f:render section="Text" arguments="{text: record.bodytext}"/>
+<f:render section="Images" arguments="{images: record.image}"/>
+<f:render section="Cta" arguments="{
+    link: record.tx_themecamino_link,
+    linklabel: record.tx_themecamino_link_label,
+    config: record.tx_themecamino_link_config,
+    icon: record.tx_themecamino_link_icon,
+}"/>
+
+<f:section name="Cta">
+    <f:if condition="{f:uri.typolink(parameter: link, language: language)}">
+        <div class="camino_preview_link camino_preview_link--section">
+            <span class="camino_preview_label">{f:translate(key: 'link.label', domain: 'theme_camino.backend_previews')}: </span>{linklabel}
+            <f:if condition="{f:uri.typolink(parameter: link, language: language)}">
+                <f:then>
+                    ({f:uri.typolink(parameter: link, language: language)})
+                </f:then>
+                <f:else>
+                    <span class="camino_preview_warning camino_preview_warning--error">
+                        <f:translate key="warnings.linkTargetError" domain="theme_camino.backend_previews"/>
+                    </span>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{config} || {icon}">
+                <f:spaceless>[<f:if condition="{config}">{f:translate(key: 'link.config', domain: 'theme_camino.backend_previews')}:
+                    {f:translate(key: 'tt_content.tx_themecamino_link_config.I.{config}', domain: 'theme_camino.backend_fields')}<f:if condition="{icon}">, </f:if>
+                    </f:if><f:if condition="{icon}">{f:translate(key: 'backend_previews.icon.label', domain: 'theme_camino.backend_previews')}:
+                    {f:translate(key: 'tt_content.tx_themecamino_link_icon.I.{icon}', domain: 'theme_camino.backend_fields')}</f:if>]
+                </f:spaceless>
+            </f:if>
+        </div>
+    </f:if>
+</f:section>
+
+<f:section name="Images">
+    <f:if condition="{images}">
+        <f:if condition="!{cropVariant}">
+            <f:variable name="cropVariant" value="default"/>
+        </f:if>
+        <div class="camino_preview_images">
+            <f:for each="{images}" as="image">
+                <f:render section="Media-Image" arguments="{image: image, cropVariant: cropVariant}"/>
+            </f:for>
+        </div>
+    </f:if>
+</f:section>
+
+<f:section name="Media-Image">
+    <f:if condition="{image.uid}">
+        <f:image
+            src="{image.uid}" treatIdAsReference="1"
+            height="64"
+            class="camino_preview_image {f:if(condition: image.properties.hidden, then: 'camino_preview_image--hidden')}"
+            cropVariant="{cropVariant}"
+        />
+    </f:if>
+</f:section>
+
+<f:section name="Text">
+    <f:if condition="{text}">
+        <div class="camino_preview_text">
+            <f:variable name="rawText" value="{text -> f:format.stripTags(allowedTags: '<br><sup><sub>')}"/>
+            <f:if condition="{crop}">
+                <f:then>
+                    {rawText -> f:format.crop(maxCharacters: crop) -> f:format.raw()}
+                </f:then>
+                <f:else>
+                    {rawText -> f:format.raw()}
+                </f:else>
+            </f:if>
+        </div>
+    </f:if>
+</f:section>
+
+</html>

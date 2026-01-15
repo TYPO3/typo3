@@ -1,0 +1,25 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Content/Unwrapped"/>
+
+<f:section name="Main">
+    <f:render
+        partial="Components/Textmediateaser"
+        arguments="{
+            image: record.image.0,
+            header: data.header,
+            text: data.bodytext,
+            textHtml: 1,
+            date: data.date,
+            category: data.subheader,
+            link: data.tx_themecamino_link,
+            label: data.tx_themecamino_link_label,
+            icon: data.tx_themecamino_link_icon,
+        }"
+    />
+</f:section>
+
+</html>

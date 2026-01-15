@@ -1,0 +1,16 @@
+.sociallinks {
+    --list-item-display: inline;
+    --icon-size: 32px;
+    --icon-padding: var(--spacing-s);
+    --margin-top-paragraph: var(--spacing-s);
+    --margin-top-list-item: 0;
+    --margin-bottom-list-item: 0;
+
+    gap: var(--spacing-s);
+    flex-wrap: wrap;
+    display: flex;
+}
+
+.sociallinks__item {
+    display: var(--list-item-display);
+}

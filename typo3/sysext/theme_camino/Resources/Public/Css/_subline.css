@@ -1,0 +1,30 @@
+.subline {
+    font-family: var(--subline-medium-family);
+    font-size: var(--subline-medium-size);
+    font-weight: var(--subline-medium-weight);
+    line-height: var(--subline-medium-line-height);
+    letter-spacing: var(--subline-medium-letter-spacing);
+    margin-bottom: var(--margin-bottom-subline, var(--spacing-l));
+    max-width: var(--max-width-paragraph);
+    margin-top: var(--subline-margin-top, 0);
+
+    &:last-child {
+        --margin-bottom-subline: var(--margin-bottom-paragraph-last-child, 0);
+    }
+}
+
+.subline--small {
+    font-family: var(--subline-small-family);
+    font-size: var(--subline-small-size);
+    font-weight: var(--subline-small-weight);
+    line-height: var(--subline-small-line-height);
+    letter-spacing: var(--subline-small-letter-spacing);
+}
+
+.subline--large {
+    font-family: var(--subline-large-family);
+    font-size: var(--subline-large-size);
+    font-weight: var(--subline-large-weight);
+    line-height: var(--subline-large-line-height);
+    letter-spacing: var(--subline-large-letter-spacing);
+}

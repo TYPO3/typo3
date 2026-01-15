@@ -1,0 +1,34 @@
+.textmedia-teaser-grid {
+    --textmedia-teaser-width: 360px;
+
+    display: grid;
+    gap: var(--spacing-xl);
+}
+
+.textmedia-teaser-grid__grid {
+    /* ignore the grid container on small breakpoints to enable horizontal scrolling */
+    display: contents;
+}
+
+/**
+ * Viewports
+ */
+
+/* Small */
+@media (min-width: 768px) {
+    .textmedia-teaser-grid__grid {
+        display: grid;
+        width: 100%;
+        gap: var(--spacing-m);
+        grid-template-columns: repeat(3, 1fr);
+
+        &:has(> :only-child) {
+            grid-template-columns: 1fr;
+        }
+
+        &:has(> :nth-child(2)):not(:has(> :nth-child(3))),
+        &:has(> :nth-child(4)):not(:has(> :nth-child(5))) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+}

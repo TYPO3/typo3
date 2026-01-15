@@ -52,7 +52,8 @@
 					"typo3/cms-tstemplate": "14.1.0-dev",
 					"typo3/cms-viewpage": "14.1.0-dev",
 					"typo3/cms-webhooks": "14.1.0-dev",
-					"typo3/cms-workspaces": "14.1.0-dev"
+					"typo3/cms-workspaces": "14.1.0-dev",
+					"typo3/theme-camino": "14.1.0-dev"
 				}
 			}
 		},
@@ -98,6 +99,7 @@
 		"typo3/cms-tstemplate": "@dev",
 		"typo3/cms-viewpage": "@dev",
 		"typo3/cms-webhooks": "@dev",
-		"typo3/cms-workspaces": "@dev"
+		"typo3/cms-workspaces": "@dev",
+		"typo3/theme-camino": "@dev"
 	}
 }

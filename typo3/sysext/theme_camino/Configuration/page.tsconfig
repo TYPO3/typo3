@@ -1,0 +1,25 @@
+# disable everything globally for the new fields, so they are only visible
+# if the site config enables the fields
+TCEFORM.pages {
+  tx_themecamino_logo.disabled = 1
+}
+
+# Hide custom content types globally, they are only enabled via the set's page.tsconfig
+TCEFORM.tt_content {
+  CType.removeItems := addToList(camino_hero)
+  CType.removeItems := addToList(camino_hero_small)
+  CType.removeItems := addToList(camino_hero_text_only)
+  CType.removeItems := addToList(camino_textteaser)
+  CType.removeItems := addToList(camino_testimonial)
+  CType.removeItems := addToList(camino_author)
+  CType.removeItems := addToList(camino_textmedia_teaser)
+  CType.removeItems := addToList(camino_textmedia_teaser_grid)
+  CType.removeItems := addToList(camino_linklist)
+  CType.removeItems := addToList(camino_sociallinks)
+
+  tx_themecamino_header_style.disabled = 1
+  tx_themecamino_link.disabled = 1
+  tx_themecamino_link_label.disabled = 1
+  tx_themecamino_link_config.disabled = 1
+  tx_themecamino_link_icon.disabled = 1
+}

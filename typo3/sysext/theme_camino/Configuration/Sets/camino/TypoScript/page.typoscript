@@ -1,0 +1,24 @@
+# use fluid to render page templates
+lib.fluidPage = PAGEVIEW
+lib.fluidPage {
+  paths.10 = EXT:theme_camino/Resources/Private/Templates/
+
+  dataProcessing {
+    1763411533130 = menu
+    1763411533130 {
+      as = mainMenu
+      levels = 2
+      expandAll = 1
+    }
+
+    1763486507925 = menu
+    1763486507925 {
+      special = rootline
+      as = breadcrumb
+      dataProcessing.10 = record-transformation
+    }
+
+    1767692750 = site
+    1767692750.as = site
+  }
+}

@@ -1,0 +1,18 @@
+.image {
+    width: var(--image-width, 100%);
+    height: var(--image-height, auto);
+    aspect-ratio: var(--image-aspect-ratio);
+    border-radius: var(--image-border-radius, var(--corners-l));
+    transform: var(--image-transform);
+    transition: transform 0.3s;
+    object-fit: var(--image-object-fit, unset);
+}
+
+.image__picture {
+    display: var(--picture-display, flex);
+    border-radius: var(--image-border-radius, var(--corners-l));
+    overflow: var(--picture-overflow);
+    height: var(--picture-height, auto);
+    clip-path: var(--picture-clip-path, none);
+    justify-content: var(--picture-justify-content);
+}

@@ -1,0 +1,33 @@
+.linklist {
+    --list-item-display: list-item;
+    --click-targets-default: 32px;
+    --margin-bottom-list-item: 0;
+    --margin-top-list-item: 0;
+    --button-text-content-border-bottom-color: transparent;
+    --linklist-inline-gap: var(--spacing-m);
+}
+
+.linklist--inline {
+    --list-item-display: inline;
+    --max-width-paragraph: auto;
+
+    display: flex;
+    gap: var(--linklist-inline-gap);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.linklist__item {
+    display: var(--list-item-display);
+}
+
+/**
+ * Viewports
+ */
+
+/* Small */
+@media (min-width: 768px) {
+    .linklist {
+        --linklist-inline-gap: var(--spacing-s) var(--padding-vertical-l);
+    }
+}

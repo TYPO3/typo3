@@ -1,0 +1,34 @@
+.headline {
+    font-family: var(--headline-medium-family);
+    font-size: var(--headline-medium-size);
+    font-weight: var(--headline-medium-weight);
+    line-height: var(--headline-medium-line-height);
+    letter-spacing: var(--headline-medium-letter-spacing);
+    margin-bottom: var(--headline-margin-bottom, var(--spacing-l));
+    max-width: var(--max-width-paragraph);
+    color: var(--headline-color, var(--text-color));
+
+    &:has(+ .subline) {
+        margin-bottom: var(--spacing-s);
+    }
+
+    &:last-child {
+        --headline-margin-bottom: var(--margin-bottom-paragraph-last-child, 0);
+    }
+}
+
+.headline--small {
+    font-family: var(--headline-small-family);
+    font-size: var(--headline-small-size);
+    font-weight: var(--headline-small-weight);
+    line-height: var(--headline-small-line-height);
+    letter-spacing: var(--headline-small-letter-spacing);
+}
+
+.headline--large {
+    font-family: var(--headline-large-family);
+    font-size: var(--headline-large-size);
+    font-weight: var(--headline-large-weight);
+    line-height: var(--headline-large-line-height);
+    letter-spacing: var(--headline-large-letter-spacing);
+}

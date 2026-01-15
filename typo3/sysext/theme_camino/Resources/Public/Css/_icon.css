@@ -1,0 +1,15 @@
+.icon {
+    width: var(--icon-width, var(--icon-size));
+    height: var(--icon-height, var(--icon-size));
+    fill: var(--icon-fill);
+    color: var(--icon-color);
+    margin: var(--icon-margin);
+    display: var(--icon-display);
+    position: var(--icon-position, static);
+    top: var(--icon-top);
+    left: var(--icon-left);
+    right: var(--icon-right);
+    bottom: var(--icon-bottom);
+    rotate: var(--icon-rotate);
+    padding: var(--icon-padding);
+}

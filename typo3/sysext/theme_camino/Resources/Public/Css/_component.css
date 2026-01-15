@@ -1,0 +1,89 @@
+body {
+    --text-color: var(--color-neutral-90);
+    --background-color: var(--color-neutral-0);
+    --text-color-highlight: var(--color-neutral-70);
+    --component-padding-horizontal: var(--component-neutral-padding-horizontal);
+    --component-padding-vertical: 0;
+    --component-gap-colored-backgrounds: 0;
+}
+
+[class*='--bg-10'] {
+    --background-color: var(--color-neutral-10);
+    --component-padding-vertical: var(--component-inside-padding-vertical);
+    --component-padding-horizontal: var(--component-colored-padding-horizontal);
+    --component-margin-bottom-last-child: 0;
+}
+
+[class*='--bg-80'] {
+    --background-color: var(--color-neutral-80);
+    --text-color: var(--color-neutral-0);
+    --text-color-highlight: var(--color-neutral-10);
+    --component-padding-vertical: var(--component-inside-padding-vertical);
+    --component-padding-horizontal: var(--component-colored-padding-horizontal);
+    --link-color: var(--color-neutral-0);
+    --link-color-hover: var(--color-neutral-10);
+    --component-margin-bottom-last-child: 0;
+}
+
+[class*='--bg-100'] {
+    --background-color: var(--color-primary-100);
+    --text-color: var(--color-neutral-0);
+    --text-color-highlight: var(--color-neutral-10);
+    --component-padding-vertical: var(--component-inside-padding-vertical);
+    --component-padding-horizontal: var(--component-colored-padding-horizontal);
+    --link-color: var(--color-neutral-0);
+    --link-color-hover: var(--color-neutral-10);
+    --component-margin-bottom-last-child: 0;
+}
+
+/* remove margins in between multiple components with background-colors */
+[class*='component--bg-'] {
+    & + & {
+        margin-top: var(--component-gap-colored-backgrounds);
+    }
+
+    &:has(+ &) {
+        margin-bottom: var(--component-gap-colored-backgrounds);
+    }
+}
+
+.component {
+    background: var(--background-color);
+    padding: var(--component-padding-vertical) var(--component-padding-horizontal);
+    margin: var(--component-margin-vertical) 0;
+
+    color: var(--text-color);
+
+    * > &:first-child {
+        margin-top: var(--component-margin-top-first-child, var(--component-margin-vertical));
+    }
+
+    * > &:last-child {
+        margin-bottom: var(--component-margin-bottom-last-child, var(--component-margin-vertical));
+    }
+}
+
+.component--page-area {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.component--page-footer {
+    --component-padding-vertical: var(--spacing-m);
+}
+
+.component__content {
+    --component-padding-horizontal: 0;
+
+    max-width: var(--content-max-width);
+    margin-left: auto;
+    margin-right: auto;
+
+    > *:first-child {
+        margin-top: 0;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}

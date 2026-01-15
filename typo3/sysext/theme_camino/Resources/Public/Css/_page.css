@@ -1,0 +1,8 @@
+.page__content {
+    display: block;
+    flex-grow: 1;
+}
+
+.page__content--fixed {
+    padding-top: calc(var(--header-height) + calc(var(--header-padding-vertical) * 2));
+}

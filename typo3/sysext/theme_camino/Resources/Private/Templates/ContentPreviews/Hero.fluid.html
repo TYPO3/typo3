@@ -1,0 +1,75 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:asset.css identifier="theme_camino_backend_previews" href="EXT:theme_camino/Resources/Public/Css/previews.css"/>
+
+<f:switch expression="{record.CType}">
+    <f:case value="hero_text_only"></f:case>
+    <f:defaultCase>
+        <f:render section="ImagesWithCropVariants" arguments="{
+            images: record.image,
+            cropVariants: {0: 'default', 1: 'sm', 2: 'md', 3: 'lg', 4: 'xl'},
+        }"/>
+    </f:defaultCase>
+</f:switch>
+<f:render section="Cta" arguments="{
+    link: record.tx_themecamino_link,
+    linklabel: record.tx_themecamino_link_label,
+    config: record.tx_themecamino_link_config,
+    icon: record.tx_themecamino_link_icon,
+}"/>
+
+<f:section name="Cta">
+    <f:if condition="{f:uri.typolink(parameter: link, language: language)}">
+        <div class="camino_preview_link camino_preview_link--section">
+            <span class="camino_preview_label">{f:translate(key: 'link.label', domain: 'theme_camino.backend_previews')}: </span>{linklabel}
+            <f:if condition="{f:uri.typolink(parameter: link, language: language)}">
+                <f:then>
+                    ({f:uri.typolink(parameter: link, language: language)})
+                </f:then>
+                <f:else>
+                    <span class="camino_preview_warning camino_preview_warning--error">
+                        <f:translate key="warnings.linkTargetError" domain="theme_camino.backend_previews"/>
+                    </span>
+                </f:else>
+            </f:if>
+
+            <f:if condition="{config} || {icon}">
+                <f:spaceless>[<f:if condition="{config}">{f:translate(key: 'link.config', domain: 'theme_camino.backend_previews')}:
+                    {f:translate(key: 'tt_content.tx_themecamino_link_config.I.{config}', domain: 'theme_camino.backend_fields')}<f:if condition="{icon}">, </f:if>
+                    </f:if><f:if condition="{icon}">{f:translate(key: 'backend_previews.icon.label', domain: 'theme_camino.backend_previews')}:
+                    {f:translate(key: 'tt_content.tx_themecamino_link_icon.I.{icon}', domain: 'theme_camino.backend_fields')}</f:if>]
+                </f:spaceless>
+            </f:if>
+        </div>
+    </f:if>
+</f:section>
+
+<f:section name="ImagesWithCropVariants">
+    <f:if condition="{images}">
+        <div class="camino_preview_images">
+            <f:for each="{images}" as="image">
+                <div class="camino_preview_imagevariants">
+                    <f:for each="{cropVariants}" as="cropVariant">
+                        <f:render section="Media-Image" arguments="{image: image, cropVariant: cropVariant}"/>
+                    </f:for>
+                </div>
+            </f:for>
+        </div>
+    </f:if>
+</f:section>
+
+<f:section name="Media-Image">
+    <f:if condition="{image.uid}">
+        <f:image
+            src="{image.uid}" treatIdAsReference="1"
+            height="64"
+            class="camino_preview_image {f:if(condition: image.properties.hidden, then: 'camino_preview_image--hidden')}"
+            cropVariant="{cropVariant}"
+        />
+    </f:if>
+</f:section>
+
+</html>

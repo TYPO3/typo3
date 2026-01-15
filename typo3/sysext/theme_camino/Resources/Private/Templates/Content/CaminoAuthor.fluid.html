@@ -1,0 +1,57 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Content/Default"/>
+
+<f:comment><!-- Do not render headlines --></f:comment>
+<f:section name="Header"></f:section>
+
+<f:section name="Main">
+    <div class="author">
+        <div class="author__image">
+            <f:render partial="Components/Person" arguments="{
+                image: record.image.0,
+                name: data.header,
+                position: data.subheader,
+            }"/>
+        </div>
+
+        <div class="author__content">
+            <f:if condition="{data.bodytext}">
+                <p>
+                    {data.bodytext -> f:format.nl2br()}
+                </p>
+            </f:if>
+
+            <f:for each="{record.tx_themecamino_list_elements}" as="item">
+                <f:variable name="linkUrl" value="{f:uri.typolink(parameter: item.link)}" />
+                <f:variable name="linkIcon">{f:render(partial: 'LinkIcon', arguments: '{url: linkUrl}') -> f:spaceless()}</f:variable>
+                <p class="author__listitem">
+                    <f:if condition="{item.link_label}">
+                        <f:then>
+                            <f:link.typolink parameter="{item.link}" class="author__listitem_link">
+                                <f:if condition="{linkIcon}"><span class="author__listlitem_icon">{linkIcon -> f:format.raw()}</span></f:if>
+                                <span class="author__listlitem_text">{item.link_label}</span>
+                            </f:link.typolink>
+                        </f:then>
+                        <f:else>
+                            <f:comment><!-- Fallback: Render title of link target --></f:comment>
+                            <f:if condition="{linkIcon}">
+                                <f:then>
+                                    <f:link.typolink parameter="{item.link}" textWrap="<span class=\"author__listlitem_icon\">{linkIcon -> f:format.raw()}</span><span class=\"author__listlitem_text\">|</span>" class="author__listitem_link"/>
+                                </f:then>
+                                <f:else>
+                                    <f:link.typolink parameter="{item.link}"  class="author__listitem_link" textWrap="<span class=\"author__listlitem_text\">|</span>"/>
+                                </f:else>
+                            </f:if>
+                        </f:else>
+                    </f:if>
+                </p>
+            </f:for>
+        </div>
+    </div>
+</f:section>
+
+</html>

@@ -1,0 +1,40 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:comment>
+    <!-- use {addCta} to force a CTA without a link value -->
+</f:comment>
+
+<f:render partial="Header/Header" arguments="{
+    header: header,
+    tag: headertag,
+    size: size,
+    layout: layout,
+}"/>
+<f:render partial="Header/Subheader" arguments="{
+    subheader: subheader,
+    tag: 'p',
+    size: size,
+    layout: layout,
+}"/>
+
+<f:if condition="{text}">
+    <f:if condition="{textHtml}">
+        <f:then>
+            {text -> f:format.html()}
+        </f:then>
+        <f:else>
+            <p>{text -> f:format.nl2br()}</p>
+        </f:else>
+    </f:if>
+</f:if>
+
+<f:if condition="{addCta} || {link}">
+    <f:render partial="Wrapper/Buttons" contentAs="content">
+        <f:render partial="Button" arguments="{_all}"/>
+    </f:render>
+</f:if>
+
+</html>

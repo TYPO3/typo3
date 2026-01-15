@@ -1,0 +1,63 @@
+.textpic {
+    display: grid;
+    gap: var(--spacing-m);
+    grid-template-columns: var(--textpic-grid-columns);
+    grid-column-gap: var(--textpic-grid-column-gap);
+}
+
+.textpic--below,
+.textpic--right,
+.textpic--right-third {
+    --textpic-text-order: 1;
+    --textpic-media-order: 2;
+}
+
+.textpic__media {
+    order: var(--textpic-media-order);
+}
+
+.textpic__text {
+    order: var(--textpic-text-order);
+}
+
+.textpic__video {
+    width: 100%;
+    height: auto;
+}
+
+/**
+ * Viewports
+ */
+
+/* Small */
+@media (min-width: 768px) {
+    .textpic {
+        --textpic-grid-column-gap: var(--spacing-m);
+    }
+
+    .textpic--left,
+    .textpic--right,
+    .textpic--left-third,
+    .textpic--right-third {
+        --textpic-grid-columns: 1fr 1fr;
+    }
+}
+
+/* Large */
+@media (min-width: 1280px) {
+    .textpic {
+        --textpic-grid-column-gap: var(--spacing-l);
+    }
+
+    .textpic--left-third {
+        --textpic-grid-columns: 288px 1fr;
+    }
+
+    .textpic--right-third {
+        /*
+            the max-width of bodytext is 880px. This grid configuration avoids
+            funny-looking white space between the text and the image/media to the right
+        */
+        --textpic-grid-columns: var(--max-width-paragraph) 288px;
+    }
+}

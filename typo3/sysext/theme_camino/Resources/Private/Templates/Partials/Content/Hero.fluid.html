@@ -1,0 +1,52 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:variable name="layout" value="{layout}"/>
+<f:if condition="!{images.0.uid}">
+    <f:variable name="layout" value="text-only"/>
+</f:if>
+
+<div class="hero hero--bg-10 {f:if(condition: layout, then: 'hero--{layout}')}">
+    <div class="hero__content-wrapper">
+        <div class="hero__content">
+            <f:render
+                partial="Components/Intro"
+                arguments="{
+                    header: data.header,
+                    headertag: data.header_layout,
+                    size: 'large',
+                    subheader: data.subheader,
+                    link: data.tx_themecamino_link,
+                    label: data.tx_themecamino_link_label,
+                    icon: data.tx_themecamino_link_icon,
+                    config: data.tx_themecamino_link_config,
+                }"
+            />
+        </div>
+    </div>
+    <f:if condition="{images.0.uid} && {layout} != 'text-only'">
+        <div class="hero__image">
+            <f:variable name="imageHeight" value="{f:if(condition: '{layout} == \'small\'', then: '480c', else: '640c')}"/>
+            <f:render
+                partial="Atoms/Image"
+                arguments="{
+                    image: images.0,
+                    width: '479c',
+                    height: '270c',
+                    sources: {
+                        xl: {width: '960c', height: imageHeight, cropVariant: 'xl'},
+                        lg: {width: '720c', height: imageHeight, cropVariant: 'lg'},
+                        md: {width: '640c', height: imageHeight, cropVariant: 'md'},
+                        sm: {width: '512c', height: imageHeight, cropVariant: 'sm'},
+                        xs: {width: '767c', height: '432c'},
+                    },
+                    loading: 'eager',
+                }"
+            />
+        </div>
+    </f:if>
+</div>
+
+</html>

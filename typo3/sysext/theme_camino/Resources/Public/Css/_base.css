@@ -1,0 +1,88 @@
+html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    box-sizing: content-box;
+}
+
+body {
+    /* set dynamic default colors. These colors are changed using .theme-<name> classes.*/
+    --link-color: var(--color-primary-100);
+    --link-color-hover: var(--color-neutral-70);
+    --figure-color: var(--color-neutral-70);
+
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: var(--text-color);
+    font-family: var(--body-medium-family);
+    font-size: var(--body-medium-size);
+    font-weight: var(--body-medium-weight);
+    line-height: var(--body-medium-line-height);
+    max-width: 100%;
+}
+
+
+h1, h2, h3, h4, h5, h6,
+.headline, .subline {
+    text-wrap: balance;
+}
+
+p,
+ul,
+ol {
+    color: var(--text-color);
+    margin: var(--margin-top-paragraph) 0 var(--margin-bottom-paragraph);
+    font-size: var(--paragraph-font-size, var(--body-medium-size));
+    letter-spacing: var(--paragraph-letter-spacing, var(--body-letter-spacing));
+}
+
+p,
+ul,
+ol {
+    max-width: var(--max-width-paragraph, auto);
+
+    &:first-child {
+        --margin-top-paragraph: var(--margin-top-paragraph-first-child, 0);
+    }
+
+    &:last-child {
+        --margin-bottom-paragraph: var(--margin-bottom-paragraph-last-child, 0);
+    }
+}
+
+li {
+    margin: var(--margin-top-list-item, var(--margin-top-paragraph)) 0 var(--margin-bottom-list-item, var(--margin-bottom-paragraph));
+}
+
+a, button {
+    color: var(--link-color);
+    text-decoration: none;
+    font-family: var(--link-family, inherit);
+    font-size: var(--link-size, inherit);
+    letter-spacing: var(--link-letter-spacing, inherit);
+
+    &:not(:disabled) {
+        cursor: pointer;
+    }
+
+    &:hover:not(:disabled) {
+        color: var(--link-color-hover);
+    }
+
+    &:focus-visible {
+        border-radius: 2px;
+        outline: 2px solid var(--color-primary-100);
+        box-shadow: 0 0 0 2px white;
+    }
+}
+
+/* hide content, but make it available for screen readers */
+.sr-only {
+    position: absolute;
+    top: auto;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}

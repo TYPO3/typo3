@@ -1,0 +1,288 @@
+:root {
+    /* Colors */
+    --color-primary-75: #DD997C;
+    --color-primary-100: #B45023;
+
+    --color-neutral-0: #FFFFFF;
+    --color-neutral-10: #FBF2EE;
+    --color-neutral-20: #ECDFD9;
+    --color-neutral-30: #D0BFB7;
+    --color-neutral-40: #BCA59A;
+    --color-neutral-50: #AB978E;
+    --color-neutral-60: #887167;
+    --color-neutral-70: #6C5246;
+    --color-neutral-80: #49362D;
+    --color-neutral-90: #220B01;
+
+    --color-info: #0E55FF;
+    --color-info-soft: #CFDEFF;
+    --color-success: #378200;
+    --color-success-soft: #F7FFF1;
+    --color-warning: #846C00;
+    --color-warning-soft: #FFF8D8;
+    --color-error: #D70000;
+    --color-error-soft: #FFE9E9;
+
+    /* Headlines */
+    --headline-family: "Playfair";
+    --headline-weight: 500;
+    --headline-line-height: 1.1;
+    --headline-letter-spacing: 0;
+
+    --headline-large-family: var(--headline-family);
+    --headline-large-size: 48px;
+    --headline-large-style: ;
+    --headline-large-weight: var(--headline-weight);
+    --headline-large-line-height: var(--headline-line-height);
+    --headline-large-letter-spacing: var(--headline-letter-spacing);
+
+    --headline-medium-family: var(--headline-family);
+    --headline-medium-size: 40px;
+    --headline-medium-style: ;
+    --headline-medium-weight: var(--headline-weight);
+    --headline-medium-line-height: var(--headline-line-height);
+    --headline-medium-letter-spacing: var(--headline-letter-spacing);
+
+    --headline-small-family: var(--headline-family);
+    --headline-small-size: 32px;
+    --headline-small-style: ;
+    --headline-small-weight: var(--headline-weight);
+    --headline-small-line-height: var(--headline-line-height);
+    --headline-small-letter-spacing: var(--headline-letter-spacing);
+
+
+    /* Sublines */
+    --subline-family: "Open Sans";
+    --subline-weight: 400;
+    --subline-line-height: 1.5;
+    --subline-letter-spacing: 0;
+
+    --subline-large-family: var(--subline-family);
+    --subline-large-size: 24px;
+    --subline-large-style: ;
+    --subline-large-weight: var(--subline-weight);
+    --subline-large-line-height: var(--subline-line-height);
+    --subline-large-letter-spacing: var(--subline-letter-spacing);
+
+    --subline-medium-family: var(--subline-family);
+    --subline-medium-size: 20px;
+    --subline-medium-style: ;
+    --subline-medium-weight: var(--subline-weight);
+    --subline-medium-line-height: var(--subline-line-height);
+    --subline-medium-letter-spacing: var(--subline-letter-spacing);
+
+    --subline-small-family: var(--subline-family);
+    --subline-small-size: 20px;
+    --subline-small-style: ;
+    --subline-small-weight: var(--subline-weight);
+    --subline-small-line-height: var(--subline-line-height);
+    --subline-small-letter-spacing: var(--subline-letter-spacing);
+
+    /* Titles */
+    --title-family: "Open Sans";
+    --title-weight: 700;
+    --title-line-height: 1.1;
+    --title-letter-spacing: 0;
+
+    --title-large-family: var(--title-family);
+    --title-large-size: 20px;
+    --title-large-style: ;
+    --title-large-weight: var(--title-weight);
+    --title-large-line-height: var(--title-line-height);
+    --title-large-letter-spacing: var(--title-letter-spacing);
+
+    --title-medium-family: var(--title-family);
+    --title-medium-size: 18px;
+    --title-medium-style: ;
+    --title-medium-weight: var(--title-weight);
+    --title-medium-line-height: var(--title-line-height);
+    --title-medium-letter-spacing: var(--title-letter-spacing);
+
+    --title-small-family: var(--title-family);
+    --title-small-size: 16px;
+    --title-small-style: ;
+    --title-small-weight: var(--title-weight);
+    --title-small-line-height: var(--title-line-height);
+    --title-small-letter-spacing: var(--title-letter-spacing);
+
+    /* Labels */
+    --label-family: "Open Sans";
+    --label-weight: 500;
+    --label-line-height: 1.1;
+
+    --label-large-family: var(--label-family);
+    --label-large-size: 18px;
+    --label-large-style: ;
+    --label-large-weight: var(--label-weight);
+    --label-large-line-height: var(--label-line-height);
+    --label-large-letter-spacing: 0.1;
+
+    --label-medium-family: var(--label-family);
+    --label-medium-size: 16px;
+    --label-medium-style: ;
+    --label-medium-weight: var(--label-weight);
+    --label-medium-line-height: var(--label-line-height);
+    --label-medium-letter-spacing: 0.2;
+
+    --label-small-family: var(--label-family);
+    --label-small-size: 12px;
+    --label-small-style: ;
+    --label-small-weight: var(--label-weight);
+    --label-small-line-height: var(--label-line-height);
+    --label-small-letter-spacing: 0.25;
+
+    /* Body */
+    --body-family: "Open Sans";
+    --body-weight: 400;
+    --body-line-height: 1.5;
+    --body-letter-spacing: 0;
+
+    --body-large-family: var(--body-family);
+    --body-large-size: 20px;
+    --body-large-style: ;
+    --body-large-weight: var(--body-weight);
+    --body-large-line-height: var(--body-line-height);
+    --body-large-letter-spacing: var(--body-letter-spacing);
+
+    --body-medium-family: var(--body-family);
+    --body-medium-size: 18px;
+    --body-medium-style: ;
+    --body-medium-weight: var(--body-weight);
+    --body-medium-line-height: var(--body-line-height);
+    --body-medium-letter-spacing: var(--body-letter-spacing);
+
+    --body-small-family: var(--body-family);
+    --body-small-size: 16px;
+    --body-small-style: ;
+    --body-small-weight: var(--body-weight);
+    --body-small-line-height: var(--body-line-height);
+    --body-small-letter-spacing: 0.1;
+
+    /* typography */
+    --margin-top-paragraph: 1em;
+    --margin-bottom-paragraph: 1em;
+    --max-width-paragraph: 784px;
+
+    /* corners */
+    --corners-s: 8px;
+    --corners-m: 16px;
+    --corners-l: 24px;
+
+    /* click-targets */
+    --click-targets-default: 48px;
+
+    /* spacings */
+    --spacing-xs: 4px;
+    --spacing-s: 8px;
+    --spacing-m: 16px;
+    --spacing-l: 24px;
+    --spacing-xl: 64px;
+
+    --padding-vertical-l: 40px;
+
+    --inline-card-padding: 16px;
+
+    --hero-content-padding-vertical: 40px;
+
+    --spacing-frame: 56px;
+
+    /* content */
+    --header-height: 48px;
+
+    --component-margin-vertical: 48px;
+    --component-inside-padding-vertical: 56px;
+
+    /* we handle colored and white background separately when on a content page with a sidebar */
+    --component-neutral-padding-horizontal: 16px;
+    --component-colored-padding-horizontal: 16px;
+
+    --content-max-width: 1244px;
+
+    /* miscellaneous */
+    --effect-image-scale: scale(1.1);
+}
+
+.theme-ocean-breeze {
+    --color-primary-75: #78BCFF;
+    --color-primary-100: #0068CE;
+
+    --color-neutral-0: #FFFFFF;
+    --color-neutral-10: #EBF0F5;
+    --color-neutral-20: #D9E2EC;
+    --color-neutral-30: #B7C2D0;
+    --color-neutral-40: #9AA9BC;
+    --color-neutral-50: #8E9BAB;
+    --color-neutral-60: #677688;
+    --color-neutral-70: #46576C;
+    --color-neutral-80: #2D3A49;
+    --color-neutral-90: #011022;
+}
+
+.theme-forest-mist {
+    --color-primary-75: #86B6A6;
+    --color-primary-100: #266D55;
+
+    --color-neutral-0: #FFFFFF;
+    --color-neutral-10: #EDEBE9;
+    --color-neutral-20: #E3DEDA;
+    --color-neutral-30: #CCCAC8;
+    --color-neutral-40: #B3AEAA;
+    --color-neutral-50: #9F9893;
+    --color-neutral-60: #7B746F;
+    --color-neutral-70: #51463F;
+    --color-neutral-80: #443B35;
+    --color-neutral-90: #220E01;
+}
+
+.theme-violet-velvet {
+    --color-primary-75: #D0B4FF;
+    --color-primary-100: #6E1AFF;
+
+    --color-neutral-0: #FFFFFF;
+    --color-neutral-10: #F0EFF2;
+    --color-neutral-20: #D7D5DB;
+    --color-neutral-30: #CAC8CC;
+    --color-neutral-40: #AEAAB3;
+    --color-neutral-50: #97939F;
+    --color-neutral-60: #736F7B;
+    --color-neutral-70: #463F51;
+    --color-neutral-80: #3A3544;
+    --color-neutral-90: #0D0122;
+}
+
+/**
+ * Viewports
+ */
+
+/* Small */
+@media (min-width: 768px) {
+    :root {
+        --component-margin-vertical: 56px;
+        --component-neutral-padding-horizontal: 32px;
+        --component-colored-padding-horizontal: 32px;
+        --hero-content-padding-vertical: 48px;
+        --inline-card-padding: 24px;
+    }
+}
+
+/* Medium */
+@media (min-width: 1024px) {
+    :root {
+        --headline-small-size: 40px;
+        --headline-large-size: 64px;
+        --headline-medium-size: 48px;
+        --subline-large-size: 32px;
+        --subline-medium-size: 24px;
+        --component-margin-vertical: 80px;
+        --hero-content-padding-vertical: 52px;
+    }
+}
+
+/* Large */
+@media (min-width: 1280px) {
+    :root {
+        /* 8-col */
+        --max-width-paragraph: 808px;
+        --header-height: 50px;
+    }
+}

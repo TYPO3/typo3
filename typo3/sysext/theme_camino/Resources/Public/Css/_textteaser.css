@@ -1,0 +1,11 @@
+.textteaser {
+    background: var(--background-color);
+    padding: var(--inline-card-padding);
+    color: var(--text-color);
+    border-radius: var(--corners-l);
+}
+
+.textteaser__content {
+    max-width: var(--max-width-paragraph);
+    margin: 0 auto;
+}

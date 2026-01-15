@@ -1,0 +1,72 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:render section="Link" contentAs="content" arguments="{link: link, layout: layout}">
+    <f:if condition="{image}">
+        <div class="textmedia-teaser__media">
+            <f:render partial="Atoms/Image" arguments="{
+                image: image,
+                width: '450c', height: '300c',
+                sources: {
+                    lg: {width: '392c', height: '261c'},
+                    md: {width: '310c', height: '207c'},
+                    sm: {width: '344c', height: '229c'},
+                },
+            }"/>
+        </div>
+    </f:if>
+
+    <div class="textmedia-teaser__content">
+        <f:render partial="Header/HeaderTag" arguments="{tag: 'header', text: header, size: 'small'}"/>
+
+        <f:if condition="{date} || {category}">
+            <p class="textmedia-teaser__meta">
+                <f:if condition="{date}">
+                    {date -> f:format.date(pattern: 'SHORTDATE')}
+                </f:if>
+                <f:if condition="{date} && {category}"> | </f:if>
+                <f:if condition="{category}">
+                    {category}
+                </f:if>
+            </p>
+        </f:if>
+
+        <f:if condition="{text}">
+            <f:if condition="{textHtml}">
+                <f:then>
+                    <div class="textmedia-teaser__text">
+                        {text -> f:format.html()}
+                    </div>
+                </f:then>
+                <f:else>
+                    <p class="textmedia-teaser__text">{text}</p>
+                </f:else>
+            </f:if>
+        </f:if>
+
+        <f:if condition="{f:link.typolink(parameter: link)} && {label}">
+            <f:render partial="Button" arguments="{label: label, showButton: 1, icon: icon, resetTabindex: 1}"/>
+        </f:if>
+    </div>
+</f:render>
+
+<f:section name="Link">
+    <f:if condition="{f:link.typolink(parameter: link)}">
+        <f:then>
+            <f:link.typolink
+                parameter="{link}"
+                class="textmedia-teaser textmedia-teaser--link {f:if(condition: layout, then: 'textmedia-teaser--{layout}')}"
+            >
+                {content -> f:format.raw()}
+            </f:link.typolink>
+        </f:then>
+        <f:else>
+            <div class="textmedia-teaser {f:if(condition: layout, then: 'textmedia-teaser--{layout}')}">
+                {content -> f:format.raw()}
+            </div>
+        </f:else>
+    </f:if>
+</f:section>
+</html>

@@ -1,0 +1,46 @@
+mod {
+  web_layout {
+    BackendLayouts {
+      CaminoContentpageSidebar {
+        title = LLL:theme_camino.backend_layouts:backend_layout.camino_contentpage_sidebar.title
+        config {
+          backend_layout {
+            colCount = 4
+            rowCount = 2
+            rows {
+              1 {
+                columns {
+                  1 {
+                    name = LLL:theme_camino.backend_layouts:backend_layout.colPos.2.name
+                    colPos = 2
+                    colspan = 4
+                    identifier = stage
+                    allowedContentTypes = camino_hero, camino_hero_small, camino_hero_text_only
+                  }
+                }
+              }
+              2 {
+                columns {
+                  1 {
+                    name = LLL:theme_camino.backend_layouts:backend_layout.colPos.0.name
+                    colPos = 0
+                    colspan = 3
+                    identifier = content
+                    disallowedContentTypes = camino_hero, camino_hero_small, camino_hero_text_only, camino_sociallinks, camino_linklist, camino_testimonial, camino_textmedia_teaser
+                  }
+                  2 {
+                    name = LLL:theme_camino.backend_layouts:backend_layout.colPos.1.name
+                    colPos = 1
+                    identifier = sidebar
+                    allowedContentTypes = camino_textteaser, camino_author, camino_textmedia_teaser
+                    slideMode = slide
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

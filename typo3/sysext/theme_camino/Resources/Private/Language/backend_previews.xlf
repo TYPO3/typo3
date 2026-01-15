@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:theme_camino/Resources/Private/Language/backend_previews.xlf" date="2026-01-13T15:46:30Z" product-name="theme_camino">
+    <header/>
+    <body>
+      <trans-unit id="CType.label">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="link.label">
+        <source>Link</source>
+      </trans-unit>
+      <trans-unit id="link.config">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="backend_previews.icon.label">
+        <source>Icon</source>
+      </trans-unit>
+      <trans-unit id="warnings.label.warning">
+        <source>Warning:</source>
+      </trans-unit>
+      <trans-unit id="warnings.label.error">
+        <source>Error:</source>
+      </trans-unit>
+      <trans-unit id="warnings.firstItemOnly">
+        <source>Only the first visible item will be used.</source>
+      </trans-unit>
+      <trans-unit id="warnings.firstImageOnly">
+        <source>Only the first visible image will be used.</source>
+      </trans-unit>
+      <trans-unit id="warnings.firstAssetOnly">
+        <source>Only the first visible asset will be used.</source>
+      </trans-unit>
+      <trans-unit id="warnings.noImage">
+        <source>This element will not be shown without an active, visible image!</source>
+      </trans-unit>
+      <trans-unit id="warnings.noAsset">
+        <source>This element will not be shown without an active, visible asset!</source>
+      </trans-unit>
+      <trans-unit id="warnings.noItem">
+        <source>This element will not be shown without an active, visible item!</source>
+      </trans-unit>
+      <trans-unit id="warnings.linkTargetError">
+        <source>Invalid link</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

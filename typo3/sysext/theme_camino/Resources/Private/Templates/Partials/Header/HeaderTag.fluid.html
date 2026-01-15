@@ -1,0 +1,61 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{text}">
+    <f:if condition="!{class}">
+        <f:if condition="!{size}">
+            <f:switch expression="{layout}">
+                <f:case value="1"><f:variable name="size" value="large"/></f:case>
+                <f:case value="2"><f:variable name="size" value="small"/></f:case>
+            </f:switch>
+        </f:if>
+
+        <f:variable name="blockname" value="headline"/>
+        <f:if condition="{type} == 'subheader'">
+            <f:variable name="blockname" value="subline"/>
+        </f:if>
+
+        <f:switch expression="{size}">
+            <f:case value="small">
+                <f:variable name="class" value="{blockname} {blockname}--small"/>
+            </f:case>
+            <f:case value="large">
+                <f:variable name="class" value="{blockname} {blockname}--large"/>
+            </f:case>
+            <f:defaultCase>
+                <f:variable name="class" value="{blockname}"/>
+            </f:defaultCase>
+        </f:switch>
+    </f:if>
+
+    <f:switch expression="{tag}">
+        <f:case value="1">
+            <h1 class="{class}">{text -> f:format.nl2br()}</h1>
+        </f:case>
+        <f:case value="2">
+            <h2 class="{class}">{text -> f:format.nl2br()}</h2>
+        </f:case>
+        <f:case value="3">
+            <h3 class="{class}">{text -> f:format.nl2br()}</h3>
+        </f:case>
+        <f:case value="4">
+            <h4 class="{class}">{text -> f:format.nl2br()}</h4>
+        </f:case>
+        <f:case value="5">
+            <h5 class="{class}">{text -> f:format.nl2br()}</h5>
+        </f:case>
+        <f:case value="6">
+            <h6 class="{class}">{text -> f:format.nl2br()}</h6>
+        </f:case>
+        <f:case value="header">
+            <header class="{class}">{text -> f:format.nl2br()}</header>
+        </f:case>
+        <f:defaultCase>
+            <p class="{class}">{text -> f:format.nl2br()}</p>
+        </f:defaultCase>
+    </f:switch>
+</f:if>
+
+</html>

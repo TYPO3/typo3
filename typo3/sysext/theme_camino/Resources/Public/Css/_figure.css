@@ -1,0 +1,15 @@
+.figure {
+    margin: var(--figure-margin-top) 0 var(--figure-margin-bottom);
+}
+
+.figure__caption {
+    margin-top: var(--spacing-s);
+    font-size: var(--body-small-size);
+    letter-spacing: var(--body-small-letter-spacing);
+    color: var(--figure-color);
+}
+
+[class*='--bg-80'],
+[class*='--bg-100'] {
+    --figure-color: var(--color-neutral-0);
+}
