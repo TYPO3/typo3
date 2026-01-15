@@ -96,7 +96,8 @@ class YouTubeRenderer implements FileRendererInterface
         $attributes = $this->collectIframeAttributes($width, $height, $options);
 
         return sprintf(
-            '<iframe src="%s"%s></iframe>',
+            '<iframe %s="%s"%s></iframe>',
+            $options['srcAttribute'] ?? 'src',
             htmlspecialchars($src, ENT_QUOTES | ENT_HTML5),
             empty($attributes) ? '' : ' ' . $this->implodeAttributes($attributes)
         );

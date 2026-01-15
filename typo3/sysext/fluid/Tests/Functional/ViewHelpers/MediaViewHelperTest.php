@@ -65,6 +65,11 @@ final class MediaViewHelperTest extends FunctionalTestCase
                 '1:/user_upload/example.youtube',
                 '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen allow="fullscreen"></iframe>',
             ],
+            'show youtube video with alternative src attribute' => [
+                '<f:media file="{file}" additionalConfig="{srcAttribute: \'data-src\'}" />',
+                '1:/user_upload/example.youtube',
+                '<iframe data-src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen allow="fullscreen"></iframe>',
+            ],
             'evaluate file type "image"' => [
                 '<f:switch expression="{file.type}">
                     <f:case value="3">audio</f:case>

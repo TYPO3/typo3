@@ -309,4 +309,15 @@ final class YouTubeRendererTest extends UnitTestCase
             $subject->render($fileResourceMock, '300m', '200')
         );
     }
+
+    #[Test]
+    public function renderOutputWithAlternativeSrcAttributeIsCorrect(): void
+    {
+        $fileResourceMock = $this->createMock(File::class);
+
+        self::assertSame(
+            '<iframe data-src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['srcAttribute' => 'data-src'])
+        );
+    }
 }
