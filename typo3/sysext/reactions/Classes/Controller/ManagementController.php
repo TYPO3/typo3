@@ -119,9 +119,9 @@ class ManagementController
         $view->getDocHeaderComponent()->getButtonBar()->addButton($newRecordButton);
 
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'integrations_reactions',
-            displayName: $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/module.xlf:title'),
-            arguments: array_filter([
+            'integrations_reactions',
+            $languageService->sL('LLL:EXT:reactions/Resources/Private/Language/module.xlf:title'),
+            array_filter([
                 'demand' => $demand->getParameters(),
                 'orderField' => $demand->getOrderField(),
                 'orderDirection' => $demand->getOrderDirection(),

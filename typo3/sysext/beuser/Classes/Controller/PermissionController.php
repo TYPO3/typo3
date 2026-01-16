@@ -428,9 +428,9 @@ class PermissionController
         }
 
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'permissions_pages',
-            displayName: $this->getShortcutTitle(),
-            arguments: ['id' => $this->id, 'action' => $action]
+            'permissions_pages',
+            $this->getShortcutTitle(),
+            ['id' => $this->id, 'action' => $action]
         );
     }
 

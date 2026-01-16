@@ -48,8 +48,8 @@ final readonly class RecordStatisticsController
         );
         $view->makeDocHeaderModuleMenu();
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'system_reports_statistics',
-            displayName: $languageService->translate('title', 'reports.modules.statistics')
+            'system_reports_statistics',
+            $languageService->translate('title', 'reports.modules.statistics')
         );
 
         return $view->assignMultiple([

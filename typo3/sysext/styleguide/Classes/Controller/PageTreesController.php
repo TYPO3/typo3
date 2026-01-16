@@ -103,13 +103,13 @@ final class PageTreesController
         );
         $view->makeDocHeaderModuleMenu();
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'styleguide_pagetrees',
-            displayName: sprintf(
+            'styleguide_pagetrees',
+            sprintf(
                 '%s - %s',
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styleguide'),
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.managePageTrees')
             ),
-            arguments: ['action' => 'managePageTrees']
+            ['action' => 'managePageTrees']
         );
         return $view->renderResponse('Backend/ManagePageTrees');
     }

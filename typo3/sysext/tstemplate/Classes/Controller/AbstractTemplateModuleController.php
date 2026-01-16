@@ -159,9 +159,9 @@ abstract class AbstractTemplateModuleController
             $pageUid
         );
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: $moduleIdentifier,
-            displayName: $shortcutTitle,
-            arguments: ['id' => $pageUid]
+            $moduleIdentifier,
+            $shortcutTitle,
+            ['id' => $pageUid]
         );
     }
 

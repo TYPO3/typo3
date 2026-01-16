@@ -221,10 +221,10 @@ class MfaSetupController extends AbstractMfaController
     protected function addCustomAuthenticationFormStyles(ServerRequestInterface $request): void
     {
         if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles($request)) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, useNonce: true);
+            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, null, false, true);
         }
         if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, useNonce: true);
+            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, null, false, true);
         }
     }
 

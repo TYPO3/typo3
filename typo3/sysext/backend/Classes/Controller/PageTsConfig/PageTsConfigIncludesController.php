@@ -133,9 +133,9 @@ final readonly class PageTsConfigIncludesController
             $pageUid
         );
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: $currentModuleIdentifier,
-            displayName: $shortcutTitle,
-            arguments: ['id' => $pageUid]
+            $currentModuleIdentifier,
+            $shortcutTitle,
+            ['id' => $pageUid]
         );
         $view->makeDocHeaderModuleMenu(['id' => $pageUid]);
         $view->assignMultiple([

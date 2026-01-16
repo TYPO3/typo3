@@ -151,9 +151,9 @@ class LinkValidatorController
         $action = $moduleData->get('action');
 
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'web_linkvalidator',
-            displayName: $this->getModuleTitle(),
-            arguments: ['id' => $this->id, 'action' => $action]
+            'web_linkvalidator',
+            $this->getModuleTitle(),
+            ['id' => $this->id, 'action' => $action]
         );
         $view->makeDocHeaderModuleMenu(['id' => $this->id]);
 

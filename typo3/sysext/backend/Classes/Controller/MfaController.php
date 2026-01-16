@@ -130,9 +130,11 @@ class MfaController extends AbstractMfaController
         // Call the provider to verify the request
         if (!$mfaProvider->verify($request, $propertyManager)) {
             $this->log(
-                message: 'Multi-factor authentication failed for user \'###USERNAME###\' with provider \'' . $mfaProvider->getIdentifier() . '\'!',
-                action: Login::ATTEMPT,
-                error: SystemLogErrorClassification::SECURITY_NOTICE
+                'Multi-factor authentication failed for user \'###USERNAME###\' with provider \'' . $mfaProvider->getIdentifier() . '\'!',
+                [],
+                null,
+                Login::ATTEMPT,
+                SystemLogErrorClassification::SECURITY_NOTICE
             );
             $this->eventDispatcher->dispatch(
                 new MfaVerificationFailedEvent($request, $propertyManager, $mfaProvider)
@@ -233,10 +235,10 @@ class MfaController extends AbstractMfaController
     protected function addCustomAuthenticationFormStyles(ServerRequestInterface $request): void
     {
         if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles($request)) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, useNonce: true);
+            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, null, false, true);
         }
         if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, useNonce: true);
+            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, null, false, true);
         }
     }
 }

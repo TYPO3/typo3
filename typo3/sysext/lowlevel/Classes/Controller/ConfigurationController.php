@@ -61,9 +61,9 @@ final class ConfigurationController
         $view->setTitle($languageService->translate('title', 'lowlevel.modules.config'), $selectedProviderLabel);
         $this->addProviderDropDownToDocHeader($view, $providers, $selectedProvider);
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'system_config',
-            displayName: $selectedProvider->getLabel(),
-            arguments: ['tree' => $selectedProviderIdentifier]
+            'system_config',
+            $selectedProvider->getLabel(),
+            ['tree' => $selectedProviderIdentifier]
         );
         $view->assignMultiple([
             'tree' => $this->renderTree($configurationArray, $selectedProviderLabelHash),

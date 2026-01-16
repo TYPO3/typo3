@@ -16,6 +16,15 @@ services:
         - PHPUnit\Framework\Attributes\WithoutErrorHandler
     tags:
       - phpstan.rules.rule
+  -
+    class: TYPO3\CMS\PHPStan\Rules\Classes\NamedArgumentUsageRule
+    arguments:
+      allowedNamespaces:
+        - 'TYPO3\CMS\Core\Tests'
+        - 'TYPO3\CMS\Extbase\Tests'
+        - 'TYPO3\CMS\Frontend\Tests'
+    tags:
+      - phpstan.rules.rule
 
 parameters:
   # Use local .cache dir instead of /tmp

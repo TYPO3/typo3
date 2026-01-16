@@ -120,9 +120,9 @@ class ManagementController
 
         // Shortcut
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'integrations_webhooks',
-            displayName: $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/module.xlf:title'),
-            arguments: array_filter([
+            'integrations_webhooks',
+            $languageService->sL('LLL:EXT:webhooks/Resources/Private/Language/module.xlf:title'),
+            array_filter([
                 'demand' => $demand->getParameters(),
                 'orderField' => $demand->getOrderField(),
                 'orderDirection' => $demand->getOrderDirection(),

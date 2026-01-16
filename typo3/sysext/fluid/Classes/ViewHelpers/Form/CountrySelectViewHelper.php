@@ -147,7 +147,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
     private function translate(string $label): string
     {
         if ($this->arguments['alternativeLanguage']) {
-            return (string)LocalizationUtility::translate($label, languageKey: $this->arguments['alternativeLanguage']);
+            return (string)LocalizationUtility::translate($label, null, null, $this->arguments['alternativeLanguage']);
         }
         return (string)LocalizationUtility::translate($label);
     }

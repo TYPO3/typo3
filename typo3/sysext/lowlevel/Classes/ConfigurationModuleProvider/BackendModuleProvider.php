@@ -27,7 +27,7 @@ class BackendModuleProvider extends AbstractProvider
     public function getConfiguration(): array
     {
         $configurationArray = [];
-        foreach ($this->provider->getModules(respectWorkspaceRestrictions: false, grouped: false) as $identifier => $module) {
+        foreach ($this->provider->getModules(null, false, false) as $identifier => $module) {
             $configurationArray[$identifier] = [
                 'identifier' => $module->getIdentifier(),
                 'parentIdentifier' => $module->getParentIdentifier(),

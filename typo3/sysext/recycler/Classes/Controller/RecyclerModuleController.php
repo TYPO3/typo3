@@ -106,9 +106,9 @@ readonly class RecyclerModuleController
             $id
         );
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'recycler',
-            displayName: $shortcutTitle,
-            arguments: ['id' => $id]
+            'recycler',
+            $shortcutTitle,
+            ['id' => $id]
         );
     }
 

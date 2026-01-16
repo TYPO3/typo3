@@ -134,9 +134,9 @@ class AdministrationController extends ActionController
         $moduleTitle = $languageService->translate('title', 'indexed_search.module');
         $shortcutTitle = $context ? $moduleTitle . ': ' . $context : $moduleTitle;
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'manage_search_index',
-            displayName: $shortcutTitle,
-            arguments: [
+            'manage_search_index',
+            $shortcutTitle,
+            [
                 'id' => $this->pageUid,
                 'action' => $this->request->getControllerActionName(),
             ]

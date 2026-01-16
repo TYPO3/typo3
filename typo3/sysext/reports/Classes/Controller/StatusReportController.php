@@ -59,8 +59,8 @@ final readonly class StatusReportController
         );
         $view->makeDocHeaderModuleMenu();
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'system_reports_status',
-            displayName: $languageService->translate('title', 'reports.modules.status')
+            'system_reports_status',
+            $languageService->translate('title', 'reports.modules.status')
         );
 
         return $view->assignMultiple([

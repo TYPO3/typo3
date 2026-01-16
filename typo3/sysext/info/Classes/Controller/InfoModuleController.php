@@ -145,13 +145,13 @@ class InfoModuleController
 
         // Set shortcut context - reload button is added automatically
         $this->view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: $this->currentModule->getIdentifier(),
-            displayName: sprintf(
+            $this->currentModule->getIdentifier(),
+            sprintf(
                 '%s [%d]',
                 $this->getLanguageService()->sL($this->currentModule->getTitle()),
                 $this->id
             ),
-            arguments: ['id' => $this->id]
+            ['id' => $this->id]
         );
     }
 

@@ -95,7 +95,7 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
         $record = BackendUtility::getRecord($type, $uid);
         if (!$record) {
             return LocalizationResult::error(
-                errors: [
+                [
                     sprintf(
                         $this->getLanguageService()->sL('backend.wizards.localization:error.recordNotFound'),
                         $uid,
@@ -110,7 +110,7 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
         if ($existingTranslation !== null) {
             // Translation already exists, return success with no-op finisher
             return LocalizationResult::success(
-                finisher: (new NoopLocalizationFinisher())
+                new NoopLocalizationFinisher()
             );
         }
 
@@ -127,7 +127,7 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
         $dataHandler->process_cmdmap();
 
         if ($dataHandler->errorLog !== []) {
-            return LocalizationResult::error(errors: $dataHandler->errorLog);
+            return LocalizationResult::error($dataHandler->errorLog);
         }
 
         // Get the newly created record UID from DataHandler's copy mapping
@@ -143,7 +143,7 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
         $redirectUrl = $newUid !== null ? $this->generateRedirectUrl($type, $newUid, $targetLanguage) : null;
 
         return LocalizationResult::success(
-            finisher: $redirectUrl !== null
+            $redirectUrl !== null
                 ? new RedirectLocalizationFinisher($redirectUrl)
                 : new ReloadLocalizationFinisher()
         );
@@ -192,7 +192,7 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
             // Use no-op finisher to indicate nothing was done, but offer to reload
 
             return LocalizationResult::success(
-                finisher: (new NoopLocalizationFinisher())
+                new NoopLocalizationFinisher()
             );
         }
 
@@ -207,7 +207,7 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
         // Generate redirect finisher to the page layout in the target language or use reload finisher as fallback
         $redirectUrl = $this->generateRedirectUrl('pages', $pageUid, $targetLanguage);
         return LocalizationResult::success(
-            finisher: $redirectUrl !== null
+            $redirectUrl !== null
                 ? new RedirectLocalizationFinisher($redirectUrl)
                 : new ReloadLocalizationFinisher()
         );

@@ -132,9 +132,9 @@ final readonly class ReviewController
     {
         // Set shortcut context - reload button is added automatically
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'workspaces_publish',
-            displayName: sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $pageId),
-            arguments: ['id' => $pageId]
+            'workspaces_publish',
+            sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $pageId),
+            ['id' => $pageId]
         );
     }
 

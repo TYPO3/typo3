@@ -64,8 +64,8 @@ final readonly class SubmoduleOverviewController
         }
         $view->makeDocHeaderModuleMenu(['id' => $id]);
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: $currentModule->getIdentifier(),
-            displayName: $this->getLanguageService()->sL($currentModule->getTitle())
+            $currentModule->getIdentifier(),
+            $this->getLanguageService()->sL($currentModule->getTitle())
         );
 
         $view->setTitle($this->getLanguageService()->sL($currentModule->getTitle()));

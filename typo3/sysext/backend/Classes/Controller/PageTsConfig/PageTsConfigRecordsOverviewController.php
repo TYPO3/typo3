@@ -84,9 +84,9 @@ final class PageTsConfigRecordsOverviewController
             $view->assign('id', $pageId);
             // Setting up the buttons and the module menu for the doc header
             $view->getDocHeaderComponent()->setShortcutContext(
-                routeIdentifier: $currentModule->getIdentifier(),
-                displayName: $this->getLanguageService()->sL($currentModule->getTitle()),
-                arguments: ['id' => $pageId]
+                $currentModule->getIdentifier(),
+                $this->getLanguageService()->sL($currentModule->getTitle()),
+                ['id' => $pageId]
             );
         }
         $view->assign('accessContent', $accessContent);

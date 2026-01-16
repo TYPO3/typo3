@@ -1380,9 +1380,9 @@ class EditDocumentController
         }
         $arguments = $this->getUrlQueryParamsForCurrentRequest($request);
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'record_edit',
-            displayName: $this->getShortcutTitle($request),
-            arguments: $arguments
+            'record_edit',
+            $this->getShortcutTitle($request),
+            $arguments
         );
     }
 

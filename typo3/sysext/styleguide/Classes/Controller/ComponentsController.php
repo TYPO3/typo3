@@ -655,13 +655,13 @@ final class ComponentsController
         $view->setModuleClass('module-styleguide');
         $view->makeDocHeaderModuleMenu();
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'styleguide_components',
-            displayName: sprintf(
+            'styleguide_components',
+            sprintf(
                 '%s - %s',
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styleguide'),
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.' . $action)
             ),
-            arguments: ['action' => $action]
+            ['action' => $action]
         );
         return $view;
     }

@@ -183,13 +183,13 @@ final class StylesController
         $view->setModuleClass('module-styleguide');
         $view->makeDocHeaderModuleMenu();
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'styleguide_styles',
-            displayName: sprintf(
+            'styleguide_styles',
+            sprintf(
                 '%s - %s',
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:styleguide'),
                 $this->getLanguageService()->sL('LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:action.' . $action)
             ),
-            arguments: ['action' => $action]
+            ['action' => $action]
         );
         return $view;
     }

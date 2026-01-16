@@ -401,10 +401,10 @@ class BookmarkService
         }
 
         $this->bookmarkRepository->moveToGroup(
-            ids: $manageableIds,
-            userId: $userId,
-            groupId: $groupId,
-            allowGlobalGroups: $allowGlobalGroups
+            $manageableIds,
+            $userId,
+            $groupId,
+            $allowGlobalGroups
         );
 
         return true;

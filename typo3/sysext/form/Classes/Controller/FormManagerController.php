@@ -543,9 +543,9 @@ class FormManagerController extends ActionController
             $arguments['tx_form_web_formformbuilder']['controller'] = 'FormManager';
         }
         $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'web_FormFormbuilder',
-            displayName: $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:module.shortcut_name'),
-            arguments: $arguments
+            'web_FormFormbuilder',
+            $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:module.shortcut_name'),
+            $arguments
         );
         return $moduleTemplate;
     }

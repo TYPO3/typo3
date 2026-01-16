@@ -188,8 +188,8 @@ class SetupModuleController
 
         // Set shortcut context - reload button is added automatically
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'user_setup',
-            displayName: $this->getLanguageService()->translate('short_description', 'setup.module')
+            'user_setup',
+            $this->getLanguageService()->translate('short_description', 'setup.module')
         );
         $view->assignMultiple([
             'typo3Info' => $this->typo3Information,

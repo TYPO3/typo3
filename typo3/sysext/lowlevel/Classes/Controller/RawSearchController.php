@@ -69,8 +69,8 @@ class RawSearchController
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $moduleTemplate->makeDocHeaderModuleMenu();
         $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'system_database_raw',
-            displayName: $this->getLanguageService()->translate('title', 'lowlevel.modules.database_raw')
+            'system_database_raw',
+            $this->getLanguageService()->translate('title', 'lowlevel.modules.database_raw')
         );
 
         $title = $this->getLanguageService()->translate('title', 'lowlevel.modules.database_integrity');

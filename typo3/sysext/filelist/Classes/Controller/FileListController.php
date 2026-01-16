@@ -626,13 +626,13 @@ class FileListController implements LoggerAwareInterface
 
         // Shortcut
         $this->view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'media_management',
-            displayName: sprintf(
+            'media_management',
+            sprintf(
                 '%s: %s',
                 $lang->translate('title', 'filelist.module'),
                 $this->folderObject->getName() ?: $this->folderObject->getIdentifier()
             ),
-            arguments: array_filter([
+            array_filter([
                 'id' => $this->id,
                 'searchTerm' => $this->searchTerm,
             ])

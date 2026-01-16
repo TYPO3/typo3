@@ -570,11 +570,7 @@ class RecordListController
                 $arguments[$argument] = $queryParams[$argument];
             }
         }
-        $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'records',
-            displayName: $this->getShortcutTitle($arguments),
-            arguments: $arguments
-        );
+        $view->getDocHeaderComponent()->setShortcutContext('records', $this->getShortcutTitle($arguments), $arguments);
 
         // Back
         if ($this->returnUrl) {

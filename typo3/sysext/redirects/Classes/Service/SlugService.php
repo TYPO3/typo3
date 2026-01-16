@@ -224,8 +224,8 @@ class SlugService implements LoggerAwareInterface
         $subPageRecords = $this->resolveSubPages($pageId, $languageUid);
         foreach ($subPageRecords as $subPageRecord) {
             $changeItem = $this->slugRedirectChangeItemFactory->create(
-                pageId: (int)$subPageRecord['uid'],
-                original: $subPageRecord
+                (int)$subPageRecord['uid'],
+                $subPageRecord
             );
             if ($changeItem === null) {
                 continue;

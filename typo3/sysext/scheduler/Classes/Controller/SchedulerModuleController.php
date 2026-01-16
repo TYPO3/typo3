@@ -403,8 +403,8 @@ final class SchedulerModuleController
     private function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name): void
     {
         $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'scheduler',
-            displayName: $name
+            'scheduler',
+            $name
         );
     }
 

@@ -222,13 +222,13 @@ class ResetPasswordController
     protected function provideCustomLoginStyling(ServerRequestInterface $request): void
     {
         if (($backgroundImageStyles = $this->authenticationStyleInformation->getBackgroundImageStyles($request)) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, useNonce: true);
+            $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles, null, false, true);
         }
         if (($footerNote = $this->authenticationStyleInformation->getFooterNote()) !== '') {
             $this->view->assign('loginFootnote', $footerNote);
         }
         if (($highlightColorStyles = $this->authenticationStyleInformation->getHighlightColorStyles()) !== '') {
-            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, useNonce: true);
+            $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles, null, false, true);
         }
         $this->view->assignMultiple([
             'copyright' => $this->typo3Information->getCopyrightNotice(),

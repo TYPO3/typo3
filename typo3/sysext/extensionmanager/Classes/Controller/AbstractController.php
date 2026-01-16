@@ -129,8 +129,8 @@ class AbstractController extends ActionController
         $view->setFlashMessageQueue($this->getFlashMessageQueue());
 
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'extensionmanager.' . $request->getControllerName() . '_' . $request->getControllerActionName(),
-            displayName: $activeTitle
+            'extensionmanager.' . $request->getControllerName() . '_' . $request->getControllerActionName(),
+            $activeTitle
         );
 
         return $view;

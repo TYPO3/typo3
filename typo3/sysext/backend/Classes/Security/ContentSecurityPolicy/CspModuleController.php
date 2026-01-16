@@ -67,8 +67,8 @@ class CspModuleController
     protected function registerDocHeaderButtons(ModuleTemplate $view, ModuleInterface $currentModule): void
     {
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: $currentModule->getIdentifier(),
-            displayName: $this->getLanguageService()->translate('title', 'backend.modules.content_security_policy')
+            $currentModule->getIdentifier(),
+            $this->getLanguageService()->translate('title', 'backend.modules.content_security_policy')
         );
         $view->getDocHeaderComponent()->disableAutomaticReloadButton();
         $reloadButton = $this->componentFactory

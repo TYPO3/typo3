@@ -478,14 +478,14 @@ class PageLayoutController
 
         // Shortcut
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'web_layout',
-            displayName: sprintf(
+            'web_layout',
+            sprintf(
                 '%s: %s [%d]',
                 $this->getLanguageService()->translate('short_description', 'backend.modules.layout'),
                 $this->pageContext->getPageTitle(),
                 $this->pageContext->pageId
             ),
-            arguments: [
+            [
                 'id' => $this->pageContext->pageId,
                 'showHidden' => (bool)$this->moduleData->get('showHidden'),
                 'viewMode' => (int)$this->moduleData->get('viewMode'),

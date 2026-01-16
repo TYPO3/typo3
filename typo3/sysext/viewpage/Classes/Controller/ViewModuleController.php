@@ -190,14 +190,14 @@ final class ViewModuleController
 
         // Shortcut
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'page_preview',
-            displayName: sprintf(
+            'page_preview',
+            sprintf(
                 '%s: %s [%d]',
                 $this->getLanguageService()->translate('short_description', 'viewpage.module'),
                 $this->pageContext->getPageTitle(),
                 $this->pageContext->pageId
             ),
-            arguments: ['id' => $this->pageContext->pageId, 'languages' => [$languageId]],
+            ['id' => $this->pageContext->pageId, 'languages' => [$languageId]],
         );
     }
 

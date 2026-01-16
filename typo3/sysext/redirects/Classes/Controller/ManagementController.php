@@ -182,8 +182,8 @@ class ManagementController
 
         // Shortcut
         $view->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: 'redirects',
-            displayName: $languageService->translate('short_description', 'redirects.modules.redirects')
+            'redirects',
+            $languageService->translate('short_description', 'redirects.modules.redirects')
         );
     }
 

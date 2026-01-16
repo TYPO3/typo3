@@ -236,9 +236,9 @@ class QuerySearchController
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $moduleTemplate->makeDocHeaderModuleMenu();
         $moduleTemplate->getDocHeaderComponent()->setShortcutContext(
-            routeIdentifier: $this->moduleName,
-            displayName: $this->getLanguageService()->translate('fullSearch', 'lowlevel.messages'),
-            arguments: [
+            $this->moduleName,
+            $this->getLanguageService()->translate('fullSearch', 'lowlevel.messages'),
+            [
                 'SET' => [
                     'search_query_makeQuery' => $this->MOD_SETTINGS['search_query_makeQuery'] ?? '',
                 ],
