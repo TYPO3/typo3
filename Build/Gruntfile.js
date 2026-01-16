@@ -375,26 +375,6 @@ module.exports = function (grunt) {
           }
         ]
       },
-      extension_icons: {
-        files: [
-          {
-            dest: '<%= paths.sysext %>form/Resources/Public/Icons/Extension.svg',
-            src: '<%= paths.t3icons %>svgs/module/module-form.svg'
-          },
-          {
-            dest: '<%= paths.sysext %>reactions/Resources/Public/Icons/Extension.svg',
-            src: '<%= paths.t3icons %>svgs/module/module-reactions.svg'
-          },
-          {
-            dest: '<%= paths.sysext %>rte_ckeditor/Resources/Public/Icons/Extension.svg',
-            src: '<%= paths.t3icons %>svgs/module/module-rte-ckeditor.svg'
-          },
-          {
-            dest: '<%= paths.sysext %>linkvalidator/Resources/Public/Icons/Extension.svg',
-            src: '<%= paths.t3icons %>svgs/module/module-linkvalidator.svg'
-          }
-        ]
-      },
       fonts: {
         files: [
           {

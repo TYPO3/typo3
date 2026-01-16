@@ -48,7 +48,7 @@ return [
         'access' => 'admin',
         'workspaces' => 'live',
         'path' => '/module/integrations',
-        'iconIdentifier' => 'module-webhooks',
+        'iconIdentifier' => 'module-integrations',
         'labels' => 'core.modules.integrations',
         'appearance' => [
             'dependsOnSubmodules' => true,

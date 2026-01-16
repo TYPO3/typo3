@@ -209,6 +209,7 @@ button.dropdown-item,
 
     &.active,
     &:active {
+        --typo3-icons-accent: currentColor;
         color: var(--typo3-dropdown-item-active-color);
         background-color: var(--typo3-dropdown-item-active-bg);
         outline: 1px solid var(--typo3-dropdown-item-active-border-color);

@@ -1,11 +1,6 @@
 <?php
 
 return [
-    // Register styleguide module icon
-    'module-styleguide' => [
-        'provider' => TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        'source' => 'EXT:styleguide/Resources/Public/Icons/module.svg',
-    ],
     // Register styleguide svg for use within backend module
     'tcarecords-tx_styleguide_forms-default' => [
         'provider' => TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,

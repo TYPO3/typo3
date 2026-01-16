@@ -4998,6 +4998,13 @@
       "sprite": "sprites/module.svg#module-dbint",
       "bidi": false
     },
+    "module-debug": {
+      "identifier": "module-debug",
+      "category": "module",
+      "svg": "svgs/module/module-debug.svg",
+      "sprite": "sprites/module.svg#module-debug",
+      "bidi": false
+    },
     "module-documentation": {
       "identifier": "module-documentation",
       "category": "module",
@@ -5094,6 +5101,13 @@
       "category": "module",
       "svg": "svgs/module/module-install.svg",
       "sprite": "sprites/module.svg#module-install",
+      "bidi": false
+    },
+    "module-integrations": {
+      "identifier": "module-integrations",
+      "category": "module",
+      "svg": "svgs/module/module-integrations.svg",
+      "sprite": "sprites/module.svg#module-integrations",
       "bidi": false
     },
     "module-lang": {
@@ -5215,6 +5229,13 @@
       "sprite": "sprites/module.svg#module-sites",
       "bidi": false
     },
+    "module-styleguide": {
+      "identifier": "module-styleguide",
+      "category": "module",
+      "svg": "svgs/module/module-styleguide.svg",
+      "sprite": "sprites/module.svg#module-styleguide",
+      "bidi": false
+    },
     "module-taskcenter": {
       "identifier": "module-taskcenter",
       "category": "module",
@@ -5236,6 +5257,13 @@
       "sprite": "sprites/module.svg#module-tsconfig",
       "bidi": false
     },
+    "module-upgrade": {
+      "identifier": "module-upgrade",
+      "category": "module",
+      "svg": "svgs/module/module-upgrade.svg",
+      "sprite": "sprites/module.svg#module-upgrade",
+      "bidi": false
+    },
     "module-urls": {
       "identifier": "module-urls",
       "category": "module",
@@ -5243,18 +5271,18 @@
       "sprite": "sprites/module.svg#module-urls",
       "bidi": false
     },
-    "module-version": {
-      "identifier": "module-version",
-      "category": "module",
-      "svg": "svgs/module/module-version.svg",
-      "sprite": "sprites/module.svg#module-version",
-      "bidi": false
-    },
     "module-viewpage": {
       "identifier": "module-viewpage",
       "category": "module",
       "svg": "svgs/module/module-viewpage.svg",
       "sprite": "sprites/module.svg#module-viewpage",
+      "bidi": false
+    },
+    "module-webhooks": {
+      "identifier": "module-webhooks",
+      "category": "module",
+      "svg": "svgs/module/module-webhooks.svg",
+      "sprite": "sprites/module.svg#module-webhooks",
       "bidi": false
     },
     "module-workspaces": {
@@ -5742,6 +5770,8 @@
     "information-application-context": "actions-window-cog",
     "apps-toolbar-menu-workspace": "actions-workspace",
     "empty-empty": "miscellaneous-placeholder",
+    "module-cshmanual": "module-documentation",
+    "module-version": "module-generic",
     "module-templates": "module-template",
     "module-tstemplate": "module-tsconfig",
     "spinner-circle-light": "spinner-circle",

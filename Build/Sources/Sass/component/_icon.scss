@@ -12,11 +12,17 @@
     display: inline-block;
 }
 
+:root,
+.icon {
+    --icon-color-accent: var(--typo3-icons-accent);
+}
+
 //
 // Icon alignment
 //
 .icon {
     vertical-align: -22%;
+    --icon-color-accent: var(--typo3-icons-accent);
 }
 
 //
