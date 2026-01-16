@@ -102,10 +102,7 @@ readonly class StagesService
     {
         $availableStagesForWSUser = $this->getStagesForWSUser($stages);
         $usedStages = [];
-        foreach ($workspaceItems as $tableName => $items) {
-            if ($tableName !== 'pages' && $tableName !== 'tt_content') {
-                continue;
-            }
+        foreach ($workspaceItems as $items) {
             foreach ($items as $item) {
                 $usedStages[$item['t3ver_stage'] ?? 0] = true;
             }
@@ -150,10 +147,7 @@ readonly class StagesService
     {
         $availableStagesForWSUser = $this->getStagesForWSUser($stages);
         $usedStages = [];
-        foreach ($workspaceItems as $tableName => $items) {
-            if ($tableName !== 'pages' && $tableName !== 'tt_content') {
-                continue;
-            }
+        foreach ($workspaceItems as $items) {
             foreach ($items as $item) {
                 $usedStages[$item['t3ver_stage'] ?? 0] = true;
             }
