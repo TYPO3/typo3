@@ -446,13 +446,15 @@ class FileContentParser
                     $pdfInfo = $this->splitPdfInfo($res);
                     unset($res);
                     if ((int)($pdfInfo['pages'] ?? 0)) {
-                        [$low, $high] = explode('-', $cPKey);
-                        // Get pdf content:
-                        $tempFileName = GeneralUtility::tempnam('Typo3_indexer');
+                        [$low, $high] = array_map(intval(...), explode('-', $cPKey, 2) + [0, 0]);
                         // Create temporary name
-                        @unlink($tempFileName);
+                        $tempFileName = GeneralUtility::tempnam('Typo3_indexer');
                         // Delete if exists, just to be safe.
-                        $cmd = $this->app['pdftotext'] . ' -f ' . $low . ' -l ' . $high . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . $tempFileName;
+                        if (@is_file($tempFileName)) {
+                            unlink($tempFileName);
+                        }
+                        // Get pdf content:
+                        $cmd = $this->app['pdftotext'] . ' -f ' . escapeshellarg((string)$low) . ' -l ' . escapeshellarg((string)$high) . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . escapeshellarg($tempFileName);
                         CommandUtility::exec($cmd);
                         if (@is_file($tempFileName)) {
                             $content = (string)file_get_contents($tempFileName);
