@@ -407,6 +407,7 @@ abstract class AbstractFormElement extends AbstractNode
         if ($checked xor $invert) {
             $attrs['checked'] = 'checked';
         }
+        $attrs['data-invert-state-display'] = $invert ? 'true' : 'false';
         return GeneralUtility::implodeAttributes($attrs, true);
     }
 
