@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
+  <file id="tests">
+    <unit id="multiline.default">
+      <segment>
+        <source>This is a
+        multi-line
+        string.</source>
+      </segment>
+    </unit>
+    <unit id="multiline.preserve">
+      <segment xml:space="preserve">
+        <source>This is a
+        multi-line
+        string.</source>
+      </segment>
+    </unit>
+    <unit id="spaces.default">
+      <segment>
+        <source>Multiple   spaces   here</source>
+      </segment>
+    </unit>
+    <unit id="spaces.preserve">
+      <segment xml:space="preserve">
+        <source>Multiple   spaces   here</source>
+      </segment>
+    </unit>
+    <unit id="mixed.default">
+      <segment>
+        <source>
+          Indented text
+          with multiple lines
+          and   extra   spaces
+        </source>
+      </segment>
+    </unit>
+    <unit id="mixed.preserve">
+      <segment xml:space="preserve">
+        <source>
+          Indented text
+          with multiple lines
+          and   extra   spaces
+        </source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

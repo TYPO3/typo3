@@ -254,4 +254,76 @@ final class XliffLoaderTest extends UnitTestCase
         self::assertArrayHasKey('label2', $messages);
         self::assertArrayNotHasKey('label3', $messages); // explicitly not approved
     }
+
+    /**
+     * @see https://forge.typo3.org/issues/70867
+     */
+    #[Test]
+    public function normalizesWhitespaceWithoutXmlSpacePreserve(): void
+    {
+        $fixturePath = __DIR__ . '/Fixtures/locallang-whitespace.xlf';
+        $subject = new XliffLoader();
+        $catalogue = $subject->load($fixturePath, 'en');
+
+        $messages = $catalogue->all('messages');
+
+        // Without xml:space="preserve", whitespace should be normalized
+        self::assertEquals('This is a multi-line string.', $messages['multiline.default']);
+        self::assertEquals('Multiple spaces here', $messages['spaces.default']);
+        self::assertEquals('Indented text with multiple lines and extra spaces', $messages['mixed.default']);
+    }
+
+    /**
+     * @see https://forge.typo3.org/issues/70867
+     */
+    #[Test]
+    public function preservesWhitespaceWithXmlSpacePreserve(): void
+    {
+        $fixturePath = __DIR__ . '/Fixtures/locallang-whitespace.xlf';
+        $subject = new XliffLoader();
+        $catalogue = $subject->load($fixturePath, 'en');
+
+        $messages = $catalogue->all('messages');
+
+        // With xml:space="preserve", whitespace should be kept as-is
+        self::assertEquals("This is a\n        multi-line\n        string.", $messages['multiline.preserve']);
+        self::assertEquals('Multiple   spaces   here', $messages['spaces.preserve']);
+        self::assertEquals("\n          Indented text\n          with multiple lines\n          and   extra   spaces\n        ", $messages['mixed.preserve']);
+    }
+
+    /**
+     * @see https://forge.typo3.org/issues/70867
+     */
+    #[Test]
+    public function normalizesWhitespaceWithoutXmlSpacePreserveXliff2(): void
+    {
+        $fixturePath = __DIR__ . '/Fixtures/locallang-whitespace-v2.xlf';
+        $subject = new XliffLoader();
+        $catalogue = $subject->load($fixturePath, 'en');
+
+        $messages = $catalogue->all('messages');
+
+        // Without xml:space="preserve", whitespace should be normalized
+        self::assertEquals('This is a multi-line string.', $messages['multiline.default']);
+        self::assertEquals('Multiple spaces here', $messages['spaces.default']);
+        self::assertEquals('Indented text with multiple lines and extra spaces', $messages['mixed.default']);
+    }
+
+    /**
+     * @see https://forge.typo3.org/issues/70867
+     */
+    #[Test]
+    public function preservesWhitespaceWithXmlSpacePreserveXliff2(): void
+    {
+        $fixturePath = __DIR__ . '/Fixtures/locallang-whitespace-v2.xlf';
+        $subject = new XliffLoader();
+        $catalogue = $subject->load($fixturePath, 'en');
+
+        $messages = $catalogue->all('messages');
+
+        // With xml:space="preserve", whitespace should be kept as-is
+        self::assertEquals("This is a\n        multi-line\n        string.", $messages['multiline.preserve']);
+        self::assertEquals('Multiple   spaces   here', $messages['spaces.preserve']);
+        self::assertEquals("\n          Indented text\n          with multiple lines\n          and   extra   spaces\n        ", $messages['mixed.preserve']);
+    }
 }

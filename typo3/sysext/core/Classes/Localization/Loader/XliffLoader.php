@@ -141,12 +141,13 @@ final readonly class XliffLoader implements LoaderInterface
                     $deprecated = isset($translationElement['x-unused-since']);
                     if ($isDefaultLanguage) {
                         // Default language from XLIFF template (no target element)
-                        $translation = (string)$translationElement->source;
+                        $sourceElement = $translationElement->source;
+                        $translation = $this->extractText($sourceElement, $translationElement);
                         $catalogue->set($id . ($deprecated ? '.x-unused' : ''), $translation, $domain);
                     } else {
                         $approved = (string)($translationElement['approved'] ?? 'yes');
                         if (!$requireApprovedLocalizations || $approved === 'yes') {
-                            $catalogue->set($id . ($deprecated ? '.x-unused' : ''), (string)$translationElement->target, $domain);
+                            $catalogue->set($id . ($deprecated ? '.x-unused' : ''), $this->extractText($translationElement->target, $translationElement), $domain);
                         }
                     }
                 } elseif ($translationElement->getName() === 'group' && isset($translationElement['restype']) && (string)$translationElement['restype'] === 'x-gettext-plurals') {
@@ -160,12 +161,11 @@ final readonly class XliffLoader implements LoaderInterface
                             $formIndex = substr((string)$translationPluralForm['id'], strpos((string)$translationPluralForm['id'], '[') + 1, -1);
                             if ($isDefaultLanguage) {
                                 // Default language from XLIFF template (no target element)
-                                $translation = (string)$translationPluralForm->source;
-                                $parsedTranslationElement[(int)$formIndex] = $translation;
+                                $parsedTranslationElement[(int)$formIndex] = $this->extractText($translationPluralForm->source, $translationPluralForm);
                             } else {
                                 $approved = (string)($translationPluralForm['approved'] ?? 'yes');
                                 if (!$requireApprovedLocalizations || $approved === 'yes') {
-                                    $parsedTranslationElement[(int)$formIndex] = (string)$translationPluralForm->target;
+                                    $parsedTranslationElement[(int)$formIndex] = $this->extractText($translationPluralForm->target, $translationPluralForm);
                                 }
                             }
                         }
@@ -235,7 +235,7 @@ final readonly class XliffLoader implements LoaderInterface
 
                     if ($isDefaultLanguage) {
                         // Default language from XLIFF template (no target element)
-                        $translation = (string)$source[0];
+                        $translation = $this->extractText($source[0], $segment);
                         $catalogue->set($unitId . ($deprecated ? '.x-unused' : ''), $translation, $domain);
                     } else {
                         // Check approval state (XLIFF 2.0 uses 'state' attribute on segment)
@@ -251,7 +251,7 @@ final readonly class XliffLoader implements LoaderInterface
 
                         if (!$requireApprovedLocalizations || $approved === 'yes') {
                             if ($target !== false && isset($target[0])) {
-                                $catalogue->set($unitId . ($deprecated ? '.x-unused' : ''), (string)$target[0], $domain);
+                                $catalogue->set($unitId . ($deprecated ? '.x-unused' : ''), $this->extractText($target[0], $segment), $domain);
                             }
                         }
                     }
@@ -270,8 +270,7 @@ final readonly class XliffLoader implements LoaderInterface
 
                         if ($isDefaultLanguage) {
                             // Default language from XLIFF template (no target element)
-                            $translation = (string)$source[0];
-                            $parsedTranslationElement[$formIndex] = $translation;
+                            $parsedTranslationElement[$formIndex] = $this->extractText($source[0], $segment);
                         } else {
                             $approved = 'yes';
                             if (isset($segment['state'])) {
@@ -283,7 +282,7 @@ final readonly class XliffLoader implements LoaderInterface
 
                             if (!$requireApprovedLocalizations || $approved === 'yes') {
                                 if ($target !== false && isset($target[0])) {
-                                    $parsedTranslationElement[$formIndex] = (string)$target[0];
+                                    $parsedTranslationElement[$formIndex] = $this->extractText($target[0], $segment);
                                 }
                             }
                         }
@@ -324,5 +323,49 @@ final readonly class XliffLoader implements LoaderInterface
     private function isXmlString(string $resource): bool
     {
         return str_starts_with($resource, '<?xml');
+    }
+
+    /**
+     * Extract text content from an XML element, respecting xml:space attribute.
+     * Per XML spec: xml:space="preserve" keeps whitespace as-is,
+     * otherwise whitespace should be normalized (multiple spaces/newlines collapsed to single space).
+     * see https://www.w3.org/TR/xml/#sec-white-space
+     */
+    private function extractText(\SimpleXMLElement $element, ?\SimpleXMLElement $parentElement = null): string
+    {
+        $text = (string)$element;
+
+        // Check xml:space on the element itself or parent (trans-unit/unit/segment)
+        $xmlSpace = $this->getXmlSpaceAttribute($element, $parentElement);
+
+        if ($xmlSpace !== 'preserve') {
+            // Normalize whitespace: collapse multiple whitespace characters to single space
+            $text = preg_replace('/\s+/', ' ', $text);
+            $text = trim($text);
+        }
+
+        return $text;
+    }
+
+    /**
+     * Get the xml:space attribute value, checking element and parent (attribute is inherited per XML spec).
+     */
+    private function getXmlSpaceAttribute(\SimpleXMLElement $element, ?\SimpleXMLElement $parent): string
+    {
+        // Check element's xml:space attribute
+        $attributes = $element->attributes('xml', true);
+        if (isset($attributes['space'])) {
+            return (string)$attributes['space'];
+        }
+
+        // Check parent's xml:space attribute (inherited per XML spec)
+        if ($parent !== null) {
+            $parentAttributes = $parent->attributes('xml', true);
+            if (isset($parentAttributes['space'])) {
+                return (string)$parentAttributes['space'];
+            }
+        }
+
+        return 'default';
     }
 }

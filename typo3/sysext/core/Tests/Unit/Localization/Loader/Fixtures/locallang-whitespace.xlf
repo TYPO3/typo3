@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Tests/Unit/Localization/Loader/Fixtures/locallang-whitespace.xlf" date="2024-01-01T00:00:00Z" product-name="tests">
+    <header/>
+    <body>
+      <trans-unit id="multiline.default">
+        <source>This is a
+        multi-line
+        string.</source>
+      </trans-unit>
+      <trans-unit id="multiline.preserve" xml:space="preserve">
+        <source>This is a
+        multi-line
+        string.</source>
+      </trans-unit>
+      <trans-unit id="spaces.default">
+        <source>Multiple   spaces   here</source>
+      </trans-unit>
+      <trans-unit id="spaces.preserve" xml:space="preserve">
+        <source>Multiple   spaces   here</source>
+      </trans-unit>
+      <trans-unit id="mixed.default">
+        <source>
+          Indented text
+          with multiple lines
+          and   extra   spaces
+        </source>
+      </trans-unit>
+      <trans-unit id="mixed.preserve" xml:space="preserve">
+        <source>
+          Indented text
+          with multiple lines
+          and   extra   spaces
+        </source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
