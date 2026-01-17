@@ -1757,8 +1757,6 @@ In this example, 'GenderSelect' is basically a radio button form element with so
            FormElement-GenderSelect: 'Stage/SelectTemplate'
        formElementsDefinition:
          GenderSelect:
-           __inheritances:
-             10: 'prototypes.standard.formElementsDefinition.RadioButton'
            renderingOptions:
              templateName: 'RadioButton'
            properties:
@@ -1779,7 +1777,67 @@ In this example, 'GenderSelect' is basically a radio button form element with so
                    u: 'Unicorn'
                    a: 'Alien'
              editors:
-               300: null
+               100:
+                 identifier: header
+                 templateName: Inspector-FormElementHeaderEditor
+               200:
+                 identifier: label
+                 templateName: Inspector-TextEditor
+                 label: formEditor.elements.FormElement.editor.label.label
+                 propertyPath: label
+               230:
+                 identifier: elementDescription
+                 templateName: Inspector-TextEditor
+                 label: formEditor.elements.FormElement.editor.elementDescription.label
+                 propertyPath: properties.elementDescription
+               700:
+                 identifier: gridColumnViewPortConfiguration
+                 templateName: Inspector-GridColumnViewPortConfigurationEditor
+                 label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                 configurationOptions:
+                   viewPorts:
+                     10:
+                       viewPortIdentifier: xs
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                     20:
+                       viewPortIdentifier: sm
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                     30:
+                       viewPortIdentifier: md
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                     40:
+                       viewPortIdentifier: lg
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                     50:
+                       viewPortIdentifier: xl
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label
+                     60:
+                       viewPortIdentifier: xxl
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label
+                   numbersOfColumnsToUse:
+                     label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                     propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                     fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+               800:
+                 identifier: requiredValidator
+                 templateName: Inspector-RequiredValidatorEditor
+                 label: formEditor.elements.FormElement.editor.requiredValidator.label
+                 validatorIdentifier: NotEmpty
+                 propertyPath: properties.fluidAdditionalAttributes.required
+                 propertyValue: required
+                 configurationOptions:
+                   validationErrorMessage:
+                     label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
+                     propertyPath: properties.validationErrorMessages
+                     fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                     errorCodes:
+                       10: 1221560910
+                       20: 1221560718
+                       30: 1347992400
+                       40: 1347992453
+               9999:
+                 identifier: removeButton
+                 templateName: Inspector-RemoveElementEditor
 
 .. code-block:: javascript
    :emphasize-lines: 105-109

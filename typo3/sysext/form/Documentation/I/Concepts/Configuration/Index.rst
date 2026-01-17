@@ -328,13 +328,10 @@ __inheritances operator
     The ``__inheritances`` operator has been marked as deprecated.
     Support will be removed in TYPO3 v15. Use native YAML syntax to :ref:`prevent duplication <concepts-configuration-prevent-duplication>`
 
-The ``__inheritances`` operator is an extremely useful instrument. Using it
-helps to significantly reduce the configuration effort. It behaves similar
-to the ``<`` operator in TypoScript. That is, the definition of the source
-object is copied to the target object. The configuration can be inherited
-from several parent objects and can be overridden afterwards. Two simple
-examples will show you the usage and behaviour of the ``__inheritances``
-operator.
+The ``__inheritances`` behaves similar to the ``<`` operator in TypoScript.
+That is, the definition of the source object is copied to the target object.
+The configuration can be inherited from several parent objects and can be overridden afterwards.
+The following example will show you the usage and behaviour of the ``__inheritances`` operator.
 
 .. code-block:: yaml
 
@@ -382,37 +379,6 @@ The configuration above results in:
        key: value
      part02:
        key: 'value override'
-
-EXT:form heavily uses the ``__inheritances`` operator, in particular, for
-the definition of form elements. The following example shows you how to use
-the operator to define a new form element which behaves like the parent
-element but also has its own properties.
-
-.. code-block:: yaml
-
-   prototypes:
-     standard:
-       formElementsDefinition:
-         GenderSelect:
-           __inheritances:
-             10: 'prototypes.standard.formElementsDefinition.RadioButton'
-           renderingOptions:
-             templateName: 'RadioButton'
-           properties:
-             options:
-               f: 'Female'
-               m: 'Male'
-               u: 'Unicorn'
-               a: 'Alien'
-
-The YAML configuration defines a new form element called ``GenderSelect``.
-This element inherits its definition from the ``RadioButton`` element but
-additionally ships four predefined options. Without any problems, the new
-element can be used and overridden within the ``form definition``.
-
-It will probably take some time to fully understand the awesomeness of
-this operator. If you are eager to learn more about this great instrument,
-check out the unit tests defined in ``EXT:form/Tests/Unit/Mvc/Configuration/InheritancesResolverServiceTest.php``.
 
 
 .. _concepts-configuration-prototypes:
