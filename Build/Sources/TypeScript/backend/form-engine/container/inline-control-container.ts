@@ -477,7 +477,8 @@ class InlineControlContainer extends HTMLElement {
 
       if (hiddenValueCheckBox !== null && hiddenValueInput !== null) {
         hiddenValueCheckBox.checked = !hiddenValueCheckBox.checked;
-        hiddenValueInput.value = hiddenValueCheckBox.checked ? '1' : '0';
+        const active = hiddenValueCheckBox.checked !== (hiddenValueCheckBox.dataset.invertStateDisplay === 'true');
+        hiddenValueInput.value = active ? '1' : '0';
         FormEngine.markFieldAsChanged(hiddenValueCheckBox);
       }
 
