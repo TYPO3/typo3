@@ -151,7 +151,7 @@ Example:
 
         public function __invoke(RenderComponentEvent $event): void
         {
-            // Add bundled components css if a component is used on the page
+            // Add bundled components CSS if a component is used on the page
             if ($event->getComponentCollection()->getNamespace() === 'MyVendor\\MyExtension\\Components') {
                 $this->assetCollector->addStyleSheet(
                     'componentsBundle',

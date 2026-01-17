@@ -114,7 +114,7 @@ can be used to receive HTML content.
 Example:
 
 ..  code-block:: html
-    :caption: EXT:my_extension/Resources/Private/Components/Molecule/TeaserCard/TeaserCard.html
+    :caption: EXT:my_extension/Resources/Private/Components/Molecule/TeaserCard/TeaserCard.fluid.html
 
     <html
         xmlns:my="http://typo3.org/ns/MyVendor/MyExtension/Components"
