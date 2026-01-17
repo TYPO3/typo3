@@ -67,19 +67,23 @@ As rule of thumb:
 There are "temporary" and "permanent" redirects. 301 and 308 are "permanent"
 redirects.
 
+..  attention::
+
     Don’t use a 301 if you ever want to use that specific (source) URL ever again.
 
 Source: `6 questions about redirects for SEO (Yoast)
 <https://yoast.com/6-questions-about-redirects-for-seo/>`__
 
-    For routine redirect tasks, 301 (permanent redirect) and 307 (temporarily
+..  attention::
+
+    For routine redirect tasks, 301 (permanent redirect) and 307 (temporary
     redirect) status codes can be used depending on what type of change you
     are implementing on your website.
 
 Source: `A Technical SEO Guide to Redirects (SEJ)
 <https://www.searchenginejournal.com/technical-seo/redirects/>`__
 
-For automatically created redirects, it is not recommended to use 301. You can
+For automatically created redirects it is not recommended to use 301. You can
 use 307, which is also the default in the redirects extension. However,
 if you create redirects manually, it **may** make sense to use 301 for these.
 
