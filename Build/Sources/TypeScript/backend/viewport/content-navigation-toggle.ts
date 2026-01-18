@@ -12,7 +12,7 @@
  */
 
 import { html, nothing, type TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import { NavigationToggleEvent, NavigationStateChangeEvent, ContentNavigationSlotEnum, type ContentNavigation } from './content-navigation';
 import '@typo3/backend/element/icon-element';

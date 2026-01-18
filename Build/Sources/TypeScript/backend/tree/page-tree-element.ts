@@ -12,8 +12,8 @@
  */
 
 import { html, LitElement, type TemplateResult, nothing } from 'lit';
-import { customElement, property, query } from 'lit/decorators';
-import { until } from 'lit/directives/until';
+import { customElement, property, query } from 'lit/decorators.js';
+import { until } from 'lit/directives/until.js';
 import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Persistent from '@typo3/backend/storage/persistent';

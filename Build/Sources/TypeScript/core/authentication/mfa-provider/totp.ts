@@ -12,7 +12,7 @@
  */
 
 import { html } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import Modal from '@typo3/backend/modal';
 

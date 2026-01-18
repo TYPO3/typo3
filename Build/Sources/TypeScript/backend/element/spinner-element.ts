@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { Sizes } from '../enum/icon-types';
 import { IconStyles } from '@typo3/backend/icons';
 

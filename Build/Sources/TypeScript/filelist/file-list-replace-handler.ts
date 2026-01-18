@@ -13,7 +13,7 @@
 
 import { html, nothing, type TemplateResult } from 'lit';
 import { lll } from '@typo3/core/lit-helper';
-import { until } from 'lit/directives/until';
+import { until } from 'lit/directives/until.js';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ResourceInterface } from '@typo3/backend/resource/resource';
 import { FileListActionEvent, type FileListActionDetail } from '@typo3/filelist/file-list-actions';

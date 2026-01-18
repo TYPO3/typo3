@@ -12,7 +12,7 @@
  */
 
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';

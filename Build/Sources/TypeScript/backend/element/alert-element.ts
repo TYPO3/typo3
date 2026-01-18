@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
-import { classMap, type ClassInfo } from 'lit/directives/class-map';
+import { classMap, type ClassInfo } from 'lit/directives/class-map.js';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '../severity';
 import '@typo3/backend/element/icon-element';

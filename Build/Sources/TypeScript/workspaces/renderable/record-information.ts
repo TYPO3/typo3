@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing } from 'lit';
 import type { Diff } from './diff-view';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@typo3/workspaces/renderable/diff-view';
 import '@typo3/workspaces/renderable/comment-view';
 import '@typo3/workspaces/renderable/history-view';

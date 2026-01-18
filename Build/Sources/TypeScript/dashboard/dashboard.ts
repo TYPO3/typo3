@@ -12,10 +12,10 @@
  */
 
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
-import { customElement, property, state, query } from 'lit/decorators';
-import { repeat } from 'lit/directives/repeat';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
-import { styleMap } from 'lit/directives/style-map';
+import { customElement, property, state, query } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { Task } from '@lit/task';
 import { animate, fadeIn, fadeOut } from '@lit-labs/motion';
 import '@typo3/backend/element/icon-element';

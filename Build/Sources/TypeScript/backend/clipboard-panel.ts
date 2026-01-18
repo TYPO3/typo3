@@ -12,10 +12,10 @@
  */
 
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
-import { until } from 'lit/directives/until';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
-import { classMap } from 'lit/directives/class-map';
+import { customElement, property } from 'lit/decorators.js';
+import { until } from 'lit/directives/until.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { classMap } from 'lit/directives/class-map.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';

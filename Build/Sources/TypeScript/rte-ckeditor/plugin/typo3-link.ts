@@ -44,7 +44,6 @@ export interface Typo3LinkDict {
  * Inspired by @ckeditor/ckeditor5-link/src/linkcommand.js
  */
 export class Typo3LinkCommand extends Core.Command {
-  public override value: string | undefined;
   public attrs: Record<string, string> = {};
 
   public override refresh(): void {
@@ -773,7 +772,7 @@ export class Typo3LinkUI extends Core.Plugin {
     // If editing an existing link, expand selection to full link first
     if (linkCommand.value) {
       this.expandSelectionToFullLink();
-      additionalParameters += '&P[curUrl][url]=' + encodeURIComponent(linkCommand.value);
+      additionalParameters += '&P[curUrl][url]=' + encodeURIComponent(linkCommand.value as string);
       for (const [attr, value] of Object.entries(linkCommand.attrs)) {
         additionalParameters += '&P[curUrl][' + encodeURIComponent(attr) + ']=' + encodeURIComponent(value);
       }

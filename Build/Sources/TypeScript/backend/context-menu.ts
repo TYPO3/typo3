@@ -15,11 +15,11 @@ import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ContextMenuActions from './context-menu-actions';
 import '@typo3/backend/element/spinner-element';
-import { customElement, queryAll, state } from 'lit/decorators';
+import { customElement, queryAll, state } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { delay } from '@typo3/core/lit-helper';
-import { styleMap } from 'lit/directives/style-map';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { styleMap } from 'lit/directives/style-map.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { Task, initialState } from '@lit/task';
 import Notification from '@typo3/backend/notification';
 

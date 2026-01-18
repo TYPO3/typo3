@@ -12,10 +12,10 @@
  */
 
 import { html, LitElement, nothing, type PropertyValues, type TemplateResult } from 'lit';
-import { repeat } from 'lit/directives/repeat';
-import { classMap } from 'lit/directives/class-map';
-import { live } from 'lit/directives/live';
-import { customElement, property, state } from 'lit/decorators';
+import { repeat } from 'lit/directives/repeat.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { live } from 'lit/directives/live.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import '@typo3/backend/element/icon-element';
 
 export interface PropertyGridEditorEntry {

@@ -12,8 +12,8 @@
  */
 
 import { html, nothing, type TemplateResult } from 'lit';
-import { live } from 'lit/directives/live';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { live } from 'lit/directives/live.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { Task, TaskStatus } from '@lit/task';
 import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';

@@ -12,8 +12,8 @@
  */
 
 import { html, nothing, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
-import { live } from 'lit/directives/live';
+import { customElement, property } from 'lit/decorators.js';
+import { live } from 'lit/directives/live.js';
 import { BaseElement } from './base';
 
 export const componentName = 'typo3-backend-settings-type-string';

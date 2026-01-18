@@ -1,8 +1,8 @@
 import { marked, type MarkedOptions } from 'marked';
 import dompurify, { type Config as DOMPurifyConfig } from 'dompurify';
 import { html, type TemplateResult } from 'lit';
-import { until } from 'lit/directives/until';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { until } from 'lit/directives/until.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 export type ProfileType = 'minimal' | 'default';
 

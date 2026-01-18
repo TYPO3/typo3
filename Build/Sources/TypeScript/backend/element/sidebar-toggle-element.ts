@@ -12,7 +12,7 @@
  */
 
 import { html, css, type TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import { PseudoButtonLitElement } from './pseudo-button';
 import { ScaffoldState, ScaffoldSidebarToggleEvent } from '../viewport/scaffold-state';
 import '@typo3/backend/element/icon-element';

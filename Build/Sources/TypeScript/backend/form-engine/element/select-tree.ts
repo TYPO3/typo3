@@ -13,7 +13,7 @@
 
 import { html, type TemplateResult } from 'lit';
 import { Tree, type TreeSettings } from '@typo3/backend/tree/tree';
-import { customElement, state } from 'lit/decorators';
+import { customElement, state } from 'lit/decorators.js';
 import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 
 interface SelectTreeSettings extends TreeSettings {

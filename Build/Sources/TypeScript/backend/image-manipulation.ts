@@ -12,8 +12,8 @@
  */
 
 import { html, type TemplateResult } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
-import { styleMap } from 'lit/directives/style-map';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';

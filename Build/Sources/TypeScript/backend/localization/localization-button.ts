@@ -13,7 +13,7 @@
 
 import { html } from 'lit';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { lll } from '@typo3/core/lit-helper';
 import Modal from '@typo3/backend/modal';

@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, css, type TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import type { PropertyValues } from '@lit/reactive-element';
 import '@typo3/backend/element/icon-element';
 

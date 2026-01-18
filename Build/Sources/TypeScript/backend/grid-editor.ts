@@ -16,11 +16,11 @@ import { SeverityEnum } from './enum/severity';
 import 'bootstrap';
 import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import SecurityUtility from '@typo3/core/security-utility';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
-import { classMap } from 'lit/directives/class-map';
-import { type StyleInfo, styleMap } from 'lit/directives/style-map';
-import { ref, type Ref, createRef } from 'lit/directives/ref';
+import { classMap } from 'lit/directives/class-map.js';
+import { type StyleInfo, styleMap } from 'lit/directives/style-map.js';
+import { ref, type Ref, createRef } from 'lit/directives/ref.js';
 import { CodeMirrorElement } from '@typo3/backend/code-editor/element/code-mirror-element';
 
 type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number, identifier: string, slideMode: SlideModes };

@@ -12,7 +12,7 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { css, html, LitElement, type TemplateResult } from 'lit';
 import { type Action } from './action';
 import type { ResultItemActionInterface, ResultItemInterface } from '../item';

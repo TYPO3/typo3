@@ -12,8 +12,8 @@
  */
 
 import { html, LitElement, type TemplateResult, render, type PropertyValues, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators';
-import { classMap } from 'lit/directives/class-map';
+import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import '@typo3/backend/element/icon-element';
 import 'bootstrap'; // for data-bs-toggle="dropdown"
 

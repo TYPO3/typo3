@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { html, css, LitElement, type CSSResult, type TemplateResult, nothing } from 'lit';
 import Modal from '@typo3/backend/modal';
 import '@typo3/backend/element/icon-element';

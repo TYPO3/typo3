@@ -17,7 +17,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 enum QrCodeSize {
   small = 64,

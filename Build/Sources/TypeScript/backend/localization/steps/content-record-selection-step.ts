@@ -12,9 +12,9 @@
  */
 
 import { html, nothing, type TemplateResult } from 'lit';
-import { live } from 'lit/directives/live';
-import { styleMap } from 'lit/directives/style-map';
-import { repeat } from 'lit/directives/repeat';
+import { live } from 'lit/directives/live.js';
+import { styleMap } from 'lit/directives/style-map.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { Task, TaskStatus } from '@lit/task';
 import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';

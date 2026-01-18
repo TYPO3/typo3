@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { property } from 'lit/decorators';
+import { property } from 'lit/decorators.js';
 import { html, css, LitElement, type TemplateResult } from 'lit';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 

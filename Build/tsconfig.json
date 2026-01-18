@@ -8,7 +8,7 @@
             "esnext.collection"
         ],
         "module": "es2022",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "allowSyntheticDefaultImports": true,
         "incremental": true,
         "tsBuildInfoFile": "./.cache/tsconfig.tsbuildinfo",
@@ -28,20 +28,19 @@
         "useUnknownInCatchVariables": true,
         "verbatimModuleSyntax": true,
         "pretty": true,
-        "baseUrl": "Sources/TypeScript",
         "paths": {
-            "@typo3/*": [
-                "./*"
-            ]
+            "@typo3/*": ["./Sources/TypeScript/*"],
+            "*": ["./types/*"]
         },
+        "rootDir": "./Sources/TypeScript",
         "outDir": "./JavaScript/",
         "types": [
             "TYPO3",
             "ckeditor5-bundle"
         ],
         "typeRoots": [
-            "node_modules/@types",
-            "types"
+            "./node_modules/@types",
+            "./types"
         ]
     },
     "include": [

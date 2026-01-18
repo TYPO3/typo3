@@ -12,7 +12,7 @@
  */
 
 import { html, nothing, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { lll } from '@typo3/core/lit-helper';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import { BaseElement } from './base';

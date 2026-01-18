@@ -17,7 +17,7 @@ import type { LitElement } from 'lit';
 import type { ModuleStateUpdateEvent } from '@typo3/backend/storage/module-state-storage';
 import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 import type { Tree } from '@typo3/backend/tree/tree';
-import type { Constructor } from '@lit/reactive-element/decorators/base';
+import type { Constructor } from '@lit/reactive-element/decorators/base.js';
 
 export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T) => {
   abstract class TreeModuleStateClass extends superClass {

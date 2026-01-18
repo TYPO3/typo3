@@ -12,9 +12,9 @@
  */
 
 import { LitElement, html, type TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
-import { classMap } from 'lit/directives/class-map';
-import { ifDefined } from 'lit/directives/if-defined';
+import { customElement, property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import type { AbstractAction } from './action-button/abstract-action';
 import { SeverityEnum } from './enum/severity';
 import Severity from './severity';

@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, type TemplateResult, nothing, type PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';

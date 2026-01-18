@@ -12,9 +12,9 @@
  */
 
 import { html, css, LitElement, type PropertyValues, type TemplateResult } from 'lit';
-import { customElement, property, query, state } from 'lit/decorators';
-import { classMap } from 'lit/directives/class-map';
-import { styleMap, type StyleInfo } from 'lit/directives/style-map';
+import { customElement, property, query, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { styleMap, type StyleInfo } from 'lit/directives/style-map.js';
 import { lll } from '@typo3/core/lit-helper';
 import Persistent from '../storage/persistent';
 

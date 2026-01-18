@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { lll } from '@typo3/core/lit-helper';
 import '@typo3/backend/element/icon-element';
 import Modal from '@typo3/backend/modal';
