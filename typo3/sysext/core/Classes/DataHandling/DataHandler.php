@@ -66,6 +66,7 @@ use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\Field\FieldTranslationBehaviour;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
@@ -1051,6 +1052,15 @@ class DataHandler
             $id = (int)$id;
             // We must use the current values as basis for this!
             $currentRecord = ($checkValueRecord = BackendUtility::getRecord($table, $id, '*', '', false));
+            // However, we need to check if the record type is a different one, we need to adapt this one value
+            // in order to have columnsOverrides working
+            $testRecord = array_replace($checkValueRecord, $incomingFieldArray);
+            if ($schema->supportsSubSchema()
+                && !$schema->getSubSchemaTypeInformation()->isPointerToForeignFieldInForeignSchema()
+                && ($newTypeValue = BackendUtility::getTCAtypeValue($table, $testRecord)) !== BackendUtility::getTCAtypeValue($table, $checkValueRecord)
+            ) {
+                $checkValueRecord[$schema->getSubSchemaTypeInformation()->getFieldName()] = $newTypeValue;
+            }
         }
 
         // Get original language record if available:
@@ -1235,7 +1245,7 @@ class DataHandler
         }
 
         // Getting config for the field
-        $tcaFieldConf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field);
+        $tcaFieldConf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $this->checkValue_currentRecord);
 
         // Create $recFID only for those types that need it
         if ($tcaFieldConf['type'] === 'flex') {
@@ -1248,16 +1258,27 @@ class DataHandler
     }
 
     /**
-     * Use columns overrides for evaluation.
+     * Get field configuration respecting columnsOverrides for a specific record.
+     *
+     * This method resolves the TCA field configuration while considering type-specific
+     * columnsOverrides. It determines the record type and returns the merged configuration
+     * from the appropriate sub-schema if available.
      *
      * Fetch the TCA ["config"] part for a specific field, including the columnsOverrides value.
-     * Used for checkValue purposes currently (as it takes the checkValue_currentRecord value).
+     * Used for checkValue purposes currently (as it takes the checkValue_currentRecord value) but also for
+     * all other places as well now.
+     *
+     * @param array $record The record array (must contain the type field if the table has types)
+     * @return array The field configuration array, or empty array if field doesn't exist
      */
-    protected function resolveFieldConfigurationAndRespectColumnsOverrides(string $table, string $field): array
+    protected function resolveFieldConfigurationAndRespectColumnsOverrides(string $table, string $field, array $record): array
     {
         $schema = $this->tcaSchemaFactory->get($table);
-        $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
-        if ($schema->hasSubSchema($recordType) && $schema->getSubSchema($recordType)->hasField($field)) {
+        if (!$schema->hasField($field)) {
+            return [];
+        }
+        $recordType = BackendUtility::getTCAtypeValue($table, $record);
+        if ($recordType !== '' && $schema->hasSubSchema($recordType) && $schema->getSubSchema($recordType)->hasField($field)) {
             return $schema->getSubSchema($recordType)->getField($field)->getConfiguration();
         }
         return $schema->getField($field)->getConfiguration();
@@ -2559,7 +2580,7 @@ class DataHandler
         $tcaField = $schema->getField($field);
         if ($tcaField->getTranslationBehaviour() === FieldTranslationBehaviour::Excluded && $schema->isLanguageAware()) {
             $transOrigPointerField = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
-            $l10nParent = (int)$this->checkValue_currentRecord[$transOrigPointerField];
+            $l10nParent = (int)($this->checkValue_currentRecord[$transOrigPointerField] ?? 0);
             if ($l10nParent > 0) {
                 // Current record is a translation and l10n_mode "exclude" just copies the value from source language
                 return $value;
@@ -3493,8 +3514,8 @@ class DataHandler
                     ) {
                         $value = $this->getCopyHeader($table, $this->resolvePid($table, $destPid), $field, $this->clearPrefixFromValue($table, $value), 0);
                     }
-                    // Get TCA configuration for the field:
-                    $conf = $schema->hasField($field) ? $schema->getField($field)->getConfiguration() : [];
+                    // Get TCA configuration for the field (respecting columnsOverrides):
+                    $conf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $row);
                     // Processing based on the TCA config field type (files, references, flexforms...)
                     $value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $tscPID, $language);
                 }
@@ -3765,9 +3786,9 @@ class DataHandler
         foreach ($row as $field => $value) {
             /** @var string $field */
             if (!in_array($field, $nonFields, true)) {
-                // Get TCA configuration for the field:
-                $conf = $schema->hasField($field) ? $schema->getField($field)->getConfiguration() : false;
-                if (is_array($conf)) {
+                // Get TCA configuration for the field (respecting columnsOverrides):
+                $conf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $row);
+                if ($conf !== []) {
                     // Processing based on the TCA config field type (files, references, flexforms...)
                     $value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $pid, 0, $workspaceOptions);
                 }
@@ -4532,8 +4553,9 @@ class DataHandler
 
         if ($table !== 'pages' && $isMovingToDifferentPid) {
             // When moving a record to a different pid, attached children have to be moved as well.
-            foreach (($workspaceRecord ?? $liveRecord) as $field => $value) {
-                $fieldConfig = $schema->hasField($field) ? $schema->getField($field)->getConfiguration() : [];
+            $recordForFieldConfig = $workspaceRecord ?? $liveRecord;
+            foreach ($recordForFieldConfig as $field => $value) {
+                $fieldConfig = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $recordForFieldConfig);
                 if (!($fieldConfig['behaviour']['disableMovingChildrenWithParent'] ?? false)
                     && in_array($this->getRelationFieldType($fieldConfig), ['list', 'field'], true)
                 ) {
@@ -4816,8 +4838,9 @@ class DataHandler
             $subSchemaDivisorFieldName = $schema->getSubSchemaTypeInformation()->getFieldName();
             $overrideValues[$subSchemaDivisorFieldName] = $row[$subSchemaDivisorFieldName] ?? null;
         }
+
         // Set exclude Fields:
-        foreach ($schema->getFields() as $field) {
+        foreach ($this->getTypeSpecificFields($table, $row) as $field) {
             $translateToMsg = '';
             // Check if we are just prefixing:
             if ($field->getTranslationBehaviour() === FieldTranslationBehaviour::PrefixLanguageTitle
@@ -5641,14 +5664,11 @@ class DataHandler
      */
     protected function deleteRecord_procFields(string $table, array $recordToDelete, bool $forceHardDelete = false): void
     {
-        $schema = $this->tcaSchemaFactory->get($table);
         $uid = (int)$recordToDelete['uid'];
         foreach ($recordToDelete as $fieldName => $value) {
-            if (!$schema->hasField($fieldName)) {
-                continue;
-            }
-            $configuration = $schema->getField($fieldName)->getConfiguration();
-            if (!isset($configuration['type'])) {
+            // Get TCA configuration for the field (respecting columnsOverrides)
+            $configuration = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $fieldName, $recordToDelete);
+            if ($configuration === [] || !isset($configuration['type'])) {
                 continue;
             }
             if ($configuration['type'] === 'inline' || $configuration['type'] === 'file') {
@@ -8036,19 +8056,34 @@ class DataHandler
     public function newFieldArray($table, array $recordContext = []): array
     {
         $fieldArray = [];
-        if ($this->tcaSchemaFactory->has($table)) {
-            foreach (($schema = $this->tcaSchemaFactory->get($table))->getFields() as $field) {
-                $fieldName = $field->getName();
-                if (($typeSpecificValue = $this->getTypeSpecificDefault($schema, $fieldName, $recordContext)) !== null) {
-                    $fieldArray[$fieldName] = $typeSpecificValue;
-                } elseif (isset($this->defaultValues[$table][$fieldName])) {
-                    $fieldArray[$fieldName] = $this->defaultValues[$table][$fieldName];
-                } elseif ($field->hasDefaultValue() && ($field->getDefaultValue() !== null || $field->isNullable())) {
-                    $fieldArray[$fieldName] = $field->getDefaultValue();
-                }
+        foreach ($this->getTypeSpecificFields($table, $recordContext) as $field) {
+            $fieldName = $field->getName();
+            // PageTSconfig type-specific defaults take highest precedence
+            if (($typeSpecificValue = $this->getTypeSpecificDefault($table, $fieldName, $recordContext)) !== null) {
+                $fieldArray[$fieldName] = $typeSpecificValue;
+            } elseif (isset($this->defaultValues[$table][$fieldName])) {
+                $fieldArray[$fieldName] = $this->defaultValues[$table][$fieldName];
+            } elseif ($field->hasDefaultValue() && ($field->getDefaultValue() !== null || $field->isNullable())) {
+                // This now uses sub-schema field if available, respecting columnsOverrides defaults
+                $fieldArray[$fieldName] = $field->getDefaultValue();
             }
         }
         return $fieldArray;
+    }
+
+    /**
+     * Use type-specific sub-schema fields if available, otherwise main schema fields
+     */
+    protected function getTypeSpecificFields(string $table, array $row): FieldCollection
+    {
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return new FieldCollection([]);
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        $recordType = BackendUtility::getTCAtypeValue($schema->getName(), $row, true);
+        return ($recordType !== '' && $recordType !== null && $schema->hasSubSchema($recordType))
+            ? $schema->getSubSchema($recordType)->getFields()
+            : $schema->getFields();
     }
 
     /**
@@ -8057,12 +8092,12 @@ class DataHandler
      * @param array $recordContext Record context to determine type
      * @return mixed|null Type-specific default value or null if not found
      */
-    protected function getTypeSpecificDefault(TcaSchema $schema, string $fieldName, array $recordContext): mixed
+    protected function getTypeSpecificDefault(string $table, string $fieldName, array $recordContext): mixed
     {
-        $tableName = $schema->getName();
+        $schema = $this->tcaSchemaFactory->get($table);
 
         // Check if we have type-specific configuration for this table and field
-        if (!isset($this->defaultValues[$tableName]['__typeSpecific'][$fieldName])) {
+        if (!isset($this->defaultValues[$table]['__typeSpecific'][$fieldName])) {
             return null;
         }
 
@@ -8080,7 +8115,7 @@ class DataHandler
         }
 
         // Get type-specific configuration for this field
-        $fieldTypeConfig = $this->defaultValues[$tableName]['__typeSpecific'][$fieldName];
+        $fieldTypeConfig = $this->defaultValues[$table]['__typeSpecific'][$fieldName];
 
         // Check if there's a type-specific override
         return $fieldTypeConfig['types.'][$recordType] ?? null;
@@ -8387,8 +8422,9 @@ class DataHandler
     protected function fixUniqueInPid(string $table, array $row): void
     {
         $newData = [];
-        foreach ($this->tcaSchemaFactory->get($table)->getFields() as $field) {
-            if ($field->isType(TableColumnType::INPUT, TableColumnType::EMAIL) && (string)$row[$field->getName()] !== '') {
+        // Use type-specific sub-schema fields if available, otherwise main schema fields
+        foreach ($this->getTypeSpecificFields($table, $row) as $field) {
+            if ($field->isType(TableColumnType::INPUT, TableColumnType::EMAIL) && (string)($row[$field->getName()] ?? '') !== '') {
                 $evalCodesArray = GeneralUtility::trimExplode(',', $field->getConfiguration()['eval'] ?? '', true);
                 if (in_array('uniqueInPid', $evalCodesArray, true)) {
                     $newValue = $this->getUnique($table, $field->getName(), $row[$field->getName()], (int)$row['uid'], (int)$row['pid']);
@@ -8410,9 +8446,17 @@ class DataHandler
      */
     protected function fixUniqueInSite(string $table, int|array $uidOrRow): bool
     {
+        // Load record first to determine record type for columnsOverrides support
+        if (is_array($uidOrRow)) {
+            $row = $uidOrRow;
+        } else {
+            $row = BackendUtility::getRecord($table, $uidOrRow, '*', '', false);
+        }
+        if (!is_array($row)) {
+            return false;
+        }
         $newData = [];
-        $row = null;
-        foreach ($this->tcaSchemaFactory->get($table)->getFields() as $field) {
+        foreach ($this->getTypeSpecificFields($table, $row) as $field) {
             if (!$field->isType(TableColumnType::SLUG)) {
                 continue;
             }
@@ -8421,14 +8465,7 @@ class DataHandler
             if (!in_array('uniqueInSite', $evalCodesArray, true)) {
                 continue;
             }
-            if ($row === null) {
-                if (is_array($uidOrRow)) {
-                    $row = $uidOrRow;
-                } else {
-                    $row = BackendUtility::getRecord($table, $uidOrRow, '*', '', false);
-                }
-            }
-            if ((string)$row[$field->getName()] === '') {
+            if ((string)($row[$field->getName()] ?? '') === '') {
                 continue;
             }
             $helper = GeneralUtility::makeInstance(SlugHelper::class, $table, $field->getName(), $conf, $this->BE_USER->workspace);
@@ -8439,7 +8476,7 @@ class DataHandler
             }
         }
         if (!empty($newData)) {
-            $this->updateDB($table, $row['uid'], $newData, (int)$row['pid']);
+            $this->updateDB($table, (int)$row['uid'], $newData, (int)$row['pid']);
             return true;
         }
         return false;

@@ -641,9 +641,9 @@ class BackendUtility
      * @param string $table Table name present in TCA
      * @param array $row Record from $table
      * @throws \RuntimeException
-     * @return string Field value
+     * @return string|null Field value
      */
-    public static function getTCAtypeValue($table, $row)
+    public static function getTCAtypeValue($table, $row, bool $skipFallback = false)
     {
         $typeNum = null;
         $schema = self::getTcaSchema($table);
@@ -684,6 +684,9 @@ class BackendUtility
         // If current typeNum doesn't exist, set it to 0 (or to 1 for historical reasons, if 0 doesn't exist)
         // @todo Resolve this
         if ($typeNum === null || !$schema?->hasSubSchema((string)$typeNum)) {
+            if ($skipFallback) {
+                return null;
+            }
             $typeNum = $schema?->hasSubSchema('0') ? '0' : '1';
         }
         // Force to string. Necessary for eg '-1' to be recognized as a type value.

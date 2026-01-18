@@ -1722,6 +1722,7 @@ final class DataHandlerTest extends UnitTestCase
             ],
         ];
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $defaultValues = $this->subject->_call('newFieldArray', 'tx_my_testtable');
         self::assertArrayHasKey($column, $defaultValues);
         self::assertEquals($expected, $defaultValues[$column]);
@@ -1804,6 +1805,7 @@ final class DataHandlerTest extends UnitTestCase
             ],
         ];
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $defaultValues = $this->subject->_call('newFieldArray', 'tx_my_testtable');
         self::assertEquals('test', $defaultValues['input_3']);
         self::assertArrayNotHasKey($column, $defaultValues);
@@ -1850,6 +1852,7 @@ final class DataHandlerTest extends UnitTestCase
             ],
         ];
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $this->subject->defaultValues['tx_my_testtable']['input_1'] = 'foo';
         $defaultValues = $this->subject->_call('newFieldArray', 'tx_my_testtable');
         self::assertEquals('foo', $defaultValues['input_1']);
