@@ -2751,4 +2751,9 @@ return [
             'Deprecation-108148-FluidLenientArgumentProcessor.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Console\CommandNameAlreadyInUseException' => [
+        'restFiles' => [
+            'Deprecation-108667-DeprecateCommandNameAlreadyInUseException.rst',
+        ],
+    ],
 ];

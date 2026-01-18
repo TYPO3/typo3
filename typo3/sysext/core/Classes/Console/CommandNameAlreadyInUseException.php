@@ -21,6 +21,13 @@ use TYPO3\CMS\Core\Exception;
  * Exception that was thrown when a command was registered with a name
  * that is already taken. This exception is currently unused.
  *
- * @todo: deprecate
+ * @deprecated since TYPO3 v14.1, will be removed in TYPO3 v15.0.
  */
-class CommandNameAlreadyInUseException extends Exception {}
+class CommandNameAlreadyInUseException extends Exception
+{
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null)
+    {
+        trigger_error('The class ' . __CLASS__ . ' is unused and deprecated, and will be removed in TYPO3 v15.0.', E_USER_DEPRECATED);
+        parent::__construct($message, $code, $previous);
+    }
+}
