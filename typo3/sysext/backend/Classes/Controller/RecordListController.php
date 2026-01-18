@@ -304,7 +304,7 @@ class RecordListController
                 $selectFields[] = 'is_siteroot';
             }
 
-            $row = BackendUtility::getRecord($table, $uid, implode(',', $selectFields));
+            $row = BackendUtility::getRecord($table, $uid, $selectFields);
             if ($row !== null) {
                 // Get new record icon
                 $recordIcon = $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL);

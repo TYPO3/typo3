@@ -7811,11 +7811,11 @@ class DataHandler
         if (!empty($row)) {
             // Look if the record UID happens to be a versioned record. If so, find its live version.
             // If this is already a moved record in workspace, this is not needed
-            if (VersionState::tryFrom((int)($row['t3ver_state'] ?? 0)) !== VersionState::MOVE_POINTER && $lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
+            if (VersionState::tryFrom((int)($row['t3ver_state'] ?? 0)) !== VersionState::MOVE_POINTER && $lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], [$sortColumn, 'pid', 'uid'])) {
                 $row = $lookForLiveVersion;
             } elseif ($considerWorkspaces && $this->BE_USER->workspace > 0) {
                 // In case the previous record is moved in the workspace, we need to fetch the information from this specific record
-                $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $row['uid'], $sortColumn . ',pid,uid,t3ver_state');
+                $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $row['uid'], [$sortColumn, 'pid', 'uid', 't3ver_state']);
                 if (is_array($versionedRecord) && VersionState::tryFrom($versionedRecord['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
                     $row = $versionedRecord;
                 }
@@ -7969,7 +7969,7 @@ class DataHandler
         }
 
         // Get the sort value and some other details of the source language record
-        $row = BackendUtility::getRecord($table, $uid, implode(',', $select));
+        $row = BackendUtility::getRecord($table, $uid, $select);
         if (!is_array($row)) {
             // This if may be obsolete ... didn't the callee already check if the source record exists?
             return $previousLocalizedRecordUid;

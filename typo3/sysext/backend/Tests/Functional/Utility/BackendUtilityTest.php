@@ -225,6 +225,54 @@ final class BackendUtilityTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getRecordWithFieldsAsStringSelectsSpecifiedFields(): void
+    {
+        $record = BackendUtility::getRecord('tt_content', 1, 'uid,pid,header');
+        self::assertIsArray($record);
+        self::assertArrayHasKey('uid', $record);
+        self::assertArrayHasKey('pid', $record);
+        self::assertArrayHasKey('header', $record);
+        self::assertCount(3, $record);
+    }
+
+    #[Test]
+    public function getRecordWithFieldsAsArraySelectsSpecifiedFields(): void
+    {
+        $record = BackendUtility::getRecord('tt_content', 1, ['uid', 'pid', 'header']);
+        self::assertIsArray($record);
+        self::assertArrayHasKey('uid', $record);
+        self::assertArrayHasKey('pid', $record);
+        self::assertArrayHasKey('header', $record);
+        self::assertCount(3, $record);
+    }
+
+    #[Test]
+    public function getRecordWithFieldsAsArrayReturnsEquivalentResultAsString(): void
+    {
+        $recordFromString = BackendUtility::getRecord('tt_content', 1, 'uid,pid,header');
+        $recordFromArray = BackendUtility::getRecord('tt_content', 1, ['uid', 'pid', 'header']);
+        self::assertSame($recordFromString, $recordFromArray);
+    }
+
+    #[Test]
+    public function getRecordWSOLWithFieldsAsArraySelectsSpecifiedFields(): void
+    {
+        $record = BackendUtility::getRecordWSOL('tt_content', 1, ['uid', 'header']);
+        self::assertIsArray($record);
+        self::assertArrayHasKey('uid', $record);
+        self::assertArrayHasKey('header', $record);
+        self::assertArrayNotHasKey('pid', $record);
+    }
+
+    #[Test]
+    public function getRecordWSOLWithFieldsAsArrayReturnsEquivalentResultAsString(): void
+    {
+        $recordFromString = BackendUtility::getRecordWSOL('tt_content', 1, 'uid,header');
+        $recordFromArray = BackendUtility::getRecordWSOL('tt_content', 1, ['uid', 'header']);
+        self::assertSame($recordFromString, $recordFromArray);
+    }
+
+    #[Test]
     public function pageTSconfigWorksCorrectly(): void
     {
         // root page: some_property set in TSconfig

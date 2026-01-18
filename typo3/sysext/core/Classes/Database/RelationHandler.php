@@ -991,14 +991,14 @@ class RelationHandler
             if (!(MathUtility::canBeInterpretedAsInteger($updateToUid) && $updateToUid > 0)) {
                 $updateToUid = 0;
             }
-            $fields = 'uid,pid,' . $foreign_field;
+            $fields = ['uid', 'pid', $foreign_field];
             // Consider the symmetric field if defined:
             if ($symmetric_field) {
-                $fields .= ',' . $symmetric_field;
+                $fields[] = $symmetric_field;
             }
             // Consider workspaces if defined and currently used:
             if ($schema->isWorkspaceAware()) {
-                $fields .= ',t3ver_wsid,t3ver_state,t3ver_oid';
+                $fields = [...$fields, 't3ver_wsid', 't3ver_state', 't3ver_oid'];
             }
             // Update all items
             foreach ($this->itemArray as $val) {

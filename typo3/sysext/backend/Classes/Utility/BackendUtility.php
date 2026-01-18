@@ -61,7 +61,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -88,12 +87,12 @@ class BackendUtility
      *
      * @param string $table Table name, available in Schema API
      * @param int|string $uid UID of record
-     * @param string $fields List of fields to select
+     * @param string|list<non-empty-string> $fields List of fields to select, either as comma-separated string or array of field names
      * @param string $where Additional WHERE clause, eg. ' AND some_field = 0'
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return array|null Returns the row if found, otherwise NULL
      */
-    public static function getRecord(string $table, $uid, $fields = '*', $where = '', $useDeleteClause = true): ?array
+    public static function getRecord(string $table, $uid, string|array $fields = ['*'], $where = '', $useDeleteClause = true): ?array
     {
         if (self::getTcaSchema($table) === null
             || !MathUtility::canBeInterpretedAsInteger($uid)
@@ -112,8 +111,12 @@ class BackendUtility
         if ($useDeleteClause) {
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
+        $selectFields = is_array($fields)
+            // Simulate a similar "trim" + remove empty values like GeneralUtility::trimExplode() does
+            ? array_values(array_filter(array_map(trim(...), $fields), static fn(string $field): bool => $field !== ''))
+            : GeneralUtility::trimExplode(',', $fields, true);
         $queryBuilder
-            ->select(...GeneralUtility::trimExplode(',', $fields, true))
+            ->select(...$selectFields)
             ->from($table)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)));
         if ($where) {
@@ -131,7 +134,7 @@ class BackendUtility
      *
      * @param string $table Table name, available in Schema API
      * @param int $uid UID of record
-     * @param string $fields List of fields to select
+     * @param string|list<non-empty-string> $fields List of fields to select, either as comma-separated string or array of field names
      * @param string $where Additional WHERE clause, eg. ' AND some_field = 0'
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
@@ -140,18 +143,22 @@ class BackendUtility
     public static function getRecordWSOL(
         $table,
         $uid,
-        $fields = '*',
+        string|array $fields = ['*'],
         $where = '',
         $useDeleteClause = true,
         $unsetMovePointers = false
     ): ?array {
-        if ($fields !== '*') {
-            $internalFields = StringUtility::uniqueList($fields . ',uid,pid');
+        $fields = is_array($fields)
+            // Simulate a similar "trim" + remove empty values like GeneralUtility::trimExplode() does
+            ? array_values(array_filter(array_map(trim(...), $fields), static fn(string $field): bool => $field !== ''))
+            : GeneralUtility::trimExplode(',', $fields, true);
+        if ($fields !== ['*']) {
+            $internalFields = array_unique(array_merge($fields, ['uid', 'pid']));
             $row = self::getRecord($table, $uid, $internalFields, $where, $useDeleteClause);
             self::workspaceOL($table, $row, -99, $unsetMovePointers);
             if (is_array($row)) {
                 foreach ($row as $key => $_) {
-                    if (!GeneralUtility::inList($fields, $key) && $key[0] !== '_') {
+                    if (!in_array($key, $fields, true) && $key[0] !== '_') {
                         unset($row[$key]);
                     }
                 }
@@ -2745,10 +2752,10 @@ class BackendUtility
      * @param int $workspace Workspace ID
      * @param string $table Table name to select from
      * @param int $uid Record uid for which to find workspace version.
-     * @param string $fields Field list to select
+     * @param string|list<non-empty-string> $fields Field list to select, either as comma-separated string or array of field names
      * @return array|false If found, return record, otherwise false
      */
-    public static function getWorkspaceVersionOfRecord($workspace, string $table, $uid, $fields = '*'): array|false
+    public static function getWorkspaceVersionOfRecord($workspace, string $table, $uid, string|array $fields = '*'): array|false
     {
         if ($workspace === 0
             || !ExtensionManagementUtility::isLoaded('workspaces')
@@ -2763,8 +2770,11 @@ class BackendUtility
             // Workspace records aren't soft-delete aware: deleted=1 & t3ver_wsid>0 should not exist.
             // It should be fine to add the restriction to not accidentally catch invalid records.
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $selectFields = is_array($fields)
+            ? array_values(array_filter(array_map(trim(...), $fields), static fn(string $field): bool => $field !== ''))
+            : GeneralUtility::trimExplode(',', $fields, true);
         return $queryBuilder
-            ->select(...GeneralUtility::trimExplode(',', $fields))
+            ->select(...$selectFields)
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
@@ -2837,11 +2847,11 @@ class BackendUtility
      *
      * @param string $table Table name
      * @param int|string $uid Record UID of draft, offline version
-     * @param string $fields Field list, default is *
+     * @param string|list<non-empty-string> $fields Field list, default is *
      * @return array|null If found, the record, otherwise NULL
      * @todo: Warning. If uid is a 'new placeholder' record in workspaces, this row is returned.
      */
-    public static function getLiveVersionOfRecord($table, $uid, $fields = '*')
+    public static function getLiveVersionOfRecord($table, $uid, string|array $fields = '*')
     {
         $liveVersionId = self::getLiveVersionIdOfRecord($table, $uid);
         if ($liveVersionId !== null) {

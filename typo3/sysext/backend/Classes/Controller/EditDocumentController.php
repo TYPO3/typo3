@@ -676,7 +676,7 @@ class EditDocumentController
                     $labelFields = $labelCapability->getAllLabelFieldNames();
                     foreach ($labelFields as $labelField) {
                         if (!isset($row[$labelField])) {
-                            $tmpRecord = BackendUtility::getRecord($table, $uid, implode(',', $labelFields));
+                            $tmpRecord = BackendUtility::getRecord($table, $uid, $labelFields);
                             if ($tmpRecord !== null) {
                                 $row = array_merge($row, $tmpRecord);
                             }
@@ -1618,7 +1618,7 @@ class EditDocumentController
         // Page available in other languages than default language?
         if (count($availableLanguages) > 1) {
             $rowsByLang = [];
-            $fetchFields = 'uid,' . $languageField . ',' . $transOrigPointerField;
+            $fetchFields = ['uid', $languageField, $transOrigPointerField];
             // Get record in current language
             $rowCurrent = BackendUtility::getLiveVersionOfRecord($table, $uid, $fetchFields);
             if (!is_array($rowCurrent)) {
@@ -1653,7 +1653,7 @@ class EditDocumentController
                         ->removeAll()
                         ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                         ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
-                    $result = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fetchFields, true))
+                    $result = $queryBuilder->select(...$fetchFields)
                         ->from($table)
                         ->where(
                             $queryBuilder->expr()->eq(
