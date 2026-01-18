@@ -27,13 +27,12 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Service\RecoveryService;
@@ -45,7 +44,7 @@ final class RecoveryServiceTest extends UnitTestCase
 
     private MockObject&FrontendUserRepository $userRepository;
     private MockObject&RecoveryConfiguration $recoveryConfiguration;
-    private MockObject&TemplatePaths $templatePaths;
+    private MockObject&TemplatedEmailFactory $templatedEmailFactory;
     private RequestInterface $extbaseRequest;
 
     protected function setUp(): void
@@ -53,7 +52,7 @@ final class RecoveryServiceTest extends UnitTestCase
         parent::setUp();
         $this->userRepository = $this->createMock(FrontendUserRepository::class);
         $this->recoveryConfiguration = $this->createMock(RecoveryConfiguration::class);
-        $this->templatePaths = $this->createMock(TemplatePaths::class);
+        $this->templatedEmailFactory = $this->createMock(TemplatedEmailFactory::class);
 
         $request = new ServerRequest();
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
@@ -216,6 +215,7 @@ final class RecoveryServiceTest extends UnitTestCase
             ->setConstructorArgs(
                 [
                     $mailer,
+                    $this->templatedEmailFactory,
                     $eventDispatcherMock,
                     $configurationManager,
                     $this->recoveryConfiguration,
@@ -238,7 +238,6 @@ final class RecoveryServiceTest extends UnitTestCase
         $this->recoveryConfiguration->method('getSender')->willReturn($recoveryConfiguration['sender']);
         $this->recoveryConfiguration->method('getMailTemplateName')->willReturn($recoveryConfiguration['mailTemplateName']);
         $this->recoveryConfiguration->method('getReplyTo')->willReturn($recoveryConfiguration['replyTo']);
-        $this->recoveryConfiguration->method('getMailTemplatePaths')->willReturn($this->templatePaths);
 
         $this->userRepository->method('findUserByUsernameOrEmailOnPages')->with($uid, [])->willReturn($userInformation);
     }
@@ -249,7 +248,7 @@ final class RecoveryServiceTest extends UnitTestCase
         array $recoveryConfiguration
     ): MockObject&FluidEmail {
         $fluidEmailMock = $this->getMockBuilder(FluidEmail::class)->disableOriginalConstructor()->getMock();
-        GeneralUtility::addInstance(FluidEmail::class, $fluidEmailMock);
+        $this->templatedEmailFactory->method('createWithOverrides')->willReturn($fluidEmailMock);
         $fluidEmailMock->method('subject')->with('translation')->willReturn($fluidEmailMock);
         $fluidEmailMock->method('from')->with($recoveryConfiguration['sender'])->willReturn($fluidEmailMock);
         $fluidEmailMock->method('to')->with($receiver)->willReturn($fluidEmailMock);

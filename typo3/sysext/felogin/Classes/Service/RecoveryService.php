@@ -22,7 +22,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -39,6 +39,7 @@ class RecoveryService
 
     public function __construct(
         protected readonly MailerInterface $mailer,
+        protected readonly TemplatedEmailFactory $templatedEmailFactory,
         protected EventDispatcherInterface $eventDispatcher,
         ConfigurationManagerInterface $configurationManager,
         protected RecoveryConfiguration $recoveryConfiguration,
@@ -104,10 +105,12 @@ class RecoveryService
             'validUntil' => date($this->settings['dateFormat'] ?? 'Y-m-d H:i', $this->recoveryConfiguration->getLifeTimeTimestamp()),
         ];
 
-        $mailTemplatePaths = $this->recoveryConfiguration->getMailTemplatePaths();
-
-        $mail = GeneralUtility::makeInstance(FluidEmail::class, $mailTemplatePaths);
-        $mail->setRequest($request);
+        $mail = $this->templatedEmailFactory->createWithOverrides(
+            templateRootPaths: $this->settings['email']['templateRootPaths'] ?? [],
+            layoutRootPaths: $this->settings['email']['layoutRootPaths'] ?? [],
+            partialRootPaths: $this->settings['email']['partialRootPaths'] ?? [],
+            request: $request,
+        );
         $mail->subject($this->getEmailSubject())
             ->from($this->recoveryConfiguration->getSender())
             ->to($receiver)

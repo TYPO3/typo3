@@ -25,11 +25,10 @@ use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
-use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -38,18 +37,10 @@ use TYPO3\CMS\Install\Service\SessionService;
  */
 class AuthenticationService
 {
-    protected TemplatePaths $templatePaths;
-
-    public function __construct(protected readonly MailerInterface $mailer)
-    {
-        $this->templatePaths = new TemplatePaths();
-        $this->templatePaths->setTemplateRootPaths(array_replace(
-            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? [],
-            [20 => 'EXT:install/Resources/Private/Templates/Email/'],
-        ));
-        $this->templatePaths->setLayoutRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'] ?? []);
-        $this->templatePaths->setPartialRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'] ?? []);
-    }
+    public function __construct(
+        protected readonly MailerInterface $mailer,
+        protected readonly TemplatedEmailFactory $emailFactory,
+    ) {}
 
     /**
      * Checks against a given password
@@ -88,40 +79,44 @@ class AuthenticationService
     /**
      * If install tool login mail is set, send a mail for a successful login.
      */
-    protected function sendLoginSuccessfulMail(ServerRequestInterface $request)
+    protected function sendLoginSuccessfulMail(ServerRequestInterface $request): void
     {
         $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         if (!$warningEmailAddress) {
             return;
         }
-        $email = GeneralUtility::makeInstance(FluidEmail::class, $this->templatePaths);
+        $email = $this->emailFactory->createWithOverrides(
+            templateRootPaths: [20 => 'EXT:install/Resources/Private/Templates/Email/'],
+            request: $request,
+        );
         $email
             ->to($warningEmailAddress)
             ->subject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
             ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
-            ->setTemplate('Security/InstallToolLogin')
-            ->setRequest($request);
+            ->setTemplate('Security/InstallToolLogin');
         $this->sendEmail($email);
     }
 
     /**
      * If install tool login mail is set, send a mail for a failed login.
      */
-    protected function sendLoginFailedMail(ServerRequestInterface $request)
+    protected function sendLoginFailedMail(ServerRequestInterface $request): void
     {
         $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         if (!$warningEmailAddress) {
             return;
         }
         $formValues = $request->getParsedBody()['install'] ?? $request->getQueryParams()['install'] ?? null;
-        $email = GeneralUtility::makeInstance(FluidEmail::class, $this->templatePaths);
+        $email = $this->emailFactory->createWithOverrides(
+            templateRootPaths: [20 => 'EXT:install/Resources/Private/Templates/Email/'],
+            request: $request,
+        );
         $email
             ->to($warningEmailAddress)
             ->subject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
             ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
             ->setTemplate('Security/InstallToolLoginAttempt')
-            ->assign('lastCharactersOfPassword', substr(md5($formValues['password']), -5))
-            ->setRequest($request);
+            ->assign('lastCharactersOfPassword', substr(md5($formValues['password']), -5));
         $this->sendEmail($email);
     }
 

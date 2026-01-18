@@ -28,8 +28,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
-use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -61,6 +61,7 @@ class EnvironmentController extends AbstractController
         private readonly LateBootService $lateBootService,
         private readonly FormProtectionFactory $formProtectionFactory,
         private readonly MailerInterface $mailer,
+        private readonly TemplatedEmailFactory $emailFactory,
     ) {}
 
     /**
@@ -281,12 +282,11 @@ class EnvironmentController extends AbstractController
                     'introduction' => 'Hey TYPO3 Administrator',
                     'content' => 'Seems like your favorite TYPO3 installation can send out emails!',
                 ];
-                $mailMessage = GeneralUtility::makeInstance(FluidEmail::class);
+                $mailMessage = $this->emailFactory->create($request);
                 $mailMessage
                     ->to($recipient)
                     ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
                     ->subject($this->getEmailSubject())
-                    ->setRequest($request)
                     ->assignMultiple($variables);
 
                 $this->mailer->send($mailMessage);

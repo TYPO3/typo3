@@ -23,13 +23,12 @@ use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Workspaces\Messages\StageChangeMessage;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\StagesService;
@@ -47,6 +46,7 @@ readonly class StageChangeNotification
         private StagesService $stagesService,
         private PreviewUriBuilder $previewUriBuilder,
         private MailerInterface $mailer,
+        private TemplatedEmailFactory $emailFactory,
         private LoggerInterface $logger,
         private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
@@ -148,21 +148,13 @@ readonly class StageChangeNotification
      */
     protected function sendEmail(array $recipientData, array $emailConfig, array $variablesForView): void
     {
-        $templatePaths = new TemplatePaths();
-        $templatePaths->setTemplateRootPaths(array_replace(
-            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? [],
-            $emailConfig['templateRootPaths'] ?? [],
-        ));
-        $templatePaths->setLayoutRootPaths(array_replace(
-            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'] ?? [],
-            $emailConfig['layoutRootPaths'] ?? [],
-        ));
-        $templatePaths->setPartialRootPaths(array_replace(
-            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'] ?? [],
-            $emailConfig['partialRootPaths'] ?? [],
-        ));
-
-        $emailObject = GeneralUtility::makeInstance(FluidEmail::class, $templatePaths);
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $emailObject = $this->emailFactory->createWithOverrides(
+            templateRootPaths: $emailConfig['templateRootPaths'] ?? [],
+            layoutRootPaths: $emailConfig['layoutRootPaths'] ?? [],
+            partialRootPaths: $emailConfig['partialRootPaths'] ?? [],
+            request: $request instanceof ServerRequestInterface ? $request : null,
+        );
         $emailObject
             ->to(new Address($recipientData['email'], $recipientData['realName'] ?? ''))
             // Will be overridden by the template
@@ -171,11 +163,7 @@ readonly class StageChangeNotification
             ->assignMultiple($variablesForView)
             ->assign('language', $recipientData['lang'] ?? 'en');
 
-        // Injecting normalized params
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
-            $emailObject->setRequest($GLOBALS['TYPO3_REQUEST']);
-        }
-        if ($emailConfig['format']) {
+        if (!empty($emailConfig['format'])) {
             $emailObject->format($emailConfig['format']);
         }
         if (!empty($emailConfig['senderEmail']) && GeneralUtility::validEmail($emailConfig['senderEmail'])) {

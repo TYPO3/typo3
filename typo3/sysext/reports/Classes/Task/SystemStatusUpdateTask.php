@@ -20,14 +20,13 @@ namespace TYPO3\CMS\Reports\Task;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Reports\Service\StatusService;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -106,26 +105,20 @@ class SystemStatusUpdateTask extends AbstractTask
         $message .= implode(CRLF, $systemIssues);
         $message .= CRLF . CRLF;
 
-        $templatePaths = new TemplatePaths();
-        $templatePaths->setTemplateRootPaths(array_replace(
-            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? [],
-            [20 => 'EXT:reports/Resources/Private/Templates/Email/'],
-        ));
-        $templatePaths->setLayoutRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'] ?? []);
-        $templatePaths->setPartialRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'] ?? []);
-
-        $email = GeneralUtility::makeInstance(FluidEmail::class, $templatePaths);
+        $request = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface ? $GLOBALS['TYPO3_REQUEST'] : null;
+        // @todo DI should be used to inject the MailerInterface in v15.0
+        $email = GeneralUtility::makeInstance(TemplatedEmailFactory::class)->createWithOverrides(
+            templateRootPaths: [20 => 'EXT:reports/Resources/Private/Templates/Email/'],
+            request: $request,
+        );
         $email
             ->to(...$sendEmailsTo)
             ->format('plain')
             ->subject($subject)
             ->setTemplate('Report')
             ->assign('message', $message);
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
-            $email->setRequest($GLOBALS['TYPO3_REQUEST']);
-        }
 
-        // TODO: DI should be used to inject the MailerInterface
+        // @todo DI should be used to inject the MailerInterface in v15.0
         GeneralUtility::makeInstance(MailerInterface::class)->send($email);
     }
 

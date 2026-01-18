@@ -41,8 +41,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
@@ -72,6 +72,7 @@ readonly class PasswordReset
     public function __construct(
         private LoggerInterface $logger,
         private MailerInterface $mailer,
+        private TemplatedEmailFactory $templatedEmailFactory,
         private HashService $hashService,
         private Random $random,
         private ConnectionPool $connectionPool,
@@ -166,10 +167,8 @@ readonly class PasswordReset
      */
     protected function sendAmbiguousEmail(ServerRequestInterface $request, Context $context, string $emailAddress): void
     {
-        $emailObject = GeneralUtility::makeInstance(FluidEmail::class);
-        $emailObject
+        $emailObject = $this->templatedEmailFactory->create($request)
             ->to(new Address($emailAddress))
-            ->setRequest($request)
             ->assign('email', $emailAddress)
             ->setTemplate('PasswordReset/AmbiguousResetRequested');
         $this->mailer->send($emailObject);
@@ -193,10 +192,8 @@ readonly class PasswordReset
     protected function sendResetEmail(ServerRequestInterface $request, Context $context, array $user): void
     {
         $resetLink = $this->generateResetLinkForUser($context, (int)$user['uid'], (string)$user['email']);
-        $emailObject = GeneralUtility::makeInstance(FluidEmail::class);
-        $emailObject
+        $emailObject = $this->templatedEmailFactory->create($request)
             ->to(new Address((string)$user['email'], $user['realName']))
-            ->setRequest($request)
             ->assign('name', $user['realName'])
             ->assign('email', $user['email'])
             ->assign('language', $user['lang'] ?: 'en')

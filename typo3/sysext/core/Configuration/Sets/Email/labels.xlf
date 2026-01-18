@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Configuration/Sets/Email/labels.xlf" date="2026-10-28T13:37:00Z" product-name="core">
+    <header/>
+    <body>
+      <trans-unit id="label">
+        <source>Email Configuration</source>
+      </trans-unit>
+      <trans-unit id="categories.email">
+        <source>Email Configuration</source>
+      </trans-unit>
+      <trans-unit id="settings.email.format">
+        <source>Email format</source>
+      </trans-unit>
+      <trans-unit id="settings.description.email.format">
+        <source>The format to use for sending emails (html, plain, both). If empty, the global configuration is used.</source>
+      </trans-unit>
+      <trans-unit id="settings.email.templateRootPaths">
+        <source>Email Template Root Paths</source>
+      </trans-unit>
+      <trans-unit id="settings.description.email.templateRootPaths">
+        <source>Array of paths to email templates. These are merged with the global mail template paths. Format: "EXT:my_extension/Resources/Private/Templates/Email".</source>
+      </trans-unit>
+      <trans-unit id="settings.email.layoutRootPaths">
+        <source>Email Layout Root Paths</source>
+      </trans-unit>
+      <trans-unit id="settings.description.email.layoutRootPaths">
+        <source>Array of paths to email layouts. These are merged with the global mail layout paths. Format: "EXT:my_extension/Resources/Private/Layout/".</source>
+      </trans-unit>
+      <trans-unit id="settings.email.partialRootPaths">
+        <source>Email Partial Root Paths</source>
+      </trans-unit>
+      <trans-unit id="settings.description.email.partialRootPaths">
+        <source>Array of paths to email partials. These are merged with the global mail partial paths. Format: "EXT:my_extension/Resources/Private/Partials/Email".</source>
+      </trans-unit>
+      <trans-unit id="settings.email.format.enum.">
+        <source>None - inherit format</source>
+      </trans-unit>
+      <trans-unit id="settings.email.format.enum.html">
+        <source>HTML</source>
+      </trans-unit>
+      <trans-unit id="settings.email.format.enum.plain">
+        <source>Plain-text</source>
+      </trans-unit>
+      <trans-unit id="settings.email.format.enum.both">
+        <source>Both (HTML and plain-text)</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\Mailer;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute as NormalizedParamsMiddleware;
 use TYPO3\CMS\Core\Middleware\ResponsePropagation as ResponsePropagationMiddleware;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
@@ -127,7 +128,8 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getAuthenticationService(ContainerInterface $container): Authentication\AuthenticationService
     {
         return new Authentication\AuthenticationService(
-            $container->get(Mailer::class)
+            $container->get(Mailer::class),
+            $container->get(TemplatedEmailFactory::class)
         );
     }
 
@@ -286,7 +288,8 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\EnvironmentController(
             $container->get(Service\LateBootService::class),
             $container->get(FormProtectionFactory::class),
-            $container->get(Mailer::class)
+            $container->get(Mailer::class),
+            $container->get(TemplatedEmailFactory::class),
         );
     }
 

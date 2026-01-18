@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Authentication\UserSettings;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class EmailLoginNotificationTest extends UnitTestCase
@@ -46,11 +46,12 @@ final class EmailLoginNotificationTest extends UnitTestCase
             'email' => 'test@acme.com',
         ];
 
-        $mailMessage = $this->setUpMailMessageMock();
+        $mailMessage = $this->createMailMessageMock();
+        $emailFactoryMock = $this->createTemplatedEmailFactoryMock($mailMessage);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -70,10 +71,11 @@ final class EmailLoginNotificationTest extends UnitTestCase
             'username' => 'karl',
             'email' => 'test@acme.com',
         ];
+        $emailFactoryMock = $this->createMock(TemplatedEmailFactory::class);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->never())->method('send');
 
-        $subject = new EmailLoginNotification($mailerMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -93,10 +95,11 @@ final class EmailLoginNotificationTest extends UnitTestCase
             'username' => 'karl',
             'email' => 'dot.com',
         ];
+        $emailFactoryMock = $this->createMock(TemplatedEmailFactory::class);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->never())->method('send');
 
-        $subject = new EmailLoginNotification($mailerMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -116,11 +119,12 @@ final class EmailLoginNotificationTest extends UnitTestCase
             'username' => 'karl',
         ];
 
-        $mailMessage = $this->setUpMailMessageMock('typo3-admin@acme.com');
+        $mailMessage = $this->createMailMessageMock('typo3-admin@acme.com');
+        $emailFactoryMock = $this->createTemplatedEmailFactoryMock($mailMessage);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -140,11 +144,12 @@ final class EmailLoginNotificationTest extends UnitTestCase
             'username' => 'karl',
         ];
 
-        $mailMessage = $this->setUpMailMessageMock('typo3-admin@acme.com');
+        $mailMessage = $this->createMailMessageMock('typo3-admin@acme.com');
+        $emailFactoryMock = $this->createTemplatedEmailFactoryMock($mailMessage);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -164,11 +169,12 @@ final class EmailLoginNotificationTest extends UnitTestCase
             'username' => 'karl',
         ];
 
-        $mailMessage = $this->setUpMailMessageMock('typo3-admin@acme.com');
+        $mailMessage = $this->createMailMessageMock('typo3-admin@acme.com');
+        $emailFactoryMock = $this->createTemplatedEmailFactoryMock($mailMessage);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -187,14 +193,15 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $backendUser->user = [
             'username' => 'karl',
         ];
+        $emailFactoryMock = $this->createMock(TemplatedEmailFactory::class);
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->never())->method('send');
 
-        $subject = new EmailLoginNotification($mailerMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
-    private function setUpMailMessageMock(string $recipient = ''): FluidEmail&MockObject
+    private function createMailMessageMock(string $recipient = ''): FluidEmail&MockObject
     {
         $mailMessage = $this->createMock(FluidEmail::class);
 
@@ -205,9 +212,14 @@ final class EmailLoginNotificationTest extends UnitTestCase
         }
         $mailMessage->method('setTemplate')->withAnyParameters()->willReturn($mailMessage);
         $mailMessage->method('from')->withAnyParameters()->willReturn($mailMessage);
-        $mailMessage->method('setRequest')->withAnyParameters()->willReturn($mailMessage);
         $mailMessage->method('assignMultiple')->withAnyParameters()->willReturn($mailMessage);
-        GeneralUtility::addInstance(FluidEmail::class, $mailMessage);
         return $mailMessage;
+    }
+
+    private function createTemplatedEmailFactoryMock(FluidEmail&MockObject $mailMessage): TemplatedEmailFactory&MockObject
+    {
+        $emailFactoryMock = $this->createMock(TemplatedEmailFactory::class);
+        $emailFactoryMock->method('create')->willReturn($mailMessage);
+        return $emailFactoryMock;
     }
 }

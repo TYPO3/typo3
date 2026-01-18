@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Finishers\EmailFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
@@ -72,8 +73,11 @@ final class EmailFinisherTest extends FunctionalTestCase
         $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(BeforeEmailFinisherInitializedEvent::class, 'before-email-finisher-initialized-event-listener');
 
-        // create $subject with required configurations
-        $subject = new EmailFinisher($this->get(EventDispatcher::class));
+        $subject = new EmailFinisher(
+            $this->get(EventDispatcher::class),
+            $this->get(TemplatedEmailFactory::class),
+            $this->get(MailerInterface::class),
+        );
         $subject->injectTranslationService($translationServiceMock);
         $subject->setOptions([
             'senderAddress' => 'sender@example.org',
@@ -81,7 +85,6 @@ final class EmailFinisherTest extends FunctionalTestCase
             'recipients' => ['user@example.org' => 'John Doe'],
             'subject' => 'default subject',
         ]);
-        // finally execute the finisher
         $subject->execute(new FinisherContext($this->createMock(FormRuntime::class), $this->createMock(Request::class)));
 
         self::assertInstanceOf(BeforeEmailFinisherInitializedEvent::class, $beforeEmailFinisherInitializedEvent);

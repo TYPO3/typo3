@@ -60,6 +60,9 @@ class FluidEmail extends Email
     protected string $templateName = 'Default';
     protected FluidViewAdapter $view;
 
+    /**
+     * @internal use TemplatedEmailFactory instead
+     */
     public function __construct(?TemplatePaths $templatePaths = null, ?Headers $headers = null, ?AbstractPart $body = null)
     {
         parent::__construct($headers, $body);
@@ -232,6 +235,11 @@ class FluidEmail extends Email
     {
         $this->view->getRenderingContext()->getTemplatePaths()->setFormat($format);
         return $this->view->render($this->templateName);
+    }
+
+    public function getView(): FluidViewAdapter
+    {
+        return $this->view;
     }
 
     protected function resetBody(): void

@@ -28,8 +28,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
-use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,7 +55,8 @@ final class EmailLoginNotification implements LoggerAwareInterface
     private $request;
 
     public function __construct(
-        private readonly MailerInterface $mailer
+        private readonly MailerInterface $mailer,
+        private readonly TemplatedEmailFactory $emailFactory,
     ) {
         $this->warningMode = (int)($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] ?? 0);
         $this->warningEmailRecipient = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'] ?? '';
@@ -77,7 +78,8 @@ final class EmailLoginNotification implements LoggerAwareInterface
         if (!$genericLoginWarning && !$userLoginNotification) {
             return;
         }
-        $this->request = $event->getRequest() ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $this->request = $event->getRequest() ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         if ($genericLoginWarning) {
             $prefix = $currentUser->isAdmin() ? '[AdminLoginWarning]' : '[LoginWarning]';
@@ -102,9 +104,8 @@ final class EmailLoginNotification implements LoggerAwareInterface
     {
         $headline = 'TYPO3 Backend Login notification';
         $recipients = explode(',', $recipient);
-        $email = GeneralUtility::makeInstance(FluidEmail::class)
+        $email = $this->emailFactory->create($this->request)
             ->to(...$recipients)
-            ->setRequest($this->request)
             ->setTemplate('Security/LoginNotification')
             ->assignMultiple([
                 'user' => $user->user,

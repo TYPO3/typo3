@@ -1,0 +1,25 @@
+categories:
+  email: ~
+
+settings:
+  email.format:
+    default: ''
+    type: string
+    category: email
+    enum:
+      - ''
+      - 'html'
+      - 'plain'
+      - 'both'
+  email.templateRootPaths:
+    default: ['']
+    type: stringlist
+    category: email
+  email.layoutRootPaths:
+    default: ['']
+    type: stringlist
+    category: email
+  email.partialRootPaths:
+    default: ['']
+    type: stringlist
+    category: email

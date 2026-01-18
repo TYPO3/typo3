@@ -24,7 +24,6 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -178,44 +177,6 @@ final class RecoveryConfigurationTest extends UnitTestCase
         $this->setupSubject();
 
         self::assertNull($this->subject->getReplyTo());
-    }
-
-    #[Test]
-    public function getMailTemplatePathsReturnsAnInstanceOfTemplatePathsObjectWithConfigurationOfTypoScript(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] = [
-            0 => 'EXT:core/Resources/Private/Templates/',
-            10 => 'EXT:backend/Resources/Private/Templates/',
-        ];
-        $this->setupSubject();
-        $actualTemplatePaths = $this->subject->getMailTemplatePaths();
-        self::assertSame(
-            [
-                0 => Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
-                10 => Environment::getPublicPath() . '/typo3/sysext/backend/Resources/Private/Templates/',
-                20 => '/some/path/to/a/template/folder/',
-            ],
-            $actualTemplatePaths->getTemplateRootPaths()
-        );
-    }
-
-    #[Test]
-    public function getMailTemplatePathsReplacesTemplatePathsWithPathsConfiguredInTypoScript(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] = [
-            0 => 'EXT:core/Resources/Private/Templates/',
-            10 => 'EXT:backend/Resources/Private/Templates/',
-        ];
-        $this->settings['email']['templateRootPaths'] = [10 => '/some/path/to/a/template/folder/'];
-        $this->setupSubject();
-        $actualTemplatePaths = $this->subject->getMailTemplatePaths();
-        self::assertSame(
-            [
-                0 => Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
-                10 => '/some/path/to/a/template/folder/',
-            ],
-            $actualTemplatePaths->getTemplateRootPaths()
-        );
     }
 
     #[Test]

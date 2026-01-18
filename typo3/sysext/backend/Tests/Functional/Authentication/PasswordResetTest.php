@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
 use TYPO3\CMS\Core\RateLimiter\Storage\CachingFrameworkStorage;
 use TYPO3\CMS\Core\Session\SessionManager;
@@ -123,6 +124,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $subject = new PasswordReset(
             $loggerMock,
             $this->get(MailerInterface::class),
+            $this->get(TemplatedEmailFactory::class),
             new HashService(),
             new Random(),
             $this->get(ConnectionPool::class),
@@ -160,6 +162,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $subject = new PasswordReset(
             $logger,
             $this->get(MailerInterface::class),
+            $this->get(TemplatedEmailFactory::class),
             new HashService(),
             new Random(),
             $this->get(ConnectionPool::class),
@@ -203,6 +206,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $subject = new PasswordReset(
             $logger,
             $this->get(MailerInterface::class),
+            $this->get(TemplatedEmailFactory::class),
             new HashService(),
             new Random(),
             $this->get(ConnectionPool::class),
@@ -235,6 +239,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $subject = new PasswordReset(
             $loggerMock,
             $this->get(MailerInterface::class),
+            $this->get(TemplatedEmailFactory::class),
             new HashService(),
             new Random(),
             $this->get(ConnectionPool::class),
@@ -285,6 +290,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $subject = new PasswordReset(
             $logger,
             $this->get(MailerInterface::class),
+            $this->get(TemplatedEmailFactory::class),
             new HashService(),
             new Random(),
             $this->get(ConnectionPool::class),

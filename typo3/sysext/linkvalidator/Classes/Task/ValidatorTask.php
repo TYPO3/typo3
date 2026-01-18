@@ -23,6 +23,7 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -32,7 +33,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Linkvalidator\Event\ModifyValidatorTaskEmailEvent;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\CMS\Linkvalidator\Result\LinkAnalyzerResult;
@@ -418,25 +418,31 @@ class ValidatorTask extends AbstractTask
      */
     protected function getFluidEmail(): FluidEmail
     {
-        $templatePaths = new TemplatePaths();
-        $templatePaths->setTemplateRootPaths(array_replace(
-            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? [],
-            [20 => 'EXT:linkvalidator/Resources/Private/Templates/Email/'],
-        ));
-        $templatePaths->setLayoutRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'] ?? []);
-        $templatePaths->setPartialRootPaths($GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'] ?? []);
+        $fluidEmail = GeneralUtility::makeInstance(TemplatedEmailFactory::class)->createWithOverrides(
+            templateRootPaths: [20 => 'EXT:linkvalidator/Resources/Private/Templates/Email/'],
+        );
 
-        if ($this->emailTemplateName === '' || !$this->templateFilesExist($templatePaths->getTemplateRootPaths())) {
+        if ($this->emailTemplateName === '' || !$this->templateFilesExist($this->getTemplateRootPaths())) {
             // Add default template name to task if empty or given template name does not exist
             $this->emailTemplateName = 'ValidatorTask';
             $this->taskNeedsUpdate = true;
             $this->logger->notice($this->getLanguageService()->sL($this->languageFile . ':tasks.notice.useDefaultTemplate'));
         }
 
-        $fluidEmail = GeneralUtility::makeInstance(FluidEmail::class, $templatePaths);
         $fluidEmail->setTemplate($this->emailTemplateName);
 
         return $fluidEmail;
+    }
+
+    /**
+     * Get merged template root paths from global config and extension override.
+     */
+    protected function getTemplateRootPaths(): array
+    {
+        return array_replace(
+            $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] ?? [],
+            [20 => 'EXT:linkvalidator/Resources/Private/Templates/Email/'],
+        );
     }
 
     /**

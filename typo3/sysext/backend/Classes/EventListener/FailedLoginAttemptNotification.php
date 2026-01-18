@@ -27,8 +27,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Log\LogDataTrait;
-use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
@@ -55,9 +55,11 @@ final class FailedLoginAttemptNotification
      * @param int $failedLoginAttemptsThreshold The maximum accepted number of warnings before an email to $notificationRecipientEmailAddress is sent
      */
     public function __construct(
+        private readonly TemplatedEmailFactory $templatedEmailFactory,
+        private readonly MailerInterface $mailer,
         ?string $notificationRecipientEmailAddress = null,
         private readonly int $warningPeriod = 3600,
-        private readonly int $failedLoginAttemptsThreshold = 3
+        private readonly int $failedLoginAttemptsThreshold = 3,
     ) {
         $this->notificationRecipientEmailAddress = $notificationRecipientEmailAddress ?? (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
     }
@@ -146,15 +148,13 @@ final class FailedLoginAttemptNotification
                 'text' => $text,
             ];
         }
-        $email = GeneralUtility::makeInstance(FluidEmail::class)
+        $email = $this->templatedEmailFactory->create($request)
             ->to($this->notificationRecipientEmailAddress)
             ->setTemplate('Security/LoginAttemptFailedWarning')
-            ->assign('lines', $emailData)
-            ->setRequest($request);
+            ->assign('lines', $emailData);
 
         try {
-            // @todo DI should be used to inject the MailerInterface
-            GeneralUtility::makeInstance(MailerInterface::class)->send($email);
+            $this->mailer->send($email);
         } catch (TransportExceptionInterface $e) {
             // Sending mail failed. Probably broken smtp setup.
             // @todo Maybe log that sending mail failed.

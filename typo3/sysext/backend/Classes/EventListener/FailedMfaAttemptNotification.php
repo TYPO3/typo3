@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Backend\EventListener;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\Event\MfaVerificationFailedEvent;
-use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,7 +31,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final readonly class FailedMfaAttemptNotification
 {
-    public function __construct(private MailerInterface $mailer) {}
+    public function __construct(
+        private TemplatedEmailFactory $templatedEmailFactory,
+        private MailerInterface $mailer,
+    ) {}
 
     /**
      * Sends a notification email to the backend user on failed MFA verification.
@@ -50,10 +53,8 @@ final readonly class FailedMfaAttemptNotification
             return;
         }
 
-        $emailObject = GeneralUtility::makeInstance(FluidEmail::class);
-        $emailObject
+        $emailObject = $this->templatedEmailFactory->create($event->getRequest())
             ->to(new Address($emailAddress, $backendUser->user['realName']))
-            ->setRequest($event->getRequest())
             ->assign('provider', $event->getProvider())
             ->setTemplate('Mfa/FailedMfaNotification');
         $this->mailer->send($emailObject);
