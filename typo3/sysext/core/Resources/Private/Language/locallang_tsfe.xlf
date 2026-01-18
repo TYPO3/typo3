@@ -76,7 +76,7 @@
 			<trans-unit id="p_deleteConfirm">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
-			<trans-unit id="p_hideConfirm" xml:space="preserve">
+			<trans-unit id="p_hideConfirm">
 				<source>Hiding a record will make it invisible on the webpage.  To edit the hidden record enter the backend or enable the frontend preview.
 Continue?</source>
 			</trans-unit>

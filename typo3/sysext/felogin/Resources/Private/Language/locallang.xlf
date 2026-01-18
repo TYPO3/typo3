@@ -21,7 +21,7 @@
 			<trans-unit id="error_header">
 				<source>Login failure</source>
 			</trans-unit>
-			<trans-unit id="error_message" xml:space="preserve">
+			<trans-unit id="error_message">
 				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
 Be certain that you enter them precisely as they are, including upper/lower case.
 Another possibility is that cookies might be disabled in your web browser.</source>
@@ -101,20 +101,20 @@ Another possibility is that cookies might be disabled in your web browser.</sour
 			<trans-unit id="forgot_header">
 				<source>Forgot your password?</source>
 			</trans-unit>
-			<trans-unit id="forgot_email_password" xml:space="preserve">
+			<trans-unit id="forgot_email_password">
 				<source>Your password
 Hi %s
 
 Your username is "%s"
 Your password is "%s"</source>
 			</trans-unit>
-			<trans-unit id="forgot_email_nopassword" xml:space="preserve">
+			<trans-unit id="forgot_email_nopassword">
 				<source>Your password
 Hi %s
 
 We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
 			</trans-unit>
-			<trans-unit id="forgot_validate_reset_password" xml:space="preserve">
+			<trans-unit id="forgot_validate_reset_password">
 				<source>Your new password
 Dear %s,
 
@@ -159,14 +159,14 @@ For security reasons, this link is only active until %s. If you do not visit the
 			<trans-unit id="password_must_match_repeated">
 				<source>New Password must match repeated password.</source>
 			</trans-unit>
-			<trans-unit id="forgot_validate_reset_password_html" xml:space="preserve">
+			<trans-unit id="forgot_validate_reset_password_html">
 				<source>&lt;p&gt;Dear %s,&lt;/p&gt;
 &lt;p&gt;This email was sent in response to your request to reset your password. Please click on the link below.&lt;/p&gt;
 &lt;p&gt;%s&lt;/p&gt;
 &lt;p&gt;For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.&lt;/p&gt;
 				</source>
 			</trans-unit>
-			<trans-unit id="forgot_validate_reset_password_plaintext" xml:space="preserve">
+			<trans-unit id="forgot_validate_reset_password_plaintext">
 				<source>Dear %s,
 
 This email was sent in response to your request to reset your password. Please click on the link below.

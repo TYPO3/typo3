@@ -102,7 +102,7 @@
 			<trans-unit id="labels.fieldsMissing">
 				<source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
 			</trans-unit>
-			<trans-unit id="labels.fieldsChanged" xml:space="preserve">
+			<trans-unit id="labels.fieldsChanged">
 				<source>There are unsaved changes in the form!
 Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
@@ -865,7 +865,7 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="mess.deleteClip">
 				<source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login" xml:space="preserve">
+			<trans-unit id="mess.refresh_login">
 				<source>Your login has probably expired.
 Do you want to refresh it now?</source>
 			</trans-unit>

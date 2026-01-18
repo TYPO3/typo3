@@ -69,7 +69,7 @@
 			<trans-unit id="toolbarItems.sysinfo.intro.link">
 				<source>Environment Module</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.allgood" xml:space="preserve">
+			<trans-unit id="toolbarItems.sysinfo.allgood">
 				<source>Your system is fully operational.
 Have a nice day.</source>
 			</trans-unit>

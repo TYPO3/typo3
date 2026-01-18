@@ -3,61 +3,61 @@
     <file source-language="en" datatype="plaintext" original="EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf" date="2017-01-30T03:38:32Z" product-name="tests">
         <header/>
         <body>
-            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
+            <trans-unit id="element.Page.renderingOptions.nextButtonLabel">
                 <source>FORM EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.label" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.label">
                 <source>form-runtime-identifier form-element-identifier LABEL EN</source>
             </trans-unit>
-            <trans-unit id="element.form-element-identifier.properties.label" xml:space="preserve">
+            <trans-unit id="element.form-element-identifier.properties.label">
                 <source>form-runtime-identifier form-element-identifier LABEL EN 1</source>
             </trans-unit>
-            <trans-unit id="element.Text.properties.label" xml:space="preserve">
+            <trans-unit id="element.Text.properties.label">
                 <source>form-runtime-identifier form-element-identifier LABEL EN 2</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.placeholder" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.placeholder">
                 <source>form-runtime-identifier form-element-identifier PLACEHOLDER EN</source>
             </trans-unit>
-            <trans-unit id="form-runtime-identifier.element.form-element-identifier-page.renderingOptions.nextButtonLabel" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.form-element-identifier-page.renderingOptions.nextButtonLabel">
                 <source>form-runtime-identifier form-element-identifier nextButtonLabel EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue1" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue1">
                 <source>form-runtime-identifier options-form-element-identifier option 1 EN</source>
             </trans-unit>
-            <trans-unit id="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue2" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue2">
                 <source>form-runtime-identifier options-form-element-identifier option 2 EN</source>
             </trans-unit>
 
-            <trans-unit id="element.options-form-element-identifier.properties.options.optionValue1" xml:space="preserve">
+            <trans-unit id="element.options-form-element-identifier.properties.options.optionValue1">
                 <source>form-runtime-identifier options-form-element-identifier option 1 EN</source>
             </trans-unit>
-            <trans-unit id="element.options-form-element-identifier.properties.options.optionValue2" xml:space="preserve">
+            <trans-unit id="element.options-form-element-identifier.properties.options.optionValue2">
                 <source>form-runtime-identifier options-form-element-identifier option 2 EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.finisher.SaveToDatabase.subject" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.finisher.SaveToDatabase.subject">
                 <source>form-runtime-identifier form-element-identifier SaveToDatabase subject EN</source>
             </trans-unit>
-            <trans-unit id="finisher.SaveToDatabase.subject" xml:space="preserve">
+            <trans-unit id="finisher.SaveToDatabase.subject">
                 <source>form-runtime-identifier form-element-identifier SaveToDatabase subject EN 1</source>
             </trans-unit>
 
-            <trans-unit id="my-form-runtime-identifier.element.my-form-element-identifier.properties.label" xml:space="preserve">
+            <trans-unit id="my-form-runtime-identifier.element.my-form-element-identifier.properties.label">
                 <source>my-form-runtime-identifier my-form-element-identifier LABEL EN</source>
             </trans-unit>
 
-            <trans-unit id="element.my-form-element-with-translation-arguments.properties.label" xml:space="preserve">
+            <trans-unit id="element.my-form-element-with-translation-arguments.properties.label">
                 <source>See %s or %s</source>
             </trans-unit>
 
-            <trans-unit id="my-form-runtime-identifier.finisher.SaveToDatabase.subject" xml:space="preserve">
+            <trans-unit id="my-form-runtime-identifier.finisher.SaveToDatabase.subject">
                 <source>my-form-runtime-identifier form-element-identifier SaveToDatabase subject EN</source>
             </trans-unit>
 
-            <trans-unit id="finisher.EmailToReceiverWithTranslationArguments.subject" xml:space="preserve">
+            <trans-unit id="finisher.EmailToReceiverWithTranslationArguments.subject">
                 <source>My %s subject</source>
             </trans-unit>
         </body>
