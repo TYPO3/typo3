@@ -27,15 +27,8 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
  */
 class Arguments extends \ArrayObject
 {
-    /**
-     * @var array Names of the arguments contained by this object
-     */
-    protected $argumentNames = [];
-
-    /**
-     * @var array
-     */
-    protected $argumentShortNames = [];
+    protected array $argumentNames = [];
+    protected array $argumentShortNames = [];
 
     /**
      * Constructor. If this one is removed, reflection breaks.
@@ -50,10 +43,9 @@ class Arguments extends \ArrayObject
      * argument object itself, therefore the $offset does not have any meaning in this context.
      *
      * @param mixed $offset Offset - not used here
-     * @param mixed $value The argument
      * @throws \InvalidArgumentException if the argument is not a valid Controller Argument object
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if (!$value instanceof Argument) {
             throw new \InvalidArgumentException('Controller arguments must be valid TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument objects.', 1187953786);
@@ -66,10 +58,9 @@ class Arguments extends \ArrayObject
     /**
      * Sets an argument, aliased to offsetSet()
      *
-     * @param mixed $value The value
      * @throws \InvalidArgumentException if the argument is not a valid Controller Argument object
      */
-    public function append($value): void
+    public function append(mixed $value): void
     {
         if (!$value instanceof Argument) {
             throw new \InvalidArgumentException('Controller arguments must be valid TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument objects.', 1187953787);
@@ -77,10 +68,7 @@ class Arguments extends \ArrayObject
         $this->offsetSet(null, $value);
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         $translatedOffset = $this->translateToLongArgumentName($offset);
         parent::offsetUnset($translatedOffset);
@@ -90,10 +78,7 @@ class Arguments extends \ArrayObject
         }
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         $translatedOffset = $this->translateToLongArgumentName($offset);
         return parent::offsetExists($translatedOffset);
@@ -102,11 +87,9 @@ class Arguments extends \ArrayObject
     /**
      * Returns the value at the specified index
      *
-     * @param mixed $offset Offset
-     * @return Argument The requested argument object
      * @throws NoSuchArgumentException if the argument does not exist
      */
-    public function offsetGet($offset): Argument
+    public function offsetGet(mixed $offset): Argument
     {
         $translatedOffset = $this->translateToLongArgumentName($offset);
         if ($translatedOffset === '') {
@@ -119,14 +102,8 @@ class Arguments extends \ArrayObject
      * Creates, adds and returns a new controller argument to this composite object.
      * If an argument with the same name exists already, it will be replaced by the
      * new argument object.
-     *
-     * @param string $name Name of the argument
-     * @param string $dataType Name of one of the built-in data types
-     * @param bool $isRequired TRUE if this argument should be marked as required
-     * @param mixed $defaultValue Default value of the argument. Only makes sense if $isRequired==FALSE
-     * @return Argument The new argument
      */
-    public function addNewArgument($name, $dataType = 'Text', $isRequired = false, $defaultValue = null)
+    public function addNewArgument(string $name, string $dataType = 'Text', bool $isRequired = false, mixed $defaultValue = null): Argument
     {
         $argument = GeneralUtility::makeInstance(Argument::class, $name, $dataType);
         $argument->setRequired($isRequired);
@@ -141,10 +118,8 @@ class Arguments extends \ArrayObject
      * new argument object.
      *
      * Note that the argument will be cloned, not referenced.
-     *
-     * @param Argument $argument The argument to add
      */
-    public function addArgument(Argument $argument)
+    public function addArgument(Argument $argument): void
     {
         $this->offsetSet(null, $argument);
     }
@@ -152,11 +127,9 @@ class Arguments extends \ArrayObject
     /**
      * Returns an argument specified by name
      *
-     * @param string $argumentName Name of the argument to retrieve
-     * @return Argument
      * @throws NoSuchArgumentException
      */
-    public function getArgument($argumentName)
+    public function getArgument(string $argumentName): Argument
     {
         if (!$this->offsetExists($argumentName)) {
             throw new NoSuchArgumentException('An argument "' . $argumentName . '" does not exist.', 1195815178);
@@ -167,31 +140,25 @@ class Arguments extends \ArrayObject
     /**
      * Checks if an argument with the specified name exists
      *
-     * @param string $argumentName Name of the argument to check for
-     * @return bool TRUE if such an argument exists, otherwise FALSE
      * @see offsetExists()
      */
-    public function hasArgument($argumentName)
+    public function hasArgument(string $argumentName): bool
     {
         return $this->offsetExists($argumentName);
     }
 
     /**
      * Returns the names of all arguments contained in this object
-     *
-     * @return array Argument names
      */
-    public function getArgumentNames()
+    public function getArgumentNames(): array
     {
         return array_keys($this->argumentNames);
     }
 
     /**
      * Returns the short names of all arguments contained in this object that have one.
-     *
-     * @return array Argument short names
      */
-    public function getArgumentShortNames()
+    public function getArgumentShortNames(): array
     {
         $argumentShortNames = [];
         /** @var Argument $argument */
@@ -205,11 +172,9 @@ class Arguments extends \ArrayObject
      * Magic setter method for the argument values. Each argument
      * value can be set by just calling the setArgumentName() method.
      *
-     * @param string $methodName Name of the method
-     * @param array $arguments Method arguments
      * @throws \LogicException
      */
-    public function __call($methodName, array $arguments)
+    public function __call(string $methodName, array $arguments): void
     {
         if (!str_starts_with($methodName, 'set')) {
             throw new \LogicException('Unknown method "' . $methodName . '".', 1210858451);
@@ -231,11 +196,8 @@ class Arguments extends \ArrayObject
      *
      * If an argument with the specified name or short name does not exist, an empty
      * string is returned.
-     *
-     * @param string $argumentName argument name
-     * @return string long argument name or empty string
      */
-    protected function translateToLongArgumentName($argumentName)
+    protected function translateToLongArgumentName(string $argumentName): string
     {
         if (in_array($argumentName, $this->getArgumentNames())) {
             return $argumentName;
@@ -252,7 +214,7 @@ class Arguments extends \ArrayObject
     /**
      * Remove all arguments and resets this object
      */
-    public function removeAll()
+    public function removeAll(): void
     {
         foreach ($this->argumentNames as $argumentName => $booleanValue) {
             parent::offsetUnset($argumentName);
