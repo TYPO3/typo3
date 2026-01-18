@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
-import { classMap } from 'lit/directives/class-map';
+import { classMap } from 'lit/directives/class-map.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { lll } from '@typo3/core/lit-helper';

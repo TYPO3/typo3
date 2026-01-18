@@ -13,7 +13,7 @@
 
 import LiveSearchConfigurator from '@typo3/backend/live-search/live-search-configurator';
 import Viewport from '@typo3/backend/viewport';
-import { customElement, property, query } from 'lit/decorators';
+import { customElement, property, query } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { lll } from '@typo3/core/lit-helper';
 import { type ItemContainer } from './item/item-container';

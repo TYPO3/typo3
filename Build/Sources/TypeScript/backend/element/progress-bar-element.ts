@@ -12,8 +12,8 @@
  */
 
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
-import { classMap } from 'lit/directives/class-map';
+import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import Severity from '@typo3/backend/severity';
 import { SeverityEnum } from '@typo3/backend/enum/severity';

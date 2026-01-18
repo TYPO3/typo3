@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, type TemplateResult, nothing } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import { until } from 'lit/directives/until.js';
 import '@typo3/backend/element/icon-element';
 import { copyToClipboard } from '@typo3/backend/copy-to-clipboard';

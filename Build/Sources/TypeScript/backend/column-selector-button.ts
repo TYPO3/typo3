@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { default as Modal, type ModalElement } from '@typo3/backend/modal';

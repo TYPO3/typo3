@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
-import { repeat } from 'lit/directives/repeat';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { repeat } from 'lit/directives/repeat.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { nl2br } from '@typo3/core/directive/nl2br';
 
 type Comment = {

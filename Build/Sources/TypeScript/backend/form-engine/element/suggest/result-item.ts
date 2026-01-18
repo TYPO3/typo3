@@ -12,7 +12,7 @@
  */
 
 import { html, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import '@typo3/backend/element/icon-element';
 

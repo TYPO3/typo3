@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';

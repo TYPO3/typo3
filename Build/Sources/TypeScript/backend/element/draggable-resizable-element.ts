@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, type TemplateResult, type PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import { Offset } from '@typo3/backend/offset';
 
 interface Position {

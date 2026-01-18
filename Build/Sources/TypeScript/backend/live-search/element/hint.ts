@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { markdown } from '@typo3/core/directive/markdown';
 import '@typo3/backend/element/icon-element';

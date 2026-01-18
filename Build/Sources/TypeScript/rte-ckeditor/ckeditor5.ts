@@ -1,5 +1,5 @@
 import { html, LitElement, type TemplateResult } from 'lit';
-import { customElement, property, queryAssignedElements } from 'lit/decorators';
+import { customElement, property, queryAssignedElements } from 'lit/decorators.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import { prefixAndRebaseCss } from '@typo3/rte-ckeditor/css-prefixer';

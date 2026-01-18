@@ -12,7 +12,7 @@
  */
 
 import { html, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { BaseElement } from './base';
 import '@typo3/backend/color-picker';
 import RegularEvent from '@typo3/core/event/regular-event';

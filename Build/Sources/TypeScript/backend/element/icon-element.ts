@@ -13,8 +13,8 @@
 
 import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { Task } from '@lit/task';
-import { customElement, property } from 'lit/decorators';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { customElement, property } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { Sizes, States, MarkupIdentifiers } from '../enum/icon-types';
 import Icons, { IconStyles } from '../icons';
 import '@typo3/backend/element/spinner-element';

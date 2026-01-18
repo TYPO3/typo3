@@ -1,5 +1,5 @@
 import { LitElement, type TemplateResult, html } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('typo3-install-offset-group')
 class OffsetGroupElement extends LitElement {

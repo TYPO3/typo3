@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property, query } from 'lit/decorators';
+import { customElement, property, query } from 'lit/decorators.js';
 import { css, html, LitElement, type TemplateResult } from 'lit';
 import Alwan from 'alwan';
 import RegularEvent from '@typo3/core/event/regular-event';

@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property } from 'lit/decorators';
-import { ifDefined } from 'lit/directives/if-defined';
+import { customElement, property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { html, LitElement, type TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
 import type { ResultItemActionInterface, ResultItemInterface } from '../item';

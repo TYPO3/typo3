@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, type TemplateResult } from 'lit';
-import { customElement, state } from 'lit/decorators';
+import { customElement, state } from 'lit/decorators.js';
 import Modal, { type ModalElement, Styles, Sizes } from '@typo3/backend/modal';
 import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';

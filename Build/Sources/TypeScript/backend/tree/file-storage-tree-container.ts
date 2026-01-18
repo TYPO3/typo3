@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, type TemplateResult } from 'lit';
-import { customElement, query } from 'lit/decorators';
+import { customElement, query } from 'lit/decorators.js';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import '@typo3/backend/tree/tree-toolbar';

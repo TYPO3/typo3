@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, type TemplateResult } from 'lit';
-import { customElement, query } from 'lit/decorators';
+import { customElement, query } from 'lit/decorators.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { type TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
 import ElementBrowser from '@typo3/backend/element-browser';

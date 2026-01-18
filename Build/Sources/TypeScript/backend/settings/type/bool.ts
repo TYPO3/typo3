@@ -12,7 +12,7 @@
  */
 
 import { html, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { BaseElement } from './base';
 
 export const componentName = 'typo3-backend-settings-type-bool';

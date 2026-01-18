@@ -12,7 +12,7 @@
  */
 
 import Severity from './severity';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
 
 /**

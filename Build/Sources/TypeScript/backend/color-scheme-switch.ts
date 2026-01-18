@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
+import { customElement, property, state } from 'lit/decorators.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import '@typo3/backend/element/icon-element';
 import type { ColorSchemeUpdateEventData, ColorScheme } from '@typo3/backend/user-settings-manager';

@@ -12,8 +12,8 @@
  */
 
 import { css, html, LitElement, nothing, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
-import { styleMap } from 'lit/directives/style-map';
+import { customElement, property } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { lll } from '@typo3/core/lit-helper';
 
 export type Stage = string;

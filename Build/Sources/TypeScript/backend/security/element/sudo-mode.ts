@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { customElement, property, query, state } from 'lit/decorators';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { html, LitElement, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';

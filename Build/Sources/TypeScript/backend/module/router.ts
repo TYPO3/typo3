@@ -12,7 +12,7 @@
  */
 
 import { html, css, LitElement, type TemplateResult, type HasChanged } from 'lit';
-import { customElement, property, query } from 'lit/decorators';
+import { customElement, property, query } from 'lit/decorators.js';
 import { ModuleUtility, type ModuleState } from '@typo3/backend/module';
 
 const IFRAME_COMPONENT = '@typo3/backend/module/iframe';

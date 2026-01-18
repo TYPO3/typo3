@@ -12,7 +12,7 @@
  */
 
 import { html, LitElement, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { customElement, property } from 'lit/decorators.js';
 import { lll } from '@typo3/core/lit-helper';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import '@typo3/backend/element/icon-element';

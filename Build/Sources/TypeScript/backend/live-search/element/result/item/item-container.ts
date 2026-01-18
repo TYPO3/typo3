@@ -14,8 +14,8 @@
 import '@typo3/backend/element/spinner-element';
 import LiveSearchConfigurator from '@typo3/backend/live-search/live-search-configurator';
 import { css, html, LitElement, type TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
-import { until } from 'lit/directives/until';
+import { customElement, property } from 'lit/decorators.js';
+import { until } from 'lit/directives/until.js';
 import '../../provider/default-result-item';
 import { type Item, type ResultItemActionInterface, type ResultItemInterface } from './item';
 import type { InvokeActionEventData, RequestActionsEventData } from '@typo3/backend/live-search/element/result/result-container';

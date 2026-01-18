@@ -12,7 +12,7 @@
 */
 
 import { html, LitElement, type TemplateResult } from 'lit';
-import { customElement } from 'lit/decorators';
+import { customElement } from 'lit/decorators.js';
 import { lll } from '@typo3/core/lit-helper';
 import type { SelectTree } from './select-tree';
 import type { TreeNodeInterface } from '../../tree/tree-node';
