@@ -49,7 +49,18 @@ final class FileListTest extends UnitTestCase
 
         $fileList = $this->getAccessibleMock(FileList::class, ['getLanguageService'], [], '', false);
         $fileList->method('getLanguageService')->willReturn($languageServiceMock);
-        self::assertEqualsCanonicalizing($expected, $fileList->_call('sortResources', $resources, 'name'));
+
+        $sortedResources = $fileList->_call('sortResources', $resources, 'name');
+
+        $expectedNames = array_map(
+            static fn(File|Folder $item): string => $item->getName(),
+            $expected
+        );
+        $actualNames = array_values(array_map(
+            static fn(File|Folder $item): string => $item->getName(),
+            $sortedResources
+        ));
+        self::assertSame($expectedNames, $actualNames);
     }
 
     #[Test]
@@ -73,6 +84,17 @@ final class FileListTest extends UnitTestCase
 
         $fileList = $this->getAccessibleMock(FileList::class, ['getLanguageService'], [], '', false);
         $fileList->method('getLanguageService')->willReturn($languageServiceMock);
-        self::assertEqualsCanonicalizing($expected, $fileList->_call('sortResources', $resources, 'fileext'));
+
+        $sortedResources = $fileList->_call('sortResources', $resources, 'fileext');
+
+        $expectedNames = array_map(
+            static fn(File|Folder $item): string => $item->getName(),
+            $expected
+        );
+        $actualNames = array_values(array_map(
+            static fn(File|Folder $item): string => $item->getName(),
+            $sortedResources
+        ));
+        self::assertSame($expectedNames, $actualNames);
     }
 }
