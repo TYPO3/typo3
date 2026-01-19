@@ -276,7 +276,6 @@ class IconRegistry implements SingletonInterface
         foreach ($json['icons'] ?? [] as $declaration) {
             $iconOptions = [
                 'sprite' => $dir . '/' . $declaration['sprite'],
-                'source' => $dir . '/' . $declaration['svg'],
             ];
             // kind of hotfix for now, needs a nicer concept later
             if ($declaration['category'] === 'spinner') {

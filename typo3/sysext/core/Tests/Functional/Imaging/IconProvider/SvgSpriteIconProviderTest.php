@@ -55,6 +55,102 @@ final class SvgSpriteIconProviderTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function prepareIconMarkupWithRelativeSpriteReturnsInstanceOfIconWithCorrectMarkup(): void
+    {
+        $testFile = $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/actions.svg', self::svgTestFileContent);
+        $this->subject->prepareIconMarkup($this->icon, [
+            'sprite' => 'typo3temp/assets/actions.svg#actions-plus',
+        ]);
+        self::assertEquals('<svg class="icon-color"><use xlink:href="/typo3temp/assets/actions.svg?' . filemtime($testFile) . '#actions-plus" /></svg>', $this->icon->getMarkup());
+    }
+
+    #[Test]
+    public function prepareIconMarkupWithAbsoluteSpriteReturnsInstanceOfIconWithCorrectMarkup(): void
+    {
+        $testFile = $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/actions.svg', self::svgTestFileContent);
+        $this->subject->prepareIconMarkup($this->icon, [
+            'sprite' => '/typo3temp/assets/actions.svg#actions-plus',
+        ]);
+        self::assertEquals('<svg class="icon-color"><use xlink:href="/typo3temp/assets/actions.svg?' . filemtime($testFile) . '#actions-plus" /></svg>', $this->icon->getMarkup());
+    }
+
+    #[Test]
+    public function prepareIconMarkupWithPkgSpriteReturnsInstanceOfIconWithCorrectMarkup(): void
+    {
+        $testFile = $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/actions.svg', self::svgTestFileContent);
+        $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/actions-plus.svg', self::svgTestFileContent);
+        $this->subject->prepareIconMarkup($this->icon, [
+            'sprite' => 'PKG:typo3/app:typo3temp/assets/actions.svg#actions-plus',
+        ]);
+        self::assertEquals('<svg class="icon-color"><use xlink:href="/typo3temp/assets/actions.svg?' . filemtime($testFile) . '#actions-plus" /></svg>', $this->icon->getMarkup());
+    }
+
+    #[Test]
+    public function getIconWithExtSpriteReferenceReturnsInstanceOfIconWithCorrectMarkup(): void
+    {
+        $this->subject->prepareIconMarkup($this->icon, [
+            'sprite' => 'EXT:core/Resources/Public/Icons/T3Icons/sprites/action.svg#actions-plus',
+        ]);
+        self::assertEquals('<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/action.svg#actions-plus" /></svg>', $this->icon->getMarkup());
+    }
+
+    #[Test]
+    public function getIconWithPkgSpriteReferenceReturnsInstanceOfIconWithCorrectMarkup(): void
+    {
+        $this->subject->prepareIconMarkup($this->icon, [
+            'sprite' => 'PKG:typo3/cms-core:Resources/Public/Icons/T3Icons/sprites/action.svg#actions-plus',
+        ]);
+        self::assertEquals('<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/action.svg#actions-plus" /></svg>', $this->icon->getMarkup());
+    }
+
+    #[Test]
+    public function getIconWithInlineOptionReturnsSpriteUseMarkup(): void
+    {
+        $testFile = $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/foo.svg', self::svgTestFileContent);
+        $this->subject->prepareIconMarkup($this->icon, [
+            'sprite' => 'typo3temp/assets/foo.svg#bar',
+        ]);
+        self::assertEquals('<svg class="icon-color"><use xlink:href="/typo3temp/assets/foo.svg?' . filemtime($testFile) . '#bar" /></svg>', $this->icon->getMarkup(SvgSpriteIconProvider::MARKUP_IDENTIFIER_INLINE));
+    }
+
+    #[Test]
+    public function getIconWithInlineOptionReturnsSpriteUseMarkupForPkgResource(): void
+    {
+        $testFile = $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/foo.svg', self::svgTestFileContent);
+        $this->subject->prepareIconMarkup($this->icon, [
+            'sprite' => 'PKG:typo3/app:typo3temp/assets/foo.svg#bar',
+        ]);
+        self::assertEquals('<svg class="icon-color"><use xlink:href="/typo3temp/assets/foo.svg?' . filemtime($testFile) . '#bar" /></svg>', $this->icon->getMarkup(SvgSpriteIconProvider::MARKUP_IDENTIFIER_INLINE));
+    }
+
+    #[Test]
+    public function defaultAndInlineMarkupAreIdenticalForSprites(): void
+    {
+        $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/sprite.svg', self::svgTestFileContent);
+        $this->subject->prepareIconMarkup($this->icon, [
+            'sprite' => 'typo3temp/assets/sprite.svg#icon-id',
+        ]);
+        self::assertEquals(
+            $this->icon->getMarkup(),
+            $this->icon->getMarkup(SvgSpriteIconProvider::MARKUP_IDENTIFIER_INLINE)
+        );
+    }
+
+    #[Test]
+    public function inlineMarkupNeverEmbedsCompleteSprite(): void
+    {
+        $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/sprite.svg', self::svgTestFileContent);
+        $this->subject->prepareIconMarkup($this->icon, [
+            'sprite' => 'typo3temp/assets/sprite.svg#icon-id',
+        ]);
+        $inlineMarkup = $this->icon->getMarkup(SvgSpriteIconProvider::MARKUP_IDENTIFIER_INLINE);
+        self::assertStringContainsString('<use xlink:href=', $inlineMarkup);
+        self::assertStringNotContainsString('<path', $inlineMarkup);
+        self::assertStringNotContainsString('<symbol', $inlineMarkup);
+        self::assertStringNotContainsString('viewBox', $inlineMarkup);
+    }
+
+    #[Test]
     public function prepareIconMarkupWithRelativeSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $testFile = $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/actions.svg', self::svgTestFileContent);
