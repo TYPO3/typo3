@@ -228,6 +228,12 @@
       <trans-unit id="labels.edit">
         <source>Edit Site Configuration "%s"</source>
       </trans-unit>
+      <trans-unit id="contextMenu.editSiteSettings">
+        <source>Edit Site Settings</source>
+      </trans-unit>
+      <trans-unit id="contextMenu.editSiteConfiguration">
+        <source>Edit Site</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

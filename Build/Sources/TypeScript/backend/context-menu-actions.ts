@@ -127,6 +127,20 @@ class ContextMenuActions {
     }
   }
 
+  public static openSiteSettings(table: string, uid: number, dataset: DOMStringMap): void {
+    const siteSettingsUrl = dataset.siteSettingsUrl;
+    if (siteSettingsUrl) {
+      Viewport.ContentContainer.setUrl(siteSettingsUrl + '&returnUrl=' + ContextMenuActions.getReturnUrl());
+    }
+  }
+
+  public static openSiteConfiguration(table: string, uid: number, dataset: DOMStringMap): void {
+    const siteConfigurationUrl = dataset.siteConfigurationUrl;
+    if (siteConfigurationUrl) {
+      Viewport.ContentContainer.setUrl(siteConfigurationUrl + '&returnUrl=' + ContextMenuActions.getReturnUrl());
+    }
+  }
+
   public static pagesNewMultiple(table: string, uid: number, dataset: DOMStringMap): void {
     const pagesSortUrl = dataset.pagesNewMultipleUrl;
     if (pagesSortUrl) {
