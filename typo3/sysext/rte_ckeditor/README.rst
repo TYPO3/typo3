@@ -10,4 +10,4 @@ backend.
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
 :Read online: https://docs.typo3.org/c/typo3/cms-rte-ckeditor/main/en-us/
-:TER:         https://extensions.typo3.org/extension/rte_ckeditor/
+:Packagist:   https://packagist.org/packages/typo3/cms-rte-ckeditor

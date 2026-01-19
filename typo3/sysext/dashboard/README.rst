@@ -7,4 +7,4 @@ This TYPO3 backend module is used to configure and create backend widgets.
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
 :Read online: https://docs.typo3.org/c/typo3/cms-dashboard/main/en-us/
-:TER:         https://extensions.typo3.org/extension/dashboard/
+:Packagist:   https://packagist.org/packages/typo3/cms-dashboard
