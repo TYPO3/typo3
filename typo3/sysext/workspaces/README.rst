@@ -8,4 +8,4 @@ granular editing and publishing process.
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
 :Read online: https://docs.typo3.org/c/typo3/cms-workspaces/main/en-us/
-:TER:         https://extensions.typo3.org/extension/workspaces/
+:Packagist:   https://packagist.org/packages/typo3/cms-workspaces

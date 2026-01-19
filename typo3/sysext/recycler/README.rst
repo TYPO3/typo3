@@ -13,4 +13,4 @@ overview of deleted records before taking further action.
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
 :Read online: https://docs.typo3.org/c/typo3/cms-recycler/main/en-us/
-:TER:         https://extensions.typo3.org/extension/recycler/
+:Packagist:   https://packagist.org/packages/typo3/cms-recycler

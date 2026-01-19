@@ -11,4 +11,4 @@ Web>Info>Log shows logs related to specific pages.
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
 :Read online: https://docs.typo3.org/
-:TER:         https://extensions.typo3.org/extension/belog/
+:Packagist:   https://packagist.org/packages/typo3/cms-belog

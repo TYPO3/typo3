@@ -8,4 +8,4 @@ that contain instructions or other information about a page or section.
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
 :Read online: https://docs.typo3.org/
-:TER:         https://extensions.typo3.org/extension/sys_note/
+:Packagist:   https://packagist.org/packages/typo3/cms-sys-note
