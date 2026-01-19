@@ -28,6 +28,27 @@ available in the element's configuration panel. This option allows you to:
 The visibility setting is stored in the form definition and is evaluated when
 the form is rendered on the frontend.
 
+Example for Integrators
+------------------------
+
+If you want to extend your own form elements with the visibility feature, you
+need to add the following configuration to the element definition:
+
+..  code-block:: yaml
+
+    prototypes:
+      standard:
+        formElementsDefinition:
+          CustomElement:
+            formEditor:
+              editors:
+                # Choose a key / position according to your own needs
+                240:
+                  identifier: enabled
+                  templateName: Inspector-CheckboxEditor
+                  label: formEditor.elements.FormElement.editor.enabled.label
+                  propertyPath: renderingOptions.enabled
+
 Impact
 ======
 

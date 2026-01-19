@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessing;
 use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\AddHmacDataConverter;
-use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\AddRenderableVisibilityConverter;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\ConverterDto;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FinisherTranslationLanguageConverter;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\RemoveHmacDataConverter;
@@ -102,29 +101,6 @@ class FormDefinitionConversionService implements SingletonInterface
                 '^finishers\.([\d]+)\.options.translation.language$',
                 GeneralUtility::makeInstance(
                     FinisherTranslationLanguageConverter::class,
-                    $converterDto
-                )
-            )
-        );
-
-        return $converterDto->getFormDefinition();
-    }
-
-    /**
-     * Add renderingOptions.enabled to renderable elements in form definitions if not explicitly configured.
-     * Matches elements identified by their 'identifier' property.
-     */
-    public function addRenderableVisibility(array $formDefinition): array
-    {
-        $converterDto = GeneralUtility::makeInstance(ConverterDto::class, $formDefinition);
-
-        GeneralUtility::makeInstance(ArrayProcessor::class, $formDefinition)->forEach(
-            GeneralUtility::makeInstance(
-                ArrayProcessing::class,
-                'setRenderableVisibility',
-                '(^identifier$|\.identifier$)',
-                GeneralUtility::makeInstance(
-                    AddRenderableVisibilityConverter::class,
                     $converterDto
                 )
             )

@@ -1952,8 +1952,13 @@ export function renderCheckboxEditor(
     .buildPropertyPath(editorConfiguration.propertyPath, collectionElementIdentifier, collectionName);
   const propertyData = getCurrentlySelectedFormElement().get(propertyPath);
 
+  // For renderingOptions.enabled, undefined means "use default" which is true
+  const useDefaultEnabled = editorConfiguration.propertyPath === 'renderingOptions.enabled'
+    && getUtility().isUndefinedOrNull(propertyData);
+
   if (
-    ('boolean' === $.type(propertyData) && propertyData)
+    useDefaultEnabled
+    || ('boolean' === $.type(propertyData) && propertyData)
     || propertyData === 'true'
     || propertyData === 1
     || propertyData === '1'
