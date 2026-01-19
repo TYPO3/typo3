@@ -36,7 +36,7 @@ class SvgSpriteIconProvider extends AbstractSvgIconProvider
         }
 
         $source = $options['sprite'];
-        return '<svg class="icon-color"><use xlink:href="' . htmlspecialchars($this->getPublicPath($source)) . '" /></svg>';
+        return $this->generateSpriteUseMarkup($source);
     }
 
     /**
@@ -44,16 +44,24 @@ class SvgSpriteIconProvider extends AbstractSvgIconProvider
      */
     protected function generateInlineMarkup(array $options): string
     {
-        if (empty($options['source'])) {
-            throw new \InvalidArgumentException('The option "source" is required and must not be empty', 1603439146);
+        if (!empty($options['source'])) {
+            $source = $options['source'];
+            if (PathUtility::isExtensionPath($source) || !PathUtility::isAbsolutePath($source)) {
+                $source = GeneralUtility::getFileAbsFileName($source);
+            }
+            return $this->getInlineSvg($source);
         }
 
-        $source = $options['source'];
-
-        if (PathUtility::isExtensionPath($source) || !PathUtility::isAbsolutePath($source)) {
-            $source = GeneralUtility::getFileAbsFileName($source);
+        if (empty($options['sprite'])) {
+            throw new \InvalidArgumentException('The option "sprite" is required and must not be empty if not source SVG file is provided', 1603439146);
         }
 
-        return $this->getInlineSvg($source);
+        $source = $options['sprite'];
+        return $this->generateSpriteUseMarkup($source);
+    }
+
+    private function generateSpriteUseMarkup(string $sprite): string
+    {
+        return '<svg class="icon-color"><use xlink:href="' . htmlspecialchars($this->getPublicPath($sprite)) . '" /></svg>';
     }
 }
