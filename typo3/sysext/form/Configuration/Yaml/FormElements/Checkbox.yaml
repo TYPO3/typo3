@@ -17,6 +17,11 @@ prototypes:
               templateName: Inspector-TextEditor
               label: formEditor.elements.FormElement.editor.elementDescription.label
               propertyPath: properties.elementDescription
+            240:
+              identifier: enabled
+              templateName: Inspector-CheckboxEditor
+              label: formEditor.elements.FormElement.editor.enabled.label
+              propertyPath: renderingOptions.enabled
             600:
               identifier: autocomplete
               templateName: Inspector-SingleSelectEditor
@@ -87,7 +92,6 @@ prototypes:
             9999:
               identifier: removeButton
               templateName: Inspector-RemoveElementEditor
-          predefinedDefaults: {  }
           label: formEditor.elements.Checkbox.label
           description: formEditor.elements.Checkbox.description
           group: select

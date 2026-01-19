@@ -349,7 +349,12 @@ class FormEditorController extends ActionController
                 foreach ($firstLevelItemValue as $formEditorDefinitionKey => $formEditorDefinitionValue) {
                     if (isset($formEditorDefinitionValue['formEditor'])) {
                         $formEditorDefinitionValue = array_intersect_key($formEditorDefinitionValue, array_flip(['formEditor']));
-                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue['formEditor'];
+                        $elementDefinition = $formEditorDefinitionValue['formEditor'];
+                        // Set default visibility for newly created elements if editors are defined
+                        if (isset($elementDefinition['editors']) && !isset($elementDefinition['predefinedDefaults']['renderingOptions']['enabled'])) {
+                            $elementDefinition['predefinedDefaults']['renderingOptions']['enabled'] = true;
+                        }
+                        $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $elementDefinition;
                     } else {
                         $formEditorDefinitions[$reducedKey][$formEditorDefinitionKey] = $formEditorDefinitionValue;
                     }
@@ -481,6 +486,7 @@ class FormEditorController extends ActionController
             'identifier',
             $multiValueFinisherProperties
         );
+        $formDefinition = $this->formDefinitionConversionService->addRenderableVisibility($formDefinition);
         $formDefinition = $this->formDefinitionConversionService->addHmacData($formDefinition);
         return $this->formDefinitionConversionService->migrateFinisherConfiguration($formDefinition);
     }

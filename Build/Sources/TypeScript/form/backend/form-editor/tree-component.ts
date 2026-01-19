@@ -152,7 +152,9 @@ function renderNestedSortableListItem(formElement: FormElement, current: number,
     .append(caret);
   listItemContent.prepend(expanderItem);
 
-  Icons.getIcon(getFormElementDefinition(formElement, 'iconIdentifier'), Icons.sizes.small, null, Icons.states.default).then(function(icon) {
+  const overlayIdentifier = formElement.get('renderingOptions.enabled') === false ? 'overlay-hidden' : null;
+
+  Icons.getIcon(getFormElementDefinition(formElement, 'iconIdentifier'), Icons.sizes.small, overlayIdentifier, Icons.states.default).then(function(icon) {
     expanderItem.after(
       $('<span></span>')
         .addClass('formeditor-tree-icon')

@@ -203,4 +203,177 @@ final class FormDefinitionConversionServiceTest extends UnitTestCase
 
         self::assertSame($expected, $formDefinitionConversionService->removeHmacData($input));
     }
+
+    #[Test]
+    public function addRenderableVisibilityAddsEnabledIfMissing(): void
+    {
+        $formDefinitionConversionService = new FormDefinitionConversionService();
+        GeneralUtility::setSingletonInstance(FormDefinitionConversionService::class, $formDefinitionConversionService);
+
+        $input = [
+            'identifier' => 'test',
+            'type' => 'Form',
+            'renderables' => [
+                [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'renderables' => [
+                        [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'identifier' => 'test',
+            'type' => 'Form',
+            'renderables' => [
+                [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'renderables' => [
+                        [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'renderingOptions' => [
+                                'enabled' => true,
+                            ],
+                        ],
+                    ],
+                    'renderingOptions' => [
+                        'enabled' => true,
+                    ],
+                ],
+            ],
+            'renderingOptions' => [
+                'enabled' => true,
+            ],
+        ];
+
+        self::assertSame($expected, $formDefinitionConversionService->addRenderableVisibility($input));
+    }
+
+    #[Test]
+    public function addRenderableVisibilityDoesNotOverrideExplicitlySetEnabled(): void
+    {
+        $formDefinitionConversionService = new FormDefinitionConversionService();
+        GeneralUtility::setSingletonInstance(FormDefinitionConversionService::class, $formDefinitionConversionService);
+
+        $input = [
+            'identifier' => 'test',
+            'type' => 'Form',
+            'renderingOptions' => [
+                'enabled' => false,
+            ],
+            'renderables' => [
+                [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'renderingOptions' => [
+                        'enabled' => false,
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'identifier' => 'test',
+            'type' => 'Form',
+            'renderingOptions' => [
+                'enabled' => false,
+            ],
+            'renderables' => [
+                [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'renderingOptions' => [
+                        'enabled' => false,
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertSame($expected, $formDefinitionConversionService->addRenderableVisibility($input));
+    }
+
+    #[Test]
+    public function addRenderableVisibilityAddsEnabledForFinishersAndValidators(): void
+    {
+        $formDefinitionConversionService = new FormDefinitionConversionService();
+        GeneralUtility::setSingletonInstance(FormDefinitionConversionService::class, $formDefinitionConversionService);
+
+        $input = [
+            'identifier' => 'test',
+            'type' => 'Form',
+            'finishers' => [
+                [
+                    'identifier' => 'EmailToReceiver',
+                ],
+            ],
+            'renderables' => [
+                [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'renderables' => [
+                        [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'validators' => [
+                                [
+                                    'identifier' => 'NotEmpty',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'identifier' => 'test',
+            'type' => 'Form',
+            'finishers' => [
+                [
+                    'identifier' => 'EmailToReceiver',
+                    'renderingOptions' => [
+                        'enabled' => true,
+                    ],
+                ],
+            ],
+            'renderables' => [
+                [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'renderables' => [
+                        [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'validators' => [
+                                [
+                                    'identifier' => 'NotEmpty',
+                                    'renderingOptions' => [
+                                        'enabled' => true,
+                                    ],
+                                ],
+                            ],
+                            'renderingOptions' => [
+                                'enabled' => true,
+                            ],
+                        ],
+                    ],
+                    'renderingOptions' => [
+                        'enabled' => true,
+                    ],
+                ],
+            ],
+            'renderingOptions' => [
+                'enabled' => true,
+            ],
+        ];
+
+        self::assertSame($expected, $formDefinitionConversionService->addRenderableVisibility($input));
+    }
 }

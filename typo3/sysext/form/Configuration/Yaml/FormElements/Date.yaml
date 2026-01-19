@@ -17,7 +17,12 @@ prototypes:
               templateName: Inspector-TextEditor
               label: formEditor.elements.FormElement.editor.elementDescription.label
               propertyPath: properties.elementDescription
-            500:
+            240:
+              identifier: enabled
+              templateName: Inspector-CheckboxEditor
+              label: formEditor.elements.FormElement.editor.enabled.label
+              propertyPath: renderingOptions.enabled
+            300:
               identifier: defaultValue
               templateName: Inspector-TextEditor
               label: formEditor.elements.TextMixin.editor.defaultValue.label

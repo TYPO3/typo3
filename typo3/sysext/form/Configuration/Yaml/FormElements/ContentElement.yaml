@@ -7,6 +7,11 @@ prototypes:
             100:
               identifier: header
               templateName: Inspector-FormElementHeaderEditor
+            240:
+              identifier: enabled
+              templateName: Inspector-CheckboxEditor
+              label: formEditor.elements.FormElement.editor.enabled.label
+              propertyPath: renderingOptions.enabled
             300:
               identifier: contentElement
               templateName: Inspector-Typo3WinBrowserEditor

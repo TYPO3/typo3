@@ -17,6 +17,11 @@ prototypes:
               templateName: Inspector-TextEditor
               label: formEditor.elements.FormElement.editor.elementDescription.label
               propertyPath: properties.elementDescription
+            240:
+              identifier: enabled
+              templateName: Inspector-CheckboxEditor
+              label: formEditor.elements.FormElement.editor.enabled.label
+              propertyPath: renderingOptions.enabled
             300:
               identifier: allowedMimeTypes
               templateName: Inspector-MultiSelectEditor

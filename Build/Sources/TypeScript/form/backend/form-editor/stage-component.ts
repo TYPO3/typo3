@@ -248,6 +248,9 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
   } else {
     template.addClass('formeditor-element');
   }
+  if (formElement.get('renderingOptions.enabled') === false) {
+    template.addClass('formeditor-element-hidden');
+  }
   listItem.append(template);
 
   renderTemplateDispatcher(formElement, template);
@@ -680,10 +683,12 @@ export function renderSimpleTemplate(formElement: FormElement, template: JQuery)
     setTemplateTextContent(domElement, propertyValue);
   });
 
+  const overlayIdentifier = formElement.get('renderingOptions.enabled') === false ? 'overlay-hidden' : null;
+
   Icons.getIcon(
     getFormElementDefinition(formElement, 'iconIdentifier'),
     Icons.sizes.small,
-    null,
+    overlayIdentifier,
     Icons.states.default,
     Icons.markupIdentifiers.inline
   ).then(function(icon) {

@@ -57,6 +57,9 @@
     --formeditor-stage-element-active-bg: var(--typo3-component-active-bg);
     --formeditor-stage-element-active-color: var(--typo3-component-active-color);
     --formeditor-stage-element-active-border-color: var(--typo3-component-active-border-color);
+    --formeditor-stage-element-hidden-bg: var(--typo3-component-bg);
+    --formeditor-stage-element-hidden-color: var(--typo3-component-color);
+    --formeditor-stage-element-hidden-border-color: var(--typo3-component-border-color);
 }
 
 //
@@ -639,6 +642,19 @@
     border: var(--formeditor-stage-element-border-width) solid var(--formeditor-stage-element-border-color-state, var(--formeditor-stage-element-border-color));
     background-color: var(--formeditor-stage-element-bg-state, var(--formeditor-stage-element-bg));
 
+    &.formeditor-element-hidden:not(&.selected) {
+        opacity: .5;
+        border: var(--formeditor-stage-element-border-width) dashed var(--formeditor-stage-element-hidden-border-color);
+        background-color: var(--formeditor-stage-element-hidden-bg);
+        transition: opacity .3s ease-in-out;
+        --formeditor-stage-element-color-state: var(--formeditor-stage-element-hidden-color);
+
+        &:hover,
+        &:focus-within {
+            opacity: 1;
+        }
+    }
+
     .formeditor-element-toolbar {
         display: flex;
         justify-content: flex-end;
@@ -821,9 +837,7 @@
     &:has(+ .formeditor-list) {
         border-end-start-radius: 0;
         border-end-end-radius: 0;
-    }
 
-    &.selected:has(+ .formeditor-list) {
         .formeditor-element-body {
             border-end-start-radius: 0;
             border-end-end-radius: 0;
@@ -837,6 +851,15 @@
         border-top: none;
         border-end-start-radius: var(--formeditor-stage-element-border-radius);
         border-end-end-radius: var(--formeditor-stage-element-border-radius);
+    }
+
+    &.formeditor-element-hidden + .formeditor-list:not(:empty) {
+        opacity: .5;
+        border: var(--formeditor-stage-element-border-width) dashed var(--formeditor-stage-element-hidden-border-color);
+        border-top: none;
+        background-color: var(--formeditor-stage-element-hidden-bg);
+        transition: opacity .3s ease-in-out;
+        --formeditor-stage-element-color-state: var(--formeditor-stage-element-hidden-color);
     }
 }
 

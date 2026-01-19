@@ -288,6 +288,167 @@ final class FormEditorControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getFormEditorDefinitionsSetsDefaultVisibilityForElementsWithEditors(): void
+    {
+        $translationServiceMock = $this->createMock(TranslationService::class);
+        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $subjectMock = $this->getAccessibleMock(
+            FormEditorController::class,
+            null,
+            [
+                $this->get(ModuleTemplateFactory::class),
+                $this->createMock(PageRenderer::class),
+                $this->createMock(IconFactory::class),
+                $this->createMock(FormDefinitionConversionService::class),
+                $this->createMock(FormPersistenceManagerInterface::class),
+                $this->createMock(ExtFormConfigurationManagerInterface::class),
+                $translationServiceMock,
+                $this->createMock(ConfigurationService::class),
+                $this->createMock(UriBuilder::class),
+                $this->createMock(ArrayFormFactory::class),
+                $this->createMock(ViewFactoryInterface::class),
+                $this->createMock(DatabaseService::class),
+                $this->createMock(CacheManager::class),
+                $this->createMock(ComponentFactory::class),
+            ],
+        );
+        $prototypeConfiguration = [
+            'formEditor' => [],
+            'formElementsDefinition' => [
+                // Element without predefinedDefaults - should get enabled=true added
+                'Text' => [
+                    'formEditor' => [
+                        'editors' => [
+                            100 => [
+                                'identifier' => 'header',
+                            ],
+                        ],
+                        'label' => 'Text',
+                    ],
+                ],
+                // Element with enabled=false - should NOT be overwritten
+                'Checkbox' => [
+                    'formEditor' => [
+                        'editors' => [
+                            100 => [
+                                'identifier' => 'header',
+                            ],
+                        ],
+                        'label' => 'Checkbox',
+                        'predefinedDefaults' => [
+                            'renderingOptions' => [
+                                'enabled' => false,
+                            ],
+                        ],
+                    ],
+                ],
+                // Element with other predefinedDefaults - should preserve them and add enabled=true
+                'SingleSelect' => [
+                    'formEditor' => [
+                        'editors' => [
+                            100 => [
+                                'identifier' => 'header',
+                            ],
+                        ],
+                        'label' => 'SingleSelect',
+                        'predefinedDefaults' => [
+                            'properties' => [
+                                'options' => [],
+                            ],
+                        ],
+                    ],
+                ],
+                // Element with other renderingOptions - should preserve them and add enabled=true
+                'MultiSelect' => [
+                    'formEditor' => [
+                        'editors' => [
+                            100 => [
+                                'identifier' => 'header',
+                            ],
+                        ],
+                        'label' => 'MultiSelect',
+                        'predefinedDefaults' => [
+                            'renderingOptions' => [
+                                'someOtherOption' => 'value',
+                            ],
+                        ],
+                    ],
+                ],
+                // Element without editors - should NOT get enabled added
+                'StaticText' => [
+                    'formEditor' => [
+                        'label' => 'StaticText',
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'formElements' => [
+                'Text' => [
+                    'editors' => [
+                        [
+                            'identifier' => 'header',
+                        ],
+                    ],
+                    'label' => 'Text',
+                    'predefinedDefaults' => [
+                        'renderingOptions' => [
+                            'enabled' => true,
+                        ],
+                    ],
+                ],
+                'Checkbox' => [
+                    'editors' => [
+                        [
+                            'identifier' => 'header',
+                        ],
+                    ],
+                    'label' => 'Checkbox',
+                    'predefinedDefaults' => [
+                        'renderingOptions' => [
+                            'enabled' => false,
+                        ],
+                    ],
+                ],
+                'SingleSelect' => [
+                    'editors' => [
+                        [
+                            'identifier' => 'header',
+                        ],
+                    ],
+                    'label' => 'SingleSelect',
+                    'predefinedDefaults' => [
+                        'properties' => [
+                            'options' => [],
+                        ],
+                        'renderingOptions' => [
+                            'enabled' => true,
+                        ],
+                    ],
+                ],
+                'MultiSelect' => [
+                    'editors' => [
+                        [
+                            'identifier' => 'header',
+                        ],
+                    ],
+                    'label' => 'MultiSelect',
+                    'predefinedDefaults' => [
+                        'renderingOptions' => [
+                            'someOtherOption' => 'value',
+                            'enabled' => true,
+                        ],
+                    ],
+                ],
+                'StaticText' => [
+                    'label' => 'StaticText',
+                ],
+            ],
+        ];
+        self::assertSame($expected, $subjectMock->_call('getFormEditorDefinitions', $prototypeConfiguration));
+    }
+
+    #[Test]
     public function renderFormEditorTemplatesThrowsExceptionIfLayoutRootPathsNotSet(): void
     {
         $this->expectException(RenderingException::class);
