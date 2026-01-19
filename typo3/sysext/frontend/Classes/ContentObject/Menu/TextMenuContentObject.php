@@ -39,7 +39,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
 
         $register = $this->request->getAttribute('frontend.register.stack')->current();
         $cObjectForCurrentMenu = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $menuContent = '';
+        $menuContent = [];
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $subMenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes'] ?? null], count($this->result));
         $explicitSpacerRenderingEnabled = ($this->mconf['SPC'] ?? false);
@@ -134,8 +134,10 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $this->I['theItem'] .= $this->subMenu($this->I['uid'], $subMenuObjSuffixes[$key]['sOSuffix'] ?? '', $key);
             }
             $part = $cObjectForCurrentMenu->stdWrapValue('wrapItemAndSub', $this->I['val']);
-            $menuContent .= $part ? $cObjectForCurrentMenu->wrap($this->I['theItem'], $part) : $this->I['theItem'];
+            $menuContent[] = $part ? $cObjectForCurrentMenu->wrap($this->I['theItem'], $part) : $this->I['theItem'];
         }
+
+        $menuContent = implode('', $menuContent);
         if (is_array($this->mconf['stdWrap.'] ?? null)) {
             $menuContent = (string)$cObjectForCurrentMenu->stdWrap($menuContent, $this->mconf['stdWrap.']);
         }

@@ -1833,7 +1833,7 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Check if the the parentMenuItem exists
+     * Check if the parentMenuItem exists
      */
     protected function hasParentMenuItem()
     {
@@ -1910,5 +1910,118 @@ abstract class AbstractMenuContentObject
             $idx++;
         }
         return 0;
+    }
+
+    /**
+     * Returns menu items as a structured array instead of rendered HTML.
+     * This provides direct access to menu data without rendering overhead.
+     *
+     * @return array<int, array{data: array, title: string, link: string, target: string, active: int, current: int, spacer: int, hasSubpages: int, children?: array}>
+     */
+    public function getMenuItems(): array
+    {
+        if (empty($this->menuArr)) {
+            return [];
+        }
+
+        $menuItems = [];
+        foreach ($this->menuArr as $key => $menuArrItem) {
+            $spacer = (bool)($menuArrItem['isSpacer'] ?? false);
+
+            // Initialize I array for link() method compatibility
+            $this->I = [
+                'key' => $key,
+                'val' => $this->result[$key] ?? [],
+            ];
+
+            // Generate link (skip for spacers)
+            $linkResult = null;
+            if (!$spacer) {
+                $linkResult = $this->link(
+                    $key,
+                    (string)($this->I['val']['altTarget'] ?? ''),
+                    (string)($this->mconf['forceTypeValue'] ?? '')
+                );
+            }
+
+            // Build menu item
+            $menuItem = [
+                'data' => $menuArrItem,
+                'title' => $this->getPageTitle(
+                    $menuArrItem['title'] ?? '',
+                    $menuArrItem['nav_title'] ?? ''
+                ),
+                'link' => $linkResult?->getUrl() ?? '',
+                'target' => $linkResult?->getTarget() ?? '',
+                'active' => $this->isActive($menuArrItem, $this->getMPvar($key)) ? 1 : 0,
+                'current' => $this->isCurrent($menuArrItem, $this->getMPvar($key)) ? 1 : 0,
+                'spacer' => $spacer ? 1 : 0,
+                'hasSubpages' => $this->isSubMenu($menuArrItem['uid'] ?? 0) ? 1 : 0,
+            ];
+
+            // Handle IProcFunc for backwards compatibility
+            if ($this->mconf['IProcFunc'] ?? false) {
+                $this->I['linkHREF'] = $linkResult;
+                $this->I = $this->userProcess('IProcFunc', $this->I);
+                // Allow IProcFunc to modify the link
+                if (isset($this->I['linkHREF']) && $this->I['linkHREF'] !== $linkResult) {
+                    $menuItem['link'] = $this->I['linkHREF']->getUrl() ?? '';
+                    $menuItem['target'] = $this->I['linkHREF']->getTarget() ?? '';
+                }
+            }
+
+            // Get submenu items recursively
+            $children = $this->getSubMenuItems($menuArrItem['uid'], $key);
+            if ($children !== []) {
+                $menuItem['children'] = $children;
+            }
+
+            $menuItems[] = $menuItem;
+        }
+
+        return $menuItems;
+    }
+
+    /**
+     * Get submenu items as array (recursive helper for getMenuItems)
+     */
+    protected function getSubMenuItems(int $uid, int $menuItemKey): array
+    {
+        $altArray = [];
+        if (is_array($this->menuArr[$menuItemKey]['_SUB_MENU'] ?? null)
+            && $this->menuArr[$menuItemKey]['_SUB_MENU'] !== []
+        ) {
+            $altArray = $this->menuArr[$menuItemKey]['_SUB_MENU'];
+        }
+
+        $menuType = $this->conf[($this->menuNumber + 1)] ?? '';
+        $this->mconf['expAll'] = $this->parent_cObj->stdWrapValue('expAll', $this->mconf);
+
+        if ($this->mconf['sectionIndex'] ?? false) {
+            return [];
+        }
+
+        if ($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($menuItemKey)) || $altArray !== []) {
+            try {
+                $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
+                $submenu = $menuObjectFactory->getMenuObjectByType($menuType);
+            } catch (NoSuchMenuTypeException) {
+                return [];
+            }
+            $submenu->entryLevel = $this->entryLevel + 1;
+            $submenu->rL_uidRegister = $this->rL_uidRegister;
+            $submenu->MP_array = $this->MP_array;
+            if ($this->menuArr[$menuItemKey]['_MP_PARAM'] ?? false) {
+                $submenu->MP_array[] = $this->menuArr[$menuItemKey]['_MP_PARAM'];
+            }
+            $submenu->parent_cObj = $this->parent_cObj;
+            $submenu->setParentMenu($this->menuArr, $menuItemKey);
+            $submenu->alternativeMenuTempArray = $altArray;
+            if ($submenu->start(null, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, '', $this->request)) {
+                $submenu->makeMenu();
+                return $submenu->getMenuItems();
+            }
+        }
+        return [];
     }
 }

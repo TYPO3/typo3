@@ -15,19 +15,17 @@
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
-use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
+use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
 
 /**
- * This menu processor utilizes HMENU to generate a json encoded menu
- * string that will be decoded again and assigned to FLUIDTEMPLATE as
- * variable. Additional DataProcessing is supported and will be applied
- * to each record.
+ * This menu processor generates a menu array that will be assigned to
+ * FLUIDTEMPLATE as variable. Additional DataProcessing is supported and
+ * will be applied to each record.
  *
  * Options:
  * as - The variable to be used within the result
@@ -61,9 +59,6 @@ use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
  */
 class MenuProcessor implements DataProcessorInterface
 {
-    public const LINK_PLACEHOLDER = '###LINKPLACEHOLDER###';
-    public const TARGET_PLACEHOLDER = '###TARGETPLACEHOLDER###';
-
     /**
      * The content object renderer
      */
@@ -71,18 +66,14 @@ class MenuProcessor implements DataProcessorInterface
 
     /**
      * The processor configuration
-     *
-     * @var array
      */
-    protected $processorConfiguration;
+    protected array $processorConfiguration;
 
     /**
      * Allowed configuration keys for menu generation, other keys
      * will throw an exception to prevent configuration errors.
-     *
-     * @var array
      */
-    public $allowedConfigurationKeys = [
+    public array $allowedConfigurationKeys = [
         'cache',
         'cache.',
         'cache_period',
@@ -128,10 +119,8 @@ class MenuProcessor implements DataProcessorInterface
     /**
      * Remove keys from configuration that should not be passed
      * to HMENU to prevent configuration errors
-     *
-     * @var array
      */
-    public $removeConfigurationKeysForHmenu = [
+    public array $removeConfigurationKeysForHmenu = [
         'levels',
         'levels.',
         'expandAll',
@@ -145,74 +134,9 @@ class MenuProcessor implements DataProcessorInterface
         'dataProcessing.',
     ];
 
-    /**
-     * @var array
-     */
-    protected $menuConfig = [
-        'wrap' => '[|]',
-    ];
+    protected array $menuConfig = [];
 
-    /**
-     * @var array
-     */
-    protected $menuLevelConfig = [
-        'doNotLinkIt' => '1',
-        'wrapItemAndSub' => '{|}, |*| {|}, |*| {|}',
-        'stdWrap.' => [
-            'cObject' => 'COA',
-            'cObject.' => [
-                '10' => 'USER',
-                '10.' => [
-                    'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\MenuProcessor->getDataAsJson',
-                    'stdWrap.' => [
-                        'wrap' => '"data":|',
-                    ],
-                ],
-                '20' => 'TEXT',
-                '20.' => [
-                    'field' => 'nav_title // title',
-                    'trim' => '1',
-                    'wrap' => ',"title":|',
-                    'preUserFunc' => 'TYPO3\CMS\Frontend\DataProcessing\MenuProcessor->jsonEncodeUserFunc',
-                ],
-                '21' => 'TEXT',
-                '21.' => [
-                    'value' => self::LINK_PLACEHOLDER,
-                    'wrap' => ',"link":|',
-                ],
-                '22' => 'TEXT',
-                '22.' => [
-                    'value' => self::TARGET_PLACEHOLDER,
-                    'wrap' => ',"target":|',
-                ],
-                '30' => 'TEXT',
-                '30.' => [
-                    'value' => '0',
-                    'wrap' => ',"active":|',
-                ],
-                '40' => 'TEXT',
-                '40.' => [
-                    'value' => '0',
-                    'wrap' => ',"current":|',
-                ],
-                '50' => 'TEXT',
-                '50.' => [
-                    'value' => '0',
-                    'wrap' => ',"spacer":|',
-                ],
-                '60' => 'TEXT',
-                '60.' => [
-                    'value' => '0',
-                    'wrap' => ',"hasSubpages":|',
-                ],
-            ],
-        ],
-    ];
-
-    /**
-     * @var array
-     */
-    public $menuDefaults = [
+    public array $menuDefaults = [
         'levels' => 1,
         'expandAll' => 1,
         'includeSpacer' => 0,
@@ -220,67 +144,30 @@ class MenuProcessor implements DataProcessorInterface
         'titleField' => 'nav_title // title',
     ];
 
-    /**
-     * @var int
-     */
-    protected $menuLevels;
-
-    /**
-     * @var int
-     */
-    protected $menuExpandAll;
-
-    /**
-     * @var int
-     */
-    protected $menuIncludeSpacer;
-
-    /**
-     * @var string
-     */
-    protected $menuTitleField;
-
-    /**
-     * @var string
-     */
-    protected $menuAlternativeSortingField;
-
-    /**
-     * @var string
-     */
-    protected $menuTargetVariableName;
+    protected int $menuLevels;
+    protected int $menuExpandAll;
+    protected int $menuIncludeSpacer;
+    protected string $menuTitleField;
+    protected string $menuAlternativeSortingField;
+    protected string $menuTargetVariableName;
 
     public function __construct(
         protected ContentDataProcessor $contentDataProcessor,
-        protected ContentObjectFactory $contentObjectFactory
+        protected MenuContentObjectFactory $menuContentObjectFactory,
     ) {}
 
     /**
-     * This is called from UserContentObject via ContentObjectRenderer->callUserFunction()
-     * for nested menu items - those use a USER content object for getDataAsJson().
-     */
-    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
-    {
-        $this->cObj = $cObj;
-    }
-
-    /**
      * Get configuration value from processorConfiguration
-     *
-     * @param string $key
-     * @return string
      */
-    protected function getConfigurationValue($key)
+    protected function getConfigurationValue(string $key): string
     {
         return $this->cObj->stdWrapValue($key, $this->processorConfiguration, $this->menuDefaults[$key] ?? '');
     }
 
     /**
-     * Validate configuration
-     *
      * @throws \InvalidArgumentException
      */
-    public function validateConfiguration()
+    public function validateConfiguration(): void
     {
         $invalidArguments = [];
         foreach ($this->processorConfiguration as $key => $value) {
@@ -293,12 +180,9 @@ class MenuProcessor implements DataProcessorInterface
         }
     }
 
-    /**
-     * Prepare Configuration
-     */
-    public function prepareConfiguration()
+    public function prepareConfiguration(): void
     {
-        $this->menuConfig += $this->processorConfiguration;
+        $this->menuConfig = $this->processorConfiguration;
         // Filter configuration
         foreach ($this->menuConfig as $key => $value) {
             if (in_array($key, $this->removeConfigurationKeysForHmenu)) {
@@ -313,67 +197,12 @@ class MenuProcessor implements DataProcessorInterface
     }
 
     /**
-     * Prepare configuration for a certain menu level in the hierarchy
+     * Build the menu configuration so it can be treated by TMENU
      */
-    public function prepareLevelConfiguration()
-    {
-        $this->menuLevelConfig['stdWrap.']['cObject.'] = array_replace_recursive(
-            $this->menuLevelConfig['stdWrap.']['cObject.'],
-            [
-                '20.' => [
-                    'field' => $this->menuTitleField,
-                ],
-            ]
-        );
-    }
-
-    /**
-     * Prepare the configuration when rendering a language menu
-     */
-    public function prepareLevelLanguageConfiguration()
-    {
-        if (($this->menuConfig['special'] ?? '') === 'language') {
-            $languageUids = $this->menuConfig['special.']['value'];
-            if ($this->menuConfig['special.']['value'] === 'auto') {
-                $site = $this->cObj->getRequest()->getAttribute('site');
-                $languageUids = implode(',', array_keys($site->getLanguages()));
-            }
-            $this->menuLevelConfig['stdWrap.']['cObject.'] = array_replace_recursive(
-                $this->menuLevelConfig['stdWrap.']['cObject.'],
-                [
-                    '60' => 'TEXT',
-                    '60.' => [
-                        'value' => '1',
-                        'wrap' => ',"available":|',
-                    ],
-                    '70' => 'TEXT',
-                    '70.' => [
-                        'value' => $languageUids,
-                        'listNum.' => [
-                            'stdWrap.' => [
-                                'data' => 'register:count_HMENU_MENUOBJ',
-                                'wrap' => '|-1',
-                            ],
-                            'splitChar' => ',',
-                        ],
-                        'wrap' => ',"languageUid":"|"',
-                    ],
-                ]
-            );
-        }
-    }
-
-    /**
-     * Build the menu configuration so it can be treated by HMENU cObject
-     */
-    public function buildConfiguration()
+    public function buildConfiguration(): void
     {
         for ($i = 1; $i <= $this->menuLevels; $i++) {
             $this->menuConfig[$i] = 'TMENU';
-            $this->menuConfig[$i . '.']['IProcFunc'] = 'TYPO3\CMS\Frontend\DataProcessing\MenuProcessor->replacePlaceholderInRenderedMenuItem';
-            if ($i > 1) {
-                $this->menuConfig[$i . '.']['stdWrap.']['wrap'] = ',"children": [|]';
-            }
             if (array_key_exists('showAccessRestrictedPages', $this->menuConfig)) {
                 $this->menuConfig[$i . '.']['showAccessRestrictedPages'] = $this->menuConfig['showAccessRestrictedPages'];
                 if (array_key_exists('showAccessRestrictedPages.', $this->menuConfig)
@@ -384,34 +213,8 @@ class MenuProcessor implements DataProcessorInterface
             $this->menuConfig[$i . '.']['expAll'] = $this->menuExpandAll;
             $this->menuConfig[$i . '.']['alternativeSortingField'] = $this->menuAlternativeSortingField;
             $this->menuConfig[$i . '.']['NO'] = '1';
-            $this->menuConfig[$i . '.']['NO.'] = $this->menuLevelConfig;
             if ($this->menuIncludeSpacer) {
                 $this->menuConfig[$i . '.']['SPC'] = '1';
-                $this->menuConfig[$i . '.']['SPC.'] = $this->menuConfig[$i . '.']['NO.'];
-                $this->menuConfig[$i . '.']['SPC.']['stdWrap.']['cObject.']['50.']['value'] = '1';
-            }
-            $this->menuConfig[$i . '.']['IFSUB'] = '1';
-            $this->menuConfig[$i . '.']['IFSUB.'] = $this->menuConfig[$i . '.']['NO.'];
-            $this->menuConfig[$i . '.']['IFSUB.']['stdWrap.']['cObject.']['60.']['value'] = '1';
-            $this->menuConfig[$i . '.']['ACT'] = '1';
-            $this->menuConfig[$i . '.']['ACT.'] = $this->menuConfig[$i . '.']['NO.'];
-            $this->menuConfig[$i . '.']['ACT.']['stdWrap.']['cObject.']['30.']['value'] = '1';
-            $this->menuConfig[$i . '.']['ACTIFSUB'] = '1';
-            $this->menuConfig[$i . '.']['ACTIFSUB.'] = $this->menuConfig[$i . '.']['ACT.'];
-            $this->menuConfig[$i . '.']['ACTIFSUB.']['stdWrap.']['cObject.']['60.']['value'] = '1';
-            $this->menuConfig[$i . '.']['CUR'] = '1';
-            $this->menuConfig[$i . '.']['CUR.'] = $this->menuConfig[$i . '.']['ACT.'];
-            $this->menuConfig[$i . '.']['CUR.']['stdWrap.']['cObject.']['40.']['value'] = '1';
-            $this->menuConfig[$i . '.']['CURIFSUB'] = '1';
-            $this->menuConfig[$i . '.']['CURIFSUB.'] = $this->menuConfig[$i . '.']['CUR.'];
-            $this->menuConfig[$i . '.']['CURIFSUB.']['stdWrap.']['cObject.']['60.']['value'] = '1';
-            if (($this->menuConfig['special'] ?? '') === 'language') {
-                $this->menuConfig[$i . '.']['USERDEF1'] = $this->menuConfig[$i . '.']['NO'];
-                $this->menuConfig[$i . '.']['USERDEF1.'] = $this->menuConfig[$i . '.']['NO.'];
-                $this->menuConfig[$i . '.']['USERDEF1.']['stdWrap.']['cObject.']['60.']['value'] = '0';
-                $this->menuConfig[$i . '.']['USERDEF2'] = $this->menuConfig[$i . '.']['ACT'];
-                $this->menuConfig[$i . '.']['USERDEF2.'] = $this->menuConfig[$i . '.']['ACT.'];
-                $this->menuConfig[$i . '.']['USERDEF2.']['stdWrap.']['cObject.']['60.']['value'] = '0';
             }
         }
     }
@@ -441,24 +244,28 @@ class MenuProcessor implements DataProcessorInterface
 
         // Build Configuration
         $this->prepareConfiguration();
-        $this->prepareLevelConfiguration();
-        $this->prepareLevelLanguageConfiguration();
         $this->buildConfiguration();
 
-        // Process Configuration
-        $menuContentObject = $this->contentObjectFactory->getContentObject('HMENU', $cObj->getRequest(), $cObj);
-        $renderedMenu = $menuContentObject?->render($this->menuConfig);
-        if (!$renderedMenu) {
+        // Create menu object and get menu items directly
+        $request = $cObj->getRequest();
+        $menu = $this->menuContentObjectFactory->getMenuObjectByType('TMENU');
+        $menu->parent_cObj = $cObj;
+
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        if (!$menu->start(null, $pageRepository, '', $this->menuConfig, 1, '', $request)) {
+            return $processedData;
+        }
+        $menu->makeMenu();
+        $menuItems = $menu->getMenuItems();
+
+        if ($menuItems === []) {
             return $processedData;
         }
 
-        // Process menu
-        $menu = json_decode($renderedMenu, true);
+        // Process additional data processors
         $processedMenu = [];
-        if (is_iterable($menu)) {
-            foreach ($menu as $key => $page) {
-                $processedMenu[$key] = $this->processAdditionalDataProcessors($page, $processorConfiguration);
-            }
+        foreach ($menuItems as $key => $page) {
+            $processedMenu[$key] = $this->processAdditionalDataProcessors($page, $processorConfiguration);
         }
 
         // Return processed data
@@ -468,12 +275,8 @@ class MenuProcessor implements DataProcessorInterface
 
     /**
      * Process additional data processors
-     *
-     * @param array $page
-     * @param array $processorConfiguration
-     * @return array
      */
-    protected function processAdditionalDataProcessors($page, $processorConfiguration)
+    protected function processAdditionalDataProcessors(array $page, array $processorConfiguration): array
     {
         if (is_array($page['children'] ?? false)) {
             foreach ($page['children'] as $key => $item) {
@@ -488,58 +291,4 @@ class MenuProcessor implements DataProcessorInterface
         return $this->contentDataProcessor->process($recordContentObjectRenderer, $processorConfiguration, $page);
     }
 
-    /**
-     * Gets the data of the current record in JSON format
-     *
-     * @return string JSON encoded data
-     */
-    #[AsAllowedCallable]
-    public function getDataAsJson()
-    {
-        return $this->jsonEncode($this->cObj->data);
-    }
-
-    /**
-     * This UserFunc encodes the content as Json
-     *
-     * @param string $content
-     * @param array $conf
-     * @return string JSON encoded content
-     */
-    #[AsAllowedCallable]
-    public function jsonEncodeUserFunc($content, $conf)
-    {
-        $content = $this->jsonEncode($content);
-        return $content;
-    }
-
-    /**
-     * JSON Encode
-     *
-     * @param mixed $value
-     * @return string
-     */
-    public function jsonEncode($value)
-    {
-        return json_encode($value, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * This UserFunc gets the link and the target
-     *
-     * @param array $menuItem
-     * @param array $conf
-     * @return array
-     */
-    #[AsAllowedCallable]
-    public function replacePlaceholderInRenderedMenuItem($menuItem, $conf)
-    {
-        $link = $this->jsonEncode($menuItem['linkHREF'] instanceof LinkResultInterface ? $menuItem['linkHREF']->getUrl() : '');
-        $target = $this->jsonEncode($menuItem['linkHREF'] instanceof LinkResultInterface ? $menuItem['linkHREF']->getTarget() : '');
-
-        $menuItem['parts']['title'] = str_replace(self::LINK_PLACEHOLDER, $link, $menuItem['parts']['title']);
-        $menuItem['parts']['title'] = str_replace(self::TARGET_PLACEHOLDER, $target, $menuItem['parts']['title']);
-
-        return $menuItem;
-    }
 }
