@@ -10,4 +10,4 @@ copy etc.). The default storage is fileadmin/.
 :Repository:  https://github.com/typo3/typo3
 :Issues:      https://forge.typo3.org/
 :Read online: https://docs.typo3.org/
-:TER:         https://extensions.typo3.org/extension/filelist/
+:Packagist:   https://packagist.org/packages/typo3/cms-filelist
