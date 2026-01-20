@@ -1772,7 +1772,7 @@ class PageRepository implements LoggerAwareInterface
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $versionedRecord = $queryBuilder
+        $newrow = $queryBuilder
             ->select(...$fields)
             ->from($table)
             ->where(
@@ -1812,7 +1812,7 @@ class PageRepository implements LoggerAwareInterface
             ->from($table)
             ->setMaxResults(1);
 
-        if (is_array($versionedRecord)) {
+        if (is_array($newrow)) {
             $queryBuilder->where(
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
@@ -1838,7 +1838,7 @@ class PageRepository implements LoggerAwareInterface
             );
             if ($bypassEnableFieldsCheck || $queryBuilder->executeQuery()->fetchOne()) {
                 // Return offline version, tested for its enableFields.
-                return $versionedRecord;
+                return $newrow;
             }
             // Return -1 because offline version was de-selected due to its enableFields.
             return -1;
@@ -2079,7 +2079,7 @@ class PageRepository implements LoggerAwareInterface
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $queryBuilder
-            ->select('*')
+            ->select('uid', 'hidden', 'starttime', 'endtime')
             ->from('pages')
             ->setMaxResults(1);
 
@@ -2118,33 +2118,18 @@ class PageRepository implements LoggerAwareInterface
             );
         }
         $page = $queryBuilder->executeQuery()->fetchAssociative();
-        if (!is_array($page)) {
-            return false;
-        }
-        $groupsFromLiveRecord = GeneralUtility::intExplode(',', $page['fe_group']);
-        $groupsFromLiveRecord[] = 0;
-        $groupsFromLiveRecord[] = -1;
-        $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
-        $alternativeContext = clone $this->context;
-        $alternativeContext->setAspect('visibility', new VisibilityAspect());
-        $alternativeContext->setAspect('frontend.user', new UserAspect(null, $groupsFromLiveRecord));
         if ((int)$this->context->getPropertyFromAspect('workspace', 'id') > 0) {
             // Fetch overlay of page if in workspace and check if it is hidden
-            $versionedPage = $this->getWorkspaceVersionOfRecord('pages', (int)$page['uid'], ['*'], true);
-            // Also add the groups from the versioned record so the AccessVoter can check against both variants
-            if (is_array($versionedPage)) {
-                $groupsFromVersionedRecord = GeneralUtility::intExplode(',', $versionedPage['fe_group']);
-                $alternativeContext->setAspect('frontend.user', new UserAspect(null, array_merge($groupsFromLiveRecord, $groupsFromVersionedRecord)));
-                // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden (at least one of the versions)
-                $isHidden = !$accessVoter->accessGranted('pages', $versionedPage, $alternativeContext) || !$accessVoter->accessGranted('pages', $page, $alternativeContext);
-            } else {
-                // No versioned page, we check for the live version.
-                $isHidden = !$accessVoter->accessGranted('pages', $page, $alternativeContext);
-            }
+            $backupContext = clone $this->context;
+            $this->context->setAspect('visibility', new VisibilityAspect());
+            $targetPage = $this->getWorkspaceVersionOfRecord('pages', (int)$page['uid']);
+            // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
+            $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);
+            $this->context = $backupContext;
         } else {
-            $isHidden = !$accessVoter->accessGranted('pages', $page, $alternativeContext);
+            $result = is_array($page) && ($page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] || $page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME']);
         }
-        return $isHidden;
+        return $result;
     }
 
     /**
