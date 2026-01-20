@@ -146,7 +146,7 @@
             <tbody data-multi-record-selection-row-selection="true">
                 <f:for each="{redirects}" key="domainName" as="redirect">
                     <tr
-                        class="{f:if(condition: '{redirect.integrity_status} !== {defaultIntegrityStatus}', then: 'danger')}"
+                        class="{f:if(condition: '{redirect.integrity_status} && {redirect.integrity_status} !== {defaultIntegrityStatus}', then: 'danger')}"
                         data-uid="{redirect.uid}"
                         data-multi-record-selection-element="true"
                     >
