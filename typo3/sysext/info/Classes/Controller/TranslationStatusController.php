@@ -134,8 +134,6 @@ class TranslationStatusController extends InfoModuleController
     {
         $lang = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
-        // Title length:
-        $titleLen = (int)$backendUser->uc['titleLen'];
         // Put together the TREE:
         $output = '';
         $langRecUids = [];
@@ -149,7 +147,7 @@ class TranslationStatusController extends InfoModuleController
         foreach ($tree->tree as $data) {
             $tCells = [];
             $langRecUids[0][] = $data['row']['uid'];
-            $pageTitle = ($showPageId ? '[' . (int)$data['row']['uid'] . '] ' : '') . GeneralUtility::fixed_lgd_cs($data['row']['title'], $titleLen);
+            $pageTitle = ($showPageId ? '[' . (int)$data['row']['uid'] . '] ' : '') . $data['row']['title'];
             // Page icons / titles etc.
             if ($pageModuleAccess) {
                 $pageModuleLink = (string)$this->uriBuilder->buildUriFromRoute($pageModule, ['id' => $data['row']['uid'], 'languages' => [0], 'viewMode' => PageViewMode::LayoutView->value]);
@@ -165,13 +163,15 @@ class TranslationStatusController extends InfoModuleController
                 $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $data['row']['uid']);
             }
 
-            $tCells[] = '<td class="col-nowrap">'
+            $tCells[] = '<td class="col-title col-responsive">'
                 . '<div class="treeline-container">'
                 . (!empty($data['depthData']) ? $data['depthData'] : '')
                 . ($data['HTML'] ?? '')
                 . $icon
+                . '<span class="treeline-label">'
                 . $pageModuleLink
-                . ((string)$data['row']['nav_title'] !== '' ? ' <span>[Nav: <em>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]</span>' : '')
+                . ((string)$data['row']['nav_title'] !== '' ? ' <span>[Nav: <em>' . htmlspecialchars($data['row']['nav_title']) . '</em>]</span>' : '')
+                . '</span>'
                 . '</div>'
                 . '</td>';
             $previewUriBuilder = PreviewUriBuilder::create($data['row']);
@@ -202,9 +202,9 @@ class TranslationStatusController extends InfoModuleController
             $info .= $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2')) . '">N</span>' : '&nbsp;';
             // Put into cell:
             $tCells[] = '<td class="' . $status . ' col-border-left col-nowrap"><div class="btn-group btn-group-sm">' . $info . '</div></td>';
-            $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
-                'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
-            ) . '" align="center">' . ($this->getContentElementCount((int)$data['row']['uid'], 0) ?: '-') . '</td>';
+            $tCells[] = '<td class="' . $status . '" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount') . '" align="center">'
+                . ($this->getContentElementCount((int)$data['row']['uid'], 0) ?: '-')
+                . '</td>';
             // Traverse system languages:
             foreach ($this->siteLanguages as $siteLanguage) {
                 $languageId = $siteLanguage->getLanguageId();
@@ -226,13 +226,10 @@ class TranslationStatusController extends InfoModuleController
                         if ($row['_COUNT'] > 1) {
                             $status = 'warning';
                         }
-                        $info = ($showPageId ? ' [' . (int)$row['uid'] . ']' : '') . ' ' . htmlspecialchars(
-                            GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)
-                        ) . ((string)$row['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(
-                            GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)
-                        ) . '</em>]' : '') . ($row['_COUNT'] > 1 ? '<div>' . $lang->sL(
-                            'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_badThingThereAre'
-                        ) . '</div>' : '');
+                        $info = ($showPageId ? ' [' . (int)$row['uid'] . '] ' : '')
+                            . htmlspecialchars($row['title'])
+                            . ((string)$row['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars($row['nav_title']) . '</em>]' : '')
+                            . ($row['_COUNT'] > 1 ? '<div>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_badThingThereAre') . '</div>' : '');
 
                         if ($pageModuleAccess) {
                             $pageModuleLink = (string)$this->uriBuilder->buildUriFromRoute($pageModule, ['id' => $data['row']['uid'], 'language' => [$languageId], 'viewMode' => PageViewMode::LanguageComparisonView->value]);
@@ -243,7 +240,7 @@ class TranslationStatusController extends InfoModuleController
                         $icon = '<span title="' . BackendUtility::getRecordIconAltText($row) . '">'
                             . $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL)->setTitle(BackendUtility::getRecordIconAltText($row, 'pages', false))->render()
                             . '</span>';
-                        $tCells[] = '<td class="' . $status . ' col-border-left col-nowrap">' .
+                        $tCells[] = '<td class="col-responsive col-border-left ' . $status . '">' .
                             BackendUtility::wrapClickMenuOnIcon($icon, 'pages', (int)$row['uid']) .
                             $pageModuleLink .
                             '</td>';

@@ -36,16 +36,16 @@
                                 A "normal" page row is rendered, not the root page
                             </f:comment>
 
-                            <td class="permission-column-name">
+                            <td class="col-title col-responsive permission-column-name">
                                 <div class="treeline-container">
                                     <f:spaceless>
                                         {data.depthData -> f:format.raw()}{data.HTML -> f:format.raw()}
                                         <f:if condition="{data.icon}">{data.icon -> f:format.raw()}</f:if>
                                     </f:spaceless>
-                                    <a
+                                    <a class="treeline-label"
                                         href="{editUrl}"
                                         title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
-                                    >{data.row.title -> f:format.crop(maxCharacters:20)}</a>
+                                    >{data.row.title}</a>
                                 </div>
                             </td>
 

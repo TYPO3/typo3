@@ -481,12 +481,27 @@ readonly class PageInformationController
             switch ($field) {
                 case 'title':
                     $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
-                    $pTitle = htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field], 20, false, false, 0, true, 0, $row));
+                    $pTitle = htmlspecialchars(
+                        (string)BackendUtility::getProcessedValue(
+                            'pages',
+                            $field,
+                            $row[$field],
+                            0,
+                            false,
+                            false,
+                            0,
+                            true,
+                            0,
+                            $row
+                        )
+                    );
                     $theData[$field] = '<div class="treeline-container">'
                         . ($row['treeIcons'] ?? '')
                         . $theIcon
+                        . '<span class="treeline-label">'
                         . ($showPageId ? '[' . $row['uid'] . '] ' : '')
                         . $pTitle
+                        . '</span>'
                         . '</div>';
                     break;
                 case $languageFieldName:
@@ -643,10 +658,10 @@ readonly class PageInformationController
             if (isset($data[$vKey])) {
                 $cssClass = '';
                 if ($lastKey === 'title') {
-                    $cssClass = 'col-title-flexible';
+                    $cssClass = 'col-title col-responsive';
                 }
                 if ($lastKey) {
-                    $out .= '<' . $rowTag . ' class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
+                    $out .= '<' . $rowTag . ' class="' . $cssClass . '"' . $colsp . '>' . $data[$lastKey] . '</' . $rowTag . '>';
                 }
                 $lastKey = $vKey;
                 $c = 1;

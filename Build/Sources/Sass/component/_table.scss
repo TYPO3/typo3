@@ -135,6 +135,9 @@
 
     .col-recordtitle {
         width: 250px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .col-path {
@@ -179,7 +182,7 @@
 
     // Column contents are cut off with an ellipsis if they get too large.
     // The overflow is limited to the td cells,to avoid clipping dropdowns in the header.
-    td.col-responsive {
+    .col-responsive {
         max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;

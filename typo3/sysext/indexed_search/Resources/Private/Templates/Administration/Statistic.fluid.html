@@ -82,15 +82,13 @@
                                                         <f:then>
                                                                 {line.depthData -> f:format.raw()}{line.HTML -> f:format.raw()}
                                                                 <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
-                                                                <span>
-                                                                    <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{line.row.title}</f:format.crop>
-                                                                </span>
+                                                                <span class="treeline-label">{line.row.title}</span>
                                                         </f:then>
                                                         <f:else>
                                                             {line.depthData -> f:format.raw()}
                                                             <span class="visually-hidden">
                                                                 <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
-                                                                <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{line.row.title}</f:format.crop>
+                                                                <span class="treeline-label">{line.row.title}</span>
                                                             </span>
                                                         </f:else>
                                                     </f:if>
@@ -162,9 +160,7 @@
                                             <div class="treeline-container">
                                                 {line.depthData -> f:format.raw()}{line.HTML -> f:format.raw()}
                                                 <f:if condition="{line.icon}">{line.icon -> f:format.raw()}</f:if>
-                                                <span>
-                                                    <f:format.crop maxCharacters="{backendUserTitleLength}" respectHtml="false">{line.row.title}</f:format.crop>
-                                                </span>
+                                                <span class="treeline-label">{line.row.title}</span>
                                             </div>
                                         </td>
                                         <f:switch expression="{mode}">

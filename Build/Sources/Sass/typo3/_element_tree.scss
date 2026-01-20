@@ -71,6 +71,13 @@
     gap: calc(var(--typo3-spacing) * .25);
 }
 
+.treeline-label {
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
 //
 // AJAX Page Tree
 //
