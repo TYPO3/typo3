@@ -475,7 +475,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/ConnectionPool.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL…'' will always evaluate to true\.$#'
+			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1010Platform.php
@@ -487,7 +487,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1010Platform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL…'' will always evaluate to true\.$#'
+			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1052Platform.php
@@ -499,7 +499,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1052Platform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL…'' will always evaluate to true\.$#'
+			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1060Platform.php
@@ -511,7 +511,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1060Platform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL…'' will always evaluate to true\.$#'
+			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDBPlatform.php
@@ -523,7 +523,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDBPlatform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL…'' will always evaluate to true\.$#'
+			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL80Platform.php
@@ -535,7 +535,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL80Platform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL…'' will always evaluate to true\.$#'
+			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL84Platform.php
@@ -547,7 +547,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL84Platform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL…'' will always evaluate to true\.$#'
+			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQLPlatform.php
@@ -559,7 +559,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQLPlatform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL…'' will always evaluate to true\.$#'
+			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/PostgreSQLPlatform.php
@@ -571,7 +571,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/PostgreSQLPlatform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL…'' will always evaluate to true\.$#'
+			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/SQLitePlatform.php

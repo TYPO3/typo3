@@ -340,7 +340,6 @@ class DefaultTcaSchema
             if ($languageColumnAdded
                 && $translationOriginPointerColumnAdded
                 && !$this->isIndexDefinedForTable($tables, $tableName, 'language_identifier')
-                && $schema->isLanguageAware()
             ) {
                 $tables[$tableName]->addIndex([
                     (string)$schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
