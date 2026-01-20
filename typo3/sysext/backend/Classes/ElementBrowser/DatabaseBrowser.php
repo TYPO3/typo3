@@ -236,7 +236,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
 
     /**
      * @param array $values Array of values to include into the parameters
-     * @return string[] Array of parameters which have to be added to URLs
+     * @return array<string,mixed> Array of parameters which have to be added to URLs
      */
     public function getUrlParameters(array $values): array
     {

@@ -283,12 +283,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
 		-
-			message: '#^Cannot assign offset ''currentValue'' to string\.$#'
-			identifier: offsetAssign.dimType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
-
-		-
 			message: '#^Property TYPO3\\CMS\\Backend\\RecordList\\DatabaseRecordList\:\:\$currentTable \(array\<array\<int\>\>\) does not accept array\<array\<int\|string\>\>\.$#'
 			identifier: assign.propertyType
 			count: 1
