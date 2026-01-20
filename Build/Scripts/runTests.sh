@@ -730,7 +730,7 @@ if [ ${CI_JOB_ID} ]; then
 fi
 NETWORK="typo3-core-${SUFFIX}"
 CONTAINER_HOST="host.docker.internal"
-RST_TYPO3_MAIN_VERSION="14.1"
+RST_TYPO3_MAIN_VERSION="14.2"
 RST_PORT="1337"
 
 # Option parsing updates above default vars
