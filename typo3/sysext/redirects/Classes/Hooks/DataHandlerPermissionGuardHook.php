@@ -33,16 +33,15 @@ final class DataHandlerPermissionGuardHook
     ) {}
 
     /**
-     * @param array<string, mixed> $incomingFieldArray
-     * @param-out array<string, mixed>|null $incomingFieldArray
+     * @param array<string, mixed>|null $incomingFieldArray
      */
     public function processDatamap_preProcessFieldArray(
-        array &$incomingFieldArray,
+        ?array &$incomingFieldArray,
         string $table,
         string|int $id,
         DataHandler $dataHandler,
     ): void {
-        if ($table === 'sys_redirect' && !$this->redirectPermissionGuard->isAllowedRedirect($incomingFieldArray)) {
+        if ($table === 'sys_redirect' && !$this->redirectPermissionGuard->isAllowedRedirect($incomingFieldArray ?? [])) {
             // Reset incoming field array to avoid further processing in DataHandler
             // in case the given source host is not allowed for the current user
             $incomingFieldArray = null;
