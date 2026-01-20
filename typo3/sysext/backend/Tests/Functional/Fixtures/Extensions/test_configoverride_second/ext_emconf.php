@@ -10,14 +10,14 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'author_email' => '',
     'state' => 'stable',
-    'version' => '13.4.24',
+    'version' => '13.4.25',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.24',
+            'typo3' => '13.4.25',
         ],
         'conflicts' => [],
         'suggests' => [
-            'test_configoverride_first' => '13.4.24',
+            'test_configoverride_first' => '13.4.25',
         ],
     ],
 ];
