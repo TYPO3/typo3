@@ -35,7 +35,7 @@
 		"ext-intl": "*",
 		"ext-libxml": "*",
 		"psr/event-dispatcher": "^1.0",
-		"typo3/cms-core": "14.1.*@dev"
+		"typo3/cms-core": "14.1.0"
 	},
 	"suggest": {
 		"typo3/cms-install": "Displays a link to the Environment module in the System Information toolbar."
