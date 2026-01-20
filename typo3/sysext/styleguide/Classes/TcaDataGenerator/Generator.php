@@ -93,19 +93,17 @@ final class Generator extends AbstractGenerator
             ];
 
             // Add page translations for all styleguide languages
-            if (!empty($styleguideDemoLanguageIds)) {
-                foreach ($styleguideDemoLanguageIds as $languageUid) {
-                    $newIdOfLocalizedPage = StringUtility::getUniqueId('NEW');
-                    $data['pages'][$newIdOfLocalizedPage] = [
-                        'title' => str_replace('_', ' ', substr($mainTable . ' - language ' . $languageUid, strlen('tx_styleguide_'))),
-                        'tx_styleguide_containsdemo' => $mainTable,
-                        'hidden' => 0,
-                        'pid' => $neighborPage,
-                        'sys_language_uid' => $languageUid,
-                        'l10n_parent' => $newIdOfPage,
-                        'l10n_source' => $newIdOfPage,
-                    ];
-                }
+            foreach ($styleguideDemoLanguageIds as $languageUid) {
+                $newIdOfLocalizedPage = StringUtility::getUniqueId('NEW');
+                $data['pages'][$newIdOfLocalizedPage] = [
+                    'title' => str_replace('_', ' ', substr($mainTable . ' - language ' . $languageUid, strlen('tx_styleguide_'))),
+                    'tx_styleguide_containsdemo' => $mainTable,
+                    'hidden' => 0,
+                    'pid' => $neighborPage,
+                    'sys_language_uid' => $languageUid,
+                    'l10n_parent' => $newIdOfPage,
+                    'l10n_source' => $newIdOfPage,
+                ];
             }
             // Have next page after this page
             $neighborPage = '-' . $newIdOfPage;
