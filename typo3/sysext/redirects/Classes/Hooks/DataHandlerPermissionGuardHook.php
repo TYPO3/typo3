@@ -34,6 +34,7 @@ final class DataHandlerPermissionGuardHook
 
     /**
      * @param array<string, mixed>|null $incomingFieldArray
+     * @param-out array<string, mixed>|null $incomingFieldArray
      */
     public function processDatamap_preProcessFieldArray(
         ?array &$incomingFieldArray,

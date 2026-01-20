@@ -354,7 +354,7 @@ class DatabaseRecordList
 
     /**
      * Override/add urlparameters in listUrl() method
-     * @var mixed[]
+     * @var array<string,mixed>
      */
     protected array $overrideUrlParameters = [];
 
@@ -2737,7 +2737,7 @@ class DatabaseRecordList
     /**
      * Set URL parameters to override or add in the listUrl() method.
      *
-     * @param string[] $urlParameters
+     * @param array<string,mixed> $urlParameters
      */
     public function setOverrideUrlParameters(array $urlParameters, ServerRequestInterface $request)
     {
