@@ -33,6 +33,7 @@ final readonly class FormData
         public array $renderingOptions,
         public array $finishers,
         public array $renderables,
+        public array $variants,
     ) {}
 
     public static function fromArray(array $data): self
@@ -45,6 +46,7 @@ final readonly class FormData
             renderingOptions: $data['renderingOptions'] ?? [],
             finishers: $data['finishers'] ?? [],
             renderables: $data['renderables'] ?? [],
+            variants: $data['variants'] ?? [],
         );
     }
 
@@ -58,6 +60,7 @@ final readonly class FormData
             'renderingOptions' => $this->renderingOptions,
             'finishers' => $this->finishers,
             'renderables' => $this->renderables,
+            'variants' => $this->variants,
         ];
     }
 }
