@@ -3700,8 +3700,11 @@ typo3-backend-combobox-choice::part(content){flex:1;overflow:hidden;text-overflo
 typo3-backend-combobox-choice::part(indicator){color:var(--typo3-form-combobox-option-indicator);-webkit-margin-end:.25rem;margin-inline-end:.25rem;min-width:var(--typo3-form-combobox-icon-size)}
 typo3-backend-content-navigation{--content-navigation-divider-color:color-mix(in srgb,var(--typo3-surface-container-lowest),var(--typo3-text-color-base) 10%);--content-navigation-divider-color-active:var(--typo3-state-primary-border-color);--content-navigation-flyout-box-shadow:var(--typo3-component-box-shadow-flyout)}
 typo3-backend-content-navigation [slot=content] typo3-backend-progress-bar{--progress-border-radius:0;left:0;position:absolute;right:0;top:0;z-index:10}
-typo3-qrcode{display:inline-block}
+typo3-qrcode{--typo3-qrcode-url-success-bg:var(--token-color-success-15);--typo3-qrcode-url-success-box-shadow:var(--token-color-success-30);display:inline-block}
 typo3-qrcode .preview{margin-bottom:var(--typo3-spacing);text-align:center}
+typo3-qrcode .url-info-icon{position:absolute;right:50px;top:var(--typo3-modal-padding)}
+typo3-qrcode .url-info-section.copy-success input{background:var(--typo3-qrcode-url-success-bg)}
+typo3-qrcode .url-info-section.copy-success .btn,typo3-qrcode .url-info-section.copy-success input{box-shadow:0 0 0 .1rem var(--typo3-qrcode-url-success-box-shadow)}
 .collapse-horizontal{height:auto;overflow:hidden;vertical-align:middle;width:0}
 .collapse-horizontal.show{display:inline-block;width:auto}
 .collapse-horizontal.collapsing{display:inline-block;transition-property:width,visibility;width:0}

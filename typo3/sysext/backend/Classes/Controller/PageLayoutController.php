@@ -432,9 +432,14 @@ class PageLayoutController
             $view->addButtonToButtonBar($viewButton);
         }
 
+        // QR Code
+        if ($qrCodeButton = $this->makeQrCodeButton()) {
+            $view->addButtonToButtonBar($qrCodeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+        }
+
         // Edit
         if ($editButton = $this->makeEditButton($request)) {
-            $view->addButtonToButtonBar($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+            $view->addButtonToButtonBar($editButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
 
         // Cache
@@ -533,6 +538,42 @@ class PageLayoutController
             ->withRootLine($this->pageContext->rootLine)
             ->withLanguage($this->pageContext->getPrimaryLanguageId())
             ->buildDispatcherDataAttributes() ?? []);
+    }
+
+    /**
+     * QR Code Button - displays a QR code modal for the frontend preview URL
+     */
+    protected function makeQrCodeButton(): ?ButtonInterface
+    {
+        if (
+            $this->pageContext->hasMultipleLanguagesSelected()
+            || VersionState::tryFrom($this->pageContext->pageRecord['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
+            || PageViewMode::tryFrom((int)$this->moduleData->get('viewMode')) !== PageViewMode::LayoutView
+        ) {
+            return null;
+        }
+
+        $previewUriBuilder = PreviewUriBuilder::create($this->pageContext->pageRecord);
+        if (!$previewUriBuilder->isPreviewable()) {
+            return null;
+        }
+
+        $fallbackUri = $previewUriBuilder
+            ->withRootLine($this->pageContext->rootLine)
+            ->withLanguage($this->pageContext->getPrimaryLanguageId())
+            ->buildUri();
+
+        $previewUri = $this->componentFactory->getPreviewUrlForQrCode(
+            $this->pageContext->pageId,
+            $this->pageContext->getPrimaryLanguageId(),
+            $fallbackUri
+        );
+
+        if ($previewUri === null) {
+            return null;
+        }
+
+        return $this->componentFactory->createQrCodeButton($previewUri);
     }
 
     /**

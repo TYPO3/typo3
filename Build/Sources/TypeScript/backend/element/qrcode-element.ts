@@ -16,6 +16,7 @@ import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';
+import '@typo3/backend/copy-to-clipboard';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
@@ -33,7 +34,8 @@ enum QrCodeSize {
  * <typo3-qrcode
  *   content="https://example.com/"
  *   size="large"
- *   show-download="true">
+ *   show-download
+ *   show-url>
  * </typo3-qrcode>
  *
  * @internal this is subject to change
@@ -42,10 +44,17 @@ enum QrCodeSize {
 export class QrCodeElement extends LitElement {
   @property({ type: String, reflect: true }) content: string = '';
   @property({ type: Boolean, reflect: true, attribute: 'show-download' }) showDownload: boolean = false;
+  @property({ type: Boolean, reflect: true, attribute: 'show-url' }) showUrl: boolean = false;
   @property({ type: String, reflect: true }) size: QrCodeSize = QrCodeSize.small;
 
   @state() private qrcodePreview: TemplateResult = html`
     <typo3-backend-spinner size="large"></typo3-backend-spinner>`;
+  @state() private urlSectionVisible: boolean = false;
+
+  public constructor() {
+    super();
+    document.addEventListener('copy-to-clipboard-success', this.showCopySuccess.bind(this));
+  }
 
   public override connectedCallback() {
     super.connectedCallback();
@@ -55,12 +64,53 @@ export class QrCodeElement extends LitElement {
   protected override render(): TemplateResult | symbol {
     return html`
       <div class="preview">${this.qrcodePreview}</div>
+      ${this.getUrlToggle()}
+      ${this.getUrlSection()}
       ${this.getControls()}
     `;
   }
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
+  }
+
+  private getUrlToggle(): TemplateResult | symbol {
+    if (!this.showUrl) {
+      return nothing;
+    }
+
+    const showUrlLabel = TYPO3.lang['qrcode.showUrl'] || 'Show URL';
+    return html`
+      <div class="url-info-icon">
+        <button type="button" class="btn btn-default btn-sm" title="${showUrlLabel}" @click=${this.toggleUrlSection}>
+          <typo3-backend-icon identifier="actions-eye-link" size="small"></typo3-backend-icon>
+        </button>
+      </div>
+    `;
+  }
+
+  private getUrlSection(): TemplateResult | symbol {
+    if (!this.showUrl || !this.urlSectionVisible) {
+      return nothing;
+    }
+    const urlLabel = TYPO3.lang['qrcode.url'] || 'URL';
+    const copyUrlLabel = TYPO3.lang['qrcode.copyUrl'] || 'Copy URL';
+    return html`
+      <div class="form-group url-info-section">
+        <label class="form-label">${urlLabel}</label>
+        <div class="input-group">
+          <input type="text" class="form-control" readonly .value="${this.content}">
+          <typo3-copy-to-clipboard text="${this.content}" class="btn btn-default" silent>
+            <typo3-backend-icon identifier="actions-clipboard" size="small"></typo3-backend-icon>
+            ${copyUrlLabel}
+          </typo3-copy-to-clipboard>
+        </div>
+      </div>
+    `;
+  }
+
+  private toggleUrlSection(): void {
+    this.urlSectionVisible = !this.urlSectionVisible;
   }
 
   private getControls(): TemplateResult {
@@ -119,6 +169,14 @@ export class QrCodeElement extends LitElement {
     }).get({ cache: 'no-cache' }).then(async (response: AjaxResponse): Promise<void> => {
       this.qrcodePreview = html`${unsafeHTML(await response.resolve())}`;
     });
+  }
+
+  private showCopySuccess(): void {
+    const urlInfoSection = this.querySelector('.url-info-section');
+    if (urlInfoSection !== null) {
+      urlInfoSection.classList.add('copy-success');
+      setTimeout(() => urlInfoSection.classList.remove('copy-success'), 500);
+    }
   }
 }
 

@@ -291,7 +291,6 @@ export class PropertyGridEditor extends LitElement {
     const entriesCopy = [...this.entries];
     const fromIndex = entriesCopy.indexOf(this.movedEntry);
     const toIndex = fromIndex + direction;
-    console.log(fromIndex, toIndex);
     if (toIndex < 0 || toIndex >= entriesCopy.length) {
       return;
     }

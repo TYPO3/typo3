@@ -19,6 +19,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { repeat } from 'lit/directives/repeat.js';
 import '@typo3/backend/element/icon-element';
+import '@typo3/backend/element/qrcode-modal-button';
 import 'bootstrap'; // for data-bs-toggle="dropdown"
 
 export type RecordData = {
@@ -54,6 +55,7 @@ export type RecordData = {
   allowedAction_publish: boolean,
   allowedAction_delete: boolean,
   allowedAction_view: boolean,
+  previewUrl: string,
   allowedAction_edit: boolean,
   allowedAction_versionPageOpen: boolean,
   state_Workspace: string,
@@ -281,6 +283,7 @@ export class RecordTableElement extends LitElement {
           'title': TYPO3.lang['tooltip.viewElementAction']
         }
       ),
+      this.getQrCodeAction(data),
       this.getAction(
         data.allowedAction_edit && data.state_Workspace !== 'deleted',
         'open',
@@ -298,6 +301,25 @@ export class RecordTableElement extends LitElement {
         }
       )
     ];
+  }
+
+  private getQrCodeAction(data: RecordData): TemplateResult {
+    if (!data.previewUrl) {
+      return html`
+        <button type="button" class="btn btn-default" disabled>
+          <typo3-backend-icon identifier="empty-empty" size="small"></typo3-backend-icon>
+        </button>
+      `;
+    }
+    return html`
+      <typo3-qrcode-modal-button
+        class="btn btn-default"
+        content="${data.previewUrl}"
+        modal-title="${TYPO3.lang['tooltip.qrCode'] || 'QR Code'}"
+        title="${TYPO3.lang['tooltip.qrCode'] || 'QR Code'}">
+        <typo3-backend-icon identifier="actions-qrcode" size="small"></typo3-backend-icon>
+      </typo3-qrcode-modal-button>
+    `;
   }
 
   private renderVersioningActions(data: RecordData): TemplateResult[] {

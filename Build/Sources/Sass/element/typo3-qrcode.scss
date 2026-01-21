@@ -1,8 +1,27 @@
 typo3-qrcode {
+    --typo3-qrcode-url-success-bg: var(--token-color-success-15);
+    --typo3-qrcode-url-success-box-shadow: var(--token-color-success-30);
     display: inline-block;
 
     .preview {
         text-align: center;
         margin-bottom: var(--typo3-spacing);
+    }
+
+    .url-info-icon {
+        position: absolute;
+        right: 50px;
+        top: var(--typo3-modal-padding);
+    }
+
+    .url-info-section.copy-success {
+        input {
+            background: var(--typo3-qrcode-url-success-bg);
+        }
+
+        input,
+        .btn {
+            box-shadow: 0 0 0 .1rem var(--typo3-qrcode-url-success-box-shadow);
+        }
     }
 }

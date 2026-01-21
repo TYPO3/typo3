@@ -42,6 +42,17 @@
                                     <core:icon identifier="actions-view" />
                                 </button>
                             </f:if>
+                            <f:if condition="{languageColumn.previewUrl}">
+                                <typo3-qrcode-modal-button
+                                    class="btn btn-default btn-sm"
+                                    content="{languageColumn.previewUrl}"
+                                    modal-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode.modalTitle')}"
+                                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode')}"
+                                    show-url
+                                >
+                                    <core:icon identifier="actions-qrcode" />
+                                </typo3-qrcode-modal-button>
+                            </f:if>
                             <f:if condition="{languageColumn.allowEditPage}">
                                 <a href="{languageColumn.pageEditUrl}" class="btn btn-default btn-sm" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:edit')}">
                                     <core:icon identifier="actions-open" />

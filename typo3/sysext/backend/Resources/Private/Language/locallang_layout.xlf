@@ -409,6 +409,12 @@
       <trans-unit id="progressTracker.steps">
         <source>Step %d of %d</source>
       </trans-unit>
+      <trans-unit id="showPageQrCode">
+        <source>Show QR code</source>
+      </trans-unit>
+      <trans-unit id="showPageQrCode.modalTitle">
+        <source>QR Code for Page Preview</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

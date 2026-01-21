@@ -13,20 +13,21 @@
 
 import { customElement, property } from 'lit/decorators.js';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
-import Modal, { ModalElement } from '@typo3/backend/modal';
+import Modal from '@typo3/backend/modal';
 import { html } from 'lit';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 
 /**
- * Module: @typo3/redirects/element/qrcode-modal-button
+ * Module: @typo3/backend/element/qrcode-modal-button
  *
  * @example
- * <typo3-qrcode-modal-button content="https://example.com" ></typo3-qrcode-modal-button>
+ * <typo3-qrcode-modal-button content="https://example.com" show-url></typo3-qrcode-modal-button>
  */
 @customElement('typo3-qrcode-modal-button')
 export class QrCodeModalButton extends PseudoButtonLitElement {
   @property({ type: String, attribute: 'modal-title' }) modalTitle: string;
   @property({ type: String }) content: string;
+  @property({ type: Boolean, attribute: 'show-url' }) showUrl: boolean = false;
 
   protected override buttonActivated(): void {
     this.modalOpen();
@@ -42,19 +43,22 @@ export class QrCodeModalButton extends PseudoButtonLitElement {
   }
 
   protected async modalOpen(): Promise<void> {
-    // Import qrcode element manually to please Firefox
+    // Import elements manually to ensure they work across iframe boundaries
     await this.loadModuleFrameAgnostic('@typo3/backend/element/qrcode-element.js');
     Modal.advanced({
-      type: Modal.types.template,
       title: this.modalTitle || 'QR Code',
       size: Modal.sizes.small,
-      callback: (modal: ModalElement): void => {
-        modal.setContent(html`
-          <div class="text-center">
-              <typo3-qrcode class="text-start" content="${this.content}" size="large" show-download=""></typo3-qrcode>
-          </div>
-        `);
-      },
+      content: html`
+        <div class="text-center">
+          <typo3-qrcode
+            class="text-start"
+            content="${this.content}"
+            size="large"
+            show-download
+            ?show-url="${this.showUrl}"
+          ></typo3-qrcode>
+        </div>
+      `,
       buttons: [
         {
           text: TYPO3.lang['button.close'] || 'Close',

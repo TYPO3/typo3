@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -123,5 +124,18 @@ class LanguageColumn extends AbstractGridObject
             ->withRootLine(BackendUtility::BEgetRootLine($pageId))
             ->withLanguage($languageId)
             ->serializeDispatcherAttributes();
+    }
+
+    public function getPreviewUrl(): ?string
+    {
+        $pageId = $this->context->getPageId();
+        $languageId = $this->context->getSiteLanguage()->getLanguageId();
+
+        $fallbackUri = PreviewUriBuilder::create($this->context->getLocalizedPageRecord() ?? $this->context->getPageRecord())
+            ->withRootLine(BackendUtility::BEgetRootLine($pageId))
+            ->withLanguage($languageId)
+            ->buildUri();
+
+        return GeneralUtility::makeInstance(ComponentFactory::class)->getPreviewUrlForQrCode($pageId, $languageId, $fallbackUri);
     }
 }

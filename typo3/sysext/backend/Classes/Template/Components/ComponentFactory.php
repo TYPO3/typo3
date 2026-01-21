@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template\Components;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
@@ -31,11 +32,13 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\SplitButton;
+use TYPO3\CMS\Backend\Template\Components\Event\ModifyPreviewUrlForQrCodeEvent;
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
 use TYPO3\CMS\Backend\Template\Components\Menu\MenuItem;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -72,6 +75,8 @@ readonly class ComponentFactory
 {
     public function __construct(
         protected IconFactory $iconFactory,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected PageRenderer $pageRenderer,
     ) {}
 
     /**
@@ -156,6 +161,52 @@ readonly class ComponentFactory
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->iconFactory->getIcon('actions-view-page', IconSize::SMALL))
             ->setShowLabelText(true);
+    }
+
+    /**
+     * Creates a standardized QR code button that opens a modal with a QR code for the given URL.
+     *
+     * Uses the typo3-qrcode-modal-button web component which displays a scannable QR code
+     * in a modal dialog. The QR code can be downloaded as PNG or SVG.
+     *
+     * @param string|UriInterface $previewUrl The URL to encode in the QR code
+     * @param bool $showCopyUrl Whether to show the URL field with copy button in the modal
+     */
+    public function createQrCodeButton(string|UriInterface $previewUrl, bool $showCopyUrl = true): GenericButton
+    {
+        $languageService = $this->getLanguageService();
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/qrcode-modal-button.js');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/qrcode.xlf');
+        $attributes = [
+            'content' => (string)$previewUrl,
+            'modal-title' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode.modalTitle'),
+        ];
+        if ($showCopyUrl) {
+            $attributes['show-url'] = '1';
+        }
+        return $this->createGenericButton()
+            ->setTag('typo3-qrcode-modal-button')
+            ->setLabel($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode'))
+            ->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode'))
+            ->setIcon($this->iconFactory->getIcon('actions-qrcode', IconSize::SMALL))
+            ->setShowLabelText(true)
+            ->setAttributes($attributes);
+    }
+
+    /**
+     * Generates a preview URL suitable for QR codes.
+     *
+     * Dispatches the ModifyPreviewUrlForQrCodeEvent to allow extensions (e.g., workspaces)
+     * to provide alternative URLs. For example, the workspaces extension can provide a URL
+     * with ADMCMD_prev parameter that works without backend authentication.
+     *
+     * @param string|UriInterface|null $fallbackUrl Fallback URL if no listener modifies the URL
+     */
+    public function getPreviewUrlForQrCode(int $pageId, int $languageId, string|UriInterface|null $fallbackUrl = null): ?string
+    {
+        return $this->eventDispatcher->dispatch(
+            new ModifyPreviewUrlForQrCodeEvent($pageId, $languageId, $fallbackUrl !== null ? (string)$fallbackUrl : null)
+        )->getPreviewUrl();
     }
 
     public function createGenericButton(): GenericButton

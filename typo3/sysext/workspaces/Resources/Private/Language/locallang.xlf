@@ -177,6 +177,9 @@
       <trans-unit id="tooltip.viewElementAction">
         <source>Preview element</source>
       </trans-unit>
+      <trans-unit id="tooltip.qrCode">
+        <source>Preview QR code</source>
+      </trans-unit>
       <trans-unit id="tooltip.editElementAction">
         <source>Edit element</source>
       </trans-unit>
