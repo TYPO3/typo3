@@ -152,6 +152,7 @@ final readonly class RecordStatisticsService
                 'lostRecords' => implode(LF, $lostRecordList),
             ];
         }
+        ksort($tableStatistic);
 
         return $tableStatistic;
     }
