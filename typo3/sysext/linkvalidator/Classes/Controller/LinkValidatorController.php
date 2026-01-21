@@ -318,7 +318,10 @@ class LinkValidatorController
                 if (!$this->tcaSchemaFactory->has($row['table_name'])) {
                     continue;
                 }
-                $items[] = $this->generateTableRow($row);
+                if (($tableRow = $this->generateTableRow($row)) !== []) {
+                    $items[] = $tableRow;
+                }
+
             }
         }
         return $items;
@@ -365,8 +368,11 @@ class LinkValidatorController
         // Try to resolve the field label from TCA
         if ($schema->hasSubSchema($elementType) && $schema->getSubSchema($elementType)->hasField($row['field'])) {
             $fieldLabel = $schema->getSubSchema($elementType)->getField($row['field'])->getLabel();
-        } else {
+        } elseif ($schema->hasField($row['field'])) {
             $fieldLabel = $schema->getField($row['field'])->getLabel();
+        } else {
+            // Entry in the database is not valid since the field <=> table combination does not or no longer exist
+            return [];
         }
         // Crop colon from end if present
         $fieldLabel = rtrim((string)($fieldLabel ?: $row['field']), ':');

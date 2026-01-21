@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * failed pages uid.
  *
  * @since 14.0
- * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
+ * @internal This class is only meant to be used within EXT:core and is not part of the TYPO3 Core API.
  * @todo Remove in 16.0 as breaking change.
  */
 #[UpgradeWizard('pageDoktypeLinkMigration')]

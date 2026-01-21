@@ -1,0 +1,7 @@
+"tx_linkvalidator_link",,,,,,,,,,
+,"uid","record_uid","record_pid","language","headline","field","table_name","element_type","link_title","url","url_response","last_check","link_type","needs_recheck"
+,1,1,1,0,"Test broken link on page 1","url","pages","3","Example Link","https://broken.example.com","404","1609459200","external",0
+,2,2,1,0,"Test broken link on page 2","url","pages","3","Another Link","https://broken2.example.com","404","1609459200","external",0
+,3,3,1,0,"Test broken link on page 3","url","pages","3","Third Link","https://broken3.example.com","404","1609459200","external",0
+,4,4,1,0,"Test link on non-link page","url","pages","1","Content Link","https://broken4.example.com","404","1609459200","external",0
+,5,5,1,0,"Test link on content element","url","tt_content","","Content Element Link","https://broken5.example.com","404","1609459200","external",0
