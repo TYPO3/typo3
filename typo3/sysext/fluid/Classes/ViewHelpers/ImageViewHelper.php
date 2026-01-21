@@ -156,10 +156,16 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
                 // The alt-attribute is mandatory to have valid html-code, therefore use "alternative" property or empty
                 $this->tag->addAttribute('alt', $image->hasProperty('alternative') ? $image->getProperty('alternative') : '');
             }
-            // Add title-attribute from property if not already set and the property is not an empty string
-            $title = (string)($image->hasProperty('title') ? $image->getProperty('title') : '');
-            if (empty($this->additionalArguments['title']) && $title !== '') {
-                $this->tag->addAttribute('title', $title);
+            // Only add title-attribute from image if not set in additional-arguments.
+            // In case the "title" attribute is explicitly set to an empty string,
+            // it will not fallback to an image-title.
+            // This allows excluding it explicitly from screen readers, improving accessibility.
+            if (!isset($this->additionalArguments['title'])) {
+                $title = trim((string)($image->hasProperty('title') ? $image->getProperty('title') : ''));
+                // The title-attribute is not mandatory, therefore use "title" property or omit fully
+                if ($title !== '') {
+                    $this->tag->addAttribute('title', $title);
+                }
             }
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist
