@@ -62,7 +62,7 @@ final readonly class BackendViewFactory
             }
         }
         // Always add EXT:backend/Resources/Private/ as first default path to resolve
-        // default Layouts/Module.html and its partials.
+        // default Layouts/Module.fluid.html and its partials.
         if (!in_array('typo3/cms-backend', $packageNames, true)) {
             array_unshift($packageNames, 'typo3/cms-backend');
         }

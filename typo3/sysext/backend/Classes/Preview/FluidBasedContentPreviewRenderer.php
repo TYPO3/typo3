@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
  * Check if a Fluid-based preview template was defined for a given CType and render it via Fluid.
  *
  * Example in page TSconfig:
- * mod.web_layout.tt_content.preview.textmedia = EXT:site_mysite/Resources/Private/Templates/Preview/Textmedia.html
+ * mod.web_layout.tt_content.preview.textmedia = EXT:site_mysite/Resources/Private/Templates/Preview/Textmedia.fluid.html
  *
  * @internal not part of the TYPO3 Core API
  */
@@ -82,7 +82,7 @@ final readonly class FluidBasedContentPreviewRenderer
             ]);
             if ($this->getBackendUser()->shallDisplayDebugInformation()) {
                 return $this->viewFactory
-                    ->create(new ViewFactoryData(templatePathAndFilename: 'EXT:backend/Resources/Private/Templates/PageLayout/FluidBasedContentPreviewRenderingException.html'))
+                    ->create(new ViewFactoryData(templatePathAndFilename: 'EXT:backend/Resources/Private/Templates/PageLayout/FluidBasedContentPreviewRenderingException.fluid.html'))
                     ->assign('error', [
                         'message' => str_replace(Environment::getProjectPath(), '', $e->getMessage()),
                         'title' => 'Error while rendering FluidTemplate preview using ' . str_replace(Environment::getProjectPath(), '', $fluidTemplateFileAbsolutePath),

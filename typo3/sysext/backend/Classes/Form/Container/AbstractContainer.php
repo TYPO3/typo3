@@ -119,7 +119,7 @@ abstract class AbstractContainer extends AbstractNode
 
     /**
      * Render tabs with label and content. Used by TabsContainer and FlexFormTabsContainer.
-     * Re-uses the template Tabs.html which is also used by ModuleTemplate.php.
+     * Re-uses the template Tabs.fluid.html which is also used by ModuleTemplate.php.
      *
      * @param array $menuItems Tab elements, each element is an array with "label" and "content"
      * @param string $domId DOM id attribute, will be appended with an iteration number per tab.

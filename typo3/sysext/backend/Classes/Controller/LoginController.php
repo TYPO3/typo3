@@ -56,9 +56,9 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  * @todo: The central template rendering magic needs an overhaul: Currently, LoginProviderInterface has to
- *        be implemented, which retrieves a "prepared" view with tons of variable used by the default Layout "Login.html".
+ *        be implemented, which retrieves a "prepared" view with tons of variable used by the default Layout "Login.fluid.html".
  *        Single LoginProviderInterface then set their template path ("Login/UserPassLoginForm" in UsernamePasswordLoginProvider),
- *        which sets Login.html as layout in its template to then get its sections "loginFormFields" and "ResetPassword"
+ *        which sets Login.fluid.html as layout in its template to then get its sections "loginFormFields" and "ResetPassword"
  *        rendered. This strategy is a major mess and needs to be turned around somehow.
  *        Note there is also this BE "relogin" and "login refresh" foo with lots of attached JS magic that
  *        should either be streamlined to actually work, or (preferred) be thrown away.

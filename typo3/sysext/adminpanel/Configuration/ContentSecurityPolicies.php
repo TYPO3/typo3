@@ -11,7 +11,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\Type\Map;
 
 /**
- * Allows inline styles (`<span style="...">`) in content dumped in QueryInformation.html.
+ * Allows inline styles (`<span style="...">`) in content dumped in QueryInformation.fluid.html.
  *
  * Note: Using `PolicyRegistry` is not possible here, since `AdminPanelRenderer`
  * middleware generates the response(!) after `ContentSecurityPolicyHeaders` middleware.

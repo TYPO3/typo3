@@ -47,7 +47,7 @@ class Ratio
     /**
      * Adjust names of Ratios for special character replacement.
      *
-     * @todo in 14 - Rework the ImageManipulationElement.html logic to actually allow dot keys.
+     * @todo in 14 - Rework the ImageManipulationElement.fluid.html logic to actually allow dot keys.
      * Ratio names are referenced through fluid, see https://forge.typo3.org/issues/80214
      * Should be possible by iterating {cropVariant.allowedAspectRatios.{cropVariant.selectedRatio}.title}
      * in the controller, and assigning a distinct, un-nested variable.

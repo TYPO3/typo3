@@ -75,7 +75,7 @@ class PagesWithInternalNote implements WidgetRendererInterface
 
         return new WidgetResult(
             label: $this->getWidgetLabel($category),
-            content: $view->render('Widget/PagesWithInternalNote.html'),
+            content: $view->render('Widget/PagesWithInternalNote'),
             refreshable: true,
         );
     }
