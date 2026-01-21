@@ -99,7 +99,7 @@ export default {
 
             '@typo3/core/': './typo3/sysext/core/Resources/Public/JavaScript/',
             'autosize': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/autosize.js',
-            'bootstrap': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/bootstrap.js',
+            'bootstrap': './typo3/sysext/backend/Resources/Public/JavaScript/Contrib/bootstrap.js',
             'cropperjs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/cropperjs.js',
             'css-tree': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/css-tree.js',
             'flatpickr': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/flatpickr.js',

@@ -36,6 +36,7 @@
         "outDir": "./JavaScript/",
         "types": [
             "TYPO3",
+            "bootstrap-src",
             "ckeditor5-bundle"
         ],
         "typeRoots": [

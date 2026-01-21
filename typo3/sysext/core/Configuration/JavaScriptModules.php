@@ -10,7 +10,6 @@ return [
             ],
         ],
         'autosize' => 'EXT:core/Resources/Public/JavaScript/Contrib/autosize.js',
-        'bootstrap' => 'EXT:core/Resources/Public/JavaScript/Contrib/bootstrap.js',
         'cropperjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/cropperjs.js',
         'css-tree' => 'EXT:core/Resources/Public/JavaScript/Contrib/css-tree.js',
         'dompurify' => 'EXT:core/Resources/Public/JavaScript/Contrib/dompurify.js',

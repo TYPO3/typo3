@@ -453,7 +453,6 @@ module.exports = function (grunt) {
     esbuild: Object.fromEntries(Object.entries({
       core: [
         'autosize',
-        { name: 'bootstrap', bundle: true },
         'cropperjs',
         { name: 'css-tree', bundle: true },
         'dompurify',
@@ -649,6 +648,7 @@ module.exports = function (grunt) {
     const { litnano } = require('litnano/rollup');
     const { mapImports } = require('./lib/map-import.js');
     const { minify } = require('rollup-plugin-esbuild');
+    const { build } = require('esbuild');
 
     const process = async (src, dest) => {
       const input = grunt.file.expand(src);
@@ -716,8 +716,31 @@ module.exports = function (grunt) {
         sourcemap: generateSourcemaps ? 'inline' : false,
       })
 
+      const filesToBundle = [
+        'backend/Resources/Public/JavaScript/Contrib/bootstrap.js',
+      ];
+
       for (const file of output) {
-        grunt.file.write(dest + file.fileName, file.code);
+        const { code, fileName } = file;
+        const target = dest + fileName;
+        if (filesToBundle.includes(fileName)) {
+          await build({
+            stdin: {
+              contents: code,
+              resolveDir: __dirname,
+              sourcefile: file.moduleIds[0],
+              loader: 'js'
+            },
+            external: ['@typo3'],
+            format: 'esm',
+            outfile: target,
+            minify: true,
+            bundle: true,
+            sourcemap: generateSourcemaps ? 'inline' : false,
+          });
+        } else {
+          grunt.file.write(target, code);
+        }
       }
     };
 

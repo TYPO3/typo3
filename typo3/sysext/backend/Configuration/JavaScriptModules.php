@@ -11,6 +11,7 @@ return [
                 'EXT:backend/Resources/Public/JavaScript/Contrib/',
             ],
         ],
+        'bootstrap' => 'EXT:backend/Resources/Public/JavaScript/Contrib/bootstrap.js',
         'crelt' => 'EXT:backend/Resources/Public/JavaScript/Contrib/crelt.js',
         'style-mod' => 'EXT:backend/Resources/Public/JavaScript/Contrib/style-mod.js',
         'w3c-keyname' => 'EXT:backend/Resources/Public/JavaScript/Contrib/w3c-keyname.js',
