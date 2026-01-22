@@ -23,10 +23,12 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Resource\PublicUrlPrefixer;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Exception\MissingRequestTokenException;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 
 /**
@@ -71,6 +73,10 @@ class RequestHandler implements RequestHandlerInterface
             'prefixWithSitePath'
         );
 
+        /** @var Route $route */
+        $route = $request->getAttribute('route');
+        $isAjaxCall = (bool)($route->getOption('ajax') ?? false);
+
         // b/w compat
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
@@ -78,6 +84,9 @@ class RequestHandler implements RequestHandlerInterface
             // Check if the router has the available route and dispatch.
             return $this->dispatcher->dispatch($request);
         } catch (MissingRequestTokenException $e) {
+            if ($isAjaxCall) {
+                return new Response(statusCode: 401);
+            }
             // When token was missing, then redirect to login, but keep the current route as redirect after login
             $loginUrl = $this->uriBuilder->buildUriWithRedirect(
                 'login',
@@ -86,6 +95,9 @@ class RequestHandler implements RequestHandlerInterface
             );
             return new RedirectResponse($loginUrl);
         } catch (InvalidRequestTokenException $e) {
+            if ($isAjaxCall) {
+                return new Response(statusCode: 401);
+            }
             // When token was invalid, then redirect to login
             $loginForm = $this->uriBuilder->buildUriFromRoute('login');
             return new RedirectResponse($loginForm);

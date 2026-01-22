@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
 use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
@@ -89,6 +90,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     {
         /** @var Route $route */
         $route = $request->getAttribute('route');
+        $isAjaxCall = (bool)($route->getOption('ajax') ?? false);
 
         // The global must be available very early, because methods below
         // might trigger code which relies on it. See: #45625
@@ -103,6 +105,9 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
             // If MFA is required and we are not already on the "auth_mfa"
             // route, force the user to it for further authentication.
             if (!$mfaRequested && $this->isLoggedInBackendUserRequired($route)) {
+                if ($isAjaxCall) {
+                    return new Response(statusCode: 401);
+                }
                 return $this->redirectToMfaEndpoint(
                     'auth_mfa',
                     $GLOBALS['BE_USER'],
@@ -116,6 +121,9 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         $this->setBackendUserAspect($GLOBALS['BE_USER'], (int)($GLOBALS['BE_USER']->user['workspace_id'] ?? 0));
         if ($this->isLoggedInBackendUserRequired($route)) {
             if (!$this->context->getAspect('backend.user')->isLoggedIn()) {
+                if ($isAjaxCall) {
+                    return new Response(statusCode: 401);
+                }
                 $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect(
                     'login',
                     [],
@@ -151,6 +159,9 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                 && $GLOBALS['BE_USER']->isMfaSetupRequired()
                 && $route->getOption('_identifier') !== 'setup_mfa'
             ) {
+                if ($isAjaxCall) {
+                    return new Response(statusCode: 401);
+                }
                 return $this->redirectToMfaEndpoint('setup_mfa', $GLOBALS['BE_USER'], $request);
             }
         }

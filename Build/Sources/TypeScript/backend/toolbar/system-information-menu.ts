@@ -16,7 +16,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import Icons from '../icons';
 import PersistentStorage from '../storage/persistent';
 import Viewport from '../viewport';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 /**
  * Explicit selectors to avoid nesting queries
@@ -96,7 +96,7 @@ class SystemInformationMenu {
     element.classList.toggle('hidden', !(data.count > 0));
   }
 
-  private readonly updateMenu = async (): Promise<void> => {
+  private readonly updateMenu = (): void => {
     const toolbarItemIcon = document.querySelector(SystemInformationSelector.icon);
     const currentIcon = toolbarItemIcon.cloneNode(true);
 
@@ -109,24 +109,14 @@ class SystemInformationMenu {
       toolbarItemIcon.replaceWith(document.createRange().createContextualFragment(spinner));
     });
 
-    try {
-      const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.systeminformation_render).get({ redirect: 'manual' });
-      const htmlResult = await response.resolve();
-      document.querySelector(SystemInformationSelector.menu).innerHTML = htmlResult;
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.systeminformation_render)).get().then(async (response: AjaxResponse): Promise<void> => {
+      document.querySelector(SystemInformationSelector.menu).innerHTML = await response.resolve();
       SystemInformationMenu.updateBadge();
-    } catch (e: unknown) {
-      const errorToBeSurpressed = (
-        // Backend is not available and returned a redirect to the login page, ignore
-        e instanceof AjaxResponse && e.response.type === 'opaqueredirect'
-      );
-      if (!errorToBeSurpressed) {
-        throw e;
-      }
-    } finally {
+    }).finally((): void => {
       document.querySelector(SystemInformationSelector.icon).replaceWith(currentIcon);
       // reload error data every five minutes
       this.timer = setTimeout(this.updateMenu, 1000 * 300);
-    }
+    });
   };
 
   /**
