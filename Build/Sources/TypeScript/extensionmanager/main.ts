@@ -141,7 +141,7 @@ class ExtensionManager {
         this.progressBar = document.createElement('typo3-backend-progress-bar');
         document.body.appendChild(this.progressBar);
         this.progressBar.start();
-        new AjaxRequest(target.href).get().then(this.updateExtension);
+        new AjaxRequest(target.href).get().then((response: AjaxResponse): Promise<void> => this.updateExtension(response));
       }).delegateTo(document, 'a[data-action=update-extension]');
 
       new RegularEvent('change', (e: Event, target: HTMLInputElement): void => {

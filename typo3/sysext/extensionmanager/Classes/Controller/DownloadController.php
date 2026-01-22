@@ -225,8 +225,8 @@ class DownloadController extends AbstractController
     {
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
-        $extensionKey = $this->request->getArgument('extension');
-        $version = $this->request->getArgument('version');
+        $extensionKey = (string)$this->request->getArgument('extension');
+        $version = (string)$this->request->getArgument('version');
         $extension = $this->extensionRepository->findOneByExtensionKeyAndVersion($extensionKey, $version);
         if ($extension === null) {
             $extension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
@@ -257,9 +257,9 @@ class DownloadController extends AbstractController
      */
     protected function updateCommentForUpdatableVersionsAction(): ResponseInterface
     {
-        $extensionKey = $this->request->getArgument('extension');
-        $versionStart = $this->request->getArgument('integerVersionStart');
-        $versionStop = $this->request->getArgument('integerVersionStop');
+        $extensionKey = (string)$this->request->getArgument('extension');
+        $versionStart = (int)$this->request->getArgument('integerVersionStart');
+        $versionStop = (int)$this->request->getArgument('integerVersionStop');
         $updateComments = [];
         $updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
             $extensionKey,
