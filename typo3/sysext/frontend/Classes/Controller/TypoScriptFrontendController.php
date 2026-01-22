@@ -272,7 +272,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($language->hasCustomTypo3Language()) {
             $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());
         } else {
-            $locale = $language->getLocale();
+            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale((string)$language->getLocale());
         }
         $this->pageRenderer->setLanguage($locale);
     }
