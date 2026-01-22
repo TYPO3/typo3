@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -145,7 +146,8 @@ class LocalizationUtility
 
         [$possibleDomain, $possibleId] = explode(':', $key, 2);
         $domainMapper = GeneralUtility::makeInstance(TranslationDomainMapper::class);
-        if ($domainMapper->isValidDomainName($possibleDomain) && $domainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
+        $domainResolver = GeneralUtility::makeInstance(TranslationDomainResolver::class);
+        if ($domainResolver->isValidDomainName($possibleDomain) && $domainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
             $languageFilePath = $possibleDomain;
             $key = trim($possibleId);
             $extensionName = self::getExtensionNameFromDomain($languageFilePath);

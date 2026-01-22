@@ -25,6 +25,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
+use TYPO3\CMS\Core\Localization\LabelFileResolver;
+use TYPO3\CMS\Core\Localization\LanguagePackService;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -45,6 +47,8 @@ class TranslationDomainListCommand extends Command
         private readonly PackageManager $packageManager,
         private readonly TranslationDomainMapper $translationDomainMapper,
         private readonly LocalizationFactory $localizationFactory,
+        private readonly LabelFileResolver $labelFileResolver,
+        private readonly LanguagePackService $languagePackService,
     ) {
         parent::__construct();
     }
@@ -68,6 +72,13 @@ class TranslationDomainListCommand extends Command
                 InputOption::VALUE_NONE,
                 'Include deprecated translation domains.'
             );
+        $this
+            ->addOption(
+                'show-overrides',
+                'o',
+                InputOption::VALUE_NONE,
+                'List resource override files, configured via resourceOverrides for each domain.'
+            );
     }
 
     /**
@@ -79,6 +90,7 @@ class TranslationDomainListCommand extends Command
 
         $specificExtension = $input->getOption('extension');
         $includeDeprecated = $input->getOption('deprecated');
+        $showOverrides = $input->getOption('show-overrides');
 
         // Determine which packages to scan
         if ($specificExtension) {
@@ -112,6 +124,7 @@ class TranslationDomainListCommand extends Command
                         'resource' => $resource,
                         'labelCount' => $labelCount,
                         'deprecated' => $deprecated,
+                        'overrides' => $showOverrides ? $this->resolveOverridesForResource($resource) : [],
                     ];
                 }
             }
@@ -135,11 +148,21 @@ class TranslationDomainListCommand extends Command
         ]);
 
         foreach ($labelData as $data) {
+            // Base file first, followed by one line per override; the label counts in the
+            // "# Labels" column are rendered in parallel so each count aligns with its file.
+            $labelResourceLines = [$data['resource']];
+            $labelCountLines = [(string)$data['labelCount']];
+            $statusLines = [$data['deprecated'] ? 'deprecated' : 'active'];
+            foreach ($data['overrides'] as $override) {
+                $labelResourceLines[] = $override['label'];
+                $labelCountLines[] = (string)$override['count'];
+                $statusLines[] = 'override: ' . $override['locale'];
+            }
             $table->addRow([
                 $data['domain'],
-                $data['resource'],
-                (string)$data['labelCount'],
-                $data['deprecated'] ? 'deprecated' : '',
+                implode("\n", $labelResourceLines),
+                implode("\n", $labelCountLines),
+                implode("\n", $statusLines),
             ]);
         }
 
@@ -151,15 +174,50 @@ class TranslationDomainListCommand extends Command
     }
 
     /**
-     * Count the number of labels in a label resource file.
-     * Uses LocalizationFactory to parse the file and count entries.
+     * Resolve the resource override files configured via
+     * $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'] for a given base resource.
+     *
+     * @return list<array{label: string, count: int, locale: string}>
      */
-    protected function countLabelsInResource(string $fileReference): int
+    protected function resolveOverridesForResource(string $resource): array
+    {
+        // "default" is evaluated always
+        $defaultLocale = 'default';
+        $defaultOverrides = $this->labelFileResolver->getOverrideFilePaths($resource, $defaultLocale);
+
+        $locales = array_merge([$defaultLocale], $this->languagePackService->getActiveLanguages());
+        $entries = [];
+        foreach ($locales as $locale) {
+            $overrides = $this->labelFileResolver->getOverrideFilePaths($resource, $locale);
+            if ($overrides === []) {
+                continue;
+            }
+            // Skip active languages that only inherit the general overrides, otherwise the same
+            // file would be listed again for every active language.
+            if ($locale !== $defaultLocale
+                && array_values($overrides) === array_values($defaultOverrides)
+            ) {
+                continue;
+            }
+            $languageKey = $locale === $defaultLocale ? 'en' : $locale;
+            foreach ($overrides as $override) {
+                $entries[] = [
+                    'label' => ' + ' . $override,
+                    'count' => $this->countLabelsInResource($override, $languageKey),
+                    'locale' => $locale,
+                ];
+            }
+        }
+
+        return $entries;
+    }
+
+    protected function countLabelsInResource(string $fileReference, string $languageKey = 'en'): int
     {
         try {
-            $labels = $this->localizationFactory->getParsedData($fileReference, 'en');
+            $labels = $this->localizationFactory->getParsedData($fileReference, $languageKey);
             return count($labels);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return 0;
         }
     }

@@ -106,6 +106,7 @@ class ServiceProvider extends AbstractServiceProvider
             Imaging\IconFactory::class => self::getIconFactory(...),
             Imaging\IconRegistry::class => self::getIconRegistry(...),
             Localization\LabelFileResolver::class => self::getLabelFileResolver(...),
+            Localization\TranslationDomainResolver::class => self::getTranslationDomainResolver(...),
             Localization\TranslationDomainMapper::class => self::getTranslationDomainMapper(...),
             Localization\LanguageServiceFactory::class => self::getLanguageServiceFactory(...),
             Localization\Locales::class => self::getLocales(...),
@@ -492,6 +493,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Cache\CacheManager::class)->getCache('runtime'),
             $container->get(Localization\TranslationDomainMapper::class),
             $container->get(Localization\LabelFileResolver::class),
+            $container->get(Localization\TranslationDomainResolver::class),
         ]);
     }
 
@@ -502,7 +504,15 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getLabelFileResolver(ContainerInterface $container): Localization\LabelFileResolver
     {
-        return self::new($container, Localization\LabelFileResolver::class, [$container->get(PackageManager::class)]);
+        return self::new($container, Localization\LabelFileResolver::class, [
+            $container->get(PackageManager::class),
+            $container->get(Localization\TranslationDomainResolver::class),
+        ]);
+    }
+
+    public static function getTranslationDomainResolver(ContainerInterface $container): Localization\TranslationDomainResolver
+    {
+        return self::new($container, Localization\TranslationDomainResolver::class, []);
     }
 
     public static function getTranslationDomainMapper(ContainerInterface $container): Localization\TranslationDomainMapper
@@ -510,6 +520,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Localization\TranslationDomainMapper::class, [
             $container->get(PackageManager::class),
             $container->get(Localization\LabelFileResolver::class),
+            $container->get(Localization\TranslationDomainResolver::class),
             $container->get(Cache\CacheManager::class)->getCache('l10n'),
             $container->get(EventDispatcherInterface::class),
         ]);

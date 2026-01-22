@@ -715,4 +715,36 @@ final class LanguageServiceTest extends FunctionalTestCase
         $input = 'a.b:c';
         self::assertEquals($input, $subject->sL($input));
     }
+
+    #[Test]
+    public function ensureLocalizationOverrideWithDomainSyntaxWorks(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['test_localization.messages'][] = self::LANGUAGE_FILE_OVERRIDE;
+
+        $this->ensureLocalizationScenarioWorks('default', self::LANGUAGE_FILE, [
+            'label1' => 'This is my 1st label',
+            'label2' => 'This is my 2nd label',
+            'label3' => 'This is label #3',
+        ]);
+    }
+
+    #[Test]
+    public function ensureLocalizationOverrideWithLanguageSpecificDomainSyntaxWorks(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['test_localization.messages'][] = self::LANGUAGE_FILE_OVERRIDE;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['de']['test_localization.messages'][] = self::LANGUAGE_FILE_OVERRIDE_DE;
+        $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides']['fr']['test_localization.messages'][] = self::LANGUAGE_FILE_OVERRIDE_FR;
+
+        $this->ensureLocalizationScenarioWorks('de', self::LANGUAGE_FILE, [
+            'label1' => 'Das ist Beschriftung 1',
+            'label2' => 'Das ist Beschriftung 2',
+            'label3' => 'Das ist Beschriftung 3',
+        ]);
+
+        $this->ensureLocalizationScenarioWorks('fr', self::LANGUAGE_FILE, [
+            'label1' => 'Ceci est mon 1er libellé',
+            'label2' => 'Ceci est le libellé no. 2',
+            'label3' => 'Ceci est mon 3e libellé',
+        ]);
+    }
 }

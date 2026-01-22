@@ -96,6 +96,7 @@ readonly class LocalizationFactory
         protected FrontendInterface $runtimeCache,
         protected TranslationDomainMapper $translationDomainMapper,
         protected LabelFileResolver $labelFileResolver,
+        protected TranslationDomainResolver $translationDomainResolver,
     ) {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['LANG']['loader'] ?? [] as $key => $loader) {
             if (class_exists($loader)) {
@@ -194,7 +195,7 @@ readonly class LocalizationFactory
         }
 
         $fileReference = $this->translationDomainMapper->mapDomainToFileName($fileReference);
-        $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
+        $domainName = $this->translationDomainResolver->mapFileNameToDomain($fileReference);
         $allLanguageKeysAsOrderedFallback = $this->computeAllLanguageKeys($locale);
 
         return [$fileReference, $domainName, $allLanguageKeysAsOrderedFallback];

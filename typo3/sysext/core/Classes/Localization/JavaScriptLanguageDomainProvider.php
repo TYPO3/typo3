@@ -28,7 +28,7 @@ final readonly class JavaScriptLanguageDomainProvider
 {
     public function __construct(
         private LanguageServiceFactory $languageServiceFactory,
-        private TranslationDomainMapper $translationDomainMapper,
+        private TranslationDomainResolver $translationDomainResolver,
         private ResponseFactoryInterface $responseFactory,
         private StreamFactoryInterface $streamFactory,
     ) {}
@@ -39,7 +39,7 @@ final readonly class JavaScriptLanguageDomainProvider
         $error = '';
         $allLabels = [];
 
-        if (!$this->translationDomainMapper->isValidDomainName($domain)) {
+        if (!$this->translationDomainResolver->isValidDomainName($domain)) {
             // @todo check for unavailable domain name and deprecation state
             $error = 'throw new Error("Invalid domain name");';
         } else {

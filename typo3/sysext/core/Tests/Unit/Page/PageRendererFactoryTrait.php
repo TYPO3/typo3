@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\AssetCollector;
@@ -73,7 +74,14 @@ trait PageRendererFactoryTrait
             new RelativeCssPathFixer($resourceFactory, $resourcePublisher),
             new LanguageServiceFactory(
                 new Locales(),
-                new LocalizationFactory(new Translator('en'), $cacheManager->getCache('l10n'), new NullFrontend('runtime'), $labelMapperMock, new LabelFileResolver($packageManager)),
+                new LocalizationFactory(
+                    new Translator('en'),
+                    $cacheManager->getCache('l10n'),
+                    new NullFrontend('runtime'),
+                    $labelMapperMock,
+                    new LabelFileResolver($packageManager, new TranslationDomainResolver()),
+                    new TranslationDomainResolver(),
+                ),
                 new NullFrontend('null')
             ),
             new ResponseFactory(),
