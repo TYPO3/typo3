@@ -51,7 +51,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             // Initialize site languages to be fetched
             $siteLanguages = [];
 
-            if (($result['effectivePid'] ?? 0) === 0 || !($result['site'] ?? null) instanceof Site) {
+            if (($result['effectivePid'] ?? 0) === 0) {
                 // In case we deal with a pid=0 record or a record on a page outside
                 // of a site config, all languages from all sites should be added.
                 foreach ($this->siteFinder->getAllSites() as $site) {
@@ -70,9 +70,40 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
                 }
                 ksort($siteLanguages);
             } elseif (($result['systemLanguageRows'] ?? []) !== []) {
+                $isLanguageField = $fieldName === ($result['processedTca']['ctrl']['languageField'] ?? '');
+
+                $currentLanguageId = (int)($result['databaseRow'][$fieldName] ?? 0);
+
+                $availablePageLanguageIds = [];
+                if ($isLanguageField && $table !== 'pages' && !empty($result['pageLanguageOverlayRows'])) {
+                    foreach ($result['pageLanguageOverlayRows'] as $pageTranslation) {
+                        $availablePageLanguageIds[] = (int)($pageTranslation['sys_language_uid'] ?? 0);
+                    }
+                }
+
                 // Add system languages available for the current site
                 foreach ($result['systemLanguageRows'] as $languageId => $language) {
-                    if ($languageId !== -1) {
+                    if ($languageId === -1) {
+                        continue;
+                    }
+                    if ($isLanguageField && $table === 'pages') {
+                        // For pages table language field: only show the current language
+                        // (language cannot be changed via FormEngine after creation)
+                        if ($languageId === $currentLanguageId) {
+                            $siteLanguages[$languageId] = [
+                                'title' => $language['title'],
+                                'flagIconIdentifier' => $language['flagIconIdentifier'],
+                            ];
+                        }
+                    } elseif ($isLanguageField && $availablePageLanguageIds !== []) {
+                        // For other tables' language field: only show languages with page translations
+                        if ($languageId === 0 || in_array($languageId, $availablePageLanguageIds, true)) {
+                            $siteLanguages[$languageId] = [
+                                'title' => $language['title'],
+                                'flagIconIdentifier' => $language['flagIconIdentifier'],
+                            ];
+                        }
+                    } else {
                         $siteLanguages[$languageId] = [
                             'title' => $language['title'],
                             'flagIconIdentifier' => $language['flagIconIdentifier'],

@@ -94,15 +94,92 @@ final class TcaLanguageTest extends UnitTestCase
     }
 
     #[Test]
-    public function addDataOmitsLanguageAllForPages(): void
+    public function addDataShowsOnlyCurrentLanguageForPages(): void
     {
-        $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages(), [], ['tableName' => 'pages']);
+        // For pages, only the current language should be shown (language cannot be changed via FormEngine)
+        $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages(), ['aField' => 0], ['tableName' => 'pages']);
+
+        $expected = [
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+        ];
+
+        self::assertEquals(
+            $expected,
+            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+        );
+    }
+
+    #[Test]
+    public function addDataShowsOnlyCurrentLanguageForPagesTranslation(): void
+    {
+        // For page translations, only the current language should be shown
+        $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages(), ['aField' => 13], ['tableName' => 'pages']);
+
+        $expected = [
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+        ];
+
+        self::assertEquals(
+            $expected,
+            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+        );
+    }
+
+    #[Test]
+    public function addDataOnlyShowsLanguagesWithPageTranslationsForNonPagesTables(): void
+    {
+        $systemLanguages = $this->getDefaultSystemLanguages();
+        // Only Danish (13) has a page translation, German (14) does not
+        $pageLanguageOverlayRows = [
+            ['uid' => 100, 'sys_language_uid' => 13],
+        ];
+
+        $input = $this->getDefaultResultArray([], $systemLanguages, [], [
+            'pageLanguageOverlayRows' => $pageLanguageOverlayRows,
+        ]);
+
+        $expected = [
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
+            // German (14) is NOT shown because there is no page translation for it
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', 'value' => -1, 'icon' => 'flags-multiple', 'group' => null, 'description' => null],
+        ];
+
+        self::assertEquals(
+            $expected,
+            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+        );
+    }
+
+    #[Test]
+    public function addDataShowsAllLanguagesForNonLanguageFieldEvenWithLimitedPageTranslations(): void
+    {
+        $systemLanguages = $this->getDefaultSystemLanguages();
+        // Only Danish (13) has a page translation, German (14) does not
+        $pageLanguageOverlayRows = [
+            ['uid' => 100, 'sys_language_uid' => 13],
+        ];
+
+        $input = $this->getDefaultResultArray([], $systemLanguages, [], [
+            'pageLanguageOverlayRows' => $pageLanguageOverlayRows,
+            'processedTca' => [
+                'ctrl' => [
+                    'languageField' => 'differentField',
+                ],
+            ],
+        ]);
 
         $expected = [
             ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
             ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
             ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
             ['label' => 'German', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', 'value' => -1, 'icon' => 'flags-multiple', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -147,8 +224,6 @@ final class TcaLanguageTest extends UnitTestCase
                 ],
             ],
             $this->getDefaultSystemLanguages(),
-            [],
-            ['tableName' => 'pages']
         );
 
         $expected = [
@@ -157,6 +232,7 @@ final class TcaLanguageTest extends UnitTestCase
             ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
             ['label' => 'German', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
             ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', 'value' => -1, 'icon' => 'flags-multiple', 'group' => null, 'description' => null],
             ['label' => 'User defined', 'value' => 8, 'icon' => 'some-icon', 'group' => null, 'description' => null],
         ];
 
@@ -317,7 +393,8 @@ final class TcaLanguageTest extends UnitTestCase
     #[Test]
     public function addDataAddsInvalidDatabaseValue(): void
     {
-        $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages(), ['aField' => 5], ['tableName' => 'pages']);
+        // Test with a non-pages table that has an invalid language value
+        $input = $this->getDefaultResultArray([], $this->getDefaultSystemLanguages(), ['aField' => 5]);
 
         $expected = [
             ['label' => '[ LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue ]', 'value' => 5, 'icon' => null, 'group' => null, 'description' => null],
@@ -325,6 +402,8 @@ final class TcaLanguageTest extends UnitTestCase
             ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
             ['label' => 'Danish', 'value' => 13, 'icon' => 'flags-dk', 'group' => null, 'description' => null],
             ['label' => 'German', 'value' => 14, 'icon' => 'flags-de', 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', 'value' => -1, 'icon' => 'flags-multiple', 'group' => null, 'description' => null],
         ];
 
         self::assertEquals(
@@ -507,9 +586,9 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    #[DataProvider('addDataAddsAllSiteLanguagesDataProvider')]
+    #[DataProvider('addDataAddsAllSiteLanguagesOnRootPageDataProvider')]
     #[Test]
-    public function addDataAddsAllSiteLanguagesFromAllSites(array $config): void
+    public function addDataAddsAllSiteLanguagesOnRootPage(array $config): void
     {
         $siteFinder = $this->createMock(SiteFinder::class);
         $siteFinder->method('getAllSites')->willReturn([
@@ -560,18 +639,48 @@ final class TcaLanguageTest extends UnitTestCase
         );
     }
 
-    public static function addDataAddsAllSiteLanguagesDataProvider(): \Generator
+    public static function addDataAddsAllSiteLanguagesOnRootPageDataProvider(): \Generator
     {
         yield 'On root level pid=0' => [
             [
                 'effectivePid' => 0,
             ],
         ];
-        yield 'Without site configuration' => [
-            [
-                'site' => new NullSite(),
+    }
+
+    #[Test]
+    public function addDataAddsOnlyDefaultLanguagesForNullSite(): void
+    {
+        $systemLanguages = [
+            -1 => [
+                'uid' => -1,
+                'title' => 'All Languages',
+                'iso' => 'DEF',
+                'flagIconIdentifier' => 'flags-multiple',
+            ],
+            0 => [
+                'uid' => 0,
+                'title' => 'English',
+                'iso' => 'DEF',
+                'flagIconIdentifier' => 'flags-us',
             ],
         ];
+
+        $input = $this->getDefaultResultArray([], $systemLanguages, [], [
+            'site' => new NullSite(),
+        ]);
+
+        $expected = [
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'English', 'value' => 0, 'icon' => 'flags-us', 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', 'value' => '--div--', 'icon' => null, 'group' => null, 'description' => null],
+            ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', 'value' => -1, 'icon' => 'flags-multiple', 'group' => null, 'description' => null],
+        ];
+
+        self::assertEquals(
+            $expected,
+            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+        );
     }
 
     private function getDefaultResultArray(
@@ -580,13 +689,31 @@ final class TcaLanguageTest extends UnitTestCase
         array $databaseRow = [],
         array $additionalConfiguration = []
     ): array {
+        // For non-pages tables, create page overlays matching the system languages (except 0 and -1)
+        // unless explicitly provided in additionalConfiguration
+        if (!array_key_exists('pageLanguageOverlayRows', $additionalConfiguration)) {
+            $pageLanguageOverlayRows = [];
+            foreach ($systemLanguages as $languageId => $language) {
+                if ($languageId > 0) {
+                    $pageLanguageOverlayRows[] = ['uid' => $languageId * 100, 'sys_language_uid' => $languageId];
+                }
+            }
+        } else {
+            $pageLanguageOverlayRows = $additionalConfiguration['pageLanguageOverlayRows'];
+            unset($additionalConfiguration['pageLanguageOverlayRows']);
+        }
+
         return array_replace_recursive([
             'tableName' => 'aTable',
             'systemLanguageRows' => array_replace_recursive([], $systemLanguages),
+            'pageLanguageOverlayRows' => $pageLanguageOverlayRows,
             'effectivePid' => 1,
             'site' => new Site('some-site', 1, []),
             'databaseRow' => array_replace_recursive([], $databaseRow),
             'processedTca' => [
+                'ctrl' => [
+                    'languageField' => 'aField',
+                ],
                 'columns' => [
                     'aField' => array_replace_recursive([
                         'config' => [
