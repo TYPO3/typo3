@@ -45,6 +45,7 @@ final class LocalizationFactoryTest extends UnitTestCase
         $labelMapperMock->method('mapDomainToFileName')->willReturnArgument(0);
 
         $packageManagerMock = $this->createMock(PackageManager::class);
+        $packageManagerMock->method('getActivePackages')->willReturn([]);
 
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'] = ['foo' => 'bar'];
 
@@ -59,6 +60,7 @@ final class LocalizationFactoryTest extends UnitTestCase
     public function ensureLocalizationIsProperlyCached(): void
     {
         $packageManagerMock = $this->createMock(PackageManager::class);
+        $packageManagerMock->method('getActivePackages')->willReturn([]);
         $packageManagerMock->method('extractPackageKeyFromPackagePath')->with('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
 
         $catalogue = $this->createMock(MessageCatalogue::class);
@@ -90,6 +92,7 @@ final class LocalizationFactoryTest extends UnitTestCase
     public function usesSymfonyTranslatorInternally(): void
     {
         $packageManagerMock = $this->createMock(PackageManager::class);
+        $packageManagerMock->method('getActivePackages')->willReturn([]);
 
         // Create a test file that exists
         $testFile = __DIR__ . '/Fixtures/locallang.xlf';

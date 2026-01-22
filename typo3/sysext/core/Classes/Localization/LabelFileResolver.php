@@ -280,7 +280,7 @@ readonly class LabelFileResolver
      *
      * Examples:
      * - Source: "/ext/core/Resources/Private/Language/locallang.xlf"
-     * - For locale "de": tries "de.locallang.xlf" in same dir, then "/var/labels/de/core/de.locallang.xlf"
+     * - For locale "de": tries "de.locallang.xlf" in same dir, then "/var/labels/de/core/Resources/Private/Language/de.locallang.xlf"
      * - For locale "de-CH": tries both "de-CH.locallang.xlf" and "de_CH.locallang.xlf" variants
      *
      * @param string $sourcePath Absolute path to the source localization file
@@ -294,6 +294,10 @@ readonly class LabelFileResolver
             $possiblePrefixes[] = str_replace('_', '-', $locale);
         } elseif (str_contains($locale, '-')) {
             $possiblePrefixes[] = str_replace('-', '_', $locale);
+        }
+        $packageRootPaths = [];
+        foreach ($this->packageManager->getActivePackages() as $package) {
+            $packageRootPaths[$package->getPackageKey()] = $package->getPackagePath();
         }
 
         foreach ($possiblePrefixes as $fileNamePrefix) {
@@ -309,22 +313,21 @@ readonly class LabelFileResolver
             }
 
             // Try labels directory structure
-            if (str_starts_with($sourcePath, Environment::getFrameworkBasePath() . '/')) {
-                $validatedPrefix = Environment::getFrameworkBasePath() . '/';
-            } elseif (str_starts_with($sourcePath, Environment::getExtensionsPath() . '/')) {
-                $validatedPrefix = Environment::getExtensionsPath() . '/';
-            } else {
+            $relativePathInPackagePath = '';
+            $extensionKey = null;
+            foreach ($packageRootPaths as $packageKey => $packageRootPath) {
+                if (str_starts_with($sourcePath, $packageRootPath)) {
+                    $relativePathInPackagePath = substr($sourcePath, strlen($packageRootPath));
+                    $extensionKey = $packageKey;
+                    break;
+                }
+            }
+            if ($relativePathInPackagePath === '' || $extensionKey === null) {
                 return $sourcePath;
             }
 
-            [$extensionKey, $file_extPath] = explode('/', substr($sourcePath, strlen($validatedPrefix)), 2);
-            $temp = GeneralUtility::revExplode('/', $file_extPath, 2);
-            if (count($temp) === 1) {
-                array_unshift($temp, '');
-            }
-            [$file_extPath, $file_fileName] = $temp;
-
-            $localizedPath = Environment::getLabelsPath() . '/' . $fileNamePrefix . '/' . $extensionKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $fileNamePrefix . '.' . $file_fileName;
+            [$relativePathInPackagePath, $baseName] = GeneralUtility::revExplode('/', $relativePathInPackagePath, 2);
+            $localizedPath = Environment::getLabelsPath() . '/' . $fileNamePrefix . '/' . $extensionKey . '/' . ($relativePathInPackagePath ? $relativePathInPackagePath . '/' : '') . $fileNamePrefix . '.' . $baseName;
 
             if (@is_file($localizedPath)) {
                 return $localizedPath;
