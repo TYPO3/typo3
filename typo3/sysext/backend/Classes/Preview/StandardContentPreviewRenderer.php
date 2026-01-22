@@ -58,34 +58,42 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     public function renderPageModulePreviewHeader(GridColumnItem $item): string
     {
         $record = $item->getRecord();
-        $row = $record->getRawRecord()?->toArray() ?? [];
-        $itemLabels = $item->getContext()->getItemLabels();
-        $table = $item->getTable();
-        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($table);
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($item->getTable());
         $outHeader = '';
 
-        $headerLayout = (string)($row['header_layout'] ?? '');
-        if ($headerLayout === '100') {
-            $headerLayoutHiddenLabel = $this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout.I.6');
-            $outHeader .= '<div class="element-preview-header-status">' . htmlspecialchars($headerLayoutHiddenLabel) . '</div>';
-        }
-
-        $date = (string)($row['date'] ?? '');
-        if ($date !== '0' && $date !== '') {
-            $dateLabel = $itemLabels['date'] . ' ' . BackendUtility::date($row['date']);
-            $outHeader .= '<div class="element-preview-header-date">' . htmlspecialchars($dateLabel) . ' </div>';
-        }
-
-        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-            $label = $row[$schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName()] ?? '';
-            if ($label !== '') {
-                $outHeader .= '<div class="element-preview-header-header">' . $this->linkEditContent($this->renderText($label), $record) . '</div>';
+        if ($record->has('header_layout')) {
+            $headerLayout = (string)$record->get('header_layout');
+            if ($headerLayout === '100') {
+                $headerLayoutHiddenLabel = $this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout.I.6');
+                $outHeader .= '<div class="element-preview-header-status">' . htmlspecialchars($headerLayoutHiddenLabel) . '</div>';
             }
         }
 
-        $subHeader = (string)($row['subheader'] ?? '');
-        if ($subHeader !== '') {
-            $outHeader .= '<div class="element-preview-header-subheader">' . $this->linkEditContent($this->renderText($subHeader), $record) . '</div>';
+        if ($record->has('date')) {
+            /** @var \DateTimeImmutable|null $date */
+            $date = $record->get('date');
+            if ($date && $date->getTimestamp() !== 0) {
+                $itemLabels = $item->getContext()->getItemLabels();
+                $dateLabel = $itemLabels['date'] . ' ' . BackendUtility::date($date);
+                $outHeader .= '<div class="element-preview-header-date">' . htmlspecialchars($dateLabel) . ' </div>';
+            }
+        }
+
+        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
+            $labelFieldName = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName();
+            if ($record->has($labelFieldName)) {
+                $label = $record->get($labelFieldName);
+                if ($label !== '') {
+                    $outHeader .= '<div class="element-preview-header-header">' . $this->linkEditContent($this->renderText($label), $record) . '</div>';
+                }
+            }
+        }
+
+        if ($record->has('subheader')) {
+            $subHeader = (string)$record->get('subheader');
+            if ($subHeader !== '') {
+                $outHeader .= '<div class="element-preview-header-subheader">' . $this->linkEditContent($this->renderText($subHeader), $record) . '</div>';
+            }
         }
 
         return $outHeader;
@@ -93,25 +101,24 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
-        $languageService = $this->getLanguageService();
         $table = $item->getTable();
+        // This preview should only be used for tt_content records.
+        if ($table !== 'tt_content') {
+            return '';
+        }
+
+        $languageService = $this->getLanguageService();
         $recordObj = $item->getRecord();
         $recordType = $recordObj->getRecordType();
-        $out = '';
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($recordObj->getMainType());
 
         // If record type is unknown, render warning message.
-        if (!GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($recordObj->getMainType())->hasSubSchema($recordType)) {
+        if (!$schema->hasSubSchema($recordType)) {
             $message = sprintf(
                 $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
                 $recordType
             );
-            $out .= '<span class="badge badge-warning">' . htmlspecialchars($message) . '</span>';
-            return $out;
-        }
-
-        // This preview should only be used for tt_content records.
-        if ($table !== 'tt_content') {
-            return $out;
+            return '<span class="badge badge-warning">' . htmlspecialchars($message) . '</span>';
         }
 
         // Draw preview of the item depending on its record type
@@ -120,7 +127,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 break;
             case 'uploads':
                 if ($recordObj->has('media') && ($media = $recordObj->get('media'))) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($media), $recordObj);
+                    return $this->linkEditContent($this->getThumbCodeUnlinked($media), $recordObj);
                 }
                 break;
             case 'shortcut':
@@ -140,9 +147,15 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                             $shortcutRecord->getUid(),
                             '1'
                         );
-                        $shortcutContent .= '<li class="list-group-item">' . $icon . ' ' . $this->linkEditContent(htmlspecialchars(BackendUtility::getRecordTitle($shortcutTableName, $row)), $shortcutRecord) . '</li>';
+                        $pathToContainingPage = BackendUtility::getRecordPath($row['pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0);
+                        $title = BackendUtility::getRecordTitle($shortcutTableName, $row);
+                        $shortcutContent .= '<li class="list-group-item">'
+                            . $icon
+                            . ' '
+                            . $this->linkEditContent(htmlspecialchars($title) . ' <span class="text-variant">[' . $recordObj->getUid() . '] ' . $pathToContainingPage . '</span>', $shortcutRecord)
+                            . '</li>';
                     }
-                    $out .= $shortcutContent ? '<ul class="list-group">' . $shortcutContent . '</ul>' : '';
+                    return $shortcutContent !== '' ? '<ul class="list-group">' . $shortcutContent . '</ul>' : '';
                 }
                 break;
             case 'menu_abstract':
@@ -159,25 +172,58 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 $row = $recordObj->getRawRecord()?->toArray() ?? [];
                 if ($recordType !== 'menu_sitemap' && (($row['pages'] ?? false) || ($row['selected_categories'] ?? false))) {
                     // Show pages/categories if menu type is not "Sitemap"
-                    $out .= $this->linkEditContent($this->generateListForMenuContentTypes($row, $recordType), $recordObj);
+                    return $this->linkEditContent($this->generateListForMenuContentTypes($row, $recordType), $recordObj);
                 }
                 break;
+            case 'bullets':
+                $list = GeneralUtility::trimExplode(LF, $recordObj->get('bodytext'), true);
+                if ($list !== []) {
+                    switch ($recordObj->get('bullets_type')) {
+                        case 0:
+                            $list = array_map(
+                                static fn(string $item) => '<li>' . htmlspecialchars($item) . '</li>',
+                                $list
+                            );
+                            return '<ul>' . implode(LF, $list) . '</ul>';
+                        case 1:
+                            $list = array_map(
+                                static fn(string $item) => '<li>' . htmlspecialchars($item) . '</li>',
+                                $list
+                            );
+                            return '<ol>' . implode(LF, $list) . '</ol>';
+                        case 2:
+                            $list = array_map(
+                                static fn(string $item): string =>
+                                (static function () use ($item) {
+                                    $split = GeneralUtility::trimExplode('|', $item, true, 2);
+
+                                    return '<dt>' . htmlspecialchars($split[0]) . '</dt>'
+                                        . '<dd>' . htmlspecialchars($split[1] ?? '') . '</dd>';
+                                })(),
+                                $list
+                            );
+                            return '<dl>' . implode(LF, $list) . '</dl>';
+                    }
+                }
+                break;
+            case 'html':
+                $html = GeneralUtility::trimExplode(LF, $recordObj->get('bodytext'), true);
+                $html = array_slice($html, 0, 100);
+                return $this->linkEditContent(str_replace(LF, '<br />', htmlspecialchars(implode(LF, $html))), $recordObj);
             default:
+                $content = '';
                 if ($recordObj->has('bodytext') && ($bodytext = $recordObj->get('bodytext'))) {
-                    $out .= $this->linkEditContent($this->renderText($bodytext), $recordObj);
+                    $content .= $this->linkEditContent($this->renderText($bodytext), $recordObj);
                 }
-                if ($recordObj->has('image') && ($image = $recordObj->get('image'))) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($image), $recordObj);
+                foreach (['image', 'media', 'assets'] as $fieldName) {
+                    if ($recordObj->has($fieldName) && ($image = $recordObj->get($fieldName))) {
+                        $content .= $this->linkEditContent($this->getThumbCodeUnlinked($image), $recordObj);
+                    }
                 }
-                if ($recordObj->has('media') && ($media = $recordObj->get('media'))) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($media), $recordObj);
-                }
-                if ($recordObj->has('assets') && ($assets = $recordObj->get('assets'))) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($assets), $recordObj);
-                }
+                return $content;
         }
 
-        return $out;
+        return '';
     }
 
     /**
@@ -348,12 +394,13 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             return '';
         }
         $content = '';
-        $uidList = explode(',', $record[$field]);
+        $uidList = GeneralUtility::intExplode(',', $record[$field], true);
         foreach ($uidList as $uid) {
-            $uid = (int)$uid;
-            $pageRecord = BackendUtility::getRecord($table, $uid, 'title');
+            $pageRecord = BackendUtility::getRecord($table, $uid);
             if ($pageRecord) {
-                $content .= '<li class="list-group-item">' . htmlspecialchars($pageRecord['title']) . ' <span class="text-variant">[' . $uid . ']</span></li>';
+                $title = BackendUtility::getRecordTitle($table, $pageRecord);
+                $pathToContainingPage = BackendUtility::getRecordPath($pageRecord['pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0);
+                $content .= '<li class="list-group-item">' . htmlspecialchars($title) . ' <span class="text-variant">[' . $uid . '] ' . $pathToContainingPage . '</span></li>';
             }
         }
         return $content ? '<ul class="list-group">' . $content . '</ul>' : '';

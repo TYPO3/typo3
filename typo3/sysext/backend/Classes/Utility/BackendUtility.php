@@ -869,11 +869,14 @@ class BackendUtility
     /**
      * Returns $tstamp formatted as "ddmmyy" (According to $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'])
      *
-     * @param int $tstamp Time stamp, seconds
+     * @param \DateTimeInterface|int $tstamp Time stamp, seconds
      * @return string Formatted time
      */
-    public static function date($tstamp)
+    public static function date(\DateTimeInterface|int $tstamp)
     {
+        if ($tstamp instanceof \DateTimeInterface) {
+            return $tstamp->format($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
+        }
         return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)$tstamp);
     }
 
