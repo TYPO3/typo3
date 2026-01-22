@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\LabelFileResolver;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -49,8 +50,15 @@ final class LocalizationFactoryTest extends UnitTestCase
 
         $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'] = ['foo' => 'bar'];
 
-        $result = (new LocalizationFactory($translatorMock, $cacheFrontendMock, new NullFrontend('runtime'), $labelMapperMock, new LabelFileResolver($packageManagerMock)))
-            ->getParsedData(__DIR__ . '/Fixtures/locallang.invalid', 'en');
+        $subject = new LocalizationFactory(
+            $translatorMock,
+            $cacheFrontendMock,
+            new NullFrontend('runtime'),
+            $labelMapperMock,
+            new LabelFileResolver($packageManagerMock, new TranslationDomainResolver()),
+            new TranslationDomainResolver(),
+        );
+        $result = $subject->getParsedData(__DIR__ . '/Fixtures/locallang.invalid', 'en');
 
         // Should return empty structure when file not found
         self::assertEmpty($result);
@@ -81,8 +89,15 @@ final class LocalizationFactoryTest extends UnitTestCase
             'label1' => 'This is label #1',
         ]);
 
-        $result = (new LocalizationFactory($translatorMock, $cacheFrontendMock, new NullFrontend('runtime'), $labelMapperMock, new LabelFileResolver($packageManagerMock)))
-            ->getParsedData('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf', 'en');
+        $subject = new LocalizationFactory(
+            $translatorMock,
+            $cacheFrontendMock,
+            new NullFrontend('runtime'),
+            $labelMapperMock,
+            new LabelFileResolver($packageManagerMock, new TranslationDomainResolver()),
+            new TranslationDomainResolver(),
+        );
+        $result = $subject->getParsedData('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf', 'en');
 
         // Verify we get the expected structure
         self::assertNotEmpty($result);
@@ -104,7 +119,6 @@ final class LocalizationFactoryTest extends UnitTestCase
             ->with('xlf', self::stringContains('locallang.xlf'), 'default', $testFile);
 
         $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
-        $labelMapperMock->method('mapFileNameToDomain')->willReturnArgument(0);
         $labelMapperMock->method('mapDomainToFileName')->willReturnArgument(0);
 
         $catalogue = new MessageCatalogue('en', [$testFile => ['fine' => 'true']]);
@@ -116,7 +130,8 @@ final class LocalizationFactoryTest extends UnitTestCase
             new NullFrontend('l10n'),
             new NullFrontend('runtime'),
             $labelMapperMock,
-            new LabelFileResolver($packageManagerMock)
+            new LabelFileResolver($packageManagerMock, new TranslationDomainResolver()),
+            new TranslationDomainResolver(),
         );
         $subject->getParsedData($testFile, 'en');
     }

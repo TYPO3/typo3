@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
@@ -259,7 +259,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Middleware\JavaScriptLanguageDomainProvider(
             $container->get(LanguageServiceFactory::class),
-            $container->get(TranslationDomainMapper::class),
+            $container->get(TranslationDomainResolver::class),
         );
     }
 

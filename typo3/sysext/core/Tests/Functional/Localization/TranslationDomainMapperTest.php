@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -71,7 +72,7 @@ final class TranslationDomainMapperTest extends FunctionalTestCase
     #[Test]
     public function mapFileNameToDomain(string $fileName, string $expectedDomain): void
     {
-        $subject = $this->get(TranslationDomainMapper::class);
+        $subject = $this->get(TranslationDomainResolver::class);
         $actualDomain = $subject->mapFileNameToDomain($fileName);
         self::assertSame($expectedDomain, $actualDomain);
     }
@@ -261,13 +262,14 @@ final class TranslationDomainMapperTest extends FunctionalTestCase
     #[Test]
     public function domainToFileAndBackRoundTrip(string $originalDomain, string $expectedDomain): void
     {
-        $subject = $this->get(TranslationDomainMapper::class);
+        $subjectMapper = $this->get(TranslationDomainMapper::class);
+        $subjectResolver = $this->get(TranslationDomainResolver::class);
 
         // Domain -> File
-        $fileName = $subject->mapDomainToFileName($originalDomain);
+        $fileName = $subjectMapper->mapDomainToFileName($originalDomain);
 
         // File -> Domain
-        $resultDomain = $subject->mapFileNameToDomain($fileName);
+        $resultDomain = $subjectResolver->mapFileNameToDomain($fileName);
 
         // Should get back extension key format
         self::assertSame($expectedDomain, $resultDomain);
@@ -286,7 +288,7 @@ final class TranslationDomainMapperTest extends FunctionalTestCase
     #[Test]
     public function caseConversionInDomains(string $fileName, string $expectedDomainPart): void
     {
-        $subject = $this->get(TranslationDomainMapper::class);
+        $subject = $this->get(TranslationDomainResolver::class);
         $domain = $subject->mapFileNameToDomain($fileName);
         self::assertStringContainsString($expectedDomainPart, $domain);
     }
@@ -357,7 +359,7 @@ final class TranslationDomainMapperTest extends FunctionalTestCase
     #[Test]
     public function fileNameToDomainIsConsistentDespiteCollisions(): void
     {
-        $subject = $this->get(TranslationDomainMapper::class);
+        $subject = $this->get(TranslationDomainResolver::class);
 
         // Both files should map to the same domain
         $domainFromLocallang = $subject->mapFileNameToDomain(
@@ -381,13 +383,14 @@ final class TranslationDomainMapperTest extends FunctionalTestCase
     #[Test]
     public function tabsFileCollisionPriority(): void
     {
-        $subject = $this->get(TranslationDomainMapper::class);
+        $subjectMapper = $this->get(TranslationDomainMapper::class);
+        $subjectResolver = $this->get(TranslationDomainResolver::class);
 
         // Both locallang_tabs.xlf and tabs.xlf should map to "tabs" domain
-        $domainFromLocallangTabs = $subject->mapFileNameToDomain(
+        $domainFromLocallangTabs = $subjectResolver->mapFileNameToDomain(
             'EXT:test_translation_domain/Resources/Private/Language/locallang_tabs.xlf'
         );
-        $domainFromTabs = $subject->mapFileNameToDomain(
+        $domainFromTabs = $subjectResolver->mapFileNameToDomain(
             'EXT:test_translation_domain/Resources/Private/Language/tabs.xlf'
         );
 
@@ -397,7 +400,7 @@ final class TranslationDomainMapperTest extends FunctionalTestCase
         self::assertSame($domainFromLocallangTabs, $domainFromTabs);
 
         // Check which file wins in the domain-to-file mapping
-        $resources = $subject->findLabelResourcesInPackage('test_translation_domain');
+        $resources = $subjectMapper->findLabelResourcesInPackage('test_translation_domain');
         $tabsFile = $resources['test_translation_domain.tabs'];
 
         // tabs.xlf should win (priority 3) over locallang_tabs.xlf (priority 2)
@@ -513,7 +516,7 @@ final class TranslationDomainMapperTest extends FunctionalTestCase
     #[Test]
     public function customDirectoryFilesWithSameNameGenerateUniqueDomains(): void
     {
-        $subject = $this->get(TranslationDomainMapper::class);
+        $subject = $this->get(TranslationDomainResolver::class);
 
         $fooDomain = $subject->mapFileNameToDomain(
             'EXT:test_translation_domain/ContentBlocks/ContentElements/foo/language/labels.xlf'

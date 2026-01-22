@@ -63,6 +63,7 @@ readonly class TranslationDomainMapper
     public function __construct(
         protected PackageManager $packageManager,
         protected LabelFileResolver $labelFileResolver,
+        protected TranslationDomainResolver $translationDomainResolver,
         #[Autowire(service: 'cache.l10n')]
         protected FrontendInterface $labelCache,
         protected EventDispatcherInterface $eventDispatcher,
@@ -96,7 +97,7 @@ readonly class TranslationDomainMapper
             // Make path relative
             $file = $this->getRelativePath($file, $packageKey, $package);
 
-            $domain = $this->mapFileNameToDomain($file);
+            $domain = $this->translationDomainResolver->mapFileNameToDomain($file);
             $priority = $this->getFilePriority($file);
 
             // Only set/overwrite if this file has higher or equal priority
@@ -137,7 +138,7 @@ readonly class TranslationDomainMapper
 
             foreach ($files as $file) {
                 $file = $this->getRelativePath($file, $packageKey, $package);
-                $domain = $this->mapFileNameToDomain($file);
+                $domain = $this->translationDomainResolver->mapFileNameToDomain($file);
                 $priority = $this->getFilePriority($file);
 
                 // Only set/overwrite if this file has higher or equal priority
@@ -166,10 +167,10 @@ readonly class TranslationDomainMapper
     protected function getFilePriority(string $filePath): int
     {
         $fileName = basename($filePath);
-        $fileNameWithoutExtension = $this->labelFileResolver->getFileReferenceWithoutExtension($fileName);
+        $fileNameWithoutExtension = $this->translationDomainResolver->getFileReferenceWithoutExtension($fileName);
 
         // Remove locale prefix if present (e.g., "de.locallang.xlf" -> "locallang.xlf")
-        $locale = $this->labelFileResolver->getLocaleFromLanguageFile($fileName);
+        $locale = $this->translationDomainResolver->getLocaleFromLanguageFile($fileName);
         if ($locale !== null) {
             $fileNameWithoutExtension = substr($fileNameWithoutExtension, strlen($locale) + 1);
         }
@@ -210,7 +211,7 @@ readonly class TranslationDomainMapper
         if (str_starts_with($domain, 'EXT:') || GeneralUtility::isAllowedAbsPath($domain)) {
             return $domain;
         }
-        if (!$this->isValidDomainName($domain)) {
+        if (!$this->translationDomainResolver->isValidDomainName($domain)) {
             return $domain;
         }
 
@@ -227,119 +228,6 @@ readonly class TranslationDomainMapper
         return $allDomainsInPackage[$domain] ?? $domain;
     }
 
-    /**
-     * Maps a label resource file reference to a translation domain.
-     *
-     * Examples:
-     * - "EXT:core/Resources/Private/Language/locallang.xlf" -> "core.messages"
-     * - "EXT:backend/Resources/Private/Language/locallang_toolbar.xlf" -> "backend.toolbar"
-     * - "EXT:felogin/Configuration/Sets/Felogin/labels.xlf" -> "felogin.sets.felogin"
-     */
-    public function mapFileNameToDomain(string $fileName): string
-    {
-        // Extract extension key from EXT: path
-        try {
-            $extensionKey = $this->extractExtensionKey($fileName);
-        } catch (\InvalidArgumentException) {
-            return $fileName;
-        }
-
-        // Transform file path to resource name
-        $resourceName = $this->transformFilePathToResource($fileName, $extensionKey);
-        return $extensionKey . '.' . $resourceName;
-    }
-
-    /**
-     * Transforms a file path to a resource name (for domain).
-     *
-     * Examples:
-     * - "Resources/Private/Language/locallang.xlf" -> "messages"
-     * - "Resources/Private/Language/locallang_toolbar.xlf" -> "toolbar"
-     * - "Resources/Private/Language/Form/locallang_tabs.xlf" -> "form.tabs"
-     * - "Configuration/Sets/Felogin/labels.xlf" -> "sets.felogin"
-     * - "EXT:example/ContentBlocks/ContentElements/simple-relation/language/labels.xlf" -> "content_blocks.content_elements.simple_relation.language.labels"
-     */
-    protected function transformFilePathToResource(string $filePath, string $extensionKey): string
-    {
-        $isExtensionPath = false;
-
-        // Remove EXT:extensionKey/ prefix
-        $prefix = 'EXT:' . $extensionKey . '/';
-        if (str_starts_with($filePath, $prefix)) {
-            $isExtensionPath = true;
-            $filePath = substr($filePath, strlen($prefix));
-        }
-
-        // Remove locale prefix if present (e.g., "de.locallang.xlf" -> "locallang.xlf")
-        $fileName = basename($filePath);
-        $locale = $this->labelFileResolver->getLocaleFromLanguageFile($fileName);
-        if ($locale !== null) {
-            $fileName = substr($fileName, strlen($locale) + 1);
-            $filePath = dirname($filePath) . '/' . $fileName;
-        }
-
-        // Handle site sets: Configuration/Sets/{Name}/labels.xlf -> sets.{name}
-        if (preg_match('#Configuration/Sets/([^/]+)/labels\.xlf$#', $filePath, $matches)) {
-            $setName = $this->upperCamelCaseToSnakeCase($matches[1]);
-            return 'sets.' . $setName;
-        }
-
-        // Clean standard language files: Resources/Private/Language/...
-        if (str_starts_with($filePath, 'Resources/Private/Language/')) {
-            $isExtensionPath = true;
-            $filePath = substr($filePath, strlen('Resources/Private/Language/'));
-        }
-
-        // Handle extension paths
-        if ($isExtensionPath) {
-            // Split into directory and filename
-            $pathParts = explode('/', $filePath);
-            $fileName = array_pop($pathParts);
-
-            // Convert directories from UpperCamelCase to snake_case
-            $resourceParts = array_map([$this, 'upperCamelCaseToSnakeCase'], $pathParts);
-
-            // Transform filename
-            $fileNameWithoutExtension = $this->labelFileResolver->getFileReferenceWithoutExtension($fileName);
-
-            if ($fileNameWithoutExtension === 'locallang') {
-                $resourceParts[] = 'messages';
-            } elseif (str_starts_with($fileNameWithoutExtension, 'locallang_')) {
-                // Remove locallang_ prefix (keep snake_case as-is)
-                $suffix = substr($fileNameWithoutExtension, strlen('locallang_'));
-                $suffix = $this->upperCamelCaseToSnakeCase($suffix);
-                $resourceParts[] = $suffix;
-            } else {
-                // Use filename as-is, converted to snake_case
-                $resourceParts[] = $this->upperCamelCaseToSnakeCase($fileNameWithoutExtension);
-            }
-
-            return implode('.', $resourceParts);
-        }
-
-        // Fallback: use filename without extension
-        $fileNameWithoutExtension = $this->labelFileResolver->getFileReferenceWithoutExtension(basename($filePath));
-        return $this->upperCamelCaseToSnakeCase($fileNameWithoutExtension);
-    }
-
-    /**
-     * Extracts the extension key from an EXT: file reference.
-     */
-    protected function extractExtensionKey(string $filePath): string
-    {
-        if (!str_starts_with($filePath, 'EXT:')) {
-            throw new \InvalidArgumentException('File path must start with "EXT:"', 1729000001);
-        }
-
-        $withoutPrefix = substr($filePath, 4);
-        $slashPos = strpos($withoutPrefix, '/');
-        if ($slashPos === false) {
-            throw new \InvalidArgumentException('Invalid EXT: reference format', 1729000002);
-        }
-
-        return substr($withoutPrefix, 0, $slashPos);
-    }
-
     protected function getRelativePath(string $file, string $packageKey, PackageInterface $package): string
     {
         if (str_starts_with($file, $package->getPackagePath())) {
@@ -349,27 +237,5 @@ readonly class TranslationDomainMapper
             $file = substr($file, strlen(Environment::getProjectPath()) + 1);
         }
         return $file;
-    }
-
-    /**
-     * Converts UpperCamelCase to snake_case.
-     *
-     * Examples: "SudoMode" -> "sudo_mode", "Form" -> "form"
-     */
-    protected function upperCamelCaseToSnakeCase(string $input): string
-    {
-        // Insert underscores before uppercase letters (except at start) and convert to lowercase
-        $result = preg_replace('/([a-z0-9])([A-Z])/', '$1_$2', $input);
-        $result = strtolower($result ?? $input);
-        return str_replace('-', '_', $result);
-    }
-
-    /**
-     * A valid domain consists of lowercase letters, numbers, underscores only
-     * and at least one dot in between.
-     */
-    public function isValidDomainName(string $domain): bool
-    {
-        return (bool)preg_match('/^[a-z0-9_]+(\.[a-z0-9_]+)+$/', $domain);
     }
 }

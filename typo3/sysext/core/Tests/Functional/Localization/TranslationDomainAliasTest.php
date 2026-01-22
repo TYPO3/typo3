@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Localization;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -93,7 +94,7 @@ final class TranslationDomainAliasTest extends FunctionalTestCase
     #[Test]
     public function fileNameToDomainGeneratesNewDomain(): void
     {
-        $subject = $this->get(TranslationDomainMapper::class);
+        $subject = $this->get(TranslationDomainResolver::class);
 
         // wizards.xlf should map to the new domain
         $domain = $subject->mapFileNameToDomain(

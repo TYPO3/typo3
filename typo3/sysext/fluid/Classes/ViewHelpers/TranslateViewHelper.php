@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface as ExtbaseRequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -65,6 +66,7 @@ final class TranslateViewHelper extends AbstractViewHelper
 
     public function __construct(
         private readonly TranslationDomainMapper $translationDomainMapper,
+        private readonly TranslationDomainResolver $translationDomainResolver,
         private readonly Locales $locales,
     ) {}
 
@@ -118,7 +120,7 @@ final class TranslateViewHelper extends AbstractViewHelper
                     $possibleDomain,
                     $possibleId
                 ] = explode(':', $id, 2);
-                if ($this->translationDomainMapper->isValidDomainName($possibleDomain) && $this->translationDomainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
+                if ($this->translationDomainResolver->isValidDomainName($possibleDomain) && $this->translationDomainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
                     $extensionName = $possibleDomain;
                     $id = $possibleId;
                 }

@@ -44,6 +44,7 @@ readonly class LabelFileResolver
 {
     public function __construct(
         protected PackageManager $packageManager,
+        protected TranslationDomainResolver $translationDomainResolver,
     ) {}
 
     /**
@@ -69,7 +70,7 @@ readonly class LabelFileResolver
             $files = GeneralUtility::getAllFilesAndFoldersInPath([], $searchPath, $allowedFileExtensions);
             foreach ($files as $file) {
                 $fileName = PathUtility::basename($file);
-                $locale = $this->getLocaleFromLanguageFile($fileName);
+                $locale = $this->translationDomainResolver->getLocaleFromLanguageFile($fileName);
                 if ($locale === null) {
                     $locale = 'default';
                 }
@@ -98,20 +99,6 @@ readonly class LabelFileResolver
             }
         }
         return $result;
-    }
-
-    /**
-     * If a file is called "de_AT.locallang.xlf", this method returns "de_AT".
-     * If there is no suffix, NULL is returned.
-     *
-     * However, for files like "db.xlf", "db" should not be detected as locale
-     */
-    public function getLocaleFromLanguageFile(string $fileName): ?string
-    {
-        if (substr_count($fileName, '.') > 1 && preg_match('/^[a-z]{2}([_-][A-z]{2,3})?\./', $fileName)) {
-            return substr($fileName, 0, strpos($fileName, '.'));
-        }
-        return null;
     }
 
     /**
@@ -163,7 +150,9 @@ readonly class LabelFileResolver
      * Get override file paths for localization
      *
      * This method returns an array of override file paths that should be loaded
-     * for the given file reference and language key
+     * for the given file reference and language key. It supports both file path syntax
+     * (e.g., 'EXT:core/Resources/Private/Language/locallang.xlf') and domain syntax
+     * (e.g., 'core.messages').
      *
      * @return array<string> Array of absolute file paths to override files
      */
@@ -178,18 +167,29 @@ readonly class LabelFileResolver
         $overrideFiles = $GLOBALS['TYPO3_CONF_VARS']['LANG']['resourceOverrides'];
         $supportedExtensions = $this->getSupportedExtensions();
 
+        // Build list of keys to check: file paths (with various extensions)
+        $keysToCheck = [];
         foreach ($supportedExtensions as $extension) {
-            $fullFileReference = $fileReferenceWithoutExtension . '.' . $extension;
+            $keysToCheck[] = $fileReferenceWithoutExtension . '.' . $extension;
+        }
 
+        // Also add domain key for domain-syntax override support
+        $domain = $this->translationDomainResolver->mapFileNameToDomain($fileReference);
+        if ($domain !== $fileReference && $this->translationDomainResolver->isValidDomainName($domain)) {
+            $keysToCheck[] = $domain;
+        }
+
+        foreach ($keysToCheck as $key) {
             // Check language-specific overrides first
-            if (isset($overrideFiles[$locale][$fullFileReference]) && is_array($overrideFiles[$locale][$fullFileReference])) {
-                $validOverrideFiles = array_merge($validOverrideFiles, $overrideFiles[$locale][$fullFileReference]);
+            if (isset($overrideFiles[$locale][$key]) && is_array($overrideFiles[$locale][$key])) {
+                $validOverrideFiles = array_merge($validOverrideFiles, $overrideFiles[$locale][$key]);
             }
             // Check general overrides (applies to all languages)
-            elseif (isset($overrideFiles[$fullFileReference]) && is_array($overrideFiles[$fullFileReference])) {
-                $validOverrideFiles = array_merge($validOverrideFiles, $overrideFiles[$fullFileReference]);
+            elseif (isset($overrideFiles[$key]) && is_array($overrideFiles[$key])) {
+                $validOverrideFiles = array_merge($validOverrideFiles, $overrideFiles[$key]);
             }
         }
+        $validOverrideFiles = array_unique($validOverrideFiles);
 
         // Convert relative paths to absolute paths
         $absoluteOverrideFiles = [];
@@ -203,6 +203,7 @@ readonly class LabelFileResolver
                 }
             }
         }
+        $absoluteOverrideFiles = array_unique($absoluteOverrideFiles);
 
         return $absoluteOverrideFiles;
     }
@@ -229,7 +230,7 @@ readonly class LabelFileResolver
 
     public function getFileReferenceWithoutExtension(string $fileReference): string
     {
-        return preg_replace('/\\.[a-z0-9]+$/i', '', $fileReference) ?? $fileReference;
+        return $this->translationDomainResolver->getFileReferenceWithoutExtension($fileReference);
     }
 
     /**

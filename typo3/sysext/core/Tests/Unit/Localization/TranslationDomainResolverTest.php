@@ -19,19 +19,16 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Localization\LabelFileResolver;
-use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-final class LabelFileResolverTest extends UnitTestCase
+final class TranslationDomainResolverTest extends UnitTestCase
 {
     #[Test]
     #[DataProvider('getLocaleFromLanguageFileDataProvider')]
     public function getLocaleFromLanguageFileReturnsTheLocaleOnlyForValidResults(string $languageFile, ?string $expected): void
     {
-        $subject = new LabelFileResolver(
-            $this->createMock(PackageManager::class),
-        );
+        $subject = new TranslationDomainResolver();
         $result = $subject->getLocaleFromLanguageFile($languageFile);
         self::assertEquals($expected, $result);
     }

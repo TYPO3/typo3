@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Localization\JavaScriptLanguageDomainProvider as CoreJavaScriptLanguageDomainProvider;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
+use TYPO3\CMS\Core\Localization\TranslationDomainResolver;
 
 /**
  * @internal
@@ -34,7 +34,7 @@ final readonly class JavaScriptLanguageDomainProvider implements MiddlewareInter
 {
     public function __construct(
         private LanguageServiceFactory $languageServiceFactory,
-        private TranslationDomainMapper $translationDomainMapper,
+        private TranslationDomainResolver $translationDomainResolver,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -62,7 +62,7 @@ final readonly class JavaScriptLanguageDomainProvider implements MiddlewareInter
 
         $provider = new CoreJavaScriptLanguageDomainProvider(
             $this->languageServiceFactory,
-            $this->translationDomainMapper,
+            $this->translationDomainResolver,
             new ResponseFactory(),
             new StreamFactory(),
         );
