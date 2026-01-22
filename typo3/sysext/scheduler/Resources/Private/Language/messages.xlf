@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
-    <file id="f1">
-        <unit id="delete_group">
-            <segment>
-                <source>Delete this task group? You can restore it in the module "Recycler".</source>
-            </segment>
-        </unit>
-        <unit id="delete_task">
-            <segment>
-                <source>Delete this task? You can restore it in the module "Recycler".</source>
-            </segment>
-        </unit>
-    </file>
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
+  <file id="f1">
+    <unit id="delete_group">
+      <segment>
+        <source>Delete this task group? You can restore it in the module "Recycler".</source>
+      </segment>
+    </unit>
+    <unit id="delete_task">
+      <segment>
+        <source>Delete this task? You can restore it in the module "Recycler".</source>
+      </segment>
+    </unit>
+  </file>
 </xliff>
