@@ -228,6 +228,9 @@ class MenuProcessor implements DataProcessorInterface
      */
     public function process(ContentObjectRenderer $cObj, array $contentObjectConfiguration, array $processorConfiguration, array $processedData)
     {
+        if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) {
+            return $processedData;
+        }
         $this->cObj = $cObj;
         $this->processorConfiguration = $processorConfiguration;
 
