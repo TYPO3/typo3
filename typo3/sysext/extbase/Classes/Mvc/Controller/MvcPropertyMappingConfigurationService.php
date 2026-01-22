@@ -140,6 +140,7 @@ class MvcPropertyMappingConfigurationService implements SingletonInterface
         }
 
         foreach ($trustedProperties as $propertyName => $propertyConfiguration) {
+            $propertyName = (string)$propertyName;
             if (!$controllerArguments->hasArgument($propertyName) || !is_array($propertyConfiguration)) {
                 continue;
             }
