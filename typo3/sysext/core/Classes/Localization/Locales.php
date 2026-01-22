@@ -37,6 +37,8 @@ class Locales
     /**
      * Supported TYPO3 languages with locales
      *
+     * Important: This uses "underscore" to separate locale and country e.g. fr_CA
+     *
      * @var array<non-empty-string, non-empty-string>
      */
     protected array $languages = [
@@ -118,11 +120,13 @@ class Locales
      *   $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']
      * it is possible to extend the dependency list.
      *
+     * Important: This uses "dash" to separate locale and country e.g. fr-CA
+     *
      * Example:
-     * If "lb" is chosen, but no label was found, a fallback to the label in "de" is used.
+     * If "lb" is chosen, but no label was found, a fallback to the label in "de-LU" is used.
      */
     protected array $localeDependencies = [
-        'lb' => ['de'],
+        'lb' => ['de-LU'],
     ];
 
     public function __construct()
@@ -132,28 +136,37 @@ class Locales
             if (!is_string($locale) || $locale === '') {
                 continue;
             }
+            // Normalize: $this->languages uses "underscore" to separate locale and country e.g. fr_CA
+            $locale = $this->normalizeLanguage($locale);
             if (!isset($this->languages[$locale])) {
                 $this->languages[$locale] = $name;
             }
         }
         // Merge user-provided locale dependencies
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] ?? null)) {
+            // Normalize: $this->localeDependencies uses "dash" to separate locale and country e.g. fr-CA
+            $localDependenciesOverride = [];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] as $locale => $dependencies) {
+                $localDependenciesOverride[$this->normalizeLocale($locale)] = $this->normalizeLocaleDependencies($dependencies);
+            }
             $this->localeDependencies = array_replace_recursive(
                 $this->localeDependencies,
-                $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']
+                $localDependenciesOverride
             );
         }
     }
 
     public function createLocale(string $localeKey, ?array $alternativeDependencies = null): Locale
     {
-        if (strpos($localeKey, '.')) {
-            [$sanitizedLocaleKey] = explode('.', $localeKey);
-        }
         // Find the requested language in this list based on the $languageKey
         // Language is found. Configure it:
-        if ($localeKey === 'en' || $this->isValidLanguageKey($sanitizedLocaleKey ?? $localeKey)) {
-            return new Locale($localeKey, $alternativeDependencies ?? $this->getLocaleDependencies($sanitizedLocaleKey ?? $localeKey));
+        if ($this->isValidLanguageKey($localeKey)) {
+            if ($alternativeDependencies !== null) {
+                $dependencies = $this->normalizeLocaleDependencies($alternativeDependencies);
+            } else {
+                $dependencies = $this->getLocaleDependencies($localeKey);
+            }
+            return new Locale($localeKey, $dependencies);
         }
         return new Locale();
     }
@@ -169,24 +182,28 @@ class Locales
 
     public function isValidLanguageKey(string $locale): bool
     {
-        // "en" implicitly equals "default", so this is OK
-        if ($locale === 'en' || $locale === 'default') {
+        // "default" is converted to "en" in Locale::normalize(), so this is OK
+        if ($locale === 'default') {
             return true;
         }
-        if (!isset($this->languages[$locale])) {
-            // the given locale is not found in the current locales, let us see if
-            // the base language (iso-639-1) is in the list of supported locales.
-            if (str_contains($locale, '_')) {
-                [$baseIsoCodeLanguageKey] = explode('_', $locale);
-                return $this->isValidLanguageKey($baseIsoCodeLanguageKey);
-            }
-            if (str_contains($locale, '-')) {
-                [$baseIsoCodeLanguageKey] = explode('-', $locale);
-                return $this->isValidLanguageKey($baseIsoCodeLanguageKey);
-            }
-            return false;
+
+        // Remove code-set if any
+        if (str_contains($locale, '.')) {
+            [$locale] = explode('.', $locale, 2);
         }
-        return true;
+        // Normalize: $this->languages uses "underscore" to separate locale and country e.g. fr_CA
+        $locale = $this->normalizeLanguage($locale);
+        // Check if the normalized locale is already in the list of supported locales.
+        if (isset($this->languages[$locale])) {
+            return true;
+        }
+
+        // Remove country-code if any
+        if (str_contains($locale, '_')) {
+            [$locale] = explode('_', $locale, 2);
+        }
+        // Check if the base language (iso-639-1) is in the list of supported locales.
+        return isset($this->languages[$locale]);
     }
 
     /**
@@ -220,37 +237,55 @@ class Locales
      *
      * @return array<int, non-empty-string>
      */
-    public function getLocaleDependencies(string $locale): array
+    public function getLocaleDependencies(string $localeKey): array
     {
+        $locale = new Locale($localeKey);
         $dependencies = [];
-        if (isset($this->localeDependencies[$locale])) {
-            $dependencies = $this->localeDependencies[$locale];
+        if (isset($this->localeDependencies[$locale->getName()])) {
+            $localeDependencies = $this->localeDependencies[$locale->getName()];
             // Search for dependencies recursively
-            $localeDependencies = $dependencies;
             foreach ($localeDependencies as $dependency) {
-                if (isset($this->localeDependencies[$dependency])) {
-                    $dependencies = array_merge($dependencies, $this->getLocaleDependencies($dependency));
-                }
+                // Ensure order of dependencies including their direct fallbacks is preserved
+                $dependencies[] = $dependency;
+                $dependencies = array_merge($dependencies, $this->getLocaleDependencies($dependency));
             }
         }
         // Use automatic dependency resolving.
         // "de_AT" automatically has a dependency on "de".
+        // "en_US" automatically has a dependency on "en".
         // but only do this if the actual "de_AT" does not have a custom dependency already defined in
         // $this->localeDependencies
-        if ($dependencies === [] && str_contains($locale, '_')) {
-            [$languageIsoCode] = explode('_', $locale);
-            // "en" and "default" is always implicitly the default fallback dependency
-            if ($languageIsoCode !== 'en') {
-                $dependencies[] = $languageIsoCode;
-                $dependencies = array_merge($dependencies, $this->getLocaleDependencies($languageIsoCode));
-            }
-        } elseif ($dependencies === [] && str_contains($locale, '-')) {
-            [$languageIsoCode] = explode('-', $locale);
-            // "en" and "default" is always implicitly the default fallback dependency
-            if ($languageIsoCode !== 'en') {
-                $dependencies[] = $languageIsoCode;
-                $dependencies = array_merge($dependencies, $this->getLocaleDependencies($languageIsoCode));
-            }
+        if ($dependencies === [] && $locale->getCountryCode() !== null) {
+            $languageIsoCode = $locale->getLanguageCode();
+            $dependencies[] = $languageIsoCode;
+            $dependencies = array_merge($dependencies, $this->getLocaleDependencies($languageIsoCode));
+        }
+        return array_unique($dependencies);
+    }
+
+    protected function normalizeLocale(string $locale): string
+    {
+        return new Locale($locale)->getName();
+    }
+
+    protected function normalizeLanguage(string $locale): string
+    {
+        $locale = $this->normalizeLocale($locale);
+        if (str_contains($locale, '-')) {
+            $locale = str_replace('-', '_', $locale);
+        }
+        return $locale;
+    }
+
+    /**
+     * Normalizes dependencies
+     *
+     * @return array<int, non-empty-string>
+     */
+    protected function normalizeLocaleDependencies(array $dependencies): array
+    {
+        foreach ($dependencies as &$dependency) {
+            $dependency = $this->normalizeLocale($dependency);
         }
         return array_unique($dependencies);
     }

@@ -153,6 +153,9 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             => ['key1', 'label_test', 'da', 'key1 value from TS core'],
 
             'TS override simple key (key6) but only in English'
+            => ['key6', 'label_test', 'en', 'key6 TypoScript label overridden only for English'],
+
+            'TS override simple key (key6) for legacy DEFAULT localization is handled like English'
             => ['key6', 'label_test', 'default', 'key6 TypoScript label overridden only for English'],
 
             'No TS override for key6 in DA'
@@ -176,7 +179,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             'XLF label no override (key2)'
             => ['key2', 'label_test', 'da', 'English label for key2'],
 
-            // This case is edgy. key3 has no translation in DA, but has a TS override for EN.
+            // This case is edgy. key3 has no translation in DA, but has a TS override for DEFAULT.
             // we can't support this override, because we would need to process all overrides for all languages
             // in the potential fallback chain.
             'TS override key3 (top-level)'
@@ -187,6 +190,51 @@ final class LocalizationUtilityTest extends FunctionalTestCase
 
             'TS nested subsubkey (key3.subkey2.subsubkey)'
             => ['key3.subkey2.subsubkey', 'label_test', 'da', 'key3.subkey2.subsubkey value from TypoScript'],
+
+            'No TS default label override if an Xliff file entry already exists (key3)'
+            => ['key3', 'label_test', 'en', 'English label for key3'],
+
+            'TS default label keyNonexistentInXliffFile if no Xliff file entry exists (en)'
+            => ['keyNonexistentInXliffFile', 'label_test', 'en', 'Default label for keyNonexistentInXliffFile from TypoScript used for all langauges'],
+
+            'TS default label keyNonexistentInXliffFile if no Xliff file entry exists (da)'
+            => ['keyNonexistentInXliffFile', 'label_test', 'da', 'Default label for keyNonexistentInXliffFile from TypoScript used for all langauges'],
+
+            'TS default label keyNonexistentInXliffFile if no Xliff file entry exists (fr-LU)'
+            => ['keyNonexistentInXliffFile', 'label_test', 'fr-lu', 'Default label for keyNonexistentInXliffFile from TypoScript used for all langauges'],
+
+            'TS override key3 in fr and fr-LU (fr)'
+            => ['key3', 'label_test', 'fr', 'key3 fr value from TS label'],
+
+            'TS override key3 in fr and fr-LU (fr-LU)'
+            => ['key3', 'label_test', 'fr-lu', 'key3 fr-LU value from TS label'],
+
+            'TS override key4 in FR and no override in fr-LU (fr)'
+            => ['key4', 'label_test', 'fr', 'key4 fr value from TS label'],
+
+            'TS override key4 FR and no override in fr-LU (fr-LU)'
+            => ['key4', 'label_test', 'fr-lu', 'key4 fr value from TS label'],
+
+            'TS override key4 in invalid fr-lu (fr-LU)'
+            => ['key4a', 'label_test', 'fr-lu', 'key4a fr-lu all-lowercase'],
+
+            'TS override key4 in invalid fr_LU (fr-LU)'
+            => ['key4b', 'label_test', 'fr-lu', 'key4b fr_LU with underscore'],
+
+            'TS override key4 in invalid fr_lu (fr-LU)'
+            => ['key4c', 'label_test', 'fr-lu', 'key4c fr_lu all-lowercase with underscore'],
+
+            'TS override key4 in invalid FR-lu (fr-LU)'
+            => ['key4d', 'label_test', 'fr-lu', 'key4d FR-lu with uppercase FR'],
+
+            'TS override key4 in invalid FR_lu (fr-LU)'
+            => ['key4e', 'label_test', 'fr-lu', 'key4e FR-lu with uppercase FR and with underscore'],
+
+            'No TS override for key6 in fr but override in fr-LU'
+            => ['key6', 'label_test', 'fr', 'English label for key6'],
+
+            'TS override for key6 in fr-LU and no override in fr'
+            => ['key6', 'label_test', 'fr-lu', 'key6 fr-LU value from TS label'],
         ];
     }
 
@@ -209,7 +257,11 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             'plugin.' => [
                 'tx_labeltest.' => ['_LOCAL_LANG.' => [
                     'default.' => [
-                        'key3' => 'English label for key3 from TypoScript',
+                        'key3' => 'Default label for key3 from TypoScript never overrides existing Xliff key3',
+                        'key6' => 'Default label for key6 from TypoScript never overrides existing Xliff key6',
+                        'keyNonexistentInXliffFile' => 'Default label for keyNonexistentInXliffFile from TypoScript used for all langauges',
+                    ],
+                    'en.' => [
                         'key6' => 'key6 TypoScript label overridden only for English',
                     ],
                     'da.' => [
@@ -221,6 +273,29 @@ final class LocalizationUtilityTest extends FunctionalTestCase
                                 'subsubkey' => 'key3.subkey2.subsubkey value from TypoScript',
                             ],
                         ],
+                    ],
+                    'fr.' => [
+                        'key3' => 'key3 fr value from TS label',
+                        'key4' => 'key4 fr value from TS label',
+                    ],
+                    'fr-LU.' => [
+                        'key3' => 'key3 fr-LU value from TS label',
+                        'key6' => 'key6 fr-LU value from TS label',
+                    ],
+                    'fr-lu.' => [
+                        'key4a' => 'key4a fr-lu all-lowercase',
+                    ],
+                    'fr_LU.' => [
+                        'key4b' => 'key4b fr_LU with underscore',
+                    ],
+                    'fr_lu.' => [
+                        'key4c' => 'key4c fr_lu all-lowercase with underscore',
+                    ],
+                    'FR-lu.' => [
+                        'key4d' => 'key4d FR-lu with uppercase FR',
+                    ],
+                    'FR_lu.' => [
+                        'key4e' => 'key4e FR-lu with uppercase FR and with underscore',
                     ],
                 ],
                 ],

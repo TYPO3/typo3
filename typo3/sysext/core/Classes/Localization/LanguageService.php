@@ -59,9 +59,14 @@ class LanguageService implements TranslatorInterface
     protected ?Locale $locale = null;
 
     /**
-     * @var array<string, TranslationFile>
+     * @var array<string, TypoScriptLabels>
      */
     protected array $overrideLabels = [];
+
+    /**
+     * @var array<string, TypoScriptLabels>
+     */
+    protected array $defaultLabels = [];
 
     /**
      * @internal use LanguageServiceFactory instead
@@ -287,9 +292,13 @@ class LanguageService implements TranslatorInterface
                 );
             }
             $labelsFromDomain = $this->readLLfile($domain);
-            if (is_array($this->overrideLabels[$domain] ?? null)) {
-                $labelsFromDomain = array_replace_recursive($labelsFromDomain, $this->overrideLabels[$domain]);
-            }
+            // Use default-labels as base, in case there is a missing label in domain:
+            // Attention: This merges mixed values.
+            // * TypoScriptLabels $this->defaultLabels[$domain] contains flattened values only
+            // * TranslationFile $labelsFromDomain might contain unflattened values
+            // * TypoScriptLabels $this->overrideLabels[$domain] contains flattened values only
+            $labelsFromDomain = array_replace_recursive($this->defaultLabels[$domain] ?? [], $labelsFromDomain);
+            $labelsFromDomain = array_replace_recursive($labelsFromDomain, $this->overrideLabels[$domain] ?? []);
             $result = $this->getLLL($id, $labelsFromDomain, true);
             if ($result === null) {
                 $result = $this->getLLL($id . '.x-unused', $labelsFromDomain, true);
@@ -308,7 +317,7 @@ class LanguageService implements TranslatorInterface
             $this->runtimeCache->set($cacheIdentifier, $result);
         }
         if ($result === '' || $result === null) {
-            return $default !== null ? $default : $result;
+            return $default ?? $result;
         }
         if ($arguments !== []) {
             // Check if we should use ICU format (when using named arguments)
@@ -419,28 +428,26 @@ class LanguageService implements TranslatorInterface
      */
     public function overrideLabels(string $fileRef, array $labels): void
     {
-        /** @var TypoScriptLabels $localLanguage */
-        $localLanguage = [
-            // Default is kept for fallback purposes when coming from TypoScript
-            'en' => $labels['en'] ?? $labels['default'] ?? [],
-        ];
         $mainLanguageKey = $this->getTypo3LanguageKey();
-        // Special handling for legacy reasons:
-        // Default and EN were historically the same. It is valid though to have an EN(-XX)-XLF translation.
-        // Therefore, copy the overrides of "default" over to "en-*", if no specific overrides exist for this yet.
-        if (str_starts_with($mainLanguageKey, 'en') && !isset($labels[$mainLanguageKey])) {
-            $localLanguage[$mainLanguageKey] = $localLanguage['en'];
-        }
-        if ($mainLanguageKey !== 'default') {
-            $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
-            $allLocales = array_unique($allLocales);
-            $allLocales = array_reverse($allLocales);
-            foreach ($allLocales as $language) {
-                if (isset($labels[$language])) {
-                    $localLanguage[$mainLanguageKey] = array_replace_recursive($localLanguage[$mainLanguageKey] ?? [], $labels[$language]);
-                }
+
+        /** @var TypoScriptLabels $localLanguageDefault */
+        $localLanguageDefault = [
+            $mainLanguageKey => $labels['default'] ?? [],
+        ];
+        $this->defaultLabels[$fileRef] = $localLanguageDefault;
+
+        /** @var LabelOverrides $localLabels */
+        $localLabels = [];
+        $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
+        $allLocales = array_unique($allLocales);
+        $allLocales = array_reverse($allLocales);
+        foreach ($allLocales as $language) {
+            if (isset($labels[$language])) {
+                $localLabels = array_replace($localLabels, $labels[$language]);
             }
         }
+        /** @var TypoScriptLabels $localLanguage */
+        $localLanguage = [$mainLanguageKey => $localLabels];
         $this->overrideLabels[$fileRef] = $localLanguage;
     }
 
@@ -458,11 +465,16 @@ class LanguageService implements TranslatorInterface
         $extensionName = str_replace('_', '', $extensionName);
         $extensionName = strtolower($extensionName);
 
-        $allLabels = $typoScript->getSetupArray()['plugin.']['tx_' . $extensionName . '.']['_LOCAL_LANG.'] ?? [];
+        $allLabels = $this->normalizeTsLocales(
+            $typoScript->getSetupArray()['plugin.']['tx_' . $extensionName . '.']['_LOCAL_LANG.'] ?? []
+        );
         if ($pluginName !== '') {
+            $pluginLabels = $this->normalizeTsLocales(
+                $typoScript->getSetupArray()['plugin.']['tx_' . $extensionName . '_' . strtolower($pluginName) . '.']['_LOCAL_LANG.'] ?? []
+            );
             $allLabels = array_replace_recursive(
                 $allLabels,
-                $typoScript->getSetupArray()['plugin.']['tx_' . $extensionName . '_' . strtolower($pluginName) . '.']['_LOCAL_LANG.'] ?? [],
+                $pluginLabels
             );
         }
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
@@ -491,5 +503,21 @@ class LanguageService implements TranslatorInterface
     private function getTypo3LanguageKey(): string
     {
         return $this->locale?->getName() ?? 'en';
+    }
+
+    protected function normalizeTsLocales(array $labelsByLocale): array
+    {
+        $normalizedLabelsByLocale = [];
+        foreach ($labelsByLocale as $tsLocale => $labels) {
+            $tsLocale = mb_strtolower($tsLocale);
+            if ($tsLocale !== 'default.') {
+                $tsLocale = new Locale(rtrim($tsLocale, '.'))->getName() . '.';
+            }
+            $normalizedLabelsByLocale[$tsLocale] = array_replace_recursive(
+                $normalizedLabelsByLocale[$tsLocale] ?? [],
+                $labels
+            );
+        }
+        return $normalizedLabelsByLocale;
     }
 }

@@ -3,7 +3,7 @@
   <file source-language="en" target-language="de-AT" datatype="plaintext" original="EXT:test_translate/Resources/Private/Language/de_at.locallang.xlf" date="2023-08-22T09:10:11Z">
     <body>
       <trans-unit id="localized.to.de_at">
-        <source>EN label</source>
+        <source>Default label</source>
         <target>DE_AT label</target>
       </trans-unit>
     </body>

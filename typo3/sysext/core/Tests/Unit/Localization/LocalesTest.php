@@ -57,6 +57,7 @@ final class LocalesTest extends UnitTestCase
         self::assertTrue($locales->isValidLanguageKey('fr_CA'));
         self::assertTrue($locales->isValidLanguageKey('fr-CA'));
         // User-defined language keys
+        self::assertTrue($locales->isValidLanguageKey('fr_CG'));
         self::assertTrue($locales->isValidLanguageKey('fr-CG'));
         self::assertTrue($locales->isValidLanguageKey('de'));
         // Transient language key
@@ -86,12 +87,108 @@ final class LocalesTest extends UnitTestCase
         self::assertEquals(['pt'], $dependencies);
         // Explicitly defined 2-letter custom dependency
         $dependencies = $locales->getLocaleDependencies('lb');
-        self::assertEquals(['de'], $dependencies);
+        self::assertEquals(['de-LU', 'de'], $dependencies);
         // Dependency with custom dependencies
         $dependencies = $locales->getLocaleDependencies('de-CH');
         self::assertEquals(['fr', 'es'], $dependencies);
         // Custom registered language
         $dependencies = $locales->getLocaleDependencies('fr_CG');
+        self::assertEquals(['fr'], $dependencies);
+    }
+
+    #[Test]
+    public function isValidCustomRegionSpecificKeyWithoutRegisteredLocaleKey(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] = [
+            // Custom registered language "gsw-CH" with unregistered locale "gsw"
+            'gsw-CH' => 'Swiss German (Switzerland)',
+        ];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] = [
+            'gsw-CH' => ['de-CH'],
+        ];
+        $locales = new Locales();
+        // Undefined locale key
+        self::assertFalse($locales->isValidLanguageKey('gsw'));
+        // User-defined language keys
+        self::assertTrue($locales->isValidLanguageKey('gsw-CH'));
+        // Check dependencies
+        $dependencies = $locales->getLocaleDependencies('gsw-CH');
+        self::assertEquals(['de-CH', 'de'], $dependencies);
+    }
+
+    #[Test]
+    public function getLocaleDependenciesResolvesComplexDependencies(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] = [
+            'fr_LU' => 'French (Luxembourg)',
+        ];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] = [
+            'fr-LU' => ['fr-CH'],
+            'fr-CH' => ['de-CH', 'it-CH'],
+            'fr-FR' => ['es-PE'],
+        ];
+        $locales = new Locales();
+        // User-defined language keys
+        self::assertTrue($locales->isValidLanguageKey('fr_LU'));
+        // Check dependencies
+        $dependencies = $locales->getLocaleDependencies('fr-LU');
+        self::assertEquals(['fr-CH', 'de-CH', 'de', 'it-CH', 'it'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('fr-CH');
+        self::assertEquals(['de-CH', 'de', 'it-CH', 'it'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('fr-FR');
+        self::assertEquals(['es-PE', 'es'], $dependencies);
+    }
+
+    #[Test]
+    public function isValidArbitrarySyntaxForLocaleKey(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] = [
+            'fr_LU' => 'French (Luxembourg)',
+            'fr_lb' => 'French (Libanon)',
+            'FR_ch' => 'French (Swiss)',
+        ];
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] = [
+            'fr_LU' => ['fr_ch'],
+            'fr_lb' => ['fr-fr'],
+        ];
+        $locales = new Locales();
+        // User-defined language keys
+        self::assertTrue($locales->isValidLanguageKey('fr-LU'));
+        self::assertTrue($locales->isValidLanguageKey('fr_LU'));
+        self::assertTrue($locales->isValidLanguageKey('fr-lu'));
+        self::assertTrue($locales->isValidLanguageKey('fr_lu'));
+        self::assertTrue($locales->isValidLanguageKey('FR-LB'));
+        self::assertTrue($locales->isValidLanguageKey('FR_LB'));
+        self::assertTrue($locales->isValidLanguageKey('FR-lb'));
+        self::assertTrue($locales->isValidLanguageKey('FR_lb'));
+        self::assertTrue($locales->isValidLanguageKey('fr-CH'));
+        self::assertTrue($locales->isValidLanguageKey('fr_CH'));
+        self::assertTrue($locales->isValidLanguageKey('fr-ch'));
+        self::assertTrue($locales->isValidLanguageKey('fr_ch'));
+        // Check dependencies
+        $dependencies = $locales->getLocaleDependencies('fr-LU');
+        self::assertEquals(['fr-CH', 'fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('fr_LU');
+        self::assertEquals(['fr-CH', 'fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('fr-lu');
+        self::assertEquals(['fr-CH', 'fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('fr_lu');
+        self::assertEquals(['fr-CH', 'fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('FR-LB');
+        self::assertEquals(['fr-FR', 'fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('FR_LB');
+        self::assertEquals(['fr-FR', 'fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('FR-lb');
+        self::assertEquals(['fr-FR', 'fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('FR_lb');
+        self::assertEquals(['fr-FR', 'fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('fr-CH');
+        self::assertEquals(['fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('fr_CH');
+        self::assertEquals(['fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('fr-ch');
+        self::assertEquals(['fr'], $dependencies);
+        $dependencies = $locales->getLocaleDependencies('fr_ch');
         self::assertEquals(['fr'], $dependencies);
     }
 

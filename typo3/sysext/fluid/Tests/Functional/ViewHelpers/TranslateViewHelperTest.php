@@ -175,7 +175,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
             ],
             'languageKey fallback to default when key is not localized to de' => [
                 '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:not.localized.to.de" languageKey="de" />',
-                'EN label',
+                'Default label',
             ],
             'languageKey de when key is localized to de' => [
                 '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de" languageKey="de" />',
@@ -259,11 +259,11 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         return [
             'languageKey fallback to default when key is not localized to en' => [
                 '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:not.localized.to.en" />',
-                'EN label',
+                'Default label',
             ],
             'languageKey fallback to default when key is not localized to de' => [
                 '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:not.localized.to.de" languageKey="de" />',
-                'EN label',
+                'Default label',
             ],
             'languageKey de when key is localized to de' => [
                 '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.de" languageKey="de" />',
@@ -279,7 +279,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
             ],
             'key + extensionName: languageKey fallback to default when key is not localized to de' => [
                 '<f:translate extensionName="test_translate" key="not.localized.to.de" languageKey="de" />',
-                'EN label',
+                'Default label',
             ],
             'key + extensionName: languageKey de when key is localized to de' => [
                 '<f:translate extensionName="test_translate" key="localized.to.de" languageKey="de" />',
@@ -410,7 +410,7 @@ final class TranslateViewHelperTest extends FunctionalTestCase
             ],
             'languageKey fallback to default when key is not localized to de' => [
                 '<f:translate key="not.localized.to.de" languageKey="de" />',
-                'EN label',
+                'Default label',
             ],
             'languageKey de when key is localized to de' => [
                 '<f:translate key="localized.to.de" languageKey="de" />',
@@ -538,8 +538,27 @@ final class TranslateViewHelperTest extends FunctionalTestCase
         self::assertSame('DE_AT label', $templateView->render());
     }
 
+    public static function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptDataProvider(): array
+    {
+        return [
+            'en-US label for site with localization en-US' => [
+                'plugin.tx_testtranslate_test._LOCAL_LANG.en-US.localized\.to\.de = TypoScript en-US label',
+                'TypoScript en-US label',
+            ],
+            'en label for site with localization en-US' => [
+                'plugin.tx_testtranslate_test._LOCAL_LANG.en.localized\.to\.de = TypoScript en label',
+                'TypoScript en label',
+            ],
+            'default label for site with localization en-US does not override an existent Xliff-file label' => [
+                'plugin.tx_testtranslate_test._LOCAL_LANG.default.localized\.to\.de = TypoScript label',
+                'Default label',
+            ],
+        ];
+    }
+
+    #[DataProvider('renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptDataProvider')]
     #[Test]
-    public function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptInDefaultLanguage(): void
+    public function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptEnglishUsLabelInEnglishUsLanguage(string $tsConfig, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
@@ -557,16 +576,37 @@ page.10 {
     extensionName = TestTranslate
     pluginName = Test
 }
-plugin.tx_testtranslate_test._LOCAL_LANG.default.localized\.to\.de = TypoScript default label
-EOT
+EOT . LF . $tsConfig,
         ]);
         $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(2));
-        self::assertStringContainsString('TypoScript default label', (string)$response->getBody());
-
+        self::assertStringContainsString($expected, (string)$response->getBody());
     }
 
+    public static function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptInLocalizedPageDataProvider(): array
+    {
+        return [
+            'de-DE label for site with localization de-DE' => [
+                'plugin.tx_testtranslate_test._LOCAL_LANG.de-DE.localized\.to\.de = TypoScript de-DE label',
+                'TypoScript de-DE label',
+            ],
+            'de label for site with localization de-DE' => [
+                'plugin.tx_testtranslate_test._LOCAL_LANG.de.localized\.to\.de = TypoScript de label',
+                'TypoScript de label',
+            ],
+            'default label for site with localization de-DE does not override an existent Xliff-file label' => [
+                'plugin.tx_testtranslate_test._LOCAL_LANG.default.localized\.to\.de = TypoScript label',
+                'DE label',
+            ],
+            'en label for site with localization de-DE does not override an existent label' => [
+                'plugin.tx_testtranslate_test._LOCAL_LANG.en.localized\.to\.de = TypoScript en label',
+                'DE label',
+            ],
+        ];
+    }
+
+    #[DataProvider('renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptInLocalizedPageDataProvider')]
     #[Test]
-    public function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptInLocalizedPage(): void
+    public function renderInExtbaseFrontendContextHandlesLabelOverrideWithTypoScriptInLocalizedPage(string $tsConfig, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
@@ -588,11 +628,9 @@ page.10 {
     extensionName = TestTranslate
     pluginName = Test
 }
-plugin.tx_testtranslate_test._LOCAL_LANG.de-DE.localized\.to\.de = TypoScript de label
-EOT
+EOT . LF . $tsConfig,
         ]);
         $response = $this->executeFrontendSubRequest(new InternalRequest()->withPageId(2)->withLanguageId(1));
-        self::assertStringContainsString('TypoScript de label', (string)$response->getBody());
-
+        self::assertStringContainsString($expected, (string)$response->getBody());
     }
 }

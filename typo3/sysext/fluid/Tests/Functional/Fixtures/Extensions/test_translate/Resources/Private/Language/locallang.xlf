@@ -18,19 +18,19 @@
         <source>A valid string is expected.</source>
       </trans-unit>
       <trans-unit id="not.localized.to.de">
-        <source>EN label</source>
+        <source>Default label</source>
       </trans-unit>
       <trans-unit id="localized.to.de">
-        <source>EN label</source>
+        <source>Default label</source>
       </trans-unit>
       <trans-unit id="localized.to.de_at">
-        <source>EN label</source>
+        <source>Default label</source>
       </trans-unit>
       <trans-unit id="localized.to.en">
-        <source>EN label</source>
+        <source>Default label</source>
       </trans-unit>
       <trans-unit id="not.localized.to.en">
-        <source>EN label</source>
+        <source>Default label</source>
       </trans-unit>
       <trans-unit id="my_deprecated_label" x-unused-since="4.5">
         <source>My label is deprecated!</source>

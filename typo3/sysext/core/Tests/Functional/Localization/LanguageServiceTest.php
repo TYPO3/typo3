@@ -186,6 +186,14 @@ final class LanguageServiceTest extends FunctionalTestCase
                 'label3' => 'Ceci est le libellé no. 3',
             ],
         ];
+        yield 'Can handle localization with intermediate locale fr for undefined locale fr-ZZ' => [
+            'locale' => 'fr-ZZ',
+            'expectedLabels' => [
+                'label1' => 'Ceci est le libellé no. 1',
+                'label2' => 'Ceci est le libellé no. 2',
+                'label3' => 'Ceci est le libellé no. 3',
+            ],
+        ];
     }
 
     #[DataProvider('ensureVariousLocalizationOverrideScenariosWorkDataProvider')]
