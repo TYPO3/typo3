@@ -225,7 +225,8 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             if ($language->hasCustomTypo3Language()) {
                 $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());
             } else {
-                $locale = $language->getLocale();
+                // The createLocale() call is needed in order to resolve dependencies from the Locales class
+                $locale = GeneralUtility::makeInstance(Locales::class)->createLocale((string)$language->getLocale());
             }
             $this->pageRenderer->setLanguage($locale);
             $pageParts->setPageRendererSubstitutionHash(md5(StringUtility::getUniqueId()));
