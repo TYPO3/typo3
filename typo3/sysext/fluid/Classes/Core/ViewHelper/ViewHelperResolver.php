@@ -43,9 +43,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperResolverDelegateInterface;
  * to effectively create aliases for the Fluid core ViewHelpers
  * to be loaded in the TYPO3\CMS\ViewHelpers scope as well.
  *
- * Default ViewHelper namespaces are read TYPO3 configuration at:
- *
- * $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']
+ * Default ViewHelper namespaces are read from the extension-level
+ * configuration file "Configuration/Fluid/Namespaces.php".
  *
  * Extending this array allows third party ViewHelper providers
  * to automatically add or extend namespaces which then become

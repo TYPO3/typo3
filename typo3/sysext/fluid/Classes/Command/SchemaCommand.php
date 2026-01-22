@@ -23,6 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactoryInterface;
 use TYPO3Fluid\Fluid\Schema\SchemaGenerator;
 use TYPO3Fluid\Fluid\Schema\ViewHelperFinder;
 
@@ -34,8 +35,10 @@ use TYPO3Fluid\Fluid\Schema\ViewHelperFinder;
 #[AsCommand('fluid:schema:generate', 'Generate XSD schema files for all available ViewHelpers in var/transient/')]
 final class SchemaCommand extends Command
 {
-    public function __construct(private readonly ClassLoader $classLoader)
-    {
+    public function __construct(
+        private readonly ClassLoader $classLoader,
+        private readonly ViewHelperResolverFactoryInterface $viewHelperResolverFactory,
+    ) {
         parent::__construct();
     }
 
@@ -62,7 +65,8 @@ final class SchemaCommand extends Command
         // For example, both Fluid Standalone and EXT:fluid define <f:render>,
         // but EXT:fluid is the higher item in the namespace array, so it will be part
         // of the xsd file, while the <f:render> from Fluid Standalone will be omitted.
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'] ?? [] as $mergedNamespace) {
+        $viewHelperResolver = $this->viewHelperResolverFactory->create();
+        foreach ($viewHelperResolver->getNamespaces() as $mergedNamespace) {
             // If a global namespace has only one item, it is already covered by the
             // default handling above
             if (count($mergedNamespace) < 2) {
