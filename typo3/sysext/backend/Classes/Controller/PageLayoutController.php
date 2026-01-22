@@ -276,7 +276,9 @@ class PageLayoutController
         ServerRequestInterface $request
     ): PageLayoutContext {
         $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($this->pageContext->pageId);
-        $viewMode = PageViewMode::tryFrom((int)$this->moduleData->get('viewMode')) ?? PageViewMode::LayoutView;
+        $viewMode = count($this->pageContext->languageInformation->availableLanguages) > 1
+            ? PageViewMode::tryFrom((int)$this->moduleData->get('viewMode')) ?? PageViewMode::LayoutView
+            : PageViewMode::LayoutView;
         $configuration = DrawingConfiguration::create($backendLayout, $this->pageContext->pageTsConfig, $viewMode);
         $configuration->setShowHidden((bool)$this->moduleData->get('showHidden'));
 
