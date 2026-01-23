@@ -144,37 +144,6 @@ $border-radius: .125rem;
 $border-radius-sm: $border-radius;
 $border-radius-lg: $border-radius;
 
-// Tables
-$table-bg: $white;
-$table-border-color: $gray-400;
-$table-bg-scale: -85%;
-$table-striped-bg-factor: .025;
-$table-hover-bg-factor: .035;
-$table-active-bg-factor: .045;
-$table-border-factor: .1;
-
-// Navbar
-$navbar-height: 45px;
-$navbar-default-bg: #f8f8f8;
-$navbar-default-link-hover-bg: darken($navbar-default-bg, 5%);
-$navbar-default-link-active-bg: darken($navbar-default-bg, 10%);
-$navbar-default-link-disabled-bg: darken($navbar-default-bg, 15%);
-$navbar-inverse-color: #999;
-$navbar-inverse-bg: #111;
-$navbar-inverse-border: none;
-$navbar-inverse-link-color: #ddd;
-$navbar-inverse-link-bg: lighten($navbar-inverse-bg, 7.5%);  // TYPO3 SPECIFIC
-$navbar-inverse-link-hover-color: rgb(200, 200, 200);
-$navbar-inverse-link-hover-bg: rgb(50, 50, 50);
-$navbar-inverse-link-active-color: #fff;
-$navbar-inverse-link-active-bg: $navbar-inverse-link-hover-bg;
-$navbar-inverse-link-disabled-color: darken($navbar-inverse-color, 30%);
-$navbar-inverse-link-disabled-bg: darken($navbar-inverse-bg, 20%);
-
-// Panels
-$panel-default-border: #ccc;
-$panel-default-heading-bg: #ddd;
-
 // Type
 $hr-border: #7a7a7a;
 $hr-opacity: 1;
@@ -182,13 +151,7 @@ $hr-opacity: 1;
 // Popover
 $popover-box-shadow: var(--typo3-component-box-shadow-flyout);
 
-// Card
-$card-cap-bg: transparent;
-
-// Overwrite Progress bar background color
-$progress-bg: #dedede;
-$progress-height: 1.25rem;
-$progress-font-size: $font-size-base * .9;
+// Utilities
 $utilities: (
     "float": (
         property: float,
@@ -209,8 +172,36 @@ $utilities: (
             center: center,
         )
     ),
-    // disable bootstrap color utilities
+    // disable bootstrap utilities
     "color": (),
+    "opacity": (),
     "text-color": (),
     "text-opacity": (),
+    "overflow": (),
+    "overflow-x": (),
+    "overflow-y": (),
+    "object-fit": (),
+    "order": (),
+    "border-opacity": (),
+    "column-gap": (),
+    "align": (),
+    "shadow": (),
+    "focus-ring": (),
+    "position": (),
+    "top": (),
+    "start": (),
+    "end": (),
+    "bottom": (),
+    "translate-middle": (),
+    "rounded": (),
+    "rounded-top": (),
+    "rounded-start": (),
+    "rounded-end": (),
+    "rounded-bottom": (),
+    "link-opacity": (),
+    "link-offset": (),
+    "link-underline-opacity": (),
+    "user-select": (),
+    "pointer-events": (),
+    "z-index": (),
 );
