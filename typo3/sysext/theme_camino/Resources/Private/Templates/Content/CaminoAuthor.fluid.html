@@ -13,15 +13,15 @@
         <div class="author__image">
             <f:render partial="Components/Person" arguments="{
                 image: record.image.0,
-                name: data.header,
-                position: data.subheader,
+                name: record.header,
+                position: record.subheader,
             }"/>
         </div>
 
         <div class="author__content">
-            <f:if condition="{data.bodytext}">
+            <f:if condition="{record.bodytext}">
                 <p>
-                    {data.bodytext -> f:format.nl2br()}
+                    {record.bodytext -> f:format.nl2br()}
                 </p>
             </f:if>
 

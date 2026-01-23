@@ -12,7 +12,7 @@
 <f:section name="Header"/>
 
 <f:section name="Main">
-    <f:switch expression="{data.frame_class}">
+    <f:switch expression="{record.frame_class}">
         <f:case value="bg-10"><f:variable name="frame" value="bg-10"/></f:case>
         <f:case value="bg-80"><f:variable name="frame" value="bg-80"/></f:case>
         <f:case value="bg-100"><f:variable name="frame" value="bg-100"/></f:case>
@@ -24,15 +24,15 @@
     <div class="textteaser textteaser--{frame}">
         <div class="textteaser__content">
             <f:render partial="Components/Intro" arguments="{
-                header: data.header,
-                subheader: data.subheader,
-                headertag: data.header_layout,
-                layout: data.tx_themecamino_header_style,
-                text: data.bodytext,
+                header: record.header,
+                subheader: record.subheader,
+                headertag: record.header_layout,
+                layout: record.tx_themecamino_header_style,
+                text: record.bodytext,
                 textHtml: 1,
-                link: data.tx_themecamino_link,
-                label: data.tx_themecamino_link_label,
-                icon: data.tx_themecamino_link_icon,
+                link: record.tx_themecamino_link,
+                label: record.tx_themecamino_link_label,
+                icon: record.tx_themecamino_link_icon,
             }"/>
         </div>
     </div>

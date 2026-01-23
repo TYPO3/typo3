@@ -5,7 +5,7 @@
 
 <f:asset.css identifier="theme_camino_backend_previews" href="EXT:theme_camino/Resources/Public/Css/previews.css"/>
 
-<f:switch expression="{record.CType}">
+<f:switch expression="{record.recordType}">
     <f:case value="hero_text_only"></f:case>
     <f:defaultCase>
         <f:render section="ImagesWithCropVariants" arguments="{

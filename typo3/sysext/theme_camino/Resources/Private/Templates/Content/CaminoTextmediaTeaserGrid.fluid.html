@@ -9,21 +9,21 @@
 
 <f:section name="Main">
     <div class="textmedia-teaser-grid">
-        <f:if condition="{data.header} || {data.bodytext} || {data.subheader}">
+        <f:if condition="{record.header} || {record.bodytext} || {record.subheader}">
             <div class="textmedia-teaser-grid__intro">
                 <f:render
                     partial="Components/Intro"
                     arguments="{
-                        header: data.header,
-                        subheader: data.subheader,
-                        headertag: data.headertag,
-                        layout: data.header_layout,
-                        text: data.bodytext,
+                        header: record.header,
+                        subheader: record.subheader,
+                        headertag: record.headertag,
+                        layout: record.header_layout,
+                        text: record.bodytext,
                         textHtml: 1,
-                        link: data.tx_themecamino_link,
-                        label: data.tx_themecamino_link_label,
-                        config: data.tx_themecamino_link_config,
-                        icon: data.tx_themecamino_link_icon,
+                        link: record.tx_themecamino_link,
+                        label: record.tx_themecamino_link_label,
+                        config: record.tx_themecamino_link_config,
+                        icon: record.tx_themecamino_link_icon,
                     }"
                 />
             </div>
@@ -43,7 +43,7 @@
                                 link: item.link,
                                 label: item.link_label,
                                 icon: item.link_icon,
-                                layout: data.layout,
+                                layout: record.layout,
                             }"
                         />
                     </f:for>
