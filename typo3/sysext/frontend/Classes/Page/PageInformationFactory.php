@@ -23,6 +23,7 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Error\Http\LinkedPageNotResolvableException;
@@ -79,6 +80,7 @@ final readonly class PageInformationFactory
         private PageLayoutResolver $pageLayoutResolver,
         private TcaSchemaFactory $tcaSchemaFactory,
         private PageTypeLinkResolver $pageTypeLinkResolver,
+        private PageDoktypeRegistry $pageDoktypeRegistry,
     ) {}
 
     /**
@@ -210,8 +212,8 @@ final readonly class PageInformationFactory
         $pageInformation->setPageRecord($pageRecord);
         $pageDoktype = (int)($pageRecord['doktype']);
 
-        if ($pageDoktype === PageRepository::DOKTYPE_SPACER || $pageDoktype === PageRepository::DOKTYPE_SYSFOLDER) {
-            // Spacer and sysfolders are not accessible in frontend
+        // Spacer and sysfolders are not accessible in frontend
+        if (!$this->pageDoktypeRegistry->isPageTypeViewable($pageDoktype)) {
             $response = $this->errorController->pageNotFoundAction(
                 $request,
                 'The requested page does not exist!',

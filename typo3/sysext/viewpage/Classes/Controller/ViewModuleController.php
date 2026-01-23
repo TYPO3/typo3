@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -61,6 +62,7 @@ final class ViewModuleController
         private readonly PolicyRegistry $policyRegistry,
         private readonly ComponentFactory $componentFactory,
         private readonly PageContextFactory $pageContextFactory,
+        private readonly PageDoktypeRegistry $pageDoktypeRegistry,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -265,11 +267,7 @@ final class ViewModuleController
             return false;
         }
         $pageType = (int)($this->pageContext->pageRecord['doktype'] ?? 0);
-        return $pageType !== 0
-            && !in_array($pageType, [
-                PageRepository::DOKTYPE_SPACER,
-                PageRepository::DOKTYPE_SYSFOLDER,
-            ], true);
+        return $this->pageDoktypeRegistry->isPageViewable($pageType, $this->pageContext->pageId);
     }
 
     private function getBackendUser(): BackendUserAuthentication

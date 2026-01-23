@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\DataHandling;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -158,5 +159,64 @@ class PageDoktypeRegistry
             $doktypeLabelMap[] = $selectionItem;
         }
         return $doktypeLabelMap;
+    }
+
+    /**
+     * Check if a page type is viewable based on TCA configuration only.
+     * Does NOT consider pageTsConfig overrides.
+     *
+     * By default, all page types are viewable unless explicitly set to false
+     * via the TCA option "isViewable".
+     */
+    public function isPageTypeViewable(int $doktype): bool
+    {
+        $pageSchema = $this->tcaSchemaFactory->get('pages');
+        if ($pageSchema->hasSubSchema((string)$doktype)) {
+            $subSchema = $pageSchema->getSubSchema((string)$doktype);
+            $config = $subSchema->getRawConfiguration();
+            if (isset($config['isViewable'])) {
+                return (bool)$config['isViewable'];
+            }
+        }
+        // Default: viewable
+        return true;
+    }
+
+    /**
+     * Check if a page is viewable, considering both TCA and pageTsConfig.
+     * Respects TCEMAIN.preview.disableButtonForDokType TSconfig.
+     */
+    public function isPageViewable(int $doktype, int $pageId): bool
+    {
+        // check TSconfig (same logic as PreviewUriBuilder::isPreviewableDoktype)
+        $TSconfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['preview.'] ?? [];
+        if (isset($TSconfig['disableButtonForDokType'])) {
+            $excludeDokTypes = GeneralUtility::intExplode(',', (string)$TSconfig['disableButtonForDokType'], true);
+            return !in_array($doktype, $excludeDokTypes, true);
+        }
+
+        // fallback to check TCA
+        if (!$this->isPageTypeViewable($doktype)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns array of non-viewable doktype integers based on TCA only.
+     * Used for JavaScript tree configuration.
+     *
+     * @return int[]
+     */
+    public function getNonViewableDoktypes(): array
+    {
+        $nonViewable = [];
+        foreach ($this->tcaSchemaFactory->get('pages')->getSubSchemata() as $doktype => $schema) {
+            $isViewable = $schema->getRawConfiguration()['isViewable'] ?? true;
+            if (!$isViewable) {
+                $nonViewable[] = (int)$doktype;
+            }
+        }
+        return $nonViewable;
     }
 }

@@ -804,6 +804,7 @@ return [
         ],
         // spacer
         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SPACER => [
+            'isViewable' => false,
             'showitem' => '
                 --div--;core.form.tabs:general,
                     --palette--;;standard,
@@ -826,6 +827,7 @@ return [
         // In CMS context it's NOT a viewable page. Can contain any element.
         (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SYSFOLDER => [
             'allowedRecordTypes' => ['*'],
+            'isViewable' => false,
             'showitem' => '
                 --div--;core.form.tabs:general,
                     --palette--;;standard,

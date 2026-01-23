@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -647,17 +648,7 @@ class PreviewUriBuilder
         if ($pageId <= 0 || $doktype <= 0) {
             return false;
         }
-
-        $TSconfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['preview.'] ?? [];
-        if (isset($TSconfig['disableButtonForDokType'])) {
-            $excludeDokTypes = GeneralUtility::intExplode(',', (string)$TSconfig['disableButtonForDokType'], true);
-        } else {
-            // Exclude sysfolders and spacers by default
-            $excludeDokTypes = [
-                PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_SPACER,
-            ];
-        }
-        return !in_array($doktype, $excludeDokTypes, true);
+        $doktypeRegistry = GeneralUtility::makeInstance(PageDoktypeRegistry::class);
+        return $doktypeRegistry->isPageViewable($doktype, $pageId);
     }
 }

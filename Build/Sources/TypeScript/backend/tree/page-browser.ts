@@ -78,14 +78,12 @@ export class PageBrowserTree extends PageTree {
   }
 
   /**
-   * The following page doktypes can be browsed, but not directly added as "action":
-   * - Spacer
-   * - SysFolder
-   * - Recycler
+   * Check if a page can be linked based on TCA configuration.
+   * Non-viewable doktypes are provided by the backend configuration endpoint.
    */
   private isLinkable(node: TreeNodeInterface): boolean {
-    const nonLinkableDoktypes = ['199', '254', '255'];
-    return nonLinkableDoktypes.includes(String(node.recordType)) === false;
+    const nonViewableDoktypes: number[] = this.settings.nonViewableDoktypes ?? [199, 254];
+    return !nonViewableDoktypes.includes(Number(node.recordType));
   }
 
   /**

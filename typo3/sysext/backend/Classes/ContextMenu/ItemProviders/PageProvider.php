@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -576,11 +576,7 @@ class PageProvider extends RecordProvider
      */
     protected function isExcludedDoktype(): bool
     {
-        $excludeDoktypes = [
-            PageRepository::DOKTYPE_SYSFOLDER,
-            PageRepository::DOKTYPE_SPACER,
-        ];
-
-        return in_array((int)($this->record['doktype'] ?? 0), $excludeDoktypes, true);
+        $doktypeRegistry = GeneralUtility::makeInstance(PageDoktypeRegistry::class);
+        return $doktypeRegistry->isPageTypeViewable((int)($this->record['doktype'] ?? 0));
     }
 }

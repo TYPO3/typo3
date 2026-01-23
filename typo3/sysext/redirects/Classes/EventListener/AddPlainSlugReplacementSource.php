@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\EventListener;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
 use TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource;
 use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
@@ -27,22 +27,18 @@ use TYPO3\CMS\Redirects\RedirectUpdate\RedirectSourceCollection;
  * Event listener to create plain slug replacement.
  * @internal Internal use for ext:redirects, not part of Public API. May vanish at any given time.
  */
-final class AddPlainSlugReplacementSource
+final readonly class AddPlainSlugReplacementSource
 {
-    /**
-     * @var list<PageRepository::DOKTYPE_*>
-     */
-    private array $ignoredDokTypes = [
-        PageRepository::DOKTYPE_SPACER,
-        PageRepository::DOKTYPE_SYSFOLDER,
-    ];
+    public function __construct(
+        private PageDoktypeRegistry $doktypeRegistry,
+    ) {}
 
     #[AsEventListener('redirects-add-plain-slug-replacement-source')]
     public function __invoke(SlugRedirectChangeItemCreatedEvent $event): void
     {
         $changeItem = $event->getSlugRedirectChangeItem();
         // Do not create a redirect source for ignored doktypes
-        if (in_array((int)($changeItem->getOriginal()['doktype'] ?? 0), $this->ignoredDokTypes, true)) {
+        if (!$this->doktypeRegistry->isPageTypeViewable((int)($changeItem->getOriginal()['doktype'] ?? 0))) {
             return;
         }
 

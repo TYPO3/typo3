@@ -25,6 +25,7 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -94,6 +95,7 @@ final class RedirectServiceTest extends UnitTestCase
                 $this->createMock(PageLayoutResolver::class),
                 $this->createMock(TcaSchemaFactory::class),
                 $this->createMock(PageTypeLinkResolver::class),
+                $this->createMock(PageDoktypeRegistry::class),
             ),
             new FrontendTypoScriptFactory(
                 $this->createMock(ContainerInterface::class),
@@ -659,6 +661,7 @@ final class RedirectServiceTest extends UnitTestCase
                     $this->createMock(PageLayoutResolver::class),
                     $this->createMock(TcaSchemaFactory::class),
                     $this->createMock(PageTypeLinkResolver::class),
+                    $this->createMock(PageDoktypeRegistry::class),
                 ),
                 new FrontendTypoScriptFactory(
                     $this->createMock(ContainerInterface::class),

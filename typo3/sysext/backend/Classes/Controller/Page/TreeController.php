@@ -200,6 +200,7 @@ class TreeController
             'dataUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_data', $additionalArguments),
             'filterUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_filter', $additionalArguments),
             'setTemporaryMountPointUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_set_temporary_mount_point'),
+            'nonViewableDoktypes' => $this->pageDoktypeRegistry->getNonViewableDoktypes(),
         ];
         return new JsonResponse($configuration);
     }

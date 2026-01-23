@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -49,6 +49,14 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      * @var array
      */
     protected $linkParts = [];
+
+    protected PageDoktypeRegistry $pageDoktypeRegistry;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->pageDoktypeRegistry = GeneralUtility::makeInstance(PageDoktypeRegistry::class);
+    }
 
     /**
      * Checks if this is the handler for the given link
@@ -260,6 +268,9 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
     protected function isPageLinkable(array $page): bool
     {
-        return !in_array((int)$page['doktype'], [PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER]);
+        return $this->pageDoktypeRegistry->isPageViewable(
+            (int)$page['doktype'],
+            (int)$page['uid']
+        );
     }
 }

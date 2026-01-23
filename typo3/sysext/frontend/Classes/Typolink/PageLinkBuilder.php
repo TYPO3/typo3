@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -86,6 +87,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         protected readonly TypoLinkCodecService $linkCodecService,
         protected readonly PageTypeLinkResolver $pageTypeLinkResolver,
         protected readonly LoggerInterface $logger,
+        protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
     ) {}
 
     public function buildLink(array $linkDetails, array $configuration, ServerRequestInterface $request, string $linkText = ''): LinkResultInterface
@@ -251,7 +253,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
                 $linkResultType = $linkResult->getType();
                 $treatAsExternalLink = true;
             }
-        } elseif ((int)$resolvedPage['doktype'] === PageRepository::DOKTYPE_SYSFOLDER || (int)$resolvedPage['doktype'] === PageRepository::DOKTYPE_SPACER) {
+        } elseif (!$this->pageDoktypeRegistry->isPageTypeViewable((int)$resolvedPage['doktype'])) {
             throw new UnableToLinkException('Link to page of type ' . $resolvedPage['doktype'] . ' is not possible.', 1742757285, null, $linkText);
         }
         if ($url === null) {
