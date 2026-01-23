@@ -84,7 +84,8 @@ class FileHandlingService implements SingletonInterface
                 continue;
             }
 
-            $classSchema = $this->reflectionService->getClassSchema($argument->getDataType());
+            $dataType = GeneralUtility::getClassName($argument->getDataType());
+            $classSchema = $this->reflectionService->getClassSchema($dataType);
             foreach ($classSchema->getProperties() as $property) {
                 $this->addUploadConfigurationForProperty($argument, $property);
             }

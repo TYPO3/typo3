@@ -35,6 +35,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\FileUpload\Domain\Model\FileReferencePropertySingle;
 use TYPO3Tests\FileUpload\Domain\Model\FileUploadMultipleProperties;
+use TYPO3Tests\FileUpload\Domain\Model\ModelWithTextfield;
 
 final class FileHandlingServiceTest extends FunctionalTestCase
 {
@@ -242,6 +243,29 @@ final class FileHandlingServiceTest extends FunctionalTestCase
 
         $this->expectException(InvalidHashStringException::class);
         $this->fileHandlingService->initializeFileUploadDeletionConfigurationsFromRequest($request, $arguments);
+    }
+
+    #[Test]
+    public function fileUploadConfigurationIsInitializedForXClassedDomainModel(): void
+    {
+        $argument = new Argument('xclassedModel', ModelWithTextfield::class);
+
+        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validator = $validationResolver->createValidator(ConjunctionValidator::class);
+        $argument->setValidator($validator);
+
+        $arguments = new Arguments();
+        $arguments->addArgument($argument);
+
+        $serverRequest = (new ServerRequest('/some/uri', 'POST'))
+            ->withAttribute('extbase', new ExtbaseRequestParameters())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = new Request($serverRequest);
+
+        $this->fileHandlingService->initializeFileUploadConfigurationsFromRequest($request, $arguments);
+
+        $fileUploadPropertiesArgument = $arguments->getArgument('xclassedModel');
+        self::assertNotEmpty($fileUploadPropertiesArgument->getFileHandlingServiceConfiguration()->getFileUploadConfigurations());
     }
 
     // @todo Add more tests
