@@ -768,4 +768,213 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $query->matching($query->like('title', '%BlOg%'));
         self::assertCount(2, $query->execute());
     }
+
+    #[Test]
+    public function orderingWithConcatExpressionGeneratesCorrectSql(): void
+    {
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->orderBy($query->concat('title', 'description'), QueryInterface::ORDER_ASCENDING);
+
+        $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
+
+        $orderBy = $queryBuilder->getOrderBy();
+        self::assertCount(1, $orderBy);
+        self::assertStringContainsString('CONCAT(', $orderBy[0]);
+        self::assertStringContainsString('title', $orderBy[0]);
+        self::assertStringContainsString('description', $orderBy[0]);
+        self::assertStringContainsString('ASC', $orderBy[0]);
+    }
+
+    #[Test]
+    public function orderingWithTrimExpressionGeneratesCorrectSql(): void
+    {
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->orderBy($query->trim('title'), QueryInterface::ORDER_DESCENDING);
+
+        $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
+
+        $orderBy = $queryBuilder->getOrderBy();
+        self::assertCount(1, $orderBy);
+        self::assertStringContainsString('TRIM(', $orderBy[0]);
+        self::assertStringContainsString('title', $orderBy[0]);
+        self::assertStringContainsString('DESC', $orderBy[0]);
+    }
+
+    #[Test]
+    public function orderingWithCoalesceExpressionGeneratesCorrectSql(): void
+    {
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->orderBy($query->coalesce('subtitle', 'title'), QueryInterface::ORDER_ASCENDING);
+
+        $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
+
+        $orderBy = $queryBuilder->getOrderBy();
+        self::assertCount(1, $orderBy);
+        self::assertStringContainsString('COALESCE(', $orderBy[0]);
+        self::assertStringContainsString('subtitle', $orderBy[0]);
+        self::assertStringContainsString('title', $orderBy[0]);
+        self::assertStringContainsString('ASC', $orderBy[0]);
+    }
+
+    #[Test]
+    public function orderingWithNestedExpressionsGeneratesCorrectSql(): void
+    {
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->orderBy(
+            $query->concat(
+                $query->trim('title'),
+                $query->trim('description')
+            ),
+            QueryInterface::ORDER_ASCENDING
+        );
+
+        $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
+
+        $orderBy = $queryBuilder->getOrderBy();
+        self::assertCount(1, $orderBy);
+        self::assertStringContainsString('CONCAT(TRIM(', $orderBy[0]);
+        self::assertStringContainsString('title', $orderBy[0]);
+        self::assertStringContainsString('description', $orderBy[0]);
+        self::assertStringContainsString('ASC', $orderBy[0]);
+    }
+
+    #[Test]
+    public function fluentOrderByApiWorks(): void
+    {
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query
+            ->orderBy('title', QueryInterface::ORDER_ASCENDING)
+            ->addOrderBy('description', QueryInterface::ORDER_DESCENDING);
+
+        $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
+
+        $orderBy = $queryBuilder->getOrderBy();
+        self::assertCount(2, $orderBy);
+        self::assertStringContainsString('title', $orderBy[0]);
+        self::assertStringContainsString('ASC', $orderBy[0]);
+        self::assertStringContainsString('description', $orderBy[1]);
+        self::assertStringContainsString('DESC', $orderBy[1]);
+    }
+
+    #[Test]
+    public function backwardsCompatibilityWithSetOrderingsPreserved(): void
+    {
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->setOrderings([
+            'title' => QueryInterface::ORDER_ASCENDING,
+            'description' => QueryInterface::ORDER_DESCENDING,
+        ]);
+
+        $queryBuilder = $typo3DbQueryParser->convertQueryToDoctrineQueryBuilder($query);
+
+        $orderBy = $queryBuilder->getOrderBy();
+        self::assertCount(2, $orderBy);
+        self::assertMatchesRegularExpression('/title. ASC/', $orderBy[0]);
+        self::assertMatchesRegularExpression('/description. DESC/', $orderBy[1]);
+    }
+
+    #[Test]
+    public function orderingWithConcatExpressionExecutesSuccessfully(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbQueryParserTestImport.csv');
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->orderBy($query->concat('title', 'description'), QueryInterface::ORDER_ASCENDING);
+
+        // This proves the generated SQL is valid and executes successfully
+        $results = $query->execute();
+        self::assertCount(2, $results);
+    }
+
+    #[Test]
+    public function orderingWithTrimExpressionExecutesSuccessfully(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbQueryParserTestImport.csv');
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->orderBy($query->trim('title'), QueryInterface::ORDER_DESCENDING);
+
+        // This proves the generated SQL is valid and executes successfully
+        $results = $query->execute();
+        self::assertCount(2, $results);
+    }
+
+    #[Test]
+    public function orderingWithCoalesceExpressionExecutesSuccessfully(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/Typo3DbQueryParserTestImport.csv');
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+        $blogRepository = $this->get(BlogRepository::class);
+        $query = $blogRepository->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->orderBy($query->coalesce('subtitle', 'title'), QueryInterface::ORDER_ASCENDING);
+
+        // This proves the generated SQL is valid and executes successfully
+        $results = $query->execute();
+        self::assertCount(2, $results);
+    }
 }

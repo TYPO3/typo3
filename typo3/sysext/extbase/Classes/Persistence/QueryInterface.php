@@ -16,10 +16,14 @@
 namespace TYPO3\CMS\Extbase\Persistence;
 
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\CoalesceInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConcatInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\TrimInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
 /**
@@ -128,6 +132,47 @@ interface QueryInterface
      * @phpstan-return QueryInterface<T>
      */
     public function setOrderings(array $orderings);
+
+    /**
+     * Sets the ordering for the result by a single operand. Replaces any existing orderings.
+     *
+     * @param string|DynamicOperandInterface $operand The property name or a dynamic operand (e.g., concat(), trim())
+     * @param string $order The order direction (QueryInterface::ORDER_ASCENDING or ORDER_DESCENDING)
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @phpstan-return QueryInterface<T>
+     */
+    public function orderBy(string|DynamicOperandInterface $operand, string $order = self::ORDER_ASCENDING);
+
+    /**
+     * Adds an ordering for the result. Appends to any existing orderings.
+     *
+     * @param string|DynamicOperandInterface $operand The property name or a dynamic operand (e.g., concat(), trim())
+     * @param string $order The order direction (QueryInterface::ORDER_ASCENDING or ORDER_DESCENDING)
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @phpstan-return QueryInterface<T>
+     */
+    public function addOrderBy(string|DynamicOperandInterface $operand, string $order = self::ORDER_ASCENDING);
+
+    /**
+     * Creates a CONCAT expression for ordering.
+     *
+     * @param string|DynamicOperandInterface ...$operands Property names or operand objects to concatenate
+     */
+    public function concat(string|DynamicOperandInterface ...$operands): ConcatInterface;
+
+    /**
+     * Creates a TRIM expression for ordering.
+     *
+     * @param string|DynamicOperandInterface $operand The property name or operand to trim
+     */
+    public function trim(string|DynamicOperandInterface $operand): TrimInterface;
+
+    /**
+     * Creates a COALESCE expression for ordering.
+     *
+     * @param string|DynamicOperandInterface ...$operands Property names or operand objects
+     */
+    public function coalesce(string|DynamicOperandInterface ...$operands): CoalesceInterface;
 
     /**
      * Sets the maximum size of the result set to limit. Returns $this to allow
@@ -304,13 +349,18 @@ interface QueryInterface
     public function count();
 
     /**
-     * Gets the property names to order the result by, like this:
+     * Gets the orderings for this query.
+     *
+     * When using setOrderings(), returns legacy format:
      * array(
      *  'foo' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
      *  'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @return array<string,string>
+     * When using orderBy()/addOrderBy(), returns OrderingInterface objects:
+     * array(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrderingInterface, ...)
+     *
+     * @return array<string,string>|array<\TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrderingInterface>
      */
     public function getOrderings();
 

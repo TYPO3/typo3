@@ -53,9 +53,11 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\EquiJoinCondition;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\FunctionExpressionInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrderingInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface;
@@ -205,12 +207,20 @@ class Typo3DbQueryParser
     /**
      * Transforms orderings into SQL.
      *
-     * @param array $orderings An array of orderings (Qom\Ordering)
+     * @param array $orderings An array of orderings (Qom\Ordering or legacy propertyName => direction)
      * @throws UnsupportedOrderException
      */
     protected function parseOrderings(array $orderings, SourceInterface $source): void
     {
         foreach ($orderings as $propertyName => $order) {
+            // New API: OrderingInterface objects
+            if ($order instanceof OrderingInterface) {
+                $sql = $this->parseOperand($order->getOperand(), $source);
+                $this->queryBuilder->addOrderBy($sql, $order->getOrder());
+                continue;
+            }
+
+            // Legacy API: propertyName => direction
             if ($order !== QueryInterface::ORDER_ASCENDING && $order !== QueryInterface::ORDER_DESCENDING) {
                 throw new UnsupportedOrderException('Unsupported order encountered.', 1242816074);
             }
@@ -495,6 +505,8 @@ class Typo3DbQueryParser
             $constraintSQL = 'LOWER(' . $this->parseOperand($operand->getOperand(), $source, $columnMapOut) . ')';
         } elseif ($operand instanceof UpperCaseInterface) {
             $constraintSQL = 'UPPER(' . $this->parseOperand($operand->getOperand(), $source, $columnMapOut) . ')';
+        } elseif ($operand instanceof FunctionExpressionInterface) {
+            $constraintSQL = $this->parseFunctionExpression($operand, $source);
         } elseif ($operand instanceof PropertyValueInterface) {
             $propertyName = $operand->getPropertyName();
             $className = '';
@@ -518,6 +530,27 @@ class Typo3DbQueryParser
             throw new \InvalidArgumentException('Given operand has invalid type "' . get_class($operand) . '".', 1395710211);
         }
         return $constraintSQL;
+    }
+
+    /**
+     * Parses a function expression (CONCAT, TRIM, COALESCE) into SQL.
+     */
+    protected function parseFunctionExpression(FunctionExpressionInterface $expression, SourceInterface $source): string
+    {
+        $functionName = $expression->getFunctionName();
+        $operands = $expression->getOperands();
+        $parsedOperands = [];
+
+        foreach ($operands as $operand) {
+            if ($operand instanceof DynamicOperandInterface) {
+                $parsedOperands[] = $this->parseOperand($operand, $source);
+            } elseif (is_string($operand)) {
+                // Literal string value - use named parameter to prevent SQL injection
+                $parsedOperands[] = $this->queryBuilder->createNamedParameter($operand);
+            }
+        }
+
+        return $functionName . '(' . implode(', ', $parsedOperands) . ')';
     }
 
     /**

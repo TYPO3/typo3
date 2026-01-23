@@ -21,11 +21,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\CoalesceInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConcatInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrderingInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\TrimInterface;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -85,9 +90,9 @@ class Query implements QueryInterface
     protected $statement;
 
     /**
-     * @var array<string, string>
+     * @var array<string, string>|array<OrderingInterface>
      */
-    protected $orderings = [];
+    protected array $orderings = [];
 
     /**
      * @var int|null
@@ -255,11 +260,95 @@ class Query implements QueryInterface
      * 'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @return array<string, string>
+     * @return array<string, string>|array<OrderingInterface>
      */
     public function getOrderings()
     {
         return $this->orderings;
+    }
+
+    /**
+     * Sets the ordering for the result by a single operand. Replaces any existing orderings.
+     *
+     * @param string|DynamicOperandInterface $operand The property name or a dynamic operand
+     * @param string $order The order direction
+     * @return QueryInterface
+     * @phpstan-return QueryInterface<T>
+     */
+    public function orderBy(string|DynamicOperandInterface $operand, string $order = QueryInterface::ORDER_ASCENDING)
+    {
+        $this->orderings = [];
+        return $this->addOrderBy($operand, $order);
+    }
+
+    /**
+     * Adds an ordering for the result. Appends to any existing orderings.
+     *
+     * @param string|DynamicOperandInterface $operand The property name or a dynamic operand
+     * @param string $order The order direction
+     * @return QueryInterface
+     * @phpstan-return QueryInterface<T>
+     */
+    public function addOrderBy(string|DynamicOperandInterface $operand, string $order = QueryInterface::ORDER_ASCENDING)
+    {
+        if (is_string($operand)) {
+            $operand = $this->qomFactory->propertyValue($operand, $this->getSelectorName());
+        }
+        if ($order === QueryInterface::ORDER_ASCENDING) {
+            $this->orderings[] = $this->qomFactory->ascending($operand);
+        } else {
+            $this->orderings[] = $this->qomFactory->descending($operand);
+        }
+        return $this;
+    }
+
+    /**
+     * Creates a CONCAT expression for ordering.
+     *
+     * @param string|DynamicOperandInterface ...$operands Property names or operand objects to concatenate
+     */
+    public function concat(string|DynamicOperandInterface ...$operands): ConcatInterface
+    {
+        $resolvedOperands = [];
+        foreach ($operands as $operand) {
+            if (is_string($operand)) {
+                $resolvedOperands[] = $this->qomFactory->propertyValue($operand, $this->getSelectorName());
+            } else {
+                $resolvedOperands[] = $operand;
+            }
+        }
+        return $this->qomFactory->concat(...$resolvedOperands);
+    }
+
+    /**
+     * Creates a TRIM expression for ordering.
+     *
+     * @param string|DynamicOperandInterface $operand The property name or operand to trim
+     */
+    public function trim(string|DynamicOperandInterface $operand): TrimInterface
+    {
+        if (is_string($operand)) {
+            $operand = $this->qomFactory->propertyValue($operand, $this->getSelectorName());
+        }
+        return $this->qomFactory->trim($operand);
+    }
+
+    /**
+     * Creates a COALESCE expression for ordering.
+     *
+     * @param string|DynamicOperandInterface ...$operands Property names or operand objects
+     */
+    public function coalesce(string|DynamicOperandInterface ...$operands): CoalesceInterface
+    {
+        $resolvedOperands = [];
+        foreach ($operands as $operand) {
+            if (is_string($operand)) {
+                $resolvedOperands[] = $this->qomFactory->propertyValue($operand, $this->getSelectorName());
+            } else {
+                $resolvedOperands[] = $operand;
+            }
+        }
+        return $this->qomFactory->coalesce(...$resolvedOperands);
     }
 
     /**

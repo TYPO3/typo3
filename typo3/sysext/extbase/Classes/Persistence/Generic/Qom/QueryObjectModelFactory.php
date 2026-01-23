@@ -151,4 +151,34 @@ class QueryObjectModelFactory implements SingletonInterface
     {
         return GeneralUtility::makeInstance(BindVariableValue::class, $bindVariableName);
     }
+
+    /**
+     * Evaluates to the concatenated string value of the operands.
+     *
+     * @param DynamicOperandInterface|string ...$operands Property names or operand objects to concatenate
+     */
+    public function concat(DynamicOperandInterface|string ...$operands): ConcatInterface
+    {
+        return GeneralUtility::makeInstance(Concat::class, $operands);
+    }
+
+    /**
+     * Evaluates to the trimmed string value of the operand.
+     *
+     * @param DynamicOperandInterface $operand The operand to trim
+     */
+    public function trim(DynamicOperandInterface $operand): TrimInterface
+    {
+        return GeneralUtility::makeInstance(Trim::class, $operand);
+    }
+
+    /**
+     * Evaluates to the first non-NULL value among the operands.
+     *
+     * @param DynamicOperandInterface|string ...$operands Property names or operand objects
+     */
+    public function coalesce(DynamicOperandInterface|string ...$operands): CoalesceInterface
+    {
+        return GeneralUtility::makeInstance(Coalesce::class, $operands);
+    }
 }
