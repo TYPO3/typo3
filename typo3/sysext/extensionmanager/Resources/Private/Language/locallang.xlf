@@ -224,9 +224,6 @@
       <trans-unit id="extensionList.updateConfirmation.title">
         <source>Update?</source>
       </trans-unit>
-      <trans-unit id="extensionList.updateConfirmation.message">
-        <source>Update Comments</source>
-      </trans-unit>
       <trans-unit id="extensionList.databaseImport">
         <source>The static database data has changed. You should re-import the data.</source>
       </trans-unit>

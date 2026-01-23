@@ -222,46 +222,51 @@ class ExtensionManager {
   }
 
   private async updateExtension(response: AjaxResponse): Promise<void> {
-    let i = 0;
     const data: UpdateInformation = await response.resolve();
+    const versions = Object.entries(data.updateComments);
+
     const form = document.createElement('form');
-    for (const [version, comment] of Object.entries(data.updateComments)) {
+
+    versions.forEach(([version, comment], index) => {
+      const formCheck = document.createElement('div');
+      formCheck.classList.add('form-check', 'form-check-type-card', 'mb-2');
+
+      const inputId = 'version-' + version.replace(/\./g, '-');
+
       const versionInput = document.createElement('input');
-      versionInput.setAttribute('type', 'radio');
-      versionInput.setAttribute('name', 'version');
+      versionInput.classList.add('form-check-input');
+      versionInput.type = 'radio';
+      versionInput.name = 'version';
+      versionInput.id = inputId;
       versionInput.value = version;
-      if (i === 0) {
-        versionInput.setAttribute('checked', 'checked');
+      if (index === 0) {
+        versionInput.checked = true;
       }
 
-      const versionHeader = document.createElement('h3');
-      versionHeader.innerHTML = securityUtility.encodeHtml(version);
-      versionHeader.prepend(versionInput);
+      const label = document.createElement('label');
+      label.classList.add('form-check-label');
+      label.setAttribute('for', inputId);
 
-      const commentDiv = document.createElement('div');
-      commentDiv.innerHTML = comment
-        .replace(/(\r\n|\n\r|\r|\n)/g, '\n')
-        .split(/\n/).map((line: string): string => {
-          return securityUtility.encodeHtml(line);
-        })
-        .join('<br>');
+      const labelHeader = document.createElement('span');
+      labelHeader.classList.add('form-check-label-header');
+      labelHeader.textContent = version;
+      label.append(labelHeader);
 
-      form.append(versionHeader, commentDiv);
-      i++;
-    }
+      if (comment) {
+        const labelBody = document.createElement('span');
+        labelBody.classList.add('form-check-label-body');
+        labelBody.innerHTML = comment
+          .replace(/(\r\n|\n\r|\r|\n)/g, '\n')
+          .split(/\n/).map((line: string): string => {
+            return securityUtility.encodeHtml(line);
+          })
+          .join('<br>');
+        label.append(labelBody);
+      }
 
-    const updateConfirmationTitle = document.createElement('h1');
-    updateConfirmationTitle.textContent = TYPO3.lang['extensionList.updateConfirmation.title'];
-
-    const updateConfirmationMessage = document.createElement('h2');
-    updateConfirmationMessage.textContent = TYPO3.lang['extensionList.updateConfirmation.message'];
-
-    const container = document.createElement('div');
-    container.append(
-      updateConfirmationTitle,
-      updateConfirmationMessage,
-      form,
-    );
+      formCheck.append(versionInput, label);
+      form.append(formCheck);
+    });
 
     if (this.progressBar) {
       this.progressBar.done();
@@ -269,8 +274,8 @@ class ExtensionManager {
 
     Modal.confirm(
       TYPO3.lang['extensionList.updateConfirmation.questionVersionComments'],
-      container,
-      Severity.warning,
+      form,
+      Severity.notice,
       [
         {
           text: TYPO3.lang['button.cancel'],
