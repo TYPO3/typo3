@@ -189,7 +189,6 @@ readonly class ComponentFactory
             ->setLabel($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode'))
             ->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode'))
             ->setIcon($this->iconFactory->getIcon('actions-qrcode', IconSize::SMALL))
-            ->setShowLabelText(true)
             ->setAttributes($attributes);
     }
 

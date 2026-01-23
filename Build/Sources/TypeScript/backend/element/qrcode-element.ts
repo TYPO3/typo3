@@ -49,11 +49,11 @@ export class QrCodeElement extends LitElement {
 
   @state() private qrcodePreview: TemplateResult = html`
     <typo3-backend-spinner size="large"></typo3-backend-spinner>`;
-  @state() private urlSectionVisible: boolean = false;
 
   public constructor() {
     super();
     document.addEventListener('copy-to-clipboard-success', this.showCopySuccess.bind(this));
+    document.addEventListener('copy-to-clipboard-error', this.showCopyError.bind(this));
   }
 
   public override connectedCallback() {
@@ -64,7 +64,6 @@ export class QrCodeElement extends LitElement {
   protected override render(): TemplateResult | symbol {
     return html`
       <div class="preview">${this.qrcodePreview}</div>
-      ${this.getUrlToggle()}
       ${this.getUrlSection()}
       ${this.getControls()}
     `;
@@ -74,23 +73,8 @@ export class QrCodeElement extends LitElement {
     return this;
   }
 
-  private getUrlToggle(): TemplateResult | symbol {
-    if (!this.showUrl) {
-      return nothing;
-    }
-
-    const showUrlLabel = TYPO3.lang['qrcode.showUrl'] || 'Show URL';
-    return html`
-      <div class="url-info-icon">
-        <button type="button" class="btn btn-default btn-sm" title="${showUrlLabel}" @click=${this.toggleUrlSection}>
-          <typo3-backend-icon identifier="actions-eye-link" size="small"></typo3-backend-icon>
-        </button>
-      </div>
-    `;
-  }
-
   private getUrlSection(): TemplateResult | symbol {
-    if (!this.showUrl || !this.urlSectionVisible) {
+    if (!this.showUrl) {
       return nothing;
     }
     const urlLabel = TYPO3.lang['qrcode.url'] || 'URL';
@@ -107,10 +91,6 @@ export class QrCodeElement extends LitElement {
         </div>
       </div>
     `;
-  }
-
-  private toggleUrlSection(): void {
-    this.urlSectionVisible = !this.urlSectionVisible;
   }
 
   private getControls(): TemplateResult {
@@ -176,6 +156,14 @@ export class QrCodeElement extends LitElement {
     if (urlInfoSection !== null) {
       urlInfoSection.classList.add('copy-success');
       setTimeout(() => urlInfoSection.classList.remove('copy-success'), 500);
+    }
+  }
+
+  private showCopyError(): void {
+    const urlInfoSection = this.querySelector('.url-info-section');
+    if (urlInfoSection !== null) {
+      urlInfoSection.classList.add('copy-error');
+      setTimeout(() => urlInfoSection.classList.remove('copy-error'), 750);
     }
   }
 }

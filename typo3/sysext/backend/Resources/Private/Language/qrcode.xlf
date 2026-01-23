@@ -33,9 +33,6 @@
       <trans-unit id="qrcode.copyUrl">
         <source>Copy URL</source>
       </trans-unit>
-      <trans-unit id="qrcode.showUrl">
-        <source>Show URL</source>
-      </trans-unit>
     </body>
   </file>
 </xliff>

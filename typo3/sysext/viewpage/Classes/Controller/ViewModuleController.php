@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Domain\Model\Language\LanguageItem;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -184,9 +183,7 @@ final class ViewModuleController
         $view->addButtonToButtonBar(
             $this->componentFactory->createQrCodeButton(
                 $this->componentFactory->getPreviewUrlForQrCode($this->pageContext->pageId, $languageId, $targetUrl)
-            ),
-            ButtonBar::BUTTON_POSITION_LEFT,
-            2
+            )
         );
 
         // Shortcut

@@ -458,7 +458,7 @@ class RecordListController
                     $view->addButtonToButtonBar(
                         $this->componentFactory->createQrCodeButton($previewUri),
                         ButtonBar::BUTTON_POSITION_LEFT,
-                        16
+                        15
                     );
                 }
             }

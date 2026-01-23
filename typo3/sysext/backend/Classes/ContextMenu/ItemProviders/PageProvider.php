@@ -43,6 +43,11 @@ class PageProvider extends RecordProvider
             'iconIdentifier' => 'actions-view-page',
             'callbackAction' => 'viewRecord',
         ],
+        'qrcode' => [
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode',
+            'iconIdentifier' => 'actions-qrcode',
+            'callbackAction' => 'showQrCode',
+        ],
         'edit' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit',
             'iconIdentifier' => 'actions-page-open',
@@ -191,6 +196,7 @@ class PageProvider extends RecordProvider
         $canRender = false;
         switch ($itemName) {
             case 'view':
+            case 'qrcode':
                 $canRender = $this->canBeViewed();
                 break;
             case 'edit':
@@ -475,7 +481,7 @@ class PageProvider extends RecordProvider
     protected function getAdditionalAttributes(string $itemName): array
     {
         $attributes = [];
-        if ($itemName === 'view') {
+        if ($itemName === 'view' || $itemName === 'qrcode') {
             $attributes += $this->getViewAdditionalAttributes();
         }
         if ($itemName === 'enable' || $itemName === 'disable') {

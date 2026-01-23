@@ -31,6 +31,7 @@ export function copyToClipboard(text: string, silent: boolean = false): void {
         Notification.success(lll('copyToClipboard.success'), '', 1);
       }
     }).catch((): void => {
+      document.dispatchEvent(new CustomEvent('copy-to-clipboard-error'));
       if (!silent) {
         Notification.error(lll('copyToClipboard.error'));
       }
@@ -48,10 +49,12 @@ export function copyToClipboard(text: string, silent: boolean = false): void {
           Notification.success(lll('copyToClipboard.success'), '', 1);
         }
       } else if (!silent) {
+        document.dispatchEvent(new CustomEvent('copy-to-clipboard-error'));
         Notification.error(lll('copyToClipboard.error'));
       }
     } catch {
       if (!silent) {
+        document.dispatchEvent(new CustomEvent('copy-to-clipboard-error'));
         Notification.error(lll('copyToClipboard.error'));
       }
     }
@@ -79,6 +82,7 @@ export class CopyToClipboard extends PseudoButtonLitElement {
     if (typeof this.text !== 'string') {
       console.warn('No text for copy to clipboard given.');
       if (!this.silent) {
+        document.dispatchEvent(new CustomEvent('copy-to-clipboard-error'));
         Notification.error(lll('copyToClipboard.error'));
       }
       return;

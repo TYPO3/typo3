@@ -16,12 +16,14 @@ import { SeverityEnum } from './enum/severity';
 import AjaxDataHandler from './ajax-data-handler';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import InfoWindow from './info-window';
-import Modal from './modal';
+import Modal, { type ModalElement } from './modal';
 import ModuleMenu from './module-menu';
 import Notification from '@typo3/backend/notification';
 import Viewport from './viewport';
 import '@typo3/backend/new-record-wizard';
 import Utility from '@typo3/backend/utility';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { html } from 'lit';
 
 /**
  * @exports @typo3/backend/context-menu-actions
@@ -62,6 +64,36 @@ class ContextMenuActions {
         previewWin.location.reload();
       }
     }
+  }
+
+  public static async showQrCode(table: string, uid: number, dataset: DOMStringMap): Promise<void> {
+    const previewUrl = dataset.previewUrl;
+    if (!previewUrl) {
+      return;
+    }
+    await topLevelModuleImport('@typo3/backend/element/qrcode-element.js');
+    Modal.advanced({
+      title: TYPO3.lang['showPageQrCode.modalTitle'] || 'QR Code',
+      size: Modal.sizes.small,
+      content: html`
+        <div class="text-center">
+          <typo3-qrcode
+            class="text-start"
+            content="${previewUrl}"
+            size="large"
+            show-url
+          ></typo3-qrcode>
+        </div>
+      `,
+      buttons: [
+        {
+          text: TYPO3.lang['button.close'] || 'Close',
+          btnClass: 'btn-default',
+          name: 'close',
+          trigger: (event: Event, modal: ModalElement) => modal.hideModal(),
+        },
+      ],
+    });
   }
 
   public static openInfoPopUp(table: string, uid: number): void {

@@ -28,6 +28,7 @@ export class QrCodeModalButton extends PseudoButtonLitElement {
   @property({ type: String, attribute: 'modal-title' }) modalTitle: string;
   @property({ type: String }) content: string;
   @property({ type: Boolean, attribute: 'show-url' }) showUrl: boolean = false;
+  @property({ type: Boolean, attribute: 'show-download' }) showDownload: boolean = false;
 
   protected override buttonActivated(): void {
     this.modalOpen();
@@ -54,7 +55,7 @@ export class QrCodeModalButton extends PseudoButtonLitElement {
             class="text-start"
             content="${this.content}"
             size="large"
-            show-download
+            ?show-download="${this.showDownload}"
             ?show-url="${this.showUrl}"
           ></typo3-qrcode>
         </div>

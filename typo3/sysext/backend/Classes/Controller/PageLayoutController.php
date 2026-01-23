@@ -436,7 +436,7 @@ class PageLayoutController
 
         // QR Code
         if ($qrCodeButton = $this->makeQrCodeButton()) {
-            $view->addButtonToButtonBar($qrCodeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+            $view->addButtonToButtonBar($qrCodeButton);
         }
 
         // Edit
