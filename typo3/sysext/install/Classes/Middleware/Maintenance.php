@@ -316,7 +316,7 @@ class Maintenance implements MiddlewareInterface
         if (file_exists($this->configurationManager->getSystemConfigurationFileLocation())) {
             return true;
         }
-        // Check can be removed with TYPO3 v14.0
+        // @deprecated since TYPO3 v12.0, will be removed in TYPO3 v15.0.
         if (file_exists($this->configurationManager->getLocalConfigurationFileLocation())) {
             mkdir(dirname($this->configurationManager->getSystemConfigurationFileLocation()), 02775, true);
             rename($this->configurationManager->getLocalConfigurationFileLocation(), $this->configurationManager->getSystemConfigurationFileLocation());

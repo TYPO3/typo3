@@ -132,6 +132,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Note by benni in 2025: This method will cease to exist at some point, as the title is loaded from TCA eventually.
      *
      * @return string
+     * @deprecated since TYPO3 v14.0, may be removed in TYPO3 v15.0.
      */
     public function getTaskTitle()
     {
@@ -144,6 +145,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Note by benni in 2025: This method will cease to exist at some point, as the description is loaded from TCA eventually.
      *
      * @return string
+     * @deprecated since TYPO3 v14.0, may be removed in TYPO3 v15.0.
      */
     public function getTaskDescription()
     {
@@ -155,6 +157,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Unused since TYPO3 v14.0, can be deprecated and removed once we migrate task registration away from TYPO3_CONF_VARS.
      *
      * @return string
+     * @deprecated since TYPO3 v14.0, may be removed in TYPO3 v15.0.
      */
     public function getTaskClassName()
     {
