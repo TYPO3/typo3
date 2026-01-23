@@ -140,7 +140,8 @@ class LanguageMenuProcessor implements DataProcessorInterface
 
         $paramsToExclude = CanonicalizationUtility::getParamsToExcludeForCanonicalizedUrl(
             $this->getRequest()->getAttribute('frontend.page.information')->getId(),
-            (array)$GLOBALS['TYPO3_CONF_VARS']['FE']['additionalCanonicalizedUrlParameters']
+            (array)$GLOBALS['TYPO3_CONF_VARS']['FE']['additionalCanonicalizedUrlParameters'],
+            $this->cObj->getRequest()
         );
 
         $this->menuConfig['addQueryString.']['exclude'] = implode(

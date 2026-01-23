@@ -37,11 +37,16 @@ class CanonicalizationUtility
      * @param int $pageId Id of the page you want to get the excluded params
      * @param array $additionalCanonicalizedUrlParameters Which GET-params should stay besides the params used for cHash calculation
      */
-    public static function getParamsToExcludeForCanonicalizedUrl(int $pageId, array $additionalCanonicalizedUrlParameters = []): array
+    public static function getParamsToExcludeForCanonicalizedUrl(int $pageId, array $additionalCanonicalizedUrlParameters = [], ?ServerRequestInterface $request = null): array
     {
         $cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
 
-        $GET = ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) ? $GLOBALS['TYPO3_REQUEST']->getQueryParams() : [];
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if ($request instanceof ServerRequestInterface) {
+            $GET = $request->getQueryParams();
+        } else {
+            $GET = [];
+        }
         $GET['id'] = $pageId;
 
         $queryString = HttpUtility::buildQueryString($GET, '&');
@@ -51,7 +56,7 @@ class CanonicalizationUtility
         $urlParameters = GeneralUtility::explodeUrl2Array($queryString);
 
         $paramsToExclude = array_keys(
-            array_diff(
+            array_diff_assoc(
                 $urlParameters,
                 $cHashArray
             )

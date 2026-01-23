@@ -158,7 +158,8 @@ readonly class CanonicalGenerator
                     ',',
                     CanonicalizationUtility::getParamsToExcludeForCanonicalizedUrl(
                         $id,
-                        (array)$GLOBALS['TYPO3_CONF_VARS']['FE']['additionalCanonicalizedUrlParameters']
+                        (array)$GLOBALS['TYPO3_CONF_VARS']['FE']['additionalCanonicalizedUrlParameters'],
+                        $request
                     )
                 ),
             ],
