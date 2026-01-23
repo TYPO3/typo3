@@ -323,7 +323,7 @@ readonly class LabelFileResolver
                 }
             }
             if ($relativePathInPackagePath === '' || $extensionKey === null) {
-                return $sourcePath;
+                continue;
             }
 
             [$relativePathInPackagePath, $baseName] = GeneralUtility::revExplode('/', $relativePathInPackagePath, 2);
