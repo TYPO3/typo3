@@ -43,13 +43,18 @@ final readonly class LabelFinder
         $totalLabelData = [];
         $count = 0;
         foreach ($packages as $package) {
+            $resources = [];
             $resourcesByLocale = $this->translationDomainMapper->findLabelResourcesInPackageGroupedByLocale($package->getPackageKey());
             if ($locale === 'default') {
                 $locale = 'en';
             }
+            if ($locale !== 'en') {
+                // Merge english resources on a requested non-english locale, otherwise we would only access a subset of labels.
+                $resources = array_merge($resources, $resourcesByLocale['en'] ?? []);
+            }
 
-            // Get English resources (base files)
-            $resources = $resourcesByLocale[$locale] ?? [];
+            // Merge the specific locale resources
+            $resources = array_merge($resources, $resourcesByLocale[$locale] ?? []);
             foreach ($resources as $domain => $resource) {
                 $labels = $this->localizationFactory->getParsedData($resource, $locale);
                 $labelData = [];

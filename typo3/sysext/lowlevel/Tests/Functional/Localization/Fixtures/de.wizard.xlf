@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/wizard.xlf" date="2016-02-14T16:11:24Z" product-name="core" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="wizard.button.next" approved="yes">
+        <source>Next Testinglabelsearch</source>
+        <target state="final">Testinglabelsearchsuche</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

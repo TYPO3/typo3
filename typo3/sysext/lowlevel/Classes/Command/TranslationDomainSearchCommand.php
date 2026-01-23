@@ -194,10 +194,9 @@ Search only in the `core` extension using a regular expression:
             return Command::SUCCESS;
         }
         if ($flatList) {
-            $this->printTableFlat($io, $searchResult, $crop, true);
+            $this->printTableFlat($io, $searchResult, $crop, true, $locale);
         } else {
-
-            $this->printTable($io, $searchResult, $crop);
+            $this->printTable($io, $searchResult, $crop, $locale);
         }
 
         if ($limit <= 0 || count($searchResult) < $limit) {
@@ -210,17 +209,17 @@ Search only in the `core` extension using a regular expression:
         return Command::SUCCESS;
     }
 
-    private function printTable(SymfonyStyle $io, array $labelInDomain, int $crop): void
+    private function printTable(SymfonyStyle $io, array $labelInDomain, int $crop, string $locale): void
     {
         /** @var DomainSearchResult $domain */
         foreach ($labelInDomain as $domain) {
             $io->writeln('');
             $io->title($domain->domain . ' file ' . $domain->resource);
-            $this->printTableFlat($io, $domain->labels, $crop, false);
+            $this->printTableFlat($io, $domain->labels, $crop, false, $locale);
         }
     }
 
-    private function printTableFlat(SymfonyStyle $io, array $labelData, int $crop, bool $includeDomain): void
+    private function printTableFlat(SymfonyStyle $io, array $labelData, int $crop, bool $includeDomain, string $locale): void
     {
         // Sort by domain name and reference
         usort($labelData, static function ($a, $b): int {
@@ -235,7 +234,7 @@ Search only in the `core` extension using a regular expression:
         $headers = [
             'Domain',
             'Label Reference',
-            'Label Content (en)',
+            'Label Content (' . $locale . ')',
         ];
         if (!$includeDomain) {
             array_shift($headers);
