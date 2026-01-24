@@ -17,10 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Service;
 
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
-use TYPO3\CMS\Core\Package\PackageInterface;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3Fluid\Fluid\Validation\TemplateValidator;
 use TYPO3Fluid\Fluid\Validation\TemplateValidatorResult;
@@ -31,7 +27,7 @@ use TYPO3Fluid\Fluid\Validation\TemplateValidatorResult;
 readonly class CacheWarmupService
 {
     public function __construct(
-        private PackageManager $packageManager,
+        private TemplateFinder $templateFinder,
         private RenderingContextFactory $renderingContextFactory,
     ) {}
 
@@ -40,7 +36,7 @@ readonly class CacheWarmupService
      */
     public function warmupTemplatesInAllPackages(): array
     {
-        $templates = $this->findTemplatesInAllPackages();
+        $templates = $this->templateFinder->findTemplatesInAllPackages();
         $validationResults = (new TemplateValidator())->validateTemplateFiles(
             $templates,
             $this->renderingContextFactory->create()
@@ -58,28 +54,5 @@ readonly class CacheWarmupService
             }
         }
         return $validationResults;
-    }
-
-    private function findTemplatesInAllPackages(): array
-    {
-        $packagePaths = array_map(
-            fn(PackageInterface $package): string => $package->getPackagePath(),
-            $this->packageManager->getActivePackages(),
-        );
-        $finder = new Finder();
-        $templates = $finder
-            ->files()
-            ->in($packagePaths)
-            ->exclude([
-                'Classes',
-                'Tests',
-                'node_modules',
-                'vendor',
-            ])
-            ->name('*.fluid.*');
-        return array_map(
-            fn(SplFileInfo $file): string => $file->getPathname(),
-            iterator_to_array($templates),
-        );
     }
 }
