@@ -119,6 +119,11 @@ readonly class CommandMap
      * Resolves workspaces related dependencies for staging of the command map.
      * Workspaces records that have children or (relative) parents which are versionized
      * but not staged with this request, are removed from the command map.
+     *
+     * The "change_stage" command and the legacy "version" command with action "setStage"
+     * are both keyed by the versioned uid. Every element keeps the command it was requested
+     * with, and dependent elements pulled in by the resolver take the command of the element
+     * that was requested, so processCmdmap hooks always see the shape the caller sent.
      */
     protected function resolveWorkspacesSetStageDependencies(array $commandMap, int $workspace): array
     {
@@ -127,24 +132,25 @@ readonly class CommandMap
         $dependency->setEventDispatcher($this->eventDispatcher);
         $dependency->setAction(DependencyCollectionAction::StageChange);
         foreach ($commandMap as $table => $versionIdCollection) {
-            foreach ($versionIdCollection as $versionIdList => $commandCollection) {
-                foreach ($commandCollection as $command => $properties) {
-                    if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'setStage') {
-                        if (isset($properties['stageId']) && MathUtility::canBeInterpretedAsInteger($properties['stageId'])) {
-                            $commandMap = $this->explodeSetStage($commandMap, $table, $versionIdList, $properties);
-                        }
-                    }
+            foreach ($versionIdCollection as $versionId => $commandCollection) {
+                $hasChangeStage = array_key_exists('change_stage', $commandCollection);
+                if ($hasChangeStage && ($commandCollection['version']['action'] ?? null) === 'setStage') {
+                    // Both commands address the same record, which must change its stage only once.
+                    // "change_stage" wins even if invalid, it is then rejected by the hook.
+                    unset($commandMap[$table][$versionId]['version']);
                 }
-            }
-        }
-        foreach ($commandMap as $table => $versionIdCollection) {
-            foreach ($versionIdCollection as $versionIdList => $commandCollection) {
-                foreach ($commandCollection as $command => $properties) {
-                    if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'setStage') {
-                        if (isset($properties['stageId']) && MathUtility::canBeInterpretedAsInteger($properties['stageId'])) {
-                            $dependency->addElement($table, $versionIdList, ['versionId' => $versionIdList, 'properties' => $properties]);
-                        }
-                    }
+                if ($this->isChangeStageCommand($commandCollection['change_stage'] ?? null)) {
+                    $dependency->addElement($table, (int)$versionId, [
+                        'command' => 'change_stage',
+                        'properties' => $commandCollection['change_stage'],
+                    ]);
+                } elseif (!$hasChangeStage && $this->isLegacySetStageCommand($commandCollection['version'] ?? null)) {
+                    $properties = $commandCollection['version'];
+                    $properties['stage'] = $properties['stageId'];
+                    $dependency->addElement($table, (int)$versionId, [
+                        'command' => 'version',
+                        'properties' => $properties,
+                    ]);
                 }
             }
         }
@@ -158,16 +164,24 @@ readonly class CommandMap
             if (!empty($intersectingElements)) {
                 $intersectingElement = current($intersectingElements);
                 $orderedCommandMap = [];
-                $commonProperties = $this->getSetStageProperties($intersectingElement);
+                $commonProperties = $this->getCommonStageProperties($intersectingElement);
                 /** @var ElementEntity $element */
                 foreach ($dependentElements as $element) {
                     $table = $element->getTable();
-                    $id = $element->getId();
-                    unset($commandMap[$table][$id]['version']);
+                    $versionId = $element->getId();
+                    unset($commandMap[$table][$versionId]['change_stage']);
+                    if ($this->isLegacySetStageCommand($commandMap[$table][$versionId]['version'] ?? null)) {
+                        unset($commandMap[$table][$versionId]['version']);
+                    }
                     if ($element->isInvalid()) {
                         continue;
                     }
-                    $orderedCommandMap[$table][$id]['version'] = array_merge($commonProperties, $this->getSetStageProperties($element));
+                    $properties = array_merge($commonProperties, $this->getCommonStageProperties($element));
+                    if (($element->getDataValue('command') ?? $intersectingElement->getDataValue('command')) === 'version') {
+                        $orderedCommandMap[$table][$versionId]['version'] = $this->toLegacySetStageProperties($properties);
+                    } else {
+                        $orderedCommandMap[$table][$versionId]['change_stage'] = $properties;
+                    }
                 }
                 // Ensure that ordered command map is on top of the command map:
                 ArrayUtility::mergeRecursiveWithOverrule($orderedCommandMap, $commandMap);
@@ -232,26 +246,6 @@ readonly class CommandMap
     }
 
     /**
-     * Explodes id-lists in the command map for staging actions.
-     */
-    protected function explodeSetStage(array $commandMap, string $table, string|int $versionIdList, array $properties): array
-    {
-        $extractedCommandMap = [];
-        $versionIds = GeneralUtility::trimExplode(',', (string)$versionIdList, true);
-        if (count($versionIds) > 1) {
-            foreach ($versionIds as $versionId) {
-                if (isset($commandMap[$table][$versionId]['version'])) {
-                    throw new \RuntimeException('Command map for [' . $table . '][' . $versionId . '][version] was already set.', 1289391048);
-                }
-                $extractedCommandMap[$table][$versionId]['version'] = $properties;
-            }
-            // Merge command map elements to the bottom of the current command map.
-            ArrayUtility::mergeRecursiveWithOverrule($commandMap, $extractedCommandMap);
-        }
-        return $commandMap;
-    }
-
-    /**
      * Gets common properties of dependent elements for clearing.
      */
     protected function getCommonClearProperties(ElementEntity $element): array
@@ -280,25 +274,32 @@ readonly class CommandMap
         return $commonPublishProperties;
     }
 
-    /**
-     * Gets common properties of dependent elements for staging.
-     */
-    protected function getSetStageProperties(ElementEntity $element): array
+    protected function isChangeStageCommand(mixed $properties): bool
     {
-        $commonSetStageProperties = [];
-        $elementProperties = $element->getDataValue('properties');
-        if (isset($elementProperties['stageId'])) {
-            $commonSetStageProperties['stageId'] = $elementProperties['stageId'];
-        }
-        if (isset($elementProperties['comment'])) {
-            $commonSetStageProperties['comment'] = $elementProperties['comment'];
-        }
-        if (isset($elementProperties['action'])) {
-            $commonSetStageProperties['action'] = $elementProperties['action'];
-        }
-        if (isset($elementProperties['notificationAlternativeRecipients'])) {
-            $commonSetStageProperties['notificationAlternativeRecipients'] = $elementProperties['notificationAlternativeRecipients'];
-        }
-        return $commonSetStageProperties;
+        return is_array($properties) && MathUtility::canBeInterpretedAsInteger($properties['stage'] ?? null);
+    }
+
+    protected function isLegacySetStageCommand(mixed $properties): bool
+    {
+        return is_array($properties)
+            && ($properties['action'] ?? null) === 'setStage'
+            && MathUtility::canBeInterpretedAsInteger($properties['stageId'] ?? null);
+    }
+
+    /**
+     * Gets common properties of dependent elements for staging, in the shape of
+     * the "change_stage" command.
+     */
+    protected function getCommonStageProperties(ElementEntity $element): array
+    {
+        $elementProperties = $element->getDataValue('properties') ?? [];
+        return array_intersect_key($elementProperties, array_flip(['stage', 'comment', 'notificationAlternativeRecipients']));
+    }
+
+    protected function toLegacySetStageProperties(array $properties): array
+    {
+        $legacyProperties = ['action' => 'setStage', 'stageId' => $properties['stage']];
+        unset($properties['stage']);
+        return array_merge($legacyProperties, $properties);
     }
 }

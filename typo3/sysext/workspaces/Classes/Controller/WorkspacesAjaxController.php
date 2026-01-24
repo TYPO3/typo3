@@ -446,10 +446,11 @@ final readonly class WorkspacesAjaxController
         $table = $parameters->affects->table;
         $versionId = $parameters->affects->uid;
         $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $setStageId);
-        $cmdArray[$table][$versionId]['version']['action'] = 'setStage';
-        $cmdArray[$table][$versionId]['version']['stageId'] = $setStageId;
-        $cmdArray[$table][$versionId]['version']['comment'] = $comments;
-        $cmdArray[$table][$versionId]['version']['notificationAlternativeRecipients'] = $recipients;
+        $cmdArray[$table][$versionId]['change_stage'] = [
+            'stage' => $setStageId,
+            'comment' => $comments,
+            'notificationAlternativeRecipients' => $recipients,
+        ];
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmdArray);
         $dataHandler->process_cmdmap();
@@ -466,10 +467,11 @@ final readonly class WorkspacesAjaxController
         $table = $parameters->affects->table;
         $versionId = $parameters->affects->uid;
         $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $setStageId);
-        $cmdArray[$table][$versionId]['version']['action'] = 'setStage';
-        $cmdArray[$table][$versionId]['version']['stageId'] = $setStageId;
-        $cmdArray[$table][$versionId]['version']['comment'] = $comments;
-        $cmdArray[$table][$versionId]['version']['notificationAlternativeRecipients'] = $recipients;
+        $cmdArray[$table][$versionId]['change_stage'] = [
+            'stage' => $setStageId,
+            'comment' => $comments,
+            'notificationAlternativeRecipients' => $recipients,
+        ];
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmdArray);
         $dataHandler->process_cmdmap();
@@ -617,10 +619,11 @@ final readonly class WorkspacesAjaxController
             if ((int)($elementRecord['t3ver_wsid'] ?? 0) === 0) {
                 continue;
             }
-            $cmdArray[$element->table][$element->uid]['version']['action'] = 'setStage';
-            $cmdArray[$element->table][$element->uid]['version']['stageId'] = $setStageId;
-            $cmdArray[$element->table][$element->uid]['version']['comment'] = $comments;
-            $cmdArray[$element->table][$element->uid]['version']['notificationAlternativeRecipients'] = $recipients;
+            $cmdArray[$element->table][$element->uid]['change_stage'] = [
+                'stage' => $setStageId,
+                'comment' => $comments,
+                'notificationAlternativeRecipients' => $recipients,
+            ];
         }
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmdArray);
@@ -668,10 +671,11 @@ final readonly class WorkspacesAjaxController
         $recipients = $this->getRecipientList((array)($parameters->recipients ?? []), (string)($parameters->additional ?? ''), $stageId);
         foreach ($parameters->affects as $tableName => $items) {
             foreach ($items as $item) {
-                $cmdMapArray[$tableName][$item->uid]['version']['action'] = 'setStage';
-                $cmdMapArray[$tableName][$item->uid]['version']['stageId'] = $stageId;
-                $cmdMapArray[$tableName][$item->uid]['version']['comment'] = $comment;
-                $cmdMapArray[$tableName][$item->uid]['version']['notificationAlternativeRecipients'] = $recipients;
+                $cmdMapArray[$tableName][$item->uid]['change_stage'] = [
+                    'stage' => $stageId,
+                    'comment' => $comment,
+                    'notificationAlternativeRecipients' => $recipients,
+                ];
             }
         }
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);

@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\VirtualRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\DataHandler\CommandMap;
@@ -97,6 +98,27 @@ class DataHandlerHook
      */
     public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, DataHandler $dataHandler)
     {
+        // Custom command "change_stage": Sends a workspace record to another stage. In contrast
+        // to the legacy "version" command with action "setStage", the parameters are not nested
+        // below an "action" and the target stage is given as "stage".
+        if ($command === 'change_stage') {
+            $commandIsProcessed = true;
+            $stageId = is_array($value) ? ($value['stage'] ?? null) : null;
+            if (!MathUtility::canBeInterpretedAsInteger($stageId)) {
+                $dataHandler->log($table, (int)$id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: No target stage given');
+                return;
+            }
+            $this->version_setStage(
+                $table,
+                (int)$id,
+                (int)$stageId,
+                (string)($value['comment'] ?? ''),
+                $dataHandler,
+                (array)($value['notificationAlternativeRecipients'] ?? [])
+            );
+            return;
+        }
+
         // Custom command "publish": Publishes a workspace record to live. In contrast to the
         // legacy "version" command with action "swap", it is keyed by the uid of the workspace
         // version, the live uid and the workspace are resolved from t3ver_oid and t3ver_wsid.
@@ -150,17 +172,14 @@ class DataHandlerHook
                 break;
             case 'setStage':
                 $commandIsProcessed = true;
-                $elementIds = GeneralUtility::intExplode(',', (string)$id, true);
-                foreach ($elementIds as $elementId) {
-                    $this->version_setStage(
-                        $table,
-                        $elementId,
-                        $value['stageId'],
-                        $comment,
-                        $dataHandler,
-                        $notificationAlternativeRecipients
-                    );
-                }
+                $this->version_setStage(
+                    $table,
+                    (int)$id,
+                    $value['stageId'],
+                    $comment,
+                    $dataHandler,
+                    $notificationAlternativeRecipients
+                );
                 break;
             default:
                 // Do nothing
