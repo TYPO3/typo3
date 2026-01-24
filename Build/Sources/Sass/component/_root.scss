@@ -479,15 +479,3 @@
     --typo3-position-start: right;
     --typo3-position-end: left;
 }
-
-//
-// Bootstrap Corrections
-//
-// Note:
-// Some components are already reactive to the preferred color
-// scheme of the user. We correct some general global CSS variables
-// for some contexts to ensure the display is correct.
-//
-.dropdown-menu {
-    --bs-secondary-color: var(--typo3-component-secondary-color);
-}

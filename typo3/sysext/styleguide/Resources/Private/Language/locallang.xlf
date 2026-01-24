@@ -596,6 +596,9 @@
       <trans-unit id="component.dropdown.section.listitemswithactions.headline">
         <source>List items with actions</source>
       </trans-unit>
+      <trans-unit id="component.dropdown.section.positions.headline">
+        <source>Positions</source>
+      </trans-unit>
       <!-- Component: Developer Tools -->
       <trans-unit id="component.developerTools.headline">
         <source>Developer Tools</source>

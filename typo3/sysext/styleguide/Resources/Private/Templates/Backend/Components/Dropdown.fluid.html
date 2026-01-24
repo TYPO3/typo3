@@ -7,10 +7,6 @@
 
 <f:layout name="Module" />
 
-<f:section name="Before">
-    <f:asset.script identifier="styleguide-checkbox-demo" src="EXT:styleguide/Resources/Public/JavaScript/checkbox-demo.js" />
-</f:section>
-
 <f:section name="Content">
 
     <f:render
@@ -31,43 +27,43 @@
 
         <h2><f:translate key="component.dropdown.section.toggles.headline" domain="styleguide.messages" /></h2>
         <f:variable name="customCode">
-            <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-default dropdown-toggle" popovertarget="demo">
                 Dropdown button
             </button>
-            <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown button (no chevron)
+            <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" popovertarget="demo">
+                Dropdown button
             </button>
-            <button class="dropdown-toggle dropdown-toggle-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="dropdown-toggle dropdown-toggle-link" type="button" popovertarget="demo">
                 Dropdown Link
             </button>
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
             <div style="display: flex; gap: .5rem; align-items: center;">
                 <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-default dropdown-toggle" popovertarget="toggle-menu-1">
                         Dropdown button
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul id="toggle-menu-1" class="dropdown-menu" popover>
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </div>
                 <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" popovertarget="toggle-menu-2">
                         Dropdown button (no chevron)
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul id="toggle-menu-2" class="dropdown-menu" popover>
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </div>
                 <div class="dropdown">
-                    <button class="dropdown-toggle dropdown-toggle-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="dropdown-toggle dropdown-toggle-link" popovertarget="toggle-menu-3">
                         Dropdown Link
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul id="toggle-menu-3" class="dropdown-menu" popover>
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -78,14 +74,14 @@
 
         <h2><f:translate key="component.dropdown.section.basic.headline" domain="styleguide.messages" /></h2>
         <f:variable name="customCode">
-            <ul class="dropdown-menu">
+            <ul id="demo" class="dropdown-menu" popover>
                 <li><a class="dropdown-item" href="#">Action</a></li>
                 <li><a class="dropdown-item" href="#">Another action</a></li>
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
-            <ul class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+            <ul class="dropdown-menu" style="display: block; position: relative; z-index: 0; max-width: 300px;">
                 <li><a class="dropdown-item" href="#">Action</a></li>
                 <li><a class="dropdown-item" href="#">Another action</a></li>
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -94,7 +90,7 @@
 
         <h2><f:translate key="component.dropdown.section.states.headline" domain="styleguide.messages" /></h2>
         <f:variable name="customCode">
-            <ul class="dropdown-menu show">
+            <ul id="demo" class="dropdown-menu" popover>
                 <li><a class="dropdown-item" href="#">Item Link</a></li>
                 <li><a class="dropdown-item disabled" href="#" aria-disabled="true">Item Link (disabled)</a></li>
                 <li><button class="dropdown-item" type="button">Item Button</button></li>
@@ -102,7 +98,7 @@
             </ul>
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
-            <ul class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+            <ul class="dropdown-menu" style="display: block; position: relative; z-index: 0; max-width: 300px;">
                 <li><a class="dropdown-item" href="#">Item Link</a></li>
                 <li><a class="dropdown-item disabled" href="#" aria-disabled="true">Item Link (disabled)</a></li>
                 <li><button class="dropdown-item" type="button">Item Button</button></li>
@@ -124,7 +120,7 @@
             </button>
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
-            <ul class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+            <ul class="dropdown-menu" style="display: block; position: relative; z-index: 0; max-width: 300px;">
                 <li>
                     <button class="dropdown-item" type="button">
                         <span class="dropdown-item-columns">
@@ -158,7 +154,7 @@
             <div class="dropdown-header">Dropdown Header</div>
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
-            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+            <div class="dropdown-menu" style="display: block; position: relative; z-index: 0; max-width: 300px;">
                 <div class="dropdown-headline">Dropdown Headline</div>
                 <div class="dropdown-header">Dropdown Header</div>
             </div>
@@ -173,7 +169,7 @@
             </p>
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
-            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+            <div class="dropdown-menu" style="display: block; position: relative; z-index: 0; max-width: 300px;">
                 <p class="dropdown-item-text">
                     Dropdown text, lobortis eros. Donec libero
                     tellus, <a href="#">convallis scelerisque</a> risus id,
@@ -194,7 +190,7 @@
             </div>
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
-            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+            <div class="dropdown-menu" style="display: block; position: relative; z-index: 0; max-width: 300px;">
                 <div class="dropdown-row">
                     <div class="text-danger">
                         <core:icon identifier="actions-info-circle-alt" size="small" />
@@ -211,7 +207,7 @@
             <hr class="dropdown-divider" aria-hidden="true">
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
-            <ul class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+            <ul class="dropdown-menu" style="display: block; position: relative; z-index: 0; max-width: 300px;">
                 <li><a class="dropdown-item" href="#">Action</a></li>
                 <li><a class="dropdown-item" href="#">Another action</a></li>
                 <li><hr class="dropdown-divider" aria-hidden="true"></li>
@@ -252,7 +248,7 @@
             </table>
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
-            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+            <div class="dropdown-menu" style="display: block; position: relative; z-index: 0; max-width: 300px;">
                 {customCode}
             </div>
         </sg:example>
@@ -281,7 +277,7 @@
             </ul>
         </f:variable>
         <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
-            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+            <div class="dropdown-menu" style="display: block; position: relative; z-index: 0; max-width: 300px;">
                 <ul class="dropdown-list">
                     <li>
                         <a href="#" class="dropdown-item dropdown-item-title" title="...">
@@ -319,6 +315,36 @@
                             <core:icon identifier="actions-delete" size="small" />
                         </button>
                     </li>
+                </ul>
+            </div>
+        </sg:example>
+
+        <h2>Legacy Bootstrap Dropdown</h2>
+        <p>
+            For legacy support, Bootstrap dropdowns using <code>data-bs-toggle="dropdown"</code> are still available.
+            New implementations should use the Popover API with <code>popovertarget</code> instead.
+        </p>
+        <f:variable name="customCode">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Legacy Dropdown
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                </ul>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Legacy Dropdown
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
             </div>
         </sg:example>

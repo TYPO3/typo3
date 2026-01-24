@@ -32,7 +32,7 @@ test('Switch between languages in "Open in new window"', async ({
     });
 
   try {
-    const languageButton = standalonePage.locator('button[data-bs-toggle="dropdown"]').filter({ hasText: /Language:/i });
+    const languageButton = standalonePage.locator('button.dropdown-toggle').filter({ hasText: /Language:/i });
 
     // docHeader fixture not available on standalone page by default
     const docHeader = new DocHeader(standalonePage);

@@ -20,7 +20,7 @@ export class DocHeader {
     await triggerButton.click();
 
     // Wait for dropdown menu to be visible
-    const dropdownMenu = this.container.locator('.dropdown-menu.show');
+    const dropdownMenu = this.container.locator('.dropdown-menu:popover-open');
     await expect(dropdownMenu).toBeVisible();
 
     // Select dropdown item using title attribute for precise matching
@@ -40,7 +40,7 @@ export class DocHeader {
     await triggerButton.click();
 
     // Wait for dropdown menu to be visible
-    const dropdownMenu = this.container.locator('.dropdown-menu.show');
+    const dropdownMenu = this.container.locator('.dropdown-menu:popover-open');
     await expect(dropdownMenu).toBeVisible();
 
     // Select dropdown item
@@ -59,7 +59,7 @@ export class DocHeader {
     await triggerButton.click();
 
     // Count dropdown items
-    const optionButtons = this.container.locator('.dropdown-menu.show .dropdown-item');
+    const optionButtons = this.container.locator('.dropdown-menu:popover-open .dropdown-item');
     const count = await optionButtons.count();
 
     // Close dropdown again to be in a stable state

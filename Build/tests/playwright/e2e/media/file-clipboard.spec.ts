@@ -51,11 +51,12 @@ test.describe('Media Clipboard', () => {
     });
 
     await test.step('Add file to clipboard via Cut action', async () => {
-      const actionDropdown = backend.contentFrame.getByRole('row', { name: 'Open context menu ' + fileName }).getByRole('link');
+      const fileRow = backend.contentFrame.getByRole('row', { name: fileName });
+      const actionDropdown = fileRow.getByRole('button', { name: 'More options...' });
       await actionDropdown.click();
 
       // Wait for dropdown menu to be visible and click Cut option
-      const dropdownMenu = backend.contentFrame.locator('.dropdown-menu.show');
+      const dropdownMenu = backend.contentFrame.locator('.dropdown-menu:popover-open');
       await expect(dropdownMenu).toBeVisible();
 
       // Wait for module response after Cut action
@@ -112,8 +113,12 @@ test.describe('Media Clipboard', () => {
       // Open multi-selection actions dropdown
       await backend.contentFrame.getByRole('button', { name: 'Open selection options' }).click();
 
+      // Wait for dropdown menu to be visible
+      const selectionDropdown = backend.contentFrame.locator('.dropdown-menu:popover-open');
+      await expect(selectionDropdown).toBeVisible();
+
       // Select all files
-      await backend.contentFrame.getByRole('button', { name: 'Check all', exact: true }).click();
+      await selectionDropdown.getByRole('button', { name: 'Check all', exact: true }).click();
 
       // Copy marked files to clipboard
       const moduleResponse = backend.waitForModuleResponse();

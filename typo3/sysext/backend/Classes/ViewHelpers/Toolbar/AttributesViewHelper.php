@@ -41,7 +41,7 @@ final class AttributesViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $additionalAttributes = [
-            'class' => 'toolbar-item',
+            'class' => 'toolbar-item dropdown',
         ];
         $toolbarItem = $this->arguments['class'] ?? null;
         if ($toolbarItem instanceof ToolbarItemInterface) {

@@ -101,7 +101,6 @@ body:has(.module) *:target {
 
     .dropdown-menu {
         max-height: calc(100dvh - var(--module-docheader-height));
-        overflow-y: auto;
     }
 }
 

@@ -158,6 +158,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         ]);
         $this->pageRenderer->getJavaScriptRenderer()->includeAllImports();
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/dropdown.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-help.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/key-bindings.js');

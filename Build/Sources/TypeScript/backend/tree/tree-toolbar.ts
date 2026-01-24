@@ -54,42 +54,44 @@ export class TreeToolbar extends LitElement {
               </label>
               <input type="search" autocomplete="off" id="toolbarSearch" class="form-control form-control-sm search-input" placeholder="${this.tree?.setup?.searchPlaceholder || lll('tree.searchTermInfo')}">
           </div>
-          <button
-            type="button"
-            class="btn btn-sm btn-icon btn-default btn-borderless"
-            data-bs-toggle="dropdown"
-            data-bs-boundary="window"
-            aria-expanded="false"
-            aria-label="${lll('labels.openTreeOptionsMenu')}"
-          >
-            <typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-              <button class="dropdown-item" @click="${() => this.refreshTree()}">
-                <span class="dropdown-item-columns">
-                  <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                    <typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>
+          <div class="dropdown">
+            <button
+              type="button"
+              class="btn btn-sm btn-icon btn-default btn-borderless dropdown-toggle dropdown-toggle-no-chevron"
+              data-bs-toggle="dropdown"
+              data-bs-boundary="window"
+              aria-expanded="false"
+              aria-label="${lll('labels.openTreeOptionsMenu')}"
+            >
+              <typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <button class="dropdown-item" @click="${() => this.refreshTree()}">
+                  <span class="dropdown-item-columns">
+                    <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                      <typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>
+                    </span>
+                    <span class="dropdown-item-column dropdown-item-column-title">
+                      ${lll('labels.refresh')}
+                    </span>
                   </span>
-                  <span class="dropdown-item-column dropdown-item-column-title">
-                    ${lll('labels.refresh')}
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
+                  <span class="dropdown-item-columns">
+                    <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                      <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
+                    </span>
+                    <span class="dropdown-item-column dropdown-item-column-title">
+                      ${lll('labels.collapse')}
+                    </span>
                   </span>
-                </span>
-              </button>
-            </li>
-            <li>
-              <button class="dropdown-item" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
-                <span class="dropdown-item-columns">
-                  <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                    <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
-                  </span>
-                  <span class="dropdown-item-column dropdown-item-column-title">
-                    ${lll('labels.collapse')}
-                  </span>
-                </span>
-              </button>
-            </li>
-          </ul>
+                </button>
+              </li>
+            </ul>
+          </div>
           <typo3-backend-content-navigation-toggle
             class="btn btn-sm btn-icon btn-default btn-borderless"
             action="collapse"

@@ -96,7 +96,13 @@
       {
         "ignoreProperties": [
           "animation-timeline",
-          "animation-range"
+          "animation-range",
+          "position-anchor",
+          "position-area",
+          "position-try-fallbacks",
+          "position-try-order",
+          "anchor-scope",
+          "anchor-name"
         ]
       }
     ],
@@ -121,7 +127,14 @@
     "selector-list-comma-space-before": "never",
     "selector-max-empty-lines": 0,
     "selector-pseudo-class-case": "lower",
-    "selector-pseudo-class-no-unknown": true,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "popover-open"
+        ]
+      }
+    ],
     "selector-pseudo-class-parentheses-space-inside": "never",
     "selector-pseudo-element-case": "lower",
     "selector-pseudo-element-colon-notation": "single",

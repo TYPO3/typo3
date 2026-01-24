@@ -3,13 +3,15 @@
 //
 .dropdown {
     position: relative;
+    anchor-scope: --dropdown;
 }
 
-.dropdown-static {
-    position: static;
+:root {
+    --typo3-dropdown-anchor-offset: .125rem;
 }
 
 .dropdown-toggle {
+    anchor-name: --dropdown;
     white-space: nowrap;
     text-decoration: none;
 
@@ -68,11 +70,9 @@
 }
 
 .dropdown-menu {
-    --typo3-dropdown-zindex: var(--typo3-zindex-dropdown);
     --typo3-dropdown-min-width: 10rem;
     --typo3-dropdown-padding-x: 2px;
     --typo3-dropdown-padding-y: 2px;
-    --typo3-dropdown-spacer: .125rem;
     --typo3-dropdown-font-size: var(--typo3-component-font-size);
     --typo3-dropdown-line-height: var(--typo3-component-line-height);
     --typo3-dropdown-color: var(--typo3-component-color);
@@ -106,9 +106,9 @@
     --typo3-dropdown-header-padding-y: var(--typo3-list-item-padding-y);
     display: none;
     position: absolute;
-    z-index: var(--typo3-dropdown-zindex);
     min-width: var(--typo3-dropdown-min-width);
     max-width: calc(100dvw - 1.25rem);
+    max-height: calc(100dvh - 1.25rem);
     padding: var(--typo3-dropdown-padding-y) var(--typo3-dropdown-padding-x);
     margin: 0;
     font-size: var(--typo3-dropdown-font-size);
@@ -120,37 +120,18 @@
     border: var(--typo3-dropdown-border-width) solid var(--typo3-dropdown-border-color);
     border-radius: var(--typo3-dropdown-border-radius);
     box-shadow: var(--typo3-dropdown-box-shadow);
+    position-anchor: --dropdown;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+    position-try-order: most-block-size;
+    overflow-y: auto;
 
-    &[data-bs-popper] {
-        top: 100%;
-        left: 0;
-        margin-top: var(--typo3-dropdown-spacer);
-    }
-
-    //
-    // @TODO:
-    // Remove this once Bootstrap's JavaScript handling for dropdowns
-    // is no longer required. This is currently necessary for correct
-    // placement, as it relies on hardcoded logic in Bootstrap.
-    //
-    // Once the Popover API and Anchor Positioning API are stable and
-    // widely supported, we will transition dropdown handling to use
-    // those APIs and eliminate the JavaScript dependency.
-    //
-    // See: https://developer.mozilla.org/en-US/docs/Web/API/Popover_API
-    // See: https://developer.mozilla.org/en-US/docs/Web/CSS/anchor
-    //
-    &-end {
-        --bs-position: end;
-
-        &[data-bs-popper] {
-            right: 0;
-            left: auto;
-        }
-    }
-
-    &.show {
+    &:popover-open {
         display: block;
+    }
+
+    &[popover] {
+        position-area: block-end span-inline-end;
+        margin-block: var(--typo3-dropdown-anchor-offset);
     }
 
     a:not([class]) {

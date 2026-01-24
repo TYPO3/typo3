@@ -25,7 +25,9 @@
 //export { default as Button } from 'bootstrap/js/src/button.js';
 export { default as Carousel } from 'bootstrap/js/src/carousel.js';
 export { default as Collapse } from 'bootstrap/js/src/collapse.js';
-export { default as Dropdown } from 'bootstrap/js/src/dropdown.js';
+// Dropdown is handled by @typo3/backend/dropdown which includes keyboard navigation
+// and legacy Bootstrap dropdown compatibility
+import '@typo3/backend/dropdown';
 //export { default as Modal } from 'bootstrap/js/src/modal.js';
 //export { default as Offcanvas } from 'bootstrap/js/src/offcanvas.js';
 export { default as Popover } from 'bootstrap/js/src/popover.js';
