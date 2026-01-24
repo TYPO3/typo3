@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FieldWizard;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -125,7 +125,7 @@ class TableList extends AbstractNode
                 $entryPoint = (string)$this->data['site']->getRootPageId();
             } else {
                 // Check for special TSconfig marker
-                $TSconfig = BackendUtility::getTCEFORM_TSconfig($this->data['tableName'], ['pid' => $this->data['effectivePid']]);
+                $TSconfig = FormEngineUtility::getTCEFORM_TSconfig($this->data['tableName'], ['pid' => $this->data['effectivePid']]);
                 $keyword = substr($entryPoint, 3, -3);
                 if (str_starts_with($keyword, 'PAGE_TSCONFIG_')) {
                     $entryPoint = (string)($TSconfig[$this->data['fieldName']][$keyword] ?? '');

@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -206,7 +207,7 @@ class AddController
         // Set table:
         $this->table = $this->P['params']['table'];
         // Get TSconfig for it.
-        $TSconfig = BackendUtility::getTCEFORM_TSconfig(
+        $TSconfig = FormEngineUtility::getTCEFORM_TSconfig(
             $this->P['table'],
             is_array($record) ? $record : ['pid' => (int)$this->P['params']['pid']]
         );

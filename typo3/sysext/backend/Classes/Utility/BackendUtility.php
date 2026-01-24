@@ -690,8 +690,7 @@ class BackendUtility
             $typeNum = $schema?->hasSubSchema('0') ? '0' : '1';
         }
         // Force to string. Necessary for eg '-1' to be recognized as a type value.
-        $typeNum = (string)$typeNum;
-        return $typeNum;
+        return (string)$typeNum;
     }
 
     /*******************************************
@@ -2388,22 +2387,24 @@ class BackendUtility
      *
      * @param string $table Table name present in TCA
      * @param array $row Row from table
+     * @deprecated will be removed in TYPO3 v15.0 Copy this logic in your own code, but its better to rely on FormEngine.
      */
     public static function getTCEFORM_TSconfig($table, $row): array
     {
+        trigger_error('BackendUtility::getTCEFORM_TSconfig() will be removed in TYPO3 v15.0. Copy this logic in your own code, but its better to rely on your own.', E_USER_DEPRECATED);
         $res = [];
         // Get main config for the table
-        [$TScID, $cPid] = self::getTSCpid($table, $row['uid'] ?? 0, $row['pid'] ?? 0);
+        [$TScID, $cPid] = self::getTSCpid($table, $row['uid'] ?? 0, $row['pid'] ?? 0, true);
         if ($TScID >= 0) {
             $tsConfig = static::getPagesTSconfig($TScID)['TCEFORM.'][$table . '.'] ?? [];
-            $typeVal = self::getTCAtypeValue($table, $row);
+            $typeVal = self::getTCAtypeValue($table, $row, true);
             foreach ($tsConfig as $key => $val) {
                 if (is_array($val)) {
                     $fieldN = substr($key, 0, -1);
                     $res[$fieldN] = $val;
                     unset($res[$fieldN]['types.']);
-                    if ((string)$typeVal !== '' && is_array($val['types.'][$typeVal . '.'] ?? false)) {
-                        ArrayUtility::mergeRecursiveWithOverrule($res[$fieldN], $val['types.'][$typeVal . '.']);
+                    if ($typeVal !== null && is_array($val['types.'][$typeVal . '.'] ?? false)) {
+                        $res[$fieldN] = array_replace_recursive($res[$fieldN], $val['types.'][$typeVal . '.']);
                     }
                 }
             }
@@ -2473,14 +2474,16 @@ class BackendUtility
      * @param string $uid UID value
      * @param string $pid PID value
      * @return array Array of two integers; first is the real PID of a record, second is the PID value for TSconfig.
+     * @deprecated will be removed in TYPO3 v15.0. Use BackendUtility::getTSCpid() directly.
      */
     public static function getTSCpidCached($table, $uid, $pid)
     {
+        trigger_error('BackendUtility::getTSCpidCached() will be removed in TYPO3 v15.0, use BackendUtility::getRealPageId() instead', E_USER_DEPRECATED);
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $firstLevelCache = $runtimeCache->get('backendUtilityTscPidCached') ?: [];
         $key = $table . ':' . $uid . ':' . $pid;
         if (!isset($firstLevelCache[$key])) {
-            $firstLevelCache[$key] = static::getTSCpid($table, (int)$uid, (int)$pid);
+            $firstLevelCache[$key] = static::getTSCpid($table, (int)$uid, (int)$pid, true);
             $runtimeCache->set('backendUtilityTscPidCached', $firstLevelCache);
         }
         return $firstLevelCache[$key];
@@ -2497,14 +2500,41 @@ class BackendUtility
      * @internal
      * @see \TYPO3\CMS\Core\DataHandling\DataHandler::setHistory()
      * @see \TYPO3\CMS\Core\DataHandling\DataHandler::process_datamap()
+     * @deprecated will be removed in TYPO3 v15.0. Implement the parts of the method yourself that you need.
      */
-    public static function getTSCpid($table, $uid, $pid)
+    public static function getTSCpid($table, $uid, $pid, bool $isInternalCall = false)
     {
+        if (!$isInternalCall) {
+            trigger_error('BackendUtility::getTSCpid() will be removed in TYPO3 v15.0. Implement the parts of the method yourself that you need.', E_USER_DEPRECATED);
+        }
         // If pid is negative (referring to another record) the pid of the other record is fetched and returned.
         $cPid = self::getTSconfig_pidValue($table, $uid, $pid);
         // $TScID is the id of $table = pages, else it's the pid of the record.
         $TScID = $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $cPid;
         return [$TScID, $cPid];
+    }
+
+    /**
+     * Returns the REAL pid of the record, if possible.
+     * If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
+     *
+     * @param string $table Table name
+     * @param int|string $uid Record uid
+     * @param int|string|null $pid Record pid
+     * @return int|null the REAL PID of a record and if it is a new record negative values are resolved to the true PID.
+     */
+    public static function getRealPageId(string $table, int|string $uid, int|string|null $pid = null): ?int
+    {
+        // If pid is negative (referring to another record) the pid of the other record is fetched and returned.
+        // getTSconfig_pidValue() is the id of $table = pages, else it's the pid of the record.
+        if ($table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid)) {
+            return (int)$uid;
+        }
+        $result = static::getTSconfig_pidValue($table, $uid, $pid);
+        if ($result === -1 || $result === -2) {
+            return null;
+        }
+        return $result;
     }
 
     /**

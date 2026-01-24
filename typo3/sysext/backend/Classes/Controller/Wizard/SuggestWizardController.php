@@ -66,7 +66,7 @@ class SuggestWizardController
         $flexFormFieldName = $parsedBody['flexFormFieldName'] ?? null;
         $flexFormContainerName = $parsedBody['flexFormContainerName'] ?? null;
         $flexFormContainerFieldName = $parsedBody['flexFormContainerFieldName'] ?? null;
-        $recordType = (string)($parsedBody['recordTypeValue'] ?? '');
+        $recordType = (string)($parsedBody['recordTypeValue'] ?? '') ?: null;
         $schema = $this->tcaSchemaFactory->get($tableName);
 
         // Determine TCA config of field
@@ -78,13 +78,14 @@ class SuggestWizardController
 
             // With possible columnsOverrides
             // @todo Validate if we can move this fallback recordType determination, should be do-able in v13?!
-            if ($recordType === '') {
+            if ($recordType === null) {
                 $recordType = BackendUtility::getTCAtypeValue(
                     $tableName,
-                    BackendUtility::getRecord($tableName, $uid) ?? []
+                    BackendUtility::getRecord($tableName, $uid) ?? [],
+                    true
                 );
             }
-            if ($recordType !== '' && $schema->hasSubSchema($recordType)) {
+            if ($recordType !== null) {
                 $fieldConfig = $schema->getSubSchema($recordType)->getField($fieldName)->getConfiguration();
             }
         } else {

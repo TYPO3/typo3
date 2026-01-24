@@ -778,14 +778,14 @@ class DataHandler
                         }
                     }
                     // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
-                    [$tscPID] = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: ($fieldArray['pid'] ?? 0));
+                    $tscPID = (int)BackendUtility::getRealPageId($table, $id, $old_pid_value ?: ($fieldArray['pid'] ?? 0));
                     // Apply TCA defaults from pageTS
-                    $fieldArray = $this->applyDefaultsForFieldArray($table, (int)$tscPID, $fieldArray, $incomingFieldArray);
+                    $fieldArray = $this->applyDefaultsForFieldArray($table, $tscPID, $fieldArray, $incomingFieldArray);
                     // Apply page permissions as well
                     if ($table === 'pages') {
                         $fieldArray = $this->pagePermissionAssembler->applyDefaults(
                             $fieldArray,
-                            (int)$tscPID,
+                            $tscPID,
                             (int)$this->BE_USER->getUserId(),
                             (int)$this->BE_USER->firstMainGroup
                         );
@@ -929,7 +929,7 @@ class DataHandler
                         }
                     }
                     // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
-                    [$tscPID] = BackendUtility::getTSCpid($table, $id, 0);
+                    $tscPID = (int)BackendUtility::getRealPageId($table, $id, 0);
                     // Processing of all fields in incomingFieldArray and setting them in $fieldArray
                     $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, (int)$currentRecord['pid'], 'update', $tscPID);
                     // Set stage to "Editing" to make sure we restart the workflow
@@ -1277,8 +1277,8 @@ class DataHandler
         if (!$schema->hasField($field)) {
             return [];
         }
-        $recordType = BackendUtility::getTCAtypeValue($table, $record);
-        if ($recordType !== '' && $schema->hasSubSchema($recordType) && $schema->getSubSchema($recordType)->hasField($field)) {
+        $recordType = BackendUtility::getTCAtypeValue($table, $record, true);
+        if ($recordType !== null && $schema->hasSubSchema($recordType) && $schema->getSubSchema($recordType)->hasField($field)) {
             return $schema->getSubSchema($recordType)->getField($field)->getConfiguration();
         }
         return $schema->getField($field)->getConfiguration();
@@ -4765,11 +4765,11 @@ class DataHandler
             return false;
         }
 
-        [$pageId] = BackendUtility::getTSCpid($table, $uid, '');
+        $pageId = (int)BackendUtility::getRealPageId($table, $uid);
         // Try to fetch the site language from the pages' associated site
-        $siteLanguage = $this->getSiteLanguageForPage((int)$pageId, (int)$language);
+        $siteLanguage = $this->getSiteLanguageForPage($pageId, (int)$language);
         if ($siteLanguage === null) {
-            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Language ID "{languageId}" not found for page {pageId}', null, ['languageId' => (int)$language, 'pageId' => (int)$pageId]);
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Language ID "{languageId}" not found for page {pageId}', null, ['languageId' => (int)$language, 'pageId' => $pageId]);
             return false;
         }
 
@@ -5399,7 +5399,7 @@ class DataHandler
         }
 
         // Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
-        [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
+        $parentUid = (int)BackendUtility::getRealPageId($table, $uid);
         $this->registerRecordIdForPageCacheClearing($table, $uid, $parentUid);
         if ($schema->hasCapability(TcaSchemaCapability::SoftDelete) && !$forceHardDelete) {
             $updateFields = [
@@ -5561,7 +5561,7 @@ class DataHandler
         $recordWorkspaceId = (int)($recordToDelete['t3ver_wsid'] ?? 0);
 
         // Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
-        [$parentUid] = BackendUtility::getTSCpid('pages', $uid, '');
+        $parentUid = (int)BackendUtility::getRealPageId('pages', $uid);
         $this->registerRecordIdForPageCacheClearing('pages', $uid, $parentUid);
         if ($recordWorkspaceId > 0) {
             // @todo: This should be relocated elsewhere, dispatching to discard() here should happen at a different position:
@@ -8081,7 +8081,7 @@ class DataHandler
         }
         $schema = $this->tcaSchemaFactory->get($table);
         $recordType = BackendUtility::getTCAtypeValue($schema->getName(), $row, true);
-        return ($recordType !== '' && $recordType !== null && $schema->hasSubSchema($recordType))
+        return ($recordType !== null && $schema->hasSubSchema($recordType))
             ? $schema->getSubSchema($recordType)->getFields()
             : $schema->getFields();
     }
@@ -8306,7 +8306,7 @@ class DataHandler
         if (isset(self::$recordPidsForDeletedRecords[$table][$uid])) {
             return self::$recordPidsForDeletedRecords[$table][$uid];
         }
-        [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
+        $parentUid = (int)BackendUtility::getRealPageId($table, $uid);
         return [$parentUid];
     }
 

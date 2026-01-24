@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -571,7 +572,7 @@ class NewContentElementController
         $removeItems = [];
         $keepItems = [];
         // Get TCEFORM from TSconfig of current page
-        $TCEFORM_TSconfig = BackendUtility::getTCEFORM_TSconfig('tt_content', ['pid' => $this->id]);
+        $TCEFORM_TSconfig = FormEngineUtility::getTCEFORM_TSconfig('tt_content', ['pid' => $this->id]);
         $backendUser = $this->getBackendUser();
         // Traverse wizard items:
         foreach ($wizardItems as $key => $cfg) {

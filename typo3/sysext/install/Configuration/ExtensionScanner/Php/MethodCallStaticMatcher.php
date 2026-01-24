@@ -1749,4 +1749,25 @@ return [
             'Deprecation-107537-getPublicResourcesWebPath.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-108761-BackendUtilityTSconfigMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpidCached' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-108761-BackendUtilityTSconfigMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-108761-BackendUtilityTSconfigMethods.rst',
+        ],
+    ],
 ];

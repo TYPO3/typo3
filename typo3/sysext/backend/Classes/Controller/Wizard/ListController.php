@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -44,7 +45,7 @@ class ListController
         $id = $parsedBody['id'] ?? $queryParams['id'] ?? null;
         $table = $parameters['table'] ?? '';
         $origRow = BackendUtility::getRecord($table, $parameters['uid']);
-        $tsConfig = BackendUtility::getTCEFORM_TSconfig($table, $origRow ?? ['pid' => $parameters['pid'] ?? 0]);
+        $tsConfig = FormEngineUtility::getTCEFORM_TSconfig($table, $origRow ?? ['pid' => $parameters['pid'] ?? 0]);
 
         if (str_starts_with($parameters['params']['pid'], '###') && substr($parameters['params']['pid'], -3) === '###') {
             $keyword = substr($parameters['params']['pid'], 3, -3);

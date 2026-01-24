@@ -1283,7 +1283,7 @@ class DataMapProcessor
             return $data;
         }
 
-        [$pageId] = BackendUtility::getTSCpid($tableName, (int)$fromId, $data['pid'] ?? null);
+        $pageId = (int)BackendUtility::getRealPageId($tableName, (int)$fromId, $data['pid'] ?? null);
         $tsConfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.'] ?? [];
         if (($translateToMessage = (string)($tsConfig['translateToMessage'] ?? '')) === '') {
             // Return in case translateToMessage had been unset

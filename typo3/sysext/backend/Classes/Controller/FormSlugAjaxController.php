@@ -84,10 +84,12 @@ readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
 
         $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
         $row = (array)BackendUtility::getRecord($tableName, $recordId);
-        $recordType = BackendUtility::getTCAtypeValue($tableName, $row);
-        $columnsOverridesConfigOfField = $GLOBALS['TCA'][$tableName]['types'][$recordType]['columnsOverrides'][$fieldName]['config'] ?? null;
-        if ($columnsOverridesConfigOfField) {
-            ArrayUtility::mergeRecursiveWithOverrule($fieldConfig, $columnsOverridesConfigOfField);
+        $recordType = BackendUtility::getTCAtypeValue($tableName, $row, true);
+        if ($recordType !== null) {
+            $columnsOverridesConfigOfField = $GLOBALS['TCA'][$tableName]['types'][$recordType]['columnsOverrides'][$fieldName]['config'] ?? null;
+            if ($columnsOverridesConfigOfField) {
+                ArrayUtility::mergeRecursiveWithOverrule($fieldConfig, $columnsOverridesConfigOfField);
+            }
         }
         if (empty($fieldConfig)) {
             throw new \RuntimeException(

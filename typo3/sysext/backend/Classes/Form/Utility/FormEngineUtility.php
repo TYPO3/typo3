@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * This is a static, internal and intermediate helper class for various
@@ -115,13 +116,51 @@ class FormEngineUtility
         $cache = $runtimeCache->get('formEngineUtilityTsConfigForTableRow') ?: [];
         $cacheIdentifier = $table . ':' . $row['uid'];
         if (!isset($cache[$cacheIdentifier])) {
-            $cache[$cacheIdentifier] = BackendUtility::getTCEFORM_TSconfig($table, $row);
+            $cache[$cacheIdentifier] = self::getTCEFORM_TSconfig($table, $row);
             $runtimeCache->set('formEngineUtilityTsConfigForTableRow', $cache);
         }
         if ($field && isset($cache[$cacheIdentifier][$field])) {
             return $cache[$cacheIdentifier][$field];
         }
         return $cache[$cacheIdentifier];
+    }
+
+    /**
+     * Returns TSConfig for the TCEFORM object in page TSconfig.
+     * Used in TCEFORMs
+     *
+     * @param string $table Table name present in TCA
+     * @param array $row Row from table
+     */
+    public static function getTCEFORM_TSconfig(string $table, array $row): array
+    {
+        $res = [];
+        $uid = $row['uid'] ?? 0;
+        $pid = $row['pid'] ?? 0;
+        // Get main config for the table
+        // If pid is negative (referring to another record) the pid of the other record is fetched and returned.
+        $cPid = BackendUtility::getTSconfig_pidValue($table, $uid, $pid);
+        // $TScID is the id of $table = pages, else it's the pid of the record.
+        $TScID = $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $cPid;
+        if ($TScID >= 0) {
+            $tsConfig = BackendUtility::getPagesTSconfig($TScID)['TCEFORM.'][$table . '.'] ?? [];
+            $typeVal = BackendUtility::getTCAtypeValue($table, $row, true);
+            foreach ($tsConfig as $key => $val) {
+                if (is_array($val)) {
+                    $fieldN = substr($key, 0, -1);
+                    $res[$fieldN] = $val;
+                    unset($res[$fieldN]['types.']);
+                    if ($typeVal !== null && is_array($val['types.'][$typeVal . '.'] ?? false)) {
+                        $res[$fieldN] = array_replace_recursive($res[$fieldN], $val['types.'][$typeVal . '.']);
+                    }
+                }
+            }
+        }
+        $res['_CURRENT_PID'] = $cPid;
+        $res['_THIS_UID'] = $row['uid'] ?? 0;
+        // So the row will be passed to foreign_table_where_query()
+        $res['_THIS_ROW'] = $row;
+        return $res;
     }
 
     /**

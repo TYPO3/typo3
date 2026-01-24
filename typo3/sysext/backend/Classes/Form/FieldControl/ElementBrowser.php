@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -148,7 +148,7 @@ class ElementBrowser extends AbstractNode
                 $entryPoint = (string)$this->data['site']->getRootPageId();
             } else {
                 // Check for special TSconfig marker
-                $TSconfig = BackendUtility::getTCEFORM_TSconfig($table, ['pid' => $this->data['effectivePid']]);
+                $TSconfig = FormEngineUtility::getTCEFORM_TSconfig($table, ['pid' => $this->data['effectivePid']]);
                 $keyword = substr($entryPoint, 3, -3);
                 if (str_starts_with($keyword, 'PAGE_TSCONFIG_')) {
                     $entryPoint = (string)($TSconfig[$fieldName][$keyword] ?? '');

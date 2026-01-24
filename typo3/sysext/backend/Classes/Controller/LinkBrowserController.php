@@ -92,7 +92,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
                 }
             }
         }
-        return (int)BackendUtility::getTSCpidCached($browserParameters['table'], $browserParameters['uid'], $pageId)[0];
+        return (int)BackendUtility::getRealPageId((string)$browserParameters['table'], (int)$browserParameters['uid'], (int)$pageId);
     }
 
     protected function initCurrentUrl(): void
