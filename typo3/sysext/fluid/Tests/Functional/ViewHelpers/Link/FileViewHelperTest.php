@@ -33,7 +33,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class FileViewHelperTest extends FunctionalTestCase
 {
-    private const TEMPLATE_PATH = 'EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Template.html';
+    private const TEMPLATE_PATH = 'EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Template.fluid.html';
 
     protected array $additionalFoldersToCreate = [
         '/fileadmin/user_upload',

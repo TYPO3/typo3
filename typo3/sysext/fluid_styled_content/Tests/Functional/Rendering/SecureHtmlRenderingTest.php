@@ -376,7 +376,7 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
                 'page.' => [
                     '10' => 'FLUIDTEMPLATE',
                     '10.' => [
-                        'file' => 'EXT:fluid_styled_content/Tests/Functional/Rendering/Fixtures/FluidTemplate.html',
+                        'file' => 'EXT:fluid_styled_content/Tests/Functional/Rendering/Fixtures/FluidTemplate.fluid.html',
                         'variables.' => [
                             'type' => 'TEXT',
                             'type.' => [

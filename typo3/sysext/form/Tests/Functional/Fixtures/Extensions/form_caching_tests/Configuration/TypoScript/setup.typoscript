@@ -18,7 +18,7 @@ page = PAGE
 page {
     1628755200 = FLUIDTEMPLATE
     1628755200 {
-        file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+        file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
         settings {
             persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
             formIdentifier = FormFromSimpleFluidtemplate
@@ -35,7 +35,7 @@ page {
     1628755210 {
         10 = FLUIDTEMPLATE
         10 {
-            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
             settings {
                 persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
                 formIdentifier = FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsCached
@@ -53,7 +53,7 @@ page {
     1628755220 {
         10 = FLUIDTEMPLATE
         10 {
-            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
             settings {
                 persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
                 formIdentifier = FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerAllActionsCached
@@ -71,7 +71,7 @@ page {
     1628755230 {
         10 = FLUIDTEMPLATE
         10 {
-            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
             settings {
                 persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
                 formIdentifier = FormFromCoaFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached
@@ -89,7 +89,7 @@ page {
     1628755240 {
         10 = FLUIDTEMPLATE
         10 {
-            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
             settings {
                 persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
                 formIdentifier = FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached
@@ -107,7 +107,7 @@ page {
     1628755250 {
         10 = FLUIDTEMPLATE
         10 {
-            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
             settings {
                 persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
                 formIdentifier = FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsUncached
@@ -125,7 +125,7 @@ page {
     1628755260 {
         10 = FLUIDTEMPLATE
         10 {
-            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
             settings {
                 persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
                 formIdentifier = FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerAllActionsUncached
@@ -143,7 +143,7 @@ page {
     1628755270 {
         10 = FLUIDTEMPLATE
         10 {
-            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
             settings {
                 persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
                 formIdentifier = FormFromCoaFluidtemplateThroughExtFormController
@@ -161,7 +161,7 @@ page {
     1628755280 {
         10 = FLUIDTEMPLATE
         10 {
-            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.fluid.html
             settings {
                 persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
                 formIdentifier = FormFromCoaIntFluidtemplateThroughExtFormController

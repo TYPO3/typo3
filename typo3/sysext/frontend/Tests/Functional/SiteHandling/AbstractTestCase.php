@@ -140,7 +140,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
             ->withArray([
                 '10' => 'FLUIDTEMPLATE',
                 '10.' => [
-                    'file' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/Frontend/FluidJson.html',
+                    'file' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/Frontend/FluidJson.fluid.html',
                     'dataProcessing.' => [
                         '1' => 'TYPO3\\CMS\\Frontend\\DataProcessing\\MenuProcessor',
                         '1.' => array_merge(
@@ -158,7 +158,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
             ->withArray([
                 '10' => 'FLUIDTEMPLATE',
                 '10.' => [
-                    'file' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/Frontend/FluidJson.html',
+                    'file' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/Frontend/FluidJson.fluid.html',
                     'dataProcessing.' => [
                         '1' => 'TYPO3\\CMS\\Frontend\\DataProcessing\\LanguageMenuProcessor',
                         '1.' => array_merge(

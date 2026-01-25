@@ -171,7 +171,7 @@ trait SiteBasedTestTrait
             }
         } elseif ($handler === 'Fluid') {
             $baseConfiguration = [
-                'errorFluidTemplate' => 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/FluidError.html',
+                'errorFluidTemplate' => 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/FluidError.fluid.html',
                 'errorFluidTemplatesRootPath' => '',
                 'errorFluidLayoutsRootPath' => '',
                 'errorFluidPartialsRootPath' => '',

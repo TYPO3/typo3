@@ -81,7 +81,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
     #[Test]
     public function incidentIsLogged(): void
     {
-        $templatePath = __DIR__ . '/Fixtures/Template.html';
+        $templatePath = __DIR__ . '/Fixtures/Template.fluid.html';
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplatePathAndFilename($templatePath);
         $view = new TemplateView($context);

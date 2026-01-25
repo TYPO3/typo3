@@ -35,7 +35,7 @@ final class IfHasStateViewHelperTest extends FunctionalTestCase
         parent::setUp();
         $renderingContext = $this->get(RenderingContextFactory::class)->create();
         $renderingContext->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
-        $renderingContext->getTemplatePaths()->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Mfa/IfHasStateViewHelper.html');
+        $renderingContext->getTemplatePaths()->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Mfa/IfHasStateViewHelper.fluid.html');
         $this->view = new TemplateView($renderingContext);
         $this->view->assign('provider', $this->get(MfaProviderRegistry::class)->getProvider('totp'));
     }
