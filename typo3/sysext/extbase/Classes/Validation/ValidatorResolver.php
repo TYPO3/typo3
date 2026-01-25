@@ -131,7 +131,9 @@ class ValidatorResolver implements SingletonInterface
 
             $propertyTargetClassName = $primaryType->getClassName() ?? $primaryType->getBuiltinType();
 
-            if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName)) {
+            // Skip transient properties for auto-generated validators (model-typed properties).
+            // Transient properties are not persisted and may not have public accessors.
+            if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName) && !$property->isTransient()) {
                 // The outer simpleType check reduces lookups to the class loader
                 // @todo: Whether the property holds a simple type or not and whether it holds a collection is known in
                 //        in the ClassSchema. The information could be made available and not evaluated here again.
