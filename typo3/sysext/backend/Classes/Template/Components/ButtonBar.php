@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Template\Components;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
@@ -193,7 +194,7 @@ class ButtonBar
      * Returns an associative array of all buttons in the form of
      * ButtonPosition > ButtonGroup > Button
      */
-    public function getButtons(): array
+    public function getButtons(ServerRequestInterface $request): array
     {
         // here we need to call the sorting methods and stuff.
         foreach ($this->buttons as $position => $_) {
@@ -201,7 +202,7 @@ class ButtonBar
         }
 
         // Dispatch event for manipulating the docHeaderButtons
-        $this->buttons = $this->eventDispatcher->dispatch(new ModifyButtonBarEvent($this->buttons, $this))->getButtons();
+        $this->buttons = $this->eventDispatcher->dispatch(new ModifyButtonBarEvent($this->buttons, $this, $request))->getButtons();
 
         return $this->buttons;
     }

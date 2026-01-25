@@ -386,7 +386,7 @@ class DocHeaderComponent
 
         return [
             'enabled' => $this->isEnabled(),
-            'buttons' => $this->buttonBar->getButtons(),
+            'buttons' => $this->buttonBar->getButtons($request),
             'breadcrumb' => $this->breadcrumb->getBreadcrumb($request, $this->breadcrumbContext),
             'languageSelector' => $this->getLanguageSelector(),
         ];

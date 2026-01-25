@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template\Components;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * PSR-14 event that allows listeners to modify the buttons in the backend module
  * document header button bar. This event is dispatched after all buttons have been
@@ -67,7 +69,7 @@ final class ModifyButtonBarEvent
     /**
      * @param Buttons $buttons
      */
-    public function __construct(private array $buttons, private readonly ButtonBar $buttonBar) {}
+    public function __construct(private array $buttons, private readonly ButtonBar $buttonBar, private readonly ServerRequestInterface $request) {}
 
     /**
      * @return Buttons
@@ -88,5 +90,10 @@ final class ModifyButtonBarEvent
     public function getButtonBar(): ButtonBar
     {
         return $this->buttonBar;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }
