@@ -35,8 +35,14 @@ final class TemplateFinderTest extends FunctionalTestCase
         self::assertContains($this->instancePath . '/typo3/sysext/core/Resources/Private/Layouts/SystemEmail.fluid.html', $foundTemplates);
         self::assertContains($this->instancePath . '/typo3/sysext/core/Resources/Private/Layouts/SystemEmail.fluid.txt', $foundTemplates);
         self::assertContains($this->instancePath . '/typo3/sysext/backend/Resources/Private/Layouts/Module.fluid.html', $foundTemplates);
+        self::assertContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
+        self::assertContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.txt', $foundTemplates);
         self::assertNotContains($this->instancePath . '/typo3/sysext/core/Resources/Private/Templates/PageRenderer.html', $foundTemplates);
         self::assertNotContains($this->instancePath . '/typo3/sysext/core/Documentation/guides.xml', $foundTemplates);
-        // TODO add assertion(s) from fluid_test extension once template names have been migrated to *.fluid.html
+        self::assertNotContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.html', $foundTemplates);
+        self::assertNotContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.txt', $foundTemplates);
+        // Tests/ folders are excluded,
+        // also paths are added based on the symlinked position (= the way TYPO3 would resolve the file)
+        self::assertNotContains($this->instancePath . '/typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
     }
 }

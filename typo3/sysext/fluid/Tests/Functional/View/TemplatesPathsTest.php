@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\View;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Fluid\View\FluidViewFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\FluidTest\Controller\TemplateController;
@@ -264,6 +266,27 @@ final class TemplatesPathsTest extends FunctionalTestCase
 
         self::assertStringContainsString('Base Template', $content);
         self::assertStringContainsString('Override Template', $content);
+    }
+
+    public static function fileExtensionFallbackDataProvider(): array
+    {
+        return [
+            ['EXT:fluid_test/Resources/Private/FileExtension/WithoutFluid/', 'html', "Test.html\n"],
+            ['EXT:fluid_test/Resources/Private/FileExtension/OnlyFluid/', 'html', "Test.fluid.html\n"],
+            ['EXT:fluid_test/Resources/Private/FileExtension/Both/', 'html', "Test.fluid.html\n"],
+            ['EXT:fluid_test/Resources/Private/FileExtension/WithoutFluid/', 'txt', "Test.txt\n"],
+            ['EXT:fluid_test/Resources/Private/FileExtension/OnlyFluid/', 'txt', "Test.fluid.txt\n"],
+            ['EXT:fluid_test/Resources/Private/FileExtension/Both/', 'txt', "Test.fluid.txt\n"],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('fileExtensionFallbackDataProvider')]
+    public function fileExtensionFallback(string $templatePath, string $format, string $expectedContent): void
+    {
+        $view = $this->get(FluidViewFactory::class)
+            ->create(new ViewFactoryData(templateRootPaths: [$templatePath], format: $format));
+        self::assertSame($expectedContent, $view->render('Test'));
     }
 
     private function fetchFrontendResponseBody(array $requestArguments): string
