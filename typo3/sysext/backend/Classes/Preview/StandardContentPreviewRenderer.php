@@ -152,7 +152,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         $shortcutContent .= '<li class="list-group-item">'
                             . $icon
                             . ' '
-                            . $this->linkEditContent(htmlspecialchars($title) . ' <span class="text-variant">[' . $recordObj->getUid() . '] ' . $pathToContainingPage . '</span>', $shortcutRecord)
+                            . $this->linkEditContent(htmlspecialchars($title) . ' <span class="text-variant">[' . $recordObj->getUid() . '] ' . htmlspecialchars($pathToContainingPage) . '</span>', $shortcutRecord)
                             . '</li>';
                     }
                     return $shortcutContent !== '' ? '<ul class="list-group">' . $shortcutContent . '</ul>' : '';
@@ -400,7 +400,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             if ($pageRecord) {
                 $title = BackendUtility::getRecordTitle($table, $pageRecord);
                 $pathToContainingPage = BackendUtility::getRecordPath($pageRecord['pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0);
-                $content .= '<li class="list-group-item">' . htmlspecialchars($title) . ' <span class="text-variant">[' . $uid . '] ' . $pathToContainingPage . '</span></li>';
+                $content .= '<li class="list-group-item">' . htmlspecialchars($title) . ' <span class="text-variant">[' . $uid . '] ' . htmlspecialchars($pathToContainingPage) . '</span></li>';
             }
         }
         return $content ? '<ul class="list-group">' . $content . '</ul>' : '';
