@@ -29,6 +29,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\TestValidators\Domain\Model\AnotherModel;
 use TYPO3Tests\TestValidators\Domain\Model\Model;
+use TYPO3Tests\TestValidators\Domain\Model\ModelWithTransientProperty;
 use TYPO3Tests\TestValidators\Validation\Validator\CustomValidator;
 
 final class ValidatorResolverTest extends FunctionalTestCase
@@ -156,5 +157,36 @@ final class ValidatorResolverTest extends FunctionalTestCase
             $baseValidatorConjunctions[AnotherModel::class],
             $propertyValidator
         );
+    }
+
+    #[Test]
+    public function transientPropertiesWithoutGetterAreSkippedDuringValidation(): void
+    {
+        $subject = $this->getAccessibleMock(
+            ValidatorResolver::class,
+            null,
+            [$this->get(ReflectionService::class)]
+        );
+
+        // This should not throw an exception for the transient property without a getter
+        $subject->getBaseValidatorConjunction(ModelWithTransientProperty::class);
+
+        $baseValidatorConjunctions = $subject->_get('baseValidatorConjunctions');
+        self::assertIsArray($baseValidatorConjunctions);
+        self::assertArrayHasKey(ModelWithTransientProperty::class, $baseValidatorConjunctions);
+
+        $conjunctionValidator = $baseValidatorConjunctions[ModelWithTransientProperty::class];
+        self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
+
+        // There should be no validators added since there are no #[Validate] attributes
+        // and the transient property should be skipped
+        $baseValidators = $conjunctionValidator->getValidators();
+        self::assertCount(0, $baseValidators);
+
+        // Also verify that validation can be executed without throwing an exception
+        $model = new ModelWithTransientProperty();
+        $model->setTitle('test');
+        $result = $conjunctionValidator->validate($model);
+        self::assertFalse($result->hasErrors());
     }
 }
