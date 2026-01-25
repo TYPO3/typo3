@@ -24,28 +24,49 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Fluid\Service\CacheWarmupService;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3\CMS\Fluid\Service\TemplateFinder;
+use TYPO3Fluid\Fluid\Validation\TemplateValidator;
 
 /**
- * Warmup Fluid cache for detected template files
+ * Analyses Fluid templates for syntax errors and deprecated functionality
  *
  * @internal: Specific command implementation, not API itself.
  */
-#[AsCommand('fluid:cache:warmup', 'Performs a cache warmup for detected Fluid templates.')]
-final class WarmupCommand extends Command
+#[AsCommand(
+    'fluid:analyse',
+    'Analyses Fluid templates for syntax errors and deprecated functionality.',
+    ['fluid:analyze'],
+)]
+final class AnalyseCommand extends Command
 {
-    public function __construct(private readonly CacheWarmupService $cacheWarmupService)
-    {
+    public function __construct(
+        private readonly TemplateFinder $templateFinder,
+        private readonly RenderingContextFactory $renderingContextFactory,
+    ) {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
         $formatter = new FormatterHelper();
+        $io = new SymfonyStyle($input, $output);
+
+        $templates = $this->templateFinder->findTemplatesInAllPackages();
+        $templatesCount = count($templates);
+        if ($output->isVeryVerbose()) {
+            $io->success(sprintf('%d templates will be analyzed:', $templatesCount));
+            $index = 0;
+            foreach ($templates as $template) {
+                $index++;
+                $output->writeln(sprintf('<info>%d</info> %s', $index, $template));
+            }
+        }
+        $results = (new TemplateValidator())->validateTemplateFiles(
+            $templates,
+            $this->renderingContextFactory->create(),
+        );
         $errors = $deprecations = 0;
-        $results = $this->cacheWarmupService->warmupTemplatesInAllPackages();
-        $templatesCount = count($results);
         foreach ($results as $result) {
             $templateFile = $result->path;
             if (str_starts_with($templateFile, Environment::getProjectPath())) {
@@ -71,14 +92,14 @@ final class WarmupCommand extends Command
         if ($output->isVerbose()) {
             if ($errors > 0) {
                 $output->writeln('');
-                $io->error(sprintf('%d error(s) found in %d warmed up templates.', $errors, $templatesCount));
+                $io->error(sprintf('%d error(s) found in %d analysed templates.', $errors, $templatesCount));
             }
             if ($deprecations > 0) {
                 $output->writeln('');
-                $io->warning(sprintf('%d deprecation(s) found in %d warmed up templates.', $deprecations, $templatesCount));
+                $io->warning(sprintf('%d deprecation(s) found in %d analysed templates.', $deprecations, $templatesCount));
             }
             if ($errors === 0 && $deprecations === 0) {
-                $io->success(sprintf('%d templates warmed up without errors or deprecations.', $templatesCount));
+                $io->success(sprintf('%d templates analyzed without errors or deprecations.', $templatesCount));
             }
         }
         return $errors > 0 ? Command::FAILURE : Command::SUCCESS;

@@ -22,6 +22,9 @@ Fluid warmup can also be called directly using :shell:`typo3
 fluid:cache:warmup`, which will additionally output compile time
 deprecations found within Fluid template files.
 
+Verbose output allows to get feedback of warmed up templates
+and the number of errors/deprecations (or success).
+
 Impact
 ======
 

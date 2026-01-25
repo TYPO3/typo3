@@ -32,7 +32,7 @@ use TYPO3Fluid\Fluid\Schema\ViewHelperFinder;
  *
  * @internal: Specific command implementation, not API itself.
  */
-#[AsCommand('fluid:schema:generate', 'Generate XSD schema files for all available ViewHelpers in var/transient/')]
+#[AsCommand('fluid:schema:generate', 'Generate XSD schema files for all available ViewHelpers in var/transient/.')]
 final class SchemaCommand extends Command
 {
     public function __construct(

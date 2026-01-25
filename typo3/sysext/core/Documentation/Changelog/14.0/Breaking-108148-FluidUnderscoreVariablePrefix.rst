@@ -37,17 +37,17 @@ rendered. A deprecation has been written to the deprecation log since
 TYPO3 13.4.21 if this is encountered in a Fluid template during rendering.
 
 For template files already using the new `*.fluid.*` file extension, the built-in
-template cache warmup command will discover affected template files:
+template analyse command will discover affected template files:
 
 ..  code-block:: sh
 
-    vendor/bin/typo3 fluid:cache:warmup
+    vendor/bin/typo3 fluid:analyse
 
 For each affected template, the command will output an error like this:
 
 ..  code-block::
 
-    [error] packages/myext/Resources/Private/Templates/Test.fluid.html: Variable identifiers cannot start with a "_": _myvariable
+    [ERROR] packages/myext/Resources/Private/Templates/Test.fluid.html: Variable identifiers cannot start with a "_": _myvariable
 
 Migration
 =========
