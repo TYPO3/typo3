@@ -1,9 +1,9 @@
 :template: sitemap.html
 
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 =======
 Sitemap
 =======
 
-.. The sitemap.html template will insert here the page tree automatically.
+..  The sitemap.html template will insert here the page tree automatically.

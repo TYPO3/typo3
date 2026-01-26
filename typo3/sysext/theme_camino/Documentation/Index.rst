@@ -6,26 +6,26 @@ TYPO3 Theme: Camino
 ===================
 
 :Extension key:
-   theme_camino
+    theme_camino
 
 :Package name:
-   typo3/theme-camino
+    typo3/theme-camino
 
 :Version:
-   |release|
+    |release|
 
 :Language:
-   en
+    en
 
 :Author:
-   TYPO3 contributors
+    TYPO3 contributors
 
 :License:
-   This document is published under the
-   `Open Content License <https://www.openhub.net/licenses/opl>`__.
+    This document is published under the
+    `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-   |today|
+    |today|
 
 ----
 
@@ -36,15 +36,20 @@ This extension provides the default theme for sites in the TYPO3 v14 series.
 
 **Table of Contents:**
 
-.. toctree::
+..  toctree::
    :maxdepth: 2
    :titlesonly:
 
+   Introduction/Index
    Installation/Index
+   Setup/Index
+   Customize/Index
+   BackendLayouts/Index
+   ContentElements/Index
 
-.. Meta Menu
+..  Meta Menu
 
-.. toctree::
+..  toctree::
    :hidden:
 
    Sitemap

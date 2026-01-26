@@ -1,0 +1,5 @@
+..  versionadded:: 14.1
+    The camino theme was added with TYPO3 14.1 and is not available in older
+    TYPO3 versions. Download and install a default site package from
+    `the official Site Package Builder <https://get.typo3.org/sitepackage>`_ for
+    older TYPO3 versions.
