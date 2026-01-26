@@ -34,9 +34,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -75,6 +73,7 @@ final class PageRecordProvider implements SearchProviderInterface
         protected readonly SiteFinder $siteFinder,
         protected readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ConnectionPool $connectionPool,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
@@ -139,13 +138,11 @@ final class PageRecordProvider implements SearchProviderInterface
 
     protected function getQueryBuilderForTable(SearchDemand $searchDemand): ?QueryBuilder
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
-            ->add(new WorkspaceRestriction($this->getBackendUser()->workspace))
-            ->removeByType(HiddenRestriction::class)
-            ->removeByType(StartTimeRestriction::class)
-            ->removeByType(EndTimeRestriction::class);
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace, true));
 
         $constraints = $this->buildConstraintsForTable($searchDemand->getQuery(), $queryBuilder);
         if ($constraints === []) {
