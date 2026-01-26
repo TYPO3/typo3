@@ -186,7 +186,7 @@ class SchedulerListCommand extends Command
 
     private function getLanguageService(): LanguageService
     {
-        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('en');
     }
 
     protected function updateTable(InputInterface $input, Table $table, BufferedOutput $buffer, ConsoleSectionOutput $tableSection): void

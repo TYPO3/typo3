@@ -54,7 +54,7 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/base.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectItems/sys_file_storage.csv');
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
         $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
     }
 

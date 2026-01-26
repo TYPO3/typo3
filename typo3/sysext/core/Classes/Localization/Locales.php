@@ -41,7 +41,7 @@ class Locales implements SingletonInterface
      * @var array<non-empty-string, non-empty-string>
      */
     protected array $languages = [
-        'default' => 'English', // internally, this is the fallback, the mapping from "default" to "en" is done within LanguageService + LocalizationFactory.
+        'en' => 'English',
         'af' => 'Afrikaans',
         'ar' => 'Arabic',
         'bs' => 'Bosnian',
@@ -199,13 +199,13 @@ class Locales implements SingletonInterface
     }
 
     /**
-     * Returns a list of all ISO codes / TYPO3 languages that have active language packs, but also includes "default".
+     * Returns a list of all ISO codes / TYPO3 languages that have active language packs, including "en" (English).
      * @return array<int, non-empty-string>
      */
     public function getActiveLanguages(): array
     {
         return array_merge(
-            ['default'],
+            ['en'],
             array_filter(array_values($GLOBALS['TYPO3_CONF_VARS']['LANG']['availableLocales'] ?? []))
         );
     }
@@ -260,16 +260,16 @@ class Locales implements SingletonInterface
      * into a TYPO3-readable language code
      *
      * @param string $languageCodesList List of language codes. something like 'de,en-us;q=0.9,de-de;q=0.7,es-cl;q=0.6,en;q=0.4,es;q=0.3,zh;q=0.1'
-     * @return non-empty-string A preferred language that TYPO3 supports, or "default" if none found
+     * @return non-empty-string A preferred language that TYPO3 supports, or "en" as fallback if none found
      */
     public function getPreferredClientLanguage(string $languageCodesList): string
     {
-        $allLanguageCodesFromLocales = ['en' => 'default'];
+        $allLanguageCodesFromLocales = [];
         foreach ($this->languages as $locale => $localeTitle) {
             $locale = str_replace('_', '-', $locale);
             $allLanguageCodesFromLocales[$locale] = $locale;
         }
-        $selectedLanguage = 'default';
+        $selectedLanguage = 'en';
         $preferredLanguages = GeneralUtility::trimExplode(',', $languageCodesList);
         // Order the preferred languages after they key
         $sortedPreferredLanguages = [];
@@ -293,9 +293,6 @@ class Locales implements SingletonInterface
                 $selectedLanguage = $allLanguageCodesFromLocales[$preferredLanguage];
                 break;
             }
-        }
-        if (!$selectedLanguage || $selectedLanguage === 'en') {
-            $selectedLanguage = 'default';
         }
         return str_replace('-', '_', $selectedLanguage);
     }

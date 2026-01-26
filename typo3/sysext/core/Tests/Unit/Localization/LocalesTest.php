@@ -102,7 +102,7 @@ final class LocalesTest extends UnitTestCase
             ],
             'english as default' => [
                 'en-US;q=0.8,en;q=0.6;de-DE,de;q=0.4',
-                'default',
+                'en',
             ],
             'french canadian' => [
                 'fr-CA;q=0.8,en;q=0.6;de-DE,de;q=0.4',

@@ -74,7 +74,7 @@ final class FileMetadataOverlayAspectTest extends AbstractTestCase
                 ]
             );
             $backendUser = $this->setUpBackendUser(1);
-            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+            $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
 
             $scenarioFile = __DIR__ . '/Fixtures/MetadataScenario.yaml';
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);

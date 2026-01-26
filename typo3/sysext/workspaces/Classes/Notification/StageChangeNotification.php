@@ -169,7 +169,7 @@ readonly class StageChangeNotification
             ->subject('TYPO3 Workspaces: Stage Change')
             ->setTemplate('StageChangeNotification')
             ->assignMultiple($variablesForView)
-            ->assign('language', $recipientData['lang'] ?? 'default');
+            ->assign('language', $recipientData['lang'] ?? 'en');
 
         // Injecting normalized params
         if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {

@@ -35,7 +35,7 @@ final class FilesControlContainerTest extends FunctionalTestCase
     {
         parent::setUp();
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
     }
 
     #[Test]

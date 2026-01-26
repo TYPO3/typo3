@@ -362,7 +362,7 @@ EOT
 
     private function getBackendUserPasswordValidationErrors(string $password): array
     {
-        $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
+        $GLOBALS['LANG'] = $this->languageServiceFactory->create('en');
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
         $passwordPolicyValidator = new PasswordPolicyValidator(
             PasswordPolicyAction::NEW_USER_PASSWORD,

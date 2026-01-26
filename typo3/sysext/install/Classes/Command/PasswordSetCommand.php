@@ -109,7 +109,7 @@ final class PasswordSetCommand extends Command
         }
 
         // Validation error messages require a valid LANG object to operate on (or a backend user context, which we don't need here)
-        $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
+        $GLOBALS['LANG'] = $this->languageServiceFactory->create('en');
         $validationResultErrors = $this->passwordService->getValidationErrorsForInstallToolUpdate($password);
         if ($validationResultErrors !== []) {
             $output->writeln('Your password could not be used. The following validation rules did not pass:');

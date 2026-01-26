@@ -64,7 +64,7 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $view = new TemplateView($context);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
         $view->render();
         $pageRenderer = $this->get(PageRenderer::class);
         // PageRenderer depends on request to determine FE vs. BE
@@ -80,7 +80,7 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
         $context->getTemplatePaths()->setTemplateSource('<f:be.pageRenderer addJsInlineLabels="{0: \'login.header\'}" />');
         $view = new TemplateView($context);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
         $view->render();
         $pageRenderer = $this->get(PageRenderer::class);
         // PageRenderer depends on request to determine FE vs. BE

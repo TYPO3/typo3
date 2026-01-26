@@ -144,7 +144,7 @@ class SetupModuleController
 
         }
         if ($this->languageUpdate) {
-            $this->getLanguageService()->init($this->getBackendUser()->user['lang'] ?? 'default');
+            $this->getLanguageService()->init($this->getBackendUser()->user['lang'] ?? 'en');
             $locale = $this->getLanguageService()->getLocale();
             if ($locale !== null) {
                 $parameters = [
@@ -705,11 +705,11 @@ class SetupModuleController
         $items = $this->locales->getLanguages();
         $officialLanguages = new OfficialLanguages();
         $backendUser = $this->getBackendUser();
-        $currentSelectedLanguage = (string)($backendUser->user['lang'] ?? 'default');
+        $currentSelectedLanguage = (string)($backendUser->user['lang'] ?? 'en');
         $languageService = $this->getLanguageService();
         $content = '';
         // get all labels in default language as well
-        $defaultLanguageLabelService = $this->languageServiceFactory->create('default');
+        $defaultLanguageLabelService = $this->languageServiceFactory->create('en');
         foreach ($items as $languageCode => $name) {
             if (!$this->locales->isLanguageKeyAvailable($languageCode)) {
                 continue;
@@ -734,7 +734,7 @@ class SetupModuleController
             $content .= '<option value="' . $languageCode . '"' . ($currentSelectedLanguage === $languageCode ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
         }
         $content = '<select id="field_lang" name="data[be_users][lang]" class="form-select">' . $content . '</select>';
-        if ($currentSelectedLanguage !== 'default' && !@is_dir(Environment::getLabelsPath() . '/' . $currentSelectedLanguage)) {
+        if ($currentSelectedLanguage !== 'en' && !@is_dir(Environment::getLabelsPath() . '/' . $currentSelectedLanguage)) {
             $languageUnavailableWarning = htmlspecialchars(sprintf($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:languageUnavailable'), $languageService->sL($officialLanguages->getLabelIdentifier($currentSelectedLanguage)))) . '&nbsp;&nbsp;<br>&nbsp;&nbsp;' . htmlspecialchars($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
             $content = '<br><span class="badge badge-danger">' . $languageUnavailableWarning . '</span><br><br>' . $content;
         }

@@ -36,7 +36,7 @@ class CleanupRedirectsCommand extends Command
         protected readonly RedirectRepository $redirectRepository,
         protected readonly LanguageServiceFactory $languageServiceFactory
     ) {
-        $this->languageService = $languageServiceFactory->create('default');
+        $this->languageService = $languageServiceFactory->create('en');
         parent::__construct();
     }
 

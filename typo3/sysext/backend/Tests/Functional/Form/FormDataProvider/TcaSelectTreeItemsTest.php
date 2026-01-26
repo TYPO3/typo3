@@ -40,7 +40,7 @@ final class TcaSelectTreeItemsTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaSelectTreeItems/base.csv');
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
         $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
     }
 

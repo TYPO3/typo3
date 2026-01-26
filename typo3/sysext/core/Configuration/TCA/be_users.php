@@ -259,7 +259,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSystemLanguagesForBackend',
-                'default' => 'default',
+                'default' => 'en',
                 'dbFieldLength' => 10,
                 'items' => [
                 ],

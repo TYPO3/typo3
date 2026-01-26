@@ -68,7 +68,7 @@ final class TcaRecordTitleTest extends FunctionalTestCase
     public static function addDataReturnsRecordTitleForCountryTypeDataProvider(): \Generator
     {
         yield 'Germany, localized name (in english)' => [
-            'locale' => 'default',
+            'locale' => 'en',
             'labelField' => 'localizedName',
             'inputCountry' => 'DE',
             'expectedLabel' => 'Germany',
@@ -79,20 +79,20 @@ final class TcaRecordTitleTest extends FunctionalTestCase
             'inputCountry' => 'DE',
             'expectedLabel' => 'Deutschland',
         ];
-        yield 'Germany, default name' => [
-            'locale' => 'default',
+        yield 'Germany, english / default name' => [
+            'locale' => 'en',
             'labelField' => 'name',
             'inputCountry' => 'DE',
             'expectedLabel' => 'Germany',
         ];
         yield 'Germany, official name' => [
-            'locale' => 'default',
+            'locale' => 'en',
             'labelField' => 'officialName',
             'inputCountry' => 'DE',
             'expectedLabel' => 'Federal Republic of Germany',
         ];
         yield 'Austria, localized official name' => [
-            'locale' => 'default',
+            'locale' => 'en',
             'labelField' => 'localizedOfficialName',
             'inputCountry' => 'AT',
             'expectedLabel' => 'Republic of Austria',
@@ -104,19 +104,19 @@ final class TcaRecordTitleTest extends FunctionalTestCase
             'expectedLabel' => 'Republik Österreich',
         ];
         yield 'Denmark, iso2' => [
-            'locale' => 'default',
+            'locale' => 'en',
             'labelField' => 'iso2',
             'inputCountry' => 'AT',
             'expectedLabel' => 'AT',
         ];
         yield 'Denmark, iso3' => [
-            'locale' => 'default',
+            'locale' => 'en',
             'labelField' => 'iso3',
             'inputCountry' => 'AT',
             'expectedLabel' => 'AUT',
         ];
         yield 'Invalid Country' => [
-            'locale' => 'default',
+            'locale' => 'en',
             'labelField' => 'iso3',
             'inputCountry' => 'NOTHING',
             'expectedLabel' => 'NOTHING',

@@ -69,7 +69,7 @@ abstract readonly class AbstractFormEngineAjaxController
      */
     protected function getLabelsFromLocalizationFile(string $file): array
     {
-        $languageService = $this->getLanguageService() ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $languageService = $this->getLanguageService() ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('en');
         return $languageService->getLabelsFromResource($file);
     }
 

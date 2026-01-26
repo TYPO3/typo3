@@ -40,7 +40,7 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/sys_file.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
 
         // ensure, temporary uploaded files are purged again
         // @todo move this to the testing framework (which only reinitialized files for the first run)

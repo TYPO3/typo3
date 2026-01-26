@@ -71,7 +71,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
     #[Test]
     public function forwardedActionValidatesPreviouslyIgnoredArgument(array $blogPostArgument, array $trustedProperties, array $expectedErrorCodes): void
     {
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $response = new Response();
@@ -118,7 +118,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
     #[Test]
     public function validationResultsAreProvidedForTheSameObjectInDifferentArguments(): void
     {
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $response = new Response();
@@ -178,7 +178,7 @@ final class ActionControllerValidationTest extends FunctionalTestCase
     #[Test]
     public function argumentsOfOriginalRequestRemainOnValidationErrors(): void
     {
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $response = new Response();

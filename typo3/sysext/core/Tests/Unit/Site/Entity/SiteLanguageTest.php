@@ -127,7 +127,7 @@ final class SiteLanguageTest extends UnitTestCase
         yield 'Undefined "default" configuration with POSIX' => [
             'C',
             [],
-            'default',
+            'en',
         ];
         yield 'Defined language + country combination' => [
             'de-AT',

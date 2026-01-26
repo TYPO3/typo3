@@ -91,7 +91,7 @@ class LanguagePackService
         $activeLanguages = $this->getActiveLanguages();
         $languages = [];
         foreach ($availableLanguages as $iso => $name) {
-            if ($iso === 'default') {
+            if ($iso === 'en') {
                 continue;
             }
             $lastUpdate = $this->registry->get('languagePacks', $iso);
@@ -246,8 +246,6 @@ class LanguagePackService
                 }
             }
         } else {
-            $operationResult = false;
-
             $this->logger->warning('Requesting {request} was not successful, got status code {status} ({reason})', [
                 'request' => $languagePackBaseUrl . $packageUrl,
                 'status' => $response->getStatusCode(),
@@ -267,7 +265,7 @@ class LanguagePackService
      * @param string[] $isos List of iso code timestamps to set
      * @throws \RuntimeException
      */
-    public function setLastUpdatedIsoCode(array $isos)
+    public function setLastUpdatedIsoCode(array $isos): void
     {
         $activeLanguages = $GLOBALS['TYPO3_CONF_VARS']['LANG']['availableLocales'] ?? [];
         foreach ($isos as $iso) {
@@ -280,11 +278,8 @@ class LanguagePackService
 
     /**
      * Format a timestamp to a formatted date string
-     *
-     * @param int|null $timestamp
-     * @return string|null
      */
-    protected function getFormattedDate($timestamp)
+    protected function getFormattedDate(?int $timestamp): ?string
     {
         if (is_int($timestamp)) {
             $date = (new \DateTime())->setTimestamp($timestamp);
@@ -300,7 +295,7 @@ class LanguagePackService
      * @param string $file path to zip file
      * @param string $path path to extract to
      */
-    protected function unzipTranslationFile(string $file, string $path)
+    protected function unzipTranslationFile(string $file, string $path): void
     {
         if (!is_dir($path)) {
             GeneralUtility::mkdir_deep($path);

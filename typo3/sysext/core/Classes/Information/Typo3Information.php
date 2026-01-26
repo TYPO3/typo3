@@ -40,7 +40,7 @@ class Typo3Information
         if (($GLOBALS['LANG'] ?? null) instanceof LanguageService) {
             $this->languageService = $GLOBALS['LANG'];
         } else {
-            $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+            $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('en');
         }
     }
 

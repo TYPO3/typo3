@@ -426,7 +426,7 @@ class SettingsController extends AbstractController
     public function extensionConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
         // Extension configuration needs initialized $GLOBALS['LANG']
-        $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
+        $GLOBALS['LANG'] = $this->languageServiceFactory->create('en');
         $extensionsWithConfigurations = [];
         $activePackages = $this->packageManager->getActivePackages();
         $extensionConfiguration = new ExtensionConfiguration();

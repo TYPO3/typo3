@@ -216,7 +216,7 @@ class LinkAnalyzerResult
                 $site = $this->siteFinder->getSiteByPageId((int)$brokenLink['real_pid']);
                 $languageCode = $site->getLanguageById((int)$brokenLink['language'])->getLocale()->getLanguageCode();
             } catch (SiteNotFoundException | \InvalidArgumentException $e) {
-                $languageCode = 'default';
+                $languageCode = 'en';
             }
             if ($pageRecord !== null) {
                 $brokenLink['page_record'] = $pageRecord;

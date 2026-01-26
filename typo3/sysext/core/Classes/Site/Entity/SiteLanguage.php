@@ -219,8 +219,7 @@ class SiteLanguage
     }
 
     /**
-     * Returns the XLF label language key, returns "default" when it is "en".
-     * "default" is currently still needed for TypoScript label overloading.
+     * Returns the XLF label language key.
      * For locales like "en-US", this method returns "en_US" which can then be used
      * for XLF file prefixes properly.
      */
@@ -228,10 +227,6 @@ class SiteLanguage
     {
         if ($this->typo3Language !== '') {
             return $this->typo3Language;
-        }
-        // locale is just set to "C" or "en", this should then be mapped to "default"
-        if ($this->locale->getLanguageCode() === 'en' && !$this->locale->getCountryCode()) {
-            return 'default';
         }
         $typo3Language = $this->locale->getLanguageCode();
         if ($this->locale->getCountryCode()) {

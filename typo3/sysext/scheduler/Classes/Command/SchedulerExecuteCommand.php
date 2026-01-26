@@ -143,7 +143,7 @@ class SchedulerExecuteCommand extends Command
 
     private function getLanguageService(): LanguageService
     {
-        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('en');
     }
 
     private function getTasksToRun(array $taskGroups, array $taskList): array

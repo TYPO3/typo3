@@ -489,7 +489,7 @@ class TranslationService implements SingletonInterface
         if ($language) {
             $this->languageKey = $language;
         } else {
-            $this->languageKey = 'default';
+            $this->languageKey = 'en';
             if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                 && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
             ) {

@@ -379,7 +379,7 @@ final class WorkspacePreview implements MiddlewareInterface
 
     private function getLanguageService(): LanguageService
     {
-        return $GLOBALS['LANG'] ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        return $GLOBALS['LANG'] ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('en');
     }
 
     /**

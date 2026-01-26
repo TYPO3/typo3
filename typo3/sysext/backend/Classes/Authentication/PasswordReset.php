@@ -199,7 +199,7 @@ readonly class PasswordReset
             ->setRequest($request)
             ->assign('name', $user['realName'])
             ->assign('email', $user['email'])
-            ->assign('language', $user['lang'] ?: 'default')
+            ->assign('language', $user['lang'] ?: 'en')
             ->assign('resetLink', $resetLink)
             ->assign('username', $user['username'])
             ->assign('userData', $user)

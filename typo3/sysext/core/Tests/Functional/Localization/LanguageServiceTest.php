@@ -63,7 +63,7 @@ final class LanguageServiceTest extends FunctionalTestCase
     #[Test]
     public function splitLabelTest(string $input, string $expected): void
     {
-        $subject = $this->get(LanguageServiceFactory::class)->create('default');
+        $subject = $this->get(LanguageServiceFactory::class)->create('en');
         self::assertEquals($expected, $subject->sL($input));
     }
 
@@ -153,7 +153,7 @@ final class LanguageServiceTest extends FunctionalTestCase
     public static function ensureVariousLocalizationScenariosWorkDataProvider(): \Generator
     {
         yield 'Can handle localization for native language' => [
-            'locale' => 'default',
+            'locale' => 'en',
             'expectedLabels' => [
                 'label1' => 'This is label #1',
                 'label2' => 'This is label #2',
@@ -211,7 +211,7 @@ final class LanguageServiceTest extends FunctionalTestCase
     public static function ensureVariousLocalizationOverrideScenariosWorkDataProvider(): \Generator
     {
         yield 'Can override localization for native translation' => [
-            'locale' => 'default',
+            'locale' => 'en',
             'expectedLabels' => [
                 'label1' => 'This is my 1st label',
                 'label2' => 'This is my 2nd label',
@@ -334,14 +334,14 @@ final class LanguageServiceTest extends FunctionalTestCase
             'longLabel' => self::LANGUAGE_FILE . ':deprecated_label',
             'label' => 'deprecated_label',
             'domain' => 'test_localization.messages',
-            'locale' => 'default',
+            'locale' => 'en',
         ];
         yield 'DeprecatedLabelIsDeprecatedXliff1' => [
             'expected' => 'This is label #4 is deprecated',
             'longLabel' => self::LANGUAGE_FILE . ':label4.x-unused',
             'label' => 'label4.x-unused',
             'domain' => 'test_localization.messages',
-            'locale' => 'default',
+            'locale' => 'en',
         ];
         yield 'DeprecatedLabelFrenchFallbackXliff1' => [
             'expected' => 'This is label is deprecated',
@@ -355,14 +355,14 @@ final class LanguageServiceTest extends FunctionalTestCase
             'longLabel' => self::LANGUAGE_FILE_XLIFF_2 . ':expiration_date',
             'label' => 'expiration_date',
             'domain' => 'test_localization.messages_2',
-            'locale' => 'default',
+            'locale' => 'en',
         ];
         yield 'DeprecatedLabelIsDeprecatedXliff2' => [
             'expected' => 'This is label #4 is deprecated',
             'longLabel' => self::LANGUAGE_FILE_XLIFF_2 . ':label4.x-unused',
             'label' => 'label4.x-unused',
             'domain' => 'test_localization.messages_2',
-            'locale' => 'default',
+            'locale' => 'en',
         ];
     }
 

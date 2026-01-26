@@ -81,7 +81,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
     {
         $this->sourcePath = $sourcePath;
         $this->languageKey = $languageKey;
-        if ($this->languageKey !== 'default') {
+        if ($this->languageKey !== 'default' && $this->languageKey !== 'en') {
             $this->sourcePath = $labelsPath ?? $this->getLocalizedFileName($this->sourcePath, $this->languageKey);
             if (!@is_file($this->sourcePath)) {
                 // Global localization is not available, try split localization file

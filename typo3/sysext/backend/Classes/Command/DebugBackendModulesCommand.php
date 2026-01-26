@@ -51,7 +51,7 @@ class DebugBackendModulesCommand extends Command
         private readonly ModuleFactory $moduleFactory,
         private readonly LanguageServiceFactory $languageServiceFactory,
     ) {
-        $this->languageService = $GLOBALS['LANG'] = $this->languageServiceFactory->create('default');
+        $this->languageService = $GLOBALS['LANG'] = $this->languageServiceFactory->create('en');
         // Note: We cannot directly use autowire of 'backend.modules' because that
         // would only give us the final constructed registry, without access to data
         // like "packageName" and "labels".

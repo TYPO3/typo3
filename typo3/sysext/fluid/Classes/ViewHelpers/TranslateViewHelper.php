@@ -58,7 +58,7 @@ final class TranslateViewHelper extends AbstractViewHelper
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
         $this->registerArgument('domain', 'string', 'Translation Domain to be used for the ID/Key. Takes precedence over "extensionName". Should also be used over "extensionName".');
-        $this->registerArgument('languageKey', 'string', 'Language key ("da" for example) or "default" to use. Also a Locale object is possible. If empty, use current locale from the request.');
+        $this->registerArgument('languageKey', 'string', 'Language key ("da" for example) or "en" to use. Also a Locale object is possible. If empty, use current locale from the request.');
     }
 
     /**

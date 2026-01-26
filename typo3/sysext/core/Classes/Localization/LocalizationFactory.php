@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
  *
  * Ideally, consider using a runtime cache if needed, if not using LanguageService.
  *
- * Hand in the locale to load, or english ("default").
+ * Hand in the locale to load, or english ("en").
  *
  * What it does:
  * - Caches on a system-level cache
