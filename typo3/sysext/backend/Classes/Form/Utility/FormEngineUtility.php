@@ -140,7 +140,7 @@ class FormEngineUtility
         } else {
             $absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
         }
-        if (!empty($absoluteFilePath) && (is_file($absoluteFilePath)) || is_file(Environment::getPublicPath() . $absoluteFilePath)) {
+        if (!empty($absoluteFilePath) && (@is_file($absoluteFilePath)) || @is_file(Environment::getPublicPath() . $absoluteFilePath)) {
             return '<img'
                 . ' loading="lazy" '
                 . ' src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($absoluteFilePath)) . '"'
