@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
@@ -50,6 +51,7 @@ class CreateBackendUserCommand extends Command
         private readonly ConnectionPool $connectionPool,
         private readonly ConfigurationManager $configurationManager,
         private readonly LanguageServiceFactory $languageServiceFactory,
+        private readonly Locales $locales,
     ) {
         parent::__construct();
     }
@@ -81,6 +83,12 @@ class CreateBackendUserCommand extends Command
                 'Assign given groups to the user'
             )
             ->addOption(
+                'language',
+                'l',
+                InputOption::VALUE_REQUIRED,
+                'The language for the user interface'
+            )
+            ->addOption(
                 'admin',
                 'a',
                 InputOption::VALUE_NONE,
@@ -100,6 +108,7 @@ Example:
 TYPO3_BE_USER_NAME=username \
 TYPO3_BE_USER_EMAIL=admin@example.com \
 TYPO3_BE_USER_GROUPS=<comma-separated-list-of-group-ids> \
+TYPO3_BE_USER_LANGUAGE=de \
 TYPO3_BE_USER_ADMIN=0 \
 TYPO3_BE_USER_MAINTAINER=0 \
 ./bin/typo3 backend:user:create --no-interaction
@@ -125,6 +134,7 @@ EOT
         $password = $this->getPassword($questionHelper, $input, $output);
         $email = $this->getEmail($questionHelper, $input, $output) ?: '';
         $maintainer = $this->getMaintainer($questionHelper, $input, $output);
+        $language = $this->getLanguage($questionHelper, $input, $output) ?: 'default';
 
         // If the user is 'maintainer' it is also required to set the 'admin' flag.
         if ($maintainer) {
@@ -141,7 +151,7 @@ EOT
             $groups = $this->getGroups($questionHelper, $input, $output);
         }
 
-        $this->createUser($username, $password, $email, $admin, $maintainer, $groups);
+        $this->createUser($username, $password, $email, $admin, $maintainer, $groups, $language);
 
         return Command::SUCCESS;
     }
@@ -308,6 +318,33 @@ EOT
         return (bool)$adminFromCli;
     }
 
+    private function getLanguage(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string
+    {
+        $languagesList = $this->locales->getLanguages();
+
+        $languageValidator = static function ($language) use ($languagesList) {
+            if (!empty($language) && !isset($languagesList[$language])) {
+                throw new \RuntimeException(
+                    'The given language "' . $language . '"  is not supported.',
+                    1769429507
+                );
+            }
+
+            return $language;
+        };
+
+        $languageFromCli = $this->getFallbackValueEnvOrOption($input, 'language', 'TYPO3_BE_USER_LANGUAGE');
+        if ($languageFromCli === false && $input->isInteractive()) {
+            $questionLanguage = new Question('Enter the language for the user interface [eg: de/fr/it/...]: ', '');
+            $questionLanguage->setValidator($languageValidator);
+            $questionLanguage->setAutocompleterValues(array_keys($languagesList));
+
+            return $questionHelper->ask($input, $output, $questionLanguage);
+        }
+
+        return (string)$languageValidator($languageFromCli);
+    }
+
     /**
      * Get a value from
      * 1. environment variable
@@ -342,7 +379,7 @@ EOT
      * similar to "\TYPO3\CMS\Install\Service\SetupService::createUser()",
      * but accepts admin/maintainer flag and groups
      */
-    private function createUser(string $username, string $password, string $email = '', bool $admin = false, bool $maintainer = false, array $groups = []): void
+    private function createUser(string $username, string $password, string $email = '', bool $admin = false, bool $maintainer = false, array $groups = [], string $language = 'default'): void
     {
         // Initialize backend user authentication to ensure the new backend user can be created with proper permissions
         Bootstrap::initializeBackendAuthentication();
@@ -359,6 +396,7 @@ EOT
                     'admin' => $admin ? 1 : 0,
                     'usergroup' => $groups,
                     'disable' => 0,
+                    'lang' => $language,
                 ],
             ],
         ];
