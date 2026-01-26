@@ -67,10 +67,10 @@
                 <tr>
                     <th class="col-checkbox" colspan="2">
                         <div class="btn-group dropdown">
-                            <a href="javascript:;" class="dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openSelectionOptions')}">
+                            <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openSelectionOptions')}" popovertarget="qrcodes-selection">
                                 <core:icon identifier="actions-selection" size="small" />
-                            </a>
-                            <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
+                            </button>
+                            <ul id="qrcodes-selection" class="dropdown-menu t3js-multi-record-selection-check-actions" popover>
                                 <li>
                                     <button type="button" class="dropdown-item" disabled="disabled" data-multi-record-selection-check-action="check-all" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')}">
                                         <span class="dropdown-item-columns">
@@ -129,7 +129,6 @@
             <tbody data-multi-record-selection-row-selection="true">
                 <f:for each="{redirects}" key="domainName" as="redirect">
                     <tr
-                        class="{f:if(condition: '{redirect.integrity_status} !== {defaultIntegrityStatus}', then: 'danger')}"
                         data-uid="{redirect.uid}"
                         data-multi-record-selection-element="true"
                     >
@@ -273,8 +272,8 @@
 </f:section>
 
 <f:section name="listHeaderSorting">
-    <div class="dropdown dropdown-static">
-        <button class="dropdown-toggle dropdown-toggle-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="dropdown">
+        <button class="dropdown-toggle dropdown-toggle-link" type="button" popovertarget="qrcodes-selection-sorting-{field}">
             <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:{label}"/>
             <f:if condition="{demand.orderField} === {field}">
                 <f:then>
@@ -296,7 +295,7 @@
                 </f:else>
             </f:if>
         </button>
-        <ul class="dropdown-menu">
+        <ul id="qrcodes-selection-sorting-{field}" class="dropdown-menu" popover>
             <li>
                 <a
                     class="dropdown-item"

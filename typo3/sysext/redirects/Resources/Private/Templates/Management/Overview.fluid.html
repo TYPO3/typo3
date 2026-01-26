@@ -78,10 +78,10 @@
                 <tr>
                     <th class="col-checkbox" colspan="2">
                         <div class="btn-group dropdown">
-                            <a href="javascript:;" class="dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openSelectionOptions')}">
+                            <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openSelectionOptions')}" popovertarget="redirects-selection">
                                 <core:icon identifier="actions-selection" size="small" />
-                            </a>
-                            <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
+                            </button>
+                            <ul id="redirects-selection" class="dropdown-menu t3js-multi-record-selection-check-actions" popover>
                                 <li>
                                     <button type="button" class="dropdown-item" disabled="disabled" data-multi-record-selection-check-action="check-all" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')}">
                                         <span class="dropdown-item-columns">
@@ -285,16 +285,14 @@
                                 </f:if>
                                 <f:if condition="{showPreviewButton} || {showHitCountResetButton}">
                                     <f:then>
-                                        <a
-                                            href="#actions-{redirect.uid}"
+                                        <button
+                                            type="button"
                                             class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron"
-                                            data-bs-toggle="dropdown"
-                                            data-bs-boundary="window"
-                                            aria-expanded="false"
+                                            popovertarget="actions-{redirect.uid}"
                                         >
                                             <core:icon identifier="actions-menu-alternative" />
-                                        </a>
-                                        <ul id="actions-{redirect.uid}" class="dropdown-menu">
+                                        </button>
+                                        <ul id="actions-{redirect.uid}" class="dropdown-menu" popover>
                                             <f:if condition="{showPreviewButton}">
                                                 <li>
                                                     <f:link.external
@@ -352,8 +350,8 @@
 </f:section>
 
 <f:section name="listHeaderSorting">
-    <div class="dropdown dropdown-static">
-        <button class="dropdown-toggle dropdown-toggle-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="dropdown">
+        <button class="dropdown-toggle dropdown-toggle-link" type="button" popovertarget="redirects-selection-sorting-{field}">
             <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:{label}"/>
             <f:if condition="{demand.orderField} === {field}">
                 <f:then>
@@ -375,7 +373,7 @@
                 </f:else>
             </f:if>
         </button>
-        <ul class="dropdown-menu">
+        <ul id="redirects-selection-sorting-{field}" class="dropdown-menu" popover>
             <li>
                 <a
                     class="dropdown-item"
