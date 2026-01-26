@@ -35,9 +35,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -73,6 +71,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         private readonly QueryParser $queryParser,
         private readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly ConnectionPool $connectionPool,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
@@ -193,13 +192,11 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
     private function getQueryBuilderForTable(SearchDemand $searchDemand, string $tableName): ?QueryBuilder
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($tableName);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()
-            ->add(new WorkspaceRestriction($this->getBackendUser()->workspace))
-            ->removeByType(HiddenRestriction::class)
-            ->removeByType(StartTimeRestriction::class)
-            ->removeByType(EndTimeRestriction::class);
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace, true));
 
         $constraints = $this->buildConstraintsForTable($searchDemand->getQuery(), $queryBuilder, $tableName);
         $event = $this->eventDispatcher->dispatch(new ModifyConstraintsForLiveSearchEvent($constraints, $tableName, $searchDemand));
