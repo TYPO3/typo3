@@ -113,6 +113,20 @@ readonly class LocalizationFactory
     }
 
     /**
+     * Preload files into Symfony Translator without retrieving catalogues.
+     *
+     * This is used during cache warmup to batch all addResource() calls before
+     * any getCatalogue() calls, avoiding O(n²) catalogue rebuilds.
+     *
+     * @internal
+     */
+    public function warmupTranslatorResource(string $fileReference, Locale $locale): void
+    {
+        [$fileReference, $domainName, $allLanguageKeysAsOrderedFallback] = $this->computeFileDomainAndFallbacks($fileReference, $locale);
+        $this->loadLanguagesIntoSymfonyTranslator($fileReference, $domainName, $allLanguageKeysAsOrderedFallback);
+    }
+
+    /**
      * Returns parsed data from a given file and language key.
      *
      * @param string $fileReference Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a supported locallang file format
@@ -123,17 +137,6 @@ readonly class LocalizationFactory
      */
     public function getParsedData(string $fileReference, Locale|string|null $locale, bool $renewCache = false): array
     {
-        if (in_array($fileReference, self::DEPRECATED_FILES)) {
-            trigger_error(
-                sprintf('The file "%s" is deprecated. Please use a label from a different language file instead.', $fileReference),
-                E_USER_DEPRECATED
-            );
-        }
-        if (isset(self::MOVED_FILES[$fileReference])) {
-            trigger_error('The file ' . $fileReference . ' has been moved to ' . self::MOVED_FILES[$fileReference] . '. Please update your code accordingly.', E_USER_DEPRECATED);
-            $fileReference = self::MOVED_FILES[$fileReference];
-        }
-
         if ($locale === null) {
             $locale = new Locale('en', ['default']);
         }
@@ -143,9 +146,7 @@ readonly class LocalizationFactory
         }
         $languageKey = $locale->getName();
 
-        $fileReference = $this->translationDomainMapper->mapDomainToFileName($fileReference);
-        $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
-        $allLanguageKeysAsOrderedFallback = $this->computeAllLanguageKeys($locale);
+        [$fileReference, $domainName, $allLanguageKeysAsOrderedFallback] = $this->computeFileDomainAndFallbacks($fileReference, $locale);
         $systemCacheIdentifier = md5($domainName . $languageKey . serialize($allLanguageKeysAsOrderedFallback));
 
         // If the content is in system cache, put it in runtime cache and use it
@@ -157,9 +158,7 @@ readonly class LocalizationFactory
         }
 
         // Add files for all locales to Symfony Translator catalogue - order does not matter here.
-        foreach ($allLanguageKeysAsOrderedFallback as $currentLanguageKey) {
-            $this->loadFilesIntoSymfonyTranslator($fileReference, $currentLanguageKey, $domainName);
-        }
+        $this->loadLanguagesIntoSymfonyTranslator($fileReference, $domainName, $allLanguageKeysAsOrderedFallback);
 
         // Set order of fallback locales in Symfony Translator.
         if ($this->translator->getFallbackLocales() !== $allLanguageKeysAsOrderedFallback) {
@@ -172,6 +171,31 @@ readonly class LocalizationFactory
         $this->systemCache->set($systemCacheIdentifier, $labels);
 
         return $labels;
+    }
+
+    /**
+     * Prepares file reference, domain, language fallbacks
+     *
+     * @return array{string, string, array<string>}
+     */
+    protected function computeFileDomainAndFallbacks(string $fileReference, Locale $locale): array
+    {
+        if (in_array($fileReference, self::DEPRECATED_FILES)) {
+            trigger_error(
+                sprintf('The file "%s" is deprecated. Please use a label from a different language file instead.', $fileReference),
+                E_USER_DEPRECATED
+            );
+        }
+        if (isset(self::MOVED_FILES[$fileReference])) {
+            trigger_error('The file ' . $fileReference . ' has been moved to ' . self::MOVED_FILES[$fileReference] . '. Please update your code accordingly.', E_USER_DEPRECATED);
+            $fileReference = self::MOVED_FILES[$fileReference];
+        }
+
+        $fileReference = $this->translationDomainMapper->mapDomainToFileName($fileReference);
+        $domainName = $this->translationDomainMapper->mapFileNameToDomain($fileReference);
+        $allLanguageKeysAsOrderedFallback = $this->computeAllLanguageKeys($locale);
+
+        return [$fileReference, $domainName, $allLanguageKeysAsOrderedFallback];
     }
 
     protected function computeAllLanguageKeys(Locale $locale): array
@@ -194,10 +218,29 @@ readonly class LocalizationFactory
     }
 
     /**
+     * Load languages into Symfony Translator
+     */
+    protected function loadLanguagesIntoSymfonyTranslator(string $fileReference, string $domainName, array $allLanguageKeysAsOrderedFallback): void
+    {
+        // Add files for all locales to Symfony Translator catalogue - order does not matter here.
+        foreach ($allLanguageKeysAsOrderedFallback as $currentLanguageKey) {
+            $this->loadFilesIntoSymfonyTranslator($fileReference, $currentLanguageKey, $domainName);
+        }
+    }
+
+    /**
      * Load files into Symfony Translator
      */
     protected function loadFilesIntoSymfonyTranslator(string $fileReference, string $languageKey, string $domainName): void
     {
+        // Early exit if this file+locale combination has already been fully processed (including overrides).
+        // This avoids redundant resolveFileReference() and getOverrideFilePaths() calls when processing
+        // fallback locales that have already been loaded for previous files.
+        $loadedCacheIdentifier = 'localization-factory-loaded-' . md5($fileReference . '-' . $languageKey . '-' . $domainName);
+        if ($this->runtimeCache->has($loadedCacheIdentifier)) {
+            return;
+        }
+
         // Firstly, load language into catalogue.
         try {
             $this->addFileReferenceToTranslator($fileReference, $languageKey, $domainName);
@@ -213,6 +256,8 @@ readonly class LocalizationFactory
             } catch (FileNotFoundException) {
             }
         }
+
+        $this->runtimeCache->set($loadedCacheIdentifier, true);
     }
 
     /**
