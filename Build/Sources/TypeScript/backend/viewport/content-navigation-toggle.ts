@@ -66,13 +66,13 @@ export class ContentNavigationToggle extends PseudoButtonLitElement {
     this.setupStateSync();
     this.setupFocusListener();
     this.setupResizeObserver();
+    window.addEventListener('pagehide', this.pageHideHandler);
   }
 
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.cleanupStateSync();
-    this.cleanupFocusListener();
-    this.cleanupResizeObserver();
+    this.releaseTopLevelListeners();
+    window.removeEventListener('pagehide', this.pageHideHandler);
   }
 
   protected override render(): TemplateResult {
@@ -192,6 +192,16 @@ export class ContentNavigationToggle extends PseudoButtonLitElement {
 
     this.getTargetDocument().removeEventListener(NavigationStateChangeEvent.eventName, this.boundStateChangeHandler);
   }
+
+  private releaseTopLevelListeners(): void {
+    this.cleanupStateSync();
+    this.cleanupFocusListener();
+    this.cleanupResizeObserver();
+  }
+
+  private readonly pageHideHandler = () => {
+    this.releaseTopLevelListeners();
+  };
 
   private handleStateChange(event: Event): void {
     const { contentNavigation } = this.context || {};
