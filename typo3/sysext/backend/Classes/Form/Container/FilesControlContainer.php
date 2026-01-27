@@ -265,7 +265,12 @@ class FilesControlContainer extends AbstractContainer
             $fileExtensionFilter->setAllowedFileExtensions($config['allowed'] ?? null);
             $fileExtensionFilter->setDisallowedFileExtensions($config['disallowed'] ?? null);
             $view->assign('fileSelectors', $this->getFileSelectors($inlineStructure, $config, $fileExtensionFilter));
-            $view->assignMultiple($fileExtensionFilter->getFilteredFileExtensions());
+            $filteredFileExtensions = $fileExtensionFilter->getFilteredFileExtensions();
+            // Do not display "allowed file extensions" if all extensions are allowed (indicated by ['*'])
+            if (($filteredFileExtensions['allowedFileExtensions'] ?? null) === ['*']) {
+                $filteredFileExtensions = [];
+            }
+            $view->assignMultiple($filteredFileExtensions);
             // Render the localization buttons if needed
             if ($numberOfNotYetLocalizedChildren) {
                 $view->assignMultiple([

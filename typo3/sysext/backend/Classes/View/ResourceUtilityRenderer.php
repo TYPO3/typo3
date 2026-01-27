@@ -258,10 +258,13 @@ class ResourceUtilityRenderer
         $markup[] = '<button type="button" class="btn btn-default t3js-drag-uploader-trigger">';
         $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));
         $markup[] = '</button>';
-        $markup[] = '<div class="form-text mt-1">';
-        $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($denyList ? 'disallowedFileExtensions' : 'allowedFileExtensions')));
-        $markup[] = '<ul class="badge-list">' . implode(' ', $allowedFileExtensionsList) . '</ul>';
-        $markup[] = '</div>';
+        // Only show file extension info if there is an actual limitation (not just '*')
+        if ($list !== ['*']) {
+            $markup[] = '<div class="form-text mt-1">';
+            $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($denyList ? 'disallowedFileExtensions' : 'allowedFileExtensions')));
+            $markup[] = '<ul class="badge-list">' . implode(' ', $allowedFileExtensionsList) . '</ul>';
+            $markup[] = '</div>';
+        }
         $markup[] = '</div>';
 
         return implode(LF, $markup);
@@ -341,10 +344,13 @@ class ResourceUtilityRenderer
         $markup[] = '</div>';
         $markup[] = '</div>';
         $markup[] = '</div>';
-        $markup[] = '<div class="form-text mt-1">';
-        $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($denyList ? 'disallowedFileExtensions' : 'allowedFileExtensions')));
-        $markup[] = '<ul class="badge-list">' . implode(' ', $allowedFileExtensionsList) . '</ul>';
-        $markup[] = '</div>';
+        // Only show file extension info if there is an actual limitation (not just '*')
+        if ($list !== ['*']) {
+            $markup[] = '<div class="form-text mt-1">';
+            $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($denyList ? 'disallowedFileExtensions' : 'allowedFileExtensions')));
+            $markup[] = '<ul class="badge-list">' . implode(' ', $allowedFileExtensionsList) . '</ul>';
+            $markup[] = '</div>';
+        }
         $markup[] = '</form>';
 
         return implode(LF, $markup);
