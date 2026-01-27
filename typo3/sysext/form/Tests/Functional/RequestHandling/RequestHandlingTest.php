@@ -19,11 +19,19 @@ namespace TYPO3\CMS\Form\Tests\Functional\RequestHandling;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Header\HeaderInterface;
+use Symfony\Component\Mime\Header\Headers;
+use Symfony\Component\Mime\Part\AbstractPart;
+use Symfony\Component\Mime\Part\File;
+use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Serializer\PolymorphicDeserializer;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Form\Tests\Functional\Framework\FormHandling\FormDataFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
@@ -107,7 +115,17 @@ final class RequestHandlingTest extends FunctionalTestCase
         $messages = [];
         foreach (array_filter(glob($this->instancePath . '/' . self::MAIL_SPOOL_FOLDER . '*'), 'is_file') as $path) {
             $serializedMessage = file_get_contents($path);
-            $sentMessage = unserialize($serializedMessage);
+            $deserializer = new PolymorphicDeserializer();
+            $sentMessage = $deserializer->deserialize($serializedMessage, [
+                SentMessage::class,
+                RawMessage::class,
+                Envelope::class,
+                Address::class,
+                AbstractPart::class,
+                File::class, // This one does not extend AbstractPart
+                Headers::class,
+                HeaderInterface::class,
+            ]);
             if (!$sentMessage instanceof SentMessage) {
                 continue;
             }
