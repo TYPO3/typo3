@@ -2661,6 +2661,34 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     }
 
     #[Test]
+    public function enrichAddsSelectStringWithLengthAndCustomDefault(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $tca['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'itemsProcFunc' => 'SomeClass->someMethod',
+                'dbFieldLength' => 10,
+                'default' => 'default',
+            ],
+        ];
+        $subject = new DefaultTcaSchema($this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('string'),
+            [
+                'notnull' => true,
+                'default' => 'default',
+                'length' => 10,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
+    }
+
+    #[Test]
     public function enrichAddsSelectSingleWithMMTable(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2746,6 +2774,42 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     }
 
     #[Test]
+    public function enrichAddsSelectSingleWithIntegerItemsAndCustomDefault(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $tca['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        'label' => 'someLabel',
+                        'value' => 17,
+                    ],
+                    [
+                        'label' => 'defaultLabel',
+                        'value' => 42,
+                    ],
+                ],
+                'default' => 42,
+            ],
+        ];
+        $subject = new DefaultTcaSchema($this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('integer'),
+            [
+                'notnull' => true,
+                'default' => 42,
+                'unsigned' => true,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
+    }
+
+    #[Test]
     public function enrichAddsSelectSingleWithForeignTableAndSignedIntegerItems(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
@@ -2803,6 +2867,42 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             [
                 'notnull' => true,
                 'default' => '',
+                'length' => 255,
+            ]
+        );
+        self::assertSame($expectedColumn->toArray(), $result['aTable']->getColumn('select')->toArray());
+    }
+
+    #[Test]
+    public function enrichAddsSelectSingleWithStringItemsAndCustomDefault(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $tca['aTable']['columns']['select'] = [
+            'label' => 'aLabel',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        'label' => 'someLabel',
+                        'value' => 'someValue',
+                    ],
+                    [
+                        'label' => 'defaultLabel',
+                        'value' => 'defaultValue',
+                    ],
+                ],
+                'default' => 'defaultValue',
+            ],
+        ];
+        $subject = new DefaultTcaSchema($this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedColumn = new Column(
+            '`select`',
+            Type::getType('string'),
+            [
+                'notnull' => true,
+                'default' => 'defaultValue',
                 'length' => 255,
             ]
         );

@@ -978,7 +978,7 @@ class DefaultTcaSchema
                                         Types::INTEGER,
                                         [
                                             'notnull' => true,
-                                            'default' => 0,
+                                            'default' => (int)($fieldType->getDefaultValue() ?? 0),
                                             'unsigned' => $itemsAreAllPositive,
                                         ]
                                     );
@@ -990,7 +990,7 @@ class DefaultTcaSchema
                                     Types::STRING,
                                     [
                                         'notnull' => true,
-                                        'default' => '',
+                                        'default' => (string)($fieldType->getDefaultValue() ?? ''),
                                         'length' => $dbFieldLength > 0 ? $dbFieldLength : 255,
                                     ]
                                 );
@@ -1011,7 +1011,7 @@ class DefaultTcaSchema
                                         //        nullable, but could have a look at it later again when a value upgrade
                                         //        for such cases is in place that updates existing null fields to empty string.
                                         'notnull' => false,
-                                        'default' => '',
+                                        'default' => (string)($fieldType->getDefaultValue() ?? ''),
                                         'length' => $dbFieldLength > 0 ? $dbFieldLength : 255,
                                     ]
                                 );
@@ -1025,7 +1025,7 @@ class DefaultTcaSchema
                                 Types::STRING,
                                 [
                                     'notnull' => true,
-                                    'default' => '',
+                                    'default' => (string)($fieldType->getDefaultValue() ?? ''),
                                     'length' => $dbFieldLength,
                                 ]
                             );

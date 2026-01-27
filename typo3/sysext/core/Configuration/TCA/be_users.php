@@ -260,6 +260,7 @@ return [
                 'renderType' => 'selectSingle',
                 'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSystemLanguagesForBackend',
                 'default' => 'default',
+                'dbFieldLength' => 10,
                 'items' => [
                 ],
                 'itemGroups' => [

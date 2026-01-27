@@ -11,8 +11,6 @@ CREATE TABLE be_sessions (
 );
 
 CREATE TABLE be_users (
-	# @todo: Analyzer does not handle default yet.
-	lang varchar(10) DEFAULT 'default' NOT NULL,
 	# No TCA column defined since it is a general storage blob
 	uc mediumblob,
 	# No TCA column defined
