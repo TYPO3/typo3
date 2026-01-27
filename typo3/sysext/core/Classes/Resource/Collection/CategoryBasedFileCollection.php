@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Collection;
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -47,13 +48,22 @@ class CategoryBasedFileCollection extends AbstractFileCollection
     protected $itemTableName = 'sys_category';
 
     /**
-     * Populates the content-entries of the collection
+     * Populates the content-entries of the collection.
+     *
+     * Respects the current language context by filtering sys_file_metadata records
+     * based on their sys_language_uid. Records are prioritized by language specificity
+     * (current language > default language > all languages) to ensure translated
+     * metadata takes precedence over default language metadata.
      */
     public function loadContents()
     {
+        $context = GeneralUtility::makeInstance(Context::class);
+        $languageAspect = $context->getAspect('language');
+        $languageIds = array_unique([-1, 0, $languageAspect->getContentId()]);
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_category');
         $queryBuilder->getRestrictions()->removeAll();
-        $statement = $queryBuilder->select('sys_file_metadata.file')
+        $statement = $queryBuilder->select('sys_file_metadata.file', 'sys_file_metadata.sys_language_uid')
             ->from('sys_category')
             ->join(
                 'sys_category',
@@ -81,12 +91,25 @@ class CategoryBasedFileCollection extends AbstractFileCollection
                 $queryBuilder->expr()->eq(
                     'sys_category_record_mm.tablenames',
                     $queryBuilder->createNamedParameter('sys_file_metadata')
+                ),
+                $queryBuilder->expr()->in(
+                    'sys_file_metadata.sys_language_uid',
+                    $queryBuilder->createNamedParameter($languageIds, Connection::PARAM_INT_ARRAY)
                 )
             )
+            ->orderBy('sys_file_metadata.sys_language_uid', 'DESC')
             ->executeQuery();
+
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $addedFiles = [];
         while ($record = $statement->fetchAssociative()) {
-            $this->add($resourceFactory->getFileObject((int)$record['file']));
+            $fileId = (int)$record['file'];
+            // Skip if file was already added (from a more specific language record)
+            if (isset($addedFiles[$fileId])) {
+                continue;
+            }
+            $addedFiles[$fileId] = true;
+            $this->add($resourceFactory->getFileObject($fileId));
         }
     }
 }
