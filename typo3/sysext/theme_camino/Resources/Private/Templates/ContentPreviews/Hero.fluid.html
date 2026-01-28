@@ -62,9 +62,9 @@
 </f:section>
 
 <f:section name="Media-Image">
-    <f:if condition="{image.uid}">
+    <f:if condition="{image}">
         <f:image
-            src="{image.uid}" treatIdAsReference="1"
+            image="{image}"
             height="64"
             class="camino_preview_image {f:if(condition: image.properties.hidden, then: 'camino_preview_image--hidden')}"
             cropVariant="{cropVariant}"
