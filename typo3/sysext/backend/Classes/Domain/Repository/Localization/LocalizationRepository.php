@@ -18,155 +18,52 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Domain\Repository\Localization;
 
 use Doctrine\DBAL\Result;
-use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\RawRecord;
+use TYPO3\CMS\Core\Domain\RecordFactory;
+use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
- * Repository for record localizations
+ * Repository for having low-level logic fetching "record translation" dealing with
+ * for the purpose of the TYPO3 Backend!
  *
- * @internal
+ * A few rules for this class:
+ * - It only returns translated records (having l10n_parent / l10n_source > 0)
+ * - It only deals with RawRecord (not other Records) as we are usually interested in the raw values
+ * - It has no dependency on $GLOBALS['BE_USER']
  */
+#[Autoconfigure(public: true)]
 class LocalizationRepository
 {
-    /**
-     * @var TranslationConfigurationProvider
-     */
-    protected $translationConfigurationProvider;
-
-    public function __construct(?TranslationConfigurationProvider $translationConfigurationProvider = null)
-    {
-        $this->translationConfigurationProvider = $translationConfigurationProvider ?? GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-    }
-
-    /**
-     * Fetch the language from which the records in a certain language were initially localized
-     */
-    public function fetchOriginLanguage(int $pageId, int $localizedLanguage): array
-    {
-        $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
-
-        $queryBuilder->select('tt_content_orig.sys_language_uid')
-            ->from('tt_content')
-            ->join(
-                'tt_content',
-                'tt_content',
-                'tt_content_orig',
-                $queryBuilder->expr()->eq(
-                    'tt_content.l10n_source',
-                    $queryBuilder->quoteIdentifier('tt_content_orig.uid')
-                )
-            )
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'tt_content.pid',
-                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'tt_content.sys_language_uid',
-                    $queryBuilder->createNamedParameter($localizedLanguage, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->neq(
-                    'tt_content_orig.sys_language_uid',
-                    $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
-                )
-            )
-            ->groupBy('tt_content_orig.sys_language_uid');
-        $this->getAllowedLanguageConstraintsForBackendUser($pageId, $queryBuilder, $this->getBackendUser(), 'tt_content_orig');
-
-        return $queryBuilder->executeQuery()->fetchAssociative() ?: [];
-    }
-
-    /**
-     * Returns number of localized records in given page and language
-     * Records which were added to the language directly (not through translation) are not counted.
-     */
-    public function getLocalizedRecordCount(int $pageId, int $languageId): int
-    {
-        $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
-
-        $rowCount = $queryBuilder->count('uid')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->neq(
-                    'l10n_source',
-                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                )
-            )
-            ->executeQuery()
-            ->fetchOne();
-
-        return (int)$rowCount;
-    }
-
-    /**
-     * Fetch all available languages
-     */
-    public function fetchAvailableLanguages(int $pageId, int $languageId): array
-    {
-        $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
-        $queryBuilder->select('sys_language_uid')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->neq(
-                    'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
-                )
-            )
-            ->groupBy('sys_language_uid');
-
-        $this->getAllowedLanguageConstraintsForBackendUser($pageId, $queryBuilder, $this->getBackendUser());
-        $languages = $queryBuilder->executeQuery()->fetchAllAssociative();
-        return $languages ?: [];
-    }
-
-    /**
-     * Builds additional query constraints to exclude hidden languages and
-     * limit a backend user to its allowed languages (unless the user is an admin)
-     */
-    protected function getAllowedLanguageConstraintsForBackendUser(int $pageId, QueryBuilder $queryBuilder, BackendUserAuthentication $backendUser, string $alias = ''): void
-    {
-        if ($backendUser->isAdmin()) {
-            return;
-        }
-        // This always includes default language
-        $allowedLanguages = $this->translationConfigurationProvider->getSystemLanguages($pageId);
-        $queryBuilder->andWhere(
-            $queryBuilder->expr()->in(
-                ($alias === '' ? '' : ($alias . '.')) . 'sys_language_uid',
-                $queryBuilder->createNamedParameter(array_keys($allowedLanguages), Connection::PARAM_INT_ARRAY)
-            )
-        );
-    }
+    public function __construct(
+        protected ?TcaSchemaFactory $tcaSchemaFactory,
+        protected ?RecordFactory $recordFactory,
+    ) {}
 
     /**
      * Get records for copy process
-     *
-     * @return Result
      */
-    public function getRecordsToCopyDatabaseResult(int $pageId, int $destLanguageId, int $languageId, string $fields = '*')
+    public function getRecordsToCopyDatabaseResult(int $pageId, int $destLanguageId, int $languageId, int $workspaceId = 0): Result
     {
         $originalUids = [];
 
         // Get original uid of existing elements triggered language
-        $queryBuilder = $this->getQueryBuilderWithWorkspaceRestriction('tt_content');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(new DeletedRestriction())
+            ->add(new WorkspaceRestriction($workspaceId));
 
         $originalUidsStatement = $queryBuilder
             ->select('l10n_source')
@@ -187,7 +84,8 @@ class LocalizationRepository
             $originalUids[] = (int)$origUid;
         }
 
-        $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
+        $queryBuilder
+            ->select('*')
             ->from('tt_content')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -201,7 +99,7 @@ class LocalizationRepository
             )
             ->orderBy('sorting');
 
-        if (!empty($originalUids)) {
+        if ($originalUids !== []) {
             $queryBuilder
                 ->andWhere(
                     $queryBuilder->expr()->notIn(
@@ -214,23 +112,285 @@ class LocalizationRepository
         return $queryBuilder->executeQuery();
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
+    /**
+     * Fetches the translated version of a record.
+     * It automatically applies workspace overlay and filters out DELETE_PLACEHOLDER records.
+     *
+     * @param string|TcaSchema $tableOrSchema The table name or TCA schema
+     * @param int|array|RecordInterface $recordOrUid The record UID, or the full record (array or RecordInterface).
+     *        When passing the full record, the pid is automatically used for filtering.
+     * @param int|LanguageAspect $language The target language ID or LanguageAspect
+     * @return RawRecord|null The translated record or null if not found
+     */
+    public function getRecordTranslation(
+        string|TcaSchema $tableOrSchema,
+        int|array|RecordInterface $recordOrUid,
+        int|LanguageAspect $language,
+        int $workspaceId = 0,
+        bool $includeDeletedRecords = false,
+    ): ?RawRecord {
+        // Resolve table name and schema
+        if ($tableOrSchema instanceof TcaSchema) {
+            $table = $tableOrSchema->getName();
+            $schema = $tableOrSchema;
+        } else {
+            $table = $tableOrSchema;
+            if (!$this->tcaSchemaFactory->has($table)) {
+                return null;
+            }
+            $schema = $this->tcaSchemaFactory->get($table);
+        }
+
+        if (!$schema->isLanguageAware()) {
+            return null;
+        }
+
+        // Resolve uid and optional pid from record
+        if ($recordOrUid instanceof RecordInterface) {
+            $uid = $recordOrUid->getUid();
+            $pid = $recordOrUid->getPid();
+        } elseif (is_array($recordOrUid)) {
+            $uid = (int)($recordOrUid['uid'] ?? 0);
+            $pid = isset($recordOrUid['pid']) ? (int)$recordOrUid['pid'] : null;
+        } else {
+            $uid = $recordOrUid;
+            $pid = null;
+        }
+
+        if ($uid === 0) {
+            return null;
+        }
+
+        // Resolve language ID
+        $languageId = $language instanceof LanguageAspect ? $language->getId() : $language;
+
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+
+        if (!$includeDeletedRecords) {
+            $queryBuilder->getRestrictions()->add(new DeletedRestriction());
+        }
+        $queryBuilder->getRestrictions()->add(new WorkspaceRestriction($workspaceId));
+
+        // Prefer translationSourceField (l10n_source) over transOrigPointerField (l10n_parent)
+        $parentPointerField = $languageCapability->hasTranslationSourceField()
+            ? $languageCapability->getTranslationSourceField()->getName()
+            : $languageCapability->getTranslationOriginPointerField()->getName();
+
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $parentPointerField,
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    $languageCapability->getLanguageField()->getName(),
+                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
+                )
+            )
+            ->setMaxResults(1);
+
+        // When a full record is provided, automatically filter by pid
+        if ($pid !== null) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT))
+            );
+        }
+
+        $row = $queryBuilder->executeQuery()->fetchAssociative();
+
+        if ($row === false) {
+            return null;
+        }
+
+        // Apply workspace overlay
+        BackendUtility::workspaceOL($table, $row, $workspaceId);
+        if (!is_array($row) || VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER) {
+            return null;
+        }
+
+        return $this->recordFactory->createRawRecord($table, $row);
     }
 
     /**
-     * Get a QueryBuilder for the given table with preconfigured restrictions
-     * to not retrieve workspace placeholders or deleted records.
+     * Fetches all translations of a record.
+     * It automatically applies workspace overlay and filters out DELETE_PLACEHOLDER records.
+     *
+     * @param string|TcaSchema $tableOrSchema The table name or TCA schema
+     * @param int|array|RecordInterface $recordOrUid The record UID, or the full record (array or RecordInterface).
+     *        When passing the full record, the pid is automatically used for filtering.
+     * @param array<int> $limitToLanguageIds Optional list of language IDs to filter by
+     * @return RawRecord[] Array of translated records indexed by language ID
      */
-    protected function getQueryBuilderWithWorkspaceRestriction(string $tableName): QueryBuilder
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+    public function getRecordTranslations(
+        string|TcaSchema $tableOrSchema,
+        int|array|RecordInterface $recordOrUid,
+        array $limitToLanguageIds = [],
+        int $workspaceId = 0,
+        bool $includeDeletedRecords = false,
+    ): array {
+        // Resolve table name and schema
+        if ($tableOrSchema instanceof TcaSchema) {
+            $table = $tableOrSchema->getName();
+            $schema = $tableOrSchema;
+        } else {
+            $table = $tableOrSchema;
+            if (!$this->tcaSchemaFactory->has($table)) {
+                return [];
+            }
+            $schema = $this->tcaSchemaFactory->get($table);
+        }
 
-        return $queryBuilder;
+        if (!$schema->isLanguageAware()) {
+            return [];
+        }
+
+        // Resolve uid and optional pid from record
+        if ($recordOrUid instanceof RecordInterface) {
+            $uid = $recordOrUid->getUid();
+            $pid = $recordOrUid->getPid();
+        } elseif (is_array($recordOrUid)) {
+            $uid = (int)($recordOrUid['uid'] ?? 0);
+            $pid = isset($recordOrUid['pid']) ? (int)$recordOrUid['pid'] : null;
+        } else {
+            $uid = $recordOrUid;
+            $pid = null;
+        }
+
+        if ($uid === 0) {
+            return [];
+        }
+
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageFieldName = $languageCapability->getLanguageField()->getName();
+
+        // Prefer translationSourceField (l10n_source) over transOrigPointerField (l10n_parent)
+        $parentPointerField = $languageCapability->hasTranslationSourceField()
+            ? $languageCapability->getTranslationSourceField()->getName()
+            : $languageCapability->getTranslationOriginPointerField()->getName();
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+
+        if (!$includeDeletedRecords) {
+            $queryBuilder->getRestrictions()->add(new DeletedRestriction());
+        }
+        $queryBuilder->getRestrictions()->add(new WorkspaceRestriction($workspaceId));
+
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $parentPointerField,
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->gt(
+                    $languageFieldName,
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                )
+            );
+
+        // When a full record is provided, automatically filter by pid
+        if ($pid !== null) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT))
+            );
+        }
+
+        if ($limitToLanguageIds !== []) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    $languageFieldName,
+                    $queryBuilder->createNamedParameter($limitToLanguageIds, Connection::PARAM_INT_ARRAY)
+                )
+            );
+        }
+
+        $result = $queryBuilder->executeQuery();
+
+        $records = [];
+        while ($row = $result->fetchAssociative()) {
+            BackendUtility::workspaceOL($table, $row, $workspaceId);
+            if (is_array($row) && VersionState::tryFrom($row['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER) {
+                $records[(int)$row[$languageFieldName]] = $this->recordFactory->createRawRecord($table, $row);
+            }
+        }
+
+        return $records;
+    }
+
+    /**
+     * Fetches all existing page translations for a given page.
+     * It automatically applies workspace overlay and filters out DELETE_PLACEHOLDER records.
+     *
+     * @param int $pageUid The UID of the default language page
+     * @param array<int> $limitToLanguageIds Optional list of language IDs to filter by
+     * @return RawRecord[] Array of page translation records indexed by language ID
+     */
+    public function getPageTranslations(
+        int $pageUid,
+        array $limitToLanguageIds = [],
+        int $workspaceId = 0,
+        bool $includeDeletedRecords = false,
+    ): array {
+        if ($pageUid === 0) {
+            return [];
+        }
+
+        if (!$this->tcaSchemaFactory->has('pages')) {
+            return [];
+        }
+
+        $schema = $this->tcaSchemaFactory->get('pages');
+        if (!$schema->isLanguageAware()) {
+            return [];
+        }
+
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageFieldName = $languageCapability->getLanguageField()->getName();
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        if (!$includeDeletedRecords) {
+            $queryBuilder->getRestrictions()->add(new DeletedRestriction());
+        }
+        $queryBuilder->getRestrictions()->add(new WorkspaceRestriction($workspaceId));
+
+        $queryBuilder
+            ->select('*')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $languageCapability->getTranslationOriginPointerField()->getName(),
+                    $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
+                )
+            );
+
+        if ($limitToLanguageIds !== []) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    $languageFieldName,
+                    $queryBuilder->createNamedParameter($limitToLanguageIds, Connection::PARAM_INT_ARRAY)
+                )
+            );
+        }
+
+        $result = $queryBuilder->executeQuery();
+
+        $records = [];
+        while ($row = $result->fetchAssociative()) {
+            BackendUtility::workspaceOL('pages', $row, $workspaceId);
+            if (is_array($row) && VersionState::tryFrom($row['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER) {
+                $records[(int)$row[$languageFieldName]] = $this->recordFactory->createRawRecord('pages', $row);
+            }
+        }
+
+        return $records;
     }
 }

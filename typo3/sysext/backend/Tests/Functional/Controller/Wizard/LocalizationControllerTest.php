@@ -343,9 +343,9 @@ final class LocalizationControllerTest extends FunctionalTestCase
     #[Test]
     public function getContentRespectsWorkspaceForDeletedRecords(): void
     {
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-        $backendUser->workspace = 1;
+        $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
+        $GLOBALS['BE_USER']->workspace = 1;
 
         // Delete record 2 in workspace
         $actionService = new ActionService();

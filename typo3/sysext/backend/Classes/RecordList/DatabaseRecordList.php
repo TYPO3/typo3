@@ -24,6 +24,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Context\PageContext;
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadPresetsAreDisplayedEvent;
@@ -427,6 +428,7 @@ class DatabaseRecordList
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly RecordFactory $recordFactory,
         protected readonly ComponentFactory $componentFactory,
+        protected readonly LocalizationRepository $localizationRepository,
     ) {
         $this->calcPerms = new Permission();
     }
@@ -1887,11 +1889,14 @@ class DatabaseRecordList
                     $record->getUid(),
                     LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
                     (string)$this->getReferenceCount($table, $record->getUid())
-                ) . BackendUtility::translationCount(
-                    $table,
-                    $record->getUid(),
-                    LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
                 );
+                $translationCount = count($this->localizationRepository->getRecordTranslations($table, $record->getUid()));
+                if ($translationCount > 0) {
+                    $refCountMsg .= LF . sprintf(
+                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'),
+                        $translationCount
+                    );
+                }
 
                 $warningText = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:' . $actionName . 'Warning'), trim($recordInfo)) . $refCountMsg;
                 $icon = 'actions-edit-' . $actionName;

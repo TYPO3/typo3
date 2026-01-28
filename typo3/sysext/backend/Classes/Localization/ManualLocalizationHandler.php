@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Localization;
 
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Localization\Finisher\NoopLocalizationFinisher;
 use TYPO3\CMS\Backend\Localization\Finisher\RedirectLocalizationFinisher;
 use TYPO3\CMS\Backend\Localization\Finisher\ReloadLocalizationFinisher;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -38,7 +40,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ManualLocalizationHandler implements LocalizationHandlerInterface
 {
     public function __construct(
-        protected readonly UriBuilder $uriBuilder
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly LocalizationRepository $localizationRepository,
     ) {}
 
     public function getIdentifier(): string
@@ -103,8 +106,8 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
         }
 
         // Check if translation already exists
-        $existingTranslations = BackendUtility::getRecordLocalization($type, $uid, $targetLanguage);
-        if (!empty($existingTranslations)) {
+        $existingTranslation = $this->localizationRepository->getRecordTranslation($type, $uid, $targetLanguage);
+        if ($existingTranslation !== null) {
             // Translation already exists, return success with no-op finisher
             return LocalizationResult::success(
                 finisher: (new NoopLocalizationFinisher())
@@ -132,8 +135,8 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
 
         // If no UID was found in copy mapping, try to find the translated record
         if ($newUid === null) {
-            $translations = BackendUtility::getRecordLocalization($type, $uid, $targetLanguage);
-            $newUid = !empty($translations) ? (int)$translations[0]['uid'] : null;
+            $translation = $this->localizationRepository->getRecordTranslation($type, $uid, $targetLanguage);
+            $newUid = $translation?->getUid();
         }
 
         // Generate redirect finisher or use reload finisher as fallback
@@ -161,9 +164,8 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
         $cmd = [];
 
         // Step 1: Check if page translation already exists
-        $pageTranslations = BackendUtility::getRecordLocalization('pages', $pageUid, $targetLanguage);
-
-        if (empty($pageTranslations)) {
+        $pageTranslation = $this->localizationRepository->getPageTranslations($pageUid, [$targetLanguage], $this->getBackendUser()->workspace);
+        if ($pageTranslation === []) {
             // Page translation doesn't exist - create it
             // Always use 'localize' command for pages (even for copy mode)
             // as we need to create a proper page translation/overlay
@@ -270,5 +272,10 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

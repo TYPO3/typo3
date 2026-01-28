@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -60,6 +61,7 @@ readonly class PageInformationController
         protected ComponentFactory $componentFactory,
         protected BackendLayoutView $backendLayoutView,
         protected ConnectionPool $connectionPool,
+        protected LocalizationRepository $localizationRepository,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -230,9 +232,9 @@ readonly class PageInformationController
             ->fetchAssociative();
         BackendUtility::workspaceOL('pages', $row);
         if ($language > 0) {
-            $localizedParentPageRecord = BackendUtility::getRecordLocalization('pages', $row['uid'], $language);
-            if (!empty($localizedParentPageRecord)) {
-                $row = $localizedParentPageRecord[0];
+            $localizedPageRecord = $this->localizationRepository->getPageTranslations($row['uid'], [$language], $this->getBackendUser()->workspace);
+            if ($localizedPageRecord !== []) {
+                $row = reset($localizedPageRecord)->toArray();
                 $row['uid'] = $row[$translationOriginFieldName];
             }
         }
@@ -429,14 +431,14 @@ readonly class PageInformationController
             $count = 0;
             while ($row = $result->fetchAssociative()) {
                 BackendUtility::workspaceOL('pages', $row);
-                $uid = $row['uid'];
+                $uid = (int)$row['uid'];
                 if (is_array($row)) {
                     if ($language > 0) {
-                        $localizedParentPageRecord = BackendUtility::getRecordLocalization('pages', $row['uid'], $language);
-                        if (empty($localizedParentPageRecord)) {
+                        $localizedPageRecord = $this->localizationRepository->getPageTranslations($uid, [$language], $this->getBackendUser()->workspace);
+                        if ($localizedPageRecord === []) {
                             continue;
                         }
-                        $row = $localizedParentPageRecord[0];
+                        $row = reset($localizedPageRecord)->toArray();
                     }
                     $count++;
                     $row['treeIcons'] = $iconPrefix

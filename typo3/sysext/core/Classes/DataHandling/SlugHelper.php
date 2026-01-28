@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling;
 
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
@@ -585,14 +586,16 @@ class SlugHelper
                 // no site or requested language available - move on
             }
 
+            /** @var LocalizationRepository $localizationRepository */
+            $localizationRepository = GeneralUtility::makeInstance(LocalizationRepository::class);
             foreach ($languageIds as $languageId) {
-                $localizedParentPageRecord = BackendUtility::getRecordLocalization(
-                    'pages',
+                $localizedParentPageRecord = $localizationRepository->getPageTranslations(
                     $parentPageRecord['uid'],
-                    $languageId
+                    [$languageId],
+                    $this->workspaceId
                 );
-                if (!empty($localizedParentPageRecord)) {
-                    $parentPageRecord = reset($localizedParentPageRecord);
+                if ($localizedParentPageRecord !== []) {
+                    $parentPageRecord = reset($localizedParentPageRecord)->toArray();
                     break;
                 }
             }

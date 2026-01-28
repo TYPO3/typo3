@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\View;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Context\PageContext;
 use TYPO3\CMS\Backend\Domain\Model\Language\PageLanguageInformation;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\ContentFetcher;
 use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
@@ -103,15 +103,12 @@ class PageLayoutContext
         $this->siteLanguage = $siteLanguage;
         $languageId = $siteLanguage->getLanguageId();
         if ($languageId > 0) {
-            $pageLocalizationRecord = BackendUtility::getRecordLocalization(
-                'pages',
-                $this->getPageId(),
-                $languageId
-            );
-            $pageLocalizationRecord = reset($pageLocalizationRecord);
-            if (!empty($pageLocalizationRecord)) {
-                BackendUtility::workspaceOL('pages', $pageLocalizationRecord);
-                $this->localizedPageRecord = $pageLocalizationRecord ?: null;
+            $pageLocalizationRecord = GeneralUtility::makeInstance(LocalizationRepository::class)
+                ->getPageTranslations($this->getPageId(), [$languageId], $this->getBackendUser()->workspace);
+            if ($pageLocalizationRecord !== []) {
+                // @todo: lets move to Record API soon
+                $pageLocalizationRecord = reset($pageLocalizationRecord);
+                $this->localizedPageRecord = $pageLocalizationRecord->toArray(true) ?: null;
             }
         }
     }

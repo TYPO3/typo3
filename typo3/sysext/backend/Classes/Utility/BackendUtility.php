@@ -282,11 +282,16 @@ class BackendUtility
     /**
      * Fetches the localization for a given record.
      *
+     * Note: For new code, consider using LocalizationRepository::getRecordTranslation()
+     * instead, which provides dependency injection support, better type safety, and returns
+     * a RawRecord object instead of an array.
+     *
      * @param string $table Table name, available in Schema API
      * @param int $uid The uid of the record
      * @param int $language The id of the site language
      * @param string $andWhereClause Optional additional WHERE clause (default: '')
      * @return mixed Multidimensional array with selected records, empty array if none exists and FALSE if table is not localizable
+     * @see \TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository::getRecordTranslation()
      */
     public static function getRecordLocalization(string $table, $uid, $language, $andWhereClause = '')
     {
@@ -498,6 +503,7 @@ class BackendUtility
      *
      * @param int[] $limitToLanguageIds
      * @internal
+     * use LocalizationRepository->getPageTranslations() in the future.
      */
     public static function getExistingPageTranslations(int $pageUid, array $limitToLanguageIds = []): array
     {
@@ -2582,10 +2588,14 @@ class BackendUtility
     /**
      * Counting translations of records
      *
+     * Note: Consider using LocalizationRepository::getRecordTranslations() with count() instead,
+     * which provides a DI-friendly alternative with workspace overlay support.
+     *
      * @param string $table Table name
      * @param string|int $ref Reference: the record's uid
      * @param string $msg Message with %s, eg. "This record has %s translation(s) which will be deleted, too!
      * @return string Output string (or int count value if no msg string specified)
+     * @see \TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository::getRecordTranslations()
      */
     public static function translationCount(string $table, $ref, $msg = ''): string
     {

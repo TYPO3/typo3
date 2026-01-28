@@ -25,6 +25,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Uid\Uuid;
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -407,6 +408,7 @@ class DataHandler
         private readonly OpcodeCacheService $opcodeCacheService,
         private readonly FlashMessageService $flashMessageService,
         private readonly LogEntryRepository $logEntryRepository,
+        private readonly LocalizationRepository $localizationRepository,
     ) {}
 
     /**
@@ -4183,12 +4185,9 @@ class DataHandler
 
         // Get available page translations
         if ($table !== 'pages') {
-            $availableLanguages = [];
-            $pageTranslations = BackendUtility::getExistingPageTranslations($destPid < 0 ? $tscPID : $destPid);
+            $pageTranslations = $this->localizationRepository->getPageTranslations($destPid < 0 ? $tscPID : $destPid, [], $this->BE_USER->workspace);
             // Build array with language ids for comparison
-            foreach ($pageTranslations as $translation) {
-                $availableLanguages[] = $translation[$languageField];
-            }
+            $availableLanguages = array_keys($pageTranslations);
             // Filter records
             foreach ($l10nRecords as $key => $record) {
                 // Remove record when target page in not available in the corresponding language

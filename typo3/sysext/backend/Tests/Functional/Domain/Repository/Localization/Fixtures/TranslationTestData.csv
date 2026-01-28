@@ -1,0 +1,29 @@
+"sys_workspace"
+,"uid","pid","title"
+,1,0,"Test Workspace"
+"pages"
+,"uid","pid","sorting","deleted","title","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state"
+,1001,0,256,0,"Default Page",0,0,0,0,0
+,1002,0,256,0,"[DE] Default Page",1,1001,0,0,0
+,1003,0,256,0,"[FR] Default Page",2,1001,0,0,0
+,1004,0,512,0,"Page with deleted translation",0,0,0,0,0
+,1005,0,512,1,"[DE] Deleted translation",1,1004,0,0,0
+,1006,0,768,0,"Page with workspace translation",0,0,0,0,0
+,1007,0,768,0,"[DE] Live translation",1,1006,0,0,0
+,1008,0,768,0,"[DE] Workspace translation (modified)",1,1006,1,1007,0
+,1009,0,1024,0,"Page with workspace deleted translation",0,0,0,0,0
+,1010,0,1024,0,"[DE] Translation to be deleted in WS",1,1009,0,0,0
+,1011,0,1024,0,"[DE] Delete placeholder",1,1009,1,1010,2
+"tt_content"
+,"uid","pid","sorting","deleted","header","sys_language_uid","l18n_parent","l10n_source","t3ver_wsid","t3ver_oid","t3ver_state"
+,1100,1001,256,0,"Content Default",0,0,0,0,0,0
+,1101,1001,256,0,"[DE] Content Default",1,1100,1100,0,0,0
+,1102,1001,256,0,"[FR] Content Default",2,1100,1100,0,0,0
+,1200,1004,256,0,"Content with deleted translation",0,0,0,0,0,0
+,1201,1004,256,1,"[DE] Deleted content translation",1,1200,1200,0,0,0
+,1300,1006,256,0,"Content with workspace translation",0,0,0,0,0,0
+,1301,1006,256,0,"[DE] Live content translation",1,1300,1300,0,0,0
+,1302,1006,256,0,"[DE] Workspace content translation",1,1300,1300,1,1301,0
+,1400,1009,256,0,"Content with WS deleted translation",0,0,0,0,0,0
+,1401,1009,256,0,"[DE] Translation to be deleted",1,1400,1400,0,0,0
+,1402,1009,256,0,"[DE] Delete placeholder content",1,1400,1400,1,1401,2

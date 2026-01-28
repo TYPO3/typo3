@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Domain\Model\OpenDocument;
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Domain\Repository\OpenDocumentRepository;
 use TYPO3\CMS\Backend\Dto\FormElementData;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
@@ -194,6 +195,7 @@ class EditDocumentController
         private readonly NodeFactory $nodeFactory,
         protected TcaSchemaFactory $tcaSchemaFactory,
         protected readonly OpenDocumentRepository $openDocumentRepository,
+        protected readonly LocalizationRepository $localizationRepository,
     ) {}
 
     /**
@@ -1245,13 +1247,18 @@ class EditDocumentController
             ),
             (string)$numberOfReferences
         );
-        $translationCountMessage = BackendUtility::translationCount(
+
+        $translations = $this->localizationRepository->getRecordTranslations(
             $this->firstEl->table,
-            (string)(int)$this->firstEl->uid,
-            $this->getLanguageService()->sL(
-                'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'
-            )
+            (int)$this->firstEl->uid,
         );
+        $count = count($translations);
+        $translationCountMessage = '';
+        if ($count > 0) {
+            $translationCountMessage = sprintf($this->getLanguageService()->sL(
+                'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'
+            ), $count);
+        }
 
         $deleteUrl = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
             'cmd' => [
@@ -1812,30 +1819,15 @@ class EditDocumentController
             static fn(array $language): bool => (int)$language['uid'] !== -1
         );
         if ($table !== 'pages' && $id > 0) {
-            $schema = $this->tcaSchemaFactory->get('pages');
-            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-            $languageField = $languageCapability->getLanguageField()->getName();
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-            $statement = $queryBuilder->select('uid', $languageField)
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $languageCapability->getTranslationOriginPointerField()->getName(),
-                        $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
-                    )
-                )
-                ->executeQuery();
+            $translatedPages = $this->localizationRepository->getPageTranslations($pageId, [], $this->getBackendUser()->workspace);
             $availableLanguages = [];
             if ($allLanguages[0] ?? false) {
                 $availableLanguages = [
                     0 => $allLanguages[0],
                 ];
             }
-            while ($row = $statement->fetchAssociative()) {
-                $languageId = (int)$row[$languageField];
+            foreach ($translatedPages as $translatedPage) {
+                $languageId = $translatedPage->get('sys_language_uid');
                 if (isset($allLanguages[$languageId])) {
                     $availableLanguages[$languageId] = $allLanguages[$languageId];
                 }

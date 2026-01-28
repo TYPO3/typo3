@@ -19,13 +19,13 @@ namespace TYPO3\CMS\Backend\Preview;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record;
-use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -289,10 +289,8 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         }
 
         // record is localized - fetch the shortcut record translation, if available
-        $shortcutRecordLocalization = BackendUtility::getRecordLocalization($tableName, $shortcutRecord->getUid(), $targetLanguage);
-        return is_array($shortcutRecordLocalization) && !empty($shortcutRecordLocalization)
-            ? GeneralUtility::makeInstance(RecordFactory::class)->createRawRecord($tableName, $shortcutRecordLocalization[0])
-            : $shortcutRecord->getRawRecord();
+        $shortcutRecordLocalization = GeneralUtility::makeInstance(LocalizationRepository::class)->getRecordTranslation($tableName, $shortcutRecord, $targetLanguage);
+        return $shortcutRecordLocalization ?? $shortcutRecord->getRawRecord();
     }
 
     protected function getProcessedValue(GridColumnItem $item, string|array $fieldList, array &$info): void

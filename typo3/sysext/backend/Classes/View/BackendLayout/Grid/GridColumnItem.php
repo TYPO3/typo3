@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -149,11 +150,14 @@ class GridColumnItem extends AbstractGridObject
             $this->record->getUid(),
             LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
             (string)$this->getReferenceCount($this->record->getUid())
-        ) . BackendUtility::translationCount(
-            $this->table,
-            (string)$this->record->getUid(),
-            LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
         );
+        $translationCount = count(GeneralUtility::makeInstance(LocalizationRepository::class)->getRecordTranslations($this->table, $this->record->getUid()));
+        if ($translationCount > 0) {
+            $refCountMsg .= LF . sprintf(
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'),
+                $translationCount
+            );
+        }
 
         return sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteWarning'), trim($recordInfo)) . $refCountMsg;
     }

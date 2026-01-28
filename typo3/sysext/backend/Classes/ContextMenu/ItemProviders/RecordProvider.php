@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -149,7 +150,8 @@ class RecordProvider extends AbstractProvider
 
     public function __construct(
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly UriBuilder $uriBuilder
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly LocalizationRepository $localizationRepository,
     ) {
         parent::__construct();
     }
@@ -390,11 +392,13 @@ class RecordProvider extends AbstractProvider
                 $this->record['uid'],
                 LF . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord')
             );
-            $confirmMessage .= BackendUtility::translationCount(
-                $this->table,
-                $this->record['uid'],
-                LF . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
-            );
+            $translationCount = count($this->localizationRepository->getRecordTranslations($this->table, $this->record['uid']));
+            if ($translationCount > 0) {
+                $confirmMessage .= LF . sprintf(
+                    $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'),
+                    $translationCount
+                );
+            }
 
             $attributes += [
                 'data-title' => $title,

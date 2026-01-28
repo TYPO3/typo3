@@ -32,6 +32,7 @@ use TYPO3\CMS\Backend\Localization\LocalizationMode;
 use TYPO3\CMS\Backend\Localization\LocalizationResult;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -159,7 +160,7 @@ readonly class LocalizationController
         }
 
         // Get page record for permission checks
-        $pageRecord = BackendUtility::readPageAccess($page, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
+        $pageRecord = BackendUtility::readPageAccess($page, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
         if (!$pageRecord) {
             return new JsonResponse(null, 403);
         }
@@ -240,7 +241,7 @@ readonly class LocalizationController
         }
 
         // Get page record for permission checks
-        $pageRecord = BackendUtility::readPageAccess($page, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
+        $pageRecord = BackendUtility::readPageAccess($page, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
         if (!$pageRecord) {
             return new JsonResponse(null, 403);
         }
@@ -285,7 +286,7 @@ readonly class LocalizationController
         }
 
         // Get page record for permission checks
-        $pageRecord = BackendUtility::readPageAccess($page, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
+        $pageRecord = BackendUtility::readPageAccess($page, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
         if (!$pageRecord) {
             return new JsonResponse(null, 403);
         }
@@ -301,9 +302,8 @@ readonly class LocalizationController
             // Check each system language to see if a translation exists
             foreach (array_keys($systemLanguages) as $languageUid) {
                 if ($languageUid > 0) { // Skip default language (0) and "All languages" (-1)
-                    // getRecordLocalization returns an array with one record if translation exists, empty array otherwise
-                    $translation = BackendUtility::getRecordLocalization($recordType, $recordUid, (int)$languageUid);
-                    if (is_array($translation) && $translation !== []) {
+                    $translation = $this->localizationRepository->getRecordTranslation($recordType, $record, (int)$languageUid);
+                    if ($translation !== null) {
                         $existingLanguageUids[] = $languageUid;
                     }
                 }
@@ -351,12 +351,12 @@ readonly class LocalizationController
             $pageUid,
             $targetLanguage,
             $sourceLanguage,
-            '*'
+            $this->getBackendUser()->workspace
         );
 
         $flatRecords = [];
         while ($row = $result->fetchAssociative()) {
-            BackendUtility::workspaceOL('tt_content', $row, -99, true);
+            BackendUtility::workspaceOL('tt_content', $row, $this->getBackendUser()->workspace, true);
             if (!$row || VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER) {
                 continue;
             }
@@ -568,8 +568,8 @@ readonly class LocalizationController
     private function filterSourceLanguagesForPage(int $pageUid, int $targetLanguage, array $availableLanguages): array
     {
         // Check if a page translation exists in the target language
-        $pageTranslation = BackendUtility::getRecordLocalization('pages', $pageUid, $targetLanguage);
-        if (!is_array($pageTranslation) || $pageTranslation === []) {
+        $pageTranslation = $this->localizationRepository->getPageTranslations($pageUid, [$targetLanguage], $this->getBackendUser()->workspace);
+        if ($pageTranslation === []) {
             return $availableLanguages;
         }
 
@@ -613,7 +613,7 @@ readonly class LocalizationController
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $GLOBALS['BE_USER']->workspace));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
         $result = $queryBuilder
             ->select($translationSourceField)
@@ -715,7 +715,7 @@ readonly class LocalizationController
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $GLOBALS['BE_USER']->workspace));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
         // Select only the translation pointer field to determine the mode
         $result = $queryBuilder
@@ -757,6 +757,11 @@ readonly class LocalizationController
         // If any connected record exists, return TRANSLATE mode
         // Otherwise, all records are free mode, return COPY
         return $hasConnected ? LocalizationMode::TRANSLATE : LocalizationMode::COPY;
+    }
+
+    private function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     private function getLanguageService(): LanguageService
