@@ -508,6 +508,29 @@ final class TranslationDomainMapperTest extends FunctionalTestCase
     }
 
     /**
+     * Test that files with the same name in different custom directories get unique domain names.
+     */
+    #[Test]
+    public function customDirectoryFilesWithSameNameGenerateUniqueDomains(): void
+    {
+        $subject = $this->get(TranslationDomainMapper::class);
+
+        $fooDomain = $subject->mapFileNameToDomain(
+            'EXT:test_translation_domain/ContentBlocks/ContentElements/foo/language/labels.xlf'
+        );
+        $barDomain = $subject->mapFileNameToDomain(
+            'EXT:test_translation_domain/ContentBlocks/ContentElements/bar/language/labels.xlf'
+        );
+
+        // Most importantly: they must be different
+        self::assertNotSame($fooDomain, $barDomain, 'Files with the same name in different directories must have unique domains');
+
+        // Both should include the full path in the domain
+        self::assertSame('test_translation_domain.content_blocks.content_elements.foo.language.labels', $fooDomain);
+        self::assertSame('test_translation_domain.content_blocks.content_elements.bar.language.labels', $barDomain);
+    }
+
+    /**
      * Test that priority system works across different scenarios
      */
     #[Test]

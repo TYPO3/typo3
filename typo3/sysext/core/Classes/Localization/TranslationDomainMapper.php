@@ -253,12 +253,16 @@ readonly class TranslationDomainMapper
      * - "Resources/Private/Language/locallang_toolbar.xlf" -> "toolbar"
      * - "Resources/Private/Language/Form/locallang_tabs.xlf" -> "form.tabs"
      * - "Configuration/Sets/Felogin/labels.xlf" -> "sets.felogin"
+     * - "EXT:example/ContentBlocks/ContentElements/simple-relation/language/labels.xlf" -> "content_blocks.content_elements.simple_relation.language.labels"
      */
     protected function transformFilePathToResource(string $filePath, string $extensionKey): string
     {
+        $isExtensionPath = false;
+
         // Remove EXT:extensionKey/ prefix
         $prefix = 'EXT:' . $extensionKey . '/';
         if (str_starts_with($filePath, $prefix)) {
+            $isExtensionPath = true;
             $filePath = substr($filePath, strlen($prefix));
         }
 
@@ -276,12 +280,16 @@ readonly class TranslationDomainMapper
             return 'sets.' . $setName;
         }
 
-        // Handle standard language files: Resources/Private/Language/...
+        // Clean standard language files: Resources/Private/Language/...
         if (str_starts_with($filePath, 'Resources/Private/Language/')) {
-            $relativePath = substr($filePath, strlen('Resources/Private/Language/'));
+            $isExtensionPath = true;
+            $filePath = substr($filePath, strlen('Resources/Private/Language/'));
+        }
 
+        // Handle extension paths
+        if ($isExtensionPath) {
             // Split into directory and filename
-            $pathParts = explode('/', $relativePath);
+            $pathParts = explode('/', $filePath);
             $fileName = array_pop($pathParts);
 
             // Convert directories from UpperCamelCase to snake_case
