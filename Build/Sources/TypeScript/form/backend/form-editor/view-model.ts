@@ -15,7 +15,7 @@
  * Module: @typo3/form/backend/form-editor/view-model
  */
 import $ from 'jquery';
-import * as TreeComponent from '@typo3/form/backend/form-editor/tree-component';
+import * as TreeComponent from '@typo3/form/backend/form-editor/tree-component-adapter';
 import * as ModalsComponent from '@typo3/form/backend/form-editor/modals-component';
 import * as InspectorComponent from '@typo3/form/backend/form-editor/inspector-component';
 import * as StageComponent from '@typo3/form/backend/form-editor/stage-component';
@@ -545,6 +545,8 @@ export function setStructureRootElementTitle(title?: string): void {
 }
 
 export function addStructureValidationResults(): void {
+  getStructure().clearAllValidationErrors();
+
   getStructure().getAllTreeNodes()
     .removeClass(getHelper().getDomElementClassName('validationErrors'))
     .removeClass(getHelper().getDomElementClassName('validationChildHasErrors'));
@@ -568,14 +570,28 @@ export function addStructureValidationResults(): void {
       if (i === 0) {
         setElementValidationErrorClass(getStructureRootContainer());
       } else {
-        let validationElement = getStructure().getTreeNode(validationResults[i].formElementIdentifierPath);
+        const identifierPath = validationResults[i].formElementIdentifierPath;
+
+        // Use new tree component method to set validation error
+        getStructure().setNodeValidationError(identifierPath, true);
+
+        // Also set legacy CSS class for backward compatibility
+        const validationElement = getStructure().getTreeNode(identifierPath);
         setElementValidationErrorClass(validationElement);
 
-        const pathParts = validationResults[i].formElementIdentifierPath.split('/');
+        // Mark all parent nodes as having a child with error
+        const pathParts = identifierPath.split('/');
         while (pathParts.pop()) {
-          validationElement = getStructure().getTreeNode(pathParts.join('/'));
-          if ('object' === $.type(validationElement)) {
-            setElementValidationErrorClass(validationElement, 'validationChildHasErrors');
+          const parentPath = pathParts.join('/');
+          if (parentPath) {
+            // Use new tree component method
+            getStructure().setNodeChildHasError(parentPath, true);
+
+            // Also set legacy CSS class for backward compatibility
+            const parentElement = getStructure().getTreeNode(parentPath);
+            if ('object' === $.type(parentElement)) {
+              setElementValidationErrorClass(parentElement, 'validationChildHasErrors');
+            }
           }
         }
       }

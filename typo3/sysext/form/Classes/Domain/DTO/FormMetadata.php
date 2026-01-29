@@ -38,6 +38,7 @@ final readonly class FormMetadata
         public bool $duplicateIdentifier = false,
         public ?int $fileUid = null,
         public int $referenceCount = 0,
+        public ?string $editUrl = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -55,6 +56,7 @@ final readonly class FormMetadata
             duplicateIdentifier: $data['duplicateIdentifier'] ?? false,
             fileUid: $data['fileUid'] ?? null,
             referenceCount: $data['referenceCount'] ?? 0,
+            editUrl: $data['editUrl'] ?? null,
         );
     }
 
@@ -99,6 +101,7 @@ final readonly class FormMetadata
             'duplicateIdentifier' => $this->duplicateIdentifier,
             'fileUid' => $this->fileUid,
             'referenceCount' => $this->referenceCount,
+            'editUrl' => $this->editUrl,
         ];
     }
 
@@ -117,6 +120,7 @@ final readonly class FormMetadata
             duplicateIdentifier: $changes['duplicateIdentifier'] ?? $this->duplicateIdentifier,
             fileUid: $changes['fileUid'] ?? $this->fileUid,
             referenceCount: $changes['referenceCount'] ?? $this->referenceCount,
+            editUrl: $changes['editUrl'] ?? $this->editUrl,
         );
     }
 
@@ -158,5 +162,10 @@ final readonly class FormMetadata
     public function withInvalid(bool $invalid): self
     {
         return $this->with(['invalid' => $invalid]);
+    }
+
+    public function withEditUrl(string $editUrl): self
+    {
+        return $this->with(['editUrl' => $editUrl]);
     }
 }

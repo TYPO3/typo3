@@ -24,6 +24,7 @@ import 'bootstrap'; // for data-bs-toggle="dropdown"
 @customElement('typo3-backend-tree-toolbar')
 export class TreeToolbar extends LitElement {
   @property({ type: Tree }) tree: Tree = null;
+  @property({ type: Boolean }) showRefresh: boolean = true;
   protected settings = {
     searchInput: '.search-input',
     filterTimeout: 450
@@ -66,6 +67,7 @@ export class TreeToolbar extends LitElement {
               <typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
+              ${this.showRefresh ? html`
               <li>
                 <button class="dropdown-item" @click="${() => this.refreshTree()}">
                   <span class="dropdown-item-columns">
@@ -78,6 +80,7 @@ export class TreeToolbar extends LitElement {
                   </span>
                 </button>
               </li>
+              ` : ''}
               <li>
                 <button class="dropdown-item" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
                   <span class="dropdown-item-columns">

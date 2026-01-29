@@ -15,22 +15,6 @@
         </div>
         <div class="formeditor-module hidden" data-identifier="moduleWrapper">
             <f:format.raw>{formEditorTemplates}</f:format.raw>
-            <section class="formeditor-sidebar formeditor-sidebar-navigation" data-identifier="structureSection">
-                <div class="formeditor-sidebar-toggle">
-                    <button
-                        type="button"
-                        class="btn btn-default btn-sm"
-                        title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_structure')}"
-                        data-identifier="formeditorStructureToggle"
-                        >
-                        <span class="caret"></span>
-                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.button_toggle_structure')}</span>
-                    </button>
-                </div>
-                <div class="formeditor-sidebar-inner">
-                    <f:render section="ElementSidebarTree" />
-                </div>
-            </section>
             <section class="formeditor-stage" data-identifier="stageContainer">
                 <div class="formeditor-stage-inner" data-identifier="stageContainerInner">
                     <f:render section="Header" />
@@ -55,16 +39,6 @@
             </section>
         </div>
     </div>
-</f:section>
-
-<f:section name="ElementSidebarTree">
-    <div class="formeditor-tree-root" data-identifier="treeRootContainer">
-        <span class="formeditor-tree-icon">
-            <core:icon identifier="content-form" />
-        </span>
-        <span class="formeditor-tree-title" data-identifier="treeRootElement"></span>
-    </div>
-    <div class="formeditor-tree" data-identifier="structure-element"></div>
 </f:section>
 
 <f:section name="Header">

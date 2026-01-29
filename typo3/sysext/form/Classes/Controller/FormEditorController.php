@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -90,8 +91,11 @@ class FormEditorController extends ActionController
      *
      * @throws PersistenceManagerException
      */
-    protected function indexAction(string $formPersistenceIdentifier, ?string $prototypeName = null): ResponseInterface
+    protected function indexAction(string $formPersistenceIdentifier = '', ?string $prototypeName = null): ResponseInterface
     {
+        if ($formPersistenceIdentifier === '') {
+            return new RedirectResponse((string)$this->coreUriBuilder->buildUriFromRoute('form_manager'));
+        }
         $formSettings = $this->getFormSettings();
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Read "%s" is not allowed', $formPersistenceIdentifier), 1614500662);

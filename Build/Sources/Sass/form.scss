@@ -203,10 +203,6 @@
         }
     }
 
-    .formeditor-stage {
-        margin-inline-start: var(--formeditor-module-sidebar-collapsed);
-    }
-
     .formeditor-sidebar-navigation:not(.formeditor-sidebar-expanded) {
         position: absolute;
         width: var(--formeditor-module-sidebar-collapsed);

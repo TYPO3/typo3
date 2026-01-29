@@ -80,14 +80,16 @@
                                             {form.name}
                                         </f:then>
                                         <f:else>
-                                            <f:link.action
-                                                controller="FormEditor"
-                                                action="index"
-                                                arguments="{formPersistenceIdentifier: form.persistenceIdentifier}"
-                                                title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}"
-                                            >
-                                                {form.name}
-                                            </f:link.action>
+                                            <f:if condition="{form.editUrl}">
+                                                <f:then>
+                                                    <a href="{form.editUrl}" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}">
+                                                        {form.name}
+                                                    </a>
+                                                </f:then>
+                                                <f:else>
+                                                    {form.name}
+                                                </f:else>
+                                            </f:if>
                                         </f:else>
                                     </f:if>
                                 </td>
@@ -125,15 +127,16 @@
                                                 <span class="btn btn-default disabled" aria-hidden="true"><core:icon identifier="empty-empty" /></span>
                                             </f:then>
                                             <f:else>
-                                                <f:link.action
-                                                    controller="FormEditor"
-                                                    action="index"
-                                                    arguments="{formPersistenceIdentifier: form.persistenceIdentifier}"
-                                                    title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}"
-                                                    class="btn btn-default form-record-open"
-                                                >
-                                                    <core:icon identifier="actions-open" />
-                                                </f:link.action>
+                                                <f:if condition="{form.editUrl}">
+                                                    <f:then>
+                                                        <a href="{form.editUrl}" class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.edit_form')}">
+                                                            <core:icon identifier="actions-open" />
+                                                        </a>
+                                                    </f:then>
+                                                    <f:else>
+                                                        <span class="btn btn-default disabled" aria-hidden="true"><core:icon identifier="empty-empty" /></span>
+                                                    </f:else>
+                                                </f:if>
                                             </f:else>
                                         </f:if>
                                         <f:if condition="{form.removable} && ({form.invalid} == '0') && ({form.referenceCount} == '0')">

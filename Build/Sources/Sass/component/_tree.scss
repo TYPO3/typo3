@@ -14,6 +14,11 @@
     --tree-node-selected-color: var(--typo3-component-active-color);
     --tree-node-selected-bg: var(--typo3-component-active-bg);
     --tree-node-selected-border-color: var(--typo3-component-active-border-color);
+    // node validation error
+    --tree-node-validation-error-color: var(--typo3-text-color-danger);
+    --tree-node-validation-error-hover-color: var(--typo3-text-color-danger);
+    --tree-node-validation-error-focus-color: var(--typo3-text-color-danger);
+    --tree-node-validation-error-selected-color: var(--typo3-text-color-danger);
     // special
     --tree-info-bg: var(--typo3-surface-info);
     --tree-info-color: var(--typo3-surface-info-text);
@@ -40,7 +45,8 @@
 // Components
 //
 typo3-backend-navigation-component-filestoragetree,
-typo3-backend-navigation-component-pagetree {
+typo3-backend-navigation-component-pagetree,
+typo3-backend-navigation-component-formeditortree {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -185,6 +191,13 @@ typo3-backend-navigation-component-pagetree {
                 bottom: 0;
             }
         }
+    }
+
+    &-validation-error {
+        --tree-node-color: var(--tree-node-validation-error-color);
+        --tree-node-hover-color: var(--tree-node-validation-error-hover-color);
+        --tree-node-focus-color: var(--tree-node-validation-error-focus-color);
+        --tree-node-selected-color: var(--tree-node-validation-error-selected-color);
     }
 }
 

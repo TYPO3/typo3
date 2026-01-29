@@ -36,7 +36,6 @@
 .formeditor-sidebar-navigation .formeditor-sidebar-inner{border:none}
 .formeditor-sidebar-navigation .formeditor-sidebar-toggle{display:block;order:2}
 .formeditor-sidebar-navigation .formeditor-sidebar-toggle .btn{border-inline-end-width:1px;border-inline-start-width:1px}
-.formeditor-stage{-webkit-margin-start:var(--formeditor-module-sidebar-collapsed);margin-inline-start:var(--formeditor-module-sidebar-collapsed)}
 .formeditor-sidebar-navigation:not(.formeditor-sidebar-expanded){box-shadow:none;position:absolute;width:var(--formeditor-module-sidebar-collapsed)}
 .formeditor-sidebar-navigation:not(.formeditor-sidebar-expanded) .formeditor-sidebar-toggle{--typo3-caret-rotation:calc(-90deg*var(--typo3-position-modifier))}
 .formeditor-sidebar-navigation:not(.formeditor-sidebar-expanded) .formeditor-sidebar-toggle .btn{border-inline-start-width:0}

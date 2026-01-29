@@ -164,7 +164,7 @@ class FormManagerController extends ActionController
         $form = $event->form;
         $response = [
             'status' => 'success',
-            'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor'),
+            'url' => (string)$this->coreUriBuilder->buildUriFromRoute('form_editor', ['formPersistenceIdentifier' => $formPersistenceIdentifier]),
         ];
         $form = ArrayUtility::stripTagsFromValuesRecursive($form);
         try {
@@ -222,7 +222,7 @@ class FormManagerController extends ActionController
         $formToDuplicate = $event->form;
         $response = [
             'status' => 'success',
-            'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor'),
+            'url' => (string)$this->coreUriBuilder->buildUriFromRoute('form_editor', ['formPersistenceIdentifier' => $formPersistenceIdentifier]),
         ];
         $formToDuplicate = ArrayUtility::stripTagsFromValuesRecursive($formToDuplicate);
         try {
@@ -428,6 +428,15 @@ class FormManagerController extends ActionController
 
             if ($referenceCount > 0) {
                 $formMetadata = $formMetadata->withReferenceCount($referenceCount);
+            }
+
+            // Add edit URL to form metadata
+            if ($formMetadata->persistenceIdentifier && !$formMetadata->invalid && !$formMetadata->readOnly) {
+                $editUrl = (string)$this->coreUriBuilder->buildUriFromRoute(
+                    'form_editor',
+                    ['formPersistenceIdentifier' => $formMetadata->persistenceIdentifier]
+                );
+                $formMetadata = $formMetadata->withEditUrl($editUrl);
             }
 
             if ($searchCriteria->searchTerm === ''
