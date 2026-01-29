@@ -826,6 +826,37 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function copyTranslatedPageToSiteWithLimitedLanguages(): void
+    {
+        // Configure a second site with only English (no DA or DE languages)
+        $this->writeSiteConfiguration(
+            'second',
+            $this->buildSiteConfiguration(50, '/second/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        parent::copyTranslatedPageToSiteWithLimitedLanguages();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyTranslatedPageToSiteWithLimitedLanguages.csv');
+    }
+
+    #[Test]
+    public function copyTranslatedPageToSiteWithPartialLanguages(): void
+    {
+        // Configure a second site with English and Danish only (no German)
+        $this->writeSiteConfiguration(
+            'second',
+            $this->buildSiteConfiguration(50, '/second/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('DA', '/da/', ['EN']),
+            ]
+        );
+        parent::copyTranslatedPageToSiteWithPartialLanguages();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyTranslatedPageToSiteWithPartialLanguages.csv');
+    }
+
+    #[Test]
     public function changePageSorting(): void
     {
         parent::changePageSorting();

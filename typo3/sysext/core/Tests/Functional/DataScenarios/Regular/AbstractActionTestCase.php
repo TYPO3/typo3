@@ -469,6 +469,28 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedPageId2'] = $copiedTableIds2[self::TABLE_Page][self::VALUE_PageIdParent];
     }
 
+    /**
+     * Copy a page with translations to a site that has fewer languages configured.
+     * Page translations for languages not available in the target site should be skipped.
+     */
+    public function copyTranslatedPageToSiteWithLimitedLanguages(): void
+    {
+        // Copy page 89 (which has translations in DA=1 and DE=2) to page 51 (second site with only English)
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, 51);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    /**
+     * Copy a page with translations to a site that has partially matching languages.
+     * Only page translations for languages available in the target site should be copied.
+     */
+    public function copyTranslatedPageToSiteWithPartialLanguages(): void
+    {
+        // Copy page 89 (which has translations in DA=1 and DE=2) to page 51 (second site with EN and DA only)
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, 51);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
     public function changePageSorting(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);

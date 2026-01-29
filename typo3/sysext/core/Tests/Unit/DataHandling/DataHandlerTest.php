@@ -46,6 +46,7 @@ use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action;
 use TYPO3\CMS\Core\SysLog\Error;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
@@ -88,6 +89,7 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            $this->createMock(SiteFinder::class),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
         $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
@@ -248,6 +250,7 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            $this->createMock(SiteFinder::class),
         ];
         $subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments, '');
         $inputValue = 'myPassword';
@@ -833,6 +836,7 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            $this->createMock(SiteFinder::class),
         );
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = StringUtility::getUniqueId('details');
@@ -859,6 +863,7 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            $this->createMock(SiteFinder::class),
         );
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
@@ -1282,6 +1287,7 @@ final class DataHandlerTest extends UnitTestCase
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
             $this->createMock(FlashMessageService::class),
+            $this->createMock(SiteFinder::class),
         );
         self::assertEquals($expected, $subject->clearPrefixFromValue('testTable', $input));
     }
