@@ -1770,4 +1770,25 @@ return [
             'Deprecation-108761-BackendUtilityTSconfigMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-108810-BackendUtilityLocalizationMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getExistingPageTranslations' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-108810-BackendUtilityLocalizationMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::translationCount' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-108810-BackendUtilityLocalizationMethods.rst',
+        ],
+    ],
 ];

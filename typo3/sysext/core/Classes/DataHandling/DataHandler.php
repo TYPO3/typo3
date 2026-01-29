@@ -3965,9 +3965,9 @@ class DataHandler
                 }
 
                 // Since select or group fields can reference many records, check whether there's already a localization.
-                $recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
+                $recordLocalization = $this->localizationRepository->getRecordTranslation($item['table'], (int)$item['id'], $language, $this->BE_USER->workspace);
                 if ($recordLocalization) {
-                    $dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
+                    $dbAnalysis->itemArray[$index]['id'] = $recordLocalization->getUid();
                 } elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize-' . $language) === false) {
                     $dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
                 }
@@ -4793,19 +4793,19 @@ class DataHandler
             return false;
         }
 
-        $recordLocalizations = BackendUtility::getRecordLocalization($table, $uid, $language, 'AND pid=' . (int)$row['pid']);
+        $recordLocalization = $this->localizationRepository->getRecordTranslation($table, $row, $language, $this->BE_USER->workspace);
 
-        if (!empty($recordLocalizations)) {
+        if ($recordLocalization) {
             $this->log(
                 $table,
                 $uid,
                 SystemLogDatabaseAction::LOCALIZE,
                 null,
                 SystemLogErrorClassification::USER_ERROR,
-                'Localization failed: There already are localizations ({localizations}) for language {language} of the "{table}" record {uid}',
+                'Localization failed: The record {uid} of type "{table}" has already been localized in language {language} (Localized UID: {localizedUid})',
                 null,
                 [
-                    'localizations' => implode(', ', array_column($recordLocalizations, 'uid')),
+                    'localizedUid' => $recordLocalization->getUid(),
                     'language' => $language,
                     'table' => $table,
                     'uid' => $uid,
@@ -4957,6 +4957,17 @@ class DataHandler
     protected function inlineLocalizeSynchronize($table, $id, array $command): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
+        $field = $command['field'] ?? '';
+        $language = (int)($command['language'] ?? 0);
+        $action = $command['action'] ?? '';
+        $ids = $command['ids'] ?? [];
+        if (!$field || !($action === 'localize' || $action === 'synchronize') && empty($ids) || !$schema->hasField($field)) {
+            return;
+        }
+        if ($language <= 0) {
+            return;
+        }
+
         $parentRecord = BackendUtility::getRecord($table, $id);
         BackendUtility::workspaceOL($table, $parentRecord, $this->BE_USER->workspace);
 
@@ -4965,28 +4976,17 @@ class DataHandler
 
         // In case the parent record is the default language record, fetch the localization
         if (empty($parentRecord[$languageCapability->getLanguageField()->getName()])) {
-            // Fetch the live record
-            // @todo: this needs to be revisited, as getRecordLocalization() does a WorkspaceRestriction
-            //        based on $GLOBALS[BE_USER], which could differ from the $this->BE_USER->workspace value
-            //        and that's why we have this check here and do the overlay manually there (which is a bad idea)
-            $whereClause = $schema->hasCapability(TcaSchemaCapability::Workspace) ? 'AND t3ver_oid=0' : '';
-            $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], $whereClause);
-            if (empty($parentRecordLocalization)) {
+            // We need the live UID inside $id but we still process overlay for the current selected workspace
+            $parentRecordLocalization = $this->localizationRepository->getRecordTranslation($table, $parentRecord, $language, $this->BE_USER->workspace);
+            if (!$parentRecordLocalization) {
                 $this->log($table, $id, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::MESSAGE, 'Localization for parent record {table}:{uid} cannot be fetched', null, ['table' => $table, 'uid' => (int)$id], $table === 'pages' ? $id : $parentRecord['pid']);
                 return;
             }
-            $parentRecord = $parentRecordLocalization[0];
+            $parentRecord = $parentRecordLocalization->toArray(true);
             $id = $parentRecord['uid'];
-            // Process overlay for current selected workspace
-            BackendUtility::workspaceOL($table, $parentRecord, $this->BE_USER->workspace);
         }
 
-        $field = $command['field'] ?? '';
-        $language = $command['language'] ?? 0;
-        $action = $command['action'] ?? '';
-        $ids = $command['ids'] ?? [];
-
-        if (!$field || !($action === 'localize' || $action === 'synchronize') && empty($ids) || !$schema->hasField($field)) {
+        if (!$parentRecord) {
             return;
         }
 
@@ -4998,7 +4998,7 @@ class DataHandler
         $transOrigPointer = (int)$parentRecord[$languageCapability->getTranslationOriginPointerField()->getName()];
         $childTransOrigPointerField = $foreignTableSchema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
 
-        if (!$parentRecord || !is_array($parentRecord) || $language <= 0 || !$transOrigPointer) {
+        if (!$transOrigPointer) {
             return;
         }
 
@@ -5109,8 +5109,10 @@ class DataHandler
     {
         $row = BackendUtility::getRecord($table, $uid);
         BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
-        $localizations = BackendUtility::getRecordLocalization($table, $uid, $language, 'pid=' . (int)$row['pid']);
-        return !empty($localizations);
+        if (!$row) {
+            return false;
+        }
+        return $this->localizationRepository->getRecordTranslation($table, $row, $language, $this->BE_USER->workspace) !== null;
     }
 
     /**
@@ -8033,9 +8035,9 @@ class DataHandler
         // If there is a "before" record in source language, see if it is localized to target language.
         // If so, return uid of target language record.
         if ($previousRow = $queryBuilder->executeQuery()->fetchAssociative()) {
-            $previousLocalizedRecord = BackendUtility::getRecordLocalization($table, $previousRow['uid'], $targetLanguage, 'pid=' . (int)$pid);
-            if (isset($previousLocalizedRecord[0]) && is_array($previousLocalizedRecord[0])) {
-                $previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
+            $previousLocalizedRecord = $this->localizationRepository->getRecordTranslation($table, ['uid' => $previousRow['uid'], 'pid' => $pid], $targetLanguage, $this->BE_USER->workspace);
+            if ($previousLocalizedRecord) {
+                $previousLocalizedRecordUid = $previousLocalizedRecord->getUid();
             }
         }
 

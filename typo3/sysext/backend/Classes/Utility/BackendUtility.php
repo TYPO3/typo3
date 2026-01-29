@@ -292,9 +292,11 @@ class BackendUtility
      * @param string $andWhereClause Optional additional WHERE clause (default: '')
      * @return mixed Multidimensional array with selected records, empty array if none exists and FALSE if table is not localizable
      * @see \TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository::getRecordTranslation()
+     * @deprecated will be removed in TYPO3 v15.0 - use LocalizationRepository->getRecordTranslation() instead.
      */
     public static function getRecordLocalization(string $table, $uid, $language, $andWhereClause = '')
     {
+        trigger_error('BackendUtility::getRecordLocalization() will be removed in TYPO3 v15.0, use LocalizationRepository::getRecordTranslation() instead.', E_USER_DEPRECATED);
         $recordLocalization = false;
         $schema = static::getTcaSchema($table);
         if ($schema !== null && $schema->hasCapability(TcaSchemaCapability::Language)) {
@@ -503,10 +505,11 @@ class BackendUtility
      *
      * @param int[] $limitToLanguageIds
      * @internal
-     * use LocalizationRepository->getPageTranslations() in the future.
+     * @deprecated will be removed in TYPO3 v15.0 - use LocalizationRepository->getPageTranslations() instead.
      */
     public static function getExistingPageTranslations(int $pageUid, array $limitToLanguageIds = []): array
     {
+        trigger_error('BackendUtility::translationCount() will be removed in TYPO3 v15.0, use LocalizationRepository::getPageTranslations() instead.', E_USER_DEPRECATED);
         if ($pageUid === 0 || !($schema = self::getTcaSchema('pages'))?->hasCapability(TcaSchemaCapability::Language)) {
             return [];
         }
@@ -2596,9 +2599,11 @@ class BackendUtility
      * @param string $msg Message with %s, eg. "This record has %s translation(s) which will be deleted, too!
      * @return string Output string (or int count value if no msg string specified)
      * @see \TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository::getRecordTranslations()
+     * @deprecated will be removed in TYPO3 v15.0 - use LocalizationRepository->getRecordTranslations() instead.
      */
     public static function translationCount(string $table, $ref, $msg = ''): string
     {
+        trigger_error('BackendUtility::translationCount() will be removed in TYPO3 v15.0, use LocalizationRepository::getRecordTranslations() instead.', E_USER_DEPRECATED);
         $schema = self::getTcaSchema($table);
         $count = 0;
         if ($schema?->hasCapability(TcaSchemaCapability::Language)) {
