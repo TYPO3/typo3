@@ -102,6 +102,7 @@ use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
+use TYPO3\CMS\Frontend\Typolink\LinkResultService;
 use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
@@ -404,6 +405,7 @@ class ContentObjectRenderer
         private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly FlexFormTools $flexFormTools,
         private readonly LinkFactory $linkFactory,
+        private readonly LinkResultService $linkResultService,
         // TimeTracker is a stateful singleton, we would usually not inject this. This
         // instance however is set up early in middlewares and carried around with its accumulating
         // state throughout entire FE rendering. As such, it is ok to get it injected here,
@@ -436,7 +438,9 @@ class ContentObjectRenderer
             'parentRecordNumber' => $this->parentRecordNumber,
             'parentRecord' => $this->parentRecord,
             'checkPid_badDoktypeList' => $this->checkPid_badDoktypeList,
-            'lastTypoLinkResult' => $this->lastTypoLinkResult,
+            'lastTypoLinkResult' => $this->lastTypoLinkResult !== null
+                ? $this->linkResultService->getState($this->lastTypoLinkResult)
+                : null,
             'doConvertToUserIntObject' => $this->doConvertToUserIntObject,
             'userObjectType' => $this->userObjectType,
             'stopRendering' => $this->stopRendering,
@@ -467,7 +471,9 @@ class ContentObjectRenderer
         $this->parentRecordNumber = $state['parentRecordNumber'];
         $this->parentRecord = $state['parentRecord'];
         $this->checkPid_badDoktypeList = $state['checkPid_badDoktypeList'];
-        $this->lastTypoLinkResult = $state['lastTypoLinkResult'];
+        $this->lastTypoLinkResult = isset($state['lastTypoLinkResult'])
+            ? $this->linkResultService->fromState($state['lastTypoLinkResult'])
+            : null;
         $this->doConvertToUserIntObject = $state['doConvertToUserIntObject'];
         $this->userObjectType = $state['userObjectType'];
         $this->stopRendering = $state['stopRendering'];

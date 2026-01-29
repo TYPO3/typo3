@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class represents a created link to a resource (page, email etc.), coming from LinkService.
  * After it was executed by the LinkBuilders (mostly in Frontend) after it is called from Typolink.
  */
-class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
+class LinkResult implements LinkResultInterface, LinkResultStateInterface, \Stringable, \JsonSerializable
 {
     public const STRING_CAST_HTML = 1;
     public const STRING_CAST_JSON = 2;
@@ -51,6 +51,25 @@ class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
             $target->linkConfiguration = $other->getLinkConfiguration();
         }
         return $target->withFlags($flags);
+    }
+
+    /**
+     * Create a LinkResult instance from a state array.
+     *
+     * @internal
+     */
+    public static function fromState(array $state): self
+    {
+        $target = new self(
+            $state['type'] ?? LinkService::TYPE_UNKNOWN,
+            $state['url'] ?? ''
+        );
+        $target->target = $state['target'] ?? '';
+        $target->additionalAttributes = $state['additionalAttributes'] ?? [];
+        $target->linkText = $state['linkText'] ?? null;
+        $target->linkConfiguration = $state['linkConfiguration'] ?? [];
+        $target->flags = $state['flags'] ?? self::STRING_CAST_HTML;
+        return $target;
     }
 
     public function __construct(string $type, string $url)
@@ -227,6 +246,35 @@ class LinkResult implements LinkResultInterface, \Stringable, \JsonSerializable
             'title' => $this->getAttribute('title') ?: null,
             'linkText' => $this->linkText ?: null,
             'additionalAttributes' => $this->filterAdditionalAttributes($this->getAttributes()),
+        ];
+    }
+
+    /**
+     * Export all properties as a scalar state array for serialization.
+     *
+     * @return array{
+     *     className: class-string<self>,
+     *     type: string,
+     *     url: string,
+     *     target: string,
+     *     additionalAttributes: array<string, string>,
+     *     linkText: ?string,
+     *     linkConfiguration: array<string, string>,
+     *     flags: int
+     * }
+     * @internal
+     */
+    public function getState(): array
+    {
+        return [
+            'className' => self::class,
+            'type' => $this->type,
+            'url' => $this->url,
+            'target' => $this->target,
+            'additionalAttributes' => $this->additionalAttributes,
+            'linkText' => $this->linkText,
+            'linkConfiguration' => $this->linkConfiguration,
+            'flags' => $this->flags,
         ];
     }
 

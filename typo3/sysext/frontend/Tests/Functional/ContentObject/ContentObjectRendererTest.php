@@ -66,6 +66,7 @@ use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -4344,6 +4345,25 @@ content="benni">',
         $subject->setRequest($this->getPreparedRequest());
         $linkResult = $subject->typoLink('', ['parameter' => 'https://example.tld', 'returnLast' => 'result']);
         self::assertInstanceOf(LinkResultInterface::class, $linkResult);
+    }
+
+    #[Test]
+    public function typolinkLinkResultStateContainsOnlyScalarValues(): void
+    {
+        $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest($this->getPreparedRequest());
+        $linkResult = $subject->typoLink('Link text', [
+            'parameter' => 'https://example.tld',
+            'ATagParams' => 'class="test-class"',
+            'title' => 'Test title',
+            'returnLast' => 'result',
+        ]);
+
+        self::assertInstanceOf(LinkResult::class, $linkResult);
+        $state = $subject->getState();
+
+        self::assertNotEmpty($state['lastTypoLinkResult']);
+        self::assertTrue(ArrayUtility::containsOnlyScalarValues($state), 'The array contains non-scalar values');
     }
 
     #[Test]
