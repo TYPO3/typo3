@@ -404,6 +404,7 @@ class DataHandler
         private readonly FlashMessageService $flashMessageService,
         private readonly LogEntryRepository $logEntryRepository,
         private readonly LocalizationRepository $localizationRepository,
+        private readonly SiteFinder $siteFinder,
     ) {}
 
     /**
@@ -4160,6 +4161,27 @@ class DataHandler
             return;
         }
 
+        // Check whether the target site has configured the language to avoid orphaned records
+        $targetPageId = $destPid < 0 ? $tscPID : $destPid;
+        try {
+            $targetSite = $this->siteFinder->getSiteByPageId($targetPageId);
+            // Get all language IDs configured in the target site (including disabled ones, as they may be re-enabled)
+            $siteLanguageIds = array_keys($targetSite->getAllLanguages());
+            foreach ($l10nRecords as $key => $record) {
+                // Remove page translation when the language is not configured in the target site
+                if (!in_array($record[$languageField], $siteLanguageIds, true)) {
+                    $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::WARNING, 'Attempt to copy translation of record {table}:{uid} into a site, but the site does not support the language {language}', null, ['table' => $table, 'uid' => $uid, 'language' => $record[$languageField]]);
+                    unset($l10nRecords[$key]);
+                }
+            }
+            if (empty($l10nRecords)) {
+                return;
+            }
+        } catch (SiteNotFoundException) {
+            // Translations are not possible in a non-site context
+            return;
+        }
+
         $localizedDestPids = [];
         // If $destPid < 0, then it is the uid of the original language record we are inserting after
         if ($destPid < 0) {
@@ -4175,17 +4197,21 @@ class DataHandler
             $uid => $overrideValues[$transOrigPointerField],
         ];
 
-        // Get available page translations
+        // For non-page records: Check if target page has translations in the respective language
         if ($table !== 'pages') {
             $pageTranslations = $this->localizationRepository->getPageTranslations($destPid < 0 ? $tscPID : $destPid, [], $this->BE_USER->workspace);
             // Build array with language ids for comparison
             $availableLanguages = array_keys($pageTranslations);
             // Filter records
             foreach ($l10nRecords as $key => $record) {
-                // Remove record when target page in not available in the corresponding language
+                // Remove record when target page is not available in the corresponding language
                 if (!in_array($record[$languageField], $availableLanguages, true)) {
+                    $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::WARNING, 'Attempt to copy translation of record {table}:{uid} into a page, but the page does not support the language {language}', null, ['table' => $table, 'uid' => $uid, 'language' => $record[$languageField]]);
                     unset($l10nRecords[$key]);
                 }
+            }
+            if (empty($l10nRecords)) {
+                return;
             }
         }
 
@@ -8109,7 +8135,7 @@ class DataHandler
             return $incomingFieldArray;
         }
         try {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
+            $site = $this->siteFinder->getSiteByPageId($pageId);
             foreach ($site->getAvailableLanguages($this->BE_USER, false, $pageId) as $languageId => $language) {
                 $incomingFieldArray[$languageFieldName] = $languageId;
                 break;
@@ -8134,13 +8160,13 @@ class DataHandler
     {
         try {
             // Try to fetch the site language from the pages' associated site
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
+            $site = $this->siteFinder->getSiteByPageId($pageId);
             return $site->getLanguageById($languageId);
         } catch (SiteNotFoundException | \InvalidArgumentException $e) {
             // In case no site language could be found, we might deal with the root node,
             // we therefore try to fetch the site language from all available sites.
             // NOTE: This has side effects, in case the SAME ID is used for different languages in different sites!
-            $sites = GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
+            $sites = $this->siteFinder->getAllSites();
             foreach ($sites as $site) {
                 try {
                     return $site->getLanguageById($languageId);

@@ -49,6 +49,7 @@ use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Security\PermissionSet\PrincipalRole;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action;
 use TYPO3\CMS\Core\SysLog\Error;
 use TYPO3\CMS\Core\SysLog\Repository\LogEntryRepository;
@@ -98,6 +99,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(FlashMessageService::class),
             new LogEntryRepository($connectionPoolMock),
             $this->createMock(LocalizationRepository::class),
+            $this->createMock(SiteFinder::class),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
         $this->subject->start([], [], new BackendUserAuthentication(), $this->createMock(ReferenceIndexUpdater::class));
@@ -270,6 +272,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(FlashMessageService::class),
             new LogEntryRepository($connectionPoolMock),
             $this->createMock(LocalizationRepository::class),
+            $this->createMock(SiteFinder::class),
         ];
         $subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments, '');
         $inputValue = 'myPassword';
@@ -1092,6 +1095,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(FlashMessageService::class),
             new LogEntryRepository($connectionPoolMock),
             $this->createMock(LocalizationRepository::class),
+            $this->createMock(SiteFinder::class),
         );
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
@@ -1125,6 +1129,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(FlashMessageService::class),
             new LogEntryRepository($connectionPoolMock),
             $this->createMock(LocalizationRepository::class),
+            $this->createMock(SiteFinder::class),
         );
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
@@ -1555,6 +1560,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(FlashMessageService::class),
             new LogEntryRepository($connectionPoolMock),
             $this->createMock(LocalizationRepository::class),
+            $this->createMock(SiteFinder::class),
         );
         self::assertEquals($expected, $subject->clearPrefixFromValue('testTable', $input));
     }
