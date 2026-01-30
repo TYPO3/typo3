@@ -1327,12 +1327,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FileInterface\:\:setMissing\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FolderInterface\:\:getRole\(\)\.$#'
 			identifier: method.notFound
 			count: 1

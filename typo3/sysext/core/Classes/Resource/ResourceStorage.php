@@ -756,7 +756,7 @@ class ResourceStorage implements ResourceStorageInterface
             $isMissing = $file->isMissing();
         }
 
-        if ($this->driver->fileExists($file->getIdentifier()) === false) {
+        if ($this->driver->fileExists($file->getIdentifier()) === false && $file instanceof File) {
             $file->setMissing(true);
             $isMissing = true;
         }
