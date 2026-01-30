@@ -11,15 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-export type HotkeyStruct = {
-  modifiers: {
-    meta: boolean,
-    ctrl: boolean,
-    shift: boolean,
-    alt: boolean,
-  },
-  key: string
-};
+import type { HotkeyStruct } from '@typo3/backend/hotkeys/hotkey-struct';
+
 export type HotkeyHandler = (e: KeyboardEvent) => void;
 export type Options = {
   scope: string,
@@ -52,12 +45,4 @@ class HotkeyStorage {
   }
 }
 
-let hotkeysStorageInstance: HotkeyStorage;
-if (!top.TYPO3.HotkeyStorage) {
-  hotkeysStorageInstance = new HotkeyStorage();
-  top.TYPO3.HotkeyStorage = hotkeysStorageInstance;
-} else {
-  hotkeysStorageInstance = top.TYPO3.HotkeyStorage;
-}
-
-export default hotkeysStorageInstance;
+export default new HotkeyStorage();

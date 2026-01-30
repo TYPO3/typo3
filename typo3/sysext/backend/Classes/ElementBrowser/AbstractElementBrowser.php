@@ -85,6 +85,7 @@ abstract class AbstractElementBrowser
         $this->view = $view;
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element-browser.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/hotkeys.js');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
         $this->initVariables($request);
