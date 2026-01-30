@@ -12,12 +12,12 @@
  */
 
 import { lll } from '@typo3/core/lit-helper';
-import Modal from '../modal';
+import Modal from '@typo3/backend/modal';
 import '@typo3/backend/element/icon-element';
-import '../live-search/element/hint';
-import '../live-search/element/result/result-pagination';
-import '../live-search/element/search-option-item';
-import '../live-search/live-search-shortcut';
+import '@typo3/backend/live-search/element/hint';
+import '@typo3/backend/live-search/element/result/result-pagination';
+import '@typo3/backend/live-search/element/search-option-item';
+import '@typo3/backend/live-search/live-search-shortcut';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DebounceEvent from '@typo3/core/event/debounce-event';
@@ -28,10 +28,6 @@ import { componentName as resultContainerComponentName, type ResultContainer } f
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import type { ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
 import type { Pagination, ResultPagination } from '@typo3/backend/live-search/element/result/result-pagination';
-
-enum Identifiers {
-  toolbarItem = '.t3js-topbar-button-search',
-}
 
 interface SearchOption {
   key: string;
@@ -57,9 +53,9 @@ export interface SelectPageEventData {
 
 
 /**
- * Module: @typo3/backend/toolbar/live-search
+ * Module: @typo3/backend/live-search/live-search
  * Global search to deal with everything in the backend that is search-related
- * @exports @typo3/backend/toolbar/live-search
+ * @exports @typo3/backend/live-search/live-search
  */
 class LiveSearch {
   private currentSearchRequest: AjaxRequest|null = null;
@@ -71,10 +67,6 @@ class LiveSearch {
   }
 
   private registerEvents(): void {
-    new RegularEvent('click', (): void => {
-      this.openSearchModal();
-    }).delegateTo(document, Identifiers.toolbarItem);
-
     new RegularEvent('typo3:live-search:trigger-open', (): void => {
       if (Modal.currentModal) {
         return;
@@ -267,12 +259,8 @@ class LiveSearch {
     searchResultContainer.loading = false;
     searchResultContainer.hasErrors = hasErrors;
 
-    this.updatePagination(response?.pagination ?? null);
-  }
-
-  private updatePagination(pagination: Pagination): void {
     const paginationElement: ResultPagination = document.querySelector('typo3-backend-live-search-result-pagination');
-    paginationElement.pagination = pagination;
+    paginationElement.pagination = response?.pagination ?? null;
     paginationElement.loading = false;
   }
 }

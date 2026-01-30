@@ -14,7 +14,7 @@
 import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
-import type { SelectPageEventData } from '@typo3/backend/toolbar/live-search';
+import type { SelectPageEventData } from '@typo3/backend/live-search/live-search';
 
 export type Pagination = {
   itemsPerPage: number,

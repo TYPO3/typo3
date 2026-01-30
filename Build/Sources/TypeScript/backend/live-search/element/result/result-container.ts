@@ -19,7 +19,7 @@ import { lll } from '@typo3/core/lit-helper';
 import { type ItemContainer } from './item/item-container';
 import { type ResultDetailContainer } from './result-detail-container';
 import type { ResultItemActionInterface, ResultItemInterface } from './item/item';
-import type { ChooseItemEventData } from '@typo3/backend/toolbar/live-search';
+import type { ChooseItemEventData } from '@typo3/backend/live-search/live-search';
 
 export interface InvokeActionEventData {
   resultItem: ResultItemInterface,
