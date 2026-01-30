@@ -128,7 +128,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
         }
         $displayComments = $moduleData->get('displayComments');
 
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
 
         // Build the constant include tree
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, new LosslessTokenizer(), $site);
@@ -244,7 +244,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             }
         }
 
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
 
         // Get current value of to-edit object path
         // Build the constant include tree

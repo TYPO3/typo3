@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\SysTemplateRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -92,5 +93,143 @@ final class SysTemplateRepositoryTest extends FunctionalTestCase
         self::assertSame(1, $result[0]['uid']);
         $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, null, 2);
         self::assertSame(2, $result[0]['uid']);
+    }
+
+    #[Test]
+    public function twoPagesTwoTemplatesOneDeleted(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesOneDeleted.csv');
+        $rootline = [
+            [
+                'uid' => 2,
+                'pid' => 1,
+                'is_siteroot' => 0,
+            ],
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'is_siteroot' => 0,
+            ],
+        ];
+
+        $sysTemplateRepository = $this->get(SysTemplateRepository::class);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline);
+        self::assertCount(1, $result);
+        self::assertSame(1, $result[0]['uid']);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, null, 2);
+        self::assertCount(1, $result);
+        self::assertSame(1, $result[0]['uid']);
+    }
+
+    #[Test]
+    public function twoPagesTwoTemplatesOneHiddenWithDefaultBackendContext(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesOneHidden.csv');
+        $rootline = [
+            [
+                'uid' => 2,
+                'pid' => 1,
+                'is_siteroot' => 0,
+            ],
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'is_siteroot' => 0,
+            ],
+        ];
+
+        $visibility = new VisibilityAspect(includeHiddenContent: true, includeScheduledRecords: true);
+        $sysTemplateRepository = $this->get(SysTemplateRepository::class);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, null, $visibility);
+        self::assertCount(2, $result);
+        self::assertSame(1, $result[0]['uid']);
+        self::assertSame(2, $result[1]['uid']);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, null, 2, $visibility);
+        self::assertCount(2, $result);
+        self::assertSame(1, $result[0]['uid']);
+        self::assertSame(2, $result[1]['uid']);
+    }
+
+    #[Test]
+    public function twoPagesTwoTemplatesOneHiddenWithVisibilityAspect(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesOneHidden.csv');
+        $rootline = [
+            [
+                'uid' => 2,
+                'pid' => 1,
+                'is_siteroot' => 0,
+            ],
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'is_siteroot' => 0,
+            ],
+        ];
+
+        $visibility = new VisibilityAspect(includeHiddenContent: false, includeScheduledRecords: false);
+        $sysTemplateRepository = $this->get(SysTemplateRepository::class);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, null, $visibility);
+        self::assertCount(1, $result);
+        self::assertSame(1, $result[0]['uid']);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, null, 2, $visibility);
+        self::assertCount(1, $result);
+        self::assertSame(1, $result[0]['uid']);
+    }
+
+    #[Test]
+    public function twoPagesTwoTemplatesOneTimedOutWithDefaultBackendContext(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesOneTimedOut.csv');
+        $rootline = [
+            [
+                'uid' => 2,
+                'pid' => 1,
+                'is_siteroot' => 0,
+            ],
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'is_siteroot' => 0,
+            ],
+        ];
+
+        $visibility = new VisibilityAspect(includeHiddenContent: true, includeScheduledRecords: true);
+        $sysTemplateRepository = $this->get(SysTemplateRepository::class);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, null, $visibility);
+        self::assertCount(2, $result);
+        self::assertSame(1, $result[0]['uid']);
+        self::assertSame(2, $result[1]['uid']);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, null, 2, $visibility);
+        self::assertCount(2, $result);
+        self::assertSame(1, $result[0]['uid']);
+        self::assertSame(2, $result[1]['uid']);
+    }
+
+    #[Test]
+    public function twoPagesTwoTemplatesOneTimedOutWithVisibilityAspect(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/twoPagesTwoTemplatesOneTimedOut.csv');
+        $rootline = [
+            [
+                'uid' => 2,
+                'pid' => 1,
+                'is_siteroot' => 0,
+            ],
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'is_siteroot' => 0,
+            ],
+        ];
+
+        $visibility = new VisibilityAspect(includeHiddenContent: false, includeScheduledRecords: false);
+        $sysTemplateRepository = $this->get(SysTemplateRepository::class);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline, null, $visibility);
+        self::assertCount(1, $result);
+        self::assertSame(1, $result[0]['uid']);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootline, null, 2, $visibility);
+        self::assertCount(1, $result);
+        self::assertSame(1, $result[0]['uid']);
     }
 }

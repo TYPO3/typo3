@@ -142,7 +142,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
         $site = $request->getAttribute('site');
         $rootLine = $this->getScopedRootline($site, $rootLine);
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $this->treeTraverser->traverse($constantIncludeTree, [$constantAstBuilderVisitor]);
@@ -238,7 +238,7 @@ class ConstantEditorController extends AbstractTemplateModuleController
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
         $site = $request->getAttribute('site');
         $rootLine = $this->getScopedRootline($site, $rootLine);
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
         $constantAstBuilderVisitor = GeneralUtility::makeInstance(IncludeTreeCommentAwareAstBuilderVisitor::class);
         $this->treeTraverser->traverse($constantIncludeTree, [$constantAstBuilderVisitor]);
