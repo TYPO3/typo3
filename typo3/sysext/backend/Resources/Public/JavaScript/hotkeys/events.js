@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import e from"@typo3/backend/hotkeys.js";import r from"@typo3/core/document-service.js";class o{constructor(){r.ready().then(()=>{e.register([e.normalizedCtrlModifierKey,"k"],t=>{t.preventDefault(),top.document.dispatchEvent(new CustomEvent("typo3:live-search:trigger-open"))},{allowOnEditables:!0})})}}var a=new o;export{a as default};
+class t extends Event{static{this.eventName="typo3:hotkey:requested"}constructor(e){super(t.eventName,{bubbles:!0,composed:!0,cancelable:!1}),this.keyboardEvent=e}}class s extends Event{static{this.eventName="typo3:hotkey:dispatched"}constructor(e){super(s.eventName,{bubbles:!1,composed:!0,cancelable:!0}),this.keyboardEvent=e}}export{s as HotkeyDispatchedEvent,t as HotkeyRequestedEvent};

@@ -11,8 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import HotkeyStorage, { type ScopedHotkeyMap, type HotkeyStruct, type Options, type HotkeySetup } from '@typo3/backend/hotkeys/hotkey-storage';
+import HotkeyStorage, { type ScopedHotkeyMap, type Options, type HotkeySetup } from '@typo3/backend/hotkeys/hotkey-storage';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { HotkeyStruct } from '@typo3/backend/hotkeys/hotkey-struct';
+import { HotkeyDispatchedEvent, HotkeyRequestedEvent } from '@typo3/backend/hotkeys/events';
 
 export enum ModifierKeys {
   META = 'meta',
@@ -70,10 +72,9 @@ class Hotkeys {
       this.scopedHotkeyMap.set(mergedConfiguration.scope, new Map());
     }
 
-    let ariaKeyShortcut = this.composeAriaKeyShortcut(hotkey);
     const hotkeyMap = this.scopedHotkeyMap.get(mergedConfiguration.scope);
-    const hotkeyStruct = this.createHotkeyStructFromTrigger(hotkey);
-    const encodedHotkeyStruct = JSON.stringify(hotkeyStruct);
+    const hotkeyStruct = HotkeyStruct.fromHotkey(hotkey);
+    const encodedHotkeyStruct = hotkeyStruct.toString();
 
     if (hotkeyMap.has(encodedHotkeyStruct)) {
       const setup = hotkeyMap.get(encodedHotkeyStruct);
@@ -87,6 +88,7 @@ class Hotkeys {
 
     if (mergedConfiguration.bindElement instanceof Element) {
       const existingAriaAttribute = mergedConfiguration.bindElement.getAttribute('aria-keyshortcuts');
+      let ariaKeyShortcut = this.composeAriaKeyShortcut(hotkey);
       if (existingAriaAttribute !== null && !existingAriaAttribute.includes(ariaKeyShortcut)) {
         // Element already has `aria-keyshortcuts`, append composed shortcut
         ariaKeyShortcut = existingAriaAttribute + ' ' + ariaKeyShortcut;
@@ -97,31 +99,39 @@ class Hotkeys {
 
   private registerEventHandler(): void {
     new RegularEvent('keydown', (e: KeyboardEvent): void => {
-      const hotkeySetup = this.findHotkeySetup(e);
-      if (hotkeySetup === null) {
-        return;
+      const hotkeyStruct = HotkeyStruct.fromEvent(e);
+      if (hotkeyStruct.hasAnyModifier()) {
+        top.document.dispatchEvent(new HotkeyRequestedEvent(e));
       }
+    }).bindTo(document);
 
-      if (e.repeat && !hotkeySetup.options.allowRepeat) {
-        return;
-      }
+    new RegularEvent(HotkeyDispatchedEvent.eventName, (e: HotkeyDispatchedEvent): void => {
+      const { keyboardEvent } = e;
+      const hotkeySetup = this.findHotkeySetup(keyboardEvent);
+      if (hotkeySetup !== null) {
+        e.preventDefault();
 
-      if (!hotkeySetup.options.allowOnEditables) {
-        const target = e.target as HTMLElement;
-        if (target.isContentEditable || (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) && !(e.target as HTMLInputElement|HTMLTextAreaElement).readOnly)) {
+        if (keyboardEvent.repeat && !hotkeySetup.options.allowRepeat) {
           return;
         }
-      }
 
-      hotkeySetup.handler(e);
+        if (!hotkeySetup.options.allowOnEditables) {
+          const target = keyboardEvent.target as HTMLElement;
+          if (target.isContentEditable || (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) && !(keyboardEvent.target as HTMLInputElement|HTMLTextAreaElement).readOnly)) {
+            return;
+          }
+        }
+
+        hotkeySetup.handler(keyboardEvent);
+      }
     }).bindTo(document);
   }
 
   private findHotkeySetup(e: KeyboardEvent): HotkeySetup|undefined {
     // We always consider the global "all" scope first to avoid overriding global hotkeys
     const scopes: string[] = [...new Set(['all', HotkeyStorage.activeScope])];
-    const hotkeyStruct = this.createHotkeyStructFromEvent(e);
-    const encodedHotkeyStruct = JSON.stringify(hotkeyStruct);
+    const hotkeyStruct = HotkeyStruct.fromEvent(e);
+    const encodedHotkeyStruct = hotkeyStruct.toString();
 
     for (const scope of scopes) {
       const hotkeyMap = this.scopedHotkeyMap.get(scope);
@@ -131,35 +141,6 @@ class Hotkeys {
     }
 
     return null;
-  }
-
-  private createHotkeyStructFromTrigger(hotkey: Hotkey): HotkeyStruct {
-    const nonModifierCodes = hotkey.filter((hotkeyPart: string) => !Object.values<string>(ModifierKeys).includes(hotkeyPart));
-    if (nonModifierCodes.length > 1) {
-      throw new Error('Cannot register hotkey with more than one non-modifier key, "' + nonModifierCodes.join('+') + '" given.');
-    }
-
-    return {
-      modifiers: {
-        meta: hotkey.includes(ModifierKeys.META),
-        ctrl: hotkey.includes(ModifierKeys.CTRL),
-        shift: hotkey.includes(ModifierKeys.SHIFT),
-        alt: hotkey.includes(ModifierKeys.ALT),
-      },
-      key: nonModifierCodes[0].toLowerCase(),
-    };
-  }
-
-  private createHotkeyStructFromEvent(e: KeyboardEvent): HotkeyStruct {
-    return {
-      modifiers: {
-        meta: e.metaKey,
-        ctrl: e.ctrlKey,
-        shift: e.shiftKey,
-        alt: e.altKey,
-      },
-      key: e.key?.toLowerCase(),
-    };
   }
 
   /**

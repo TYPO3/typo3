@@ -108,6 +108,9 @@ class BackendController
             JavaScriptModuleInstruction::create('@typo3/backend/broadcast-service.js')->invoke('listen')
         );
         $javaScriptRenderer->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::create('@typo3/backend/hotkeys/negotiator.js')
+        );
+        $javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/backend/hotkeys.js')
         );
         $javaScriptRenderer->addJavaScriptModuleInstruction(
