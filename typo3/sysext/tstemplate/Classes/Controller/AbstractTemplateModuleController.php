@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -253,6 +254,26 @@ abstract class AbstractTemplateModuleController
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT))
             )
             ->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
+    }
+
+    /**
+     * Create a VisibilityAspect that simulates frontend-like behavior:
+     * hidden templates and templates outside their scheduled time window
+     * are excluded, as they would be in the frontend.
+     */
+    protected function createVisibilityAspect(): VisibilityAspect
+    {
+        // For the context of the TypoScript management backend, we want to
+        // edit TypoScript records that are hidden. But in a backend submodule like
+        // the ActiveTypoScriptController / TemplateAnalyzerController, only
+        // non-hidden records with matching time constraints should be evaluated,
+        // just like in the frontend.
+        return new VisibilityAspect(
+            includeHiddenPages: true,
+            includeHiddenContent: false,
+            includeDeletedRecords: false,
+            includeScheduledRecords: false,
+        );
     }
 
     protected function getLanguageService(): LanguageService

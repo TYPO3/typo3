@@ -102,7 +102,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
         $site = $request->getAttribute('site');
         $rootLine = $this->getScopedRootline($site, $rootLine);
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
 
         // Build the constant include tree
         $constantIncludeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRows, $this->losslessTokenizer, $site);
@@ -158,7 +158,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             return $this->responseFactory->createResponse(400);
         }
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
         $site = $request->getAttribute('site');
         $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
         $includeTree->setIdentifier($type . ' tstemplate includes');
@@ -193,7 +193,7 @@ final class TemplateAnalyzerController extends AbstractTemplateModuleController
             return $this->responseFactory->createResponse(400);
         }
         $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageUid)->get();
-        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid);
+        $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootlineWithUidOverride($rootLine, $request, $selectedTemplateUid, $this->createVisibilityAspect());
         $site = $request->getAttribute('site');
         $includeTree = $this->treeBuilder->getTreeBySysTemplateRowsAndSite($type, $sysTemplateRows, $this->losslessTokenizer, $site);
         $includeTree->setIdentifier($type . ' tstemplate includes');

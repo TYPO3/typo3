@@ -21,10 +21,13 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\AfterTemplatesHaveBeenDeterminedEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -59,7 +62,7 @@ final readonly class SysTemplateRepository
      *        into the Page rootline resolving as soon as it uses a CTE: This would save one query in *all* FE
      *        requests, even for fully-cached page requests.
      */
-    public function getSysTemplateRowsByRootline(array $rootline, ?ServerRequestInterface $request = null): array
+    public function getSysTemplateRowsByRootline(array $rootline, ?ServerRequestInterface $request = null, ?VisibilityAspect $visibility = null): array
     {
         if ($rootline === []) {
             return [];
@@ -69,7 +72,7 @@ final readonly class SysTemplateRepository
         $rootLinePageIds = array_reverse(array_column($rootline, 'uid'));
         $sysTemplateRows = [];
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
-        $queryBuilder->setRestrictions($this->getSysTemplateQueryRestrictionContainer());
+        $queryBuilder->setRestrictions($this->getSysTemplateQueryRestrictionContainer($visibility));
         $queryBuilder->select('sys_template.*')->from('sys_template');
         // Build a value list as joined table to have sorting based on list sorting
         $valueList = [];
@@ -128,14 +131,14 @@ final readonly class SysTemplateRepository
      * one query per page. To handle the capabilities mentioned above, the query is a bit nifty, but
      * the implementation should scale nearly O(1) instead of O(n) with the rootline depth.
      */
-    public function getSysTemplateRowsByRootlineWithUidOverride(array $rootline, ?ServerRequestInterface $request, int $templateUidOnDeepestRootline): array
+    public function getSysTemplateRowsByRootlineWithUidOverride(array $rootline, ?ServerRequestInterface $request, int $templateUidOnDeepestRootline, ?VisibilityAspect $visibility = null): array
     {
         // Site-root node first!
         $rootLinePageIds = array_reverse(array_column($rootline, 'uid'));
         $templatePidOnDeepestRootline = $rootline[array_key_first($rootline)]['uid'];
         $sysTemplateRows = [];
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
-        $queryBuilder->setRestrictions($this->getSysTemplateQueryRestrictionContainer());
+        $queryBuilder->setRestrictions($this->getSysTemplateQueryRestrictionContainer($visibility));
         $queryBuilder->select('sys_template.*')->from('sys_template');
         if ($templateUidOnDeepestRootline && $templatePidOnDeepestRootline) {
             $queryBuilder->andWhere(
@@ -201,11 +204,16 @@ final readonly class SysTemplateRepository
      * Get sys_template record query builder restrictions.
      * Allows hidden records if enabled in context.
      */
-    private function getSysTemplateQueryRestrictionContainer(): DefaultRestrictionContainer
+    private function getSysTemplateQueryRestrictionContainer(?VisibilityAspect $visibility = null): DefaultRestrictionContainer
     {
         $restrictionContainer = GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
-        if ($this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false)) {
+        $visibility ??= $this->context->getAspect('visibility');
+        if ($visibility->includeHiddenContent()) {
             $restrictionContainer->removeByType(HiddenRestriction::class);
+        }
+        if ($visibility->includeScheduledRecords()) {
+            $restrictionContainer->removeByType(StartTimeRestriction::class);
+            $restrictionContainer->removeByType(EndTimeRestriction::class);
         }
         return $restrictionContainer;
     }
