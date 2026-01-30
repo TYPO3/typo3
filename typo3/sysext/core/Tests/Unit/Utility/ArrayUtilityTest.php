@@ -3517,4 +3517,31 @@ final class ArrayUtilityTest extends UnitTestCase
         $result = ArrayUtility::replaceAndAppendScalarValuesRecursive($array1, $array2);
         self::assertEquals($expectedResult, $result);
     }
+
+    public static function containsOnlyScalarValuesDataProvider(): iterable
+    {
+        yield 'empty array' => [[], true];
+        yield 'flat array with scalars' => [['string', 123, 45.67, true, false], true];
+        yield 'flat array with null' => [['string', null, 123], true];
+        yield 'nested array with scalars' => [['foo' => ['bar' => 'baz', 'num' => 42]], true];
+        yield 'deeply nested array with scalars' => [['level1' => ['level2' => ['level3' => 'value']]], true];
+        yield 'array with object' => [['foo', new \stdClass()], false];
+        yield 'nested array with object' => [['foo' => ['bar' => new \stdClass()]], false];
+        yield 'array with closure' => [['foo', static fn() => 'bar'], false];
+    }
+
+    #[Test]
+    #[DataProvider('containsOnlyScalarValuesDataProvider')]
+    public function containsOnlyScalarValuesReturnsExpectedResult(array $input, bool $expected): void
+    {
+        self::assertSame($expected, ArrayUtility::containsOnlyScalarValues($input));
+    }
+
+    #[Test]
+    public function containsOnlyScalarValuesReturnsFalseForResource(): void
+    {
+        $resource = fopen('php://memory', 'r');
+        self::assertFalse(ArrayUtility::containsOnlyScalarValues(['foo', $resource]));
+        fclose($resource);
+    }
 }

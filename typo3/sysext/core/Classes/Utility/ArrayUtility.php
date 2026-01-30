@@ -1002,4 +1002,21 @@ class ArrayUtility
 
         return $array1;
     }
+
+    /**
+     * Determines whether all (nested) array values are scalar values or `null`.
+     */
+    public static function containsOnlyScalarValues(array $array): bool
+    {
+        foreach ($array as $value) {
+            if (is_array($value)) {
+                if (!self::containsOnlyScalarValues($value)) {
+                    return false;
+                }
+            } elseif (!is_scalar($value) && $value !== null) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
