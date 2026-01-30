@@ -2134,16 +2134,18 @@ readonly class PageRepository
             );
         }
         $page = $queryBuilder->executeQuery()->fetchAssociative();
+        if (!is_array($page)) {
+            return false;
+        }
         if ((int)$this->context->getPropertyFromAspect('workspace', 'id') > 0) {
-            // Fetch overlay of page if in workspace and check if it is hidden. The visibility aspect is
-            // reset on a cloned context so the workspace version is evaluated against default visibility.
+            // Only the workspace version (or the live page if there is none) is evaluated by the RecordAccessVoter
+            // against default visibility. -1 and -2 mean that the respective record is hidden or out of schedule.
             $context = clone $this->context;
             $context->setAspect('visibility', VisibilityAspect::create());
             $targetPage = $this->getWorkspaceVersionOfRecord('pages', $page, false, $context);
-            // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
-            $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);
+            $result = $targetPage === -1 || $targetPage === -2;
         } else {
-            $result = is_array($page) && ($page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] || $page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME']);
+            $result = $page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] || $page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME'];
         }
         return $result;
     }
