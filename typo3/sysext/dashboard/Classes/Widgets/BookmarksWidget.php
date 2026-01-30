@@ -17,17 +17,25 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
-use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
+use TYPO3\CMS\Backend\Backend\Bookmark\BookmarkService;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Settings\SettingsInterface;
 
-final readonly class BookmarksWidget implements WidgetRendererInterface
+/**
+ * Widget to display user bookmarks on the dashboard.
+ *
+ * The widget renders a custom element that reads bookmark data
+ * from the central BookmarkStore in the top frame.
+ */
+final readonly class BookmarksWidget implements WidgetRendererInterface, JavaScriptInterface
 {
     public function __construct(
         private WidgetConfigurationInterface $configuration,
         private BackendViewFactory $backendViewFactory,
-        private ShortcutRepository $shortcutRepository,
+        private BookmarkService $bookmarkService,
         /** @var array{limit?: int, group?: string} */
         private array $options = [],
     ) {}
@@ -39,27 +47,20 @@ final readonly class BookmarksWidget implements WidgetRendererInterface
     {
         return [
             new SettingDefinition(
-                key: 'label',
-                type: 'string',
-                default: '',
-                label: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.bookmarks.setting.label.label',
-                description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.bookmarks.setting.label.description',
-            ),
-            new SettingDefinition(
                 key: 'group',
                 type: 'string',
-                default: (string)($this->options['group'] ?? ''),
-                label: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.bookmarks.setting.groups.label',
-                description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.bookmarks.setting.groups.description',
+                default: $this->options['group'] ?? '',
+                label: 'dashboard.widget_bookmarks:widget.bookmarks.setting.groups.label',
+                description: 'dashboard.widget_bookmarks:widget.bookmarks.setting.groups.description',
                 readonly: array_key_exists('group', $this->options),
                 enum: $this->getAvailableGroups(),
             ),
             new SettingDefinition(
                 key: 'limit',
                 type: 'int',
-                default: (int)($this->options['limit'] ?? 10),
-                label: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.bookmarks.setting.limit.label',
-                description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.bookmarks.setting.limit.description',
+                default: (int)($this->options['limit'] ?? 0),
+                label: 'dashboard.widget_bookmarks:widget.bookmarks.setting.limit.label',
+                description: 'dashboard.widget_bookmarks:widget.bookmarks.setting.limit.description',
                 readonly: array_key_exists('limit', $this->options),
             ),
         ];
@@ -67,85 +68,66 @@ final readonly class BookmarksWidget implements WidgetRendererInterface
 
     public function renderWidget(WidgetContext $context): WidgetResult
     {
-        $shortcutMenu = $this->getShortcuts($context->settings);
-
         $view = $this->backendViewFactory->create($context->request);
         $view->assignMultiple([
             'options' => $this->options,
             'settings' => $context->settings,
-            'shortcutMenu' => $shortcutMenu,
             'configuration' => $this->configuration,
         ]);
 
         return new WidgetResult(
             content: $view->render('Widget/BookmarksWidget'),
-            label: $this->resolveLabel($context, $shortcutMenu),
+            label: $this->resolveLabel($context->settings),
             refreshable: true,
         );
     }
 
-    /**
-     * @return array<int, array{id: int, title: string, shortcuts: array}>
-     */
-    private function getShortcuts(SettingsInterface $settings): array
+    public function getJavaScriptModuleInstructions(): array
     {
-        $shortcutMenu = [];
-        $group = $settings->get('group') !== '' ? (int)$settings->get('group') : null;
-        $groups = $this->shortcutRepository->getGroupsFromShortcuts();
-        if ($group !== null) {
-            if (!isset($groups[$group])) {
-                $groups = [];
-            } else {
-                $groups = [$group => $groups[$group]];
-            }
-        }
-        arsort($groups, SORT_NUMERIC);
-        $limit = max(1, (int)$settings->get('limit'));
-        foreach ($groups as $groupId => $groupLabel) {
-            $shortcuts = $this->shortcutRepository->getShortcutsByGroup($groupId);
-            if ($shortcuts === []) {
-                continue;
-            }
-            if ($limit > 0) {
-                if (count($shortcuts) > $limit) {
-                    $shortcuts = array_slice($shortcuts, 0, $limit);
-                }
-                $limit -= count($shortcuts);
-                $shortcutMenu[] = [
-                    'id' => $groupId,
-                    'title' => $groupLabel,
-                    'shortcuts' => $shortcuts,
-                    'single' => $group !== null,
-                ];
-            }
-        }
-        return $shortcutMenu;
+        return [
+            JavaScriptModuleInstruction::create('@typo3/dashboard/widget/bookmarks-widget-element.js'),
+        ];
     }
 
     private function getAvailableGroups(): array
     {
-        $groups = $this->shortcutRepository->getGroupsFromShortcuts();
-        $groups[0] = 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.bookmarks.notGrouped';
-        $groups[''] = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.bookmarks.setting.label.showAll';
+        $groups = [
+            '' => 'dashboard.widget_bookmarks:widget.bookmarks.setting.showAll',
+        ];
+
+        // Only show groups that contain bookmarks
+        $groupsWithBookmarks = [];
+        foreach ($this->bookmarkService->getBookmarks() as $bookmark) {
+            $groupsWithBookmarks[$bookmark->groupId] = true;
+        }
+
+        foreach ($this->bookmarkService->getGroups() as $group) {
+            if (isset($groupsWithBookmarks[$group->id])) {
+                $groups[(string)$group->id] = $group->label;
+            }
+        }
         return $groups;
     }
 
-    private function resolveLabel(WidgetContext $context, array $shortcutMenu): ?string
+    private function resolveLabel(SettingsInterface $settings): ?string
     {
-        $label = $context->settings->get('label');
-        if ($label !== '') {
-            // Use defined label
-            return $label;
-        }
-        if (count($shortcutMenu) === 1) {
-            $group = reset($shortcutMenu);
-            $label = $group['title'] ?? '';
-            if ($label !== '') {
-                // Use group title
-                return $label;
+        $group = $settings->get('group');
+        if ($group !== '') {
+            $groupId = is_numeric($group) ? (int)$group : $group;
+            foreach ($this->bookmarkService->getGroups() as $bookmarkGroup) {
+                if ($bookmarkGroup->id === $groupId) {
+                    $widgetTitle = $this->getLanguageService()->sL($this->configuration->getTitle());
+                    return $widgetTitle . ': ' . $bookmarkGroup->label;
+                }
             }
         }
+
         // Fall back to default widget title
         return null;
+    }
+
+    private function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

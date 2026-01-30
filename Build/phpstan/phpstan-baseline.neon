@@ -7,12 +7,6 @@ parameters:
 			path: ../../typo3/sysext/adminpanel/Classes/Modules/PreviewModule.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between ''new'' and ''new'' will always evaluate to true\.$#'
-			identifier: identical.alwaysTrue
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Backend/Shortcut/ShortcutRepository.php
-
-		-
 			message: '#^Instanceof between TYPO3\\CMS\\Backend\\Toolbar\\InformationStatus and TYPO3\\CMS\\Backend\\Toolbar\\InformationStatus will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 2

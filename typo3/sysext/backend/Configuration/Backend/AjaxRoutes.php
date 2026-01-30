@@ -202,34 +202,63 @@ return [
         'target' => Controller\FileStorage\TreeController::class . '::filterDataAction',
     ],
 
-    // Get shortcut edit form
-    'shortcut_editform' => [
-        'path' => '/shortcut/editform',
-        'target' => Controller\ShortcutController::class . '::showEditFormAction',
+    // Bookmark management API
+    'bookmark_list' => [
+        'path' => '/bookmark/list',
+        'methods' => ['GET'],
+        'target' => Controller\BookmarkController::class . '::listAction',
+    ],
+    'bookmark_create' => [
+        'path' => '/bookmark/create',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::createAction',
+    ],
+    'bookmark_update' => [
+        'path' => '/bookmark/update',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::updateAction',
+    ],
+    'bookmark_delete' => [
+        'path' => '/bookmark/delete',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::deleteAction',
+    ],
+    'bookmark_reorder' => [
+        'path' => '/bookmark/reorder',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::reorderAction',
+    ],
+    'bookmark_delete_multiple' => [
+        'path' => '/bookmark/delete-multiple',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::deleteMultipleAction',
+    ],
+    'bookmark_move' => [
+        'path' => '/bookmark/move',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::moveAction',
     ],
 
-    // Save edited shortcut
-    'shortcut_saveform' => [
-        'path' => '/shortcut/saveform',
-        'target' => Controller\ShortcutController::class . '::updateAction',
+    // Bookmark group management
+    'bookmark_group_create' => [
+        'path' => '/bookmark/group/create',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::createGroupAction',
     ],
-
-    // Render shortcut toolbar item
-    'shortcut_list' => [
-        'path' => '/shortcut/list',
-        'target' => Controller\ShortcutController::class . '::menuAction',
+    'bookmark_group_update' => [
+        'path' => '/bookmark/group/update',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::updateGroupAction',
     ],
-
-    // Delete a shortcut
-    'shortcut_remove' => [
-        'path' => '/shortcut/remove',
-        'target' => Controller\ShortcutController::class . '::removeAction',
+    'bookmark_group_delete' => [
+        'path' => '/bookmark/group/delete',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::deleteGroupAction',
     ],
-
-    // Create a new shortcut
-    'shortcut_create' => [
-        'path' => '/shortcut/create',
-        'target' => Controller\ShortcutController::class . '::addAction',
+    'bookmark_group_reorder' => [
+        'path' => '/bookmark/group/reorder',
+        'methods' => ['POST'],
+        'target' => Controller\BookmarkController::class . '::reorderGroupsAction',
     ],
 
     // Render systeminformation toolbar item

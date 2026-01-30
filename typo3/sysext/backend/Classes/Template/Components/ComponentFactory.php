@@ -22,6 +22,7 @@ use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownGeneric;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownHeader;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
@@ -251,6 +252,11 @@ readonly class ComponentFactory
     public function createDropDownHeader(): DropDownHeader
     {
         return GeneralUtility::makeInstance(DropDownHeader::class);
+    }
+
+    public function createDropDownGeneric(): DropDownGeneric
+    {
+        return GeneralUtility::makeInstance(DropDownGeneric::class);
     }
 
     public function createLinkButton(): LinkButton

@@ -64,9 +64,22 @@ CREATE TABLE sys_be_shortcuts (
 	description varchar(255) DEFAULT '' NOT NULL,
 	sorting int(11) DEFAULT '0' NOT NULL,
 	sc_group tinyint(4) DEFAULT '0' NOT NULL,
+	group_uuid uuid,
 
 	PRIMARY KEY (uid),
 	KEY event (userid)
+);
+
+# Define table and fields since it has no TCA
+# User-defined bookmark groups
+CREATE TABLE sys_be_shortcuts_group (
+	uuid uuid NOT NULL,
+	userid int(11) unsigned DEFAULT '0' NOT NULL,
+	label varchar(255) DEFAULT '' NOT NULL,
+	sorting int(11) DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uuid),
+	KEY user_groups (userid)
 );
 
 CREATE TABLE sys_file_storage (

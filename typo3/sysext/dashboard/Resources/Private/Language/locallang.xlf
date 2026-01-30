@@ -291,36 +291,6 @@
       <trans-unit id="dashboard.empty.content.button">
         <source>Add a widget</source>
       </trans-unit>
-      <trans-unit id="widgets.bookmarks.title">
-        <source>Bookmarks</source>
-      </trans-unit>
-      <trans-unit id="widgets.bookmarks.description">
-        <source>Display current bookmarks as a dashboard widget</source>
-      </trans-unit>
-      <trans-unit id="widgets.bookmarks.noBookmarks">
-        <source>You haven't added any bookmarks yet. To add one, click the share icon %s, available on all pages throughout the backend.</source>
-      </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.label.label">
-        <source>Widget Label</source>
-      </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.label.description">
-        <source>Leave empty to use the selected group title automatically.</source>
-      </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.groups.label">
-        <source>Bookmark groups</source>
-      </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.groups.description">
-        <source>Bookmark groups to be displayed.</source>
-      </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.limit.label">
-        <source>Limit</source>
-      </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.limit.description">
-        <source>Defines how many Bookmark items should be shown.</source>
-      </trans-unit>
-      <trans-unit id="widget.bookmarks.setting.label.showAll">
-        <source>Show all Bookmarks</source>
-      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,52 +1,14 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Widget/Widget"/>
 <f:section name="main">
-    <f:if condition="{shortcutMenu}">
-        <f:then>
-            <div class="widget-table-wrapper">
-                <f:for each="{shortcutMenu}" as="group" iteration="iterator">
-                    <table class="widget-table table table-striped table-hover">
-                        <f:if condition="!{group.single}">
-                            <thead>
-                                <tr>
-                                    <f:if condition="{group.title}">
-                                        <f:then>
-                                            <th>{group.title}</th>
-                                        </f:then>
-                                        <f:else if="{shortcutMenu -> f:count()} > 1">
-                                            <th>
-                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.bookmarks.notGrouped"/>
-                                            </th>
-                                        </f:else>
-                                    </f:if>
-                                </tr>
-                            </thead>
-                        </f:if>
-                        <tbody>
-                            <f:for each="{group.shortcuts}" as="shortcut">
-                                <tr>
-                                    <td>
-                                        <span class="bookmark-item-column bookmark-item-column-icon" aria-hidden="true">
-                                            {shortcut.icon -> f:format.raw()}
-                                        </span>
-                                        <a href="{shortcut.href}" title="{shortcut.label}">
-                                            <span class="bookmark-item-column bookmark-item-column-title">
-                                                {shortcut.label}
-                                            </span>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </f:for>
-                        </tbody>
-                    </table>
-                </f:for>
-            </div>
-        </f:then>
-        <f:else>
-            <f:alias map="{inlineIcon: '{core:icon(identifier: \'actions-share-alt\', alternativeMarkupIdentifier: \'inline\')}', inlineIconTitle: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.bookmarks\')}'}">
-                <p class="dropdown-item-text">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.bookmarks.description', arguments:'{0: \'<span title="{inlineIconTitle}">{inlineIcon -> f:format.raw()}</span>\'}') -> f:format.raw()}</p>
-            </f:alias>
-        </f:else>
-    </f:if>
+    <typo3-dashboard-bookmarks-widget
+        limit="{settings.limit}"
+        group="{f:if(condition: '{settings.group} != \'\'', then: settings.group)}"
+    ></typo3-dashboard-bookmarks-widget>
+</f:section>
+<f:section name="footer">
+    <typo3-backend-bookmark-manager-button class="widget-cta">
+        <f:translate key="widget.bookmarks.manageBookmarks" domain="dashboard.widget_bookmarks" />
+    </typo3-backend-bookmark-manager-button>
 </f:section>
 </html>

@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template\Components\Buttons\Action;
 
-use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -35,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Shortcut button for the DocHeader that enables bookmarking of backend module states.
  *
- * This button allows users to create shortcuts (bookmarks) to specific module views
+ * This button allows users to create bookmarks to specific module views
  * with their context (e.g., specific page, record, or configuration). The shortcut
  * preserves the route and arguments for quick access later.
  *
@@ -43,7 +41,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * context is provided. It's positioned on the right side of the button bar as the
  * last button (group 91).
  *
- * Example - Using automatic shortcut button (recommended):
+ * Example - Using automatic bookmark button (recommended):
  *
  * ```
  * public function myAction(ServerRequestInterface $request): ResponseInterface
@@ -71,7 +69,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     protected string $displayName = '';
 
     /**
-     * @var array List of parameter/value pairs relevant for this shortcut
+     * @var array List of parameter/value pairs relevant for this bookmark
      */
     protected array $arguments = [];
 
@@ -108,8 +106,8 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     }
 
     /**
-     * Defines whether the shortcut button should be extended to also
-     * allow copying the current URL to the operating systems' clipboard.
+     * Defines whether the button should be extended to also allow
+     * copying the current URL to the operating systems' clipboard.
      */
     public function setCopyUrlToClipboard(bool $copyUrlToClipboard): static
     {
@@ -155,17 +153,17 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
     public function render(): string
     {
-        $createShortcut = $this->getBackendUser()->mayMakeShortcut();
-        // Early return in case the current user is not allowed to create shortcuts.
+        $canCreateBookmark = $this->getBackendUser()->mayMakeShortcut();
+        // Early return in case the current user is not allowed to create bookmarks.
         // Note: This is not checked in isValid(), since it only concerns the current
         //       user and does not mean, the button is not configured properly.
-        if (!$createShortcut && !$this->copyUrlToClipboard) {
+        if (!$canCreateBookmark && !$this->copyUrlToClipboard) {
             return '';
         }
 
         $routeIdentifier = $this->routeIdentifier;
         $arguments = $this->arguments;
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
         // The route parameter is not needed, since this is already provided with the $routeIdentifier
         unset($arguments['route']);
@@ -176,48 +174,34 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         // Encode arguments to be stored in the database
         $encodedArguments = json_encode($arguments) ?: '';
 
-        $confirmationText = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark');
-        $alreadyBookmarkedText = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.alreadyBookmarked');
+        if ($canCreateBookmark && !$this->copyUrlToClipboard) {
+            // Load the bookmark button custom element
+            $pageRenderer->loadJavaScriptModule('@typo3/backend/bookmark/element/bookmark-button-element.js');
 
-        if ($createShortcut && !$this->copyUrlToClipboard) {
-            $shortcutButton = GeneralUtility::makeInstance(GenericButton::class);
-            $shortcutButton->setIcon($iconFactory->getIcon('actions-bookmark', IconSize::SMALL));
-            if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
-                $shortcutButton->setLabel($alreadyBookmarkedText);
-            } else {
-                $shortcutButton->setLabel($confirmationText);
-                $shortcutButton->setAttributes(
-                    array_merge(
-                        $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText),
-                        $this->isDisabled() ? ['disabled' => 'disabled'] : []
-                    )
-                );
-            }
-            return (string)$shortcutButton;
+            return $this->renderBookmarkButton($routeIdentifier, $encodedArguments);
         }
 
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $dropdownItems = [];
         $componentFactory = GeneralUtility::makeInstance(ComponentFactory::class);
 
-        // Shortcut Button
-        if ($createShortcut) {
-            $shortcutItem =  $componentFactory->createDropDownItem();
-            $shortcutItem->setTag('button');
-            $shortcutItem->setIcon($iconFactory->getIcon('actions-bookmark', IconSize::SMALL));
-            $attributes = $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText);
-            if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
-                $shortcutItem->setLabel($alreadyBookmarkedText);
-                $shortcutItem->setAttributes($attributes + ['data-dispatch-disabled' => 'disabled', 'disabled' => 'disabled']);
-            } else {
-                $shortcutItem->setLabel($confirmationText);
-                $shortcutItem->setAttributes($attributes);
-            }
-            $dropdownItems[] = $shortcutItem;
+        // Bookmark Button
+        if ($canCreateBookmark) {
+            // Load the bookmark button custom element
+            $pageRenderer->loadJavaScriptModule('@typo3/backend/bookmark/element/bookmark-button-element.js');
+
+            $bookmarkItem = $componentFactory->createDropDownGeneric();
+            $bookmarkItem->setTag('typo3-backend-bookmark-button');
+            $bookmarkItem->setAttributes([
+                'route' => $routeIdentifier,
+                'arguments' => $encodedArguments,
+                'display-name' => $this->displayName,
+            ]);
+            $dropdownItems[] = $bookmarkItem;
         }
 
         // Clipboard Button
         if ($this->copyUrlToClipboard) {
-            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $pageRenderer->loadJavaScriptModule('@typo3/backend/copy-to-clipboard.js');
             $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf');
             $clipboardItem = $componentFactory->createDropDownItem();
@@ -246,20 +230,19 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     }
 
     /**
-     * Returns HTML attributes for client-side `ActionDispatcher` of the "add shortcut" button.
+     * Renders the bookmark button custom element.
      */
-    protected function getDispatchActionAttrs(string $routeIdentifier, string $encodedArguments, string $confirmationText): array
+    protected function renderBookmarkButton(string $routeIdentifier, string $encodedArguments): string
     {
-        return [
-            'data-dispatch-action' => 'TYPO3.ShortcutMenu.createShortcut',
-            'data-dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                $routeIdentifier,
-                $encodedArguments,
-                $this->displayName,
-                $confirmationText,
-                '{$target}',
-            ]),
+        $attributes = [
+            'class' => 'btn btn-default btn-sm',
+            'route' => $routeIdentifier,
+            'arguments' => $encodedArguments,
+            'display-name' => $this->displayName,
+            'hide-label-text' => 'true',
         ];
+
+        return '<typo3-backend-bookmark-button ' . GeneralUtility::implodeAttributes($attributes, true) . '></typo3-backend-bookmark-button>';
     }
 
     protected function routeExists(string $routeIdentifier): bool

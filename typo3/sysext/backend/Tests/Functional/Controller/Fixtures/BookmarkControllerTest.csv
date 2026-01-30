@@ -1,0 +1,23 @@
+"be_users"
+,"uid","pid","tstamp","username","password","admin","disable","starttime","endtime","options","crdate","workspace_perms","deleted","TSconfig","lastlogin","workspace_id"
+# User 1: Admin user (password is "password")
+,1,0,1366642540,"admin","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,1,0,"options.enableBookmarks = 1",1371033743,0
+# User 2: Regular user (password is "password")
+,2,0,1366642540,"editor","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,0,"options.enableBookmarks = 1",1371033743,0
+"sys_be_shortcuts"
+,"uid","userid","description","sc_group","route","arguments","group_uuid","sorting"
+# User 1's bookmarks
+,1,1,"Page Layout",0,"web_layout","{""id"":""123""}","\NULL",0
+,2,1,"Record List",0,"records","{""id"":""456""}","\NULL",1
+# User 2's bookmark
+,3,2,"User 2 Bookmark",0,"web_layout","{""id"":""789""}","\NULL",0
+# User 1's bookmark in a custom group
+,4,1,"Grouped Bookmark",0,"web_layout","{""id"":""111""}","ef75846e-59e0-40d0-95ac-33cdc9da8c2b",0
+# Global bookmark (accessible to all, editable by admin)
+,5,1,"Global Bookmark",-100,"web_layout","{""id"":""222""}","\NULL",0
+"sys_be_shortcuts_group"
+,"uuid","userid","label","sorting"
+# User 1's group
+,"ef75846e-59e0-40d0-95ac-33cdc9da8c2b",1,"User 1 Custom Group",0
+# User 2's group
+,"d663f18b-3330-4939-b9af-8bb117ce2dc4",2,"User 2 Custom Group",0

@@ -3,48 +3,6 @@
   <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_toolbar.xlf" date="2024-06-17T15:00:00Z" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="toolbarItems.bookmarkAlreadyExistsMessage">
-        <source>The document is already in your bookmarks.</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarkAlreadyExistsTitle">
-        <source>Bookmark already exists</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarkFailedMessage">
-        <source>The bookmark couldn't get created</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarkFailedTitle">
-        <source>Bookmark creation failed</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarkSavedMessage">
-        <source>The bookmark was saved.</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarkSavedTitle">
-        <source>Bookmark saved</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarks">
-        <source>Bookmarks</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarks.description">
-        <source>This is the bookmarks menu. You haven't added any bookmarks yet. To add one, click the share icon %s, available on all pages throughout the backend.</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarks.field.group">
-        <source>Group</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarks.field.title">
-        <source>Title</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarks.notGrouped">
-        <source>Not grouped</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarksDelete">
-        <source>Delete bookmark</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.bookmarksEdit">
-        <source>Edit bookmark</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.confirmBookmarksDelete">
-        <source>Do you really want to remove this bookmark?</source>
-      </trans-unit>
       <trans-unit id="toolbarItems.clearCache">
         <source>Clear cache</source>
       </trans-unit>

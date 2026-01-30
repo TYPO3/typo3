@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Backend\Bookmark\BookmarkService;
 use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
@@ -76,6 +77,7 @@ class BackendController
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly FlashMessageService $flashMessageService,
         protected readonly BackendEntryPointResolver $backendEntryPointResolver,
+        protected readonly BookmarkService $bookmarkService,
     ) {}
 
     /**
@@ -121,6 +123,14 @@ class BackendController
             JavaScriptModuleInstruction::create('@typo3/backend/storage/persistent.js')
                 ->invoke('load', $backendUser->uc)
         );
+        // Initialize bookmark store with server data if bookmarks are enabled
+        if ($this->bookmarkService->isEnabled()) {
+            $javaScriptRenderer->addJavaScriptModuleInstruction(
+                JavaScriptModuleInstruction::create('@typo3/backend/bookmark/bookmark-store.js')
+                    ->invoke('initialize', $this->bookmarkService->getBookmarks(), $this->bookmarkService->getGroups())
+            );
+            $pageRenderer->addInlineLanguageDomain('core.bookmarks');
+        }
         $javaScriptRenderer->addGlobalAssignment([
             'TYPO3' => [
                 'configuration' => [

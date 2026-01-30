@@ -100,8 +100,8 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
         // Verify reload button is present
         self::assertStringContainsString('actions-refresh', $content);
 
-        // Verify shortcut button is present
-        self::assertStringContainsString('actions-bookmark', $content);
+        // Verify bookmark button is present
+        self::assertStringContainsString('typo3-backend-bookmark-button', $content);
     }
 
     #[Test]

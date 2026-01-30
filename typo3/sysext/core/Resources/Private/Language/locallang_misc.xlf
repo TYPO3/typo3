@@ -6,30 +6,6 @@
       <trans-unit id="shortcut_onlineWS">
         <source>LIVE workspace</source>
       </trans-unit>
-      <trans-unit id="bookmark_group">
-        <source>Group</source>
-      </trans-unit>
-      <trans-unit id="bookmark_group_1">
-        <source>Pages</source>
-      </trans-unit>
-      <trans-unit id="bookmark_group_2">
-        <source>Records</source>
-      </trans-unit>
-      <trans-unit id="bookmark_group_3">
-        <source>Files</source>
-      </trans-unit>
-      <trans-unit id="bookmark_group_4">
-        <source>Tools</source>
-      </trans-unit>
-      <trans-unit id="bookmark_group_5">
-        <source>Miscellaneous</source>
-      </trans-unit>
-      <trans-unit id="bookmark_global">
-        <source>Global</source>
-      </trans-unit>
-      <trans-unit id="bookmark_all">
-        <source>All</source>
-      </trans-unit>
       <trans-unit id="overwriteExistingFiles">
         <source>Overwrite existing files</source>
       </trans-unit>

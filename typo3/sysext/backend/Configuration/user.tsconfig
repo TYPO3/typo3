@@ -1,5 +1,14 @@
 options.enableBookmarks = 1
 
+# Default bookmark groups (can be disabled by setting to 0 or empty)
+options.bookmarkGroups {
+  1 = core.bookmarks:group_pages
+  2 = core.bookmarks:group_records
+  3 = core.bookmarks:group_files
+  4 = core.bookmarks:group_tools
+  5 = core.bookmarks:group_miscellaneous
+}
+
 options.pageTree {
   doktypesToShowInNewPageDragArea := addToList(1,6,4,7,3,254,199)
   searchInTranslatedPages = 1

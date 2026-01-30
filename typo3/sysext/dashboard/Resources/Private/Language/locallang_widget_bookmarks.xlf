@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard">
+    <header/>
+    <body>
+      <trans-unit id="widget.bookmarks.title" xml:space="preserve">
+        <source>Bookmarks</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.description" xml:space="preserve">
+        <source>Display your bookmarks as a dashboard widget.</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.label" xml:space="preserve">
+        <source>Bookmark groups</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.groups.description" xml:space="preserve">
+        <source>Bookmark groups to be displayed.</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.label" xml:space="preserve">
+        <source>Limit</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.limit.description" xml:space="preserve">
+        <source>Maximum number of bookmarks to display.</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.setting.showAll" xml:space="preserve">
+        <source>Show all bookmarks</source>
+      </trans-unit>
+      <trans-unit id="widget.bookmarks.manageBookmarks" xml:space="preserve">
+        <source>Manage bookmarks</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

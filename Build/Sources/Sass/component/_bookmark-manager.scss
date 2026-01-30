@@ -1,0 +1,84 @@
+//
+// Bookmark Manager
+//
+typo3-backend-bookmark-manager-content {
+    --bookmark-manager-color: var(--typo3-component-color);
+    --bookmark-manager-bg: var(--typo3-surface-container-low);
+    --bookmark-manager-border-radius: var(--typo3-component-border-radius);
+    --bookmark-manager-border-color: color-mix(in srgb, var(--bookmark-manager-bg), var(--bookmark-manager-color) 10%);
+    --bookmark-manager-padding: 1rem;
+    --bookmark-manager-box-shadow: var(--typo3-component-box-shadow);
+    --bookmark-manager-border-width: var(--typo3-component-border-width);
+    --bookmark-manager-toolbar-color: var(--bookmark-manager-color);
+    --bookmark-manager-toolbar-bg: transparent;
+
+    .bookmark-manager {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        grid-template-areas:
+            "toolbar"
+            "content";
+        border: var(--bookmark-manager-border-width) solid var(--bookmark-manager-border-color);
+        border-radius: var(--bookmark-manager-border-radius);
+        box-shadow: var(--bookmark-manager-box-shadow);
+    }
+
+    .bookmark-manager-toolbar {
+        grid-area: toolbar;
+        display: flex;
+        gap: .5rem;
+        padding: var(--bookmark-manager-padding);
+        align-items: center;
+        border-bottom: var(--bookmark-manager-border-width) solid var(--bookmark-manager-border-color);
+        color: var(--bookmark-manager-toolbar-color);
+        background-color: var(--bookmark-manager-toolbar-bg);
+    }
+
+    .bookmark-manager-toolbar-start {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .bookmark-manager-toolbar-end {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        margin-left: auto;
+    }
+
+    .bookmark-manager-content {
+        grid-area: content;
+        padding: var(--bookmark-manager-padding);
+        overflow-y: auto;
+    }
+}
+
+//
+// Usage in Modal
+//
+.modal-header:has(+ .modal-body typo3-backend-bookmark-manager-content) {
+    border-bottom: 0;
+}
+
+.modal-body {
+    typo3-backend-bookmark-manager-content {
+        --bookmark-manager-padding: var(--typo3-modal-padding);
+        --bookmark-manager-border-radius: 0;
+        --bookmark-manager-box-shadow: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        .bookmark-manager {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border: none;
+        }
+    }
+}

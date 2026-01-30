@@ -159,6 +159,10 @@ export class ModalElement extends LitElement {
   }
 
   protected async showModal(): Promise<void> {
+    // Wait a frame to avoid a visual bug where top layer
+    // elements interfere with each other during promotion
+    await new Promise(resolve => requestAnimationFrame(resolve));
+
     this.trigger('typo3-modal-show');
     this.dialog.showModal();
 

@@ -16,16 +16,8 @@
 $fileMtimeActions = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/actions.svg');
 return <<<EOF
 <div class="btn-group">
-    <button
-        type="button"
-        class="btn btn-sm btn-default dropdown-toggle"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        aria-label="Share"
-        title="Share">
-        <span
-            class="t3js-icon icon icon-size-small icon-state-default icon-actions-share-alt"
-            data-identifier="actions-share-alt" aria-hidden="true">
+    <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share" title="Share">
+        <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-share-alt" data-identifier="actions-share-alt" aria-hidden="true">
             <span class="icon-markup">
                 <svg class="icon-color">
                     <use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-share-alt" />
@@ -35,20 +27,7 @@ return <<<EOF
     </button>
     <ul class="dropdown-menu">
         <li>
-            <button
-                data-dispatch-action="TYPO3.ShortcutMenu.createShortcut"
-                data-dispatch-args="[&amp;quot;records&amp;quot;,&amp;quot;{\u0022id\u0022:123,\u0022table\u0022:\u0022some_table\u0022,\u0022GET\u0022:{\u0022clipBoard\u0022:1}}&amp;quot;,&amp;quot;Recordlist - single table view&amp;quot;,&amp;quot;Create a bookmark to this record&amp;quot;,&amp;quot;{\$target}&amp;quot;]"
-                class="dropdown-item dropdown-item-spaced" title="Create a bookmark to this record">
-                <span
-                    class="t3js-icon icon icon-size-small icon-state-default icon-actions-bookmark"
-                    data-identifier="actions-bookmark" aria-hidden="true">
-                    <span class="icon-markup">
-                        <svg class="icon-color">
-                            <use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-bookmark" />
-                        </svg>
-                    </span>
-                </span>Create a bookmark to this record
-            </button>
+            <typo3-backend-bookmark-button route="records" arguments="{&quot;id&quot;:123,&quot;table&quot;:&quot;some_table&quot;,&quot;GET&quot;:{&quot;clipBoard&quot;:1}}" display-name="Recordlist - single table view" class="dropdown-item dropdown-item-spaced"></typo3-backend-bookmark-button>
         </li>
         <li>
             <typo3-copy-to-clipboard

@@ -13,7 +13,6 @@
 
 import InfoWindow from '@typo3/backend/info-window';
 import RegularEvent from '@typo3/core/event/regular-event';
-import shortcutMenu from '@typo3/backend/toolbar/shortcut-menu';
 import windowManager from '@typo3/backend/window-manager';
 import moduleMenuApp from '@typo3/backend/module-menu';
 import documentService from '@typo3/core/document-service';
@@ -60,7 +59,6 @@ class ActionDispatcher {
   private createDelegates(): void {
     this.delegates = {
       'TYPO3.InfoWindow.showItem': InfoWindow.showItem.bind(null),
-      'TYPO3.ShortcutMenu.createShortcut': shortcutMenu.createShortcut.bind(shortcutMenu),
       'TYPO3.WindowManager.localOpen': windowManager.localOpen.bind(windowManager),
       'TYPO3.ModuleMenu.showModule': moduleMenuApp.App.showModule.bind(moduleMenuApp.App),
     };

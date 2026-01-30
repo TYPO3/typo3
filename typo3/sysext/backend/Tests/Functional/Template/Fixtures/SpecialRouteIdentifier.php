@@ -13,21 +13,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$fileMtimeActions = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/actions.svg');
 return <<<EOF
-<button
-    data-dispatch-action="TYPO3.ShortcutMenu.createShortcut"
-    data-dispatch-args="[&amp;quot;record_edit&amp;quot;,&amp;quot;[]&amp;quot;,&amp;quot;Edit record&amp;quot;,&amp;quot;Create a bookmark to this record&amp;quot;,&amp;quot;{\$target}&amp;quot;]"
-    class="btn btn-sm btn-default"
-    title="Create a bookmark to this record">
-    <span
-        class="t3js-icon icon icon-size-small icon-state-default icon-actions-bookmark"
-        data-identifier="actions-bookmark" aria-hidden="true">
-        <span class="icon-markup">
-            <svg class="icon-color">
-                <use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-bookmark" />
-            </svg>
-        </span>
-    </span>
-</button>
+<typo3-backend-bookmark-button class="btn btn-default btn-sm" route="record_edit" arguments="[]" display-name="Edit record" hide-label-text="true"></typo3-backend-bookmark-button>
 EOF;

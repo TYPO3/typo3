@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_bookmarks.xlf" date="2025-01-08T00:00:00Z" product-name="lang">
+    <header/>
+    <body>
+      <!-- Group labels -->
+      <trans-unit id="group_default">
+        <source>Default</source>
+      </trans-unit>
+      <trans-unit id="group_pages">
+        <source>Pages</source>
+      </trans-unit>
+      <trans-unit id="group_records">
+        <source>Records</source>
+      </trans-unit>
+      <trans-unit id="group_files">
+        <source>Files</source>
+      </trans-unit>
+      <trans-unit id="group_tools">
+        <source>Tools</source>
+      </trans-unit>
+      <trans-unit id="group_miscellaneous">
+        <source>Miscellaneous</source>
+      </trans-unit>
+      <trans-unit id="global">
+        <source>Global</source>
+      </trans-unit>
+      <trans-unit id="all">
+        <source>All</source>
+      </trans-unit>
+      <!-- UI labels -->
+      <trans-unit id="title">
+        <source>Bookmarks</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>This is the bookmarks menu. You have not added any bookmarks yet. To add one, click the share icon, available on all pages throughout the backend.</source>
+      </trans-unit>
+      <trans-unit id="notGrouped">
+        <source>Not grouped</source>
+      </trans-unit>
+      <trans-unit id="empty">
+        <source>No bookmarks yet. Add bookmarks using the share icon on pages throughout the backend.</source>
+      </trans-unit>
+      <trans-unit id="manage">
+        <source>Manage bookmarks</source>
+      </trans-unit>
+      <trans-unit id="delete">
+        <source>Delete bookmark</source>
+      </trans-unit>
+      <trans-unit id="fieldTitle">
+        <source>Title</source>
+      </trans-unit>
+      <trans-unit id="fieldGroup">
+        <source>Group</source>
+      </trans-unit>
+      <!-- Success notifications for bookmarks -->
+      <trans-unit id="success.created.title">
+        <source>Bookmark created</source>
+      </trans-unit>
+      <trans-unit id="success.created.message">
+        <source>The bookmark was created.</source>
+      </trans-unit>
+      <trans-unit id="success.updated.title">
+        <source>Bookmark updated</source>
+      </trans-unit>
+      <trans-unit id="success.updated.message">
+        <source>Bookmark updated successfully.</source>
+      </trans-unit>
+      <trans-unit id="success.deleted.title">
+        <source>Bookmark deleted</source>
+      </trans-unit>
+      <trans-unit id="success.deleted.message">
+        <source>Bookmark deleted successfully.</source>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.title">
+        <source>Bookmarks deleted</source>
+      </trans-unit>
+      <trans-unit id="success.deletedMultiple.message">
+        <source>%d bookmark(s) deleted.</source>
+      </trans-unit>
+      <trans-unit id="success.moved.title">
+        <source>Bookmarks moved</source>
+      </trans-unit>
+      <trans-unit id="success.moved.message">
+        <source>%d bookmark(s) moved.</source>
+      </trans-unit>
+      <!-- Success notifications for groups -->
+      <trans-unit id="success.groupCreated.title">
+        <source>Group created</source>
+      </trans-unit>
+      <trans-unit id="success.groupCreated.message">
+        <source>Group created successfully.</source>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.title">
+        <source>Group updated</source>
+      </trans-unit>
+      <trans-unit id="success.groupUpdated.message">
+        <source>Group updated successfully.</source>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.title">
+        <source>Group deleted</source>
+      </trans-unit>
+      <trans-unit id="success.groupDeleted.message">
+        <source>Group deleted successfully.</source>
+      </trans-unit>
+      <!-- Error notifications for bookmarks -->
+      <trans-unit id="error.unknown.message">
+        <source>An unexpected error occurred.</source>
+      </trans-unit>
+      <trans-unit id="error.notFound.message">
+        <source>Bookmark not found.</source>
+      </trans-unit>
+      <trans-unit id="error.accessDenied.message">
+        <source>You do not have permission to edit this bookmark.</source>
+      </trans-unit>
+      <trans-unit id="error.globalGroupNotAllowed.message">
+        <source>Only administrators can assign bookmarks to global groups.</source>
+      </trans-unit>
+      <trans-unit id="error.createFailed.title">
+        <source>Bookmark creation failed</source>
+      </trans-unit>
+      <trans-unit id="error.createFailed.message">
+        <source>The bookmark could not be created.</source>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.title">
+        <source>Bookmark update failed</source>
+      </trans-unit>
+      <trans-unit id="error.updateFailed.message">
+        <source>The bookmark could not be updated.</source>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.title">
+        <source>Bookmark deletion failed</source>
+      </trans-unit>
+      <trans-unit id="error.deleteFailed.message">
+        <source>The bookmarks could not be deleted.</source>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.title">
+        <source>Move failed</source>
+      </trans-unit>
+      <trans-unit id="error.moveFailed.message">
+        <source>The bookmarks could not be moved.</source>
+      </trans-unit>
+      <trans-unit id="error.missingRoute.message">
+        <source>The bookmark could not be created because route information is missing.</source>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkId.message">
+        <source>Missing bookmark ID.</source>
+      </trans-unit>
+      <trans-unit id="error.missingBookmarkIds.message">
+        <source>Missing bookmark IDs.</source>
+      </trans-unit>
+      <!-- Error notifications for groups -->
+      <trans-unit id="error.groupCreateFailed.title">
+        <source>Group creation failed</source>
+      </trans-unit>
+      <trans-unit id="error.groupCreateFailed.message">
+        <source>The group could not be created.</source>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.title">
+        <source>Group update failed</source>
+      </trans-unit>
+      <trans-unit id="error.groupUpdateFailed.message">
+        <source>The group could not be updated.</source>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.title">
+        <source>Group deletion failed</source>
+      </trans-unit>
+      <trans-unit id="error.groupDeleteFailed.message">
+        <source>The group could not be deleted.</source>
+      </trans-unit>
+      <trans-unit id="error.groupReorderFailed.message">
+        <source>The groups could not be reordered.</source>
+      </trans-unit>
+      <trans-unit id="error.missingGroupId.message">
+        <source>Missing group ID.</source>
+      </trans-unit>
+      <trans-unit id="error.missingGroupIds.message">
+        <source>Missing group IDs.</source>
+      </trans-unit>
+      <trans-unit id="error.missingLabel.message">
+        <source>Group label is required.</source>
+      </trans-unit>
+      <!-- Button labels -->
+      <trans-unit id="action.create">
+        <source>Create bookmark</source>
+      </trans-unit>
+      <trans-unit id="action.remove">
+        <source>Remove bookmark</source>
+      </trans-unit>
+      <trans-unit id="action.save">
+        <source>Save</source>
+      </trans-unit>
+      <trans-unit id="action.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="action.delete">
+        <source>Delete</source>
+      </trans-unit>
+      <!-- Edit view labels -->
+      <trans-unit id="details">
+        <source>Details</source>
+      </trans-unit>
+      <trans-unit id="details.route">
+        <source>Route</source>
+      </trans-unit>
+      <trans-unit id="details.url">
+        <source>URL</source>
+      </trans-unit>
+      <trans-unit id="details.parameters">
+        <source>Parameters</source>
+      </trans-unit>
+      <!-- Confirmation dialogs -->
+      <trans-unit id="confirmDelete.title">
+        <source>Delete bookmark</source>
+      </trans-unit>
+      <trans-unit id="confirmDelete.message">
+        <source>Are you sure you want to delete this bookmark?</source>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.title">
+        <source>Delete bookmarks</source>
+      </trans-unit>
+      <trans-unit id="confirmDeleteMultiple.message">
+        <source>Are you sure you want to delete %d bookmark(s)?</source>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.title">
+        <source>Delete group</source>
+      </trans-unit>
+      <trans-unit id="confirmDeleteGroup.message">
+        <source>Are you sure you want to delete the group "%s"? Bookmarks in this group will be moved to the Default group.</source>
+      </trans-unit>
+      <!-- Manager view labels -->
+      <trans-unit id="manager.selectAll">
+        <source>Select all</source>
+      </trans-unit>
+      <trans-unit id="manager.deselectAll">
+        <source>Deselect all</source>
+      </trans-unit>
+      <trans-unit id="manager.moveToGroup">
+        <source>Move to group</source>
+      </trans-unit>
+      <trans-unit id="manager.deleteSelected">
+        <source>Delete</source>
+      </trans-unit>
+      <trans-unit id="manager.manageGroups">
+        <source>Manage Groups</source>
+      </trans-unit>
+      <trans-unit id="manager.newGroup">
+        <source>New Group</source>
+      </trans-unit>
+      <trans-unit id="manager.createGroup">
+        <source>Create Group</source>
+      </trans-unit>
+      <trans-unit id="manager.editGroup">
+        <source>Edit Group</source>
+      </trans-unit>
+      <trans-unit id="manager.noGroups">
+        <source>You have not created any groups yet. Click "New Group" to create one.</source>
+      </trans-unit>
+      <trans-unit id="manager.label">
+        <source>Label</source>
+      </trans-unit>
+      <trans-unit id="manager.back">
+        <source>Back</source>
+      </trans-unit>
+      <trans-unit id="manager.editBookmark">
+        <source>Edit bookmark</source>
+      </trans-unit>
+      <trans-unit id="manager.dragToReorder">
+        <source>Drag to reorder</source>
+      </trans-unit>
+      <trans-unit id="manager.moveUp">
+        <source>Move up</source>
+      </trans-unit>
+      <trans-unit id="manager.moveDown">
+        <source>Move down</source>
+      </trans-unit>
+      <trans-unit id="manager.locked">
+        <source>This bookmark cannot be edited</source>
+      </trans-unit>
+      <trans-unit id="manager.notAccessible">
+        <source>Not accessible</source>
+      </trans-unit>
+      <trans-unit id="groupType.user">
+        <source>My Groups</source>
+      </trans-unit>
+      <trans-unit id="groupType.system">
+        <source>System Groups</source>
+      </trans-unit>
+      <trans-unit id="groupType.global">
+        <source>Global Groups</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

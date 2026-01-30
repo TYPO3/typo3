@@ -19,24 +19,23 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
+use TYPO3\CMS\Backend\Backend\Bookmark\BookmarkService;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
- * Class to render the shortcut menu toolbar.
+ * Class to render the bookmark menu toolbar.
  *
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 #[Autoconfigure(public: true)]
-class ShortcutToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
+class BookmarkToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
     private ServerRequestInterface $request;
 
     public function __construct(
-        private readonly ShortcutRepository $shortcutRepository,
+        private readonly BookmarkService $bookmarkService,
         private readonly BackendViewFactory $backendViewFactory,
     ) {}
 
@@ -50,16 +49,16 @@ class ShortcutToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
      */
     public function checkAccess(): bool
     {
-        return (bool)($this->getBackendUser()->getTSConfig()['options.']['enableBookmarks'] ?? false);
+        return $this->bookmarkService->isEnabled();
     }
 
     /**
-     * Render shortcut icon.
+     * Render bookmark icon.
      */
     public function getItem(): string
     {
         $view = $this->backendViewFactory->create($this->request);
-        return $view->render('ToolbarItems/ShortcutToolbarItemItem');
+        return $view->render('ToolbarItems/BookmarkToolbarItemItem');
     }
 
     /**
@@ -71,23 +70,13 @@ class ShortcutToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
     }
 
     /**
-     * Render drop-down content
+     * Render drop-down content.
+     * The dropdown contains a custom element that fetches data via AJAX.
      */
     public function getDropDown(): string
     {
-        $shortcutMenu = [];
-        $groups = $this->shortcutRepository->getGroupsFromShortcuts();
-        arsort($groups, SORT_NUMERIC);
-        foreach ($groups as $groupId => $groupLabel) {
-            $shortcutMenu[] = [
-                'id' => (int)$groupId,
-                'title' => $groupLabel,
-                'shortcuts' => $this->shortcutRepository->getShortcutsByGroup($groupId),
-            ];
-        }
         $view = $this->backendViewFactory->create($this->request);
-        $view->assign('shortcutMenu', $shortcutMenu);
-        return $view->render('ToolbarItems/ShortcutToolbarItemDropDown');
+        return $view->render('ToolbarItems/BookmarkToolbarItemDropDown');
     }
 
     /**
@@ -104,10 +93,5 @@ class ShortcutToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
     public function getIndex(): int
     {
         return 20;
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

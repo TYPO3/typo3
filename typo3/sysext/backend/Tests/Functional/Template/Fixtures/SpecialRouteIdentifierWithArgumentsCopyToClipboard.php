@@ -16,16 +16,8 @@
 $fileMtimeActions = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/actions.svg');
 return <<<EOF
 <div class="btn-group">
-    <button
-        type="button"
-        class="btn btn-sm btn-default dropdown-toggle"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        aria-label="Share"
-        title="Share">
-        <span
-            class="t3js-icon icon icon-size-small icon-state-default icon-actions-share-alt"
-            data-identifier="actions-share-alt" aria-hidden="true">
+    <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share" title="Share">
+        <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-share-alt" data-identifier="actions-share-alt" aria-hidden="true">
             <span class="icon-markup">
                 <svg class="icon-color">
                     <use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-share-alt" />
@@ -35,21 +27,7 @@ return <<<EOF
     </button>
     <ul class="dropdown-menu">
         <li>
-            <button
-                data-dispatch-action="TYPO3.ShortcutMenu.createShortcut"
-                data-dispatch-args="[&amp;quot;record_edit&amp;quot;,&amp;quot;{\u0022id\u0022:123,\u0022edit\u0022:{\u0022pages\u0022:{\u0022123\u0022:\u0022edit\u0022},\u0022overrideVals\u0022:{\u0022pages\u0022:{\u0022sys_language_uid\u0022:1}}}}&amp;quot;,&amp;quot;Edit record&amp;quot;,&amp;quot;Create a bookmark to this record&amp;quot;,&amp;quot;{\$target}&amp;quot;]"
-                class="dropdown-item dropdown-item-spaced"
-                title="Create a bookmark to this record">
-                <span
-                    class="t3js-icon icon icon-size-small icon-state-default icon-actions-bookmark"
-                    data-identifier="actions-bookmark" aria-hidden="true">
-                    <span class="icon-markup">
-                        <svg class="icon-color">
-                            <use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-bookmark" />
-                        </svg>
-                    </span>
-                </span>Create a bookmark to this record
-            </button>
+            <typo3-backend-bookmark-button route="record_edit" arguments="{&quot;id&quot;:123,&quot;edit&quot;:{&quot;pages&quot;:{&quot;123&quot;:&quot;edit&quot;},&quot;overrideVals&quot;:{&quot;pages&quot;:{&quot;sys_language_uid&quot;:1}}}}" display-name="Edit record" class="dropdown-item dropdown-item-spaced"></typo3-backend-bookmark-button>
         </li>
         <li>
             <typo3-copy-to-clipboard

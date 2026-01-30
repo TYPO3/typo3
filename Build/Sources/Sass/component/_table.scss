@@ -450,3 +450,21 @@
     --typo3-table-bg: var(--typo3-table-info-bg);
     --typo3-table-border-color: color-mix(in srgb, var(--typo3-table-bg), var(--typo3-table-color) 10%);
 }
+
+//
+// Drop position indicators
+// Colors the border-bottom of the row above the drop position
+//
+.table tr:has(+ .row-drop-before) > *,
+.table .row-drop-after:not(:last-child) > * {
+    box-shadow: inset 0 -1px 0 0 var(--typo3-state-primary-border-color);
+    border-bottom-color: var(--typo3-state-primary-border-color);
+}
+
+.table .row-drop-before:first-child > * {
+    box-shadow: inset 0 2px 0 0 var(--typo3-state-primary-border-color);
+}
+
+.table .row-drop-after:last-child > * {
+    box-shadow: inset 0 -2px 0 0 var(--typo3-state-primary-border-color);
+}

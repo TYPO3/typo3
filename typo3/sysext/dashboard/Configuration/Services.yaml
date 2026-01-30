@@ -208,8 +208,8 @@ services:
       - name: dashboard.widget
         identifier: 'bookmarks'
         groupNames: 'content'
-        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.bookmarks.title'
-        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.bookmarks.description'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_bookmarks.xlf:widget.bookmarks.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_bookmarks.xlf:widget.bookmarks.description'
         iconIdentifier: 'content-bookmark'
         height: 'medium'
         width: 'medium'

@@ -15,26 +15,21 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Functional\Backend\Shortcut;
+namespace TYPO3\CMS\Backend\Tests\Functional\Backend\Bookmark;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
-use TYPO3\CMS\Backend\Module\ModuleProvider;
-use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Backend\Bookmark\BookmarkService;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class ShortcutRepositoryTest extends FunctionalTestCase
+final class BookmarkServiceTest extends FunctionalTestCase
 {
-    private ShortcutRepository $subject;
+    private BookmarkService $subject;
 
     protected array $coreExtensionsToLoad = ['filelist'];
 
@@ -54,20 +49,20 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
         $requestContextFactory = $this->get(RequestContextFactory::class);
         $uriBuilder = $this->get(UriBuilder::class);
         $uriBuilder->setRequestContext($requestContextFactory->fromBackendRequest($request));
-        $this->subject = $this->createShortcutRepository();
+        $this->subject = $this->get(BookmarkService::class);
     }
 
-    #[DataProvider('shortcutExistsTestDataProvider')]
+    #[DataProvider('bookmarkExistsTestDataProvider')]
     #[Test]
-    public function shortcutExistsTest(string $routeIdentifier, array $arguments, int $userid, bool $exists): void
+    public function bookmarkExistsTest(string $routeIdentifier, array $arguments, int $userid, bool $exists): void
     {
         $GLOBALS['BE_USER']->user['uid'] = $userid;
-        self::assertEquals($exists, $this->subject->shortcutExists($routeIdentifier, json_encode($arguments)));
+        self::assertEquals($exists, $this->subject->hasBookmark($routeIdentifier, json_encode($arguments)));
     }
 
-    public static function shortcutExistsTestDataProvider(): \Generator
+    public static function bookmarkExistsTestDataProvider(): \Generator
     {
-        yield 'Shortcut exists' => [
+        yield 'Bookmark exists' => [
             'records',
             ['id' => 123, 'GET' => ['clipBoard' => 1]],
             1,
@@ -94,33 +89,33 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function addShortcutTest(): void
+    public function addBookmarkTest(): void
     {
-        foreach ($this->getShortcutsToAdd() as $shortcut) {
-            $this->subject->addShortcut(
-                $shortcut['routeIdentifier'],
-                json_encode($shortcut['arguments']),
-                $shortcut['title']
+        foreach ($this->getBookmarksToAdd() as $bookmark) {
+            $this->subject->createBookmark(
+                $bookmark['routeIdentifier'],
+                json_encode($bookmark['arguments']),
+                $bookmark['title']
             );
         }
 
-        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/ShortcutsAddedResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/BookmarksAddedResult.csv');
     }
 
-    public function getShortcutsToAdd(): array
+    public function getBookmarksToAdd(): array
     {
         return [
-            'Basic shortcut with all information' => [
+            'Basic bookmark with all information' => [
                 'routeIdentifier' => 'records',
                 'arguments' => ['id' => 111, 'GET' => ['clipBoard' => 1]],
                 'title' => 'Recordlist of id 111',
             ],
-            'Shortcut with empty title' => [
+            'Bookmark with empty title' => [
                 'routeIdentifier' => 'record_edit',
                 'arguments' => ['edit' => ['pages' => [112 => 'edit']]],
                 'title' => '',
             ],
-            'Shortcut with invalid route' => [
+            'Bookmark with invalid route' => [
                 'routeIdentifier' => 'invalid_route',
                 'arguments' => ['edit' => ['pages' => [112 => 'edit']]],
                 'title' => 'Some title',
@@ -129,10 +124,10 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * This effectively also tests ShortcutRepository::initShortcuts()
+     * This effectively also tests BookmarkService::initBookmarks()
      */
     #[Test]
-    public function getShortcutsByGroupTest(): void
+    public function getBookmarksByGroupTest(): void
     {
         $expected = [
             1 => [
@@ -140,26 +135,26 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
                 'recordid' => null,
                 'groupLabel' => 'Pages',
                 'type' => 'other',
-                'icon' => 'data-identifier="module-list"',
+                'iconIdentifier' => 'module-list',
                 'label' => 'Recordlist',
                 'href' => '/typo3/module/content/records?token=%s&id=123&GET%5BclipBoard%5D=1',
             ],
             2 => [
                 'table' => 'tt_content',
-                'recordid' => 113,
+                'recordid' => '113',
                 'groupLabel' => null,
                 'type' => 'edit',
                 'label' => 'Edit Content',
-                'icon' => 'data-identifier="mimetypes-x-content-text"',
+                'iconIdentifier' => 'mimetypes-x-content-text',
                 'href' => '/typo3/record/edit?token=%s&edit%5Btt_content%5D%5B113%5D=edit',
             ],
             3 => [
                 'table' => 'tt_content',
-                'recordid' => 117,
+                'recordid' => '117',
                 'groupLabel' => null,
                 'type' => 'new',
                 'label' => 'Create Content',
-                'icon' => 'data-identifier="mimetypes-x-content-text"',
+                'iconIdentifier' => 'mimetypes-x-content-text',
                 'href' => '/typo3/record/edit?token=%s&edit%5Btt_content%5D%5B117%5D=new',
             ],
             7 => [
@@ -167,29 +162,30 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
                 'recordid' => null,
                 'groupLabel' => null,
                 'type' => 'other',
-                'label' => 'Shortcut', // This is a fallback to not display shortcuts without title
-                'icon' => 'data-identifier="module-page"',
+                'label' => 'Bookmark', // This is a fallback to not display bookmarks without title
+                'iconIdentifier' => 'module-page',
                 'href' => '/typo3/module/web/layout?token=%s&id=123',
             ],
         ];
 
-        $shortcuts = $this->subject->getShortcutsByGroup(1);
-        self::assertCount(count($expected), $shortcuts);
+        // Filter bookmarks by group 1
+        $bookmarks = array_filter(
+            $this->subject->getBookmarks(),
+            static fn($bookmark) => $bookmark->groupId === 1
+        );
 
-        foreach ($shortcuts as $shortcut) {
-            $id = (int)$shortcut['raw']['uid'];
-            self::assertEquals(1, $shortcut['group']);
-            self::assertEquals($expected[$id]['table'], $shortcut['table'] ?? null);
-            self::assertEquals($expected[$id]['recordid'], $shortcut['recordid'] ?? null);
-            self::assertEquals($expected[$id]['groupLabel'], $shortcut['groupLabel'] ?? null);
-            self::assertEquals($expected[$id]['type'], $shortcut['type']);
-            self::assertEquals($expected[$id]['label'], $shortcut['label']);
-            self::assertStringContainsString($expected[$id]['icon'], $shortcut['icon']);
-            self::assertStringMatchesFormat($expected[$id]['href'], $shortcut['href']);
+        self::assertCount(count($expected), $bookmarks);
+
+        foreach ($bookmarks as $bookmark) {
+            $id = $bookmark->id;
+            self::assertEquals(1, $bookmark->groupId);
+            self::assertEquals($expected[$id]['label'], $bookmark->title);
+            self::assertEquals($expected[$id]['iconIdentifier'], $bookmark->iconIdentifier);
+            self::assertStringMatchesFormat($expected[$id]['href'], $bookmark->href);
         }
     }
 
-    public static function invalidShortcutArgumentsAreIgnoredDataProvider(): \Generator
+    public static function invalidBookmarkArgumentsAreIgnoredDataProvider(): \Generator
     {
         yield 'record_edit invalid JSON' => [
             'record_edit',
@@ -214,24 +210,10 @@ final class ShortcutRepositoryTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[DataProvider('invalidShortcutArgumentsAreIgnoredDataProvider')]
-    public function invalidShortcutArgumentsAreIgnored($routIdentifier, string $arguments): void
+    #[DataProvider('invalidBookmarkArgumentsAreIgnoredDataProvider')]
+    public function invalidBookmarkArgumentsAreIgnored($routIdentifier, string $arguments): void
     {
         $this->expectNotToPerformAssertions();
-        $this->subject->addShortcut($routIdentifier, $arguments, 'Test');
-        // create new instance to trigger initialization in constructor
-        $this->createShortcutRepository();
-    }
-
-    private function createShortcutRepository(): ShortcutRepository
-    {
-        return new ShortcutRepository(
-            $this->get(ConnectionPool::class),
-            $this->get(IconFactory::class),
-            $this->get(ModuleProvider::class),
-            $this->get(Router::class),
-            $this->get(UriBuilder::class),
-            $this->get(LogManager::class)->getLogger(ShortcutRepository::class),
-        );
+        $this->subject->createBookmark($routIdentifier, $arguments, 'Test');
     }
 }
