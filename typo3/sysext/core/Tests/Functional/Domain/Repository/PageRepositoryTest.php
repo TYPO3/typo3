@@ -498,6 +498,33 @@ final class PageRepositoryTest extends FunctionalTestCase
         );
     }
 
+    public static function checkIfPageIsHiddenInWorkspaceDataProvider(): array
+    {
+        return [
+            'visible in live, no workspace version' => [2000, false],
+            'hidden in live, no workspace version' => [2001, true],
+            'hidden in live, visible in workspace' => [2002, false],
+            'visible in live, hidden in workspace' => [2003, true],
+            'hidden in live, hidden in workspace' => [2004, true],
+            'visible in live, expired in workspace' => [2005, true],
+            'visible in live, visible in workspace' => [2006, false],
+            'new in workspace, visible' => [2007, false],
+            'new in workspace, hidden' => [2008, true],
+            'not existing page' => [2999, false],
+        ];
+    }
+
+    #[DataProvider('checkIfPageIsHiddenInWorkspaceDataProvider')]
+    #[Test]
+    public function checkIfPageIsHiddenOnlyConsidersWorkspaceVersion(int $pageId, bool $expected): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/checkIfPageIsHidden.csv');
+        $context = new Context();
+        $context->setAspect('workspace', new WorkspaceAspect(1));
+        $subject = new PageRepository($context);
+        self::assertSame($expected, $subject->checkIfPageIsHidden($pageId, new LanguageAspect(0)));
+    }
+
     private function assertOverlayRow($row): void
     {
         self::assertIsArray($row);

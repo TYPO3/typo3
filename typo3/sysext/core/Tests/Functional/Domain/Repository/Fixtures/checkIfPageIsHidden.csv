@@ -1,0 +1,16 @@
+"pages",,,,,,,,,,,
+,"uid","pid","title","hidden","starttime","endtime","deleted","t3ver_oid","t3ver_wsid","t3ver_state","sys_language_uid"
+,2000,1,"Visible in live, no workspace version",0,0,0,0,0,0,0,0
+,2001,1,"Hidden in live, no workspace version",1,0,0,0,0,0,0,0
+,2002,1,"Hidden in live, visible in workspace",1,0,0,0,0,0,0,0
+,2102,1,"Hidden in live, visible in workspace",0,0,0,0,2002,1,0,0
+,2003,1,"Visible in live, hidden in workspace",0,0,0,0,0,0,0,0
+,2103,1,"Visible in live, hidden in workspace",1,0,0,0,2003,1,0,0
+,2004,1,"Hidden in live, hidden in workspace",1,0,0,0,0,0,0,0
+,2104,1,"Hidden in live, hidden in workspace",1,0,0,0,2004,1,0,0
+,2005,1,"Visible in live, expired in workspace",0,0,0,0,0,0,0,0
+,2105,1,"Visible in live, expired in workspace",0,0,1,0,2005,1,0,0
+,2006,1,"Visible in live, visible in workspace",0,0,0,0,0,0,0,0
+,2106,1,"Visible in live, visible in workspace",0,0,0,0,2006,1,0,0
+,2007,1,"New in workspace, visible",0,0,0,0,0,1,1,0
+,2008,1,"New in workspace, hidden",1,0,0,0,0,1,1,0
