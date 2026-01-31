@@ -1,0 +1,14 @@
+"pages"
+,"uid","pid","title","sorting","deleted","perms_everybody","slug"
+,1,0,"Root",128,0,15,"/"
+,2,1,"Subpage",256,0,15,"/subpage"
+"be_users"
+,"uid","pid","tstamp","username","password","admin","disable","starttime","endtime","options","crdate","workspace_perms","deleted","TSconfig","lastlogin","workspace_id"
+,1,0,1366642540,"admin","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,1,0,,1371033743,0
+"tt_content"
+,"uid","pid","CType","header","bodytext","deleted","t3ver_oid","t3ver_wsid","sys_language_uid"
+,1,1,"text","Normal Header","Normal bodytext",0,0,0,0
+,2,1,"text","<script>alert('XSS')</script>","<script>alert('XSS')</script>",0,0,0,0
+,3,1,"text","Header with ""quotes"" and 'apostrophes'","Text with ""quotes""",0,0,0,0
+,4,1,"text","Test & ampersand","Text with & ampersand",0,0,0,0
+,5,1,"text","<img src=x onerror=alert('XSS')>","<img src=x onerror=alert('XSS')>",0,0,0,0

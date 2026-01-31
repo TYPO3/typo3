@@ -1,0 +1,29 @@
+"sys_file_storage"
+,"uid","pid","name","processingfolder","driver","is_browsable","is_public","is_writable","is_online","configuration"
+,1,0,"fileadmin/ (auto-created)","_processed_/","Local",1,1,1,1,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+	<data>
+		<sheet index=""sDEF"">
+			<language index=""lDEF"">
+				<field index=""basePath"">
+					<value index=""vDEF"">fileadmin/</value>
+				</field>
+				<field index=""pathType"">
+					<value index=""vDEF"">relative</value>
+				</field>
+				<field index=""caseSensitive"">
+					<value index=""vDEF"">1</value>
+				</field>
+			</language>
+		</sheet>
+	</data>
+</T3FlexForms>"
+"sys_file"
+,"uid","pid","tstamp","last_indexed","storage","type","metadata","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","creation_date","modification_date","missing"
+,"1","0","1697814707","1697814707","1","2","0","/user_upload/ThumnailViewHelperFalTest.jpg","a20385b6dd064be08d6930ccb84ef25e8b1684d7","19669f1e02c2f16705ec7587044c66443be70725","jpg","image/jpeg","ThumnailViewHelperFalTest.jpg","da5de02721c004987c4d7dcc520ba1eeb24c63ea","1121638","1697814707","1697814707","0"
+"sys_file_metadata"
+,"uid","pid","tstamp","crdate","sys_language_uid","l10n_parent","l10n_state","l10n_diffsource","t3ver_oid","t3ver_wsid","t3ver_state","t3ver_stage","file","title","width","height","alternative","categories","description"
+,"1","0","1697814707","1697814707","0","0","\NULL","","0","0","0","0","1","Test Image","400","300","<script>alert('XSS')</script>","0","Test with <img onerror=alert(1)>"
+"sys_file_reference"
+,"uid","pid","tstamp","crdate","deleted","hidden","sys_language_uid","l10n_parent","l10n_state","l10n_diffsource","t3ver_oid","t3ver_wsid","t3ver_state","t3ver_stage","uid_foreign","tablenames","fieldname","sorting_foreign","uid_local","title","alternative","autoplay","crop","description","link"
+,"1","1","1697821916","1697821916","0","0","0","0","\NULL","","0","0","0","0","1","tt_content","image","1","1","<script>alert('XSS')</script>","<script>alert('XSS in alt')</script>","0","{""default"":{""cropArea"":{""x"":0,""y"":0,""width"":1,""height"":1},""selectedRatio"":""NaN"",""focusArea"":null}}","<img onerror=alert(1)>",""

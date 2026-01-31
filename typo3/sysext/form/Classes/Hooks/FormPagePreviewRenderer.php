@@ -18,15 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Hooks;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
+use TYPO3\CMS\Backend\Preview\PreviewRendererInterface;
+use TYPO3\CMS\Backend\Preview\RecordFieldPreviewProcessor;
 use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Core\Domain\FlexFormFieldValues;
 use TYPO3\CMS\Core\Error\Exception;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
@@ -40,7 +42,7 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class FormPagePreviewRenderer extends StandardContentPreviewRenderer
+class FormPagePreviewRenderer extends StandardContentPreviewRenderer implements PreviewRendererInterface
 {
     private const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
 
@@ -49,12 +51,15 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ExtbaseConfigurationManagerInterface $extbaseConfigurationManager,
         protected readonly ExtFormConfigurationManagerInterface $extFormConfigurationManager,
+        protected readonly RecordFieldPreviewProcessor $fieldProcessor,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly LocalizationRepository $localizationRepository,
     ) {}
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
         $record = $item->getRecord();
-        $itemContent = $this->linkEditContent('<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong>', $record) . '<br />';
+        $request = $item->getContext()->getCurrentRequest();
         $persistenceIdentifier = null;
         if ($record->has('pi_flexform')) {
             $flexFormData = $record->get('pi_flexform');
@@ -85,10 +90,7 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
                         // We are however not in extbase context here.
                         // To prevent a fallback of extbase ConfigurationManager to $GLOBALS['TYPO3_REQUEST'], we set
                         // the request explicitly here, to then fetch $formSettings from ext:form ConfigurationManager.
-                        $request = $item->getContext()->getCurrentRequest();
                         $this->extbaseConfigurationManager->setRequest($request);
-                        $typoScriptSettings = $this->extbaseConfigurationManager->getConfiguration(ExtbaseConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
-                        $formSettings = $this->extFormConfigurationManager->getYamlConfiguration($typoScriptSettings, false);
                         $formDefinition = $this->formPersistenceManager->load($persistenceIdentifier);
                         $formLabel = $formDefinition['label'];
                     } else {
@@ -137,8 +139,8 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
         } else {
             $formLabel = $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.noPersistenceIdentifier');
         }
-        $itemContent .= $this->linkEditContent(htmlspecialchars($formLabel), $record) . '<br />';
-        return $itemContent;
+        $itemContent = '<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong><br />';
+        return $this->fieldProcessor->linkToEditForm($itemContent . htmlspecialchars($formLabel), $record, $request);
     }
 
     protected function addInvalidFrameworkConfigurationFlashMessage(string $persistenceIdentifier, \Exception $e): void
@@ -147,8 +149,7 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
         $this->flashMessageService
             ->getMessageQueueByIdentifier('core.template.flashMessages')
             ->enqueue(
-                GeneralUtility::makeInstance(
-                    FlashMessage::class,
+                new FlashMessage(
                     sprintf(
                         $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
                         $persistenceIdentifier,
@@ -159,10 +160,5 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
                     true
                 )
             );
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }
