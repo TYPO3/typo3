@@ -26,6 +26,14 @@ lib.viewConfig {
     }
 }
 
+[traverse(request.getQueryParams(), 'override') == 'onlyDefaultPaths' || traverse(request.getParsedBody(), 'override') == 'onlyDefaultPaths']
+  lib.viewConfig {
+      layoutRootPaths >
+      partialRootPaths >
+      templateRootPaths >
+  }
+[end]
+
 [traverse(request.getQueryParams(), 'override') == 'overrideAll' || traverse(request.getParsedBody(), 'override') == 'overrideAll']
     lib.viewConfig {
         templateRootPaths {
@@ -43,19 +51,21 @@ lib.viewConfig {
 [end]
 
 [traverse(request.getQueryParams(), 'override') == 'defaultReordered' || traverse(request.getParsedBody(), 'override') == 'defaultReordered']
-    # Default paths are added by extbase at the first position of each list
-    # this attempts to "move" the default paths to the end of the list
+    # Default path is added explicitly to test if it can override others
     lib.viewConfig {
         templateRootPaths {
-            10 = EXT:fluid_test/Resources/Private/Templates/
+            10 = EXT:fluid_test/Resources/Private/Override/Templates/
+            20 = EXT:fluid_test/Resources/Private/Templates/
         }
 
         partialRootPaths {
-            10 = EXT:fluid_test/Resources/Private/Partials/
+            10 = EXT:fluid_test/Resources/Private/Override/Partials/
+            20 = EXT:fluid_test/Resources/Private/Partials/
         }
 
         layoutRootPaths {
-            10 = EXT:fluid_test/Resources/Private/Layouts/
+            10 = EXT:fluid_test/Resources/Private/Override/Layouts/
+            20 = EXT:fluid_test/Resources/Private/Layouts/
         }
     }
 [end]

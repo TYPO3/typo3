@@ -518,18 +518,9 @@ abstract class ActionController implements ControllerInterface
         }
         $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $extensionKey = $this->request->getControllerExtensionKey();
-        $templateRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Templates/'];
-        if (!empty($configuration['view']['templateRootPaths']) && is_array($configuration['view']['templateRootPaths'])) {
-            $templateRootPaths = array_merge($templateRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['templateRootPaths']));
-        }
-        $layoutRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Layouts/'];
-        if (!empty($configuration['view']['layoutRootPaths']) && is_array($configuration['view']['layoutRootPaths'])) {
-            $layoutRootPaths = array_merge($layoutRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['layoutRootPaths']));
-        }
-        $partialRootPaths = ['EXT:' . $extensionKey . '/Resources/Private/Partials/'];
-        if (!empty($configuration['view']['partialRootPaths']) && is_array($configuration['view']['partialRootPaths'])) {
-            $partialRootPaths = array_merge($partialRootPaths, ArrayUtility::sortArrayWithIntegerKeys($configuration['view']['partialRootPaths']));
-        }
+        $templateRootPaths = $this->addDefaultPathToPaths($configuration['view']['templateRootPaths'] ?? [], 'EXT:' . $extensionKey . '/Resources/Private/Templates/');
+        $layoutRootPaths = $this->addDefaultPathToPaths($configuration['view']['layoutRootPaths'] ?? [], 'EXT:' . $extensionKey . '/Resources/Private/Layouts/');
+        $partialRootPaths = $this->addDefaultPathToPaths($configuration['view']['partialRootPaths'] ?? [], 'EXT:' . $extensionKey . '/Resources/Private/Partials/');
         if ($this->defaultViewObjectName === null) {
             $viewFactoryData = new ViewFactoryData(
                 templateRootPaths: $templateRootPaths,
@@ -573,6 +564,32 @@ abstract class ActionController implements ControllerInterface
         }
         $view->assign('settings', $this->settings);
         return $view;
+    }
+
+    /**
+     * Adds extbase's default template path to the configured list of
+     * template paths. The default path is usually used as a fallback if
+     * no paths are specified or if the template cannot be found in any
+     * of the configured paths. However, if the default path is already
+     * present in the configured paths, the specified position takes
+     * precedence. This allows the default path to be "moved" within
+     * the list of paths via configuration.
+     *
+     * @return string[]
+     * @internal
+     */
+    protected function addDefaultPathToPaths(mixed $paths, string $defaultPath): array
+    {
+        if (!is_array($paths) || empty($paths)) {
+            $paths = [$defaultPath];
+        } else {
+            $paths = ArrayUtility::sortArrayWithIntegerKeys($paths);
+            if (!in_array($defaultPath, $paths)) {
+                $paths = array_merge([$defaultPath], $paths);
+            }
+        }
+
+        return $paths;
     }
 
     /**

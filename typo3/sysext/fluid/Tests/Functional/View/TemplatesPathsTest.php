@@ -163,10 +163,16 @@ final class TemplatesPathsTest extends FunctionalTestCase
     {
         return [
             'defaultReordered' => [
-                'default',
-                'Base Template', // @todo should be "Default Template"
-                'Base Partial', // @todo should be "Default Partial"
-                'Base Layout', // @todo should be "Default Layout"
+                'defaultReordered',
+                'Default Template',
+                'Default Partial',
+                'Default Layout',
+            ],
+            'onlyDefaultPaths' => [
+                'onlyDefaultPaths',
+                'Default Template',
+                'Default Partial',
+                'Default Layout',
             ],
         ];
     }
@@ -266,22 +272,6 @@ final class TemplatesPathsTest extends FunctionalTestCase
         self::assertStringContainsString($expectedTemplate, $content);
         self::assertStringContainsString($expectedPartial, $content);
         self::assertStringContainsString($expectedLayout, $content);
-    }
-
-    #[Test]
-    public function baseRenderingWorksForControllerAsPluginUsageWithoutConfig(): void
-    {
-        $requestArguments = [
-            'id' => '1',
-            'override' => 'base',
-            'mode' => 'plugin',
-        ];
-
-        $content = $this->fetchFrontendResponseBody($requestArguments);
-
-        self::assertStringContainsString('Default Template', $content);
-        self::assertStringContainsString('Default Layout', $content);
-        self::assertStringContainsString('Default Partial', $content);
     }
 
     #[Test]
