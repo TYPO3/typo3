@@ -122,7 +122,7 @@ test.describe('File Operations', () => {
       await expect(alert.getByText(randomUploadFileName)).toBeVisible({ timeout: 12000 });
 
       // Close alert
-      await alert.locator('[role="alertdialog"]', { hasText: 'Uploading file' }).locator('.close').click();
+      await alert.locator('[role="alertdialog"]', { hasText: 'uploaded to' }).locator('.close').click();
 
       // Wait for reload notification
       await expect(alert.getByText('Reload filelist')).toBeVisible({ timeout: 15000 });

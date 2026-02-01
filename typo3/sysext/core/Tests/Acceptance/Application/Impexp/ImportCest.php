@@ -139,7 +139,7 @@ final class ImportCest extends AbstractCest
         $I->click($this->buttonUploadFile, $this->inModuleTabsBody);
         $I->wait(1);
         $I->canSeeElement($this->inFlashMessages . ' .alert.alert-success');
-        $I->canSee('Uploading file', $this->inFlashMessages . ' .alert.alert-success .alert-message');
+        $I->canSee('uploaded to', $this->inFlashMessages . ' .alert.alert-success .alert-message');
         $I->seeElement($this->inFlashMessages . ' .alert.alert-danger');
         $I->see('Prerequisites for file import are not met.', $this->inFlashMessages);
         $I->canSeeElement($this->inModuleTabs . ' ' . $this->tabMessages);
@@ -178,7 +178,7 @@ final class ImportCest extends AbstractCest
         $I->click($this->buttonUploadFile, $this->inModuleTabsBody);
         $I->wait(1);
         $I->canSeeElement($this->inFlashMessages . ' .alert.alert-success');
-        $I->canSee('Uploading file', $this->inFlashMessages . ' .alert.alert-success .alert-message');
+        $I->canSee('uploaded to', $this->inFlashMessages . ' .alert.alert-success .alert-message');
         $I->cantSeeElement($this->inFlashMessages . ' .alert.alert-danger');
         $I->cantSeeElement($this->inModuleTabs . ' ' . $this->tabMessages);
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
@@ -220,7 +220,7 @@ final class ImportCest extends AbstractCest
         $I->click($this->buttonUploadFile, $this->inModuleTabsBody);
         $I->wait(1);
         $I->canSeeElement($this->inFlashMessages . ' .alert.alert-success');
-        $I->canSee('Uploading file', $this->inFlashMessages . ' .alert.alert-success .alert-message');
+        $I->canSee('uploaded to', $this->inFlashMessages . ' .alert.alert-success .alert-message');
         $I->cantSeeElement($this->inFlashMessages . ' .alert.alert-danger');
         $I->cantSeeElement($this->inModuleTabs . ' ' . $this->tabMessages);
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
@@ -264,7 +264,7 @@ final class ImportCest extends AbstractCest
         $I->click($this->buttonUploadFile, $this->inModuleTabsBody);
         $I->wait(1);
         $I->canSeeElement($this->inFlashMessages . ' .alert.alert-success');
-        $I->canSee('Uploading file', $this->inFlashMessages . ' .alert.alert-success .alert-message');
+        $I->canSee('uploaded to', $this->inFlashMessages . ' .alert.alert-success .alert-message');
         $I->cantSeeElement($this->inFlashMessages . ' .alert.alert-danger');
         $I->cantSeeElement($this->inModuleTabs . ' ' . $this->tabMessages);
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
