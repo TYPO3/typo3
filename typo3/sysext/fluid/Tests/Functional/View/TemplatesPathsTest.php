@@ -116,6 +116,12 @@ final class TemplatesPathsTest extends FunctionalTestCase
                 'Base Partial',
                 'Base Layout',
             ],
+            'templateOverrideReordered' => [
+                'templateOverrideReordered',
+                'Override Template', // @todo Should be "Base Template"
+                'Base Partial',
+                'Base Layout',
+            ],
             'partialOverride' => [
                 'partialOverride',
                 'Base Template',
@@ -126,6 +132,12 @@ final class TemplatesPathsTest extends FunctionalTestCase
                 'partialOverrideManual',
                 'Base Template',
                 'PartialOverride',
+                'Base Layout',
+            ],
+            'partialOverrideReordered' => [
+                'partialOverrideReordered',
+                'Base Template',
+                'Override Partial', // @todo Should be "Base Partial"
                 'Base Layout',
             ],
             'layoutOverride' => [
@@ -139,6 +151,24 @@ final class TemplatesPathsTest extends FunctionalTestCase
                 'Base Template',
                 'Base Partial',
                 'LayoutOverride',
+            ],
+            'layoutOverrideReordered' => [
+                'layoutOverrideReordered',
+                'Base Template',
+                'Base Partial',
+                'Override Layout', // @todo Should be "Base Layout"
+            ],
+        ];
+    }
+
+    public static function extbaseSpecificOverrideScenariosDataProvider(): array
+    {
+        return [
+            'defaultReordered' => [
+                'default',
+                'Base Template', // @todo should be "Default Template"
+                'Base Partial', // @todo should be "Default Partial"
+                'Base Layout', // @todo should be "Default Layout"
             ],
         ];
     }
@@ -173,6 +203,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
      * @param string $expectedLayout
      */
     #[DataProvider('differentOverrideScenariosDataProvider')]
+    #[DataProvider('extbaseSpecificOverrideScenariosDataProvider')]
     #[Test]
     public function baseRenderingWorksForControllerAsGlobalUsage($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
@@ -196,6 +227,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
      * @param string $expectedLayout
      */
     #[DataProvider('differentOverrideScenariosDataProvider')]
+    #[DataProvider('extbaseSpecificOverrideScenariosDataProvider')]
     #[Test]
     public function baseRenderingWorksForControllerAsPluginUsage($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
@@ -220,6 +252,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
      * @param string $expectedLayout
      */
     #[DataProvider('differentOverrideScenariosDataProvider')]
+    #[DataProvider('extbaseSpecificOverrideScenariosDataProvider')]
     #[Test]
     public function baseRenderingWorksForControllerAsPluginUsageWithPluginConfig($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
@@ -235,6 +268,22 @@ final class TemplatesPathsTest extends FunctionalTestCase
         self::assertStringContainsString($expectedTemplate, $content);
         self::assertStringContainsString($expectedPartial, $content);
         self::assertStringContainsString($expectedLayout, $content);
+    }
+
+    #[Test]
+    public function baseRenderingWorksForControllerAsPluginUsageWithoutConfig(): void
+    {
+        $requestArguments = [
+            'id' => '1',
+            'override' => 'base',
+            'mode' => 'plugin',
+        ];
+
+        $content = $this->fetchFrontendResponseBody($requestArguments);
+
+        self::assertStringContainsString('Default Template', $content);
+        self::assertStringContainsString('Default Layout', $content);
+        self::assertStringContainsString('Default Partial', $content);
     }
 
     #[Test]
