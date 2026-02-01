@@ -42,6 +42,24 @@ lib.viewConfig {
     }
 [end]
 
+[traverse(request.getQueryParams(), 'override') == 'defaultReordered' || traverse(request.getParsedBody(), 'override') == 'defaultReordered']
+    # Default paths are added by extbase at the first position of each list
+    # this attempts to "move" the default paths to the end of the list
+    lib.viewConfig {
+        templateRootPaths {
+            10 = EXT:fluid_test/Resources/Private/Templates/
+        }
+
+        partialRootPaths {
+            10 = EXT:fluid_test/Resources/Private/Partials/
+        }
+
+        layoutRootPaths {
+            10 = EXT:fluid_test/Resources/Private/Layouts/
+        }
+    }
+[end]
+
 [traverse(request.getQueryParams(), 'override') == 'templateOverride' || traverse(request.getParsedBody(), 'override') == 'templateOverride']
     lib.viewConfig {
         templateRootPaths {
@@ -56,6 +74,16 @@ lib.viewConfig {
         templateRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Templates/
             bla = EXT:fluid_test/Resources/Private/TemplateOverride/Templates/
+        }
+    }
+[end]
+
+[traverse(request.getQueryParams(), 'override') == 'templateOverrideReordered' || traverse(request.getParsedBody(), 'override') == 'templateOverrideReordered']
+    lib.viewConfig {
+        templateRootPaths {
+            10 = EXT:fluid_test/Resources/Private/Override/Templates/
+            # "Base" path is added twice to attempt "moving" them to the end of the list
+            20 = EXT:fluid_test/Resources/Private/Base/Templates/
         }
     }
 [end]
@@ -78,6 +106,16 @@ lib.viewConfig {
     }
 [end]
 
+[traverse(request.getQueryParams(), 'override') == 'partialOverrideReordered' || traverse(request.getParsedBody(), 'override') == 'partialOverrideReordered']
+    lib.viewConfig {
+        partialRootPaths {
+            10 = EXT:fluid_test/Resources/Private/Override/Partials/
+            # "Base" path is added twice to attempt "moving" them to the end of the list
+            20 = EXT:fluid_test/Resources/Private/Base/Partials/
+        }
+    }
+[end]
+
 [traverse(request.getQueryParams(), 'override') == 'layoutOverride' || traverse(request.getParsedBody(), 'override') == 'layoutOverride']
     lib.viewConfig {
         layoutRootPaths {
@@ -92,6 +130,16 @@ lib.viewConfig {
         layoutRootPaths {
             10 = EXT:fluid_test/Resources/Private/Override/Layouts/
             bla = EXT:fluid_test/Resources/Private/LayoutOverride/Layouts/
+        }
+    }
+[end]
+
+[traverse(request.getQueryParams(), 'override') == 'layoutOverrideReordered' || traverse(request.getParsedBody(), 'override') == 'layoutOverrideReordered']
+    lib.viewConfig {
+        layoutRootPaths {
+            10 = EXT:fluid_test/Resources/Private/Override/Layouts/
+            # "Base" path is added twice to attempt "moving" them to the end of the list
+            20 = EXT:fluid_test/Resources/Private/Base/Layouts/
         }
     }
 [end]
