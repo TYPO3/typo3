@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Event\Mvc;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Event that is triggered before any Extbase Action is called within the ActionController or one
  * of its subclasses.
@@ -26,7 +28,8 @@ final readonly class BeforeActionCallEvent
     public function __construct(
         private string $controllerClassName,
         private string $actionMethodName,
-        private array $preparedArguments
+        private array $preparedArguments,
+        private ServerRequestInterface $request,
     ) {}
 
     public function getControllerClassName(): string
@@ -42,5 +45,10 @@ final readonly class BeforeActionCallEvent
     public function getPreparedArguments(): array
     {
         return $this->preparedArguments;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }

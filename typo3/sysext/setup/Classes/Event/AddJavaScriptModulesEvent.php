@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Setup\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Collects additional JavaScript modules to be loaded in SetupModuleController.
  */
@@ -26,6 +28,15 @@ final class AddJavaScriptModulesEvent
      * @var string[]
      */
     private array $javaScriptModules = [];
+
+    public function __construct(
+        private readonly ServerRequestInterface $request,
+    ) {}
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
+    }
 
     /**
      * @param string $specifier Bare module identifier like @my/package/filename.js

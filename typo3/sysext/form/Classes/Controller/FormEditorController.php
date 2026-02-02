@@ -198,7 +198,7 @@ class FormEditorController extends ActionController
     {
         $formDefinition = $formDefinition->getArrayCopy();
         $event = $this->eventDispatcher->dispatch(
-            new BeforeFormIsSavedEvent($formPersistenceIdentifier, $formDefinition),
+            new BeforeFormIsSavedEvent($formPersistenceIdentifier, $formDefinition, $this->request),
         );
         $formPersistenceIdentifier = $event->formPersistenceIdentifier;
         $formDefinition = $event->form;

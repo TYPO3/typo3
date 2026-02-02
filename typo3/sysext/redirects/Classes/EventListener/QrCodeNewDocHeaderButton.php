@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\EventListener;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent;
@@ -39,7 +38,7 @@ readonly class QrCodeNewDocHeaderButton
     public function __invoke(ModifyButtonBarEvent $event): void
     {
         $buttons = $event->getButtons();
-        $request = $this->getRequest();
+        $request = $event->getRequest();
 
         // Overwrite the "new" button only if there is already one in
         // the qrcodes module. This way the show/hide logic is re-used
@@ -71,11 +70,6 @@ readonly class QrCodeNewDocHeaderButton
         // Overwrite the default "new" button
         $buttons['left'][4][0] = $newRecordButton;
         $event->setButtons($buttons);
-    }
-
-    protected function getRequest(): ServerRequestInterface
-    {
-        return $GLOBALS['TYPO3_REQUEST'];
     }
 
     protected function getLanguageService(): LanguageService

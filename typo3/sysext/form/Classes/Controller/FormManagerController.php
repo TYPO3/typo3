@@ -158,7 +158,7 @@ class FormManagerController extends ActionController
         $form['prototypeName'] = $prototypeName;
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($form['identifier'], $savePath, $formSettings);
         $event = $this->eventDispatcher->dispatch(
-            new BeforeFormIsCreatedEvent($formPersistenceIdentifier, $form)
+            new BeforeFormIsCreatedEvent($formPersistenceIdentifier, $form, $this->request)
         );
         $formPersistenceIdentifier = $event->formPersistenceIdentifier;
         $form = $event->form;
@@ -216,7 +216,7 @@ class FormManagerController extends ActionController
         $formToDuplicate['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($formSettings, $this->convertFormNameToIdentifier($formName));
         $formPersistenceIdentifier = $this->formPersistenceManager->getUniquePersistenceIdentifier($formToDuplicate['identifier'], $savePath, $formSettings);
         $event = $this->eventDispatcher->dispatch(
-            new BeforeFormIsDuplicatedEvent($formPersistenceIdentifier, $formToDuplicate)
+            new BeforeFormIsDuplicatedEvent($formPersistenceIdentifier, $formToDuplicate, $this->request)
         );
         $formPersistenceIdentifier = $event->formPersistenceIdentifier;
         $formToDuplicate = $event->form;
@@ -302,7 +302,7 @@ class FormManagerController extends ActionController
             $response = $this->getErrorResponseForDeleteAction($formSettings, $formPersistenceIdentifier);
         } else {
             $event = $this->eventDispatcher->dispatch(
-                new BeforeFormIsDeletedEvent($formPersistenceIdentifier)
+                new BeforeFormIsDeletedEvent($formPersistenceIdentifier, $this->request)
             );
             if ($event->preventDeletion) {
                 $response = $this->getErrorResponseForDeleteAction($formSettings, $formPersistenceIdentifier);

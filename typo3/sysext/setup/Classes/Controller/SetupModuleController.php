@@ -185,7 +185,7 @@ class SetupModuleController
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/modal.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/form-engine.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/setup/setup-module.js');
-        $this->processAdditionalJavaScriptModules();
+        $this->processAdditionalJavaScriptModules($request);
         $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
         $this->pageRenderer->addInlineLanguageLabelArray([
             'FormEngine.remainingCharacters' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
@@ -202,9 +202,9 @@ class SetupModuleController
         return $view;
     }
 
-    protected function processAdditionalJavaScriptModules(): void
+    protected function processAdditionalJavaScriptModules(ServerRequestInterface $request): void
     {
-        $event = new AddJavaScriptModulesEvent();
+        $event = new AddJavaScriptModulesEvent($request);
         $event = $this->eventDispatcher->dispatch($event);
         foreach ($event->getJavaScriptModules() as $specifier) {
             $this->pageRenderer->loadJavaScriptModule($specifier);

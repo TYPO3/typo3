@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Listeners to this Event will be able to:
@@ -29,7 +30,8 @@ final class BeforeFormIsDeletedEvent implements StoppableEventInterface
 {
     public function __construct(
         public readonly string $formPersistenceIdentifier,
-        public bool $preventDeletion = false
+        public readonly ServerRequestInterface $request,
+        public bool $preventDeletion = false,
     ) {}
 
     public function isPropagationStopped(): bool

@@ -451,7 +451,7 @@ abstract class ActionController implements ControllerInterface
                 $preparedArguments[] = $argument->getValue();
             }
 
-            $this->eventDispatcher->dispatch(new BeforeActionCallEvent(static::class, $this->actionMethodName, $preparedArguments));
+            $this->eventDispatcher->dispatch(new BeforeActionCallEvent(static::class, $this->actionMethodName, $preparedArguments, $this->request));
             $actionResult = $this->{$this->actionMethodName}(...$preparedArguments);
         } else {
             $actionResult = $this->{$this->errorMethodName}();

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\SysNote\Provider;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -66,7 +65,7 @@ final readonly class ButtonBarProvider
     public function __invoke(ModifyButtonBarEvent $event): void
     {
         $buttons = $event->getButtons();
-        $request = $this->getRequest();
+        $request = $event->getRequest();
 
         $id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $module = $request->getAttribute('module');
@@ -136,11 +135,6 @@ final readonly class ButtonBarProvider
         return ($allowedNewTables === [] && $deniedNewTables === [])
             || (!in_array(self::TABLE_NAME, $deniedNewTables)
                 && ($allowedNewTables === [] || in_array(self::TABLE_NAME, $allowedNewTables)));
-    }
-
-    private function getRequest(): ServerRequestInterface
-    {
-        return $GLOBALS['TYPO3_REQUEST'];
     }
 
     private function getBackendUserAuthentication(): BackendUserAuthentication

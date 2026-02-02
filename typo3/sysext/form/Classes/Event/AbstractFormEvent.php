@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Listeners to those Events will be able to modify the form definition and
  * persistence identifier before a form is processed, e.g. created or saved.
@@ -25,11 +27,12 @@ abstract class AbstractFormEvent
 {
     /**
      * @param array{type: string, label: string, identifier: string, prototypeName: string, renderables?: array} $form
-     *        The form definition as array. The array contains at least the following keys: type, label, identifier,
-     *        prototypeName. Optional the array may contain a key "renderables" with predefined renderables of the form.
+     *        The form definition as an array. The array contains at least the following keys: type, label, identifier,
+     *        prototypeName. Optionally, the array may contain a key "renderables" with predefined renderables of the form.
      */
     public function __construct(
         public string $formPersistenceIdentifier,
-        public array $form
+        public array $form,
+        public readonly ServerRequestInterface $request,
     ) {}
 }

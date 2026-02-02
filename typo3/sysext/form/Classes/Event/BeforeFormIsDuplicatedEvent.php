@@ -22,5 +22,3 @@ namespace TYPO3\CMS\Form\Event;
  * and persistence identifier before a form is duplicated.
  */
 final class BeforeFormIsDuplicatedEvent extends AbstractFormEvent {}
-{
-}

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\EventListener;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent;
@@ -43,7 +42,7 @@ final readonly class ReplaceAddNewButtonToFormEngine
     #[AsEventListener]
     public function __invoke(ModifyButtonBarEvent $event): void
     {
-        $request = $this->getRequest();
+        $request = $event->getRequest();
 
         if (($request->getAttribute('routing')?->getRoute()?->getOptions()['_identifier'] ?? '') !== 'record_edit') {
             return;
@@ -91,10 +90,5 @@ final readonly class ReplaceAddNewButtonToFormEngine
     private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    private function getRequest(): ServerRequestInterface
-    {
-        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
