@@ -38,6 +38,7 @@ ExtensionManagementUtility::addRecordType(
                             'link' => [
                                 'config' => [
                                     'allowedTypes' => ['url', 'email', 'telephone'],
+                                    'required' => true,
                                 ],
                             ],
                         ],
