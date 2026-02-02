@@ -4949,13 +4949,6 @@
       "sprite": "sprites/module.svg#module-belog",
       "bidi": false
     },
-    "module-beuser": {
-      "identifier": "module-beuser",
-      "category": "module",
-      "svg": "svgs/module/module-beuser.svg",
-      "sprite": "sprites/module.svg#module-beuser",
-      "bidi": false
-    },
     "module-config": {
       "identifier": "module-config",
       "category": "module",
@@ -4968,13 +4961,6 @@
       "category": "module",
       "svg": "svgs/module/module-contentelements.svg",
       "sprite": "sprites/module.svg#module-contentelements",
-      "bidi": false
-    },
-    "module-cshmanual": {
-      "identifier": "module-cshmanual",
-      "category": "module",
-      "svg": "svgs/module/module-cshmanual.svg",
-      "sprite": "sprites/module.svg#module-cshmanual",
       "bidi": false
     },
     "module-dashboard": {
@@ -5019,11 +5005,11 @@
       "sprite": "sprites/module.svg#module-extensionmanager",
       "bidi": false
     },
-    "module-filelist": {
-      "identifier": "module-filelist",
+    "module-file": {
+      "identifier": "module-file",
       "category": "module",
-      "svg": "svgs/module/module-filelist.svg",
-      "sprite": "sprites/module.svg#module-filelist",
+      "svg": "svgs/module/module-file.svg",
+      "sprite": "sprites/module.svg#module-file",
       "bidi": false
     },
     "module-form": {
@@ -5222,6 +5208,13 @@
       "sprite": "sprites/module.svg#module-site-settings",
       "bidi": false
     },
+    "module-site": {
+      "identifier": "module-site",
+      "category": "module",
+      "svg": "svgs/module/module-site.svg",
+      "sprite": "sprites/module.svg#module-site",
+      "bidi": false
+    },
     "module-sites": {
       "identifier": "module-sites",
       "category": "module",
@@ -5236,6 +5229,13 @@
       "sprite": "sprites/module.svg#module-styleguide",
       "bidi": false
     },
+    "module-system": {
+      "identifier": "module-system",
+      "category": "module",
+      "svg": "svgs/module/module-system.svg",
+      "sprite": "sprites/module.svg#module-system",
+      "bidi": false
+    },
     "module-taskcenter": {
       "identifier": "module-taskcenter",
       "category": "module",
@@ -5248,6 +5248,13 @@
       "category": "module",
       "svg": "svgs/module/module-template.svg",
       "sprite": "sprites/module.svg#module-template",
+      "bidi": false
+    },
+    "module-tools": {
+      "identifier": "module-tools",
+      "category": "module",
+      "svg": "svgs/module/module-tools.svg",
+      "sprite": "sprites/module.svg#module-tools",
       "bidi": false
     },
     "module-tsconfig": {
@@ -5271,11 +5278,25 @@
       "sprite": "sprites/module.svg#module-urls",
       "bidi": false
     },
+    "module-user": {
+      "identifier": "module-user",
+      "category": "module",
+      "svg": "svgs/module/module-user.svg",
+      "sprite": "sprites/module.svg#module-user",
+      "bidi": false
+    },
     "module-viewpage": {
       "identifier": "module-viewpage",
       "category": "module",
       "svg": "svgs/module/module-viewpage.svg",
       "sprite": "sprites/module.svg#module-viewpage",
+      "bidi": false
+    },
+    "module-web": {
+      "identifier": "module-web",
+      "category": "module",
+      "svg": "svgs/module/module-web.svg",
+      "sprite": "sprites/module.svg#module-web",
       "bidi": false
     },
     "module-webhooks": {
@@ -5290,55 +5311,6 @@
       "category": "module",
       "svg": "svgs/module/module-workspaces.svg",
       "sprite": "sprites/module.svg#module-workspaces",
-      "bidi": false
-    },
-    "modulegroup-file": {
-      "identifier": "modulegroup-file",
-      "category": "modulegroup",
-      "svg": "svgs/modulegroup/modulegroup-file.svg",
-      "sprite": "sprites/modulegroup.svg#modulegroup-file",
-      "bidi": false
-    },
-    "modulegroup-help": {
-      "identifier": "modulegroup-help",
-      "category": "modulegroup",
-      "svg": "svgs/modulegroup/modulegroup-help.svg",
-      "sprite": "sprites/modulegroup.svg#modulegroup-help",
-      "bidi": false
-    },
-    "modulegroup-site": {
-      "identifier": "modulegroup-site",
-      "category": "modulegroup",
-      "svg": "svgs/modulegroup/modulegroup-site.svg",
-      "sprite": "sprites/modulegroup.svg#modulegroup-site",
-      "bidi": false
-    },
-    "modulegroup-system": {
-      "identifier": "modulegroup-system",
-      "category": "modulegroup",
-      "svg": "svgs/modulegroup/modulegroup-system.svg",
-      "sprite": "sprites/modulegroup.svg#modulegroup-system",
-      "bidi": false
-    },
-    "modulegroup-tools": {
-      "identifier": "modulegroup-tools",
-      "category": "modulegroup",
-      "svg": "svgs/modulegroup/modulegroup-tools.svg",
-      "sprite": "sprites/modulegroup.svg#modulegroup-tools",
-      "bidi": false
-    },
-    "modulegroup-user": {
-      "identifier": "modulegroup-user",
-      "category": "modulegroup",
-      "svg": "svgs/modulegroup/modulegroup-user.svg",
-      "sprite": "sprites/modulegroup.svg#modulegroup-user",
-      "bidi": false
-    },
-    "modulegroup-web": {
-      "identifier": "modulegroup-web",
-      "category": "modulegroup",
-      "svg": "svgs/modulegroup/modulegroup-web.svg",
-      "sprite": "sprites/modulegroup.svg#modulegroup-web",
       "bidi": false
     },
     "overlay-advanced": {
@@ -5771,9 +5743,18 @@
     "apps-toolbar-menu-workspace": "actions-workspace",
     "empty-empty": "miscellaneous-placeholder",
     "module-cshmanual": "module-documentation",
+    "module-filelist": "module-file",
+    "modulegroup-file": "module-file",
     "module-version": "module-generic",
+    "modulegroup-help": "module-help",
+    "modulegroup-site": "module-site",
+    "modulegroup-system": "module-system",
     "module-templates": "module-template",
+    "modulegroup-tools": "module-tools",
     "module-tstemplate": "module-tsconfig",
+    "module-beuser": "module-user",
+    "modulegroup-user": "module-user",
+    "modulegroup-web": "module-web",
     "spinner-circle-light": "spinner-circle",
     "spinner-circle-dark": "spinner-circle"
   }

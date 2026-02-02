@@ -6,14 +6,14 @@
 return [
     'content' => [
         'labels' => 'core.modules.content',
-        'iconIdentifier' => 'modulegroup-web',
+        'iconIdentifier' => 'module-web',
         'navigationComponent' => '@typo3/backend/tree/page-tree-element',
         'aliases' => ['web'],
     ],
     'media' => [
         'position' => ['after' => 'content'],
         'labels' => 'core.modules.media',
-        'iconIdentifier' => 'modulegroup-file',
+        'iconIdentifier' => 'module-file',
         'navigationComponent' => '@typo3/backend/tree/file-storage-tree-container',
         'aliases' => ['file'],
         'appearance' => [
@@ -23,11 +23,11 @@ return [
     'site' => [
         'labels' => 'core.modules.site',
         'workspaces' => 'live',
-        'iconIdentifier' => 'modulegroup-site',
+        'iconIdentifier' => 'module-site',
     ],
     'user' => [
         'labels' => 'core.modules.user',
-        'iconIdentifier' => 'modulegroup-user',
+        'iconIdentifier' => 'module-user',
         'workspaces' => '*',
         'appearance' => [
             'renderInModuleMenu' => false,
@@ -35,12 +35,12 @@ return [
     ],
     'admin' => [
         'labels' => 'core.modules.admin',
-        'iconIdentifier' => 'modulegroup-tools',
+        'iconIdentifier' => 'module-tools',
         'aliases' => ['tools'],
     ],
     'system' => [
         'labels' => 'core.modules.system',
-        'iconIdentifier' => 'modulegroup-system',
+        'iconIdentifier' => 'module-system',
     ],
     'integrations' => [
         'parent' => 'admin',
@@ -57,7 +57,7 @@ return [
     ],
     'help' => [
         'labels' => 'core.modules.help',
-        'iconIdentifier' => 'modulegroup-help',
+        'iconIdentifier' => 'module-help',
         'appearance' => [
             'renderInModuleMenu' => false,
         ],
