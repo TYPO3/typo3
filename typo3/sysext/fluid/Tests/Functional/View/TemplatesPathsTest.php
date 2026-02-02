@@ -118,7 +118,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
             ],
             'templateOverrideReordered' => [
                 'templateOverrideReordered',
-                'Override Template', // @todo Should be "Base Template"
+                'Base Template',
                 'Base Partial',
                 'Base Layout',
             ],
@@ -137,7 +137,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
             'partialOverrideReordered' => [
                 'partialOverrideReordered',
                 'Base Template',
-                'Override Partial', // @todo Should be "Base Partial"
+                'Base Partial',
                 'Base Layout',
             ],
             'layoutOverride' => [
@@ -156,7 +156,7 @@ final class TemplatesPathsTest extends FunctionalTestCase
                 'layoutOverrideReordered',
                 'Base Template',
                 'Base Partial',
-                'Override Layout', // @todo Should be "Base Layout"
+                'Base Layout',
             ],
         ];
     }
