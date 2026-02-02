@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Preview;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -41,6 +42,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * The result is always HTML, and it's always HSCed -> ready to be rendered.
  */
+#[Autoconfigure(public: true)]
 final class RecordFieldPreviewProcessor
 {
     private array $itemLabels = [];

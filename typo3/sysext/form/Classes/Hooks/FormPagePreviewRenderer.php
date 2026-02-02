@@ -51,9 +51,9 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer implements 
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ExtbaseConfigurationManagerInterface $extbaseConfigurationManager,
         protected readonly ExtFormConfigurationManagerInterface $extFormConfigurationManager,
-        protected readonly RecordFieldPreviewProcessor $fieldProcessor,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly LocalizationRepository $localizationRepository,
+        protected ?RecordFieldPreviewProcessor $fieldProcessor,
+        protected ?TcaSchemaFactory $tcaSchemaFactory,
+        protected ?LocalizationRepository $localizationRepository,
     ) {}
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string

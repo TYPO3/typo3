@@ -53,15 +53,35 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class StandardContentPreviewRenderer implements PreviewRendererInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    protected ?RecordFieldPreviewProcessor $fieldProcessor = null;
+    protected ?TcaSchemaFactory $tcaSchemaFactory = null;
+    protected ?LocalizationRepository $localizationRepository = null;
 
-    public function __construct(
-        protected readonly RecordFieldPreviewProcessor $fieldProcessor,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly LocalizationRepository $localizationRepository,
-    ) {}
+    public function __construct()
+    {
+        $this->initialize();
+    }
+
+    /**
+     * We use this workaround for the subclasses that do DI since TYPO3 v11, but do not call this constructor.
+     * This is a backwards-compatible layer until we have a better API than PreviewRendererInterface.
+     */
+    private function initialize(): void
+    {
+        if (!isset($this->fieldProcessor)) {
+            $this->fieldProcessor = GeneralUtility::makeInstance(RecordFieldPreviewProcessor::class);
+        }
+        if (!isset($this->tcaSchemaFactory)) {
+            $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        }
+        if (!isset($this->localizationRepository)) {
+            $this->localizationRepository = GeneralUtility::makeInstance(LocalizationRepository::class);
+        }
+    }
 
     public function renderPageModulePreviewHeader(GridColumnItem $item): string
     {
+        $this->initialize();
         $record = $item->getRecord();
         $request = $item->getContext()->getCurrentRequest();
         $schema = $this->tcaSchemaFactory->get($item->getTable());
@@ -98,6 +118,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
+        $this->initialize();
         $recordObj = $item->getRecord();
         // This preview should only be used for tt_content records.
         if ($recordObj->getMainType() !== 'tt_content') {
@@ -223,6 +244,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      */
     public function renderPageModulePreviewFooter(GridColumnItem $item): string
     {
+        $this->initialize();
         $info = [];
         $record = $item->getRecord();
         $schema = $this->tcaSchemaFactory->get($item->getTable());

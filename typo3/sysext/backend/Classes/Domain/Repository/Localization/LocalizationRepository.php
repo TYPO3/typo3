@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Repository for having low-level logic fetching "record translation" dealing with
- * for the purpose of the TYPO3 Backend!
+ * for the TYPO3 Backend!
  *
  * A few rules for this class:
  * - It only returns translated records (having l10n_parent / l10n_source > 0)
@@ -44,11 +44,11 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * - It has no dependency on $GLOBALS['BE_USER']
  */
 #[Autoconfigure(public: true)]
-class LocalizationRepository
+readonly class LocalizationRepository
 {
     public function __construct(
-        protected ?TcaSchemaFactory $tcaSchemaFactory,
-        protected ?RecordFactory $recordFactory,
+        protected TcaSchemaFactory $tcaSchemaFactory,
+        protected RecordFactory $recordFactory,
     ) {}
 
     /**
