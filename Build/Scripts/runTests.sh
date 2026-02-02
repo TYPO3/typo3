@@ -50,7 +50,7 @@ waitFor() {
             COUNT=\$((COUNT + 1));
         done;
     "
-    ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name wait-for-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_ALPINE} /bin/sh -c "${TESTCOMMAND}"
+    ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name wait-for-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} /bin/sh -c "${TESTCOMMAND}"
     if [[ $? -gt 0 ]]; then
         kill -SIGINT -$$
     fi
@@ -850,7 +850,6 @@ IMAGE_PHP="ghcr.io/typo3/core-testing-$(echo "php${PHP_VERSION}" | sed -e 's/\./
 IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs22:1.3"
 IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs22-chrome:1.3"
 IMAGE_PLAYWRIGHT="mcr.microsoft.com/playwright:v1.56.1-noble"
-IMAGE_ALPINE="docker.io/alpine:3.8"
 # HEADS UP: We need to pin to <132 for --headless=old support until https://issues.chromium.org/issues/362522328 is resolved
 IMAGE_SELENIUM="docker.io/selenium/standalone-chromium:131.0-20250101"
 IMAGE_REDIS="docker.io/redis:4-alpine"
