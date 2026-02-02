@@ -347,7 +347,7 @@ class FilesControlContainer extends AbstractContainer
         $showUpload = (bool)($inlineConfiguration['appearance']['fileUploadAllowed'] ?? true);
         $showByUrl = ($inlineConfiguration['appearance']['fileByUrlAllowed'] ?? true) && $onlineMediaAllowed !== [];
 
-        if (($showUpload || $showByUrl) && ($backendUser->uc['edit_docModuleUpload'] ?? false)) {
+        if (($showUpload || $showByUrl) && $backendUser->getUserSettings()->isUploadFieldsInTopOfEBEnabled()) {
             $folder = $this->defaultUploadFolderResolver->resolve(
                 $backendUser,
                 $this->data['tableName'] === 'pages' ? $this->data['vanillaUid'] : ($this->data['parentPageRow']['uid'] ?? 0),

@@ -22,6 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
+use TYPO3\CMS\Core\Authentication\UserSettings;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,10 +36,12 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
+
+        $userSettings = new UserSettings(['emailMeAtLogin' => 1]);
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->uc['emailMeAtLogin'] = 1;
+        $backendUser->method('getUserSettings')->willReturn($userSettings);
         $backendUser->user = [
             'email' => 'test@acme.com',
         ];
@@ -57,10 +60,12 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
+
+        $userSettings = new UserSettings(['emailMeAtLogin' => 0]);
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->uc['emailMeAtLogin'] = 0;
+        $backendUser->method('getUserSettings')->willReturn($userSettings);
         $backendUser->user = [
             'username' => 'karl',
             'email' => 'test@acme.com',
@@ -78,10 +83,12 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] = 'My TYPO3 Inc.';
+
+        $userSettings = new UserSettings(['emailMeAtLogin' => 1]);
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->uc['emailMeAtLogin'] = 1;
+        $backendUser->method('getUserSettings')->willReturn($userSettings);
         $backendUser->user = [
             'username' => 'karl',
             'email' => 'dot.com',

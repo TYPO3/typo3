@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Relevant settings:
  * $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode']
  * $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr']
- * $BE_USER->uc['emailMeAtLogin']
+ * $BE_USER->getUserSettings()->isEmailMeAtLoginEnabled()
  *
  * @internal this is not part of TYPO3 API as this is an internal hook
  */
@@ -73,7 +73,7 @@ final class EmailLoginNotification implements LoggerAwareInterface
         $currentUser = $event->getUser();
         $user = $currentUser->user;
         $genericLoginWarning = $this->warningMode > 0 && !empty($this->warningEmailRecipient);
-        $userLoginNotification = ($currentUser->uc['emailMeAtLogin'] ?? null) && GeneralUtility::validEmail($user['email']);
+        $userLoginNotification = $currentUser->getUserSettings()->isEmailMeAtLoginEnabled() && GeneralUtility::validEmail($user['email']);
         if (!$genericLoginWarning && !$userLoginNotification) {
             return;
         }

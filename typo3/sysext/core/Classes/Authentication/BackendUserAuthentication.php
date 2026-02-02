@@ -125,6 +125,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     protected ?UserTsConfig $userTsConfig = null;
 
     /**
+     * Cached user settings object
+     */
+    private ?UserSettings $userSettings = null;
+
+    /**
      * True if the user TSconfig was parsed and needs to be cached.
      * @todo: Should vanish, see todo below.
      */
@@ -265,6 +270,20 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     {
         $this->name = self::getCookieName();
         parent::__construct();
+    }
+
+    public function getUserSettings(): UserSettings
+    {
+        if ($this->userSettings === null) {
+            $factory = GeneralUtility::makeInstance(UserSettingsFactory::class);
+            $this->userSettings = $factory->createFromUserRecord($this->user ?? [], $this->uc);
+        }
+        return $this->userSettings;
+    }
+
+    protected function resetUserSettingsCache(): void
+    {
+        $this->userSettings = null;
     }
 
     /**
@@ -1963,8 +1982,46 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public function resetUC()
     {
         $this->user['uc'] = '';
+        $this->user['user_settings'] = '';
         $this->uc = [];
+        $this->resetUserSettingsCache();
         $this->backendSetUC();
+    }
+
+    public function writeUC(): void
+    {
+        $userId = $this->getUserId();
+        if (!$userId) {
+            return;
+        }
+
+        $this->logger->debug('writeUC: {userid_column}={value}', [
+            'userid_column' => $this->userid_column,
+            'value' => $userId,
+        ]);
+
+        $schema = GeneralUtility::makeInstance(UserSettingsSchema::class);
+        $profileSettings = [];
+        foreach ($schema->getJsonFieldSettingKeys() as $key) {
+            if (array_key_exists($key, $this->uc)) {
+                $profileSettings[$key] = $this->uc[$key];
+            }
+        }
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($this->user_table);
+
+        $connection->update(
+            $this->user_table,
+            [
+                'uc' => serialize($this->uc),
+                'user_settings' => json_encode($profileSettings, JSON_THROW_ON_ERROR),
+            ],
+            [$this->userid_column => $userId],
+            ['uc' => Connection::PARAM_LOB]
+        );
+
+        $this->resetUserSettingsCache();
     }
 
     /**

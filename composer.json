@@ -314,6 +314,7 @@
 			"TYPO3\\CMS\\RteCKEditor\\Tests\\": "typo3/sysext/rte_ckeditor/Tests/",
 			"TYPO3\\CMS\\Scheduler\\Tests\\": "typo3/sysext/scheduler/Tests/",
 			"TYPO3\\CMS\\Seo\\Tests\\": "typo3/sysext/seo/Tests/",
+			"TYPO3\\CMS\\Setup\\Tests\\": "typo3/sysext/setup/Tests/",
 			"TYPO3\\CMS\\Styleguide\\Tests\\": "typo3/sysext/styleguide/Tests/",
 			"TYPO3\\CMS\\SysNote\\Tests\\": "typo3/sysext/sys_note/Tests/",
 			"TYPO3\\CMS\\Viewpage\\Tests\\": "typo3/sysext/viewpage/Tests/",
