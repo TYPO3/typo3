@@ -1733,7 +1733,7 @@ class BackendUtility
                     }
                     $format = DateTimeFactory::getFormatFromTCAConfig($theColConf);
                 } catch (\InvalidArgumentException) {
-                    $datetime = false;
+                    $datetime = null;
                     $format = null;
                 }
                 if ($datetime === null) {

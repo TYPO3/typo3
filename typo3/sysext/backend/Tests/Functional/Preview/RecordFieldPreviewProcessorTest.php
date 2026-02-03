@@ -119,19 +119,6 @@ final class RecordFieldPreviewProcessorTest extends FunctionalTestCase
         }
     }
 
-    #[Test]
-    public function prepareFieldWithLabelOutputContainsStrongTagForLabel(): void
-    {
-        $record = $this->loadRecordFromDatabase(1); // Normal header record
-
-        $result = $this->subject->prepareFieldWithLabel($record, 'header');
-
-        self::assertIsString($result);
-        // Output should contain the <strong> wrapper for the label
-        self::assertStringContainsString('<strong>', $result);
-        self::assertStringContainsString('</strong>', $result);
-    }
-
     public static function prepareFieldXssDataProvider(): iterable
     {
         // Uses records from xss_content.csv fixture

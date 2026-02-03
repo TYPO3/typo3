@@ -62,7 +62,7 @@ final class RecordFieldPreviewProcessor
             if ($value !== '' && $value !== null) {
                 $itemLabels = $this->getItemLabels($record);
                 $fieldValue = BackendUtility::getProcessedValue($table, $fieldName, $value, 0, false, false, $record->getUid(), true, $record->getPid(), $record->getRawRecord()->toArray()) ?? '';
-                return '<strong>' . htmlspecialchars((string)($itemLabels[$fieldName] ?? '')) . '</strong>&nbsp;' . htmlspecialchars((string)$fieldValue);
+                return htmlspecialchars((string)($itemLabels[$fieldName] ?? '')) . ': ' . htmlspecialchars((string)$fieldValue);
             }
         }
         return null;
