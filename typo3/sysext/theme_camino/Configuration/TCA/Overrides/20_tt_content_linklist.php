@@ -32,6 +32,13 @@ ExtensionManagementUtility::addRecordType(
                                 'showitem' => '--palette--;;linklabel',
                             ],
                         ],
+                        'columns' => [
+                            'link' => [
+                                'config' => [
+                                    'required' => true,
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],

@@ -18,39 +18,41 @@
             }"/>
         </div>
 
-        <div class="author__content">
-            <f:if condition="{record.bodytext}">
-                <p>
-                    {record.bodytext -> f:format.nl2br()}
-                </p>
-            </f:if>
+        <f:if condition="{record.bodytext} || {record.tx_themecamino_list_elements}">
+            <div class="author__content">
+                <f:if condition="{record.bodytext}">
+                    <p>
+                        {record.bodytext -> f:format.nl2br()}
+                    </p>
+                </f:if>
 
-            <f:for each="{record.tx_themecamino_list_elements}" as="item">
-                <f:variable name="linkUrl" value="{f:uri.typolink(parameter: item.link)}" />
-                <f:variable name="linkIcon">{f:render(partial: 'LinkIcon', arguments: '{url: linkUrl}') -> f:spaceless()}</f:variable>
-                <p class="author__listitem">
-                    <f:if condition="{item.link_label}">
-                        <f:then>
-                            <f:link.typolink parameter="{item.link}" class="author__listitem_link">
-                                <f:if condition="{linkIcon}"><span class="author__listlitem_icon">{linkIcon -> f:format.raw()}</span></f:if>
-                                <span class="author__listlitem_text">{item.link_label}</span>
-                            </f:link.typolink>
-                        </f:then>
-                        <f:else>
-                            <f:comment><!-- Fallback: Render title of link target --></f:comment>
-                            <f:if condition="{linkIcon}">
-                                <f:then>
-                                    <f:link.typolink parameter="{item.link}" textWrap="<span class=\"author__listlitem_icon\">{linkIcon -> f:format.raw()}</span><span class=\"author__listlitem_text\">|</span>" class="author__listitem_link"/>
-                                </f:then>
-                                <f:else>
-                                    <f:link.typolink parameter="{item.link}"  class="author__listitem_link" textWrap="<span class=\"author__listlitem_text\">|</span>"/>
-                                </f:else>
-                            </f:if>
-                        </f:else>
-                    </f:if>
-                </p>
-            </f:for>
-        </div>
+                <f:for each="{record.tx_themecamino_list_elements}" as="item">
+                    <f:variable name="linkUrl" value="{f:uri.typolink(parameter: item.link)}" />
+                    <f:variable name="linkIcon">{f:render(partial: 'LinkIcon', arguments: '{url: linkUrl}') -> f:spaceless()}</f:variable>
+                    <p class="author__listitem">
+                        <f:if condition="{item.link_label}">
+                            <f:then>
+                                <f:link.typolink parameter="{item.link}" class="author__listitem_link">
+                                    <f:if condition="{linkIcon}"><span class="author__listlitem_icon">{linkIcon -> f:format.raw()}</span></f:if>
+                                    <span class="author__listlitem_text">{item.link_label}</span>
+                                </f:link.typolink>
+                            </f:then>
+                            <f:else>
+                                <f:comment><!-- Fallback: Render title of link target --></f:comment>
+                                <f:if condition="{linkIcon}">
+                                    <f:then>
+                                        <f:link.typolink parameter="{item.link}" textWrap="<span class=\"author__listlitem_icon\">{linkIcon -> f:format.raw()}</span><span class=\"author__listlitem_text\">|</span>" class="author__listitem_link"/>
+                                    </f:then>
+                                    <f:else>
+                                        <f:link.typolink parameter="{item.link}"  class="author__listitem_link" textWrap="<span class=\"author__listlitem_text\">|</span>"/>
+                                    </f:else>
+                                </f:if>
+                            </f:else>
+                        </f:if>
+                    </p>
+                </f:for>
+            </div>
+        </f:if>
     </div>
 </f:section>
 

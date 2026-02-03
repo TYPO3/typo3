@@ -23,6 +23,9 @@ ExtensionManagementUtility::addRecordType(
         'columnsOverrides' => [
             'header' => [
                 'label' => 'theme_camino.backend_fields:tt_content.header.types.person-palette.label',
+                'config' => [
+                    'required' => true,
+                ],
             ],
             'subheader' => [
                 'label' => 'theme_camino.backend_fields:tt_content.subheader.types.person-palette.label',
@@ -40,6 +43,13 @@ ExtensionManagementUtility::addRecordType(
                         'types' => [
                             '0' => [
                                 'showitem' => '--palette--;;linklabel',
+                            ],
+                        ],
+                        'columns' => [
+                            'link' => [
+                                'config' => [
+                                    'required' => true,
+                                ],
                             ],
                         ],
                     ],
