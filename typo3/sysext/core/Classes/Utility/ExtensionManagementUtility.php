@@ -513,10 +513,56 @@ class ExtensionManagementUtility
      *
      * @param string $addFields List of fields to be added to the user settings
      * @param string $insertionPosition Insert fields before (default) or after one
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15. Use addUserSetting() instead.
      */
     public static function addFieldsToUserSettings(string $addFields, string $insertionPosition = ''): void
     {
+        trigger_error(
+            'ExtensionManagementUtility::addFieldsToUserSettings() is deprecated since TYPO3 v14 and will be removed in v15. Use ExtensionManagementUtility::addUserSetting() instead.',
+            E_USER_DEPRECATED
+        );
         $GLOBALS['TYPO3_USER_SETTINGS']['showitem'] = self::executePositionedStringInsertion($GLOBALS['TYPO3_USER_SETTINGS']['showitem'] ?? '', $addFields, $insertionPosition);
+    }
+
+    /**
+     * Adds a new field to the backend user settings configuration.
+     *
+     * The field configuration is stored in TCA at:
+     * $GLOBALS['TCA']['be_users']['columns']['user_settings']['columns'][$fieldName]
+     *
+     * FOR USE IN Configuration/TCA/Overrides/be_users.php FILES
+     *
+     * Example:
+     *   ExtensionManagementUtility::addUserSetting(
+     *       'myCustomSetting',
+     *       [
+     *           'label' => 'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:myCustomSetting',
+     *           'config' => [
+     *               'type' => 'check',
+     *               'renderType' => 'checkboxToggle',
+     *           ],
+     *       ],
+     *       'after:emailMeAtLogin'
+     *   );
+     *
+     * @param string $fieldName The name of the field to add
+     * @param array $fieldConfiguration The TCA-style field configuration (label, config, etc.)
+     * @param string $insertionPosition Insert field before (default) or after an existing field (e.g., 'after:email')
+     */
+    public static function addUserSetting(string $fieldName, array $fieldConfiguration, string $insertionPosition = ''): void
+    {
+        if (!isset($GLOBALS['TCA']['be_users']['columns']['user_settings']['columns'])) {
+            $GLOBALS['TCA']['be_users']['columns']['user_settings']['columns'] = [];
+        }
+        $GLOBALS['TCA']['be_users']['columns']['user_settings']['columns'][$fieldName] = $fieldConfiguration;
+
+        // Add to showitem
+        $currentShowitem = $GLOBALS['TCA']['be_users']['columns']['user_settings']['showitem'] ?? '';
+        $GLOBALS['TCA']['be_users']['columns']['user_settings']['showitem'] = self::executePositionedStringInsertion(
+            $currentShowitem,
+            $fieldName,
+            $insertionPosition
+        );
     }
 
     /**

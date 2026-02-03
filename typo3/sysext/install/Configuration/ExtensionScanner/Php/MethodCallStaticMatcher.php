@@ -1714,6 +1714,13 @@ return [
             'Deprecation-107047-ExtensionManagementUtilityAddPiFlexFormValue.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-108843-ExtensionManagementUtilityAddFieldsToUserSettings.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,

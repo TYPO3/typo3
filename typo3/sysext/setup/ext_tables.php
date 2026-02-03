@@ -2,130 +2,13 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Backend\Backend\ColorScheme;
-use TYPO3\CMS\Setup\Controller\SetupModuleController;
-
 defined('TYPO3') or die();
 
+// Initialize empty structure for backward compatibility with extensions
+// that add fields via $GLOBALS['TYPO3_USER_SETTINGS']['columns'].
+// Core settings are now defined in Configuration/TCA/Overrides/be_users.php.
+// Access to settings should go through UserSettingsSchema which merges both sources.
 $GLOBALS['TYPO3_USER_SETTINGS'] = [
-    'columns' => [
-        'realName' => [
-            'type' => 'text',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:beUser_realName',
-            'table' => 'be_users',
-            'max' => 80,
-        ],
-        'email' => [
-            'type' => 'email',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:beUser_email',
-            'table' => 'be_users',
-            'max' => 255,
-        ],
-        'emailMeAtLogin' => [
-            'type' => 'check',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:emailMeAtLogin',
-        ],
-        'password' => [
-            'type' => 'password',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword',
-            'table' => 'be_users',
-        ],
-        'password2' => [
-            'type' => 'password',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPasswordAgain',
-            'table' => 'be_users',
-        ],
-        'avatar' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
-            'type' => 'avatar',
-            'table' => 'be_users',
-        ],
-        'lang' => [
-            'type' => 'language',
-            'table' => 'be_users',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:language',
-        ],
-        'startModule' => [
-            'type' => 'select',
-            // Note: This is fake TCA. It has no itemsProcessors.
-            'itemsProcFunc' => SetupModuleController::class . '->renderStartModuleSelect',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:startModule',
-        ],
-        'titleLen' => [
-            'type' => 'number',
-            'class' => 'form-control-adapt',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:maxTitleLen',
-        ],
-        'edit_docModuleUpload' => [
-            'type' => 'check',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:edit_docModuleUpload',
-        ],
-        'showHiddenFilesAndFolders' => [
-            'type' => 'check',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:showHiddenFilesAndFolders',
-        ],
-        'displayRecentlyUsed' => [
-            'type' => 'check',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:displayRecentlyUsed',
-            'default' => 1,
-        ],
-        'copyLevels' => [
-            'type' => 'number',
-            'class' => 'form-control-adapt',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:copyLevels',
-        ],
-        'resetConfiguration' => [
-            'type' => 'button',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfiguration',
-            'buttonlabel' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfigurationButton',
-            'confirm' => true,
-            'confirmData' => [
-                'message' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:setToStandardQuestion',
-                'eventName' => 'setup:confirmation:response',
-            ],
-        ],
-        'mfaProviders' => [
-            'type' => 'mfa',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders',
-        ],
-        'backendTitleFormat' => [
-            'type' => 'select',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:backendTitleFormat',
-            'items' => [
-                'titleFirst' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:backendTitleFormat.titleFirst',
-                'sitenameFirst' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:backendTitleFormat.sitenameFirst',
-            ],
-        ],
-        'dateTimeFirstDayOfWeek' => [
-            'type' => 'select',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:datetime_first_day_of_week',
-            // Note: This is fake TCA. It has no itemsProcessors.
-            'itemsProcFunc' => SetupModuleController::class . '->renderDateTimeFirstDayOfWeekSelect',
-        ],
-        'colorScheme' => [
-            'type' => 'select',
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:colorScheme',
-            'items' => ColorScheme::getAvailableItemsForSelection(),
-        ],
-        'theme' => [
-            'type' => 'select',
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme',
-            'items' => [
-                'fresh' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme.fresh',
-                'modern' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme.modern',
-                'classic' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:theme.classic',
-            ],
-        ],
-    ],
-    'showitem' => '
-        --div--;core.form.tabs:personaldata,
-            realName,email,emailMeAtLogin,avatar,lang,
-        --div--;core.form.tabs:account_security,
-            password,password2,mfaProviders,
-        --div--;core.form.tabs:backend_appearance,
-            colorScheme,theme,startModule,backendTitleFormat,dateTimeFirstDayOfWeek,
-        --div--;core.form.tabs:personalization,
-            titleLen,edit_docModuleUpload,showHiddenFilesAndFolders,displayRecentlyUsed,copyLevels,
-        --div--;core.form.tabs:reset_configuration,
-            resetConfiguration',
+    'columns' => [],
+    'showitem' => '',
 ];

@@ -24,12 +24,14 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
+use TYPO3\CMS\Core\Authentication\UserSettingsSchema;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -102,6 +104,7 @@ class SetupModuleController
         protected readonly Locales $locales,
         protected readonly ComponentFactory $componentFactory,
         protected readonly DateFormatter $dateFormatter,
+        protected readonly UserSettingsSchema $userSettingsSchema,
     ) {
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
 
@@ -158,7 +161,30 @@ class SetupModuleController
         }
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $this->addFlashMessages($view);
+        $languageService = $this->getLanguageService();
+
+        // Add save button
         $view->addButtonToButtonBar($this->componentFactory->createSaveButton('SetupModuleController')->setName('data[save]'));
+
+        // Add reset configuration button
+        $resetButton = $this->componentFactory->createGenericButton()
+            ->setTag('button')
+            ->setLabel($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfigurationButton'))
+            ->setTitle($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfiguration'))
+            ->setIcon($this->iconFactory->getIcon('actions-undo', IconSize::SMALL))
+            ->setShowLabelText(true)
+            ->setClasses('t3js-modal-trigger')
+            ->setAttributes([
+                'type' => 'button',
+                'data-severity' => 'warning',
+                'data-title' => $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetConfiguration'),
+                'data-content' => $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:setToStandardQuestion'),
+                'data-event' => 'confirm',
+                'data-event-name' => 'setup:confirmation:response',
+                'data-event-payload' => 'resetConfiguration',
+            ]);
+        $view->addButtonToButtonBar($resetButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
         // Set shortcut context - reload button is added automatically
         $view->getDocHeaderComponent()->setShortcutContext(
             routeIdentifier: 'user_setup',
@@ -224,7 +250,7 @@ class SetupModuleController
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         // First check if something is submitted in the data-array from POST vars
         $d = $postData['data'] ?? null;
-        $columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
+        $columns = $this->userSettingsSchema->getColumns();
         $backendUser = $this->getBackendUser();
         $beUserId = (int)$backendUser->user['uid'];
         $storeRec = [];
@@ -416,7 +442,7 @@ class SetupModuleController
                 continue;
             }
 
-            $config = $GLOBALS['TYPO3_USER_SETTINGS']['columns'][$fieldName] ?? null;
+            $config = $this->userSettingsSchema->getColumn($fieldName);
             if ($config && isset($config['access']) && !$this->checkAccess($config)) {
                 continue;
             }
@@ -825,7 +851,7 @@ class SetupModuleController
      */
     protected function getFieldsFromShowItem()
     {
-        $allowedFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_USER_SETTINGS']['showitem'], true);
+        $allowedFields = GeneralUtility::trimExplode(',', $this->userSettingsSchema->getShowitem(), true);
         $backendUser = $this->getBackendUser();
         if ($backendUser->getOriginalUserIdWhenInSwitchUserMode() && $backendUser->isSystemMaintainer(true)) {
             // DataHandler denies changing the password of system maintainer users in switch user mode.

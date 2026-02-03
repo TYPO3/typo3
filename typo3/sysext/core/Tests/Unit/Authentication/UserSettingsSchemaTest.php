@@ -26,18 +26,202 @@ final class UserSettingsSchemaTest extends UnitTestCase
     protected function tearDown(): void
     {
         unset($GLOBALS['TYPO3_USER_SETTINGS']);
+        unset($GLOBALS['TCA']['be_users']['columns']['user_settings']);
         parent::tearDown();
     }
 
     #[Test]
-    public function getJsonFieldSettingKeysReturnsKeysWithoutTable(): void
+    public function getColumnsReturnsColumnsFromLegacyGlobal(): void
     {
         $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'columns' => [
-                'colorScheme' => ['type' => 'select'],
-                'titleLen' => ['type' => 'number'],
-                'email' => ['type' => 'email', 'table' => 'be_users'],
-                'lang' => ['type' => 'language', 'table' => 'be_users'],
+                'colorScheme' => ['type' => 'select', 'label' => 'Color'],
+                'titleLen' => ['type' => 'number', 'label' => 'Title Length'],
+            ],
+        ];
+
+        $schema = new UserSettingsSchema();
+        $columns = $schema->getColumns();
+
+        self::assertArrayHasKey('colorScheme', $columns);
+        self::assertArrayHasKey('titleLen', $columns);
+        self::assertSame('select', $columns['colorScheme']['type']);
+    }
+
+    #[Test]
+    public function getColumnsReturnsColumnsFromTca(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'colorScheme' => [
+                    'label' => 'Color Scheme',
+                    'config' => ['type' => 'select', 'renderType' => 'selectSingle'],
+                ],
+            ],
+        ];
+
+        $schema = new UserSettingsSchema();
+        $columns = $schema->getColumns();
+
+        self::assertArrayHasKey('colorScheme', $columns);
+        self::assertSame('select', $columns['colorScheme']['type']);
+        self::assertSame('Color Scheme', $columns['colorScheme']['label']);
+    }
+
+    #[Test]
+    public function getColumnsMergesTcaAndLegacyPreferringTca(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'colorScheme' => [
+                    'label' => 'TCA Label',
+                    'config' => ['type' => 'select', 'renderType' => 'selectSingle'],
+                ],
+            ],
+        ];
+        $GLOBALS['TYPO3_USER_SETTINGS'] = [
+            'columns' => [
+                'colorScheme' => ['type' => 'select', 'label' => 'Legacy Label'],
+                'thirdPartyField' => ['type' => 'check', 'label' => 'Third Party'],
+            ],
+        ];
+
+        $schema = new UserSettingsSchema();
+        $columns = $schema->getColumns();
+
+        // TCA takes precedence
+        self::assertSame('TCA Label', $columns['colorScheme']['label']);
+        // Legacy third-party fields are included
+        self::assertArrayHasKey('thirdPartyField', $columns);
+        self::assertSame('Third Party', $columns['thirdPartyField']['label']);
+    }
+
+    #[Test]
+    public function getColumnReturnsConfigFromTca(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'emailMeAtLogin' => [
+                    'label' => 'Email Me',
+                    'config' => ['type' => 'check', 'renderType' => 'checkboxToggle'],
+                ],
+            ],
+        ];
+
+        $schema = new UserSettingsSchema();
+        $config = $schema->getColumn('emailMeAtLogin');
+
+        self::assertSame('check', $config['type']);
+        self::assertSame('Email Me', $config['label']);
+    }
+
+    #[Test]
+    public function getColumnReturnsNullForUnknownField(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = ['columns' => []];
+        $GLOBALS['TYPO3_USER_SETTINGS'] = ['columns' => []];
+
+        $schema = new UserSettingsSchema();
+        self::assertNull($schema->getColumn('unknownField'));
+    }
+
+    #[Test]
+    public function getShowitemReturnsTcaShowitem(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'showitem' => '--div--;Tab1,field1,field2',
+        ];
+
+        $schema = new UserSettingsSchema();
+        self::assertSame('--div--;Tab1,field1,field2', $schema->getShowitem());
+    }
+
+    #[Test]
+    public function getShowitemMergesTcaAndLegacy(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'showitem' => '--div--;Tab1,field1',
+        ];
+        $GLOBALS['TYPO3_USER_SETTINGS'] = [
+            'showitem' => 'thirdPartyField',
+        ];
+
+        $schema = new UserSettingsSchema();
+        self::assertSame('--div--;Tab1,field1,thirdPartyField', $schema->getShowitem());
+    }
+
+    #[Test]
+    public function inheritFromParentMergesWithBeUsersColumn(): void
+    {
+        // Set up parent be_users TCA column
+        $GLOBALS['TCA']['be_users']['columns']['realName'] = [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.realName',
+            'config' => [
+                'type' => 'input',
+                'size' => 20,
+                'max' => 80,
+                'eval' => 'trim',
+            ],
+        ];
+
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'realName' => [
+                    'inheritFromParent' => true,
+                ],
+            ],
+        ];
+
+        $schema = new UserSettingsSchema();
+        $config = $schema->getColumn('realName');
+
+        self::assertSame('text', $config['type']);
+        self::assertSame('be_users', $config['table']);
+        self::assertSame(80, $config['max']);
+    }
+
+    #[Test]
+    public function inheritFromParentAllowsLabelOverride(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['password'] = [
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.password',
+            'config' => [
+                'type' => 'password',
+            ],
+        ];
+
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'password' => [
+                    'inheritFromParent' => true,
+                    'label' => 'setup.messages:newPassword',
+                ],
+            ],
+        ];
+
+        $schema = new UserSettingsSchema();
+        $config = $schema->getColumn('password');
+
+        self::assertSame('password', $config['type']);
+        self::assertSame('setup.messages:newPassword', $config['label']);
+        self::assertSame('be_users', $config['table']);
+    }
+
+    #[Test]
+    public function getJsonFieldSettingKeysExcludesBeUsersTableFields(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['realName'] = [
+            'config' => ['type' => 'input'],
+        ];
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'colorScheme' => [
+                    'label' => 'Color',
+                    'config' => ['type' => 'select', 'renderType' => 'selectSingle'],
+                ],
+                'realName' => [
+                    'inheritFromParent' => true,
+                ],
             ],
         ];
 
@@ -45,19 +229,26 @@ final class UserSettingsSchemaTest extends UnitTestCase
         $keys = $schema->getJsonFieldSettingKeys();
 
         self::assertContains('colorScheme', $keys);
-        self::assertContains('titleLen', $keys);
-        self::assertNotContains('email', $keys);
-        self::assertNotContains('lang', $keys);
+        self::assertNotContains('realName', $keys);
     }
 
     #[Test]
     public function getJsonFieldSettingKeysExcludesButtonAndMfaTypes(): void
     {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
             'columns' => [
-                'colorScheme' => ['type' => 'select'],
-                'resetConfiguration' => ['type' => 'button'],
-                'mfaProviders' => ['type' => 'mfa'],
+                'colorScheme' => [
+                    'label' => 'Color',
+                    'config' => ['type' => 'select', 'renderType' => 'selectSingle'],
+                ],
+                'resetConfiguration' => [
+                    'label' => 'Reset',
+                    'config' => ['type' => 'button'],
+                ],
+                'mfaProviders' => [
+                    'label' => 'MFA',
+                    'config' => ['type' => 'mfa'],
+                ],
             ],
         ];
 
@@ -70,14 +261,33 @@ final class UserSettingsSchemaTest extends UnitTestCase
     }
 
     #[Test]
-    public function getDbColumnSettingKeysReturnsKeysWithTable(): void
+    public function getDbColumnSettingKeysReturnsBeUsersTableFields(): void
     {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
+        $GLOBALS['TCA']['be_users']['columns']['email'] = [
+            'config' => ['type' => 'email'],
+        ];
+        $GLOBALS['TCA']['be_users']['columns']['lang'] = [
+            'config' => ['type' => 'language'],
+        ];
+        $GLOBALS['TCA']['be_users']['columns']['password'] = [
+            'config' => ['type' => 'password'],
+        ];
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
             'columns' => [
-                'colorScheme' => ['type' => 'select'],
-                'email' => ['type' => 'email', 'table' => 'be_users'],
-                'lang' => ['type' => 'language', 'table' => 'be_users'],
-                'password' => ['type' => 'password', 'table' => 'be_users'],
+                'colorScheme' => [
+                    'label' => 'Color',
+                    'config' => ['type' => 'select', 'renderType' => 'selectSingle'],
+                ],
+                'email' => [
+                    'inheritFromParent' => true,
+                ],
+                'lang' => [
+                    'inheritFromParent' => true,
+                ],
+                'password' => [
+                    'inheritFromParent' => true,
+                    'label' => 'New Password',
+                ],
             ],
         ];
 
@@ -92,76 +302,14 @@ final class UserSettingsSchemaTest extends UnitTestCase
     }
 
     #[Test]
-    public function isJsonFieldSettingReturnsTrueForJsonFieldSetting(): void
+    public function getDefaultReturnsValueFromTcaConfigDefault(): void
     {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
             'columns' => [
-                'colorScheme' => ['type' => 'select'],
-            ],
-        ];
-
-        $schema = new UserSettingsSchema();
-        self::assertTrue($schema->isJsonFieldSetting('colorScheme'));
-    }
-
-    #[Test]
-    public function isJsonFieldSettingReturnsFalseForTableField(): void
-    {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'columns' => [
-                'email' => ['type' => 'email', 'table' => 'be_users'],
-            ],
-        ];
-
-        $schema = new UserSettingsSchema();
-        self::assertFalse($schema->isJsonFieldSetting('email'));
-    }
-
-    #[Test]
-    public function isJsonFieldSettingReturnsFalseForUnknownField(): void
-    {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'columns' => [
-                'colorScheme' => ['type' => 'select'],
-            ],
-        ];
-
-        $schema = new UserSettingsSchema();
-        self::assertFalse($schema->isJsonFieldSetting('unknownField'));
-    }
-
-    #[Test]
-    public function isDbColumnSettingReturnsTrueForDbColumnSetting(): void
-    {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'columns' => [
-                'lang' => ['type' => 'language', 'table' => 'be_users'],
-            ],
-        ];
-
-        $schema = new UserSettingsSchema();
-        self::assertTrue($schema->isDbColumnSetting('lang'));
-    }
-
-    #[Test]
-    public function isDbColumnSettingReturnsFalseForJsonFieldSetting(): void
-    {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'columns' => [
-                'colorScheme' => ['type' => 'select'],
-            ],
-        ];
-
-        $schema = new UserSettingsSchema();
-        self::assertFalse($schema->isDbColumnSetting('colorScheme'));
-    }
-
-    #[Test]
-    public function getDefaultReturnsDefaultValue(): void
-    {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'columns' => [
-                'displayRecentlyUsed' => ['type' => 'check', 'default' => 1],
+                'displayRecentlyUsed' => [
+                    'label' => 'Display Recently Used',
+                    'config' => ['type' => 'check', 'renderType' => 'checkboxToggle', 'default' => 1],
+                ],
             ],
         ];
 
@@ -172,9 +320,12 @@ final class UserSettingsSchemaTest extends UnitTestCase
     #[Test]
     public function getDefaultReturnsNullForMissingDefault(): void
     {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
             'columns' => [
-                'colorScheme' => ['type' => 'select'],
+                'colorScheme' => [
+                    'label' => 'Color',
+                    'config' => ['type' => 'select', 'renderType' => 'selectSingle'],
+                ],
             ],
         ];
 
@@ -183,13 +334,87 @@ final class UserSettingsSchemaTest extends UnitTestCase
     }
 
     #[Test]
-    public function getDefaultReturnsNullForUnknownField(): void
+    public function convertsTcaSelectItemsToLegacyFormat(): void
     {
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'columns' => [],
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'backendTitleFormat' => [
+                    'label' => 'Title Format',
+                    'config' => [
+                        'type' => 'select',
+                        'renderType' => 'selectSingle',
+                        'items' => [
+                            ['label' => 'Title First', 'value' => 'titleFirst'],
+                            ['label' => 'Sitename First', 'value' => 'sitenameFirst'],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $schema = new UserSettingsSchema();
-        self::assertNull($schema->getDefault('unknownField'));
+        $config = $schema->getColumn('backendTitleFormat');
+
+        self::assertSame('select', $config['type']);
+        self::assertArrayHasKey('items', $config);
+        self::assertSame('Title First', $config['items']['titleFirst']);
+        self::assertSame('Sitename First', $config['items']['sitenameFirst']);
+    }
+
+    #[Test]
+    public function convertsLegacySelectItemsFormat(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'colorScheme' => [
+                    'label' => 'Color Scheme',
+                    'config' => [
+                        'type' => 'select',
+                        'renderType' => 'selectSingle',
+                        // Legacy format: value => label
+                        'items' => [
+                            'auto' => 'Automatic',
+                            'light' => 'Light',
+                            'dark' => 'Dark',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $schema = new UserSettingsSchema();
+        $config = $schema->getColumn('colorScheme');
+
+        self::assertSame('select', $config['type']);
+        self::assertArrayHasKey('items', $config);
+        self::assertSame('Automatic', $config['items']['auto']);
+        self::assertSame('Light', $config['items']['light']);
+        self::assertSame('Dark', $config['items']['dark']);
+    }
+
+    #[Test]
+    public function buttonTypeIsConvertedCorrectly(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'resetConfiguration' => [
+                    'label' => 'Reset',
+                    'config' => [
+                        'type' => 'button',
+                        'buttonLabel' => 'Reset Button',
+                        'confirm' => true,
+                        'confirmData' => ['message' => 'Are you sure?'],
+                    ],
+                ],
+            ],
+        ];
+
+        $schema = new UserSettingsSchema();
+        $config = $schema->getColumn('resetConfiguration');
+
+        self::assertSame('button', $config['type']);
+        self::assertSame('Reset Button', $config['buttonlabel']);
+        self::assertTrue($config['confirm']);
+        self::assertSame('Are you sure?', $config['confirmData']['message']);
     }
 }
