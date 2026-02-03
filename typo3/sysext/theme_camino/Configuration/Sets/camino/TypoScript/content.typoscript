@@ -1,15 +1,3 @@
-# For use in Fluid to render "specific" areas of content
-lib.dynamicContent = CONTENT
-lib.dynamicContent {
-  table = tt_content
-  select {
-    orderBy = sorting
-    where = {#colPos}={field:colPos}
-    where.insertData = 1
-  }
-  slide.field = slide
-}
-
 # Definition of the rendering of a single content element
 # This is used for system-wide settings, so needs to be defined at all times!
 lib.contentElement = FLUIDTEMPLATE

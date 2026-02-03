@@ -9,11 +9,11 @@
     <f:render partial="Wrapper/Component" arguments="{modifier: 'page-area'}" contentAs="content" optional="true">
         <div class="article">
             <div class="article__content">
-                <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 0}"/>
+                <f:render.contentArea contentArea="{content.content}"/>
             </div>
 
             <div class="article__aside">
-                <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 1}"/>
+                <f:render.contentArea contentArea="{content.sidebar}"/>
             </div>
         </div>
     </f:render>

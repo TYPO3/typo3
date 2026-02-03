@@ -18,32 +18,32 @@
                         <f:render partial="Logo/Logo" arguments="{startpage: breadcrumb.0}"/>
                     </f:link.typolink>
 
-                    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 11, slide: '-1'}"/>
+                    <f:render.contentArea contentArea="{content.footer-left}"/>
                 </f:render>
             </div>
 
             <div class="footer__col footer__col--2">
                 <f:render partial="StaticContent/Footer-Col-2" optional="true" arguments="{_all}">
-                    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 12, slide: '-1'}"/>
+                    <f:render.contentArea contentArea="{content.footer-col-2}"/>
                 </f:render>
             </div>
 
             <div class="footer__col footer__col--3">
                 <f:render partial="StaticContent/Footer-Col-3" optional="true" arguments="{_all}">
-                    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 13, slide: '-1'}"/>
+                    <f:render.contentArea contentArea="{content.footer-col-3}"/>
                 </f:render>
             </div>
 
             <div class="footer__col footer__col--4">
                 <f:render partial="StaticContent/Footer-Col-4" optional="true" arguments="{_all}">
-                    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 14, slide: '-1'}"/>
+                    <f:render.contentArea contentArea="{content.footer-col-4}"/>
                 </f:render>
             </div>
         </div>
 
         <div class="footer__meta">
             <f:render partial="StaticContent/Footer-Meta" optional="true" arguments="{_all}">
-                <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 10, slide: '-1'}"/>
+                <f:render.contentArea contentArea="{content.footer-meta}"/>
             </f:render>
         </div>
     </div>

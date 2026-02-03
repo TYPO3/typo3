@@ -6,7 +6,7 @@ mod {
         config {
           backend_layout {
             colCount = 4
-            rowCount = 2
+            rowCount = 4
             rows {
               1 {
                 columns {
@@ -33,6 +33,50 @@ mod {
                     colPos = 1
                     identifier = sidebar
                     allowedContentTypes = camino_textteaser, camino_author, camino_textmedia_teaser
+                    slideMode = slide
+                  }
+                }
+              }
+              3 {
+                columns {
+                  1 {
+                    name = LLL:theme_camino.backend_layouts:backend_layout.colPos.11.name
+                    colPos = 11
+                    identifier = footer-left
+                    allowedContentTypes = camino_sociallinks,camino_linklist
+                    slideMode = slide
+                  }
+                  2 {
+                    name = LLL:theme_camino.backend_layouts:backend_layout.colPos.12.name
+                    colPos = 12
+                    identifier = footer-col-2
+                    allowedContentTypes = camino_linklist
+                    slideMode = slide
+                  }
+                  3 {
+                    name = LLL:theme_camino.backend_layouts:backend_layout.colPos.13.name
+                    colPos = 13
+                    identifier = footer-col-3
+                    allowedContentTypes = camino_linklist
+                    slideMode = slide
+                  }
+                  4 {
+                    name = LLL:theme_camino.backend_layouts:backend_layout.colPos.14.name
+                    colPos = 14
+                    identifier = footer-col-4
+                    allowedContentTypes = camino_linklist
+                    slideMode = slide
+                  }
+                }
+              }
+              4 {
+                columns {
+                  1 {
+                    name = LLL:theme_camino.backend_layouts:backend_layout.colPos.10.name
+                    colPos = 10
+                    colspan = 4
+                    identifier = footer-meta
+                    allowedContentTypes = camino_linklist
                     slideMode = slide
                   }
                 }

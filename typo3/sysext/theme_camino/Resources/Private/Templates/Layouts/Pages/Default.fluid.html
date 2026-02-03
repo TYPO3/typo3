@@ -10,12 +10,12 @@
 <f:render partial="Pages/Header" arguments="{_all}"/>
 
 <f:render section="Stage" optional="true">
-    <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 2}"/>
+    <f:render.contentArea contentArea="{content.stage}"/>
 </f:render>
 
 <main class="page__content {f:if(condition: '{site.configuration.settings.camino.header.fixedPosition}', then: 'page__content--fixed')}">
     <f:render section="Main" optional="true">
-        <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: 0}"/>
+        <f:render.contentArea contentArea="{content.content}"/>
     </f:render>
 </main>
 
