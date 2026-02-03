@@ -91,7 +91,7 @@ final class RecordFieldPreviewProcessor
     {
         if ($record->has($fieldName)) {
             $input = $record->get($fieldName);
-            if ($input !== '') {
+            if (is_string($input) && $input !== '') {
                 $input = strip_tags($input);
                 $input = GeneralUtility::fixed_lgd_cs($input, $maxLength);
                 return nl2br(htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8', false));
@@ -103,7 +103,7 @@ final class RecordFieldPreviewProcessor
     public function preparePlainHtml(RecordInterface $record, string $fieldName, int $maxLines = 100): ?string
     {
         if ($record->has($fieldName)) {
-            $html = GeneralUtility::trimExplode(LF, $record->get($fieldName), true);
+            $html = GeneralUtility::trimExplode(LF, (string)$record->get($fieldName), true);
             if ($html !== []) {
                 $html = array_slice($html, 0, $maxLines);
                 return str_replace(LF, '<br />', htmlspecialchars(implode(LF, $html)));
