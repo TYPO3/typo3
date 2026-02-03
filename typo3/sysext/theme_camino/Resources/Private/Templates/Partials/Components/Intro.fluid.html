@@ -20,16 +20,7 @@
     layout: layout,
 }"/>
 
-<f:if condition="{text}">
-    <f:if condition="{textHtml}">
-        <f:then>
-            {text -> f:format.html()}
-        </f:then>
-        <f:else>
-            <p>{text -> f:format.nl2br()}</p>
-        </f:else>
-    </f:if>
-</f:if>
+{text}
 
 <f:if condition="{addCta} || {link}">
     <f:render partial="Wrapper/Buttons" contentAs="content">

@@ -10,13 +10,12 @@
         partial="Components/Textmediateaser"
         arguments="{
             image: record.image.0,
-            header: record.header,
-            text: record.bodytext,
-            textHtml: 1,
+            header: '{f:render.text(record: record, field: \'header\')}',
+            paragraphs: '{f:render.richText(record: record, field: \'bodytext\')}',
             date: record.date,
-            category: record.subheader,
+            category: '{f:render.richText(record: record, field: \'subheader\')}',
             link: record.tx_themecamino_link,
-            label: record.tx_themecamino_link_label,
+            label: '{f:render.richText(record: record, field: \'tx_themecamino_link_label\')}',
             icon: record.tx_themecamino_link_icon,
         }"
     />

@@ -24,14 +24,13 @@
     <div class="textteaser textteaser--{frame}">
         <div class="textteaser__content">
             <f:render partial="Components/Intro" arguments="{
-                header: record.header,
-                subheader: record.subheader,
+                header: '{f:render.text(record: record, field: \'header\')}',
+                subheader: '{f:render.text(record: record, field: \'subheader\')}',
                 headertag: record.header_layout,
                 layout: record.tx_themecamino_header_style,
-                text: record.bodytext,
-                textHtml: 1,
+                text: '{f:render.richText(record: record, field: \'bodytext\')}',
                 link: record.tx_themecamino_link,
-                label: record.tx_themecamino_link_label,
+                label: '{f:render.text(record: record, field: \'tx_themecamino_link_label\')}',
                 icon: record.tx_themecamino_link_icon,
             }"/>
         </div>

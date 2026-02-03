@@ -27,7 +27,7 @@
 
     <f:render section="Header" optional="true">
         <f:render partial="Header/Header" arguments="{
-            header: record.header,
+            header: '{f:render.text(record: record, field: \'header\')}',
             layout: record.tx_themecamino_header_style,
             tag: record.header_layout,
         }"/>

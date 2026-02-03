@@ -14,12 +14,12 @@
             <f:render
                 partial="Components/Intro"
                 arguments="{
-                    header: record.header,
+                    header: '{f:render.text(record: record, field: \'header\')}',
                     headertag: record.header_layout,
                     size: 'large',
-                    subheader: record.subheader,
+                    subheader: '{f:render.text(record: record, field: \'subheader\')}',
                     link: record.tx_themecamino_link,
-                    label: record.tx_themecamino_link_label,
+                    label: '{f:render.text(record: record, field: \'tx_themecamino_link_label\')}',
                     icon: record.tx_themecamino_link_icon,
                     config: record.tx_themecamino_link_config,
                 }"

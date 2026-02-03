@@ -13,28 +13,28 @@
         <div class="author__image">
             <f:render partial="Components/Person" arguments="{
                 image: record.image.0,
-                name: record.header,
-                position: record.subheader,
+                name: '{f:render.text(record: record, field: \'header\')}',
+                position: '{f:render.text(record: record, field: \'subheader\')}',
             }"/>
         </div>
 
-        <f:if condition="{record.bodytext} || {record.tx_themecamino_list_elements}">
+        <f:variable name="bodytext">{f:render.text(record: record, field: 'bodytext', allowNewlines: true)}</f:variable>
+        <f:if condition="{bodytext} || {record.tx_themecamino_list_elements}">
             <div class="author__content">
-                <f:if condition="{record.bodytext}">
-                    <p>
-                        {record.bodytext -> f:format.nl2br()}
-                    </p>
+                <f:if condition="{bodytext}">
+                    <p>{bodytext}</p>
                 </f:if>
 
                 <f:for each="{record.tx_themecamino_list_elements}" as="item">
                     <f:variable name="linkUrl" value="{f:uri.typolink(parameter: item.link)}" />
                     <f:variable name="linkIcon">{f:render(partial: 'LinkIcon', arguments: '{url: linkUrl}') -> f:spaceless()}</f:variable>
                     <p class="author__listitem">
-                        <f:if condition="{item.link_label}">
+                        <f:variable name="linkLabel">{f:render.text(record: item, field: 'link_label')}</f:variable>
+                        <f:if condition="{linkLabel}">
                             <f:then>
                                 <f:link.typolink parameter="{item.link}" class="author__listitem_link">
                                     <f:if condition="{linkIcon}"><span class="author__listlitem_icon">{linkIcon -> f:format.raw()}</span></f:if>
-                                    <span class="author__listlitem_text">{item.link_label}</span>
+                                    <span class="author__listlitem_text">{linkLabel}</span>
                                 </f:link.typolink>
                             </f:then>
                             <f:else>

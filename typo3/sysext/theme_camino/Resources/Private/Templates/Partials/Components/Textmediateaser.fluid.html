@@ -33,17 +33,11 @@
             </p>
         </f:if>
 
+        <f:if condition="{paragraphs}">
+            <div class="textmedia-teaser__text">{paragraphs}</div>
+        </f:if>
         <f:if condition="{text}">
-            <f:if condition="{textHtml}">
-                <f:then>
-                    <div class="textmedia-teaser__text">
-                        {text -> f:format.html()}
-                    </div>
-                </f:then>
-                <f:else>
-                    <p class="textmedia-teaser__text">{text}</p>
-                </f:else>
-            </f:if>
+            <p class="textmedia-teaser__text">{text}</p>
         </f:if>
 
         <f:if condition="{f:link.typolink(parameter: link)} && {label}">

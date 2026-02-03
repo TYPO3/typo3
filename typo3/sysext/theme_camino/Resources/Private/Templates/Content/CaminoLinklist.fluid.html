@@ -21,7 +21,7 @@
                 <f:if condition="{f:link.typolink(parameter: item.link)}">
                     <li class="linklist__item">
                         <f:render partial="Button" arguments="{
-                            label: item.link_label,
+                            label: '{f:render.text(record: item, field: \'link_label\')}',
                             link: item.link,
                             config: 'text',
                             icon: icon,
