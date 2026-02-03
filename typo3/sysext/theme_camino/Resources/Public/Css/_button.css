@@ -139,7 +139,6 @@ body {
     }
 
     &:focus-visible {
-        border-radius: var(--corners-l);
         border-color: var(--button-border-color);
         outline: 2px solid var(--button-secondary-color-focus);
         background: var(--button-color-focus);

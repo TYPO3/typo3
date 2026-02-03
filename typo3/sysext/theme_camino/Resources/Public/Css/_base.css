@@ -71,7 +71,6 @@ a, button {
     }
 
     &:focus-visible {
-        border-radius: 2px;
         outline: 2px solid var(--color-primary-100);
         box-shadow: 0 0 0 2px white;
     }
