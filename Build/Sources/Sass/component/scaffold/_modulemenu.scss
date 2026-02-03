@@ -9,9 +9,10 @@
 .modulemenu {
     --modulemenu-color: var(--typo3-scaffold-sidebar-color);
     --modulemenu-bg: var(--typo3-scaffold-sidebar-bg);
-    --modulemenu-spacer: 1px;
-    --modulemenu-group-spacer: .5rem;
-    --modulemenu-group-indent: calc(var(--modulemenu-icon-size) / 2);
+    --modulemenu-spacer: 2px;
+    --modulemenu-group-spacer: .75rem;
+    --modulemenu-group-indent: calc(var(--modulemenu-group-line-indent) + .5rem);
+    --modulemenu-group-line-indent: calc(var(--modulemenu-action-padding) + var(--modulemenu-icon-size) / 2);
     --modulemenu-icon-size: 32px;
     --modulemenu-icon-border-radius: calc(var(--modulemenu-action-border-radius) - var(--modulemenu-action-padding));
     --modulemenu-action-bg: transparent;
@@ -127,7 +128,7 @@
 //
 .modulemenu-name {
     flex-grow: 1;
-    margin-inline-start: 1em;
+    margin-inline-start: .5rem;
     text-overflow: ellipsis;
     position: absolute;
     width: 1px;
@@ -141,8 +142,6 @@
 @container (min-width: 60px) {
     .modulemenu-name {
         position: static;
-        margin: 0;
-        margin-inline-start: 1em;
         width: auto;
         height: auto;
     }
@@ -210,6 +209,7 @@
 // Group
 //
 .modulemenu-group-container {
+    position: relative;
     container-type: inline-size;
     display: grid;
     gap: var(--modulemenu-spacer);
@@ -221,6 +221,17 @@
 @container (min-width: 80px) {
     .modulemenu-group-container .modulemenu-group-container {
         padding-inline-start: var(--modulemenu-group-indent);
+
+        &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            background-color: color-mix(in srgb, currentColor, transparent 80%);
+            top: 0;
+            bottom: 0;
+            inset-inline-start: var(--modulemenu-group-line-indent);
+            width: 1px;
+        }
     }
 }
 
