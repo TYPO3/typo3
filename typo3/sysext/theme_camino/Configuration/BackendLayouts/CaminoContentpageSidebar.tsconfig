@@ -32,7 +32,7 @@ mod {
                     name = LLL:theme_camino.backend_layouts:backend_layout.colPos.1.name
                     colPos = 1
                     identifier = sidebar
-                    allowedContentTypes = camino_textteaser, camino_author, camino_textmedia_teaser
+                    allowedContentTypes = camino_textteaser, camino_author, camino_textmedia_teaser, felogin_login
                     slideMode = slide
                   }
                 }

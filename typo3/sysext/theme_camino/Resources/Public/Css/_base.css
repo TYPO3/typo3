@@ -85,3 +85,7 @@ a, button {
     height: 1px;
     overflow: hidden;
 }
+
+fieldset {
+    border: none;
+}

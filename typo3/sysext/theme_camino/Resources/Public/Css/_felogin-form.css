@@ -1,0 +1,56 @@
+input[type="submit"] {
+    background: var(--button-primary-color);
+    margin: var(--spacing-s) 0;
+    padding: var(--spacing-s) var(--spacing-m);
+    border: 2px solid var(--button-primary-border-color);
+    color: var(--button-primary-content-color);
+    border-bottom: 2px solid var(--button-text-content-border-bottom-color);
+    border-radius: var(--corners-l);
+    cursor: pointer;
+    font-size: var(--font-size-body);
+    line-height: var(--body-medium-line-height);
+    width: fit-content;
+
+    &:hover,
+    &:focus-within,
+    &:active {
+        background: var(--button-primary-color-hover);
+    }
+
+    &:focus-visible {
+        border-color: var(--button-primary-color-focus);
+        background: var(--button-primary-color-focus);
+        outline: 2px solid var(--button-secondary-color-focus);
+    }
+}
+
+fieldset input,
+fieldset label {
+    display: block;
+    width: 100%;
+}
+
+fieldset label {
+    margin-bottom: var(--spacing-s);
+}
+
+fieldset > div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--spacing-s);
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    max-width: 500px;
+    border: 2px solid #ccc;
+    border-radius: var(--corners-s);
+    padding: 0.5rem;
+    box-sizing: border-box;
+
+    &:focus-visible {
+        outline: 2px solid var(--button-secondary-color-focus);
+        border-color: var(--color-neutral-0);
+    }
+}
