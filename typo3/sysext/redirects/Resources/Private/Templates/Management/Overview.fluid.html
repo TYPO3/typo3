@@ -308,8 +308,11 @@
                                     <f:then>
                                         <button
                                             type="button"
+                                            aria-haspopup="menu"
                                             class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron"
                                             popovertarget="actions-{redirect.uid}"
+                                            aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more')}"
+                                            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more')}"
                                         >
                                             <core:icon identifier="actions-menu-alternative" />
                                         </button>

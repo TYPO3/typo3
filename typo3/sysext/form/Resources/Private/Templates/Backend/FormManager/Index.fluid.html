@@ -168,16 +168,17 @@
                                                 <span class="btn btn-default disabled" aria-hidden="true"><core:icon identifier="empty-empty" /></span>
                                             </f:then>
                                             <f:else>
-                                                <a
-                                                    href="#actions-{form.identifier}"
+                                                <button
+                                                    type="button"
+                                                    aria-haspopup="menu"
                                                     class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron"
-                                                    data-bs-toggle="dropdown"
-                                                    data-bs-boundary="window"
-                                                    aria-expanded="false"
+                                                    popovertarget="actions-{form.identifier}"
+                                                    aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more')}"
+                                                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more')}"
                                                 >
                                                     <core:icon identifier="actions-menu-alternative" />
-                                                </a>
-                                                <ul id="actions-{form.identifier}" class="dropdown-menu">
+                                                </button>
+                                                <ul id="actions-{form.identifier}" class="dropdown-menu" popover>
                                                     <li>
                                                         <a
                                                             href="#"

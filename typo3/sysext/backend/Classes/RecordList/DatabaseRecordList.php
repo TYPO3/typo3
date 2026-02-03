@@ -2063,8 +2063,8 @@ class DatabaseRecordList
             $icon = $this->iconFactory->getIcon('actions-menu-alternative', IconSize::SMALL);
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
             $output .= ' <div class="btn-group dropdown">'
-                        . '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $table . '_' . $record->getUid() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>'
-                        . '<ul id="actions_' . $table . '_' . $record->getUid() . '" class="dropdown-menu">' . $cellOutput . '</ul>'
+                        . '<button type="button" aria-haspopup="menu" aria-label="' . htmlspecialchars($title) . '" title="' . htmlspecialchars($title) . '" popovertarget="actions-' . $table . '_' . $record->getUid() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron">' . $icon->render() . '</button>'
+                        . '<ul id="actions-' . $table . '_' . $record->getUid() . '" class="dropdown-menu" popover>' . $cellOutput . '</ul>'
                         . '</div>';
         } else {
             $output .= ' <div>' . $emptyAction . '</div>';

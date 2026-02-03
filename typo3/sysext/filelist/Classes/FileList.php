@@ -1005,10 +1005,10 @@ class FileList
         if ($cellOutput !== '') {
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
             $output .= '<div class="dropdown">'
-                . '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $resourceView->resource->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">'
+                . '<button type="button" aria-haspopup="menu" aria-label="' . htmlspecialchars($title) . '" title="' . htmlspecialchars($title) . '" popovertarget="actions-' . $resourceView->resource->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron">'
                 . $this->iconFactory->getIcon('actions-menu-alternative', IconSize::SMALL)->render()
-                . '</a>'
-                . '<ul id="actions_' . $resourceView->resource->getHashedIdentifier() . '" class="dropdown-menu">' . $cellOutput . '</ul>'
+                . '</button>'
+                . '<ul id="actions-' . $resourceView->resource->getHashedIdentifier() . '" class="dropdown-menu" popover>' . $cellOutput . '</ul>'
                 . '</div>';
         }
 
