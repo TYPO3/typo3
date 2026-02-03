@@ -447,7 +447,7 @@
             user-select: none;
             mask:
                 radial-gradient(
-                    circle at 100% 100%,
+                    circle at var(--typo3-position-end-percent) 100%,
                     transparent calc(var(--size) - .5px),
                     black calc(var(--size) + .5px)
                 );
@@ -470,12 +470,16 @@
 //
 :root {
     --typo3-position-modifier: 1;
+    --typo3-position-start-percent: 0%;
+    --typo3-position-end-percent: 100%;
     --typo3-position-start: left;
     --typo3-position-end: right;
 }
 
 [dir="rtl"] {
     --typo3-position-modifier: -1;
+    --typo3-position-start-percent: 100%;
+    --typo3-position-end-percent: 0%;
     --typo3-position-start: right;
     --typo3-position-end: left;
 }
