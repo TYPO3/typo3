@@ -116,13 +116,27 @@ body {
         background: var(--textmedia-teaser-background-color-focus);
         border-color: var(--textmedia-teaser-border-color-focus);
         border-radius: var(--corners-l);
-        outline: 2px solid var(--textmedia-teaser-outline-focus);
 
         .button {
             border-radius: 10px;
             border-color: var(--button-border-color);
             outline: 2px solid var(--button-secondary-color-focus);
             background: var(--button-color-focus);
+        }
+
+        /*
+            We intentionally disable the outline and use a pseudo ::after here, since
+            the image transformation scales the image and visible overlaps the outline.
+        */
+        outline: none;
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--textmedia-teaser-outline-focus);
+            border-radius: var(--corners-l);
+            pointer-events: none;
+            z-index: 10;
         }
     }
 }
