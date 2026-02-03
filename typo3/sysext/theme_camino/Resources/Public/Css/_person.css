@@ -16,6 +16,8 @@
 
 .person__text {
     align-self: center;
+    --max-width-paragraph: 100%;
+    text-align: center;
 }
 
 .person__name {
