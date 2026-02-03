@@ -534,6 +534,9 @@
       <trans-unit id="labels.generatePassword">
         <source>Generate password</source>
       </trans-unit>
+      <trans-unit id="labels.generatePassword.failed">
+        <source>A password could not be generated</source>
+      </trans-unit>
       <trans-unit id="labels.new_section">
         <source>Create new</source>
       </trans-unit>
@@ -1452,7 +1455,7 @@
       <trans-unit id="error.missingLanguageIsocode">
         <source>Missing ISO code for language "%s" (UID %d), please edit the language record and set it.</source>
       </trans-unit>
-      <trans-unit id="error.misconfiguredPasswordRules">
+      <trans-unit id="error.misconfiguredPasswordRules" x-unused-since="14.2">
         <source>No password could be generated due to misconfigured password rules.</source>
       </trans-unit>
       <trans-unit id="labels.deleteTitle">

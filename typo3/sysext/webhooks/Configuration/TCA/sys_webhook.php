@@ -100,10 +100,7 @@ return [
                         'options' => [
                             'title' => 'LLL:EXT:webhooks/Resources/Private/Language/locallang_db.xlf:sys_webhook.secret.passwordGenerator',
                             'allowEdit' => false,
-                            'passwordRules' => [
-                                'length' => 40,
-                                'random' => 'hex',
-                            ],
+                            'passwordPolicy' => 'secretToken',
                         ],
                     ],
                 ],

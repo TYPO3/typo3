@@ -88,10 +88,7 @@ return [
                         'options' => [
                             'title' => 'LLL:EXT:reactions/Resources/Private/Language/locallang_db.xlf:sys_reaction.secret.passwordGenerator',
                             'allowEdit' => false,
-                            'passwordRules' => [
-                                'length' => 40,
-                                'random' => 'hex',
-                            ],
+                            'passwordPolicy' => 'secretToken',
                         ],
                     ],
                 ],

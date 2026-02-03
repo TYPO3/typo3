@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\OfficialLanguages;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PasswordPolicy\Event\EnrichPasswordValidationContextDataEvent;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
@@ -57,6 +58,7 @@ use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent;
 
 /**
@@ -488,6 +490,7 @@ class SetupModuleController
                     if ($type === 'password') {
                         $value = '';
                         $autocomplete = 'autocomplete="new-password" ';
+                        $more .= 'spellcheck="false" data-formengine-input-name="field_password"';
                     }
 
                     if ($fieldName === 'realName') {
@@ -671,13 +674,41 @@ class SetupModuleController
                     . '<div class="form-wizards-wrap"><div class="form-wizards-item-element"><div class="input-group">';
                 $htmlAppended = '</div></div></div></div></div>';
             }
-            if ($type === 'text' || $type === 'number' || $type === 'email' || $type === 'password') {
+            if ($type === 'text' || $type === 'number' || $type === 'email') {
                 $htmlPrepended = '<div class="formengine-field-item t3js-formengine-field-item"><div class="form-control-wrap">'
                     . '<div class="form-wizards-wrap"><div class="form-wizards-item-element">';
                 $htmlAppended = '</div></div></div></div>';
             }
+            if ($type === 'password') {
+                $icon = $this->iconFactory->getIcon('actions-dice', IconSize::SMALL)->render();
 
-            $code[] = '<fieldset class="form-section"><div class="form-group">'
+                $htmlPrepended =  '<div class="formengine-field-item t3js-formengine-field-item">';
+                $htmlPrepended .= '  <div class="form-control-wrap">';
+                $htmlPrepended .= '    <div class="form-wizards-wrap">';
+                $htmlPrepended .= '      <div class="form-wizards-item-element">';
+
+                $htmlAppended .=  '      </div>';
+
+                // todo: check for TCA fieldConfig -- START
+                $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
+
+                $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+                    JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-control/password-generator.js')->instance($id)
+                );
+
+                $htmlAppended .=  '      <div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
+                $htmlAppended .=  '        <div class="btn-group">';
+                $htmlAppended .=  '          <button type="button" id="' . $id . '" class="btn btn-default" data-item-name="field_' . htmlspecialchars($fieldName) . '" data-allow-edit="1" data-password-policy="default">' . $icon . '</button>';
+                $htmlAppended .=  '        </div>';
+                $htmlAppended .=  '      </div>';
+                // todo: check for TCA fieldConfig --END
+
+                $htmlAppended .=  '    </div>';
+                $htmlAppended .=  '  </div>';
+                $htmlAppended .=  '</div>';
+            }
+
+            $code[] = '<fieldset class="form-section"><div class="form-group t3js-formengine-palette-field">'
                 . $label
                 . $htmlPrepended
                 . $html

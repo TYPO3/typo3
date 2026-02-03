@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
@@ -106,6 +107,7 @@ class ServiceProvider extends AbstractServiceProvider
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
+            PasswordGenerator::class => self::getPasswordGenerator(...),
             Random::class => self::getRandom(...),
         ];
     }
@@ -384,7 +386,6 @@ class ServiceProvider extends AbstractServiceProvider
             'install:password:set',
             $container->get(PasswordHashFactory::class),
             $container->get(ConfigurationManager::class),
-            $container->get(Random::class),
             $container->get(LanguageServiceFactory::class),
             $container->get(PasswordService::class),
         );
@@ -393,6 +394,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
+    }
+
+    public static function getPasswordGenerator(ContainerInterface $container): PasswordGenerator
+    {
+        return self::new($container, PasswordGenerator::class, [$container->get(Random::class)]);
     }
 
     public static function getRandom(ContainerInterface $container): Random

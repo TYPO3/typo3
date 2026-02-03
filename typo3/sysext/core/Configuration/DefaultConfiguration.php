@@ -1465,6 +1465,16 @@ return [
         ],
         'passwordPolicies' => [
             'installTool' => [
+                'generator' => [
+                    'className' => \TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator::class,
+                    'options' => [
+                        'length' => 12,
+                        'upperCaseCharacters' => true,
+                        'lowerCaseCharacters' => true,
+                        'digitCharacters' => true,
+                        'specialCharacters' => true,
+                    ],
+                ],
                 'validators' => [
                     \TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator::class => [
                         'options' => [
@@ -1478,7 +1488,27 @@ return [
                     ],
                 ],
             ],
+            'secretToken' => [
+                'generator' => [
+                    'className' => \TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator::class,
+                    'options' => [
+                        'length' => 40,
+                        'random' => 'hex',
+                    ],
+                ],
+                'validators' => [],
+            ],
             'default' => [
+                'generator' => [
+                    'className' => \TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator::class,
+                    'options' => [
+                        'length' => 12,
+                        'upperCaseCharacters' => true,
+                        'lowerCaseCharacters' => true,
+                        'digitCharacters' => true,
+                        'specialCharacters' => true,
+                    ],
+                ],
                 'validators' => [
                     \TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator::class => [
                         'options' => [

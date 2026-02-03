@@ -39,6 +39,16 @@ return [
                 'passwordPolicy' => $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordPolicy'] ?? '',
                 'size' => 20,
                 'required' => true,
+                'fieldControl' => [
+                    'passwordGenerator' => [
+                        'renderType' => 'passwordGenerator',
+                        'options' => [
+                            'title' => 'core.core:labels.generatePassword',
+                            'allowEdit' => true,
+                            'passwordPolicy' => $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordPolicy'] ?? '',
+                        ],
+                    ],
+                ],
             ],
         ],
         'usergroup' => [

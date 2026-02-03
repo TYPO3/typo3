@@ -266,7 +266,7 @@ final class PasswordSetCommandTest extends FunctionalTestCase
         $command = $container->get(PasswordSetCommand::class);
         $command->setApplication(new Application());
         $tester = new CommandTester($command);
-        $result = $tester->execute(['--no-interaction' => true, '--password-length' => $passwordLength]);
+        $tester->execute(['--no-interaction' => true, '--password-length' => $passwordLength]);
     }
 
     private function createInstallToolContainer(): FailsafeContainer
@@ -281,5 +281,4 @@ final class PasswordSetCommandTest extends FunctionalTestCase
             ]
         );
     }
-
 }

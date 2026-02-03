@@ -16,6 +16,7 @@ import FormEngine from '@typo3/backend/form-engine';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '@typo3/backend/notification';
+import labels from '~labels/core.core';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 interface PasswordRules {
@@ -35,6 +36,7 @@ class PasswordGenerator {
   private humanReadableField: HTMLInputElement = null;
   private hiddenField: HTMLInputElement = null;
   private passwordRules: PasswordRules = null;
+  private passwordPolicy: string = null;
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
@@ -46,6 +48,7 @@ class PasswordGenerator {
         'input[name="' + this.controlElement.dataset.itemName + '"]',
       );
       this.passwordRules = JSON.parse(this.controlElement.dataset.passwordRules || '{}');
+      this.passwordPolicy = this.controlElement.dataset.passwordPolicy || null;
 
       // Set human-readable field to disable and readonly in case edit is disallowed in the field control settings
       if (!this.controlElement.dataset.allowEdit) {
@@ -75,6 +78,7 @@ class PasswordGenerator {
     // Generate new password
     (new AjaxRequest(TYPO3.settings.ajaxUrls.password_generate)).post({
       passwordRules: this.passwordRules,
+      passwordPolicy: this.passwordPolicy,
     })
       .then(async (response: AjaxResponse): Promise<void> => {
         const resolvedBody = await response.resolve();
@@ -86,16 +90,18 @@ class PasswordGenerator {
           // This way custom modules are also triggered when listening on this event.
           this.humanReadableField.dispatchEvent(new Event('change'));
           // Due to formatting and processing done by FormEngine, we need to set the value again (allow to copy)
-          this.humanReadableField.value = this.hiddenField.value;
+          if (this.hiddenField) {
+            this.humanReadableField.value = this.hiddenField.value;
+          }
           // Finally validate and mark the field as changed
           FormEngineValidation.validateField(this.humanReadableField);
           FormEngine.markFieldAsChanged(this.humanReadableField);
         } else {
-          Notification.warning(resolvedBody.message || 'No password was generated');
+          Notification.warning(labels.get('labels.generatePassword.failed'));
         }
       })
       .catch(() => {
-        Notification.error('Password could not be generated');
+        Notification.warning(labels.get('labels.generatePassword.failed'));
       });
   }
 }

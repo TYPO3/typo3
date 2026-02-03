@@ -28,10 +28,11 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Exception\InvalidPasswordRulesException;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGeneratorInterface;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class PasswordSetCommand extends Command
 {
@@ -39,7 +40,6 @@ final class PasswordSetCommand extends Command
         string $name,
         private readonly PasswordHashFactory $passwordHashFactory,
         private readonly ConfigurationManager $configurationManager,
-        private readonly Random $random,
         private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly PasswordService $passwordService,
     ) {
@@ -52,9 +52,8 @@ final class PasswordSetCommand extends Command
             ->addOption(
                 'password-length',
                 'p',
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_OPTIONAL,
                 'Specify the length of auto-generated passwords.',
-                8,
             )
             ->addOption(
                 'dry-run',
@@ -87,7 +86,6 @@ final class PasswordSetCommand extends Command
 
         $dryRun = $input->getOption('dry-run');
         $noInteraction = $input->getOption('no-interaction');
-        $length = (int)$input->getOption('password-length');
 
         $password = !$noInteraction
             ? $this
@@ -96,14 +94,28 @@ final class PasswordSetCommand extends Command
             : null;
 
         if ($password === null) {
-            // Password length is defined in the method itself as a proper fallback
-            $password = $this->random->generateRandomPassword([
-                'specialCharacters' => true,
-                'lowerCaseCharacters' => true,
-                'digitCharacters' => true,
-                'upperCaseCharacters' => true,
-                'length' => $length,
-            ]);
+            $generator = $GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['installTool']['generator'] ?? null;
+            if (!class_exists($generator['className'] ?? '') || !is_array($generator['options'] ?? null)) {
+                throw new \LogicException(
+                    'The TYPO3_CONF_VARS.SYS.passwordPolicies.installTool.generator configuration is misconfigured.'
+                    . ' Please ensure that the sub key \'className\' is set, and the sub key \'options\' is an array of required option values.',
+                    1770131006
+                );
+            }
+
+            $passwordGeneratorClassName = $generator['className'];
+            $passwordGeneratorOptions = $generator['options'];
+
+            $passwordGenerator = GeneralUtility::makeInstance($passwordGeneratorClassName);
+            if (!$passwordGenerator instanceof PasswordGeneratorInterface) {
+                throw new \LogicException('Class ' . $passwordGeneratorClassName . ' does not implement PasswordGeneratorInterface', 1770131293);
+            }
+
+            if ($input->getOption('password-length') !== null) {
+                $passwordGeneratorOptions['length'] = (int)$input->getOption('password-length');
+            }
+            $length = $passwordGeneratorOptions['length'];
+            $password = $passwordGenerator->generate($passwordGeneratorOptions);
             $output->writeln(sprintf('Password length: %d characters', $length));
             $output->writeln(sprintf('Generated password: <info>%s</info>', $password));
         }

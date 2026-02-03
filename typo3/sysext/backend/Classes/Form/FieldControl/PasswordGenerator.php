@@ -54,6 +54,10 @@ class PasswordGenerator extends AbstractNode
             $linkAttributes['data-password-rules'] = (string)json_encode($options['passwordRules'], JSON_THROW_ON_ERROR);
         }
 
+        if (is_string($options['passwordPolicy'] ?? null) && $options['passwordPolicy'] !== '') {
+            $linkAttributes['data-password-policy'] = $options['passwordPolicy'];
+        }
+
         return [
             'iconIdentifier' => 'actions-dice',
             'title' => $title,
