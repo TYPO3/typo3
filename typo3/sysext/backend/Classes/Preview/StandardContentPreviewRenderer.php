@@ -243,14 +243,17 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 }
             }
         }
+
+        $info = array_filter($info);
+
         if ($info === []) {
             return '';
         }
 
         if ($schema->hasCapability(TcaSchemaCapability::InternalDescription)) {
-            $itm = $this->fieldProcessor->prepareField($record, $schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName());
-            if ($itm !== null) {
-                $info[] = $itm;
+            $item = $this->fieldProcessor->prepareField($record, $schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName());
+            if ($item !== null) {
+                $info[] = $item;
             }
         }
 
