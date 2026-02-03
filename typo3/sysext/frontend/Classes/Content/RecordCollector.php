@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Content;
 use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Page\ContentSlideMode;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**

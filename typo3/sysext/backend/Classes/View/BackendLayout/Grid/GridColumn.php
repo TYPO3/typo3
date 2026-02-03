@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Page\ContentSlideMode;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -55,6 +56,7 @@ class GridColumn extends AbstractGridObject
     protected readonly int $colSpan;
     protected readonly int $rowSpan;
     protected readonly ?string $identifier;
+    protected readonly ContentSlideMode $slideMode;
     private readonly EventDispatcherInterface $eventDispatcher;
 
     /**
@@ -72,6 +74,7 @@ class GridColumn extends AbstractGridObject
         $this->colSpan = (int)($definition['colspan'] ?? 1);
         $this->rowSpan = (int)($definition['rowspan'] ?? 1);
         $this->identifier = isset($definition['identifier']) ? (string)$definition['identifier'] : null;
+        $this->slideMode = ContentSlideMode::tryFrom($definition['slideMode'] ?? null);
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
@@ -140,6 +143,11 @@ class GridColumn extends AbstractGridObject
     public function getIdentifierCleaned(): string
     {
         return strtolower((string)preg_replace('/[^a-zA-Z0-9_-]/', '', (string)$this->identifier));
+    }
+
+    public function getSlideMode(): ContentSlideMode
+    {
+        return $this->slideMode;
     }
 
     /**

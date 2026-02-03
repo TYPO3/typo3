@@ -78,6 +78,15 @@
       <trans-unit id="editColumn">
         <source>Edit this column</source>
       </trans-unit>
+      <trans-unit id="slideModeInfo.slide">
+        <source>Content will be taken from the closest parent page that has content in this column.</source>
+      </trans-unit>
+      <trans-unit id="slideModeInfo.collect">
+        <source>Content will be aggregated from this page and all parent pages that have content in this column.</source>
+      </trans-unit>
+      <trans-unit id="slideModeInfo.collectReverse">
+        <source>Content will be aggregated from farthest parent page down to this page that have content in this column.</source>
+      </trans-unit>
       <trans-unit id="editPageProperties_curLang">
         <source>Edit translation properties</source>
       </trans-unit>

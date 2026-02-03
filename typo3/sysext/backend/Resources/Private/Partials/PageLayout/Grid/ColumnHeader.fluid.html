@@ -15,7 +15,12 @@
                     </a>
                 </f:if>
             </div>
-            <h{columnHeaderLevel} id="{columnIdentifier}" class="t3-page-column-title">{column.title}</h{columnHeaderLevel}>
+            <h{columnHeaderLevel} id="{columnIdentifier}" class="t3-page-column-title">
+                {column.title}
+                <f:if condition="{column.slideMode.value} !== 'none' && !({column.slideMode.value} === 'slide' && {column.items})">
+                    <span class="badge" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:slideModeInfo.{column.slideMode.value}')}">{column.slideMode.name}</span>
+                </f:if>
+            </h{columnHeaderLevel}>
         </f:then>
         <f:else if="{column.unused}">
             <span id="{columnIdentifier}"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:unusedColPos"/></span>

@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
+use TYPO3\CMS\Core\Page\ContentSlideMode;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Content\ContentSlideMode;
 use TYPO3\CMS\Frontend\Content\RecordCollector;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;

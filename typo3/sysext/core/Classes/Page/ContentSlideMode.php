@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Content;
+namespace TYPO3\CMS\Core\Page;
 
 enum ContentSlideMode
 {
@@ -32,5 +32,10 @@ enum ContentSlideMode
             'collectReverse' => self::CollectReverse,
             default => self::None,
         };
+    }
+
+    public function getValue(): string
+    {
+        return \lcfirst($this->name);
     }
 }
