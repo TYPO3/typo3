@@ -5384,6 +5384,7 @@ class DataHandler
             // @todo: Verify this can not happen anymore and this case is dispatched to discard() more early.
             return;
         }
+
         if (!$noRecordCheck) {
             $pageRecord = [];
             if ((int)$recordToDelete['pid'] > 0) {
@@ -5393,7 +5394,9 @@ class DataHandler
                     return;
                 }
             }
-            if (!$this->hasPagePermission($perms, $pageRecord)) {
+            $allowRootLevelDeletion = (int)$recordToDelete['pid'] === 0
+                && $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction();
+            if (!$allowRootLevelDeletion && !$this->hasPagePermission($perms, $pageRecord)) {
                 $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record "{table}:{uid}" without permission', null, ['table' => $table, 'uid' => $uid]);
                 return;
             }
