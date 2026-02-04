@@ -35,12 +35,12 @@ readonly class TemplateFinder
      *
      * @return string[]
      */
-    public function findTemplatesInAllPackages(): array
+    public function findTemplatesInAllPackages(bool $includeFrameworkPackages = true): array
     {
         $finder = new Finder();
         $templates = $finder
             ->files()
-            ->in($this->getPackagePaths())
+            ->in($this->getPackagePaths($includeFrameworkPackages))
             ->exclude([
                 'Classes',
                 'Tests',
@@ -57,11 +57,18 @@ readonly class TemplateFinder
     /**
      * @return string[]
      */
-    private function getPackagePaths(): array
+    private function getPackagePaths(bool $includeFrameworkPackages): array
     {
+        $activePackages = $this->packageManager->getActivePackages();
+        if (!$includeFrameworkPackages) {
+            $activePackages = array_filter(
+                $activePackages,
+                fn(PackageInterface $package): bool => !$package->getPackageMetaData()->isFrameworkType(),
+            );
+        }
         return array_map(
             fn(PackageInterface $package): string => $package->getPackagePath(),
-            $this->packageManager->getActivePackages(),
+            $activePackages,
         );
     }
 }

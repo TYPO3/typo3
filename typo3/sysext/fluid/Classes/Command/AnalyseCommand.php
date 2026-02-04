@@ -21,6 +21,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Environment;
@@ -47,12 +48,22 @@ final class AnalyseCommand extends Command
         parent::__construct();
     }
 
+    protected function configure(): void
+    {
+        $this->addOption(
+            'include-system-extensions',
+            null,
+            InputOption::VALUE_NONE,
+            'Include template files that belong to TYPO3 system extensions',
+        );
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $formatter = new FormatterHelper();
         $io = new SymfonyStyle($input, $output);
 
-        $templates = $this->templateFinder->findTemplatesInAllPackages();
+        $templates = $this->templateFinder->findTemplatesInAllPackages($input->getOption('include-system-extensions'));
         $templatesCount = count($templates);
         if ($output->isVeryVerbose()) {
             $io->success(sprintf('%d templates will be analyzed:', $templatesCount));

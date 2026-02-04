@@ -45,4 +45,13 @@ final class TemplateFinderTest extends FunctionalTestCase
         // also paths are added based on the symlinked position (= the way TYPO3 would resolve the file)
         self::assertNotContains($this->instancePath . '/typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
     }
+
+    #[Test]
+    public function findTemplatesInAllPackagesSkipFramework(): void
+    {
+        $subject = $this->get(TemplateFinder::class);
+        $foundTemplates = $subject->findTemplatesInAllPackages(false);
+        self::assertContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
+        self::assertNotContains($this->instancePath . '/typo3/sysext/core/Resources/Private/Layouts/SystemEmail.fluid.html', $foundTemplates);
+    }
 }

@@ -31,7 +31,10 @@ Example output:
 In its initial implementation, the command automatically finds all Fluid
 templates within the current project based on the `*.fluid.*` file extension (See
 :ref:`Feature: #108166 - Fluid file extension and template resolving <feature-108166-1763400992>`)
-and analyses them. The following errors and deprecations are currently supported:
+and analyses them. By default, TYPO3's system extensions are skipped, this can
+be adjusted by specifying the `—-include-system-extensions` CLI option.
+
+The following errors and deprecations are currently supported:
 
 *   Fluid syntax errors (e. g. invalid nesting of ViewHelper tags)
 *   Usage of invalid ViewHelpers or ViewHelper namespaces
