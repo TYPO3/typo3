@@ -299,7 +299,7 @@ class ElementInformationController
 
             $propertiesForTable['fields'][] = [
                 'fieldValue' => BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, false, false, $uid, true, 0, $this->row),
-                'fieldLabel' => htmlspecialchars($label),
+                'fieldLabel' => $label,
             ];
         }
 
@@ -309,7 +309,7 @@ class ElementInformationController
             if ($this->folderObject instanceof Folder) {
                 $propertiesForTable['fields']['storage'] = [
                     'fieldValue' => $this->folderObject->getStorage()->getName(),
-                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.storage')),
+                    'fieldLabel' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.storage'),
                 ];
             }
 
@@ -318,7 +318,7 @@ class ElementInformationController
             $parentFolder = $resourceObject->getParentFolder();
             $propertiesForTable['fields']['folder'] = [
                 'fieldValue' => $parentFolder->getReadablePath(),
-                'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder')),
+                'fieldLabel' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder'),
             ];
 
             if ($this->fileObject instanceof File) {
@@ -326,11 +326,11 @@ class ElementInformationController
                 if ($this->fileObject->isType(FileType::IMAGE)) {
                     $propertiesForTable['fields']['width'] = [
                         'fieldValue' => $this->fileObject->getProperty('width') . 'px',
-                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.width')),
+                        'fieldLabel' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.width'),
                     ];
                     $propertiesForTable['fields']['height'] = [
                         'fieldValue' => $this->fileObject->getProperty('height') . 'px',
-                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.height')),
+                        'fieldLabel' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.height'),
                     ];
                 }
 
@@ -371,7 +371,7 @@ class ElementInformationController
 
                         $propertiesForTable['fields'][] = [
                             'fieldValue' => BackendUtility::getProcessedValue('sys_file_metadata', $name, $value, 0, false, false, (int)$metaData['uid'], true, 0, $metaData),
-                            'fieldLabel' => htmlspecialchars($label),
+                            'fieldLabel' => $label,
                         ];
                     }
                 }
@@ -422,12 +422,12 @@ class ElementInformationController
                 ];
                 $keyLabelPair['creation_date'] = [
                     'value' => BackendUtility::datetime($this->row['creation_date']),
-                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate')),
+                    'fieldLabel' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate'),
                     'isDatetime' => true,
                 ];
                 $keyLabelPair['modification_date'] = [
                     'value' => BackendUtility::datetime($this->row['modification_date']),
-                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp')),
+                    'fieldLabel' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp'),
                     'isDatetime' => true,
                 ];
             } else {
