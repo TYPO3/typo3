@@ -42,3 +42,12 @@ services:
   TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentProcessorInterface:
     alias: TYPO3Fluid\Fluid\Core\ViewHelper\StrictArgumentProcessor
     public: true
+
+  # Configuration module to inspect Fluid ViewHelper namespaces
+  fluid.configuration.module.provider.namespaces:
+    class: 'TYPO3\CMS\Fluid\ConfigurationModuleProvider\NamespacesProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'fluidNamespaces'
+        label: 'fluid.messages:fluidNamespaces'
+        after: 'translationDomainList'
