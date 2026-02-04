@@ -186,7 +186,7 @@ class GridDataService implements LoggerAwareInterface
                 $versionArray['language'] = [
                     'icon' => $this->iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon') ?? 'empty-empty', IconSize::SMALL)->getIdentifier(),
                     'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
-                    'title_crop' => htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->getSystemLanguageValue($languageValue, $pageId, 'title'), (int)$backendUser->uc['titleLen'])),
+                    'title_crop' => htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->getSystemLanguageValue($languageValue, $pageId, 'title') ?? '', (int)$backendUser->uc['titleLen'])),
                 ];
                 if ($isAllowedToPublish && $swapStage === StagesService::STAGE_PUBLISH_ID && (int)$versionRecord['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID) {
                     $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify && $this->stagesService->getStage($stages, StagesService::STAGE_PUBLISH_ID)->isAllowed;
