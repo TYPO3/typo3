@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -43,48 +45,111 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * @todo: This is public:true only because testing-framework uses GU::makeInstance() on it. Get rid of this.
  */
 #[Autoconfigure(public: true)]
-readonly class WorkspaceService
+class WorkspaceService
 {
     public const LIVE_WORKSPACE_ID = 0;
+
+    /**
+     * Default (initialized) workspace for a user - internal "no access" workspace
+     */
+    public const NOACCESS_WORKSPACE_ID = -99;
 
     public const PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE = 1;
     public const PUBLISH_ACCESS_ONLY_WORKSPACE_OWNERS = 2;
     public const PUBLISH_ACCESS_HIDE_ENTIRE_WORKSPACE_ACTION_DROPDOWN = 4;
 
     public function __construct(
-        private TcaSchemaFactory $tcaSchemaFactory,
-        private ConnectionPool $connectionPool,
-        private ResourceFactory $resourceFactory,
+        #[Autowire(service: 'cache.runtime')]
+        private readonly FrontendInterface $runtimeCache,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly ConnectionPool $connectionPool,
+        private readonly ResourceFactory $resourceFactory,
     ) {}
+
+    /**
+     * Check if the current backend user has access to workspaces.
+     *
+     * Returns true if the user is an admin, is currently in a workspace,
+     * or has access to at least one custom workspace.
+     */
+    public function hasAccessToWorkspaces(): bool
+    {
+        $backendUser = $this->getBackendUser();
+        if ($backendUser->isAdmin() || $backendUser->workspace === self::NOACCESS_WORKSPACE_ID) {
+            return true;
+        }
+
+        // Only grant access if there are workspaces beyond just the live workspace
+        $availableWorkspaces = $this->getAvailableWorkspaces();
+        return !($backendUser->workspace === self::LIVE_WORKSPACE_ID
+            && count($availableWorkspaces) === 1
+            && key($availableWorkspaces) === self::LIVE_WORKSPACE_ID);
+    }
+
+    /**
+     * Check if the current backend user can switch between workspaces.
+     *
+     * Returns true if the user has more than one workspace available.
+     */
+    public function canSwitchWorkspaces(): bool
+    {
+        return count($this->getAvailableWorkspaces()) > 1;
+    }
 
     /**
      * Retrieves the available workspaces from the database and checks whether
      * they're available to the current BE user
      *
-     * @return array array of workspaces available to the current user
+     * @return ($includeWorkspaceData is true
+     *   ? array<int, array{title: string, uid: int, adminusers: string, description: string, color?: string}>
+     *   : array<int, string>
+     * ) workspaces available to the current user
      */
-    public function getAvailableWorkspaces(): array
+    public function getAvailableWorkspaces(bool $includeWorkspaceData = false): array
     {
+        $cacheId = 'workspace-service-available-workspaces' . ($includeWorkspaceData ? '-detailed' : '');
+        $cached = $this->runtimeCache->get($cacheId);
+        if ($cached !== false) {
+            return $cached;
+        }
+
         $backendUser = $this->getBackendUser();
         $availableWorkspaces = [];
         // add default workspaces
         if ($backendUser->checkWorkspace(self::LIVE_WORKSPACE_ID)) {
-            $availableWorkspaces[self::LIVE_WORKSPACE_ID] = $this->getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
+            $availableWorkspaces[self::LIVE_WORKSPACE_ID] = $includeWorkspaceData ? [
+                'uid' => self::LIVE_WORKSPACE_ID,
+                'title' => $this->getLanguageService()->sL('workspaces.messages:workspaceInfo.live.title'),
+                'color' => 'red',
+                'adminusers' => '',
+                'description' => $this->getLanguageService()->sL('workspaces.messages:workspaceInfo.live.description'),
+            ] : $this->getLanguageService()->sL('workspaces.messages:workspaceInfo.live.title');
         }
         // add custom workspaces (selecting all, filtering by BE_USER check):
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_workspace');
         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
+        $labelField = $this->tcaSchemaFactory->get('sys_workspace')->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName();
+
+        // Always fetch adminusers and members for checkWorkspace() access verification
+        $columns = ['uid', $labelField . ' AS title', 'adminusers', 'members'];
+        if ($includeWorkspaceData) {
+            $columns[] = 'color';
+            $columns[] = 'description';
+        }
+
         $result = $queryBuilder
-            ->select('uid', 'title', 'adminusers', 'members')
+            ->select(...$columns)
             ->from('sys_workspace')
-            ->orderBy('title')
+            ->orderBy($labelField)
             ->executeQuery();
 
         while ($workspace = $result->fetchAssociative()) {
             if ($backendUser->checkWorkspace($workspace)) {
-                $availableWorkspaces[$workspace['uid']] = $workspace['title'];
+                $availableWorkspaces[(int)$workspace['uid']] = $includeWorkspaceData ? $workspace : $workspace['title'];
             }
         }
+
+        $this->runtimeCache->set($cacheId, $availableWorkspaces);
         return $availableWorkspaces;
     }
 
@@ -96,7 +161,7 @@ readonly class WorkspaceService
         $title = false;
         switch ($wsId) {
             case self::LIVE_WORKSPACE_ID:
-                $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:shortcut_onlineWS');
+                $title = $this->getLanguageService()->sL('workspaces.messages:workspaceInfo.live.title');
                 break;
             default:
                 $wsRecord = BackendUtility::getRecord('sys_workspace', $wsId);

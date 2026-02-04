@@ -23,7 +23,7 @@ declare namespace TYPO3 {
   export let Severity: import('@typo3/backend/severity').default;
   export let BookmarkStore: typeof import('@typo3/backend/bookmark/bookmark-store').default;
   export let WindowManager: typeof import('@typo3/backend/window-manager').default;
-  export let WorkspacesMenu: typeof import('@typo3/workspaces/toolbar/workspaces-menu').default;
+  export let WorkspaceState: typeof import('@typo3/workspaces/workspace-state').default;
   export const lang: {
     [key: string]: string
   };

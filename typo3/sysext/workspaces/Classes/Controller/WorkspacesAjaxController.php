@@ -20,12 +20,14 @@ namespace TYPO3\CMS\Workspaces\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
@@ -51,6 +53,7 @@ final readonly class WorkspacesAjaxController
 
     public function __construct(
         private WorkspaceService $workspaceService,
+        private ModuleProvider $moduleProvider,
         private GridDataService $gridDataService,
         private IntegrityService $integrityService,
         private PreviewUriBuilder $previewUriBuilder,
@@ -117,6 +120,74 @@ final readonly class WorkspacesAjaxController
             $results[] = $resultObject;
         }
         return new JsonResponse($results);
+    }
+
+    /**
+     * Returns workspace information for the current user.
+     * Used by the workspace selector and other components that need workspace state.
+     */
+    public function getWorkspaceInfoAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $backendUser = $this->getBackendUser();
+        $currentWorkspaceId = $backendUser->workspace;
+        $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces(true);
+
+        if (!isset($availableWorkspaces[$currentWorkspaceId])) {
+            throw new \RuntimeException('Current workspace' . $currentWorkspaceId . ' does not exist.', 1770726380);
+        }
+
+        $workspaces = [];
+        foreach ($availableWorkspaces as $workspaceId => $workspaceData) {
+            $workspaces[] = [
+                'id' => $workspaceId,
+                'title' => $workspaceData['title'],
+                'color' => $workspaceData['color'] ?? '',
+                'description' => $workspaceData['description'],
+            ];
+        }
+
+        return new JsonResponse([
+            'current' => [
+                'id' => $currentWorkspaceId,
+                'title' => $availableWorkspaces[$currentWorkspaceId]['title'],
+                'color' => $availableWorkspaces[$currentWorkspaceId]['color'] ?? '',
+                'description' => $availableWorkspaces[$currentWorkspaceId]['description'],
+            ],
+            'workspaces' => $workspaces,
+        ]);
+    }
+
+    public function switchWorkspaceAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $page = [];
+        $parsedBody = $request->getParsedBody();
+        $workspaceId = (int)($parsedBody['workspaceId'] ?? 0);
+        $pageId = (int)($parsedBody['pageId'] ?? 0);
+        $finalPageUid = 0;
+        $originalPageId = $pageId;
+        $backendUser = $this->getBackendUser();
+        $backendUser->setWorkspace($workspaceId);
+        $switchedWorkspaceId = $backendUser->workspace;
+        while ($pageId) {
+            $page = BackendUtility::getRecordWSOL('pages', $pageId, '*', ' AND pages.t3ver_wsid IN (0, ' . $switchedWorkspaceId . ')');
+            if ($page) {
+                if ($backendUser->doesUserHaveAccess($page, Permission::PAGE_SHOW)) {
+                    break;
+                }
+            } else {
+                $page = BackendUtility::getRecord('pages', $pageId);
+            }
+            $pageId = $page['pid'];
+        }
+        if (isset($page['uid'])) {
+            $finalPageUid = (int)$page['uid'];
+        }
+        $ajaxResponse = [
+            'workspaceId' => $switchedWorkspaceId,
+            'pageId' => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid,
+            'pageModule' => $this->moduleProvider->accessGranted('web_layout', $backendUser) ? 'web_layout' : '',
+        ];
+        return new JsonResponse($ajaxResponse);
     }
 
     /**
@@ -260,7 +331,7 @@ final readonly class WorkspacesAjaxController
             return [
                 'error' => [
                     'code' => 1287264776,
-                    'message' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.sendToNextStage.noRecordFound'),
+                    'message' => $this->getLanguageService()->sL('workspaces.messages:error.sendToNextStage.noRecordFound'),
                 ],
                 'success' => false,
             ];
@@ -273,7 +344,7 @@ final readonly class WorkspacesAjaxController
             return [
                 'error' => [
                     'code' => 1291111644,
-                    'message' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.invalid'),
+                    'message' => $this->getLanguageService()->sL('workspaces.messages:error.stageId.invalid'),
                 ],
                 'success' => false,
             ];
@@ -300,7 +371,7 @@ final readonly class WorkspacesAjaxController
             return [
                 'error' => [
                     'code' => 1287264765,
-                    'message' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.sendToNextStage.noRecordFound'),
+                    'message' => $this->getLanguageService()->sL('workspaces.messages:error.sendToNextStage.noRecordFound'),
                 ],
                 'success' => false,
             ];
@@ -313,7 +384,7 @@ final readonly class WorkspacesAjaxController
             return [
                 'error' => [
                     'code' => 1291111644,
-                    'message' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.stageId.invalid'),
+                    'message' => $this->getLanguageService()->sL('workspaces.messages:error.stageId.invalid'),
                 ],
                 'success' => false,
             ];
@@ -322,7 +393,7 @@ final readonly class WorkspacesAjaxController
             return [
                 'error' => [
                     'code' => 1287264746,
-                    'message' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.sendToPrevStage.noPreviousStage'),
+                    'message' => $this->getLanguageService()->sL('workspaces.messages:error.sendToPrevStage.noPreviousStage'),
                 ],
                 'success' => false,
             ];
@@ -333,7 +404,7 @@ final readonly class WorkspacesAjaxController
             return [
                 'error' => [
                     'code' => 1287264747,
-                    'message' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:error.sendToPrevStage.noPreviousStage'),
+                    'message' => $this->getLanguageService()->sL('workspaces.messages:error.sendToPrevStage.noPreviousStage'),
                 ],
                 'success' => false,
             ];
@@ -567,14 +638,14 @@ final readonly class WorkspacesAjaxController
         [, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($stages, $workspaceItemsArray);
         $view = $this->backendViewFactory->create($request, ['typo3/cms-workspaces']);
         $previousStageSendToTitle = $previousStage
-            ? $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage') . ' "' . $previousStage->title . '"'
+            ? $this->getLanguageService()->sL('workspaces.messages:actionSendToStage') . ' "' . $previousStage->title . '"'
             : '';
         $nextStageSendToTitle = '';
         if ($nextStage) {
             if ($nextStage->isExecuteStage) {
-                $nextStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:publish_execute_action_option');
+                $nextStageSendToTitle = $this->getLanguageService()->sL('workspaces.messages:publish_execute_action_option');
             } else {
-                $nextStageSendToTitle = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:actionSendToStage') . ' "' . $nextStage->title . '"';
+                $nextStageSendToTitle = $this->getLanguageService()->sL('workspaces.messages:actionSendToStage') . ' "' . $nextStage->title . '"';
             }
         }
         $view->assignMultiple([

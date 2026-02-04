@@ -207,6 +207,40 @@
       <trans-unit id="pleaseConfirm">
         <source>Please confirm</source>
       </trans-unit>
+      <!-- Colors -->
+      <trans-unit id="color">
+        <source>Color</source>
+      </trans-unit>
+      <trans-unit id="color.red">
+        <source>Red</source>
+      </trans-unit>
+      <trans-unit id="color.orange">
+        <source>Orange</source>
+      </trans-unit>
+      <trans-unit id="color.yellow">
+        <source>Yellow</source>
+      </trans-unit>
+      <trans-unit id="color.lime">
+        <source>Lime</source>
+      </trans-unit>
+      <trans-unit id="color.green">
+        <source>Green</source>
+      </trans-unit>
+      <trans-unit id="color.teal">
+        <source>Teal</source>
+      </trans-unit>
+      <trans-unit id="color.blue">
+        <source>Blue</source>
+      </trans-unit>
+      <trans-unit id="color.indigo">
+        <source>Indigo</source>
+      </trans-unit>
+      <trans-unit id="color.purple">
+        <source>Purple</source>
+      </trans-unit>
+      <trans-unit id="color.magenta">
+        <source>Magenta</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

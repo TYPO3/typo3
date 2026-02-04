@@ -181,8 +181,7 @@
     }
 }
 
-.scaffold-in-impersonation #typo3-cms-backend-backend-toolbaritems-usertoolbaritem,
-.scaffold-in-workspace #typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem {
+.scaffold-in-impersonation #typo3-cms-backend-backend-toolbaritems-usertoolbaritem {
     .toolbar-item-link {
         --toolbar-item-link-color-state: var(--typo3-state-primary-color);
         --toolbar-item-link-bg-state: var(--typo3-state-primary-bg);

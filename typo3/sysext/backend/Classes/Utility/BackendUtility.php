@@ -2100,6 +2100,13 @@ class BackendUtility
                             true
                         );
                         break;
+                    case 'updateWorkspaces':
+                        $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
+                            'typo3:workspaces:refresh',
+                            null,
+                            true
+                        );
+                        break;
                     case 'updateFolderTree':
                         $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
                             'typo3:filestoragetree:refresh',

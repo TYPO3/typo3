@@ -44,13 +44,14 @@ final readonly class DataHandlerInternalWorkspaceTablesHook
     ) {}
 
     /**
-     * Trigger top bar update if a sys_workspace record has been changed
-     * or created to renew state of the workspace toolbar item.
+     * Trigger module menu update if a sys_workspace record has been changed
+     * or created to renew state of the workspace switch.
      */
     public function processDatamap_afterAllOperations(DataHandler $dataHandler): void
     {
         if (isset($dataHandler->datamap['sys_workspace'])) {
-            BackendUtility::setUpdateSignal('updateTopbar');
+            BackendUtility::setUpdateSignal('updateModuleMenu');
+            BackendUtility::setUpdateSignal('updateWorkspaces');
         }
     }
 
@@ -69,6 +70,7 @@ final readonly class DataHandlerInternalWorkspaceTablesHook
             } elseif ($table === 'sys_workspace') {
                 $this->discardRecordsOfWorkspace($uid);
                 BackendUtility::setUpdateSignal('updateTopbar');
+                BackendUtility::setUpdateSignal('updateWorkspaces');
             }
         }
     }

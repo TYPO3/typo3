@@ -3,9 +3,6 @@
   <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
     <header/>
     <body>
-      <trans-unit id="shortcut_onlineWS">
-        <source>LIVE workspace</source>
-      </trans-unit>
       <trans-unit id="overwriteExistingFiles">
         <source>Overwrite existing files</source>
       </trans-unit>

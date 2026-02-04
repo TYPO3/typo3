@@ -5,7 +5,7 @@ return [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'sortby' => 'sorting',
-        'title' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage',
+        'title' => 'workspaces.db:sys_workspace_stage',
         'adminOnly' => true,
         'rootLevel' => 1,
         'hideTable' => true,
@@ -17,7 +17,7 @@ return [
     ],
     'columns' => [
         'title' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title',
+            'label' => 'core.general:LGL.title',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -27,7 +27,7 @@ return [
             ],
         ],
         'responsible_persons' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.responsible_persons',
+            'label' => 'workspaces.db:sys_workspace_stage.responsible_persons',
             'config' => [
                 'type' => 'group',
                 'allowed' => 'be_users,be_groups',
@@ -38,7 +38,7 @@ return [
             ],
         ],
         'default_mailcomment' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.default_mailcomment',
+            'label' => 'workspaces.db:sys_workspace_stage.default_mailcomment',
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
@@ -46,13 +46,13 @@ return [
             ],
         ],
         'parentid' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.parentid',
+            'label' => 'workspaces.db:sys_workspace_stage.parentid',
             'config' => [
                 'type' => 'passthrough',
             ],
         ],
         'notification_defaults' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
+            'label' => 'workspaces.db:sys_workspace_stage.notification_defaults',
             'config' => [
                 'type' => 'group',
                 'allowed' => 'be_users,be_groups',
@@ -63,26 +63,26 @@ return [
             ],
         ],
         'allow_notificaton_settings' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog',
+            'label' => 'workspaces.db:sys_workspace.settingsDialog',
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.showDialog'],
-                    ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog.changeablePreselection'],
+                    ['label' => 'workspaces.db:sys_workspace.settingsDialog.showDialog'],
+                    ['label' => 'workspaces.db:sys_workspace.settingsDialog.changeablePreselection'],
                 ],
                 'default' => 3,
                 'cols' => 1,
             ],
         ],
         'notification_preselection' => [
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection',
+            'label' => 'workspaces.db:sys_workspace.preselection',
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.owners'],
-                    ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.members'],
-                    ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.editors'],
-                    ['label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection.responsiblePersons'],
+                    ['label' => 'workspaces.db:sys_workspace.preselection.owners'],
+                    ['label' => 'workspaces.db:sys_workspace.preselection.members'],
+                    ['label' => 'workspaces.db:sys_workspace.preselection.editors'],
+                    ['label' => 'workspaces.db:sys_workspace.preselection.responsiblePersons'],
                 ],
                 'default' => 8,
                 'cols' => 1,

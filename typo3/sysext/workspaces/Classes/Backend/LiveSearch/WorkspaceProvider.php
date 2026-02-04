@@ -69,7 +69,7 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
         foreach ($workspaces as $workspaceId => $workspaceLabel) {
             $actions = [];
             $actions[] = (new ResultItemAction('open_workspace'))
-                ->setLabel($this->languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:action.switchToWorkspace'))
+                ->setLabel($this->languageService->sL('workspaces.messages:action.switchToWorkspace'))
                 ->setUrl((string)$this->uriBuilder->buildUriFromRoute('workspaces_publish', [
                     'workspace' => $workspaceId,
                     'id' => $searchDemand->getPageId(),

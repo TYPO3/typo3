@@ -6,6 +6,9 @@
       <trans-unit id="title">
         <source>Workspaces</source>
       </trans-unit>
+      <trans-unit id="indicator.workspacePrefix">
+        <source>Workspace</source>
+      </trans-unit>
       <trans-unit id="noResults">
         <source>No records found.</source>
       </trans-unit>
@@ -393,20 +396,14 @@
       <trans-unit id="action.switchToWorkspace">
         <source>Switch to workspace</source>
       </trans-unit>
-      <trans-unit id="toolbarItems.workspace">
-        <source>Workspace</source>
+      <trans-unit id="action.selectWorkspace">
+        <source>Select workspace</source>
       </trans-unit>
-      <trans-unit id="toolbarItems.workspace.intro.text">
-        <source>The following workspaces are available to you.</source>
+      <trans-unit id="workspaceInfo.live.title">
+        <source>LIVE</source>
       </trans-unit>
-      <trans-unit id="toolbarItems.workspace.intro.link">
-        <source>Workspaces Module</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.workspace.intro.link.description">
-        <source>To view changes made in a workspace, please go to:</source>
-      </trans-unit>
-      <trans-unit id="toolbarItems.workspace.noWorkspaceFound">
-        <source>No workspaces found.</source>
+      <trans-unit id="workspaceInfo.live.description">
+        <source>Changes made in this workspace are published immediately and are directly visible on the live website.</source>
       </trans-unit>
     </body>
   </file>

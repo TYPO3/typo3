@@ -1,0 +1,178 @@
+//
+// Theme styles for typo3-backend-workspace-selector web component
+//
+// Colors are applied via JavaScript using workspace color tokens
+//
+typo3-backend-workspace-selector {
+    --workspace-selector-min-width: 42px;
+    --workspace-selector-min-height: 42px;
+    --workspace-selector-padding: 4px;
+    --workspace-selector-icon-size: 32px;
+    --workspace-selector-icon-border-radius: calc(var(--workspace-selector-border-radius) - var(--workspace-selector-padding));
+    --workspace-selector-bg: var(--typo3-scaffold-sidebar-bg);
+    --workspace-selector-color: var(--typo3-scaffold-sidebar-color);
+    --workspace-selector-transition-color: var(--typo3-transition-color);
+    --workspace-selector-border-radius: var(--typo3-component-border-radius);
+    --workspace-selector-border-color: color-mix(in srgb, var(--workspace-selector-bg), var(--workspace-selector-color) 20%);
+    --workspace-selector-hover-color: var(--workspace-selector-color);
+    --workspace-selector-hover-bg: color-mix(in srgb, var(--workspace-selector-bg), var(--workspace-selector-color) 10%);
+    --workspace-selector-hover-border-color: color-mix(in srgb, var(--workspace-selector-bg), var(--workspace-selector-color) 30%);
+    --workspace-selector-focus-color: var(--workspace-selector-color);
+    --workspace-selector-focus-bg: color-mix(in srgb, var(--workspace-selector-bg), var(--workspace-selector-color) 15%);
+    --workspace-selector-focus-border-color: color-mix(in srgb, var(--workspace-selector-bg), var(--workspace-selector-color) 35%);
+    display: block;
+    position: relative;
+    min-width: var(--workspace-selector-min-width);
+    min-height: var(--workspace-selector-min-width);
+    container-type: inline-size;
+
+    > .dropdown {
+        anchor-scope: --workspace-selector;
+    }
+
+    .workspace-selector {
+        --typo3-icons-accent: currentColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--workspace-selector-padding);
+        border-radius: var(--workspace-selector-border-radius);
+        border: 1px solid var(--workspace-selector-active-border-color, var(--workspace-selector-border-color));
+        background-color: var(--workspace-selector-active-bg, var(--workspace-selector-bg));
+        color: var(--workspace-selector-active-color, var(--workspace-selector-color));
+        min-width: var(--workspace-selector-min-width);
+        min-height: var(--workspace-selector-min-width);
+        width: 100%;
+        text-align: start;
+        transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out;
+        outline: none;
+        overflow: hidden;
+        pointer-events: none;
+        anchor-name: --workspace-selector;
+
+        &:after {
+            display: none;
+        }
+
+        @container (min-width: 60px) {
+            justify-content: flex-start;
+        }
+
+        &:not([disabled]) {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        &:not([disabled]):focus-visible {
+            outline: var(--typo3-outline-width) var(--typo3-outline-style) var(--workspace-selector-active-focus-border-color, var(--workspace-selector-focus-border-color));
+        }
+
+        &:not([disabled]):hover {
+            background-color: var(--workspace-selector-active-hover-bg, var(--workspace-selector-hover-bg));
+            border-color: var(--workspace-selector-active-hover-border-color, var(--workspace-selector-hover-border-color));
+        }
+    }
+
+    .workspace-selector-icon {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: var(--workspace-selector-icon-size);
+        height: var(--workspace-selector-icon-size);
+        border-radius: var(--workspace-selector-icon-border-radius);
+        flex-shrink: 0;
+        overflow: hidden;
+    }
+
+    .workspace-selector-name {
+        flex-grow: 1;
+        margin-inline-start: .5rem;
+        text-overflow: ellipsis;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+    }
+
+    @container (min-width: 60px) {
+        .workspace-selector-name {
+            position: static;
+            width: auto;
+            height: auto;
+        }
+    }
+
+    .workspace-selector-indicator {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        width: 16px;
+        height: 16px;
+        margin-inline-start: auto;
+        flex-shrink: 0;
+        margin: 8px;
+        transition: transform .2s ease-in-out;
+
+        @container (min-width: 60px) {
+            display: flex;
+        }
+    }
+
+    .dropdown-menu {
+        --typo3-dropdown-bg: var(--workspace-selector-bg);
+        --typo3-dropdown-color: var(--workspace-selector-color);
+        --typo3-dropdown-border-color: var(--workspace-selector-border-color);
+        --typo3-dropdown-item-color: var(--workspace-selector-color);
+        --typo3-dropdown-item-hover-color: var(--workspace-selector-hover-color);
+        --typo3-dropdown-item-hover-bg: var(--workspace-selector-hover-bg);
+        --typo3-dropdown-item-hover-border-color: var(--workspace-selector-hover-border-color);
+        --typo3-dropdown-item-focus-color: var(--workspace-selector-focus-color);
+        --typo3-dropdown-item-focus-bg: var(--workspace-selector-focus-bg);
+        --typo3-dropdown-item-focus-border-color: var(--workspace-selector-focus-border-color);
+        --typo3-dropdown-item-active-color: var(--workspace-selector-focus-color);
+        --typo3-dropdown-item-active-bg: var(--workspace-selector-focus-bg);
+        --typo3-dropdown-item-active-border-color: var(--workspace-selector-focus-border-color);
+        position-anchor: --workspace-selector;
+        width: anchor-size(width);
+        min-width: 205px;
+        max-width: 400px;
+    }
+
+    .dropdown-list {
+        > li:is(:first-child) .dropdown-item {
+            border-end-start-radius: 0;
+            border-end-end-radius: 0;
+        }
+
+        > li:is(:last-child) .dropdown-item {
+            border-start-start-radius: 0;
+            border-start-end-radius: 0;
+        }
+
+        > li:not(:first-child, :last-child) .dropdown-item {
+            border-radius: 0;
+        }
+    }
+
+    .dropdown-item {
+        border-inline-start: .5rem solid var(--workspace-selector-border-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &.active {
+            pointer-events: none;
+        }
+    }
+
+    .workspace-selector-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+    }
+}
