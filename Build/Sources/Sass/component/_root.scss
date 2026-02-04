@@ -157,6 +157,13 @@
     }
 
     // Stateful Variants
+    //
+    // Color transitions for interactive states (hover, focus):
+    // - Light mode: backgrounds get darker (higher token numbers)
+    // - Dark mode: backgrounds get lighter (lower token numbers)
+    //
+    // This ensures consistent visual feedback while maintaining
+    // WCAG contrast ratios with the text color in each mode.
     --typo3-state-default-color: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-15));
     --typo3-state-default-bg: light-dark(var(--token-color-neutral-3), var(--token-color-neutral-85));
     --typo3-state-default-border-color: light-dark(var(--token-color-neutral-25), var(--token-color-neutral-75));
@@ -195,64 +202,193 @@
     --typo3-state-secondary-disabled-border-color: var(--typo3-state-secondary-border-color);
     --typo3-state-success-color: light-dark(var(--token-color-success-1), var(--token-color-success-1));
     --typo3-state-success-bg: light-dark(var(--token-color-success-70), var(--token-color-success-80));
-    --typo3-state-success-border-color: light-dark(var(--token-color-success-75), var(--token-color-success-75));
+    --typo3-state-success-border-color: light-dark(var(--token-color-success-80), var(--token-color-success-70));
     --typo3-state-success-hover-color: var(--typo3-state-success-color);
     --typo3-state-success-hover-bg: light-dark(var(--token-color-success-75), var(--token-color-success-75));
-    --typo3-state-success-hover-border-color: light-dark(var(--token-color-success-80), var(--token-color-success-70));
+    --typo3-state-success-hover-border-color: light-dark(var(--token-color-success-85), var(--token-color-success-65));
     --typo3-state-success-focus-color: var(--typo3-state-success-color);
     --typo3-state-success-focus-bg: light-dark(var(--token-color-success-80), var(--token-color-success-70));
-    --typo3-state-success-focus-border-color: light-dark(var(--token-color-success-85), var(--token-color-success-65));
+    --typo3-state-success-focus-border-color: light-dark(var(--token-color-success-90), var(--token-color-success-60));
     --typo3-state-success-disabled-color: var(--typo3-state-success-color);
     --typo3-state-success-disabled-bg: var(--typo3-state-success-bg);
     --typo3-state-success-disabled-border-color: var(--typo3-state-success-border-color);
     --typo3-state-warning-color: light-dark(var(--token-color-warning-90), var(--token-color-warning-1));
-    --typo3-state-warning-bg: light-dark(var(--token-color-warning-40), var(--token-color-warning-80));
-    --typo3-state-warning-border-color: light-dark(var(--token-color-warning-45), var(--token-color-warning-75));
+    --typo3-state-warning-bg: light-dark(var(--token-color-warning-35), var(--token-color-warning-80));
+    --typo3-state-warning-border-color: light-dark(var(--token-color-warning-45), var(--token-color-warning-70));
     --typo3-state-warning-hover-color: var(--typo3-state-warning-color);
-    --typo3-state-warning-hover-bg: light-dark(var(--token-color-warning-45), var(--token-color-warning-75));
-    --typo3-state-warning-hover-border-color: light-dark(var(--token-color-warning-50), var(--token-color-warning-70));
+    --typo3-state-warning-hover-bg: light-dark(var(--token-color-warning-40), var(--token-color-warning-75));
+    --typo3-state-warning-hover-border-color: light-dark(var(--token-color-warning-50), var(--token-color-warning-65));
     --typo3-state-warning-focus-color: var(--typo3-state-warning-color);
-    --typo3-state-warning-focus-bg: light-dark(var(--token-color-warning-50), var(--token-color-warning-70));
-    --typo3-state-warning-focus-border-color: light-dark(var(--token-color-warning-55), var(--token-color-warning-65));
+    --typo3-state-warning-focus-bg: light-dark(var(--token-color-warning-45), var(--token-color-warning-70));
+    --typo3-state-warning-focus-border-color: light-dark(var(--token-color-warning-55), var(--token-color-warning-60));
     --typo3-state-warning-disabled-color: var(--typo3-state-warning-color);
     --typo3-state-warning-disabled-bg: var(--typo3-state-warning-bg);
     --typo3-state-warning-disabled-border-color: var(--typo3-state-warning-border-color);
     --typo3-state-danger-color: light-dark(var(--token-color-danger-1), var(--token-color-danger-1));
     --typo3-state-danger-bg: light-dark(var(--token-color-danger-55), var(--token-color-danger-70));
-    --typo3-state-danger-border-color: light-dark(var(--token-color-danger-60), var(--token-color-danger-65));
+    --typo3-state-danger-border-color: light-dark(var(--token-color-danger-65), var(--token-color-danger-60));
     --typo3-state-danger-hover-color: var(--typo3-state-danger-color);
     --typo3-state-danger-hover-bg: light-dark(var(--token-color-danger-60), var(--token-color-danger-65));
-    --typo3-state-danger-hover-border-color: light-dark(var(--token-color-danger-65), var(--token-color-danger-60));
+    --typo3-state-danger-hover-border-color: light-dark(var(--token-color-danger-70), var(--token-color-danger-55));
     --typo3-state-danger-focus-color: var(--typo3-state-danger-color);
     --typo3-state-danger-focus-bg: light-dark(var(--token-color-danger-65), var(--token-color-danger-60));
-    --typo3-state-danger-focus-border-color: light-dark(var(--token-color-danger-70), var(--token-color-danger-55));
+    --typo3-state-danger-focus-border-color: light-dark(var(--token-color-danger-75), var(--token-color-danger-50));
     --typo3-state-danger-disabled-color: var(--typo3-state-danger-color);
     --typo3-state-danger-disabled-bg: var(--typo3-state-danger-bg);
     --typo3-state-danger-disabled-border-color: var(--typo3-state-danger-border-color);
     --typo3-state-info-color: light-dark(var(--token-color-info-90), var(--token-color-info-1));
-    --typo3-state-info-bg: light-dark(var(--token-color-info-20), var(--token-color-info-70));
-    --typo3-state-info-border-color: light-dark(var(--token-color-info-25), var(--token-color-info-65));
+    --typo3-state-info-bg: light-dark(var(--token-color-info-20), var(--token-color-info-85));
+    --typo3-state-info-border-color: light-dark(var(--token-color-info-30), var(--token-color-info-75));
     --typo3-state-info-hover-color: var(--typo3-state-info-color);
-    --typo3-state-info-hover-bg: light-dark(var(--token-color-info-25), var(--token-color-info-65));
-    --typo3-state-info-hover-border-color: light-dark(var(--token-color-info-30), var(--token-color-info-60));
+    --typo3-state-info-hover-bg: light-dark(var(--token-color-info-25), var(--token-color-info-80));
+    --typo3-state-info-hover-border-color: light-dark(var(--token-color-info-35), var(--token-color-info-70));
     --typo3-state-info-focus-color: var(--typo3-state-info-color);
-    --typo3-state-info-focus-bg: light-dark(var(--token-color-info-30), var(--token-color-info-60));
-    --typo3-state-info-focus-border-color: light-dark(var(--token-color-info-35), var(--token-color-info-55));
+    --typo3-state-info-focus-bg: light-dark(var(--token-color-info-30), var(--token-color-info-75));
+    --typo3-state-info-focus-border-color: light-dark(var(--token-color-info-40), var(--token-color-info-65));
     --typo3-state-info-disabled-color: var(--typo3-state-info-color);
     --typo3-state-info-disabled-bg: var(--typo3-state-info-bg);
     --typo3-state-info-disabled-border-color: var(--typo3-state-info-border-color);
     --typo3-state-notice-color: light-dark(var(--token-color-notice-1), var(--token-color-notice-15));
-    --typo3-state-notice-bg: light-dark(var(--token-color-notice-75), var(--token-color-notice-80));
-    --typo3-state-notice-border-color: light-dark(var(--token-color-notice-80), var(--token-color-notice-75));
+    --typo3-state-notice-bg: light-dark(var(--token-color-notice-75), var(--token-color-notice-75));
+    --typo3-state-notice-border-color: light-dark(var(--token-color-notice-85), var(--token-color-notice-65));
     --typo3-state-notice-hover-color: var(--typo3-state-notice-color);
-    --typo3-state-notice-hover-bg: light-dark(var(--token-color-notice-80), var(--token-color-notice-75));
-    --typo3-state-notice-hover-border-color: light-dark(var(--token-color-notice-85), var(--token-color-notice-70));
+    --typo3-state-notice-hover-bg: light-dark(var(--token-color-notice-80), var(--token-color-notice-70));
+    --typo3-state-notice-hover-border-color: light-dark(var(--token-color-notice-90), var(--token-color-notice-60));
     --typo3-state-notice-focus-color: var(--typo3-state-notice-color);
-    --typo3-state-notice-focus-bg: light-dark(var(--token-color-notice-85), var(--token-color-notice-70));
-    --typo3-state-notice-focus-border-color: light-dark(var(--token-color-notice-90), var(--token-color-notice-65));
+    --typo3-state-notice-focus-bg: light-dark(var(--token-color-notice-85), var(--token-color-notice-65));
+    --typo3-state-notice-focus-border-color: light-dark(var(--token-color-notice-95), var(--token-color-notice-55));
     --typo3-state-notice-disabled-color: var(--typo3-state-notice-color);
     --typo3-state-notice-disabled-bg: var(--typo3-state-notice-bg);
     --typo3-state-notice-disabled-border-color: var(--typo3-state-notice-border-color);
+
+    // Decorative colors
+    //
+    // Color transitions for interactive states (hover, focus):
+    // - Light mode: backgrounds get darker (higher token numbers)
+    // - Dark mode: backgrounds get lighter (lower token numbers)
+    //
+    // This ensures consistent visual feedback while maintaining
+    // WCAG contrast ratios with the text color in each mode.
+    --typo3-state-red-color: light-dark(var(--token-color-red-1), var(--token-color-red-1));
+    --typo3-state-red-bg: light-dark(var(--token-color-red-55), var(--token-color-red-70));
+    --typo3-state-red-border-color: light-dark(var(--token-color-red-65), var(--token-color-red-60));
+    --typo3-state-red-hover-color: var(--typo3-state-red-color);
+    --typo3-state-red-hover-bg: light-dark(var(--token-color-red-60), var(--token-color-red-65));
+    --typo3-state-red-hover-border-color: light-dark(var(--token-color-red-70), var(--token-color-red-55));
+    --typo3-state-red-focus-color: var(--typo3-state-red-color);
+    --typo3-state-red-focus-bg: light-dark(var(--token-color-red-65), var(--token-color-red-60));
+    --typo3-state-red-focus-border-color: light-dark(var(--token-color-red-75), var(--token-color-red-50));
+    --typo3-state-red-disabled-color: var(--typo3-state-red-color);
+    --typo3-state-red-disabled-bg: var(--typo3-state-red-bg);
+    --typo3-state-red-disabled-border-color: var(--typo3-state-red-border-color);
+    --typo3-state-orange-color: light-dark(var(--token-color-orange-90), var(--token-color-orange-1));
+    --typo3-state-orange-bg: light-dark(var(--token-color-orange-40), var(--token-color-orange-75));
+    --typo3-state-orange-border-color: light-dark(var(--token-color-orange-50), var(--token-color-orange-65));
+    --typo3-state-orange-hover-color: var(--typo3-state-orange-color);
+    --typo3-state-orange-hover-bg: light-dark(var(--token-color-orange-45), var(--token-color-orange-70));
+    --typo3-state-orange-hover-border-color: light-dark(var(--token-color-orange-55), var(--token-color-orange-60));
+    --typo3-state-orange-focus-color: var(--typo3-state-orange-color);
+    --typo3-state-orange-focus-bg: light-dark(var(--token-color-orange-50), var(--token-color-orange-65));
+    --typo3-state-orange-focus-border-color: light-dark(var(--token-color-orange-60), var(--token-color-orange-55));
+    --typo3-state-orange-disabled-color: var(--typo3-state-orange-color);
+    --typo3-state-orange-disabled-bg: var(--typo3-state-orange-bg);
+    --typo3-state-orange-disabled-border-color: var(--typo3-state-orange-border-color);
+    --typo3-state-yellow-color: light-dark(var(--token-color-yellow-90), var(--token-color-yellow-1));
+    --typo3-state-yellow-bg: light-dark(var(--token-color-yellow-35), var(--token-color-yellow-80));
+    --typo3-state-yellow-border-color: light-dark(var(--token-color-yellow-45), var(--token-color-yellow-70));
+    --typo3-state-yellow-hover-color: var(--typo3-state-yellow-color);
+    --typo3-state-yellow-hover-bg: light-dark(var(--token-color-yellow-40), var(--token-color-yellow-75));
+    --typo3-state-yellow-hover-border-color: light-dark(var(--token-color-yellow-50), var(--token-color-yellow-65));
+    --typo3-state-yellow-focus-color: var(--typo3-state-yellow-color);
+    --typo3-state-yellow-focus-bg: light-dark(var(--token-color-yellow-45), var(--token-color-yellow-70));
+    --typo3-state-yellow-focus-border-color: light-dark(var(--token-color-yellow-55), var(--token-color-yellow-60));
+    --typo3-state-yellow-disabled-color: var(--typo3-state-yellow-color);
+    --typo3-state-yellow-disabled-bg: var(--typo3-state-yellow-bg);
+    --typo3-state-yellow-disabled-border-color: var(--typo3-state-yellow-border-color);
+    --typo3-state-lime-color: light-dark(var(--token-color-lime-90), var(--token-color-lime-1));
+    --typo3-state-lime-bg: light-dark(var(--token-color-lime-35), var(--token-color-lime-85));
+    --typo3-state-lime-border-color: light-dark(var(--token-color-lime-45), var(--token-color-lime-75));
+    --typo3-state-lime-hover-color: var(--typo3-state-lime-color);
+    --typo3-state-lime-hover-bg: light-dark(var(--token-color-lime-40), var(--token-color-lime-80));
+    --typo3-state-lime-hover-border-color: light-dark(var(--token-color-lime-50), var(--token-color-lime-70));
+    --typo3-state-lime-focus-color: var(--typo3-state-lime-color);
+    --typo3-state-lime-focus-bg: light-dark(var(--token-color-lime-45), var(--token-color-lime-75));
+    --typo3-state-lime-focus-border-color: light-dark(var(--token-color-lime-55), var(--token-color-lime-65));
+    --typo3-state-lime-disabled-color: var(--typo3-state-lime-color);
+    --typo3-state-lime-disabled-bg: var(--typo3-state-lime-bg);
+    --typo3-state-lime-disabled-border-color: var(--typo3-state-lime-border-color);
+    --typo3-state-green-color: light-dark(var(--token-color-green-1), var(--token-color-green-1));
+    --typo3-state-green-bg: light-dark(var(--token-color-green-70), var(--token-color-green-80));
+    --typo3-state-green-border-color: light-dark(var(--token-color-green-80), var(--token-color-green-70));
+    --typo3-state-green-hover-color: var(--typo3-state-green-color);
+    --typo3-state-green-hover-bg: light-dark(var(--token-color-green-75), var(--token-color-green-75));
+    --typo3-state-green-hover-border-color: light-dark(var(--token-color-green-85), var(--token-color-green-65));
+    --typo3-state-green-focus-color: var(--typo3-state-green-color);
+    --typo3-state-green-focus-bg: light-dark(var(--token-color-green-80), var(--token-color-green-70));
+    --typo3-state-green-focus-border-color: light-dark(var(--token-color-green-90), var(--token-color-green-60));
+    --typo3-state-green-disabled-color: var(--typo3-state-green-color);
+    --typo3-state-green-disabled-bg: var(--typo3-state-green-bg);
+    --typo3-state-green-disabled-border-color: var(--typo3-state-green-border-color);
+    --typo3-state-teal-color: light-dark(var(--token-color-teal-90), var(--token-color-teal-1));
+    --typo3-state-teal-bg: light-dark(var(--token-color-teal-35), var(--token-color-teal-80));
+    --typo3-state-teal-border-color: light-dark(var(--token-color-teal-45), var(--token-color-teal-70));
+    --typo3-state-teal-hover-color: var(--typo3-state-teal-color);
+    --typo3-state-teal-hover-bg: light-dark(var(--token-color-teal-40), var(--token-color-teal-75));
+    --typo3-state-teal-hover-border-color: light-dark(var(--token-color-teal-50), var(--token-color-teal-65));
+    --typo3-state-teal-focus-color: var(--typo3-state-teal-color);
+    --typo3-state-teal-focus-bg: light-dark(var(--token-color-teal-45), var(--token-color-teal-70));
+    --typo3-state-teal-focus-border-color: light-dark(var(--token-color-teal-55), var(--token-color-teal-60));
+    --typo3-state-teal-disabled-color: var(--typo3-state-teal-color);
+    --typo3-state-teal-disabled-bg: var(--typo3-state-teal-bg);
+    --typo3-state-teal-disabled-border-color: var(--typo3-state-teal-border-color);
+    --typo3-state-blue-color: light-dark(var(--token-color-blue-1), var(--token-color-blue-1));
+    --typo3-state-blue-bg: light-dark(var(--token-color-blue-55), var(--token-color-blue-70));
+    --typo3-state-blue-border-color: light-dark(var(--token-color-blue-65), var(--token-color-blue-60));
+    --typo3-state-blue-hover-color: var(--typo3-state-blue-color);
+    --typo3-state-blue-hover-bg: light-dark(var(--token-color-blue-60), var(--token-color-blue-65));
+    --typo3-state-blue-hover-border-color: light-dark(var(--token-color-blue-70), var(--token-color-blue-55));
+    --typo3-state-blue-focus-color: var(--typo3-state-blue-color);
+    --typo3-state-blue-focus-bg: light-dark(var(--token-color-blue-65), var(--token-color-blue-60));
+    --typo3-state-blue-focus-border-color: light-dark(var(--token-color-blue-75), var(--token-color-blue-50));
+    --typo3-state-blue-disabled-color: var(--typo3-state-blue-color);
+    --typo3-state-blue-disabled-bg: var(--typo3-state-blue-bg);
+    --typo3-state-blue-disabled-border-color: var(--typo3-state-blue-border-color);
+    --typo3-state-indigo-color: light-dark(var(--token-color-indigo-1), var(--token-color-indigo-1));
+    --typo3-state-indigo-bg: light-dark(var(--token-color-indigo-55), var(--token-color-indigo-70));
+    --typo3-state-indigo-border-color: light-dark(var(--token-color-indigo-65), var(--token-color-indigo-60));
+    --typo3-state-indigo-hover-color: var(--typo3-state-indigo-color);
+    --typo3-state-indigo-hover-bg: light-dark(var(--token-color-indigo-60), var(--token-color-indigo-65));
+    --typo3-state-indigo-hover-border-color: light-dark(var(--token-color-indigo-70), var(--token-color-indigo-55));
+    --typo3-state-indigo-focus-color: var(--typo3-state-indigo-color);
+    --typo3-state-indigo-focus-bg: light-dark(var(--token-color-indigo-65), var(--token-color-indigo-60));
+    --typo3-state-indigo-focus-border-color: light-dark(var(--token-color-indigo-75), var(--token-color-indigo-50));
+    --typo3-state-indigo-disabled-color: var(--typo3-state-indigo-color);
+    --typo3-state-indigo-disabled-bg: var(--typo3-state-indigo-bg);
+    --typo3-state-indigo-disabled-border-color: var(--typo3-state-indigo-border-color);
+    --typo3-state-purple-color: light-dark(var(--token-color-purple-1), var(--token-color-purple-1));
+    --typo3-state-purple-bg: light-dark(var(--token-color-purple-55), var(--token-color-purple-70));
+    --typo3-state-purple-border-color: light-dark(var(--token-color-purple-65), var(--token-color-purple-60));
+    --typo3-state-purple-hover-color: var(--typo3-state-purple-color);
+    --typo3-state-purple-hover-bg: light-dark(var(--token-color-purple-60), var(--token-color-purple-65));
+    --typo3-state-purple-hover-border-color: light-dark(var(--token-color-purple-70), var(--token-color-purple-55));
+    --typo3-state-purple-focus-color: var(--typo3-state-purple-color);
+    --typo3-state-purple-focus-bg: light-dark(var(--token-color-purple-65), var(--token-color-purple-60));
+    --typo3-state-purple-focus-border-color: light-dark(var(--token-color-purple-75), var(--token-color-purple-50));
+    --typo3-state-purple-disabled-color: var(--typo3-state-purple-color);
+    --typo3-state-purple-disabled-bg: var(--typo3-state-purple-bg);
+    --typo3-state-purple-disabled-border-color: var(--typo3-state-purple-border-color);
+    --typo3-state-magenta-color: light-dark(var(--token-color-magenta-1), var(--token-color-magenta-1));
+    --typo3-state-magenta-bg: light-dark(var(--token-color-magenta-55), var(--token-color-magenta-70));
+    --typo3-state-magenta-border-color: light-dark(var(--token-color-magenta-65), var(--token-color-magenta-60));
+    --typo3-state-magenta-hover-color: var(--typo3-state-magenta-color);
+    --typo3-state-magenta-hover-bg: light-dark(var(--token-color-magenta-60), var(--token-color-magenta-65));
+    --typo3-state-magenta-hover-border-color: light-dark(var(--token-color-magenta-70), var(--token-color-magenta-55));
+    --typo3-state-magenta-focus-color: var(--typo3-state-magenta-color);
+    --typo3-state-magenta-focus-bg: light-dark(var(--token-color-magenta-65), var(--token-color-magenta-60));
+    --typo3-state-magenta-focus-border-color: light-dark(var(--token-color-magenta-75), var(--token-color-magenta-50));
+    --typo3-state-magenta-disabled-color: var(--typo3-state-magenta-color);
+    --typo3-state-magenta-disabled-bg: var(--typo3-state-magenta-bg);
+    --typo3-state-magenta-disabled-border-color: var(--typo3-state-magenta-border-color);
 
     //
     // Elevation / Shadow

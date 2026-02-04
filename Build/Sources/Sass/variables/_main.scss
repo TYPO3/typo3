@@ -17,23 +17,25 @@ $state-colors: (
     'primary': #205eb5,
     'secondary': #737373,
     'info': #abdced,
-    'success': #247554,
-    'warning': #fc3,
-    'danger': #d13a2e,
+    'success': #2a9960,
+    'warning': #e0a810,
+    'danger': #d64545,
     'notice': #737373,
 );
 $state-shades: (1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 96, 97, 98, 99);
 $base-colors: (
-    'blue': #205eb5,
-    'purple': #5e4db2,
-    'teal': #abdced,
-    'green': #247554,
-    'magenta': #c6398f,
-    'yellow': #fc3,
-    'orange': #ee6d11,
-    'red': #d13a2e,
+    'red': #d64545,
+    'orange': #f28522,
+    'yellow': #e0a810,
+    'lime': #7cb518,
+    'green': #2a9960,
+    'teal': #2aa89c,
+    'blue': #3085d6,
+    'indigo': #5563c4,
+    'purple': #7c5ac4,
+    'magenta': #d4458c,
 );
-$base-shades: (3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 96, 97);
+$base-shades: (1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 96, 97, 98, 99);
 $base-variants: (
     'primary',
     'secondary',

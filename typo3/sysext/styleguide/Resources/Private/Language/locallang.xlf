@@ -1212,6 +1212,18 @@
       <trans-unit id="styles.accentAndState.introtext">
         <source><![CDATA[Stateful color variants used for interactive elements in the TYPO3 Backend, for <strong>internal usage only</strong>. These include accent colors (primary, secondary) and semantic state colors (info, success, warning, danger, notice) with their respective default, hover, focus, and disabled variants.]]></source>
       </trans-unit>
+      <trans-unit id="styles.accentAndState.section.accentColors.headline">
+        <source>Accent Colors</source>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.stateColors.headline">
+        <source>State Colors</source>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.headline">
+        <source>Decorative Colors</source>
+      </trans-unit>
+      <trans-unit id="styles.accentAndState.section.decorativeColors.text">
+        <source>Plain color variants without semantic meaning. Use these for visual distinction only, such as workspace indicators, category tags, or user-assigned labels where colors are decorative rather than communicating status.</source>
+      </trans-unit>
       <!-- Styles: Icons -->
       <trans-unit id="styles.icons.headline">
         <source>Icons</source>

@@ -94,7 +94,7 @@ final class StylesController
             'neutralSteps' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100],
             'stateColors' => ['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'notice'],
             'stateSteps' => [1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 96, 97, 98, 99],
-            'baseColors' => ['blue', 'purple', 'teal', 'green', 'magenta', 'yellow', 'orange', 'red'],
+            'baseColors' => ['red', 'orange', 'yellow', 'lime', 'green', 'teal', 'blue', 'indigo', 'purple', 'magenta'],
             'baseSteps' => [10, 20, 30, 40, 50, 60, 70, 80, 90],
         ]);
         return $view->renderResponse('Backend/Styles/ColorTokens');
@@ -109,6 +109,7 @@ final class StylesController
             'routeIdentifier' => 'styleguide_styles',
             'accentColors' => ['primary', 'secondary'],
             'stateColors' => ['default', 'info', 'success', 'warning', 'danger', 'notice'],
+            'baseStateColors' => ['red', 'orange', 'yellow', 'lime', 'green', 'teal', 'blue', 'indigo', 'purple', 'magenta'],
             'stateVariants' => ['default', 'hover', 'focus', 'disabled'],
             'stateProperties' => ['color', 'bg', 'border-color'],
         ]);
