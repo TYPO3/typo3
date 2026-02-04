@@ -13,7 +13,8 @@
 }
 
 :root,
-.icon {
+.icon,
+typo3-backend-icon {
     --icon-color-accent: var(--typo3-icons-accent);
 }
 
@@ -22,7 +23,6 @@
 //
 .icon {
     vertical-align: -22%;
-    --icon-color-accent: var(--typo3-icons-accent);
 }
 
 //

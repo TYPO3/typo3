@@ -1896,7 +1896,7 @@ to{transform:rotate(1turn)}}
 .icon-size-mega{--icon-size:var(--icon-size-mega)}
 .icon-size-mega .icon-unify{font-size:calc(var(--icon-size)*var(--icon-unify-modifier));line-height:var(--icon-size)}
 .icon-size-mega .icon-overlay .icon-unify{font-size:calc(var(--icon-size)/1.6*var(--icon-unify-modifier));line-height:calc(var(--icon-size)/1.6)}
-.icon,:root{--icon-color-accent:var(--typo3-icons-accent)}
+.icon,:root,typo3-backend-icon{--icon-color-accent:var(--typo3-icons-accent)}
 .icon{vertical-align:-22%}
 .icon-actions-edit-copy-release,.icon-actions-edit-cut-release,.icon-status-dialog-error,.icon-status-status-current,.icon-status-status-permission-denied{--icon-color-primary:var(--typo3-text-color-danger)}
 .icon-status-status-sorting-asc,.icon-status-status-sorting-desc{--icon-color-primary:var(--typo3-text-color-variant)}
