@@ -126,6 +126,26 @@ final class DeleteActionTest extends FunctionalTestCase
         self::assertFalse($this->databaseRecordExists('pages', 10, null));
     }
 
+    #[Test]
+    public function nonAdminWithTableModifySoftDeletingRecordsOnRootLevelIsAllowed(): void
+    {
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/sys_category.csv');
+        $this->subject->BE_USER->groupData['tables_modify'] = 'sys_category';
+        $this->subject->deleteAction('sys_category', 1);
+        self::assertSame([], $this->subject->errorLog);
+        self::assertTrue($this->databaseRecordExists('sys_category', 1, true));
+    }
+
+    #[Test]
+    public function nonAdminWithoutTableModifySoftDeletingRecordsOnRootLevelIsDenied(): void
+    {
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/sys_category.csv');
+        $this->subject->BE_USER->groupData['tables_modify'] = '';
+        $this->subject->deleteAction('sys_category', 1);
+        $this->assertLogEntry(self::LOG_TEMPLATE_TABLE, 'sys_category', 1);
+        self::assertTrue($this->databaseRecordExists('sys_category', 1, false));
+    }
+
     private function databaseRecordExists(string $tableName, int $id, ?bool $expectDeleted): bool
     {
         $schema = $this->get(TcaSchemaFactory::class)->get($tableName);
