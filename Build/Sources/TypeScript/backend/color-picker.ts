@@ -67,45 +67,53 @@ export class Typo3BackendColorPicker extends LitElement {
     await DocumentService.ready();
 
     const inputElement = this.getInputElement();
-    if (inputElement) {
-      if (!inputElement.value && this.color) {
-        inputElement.value = this.color;
-      } else {
-        this.color = inputElement.value;
-      }
-
-      if (inputElement.disabled || inputElement.readOnly) {
-        return;
-      }
-
-      const alwan = new Alwan(inputElement, {
-        position: 'bottom-start',
-        format: 'hex',
-        opacity: this.opacity,
-        swatches: this.swatches,
-        preset: false,
-        color: this.color,
-        // Casting to `unknown` to prevent TypeScript Error
-        // > TS2589: Type instantiation is excessively deep and possibly infinite.
-        parent: (this.closest('dialog') ?? '') as unknown,
-      });
-
-      alwan.on('color', (e): void => {
-        this.color = e.hex;
-        inputElement.value = this.color;
-        inputElement.dispatchEvent(new Event('blur'));
-      });
-
-      // input: react on user input
-      // change: react on indirect changes, e.g. a value picker
-      ['input', 'change'].forEach((eventName: string): void => {
-        new RegularEvent(eventName, (e: Event): void => {
-          const input = (e.target as HTMLInputElement);
-          this.color = input.value;
-          alwan.setColor(this.color);
-        }).bindTo(inputElement);
-      });
+    if (!inputElement) {
+      return;
     }
+
+    if (!inputElement.value && this.color) {
+      inputElement.value = this.color;
+    } else {
+      this.color = inputElement.value;
+    }
+
+    if (inputElement.disabled || inputElement.readOnly) {
+      return;
+    }
+
+    const alwan = new Alwan(inputElement, {
+      position: 'bottom-start',
+      format: 'hex',
+      opacity: this.opacity,
+      swatches: this.swatches,
+      preset: false,
+      color: this.color,
+      // Casting to `unknown` to prevent TypeScript Error
+      // > TS2589: Type instantiation is excessively deep and possibly infinite.
+      parent: (this.closest('dialog') ?? '') as unknown,
+    });
+
+    // When the color picker opens, the input loses focus, making value changes difficult.
+    // Restore focus to the input after the picker is opened.
+    alwan.on('open', (): void => {
+      inputElement.focus();
+    });
+
+    alwan.on('color', (e): void => {
+      this.color = e.hex;
+      inputElement.value = this.color;
+      inputElement.dispatchEvent(new Event('blur'));
+    });
+
+    // input: react on user input
+    // change: react on indirect changes, e.g. a value picker
+    ['input', 'change'].forEach((eventName: string): void => {
+      new RegularEvent(eventName, (e: Event): void => {
+        const input = (e.target as HTMLInputElement);
+        this.color = input.value;
+        alwan.setColor(this.color);
+      }).bindTo(inputElement);
+    });
   }
 
   protected override render(): TemplateResult {
