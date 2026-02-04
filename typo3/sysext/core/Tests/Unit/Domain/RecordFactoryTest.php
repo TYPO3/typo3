@@ -173,4 +173,41 @@ final class RecordFactoryTest extends UnitTestCase
         self::assertSame(2, $rawRecord2->getComputedProperties()->getRequestedOverlayLanguageId());
         self::assertSame(['uid' => 222], $rawRecord2->getComputedProperties()->getTranslationSource()->toArray());
     }
+
+    #[Test]
+    public function translationSourceGivenAsArrayIsConvertedToPage(): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $schemaFactory = new TcaSchemaFactory(
+            new RelationMapBuilder(),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $schemaFactory->load([
+            'foo' => [
+                'ctrl' => [],
+                'columns' => ['title' => ['config' => ['type' => 'input']]],
+            ],
+        ]);
+        $subject = new RecordFactory(
+            $schemaFactory,
+            $this->createMock(RecordFieldTransformer::class),
+            $this->createMock(EventDispatcherInterface::class),
+        );
+
+        /** @var Record $recordObject */
+        $recordObject = $subject->createFromDatabaseRow('foo', [
+            'uid' => 2,
+            'pid' => 1,
+            'title' => 'Translated page',
+            '_TRANSLATION_SOURCE' => ['uid' => 1, 'pid' => 1, 'title' => 'Default language page'],
+        ]);
+
+        $translationSource = $recordObject->getComputedProperties()->getTranslationSource();
+        self::assertInstanceOf(Page::class, $translationSource);
+        self::assertSame(1, $translationSource->toArray()['uid']);
+        self::assertSame('Default language page', $translationSource->toArray()['title']);
+    }
 }

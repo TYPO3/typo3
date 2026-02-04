@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\DataProcessing;
 
+use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
@@ -518,6 +519,9 @@ class MenuProcessor implements DataProcessorInterface
      */
     public function jsonEncode($value)
     {
+        if (is_array($value) && ($value['_TRANSLATION_SOURCE'] ?? null) instanceof Page) {
+            $value['_TRANSLATION_SOURCE'] = $value['_TRANSLATION_SOURCE']->toArray(true);
+        }
         return json_encode($value, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
     }
 

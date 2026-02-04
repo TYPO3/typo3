@@ -205,6 +205,9 @@ readonly class RecordFactory
 
     protected function extractComputedProperties(array &$record): ComputedProperties
     {
+        if (is_array($record['_TRANSLATION_SOURCE'] ?? null)) {
+            $record['_TRANSLATION_SOURCE'] = new Page($record['_TRANSLATION_SOURCE']);
+        }
         $computed = $record['_computed'] ?? null;
         if (is_array($computed)) {
             $computedProperties = new ComputedProperties(
