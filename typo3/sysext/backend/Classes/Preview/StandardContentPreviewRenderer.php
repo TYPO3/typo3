@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Domain\RawRecord;
@@ -56,6 +57,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     protected ?RecordFieldPreviewProcessor $fieldProcessor = null;
     protected ?TcaSchemaFactory $tcaSchemaFactory = null;
     protected ?LocalizationRepository $localizationRepository = null;
+    protected ?BackendLayoutView $backendLayoutView = null;
 
     public function __construct()
     {
@@ -76,6 +78,9 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         }
         if (!isset($this->localizationRepository)) {
             $this->localizationRepository = GeneralUtility::makeInstance(LocalizationRepository::class);
+        }
+        if (!isset($this->backendLayoutView)) {
+            $this->backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
         }
     }
 
@@ -132,7 +137,19 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         // If the record type is unknown, render a warning message.
         if (!$schema->hasSubSchema($recordType)) {
             $message = sprintf(
-                $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
+                $languageService->sL('core.core:labels.noMatchingValue'),
+                $recordType
+            );
+            return '<span class="badge badge-warning">' . htmlspecialchars($message) . '</span>';
+        }
+
+        if (!$this->backendLayoutView->isCTypeAllowedInColPosByPage(
+            $item->getRecordType(),
+            $item->getColumn()->getColumnNumber() ?? 0,
+            $item->getRecord()->getPid()
+        )) {
+            $message = sprintf(
+                $languageService->sL('core.core:labels.typeNotAllowedInColumn'),
                 $recordType
             );
             return '<span class="badge badge-warning">' . htmlspecialchars($message) . '</span>';

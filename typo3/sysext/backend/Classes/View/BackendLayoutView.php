@@ -329,6 +329,10 @@ readonly class BackendLayoutView
         // If it not set check the rootline for a layout on next level and use this: Rootline
         // starts with current page and has page "0" at the end.
         $rootLine = BackendUtility::BEgetRootLine($pageId, '', true);
+        if ($rootLine === []) {
+            // Return for invalid rootline
+            return false;
+        }
         // Use first element as current page and remove last element (root page / pid=0)
         $page = reset($rootLine);
         array_pop($rootLine);

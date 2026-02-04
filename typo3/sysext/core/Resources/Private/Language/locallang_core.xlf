@@ -441,6 +441,9 @@
       <trans-unit id="labels.noMatchingValue">
         <source>Invalid value ("%s")</source>
       </trans-unit>
+      <trans-unit id="labels.typeNotAllowedInColumn">
+        <source>This element of type "%s" is not allowed in this column.</source>
+      </trans-unit>
       <trans-unit id="labels.noMatchingLabel">
         <source>Missing label ("%s")</source>
       </trans-unit>

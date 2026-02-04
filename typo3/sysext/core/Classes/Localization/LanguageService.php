@@ -113,9 +113,9 @@ class LanguageService
      * Resolve strings like these:
      *
      * ```
-     * 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'
-     * 'LLL:core.messages:labels.depth_0'
-     * 'core.messages:labels.depth_0'  // LLL: prefix is optional
+     * 'LLL:EXT:core/Resources/Private/Language/locallang_custom.xlf:labels.depth_0'
+     * 'LLL:core.custom:labels.depth_0'
+     * 'core.custom:labels.depth_0'  // LLL: prefix is optional
      * ```
      *
      * This looks up the given .xlf file path or translation domain in the 'core' extension for label labels.depth_0

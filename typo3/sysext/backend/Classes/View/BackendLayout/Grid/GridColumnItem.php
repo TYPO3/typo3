@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\Event\AfterPageContentPreviewRenderedEvent;
 use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
@@ -54,6 +55,7 @@ class GridColumnItem extends AbstractGridObject
      */
     protected array $translations = [];
     protected TcaSchema $schema;
+    protected BackendLayoutView $backendLayoutView;
 
     public function __construct(
         PageLayoutContext $context,
@@ -63,6 +65,7 @@ class GridColumnItem extends AbstractGridObject
     ) {
         parent::__construct($context);
         $this->schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->table);
+        $this->backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
     }
 
     public function isVersioned(): bool
@@ -92,6 +95,14 @@ class GridColumnItem extends AbstractGridObject
             $previewContent = $previewRenderer->renderPageModulePreviewContent($this);
         }
 
+        if (!$this->backendLayoutView->isCTypeAllowedInColPosByPage(
+            $this->getRecordType(),
+            $this->getColumn()->getColumnNumber() ?? 0,
+            $this->getRecord()->getPid()
+        )) {
+            return '<span class="badge badge-warning">' . sprintf($this->getLanguageService()->sL('core.core:labels.typeNotAllowedInColumn'), $this->getContentTypeLabel()) . '</span>';
+        }
+
         $previewContent = $previewRenderer->wrapPageModulePreview($previewHeader, $previewContent, $this);
         $event = $eventDispatcher->dispatch(
             new AfterPageContentPreviewRenderedEvent($this->table, $this->getRecordType(), $this->record, $this->context, $previewContent)
@@ -105,7 +116,13 @@ class GridColumnItem extends AbstractGridObject
         if ($this->isDisabled()) {
             $wrapperClassNames[] = 't3-page-ce-hidden t3js-hidden-record';
         }
-        if ($this->isInconsistentLanguage()) {
+        if ($this->isInconsistentLanguage() ||
+            !$this->backendLayoutView->isCTypeAllowedInColPosByPage(
+                $this->getRecordType(),
+                $this->getColumn()->getColumnNumber() ?? 0,
+                $this->getRecord()->getPid()
+            )
+        ) {
             $wrapperClassNames[] = 't3-page-ce-warning';
         }
 
@@ -148,13 +165,13 @@ class GridColumnItem extends AbstractGridObject
         $refCountMsg = BackendUtility::referenceCount(
             $this->table,
             $this->record->getUid(),
-            LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
+            LF . $this->getLanguageService()->sL('core.core:labels.referencesToRecord'),
             (string)$this->getReferenceCount($this->record->getUid())
         );
         $translationCount = count(GeneralUtility::makeInstance(LocalizationRepository::class)->getRecordTranslations($this->table, $this->record->getUid()));
         if ($translationCount > 0) {
             $refCountMsg .= LF . sprintf(
-                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord'),
+                $this->getLanguageService()->sL('core.core:labels.translationsOfRecord'),
                 $translationCount
             );
         }
@@ -173,6 +190,7 @@ class GridColumnItem extends AbstractGridObject
         if (($recordType = $this->getRecordType()) === '') {
             return '';
         }
+
         $contentTypeLabels = $this->context->getContentTypeLabels();
         $contentTypeLabel = $contentTypeLabels[$recordType] ?? '';
         if ($contentTypeLabel === '') {
