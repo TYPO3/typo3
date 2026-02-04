@@ -252,11 +252,6 @@ class DataHandler
     public BackendUserAuthentication $BE_USER;
 
     /**
-     * The list of <table>-<fields> that cannot be edited by user. This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
-     */
-    protected array $excludedTablesAndFields = [];
-
-    /**
      * Data submitted from the form view, used to control behaviours,
      * e.g. this is used to activate/deactivate fields and thus store NULL values
      */
@@ -449,11 +444,6 @@ class DataHandler
         $tcaDefaultOverride = $this->BE_USER->getTSConfig()['TCAdefaults.'] ?? null;
         if (is_array($tcaDefaultOverride)) {
             $this->setDefaultsFromUserTS($tcaDefaultOverride);
-        }
-
-        // generates the excludelist, based on TCA/exclude-flag and non_exclude_fields for the user:
-        if (!$this->BE_USER->isAdmin()) {
-            $this->excludedTablesAndFields = array_flip($this->getExcludeListArray());
         }
 
         foreach ($dataMap as $tableName => $tableRecordArray) {
@@ -1028,7 +1018,6 @@ class DataHandler
 
     /**
      * Filling in the field array
-     * $this->excludedTablesAndFields is used to filter fields if needed.
      *
      * @param int|string $id Record ID
      * @param array $fieldArray Default values, Preset $fieldArray with 'pid' maybe (pid and uid will be not be overridden anyway)
@@ -1094,7 +1083,10 @@ class DataHandler
         // - If the field is nothing of the above and the field is configured in TCA, the fieldvalues are evaluated by ->checkValue
         // If everything is OK, the field is entered into $fieldArray[]
         foreach ($incomingFieldArray as $field => $fieldValue) {
-            if (isset($this->excludedTablesAndFields[$table . '-' . $field])) {
+            if ($this->BE_USER->isAdmin() === false && $schema->hasField($field) && $schema->getField($field)->getDisplayConditions() === 'HIDE_FOR_NON_ADMINS') {
+                continue;
+            }
+            if ($schema->hasField($field) && $schema->getField($field)->supportsAccessControl() && !$this->BE_USER->check('non_exclude_fields', $table . ':' . $field)) {
                 continue;
             }
 
@@ -7439,31 +7431,6 @@ class DataHandler
             }
         }
         return true;
-    }
-
-    /**
-     * Generate an array of fields to be excluded from editing for the user. Based on "exclude"-field in TCA and a look up in non_exclude_fields
-     * Will also generate this list for admin-users so they must be check for before calling the function
-     *
-     * @return array Array of [table]-[field] pairs to exclude from editing.
-     * @internal should only be used from within DataHandler
-     */
-    public function getExcludeListArray(): array
-    {
-        $list = [];
-        if (isset($this->BE_USER->groupData['non_exclude_fields'])) {
-            $nonExcludeFieldsArray = array_flip(GeneralUtility::trimExplode(',', $this->BE_USER->groupData['non_exclude_fields']));
-            foreach ($this->tcaSchemaFactory->all() as $schema) {
-                foreach ($schema->getFields() as $field) {
-                    $isOnlyVisibleForAdmins = $field->getDisplayConditions() === 'HIDE_FOR_NON_ADMINS';
-                    $editorHasPermissionForThisField = isset($nonExcludeFieldsArray[$schema->getName() . ':' . $field->getName()]);
-                    if ($isOnlyVisibleForAdmins || ($field->supportsAccessControl() && !$editorHasPermissionForThisField)) {
-                        $list[] = $schema->getName() . '-' . $field->getName();
-                    }
-                }
-            }
-        }
-        return $list;
     }
 
     /**
