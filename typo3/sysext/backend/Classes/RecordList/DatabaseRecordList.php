@@ -1477,7 +1477,7 @@ class DatabaseRecordList
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                 >
-                    ' . htmlspecialchars($label) . ' <div class="' . ($this->sortField === $sortField ? 'text-primary' : '') . '">' . $icon . '</div>
+                    ' . $label . ' <div class="' . ($this->sortField === $sortField ? 'text-primary' : '') . '">' . $icon . '</div>
                 </button>
                 <ul class="dropdown-menu">
                     ' . implode('', array_map(static fn($item) => '<li>' . $item . '</li>', $dropdownSortingItems)) . '
