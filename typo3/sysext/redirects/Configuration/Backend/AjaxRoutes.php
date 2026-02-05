@@ -17,4 +17,17 @@ return [
         'target' => Controller\RecordHistoryRollbackController::class . '::revertCorrelation',
     ],
 
+    // Endpoint to generate a Short URL
+    'short_url_generate' => [
+        'path' => '/short-url/generate',
+        'methods' => ['POST'],
+        'target' => Controller\ShortUrlGeneratorController::class . '::generate',
+    ],
+
+    // Endpoint to validate a Short URL for uniqueness
+    'short_url_validate' => [
+        'path' => '/short-url/validate',
+        'methods' => ['POST'],
+        'target' => Controller\ShortUrlGeneratorController::class . '::validate',
+    ],
 ];

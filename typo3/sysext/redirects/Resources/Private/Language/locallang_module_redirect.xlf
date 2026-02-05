@@ -90,6 +90,12 @@
       <trans-unit id="source_path.placeholder">
         <source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
       </trans-unit>
+      <trans-unit id="short_url.source_path.placeholder">
+        <source>e.g. /AbCdEfGh</source>
+      </trans-unit>
+      <trans-unit id="short_url.copy">
+        <source>Copy Short URL to clipboard</source>
+      </trans-unit>
       <trans-unit id="pageID">
         <source>Page ID</source>
       </trans-unit>

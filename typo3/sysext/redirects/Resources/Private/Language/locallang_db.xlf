@@ -9,6 +9,9 @@
       <trans-unit id="sys_redirect.redirect_type.qr_code">
         <source>QR Code</source>
       </trans-unit>
+      <trans-unit id="sys_redirect.redirect_type.short_url">
+        <source>Short URL</source>
+      </trans-unit>
       <trans-unit id="sys_redirect.source_host">
         <source>Source Domain</source>
       </trans-unit>
@@ -128,6 +131,15 @@
       </trans-unit>
       <trans-unit id="sys_redirect.createdby">
         <source>Created by</source>
+      </trans-unit>
+      <trans-unit id="sys_redirect.short_url">
+        <source>Short URL</source>
+      </trans-unit>
+      <trans-unit id="sys_redirect.short_url.description">
+        <source>The short URL can either be assigned manually or generated. Once saved for the first time, the short URL can no longer be changed.</source>
+      </trans-unit>
+      <trans-unit id="sys_redirect.short_url.shortUrlGenerator">
+        <source>Generate Short URL</source>
       </trans-unit>
     </body>
   </file>

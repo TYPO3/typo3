@@ -7,10 +7,10 @@
         <source>Link Management</source>
       </trans-unit>
       <trans-unit id="short_description">
-        <source>Manage redirects and QR Codes</source>
+        <source>Manage redirects, QR Codes and Short URLs</source>
       </trans-unit>
       <trans-unit id="description">
-        <source>Manage redirects and QR codes to navigation and access points.</source>
+        <source>Manage redirects, QR codes and Short URLs to navigation and access points.</source>
       </trans-unit>
     </body>
   </file>

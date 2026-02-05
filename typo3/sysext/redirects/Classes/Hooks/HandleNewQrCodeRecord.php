@@ -32,7 +32,15 @@ final class HandleNewQrCodeRecord
 {
     public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, DataHandler $dataHandler): void
     {
-        if ($table === 'sys_redirect' && !isset($incomingFieldArray['source_path']) && !MathUtility::canBeInterpretedAsInteger($id)) {
+        if ($table !== 'sys_redirect') {
+            return;
+        }
+
+        if (isset($incomingFieldArray['redirect_type'])
+            && $incomingFieldArray['redirect_type'] === 'qrcode'
+            && !isset($incomingFieldArray['source_path'])
+            && !MathUtility::canBeInterpretedAsInteger($id)
+        ) {
             $incomingFieldArray['source_path'] = StringUtility::getUniqueId('/_redirect/');
             $incomingFieldArray['keep_query_parameters'] = 1;
             $incomingFieldArray['protected'] = 1;

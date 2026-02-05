@@ -31,6 +31,7 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_redirect',
             'qrcode' => 'actions-qrcode',
+            'short_url' => 'module-urls',
         ],
         'type' => 'redirect_type',
     ],
@@ -58,6 +59,15 @@ return [
                 --div--;core.form.tabs:notes, description, redirect_type
                 ',
         ],
+        'short_url' => [
+            'title' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.redirect_type.short_url',
+            'showitem' => '
+                --div--;core.form.tabs:general, --palette--;;short_url_target,
+                --div--;redirects.db:tabs.redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
+                --div--;core.form.tabs:access, --palette--;;visibility,
+                --div--;core.form.tabs:notes, description, redirect_type
+                ',
+        ],
     ],
     'palettes' => [
         'visibility' => [
@@ -75,6 +85,9 @@ return [
         'qrcode_target' => [
             'showitem' => 'source_host, target, --linebreak--, createdby, force_https',
         ],
+        'short_url_target' => [
+            'showitem' => 'short_url, --linebreak--, target, --linebreak--, createdby, force_https',
+        ],
     ],
     'columns' => [
         'redirect_type' => [
@@ -87,6 +100,22 @@ return [
             'config' => [
                 'type' => 'none',
                 'renderType' => 'qrCode',
+            ],
+        ],
+        'short_url' => [
+            'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.short_url',
+            'description' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.short_url.description',
+            'config' => [
+                'type' => 'none',
+                'renderType' => 'shortUrl',
+                'fieldControl' => [
+                    'shortUrlGenerator' => [
+                        'renderType' => 'shortUrlGenerator',
+                        'options' => [
+                            'title' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.short_url.shortUrlGenerator',
+                        ],
+                    ],
+                ],
             ],
         ],
         'source_host' => [

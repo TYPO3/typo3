@@ -3369,6 +3369,13 @@ typo3-backend-workspace-selector .dropdown-list>li:not(:first-child,:last-child)
 typo3-backend-workspace-selector .dropdown-item{-webkit-border-start:.5rem solid var(--workspace-selector-border-color);border-inline-start:.5rem solid var(--workspace-selector-border-color);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 typo3-backend-workspace-selector .dropdown-item.active{pointer-events:none}
 typo3-backend-workspace-selector .workspace-selector-loading{align-items:center;display:flex;justify-content:center;min-height:36px}
+.short-url-input-group{max-width:-webkit-fit-content;max-width:-moz-fit-content;max-width:fit-content}
+.short-url-input-group typo3-backend-combobox{flex:0 0 320px}
+.short-url-input-group typo3-backend-combobox input{border-bottom-right-radius:0;border-top-right-radius:0}
+.short-url-input-group>input[type=text]{border-left:0;border-radius:0;flex:0 0 150px}
+.short-url-input-group>input[type=text]:focus{z-index:2}
+.short-url-input-group .form-wizards-items-aside,.short-url-input-group .form-wizards-items-top{flex:0 0 auto}
+.short-url-input-group .form-wizards-items-aside .btn,.short-url-input-group .form-wizards-items-aside .btn-group,.short-url-input-group .form-wizards-items-top .btn,.short-url-input-group .form-wizards-items-top .btn-group{border-bottom-left-radius:0;border-top-left-radius:0}
 .collapse-horizontal{height:auto;overflow:hidden;vertical-align:middle;width:0}
 .collapse-horizontal.show{display:inline-block;width:auto}
 .collapse-horizontal.collapsing{display:inline-block;transition-property:width,visibility;width:0}

@@ -2,6 +2,7 @@
 
 use TYPO3\CMS\Redirects\Controller\ManagementController;
 use TYPO3\CMS\Redirects\Controller\QrCodeModuleController;
+use TYPO3\CMS\Redirects\Controller\ShortUrlModuleController;
 
 /**
  * Definitions for modules provided by EXT:redirects
@@ -36,6 +37,21 @@ return [
         ],
         'moduleData' => [
             'redirectType' => 'qrcode',
+        ],
+    ],
+    'short_urls' => [
+        'parent' => 'link_management',
+        'access' => 'user',
+        'path' => '/module/link-management/short-urls',
+        'iconIdentifier' => 'module-urls',
+        'labels' => 'redirects.modules.short_urls',
+        'routes' => [
+            '_default' => [
+                'target' => ShortUrlModuleController::class . '::handleRequest',
+            ],
+        ],
+        'moduleData' => [
+            'redirectType' => 'short_url',
         ],
     ],
 ];

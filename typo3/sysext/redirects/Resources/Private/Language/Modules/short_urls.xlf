@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/Modules/short_urls.xlf" date="2025-11-13T18:00:15Z" product-name="redirects">
+    <header/>
+    <body>
+      <trans-unit id="title">
+        <source>Short URLs</source>
+      </trans-unit>
+      <trans-unit id="short_description">
+        <source>Short URLs Administration</source>
+      </trans-unit>
+      <trans-unit id="description">
+        <source>This is the administration area for Short URLs.</source>
+      </trans-unit>
+      <trans-unit id="heading_text">
+        <source>Short URL Management</source>
+      </trans-unit>
+      <trans-unit id="add_text">
+        <source>Add Short URL</source>
+      </trans-unit>
+      <trans-unit id="not_found_with_filter.message">
+        <source>With the current set of filters applied, no Short URL could be found.</source>
+      </trans-unit>
+      <trans-unit id="not_found.title">
+        <source>No Short URLs found!</source>
+      </trans-unit>
+      <trans-unit id="not_found.message">
+        <source>There are currently no Short URLs found in the database.</source>
+      </trans-unit>
+      <trans-unit id="create">
+        <source>Create new Short URL</source>
+      </trans-unit>
+      <trans-unit id="delete.title">
+        <source>Delete Short URLs</source>
+      </trans-unit>
+      <trans-unit id="delete.message">
+        <source>Are you sure you want to delete all marked Short URLs?</source>
+      </trans-unit>
+      <trans-unit id="show">
+        <source>Show Short URL</source>
+      </trans-unit>
+      <trans-unit id="generate_short_url">
+        <source>Generate Short URL</source>
+      </trans-unit>
+      <trans-unit id="validation.duplicate_short_url">
+        <source>This Short URL already exists. Please choose a different source host or source path.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

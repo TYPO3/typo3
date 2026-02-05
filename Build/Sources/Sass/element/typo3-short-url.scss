@@ -1,0 +1,33 @@
+.short-url-input-group {
+    max-width: fit-content;
+
+    typo3-backend-combobox {
+        flex: 0 0 320px;
+
+        input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+
+    > input[type="text"] {
+        flex: 0 0 150px;
+        border-left: 0;
+        border-radius: 0;
+
+        &:focus {
+            z-index: 2;
+        }
+    }
+
+    .form-wizards-items-aside,
+    .form-wizards-items-top {
+        flex: 0 0 auto;
+
+        .btn-group,
+        .btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    }
+}

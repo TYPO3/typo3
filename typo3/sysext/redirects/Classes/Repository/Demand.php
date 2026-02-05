@@ -28,6 +28,7 @@ class Demand
 {
     public const DEFAULT_REDIRECT_TYPE = 'default';
     public const QRCODE_REDIRECT_TYPE = 'qrcode';
+    public const SHORT_URL_REDIRECT_TYPE = 'short_url';
 
     protected const ORDER_DESCENDING = 'desc';
     protected const ORDER_ASCENDING = 'asc';

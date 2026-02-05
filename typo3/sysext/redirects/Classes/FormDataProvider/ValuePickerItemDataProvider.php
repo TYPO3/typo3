@@ -42,9 +42,10 @@ final readonly class ValuePickerItemDataProvider implements FormDataProviderInte
     public function addData(array $result): array
     {
         if ($result['tableName'] === 'sys_redirect' && isset($result['processedTca']['columns']['source_host'])) {
-            // Don't add the wildcard domain for the qrcode type,
-            // because this case does not exist in context of a qrcode
-            if (($result['databaseRow']['redirect_type'] ?? '') !== Demand::QRCODE_REDIRECT_TYPE) {
+            // Don't add the wildcard domain for the qrcode / short_url types,
+            // because this case does not exist in context of a qrcode / short_url.
+            $redirectType = $result['databaseRow']['redirect_type'] ?? '';
+            if ($redirectType !== Demand::QRCODE_REDIRECT_TYPE && $redirectType !== Demand::SHORT_URL_REDIRECT_TYPE) {
                 $result['processedTca']['columns']['source_host']['config']['valuePicker']['items'][] = [
                     'label' => '*',
                     'value' => '*',
