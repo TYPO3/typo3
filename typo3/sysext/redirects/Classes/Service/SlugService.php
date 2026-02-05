@@ -60,6 +60,7 @@ class SlugService implements LoggerAwareInterface
 
     protected CorrelationId|string $correlationIdRedirectCreation = '';
     protected CorrelationId|string $correlationIdSlugUpdate = '';
+    protected CorrelationId|string $correlationIdPageUpdate = '';
     protected bool $autoUpdateSlugs = false;
     protected bool $autoCreateRedirects = false;
     protected int $redirectTTL = 0;
@@ -122,6 +123,7 @@ class SlugService implements LoggerAwareInterface
             $correlationId = $correlationId->withSubject($subject);
         }
 
+        $this->correlationIdPageUpdate = $correlationId;
         $this->correlationIdRedirectCreation = $correlationId->withAspects(self::CORRELATION_ID_IDENTIFIER, 'redirect');
         $this->correlationIdSlugUpdate = $correlationId->withAspects(self::CORRELATION_ID_IDENTIFIER, 'slug');
     }
@@ -329,6 +331,7 @@ class SlugService implements LoggerAwareInterface
             'componentName' => 'redirects',
             'eventName' => 'slugChanged',
             'correlations' => [
+                'correlationIdPageUpdate' => (string)$this->correlationIdPageUpdate,
                 'correlationIdSlugUpdate' => (string)$this->correlationIdSlugUpdate,
                 'correlationIdRedirectCreation' => (string)$this->correlationIdRedirectCreation,
             ],

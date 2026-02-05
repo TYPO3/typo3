@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Redirects\Service\SlugService;
 use TYPO3\CMS\Redirects\Service\TemporaryPermissionMutationService;
 
 /**
@@ -55,11 +54,10 @@ readonly class RecordHistoryRollbackController
             $correlationIds
         );
         foreach ($correlationIds as $correlationId) {
-            $aspects = $correlationId->getAspects();
-            if (count($aspects) < 2 || $aspects[0] !== SlugService::CORRELATION_ID_IDENTIFIER) {
-                continue;
+            $type = $correlationId->getAspects()[1] ?? null;
+            if ($type !== null) {
+                $revertedCorrelationTypes[] = $correlationId->getAspects()[1] ?? null;
             }
-            $revertedCorrelationTypes[] = $correlationId->getAspects()[1];
             $this->rollBackCorrelation($correlationId);
         }
         $result = [

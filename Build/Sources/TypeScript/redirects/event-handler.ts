@@ -18,6 +18,7 @@ import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import type { AbstractAction } from '@typo3/backend/action-button/abstract-action';
 
 type Correlation = {
+  correlationIdPageUpdate: string;
   correlationIdSlugUpdate: string;
   correlationIdRedirectCreation: string;
 };
@@ -54,6 +55,7 @@ class EventHandler {
         label: TYPO3.lang['notification.redirects.button.revert_update'],
         action: new DeferredAction(async () => {
           await this.revert([
+            correlations.correlationIdPageUpdate,
             correlations.correlationIdSlugUpdate,
             correlations.correlationIdRedirectCreation,
           ]);
@@ -94,6 +96,8 @@ class EventHandler {
       const json = await response.resolve();
       if (json.status === 'ok') {
         NotificationService.success(json.title, json.message);
+        window.location.reload();
+        top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
       }
       if (json.status === 'error') {
         NotificationService.error(json.title, json.message);
