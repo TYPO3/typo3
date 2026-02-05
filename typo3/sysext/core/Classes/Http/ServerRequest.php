@@ -111,9 +111,8 @@ class ServerRequest extends Request implements ServerRequestInterface
      * updated cookie values.
      *
      * @param array $cookies Array of key/value pairs representing cookies.
-     * @return static
      */
-    public function withCookieParams(array $cookies): ServerRequestInterface
+    public function withCookieParams(array $cookies): static
     {
         $clonedObject = clone $this;
         $clonedObject->cookieParams = $cookies;
@@ -153,11 +152,9 @@ class ServerRequest extends Request implements ServerRequestInterface
      * immutability of the message, and MUST return an instance that has the
      * updated query string arguments.
      *
-     * @param array $query Array of query string arguments, typically from
-     *     $_GET.
-     * @return static
+     * @param array $query Array of query string arguments, typically from $_GET.
      */
-    public function withQueryParams(array $query): ServerRequestInterface
+    public function withQueryParams(array $query): static
     {
         $clonedObject = clone $this;
         $clonedObject->queryParams = $query;
@@ -189,10 +186,9 @@ class ServerRequest extends Request implements ServerRequestInterface
      * updated body parameters.
      *
      * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
-     * @return static
      * @throws \InvalidArgumentException if an invalid structure is provided.
      */
-    public function withUploadedFiles(array $uploadedFiles): ServerRequestInterface
+    public function withUploadedFiles(array $uploadedFiles): static
     {
         $this->validateUploadedFiles($uploadedFiles);
         $clonedObject = clone $this;
@@ -244,11 +240,10 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @param array|object|null $data The deserialized body data. This will
      *     typically be in an array or object.
-     * @return static
      * @throws \InvalidArgumentException if an unsupported argument type is
      *     provided.
      */
-    public function withParsedBody($data): ServerRequestInterface
+    public function withParsedBody($data): static
     {
         $clonedObject = clone $this;
         $clonedObject->parsedBody = $data;
@@ -306,9 +301,8 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @param string $name The attribute name.
      * @param mixed $value The value of the attribute.
-     * @return static
      */
-    public function withAttribute(string $name, $value): ServerRequestInterface
+    public function withAttribute(string $name, $value): static
     {
         $clonedObject = clone $this;
         $clonedObject->attributes[$name] = $value;
@@ -328,9 +322,8 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @see getAttributes()
      *
      * @param string $name The attribute name.
-     * @return static
      */
-    public function withoutAttribute(string $name): ServerRequestInterface
+    public function withoutAttribute(string $name): static
     {
         $clonedObject = clone $this;
         if (!isset($clonedObject->attributes[$name])) {

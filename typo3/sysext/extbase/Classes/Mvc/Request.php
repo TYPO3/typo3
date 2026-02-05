@@ -63,7 +63,7 @@ class Request implements RequestInterface
     /**
      * Return an instance with the specified controller object name set.
      */
-    public function withControllerObjectName(string $controllerObjectName): self
+    public function withControllerObjectName(string $controllerObjectName): static
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerObjectName($controllerObjectName);
@@ -81,7 +81,7 @@ class Request implements RequestInterface
     /**
      * Return an instance with the specified plugin name set.
      */
-    public function withPluginName(string $pluginName): self
+    public function withPluginName(string $pluginName): static
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setPluginName($pluginName);
@@ -99,7 +99,7 @@ class Request implements RequestInterface
     /**
      * Return an instance with the specified controller extension name set.
      */
-    public function withControllerExtensionName(string $controllerExtensionName): self
+    public function withControllerExtensionName(string $controllerExtensionName): static
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerExtensionName($controllerExtensionName);
@@ -126,7 +126,7 @@ class Request implements RequestInterface
     /**
      * Return an instance with the specified controller name set.
      */
-    public function withControllerName(string $controllerName): self
+    public function withControllerName(string $controllerName): static
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerName($controllerName);
@@ -144,7 +144,7 @@ class Request implements RequestInterface
     /**
      * Return an instance with the specified controller action name set.
      */
-    public function withControllerActionName(string $actionName): self
+    public function withControllerActionName(string $actionName): static
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerActionName($actionName);
@@ -160,7 +160,7 @@ class Request implements RequestInterface
      * Return an instance with the specified extbase arguments, replacing
      * any arguments which existed before.
      */
-    public function withArguments(array $arguments): self
+    public function withArguments(array $arguments): static
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setArguments($arguments);
@@ -180,7 +180,7 @@ class Request implements RequestInterface
     /**
      * Return an instance with the specified argument set.
      */
-    public function withArgument(string $argumentName, mixed $value): self
+    public function withArgument(string $argumentName, mixed $value): static
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setArgument($argumentName, $value);
@@ -202,7 +202,7 @@ class Request implements RequestInterface
      * This method allows setting a single derived request attribute as
      * described in getFormat().
      */
-    public function withFormat(string $format): self
+    public function withFormat(string $format): static
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setFormat($format);
@@ -222,7 +222,7 @@ class Request implements RequestInterface
         return $this->request->getCookieParams();
     }
 
-    public function withCookieParams(array $cookies): self
+    public function withCookieParams(array $cookies): static
     {
         $request = $this->request->withCookieParams($cookies);
         return new static($request);
@@ -233,7 +233,7 @@ class Request implements RequestInterface
         return $this->request->getQueryParams();
     }
 
-    public function withQueryParams(array $query): self
+    public function withQueryParams(array $query): static
     {
         $request = $this->request->withQueryParams($query);
         return new static($request);
@@ -244,7 +244,7 @@ class Request implements RequestInterface
         return $this->getExtbaseAttribute()->getUploadedFiles();
     }
 
-    public function withUploadedFiles(array $uploadedFiles): self
+    public function withUploadedFiles(array $uploadedFiles): static
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setUploadedFiles($uploadedFiles);
@@ -256,7 +256,7 @@ class Request implements RequestInterface
         return $this->request->getParsedBody();
     }
 
-    public function withParsedBody($data): self
+    public function withParsedBody($data): static
     {
         $request = $this->request->withParsedBody($data);
         return new static($request);
@@ -272,13 +272,16 @@ class Request implements RequestInterface
         return $this->request->getAttribute($name, $default);
     }
 
-    public function withAttribute($name, $value): self
+    public function withAttribute($name, $value): static
     {
         $request = $this->request->withAttribute($name, $value);
         return new static($request);
     }
 
-    public function withoutAttribute($name): ServerRequestInterface
+    /**
+     * @return ($name is 'extbase' ? ServerRequestInterface : static)
+     */
+    public function withoutAttribute($name): ServerRequestInterface|static
     {
         $request = $this->request->withoutAttribute($name);
         if ($name === 'extbase') {
@@ -295,7 +298,7 @@ class Request implements RequestInterface
         return $this->request->getRequestTarget();
     }
 
-    public function withRequestTarget($requestTarget): self
+    public function withRequestTarget($requestTarget): static
     {
         $request = $this->request->withRequestTarget($requestTarget);
         return new static($request);
@@ -306,7 +309,7 @@ class Request implements RequestInterface
         return $this->request->getMethod();
     }
 
-    public function withMethod($method): self
+    public function withMethod($method): static
     {
         $request = $this->request->withMethod($method);
         return new static($request);
@@ -317,7 +320,7 @@ class Request implements RequestInterface
         return $this->request->getUri();
     }
 
-    public function withUri(UriInterface $uri, $preserveHost = false): self
+    public function withUri(UriInterface $uri, $preserveHost = false): static
     {
         $request = $this->request->withUri($uri, $preserveHost);
         return new static($request);
@@ -331,7 +334,7 @@ class Request implements RequestInterface
         return $this->request->getProtocolVersion();
     }
 
-    public function withProtocolVersion($version): self
+    public function withProtocolVersion($version): static
     {
         $request = $this->request->withProtocolVersion($version);
         return new static($request);
@@ -357,19 +360,19 @@ class Request implements RequestInterface
         return $this->request->getHeaderLine($name);
     }
 
-    public function withHeader($name, $value): self
+    public function withHeader($name, $value): static
     {
         $request = $this->request->withHeader($name, $value);
         return new static($request);
     }
 
-    public function withAddedHeader($name, $value): self
+    public function withAddedHeader($name, $value): static
     {
         $request = $this->request->withAddedHeader($name, $value);
         return new static($request);
     }
 
-    public function withoutHeader($name): self
+    public function withoutHeader($name): static
     {
         $request = $this->request->withoutHeader($name);
         return new static($request);
@@ -380,7 +383,7 @@ class Request implements RequestInterface
         return $this->request->getBody();
     }
 
-    public function withBody(StreamInterface $body): self
+    public function withBody(StreamInterface $body): static
     {
         $request = $this->request->withBody($body);
         return new static($request);

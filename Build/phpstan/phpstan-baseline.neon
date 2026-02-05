@@ -985,12 +985,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Mvc\\Request\:\:withoutAttribute\(\) should return static\(TYPO3\\CMS\\Extbase\\Mvc\\Request\) but returns Psr\\Http\\Message\\ServerRequestInterface\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Request.php
-
-		-
 			message: '#^Instanceof between TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface and TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
