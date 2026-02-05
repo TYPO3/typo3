@@ -55,7 +55,7 @@
         <source>Search for any record type</source>
       </trans-unit>
       <trans-unit id="newRecordWizard.filter.noResults">
-        <source>Unfortunately no record type matches your query, please try a different one.</source>
+        <source>Unfortunately, no record type matches your query, please try a different one.</source>
       </trans-unit>
       <trans-unit id="newRecordWizard.recentlyUsed">
         <source>Recently used</source>
@@ -64,7 +64,10 @@
         <source>Search for any content type</source>
       </trans-unit>
       <trans-unit id="newContentElement.filter.noResults">
-        <source>Unfortunately no content type matches your query, please try a different one.</source>
+        <source>Unfortunately, no content type matches your query, please try a different one.</source>
+      </trans-unit>
+      <trans-unit id="newContentElement.filter.userNotAllowed">
+        <source>No content elements are available with your current permissions.</source>
       </trans-unit>
       <trans-unit id="system_records">
         <source>System Records</source>

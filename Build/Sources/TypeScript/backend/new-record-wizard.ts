@@ -401,6 +401,7 @@ export class NewRecordWizard extends LitElement {
   }) categories: Categories = new Categories([]);
   @property({ type: String }) searchPlaceholder: string = 'newRecordWizard.filter.placeholder';
   @property({ type: String }) searchNothingFoundLabel: string = 'newRecordWizard.filter.noResults';
+  @property({ type: String }) userNotAllowedLabel: string = 'newContentElement.filter.userNotAllowed';
   @property({
     type: Boolean,
     converter: booleanConverter
@@ -508,7 +509,12 @@ export class NewRecordWizard extends LitElement {
     }
 
     this.messages = [];
-    if (this.selectedCategory === null) {
+    if (this.categories.items.length === 0) {
+      this.messages = [{
+        message: this.getLanguageLabel(this.userNotAllowedLabel),
+        severity: 'info'
+      }];
+    } else if (this.selectedCategory === null) {
       this.messages = [{
         message: this.getLanguageLabel(this.searchNothingFoundLabel),
         severity: 'info'

@@ -21,6 +21,9 @@
       <trans-unit id="widget.addToDashboard.searchNotFound">
         <source>Unfortunately no dashboard widget matches your query, please try a different one.</source>
       </trans-unit>
+      <trans-unit id="widget.addToDashboard.userNotAllowed">
+        <source>No widgets are available with your current permissions.</source>
+      </trans-unit>
       <trans-unit id="widget.add.button.close">
         <source>Close</source>
       </trans-unit>

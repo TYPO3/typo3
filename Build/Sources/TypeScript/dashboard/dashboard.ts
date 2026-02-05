@@ -706,6 +706,7 @@ export class Dashboard extends LitElement {
     wizard.storeName = 'dashboard-widgets';
     wizard.searchPlaceholder = lll('widget.addToDashboard.searchLabel');
     wizard.searchNothingFoundLabel = lll('widget.addToDashboard.searchNotFound');
+    wizard.userNotAllowedLabel = lll('widget.addToDashboard.userNotAllowed');
     wizard.categories = await this.fetchCategories();
     wizard.addEventListener(newRecordWizardEventName, async (event): Promise<void> => {
       const { identifier } = event.detail.item;
