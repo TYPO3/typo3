@@ -361,6 +361,11 @@ readonly class LocalizationController
                 continue;
             }
             $colPos = $row['colPos'];
+
+            if (!$this->backendLayoutView->isCTypeAllowedInColPosByPage($row['CType'], $colPos, $pageUid)) {
+                continue;
+            }
+
             if (!isset($records[$colPos])) {
                 $records[$colPos] = [];
             }

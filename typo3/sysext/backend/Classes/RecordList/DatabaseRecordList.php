@@ -43,6 +43,7 @@ use TYPO3\CMS\Backend\Template\Components\ComponentGroup;
 use TYPO3\CMS\Backend\Template\Components\ComponentInterface;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\Event\ModifyDatabaseQueryForRecordListingEvent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -429,6 +430,7 @@ class DatabaseRecordList
         protected readonly RecordFactory $recordFactory,
         protected readonly ComponentFactory $componentFactory,
         protected readonly LocalizationRepository $localizationRepository,
+        protected readonly BackendLayoutView $backendLayoutView,
     ) {
         $this->calcPerms = new Permission();
     }
@@ -571,6 +573,9 @@ class DatabaseRecordList
             $selectFields[] = 'shortcut_mode';
             $selectFields[] = 'mount_pid';
             $selectFields[] = 'is_siteroot';
+        }
+        if ($table === 'tt_content') {
+            $selectFields[] = 'colPos';
         }
         $schema = $this->tcaSchemaFactory->get($table);
         foreach ([TcaSchemaCapability::RestrictionDisabledField,
@@ -2226,6 +2231,13 @@ class DatabaseRecordList
                 && !isset($translations[$lUid_OnPage])
                 && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)
             ) {
+                if ($table === 'tt_content') {
+                    $colPos = $record->getRawRecord()?->get('colPos');
+                    if ($colPos !== null && !$this->backendLayoutView->isCTypeAllowedInColPosByPage($record->getRecordType(), $colPos, $record->getPid())) {
+                        continue;
+                    }
+                }
+
                 $title = htmlspecialchars($languageInformation[$lUid_OnPage]['title'] ?? '');
                 $lC = ($languageInformation[$lUid_OnPage]['flagIcon'] ?? false)
                     ? $this->iconFactory->getIcon($languageInformation[$lUid_OnPage]['flagIcon'], IconSize::SMALL)->setTitle($title)->render()

@@ -245,6 +245,30 @@ readonly class BackendLayoutView
         return $backendLayoutData;
     }
 
+    public function isCTypeAllowedInColPosByPage(string $cType, int $colPos, int $pageUid): bool
+    {
+        $backendLayout = $this->getBackendLayoutForPage($pageUid);
+        $colPosConfiguration = $this->getColPosConfigurationForPage($backendLayout, $colPos, $pageUid);
+
+        if (!empty($colPosConfiguration['disallowedContentTypes'])) {
+            $disallowedContentTypes = GeneralUtility::trimExplode(',', $colPosConfiguration['disallowedContentTypes']);
+
+            if (in_array($cType, $disallowedContentTypes, true)) {
+                return false;
+            }
+        }
+
+        if (!empty($colPosConfiguration['allowedContentTypes'])) {
+            $allowedContentTypes = GeneralUtility::trimExplode(',', $colPosConfiguration['allowedContentTypes']);
+
+            if (!in_array($cType, $allowedContentTypes, true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Determines the page id for a given record of a database table.
      *

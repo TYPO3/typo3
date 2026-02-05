@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\Event\IsContentUsedOnPageLayoutEvent;
 use TYPO3\CMS\Backend\View\Event\ModifyDatabaseQueryForContentEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
@@ -62,6 +63,7 @@ readonly class ContentFetcher
         private ConnectionPool $connectionPool,
         private TcaSchemaFactory $tcaSchemaFactory,
         private FlashMessageService $flashMessageService,
+        private BackendLayoutView $backendLayoutView,
     ) {}
 
     /**
@@ -178,6 +180,13 @@ readonly class ContentFetcher
             }
             if (!isset($languageTranslationInfo['hasTranslations'])) {
                 $languageTranslationInfo['hasTranslations'] = false;
+            }
+
+            foreach ($untranslatedRecordUids as $uid => $index) {
+                $contentElementInDefaultLanguage = $contentRecordsInDefaultLanguage[$index];
+                if (!$this->backendLayoutView->isCTypeAllowedInColPosByPage($contentElementInDefaultLanguage['CType'], $contentElementInDefaultLanguage['colPos'], $contentElementInDefaultLanguage['pid'])) {
+                    unset($untranslatedRecordUids[$uid]);
+                }
             }
 
             $untranslatedRecordUidsWithoutWorkspaceDeletedRecords = $this->removeWorkspaceDeletedPlaceholdersUidsFromUntranslatedRecordUids($pageLayoutContext, array_keys($untranslatedRecordUids), $language);
