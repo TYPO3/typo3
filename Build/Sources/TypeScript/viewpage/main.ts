@@ -183,7 +183,11 @@ class ViewPage {
       this.iframe.contentWindow.location.reload();
     }).bindTo(document.querySelector(Selectors.refreshSelector));
 
+    let resizeStartWidth = 0;
+    let resizeMaxWidth = 0;
     interact(this.resizableContainer).on('resizestart', (e: ResizeEvent): void => {
+      resizeStartWidth = e.rect.width;
+      resizeMaxWidth = this.calculateContainerMaxWidth();
       // Add iframe overlay to prevent losing the mouse focus to the iframe while resizing fast
       const iframeCover = document.createElement('div');
       iframeCover.id = 'viewpage-iframe-cover';
@@ -202,7 +206,10 @@ class ViewPage {
       },
       listeners: {
         move: (event: ResizeEvent): void => {
-          const roundedWidth = Math.round(event.rect.width);
+          // The container is centered and grows on both sides, so the width
+          // changes twice as much as the pointer moves to keep the edge under it
+          const width = resizeStartWidth + (event.rect.width - resizeStartWidth) * 2;
+          const roundedWidth = Math.round(Math.min(resizeMaxWidth, Math.max(this.minimalWidth, width)));
           const roundedHeight = Math.round(event.rect.height);
           Object.assign(event.target.style, {
             width: `${roundedWidth}px`,
