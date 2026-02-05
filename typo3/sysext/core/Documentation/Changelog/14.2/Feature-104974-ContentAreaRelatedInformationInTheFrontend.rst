@@ -19,8 +19,8 @@ with less configuration.
 The :typoscript:`PAGEVIEW` has now been further extended and does also
 provide all content elements, related to the page, grouped by their
 corresponding columns as defined in the page layout. The elements
-are provided as fully resolved :php:`Record` objects (see :ref:`feature-103783-1715113274`
-and :ref:`feature-103581-1723209131`).
+are provided as fully resolved :php:`Record` objects (see
+:ref:`feature-103783-1715113274` and :ref:`feature-103581-1723209131`).
 
 The elements are attached to the new :php:`ContentArea` object, which beside
 the elements itself also contains all the column related information and
@@ -100,9 +100,34 @@ single column:
         <f:render partial="ContentElement" arguments="{record: record, area: content.main}">
     </f:for>
 
-Introducing :php:`ContentArea` also improves the
-:php:`AfterContentHasBeenFetchedEvent` - used to manipulate the resolved
-content elements of each area - by having additional context at hand.
+With the introduction of the :ref:`f:render.contentArea <feature-108726-1769071158>`
+and :ref:`f:render.record <feature-108726-1769503907>` ViewHelpers, manually
+iterating over content elements is no longer necessary. All elements of a
+content area can be rendered with a single ViewHelper call:
+
+..  code-block:: html
+
+    <!-- Tag syntax -->
+    <f:render.contentArea contentArea="{content.main}"/>
+
+    <!-- Inline syntax -->
+    {content.main -> f:render.contentArea()}
+
+To render a single record, the :html:`f:render.record` ViewHelper can be used:
+
+..  code-block:: html
+
+    <!-- Tag syntax -->
+    <f:render.record record="{content.main.records.0}"/>
+
+    <!-- Inline syntax -->
+    {content.main.records.0 -> f:render.record()}
+
+.. note::
+
+    Introducing :php:`ContentArea` also improves the
+    :php:`AfterContentHasBeenFetchedEvent` - used to manipulate the resolved
+    content elements of each area - by having additional context at hand.
 
 Impact
 ======
