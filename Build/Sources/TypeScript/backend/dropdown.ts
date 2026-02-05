@@ -31,10 +31,17 @@ class Dropdown {
       }
     }, true);
 
-    // Allow opening dropdown and focusing items via arrow keys on the trigger button
+    // Allow opening dropdown and focusing items via arrow keys on top-level trigger buttons.
+    // Triggers inside a dropdown menu are handled by handleKeydown (ArrowRight opens submenu).
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       const trigger = (e.target as Element)?.closest<HTMLElement>('.dropdown-toggle[popovertarget]');
       if (!trigger) {
+        return;
+      }
+
+      // Skip triggers inside an open dropdown menu — those are submenu triggers
+      // and are handled by the menu's own keydown handler
+      if (trigger.closest('.dropdown-menu')) {
         return;
       }
 
@@ -66,12 +73,22 @@ class Dropdown {
       });
     });
 
-    // Close dropdown when clicking on items
+    // Close dropdown when clicking on items (but not submenu triggers)
     document.addEventListener('click', (e: Event) => {
       const target = e.target as HTMLElement;
-      const menu = target.closest<HTMLElement>('.dropdown-menu[popover]');
-      if (menu && target.closest('.dropdown-item')) {
+      const item = target.closest<HTMLElement>('.dropdown-item');
+      if (!item) {
+        return;
+      }
+      // Don't close when clicking a submenu trigger
+      if (item.hasAttribute('popovertarget')) {
+        return;
+      }
+      // Close all ancestor popover menus
+      let menu = item.closest<HTMLElement>('.dropdown-menu[popover]');
+      while (menu) {
         menu.hidePopover();
+        menu = menu.closest<HTMLElement>('.dropdown-menu[popover]:popover-open');
       }
     });
   }
@@ -82,23 +99,54 @@ class Dropdown {
 
     // Only close if focus explicitly moved to an element outside the menu.
     // If relatedTarget is null, focus was lost (e.g. element removed via AJAX), not moved intentionally.
-    if (relatedTarget !== null && !menu.contains(relatedTarget)) {
-      menu.hidePopover();
+    if (relatedTarget === null || menu.contains(relatedTarget)) {
+      return;
     }
+
+    // Don't close if focus moved to a child popover triggered from within this menu
+    const childMenu = relatedTarget.closest<HTMLElement>('.dropdown-menu[popover]');
+    if (childMenu) {
+      const triggerId = childMenu.id;
+      if (triggerId && menu.querySelector<HTMLElement>(`[popovertarget="${triggerId}"]`)) {
+        return;
+      }
+    }
+
+    menu.hidePopover();
   };
 
   private getFocusableItems(menu: HTMLElement): HTMLElement[] {
-    return Array.from(menu.querySelectorAll<HTMLElement>('.dropdown-item:not(:disabled):not(.disabled)'));
+    return Array.from(
+      menu.querySelectorAll<HTMLElement>('.dropdown-item:not(:disabled):not(.disabled)')
+    ).filter((item) => item.closest('.dropdown-menu') === menu);
+  }
+
+  private isRtl(element: HTMLElement): boolean {
+    return getComputedStyle(element).direction === 'rtl';
   }
 
   private readonly handleKeydown = (e: KeyboardEvent): void => {
     const menu = e.currentTarget as HTMLElement;
+    const activeElement = document.activeElement as HTMLElement | null;
+
+    // Ignore events bubbling up from a child submenu.
+    // If the focused element's closest dropdown-menu is not this menu,
+    // the event belongs to a nested submenu and should not be handled here.
+    if (activeElement && activeElement.closest('.dropdown-menu') !== menu) {
+      return;
+    }
+
     const items = this.getFocusableItems(menu);
     if (items.length === 0) {
       return;
     }
 
-    const currentIndex = items.findIndex(item => item === document.activeElement);
+    const currentIndex = items.findIndex(item => item === activeElement);
+
+    // Determine RTL mode for directional navigation
+    const isRtl = this.isRtl(menu);
+    const shouldOpenSubmenu = (e.key === 'ArrowRight' && !isRtl) || (e.key === 'ArrowLeft' && isRtl);
+    const shouldCloseSubmenu = (e.key === 'ArrowLeft' && !isRtl) || (e.key === 'ArrowRight' && isRtl);
 
     switch (e.key) {
       case 'ArrowDown':
@@ -109,6 +157,43 @@ class Dropdown {
         e.preventDefault();
         items[(currentIndex - 1 + items.length) % items.length].focus();
         break;
+      case 'ArrowRight':
+      case 'ArrowLeft':
+        if (shouldOpenSubmenu) {
+          // Open submenu if the focused item is a submenu trigger
+          if (activeElement?.hasAttribute('popovertarget')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const submenuId = activeElement.getAttribute('popovertarget');
+            const submenu = submenuId ? document.getElementById(submenuId) : null;
+            if (submenu?.matches('[popover]')) {
+              submenu.showPopover();
+              const submenuItems = this.getFocusableItems(submenu);
+              if (submenuItems.length > 0) {
+                submenuItems[0].focus();
+              }
+            }
+          }
+        } else if (shouldCloseSubmenu) {
+          // Close submenu and return focus to its trigger (only for nested menus)
+          const parentTrigger = document.querySelector<HTMLElement>(`[popovertarget="${menu.id}"]`);
+          if (parentTrigger?.closest('.dropdown-menu')) {
+            e.preventDefault();
+            e.stopPropagation();
+            menu.hidePopover();
+            parentTrigger.focus();
+          }
+        }
+        break;
+      case 'Escape': {
+        // Close the current menu and return focus to its trigger
+        e.preventDefault();
+        e.stopPropagation();
+        const trigger = document.querySelector<HTMLElement>(`[popovertarget="${menu.id}"]`);
+        menu.hidePopover();
+        trigger?.focus();
+        break;
+      }
       case 'Home':
         e.preventDefault();
         items[0].focus();

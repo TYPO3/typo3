@@ -349,6 +349,78 @@
             </div>
         </sg:example>
 
+        <h2><f:translate key="component.dropdown.section.nestedsubmenu.headline" domain="styleguide.messages" /></h2>
+        <f:variable name="customCode">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" popovertarget="demo">
+                    Dropdown with submenu
+                </button>
+                <ul id="demo" class="dropdown-menu" popover>
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li>
+                        <button class="dropdown-item dropdown-toggle" type="button" popovertarget="demo-sub">
+                            Submenu
+                        </button>
+                        <ul id="demo-sub" class="dropdown-menu" popover>
+                            <li><a class="dropdown-item" href="#">Sub action 1</a></li>
+                            <li><a class="dropdown-item" href="#">Sub action 2</a></li>
+                            <li><a class="dropdown-item" href="#">Sub action 3</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                </ul>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <div style="display: flex; gap: .5rem; align-items: center;">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" popovertarget="nested-menu-1">
+                        Dropdown with submenu
+                    </button>
+                    <ul id="nested-menu-1" class="dropdown-menu" popover>
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li>
+                            <button class="dropdown-item dropdown-toggle" type="button" popovertarget="nested-submenu-1">
+                                Submenu
+                            </button>
+                            <ul id="nested-submenu-1" class="dropdown-menu" popover>
+                                <li><a class="dropdown-item" href="#">Sub action 1</a></li>
+                                <li><a class="dropdown-item" href="#">Sub action 2</a></li>
+                                <li><a class="dropdown-item" href="#">Sub action 3</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" popovertarget="nested-menu-2">
+                        Multi-level
+                    </button>
+                    <ul id="nested-menu-2" class="dropdown-menu" popover>
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li>
+                            <button class="dropdown-item dropdown-toggle" type="button" popovertarget="nested-submenu-2">
+                                Level 2
+                            </button>
+                            <ul id="nested-submenu-2" class="dropdown-menu" popover>
+                                <li><a class="dropdown-item" href="#">Sub action</a></li>
+                                <li>
+                                    <button class="dropdown-item dropdown-toggle" type="button" popovertarget="nested-submenu-3">
+                                        Level 3
+                                    </button>
+                                    <ul id="nested-submenu-3" class="dropdown-menu" popover>
+                                        <li><a class="dropdown-item" href="#">Deep action 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Deep action 2</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                    </ul>
+                </div>
+            </div>
+        </sg:example>
+
     </div>
 
 </f:section>

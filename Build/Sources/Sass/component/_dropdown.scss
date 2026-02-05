@@ -145,6 +145,39 @@
     > li + li {
         margin-top: 1px;
     }
+
+    //
+    // Nested submenus (multilevel dropdowns)
+    // A dropdown-menu containing a dropdown-toggle + dropdown-menu is a submenu.
+    //
+    > .dropdown,
+    > :has(> .dropdown-toggle) {
+        anchor-scope: --dropdown;
+
+        > .dropdown-toggle {
+            display: flex;
+            align-items: center;
+
+            &:after {
+                rotate: calc(-90deg * var(--typo3-position-modifier));
+                margin-inline-start: auto;
+            }
+        }
+
+        > .dropdown-menu[popover] {
+            position-area: inline-end span-block-start;
+            margin-inline: calc(var(--typo3-dropdown-item-padding-x) / 2 * -1);
+            margin-block: 0;
+        }
+    }
+
+    // Dim parent menu items when a child submenu is open
+    &:has(.dropdown-menu:popover-open) {
+        > :not(:has(> .dropdown-menu:popover-open)) {
+            opacity: .5;
+            transition: opacity .15s ease;
+        }
+    }
 }
 
 .dropdown-divider {
