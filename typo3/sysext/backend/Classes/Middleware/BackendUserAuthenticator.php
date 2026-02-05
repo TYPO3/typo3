@@ -216,8 +216,13 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         ServerRequestInterface $request,
         array $parameters = []
     ): ResponseInterface {
+        $routeRedirect
+            // when intercepting {entryPoint}/login?redirect=media_management
+            = RouteRedirect::createFromRequest($request)
+            // when intercepting {entryPoint}/module/file/list
+            ?? RouteRedirect::createFromRoute($request->getAttribute('route'), $request->getQueryParams());
         $response = new RedirectResponse(
-            GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect($endpoint, $parameters, RouteRedirect::createFromRequest($request))
+            GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect($endpoint, $parameters, $routeRedirect)
         );
         // Add necessary cookies and headers to the response so
         // the already passed authentication step is not lost.
