@@ -1,0 +1,20 @@
+{
+	"name": "typo3tests/playwright-helper",
+	"type": "typo3-cms-extension",
+	"description": "Support extension providing HTTP endpoints for Playwright e2e tests",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev",
+		"typo3/cms-install": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "playwright_helper"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\PlaywrightHelper\\": "Classes/"
+		}
+	}
+}
