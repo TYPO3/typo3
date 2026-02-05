@@ -9,6 +9,7 @@ return [
         'adminOnly' => true,
         'rootLevel' => 1,
         'delete' => 'deleted',
+        'hideTable' => true,
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
