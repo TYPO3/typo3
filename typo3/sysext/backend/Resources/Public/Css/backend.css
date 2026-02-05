@@ -3793,6 +3793,8 @@ pre.ts-hl .ts-linenum{background-color:#eee;color:#212424}
 td.permission-column-name{white-space:nowrap}
 td.permission-column-list{white-space:nowrap;width:106px}
 td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-space:nowrap;width:200px}
+td.permission-column-group .input-group{flex-wrap:nowrap}
+td.permission-column-group .input-group select{min-width:100px}
 .access-legend{--typo3-access-legend-guide-color:var(--typo3-text-color-base);--typo3-access-legend-number-border-color:var(--typo3-text-color-base);margin-bottom:18px}
 .access-legend .number{border:1px solid var(--typo3-access-legend-number-border-color);border-radius:2px;display:inline-block;font-weight:700;height:16px;line-height:14px;margin-inline:10px 5px;text-align:center;width:16px}
 .access-legend .edge span{background:var(--typo3-access-legend-guide-color);display:block;height:10px;margin-top:8px;width:1px;-webkit-margin-start:6px;margin-inline-start:6px}

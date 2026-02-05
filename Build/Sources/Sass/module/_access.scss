@@ -15,6 +15,14 @@ td {
         padding-inline-start: 0;
         width: 200px;
         white-space: nowrap;
+
+        .input-group {
+            flex-wrap: nowrap;
+
+            select {
+                min-width: 100px;
+            }
+        }
     }
 }
 
