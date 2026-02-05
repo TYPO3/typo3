@@ -302,7 +302,7 @@ class EditDocumentController
         $editForm = $this->makeEditForm($request, $view, $currentEditingUrl);
         if ($editForm) {
             $this->firstEl = $this->elementsData !== [] ? reset($this->elementsData) : null;
-            $lastEl = end($this->elementsData);
+            $lastEl = $this->elementsData !== [] ? end($this->elementsData) : null;
             // Contains an array with key/value pairs of GET parameters needed to reach the
             // current document displayed - used in the 'open documents' toolbar.
             $storeArray = $this->compileStoreData($request, $queryParamsForGeneratingCurrentUrl);
@@ -319,7 +319,7 @@ class EditDocumentController
             >
             ' . $editForm . '
             <input type="hidden" name="returnUrl" value="' . htmlspecialchars($this->retUrl) . '" />
-            <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$lastEl->viewId) . '" />
+            <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$lastEl?->viewId) . '" />
             <input type="hidden" name="closeDoc" value="0" />
             <input type="hidden" name="doSave" value="0" />
             <input type="hidden" name="returnNewPageId" value="' . ($this->returnNewPageId ? 1 : 0) . '" />';
@@ -340,14 +340,14 @@ class EditDocumentController
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $this->pageinfo = BackendUtility::readPageAccess($this->firstEl->viewId ?? 0, $perms_clause) ?: [];
+        $this->pageinfo = BackendUtility::readPageAccess($this->firstEl?->viewId, $perms_clause) ?: [];
 
         // Setting up the buttons, markers for doc header and navigation component state
         $this->createBreadcrumb($view);
         $this->getButtons($view, $request, $this->firstEl, $currentEditingUrl);
 
         // Create language switch options if the record is already persisted, and it is a single record to edit
-        if ($this->isSingleRecordView() && $this->firstEl->isSavedRecord()) {
+        if ($this->isSingleRecordView() && $this->firstEl?->isSavedRecord()) {
             $this->languageSwitch($view, $this->firstEl);
         }
 
@@ -786,7 +786,7 @@ class EditDocumentController
     {
         // Handle file metadata records
         $file = null;
-        if ($this->firstEl->table === 'sys_file_metadata' && $this->firstEl->uid > 0) {
+        if ($this->firstEl !== null && $this->firstEl->table === 'sys_file_metadata' && $this->firstEl->uid > 0) {
             // Happens if it is a select/group
             $fileUid = $this->firstEl->record['file'] ?? 0;
             if (is_array($fileUid)) {
@@ -802,7 +802,7 @@ class EditDocumentController
         if ($file instanceof FileInterface) {
             $view->assign('moduleContextId', $file->getParentFolder()->getCombinedIdentifier());
             $view->getDocHeaderComponent()->setResourceBreadcrumb($file);
-        } elseif ($this->pageinfo !== []) {
+        } elseif ($this->pageinfo !== [] && $this->firstEl !== null) {
             $l10nParent = (int)($this->pageinfo['l10n_parent'] ?? 0);
             $pageUid =  $this->pageinfo['uid'] ?? '';
             $view->assign('moduleContextId', $l10nParent !== 0 ? $l10nParent : $pageUid);
@@ -1102,6 +1102,9 @@ class EditDocumentController
      */
     protected function registerViewButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
+        if ($this->firstEl === null) {
+            return;
+        }
         // Pid to show the record
         if (!$this->firstEl->viewId) {
             return;
@@ -1140,6 +1143,9 @@ class EditDocumentController
      */
     protected function registerNewButtonToButtonBar(ModuleTemplate $view, string $position, int $group): void
     {
+        if ($this->firstEl === null) {
+            return;
+        }
         if ($this->firstEl->table === '') {
             return;
         }
@@ -1200,7 +1206,7 @@ class EditDocumentController
         if (!$this->isSingleRecordView()) {
             return;
         }
-        if (!$this->firstEl->isSavedRecord()) {
+        if (!$this->firstEl?->isSavedRecord()) {
             return;
         }
         if ($this->getDisableDelete()) {
@@ -1301,7 +1307,7 @@ class EditDocumentController
         if (!$this->isSingleRecordView()) {
             return;
         }
-        if (!$this->firstEl->isSavedRecord()) {
+        if (!$this->firstEl?->isSavedRecord()) {
             return;
         }
         $button = $this->componentFactory->createGenericButton();
@@ -1322,6 +1328,9 @@ class EditDocumentController
     protected function registerHistoryButtonToButtonBar(ModuleTemplate $view, string $position, int $group, UriInterface $currentEditingUrl): void
     {
         if (!$this->isSingleRecordView()) {
+            return;
+        }
+        if ($this->firstEl === null) {
             return;
         }
         if ($this->firstEl->table === '') {
@@ -1545,7 +1554,7 @@ class EditDocumentController
     protected function getDisableDelete(): bool
     {
         $disableDelete = false;
-        if ($this->firstEl->table === 'sys_file_metadata') {
+        if ($this->firstEl?->table === 'sys_file_metadata') {
             $row = $this->firstEl->record;
             if ((int)($row['sys_language_uid'] ?? 0) === 0) {
                 // Always disable for default language
@@ -1563,7 +1572,7 @@ class EditDocumentController
     protected function isRecordCurrentBackendUser(): bool
     {
         $backendUser = $this->getBackendUser();
-        return $this->firstEl->table === 'be_users' && (int)($this->firstEl->uid ?? 0) === $backendUser->getUserId();
+        return $this->firstEl?->table === 'be_users' && (int)($this->firstEl->uid ?? 0) === $backendUser->getUserId();
     }
 
     /**
