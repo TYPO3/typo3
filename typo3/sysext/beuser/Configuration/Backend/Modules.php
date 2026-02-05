@@ -27,7 +27,7 @@ return [
         'position' => ['before' => '*'],
         'access' => 'admin',
         'path' => '/module/users/management',
-        'iconIdentifier' => 'module-beuser',
+        'iconIdentifier' => 'module-user',
         'labels' => 'beuser.modules.user_management',
         'aliases' => ['system_BeuserTxBeuser'],
         'extensionName' => 'Beuser',

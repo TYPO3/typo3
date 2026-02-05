@@ -10,7 +10,7 @@ return [
         'parent' => 'media',
         'access' => 'user',
         'path' => '/module/file/list',
-        'iconIdentifier' => 'module-filelist',
+        'iconIdentifier' => 'module-file',
         'labels' => 'filelist.module',
         'aliases' => ['file_FilelistList'],
         'routes' => [
