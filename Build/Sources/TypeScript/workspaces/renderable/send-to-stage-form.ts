@@ -52,6 +52,14 @@ export class SendToStageFormElement extends LitElement {
       <form>
         ${this.data.sendMailTo !== undefined && this.data.sendMailTo.length > 0 ? html`
           <label class="form-label">${this.TYPO3lang['window.sendToNextStageWindow.itemsWillBeSentTo']}</label>
+          <div class="form-group">
+            <button type="button" class="btn btn-default btn-xs t3js-workspace-recipients-selectall">
+              ${this.TYPO3lang['window.sendToNextStageWindow.selectAll']}
+            </button>
+            <button type="button" class="btn btn-default btn-xs t3js-workspace-recipients-deselectall">
+              ${this.TYPO3lang['window.sendToNextStageWindow.deselectAll']}
+            </button>
+          </div>
           ${this.renderRecipientCheckboxes()}
         ` : nothing}
         ${this.data.additional !== undefined ? html`
