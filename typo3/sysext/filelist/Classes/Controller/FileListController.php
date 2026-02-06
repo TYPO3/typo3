@@ -695,7 +695,7 @@ class FileListController implements LoggerAwareInterface
                         ->setClasses('t3js-modal-trigger')
                         ->setDataAttributes([
                             'severity' => 'warning',
-                            'bs-content' => $confirmText,
+                            'content' => $confirmText,
                             'title' => $pastButtonTitle,
                         ])
                         ->setShowLabelText(true)

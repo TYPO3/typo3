@@ -494,7 +494,7 @@ class RecordListController
                     ->setClasses('t3js-modal-trigger')
                     ->setDataAttributes([
                         'severity' => 'warning',
-                        'bs-content' => $confirmMessage,
+                        'content' => $confirmMessage,
                         'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste'),
                     ])
                     ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL))
