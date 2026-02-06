@@ -150,11 +150,15 @@ export class FormEngineReview {
 
     // Check if the field is visible to the user. If this is the case, the field will be focussed, triggering a scroll
     // to the input field. If checkVisibility() returns false, the input field is not visible, therefore scroll the
-    // field container into the view instead.
+    // field container into the view instead and focus the visible input of a date field, which replaces the hidden one.
     if (inputField.checkVisibility()) {
       inputField.focus();
     } else {
       DomHelper.scrollIntoViewIfNeeded(fieldContainer);
+      const datepickerInput = fieldContainer.querySelector<HTMLInputElement>('input[data-formengine-datepicker-real-input-name]');
+      if (datepickerInput !== null) {
+        datepickerInput.focus();
+      }
     }
   }
 }
