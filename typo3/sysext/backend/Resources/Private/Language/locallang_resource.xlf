@@ -19,16 +19,16 @@
         <source>The resource must be a file or a folder.</source>
       </trans-unit>
       <trans-unit id="ajax.error.message.resourceOutsideOfStorages">
-        <source>You are not allowed to access files outside your storages.</source>
+        <source>Access to files outside your configured storages is not permitted.</source>
       </trans-unit>
       <trans-unit id="ajax.error.message.resourceNoPermissionRename">
-        <source>You are not allowed to rename the resource.</source>
+        <source>Renaming this resource is not permitted.</source>
       </trans-unit>
       <trans-unit id="ajax.error.message.resourceNameCannotBeEmpty">
         <source>The resource name cannot be empty.</source>
       </trans-unit>
       <trans-unit id="ajax.error.message.resourceNameNotDifferent">
-        <source>The identical name for the resource %s was provided, nothing to do.</source>
+        <source>The resource %s already has this name. No changes were made.</source>
       </trans-unit>
       <trans-unit id="ajax.error.message.resourceNotAvailableToUpload">
         <source>No resource was selected to be uploaded.</source>
