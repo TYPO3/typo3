@@ -292,6 +292,13 @@ class DatabaseRecordList
     protected $page = 0;
 
     /**
+     * While a row of a search result is rendered, $id is the page the record is stored on,
+     * see renderListRow(). This keeps the page id the module itself shows during that time,
+     * so that URLs built by listURL() stay on that page.
+     */
+    protected ?int $modulePageId = null;
+
+    /**
      * Search string
      *
      * @var string
@@ -1222,6 +1229,7 @@ class DatabaseRecordList
         // If in search mode, make sure the preview will show the correct page
         if ($this->searchString !== '') {
             $this->id = $record->getPid();
+            $this->modulePageId = $id_orig;
         }
 
         $tagAttributes = [
@@ -1316,6 +1324,7 @@ class DatabaseRecordList
         // Reset the ID if it was overwritten
         if ($this->searchString !== '') {
             $this->id = $id_orig;
+            $this->modulePageId = null;
         }
         // Add classes to table cells
         $this->addElement_tdCssClass['_SELECTOR_'] = 'col-checkbox';
@@ -3005,7 +3014,9 @@ class DatabaseRecordList
         if ((string)$altId !== '') {
             $urlParameters['id'] = $altId;
         } else {
-            $urlParameters['id'] = $this->id;
+            // While a search result row is rendered, $id is the page of that record,
+            // but the list URL must stay on the page the module shows
+            $urlParameters['id'] = $this->modulePageId ?? $this->id;
         }
         $urlParameters['table'] = $table ?? $this->table;
         if ($this->returnUrl) {
