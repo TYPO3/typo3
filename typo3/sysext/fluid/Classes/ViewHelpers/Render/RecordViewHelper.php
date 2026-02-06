@@ -61,7 +61,7 @@ final class RecordViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
 
-        $this->registerArgument('record', RecordInterface::class, 'The record to be rendered', true);
+        $this->registerArgument('record', RecordInterface::class, 'The record to be rendered');
     }
 
     public function getContentArgumentName(): string

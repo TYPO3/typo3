@@ -61,7 +61,7 @@ final class ContentAreaViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
 
-        $this->registerArgument('contentArea', ContentArea::class, 'A content area from the page-content processor', true);
+        $this->registerArgument('contentArea', ContentArea::class, 'A content area from the page-content processor');
     }
 
     public function getContentArgumentName(): string

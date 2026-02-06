@@ -31,7 +31,7 @@ final class TextViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
 
-        $this->registerArgument('record', PageInformation::class . '|' . RecordInterface::class, 'A Record API Object', true);
+        $this->registerArgument('record', PageInformation::class . '|' . RecordInterface::class, 'A Record API Object');
         $this->registerArgument('field', 'string', 'The field that should be rendered.', true);
 
         $this->registerArgument('allowNewlines', 'bool', 'Allows newLines and converts them to <br>', false, false);
@@ -62,8 +62,10 @@ final class TextViewHelper extends AbstractViewHelper
 
         if ($record instanceof PageInformation) {
             $value = $record->getPageRecord()[$field] ?? '';
-        } else {
+        } elseif ($record instanceof RecordInterface) {
             $value = $record->get($field) ?? '';
+        } else {
+            throw new \InvalidArgumentException('The record argument must be an instance of ' . PageInformation::class . ' or ' . RecordInterface::class . '. Given: ' . get_debug_type($record), 1770539910);
         }
 
         if (!is_string($value)) {

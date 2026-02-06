@@ -109,6 +109,46 @@ final class RecordViewHelperTest extends FunctionalTestCase
         self::assertInstanceOf(ModifyRenderedRecordEvent::class, $this->dispatchedEvents[0]);
     }
 
+    #[Test]
+    public function renderThrowsForInvalidRecordObject(): void
+    {
+        $record = new \stdClass();
+
+        $request = $this->createRequest();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:render.record record="{record}" />');
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+
+        $view = new TemplateView($context);
+        $view->assign('record', $record);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The argument "record" was registered with type');
+        $this->expectExceptionCode(1256475113);
+
+        $view->render();
+    }
+
+    #[Test]
+    public function renderThrowsForInvalidRecordObjectInline(): void
+    {
+        $record = new \stdClass();
+
+        $request = $this->createRequest();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('{record -> f:render.record()}');
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+
+        $view = new TemplateView($context);
+        $view->assign('record', $record);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "record" argument must be an instance of');
+        $this->expectExceptionCode(1770215699);
+
+        $view->render();
+    }
+
     private function createRequest(): ServerRequest
     {
         $typoScriptSetup = [

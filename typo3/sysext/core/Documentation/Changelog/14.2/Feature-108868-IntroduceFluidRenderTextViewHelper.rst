@@ -36,7 +36,7 @@ Usage with the `record-transformation` data processor:
 ..  code-block:: html
     :caption: MyContentElement.fluid.html
 
-    <f:render.text record="{record} field="{title}" />
+    <f:render.text record="{record} field="title" />
     or
     {f:render.text(record: record, field: 'title')}
     or

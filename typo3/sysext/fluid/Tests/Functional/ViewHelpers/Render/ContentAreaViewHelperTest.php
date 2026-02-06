@@ -127,6 +127,46 @@ final class ContentAreaViewHelperTest extends FunctionalTestCase
         self::assertInstanceOf(ModifyRenderedContentAreaEvent::class, $this->dispatchedEvents[0]);
     }
 
+    #[Test]
+    public function renderThrowsForInvalidContentAreaObject(): void
+    {
+        $contentArea = new \stdClass();
+
+        $request = $this->createRequest();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:render.contentArea contentArea="{contentArea}" />');
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+
+        $view = new TemplateView($context);
+        $view->assign('contentArea', $contentArea);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The argument "contentArea" was registered with type');
+        $this->expectExceptionCode(1256475113);
+
+        $view->render();
+    }
+
+    #[Test]
+    public function renderThrowsForInvalidContentAreaObjectInline(): void
+    {
+        $contentArea = new \stdClass();
+
+        $request = $this->createRequest();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('{contentArea -> f:render.contentArea()}');
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+
+        $view = new TemplateView($context);
+        $view->assign('contentArea', $contentArea);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "contentArea" argument must be an instance of');
+        $this->expectExceptionCode(1770212183);
+
+        $view->render();
+    }
+
     private function registerEventListeners(): void
     {
         /** @var Container $container */

@@ -38,7 +38,7 @@ Usage with the `record-transformation` data processor:
 ..  code-block:: html
     :caption: MyContentElement.fluid.html
 
-    <f:render.richText record="{record} field="{bodytext}" />
+    <f:render.richText record="{record} field="bodytext" />
     or
     {f:render.richText(record: record, field: 'bodytext')}
     or
