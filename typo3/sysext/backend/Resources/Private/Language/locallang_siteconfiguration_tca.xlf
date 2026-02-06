@@ -111,10 +111,10 @@
         <source>Fallback Type</source>
       </trans-unit>
       <trans-unit id="site_language.fallbackType.strict">
-        <source>Strict: Show only translated content, based on overlays</source>
+        <source>Strict: Show only translated content, based on overlays. Also show records that only exist in this language.</source>
       </trans-unit>
       <trans-unit id="site_language.fallbackType.fallback">
-        <source>Fallback: Show default language if no translation exists</source>
+        <source>Fallback: Show default language if no translation exists. Also show records that only exist in this language.</source>
       </trans-unit>
       <trans-unit id="site_language.fallbackType.free">
         <source>Free mode: Ignore translation and overlay concept, only show data from selected language</source>
