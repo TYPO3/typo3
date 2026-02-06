@@ -19,10 +19,10 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Routing;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
-use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Core\Http\Error\MethodNotAllowedException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\RouteCollection;

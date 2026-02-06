@@ -19,8 +19,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Route as SymfonyRoute;
-use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
+use TYPO3\CMS\Core\Http\Error\MethodNotAllowedException;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
 use TYPO3\CMS\Core\Routing\RouteCollection;
@@ -146,7 +146,7 @@ class Router
                 throw new ResourceNotFoundException('The requested resource "' . $path . '" was not found.', 1607596900);
             }
         } catch (\Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
-            throw new MethodNotAllowedException($e->getMessage(), 1612649842);
+            throw new MethodNotAllowedException($e->getAllowedMethods(), 1612649842, $e);
         } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
             throw new ResourceNotFoundException('The requested resource "' . $path . '" was not found.', 1612649840);
         }

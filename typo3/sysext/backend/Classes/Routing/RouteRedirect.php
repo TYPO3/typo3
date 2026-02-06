@@ -18,9 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteTypeNotAllowedException;
+use TYPO3\CMS\Core\Http\Error\MethodNotAllowedException;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
@@ -129,7 +129,7 @@ class RouteRedirect
         }
         if ($route->getMethods() !== [] && !in_array('GET', $route->getMethods(), true)) {
             throw new MethodNotAllowedException(
-                sprintf('"%s" cannot be redirected as it does not allow GET methods', $this->name),
+                $route->getMethods(),
                 1627407452
             );
         }
