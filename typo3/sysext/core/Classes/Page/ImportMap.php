@@ -88,6 +88,9 @@ class ImportMap
         }
     }
 
+    /**
+     * @return ?non-empty-string
+     */
     public function resolveImport(
         string $specifier,
         bool $loadImportConfiguration = true
@@ -353,6 +356,9 @@ class ImportMap
         return $importMap;
     }
 
+    /**
+     * @return ?non-empty-string
+     */
     protected function dispatchResolveJavaScriptImportEvent(
         string $specifier,
         bool $loadImportConfiguration = true

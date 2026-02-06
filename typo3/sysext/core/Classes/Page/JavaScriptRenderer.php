@@ -101,6 +101,9 @@ class JavaScriptRenderer
         return $this->items->toArray();
     }
 
+    /**
+     * @throws \InvalidArgumentException when a JavaScript module could not be resolved (no src URL in import map)
+     */
     public function render(null|string|ConsumableNonce $nonce = null, ?string $sitePath = null): string
     {
         if ($this->isEmpty()) {
@@ -113,6 +116,17 @@ class JavaScriptRenderer
             $modules = [];
             $dynamicInstructions = [];
             foreach ($this->items->getJavascriptModuleInstructions() as $instruction) {
+                $moduleName = $instruction->getName();
+                $url = $this->importMap->resolveImport($moduleName);
+                if ($url === null) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'JavaScript module "%s" could not be resolved. (Missing entry in Configuration/JavaScriptModules.php?).',
+                            $moduleName
+                        ),
+                        1728220800
+                    );
+                }
                 if (
                     $instruction->getItems() !== [] ||
                     ($instruction->getFlags() & JavaScriptModuleInstruction::FLAG_USE_TOP_WINDOW) !== 0
@@ -122,7 +136,7 @@ class JavaScriptRenderer
                         'payload' => $instruction,
                     ];
                 } else {
-                    $modules[$instruction->getName()] = $this->importMap->resolveImport($instruction->getName());
+                    $modules[$moduleName] = $url;
                 }
             }
 

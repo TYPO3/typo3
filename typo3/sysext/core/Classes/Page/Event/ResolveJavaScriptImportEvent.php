@@ -22,6 +22,9 @@ use TYPO3\CMS\Core\Page\ImportMap;
 
 final class ResolveJavaScriptImportEvent implements StoppableEventInterface
 {
+    /**
+     * @var ?non-empty-string
+     */
     public ?string $resolution = null;
 
     public function __construct(
