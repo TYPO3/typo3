@@ -308,6 +308,72 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
     }
 
+    /**
+     * Tests whether fields can be added to multiple TCA types
+     *
+     * @see ExtensionManagementUtility::addToAllTCAtypes()
+     */
+    #[Test]
+    public function canAddFieldsToMultipleTypes(): void
+    {
+        $table = StringUtility::getUniqueId('tx_coretest_table');
+        $GLOBALS['TCA'] = $this->generateTCAForTable($table);
+        ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA, typeC', 'after:fieldC');
+        // Checking typeA:
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+        // Checking typeB:
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+        // Checking typeC:
+        self::assertEquals('fieldC;;paletteD, newA, newB, fieldA', $GLOBALS['TCA'][$table]['types']['typeC']['showitem']);
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: list<string>}>
+     */
+    public static function typeListDataProvider(): array
+    {
+        return [
+            'numeric type' => ['1', ['1']],
+            'numeric type zero' => ['0', ['0']],
+            'numeric type surrounded by whitespace' => ['  1  ', ['1']],
+            'list of numeric types with whitespace' => ['0, 1', ['0', '1']],
+            'mixed numeric and string types with whitespace' => [' 1 , typeA ', ['1', 'typeA']],
+            'string type with whitespace' => [' typeA ', ['typeA']],
+            'empty type list matches all types' => ['', ['0', '1', 'typeA']],
+            'unknown type matches nothing' => ['typeB', []],
+        ];
+    }
+
+    /**
+     * Tests whether the optional type list is matched independently of surrounding whitespace and
+     * of numeric type keys being cast to integers by PHP.
+     *
+     * @param list<string> $expectedTypes
+     * @see ExtensionManagementUtility::addToAllTCAtypes()
+     */
+    #[DataProvider('typeListDataProvider')]
+    #[Test]
+    public function addToAllTCAtypesRespectsTypeList(string $typeList, array $expectedTypes): void
+    {
+        $table = StringUtility::getUniqueId('tx_coretest_table');
+        $GLOBALS['TCA'] = [
+            $table => [
+                'types' => [
+                    '0' => ['showitem' => 'fieldA'],
+                    '1' => ['showitem' => 'fieldA'],
+                    'typeA' => ['showitem' => 'fieldA'],
+                ],
+            ],
+        ];
+
+        ExtensionManagementUtility::addToAllTCAtypes($table, 'newA', $typeList, 'after:fieldA');
+
+        foreach ($GLOBALS['TCA'][$table]['types'] as $type => $typeDetails) {
+            $expected = in_array((string)$type, $expectedTypes, true) ? 'fieldA, newA' : 'fieldA';
+            self::assertSame($expected, $typeDetails['showitem'], 'Unexpected showitem for type "' . $type . '"');
+        }
+    }
+
     #[Test]
     public function canAddFieldWithPartOfAlreadyExistingFieldname(): void
     {

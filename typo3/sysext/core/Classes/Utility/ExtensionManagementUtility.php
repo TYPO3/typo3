@@ -197,9 +197,11 @@ class ExtensionManagementUtility
         }
         $palettesChanged = [];
 
+        $typeListItems = GeneralUtility::trimExplode(',', $typeList, true);
+
         foreach ($GLOBALS['TCA'][$table]['types'] as $type => &$typeDetails) {
             // skip if we don't want to add the field for this type
-            if ($typeList !== '' && !GeneralUtility::inList($typeList, $type)) {
+            if ($typeList !== '' && !in_array((string)$type, $typeListItems, true)) {
                 continue;
             }
             // skip if fields were already added
