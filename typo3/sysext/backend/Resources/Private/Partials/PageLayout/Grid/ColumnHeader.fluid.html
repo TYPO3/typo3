@@ -17,14 +17,16 @@
             </div>
             <h{columnHeaderLevel} id="{columnIdentifier}" class="t3-page-column-title">
                 {column.title}
-                <f:if condition="{column.slideMode.value} !== 'none' && !({column.slideMode.value} === 'slide' && {column.items})">
-                    <span class="badge badge-info" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:slideModeInfo.{column.slideMode.value}')}">
-                        <f:switch expression="{column.slideMode.value}">
-                            <f:case value="slide">{core:icon(identifier: 'actions-search', size: 'small')}{core:icon(identifier: 'actions-sort-amount-up', size: 'small')}</f:case>
-                            <f:case value="collect">{core:icon(identifier: 'actions-cart', size: 'small')}{core:icon(identifier: 'actions-sort-amount-down', size: 'small')}</f:case>
-                            <f:case value="collectReverse">{core:icon(identifier: 'actions-cart', size: 'small')}{core:icon(identifier: 'actions-sort-amount-up', size: 'small')}</f:case>
-                        </f:switch>
-                    </span>
+                <f:if condition="{context.pageContext.pageRecord.pid} !== 0 && {column.slideMode.value} !== 'none'">
+                    <f:if condition="!({column.slideMode.value} === 'slide' && {column.items})">
+                        <span class="badge badge-info" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:slideModeInfo.{column.slideMode.value}')}">
+                            <f:switch expression="{column.slideMode.value}">
+                                <f:case value="slide">{core:icon(identifier: 'actions-search', size: 'small')}{core:icon(identifier: 'actions-sort-amount-up', size: 'small')}</f:case>
+                                <f:case value="collect">{core:icon(identifier: 'actions-cart', size: 'small')}{core:icon(identifier: 'actions-sort-amount-down', size: 'small')}</f:case>
+                                <f:case value="collectReverse">{core:icon(identifier: 'actions-cart', size: 'small')}{core:icon(identifier: 'actions-sort-amount-up', size: 'small')}</f:case>
+                            </f:switch>
+                        </span>
+                    </f:if>
                 </f:if>
             </h{columnHeaderLevel}>
         </f:then>
