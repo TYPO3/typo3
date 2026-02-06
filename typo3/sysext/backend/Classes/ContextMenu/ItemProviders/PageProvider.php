@@ -577,6 +577,6 @@ class PageProvider extends RecordProvider
     protected function isExcludedDoktype(): bool
     {
         $doktypeRegistry = GeneralUtility::makeInstance(PageDoktypeRegistry::class);
-        return $doktypeRegistry->isPageTypeViewable((int)($this->record['doktype'] ?? 0));
+        return !$doktypeRegistry->isPageTypeViewable((int)($this->record['doktype'] ?? 0));
     }
 }
