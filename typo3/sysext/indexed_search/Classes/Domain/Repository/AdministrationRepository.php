@@ -418,6 +418,7 @@ class AdministrationRepository
             return $allLines;
         }
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
+        $tree->addField('no_search');
         $perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW);
         $tree->init('AND ' . $perms_clause);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
