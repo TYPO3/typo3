@@ -229,12 +229,18 @@ class FormEditorController extends ActionController
     protected function renderFormPageAction(
         FormDefinitionArray $formDefinition,
         int $pageIndex,
-        ?string $prototypeName = null
+        ?string $prototypeName = null,
+        ?string $formPersistenceIdentifier = null
     ): ResponseInterface {
         $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
         $formDefinition = $formDefinition->getArrayCopy();
         $formDefinition = $this->arrayFormFactory->build($formDefinition, $prototypeName, $this->request);
         $formDefinition->setRenderingOption('previewMode', true);
+
+        if ($formPersistenceIdentifier !== null) {
+            $formDefinition->setRenderingOption('formPersistenceIdentifier', $formPersistenceIdentifier);
+        }
+
         $form = $formDefinition->bind($this->request);
         $form->setCurrentSiteLanguage($this->buildFakeSiteLanguage(0, 0));
         $form->overrideCurrentPage($pageIndex);
