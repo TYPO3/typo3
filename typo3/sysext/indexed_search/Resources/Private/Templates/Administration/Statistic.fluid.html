@@ -163,20 +163,9 @@
                                                 <span class="treeline-label">{line.row.title}</span>
                                             </div>
                                         </td>
-                                        <f:switch expression="{mode}">
-                                            <f:case value="content">
-                                                <td colspan="5">
-                                                    <span class="badge badge-secondary"><f:translate domain="indexed_search.messages" key="administration.notIndexed" /></span>
-                                                </td>
-                                            </f:case>
-                                            <f:defaultCase>
-                                                <td colspan="3"></td>
-                                                <td>
-                                                    <span class="badge badge-secondary"><f:translate domain="indexed_search.messages" key="administration.notIndexed" /></span>
-                                                </td>
-                                                <td></td>
-                                            </f:defaultCase>
-                                        </f:switch>
+                                        <td colspan="5">
+                                            <span class="badge badge-secondary"><f:translate domain="indexed_search.messages" key="{f:if(condition: line.row.no_search, then: 'administration.indexingDisabled', else: 'administration.notIndexed')}" /></span>
+                                        </td>
                                     </tr>
                                 </f:else>
                             </f:if>

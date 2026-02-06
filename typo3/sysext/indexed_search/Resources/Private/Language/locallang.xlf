@@ -375,6 +375,9 @@
       <trans-unit id="administration.notIndexed">
         <source>Not indexed</source>
       </trans-unit>
+      <trans-unit id="administration.indexingDisabled">
+        <source>Indexing disabled for this page</source>
+      </trans-unit>
       <trans-unit id="administration.document.words">
         <source>Words found on this page</source>
       </trans-unit>
