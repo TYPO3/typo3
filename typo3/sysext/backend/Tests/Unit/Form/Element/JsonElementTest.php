@@ -70,6 +70,39 @@ final class JsonElementTest extends UnitTestCase
     }
 
     #[Test]
+    public function renderKeepsUnicodeCharactersUnescaped(): void
+    {
+        $data = [
+            'parameterArray' => [
+                'itemFormElName' => 'config',
+                'itemFormElValue' => ['größe' => 'Bär', 'language' => '日本語'],
+                'fieldConf' => [
+                    'label' => 'foo',
+                    'config' => [
+                        'type' => 'json',
+                        'enableCodeEditor' => false,
+                    ],
+                ],
+            ],
+        ];
+
+        $nodeFactoryStub = self::createStub(NodeFactory::class);
+        $fieldInformationStub = self::createStub(FieldInformation::class);
+        $fieldInformationStub->method('render')->willReturn(['html' => '']);
+        $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
+
+        $subject = new JsonElement(self::createStub(CodeEditorConfiguration::class));
+        $subject->injectNodeFactory($nodeFactoryStub);
+        $subject->setData($data);
+        $result = $subject->render();
+
+        self::assertStringContainsString('&quot;größe&quot;: &quot;Bär&quot;', $result['html']);
+        self::assertStringContainsString('&quot;language&quot;: &quot;日本語&quot;', $result['html']);
+        self::assertStringNotContainsString('\u00e4', $result['html']);
+        self::assertStringNotContainsString('\u65e5', $result['html']);
+    }
+
+    #[Test]
     public function renderReturnsJsonInCodeEditor(): void
     {
         $data = [
