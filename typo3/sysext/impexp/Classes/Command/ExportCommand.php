@@ -25,6 +25,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\Export;
 
@@ -84,7 +86,12 @@ class ExportCommand extends Command
                 'table',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Include all records of this table. Examples: "_ALL", "tt_content", "sys_file_reference", etc.'
+                'Include all records of this table. Examples: "_ALL", "tt_content", "sys_file_reference", etc.',
+                [],
+                function (): array {
+                    $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+                    return array_merge(['_ALL'], $schema->all()->getNames());
+                },
             )
             ->addOption(
                 'record',
@@ -102,13 +109,23 @@ class ExportCommand extends Command
                 'include-related',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Include record relations to this table, including the related record. Examples: "_ALL", "sys_category", etc.'
+                'Include record relations to this table, including the related record. Examples: "_ALL", "sys_category", etc.',
+                [],
+                function (): array {
+                    $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+                    return array_merge(['_ALL'], $schema->all()->getNames());
+                },
             )
             ->addOption(
                 'include-static',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Include record relations to this table, excluding the related record. Examples: "_ALL", "be_users", etc.'
+                'Include record relations to this table, excluding the related record. Examples: "_ALL", "be_users", etc.',
+                [],
+                function (): array {
+                    $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+                    return array_merge(['_ALL'], $schema->all()->getNames());
+                },
             )
             ->addOption(
                 'exclude',
