@@ -107,6 +107,9 @@ class CodeEditorElement extends AbstractFormElement
         if ($parameterArray['fieldConf']['config']['readOnly'] ?? false) {
             $settings['readonly'] = true;
         }
+        if ($parameterArray['fieldConf']['config']['appearance']['lineWrapping'] ?? false) {
+            $settings['linewrapping'] = true;
+        }
 
         $editorHtml = $this->getHTMLCodeForEditor(
             $parameterArray['itemFormElName'],

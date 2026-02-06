@@ -113,6 +113,7 @@ export class CodeMirrorElement extends LitElement {
   @property({ type: Boolean, reflect: true }) autoheight: boolean = false;
   @property({ type: Boolean }) nolazyload: boolean = false;
   @property({ type: Boolean }) readonly: boolean = false;
+  @property({ type: Boolean, attribute: 'linewrapping' }) lineWrapping: boolean = false;
   @property({ type: Boolean, reflect: true }) fullscreen: boolean = false;
 
   @property({ type: String }) label: string;
@@ -210,6 +211,10 @@ export class CodeMirrorElement extends LitElement {
       EditorState.allowMultipleSelections.of(true),
       syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
     ];
+
+    if (this.lineWrapping) {
+      extensions.push(EditorView.lineWrapping);
+    }
 
     if (this.readonly) {
       extensions.push(EditorState.readOnly.of(true));

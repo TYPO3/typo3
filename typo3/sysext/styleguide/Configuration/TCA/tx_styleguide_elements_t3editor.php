@@ -61,6 +61,18 @@ return [
                 'readOnly' => true,
             ],
         ],
+        't3editor_3' => [
+            'label' => 't3editor_3',
+            'description' => 'lineWrapping=true',
+            'config' => [
+                'type' => 'text',
+                'renderType' => 'codeEditor',
+                'format' => 'html',
+                'appearance' => [
+                    'lineWrapping' => true,
+                ],
+            ],
+        ],
         't3editor_inline_1' => [
             'label' => 't3editor_inline_1',
             'config' => [
@@ -156,6 +168,7 @@ return [
                     t3editor_reload_1,
                     t3editor_1,
                     t3editor_2,
+                    t3editor_3,
                 --div--;in inline,
                     t3editor_inline_1,
                 --div--;in flex,
