@@ -3422,11 +3422,10 @@ class DatabaseRecordList
         }
 
         // Add clipboard actions in case they  are enabled and clipboard is not deactivated
-        if ($addClipboardActions && (string)($this->modTSconfig['enableClipBoard'] ?? '') !== 'deactivated') {
+        if ($addClipboardActions && (string)($this->modTSconfig['enableClipBoard'] ?? '') !== 'deactivated' && $this->clipObj->current !== 'normal') {
             $copyMarked = '
                 <button type="button"
                     class="btn btn-sm btn-default"
-                    ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '
                     title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '"
                     data-multi-record-selection-action="copyMarked"
                 >
@@ -3436,7 +3435,6 @@ class DatabaseRecordList
             $removeMarked = '
                 <button type="button"
                     class="btn btn-sm btn-default"
-                    ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '
                     title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '"
                     data-multi-record-selection-action="removeMarked"
                 >
