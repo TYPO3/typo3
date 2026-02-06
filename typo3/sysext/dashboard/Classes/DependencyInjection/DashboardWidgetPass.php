@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
+use TYPO3\CMS\Dashboard\Widgets\AdminOnlyWidgetInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
 
 /**
@@ -47,6 +48,7 @@ final class DashboardWidgetPass implements CompilerPassInterface
                 $identifier = $attributes['identifier'] ?? $serviceName;
                 $attributes['identifier'] = $identifier;
                 $attributes['serviceName'] = $serviceName;
+                $attributes['adminOnly'] = is_a($definition->getClass(), AdminOnlyWidgetInterface::class, true);
                 $attributes = $this->convertAttributes($attributes);
 
                 $configurationServiceName = $this->registerWidgetConfigurationService(

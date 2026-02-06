@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
 use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
@@ -109,14 +110,18 @@ class WidgetRegistry implements SingletonInterface
      */
     protected function checkPermissionOfWidgets(array $widgets): array
     {
-        return array_filter($widgets, function ($identifier) {
-            return $this->getBackendUser()->check('available_widgets', $identifier);
-        }, ARRAY_FILTER_USE_KEY);
+        return array_filter($widgets, function ($widget, $identifier) {
+            return $this->getBackendUser()->check('available_widgets', $identifier)
+                && (!$widget instanceof WidgetConfiguration || !$widget->isAdminOnly() || $this->getBackendUser()->isAdmin());
+        }, ARRAY_FILTER_USE_BOTH);
     }
 
     public function widgetItemsProcFunc(array &$parameters): void
     {
         foreach ($this->widgets as $widget) {
+            if ($widget instanceof WidgetConfiguration && $widget->isAdminOnly()) {
+                continue;
+            }
             $parameters['items'][] = [
                 'label' => $widget->getTitle(),
                 'value' => $widget->getIdentifier(),

@@ -30,7 +30,8 @@ class WidgetConfiguration implements WidgetConfigurationInterface
         private readonly string $description,
         private readonly string $iconIdentifier,
         private readonly string $height,
-        private readonly string $width
+        private readonly string $width,
+        private readonly bool $adminOnly = false,
     ) {
         $allowedSizes = ['small', 'medium', 'large'];
         if (!in_array($height, $allowedSizes, true)) {
@@ -79,5 +80,10 @@ class WidgetConfiguration implements WidgetConfigurationInterface
     public function getWidth(): string
     {
         return $this->width;
+    }
+
+    public function isAdminOnly(): bool
+    {
+        return $this->adminOnly;
     }
 }
