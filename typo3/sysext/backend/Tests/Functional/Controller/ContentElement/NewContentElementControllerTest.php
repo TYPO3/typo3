@@ -131,7 +131,7 @@ final class NewContentElementControllerTest extends FunctionalTestCase
     #[Test]
     public function loadAvailableWizardsReturnsExpectedArray(array $item, array $creationOptions, array $expected): void
     {
-        $group = $item['group'] ?? '';
+        $group = $item['group'] ?? 'default';
         $type = $item['value'];
         $newContentElementWizardController = $this->get(NewContentElementController::class);
         $loadAvailableWizardsFromContentElements = new \ReflectionMethod(

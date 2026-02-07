@@ -411,6 +411,9 @@ class ExtensionManagementUtility
     public static function addTcaSelectItem(string $table, string $field, array|SelectItem $item, string $relativeToField = '', string $relativePosition = ''): void
     {
         $item = $item instanceof SelectItem ? $item->toArray() : $item;
+        if ($table === 'tt_content' && $field === 'CType' && ($item['group'] ?? null) === null) {
+            $item['group'] = 'default';
+        }
         if ($relativePosition !== '' && $relativePosition !== 'before' && $relativePosition !== 'after' && $relativePosition !== 'replace') {
             throw new \InvalidArgumentException('Relative position must be either empty or one of "before", "after", "replace".', 1303236967);
         }
