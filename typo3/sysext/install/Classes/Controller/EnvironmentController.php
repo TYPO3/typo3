@@ -504,6 +504,7 @@ class EnvironmentController extends AbstractController
         }
         return $this->getImageTestResponse($result);
     }
+
     /**
      * Writing webp test
      */
@@ -1290,18 +1291,29 @@ class EnvironmentController extends AbstractController
         $responseData = [
             'success' => true,
         ];
+        $fileExtReference = null;
+        $fileExtOutput = null;
         foreach ($testResult as $resultKey => $value) {
             if ($resultKey === 'referenceFile' && !empty($testResult['referenceFile'])) {
                 $referenceFileArray = explode('.', $testResult['referenceFile']);
-                $fileExt = end($referenceFileArray);
-                $responseData['referenceFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode((string)file_get_contents($testResult['referenceFile']));
+                $fileExtReference = end($referenceFileArray);
+                $responseData['referenceFile'] = 'data:image/' . $fileExtReference . ';base64,' . base64_encode((string)file_get_contents($testResult['referenceFile']));
             } elseif ($resultKey === 'outputFile' && !empty($testResult['outputFile'])) {
                 $outputFileArray = explode('.', $testResult['outputFile']);
-                $fileExt = end($outputFileArray);
-                $responseData['outputFile'] = 'data:image/' . $fileExt . ';base64,' . base64_encode((string)file_get_contents($testResult['outputFile']));
+                $fileExtOutput = end($outputFileArray);
+                $responseData['outputFile'] = 'data:image/' . $fileExtOutput . ';base64,' . base64_encode((string)file_get_contents($testResult['outputFile']));
             } else {
                 $responseData[$resultKey] = $value;
             }
+        }
+        if (is_string($fileExtReference) && $fileExtReference !== '' && is_string($fileExtOutput) && $fileExtOutput !== '' && $fileExtReference !== $fileExtOutput) {
+            $responseData['status'][] = new FlashMessage(
+                'A fallback format was used and may not be the desired result.'
+                . ' Please verify that ImageMagick / GraphicsMagick and your system provide the required codec libraries to write ' . strtoupper($fileExtReference) . ' files,'
+                . ' for example by checking the output of a "convert -list format" shell command.',
+                'Unexpected output file extension: ' . strtoupper($fileExtOutput),
+                ContextualFeedbackSeverity::WARNING
+            );
         }
         return new JsonResponse($responseData);
     }
