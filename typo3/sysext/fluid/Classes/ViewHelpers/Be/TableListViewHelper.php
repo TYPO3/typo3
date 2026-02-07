@@ -124,7 +124,7 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $moduleData = new ModuleData('records', is_array($existingModuleData) ? $existingModuleData : []);
 
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
-        $dbList->setRequest($request);
+        $dbList->setRequest($request->withoutAttribute('pageContext'));
         $dbList->setModuleData($moduleData);
         $dbList->pageRow = $pageInfo;
         if ($readOnly) {
