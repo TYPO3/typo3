@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -25,64 +26,92 @@ final class BooleanValidatorTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    #[Test]
-    public function booleanValidatorReturnsNoErrorForAFalseStringExpectation(): void
+    public static function validTrueValues(): array
     {
-        $options = ['is' => 'false'];
+        return [
+            [true],
+            ['true'],
+            ['1'],
+            [1],
+        ];
+    }
+
+    public static function validFalseValues(): array
+    {
+        return [
+            [false],
+            ['false'],
+            ['0'],
+            [0],
+            [''],
+        ];
+    }
+
+    #[DataProvider('validFalseValues')]
+    #[Test]
+    public function booleanValidatorReturnsNoErrorForAFalseStringExpectation(mixed $booleanValue): void
+    {
+        $options = ['is' => $booleanValue];
         $validator = new BooleanValidator();
         $validator->setOptions($options);
         self::assertFalse($validator->validate(false)->hasErrors());
     }
 
+    #[DataProvider('validTrueValues')]
     #[Test]
-    public function booleanValidatorReturnsNoErrorForATrueStringExpectation(): void
+    public function booleanValidatorReturnsNoErrorForATrueStringExpectation(mixed $booleanValue): void
     {
-        $options = ['is' => 'true'];
+        $options = ['is' => $booleanValue];
         $validator = new BooleanValidator();
         $validator->setOptions($options);
         self::assertFalse($validator->validate(true)->hasErrors());
     }
 
+    #[DataProvider('validTrueValues')]
     #[Test]
-    public function booleanValidatorReturnsNoErrorForATrueExpectation(): void
+    public function booleanValidatorReturnsNoErrorForATrueExpectation(mixed $booleanValue): void
     {
-        $options = ['is' => true];
+        $options = ['is' => $booleanValue];
         $validator = new BooleanValidator();
         $validator->setOptions($options);
         self::assertFalse($validator->validate(true)->hasErrors());
     }
 
+    #[DataProvider('validFalseValues')]
     #[Test]
-    public function booleanValidatorReturnsNoErrorForAFalseExpectation(): void
+    public function booleanValidatorReturnsNoErrorForAFalseExpectation(mixed $booleanValue): void
     {
-        $options = ['is' => false];
+        $options = ['is' => $booleanValue];
         $validator = new BooleanValidator();
         $validator->setOptions($options);
         self::assertFalse($validator->validate(false)->hasErrors());
     }
 
+    #[DataProvider('validFalseValues')]
     #[Test]
-    public function booleanValidatorReturnsErrorForTrueWhenFalseExpected(): void
+    public function booleanValidatorReturnsErrorForTrueWhenFalseExpected(mixed $booleanValue): void
     {
-        $options = ['is' => false];
+        $options = ['is' => $booleanValue];
         $validator = new BooleanValidator();
         $validator->setOptions($options);
         self::assertTrue($validator->validate(true)->hasErrors());
     }
 
+    #[DataProvider('validTrueValues')]
     #[Test]
-    public function booleanValidatorReturnsErrorForFalseWhenTrueExpected(): void
+    public function booleanValidatorReturnsErrorForFalseWhenTrueExpected(mixed $booleanValue): void
     {
-        $options = ['is' => true];
+        $options = ['is' => $booleanValue];
         $validator = new BooleanValidator();
         $validator->setOptions($options);
         self::assertTrue($validator->validate(false)->hasErrors());
     }
 
+    #[DataProvider('validTrueValues')]
     #[Test]
-    public function booleanValidatorReturnsErrorForAString(): void
+    public function booleanValidatorReturnsErrorForAString(mixed $booleanValue): void
     {
-        $options = ['is' => true];
+        $options = ['is' => $booleanValue];
         $validator = new BooleanValidator();
         $validator->setOptions($options);
         self::assertTrue($validator->validate('a string')->hasErrors());
