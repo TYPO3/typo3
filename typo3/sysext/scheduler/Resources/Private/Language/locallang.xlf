@@ -579,6 +579,13 @@
       <trans-unit id="newSchedulerTask.filter.noResults">
         <source>Unfortunately no scheduler task matches your query, please try a different one.</source>
       </trans-unit>
+      <!-- Moved from messages.xlf to solve https://forge.typo3.org/issues/108902-->
+      <trans-unit id="delete_group">
+        <source>Delete this task group? You can restore it in the module "Recycler".</source>
+      </trans-unit>
+      <trans-unit id="delete_task">
+        <source>Delete this task? You can restore it in the module "Recycler".</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
