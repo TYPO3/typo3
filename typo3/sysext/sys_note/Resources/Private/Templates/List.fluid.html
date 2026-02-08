@@ -48,11 +48,11 @@
                                 <f:if condition="{note.canBeDeleted}">
                                     <typo3-sysnote-delete-button
                                         class="btn btn-default btn-sm"
-                                        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
-                                        modal-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
-                                        modal-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
-                                        modal-button-ok="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:ok')}"
-                                        modal-button-cancel="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                                        title="{f:translate(key: 'delete', domain:'sys_note.label')}"
+                                        modal-title="{f:translate(key: 'delete', domain:'sys_note.messages')}"
+                                        modal-content="{f:translate(key: 'delete_note', domain:'sys_note.messages')}"
+                                        modal-button-ok="{f:translate(key: 'delete', domain:'core.action')}"
+                                        modal-button-cancel="{f:translate(key: 'cancel', domain:'core.action')}"
                                         uid="{note.uid}"
                                         return-url="{returnUrl}"
                                     >

@@ -42,6 +42,13 @@
       <trans-unit id="widget_group.sys_note_widget.title">
         <source>System Notes</source>
       </trans-unit>
+      <!-- To be moved to messages.xlf - see https://forge.typo3.org/issues/108900 -->
+      <trans-unit id="delete">
+        <source>Delete internal note</source>
+      </trans-unit>
+      <trans-unit id="delete_note">
+        <source>Delete this note? You can restore it in the module "Recycler".</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
