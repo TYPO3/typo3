@@ -138,7 +138,7 @@ class AccessStorage implements LoggerAwareInterface
     protected function commitItems(string $sessionKey, array $items): void
     {
         // using `json_encode` here, since `UserSession` still uses PHP `serialize`
-        $this->getBackendUser()->setAndSaveSessionData($sessionKey, json_encode($items));
+        $this->getBackendUser()->setAndSaveSessionData($sessionKey, json_encode($items, JSON_INVALID_UTF8_SUBSTITUTE));
     }
 
     protected function subjectMatchesItem(AccessSubjectInterface $subject, array $item): bool
