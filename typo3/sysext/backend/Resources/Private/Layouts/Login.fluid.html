@@ -150,10 +150,11 @@
                                     <nav aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.navigation.typo3')}">
                                         <f:comment>role is for VoiceOver</f:comment>
                                         <ul class="list-unstyled" role="list">
-                                            <li><a href="https://typo3.org" target="_blank" rel="noreferrer" class="t3-login-link-typo3"><core:icon identifier="actions-window-open" size="small" /> TYPO3.org</a></li>
                                             <li>
-                                                <a href="https://typo3.org/donate/online-donation/" target="_blank" rel="noreferrer" class="t3-login-link-donate">
-                                                    <core:icon identifier="actions-window-open" size="small" /> <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.donate" />
+                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3_site" /> <a href="https://typo3.org" target="_blank" rel="noreferrer" class="t3-login-link-typo3">typo3.org <core:icon identifier="actions-window-open" size="small" /></a></li>
+                                            <li>
+                                                <a class="btn btn-block btn-secondary" href="https://typo3.org/donate/online-donation/" target="_blank" rel="noreferrer" class="t3-login-link-donate">
+                                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.donate" />
                                                 </a>
                                             </li>
                                         </ul>

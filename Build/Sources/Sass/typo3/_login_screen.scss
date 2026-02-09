@@ -269,6 +269,10 @@ body[data-typo3-login-ready] {
 
     .list-unstyled {
         line-height: 2.25;
+
+        li:not(last-of-type) {
+            margin-bottom: .5rem;
+        }
     }
 
     > *:first-child {

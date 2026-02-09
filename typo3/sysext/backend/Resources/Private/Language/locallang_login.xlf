@@ -79,13 +79,16 @@
         <source>This is free software, and you are welcome to redistribute it under certain conditions; %sdetails about licenses.%s</source>
       </trans-unit>
       <trans-unit id="free_software_and_warranty">
-        <source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see %sdetails about licenses.%s</source>
+        <source>TYPO3 CMS comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions, see %sdetails about licenses.%s</source>
       </trans-unit>
       <trans-unit id="free_software_and_custom_warranty">
         <source>Warranty is supplied by %s. This is free software, and you are welcome to redistribute it under certain conditions, see %sdetails about licenses.%s</source>
       </trans-unit>
       <trans-unit id="keep.notice">
         <source>Obstructing the appearance of this notice is prohibited by law.</source>
+      </trans-unit>
+      <trans-unit id="typo3_site">
+        <source>Details about TYPO3 CMS on</source>
       </trans-unit>
     </body>
   </file>

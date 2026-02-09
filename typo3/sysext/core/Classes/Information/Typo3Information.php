@@ -103,7 +103,7 @@ class Typo3Information
         }
         return '<a href="' . htmlspecialchars(static::URL_COMMUNITY) . '" target="_blank" rel="noreferrer">'
             . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.cms') . '</a>. '
-            . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:copyright') . ' &copy; '
+            . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:copyright') . ' '
             . htmlspecialchars($this->getCopyrightYear()) . ' Kasper Sk&aring;rh&oslash;j. '
             . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' '
             . sprintf(
