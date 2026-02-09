@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry;
-use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
@@ -194,7 +193,6 @@ final readonly class XmlSitemapRenderer
                 new Mutation(
                     MutationMode::Extend,
                     Directive::StyleSrcElem,
-                    SourceKeyword::unsafeHashes,
                     ...$hashes
                 )
             )

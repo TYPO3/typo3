@@ -194,7 +194,7 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
         self::assertEmpty($firstResponse->getHeaderLine('X-TYPO3-Debug-Cache'));
         self::assertMatchesRegularExpression(
             // note: SHA256 hash needs to be updated every time XSL stylesheet changes
-            '#style-src-elem[^;]+\'unsafe-hashes\' \'sha256-d0ax6zoVJBeBpy4l3O2FJ6Y1L4SalCWw2x62uoJH15k=\'#',
+            '#style-src-elem[^;]+\'sha256-d0ax6zoVJBeBpy4l3O2FJ6Y1L4SalCWw2x62uoJH15k=\'#',
             $firstResponse->getHeaderLine('Content-Security-Policy')
         );
 
@@ -205,7 +205,7 @@ final class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTestCase
         );
         self::assertMatchesRegularExpression(
             // note: SHA256 hash needs to be updated every time XSL stylesheet changes
-            '#style-src-elem[^;]+\'unsafe-hashes\' \'sha256-d0ax6zoVJBeBpy4l3O2FJ6Y1L4SalCWw2x62uoJH15k=\'#',
+            '#style-src-elem[^;]+\'sha256-d0ax6zoVJBeBpy4l3O2FJ6Y1L4SalCWw2x62uoJH15k=\'#',
             $secondResponse->getHeaderLine('Content-Security-Policy')
         );
     }
