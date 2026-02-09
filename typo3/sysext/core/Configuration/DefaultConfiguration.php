@@ -1008,6 +1008,11 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
@@ -1053,6 +1058,12 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCountry::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaLanguage::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => [
