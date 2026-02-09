@@ -52,29 +52,44 @@ final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        return $this->applyContentSecurityPolicy($request, $handler);
+    }
+
+    /**
+     * Apply Content-Security-Policy headers to an error response that bypassed
+     * the normal middleware stack (e.g. responses from ErrorController).
+     */
+    public function applyToResponse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        return $this->applyContentSecurityPolicy($request, $response);
+    }
+
+    private function applyContentSecurityPolicy(ServerRequestInterface $request, ResponseInterface|RequestHandlerInterface $subject): ResponseInterface
+    {
         $site = $request->getAttribute('site');
         $dispositionMap = $this->dispositionMapFactory->buildDispositionMap(
             $site instanceof Site ? ($site->getConfiguration()['contentSecurityPolicies'] ?? []) : []
         );
         // return early in case CSP shall not be used
         if ($dispositionMap->keys() === []) {
-            return $handler->handle($request);
+            return $subject instanceof RequestHandlerInterface ? $subject->handle($request) : $subject;
         }
         $scope = Scope::frontendSite($site);
         $behavior = new Behavior();
         $nonce = $this->requestId->nonce;
         $policyBag = new PolicyBag($scope, $dispositionMap, $behavior, $nonce);
-        // make sure, the nonce value is set before processing the remaining middlewares
+        // make sure, the nonce value is set before processing the remaining components
         $request = $request
             ->withAttribute('nonce', $nonce)
             ->withAttribute('csp.policyBag', $policyBag);
-        $response = $handler->handle($request);
-
+        $response = $subject instanceof RequestHandlerInterface ? $subject->handle($request) : $subject;
         if ($response->hasHeader('Content-Security-Policy') || $response->hasHeader('Content-Security-Policy-Report-Only')) {
-            $this->logger->info('Content-Security-Policy not enforced due to existence of custom header', [
-                'scope' => (string)$scope,
-                'uri' => (string)$request->getUri(),
-            ]);
+            if ($subject instanceof RequestHandlerInterface) {
+                $this->logger->info('Content-Security-Policy not enforced due to existence of custom header', [
+                    'scope' => (string)$scope,
+                    'uri' => (string)$request->getUri(),
+                ]);
+            }
             return $response;
         }
 

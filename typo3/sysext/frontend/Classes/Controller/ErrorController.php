@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Error\Http\InternalServerErrorException;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
@@ -29,13 +30,19 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Middleware\ContentSecurityPolicyHeaders;
 
 /**
  * Handles error requests,
  * returns a response object.
  */
+#[Autoconfigure(public: true)]
 class ErrorController
 {
+    public function __construct(
+        private readonly ContentSecurityPolicyHeaders $contentSecurityPolicyHeaders,
+    ) {}
+
     /**
      * Used for creating a 500 response ("Internal Server Error"), usually due to some misconfiguration.
      * If a page unavailable handler is configured, a RedirectResponse could be returned as well.
@@ -51,7 +58,10 @@ class ErrorController
         if ($errorHandler !== null) {
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
-        return $this->handleDefaultError($request, 500, $message ?: 'Internal Server Error');
+        return $this->contentSecurityPolicyHeaders->applyToResponse(
+            $request,
+            $this->handleDefaultError($request, 500, $message ?: 'Internal Server Error')
+        );
     }
 
     /**
@@ -69,7 +79,10 @@ class ErrorController
         if ($errorHandler !== null) {
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
-        return $this->handleDefaultError($request, 503, $message ?: 'Service Unavailable');
+        return $this->contentSecurityPolicyHeaders->applyToResponse(
+            $request,
+            $this->handleDefaultError($request, 503, $message ?: 'Service Unavailable')
+        );
     }
 
     /**
@@ -85,7 +98,10 @@ class ErrorController
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
         try {
-            return $this->handleDefaultError($request, 404, $message);
+            return $this->contentSecurityPolicyHeaders->applyToResponse(
+                $request,
+                $this->handleDefaultError($request, 404, $message)
+            );
         } catch (\RuntimeException $e) {
             throw new PageNotFoundException($message, 1518472189);
         }
@@ -104,7 +120,10 @@ class ErrorController
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
         try {
-            return $this->handleDefaultError($request, 403, $message);
+            return $this->contentSecurityPolicyHeaders->applyToResponse(
+                $request,
+                $this->handleDefaultError($request, 403, $message)
+            );
         } catch (\RuntimeException $e) {
             throw new PageNotFoundException($message, 1518472195);
         }

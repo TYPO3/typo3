@@ -1,0 +1,4 @@
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody","fe_group"
+,1,0,128,"Root",0,15,""
+,2,1,128,"Access Protected",0,15,"-2"

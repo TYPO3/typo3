@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Controller;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Information\Typo3Information;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -35,6 +36,7 @@ readonly class ErrorPageController
         protected ViewFactoryInterface $viewFactory,
         protected RequestId $requestId,
         protected Typo3Information $typo3Information,
+        protected ContentSecurityPolicy\PolicyRegistry $policyRegistry,
     ) {}
 
     /**
@@ -56,6 +58,15 @@ readonly class ErrorPageController
             'requestId' => GeneralUtility::makeInstance(RequestId::class),
             'copyrightYear' => $this->typo3Information->getCopyrightYear(),
         ]);
+        $this->policyRegistry->appendMutationCollection(
+            new ContentSecurityPolicy\MutationCollection(
+                new ContentSecurityPolicy\Mutation(
+                    ContentSecurityPolicy\MutationMode::Extend,
+                    ContentSecurityPolicy\Directive::StyleSrcElem,
+                    ContentSecurityPolicy\SourceKeyword::nonceProxy
+                )
+            )
+        );
         return $view->render('ErrorPage/Error');
     }
 }

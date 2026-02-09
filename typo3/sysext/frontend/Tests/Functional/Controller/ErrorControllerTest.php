@@ -30,7 +30,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->pageNotFoundAction($request, 'This test page was not found!');
         self::assertSame(404, $response->getStatusCode());
         self::assertStringContainsString('This test page was not found!', $response->getBody()->getContents());
@@ -41,7 +41,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->unavailableAction($request, 'This page is temporarily unavailable.');
         self::assertSame(503, $response->getStatusCode());
         self::assertStringContainsString('This page is temporarily unavailable.', $response->getBody()->getContents());
@@ -56,7 +56,7 @@ final class ErrorControllerTest extends FunctionalTestCase
         $this->expectExceptionCode(1518472181);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $subject->unavailableAction($request, 'All your system are belong to us!');
     }
 
@@ -65,7 +65,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->internalErrorAction($request, 'All your system are belong to us!');
         self::assertSame(500, $response->getStatusCode());
         self::assertStringContainsString('All your system are belong to us!', $response->getBody()->getContents());
@@ -80,7 +80,7 @@ final class ErrorControllerTest extends FunctionalTestCase
         $this->expectExceptionCode(1607585445);
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $subject->internalErrorAction($request, 'All your system are belong to us!');
     }
 
@@ -89,7 +89,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->pageNotFoundAction($request, 'Error handler is not configured.');
         self::assertSame(404, $response->getStatusCode());
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
@@ -101,7 +101,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->pageNotFoundAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
         self::assertSame(404, $response->getStatusCode());
@@ -114,7 +114,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->unavailableAction($request, 'Error handler is not configured.');
         self::assertSame(503, $response->getStatusCode());
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
@@ -126,7 +126,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->unavailableAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
         self::assertSame(503, $response->getStatusCode());
@@ -139,7 +139,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->internalErrorAction($request, 'Error handler is not configured.');
         self::assertSame(500, $response->getStatusCode());
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
@@ -151,7 +151,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->internalErrorAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
         self::assertSame(500, $response->getStatusCode());
@@ -164,7 +164,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->accessDeniedAction($request, 'Error handler is not configured.');
         self::assertSame(403, $response->getStatusCode());
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine('Content-Type'));
@@ -176,7 +176,7 @@ final class ErrorControllerTest extends FunctionalTestCase
     {
         $request = new ServerRequest();
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        $subject = new ErrorController();
+        $subject = $this->get(ErrorController::class);
         $response = $subject->accessDeniedAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
         $responseContent = \json_decode($response->getBody()->getContents(), true);
         self::assertSame(403, $response->getStatusCode());

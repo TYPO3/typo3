@@ -5,7 +5,7 @@
     <meta name="robots" content="noindex, follow">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{title}</title>
-    <f:format.raw><style>
+    <style nonce="{f:security.nonce(directive: 'style-src-elem')}"><f:format.raw>
         body {
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             font-size: 1rem;
@@ -71,7 +71,7 @@
             text-decoration: none;
             font-weight: 600
         }
-    </style></f:format.raw>
+    </f:format.raw></style>
 </head>
 <body class="typo3-error-page">
 
