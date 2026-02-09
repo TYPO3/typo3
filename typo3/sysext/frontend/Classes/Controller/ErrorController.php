@@ -33,8 +33,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Middleware\ContentSecurityPolicyHeaders;
 
 /**
- * Handles error requests,
- * returns a response object.
+ * This controller provides actions for common HTTP error scenarios (404, 403, 500, 503) and supports custom error
+ * handling through site-specific error handlers. If no custom error handler is configured, it falls back to
+ * rendering a standard TYPO3 error page with appropriate status code and message.
  */
 #[Autoconfigure(public: true)]
 class ErrorController
@@ -58,10 +59,14 @@ class ErrorController
         if ($errorHandler !== null) {
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
-        return $this->contentSecurityPolicyHeaders->applyToResponse(
+        $response = $this->handleError(
             $request,
-            $this->handleDefaultError($request, 500, $message ?: 'Internal Server Error')
+            500,
+            'Internal Server Error',
+            'An error occurred while processing your request. Please try again later.',
+            $message
         );
+        return $this->contentSecurityPolicyHeaders->applyToResponse($request, $response);
     }
 
     /**
@@ -79,15 +84,19 @@ class ErrorController
         if ($errorHandler !== null) {
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
-        return $this->contentSecurityPolicyHeaders->applyToResponse(
+        $response = $this->handleError(
             $request,
-            $this->handleDefaultError($request, 503, $message ?: 'Service Unavailable')
+            503,
+            'Service Unavailable',
+            'The application is currently down for maintenance. Please check back shortly.',
+            $message
         );
+        return $this->contentSecurityPolicyHeaders->applyToResponse($request, $response);
     }
 
     /**
-     * Used for creating a 404 response ("Page Not Found"),
-     * but if configured, a RedirectResponse could be returned as well.
+     * Used for creating a 404 response ("Page Not Found"), but if configured, a RedirectResponse could be returned
+     * as well.
      *
      * @throws PageNotFoundException
      */
@@ -98,18 +107,23 @@ class ErrorController
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
         try {
-            return $this->contentSecurityPolicyHeaders->applyToResponse(
+            $response = $this->handleError(
                 $request,
-                $this->handleDefaultError($request, 404, $message)
+                404,
+                'Page Not Found',
+                'The page did not exist or was inaccessible.',
+                $message
             );
-        } catch (\RuntimeException $e) {
+            return $this->contentSecurityPolicyHeaders->applyToResponse($request, $response);
+        } catch (\RuntimeException) {
             throw new PageNotFoundException($message, 1518472189);
         }
+
     }
 
     /**
-     * Used for creating a 403 response ("Access denied"),
-     * but if configured, a RedirectResponse could be returned as well.
+     * Used for creating a 403 response ("Access denied"), but if configured, a RedirectResponse could be returned
+     * as well.
      *
      * @throws PageNotFoundException
      */
@@ -120,12 +134,44 @@ class ErrorController
             return $errorHandler->handlePageError($request, $message, $reasons);
         }
         try {
-            return $this->contentSecurityPolicyHeaders->applyToResponse(
+            $response = $this->handleError(
                 $request,
-                $this->handleDefaultError($request, 403, $message)
+                403,
+                'Access Denied',
+                'You do not have the necessary permissions to access this resource.',
+                $message
             );
-        } catch (\RuntimeException $e) {
+            return $this->contentSecurityPolicyHeaders->applyToResponse($request, $response);
+        } catch (\RuntimeException) {
             throw new PageNotFoundException($message, 1518472195);
+        }
+    }
+
+    /**
+     * Used for creating an error with a custom status code, but if configured, a RedirectResponse could be
+     * returned as well.
+     *
+     * @param array<string, mixed> $reasons An array of reasons for evaluation in a possible resolved the error handler
+     *
+     * @throws PageNotFoundException
+     */
+    public function customErrorAction(
+        ServerRequestInterface $request,
+        int $statusCode,
+        string $title,
+        string $message,
+        string $technicalReason = '',
+        array $reasons = [],
+        int $errorCode = 0
+    ): ResponseInterface {
+        $errorHandler = $this->getErrorHandlerFromSite($request, $statusCode);
+        if ($errorHandler !== null) {
+            return $errorHandler->handlePageError($request, $message, $reasons);
+        }
+        try {
+            return $this->handleError($request, $statusCode, $title, $message, $technicalReason, $errorCode);
+        } catch (\RuntimeException) {
+            throw new PageNotFoundException($message, 1770466857);
         }
     }
 
@@ -157,17 +203,23 @@ class ErrorController
     }
 
     /**
-     * Ensures that a response object is created as a "fallback" when no error handler is configured.
+     * Handles the error by creating a response object. Acts as a fallback when no error handler is configured.
      */
-    protected function handleDefaultError(ServerRequestInterface $request, int $statusCode, string $reason = ''): ResponseInterface
-    {
+    protected function handleError(
+        ServerRequestInterface $request,
+        int $statusCode,
+        string $title,
+        string $message,
+        string $technicalReason = '',
+        int $errorCode = 0
+    ): ResponseInterface {
         if (str_contains($request->getHeaderLine('Accept'), 'application/json')) {
-            return new JsonResponse(['reason' => $reason], $statusCode);
+            return new JsonResponse(['reason' => $technicalReason], $statusCode);
         }
         $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
-            'Page Not Found',
-            'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . $reason : ''),
-            0,
+            $title,
+            $message . ($technicalReason ? ' Reason: ' . $technicalReason : ''),
+            $errorCode,
             $statusCode
         );
         return new HtmlResponse($content, $statusCode);
