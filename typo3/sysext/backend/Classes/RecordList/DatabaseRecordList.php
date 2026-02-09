@@ -1046,8 +1046,8 @@ class DatabaseRecordList
             $shouldRenderDownloadButton = (bool)$this->modTSconfig['displayRecordDownload'];
         }
         // Table override was explicitly set
-        if (isset($this->tableTSconfigOverTCA[$table . '.']['displayRecordDownload'])) {
-            $shouldRenderDownloadButton = (bool)$this->tableTSconfigOverTCA[$table . '.']['displayRecordDownload'];
+        if (isset($this->tableTSconfigOverTCA[$table]['displayRecordDownload'])) {
+            $shouldRenderDownloadButton = (bool)$this->tableTSconfigOverTCA[$table]['displayRecordDownload'];
         }
         // Do not render button if disabled
         if ($shouldRenderDownloadButton === false) {
@@ -2519,7 +2519,7 @@ class DatabaseRecordList
                     || in_array($tableName, $hideTablesArray, true)
                     || in_array('*', $hideTablesArray, true);
                 // Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table
-                $hideTable = (bool)($this->tableTSconfigOverTCA[$tableName . '.']['hideTable'] ?? $hideTable);
+                $hideTable = (bool)($this->tableTSconfigOverTCA[$tableName]['hideTable'] ?? $hideTable);
             }
             if ($hideTable) {
                 unset($tableNames[$tableName]);
