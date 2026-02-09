@@ -11,11 +11,11 @@
         arguments="{
             image: record.image.0,
             header: '{f:render.text(record: record, field: \'header\')}',
-            paragraphs: '{f:render.richText(record: record, field: \'bodytext\')}',
+            paragraphs: '{f:render.text(record: record, field: \'bodytext\')}',
             date: record.date,
-            category: '{f:render.richText(record: record, field: \'subheader\')}',
+            category: '{f:render.text(record: record, field: \'subheader\')}',
             link: record.tx_themecamino_link,
-            label: '{f:render.richText(record: record, field: \'tx_themecamino_link_label\')}',
+            label: '{f:render.text(record: record, field: \'tx_themecamino_link_label\')}',
             icon: record.tx_themecamino_link_icon,
         }"
     />

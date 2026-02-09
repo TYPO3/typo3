@@ -10,7 +10,7 @@
 <f:section name="Main">
     <div class="textmedia-teaser-grid">
         <f:variable name="header">{f:render.text(record: record, field: 'header')}</f:variable>
-        <f:variable name="bodytext">{f:render.richText(record: record, field: 'bodytext')}</f:variable>
+        <f:variable name="bodytext">{f:render.text(record: record, field: 'bodytext')}</f:variable>
         <f:variable name="subheader">{f:render.text(record: record, field: 'subheader')}</f:variable>
         <f:if condition="{header} || {bodytext} || {subheader}">
             <div class="textmedia-teaser-grid__intro">

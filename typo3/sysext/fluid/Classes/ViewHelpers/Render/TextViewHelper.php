@@ -17,15 +17,35 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Render;
 
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Schema\Field\InputFieldType;
+use TYPO3\CMS\Core\Schema\Field\TextFieldType;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlViewHelper;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTML;
 use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTMLString;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
+/**
+ * ViewHelper to render content based on records and fields from a TCA schema.
+ * Handles the processing of both simple and rich text fields.
+ *
+ * ````html
+ *   <f:render.text record="{page}" field="bodytext" />
+ *   {record -> f:render.text(field: 'title')}
+ *   <f:render.text field="subheader">{record}</f:render.text>
+ * ````
+ */
 final class TextViewHelper extends AbstractViewHelper
 {
     protected $escapeOutput = false;
+
+    public function __construct(
+        private readonly TcaSchemaFactory $tcaSchema,
+        private readonly RecordFactory $recordFactory,
+    ) {}
 
     public function initializeArguments(): void
     {
@@ -33,8 +53,6 @@ final class TextViewHelper extends AbstractViewHelper
 
         $this->registerArgument('record', PageInformation::class . '|' . RecordInterface::class, 'A Record API Object');
         $this->registerArgument('field', 'string', 'The field that should be rendered.', true);
-
-        $this->registerArgument('allowNewlines', 'bool', 'Allows newLines and converts them to <br>', false, false);
     }
 
     public function getContentArgumentName(): string
@@ -58,26 +76,42 @@ final class TextViewHelper extends AbstractViewHelper
         $record = $this->renderChildren();
         $field = $this->arguments['field'];
 
-        $allowNewlines = $this->arguments['allowNewlines'];
-
         if ($record instanceof PageInformation) {
-            $value = $record->getPageRecord()[$field] ?? '';
-        } elseif ($record instanceof RecordInterface) {
-            $value = $record->get($field) ?? '';
-        } else {
+            $record = $this->recordFactory->createResolvedRecordFromDatabaseRow('pages', $record->getPageRecord());
+        }
+
+        if (!$record instanceof RecordInterface) {
             throw new \InvalidArgumentException('The record argument must be an instance of ' . PageInformation::class . ' or ' . RecordInterface::class . '. Given: ' . get_debug_type($record), 1770539910);
         }
 
+        $value = $record->get($field) ?? '';
+
         if (!is_string($value)) {
-            throw new \InvalidArgumentException('The value of the field "' . $field . '" must be a string. Given: ' . get_debug_type($value), 1770321858);
+            $table = $record->getMainType();
+            throw new \InvalidArgumentException('The value of the field "' . $table . '.' . $field . '" must be a string. Given: ' . get_debug_type($value), 1770321858);
         }
 
-        // We need to manually escape the output here to pass it to UnsafeHTMLString.
-        $html = htmlspecialchars($value);
-
-        if ($allowNewlines) {
-            $html = nl2br($html);
+        $fieldSchema = $this->tcaSchema->get($record->getFullType())->getField($field);
+        if ($fieldSchema instanceof InputFieldType) {
+            return new UnsafeHTMLString(htmlspecialchars($value));
         }
-        return new UnsafeHTMLString($html);
+
+        if ($fieldSchema instanceof TextFieldType) {
+            if (!$fieldSchema->isRichText()) {
+                return new UnsafeHTMLString(nl2br(htmlspecialchars($value)));
+            }
+
+            return new UnsafeHTMLString(
+                $this->renderingContext->getViewHelperInvoker()->invoke(
+                    HtmlViewHelper::class,
+                    [],
+                    $this->renderingContext,
+                    fn() => $value,
+                ),
+            );
+        }
+
+        $table = $record->getMainType();
+        throw new \InvalidArgumentException('The field "' . $table . '.' . $field . '" is not supported. Given: ' . get_debug_type($fieldSchema), 1770618219);
     }
 }

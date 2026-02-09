@@ -100,7 +100,7 @@
     </f:if>
 
     <f:variable name="header">{f:render.text(record: record, field: 'header')}</f:variable>
-    <f:variable name="bodytext">{f:render.richText(record: record, field: 'bodytext')}</f:variable>
+    <f:variable name="bodytext">{f:render.text(record: record, field: 'bodytext')}</f:variable>
     <f:if condition="{header} || {bodytext}">
         <div class="textpic__text">
             <f:render partial="Components/Intro" arguments="{

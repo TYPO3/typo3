@@ -8,7 +8,7 @@
 <f:section name="Header"/>
 
 <f:section name="Main">
-    <f:variable name="bodytext">{f:render.text(record: record, field: 'bodytext', allowNewlines: true)}</f:variable>
+    <f:variable name="bodytext">{f:render.text(record: record, field: 'bodytext')}</f:variable>
     <f:if condition="{bodytext}">
         <div class="testimonial">
             <svg aria-hidden="true" class="icon icon--quote" width="59" height="40" viewBox="0 0 59 40" fill="none">

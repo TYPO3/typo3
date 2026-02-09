@@ -18,7 +18,7 @@
             }"/>
         </div>
 
-        <f:variable name="bodytext">{f:render.text(record: record, field: 'bodytext', allowNewlines: true)}</f:variable>
+        <f:variable name="bodytext">{f:render.text(record: record, field: 'bodytext')}</f:variable>
         <f:if condition="{bodytext} || {record.tx_themecamino_list_elements}">
             <div class="author__content">
                 <f:if condition="{bodytext}">
