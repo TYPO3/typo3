@@ -12,12 +12,13 @@
  */
 
 import { html, type TemplateResult } from 'lit';
-import type { FinisherConfig, LocalizationFinisherInterface } from '../localization-finisher';
+import type { FinisherInterface } from '@typo3/backend/wizard/finisher/finisher-interface';
+import type { FinisherConfig } from '@typo3/backend/wizard/finisher/finisher-config';
 
 /**
  * Redirect finisher - navigates to a specific URL after localization
  */
-export default class RedirectFinisher implements LocalizationFinisherInterface {
+export default class RedirectFinisher implements FinisherInterface {
   private config!: FinisherConfig;
 
   public setConfig(config: FinisherConfig): void {

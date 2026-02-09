@@ -11,12 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { live } from 'lit/directives/live.js';
 import { Task, TaskStatus } from '@lit/task';
-import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import type { LocalizationContext, LocalizationStepInterface, LocalizationStepValueInterface, LocalizationStepSummaryInterface } from '../localization-wizard';
+import type { LocalizationContext } from '@typo3/backend/localization/localization-wizard';
+import type { WizardStepInterface } from '@typo3/backend/wizard/steps/wizard-step-interface';
+import type { WizardStepValueInterface } from '@typo3/backend/wizard/steps/wizard-step-value-interface';
+import type { WizardStepSummaryInterface } from '@typo3/backend/wizard/steps/wizard-step-summary-interface';
+import type { SummaryItem } from '@typo3/backend/wizard/steps/summary-item-interface';
+import localizationWizardLabels from '~labels/backend.wizards.localization';
 
 export type LocalizationHandler = {
   identifier: string;
@@ -25,9 +29,9 @@ export type LocalizationHandler = {
   iconIdentifier: string;
 };
 
-export class HandlerSelectionStep implements LocalizationStepInterface, LocalizationStepValueInterface, LocalizationStepSummaryInterface {
+export class HandlerSelectionStep implements WizardStepInterface, WizardStepValueInterface, WizardStepSummaryInterface {
   public readonly key = 'handler';
-  public readonly title = lll('step.handler_selection.title');
+  public readonly title = localizationWizardLabels.get('step.handler_selection.title');
   public readonly autoAdvance = true;
 
   private readonly task: Task<[string, number, number | null, number | null, string | null], LocalizationHandler[]>;
@@ -99,33 +103,29 @@ export class HandlerSelectionStep implements LocalizationStepInterface, Localiza
         if (shouldAutoAdvance && !this.hasDispatchedAutoAdvance) {
           this.hasDispatchedAutoAdvance = true;
           this.context.dispatchAutoAdvance();
-          return this.context.wizard.renderLoader('localization_wizard.loading');
+          return this.context.wizard.renderLoader();
         }
 
         if (handlers.length === 0) {
           return html`
             <div class="alert alert-warning">
-              <p>${lll('step.handler_selection.no_handlers')}</p>
+              <p>${localizationWizardLabels.get('step.handler_selection.no_handlers')}</p>
             </div>
           `;
         }
 
         return html`
           <div class="localization-handler-selection">
-            <h2 class="h4">${lll('step.handler_selection.headline')}</h2>
-            <p>${lll('step.handler_selection.description')}</p>
+            <h2 class="h4">${localizationWizardLabels.get('step.handler_selection.headline')}</h2>
+            <p>${localizationWizardLabels.get('step.handler_selection.description')}</p>
             <div class="form-check-card-container">
               ${handlers.map((handler: LocalizationHandler) => this.renderHandlerOption(handler))}
             </div>
           </div>
         `;
       },
-      error: (error: unknown) => this.context.wizard.renderError(
-        'localization_wizard.step.error.title',
-        'step.handler_selection.error',
-        error
-      ),
-      pending: () => this.context.wizard.renderLoader('localization_wizard.loading')
+      error: (error: unknown) => this.context.wizard.renderError(localizationWizardLabels.get('step.handler_selection.error'), error),
+      pending: () => this.context.wizard.renderLoader()
     });
   }
 
@@ -146,28 +146,24 @@ export class HandlerSelectionStep implements LocalizationStepInterface, Localiza
     this.context.setStoreData('localizationHandler', this.getValue());
   }
 
-  public getSummary(): TemplateResult {
+  public getSummaryData(): SummaryItem[] {
     const selectedHandler = this.context.getStoreData('localizationHandler');
     if (selectedHandler == null || !this.task.value) {
-      return html`${nothing}`;
+      return [];
     }
 
     const handler = this.task.value.find((h: LocalizationHandler) => h.identifier === selectedHandler);
     if (!handler) {
-      return html`${nothing}`;
+      return [];
     }
 
-    return html`
-      <tr>
-        <th class="col-fieldname">
-          ${lll('step.handler_selection.summary_label')}
-        </th>
-        <td class="col-word-break">
-          <typo3-backend-icon identifier="${handler.iconIdentifier}" size="small" class="me-1"></typo3-backend-icon>
-          ${handler.label}
-        </td>
-      </tr>
-    `;
+    return [{
+      label: localizationWizardLabels.get('step.handler_selection.summary_label'),
+      value: html `
+        <typo3-backend-icon identifier="${handler.iconIdentifier}" size="small" class="me-1"></typo3-backend-icon>
+        ${handler.label}
+      `
+    }];
   }
 
   private renderHandlerOption(handler: LocalizationHandler): TemplateResult {

@@ -15,9 +15,13 @@ import { html, nothing, type TemplateResult } from 'lit';
 import { live } from 'lit/directives/live.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { Task, TaskStatus } from '@lit/task';
-import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import type { LocalizationContext, LocalizationStepInterface, LocalizationStepValueInterface, LocalizationStepSummaryInterface } from '@typo3/backend/localization/localization-wizard';
+import type { LocalizationContext } from '@typo3/backend/localization/localization-wizard';
+import type { WizardStepInterface } from '@typo3/backend/wizard/steps/wizard-step-interface';
+import type { WizardStepValueInterface } from '@typo3/backend/wizard/steps/wizard-step-value-interface';
+import type { WizardStepSummaryInterface } from '@typo3/backend/wizard/steps/wizard-step-summary-interface';
+import type { SummaryItem } from '@typo3/backend/wizard/steps/summary-item-interface';
+import localizationWizardLabels from '~labels/backend.wizards.localization';
 
 export type LocalizationMode = {
   key: string;
@@ -26,9 +30,9 @@ export type LocalizationMode = {
   iconIdentifier: string;
 };
 
-export class ModeStep implements LocalizationStepInterface, LocalizationStepValueInterface, LocalizationStepSummaryInterface {
+export class ModeStep implements WizardStepInterface, WizardStepValueInterface, WizardStepSummaryInterface {
   readonly key = 'mode';
-  readonly title = lll('step.modes.title');
+  readonly title = localizationWizardLabels.get('step.modes.title');
   readonly autoAdvance = true;
 
   private readonly task: Task<[string, number, number | null, number | null], LocalizationMode[]>;
@@ -97,19 +101,19 @@ export class ModeStep implements LocalizationStepInterface, LocalizationStepValu
         if (shouldAutoAdvance && !this.hasDispatchedAutoAdvance) {
           this.hasDispatchedAutoAdvance = true;
           this.context.dispatchAutoAdvance();
-          return this.context.wizard.renderLoader('localization_wizard.loading');
+          return this.context.wizard.renderLoader();
         }
 
         let content: TemplateResult | typeof nothing = nothing;
         if (modes.length === 0) {
           content = html`
             <div class="text-center">
-              <p>${lll('step.modes.none_available')}</p>
+              <p>${localizationWizardLabels.get('step.modes.none_available')}</p>
             </div>
           `;
         } else {
           content = html`
-            <p>${lll('step.modes.description')}</p>
+            <p>${localizationWizardLabels.get('step.modes.description')}</p>
             <div class="form-check-card-container">
               ${modes.map((mode: LocalizationMode) => html`
                 <div class="form-check form-check-type-card">
@@ -139,17 +143,13 @@ export class ModeStep implements LocalizationStepInterface, LocalizationStepValu
 
         return html`
           <div class="localization-mode-selection">
-            <h2 class="h4">${lll('step.modes.headline')}</h2>
+            <h2 class="h4">${localizationWizardLabels.get('step.modes.headline')}</h2>
             ${content}
           </div>
         `;
       },
-      error: (error: unknown) => this.context.wizard.renderError(
-        'localization_wizard.step.error.title',
-        'localization_wizard.step.modes.error.message',
-        error
-      ),
-      pending: () => this.context.wizard.renderLoader('localization_wizard.loading')
+      error: (error: unknown) => this.context.wizard.renderError(localizationWizardLabels.get('step.modes.error.message'), error),
+      pending: () => this.context.wizard.renderLoader()
     });
   }
 
@@ -170,28 +170,24 @@ export class ModeStep implements LocalizationStepInterface, LocalizationStepValu
     this.context.setStoreData('localizationMode', this.getValue());
   }
 
-  public getSummary(): TemplateResult {
+  public getSummaryData(): SummaryItem[] {
     const selectedMode = this.context.getStoreData('localizationMode');
     if (!selectedMode || !this.task.value) {
-      return html`${nothing}`;
+      return [];
     }
 
     const mode = this.task.value.find((m: LocalizationMode) => m.key === selectedMode);
     if (!mode) {
-      return html`${nothing}`;
+      return [];
     }
 
-    return html`
-      <tr>
-        <th class="col-fieldname">
-          ${lll('step.modes.summary.title')}
-        </th>
-        <td class="col-word-break">
-          <typo3-backend-icon identifier="${mode.iconIdentifier}" size="small" class="me-1"></typo3-backend-icon>
-          ${mode.label}
-        </td>
-      </tr>
-    `;
+    return [{
+      label: localizationWizardLabels.get('step.modes.summary.title'),
+      value: html `
+        <typo3-backend-icon identifier="${mode.iconIdentifier}" size="small" class="me-1"></typo3-backend-icon>
+        ${mode.label}
+      `
+    }];
   }
 
 }

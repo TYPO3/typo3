@@ -37,7 +37,7 @@ final readonly class RedirectLocalizationFinisher implements LocalizationFinishe
 
     public function getModule(): string
     {
-        return '@typo3/backend/localization/finisher/redirect-finisher.js';
+        return '@typo3/backend/wizard/finisher/redirect-finisher.js';
     }
 
     public function getData(): array

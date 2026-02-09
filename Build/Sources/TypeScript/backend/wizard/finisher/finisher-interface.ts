@@ -12,16 +12,7 @@
  */
 
 import type { TemplateResult } from 'lit';
-
-/**
- * Configuration data passed to finisher instances
- */
-export type FinisherConfig = {
-  identifier: string;
-  module: string;
-  data: Record<string, unknown>;
-  labels: Record<string, string>;
-};
+import type { FinisherConfig } from '@typo3/backend/wizard/finisher/finisher-config';
 
 /**
  * Interface for localization finisher implementations
@@ -29,7 +20,7 @@ export type FinisherConfig = {
  * Finishers handle the final action after successful localization,
  * such as redirecting to the translated content or reloading the page.
  */
-export interface LocalizationFinisherInterface {
+export interface FinisherInterface {
   /**
    * Set the finisher configuration
    * Must be called before render() or execute()

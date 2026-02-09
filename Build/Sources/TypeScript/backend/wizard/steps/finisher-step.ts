@@ -14,57 +14,40 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { until } from 'lit/directives/until.js';
 import { Task, TaskStatus } from '@lit/task';
-import { lll } from '@typo3/core/lit-helper';
-import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import type { LocalizationContext, LocalizationStepInterface, LocalizationDataStore } from '@typo3/backend/localization/localization-wizard';
-import type { FinisherConfig, LocalizationFinisherInterface } from '@typo3/backend/localization/localization-finisher';
+import type { WizardStepInterface } from '@typo3/backend/wizard/steps/wizard-step-interface';
+import type { Wizard } from '@typo3/backend/wizard/wizard';
+import type { SubmissionServiceInterface } from '@typo3/backend/wizard/finisher/submission-service-interface';
+import type { FinisherResult } from '@typo3/backend/wizard/finisher/finisher-result';
+import type { FinisherInterface } from '@typo3/backend/wizard/finisher/finisher-interface';
+import type { FinisherConfig } from '@typo3/backend/wizard/finisher/finisher-config';
+import wizardLabels from '~labels/backend.wizards.general';
 
-type LocalizationResultSuccess = {
-  success: true;
-  finisher: FinisherConfig;
-};
-
-type LocalizationResultError = {
-  success: false;
-  errors: string[];
-};
-
-type LocalizationResult = LocalizationResultSuccess | LocalizationResultError;
 
 /**
  * Finisher step - executes localization task, shows success message, and provides finisher action
  * This is a terminal step with no way to go back
  */
-export class FinisherStep implements LocalizationStepInterface {
+export class FinisherStep implements WizardStepInterface {
   readonly key = 'finisher';
-  readonly title = lll('step.finisher.title');
+  readonly title = wizardLabels.get('step.finisher.title');
   readonly autoAdvance = false;
 
-  private finisherInstance: LocalizationFinisherInterface | null = null;
+  private finisherInstance: FinisherInterface | null = null;
   private hasError = false;
-  private readonly task: Task<[string, number, LocalizationDataStore], LocalizationResult>;
+  private readonly task: Task<[SubmissionServiceInterface], FinisherResult>;
 
-  constructor(private readonly context: LocalizationContext) {
-    // Localization task that executes when this step is entered
-    this.task = new Task(this.context.wizard, {
-      task: async ([recordType, recordUid, dataStore]: [string, number, LocalizationDataStore]): Promise<LocalizationResult> => {
-        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.wizard_localization_localize)
-          .post({
-            recordType: recordType,
-            recordUid: recordUid,
-            data: dataStore
-          });
-
-        const result: LocalizationResult = await response.resolve();
-        return result;
+  constructor(private readonly wizard: Wizard, private readonly finisher: SubmissionServiceInterface) {
+    this.task = new Task(this.wizard, {
+      task: async ([finisher]: [SubmissionServiceInterface]): Promise<FinisherResult> => {
+        return finisher.execute();
       },
       args: () => [
-        this.context.recordType,
-        this.context.recordUid,
-        this.context.wizard.getDataStore()
-      ] as [string, number, LocalizationDataStore],
+        this.finisher
+      ] as [SubmissionServiceInterface],
       autoRun: false
-    });
+    }
+
+    );
   }
 
   public isComplete(): boolean {
@@ -76,7 +59,7 @@ export class FinisherStep implements LocalizationStepInterface {
   public async beforeAdvance(): Promise<void> {
     // If there was an error, just dismiss the wizard
     if (this.hasError) {
-      this.context.wizard.dismissWizard();
+      this.wizard.dismissWizard();
       return;
     }
 
@@ -86,7 +69,7 @@ export class FinisherStep implements LocalizationStepInterface {
     }
 
     // Dismiss the wizard first
-    this.context.wizard.dismissWizard();
+    this.wizard.dismissWizard();
 
     // Execute the finisher action (redirect, reload, etc.)
     await this.finisherInstance.execute();
@@ -100,24 +83,16 @@ export class FinisherStep implements LocalizationStepInterface {
 
     // Use the task's render method to show loading, error, or success
     return this.task.render({
-      pending: () => this.context.wizard.renderLoader('localization_wizard.status.pending.message'),
+      pending: () => this.wizard.renderLoader(wizardLabels.get('wizard.status.pending.message')),
       error: (error: unknown) => {
         this.hasError = true;
-        return this.context.wizard.renderError(
-          'localization_wizard.status.error.title',
-          'localization_wizard.status.error.message',
-          error
-        );
+        return this.wizard.renderError(wizardLabels.get('wizard.status.error.message'), error);
       },
-      complete: (result: LocalizationResult) => {
+      complete: (result: FinisherResult) => {
         // Check if localization failed
         if (result.success === false) {
           this.hasError = true;
-          return this.context.wizard.renderError(
-            'localization_wizard.status.error.title',
-            'localization_wizard.status.error.message',
-            result.errors
-          );
+          return this.wizard.renderError(wizardLabels.get('wizard.status.error.message'), result.errors);
         }
 
         // Load and render the finisher with the result data
@@ -138,15 +113,11 @@ export class FinisherStep implements LocalizationStepInterface {
       }).catch(error => {
         console.error('Failed to load finisher:', error);
         this.hasError = true;
-        return this.context.wizard.renderError(
-          'localization_wizard.status.error.title',
-          'localization_wizard.finisher.load_error.message',
-          error
-        );
+        return this.wizard.renderError(wizardLabels.get('wizard.finisher.load_error.message'), error);
       });
 
       // Show loading while finisher loads
-      return html`${until(finisherPromise, this.context.wizard.renderLoader('localization_wizard.loading_finisher'))}`;
+      return html`${until(finisherPromise, this.wizard.renderLoader(wizardLabels.get('wizard.loading_finisher')))}`;
     }
 
     // Render the finisher instance (it returns a Promise)
@@ -156,19 +127,18 @@ export class FinisherStep implements LocalizationStepInterface {
   /**
    * Load the finisher implementation from the module
    */
-  private async loadFinisher(finisherData: FinisherConfig): Promise<LocalizationFinisherInterface> {
+  private async loadFinisher(finisherData: FinisherConfig): Promise<FinisherInterface> {
     if (!finisherData.module) {
       throw new Error('Finisher data does not contain a module path');
     }
 
     const module = await import(finisherData.module);
-    const FinisherClass = module.default as { new(): LocalizationFinisherInterface };
+    const FinisherClass = module.default as { new(): FinisherInterface };
 
     if (!FinisherClass) {
       throw new Error(`Finisher module ${finisherData.module} does not export a default class`);
     }
 
-    // Instantiate the finisher and set its configuration
     const finisherInstance = new FinisherClass();
     finisherInstance.setConfig(finisherData);
 

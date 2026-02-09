@@ -36,7 +36,7 @@ final readonly class NoopLocalizationFinisher implements LocalizationFinisherInt
 
     public function getModule(): string
     {
-        return '@typo3/backend/localization/finisher/noop-finisher.js';
+        return '@typo3/backend/wizard/finisher/noop-finisher.js';
     }
 
     public function getData(): array

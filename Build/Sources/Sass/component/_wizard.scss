@@ -1,0 +1,95 @@
+//
+// Wizard
+//
+typo3-backend-wizard {
+    --wizard-color: var(--typo3-component-color);
+    --wizard-bg: var(--typo3-surface-container-low);
+    --wizard-border-radius: var(--typo3-component-border-radius);
+    --wizard-border-color: color-mix(in srgb, var(--wizard-bg), var(--wizard-color) 5%);
+    --wizard-padding: 1rem;
+    --wizard-box-shadow: var(--typo3-component-box-shadow);
+    --wizard-border-width: var(--typo3-component-border-width);
+    --wizard-progress-bg: var(--typo3-surface-container-base);
+    --wizard-progress-color: var(--typo3-text-color-base);
+    --wizard-progress-border-color: color-mix(in srgb, var(--wizard-progress-bg), var(--wizard-progress-color) 10%);
+
+    .wizard {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        border: var(--wizard-border-width) solid var(--wizard-border-color);
+        border-radius: var(--wizard-border-radius);
+        box-shadow: var(--wizard-box-shadow);
+
+        &:has(.wizard-progress) {
+            grid-template-rows: auto 1fr auto;
+        }
+    }
+
+    .wizard-progress {
+        color: var(--wizard-progress-color);
+        background-color: var(--wizard-progress-bg);
+        padding: calc(var(--wizard-padding) * .75) var(--wizard-padding);
+        border-bottom: var(--wizard-border-width) solid var(--wizard-progress-border-color);
+
+        typo3-backend-progress-tracker {
+            margin: 0;
+        }
+    }
+
+    .wizard-loader {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .wizard-content {
+        padding: var(--wizard-padding);
+        overflow-y: auto;
+    }
+
+    .wizard-actions {
+        display: flex;
+        justify-content: space-between;
+        border-top: var(--wizard-border-width) solid var(--wizard-border-color);
+        padding: calc(var(--wizard-padding) / 2) var(--wizard-padding);
+        user-select: none;
+    }
+}
+
+//
+// Usage in Modal
+//
+.modal-header:has(+ .modal-body typo3-backend-wizard) {
+    border-bottom: 0;
+}
+
+.modal-body {
+    typo3-backend-wizard {
+        --wizard-padding: var(--typo3-modal-padding);
+        --wizard-progress-bg: var(--typo3-modal-header-bg);
+        --wizard-progress-color: var(--typo3-modal-header-color);
+        --wizard-border-radius: 0;
+        --wizard-box-shadow: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        .wizard {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border: none;
+        }
+
+        .wizard-progress {
+            padding-top: 0;
+        }
+    }
+}

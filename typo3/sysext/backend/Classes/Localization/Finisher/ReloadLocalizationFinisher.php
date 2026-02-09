@@ -33,7 +33,7 @@ final readonly class ReloadLocalizationFinisher implements LocalizationFinisherI
 
     public function getModule(): string
     {
-        return '@typo3/backend/localization/finisher/reload-finisher.js';
+        return '@typo3/backend/wizard/finisher/reload-finisher.js';
     }
 
     public function getData(): array

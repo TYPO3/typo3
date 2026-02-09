@@ -3,45 +3,20 @@
   <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Wizards/localization.xlf" date="2025-10-28T00:00:00Z" product-name="backend">
     <header/>
     <body>
-      <!-- Wizard -->
       <trans-unit id="localization_wizard.modal.title">
         <source>Localization</source>
       </trans-unit>
       <trans-unit id="localization_wizard.modal.title.record_prefix">
         <source>Localize:</source>
       </trans-unit>
-      <trans-unit id="localization_wizard.buttons.cancel">
-        <source>Cancel</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.buttons.next">
-        <source>Next</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.buttons.previous">
-        <source>Previous</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.buttons.finish">
-        <source>Finish</source>
-      </trans-unit>
       <trans-unit id="localization_wizard.buttons.localize">
         <source>Localize</source>
       </trans-unit>
-      <trans-unit id="localization_wizard.error.message">
+      <trans-unit id="wizard.error.message">
         <source>Failed to load wizard configuration. Please try again.</source>
       </trans-unit>
-      <trans-unit id="localization_wizard.error.title">
+      <trans-unit id="wizard.error.title">
         <source>Configuration error</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.loading">
-        <source>Loading...</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.loading_configuration">
-        <source>Loading wizard configuration...</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.loading_steps">
-        <source>Loading step modules...</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.loading_finisher">
-        <source>Loading finisher...</source>
       </trans-unit>
       <trans-unit id="localization_wizard.no_steps_available.message">
         <source>No localization steps are available for this record type.</source>
@@ -49,20 +24,8 @@
       <trans-unit id="localization_wizard.no_steps_available.title">
         <source>Warning</source>
       </trans-unit>
-      <trans-unit id="localization_wizard.status.error.message">
-        <source>Failed to complete localization:</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.status.error.title">
-        <source>Error</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.status.pending.message">
-        <source>Processing localization...</source>
-      </trans-unit>
       <trans-unit id="localization_wizard.finisher.no_data.message">
         <source>No finisher data available. Cannot complete the localization process.</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.finisher.load_error.message">
-        <source>Failed to load finisher module:</source>
       </trans-unit>
       <trans-unit id="localization_wizard.finisher.redirect.success.title">
         <source>Localization completed</source>
@@ -81,19 +44,6 @@
       </trans-unit>
       <trans-unit id="localization_wizard.finisher.noop.success.description">
         <source>No records were selected that need processing. The page will reload.</source>
-      </trans-unit>
-      <trans-unit id="localization_wizard.step.error.title">
-        <source>Error</source>
-      </trans-unit>
-      <!-- Step: Confirmation -->
-      <trans-unit id="step.confirmation.title">
-        <source>Confirmation</source>
-      </trans-unit>
-      <trans-unit id="step.confirmation.headline">
-        <source>Confirm localization</source>
-      </trans-unit>
-      <trans-unit id="step.confirmation.description">
-        <source>Please review the following localization settings before proceeding:</source>
       </trans-unit>
       <!-- Step: Content selection -->
       <trans-unit id="step.content_selection.title">
@@ -179,10 +129,6 @@
       </trans-unit>
       <trans-unit id="step.source_language.none_available">
         <source>No source languages available.</source>
-      </trans-unit>
-      <!-- Step: Finisher -->
-      <trans-unit id="step.finisher.title">
-        <source>Finish</source>
       </trans-unit>
       <!-- Step: Target language -->
       <trans-unit id="step.target_language.title">

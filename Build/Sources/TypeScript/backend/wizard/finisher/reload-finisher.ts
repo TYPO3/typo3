@@ -12,15 +12,13 @@
  */
 
 import { html, type TemplateResult } from 'lit';
-import type { FinisherConfig, LocalizationFinisherInterface } from '../localization-finisher';
+import type { FinisherInterface } from '@typo3/backend/wizard/finisher/finisher-interface';
+import type { FinisherConfig } from '@typo3/backend/wizard/finisher/finisher-config';
 
 /**
- * Noop finisher - indicates no operation was performed
- *
- * Used when the localization wizard completes but no actual work was done
- * (e.g., page already translated, no content selected). Offers to reload the page.
+ * Reload finisher - reloads the current page/content frame after wizard finish
  */
-export default class NoopFinisher implements LocalizationFinisherInterface {
+export default class ReloadFinisher implements FinisherInterface {
   private config!: FinisherConfig;
 
   public setConfig(config: FinisherConfig): void {

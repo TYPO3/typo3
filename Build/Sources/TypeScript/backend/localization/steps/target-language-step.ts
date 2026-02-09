@@ -11,16 +11,23 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { live } from 'lit/directives/live.js';
 import { Task, TaskStatus } from '@lit/task';
-import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import type { LocalizationContext, LocalizationStepInterface, LocalizationStepValueInterface, LocalizationStepSummaryInterface, LocalizationLanguageRecord } from '@typo3/backend/localization/localization-wizard';
+import {
+  type LocalizationContext,
+  type LocalizationLanguageRecord
+} from '@typo3/backend/localization/localization-wizard';
+import type { WizardStepInterface } from '@typo3/backend/wizard/steps/wizard-step-interface';
+import type { WizardStepValueInterface } from '@typo3/backend/wizard/steps/wizard-step-value-interface';
+import type { WizardStepSummaryInterface } from '@typo3/backend/wizard/steps/wizard-step-summary-interface';
+import type { SummaryItem } from '@typo3/backend/wizard/steps/summary-item-interface';
+import localizationWizardLabels from '~labels/backend.wizards.localization';
 
-export class TargetLanguageStep implements LocalizationStepInterface, LocalizationStepValueInterface, LocalizationStepSummaryInterface {
+export class TargetLanguageStep implements WizardStepInterface, WizardStepValueInterface, WizardStepSummaryInterface {
   readonly key = 'targetLanguage';
-  readonly title = lll('step.target_language.title');
+  readonly title = localizationWizardLabels.get('step.target_language.title');
   readonly autoAdvance = true;
 
   private readonly task: Task<[string, number], LocalizationLanguageRecord[]>;
@@ -37,8 +44,8 @@ export class TargetLanguageStep implements LocalizationStepInterface, Localizati
           }).get();
           let targetLanguages: LocalizationLanguageRecord[] = await response.resolve();
 
-          // Filter to only the predefined target language if one exists via property
-          const predefinedTargetLanguage = this.context.wizard.targetLanguage;
+          // Filter to only the predefined target language if one exists vsia property
+          const predefinedTargetLanguage = this.context.targetLanguage;
           if (predefinedTargetLanguage != null) {
             targetLanguages = targetLanguages.filter(lang => lang.uid === predefinedTargetLanguage);
           }
@@ -78,7 +85,7 @@ export class TargetLanguageStep implements LocalizationStepInterface, Localizati
         // Handle auto-selection and auto-advance if no selection exists yet
         if (this.getValue() == null) {
           // Check if target language is predefined via property
-          const predefinedTargetLanguage = this.context.wizard.targetLanguage;
+          const predefinedTargetLanguage = this.context.targetLanguage;
 
           if (predefinedTargetLanguage != null) {
             // If target language is predefined, set it locally and auto-advance
@@ -98,16 +105,16 @@ export class TargetLanguageStep implements LocalizationStepInterface, Localizati
           if (shouldAutoAdvance && !this.hasDispatchedAutoAdvance) {
             this.hasDispatchedAutoAdvance = true;
             this.context.dispatchAutoAdvance();
-            return this.context.wizard.renderLoader('localization_wizard.loading');
+            return this.context.wizard.renderLoader();
           }
         }
 
         if (languages.length === 0) {
           return html`
             <div class="localization-language-selection">
-              <h2 class="h4">${lll('step.target_language.headline')}</h2>
+              <h2 class="h4">${localizationWizardLabels.get('step.target_language.headline')}</h2>
               <div class="text-center">
-                <p>${lll('step.target_language.none_available')}</p>
+                <p>${localizationWizardLabels.get('step.target_language.none_available')}</p>
               </div>
             </div>
           `;
@@ -115,8 +122,8 @@ export class TargetLanguageStep implements LocalizationStepInterface, Localizati
 
         return html`
           <div class="localization-language-selection">
-            <h2 class="h4">${lll('step.target_language.headline')}</h2>
-            <p>${lll('step.target_language.description')}</p>
+            <h2 class="h4">${localizationWizardLabels.get('step.target_language.headline')}</h2>
+            <p>${localizationWizardLabels.get('step.target_language.description')}</p>
             <div class="form-check-card-container">
               ${languages.map((language: LocalizationLanguageRecord) => html`
                 <div class="form-check form-check-type-card">
@@ -141,12 +148,8 @@ export class TargetLanguageStep implements LocalizationStepInterface, Localizati
           </div>
         `;
       },
-      error: (error: unknown) => this.context.wizard.renderError(
-        'localization_wizard.step.error.title',
-        'localization_wizard.step.target_language.error.message',
-        error
-      ),
-      pending: () => this.context.wizard.renderLoader('localization_wizard.loading')
+      error: (error: unknown) => this.context.wizard.renderError(localizationWizardLabels.get('step.target_language.error.message'), error),
+      pending: () => this.context.wizard.renderLoader()
     });
   }
 
@@ -167,28 +170,24 @@ export class TargetLanguageStep implements LocalizationStepInterface, Localizati
     this.context.setStoreData('targetLanguage', this.getValue());
   }
 
-  public getSummary(): TemplateResult {
+  public getSummaryData(): SummaryItem[] {
     const selectedTargetLanguage = this.context.getStoreData('targetLanguage');
     if (selectedTargetLanguage == null || !this.task.value) {
-      return html`${nothing}`;
+      return [];
     }
 
     const selectedLanguage = this.task.value.find((lang: LocalizationLanguageRecord) => lang.uid === selectedTargetLanguage);
     if (!selectedLanguage) {
-      return html`${nothing}`;
+      return [];
     }
 
-    return html`
-      <tr>
-        <th class="col-fieldname">
-          ${lll('step.target_language.summary.title')}
-        </th>
-        <td class="col-word-break">
-          <typo3-backend-icon identifier="${selectedLanguage.flagIcon}" size="small" class="me-1"></typo3-backend-icon>
-          ${selectedLanguage.title}
-        </td>
-      </tr>
-    `;
+    return [{
+      label: localizationWizardLabels.get('step.target_language.summary.title'),
+      value: html `
+        <typo3-backend-icon identifier="${selectedLanguage.flagIcon}" size="small" class="me-1"></typo3-backend-icon>
+        ${selectedLanguage.title}
+      `
+    }];
   }
 }
 

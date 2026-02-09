@@ -16,12 +16,16 @@ import { live } from 'lit/directives/live.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { Task, TaskStatus } from '@lit/task';
-import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import type { LocalizationContext, LocalizationStepInterface, LocalizationStepValueInterface, LocalizationStepSummaryInterface } from '@typo3/backend/localization/localization-wizard';
 import '@typo3/backend/element/alert-element';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/element/spinner-element';
+import type { LocalizationContext } from '@typo3/backend/localization/localization-wizard';
+import type { WizardStepInterface } from '@typo3/backend/wizard/steps/wizard-step-interface';
+import type { WizardStepValueInterface } from '@typo3/backend/wizard/steps/wizard-step-value-interface';
+import type { WizardStepSummaryInterface } from '@typo3/backend/wizard/steps/wizard-step-summary-interface';
+import type { SummaryItem } from '@typo3/backend/wizard/steps/summary-item-interface';
+import localizationWizardLabels from '~labels/backend.wizards.localization';
 
 type ContentRecord = {
   uid: number;
@@ -55,9 +59,9 @@ type PageRecordSelection = {
   layout: BackendLayoutStructure;
 };
 
-export class ContentRecordSelectionStep implements LocalizationStepInterface, LocalizationStepValueInterface, LocalizationStepSummaryInterface {
+export class ContentRecordSelectionStep implements WizardStepInterface, WizardStepValueInterface, WizardStepSummaryInterface {
   readonly key = 'contentRecordSelection';
-  readonly title = lll('step.content_selection.title');
+  readonly title = localizationWizardLabels.get('step.content_selection.title');
   readonly autoAdvance = true;
   private readonly task: Task<[number, number, number], PageRecordSelection>;
   private lastTargetLanguage: number | null = null;
@@ -118,7 +122,7 @@ export class ContentRecordSelectionStep implements LocalizationStepInterface, Lo
         if (pageRecordSelection.layout.elementCount === 0 && !this.hasDispatchedAutoAdvance) {
           this.hasDispatchedAutoAdvance = true;
           this.context.dispatchAutoAdvance();
-          return this.context.wizard.renderLoader('localization_wizard.loading');
+          return this.context.wizard.renderLoader();
         }
 
         const allUids = this.getAllRecordUids(pageRecordSelection.layout);
@@ -133,8 +137,8 @@ export class ContentRecordSelectionStep implements LocalizationStepInterface, Lo
           <div class="localization-record-selection">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
-                <h2 class="h4">${lll('step.content_selection.headline')}</h2>
-                <p class="mb-0">${lll('step.content_selection.description')}</p>
+                <h2 class="h4">${localizationWizardLabels.get('step.content_selection.headline')}</h2>
+                <p class="mb-0">${localizationWizardLabels.get('step.content_selection.description')}</p>
               </div>
               ${allUids.length > 0 ? html`
                 <button
@@ -143,14 +147,14 @@ export class ContentRecordSelectionStep implements LocalizationStepInterface, Lo
                   class="btn btn-primary"
                   @click=${() => this.handleSelectionToggle()}
                 >
-                  ${allSelected ? lll('step.content_selection.button.deselect_all') : lll('step.content_selection.button.select_all')}
+                  ${allSelected ? localizationWizardLabels.get('step.content_selection.button.deselect_all') : localizationWizardLabels.get('step.content_selection.button.select_all')}
                 </button>
               ` : nothing}
             </div>
             ${allUids.length === 0 ? html`
               <typo3-backend-alert
                 severity="3"
-                message="${lll('step.content_selection.no_content.message')}"
+                message="${localizationWizardLabels.get('step.content_selection.no_content.message')}"
                 show-icon
               ></typo3-backend-alert>
             ` : html`
@@ -161,12 +165,8 @@ export class ContentRecordSelectionStep implements LocalizationStepInterface, Lo
           </div>
         `;
       },
-      error: (error: unknown) => this.context.wizard.renderError(
-        'localization_wizard.step.error.title',
-        'localization_wizard.step.content_selection.error.message',
-        error
-      ),
-      pending: () => this.context.wizard.renderLoader('localization_wizard.loading')
+      error: (error: unknown) => this.context.wizard.renderError(localizationWizardLabels.get('step.content_selection.error.message'), error),
+      pending: () => this.context.wizard.renderLoader()
     });
   }
 
@@ -208,35 +208,28 @@ export class ContentRecordSelectionStep implements LocalizationStepInterface, Lo
     return records;
   }
 
-  public getSummary(): TemplateResult {
+  public getSummaryData(): SummaryItem[] {
     const selectedRecords = this.getSelectedRecordsWithDetails();
     const count = selectedRecords.length;
     if (count === 0) {
-      return html`${nothing}`;
+      return [];
     }
 
-    return html`
-      <tr>
-        <th class="col-fieldname align-top">
-          ${lll('step.content_selection.summary.title')}
-        </th>
-        <td class="col-word-break">
-          <p><strong>${lll('step.content_selection.summary.amount', count)}</strong></p>
-          ${selectedRecords.length > 0 ? html`
-            <ul class="list-group">
-              ${selectedRecords.map(record => html`
-                <li class="list-group-item">
-                  <span title="id=${record.uid}">
-                    <typo3-backend-icon identifier="${record.icon}" size="small" class="me-1"></typo3-backend-icon>
-                  </span>
-                  ${record.title}
-                </li>
-              `)}
-            </ul>
-          ` : nothing}
-        </td>
-      </tr>
-    `;
+    return [{
+      label: localizationWizardLabels.get('step.content_selection.summary.title'),
+      value: html `
+          <ul class="list-group">
+            ${selectedRecords.map(record => html`
+              <li class="list-group-item">
+                <span title="id=${record.uid}">
+                  <typo3-backend-icon identifier="${record.icon}" size="small" class="me-1"></typo3-backend-icon>
+                </span>
+                ${record.title}
+              </li>
+            `)}
+          </ul>
+      `
+    }];
   }
 
   private renderLayout(layout: BackendLayoutStructure): TemplateResult {
