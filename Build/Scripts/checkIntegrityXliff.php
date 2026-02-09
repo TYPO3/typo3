@@ -295,6 +295,18 @@ final readonly class CheckIntegrityXliff
             // XLIFF 2.0 has no deprecation syntax check yet.
         }
 
+        // Currently, "locallang.xlf" and "messages.xlf" inside
+        // the same directory are not working, as only one gets parsed.
+        $labelFileName = basename($labelFile);
+        $labelDirName = dirname($labelFile);
+        if ($labelFileName === 'messages.xlf') {
+            if (file_exists($labelDirName . '/locallang.xlf') && file_exists($labelDirName . '/messages.xlf')) {
+                $result['error'] = 'Cannot have message.xlf AND locallang.xlf files in ' . $labelDirName;
+                $result['errorcode'] = 'file.locallang+messages';
+                return $result;
+            }
+        }
+
         return $result;
     }
 }

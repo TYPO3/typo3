@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LanguageServiceTest extends FunctionalTestCase
@@ -40,6 +41,7 @@ final class LanguageServiceTest extends FunctionalTestCase
     private const LANGUAGE_FILE_CORE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_common_override.xlf';
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_localization',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_translation_domain',
     ];
 
     protected bool $initializeDatabase = false;
@@ -425,5 +427,18 @@ final class LanguageServiceTest extends FunctionalTestCase
     {
         $subject = $this->get(LanguageServiceFactory::class)->create($locale);
         self::assertEquals($expected, $subject->translate($label, $domain));
+    }
+
+    #[Test]
+    public function locallangAndMessagesXlfCurrentlyDoNotWorkAlongsideEachOther(): void
+    {
+        $subject = $this->get(LanguageServiceFactory::class)->create('default');
+
+        // @todo If this ever gets changed, also adapt `Build/Scripts/checkIntegrityXliff.php`.
+        // The expectation could be to have 'test.message' from locallang.xlf be available, even though it is not defined in messages.xlf
+        // This would allow to "merge" both files, but that would not fit with the single-file resolution system
+        // the TranslationDomainMapper follows at this time.
+        // The expectatation would then be "Test Message" (as defined in locallang.xlf)
+        self::assertSame('test_translation_domain.messages:test.message', $subject->sL('test_translation_domain.messages:test.message'));
     }
 }

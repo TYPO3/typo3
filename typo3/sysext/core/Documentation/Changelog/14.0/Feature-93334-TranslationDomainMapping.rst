@@ -140,6 +140,17 @@ Examples:
     EXT:core/.../Form/locallang_tabs.xlf          → core.form.tabs
     EXT:felogin/Configuration/Sets/.../labels.xlf → felogin.sets.felogin
 
+..  important::
+
+    The domain name `messages` is currently evaluated for both the
+    legacy file name :file:`locallang.xlf` but also for new files :file:`messages.xlf`.
+    If a file `messages.xlf` is present, this means the `locallang.xlf`
+    will never be automatically evaluated for the resulting `messages` domain.
+
+    It is recommended to avoid having both files in the same directory, unless
+    both contain the same label contents, as no merging of these two
+    files is performed.
+
 ..  _feature-93334-usage:
 
 Usage
