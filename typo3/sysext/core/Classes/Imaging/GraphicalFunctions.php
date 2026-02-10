@@ -638,12 +638,13 @@ class GraphicalFunctions
             return '';
         }
         $theMask = $this->randomName() . '.png';
-        // +matte = no alpha layer in output
-        $this->imageMagickExec($mask, $theMask, '-colorspace GRAY +matte');
+        // +matte / -alpha off = no alpha layer in output
+        $noAlpha = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'ImageMagick' ? ' -alpha off ' : ' +matte ';
+        $this->imageMagickExec($mask, $theMask, '-colorspace GRAY' . $noAlpha);
 
         $parameters = '-compose over'
             . ' -quality ' . $this->jpegQuality
-            . ' +matte '
+            . $noAlpha
             . ImageMagickFile::fromFilePath($input) . ' '
             . ImageMagickFile::fromFilePath($overlay) . ' '
             . ImageMagickFile::fromFilePath($theMask) . ' '
