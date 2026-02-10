@@ -1431,7 +1431,9 @@ class GraphicalFunctions
             // Dump to temporary file
             $this->ImageWrite($blurTextImg, $fileMask);
             $command = $this->v5_blur($blurRate + 1);
-            $this->imageMagickExec($fileMask, $fileMask, $command . ' +matte');
+            // +matte / -alpha off = no alpha layer in output
+            $noAlpha = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'ImageMagick' ? ' -alpha off ' : ' +matte ';
+            $this->imageMagickExec($fileMask, $fileMask, $command . $noAlpha);
             // The mask is loaded again
             $blurTextImg_tmp = $this->imageCreateFromFile($fileMask);
             // If nothing went wrong we continue with the blurred mask
@@ -2552,12 +2554,13 @@ class GraphicalFunctions
             return '';
         }
         $theMask = $this->randomName() . '.' . $this->gifExtension;
-        // +matte = no alpha layer in output
-        $this->imageMagickExec($mask, $theMask, '-colorspace GRAY +matte');
+        // +matte / -alpha off = no alpha layer in output
+        $noAlpha = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'ImageMagick' ? ' -alpha off ' : ' +matte ';
+        $this->imageMagickExec($mask, $theMask, '-colorspace GRAY' . $noAlpha);
 
         $parameters = '-compose over'
             . ' -quality ' . $this->jpegQuality
-            . ' +matte '
+            . $noAlpha
             . ImageMagickFile::fromFilePath($input) . ' '
             . ImageMagickFile::fromFilePath($overlay) . ' '
             . ImageMagickFile::fromFilePath($theMask) . ' '
