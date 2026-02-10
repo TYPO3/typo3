@@ -405,7 +405,7 @@ class GridColumnItem extends AbstractGridObject
 
     public function getRecordType(): string
     {
-        return $this->record->getRecordType();
+        return $this->record->getRecordType() ?? '';
     }
 
     public function getTable(): string
