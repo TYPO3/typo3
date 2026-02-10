@@ -232,7 +232,7 @@ An example to split up all Widget related configuration would look like:
         class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
         arguments:
           $title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems'
-          $link: 'https://typo3.org/project/news'
+          $link: 'https://news.typo3.com'
           $target: '_blank'
 
       dashboard.widget.t3news:
