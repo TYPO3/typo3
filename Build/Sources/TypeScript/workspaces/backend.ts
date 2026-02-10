@@ -92,6 +92,8 @@ class Backend extends Workspaces {
 
     topLevelModuleImport('@typo3/workspaces/renderable/send-to-stage-form.js');
     topLevelModuleImport('@typo3/workspaces/renderable/record-information.js');
+    topLevelModuleImport('@typo3/backend/copy-to-clipboard.js');
+    topLevelModuleImport('@typo3/backend/element/qrcode-element.js');
 
     DocumentService.ready().then((): void => {
       this.registerEvents();
@@ -928,36 +930,41 @@ class Backend extends Workspaces {
       ]),
     ).then(async (response: AjaxResponse): Promise<void> => {
       const result: Record<string, string> = (await response.resolve())[0].result;
-      const list = document.createElement('dl');
 
-      for (const [language, url] of Object.entries(result)) {
-        const title = document.createElement('dt');
-        title.textContent = language;
-
-        const link = document.createElement('a');
-        link.href = url;
-        link.target = '_blank';
-        link.textContent = url;
-
-        const listItem = document.createElement('dd');
-        listItem.appendChild(link);
-
-        list.append(title, listItem);
-      }
-
-      Modal.show(
-        labels.get('previewLink'),
-        list,
-        SeverityEnum.info,
-        [{
+      Modal.advanced({
+        title: labels.get('previewLink'),
+        content: html`
+          <dl class="mb-0">
+            ${Object.entries(result).map(([language, url]) => html`
+              <dt>${language}</dt>
+              <dd class="mt-2 mb-3">
+                <div class="mb-2">
+                  <div class="btn-group">
+                    <a class="btn btn-default btn-sm" href="${url}" target="_blank" rel="noopener">
+                      <typo3-backend-icon identifier="actions-window-open" size="small"></typo3-backend-icon>
+                      ${labels.get('previewLink.open')}
+                    </a>
+                    <typo3-copy-to-clipboard class="btn btn-default btn-sm" text="${url}">
+                      <typo3-backend-icon identifier="actions-clipboard" size="small"></typo3-backend-icon>
+                      ${labels.get('previewLink.copy')}
+                    </typo3-copy-to-clipboard>
+                  </div>
+                </div>
+                <typo3-qrcode content="${url}" size="medium"></typo3-qrcode>
+              </dd>
+            `)}
+          </dl>
+        `,
+        severity: SeverityEnum.info,
+        buttons: [{
           text: labels.get('ok'),
           active: true,
           btnClass: 'btn-info',
           name: 'ok',
           trigger: (e: Event, modal: ModalElement) => modal.hideModal(),
         }],
-        ['modal-inner-scroll'],
-      );
+        additionalCssClasses: ['modal-inner-scroll'],
+      });
     });
   }
 

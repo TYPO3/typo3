@@ -111,6 +111,12 @@
       <trans-unit id="previewLink">
         <source>Preview Link</source>
       </trans-unit>
+      <trans-unit id="previewLink.open">
+        <source>Open preview</source>
+      </trans-unit>
+      <trans-unit id="previewLink.copy">
+        <source>Copy preview link</source>
+      </trans-unit>
       <trans-unit id="error.noResponse">
         <source>The server did not send any response whether the action was successful.</source>
       </trans-unit>
