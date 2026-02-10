@@ -948,7 +948,7 @@ class GifBuilder
             // Dump to temporary file
             $this->ImageWrite($blurTextImg, $fileMask);
             $command = $this->imageService->v5_blur($blurRate + 1);
-            $this->imageService->imageMagickExec($fileMask, $fileMask, $command . ' +matte');
+            $this->imageService->imageMagickExec($fileMask, $fileMask, $command . $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'ImageMagick' ? ' -alpha off' : ' +matte');
             // The mask is loaded again
             $blurTextImg_tmp = $this->imageCreateFromFile($fileMask);
             // If nothing went wrong we continue with the blurred mask
