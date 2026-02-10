@@ -40,4 +40,7 @@ lib.contentElement {
             }
         }
     }
+    dataProcessing {
+        1770716912 = record-transformation
+    }
 }

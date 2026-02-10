@@ -14,18 +14,20 @@
             <f:render partial="Media/Gallery" arguments="{_all}" />
         </f:if>
 
-        <f:if condition="{data.bodytext}">
+        <f:variable name="bodytext">{record -> f:render.text(field: 'bodytext')}</f:variable>
+        <f:if condition="{bodytext}">
             <f:then>
                 <div class="ce-bodytext">
                     <f:if condition="{gallery.position.noWrap}">
                         <f:render partial="Header/All" arguments="{_all}" />
                     </f:if>
-                    <f:format.html>{data.bodytext}</f:format.html>
+                    {bodytext}
                 </div>
             </f:then>
             <f:else>
                 <f:if condition="{gallery.position.noWrap}">
-                    <f:if condition="{data.header}">
+                    <f:variable name="header">{record -> f:render.text(field: 'header')}</f:variable>
+                    <f:if condition="{header}">
                         <div class="ce-bodytext">
                             <f:render partial="Header/All" arguments="{_all}" />
                         </div>

@@ -4,8 +4,9 @@
 
     <f:if condition="{table}">
         <table class="ce-table{f:if(condition: data.table_class, then: ' ce-table-{data.table_class}')}">
-            <f:if condition="{data.table_caption}">
-                <caption>{data.table_caption}</caption>
+            <f:variable name="table_caption">{record -> f:render.text(field:'table_caption')}</f:variable>
+            <f:if condition="{table_caption}">
+                <caption>{table_caption}</caption>
             </f:if>
             <f:for each="{table}" as="row" iteration="rowIterator">
                 <f:if condition="{rowIterator.isFirst}">

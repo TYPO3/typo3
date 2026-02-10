@@ -2,7 +2,7 @@
 <f:layout name="Default" />
 <f:section name="Main">
 
-    <f:format.html>{data.bodytext}</f:format.html>
+    {record -> f:render.text(field: 'bodytext')}
 
 </f:section>
 </html>
