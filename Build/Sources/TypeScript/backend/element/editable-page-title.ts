@@ -109,7 +109,7 @@ export class EditablePageTitle extends LitElement {
       color: var(--button-color);
       background: var(--button-bg);
       border: 1px solid var(--button-border-color);
-      opacity: .3;
+      opacity: .8;
       outline-offset: 0;
       transition: all .2s ease-in-out;
     }
