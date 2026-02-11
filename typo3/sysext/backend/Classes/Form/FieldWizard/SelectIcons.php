@@ -61,11 +61,9 @@ class SelectIcons extends AbstractNode
             foreach ($selectIcons as $selectIcon) {
                 $active = $selectIcon['active'] ? ' active' : '';
                 $html[] =   '<div class="form-wizard-icon-list-item">';
-                if (is_array($selectIcon)) {
-                    $html[] = '<button type="button" class="' . $active . '" title="' . htmlspecialchars($selectIcon['title'], ENT_COMPAT, 'UTF-8', false) . '" data-select-index="' . htmlspecialchars((string)$selectIcon['index']) . '">';
-                    $html[] =   $selectIcon['icon'];
-                    $html[] = '</button>';
-                }
+                $html[] = '<button type="button" class="' . $active . '" title="' . htmlspecialchars($selectIcon['title'], ENT_COMPAT, 'UTF-8', false) . '" data-select-index="' . htmlspecialchars((string)$selectIcon['index']) . '">';
+                $html[] =   $selectIcon['icon'];
+                $html[] = '</button>';
                 $html[] =   '</div>';
             }
             $html[] = '</div>';

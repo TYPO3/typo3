@@ -120,7 +120,7 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface, Argo
         $hashedPassword = null;
         if ($password !== '') {
             $hashedPassword = password_hash($password, $this->getPasswordAlgorithm(), $this->options);
-            if (!is_string($hashedPassword) || empty($hashedPassword)) {
+            if (empty($hashedPassword)) {
                 throw new InvalidPasswordHashException('Cannot generate password, probably invalid options', 1526052118);
             }
         }

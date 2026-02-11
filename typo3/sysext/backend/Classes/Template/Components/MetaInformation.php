@@ -73,7 +73,7 @@ class MetaInformation
                 $title .= $this->resource->getParentFolder()->getReadablePath();
             } catch (ResourceDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {
             }
-        } elseif (is_array($pageRecord) && !empty($pageRecord['uid'])) {
+        } elseif (!empty($pageRecord['uid'])) {
             // Is this a real page
             $title = substr($pageRecord['_thePathFull'] ?? '', 0, -1);
             // Remove current page title
@@ -231,7 +231,7 @@ class MetaInformation
             } catch (ResourceDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {
                 $theIcon = '';
             }
-        } elseif (is_array($pageRecord) && !empty($pageRecord['uid'])) {
+        } elseif (!empty($pageRecord['uid'])) {
             // If there IS a real page
             $theIcon = $iconFactory
                 ->getIconForRecord('pages', $pageRecord, IconSize::SMALL)

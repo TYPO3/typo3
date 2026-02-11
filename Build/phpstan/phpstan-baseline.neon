@@ -13,18 +13,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Backend/ToolbarItems/SystemInformationToolbarItem.php
 
 		-
-			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContextMenuController.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Resource\\File and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
@@ -97,12 +85,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
 
 		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Backend\\Form\\Element\\TablePermissionElement\:\:getIconForTable\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
@@ -119,12 +101,6 @@ parameters:
 			identifier: arrayValues.list
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/FieldControl/LinkPopup.php
-
-		-
-			message: '#^Call to function is_array\(\) with array\{title\: mixed, active\: bool, icon\: non\-falsy\-string, index\: int\<0, max\>\} will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FieldWizard/SelectIcons.php
 
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
@@ -247,12 +223,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Security/SudoMode/PasswordVerification.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Template/Components/MetaInformation.php
-
-		-
 			message: '#^Parameter \#1 \$node of method TYPO3\\CMS\\Backend\\Tree\\Renderer\\UnorderedListTreeRenderer\:\:renderNode\(\) expects TYPO3\\CMS\\Backend\\Tree\\TreeRepresentationNode, TYPO3\\CMS\\Backend\\Tree\\TreeNode given\.$#'
 			identifier: argument.type
 			count: 1
@@ -331,18 +301,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/AuthenticationService.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/BackendUserAuthentication.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between list\<array\<string, mixed\>\> and false will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/BackendUserAuthentication.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between TYPO3\\CMS\\Core\\Authentication\\Mfa\\MfaViewType\:\:AUTH and TYPO3\\CMS\\Core\\Authentication\\Mfa\\MfaViewType\:\:AUTH will always evaluate to true\.$#'
 			identifier: identical.alwaysTrue
 			count: 1
@@ -373,12 +331,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Configuration/ExtensionConfiguration.php
 
 		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Configuration/Processor/Placeholder/EnvVariableProcessor.php
-
-		-
 			message: '#^PHPDoc tag @param for parameter \$referenceArray with type array\|null is not subtype of native type array\.$#'
 			identifier: parameter.phpDocType
 			count: 1
@@ -395,24 +347,6 @@ parameters:
 			identifier: identical.alwaysFalse
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Crypto/HashService.php
-
-		-
-			message: '#^Call to function is_string\(\) with non\-empty\-string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Crypto/PasswordHashing/AbstractArgon2PasswordHash.php
-
-		-
-			message: '#^Call to function is_string\(\) with non\-empty\-string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Crypto/PasswordHashing/BcryptPasswordHash.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between int and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Crypto/PasswordHashing/BlowfishPasswordHash.php
 
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
@@ -449,12 +383,6 @@ parameters:
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/SoftReference/TypolinkTagSoftReferenceParser.php
-
-		-
-			message: '#^Call to function array_key_exists\(\) with ''defaultTableOptions'' and non\-empty\-array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/ConnectionPool.php
 
 		-
 			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
@@ -567,26 +495,8 @@ parameters:
 		-
 			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Database/Query/Expression/ExpressionBuilder.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
-
-		-
-			message: '#^Variable \$alias on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.variable
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Database\\Schema\\SchemaDiff and TYPO3\\CMS\\Core\\Database\\Schema\\SchemaDiff will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
 
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Database\\Schema\\TableDiff and TYPO3\\CMS\\Core\\Database\\Schema\\TableDiff will always evaluate to true\.$#'
@@ -661,34 +571,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Domain/Repository/PageRepository.php
 
 		-
-			message: '#^Call to function is_callable\(\) with array\{\$this\(TYPO3\\CMS\\Core\\Error\\DebugExceptionHandler\), ''handleException''\} will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Error/DebugExceptionHandler.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Site\\Entity\\Site and TYPO3\\CMS\\Core\\Site\\Entity\\Site will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Error/PageErrorHandler/PageContentErrorHandler.php
-
-		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Site\\Entity\\SiteLanguage and TYPO3\\CMS\\Core\\Site\\Entity\\SiteLanguage will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Error/PageErrorHandler/PageContentErrorHandler.php
-
-		-
-			message: '#^Call to function is_callable\(\) with array\{\$this\(TYPO3\\CMS\\Core\\Error\\ProductionExceptionHandler\), ''handleException''\} will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Error/ProductionExceptionHandler.php
-
-		-
-			message: '#^Call to function is_array\(\) with array\<string, class\-string\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/core/Classes/EventDispatcher/ListenerProvider.php
 
 		-
 			message: '#^Comparison operation "\>" between 1\|2\|3\|6\|7\|8 and 0 is always true\.$#'
@@ -755,12 +641,6 @@ parameters:
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Log/Logger.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Log/Writer/SyslogWriter.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between true and false will always evaluate to false\.$#'
@@ -1395,12 +1275,6 @@ parameters:
 		-
 			message: '#^Call to function is_int\(\) with int will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\ConstraintInterface and TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\ConstraintInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
 			count: 2
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
 
@@ -2285,18 +2159,6 @@ parameters:
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
-
-		-
-			message: '#^Instanceof between DOMDocument and DOMDocument will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/seo/Classes/XmlSitemap/XmlSitemapRenderer.php
-
-		-
-			message: '#^Instanceof between DOMElement and DOMElement will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/seo/Classes/XmlSitemap/XmlSitemapRenderer.php
 
 		-
 			message: '#^Parameter \#1 \$array \(non\-empty\-list\<TYPO3\\CMS\\Backend\\Form\\Behavior\\OnFieldChangeInterface\>\) of array_values is already a list, call has no effect\.$#'

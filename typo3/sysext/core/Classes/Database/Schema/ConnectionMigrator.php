@@ -266,9 +266,6 @@ class ConnectionMigrator
         // Build SchemaDiff and handle renames of tables and columns
         $comparator = GeneralUtility::makeInstance(Comparator::class, $schemaManager->createComparator());
         $schemaDiff = $comparator->compareSchemas($fromSchema, $toSchema);
-        if (! $schemaDiff instanceof Typo3SchemaDiff) {
-            $schemaDiff = Typo3SchemaDiff::ensure($schemaDiff);
-        }
         $schemaDiff = $this->migrateColumnRenamesToDistinctActions($schemaDiff);
 
         if ($renameUnused) {
@@ -1393,9 +1390,6 @@ class ConnectionMigrator
         foreach ($tableDiffs as &$tableDiff) {
             if ($tableDiff instanceof Table) {
                 continue;
-            }
-            if (! $tableDiff instanceof Typo3TableDiff) {
-                $tableDiff = Typo3TableDiff::ensure($tableDiff);
             }
         }
         return $tableDiffs;

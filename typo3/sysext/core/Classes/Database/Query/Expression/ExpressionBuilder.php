@@ -178,9 +178,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
         $fieldName = $this->connection->quoteIdentifier($fieldName);
         $platform = $this->connection->getDatabasePlatform();
         $escapeChar ??= '\\';
-        if ($escapeChar !== null) {
-            $escapeChar = $this->connection->quote($escapeChar);
-        }
+        $escapeChar = $this->connection->quote($escapeChar);
         if ($platform instanceof DoctrinePostgreSQLPlatform) {
             // Use ILIKE to mimic case-insensitive search like most people are trained from MySQL/MariaDB.
             return $this->comparison($this->castText($fieldName), 'ILIKE', $value);
@@ -189,7 +187,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
         //       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
         //       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
         return $this->comparison($fieldName, 'LIKE', $value)
-            . ($escapeChar !== null && $escapeChar !== '' ? sprintf(' ESCAPE %s', $escapeChar) : '');
+            . ($escapeChar !== '' ? sprintf(' ESCAPE %s', $escapeChar) : '');
     }
 
     /**
@@ -203,9 +201,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
         $fieldName = $this->connection->quoteIdentifier($fieldName);
         $platform = $this->connection->getDatabasePlatform();
         $escapeChar ??= '\\';
-        if ($escapeChar !== null) {
-            $escapeChar = $this->connection->quote($escapeChar);
-        }
+        $escapeChar = $this->connection->quote($escapeChar);
         if ($platform instanceof DoctrinePostgreSQLPlatform) {
             // Use ILIKE to mimic case-insensitive search like most people are trained from MySQL/MariaDB.
             return $this->comparison($this->castText($fieldName), 'NOT ILIKE', $value);
@@ -214,7 +210,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
         //       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
         //       See: https://www.sqlite.org/src/doc/trunk/ext/icu/README.txt
         return $this->comparison($fieldName, 'NOT LIKE', $value)
-            . ($escapeChar !== null && $escapeChar !== '' ? sprintf(' ESCAPE %s', $escapeChar) : '');
+            . ($escapeChar !== '' ? sprintf(' ESCAPE %s', $escapeChar) : '');
     }
 
     /**

@@ -226,8 +226,7 @@ class ConnectionPool
     private function migrateDefaultTableOptionCollateToCollation(string $connectionName, #[\SensitiveParameter] array $params): array
     {
         $params['defaultTableOptions'] ??= [];
-        if (array_key_exists('defaultTableOptions', $params)
-            && is_array($params['defaultTableOptions'])
+        if (is_array($params['defaultTableOptions'])
             && array_key_exists('collate', $params['defaultTableOptions'])
             && is_string($params['defaultTableOptions']['collate'])
             && $params['defaultTableOptions']['collate'] !== ''

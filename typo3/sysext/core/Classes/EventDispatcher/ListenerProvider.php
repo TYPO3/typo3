@@ -71,10 +71,10 @@ class ListenerProvider implements ListenerProviderInterface
         $eventClasses = [get_class($event)];
         $classParents = class_parents($event);
         $classInterfaces = class_implements($event);
-        if (is_array($classParents) && !empty($classParents)) {
+        if (!empty($classParents)) {
             array_push($eventClasses, ...array_values($classParents));
         }
-        if (is_array($classInterfaces) && !empty($classInterfaces)) {
+        if (!empty($classInterfaces)) {
             array_push($eventClasses, ...array_values($classInterfaces));
         }
         foreach ($eventClasses as $className) {

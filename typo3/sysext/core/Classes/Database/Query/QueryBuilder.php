@@ -666,9 +666,9 @@ class QueryBuilder extends ConcreteQueryBuilder
     {
         $conditionExpression = (string)$this->expr()->and(
             $condition,
-            $this->restrictionContainer->buildExpression([$alias ?? $join => $join], $this->expr())
+            $this->restrictionContainer->buildExpression([$alias => $join], $this->expr())
         );
-        $this->restrictionsAppliedInJoinCondition[] = $alias ?? $join;
+        $this->restrictionsAppliedInJoinCondition[] = $alias;
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         $concreteQueryBuilder->leftJoin(
             $this->quoteIdentifier($fromAlias),
@@ -692,7 +692,7 @@ class QueryBuilder extends ConcreteQueryBuilder
         $fromTable = $fromAlias;
         // find the table belonging to the $fromAlias, if it's an alias at all
         foreach ($this->concreteQueryBuilder->from as $from) {
-            if (is_string($from->alias) && $from->alias !== '' && $this->unquoteSingleIdentifier($from->alias) === $fromAlias) {
+            if ($from->alias !== null && $from->alias !== '' && $this->unquoteSingleIdentifier($from->alias) === $fromAlias) {
                 $fromTable = $this->unquoteSingleIdentifier($from->alias);
                 break;
             }
@@ -1355,7 +1355,7 @@ class QueryBuilder extends ConcreteQueryBuilder
         // Loop through all FROM tables
         foreach ($this->concreteQueryBuilder->from as $from) {
             $tableName = $this->unquoteSingleIdentifier($from->table);
-            $tableAlias = is_string($from->alias) && $from->alias !== '' ? $this->unquoteSingleIdentifier($from->alias) : $tableName;
+            $tableAlias = $from->alias !== null && $from->alias !== '' ? $this->unquoteSingleIdentifier($from->alias) : $tableName;
             if (!in_array($tableAlias, $this->restrictionsAppliedInJoinCondition, true)) {
                 $queriedTables[$tableAlias] = $tableName;
             }
@@ -1365,7 +1365,7 @@ class QueryBuilder extends ConcreteQueryBuilder
         foreach ($this->concreteQueryBuilder->join as $joins) {
             foreach ($joins as $join) {
                 $tableName = $this->unquoteSingleIdentifier($join->table);
-                $tableAlias = is_string($join->alias) && $join->alias !== '' ? $this->unquoteSingleIdentifier($join->alias) : $tableName;
+                $tableAlias = $join->alias !== null && $join->alias !== '' ? $this->unquoteSingleIdentifier($join->alias) : $tableName;
                 if (!in_array($tableAlias, $this->restrictionsAppliedInJoinCondition, true)) {
                     $queriedTables[$tableAlias] = $tableName;
                 }

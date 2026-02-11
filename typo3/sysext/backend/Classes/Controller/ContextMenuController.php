@@ -47,9 +47,6 @@ class ContextMenuController
         }
 
         $items = $contextMenu->getItems($table, $identifier, $context);
-        if (!is_array($items)) {
-            $items = [];
-        }
         return new JsonResponse($items);
     }
 

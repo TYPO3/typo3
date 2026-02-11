@@ -179,12 +179,9 @@ final readonly class XmlSitemapRenderer
         } catch (SystemResourceDoesNotExistException) {
             return;
         }
-        if (!$dom instanceof \DOMDocument) {
-            return;
-        }
         $hashes = [];
         foreach ($dom->getElementsByTagName('style') as $node) {
-            if (!$node instanceof \DOMElement || $node->getAttribute('type') !== 'text/css') {
+            if ($node->getAttribute('type') !== 'text/css') {
                 continue;
             }
             $hashes[] = HashValue::hash($node->textContent);

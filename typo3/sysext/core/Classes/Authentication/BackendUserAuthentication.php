@@ -1294,11 +1294,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         $categoryMountPoints = '';
 
         // Category mounts of the groups
-        if (is_array($this->userGroups)) {
-            foreach ($this->userGroups as $group) {
-                if ($group['category_perms']) {
-                    $categoryMountPoints .= ',' . $group['category_perms'];
-                }
+        foreach ($this->userGroups as $group) {
+            if ($group['category_perms']) {
+                $categoryMountPoints .= ',' . $group['category_perms'];
             }
         }
 
@@ -1366,11 +1364,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
 
             $fileMountRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
-            if ($fileMountRecords !== false) {
-                foreach ($fileMountRecords as $fileMount) {
-                    $readOnlySuffix = $fileMount['read_only'] ? '-readonly' : '';
-                    $fileMountRecordCache[$fileMount['identifier'] . $readOnlySuffix] = $fileMount;
-                }
+            foreach ($fileMountRecords as $fileMount) {
+                $readOnlySuffix = $fileMount['read_only'] ? '-readonly' : '';
+                $fileMountRecordCache[$fileMount['identifier'] . $readOnlySuffix] = $fileMount;
             }
         }
 

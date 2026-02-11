@@ -135,7 +135,7 @@ class ElementInformationController
         // render type by user func
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] ?? [] as $className) {
             $typeRenderObj = GeneralUtility::makeInstance($className);
-            if (is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
+            if (method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
                 if ($typeRenderObj->isValid($this->type, $this)) {
                     $view->assign('hookContent', $typeRenderObj->render($this->type, $this));
                     return $view->renderResponse('ContentElement/ElementInformation');

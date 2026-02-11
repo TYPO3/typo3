@@ -169,9 +169,9 @@ class BlowfishPasswordHash implements PasswordHashInterface
      * Parses the log2 iteration count from a stored hash or setting string.
      *
      * @param string $setting Complete hash or a hash's setting string or to get log2 iteration count from
-     * @return int Used hashcount for given hash string
+     * @return int|null Used hashcount for given hash string
      */
-    protected function getCountLog2(string $setting): int
+    protected function getCountLog2(string $setting): ?int
     {
         $countLog2 = null;
         $setting = substr($setting, strlen(self::PREFIX));

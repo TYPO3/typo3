@@ -191,10 +191,6 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
 
         // Get the site related to the configured error page
         $site = $this->siteFinder->getSiteByPageId($urlParams['pageuid']);
-        // Fall back to current request for the site
-        if (!$site instanceof Site) {
-            $site = $request->getAttribute('site', null);
-        }
         /** @var SiteLanguage $requestLanguage */
         $requestLanguage = $request->getAttribute('language', null);
         // Try to get the current request language from the site that was found above

@@ -88,7 +88,7 @@ class BcryptPasswordHash implements PasswordHashInterface
         if ($password !== '') {
             $password = $this->processPlainPassword($password);
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT, $this->options);
-            if (!is_string($hashedPassword) || empty($hashedPassword)) {
+            if (empty($hashedPassword)) {
                 throw new InvalidPasswordHashException('Cannot generate password, probably invalid options', 1517174114);
             }
         }

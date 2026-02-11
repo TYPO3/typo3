@@ -34,10 +34,7 @@ class DebugExceptionHandler extends AbstractExceptionHandler
      */
     public function __construct()
     {
-        $callable = [$this, 'handleException'];
-        if (is_callable($callable)) {
-            set_exception_handler($callable);
-        }
+        set_exception_handler($this->handleException(...));
     }
 
     /**
