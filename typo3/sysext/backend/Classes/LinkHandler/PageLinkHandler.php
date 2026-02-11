@@ -73,13 +73,21 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             return false;
         }
         $data = $linkParts['url'];
+        // Resolve "current" to the actual page ID from the link browser context
+        if (($data['pageuid'] ?? '') === 'current') {
+            $currentPageId = (int)($this->linkBrowser->getParameters()['pid'] ?? 0);
+            if ($currentPageId > 0) {
+                $linkParts['url']['pageuid'] = $currentPageId;
+                $data = $linkParts['url'];
+            }
+        }
         // Check if the page still exists
         if ((int)($data['pageuid'] ?? 0) > 0) {
             $pageRow = BackendUtility::getRecordWSOL('pages', $data['pageuid']);
             if (!$pageRow) {
                 return false;
             }
-        } elseif ($data['pageuid'] ?? '' !== 'current') {
+        } else {
             return false;
         }
 
