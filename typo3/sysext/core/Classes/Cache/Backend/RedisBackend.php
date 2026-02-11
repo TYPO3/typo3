@@ -141,7 +141,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
             if ($authentication !== null) {
                 $success = $this->redis->auth($this->getAuthentication());
                 if (!$success) {
-                    throw new Exception('The given password was not accepted by the redis server.', 1279765134);
+                    throw new Exception('Authentication to Redis failed”.', 1279765134);
                 }
             }
             if ($this->database >= 0) {

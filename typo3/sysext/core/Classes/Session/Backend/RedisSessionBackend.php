@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This session backend takes these optional configuration options: 'hostname' (default '127.0.0.1'),
- * 'database' (default 0), 'port' (default 3679) and 'password' (no default value).
+ * 'database' (default 0), 'port' (default 3679), 'username' (no default value) and 'password' (no default value).
  */
 class RedisSessionBackend implements SessionBackendInterface, HashableSessionBackendInterface, LoggerAwareInterface
 {
@@ -253,12 +253,11 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
             );
         }
 
-        if (isset($this->configuration['password'])
-            && $this->configuration['password'] !== ''
-            && !$this->redis->auth($this->configuration['password'])
+        if ($this->getAuthentication() !== null
+            && !$this->redis->auth($this->getAuthentication())
         ) {
             throw new \RuntimeException(
-                'The given password was not accepted by the redis server.',
+                'Authentication to Redis failed”.',
                 1481270961
             );
         }
@@ -272,6 +271,25 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
                 1481270987
             );
         }
+    }
+
+    protected function getAuthentication(): array|string|null
+    {
+        $username = $this->configuration['username'] ?? null;
+        $password = $this->configuration['password'] ?? null;
+
+        return match (true) {
+            // Username and password configured for authentication, build associative array
+            // out of possible and supported array variants by `php-redis::auth()`.
+            ($username !== null && $password !== null) => [
+                'user' => $username,
+                'pass' => $password,
+            ],
+            // Password-only authentication configured.
+            ($username === null && $password !== null) => $password,
+            // No authentication configured.
+            default => null,
+        };
     }
 
     /**
