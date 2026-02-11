@@ -66,9 +66,9 @@ final class TemporaryPermissionMutationService
         return implode(',', array_unique($permissions));
     }
 
-    private function removeSysRedirectPermission(string $permissionString): string
+    private function removeSysRedirectPermission(string $groupData): string
     {
-        $permissions = GeneralUtility::trimExplode(',', $permissionString, true);
+        $permissions = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData[$groupData], true);
         $permissions = array_diff($permissions, ['sys_redirect']);
         return implode(',', array_unique($permissions));
     }
