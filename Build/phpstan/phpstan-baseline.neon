@@ -259,12 +259,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/LinkHandler/PageLinkHandler.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between '''' and ''current'' will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/LinkHandler/PageLinkHandler.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Backend\\LinkHandler\\RecordLinkHandler\:\:getUrlParameters\(\) should return array\<string\> but returns array\<string, array\|int\|string\>\.$#'
 			identifier: return.type
 			count: 1
