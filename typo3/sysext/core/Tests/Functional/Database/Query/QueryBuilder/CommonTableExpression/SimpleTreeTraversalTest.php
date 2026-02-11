@@ -207,7 +207,7 @@ final class SimpleTreeTraversalTest extends FunctionalTestCase
         $expr = $selectQueryBuilder->expr();
         $initialQueryBuilder = $connection->createQueryBuilder();
         $initialQueryBuilder
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 // pages fields
                 $selectQueryBuilder->quoteIdentifier('uid'),
                 $selectQueryBuilder->quoteIdentifier('pid'),
@@ -220,14 +220,14 @@ final class SimpleTreeTraversalTest extends FunctionalTestCase
                     2000,
                     '__CTE_PATH_SORTING__',
                 ),
-            ]))
+            ])
             ->from('pages')
-            ->where(...array_values([
+            ->where(...[
                 $expr->eq('pid', $selectQueryBuilder->createNamedParameter($startPageId, Connection::PARAM_INT)),
-            ]));
+            ]);
         $subQueryBuilder = $connection->createQueryBuilder();
         $subQueryBuilder
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 // pages fields
                 $selectQueryBuilder->quoteIdentifier('p.uid'),
                 $selectQueryBuilder->quoteIdentifier('p.pid'),
@@ -252,16 +252,16 @@ final class SimpleTreeTraversalTest extends FunctionalTestCase
                     2000,
                     '__CTE_PATH_SORTING__'
                 ),
-            ]))
+            ])
             ->from('pages', 'p')
             ->from('cte')
-            ->where(...array_values([
+            ->where(...[
                 $expr->eq('p.pid', $selectQueryBuilder->quoteIdentifier('cte.uid')),
-            ]));
+            ]);
         if ($maxLevel > 0) {
-            $subQueryBuilder->andWhere(...array_values([
+            $subQueryBuilder->andWhere(...[
                 $expr->lt('cte.__CTE_LEVEL__', $selectQueryBuilder->createNamedParameter($maxLevel, Connection::PARAM_INT)),
-            ]));
+            ]);
         }
         $selectQueryBuilder
             ->typo3_withRecursive(

@@ -201,7 +201,7 @@ final class TablePermissionElement extends AbstractFormElement
         return implode(LF, $html);
     }
 
-    private function getIconForTable(string $icon): ?string
+    private function getIconForTable(string $icon): string
     {
         return FormEngineUtility::getIconHtml($icon);
     }

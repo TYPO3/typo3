@@ -19,24 +19,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/File/FileController.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Backend\\Form\\Behavior\\ReloadOnFieldChange\:\:toArray\(\) should return array\{name\: string, data\?\: string\} but returns array\{name\: ''typo3\-backend\-form…'', data\: array\{confirmation\: bool\}\}\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Behavior/ReloadOnFieldChange.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Backend\\Form\\Behavior\\UpdateBitmaskOnFieldChange\:\:toArray\(\) should return array\{name\: string, data\?\: string\} but returns array\{name\: ''typo3\-backend\-form…'', data\: array\{position\: int, total\: int, invert\: bool, elementName\: string\}\}\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Behavior/UpdateBitmaskOnFieldChange.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Backend\\Form\\Behavior\\UpdateValueOnFieldChange\:\:toArray\(\) should return array\{name\: string, data\?\: string\} but returns array\{name\: ''typo3\-backend\-form…'', data\: array\{tableName\: string, identifier\: string, fieldName\: string, elementName\: string\}\}\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Behavior/UpdateValueOnFieldChange.php
-
-		-
 			message: '#^Offset ''onChange'' on array\{label\: string, config\: mixed, children\: mixed, onChange\: mixed, description\?\: mixed\} in isset\(\) always exists and is not nullable\.$#'
 			identifier: isset.offset
 			count: 1
@@ -85,12 +67,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Backend\\Form\\Element\\TablePermissionElement\:\:getIconForTable\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/TablePermissionElement.php
-
-		-
 			message: '#^Parameter \#1 \$array \(non\-empty\-list\<TYPO3\\CMS\\Backend\\Form\\Behavior\\OnFieldChangeInterface\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1
@@ -125,12 +101,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/FormDataProvider/AbstractItemProvider.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FormDataProvider/TcaCategory.php
 
 		-
 			message: '#^Argument of an invalid type string supplied for foreach, only iterables are supported\.$#'
@@ -169,12 +139,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/LinkHandler/RecordLinkHandler.php
 
 		-
-			message: '#^PHPDoc tag @var has invalid value \(\$module ModuleInterface\)\: Unexpected token "\$module", expected type at offset 9 on line 1$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Middleware/BackendModuleValidator.php
-
-		-
 			message: '#^Call to function is_array\(\) with array\<int\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -209,12 +173,6 @@ parameters:
 			identifier: empty.variable
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Security/CategoryPermissionsAspect.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<TYPO3\\CMS\\Core\\Security\\ContentSecurityPolicy\\MutationSuggestion\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Security/ContentSecurityPolicy/CspAjaxController.php
 
 		-
 			message: '#^Call to function is_object\(\) with TYPO3\\CMS\\Core\\Authentication\\AuthenticationService will always evaluate to true\.$#'
@@ -255,12 +213,6 @@ parameters:
 		-
 			message: '#^Call to function is_string\(\) with non\-falsy\-string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Backend\\Utility\\BackendUtility\:\:daysUntil\(\) should return int but returns float\.$#'
-			identifier: return.type
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
@@ -391,20 +343,8 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1010Platform.php
 
 		-
-			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MariaDB1010Platform\)\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1010Platform.php
-
-		-
 			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1052Platform.php
-
-		-
-			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MariaDB1052Platform\)\.$#'
-			identifier: varTag.nativeType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1052Platform.php
 
@@ -415,20 +355,8 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1060Platform.php
 
 		-
-			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MariaDB1060Platform\)\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1060Platform.php
-
-		-
 			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDBPlatform.php
-
-		-
-			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MariaDBPlatform\)\.$#'
-			identifier: varTag.nativeType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDBPlatform.php
 
@@ -439,20 +367,8 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL80Platform.php
 
 		-
-			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MySQL80Platform\)\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL80Platform.php
-
-		-
 			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL84Platform.php
-
-		-
-			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MySQL84Platform\)\.$#'
-			identifier: varTag.nativeType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL84Platform.php
 
@@ -463,32 +379,14 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQLPlatform.php
 
 		-
-			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MySQLPlatform\)\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQLPlatform.php
-
-		-
 			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/PostgreSQLPlatform.php
 
 		-
-			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\PostgreSQLPlatform\)\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/PostgreSQLPlatform.php
-
-		-
 			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/SQLitePlatform.php
-
-		-
-			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\SQLitePlatform\)\.$#'
-			identifier: varTag.nativeType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/SQLitePlatform.php
 
@@ -509,12 +407,6 @@ parameters:
 			identifier: class.extendsFinalByPhpDoc
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Schema/SchemaDiff.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<Doctrine\\DBAL\\Schema\\Column\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Database/Schema/SchemaMigrator.php
 
 		-
 			message: '#^Class TYPO3\\CMS\\Core\\Database\\Schema\\TableDiff extends @final class Doctrine\\DBAL\\Schema\\TableDiff\.$#'
@@ -583,12 +475,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Html/SimpleParser.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Http\\ImmediateResponseException\:\:getResponse\(\) should return TYPO3\\CMS\\Core\\Http\\Response but returns Psr\\Http\\Message\\ResponseInterface\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Http/ImmediateResponseException.php
-
-		-
 			message: '#^Call to function is_array\(\) with array\<string\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
@@ -629,12 +515,6 @@ parameters:
 			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
-
-		-
-			message: '#^PHPDoc tag @var with type TYPO3\\CMS\\Core\\Locking\\LockingStrategyInterface is not subtype of native type \(int\|string\)\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Locking/LockFactory.php
 
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Log\\LogRecord and TYPO3\\CMS\\Core\\Log\\LogRecord will always evaluate to true\.$#'
@@ -751,12 +631,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/StorageRepository.php
 
 		-
-			message: '#^PHPDoc tag @var with type TYPO3\\CMS\\Core\\Routing\\Aspect\\AspectInterface\|TYPO3\\CMS\\Core\\Site\\SiteLanguageAwareInterface is not subtype of native type TYPO3\\CMS\\Core\\Routing\\Aspect\\AspectInterface&TYPO3\\CMS\\Core\\Site\\SiteLanguageAwareInterface\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/Aspect/AspectFactory.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Core\\Routing\\Aspect\\MappableProcessor\:\:fetchMappers\(\) should return array\<TYPO3\\CMS\\Core\\Routing\\Aspect\\MappableAspectInterface\> but returns array\<TYPO3\\CMS\\Core\\Routing\\Aspect\\AspectInterface\>\.$#'
 			identifier: return.type
 			count: 1
@@ -773,12 +647,6 @@ parameters:
 			identifier: nullCoalesce.property
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/Enhancer/SimpleEnhancer.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<string\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Routing/Enhancer/VariableProcessor.php
 
 		-
 			message: '#^Parameter \#1 \$search of function str_replace expects array\<string\>\|string, array\<int, int\> given\.$#'
@@ -841,12 +709,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Routing/RouteSorter.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Schema\\Field\\NumberFieldType\:\:getFormat\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Schema/Field/NumberFieldType.php
-
-		-
 			message: '#^Property TYPO3\\CMS\\Core\\Schema\\PassiveRelation\:\:\$flexPointer is never read, only written\.$#'
 			identifier: property.onlyWritten
 			count: 1
@@ -893,24 +755,6 @@ parameters:
 			identifier: instanceof.alwaysTrue
 			count: 3
 			path: ../../typo3/sysext/core/Classes/Schema/Struct/SelectItemCollection.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Security\\ContentSecurityPolicy\\HashValue\:\:compile\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Security/ContentSecurityPolicy/HashValue.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Security\\ContentSecurityPolicy\\HashValue\:\:serialize\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Security/ContentSecurityPolicy/HashValue.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<TYPO3\\CMS\\Core\\Security\\ContentSecurityPolicy\\Scope\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Security/ContentSecurityPolicy/ScopeRepository.php
 
 		-
 			message: '#^Parameter \#1 \$array \(array\<string, TYPO3\\CMS\\Core\\Security\\Nonce\>\) to function array_filter does not contain falsy values, the array will always stay the same\.$#'
@@ -965,18 +809,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeNode.php
-
-		-
-			message: '#^PHPDoc tag @var with type TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\DatabaseTreeDataProvider is not subtype of native type null\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/TreeDataProviderFactory.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between object and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/TreeDataProviderFactory.php
 
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\TypoScript\\AST\\Visitor\\AstVisitorInterface and TYPO3\\CMS\\Core\\TypoScript\\AST\\Visitor\\AstVisitorInterface will always evaluate to true\.$#'
@@ -1111,100 +943,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
 
 		-
-			message: '#^Parameter \#1 \$array \(array\{string, string, TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string, string, TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string, string, string, string, string, string, string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string, string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
-
-		-
-			message: '#^Parameter \#1 \$array \(non\-empty\-list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Category\\\\Collection\\\\CategoryCollection'' and TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string, string, string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/QueryBuilder/CommonTableExpression/SimpleRootLineTraversalTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/QueryBuilder/CommonTableExpression/SimpleRootLineTraversalTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/QueryBuilder/CommonTableExpression/SimpleRootLineTraversalTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string, non\-falsy\-string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/QueryBuilder/CommonTableExpression/SimpleSelectCommonTableExpressionTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string, string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/QueryBuilder/CommonTableExpression/SimpleSelectCommonTableExpressionTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 6
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/QueryBuilder/CommonTableExpression/SimpleSelectCommonTableExpressionTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string, string, string, string, string, string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/QueryBuilder/CommonTableExpression/SimpleTreeTraversalTest.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\{string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/QueryBuilder/CommonTableExpression/SimpleTreeTraversalTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Log\\\\LogRecord'' and TYPO3\\CMS\\Core\\Log\\LogRecord will always evaluate to true\.$#'
@@ -1339,12 +1081,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Reflection\\ObjectAccess\:\:createAccessor\(\) should return Symfony\\Component\\PropertyAccess\\PropertyAccessor but returns Symfony\\Component\\PropertyAccess\\PropertyAccessorInterface\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php
-
-		-
 			message: '#^Unsafe call to private method TYPO3\\CMS\\Extbase\\Reflection\\ObjectAccess\:\:wrap\(\) through static\:\:\.$#'
 			identifier: staticClassAccess.privateMethod
 			count: 1
@@ -1391,24 +1127,6 @@ parameters:
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/filelist/Classes/Controller/FileListController.php
-
-		-
-			message: '#^PHPDoc tag @return has invalid value \(File\[\];\)\: Unexpected token ";", expected TOKEN_HORIZONTAL_WS at offset 25 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/Dto/ResourceCollection.php
-
-		-
-			message: '#^PHPDoc tag @return has invalid value \(Folder\[\];\)\: Unexpected token ";", expected TOKEN_HORIZONTAL_WS at offset 27 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/Dto/ResourceCollection.php
-
-		-
-			message: '#^PHPDoc tag @var has invalid value \(ResourceInterface\[\];\)\: Unexpected token ";", expected TOKEN_HORIZONTAL_WS at offset 35 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/Dto/ResourceCollection.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between non\-falsy\-string and '''' will always evaluate to true\.$#'
@@ -1669,12 +1387,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer\:\:getFileDataKey\(\) should return int\|string but returns null\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer\:\:splitObj\(\) should return string but returns int\<0, max\>\.$#'
 			identifier: return.type
 			count: 1
@@ -1689,12 +1401,6 @@ parameters:
 		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: '#^PHPDoc tag @var with type TYPO3\\CMS\\Core\\Imaging\\ImageManipulation\\Area is not subtype of native type null\.$#'
-			identifier: varTag.nativeType
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
@@ -1785,12 +1491,6 @@ parameters:
 		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<int\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
 
@@ -2125,28 +1825,10 @@ parameters:
 			path: ../../typo3/sysext/lowlevel/Classes/Controller/QuerySearchController.php
 
 		-
-			message: '#^Parameter \#1 \$array \(array\{0\: string, 1\?\: string\}\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Service/CleanUpLocalProcessedFilesService.php
-
-		-
 			message: '#^Instanceof between TYPO3\\CMS\\Backend\\Routing\\RouteResult and TYPO3\\CMS\\Backend\\Routing\\RouteResult will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/reactions/Classes/Http/Middleware/ReactionResolver.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<TYPO3\\CMS\\Redirects\\RedirectUpdate\\RedirectSourceInterface\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/redirects/Classes/EventListener/AddPlainSlugReplacementSource.php
-
-		-
-			message: '#^Parameter \#1 \$array \(non\-empty\-list\<TYPO3\\CMS\\Redirects\\RedirectUpdate\\RedirectSourceInterface\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/EventListener/AddPageTypeZeroSourceTest.php
 
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
@@ -2159,12 +1841,6 @@ parameters:
 			identifier: arrayValues.list
 			count: 1
 			path: ../../typo3/sysext/styleguide/Classes/Form/Element/User1Element.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Site\\Entity\\Site and TYPO3\\CMS\\Core\\Site\\Entity\\Site will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/tstemplate/Classes/Controller/TemplateRecordsOverviewController.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between false and false will always evaluate to true\.$#'

@@ -72,7 +72,6 @@ class AspectFactory
     protected function enrich(AspectInterface $aspect, SiteLanguage $language, Site $site): AspectInterface
     {
         if ($aspect instanceof SiteLanguageAwareInterface) {
-            /** @var AspectInterface|SiteLanguageAwareInterface $aspect */
             $aspect->setSiteLanguage($language);
         }
         if ($aspect instanceof SiteAwareInterface) {

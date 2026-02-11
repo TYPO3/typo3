@@ -135,7 +135,7 @@ class CleanUpLocalProcessedFilesService
                 'sfs',
                 $storageJoinCondition
             )
-            ->where(...array_values($conditions));
+            ->where(...$conditions);
 
         $results = $queryBuilder->executeQuery();
         $processedToDelete = [];

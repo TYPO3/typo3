@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
 
 use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -360,7 +359,7 @@ class ObjectAccess
         return $properties;
     }
 
-    private static function createAccessor(): PropertyAccessor
+    private static function createAccessor(): PropertyAccessorInterface
     {
         if (self::$propertyAccessor === null) {
             self::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()

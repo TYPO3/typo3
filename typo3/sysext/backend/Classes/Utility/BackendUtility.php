@@ -866,12 +866,11 @@ class BackendUtility
      * Returns the difference in days between input $tstamp and $EXEC_TIME
      *
      * @param int $tstamp Time stamp, seconds
-     * @return int
      */
-    public static function daysUntil($tstamp)
+    public static function daysUntil($tstamp): int
     {
         $delta_t = $tstamp - $GLOBALS['EXEC_TIME'];
-        return ceil($delta_t / (3600 * 24));
+        return (int)ceil($delta_t / (3600 * 24));
     }
 
     /**
@@ -894,7 +893,7 @@ class BackendUtility
      * @param int $value Time stamp, seconds
      * @return string Formatted time
      */
-    public static function datetime($value)
+    public static function datetime($value): string
     {
         return date(
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],

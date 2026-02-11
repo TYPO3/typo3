@@ -122,7 +122,7 @@ class VariableProcessor
         }
 
         $replace = [];
-        $search = array_values($matches[0]);
+        $search = $matches[0];
         $deflatedNames = $this->deflateValues($matches['name'], $namespace, $arguments);
         foreach ($deflatedNames as $index => $deflatedName) {
             $modifier = $matches['modifier'][$index] ?? '';
@@ -138,7 +138,7 @@ class VariableProcessor
         }
 
         $replace = [];
-        $search = array_values($matches[0]);
+        $search = $matches[0];
         $inflatedNames = $this->inflateValues($matches['name'], $namespace, $arguments);
         foreach ($inflatedNames as $index => $inflatedName) {
             $modifier = $matches['modifier'][$index] ?? '';

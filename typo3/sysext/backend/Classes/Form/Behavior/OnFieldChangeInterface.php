@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Form\Behavior;
 interface OnFieldChangeInterface
 {
     /**
-     * @return array{name: string, data?: string}
+     * @return array{name: string, data: array<string, mixed>}
      */
     public function toArray(): array;
 }

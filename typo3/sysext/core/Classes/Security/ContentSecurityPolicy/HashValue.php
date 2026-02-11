@@ -79,12 +79,12 @@ final class HashValue implements \Stringable, SourceValueInterface
         return sprintf("/^'(?P<type>%s)-(?P<value>.+)'$/", implode('|', $types));
     }
 
-    public function compile(?FrontendInterface $cache = null): ?string
+    public function compile(?FrontendInterface $cache = null): string
     {
         return (string)$this;
     }
 
-    public function serialize(): ?string
+    public function serialize(): string
     {
         return (string)$this;
     }

@@ -71,7 +71,7 @@ class LockFactory implements SingletonInterface
     {
         $queue = new \SplPriorityQueue();
 
-        /** @var LockingStrategyInterface $method */
+        /** @var class-string<LockingStrategyInterface> $method */
         foreach ($this->lockingStrategy as $method => $_) {
             $supportedCapabilities = $capabilities & $method::getCapabilities();
             if ($supportedCapabilities === $capabilities) {

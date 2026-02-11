@@ -180,7 +180,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
                     $sources = $changeItem->getSourcesCollection()->all();
                     $sources[] = $source;
                     $changeItem = $changeItem
-                        ->withSourcesCollection(new RedirectSourceCollection(...array_values($sources)));
+                        ->withSourcesCollection(new RedirectSourceCollection(...$sources));
                     $event->setSlugRedirectChangeItem($changeItem);
                 } catch (\InvalidArgumentException | InvalidRouteArgumentsException $e) {
                     throw new UnableToLinkToPageException(

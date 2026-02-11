@@ -29,7 +29,7 @@ class ResourceCollection implements \Countable, \Iterator, \ArrayAccess
     private int $position = 0;
 
     /**
-     * @var ResourceInterface[];
+     * @var ResourceInterface[]
      */
     protected array $resources = [];
 
@@ -71,7 +71,7 @@ class ResourceCollection implements \Countable, \Iterator, \ArrayAccess
     }
 
     /**
-     * @return Folder[];
+     * @return Folder[]
      */
     public function getFolders(): array
     {
@@ -81,7 +81,7 @@ class ResourceCollection implements \Countable, \Iterator, \ArrayAccess
     }
 
     /**
-     * @return File[];
+     * @return File[]
      */
     public function getFiles(): array
     {
@@ -150,18 +150,12 @@ class ResourceCollection implements \Countable, \Iterator, \ArrayAccess
         $this->position = 0;
     }
 
-    /**
-     * @return ResourceInterface|null
-     */
-    public function current(): mixed
+    public function current(): ?ResourceInterface
     {
         return $this->resources[$this->position];
     }
 
-    /**
-     * @return int
-     */
-    public function key(): mixed
+    public function key(): int
     {
         return $this->position;
     }

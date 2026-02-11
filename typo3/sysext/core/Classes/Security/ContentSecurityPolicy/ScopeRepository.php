@@ -34,7 +34,7 @@ class ScopeRepository
     {
         return array_merge(
             [Scope::backend(), Scope::frontend()],
-            array_values($this->findAllFrontendSites())
+            $this->findAllFrontendSites()
         );
     }
 

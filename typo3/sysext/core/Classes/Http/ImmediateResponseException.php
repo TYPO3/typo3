@@ -44,9 +44,6 @@ class ImmediateResponseException extends \Exception
         $this->code = $code;
     }
 
-    /**
-     * @return Response
-     */
     public function getResponse(): ResponseInterface
     {
         return $this->response;

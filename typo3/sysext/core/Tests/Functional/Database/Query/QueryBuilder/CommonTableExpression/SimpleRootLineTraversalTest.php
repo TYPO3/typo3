@@ -134,36 +134,36 @@ final class SimpleRootLineTraversalTest extends FunctionalTestCase
         $selectQueryBuilder = $connection->createQueryBuilder();
         $expr = $selectQueryBuilder->expr();
         $initialQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 // pages fields
                 $selectQueryBuilder->quoteIdentifier('uid'),
                 $selectQueryBuilder->quoteIdentifier('pid'),
                 $selectQueryBuilder->quoteIdentifier('title'),
                 // CTE recursive handling fields
                 $expr->castInt('1', '__CTE_LEVEL__'),
-            ]))
+            ])
             ->from('pages')
-            ->where(...array_values([
+            ->where(...[
                 $expr->eq('uid', $selectQueryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
-            ]));
+            ]);
         $initialQueryBuilder->getRestrictions()->removeAll();
         $subQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 // pages fields
                 $selectQueryBuilder->quoteIdentifier('p.uid'),
                 $selectQueryBuilder->quoteIdentifier('p.pid'),
                 $selectQueryBuilder->quoteIdentifier('p.title'),
                 // CTE recursive handling fields
                 $expr->castInt(sprintf('(%s + 1)', $expr->castInt($selectQueryBuilder->quoteIdentifier('c.__CTE_LEVEL__'))), '__CTE_LEVEL__'),
-            ]))
+            ])
             ->from('pages', 'p')
             ->innerJoin('p', 'cte', 'c', sprintf('(%s)', $expr->eq('p.uid', $selectQueryBuilder->quoteIdentifier('c.pid'))));
         $subQueryBuilder->getRestrictions()->removeAll();
         if ($maxLevel > 0) {
-            $subQueryBuilder->andWhere(...array_values([
+            $subQueryBuilder->andWhere(...[
                 $expr->neq('c.pid', $selectQueryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 $expr->lt('c.__CTE_LEVEL__', $selectQueryBuilder->createNamedParameter($maxLevel, Connection::PARAM_INT)),
-            ]));
+            ]);
         }
         $selectQueryBuilder
             ->typo3_withRecursive(

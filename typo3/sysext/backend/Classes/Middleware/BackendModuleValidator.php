@@ -88,7 +88,6 @@ class BackendModuleValidator implements MiddlewareInterface
         // If on a second level module with further sub modules, jump to the third-level modules
         // (either the last used or the first in the list) and store this selection for the user.
         // Skip this automatic redirection if the module should show a submodule overview instead.
-        /** @var $module ModuleInterface */
         if ($module->getParentModule() && $module->hasSubModules() && !$module->hasSubmoduleOverview()) {
             // Note: "action" is a special setting, which is evaluated here individually
             $subModuleIdentifier = (string)($backendUser->getModuleData($module->getIdentifier())['action'] ?? '');

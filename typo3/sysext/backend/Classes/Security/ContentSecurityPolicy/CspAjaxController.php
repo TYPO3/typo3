@@ -165,7 +165,7 @@ class CspAjaxController
         $suggestions = $event->getMutationSuggestions();
         // reverse sort by priority (higher priorities take precedence)
         usort($suggestions, static fn(MutationSuggestion $a, MutationSuggestion $b) => $b->priority <=> $a->priority);
-        return new JsonResponse(array_values($suggestions));
+        return new JsonResponse($suggestions);
     }
 
     protected function mutateReportAction(Scope $scope, MutationSuggestion $suggestion, string ...$initiators): ResponseInterface

@@ -333,8 +333,8 @@ class SchemaMigrator
             $currentTableDefinition = $return[$tableName];
             $return[$tableName] = new Table(
                 $tableName,
-                $this->mergeColumns(...array_values($currentTableDefinition->getColumns()), ...array_values($table->getColumns())),
-                $this->mergeIndexes(...array_values($currentTableDefinition->getIndexes()), ...array_values($table->getIndexes())),
+                $this->mergeColumns(...$currentTableDefinition->getColumns(), ...$table->getColumns()),
+                $this->mergeIndexes(...$currentTableDefinition->getIndexes(), ...$table->getIndexes()),
                 [],
                 array_merge($currentTableDefinition->getForeignKeys(), $table->getForeignKeys()),
                 array_merge($currentTableDefinition->getOptions(), $table->getOptions())

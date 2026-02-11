@@ -114,15 +114,15 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
         $selectQueryBuilder = $connection->createQueryBuilder();
         $expr = $selectQueryBuilder->expr();
         $simpleValueListQueryBuilder1 = $connection->createQueryBuilder();
-        $simpleValueListQueryBuilder1->selectLiteral(...array_values([
+        $simpleValueListQueryBuilder1->selectLiteral(...[
             $expr->castInt($expr->literal('1')),
             $expr->castInt($expr->literal('100')),
-        ]));
+        ]);
         $simpleValueListQueryBuilder2 = $connection->createQueryBuilder();
-        $simpleValueListQueryBuilder2->selectLiteral(...array_values([
+        $simpleValueListQueryBuilder2->selectLiteral(...[
             $expr->castInt($expr->literal('2')),
             $expr->castInt($expr->literal('50')),
-        ]));
+        ]);
         $selectQueryBuilder
             ->typo3_with(
                 'cte',
@@ -179,15 +179,15 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
         $selectQueryBuilder = $connection->createQueryBuilder();
         $expr = $selectQueryBuilder->expr();
         $simpleValueListQueryBuilder1 = $connection->createQueryBuilder();
-        $simpleValueListQueryBuilder1->selectLiteral(...array_values([
+        $simpleValueListQueryBuilder1->selectLiteral(...[
             $expr->castInt($expr->literal('1')),
             $expr->castInt($expr->literal('100')),
-        ]));
+        ]);
         $simpleValueListQueryBuilder2 = $connection->createQueryBuilder();
-        $simpleValueListQueryBuilder2->selectLiteral(...array_values([
+        $simpleValueListQueryBuilder2->selectLiteral(...[
             $expr->castInt($expr->literal('2')),
             $expr->castInt($expr->literal('50')),
-        ]));
+        ]);
         $selectQueryBuilder
             ->typo3_with(
                 'cte',
@@ -249,12 +249,12 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
         $expr = $selectQueryBuilder->expr();
         $concreteExpr = $selectQueryBuilder->getConcreteQueryBuilder()->expr();
         $initialQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 $expr->castInt('1', 'n'),
                 $expr->castVarchar($selectQueryBuilder->quote('abc'), 255, 'str'),
-            ]));
+            ]);
         $subQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 $expr->castInt('n + 1'),
                 $expr->castVarchar(
                     sprintf('(%s)', $expr->concat(
@@ -263,7 +263,7 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
                     )),
                     255,
                 ),
-            ]))
+            ])
             ->from('cte')
             ->where(
                 $concreteExpr->lt($selectQueryBuilder->quoteIdentifier('n'), $expr->castInt('3'))
@@ -327,13 +327,13 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
         $expr = $selectQueryBuilder->expr();
         $concreteExpr = $selectQueryBuilder->getConcreteQueryBuilder()->expr();
         $initialQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 $expr->castInt('1'),
                 $expr->castInt('0'),
                 $expr->castInt('1'),
-            ]));
+            ]);
         $subQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 $expr->castInt(sprintf('%s + 1', $selectQueryBuilder->quoteIdentifier('n'))),
                 $selectQueryBuilder->quoteIdentifier('next_fib_n'),
                 sprintf(
@@ -341,7 +341,7 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
                     $selectQueryBuilder->quoteIdentifier('fib_n'),
                     $selectQueryBuilder->quoteIdentifier('next_fib_n'),
                 ),
-            ]))
+            ])
             ->from('fibonacci')
             ->where(
                 $concreteExpr->lt($selectQueryBuilder->quoteIdentifier('n'), $expr->castInt('10'))
@@ -407,13 +407,13 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
         $expr = $selectQueryBuilder->expr();
         $concreteExpr = $selectQueryBuilder->getConcreteQueryBuilder()->expr();
         $initialQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 $expr->castInt('1'),
                 $expr->castInt('0'),
                 $expr->castInt('1'),
-            ]));
+            ]);
         $subQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 $expr->castInt(sprintf('%s + 1', $selectQueryBuilder->quoteIdentifier('n'))),
                 $selectQueryBuilder->quoteIdentifier('next_fib_n'),
                 sprintf(
@@ -421,7 +421,7 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
                     $selectQueryBuilder->quoteIdentifier('fib_n'),
                     $selectQueryBuilder->quoteIdentifier('next_fib_n'),
                 ),
-            ]))
+            ])
             ->from('fibonacci')
             ->where(
                 $concreteExpr->lt($selectQueryBuilder->quoteIdentifier('n'), $expr->castInt('10'))
@@ -480,13 +480,13 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
         $expr = $selectQueryBuilder->expr();
         $concreteExpr = $selectQueryBuilder->getConcreteQueryBuilder()->expr();
         $initialQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 $expr->castInt('1'),
                 $expr->castInt('0'),
                 $expr->castInt('1'),
-            ]));
+            ]);
         $subQueryBuilder = $connection->createQueryBuilder()
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 $expr->castInt(sprintf('%s + 1', $selectQueryBuilder->quoteIdentifier('n'))),
                 $selectQueryBuilder->quoteIdentifier('next_fib_n'),
                 sprintf(
@@ -494,7 +494,7 @@ final class SimpleSelectCommonTableExpressionTest extends FunctionalTestCase
                     $selectQueryBuilder->quoteIdentifier('fib_n'),
                     $selectQueryBuilder->quoteIdentifier('next_fib_n'),
                 ),
-            ]))
+            ])
             ->from('fibonacci')
             ->where(
                 $concreteExpr->lt($selectQueryBuilder->quoteIdentifier('n'), $expr->castInt('10'))

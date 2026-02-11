@@ -56,7 +56,7 @@ final readonly class AddPlainSlugReplacementSource
                     path: rtrim($changeItem->getSiteLanguage()->getBase()->getPath(), '/') . $changeItem->getOriginal()['slug'],
                     targetLinkParameters: []
                 ),
-                ...array_values($changeItem->getSourcesCollection()->all())
+                ...$changeItem->getSourcesCollection()->all()
             )
         );
         $event->setSlugRedirectChangeItem($changeItem);

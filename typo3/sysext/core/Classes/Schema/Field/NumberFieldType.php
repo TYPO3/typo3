@@ -29,7 +29,7 @@ final readonly class NumberFieldType extends AbstractFieldType
         return $this->getFormat() === 'integer';
     }
 
-    public function getFormat(): ?string
+    public function getFormat(): string
     {
         return $this->configuration['format'] ?? '';
     }

@@ -703,9 +703,9 @@ class RootlineUtility
                     $cte->quoteIdentifier('__CTE_IS_CYCLE__'),
                 ],
             )
-            ->select(...array_values([
+            ->select(...[
                 'cte.uid',
-                ...array_values($resolvedPagesFields),
+                ...$resolvedPagesFields,
                 'cte._ORIG_uid',
                 'cte._ORIG_pid',
                 // Cycle detection guard implemented manually due to the fact that CTE cycle is not implemented by
@@ -715,7 +715,7 @@ class RootlineUtility
                 'cte.__CTE_PATH__',
                 'cte.__CTE_IS_CYCLE__',
                 'cte.__CTE_LEVEL__',
-            ]))
+            ])
             ->from('cte')
             // It's important to traverse determined rootline records in the correct order, which means from the page
             // record down to the rootpage. The recursive CTE builds up the CTE level starting from current record as
@@ -808,7 +808,7 @@ class RootlineUtility
         if ($workspaceId === 0) {
             // Return simplified initial expression for live workspace resolving only.
             return $initial
-                ->selectLiteral(...array_values([
+                ->selectLiteral(...[
                     // data fields
                     $cte->quoteIdentifier('uid'),
                     $cte->quoteIdentifier('pid'),
@@ -824,17 +824,17 @@ class RootlineUtility
                     $expr->castText($cte->quoteIdentifier('uid'), '__CTE_PATH__'),
                     // Because of Postgres we need to have this cte colum boolean type and thus needing a comparison here
                     $expr->castInt('0 <> 0', '__CTE_IS_CYCLE__'),
-                ]))
+                ])
                 ->from('pages')
-                ->where(...array_values([
+                ->where(...[
                     $expr->eq('uid', $cte->createNamedParameter($pageId, Connection::PARAM_INT)),
                     // only select live workspace
                     $expr->eq('t3ver_wsid', $cte->createNamedParameter(0, Connection::PARAM_INT)),
-                ]));
+                ]);
         }
 
         $initial
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 // data fields
                 $cte->quoteIdentifier('live.uid'),
                 $cte->quoteIdentifier('workspace_resolved.pid'),
@@ -888,7 +888,7 @@ class RootlineUtility
                 $expr->castText($cte->quoteIdentifier('live.uid'), '__CTE_PATH__'),
                 // Because of Postgres we need to have this cte colum boolean type and thus needing a comparison here
                 $expr->castInt('0 <> 0', '__CTE_IS_CYCLE__'),
-            ]))
+            ])
             ->from('pages', 'source')
             ->innerJoin(
                 'source',
@@ -949,7 +949,7 @@ class RootlineUtility
                     ),
                 ),
             )
-            ->where(...array_values([
+            ->where(...[
                 $expr->eq('source.uid', $cte->createNamedParameter($pageId, Connection::PARAM_INT)),
                 $expr->in('source.t3ver_wsid', $cte->createNamedParameter([0, $workspaceId], Connection::PARAM_INT_ARRAY)),
                 $expr->or(
@@ -964,7 +964,7 @@ class RootlineUtility
                         ),
                     ),
                 ),
-            ]));
+            ]);
 
         return $initial;
     }
@@ -981,7 +981,7 @@ class RootlineUtility
         $traversal->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         if ($workspaceId === 0) {
             $traversal
-                ->selectLiteral(...array_values([
+                ->selectLiteral(...[
                     // data fields
                     $cte->quoteIdentifier('p.uid'),
                     $cte->quoteIdentifier('p.pid'),
@@ -1017,7 +1017,7 @@ class RootlineUtility
                         ),
                         '__CTE_IS_CYCLE__'
                     ),
-                ]))
+                ])
                 ->from('cte', 'c')
                 ->innerJoin(
                     'c',
@@ -1031,7 +1031,7 @@ class RootlineUtility
                         $expr->neq('c.uid', $cte->quoteIdentifier('p.uid')),
                     )
                 )
-                ->where(...array_values([
+                ->where(...[
                     // If last parent has been detected as start of a recursive cycle, stop here. Note that this is done to
                     // keep the cycle detection value in the result set to allow proper handling later on retrieved rows.
                     $expr->eq('c.__CTE_IS_CYCLE__', $cte->createNamedParameter(0, Connection::PARAM_INT)),
@@ -1039,13 +1039,13 @@ class RootlineUtility
                     $expr->neq('c.pid', $cte->createNamedParameter(0, Connection::PARAM_INT)),
                     // place a maximal traversal level guard against invalid cycling rootlines to mitigate endless recursion
                     $expr->lt('c.__CTE_LEVEL__', $cte->createNamedParameter(self::MAX_CTE_TRAVERSAL_LEVELS, Connection::PARAM_INT)),
-                ]));
+                ]);
 
             return $traversal;
         }
 
         $traversal
-            ->selectLiteral(...array_values([
+            ->selectLiteral(...[
                 // data fields
                 $cte->quoteIdentifier('traversal_live.uid'),
                 $cte->quoteIdentifier('traversal_workspace_resolved.pid'),
@@ -1119,7 +1119,7 @@ class RootlineUtility
                     ),
                     '__CTE_IS_CYCLE__'
                 ),
-            ]))
+            ])
             ->from('cte', 'traversal_c')
             ->innerJoin(
                 'traversal_c',
@@ -1192,7 +1192,7 @@ class RootlineUtility
                     ),
                 ),
             )
-            ->where(...array_values([
+            ->where(...[
                 // If last parent has been detected as start of a recursive cycle, stop here. Note that this is done to
                 // keep the cycle detection value in the result set to allow proper handling later on retrieved rows.
                 $expr->eq('traversal_c.__CTE_IS_CYCLE__', $cte->createNamedParameter(0, Connection::PARAM_INT)),
@@ -1213,7 +1213,7 @@ class RootlineUtility
                         ),
                     ),
                 ),
-            ]));
+            ]);
 
         return $traversal;
     }
@@ -1251,8 +1251,8 @@ class RootlineUtility
         $queryBuilder
             ->selectLiteral(
                 $queryBuilder->quoteIdentifier('live.uid'),
-                ...array_values($prefixedFields),
-                ...array_values([
+                ...$prefixedFields,
+                ...[
                     // For move pointers, store the actual live PID in the _ORIG_pid
                     // The only place where PID is actually different in a workspace
                     $queryBuilder->expr()->if(
@@ -1276,7 +1276,7 @@ class RootlineUtility
                         'null',
                         '_ORIG_uid',
                     ),
-                ])
+                ]
             )
             ->from('pages', 'source')
             ->innerJoin(

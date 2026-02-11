@@ -63,9 +63,6 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
 
         $sites = $this->siteFinder->getAllSites();
         foreach ($sites as $site) {
-            if (!$site instanceof Site) {
-                continue;
-            }
             if (!$site->isTypoScriptRoot()) {
                 continue;
             }

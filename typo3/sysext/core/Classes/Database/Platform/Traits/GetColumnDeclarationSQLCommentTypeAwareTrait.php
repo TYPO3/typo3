@@ -87,9 +87,7 @@ trait GetColumnDeclarationSQLCommentTypeAwareTrait
      */
     private function addTypeCommentIfNeeded(array $column): array
     {
-        /** @var AbstractPlatform $self Needed to satisfy PHPStan */
-        $self = $this;
-        if ($this->typeRequiresCommentHint($self, $column['type'])) {
+        if ($this->typeRequiresCommentHint($this, $column['type'])) {
             $column['comment'] .= '(DC2Type:' . Type::lookupName($column['type']) . ')';
         }
         return $column;

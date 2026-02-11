@@ -3196,10 +3196,10 @@ class ContentObjectRenderer
      *
      * @param string $theValue The input value
      * @param array $conf TypoScript options
-     * @return string The processed input value being returned; Splitted lines imploded by LF again.
+     * @return string The processed input value being returned; Split lines imploded by LF again.
      * @internal
      */
-    public function encaps_lineSplit($theValue, $conf)
+    public function encaps_lineSplit($theValue, $conf): string
     {
         if ((string)$theValue === '') {
             return '';
@@ -3428,10 +3428,9 @@ class ContentObjectRenderer
      *
      * @param string|File|FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file or a file reference object or the string GIFBUILDER. See description above.
      * @param array $fileArray TypoScript properties for the imgResource type
-     * @return ImageResource|null
      * @see cImage()
      */
-    public function getImgResource($file, $fileArray)
+    public function getImgResource($file, $fileArray): ?ImageResource
     {
         $importedFile = null;
         $fileReference = null;
@@ -3547,11 +3546,9 @@ class ContentObjectRenderer
      * OR
      * file.crop.data = file:current:crop
      *
-     * @param FileReference $fileReference
      * @param array $fileArray TypoScript properties for the imgResource type
-     * @return Area|null
      */
-    protected function getCropAreaFromFileReference(FileReference $fileReference, array $fileArray)
+    protected function getCropAreaFromFileReference(FileReference $fileReference, array $fileArray): ?Area
     {
         // Use cropping area from file reference if nothing is configured in TypoScript.
         if (!isset($fileArray['crop']) && !isset($fileArray['crop.'])) {
@@ -3566,12 +3563,9 @@ class ContentObjectRenderer
     /**
      * Returns an ImageManipulation\Area object for the given cropVariant (or 'default')
      * or null if the crop settings or crop area is empty.
-     *
-     * @return Area|null
      */
-    protected function getCropAreaFromFromTypoScriptSettings(FileInterface $file, array $fileArray)
+    protected function getCropAreaFromFromTypoScriptSettings(FileInterface $file, array $fileArray): ?Area
     {
-        /** @var Area $cropArea */
         $cropArea = null;
         // Resolve TypoScript configured cropping.
         $cropSettings = isset($fileArray['crop.'])
@@ -3955,7 +3949,7 @@ class ContentObjectRenderer
      * page.10.data = file:17:title
      *
      * @param string $key A colon-separated key, e.g. 17:name or current:sha1, with the first part being a sys_file uid or the keyword "current" and the second part being the key of information to get from file (e.g. "title", "size", "description", etc.)
-     * @return string|int The value as retrieved from the file object.
+     * @return string|int|null The value as retrieved from the file object.
      */
     protected function getFileDataKey($key)
     {
@@ -4260,7 +4254,7 @@ class ContentObjectRenderer
      * Calling a user function/class-method
      * Notice: For classes the instantiated object will have the internal variable, $cObj, set to be a *reference* to $this (the parent/calling object).
      *
-     * @param string $funcName The functionname, eg "user_myfunction" or "user_myclass->main". Notice that there are rules for the names of functions/classes you can instantiate. If a function cannot be called for some reason it will be seen in the TypoScript log in the AdminPanel.
+     * @param string|RawValue $funcName The functionname, eg "user_myfunction" or "user_myclass->main". Notice that there are rules for the names of functions/classes you can instantiate. If a function cannot be called for some reason it will be seen in the TypoScript log in the AdminPanel.
      * @param array $conf The TypoScript configuration to pass the function
      * @param mixed $content The content payload to pass the function
      * @return mixed The return content from the function call. Should probably be a string.
@@ -4692,7 +4686,7 @@ class ContentObjectRenderer
                     ->from($table)
                     ->where($queryParts['where']);
 
-                if ($queryParts['groupBy']) {
+                if (is_array($queryParts['groupBy'])) {
                     $countQueryBuilder->groupBy(...$queryParts['groupBy']);
                 }
 
