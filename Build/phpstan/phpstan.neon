@@ -23,6 +23,7 @@ parameters:
 
   bootstrapFiles:
     - phpstan-constants.php
+    - ../../typo3/sysext/core/Tests/Functional/Security/Fixtures/GlobalUserFunction.php
 
   paths:
     - ../../typo3/sysext/
