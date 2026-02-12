@@ -68,7 +68,7 @@ final class PageViewContentObject extends AbstractContentObject
      *     mylabel.value = Label from TypoScript
      *   }
      *
-     * @param array $conf Array of TypoScript properties
+     * @param mixed $conf Array of TypoScript properties (marked as "mixed" currently because we don't know what we're receiving)
      * @return string The HTML output
      * @throws ContentRenderingException
      */

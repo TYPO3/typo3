@@ -72,22 +72,20 @@ abstract class AbstractMenuContentObject
 
     /**
      * 0 = rootFolder
-     *
-     * @var int
      */
-    protected $entryLevel = 0;
+    protected int $entryLevel = 0;
 
     /**
      * Doktypes that define which should not be included in a menu
      *
      * @var int[]
      */
-    protected $excludedDoktypes = [PageRepository::DOKTYPE_BE_USER_SECTION, PageRepository::DOKTYPE_SYSFOLDER];
+    protected array $excludedDoktypes = [PageRepository::DOKTYPE_BE_USER_SECTION, PageRepository::DOKTYPE_SYSFOLDER];
 
     /**
      * @var int[]
      */
-    protected $alwaysActivePIDlist = [];
+    protected array $alwaysActivePIDlist = [];
 
     /**
      * Loaded with the parent cObj-object when a new HMENU is made
@@ -101,71 +99,49 @@ abstract class AbstractMenuContentObject
      *
      * @var string[]
      */
-    protected $MP_array = [];
+    protected array $MP_array = [];
 
     /**
      * HMENU configuration
-     *
-     * @var array
      */
-    protected $conf = [];
+    protected array $conf = [];
 
     /**
      * xMENU configuration (TMENU etc)
      *
      * @var array
      */
-    protected $mconf = [];
+    protected array $mconf = [];
 
-    /**
-     * @var PageRepository
-     */
-    protected $sys_page;
+    protected PageRepository $sys_page;
 
     /**
      * The base page-id of the menu.
-     *
-     * @var int
      */
-    protected $id;
+    protected int $id = 0;
 
     /**
      * Holds the page uid of the NEXT page in the root line from the page pointed to by entryLevel;
      * Used to expand the menu automatically if in a certain root line.
-     *
-     * @var string
      */
-    protected $nextActive;
+    protected string $nextActive = '';
 
     /**
      * The array of menuItems which is built
      *
      * @var array[]
      */
-    protected $menuArr;
+    protected array $menuArr = [];
 
-    /**
-     * @var string Unused
-     */
-    protected $hash;
-
-    /**
-     * @var array
-     */
-    protected $result = [];
+    protected array $result = [];
 
     /**
      * Is filled with an array of page uid numbers + RL parameters which are in the current
      * root line (used to evaluate whether a menu item is in active state)
-     *
-     * @var array
      */
-    protected $rL_uidRegister;
+    protected ?array $rL_uidRegister = null;
 
-    /**
-     * @var mixed[]
-     */
-    protected $I;
+    protected array $I = [];
 
     protected ServerRequestInterface $request;
 
@@ -176,15 +152,10 @@ abstract class AbstractMenuContentObject
 
     /**
      * Array key of the parentMenuItem in the parentMenuArr, if this menu is a subMenu.
-     *
-     * @var int|null
      */
-    protected $parentMenuArrItemKey;
+    protected ?int $parentMenuArrItemKey = null;
 
-    /**
-     * @var array
-     */
-    protected $parentMenuArr;
+    protected array $parentMenuArr = [];
 
     protected bool $disableGroupAccessCheck = false;
 
@@ -192,7 +163,6 @@ abstract class AbstractMenuContentObject
      * The initialization of the object. This just sets some internal variables.
      *
      * @param null $_ Obsolete argument
-     * @param PageRepository $sys_page
      * @param int|string $id A starting point page id. This should probably be blank since the 'entryLevel' value will be used then.
      * @param array $conf The TypoScript configuration for the HMENU cObject
      * @param int $menuNumber Menu number; 1,2,3. Should probably be 1
@@ -200,14 +170,14 @@ abstract class AbstractMenuContentObject
      * @return bool Returns TRUE on success
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::HMENU()
      */
-    public function start($_, $sys_page, $id, $conf, int $menuNumber, string $objSuffix, ServerRequestInterface $request): bool
+    public function start($_, PageRepository $sys_page, $id, $conf, int $menuNumber, string $objSuffix, ServerRequestInterface $request): bool
     {
         $this->conf = (array)$conf;
         $this->menuNumber = $menuNumber;
         $this->mconf = (array)$conf[$this->menuNumber . $objSuffix . '.'];
         $this->request = $request;
         // Sets the internal vars. $sys_page MUST be the PageRepository object
-        if ($this->conf[$this->menuNumber . $objSuffix] && is_object($sys_page)) {
+        if ($this->conf[$this->menuNumber . $objSuffix]) {
             $localRootLine = $request->getAttribute('frontend.page.information')->getLocalRootLine();
             $this->sys_page = $sys_page;
             // alwaysActivePIDlist initialized:
@@ -1701,10 +1671,6 @@ abstract class AbstractMenuContentObject
             $selectSetup['pidInList'] = $basePageRow['content_from_pid'];
         }
         $statement = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
-        if (!$statement) {
-            $message = 'SectionIndex: Query to fetch the content elements failed!';
-            throw new \UnexpectedValueException($message, 1337334849);
-        }
         $result = [];
         while ($row = $statement->fetchAssociative()) {
             $this->sys_page->versionOL('tt_content', $row);
@@ -1795,16 +1761,12 @@ abstract class AbstractMenuContentObject
     /**
      * Set the parentMenuArr and key to provide the parentMenu information to the
      * subMenu, special fur IProcFunc and itemArrayProcFunc user functions.
-     *
-     * @param int $menuItemKey
      * @internal
      */
-    public function setParentMenu(array $menuArr, $menuItemKey)
+    public function setParentMenu(array $menuArr, int $menuItemKey): void
     {
         // check if menuArr is a valid array and that menuItemKey matches an existing menuItem in menuArr
-        if (is_array($menuArr)
-            && (is_int($menuItemKey) && $menuItemKey >= 0 && isset($menuArr[$menuItemKey]))
-        ) {
+        if ($menuItemKey >= 0 && isset($menuArr[$menuItemKey])) {
             $this->parentMenuArr = $menuArr;
             $this->parentMenuArrItemKey = $menuItemKey;
         }
@@ -1812,14 +1774,11 @@ abstract class AbstractMenuContentObject
 
     /**
      * Check if there is a valid parentMenuArr.
-     *
-     * @return bool
      */
-    protected function hasParentMenuArr()
+    protected function hasParentMenuArr(): bool
     {
         return
             $this->menuNumber > 1
-            && is_array($this->parentMenuArr)
             && !empty($this->parentMenuArr)
         ;
     }
@@ -1827,7 +1786,7 @@ abstract class AbstractMenuContentObject
     /**
      * Check if we have a parentMenuArrItemKey
      */
-    protected function hasParentMenuItemKey()
+    protected function hasParentMenuItemKey(): bool
     {
         return $this->parentMenuArrItemKey !== null;
     }
@@ -1835,7 +1794,7 @@ abstract class AbstractMenuContentObject
     /**
      * Check if the parentMenuItem exists
      */
-    protected function hasParentMenuItem()
+    protected function hasParentMenuItem(): bool
     {
         return
             $this->hasParentMenuArr()
@@ -1846,20 +1805,16 @@ abstract class AbstractMenuContentObject
 
     /**
      * Get the parentMenuArr, if this is subMenu.
-     *
-     * @return array
      */
-    public function getParentMenuArr()
+    public function getParentMenuArr(): array
     {
         return $this->hasParentMenuArr() ? $this->parentMenuArr : [];
     }
 
     /**
      * Get the parentMenuItem from the parentMenuArr, if this is a subMenu
-     *
-     * @return array|null
      */
-    public function getParentMenuItem()
+    public function getParentMenuItem(): ?array
     {
         // check if we have a parentMenuItem and if it is an array
         if ($this->hasParentMenuItem()
@@ -1873,25 +1828,13 @@ abstract class AbstractMenuContentObject
 
     private function getMode(string $mode = ''): string
     {
-        switch ($mode) {
-            case 'starttime':
-                $sortField = 'starttime';
-                break;
-            case 'lastUpdated':
-            case 'manual':
-                $sortField = 'lastUpdated';
-                break;
-            case 'tstamp':
-                $sortField = 'tstamp';
-                break;
-            case 'crdate':
-                $sortField = 'crdate';
-                break;
-            default:
-                $sortField = 'SYS_LASTCHANGED';
-        }
-
-        return $sortField;
+        return match ($mode) {
+            'starttime' => 'starttime',
+            'lastUpdated', 'manual' => 'lastUpdated',
+            'tstamp' => 'tstamp',
+            'crdate' => 'crdate',
+            default => 'SYS_LASTCHANGED',
+        };
     }
 
     /**

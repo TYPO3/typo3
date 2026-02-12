@@ -1982,11 +1982,8 @@ class GifBuilder
         if ($sF > 1) {
             $x = ceil($x / $sF);
             $y = ceil($y / $sF);
-            if (is_array($theBBoxInfo)) {
-                foreach ($theBBoxInfo as &$value) {
-                    $value = ceil($value / $sF);
-                }
-                unset($value);
+            foreach ($theBBoxInfo as &$value) {
+                $value = ceil($value / $sF);
             }
         }
         return [$x, $y, $theBBoxInfo];

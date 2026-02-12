@@ -45,7 +45,7 @@ class RecordsContentObject extends AbstractContentObject
     /**
      * Rendering the cObject, RECORDS
      *
-     * @param array $conf Array of TypoScript properties
+     * @param mixed $conf Array of TypoScript properties (marked as "mixed" currently because we don't know what we're receiving)
      * @return string Output
      */
     public function render($conf = [])

@@ -33,7 +33,7 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
-        if (!is_array($conf)) {
+        if (empty($conf)) {
             $this->getTimeTracker()->setTSlogMessage('No elements in this content object array (COA_INT).', LogLevel::WARNING);
             return '';
         }

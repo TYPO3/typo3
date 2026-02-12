@@ -55,7 +55,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['val'] = $val;
             $this->I['title'] = $this->getPageTitle($this->menuArr[$key]['title'] ?? '', $this->menuArr[$key]['nav_title'] ?? '');
             $this->I['title.'] = $this->I['val']['stdWrap.'] ?? [];
-            $this->I['title'] = $cObjectForCurrentMenu->stdWrapValue('title', $this->I ?? []);
+            $this->I['title'] = $cObjectForCurrentMenu->stdWrapValue('title', $this->I);
             $this->I['uid'] = $this->menuArr[$key]['uid'] ?? 0;
             $this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'] ?? 0;
             $this->I['pid'] = $this->menuArr[$key]['pid'] ?? 0;

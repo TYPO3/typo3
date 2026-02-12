@@ -52,7 +52,6 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
      * The handler can decide whether to re-throw the exception or
      * return a nice error message for production context.
      *
-     * @param AbstractContentObject|null $contentObject
      * @param array $contentObjectConfiguration
      * @throws \Exception
      */
@@ -82,6 +81,6 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface
         }
 
         // Return interpolated error message
-        return str_replace(['{code}', '{requestId}'], [$code, $this->requestId], $errorMessage);
+        return str_replace(['{code}', '{requestId}'], [$code, (string)$this->requestId], $errorMessage);
     }
 }

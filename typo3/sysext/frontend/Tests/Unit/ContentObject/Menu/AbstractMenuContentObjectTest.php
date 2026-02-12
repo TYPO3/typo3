@@ -78,23 +78,6 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     }
 
     #[Test]
-    public function sectionIndexThrowsAnExceptionIfTheInternalQueryFails(): void
-    {
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1337334849);
-        $this->prepareSectionIndexTest();
-        $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->expects($this->once())->method('getPage')->willReturn(['uid' => 10]);
-        $cObject = $this->createMock(ContentObjectRenderer::class);
-        $cObject->expects($this->once())->method('exec_getQuery')->willReturn(0);
-        $subject = new AbstractMenuContentObjectFixture();
-        $subject->sys_page = $pageRepository;
-        $subject->id = 10;
-        $subject->parent_cObj = $cObject;
-        $subject->sectionIndex('field');
-    }
-
-    #[Test]
     public function sectionIndexReturnsOverlaidRowBasedOnTheLanguageOfTheGivenPage(): void
     {
         $this->prepareSectionIndexTest();
@@ -174,8 +157,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
             ],
         ];
         $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->expects($this->once())->method('getPage')->willReturn(['sys_language_uid' => 1]);
-        $pageRepository->expects($this->once())->method('getPage')->willReturn([]);
+        $pageRepository->expects($this->once())->method('getPage')->willReturn(['uid' => 1]);
         $subject->sys_page = $pageRepository;
         $cObject = $this->createMock(ContentObjectRenderer::class);
         $cObject->expects($this->once())->method('exec_getQuery')->willReturn($statementMock);

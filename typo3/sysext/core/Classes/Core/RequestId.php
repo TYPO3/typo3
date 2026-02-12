@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 /**
  * @internal
  */
-final class RequestId
+final class RequestId implements \Stringable
 {
     public readonly string $long;
     public readonly string $short;

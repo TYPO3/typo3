@@ -892,32 +892,27 @@ class ContentObjectRenderer
      * @return string A list of PIDs
      * @internal
      */
-    public function getSlidePids($pidList, $pidConf): string
+    public function getSlidePids($pidList, array $pidConf = []): string
     {
-        // todo: phpstan states that $pidConf always exists and is not nullable. At the moment, this is a false positive
-        //       as null can be passed into this method via $pidConf. As soon as more strict types are used, this isset
-        //       check must be replaced with a more appropriate check like empty or count.
-        $pidList = isset($pidConf) ? trim((string)$this->stdWrap($pidList, $pidConf)) : trim($pidList);
+        $pidList = $pidConf !== [] ? trim((string)$this->stdWrap($pidList, $pidConf)) : trim($pidList);
         if ($pidList === '') {
             $pidList = 'this';
         }
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $listArr = null;
         if (trim($pidList)) {
             $contentPid = $this->getRequest()->getAttribute('frontend.page.information')->getContentFromPid();
             $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$contentPid, $pidList));
             $listArr = $this->checkPidArray($listArr);
-        }
-        $pidList = [];
-        if (is_array($listArr) && !empty($listArr)) {
+            $pidList = [];
             foreach ($listArr as $uid) {
                 $page = $pageRepository->getPage((int)$uid);
                 if (!$page['is_siteroot']) {
                     $pidList[] = $page['pid'];
                 }
             }
+            return implode(',', $pidList);
         }
-        return implode(',', $pidList);
+        return '';
     }
 
     /**
@@ -932,7 +927,7 @@ class ContentObjectRenderer
     public function imageLinkWrap($string, $imageFile, $conf)
     {
         $string = (string)$string;
-        $enable = $this->stdWrapValue('enable', $conf ?? []);
+        $enable = $this->stdWrapValue('enable', $conf);
         if (!$enable) {
             return $string;
         }
@@ -945,19 +940,17 @@ class ContentObjectRenderer
             $file = $imageFile;
         } elseif ($imageFile instanceof FileReference) {
             $file = $imageFile->getOriginalFile();
+        } elseif (MathUtility::canBeInterpretedAsInteger($imageFile)) {
+            $file = $this->resourceFactory->getFileObject((int)$imageFile);
         } else {
-            if (MathUtility::canBeInterpretedAsInteger($imageFile)) {
-                $file = $this->resourceFactory->getFileObject((int)$imageFile);
-            } else {
-                $file = $this->resourceFactory->getFileObjectFromCombinedIdentifier($imageFile);
-            }
+            $file = $this->resourceFactory->getFileObjectFromCombinedIdentifier($imageFile);
         }
 
         // Create imageFileLink if not created with typolink
         if ($content === $string && $file !== null) {
             $parameterNames = ['width', 'height', 'effects', 'bodyTag', 'title', 'wrap', 'crop'];
             $parameters = [];
-            $sample = $this->stdWrapValue('sample', $conf ?? []);
+            $sample = $this->stdWrapValue('sample', $conf);
             if ($sample) {
                 $parameters['sample'] = 1;
             }
@@ -977,7 +970,7 @@ class ContentObjectRenderer
             }
             $absRefPrefix = $this->frontendUrlPrefix->getUrlPrefix($this->getRequest());
             $url = $absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . $file->getUid() . $params;
-            $directImageLink = $this->stdWrapValue('directImageLink', $conf ?? []);
+            $directImageLink = $this->stdWrapValue('directImageLink', $conf);
             if ($directImageLink) {
                 $imgResourceConf = [
                     'file' => $imageFile,
@@ -993,13 +986,13 @@ class ContentObjectRenderer
                     }
                 }
             }
-            $target = (string)$this->stdWrapValue('target', $conf ?? []);
+            $target = (string)$this->stdWrapValue('target', $conf);
             if ($target === '') {
                 $target = 'thePicture';
             }
             $a1 = '';
             $a2 = '';
-            $conf['JSwindow'] = $this->stdWrapValue('JSwindow', $conf ?? []);
+            $conf['JSwindow'] = $this->stdWrapValue('JSwindow', $conf);
             if ($conf['JSwindow']) {
                 $altUrl = $this->stdWrapValue('altUrl', $conf['JSwindow.'] ?? []);
                 if ($altUrl) {
@@ -1266,7 +1259,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_addPageCacheTags($content = '', $conf = [])
     {
-        $tags = (string)$this->stdWrapValue('addPageCacheTags', $conf ?? []);
+        $tags = (string)$this->stdWrapValue('addPageCacheTags', $conf);
         if (!empty($tags)) {
             $cacheTags = GeneralUtility::trimExplode(',', $tags, true);
             $this->getRequest()->getAttribute('frontend.cache.collector')->addCacheTags(
@@ -1766,7 +1759,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_hash($content = '', array $conf = []): string
     {
-        $algorithm = (string)$this->stdWrapValue('hash', $conf ?? []);
+        $algorithm = (string)$this->stdWrapValue('hash', $conf);
         if (in_array($algorithm, hash_algos())) {
             return hash($algorithm, $content);
         }
@@ -2059,7 +2052,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_encapsLines($content = '', $conf = [])
     {
-        return $this->encaps_lineSplit($content, $conf['encapsLines.']);
+        return $this->encaps_lineSplit($content, $conf['encapsLines.'] ?? []);
     }
 
     /**
@@ -2558,7 +2551,7 @@ class ContentObjectRenderer
             }
             if (isset($conf['bitAnd']) || isset($conf['bitAnd.'])) {
                 $number = (int)trim((string)$this->stdWrapValue('bitAnd', $conf));
-                if ((new BitSet($number))->get($comparisonValue) === false) {
+                if ((new BitSet($number))->get((int)$comparisonValue) === false) {
                     $flag = false;
                 }
             }
@@ -2765,27 +2758,27 @@ class ContentObjectRenderer
 
         // return value directly by returnKey. No further processing
         if ($valArr !== [''] && (MathUtility::canBeInterpretedAsInteger($conf['returnKey'] ?? null) || ($conf['returnKey.'] ?? false))) {
-            $key = (int)$this->stdWrapValue('returnKey', $conf ?? []);
+            $key = (int)$this->stdWrapValue('returnKey', $conf);
             return $valArr[$key] ?? '';
         }
 
         // return the amount of elements. No further processing
         if ($valArr !== [''] && (($conf['returnCount'] ?? false) || ($conf['returnCount.'] ?? false))) {
-            $returnCount = (bool)$this->stdWrapValue('returnCount', $conf ?? []);
+            $returnCount = (bool)$this->stdWrapValue('returnCount', $conf);
             return $returnCount ? count($valArr) : 0;
         }
 
         // calculate splitCount
         $splitCount = count($valArr);
-        $max = (int)$this->stdWrapValue('max', $conf ?? []);
+        $max = (int)$this->stdWrapValue('max', $conf);
         if ($max && $splitCount > $max) {
             $splitCount = $max;
         }
-        $min = (int)$this->stdWrapValue('min', $conf ?? []);
+        $min = (int)$this->stdWrapValue('min', $conf);
         if ($min && $splitCount < $min) {
             $splitCount = $min;
         }
-        $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
+        $wrap = (string)$this->stdWrapValue('wrap', $conf);
         $cObjNumSplitConf = isset($conf['cObjNum.']) ? $this->stdWrap($conf['cObjNum'] ?? '', $conf['cObjNum.']) : (string)($conf['cObjNum'] ?? '');
         $splitArr = [];
         if ($wrap !== '' || $cObjNumSplitConf !== '') {
@@ -3199,7 +3192,7 @@ class ContentObjectRenderer
      * @return string The processed input value being returned; Split lines imploded by LF again.
      * @internal
      */
-    public function encaps_lineSplit($theValue, $conf): string
+    public function encaps_lineSplit($theValue, array $conf): string
     {
         if ((string)$theValue === '') {
             return '';
@@ -3213,7 +3206,7 @@ class ContentObjectRenderer
         }
 
         $encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList'] ?? ''), true);
-        $defaultAlign = trim((string)$this->stdWrapValue('defaultAlign', $conf ?? []));
+        $defaultAlign = trim((string)$this->stdWrapValue('defaultAlign', $conf));
 
         $str_content = '';
         foreach ($lParts as $k => $l) {
@@ -4207,7 +4200,7 @@ class ContentObjectRenderer
      */
     public function typoLink_URL($conf): string
     {
-        return $this->createUrl($conf ?? []);
+        return $this->createUrl($conf);
     }
 
     /**
@@ -4999,9 +4992,9 @@ class ContentObjectRenderer
      * @return array Returns the array of remaining page UID numbers
      * @internal
      */
-    public function checkPidArray($pageIds): array
+    public function checkPidArray(array $pageIds): array
     {
-        if (!is_array($pageIds) || empty($pageIds)) {
+        if ($pageIds === []) {
             return [];
         }
 
@@ -5033,7 +5026,7 @@ class ContentObjectRenderer
      * @internal
      * @see getQuery()
      */
-    public function getQueryMarkers(Connection $connection, $conf): array
+    public function getQueryMarkers(Connection $connection, array $conf): array
     {
         if (!isset($conf['markers.']) || !is_array($conf['markers.'])) {
             return [];

@@ -738,7 +738,7 @@ readonly class RequestHandler implements RequestHandlerInterface
     {
         $tempArray = [];
         preg_match_all('/\\<\\!--INT_SCRIPT.[a-z0-9]*--\\>/', $searchString, $tempArray);
-        $searchString = preg_replace('/\\<\\!--INT_SCRIPT.[a-z0-9]*--\\>/', '', $searchString);
+        $searchString = (string)preg_replace('/\\<\\!--INT_SCRIPT.[a-z0-9]*--\\>/', '', $searchString);
         $intObjects = implode('', $tempArray[0]);
     }
 

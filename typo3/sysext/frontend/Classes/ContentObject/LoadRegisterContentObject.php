@@ -28,7 +28,7 @@ class LoadRegisterContentObject extends AbstractContentObject
     /**
      * Does not return any content, it just sets internal data based on the TypoScript properties.
      *
-     * @param array $conf Array of TypoScript properties
+     * @param mixed $conf Array of TypoScript properties (marked as "mixed" currently because we don't know what we're receiving)
      * @return string Empty string
      */
     public function render($conf = []): string
@@ -39,7 +39,7 @@ class LoadRegisterContentObject extends AbstractContentObject
             $isExecuted = [];
             foreach ($conf as $key => $value) {
                 $key = rtrim($key, '.');
-                if (!isset($isExecuted[$key]) || !$isExecuted[$key]) {
+                if (!isset($isExecuted[$key])) {
                     $registerProperties = $key . '.';
                     if (isset($conf[$key]) && isset($conf[$registerProperties])) {
                         $value = $this->cObj->stdWrap($conf[$key], $conf[$registerProperties]);

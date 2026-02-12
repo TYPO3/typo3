@@ -23,10 +23,10 @@ class CaseContentObject extends AbstractContentObject
     /**
      * Rendering the cObject, CASE
      *
-     * @param array $conf Array of TypoScript properties
+     * @param mixed $conf Array of TypoScript properties (marked as "mixed" currently because we don't know what we're receiving)
      * @return string Output
      */
-    public function render($conf = [])
+    public function render($conf = []): string
     {
         if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
             return '';

@@ -323,7 +323,7 @@ class AdministrationController extends ActionController
     protected function saveStopwordsAction(string $pageHash, array $stopwords = []): ResponseInterface
     {
         if ($this->getBackendUserAuthentication()->isAdmin()) {
-            if (is_array($stopwords) && !empty($stopwords)) {
+            if ($stopwords !== []) {
                 $this->administrationRepository->saveStopWords($stopwords);
             }
         }

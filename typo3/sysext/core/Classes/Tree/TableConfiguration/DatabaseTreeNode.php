@@ -118,7 +118,10 @@ class DatabaseTreeNode extends TreeRepresentationNode
         if ($this->equals($other)) {
             return 0;
         }
-        return $this->sortValue > $other->getSortValue() ? 1 : -1;
+        if ($other instanceof self) {
+            return $this->sortValue > $other->getSortValue() ? 1 : -1;
+        }
+        return parent::compareTo($other);
     }
 
     /**

@@ -796,7 +796,7 @@ class DatabaseRecordList
                     if ($allowManualSorting) {
                         if ($prevUid) {
                             $this->currentTable['prev'][$record->getUid()] = $prevPrevUid;
-                            $this->currentTable['next'][$prevUid] = '-' . $record->getUid();
+                            $this->currentTable['next'][$prevUid] = -$record->getUid();
                             $this->currentTable['prevUid'][$record->getUid()] = $prevUid;
                         }
                         $prevPrevUid = isset($this->currentTable['prev'][$record->getUid()]) ? -$prevUid : $record->getPid();

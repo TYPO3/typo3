@@ -78,10 +78,8 @@ class FilesContentObject extends AbstractContentObject
     /**
      * Function to check for references, collections, folders and
      * accumulates into one etc.
-     *
-     * @return FileCollector
      */
-    protected function findAndSortFiles(array $conf)
+    protected function findAndSortFiles(array $conf): FileCollector
     {
         $fileCollector = $this->getFileCollector();
 
@@ -144,7 +142,7 @@ class FilesContentObject extends AbstractContentObject
      * @param array $configuration TypoScript configuration
      * @param array $element The parent element referencing to files
      */
-    protected function addFileReferences(array $configuration, array $element, FileCollector $fileCollector)
+    protected function addFileReferences(array $configuration, array $element, FileCollector $fileCollector): void
     {
         // It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
         $referencesFieldName = $this->cObj->stdWrapValue('fieldName', $configuration['references.'] ?? []);

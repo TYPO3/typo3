@@ -503,9 +503,7 @@ class AdministrationRepository
                         ->executeQuery()
                         ->fetchAllAssociative();
 
-                    if (is_array($wordRecords)) {
-                        $row['allWords'] = array_column($wordRecords, 'baseword');
-                    }
+                    $row['allWords'] = array_column($wordRecords, 'baseword');
                 }
 
                 $lines[] = $row;

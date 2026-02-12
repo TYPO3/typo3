@@ -443,9 +443,7 @@ class DataHandler
 
         // Get default values from user TSconfig
         $tcaDefaultOverride = $this->BE_USER->getTSConfig()['TCAdefaults.'] ?? null;
-        if (is_array($tcaDefaultOverride)) {
-            $this->setDefaultsFromUserTS($tcaDefaultOverride);
-        }
+        $this->setDefaultsFromUserTS($tcaDefaultOverride);
 
         foreach ($dataMap as $tableName => $tableRecordArray) {
             // @todo: Move this to a public setter and call it here. Then protect the property.
@@ -473,7 +471,7 @@ class DataHandler
      * Function that can mirror input values in datamap-array to other uid numbers.
      * Example: $mirror[table][11] = '22,33' will look for content in $this->datamap[table][11] and copy it to $this->datamap[table][22] and $this->datamap[table][33]
      *
-     * @param array $mirror This array has the syntax $mirror[table_name][uid] = [list of uids to copy data-value TO!]
+     * @param array|mixed $mirror This array has the syntax $mirror[table_name][uid] = [list of uids to copy data-value TO!]
      * @internal
      */
     public function setMirror($mirror): void
@@ -503,7 +501,7 @@ class DataHandler
      * TCAdefaults.tt_content.header_layout = 1 (field-level)
      * TCAdefaults.tt_content.header_layout.types.textmedia = 3 (type-specific)
      *
-     * @param array $userTS User TSconfig array
+     * @param array|null $userTS User TSconfig array
      * @internal should only be used from within DataHandler
      */
     public function setDefaultsFromUserTS($userTS): void
@@ -686,6 +684,7 @@ class DataHandler
                     if (method_exists($hookObj, 'processDatamap_preProcessFieldArray')) {
                         $hookObj->processDatamap_preProcessFieldArray($incomingFieldArray, $table, $id, $this);
                         // If a hook invalidated $incomingFieldArray, skip the record completely
+                        /** @phpstan-ignore-next-line */
                         if (!is_array($incomingFieldArray)) {
                             continue 2;
                         }
@@ -2969,7 +2968,7 @@ class DataHandler
      * See checkValue_flex_procInData_travDS() for more details.
      * WARNING: Currently, it traverses based on the actual _data_ array and NOT the _structure_. This means that values for non-valid fields, lKey/vKey/sKeys will be accepted! For traversal of data with a call back function you should rather use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
      *
-     * @param array $dataPart The 'data' part of the INPUT flexform data
+     * @param array|null $dataPart The 'data' part of the INPUT flexform data
      * @param array $dataPart_current The 'data' part of the CURRENT flexform data
      * @param array $dataStructure Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions
@@ -3006,7 +3005,7 @@ class DataHandler
      *
      * @param array $dataValues New values (those being processed): Multidimensional Data array for sheet/language, passed by reference!
      * @param array $dataValues_current Current values: Multidimensional Data array. May be empty array() if not needed (for callBackFunctions)
-     * @param array $DSelements Data structure which fits the data array
+     * @param array|null $DSelements Data structure which fits the data array
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions / call back function
      * @param string $callBackFunc Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
      * @param string $structurePath
@@ -3698,7 +3697,7 @@ class DataHandler
                             $rows[$movePlaceHolderId] = $liveRecord;
                         }
                     }
-                    if (is_array($rows)) {
+                    if ($rows !== []) {
                         $languageSourceMap = [];
                         $overrideValues = $translationSourceField ? [$translationSourceField => 0] : [];
                         $doRemap = false;
@@ -7566,7 +7565,7 @@ class DataHandler
      */
     protected function updateDB($table, $uid, $fieldArray, int $recordPid): void
     {
-        if (!is_array($fieldArray) || !$this->tcaSchemaFactory->has($table) || !(int)$uid) {
+        if (!$this->tcaSchemaFactory->has($table) || !(int)$uid) {
             return;
         }
         // Never update the uid field
@@ -7605,7 +7604,7 @@ class DataHandler
      */
     protected function insertDB($table, $id, $fieldArray, $suggestedUid = 0): ?int
     {
-        if (!is_array($fieldArray) || !$this->tcaSchemaFactory->has($table) || !isset($fieldArray['pid'])) {
+        if (!$this->tcaSchemaFactory->has($table) || !isset($fieldArray['pid'])) {
             return null;
         }
         // Do NOT insert the UID field, ever!

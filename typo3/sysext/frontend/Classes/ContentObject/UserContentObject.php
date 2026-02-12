@@ -32,7 +32,7 @@ class UserContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
-        if (!is_array($conf) || empty($conf)) {
+        if (empty($conf)) {
             $this->getTimeTracker()->setTSlogMessage('USER without configuration.', LogLevel::WARNING);
             return '';
         }

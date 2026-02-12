@@ -1709,6 +1709,7 @@ class PageRepository implements LoggerAwareInterface
      * @param bool $unsetMovePointers If set, the $row is cleared in case it is a move-pointer. This is only for preview of moved records (to remove the record from the original location so it appears only in the new location)
      * @param bool $bypassEnableFieldsCheck Unless this option is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. This is because when versionOL() is called it is assumed that the online record is already selected with no regards to it's enablefields. However, after looking for a new version the online record enablefields must ALSO be evaluated of course. This is done all by this function!
      * @see BackendUtility::workspaceOL()
+     * @param-out false|array|null $row
      */
     public function versionOL(string $table, &$row, bool $unsetMovePointers = false, bool $bypassEnableFieldsCheck = false): void
     {

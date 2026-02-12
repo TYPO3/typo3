@@ -40,7 +40,7 @@ abstract class AbstractContentObject
     /**
      * Renders the content object.
      *
-     * @param array $conf
+     * @param mixed $conf Array of TypoScript properties (marked as "mixed" currently because we don't know what we're receiving)
      * @return string
      * @throws ContentRenderingException
      * @throws \Exception

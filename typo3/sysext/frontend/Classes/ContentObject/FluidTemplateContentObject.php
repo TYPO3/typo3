@@ -61,7 +61,7 @@ class FluidTemplateContentObject extends AbstractContentObject
      *   mylabel.value = Label from TypoScript coming
      * }
      *
-     * @param array $conf Array of TypoScript properties
+     * @param mixed $conf Array of TypoScript properties (marked as "mixed" currently because we don't know what we're receiving)
      */
     public function render($conf = []): string
     {

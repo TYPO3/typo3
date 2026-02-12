@@ -18,16 +18,17 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu\Fixtures;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 
 final class AbstractMenuContentObjectFixture extends AbstractMenuContentObject
 {
-    public $conf = [];
-    public $mconf = [];
-    public $sys_page;
-    public $id;
-    public $menuArr;
+    public array $conf = [];
+    public array $mconf = [];
+    public PageRepository $sys_page;
+    public int $id = 0;
+    public array $menuArr = [];
     public ServerRequestInterface $request;
 
     public function isItemState($kind, $key)

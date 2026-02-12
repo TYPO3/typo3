@@ -291,7 +291,7 @@ class TranslationStatusController extends InfoModuleController
         // Put together HEADER:
         $headerCells = [];
         $headerCells[] = '<th>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . '</th>';
-        if ($backendUser->check('tables_modify', 'pages') && is_array($langRecUids[0])) {
+        if ($backendUser->check('tables_modify', 'pages')) {
             $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [
