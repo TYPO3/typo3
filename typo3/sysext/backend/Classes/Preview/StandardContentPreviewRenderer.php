@@ -241,7 +241,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 }
                 break;
             case 'html':
-                $html = $this->fieldProcessor->preparePlainHtml($recordObj, 'bodytext');
+                $html = (string)$this->fieldProcessor->preparePlainHtml($recordObj, 'bodytext');
                 return $this->fieldProcessor->linkToEditForm($html, $recordObj, $request);
             default:
                 $content = (string)$this->fieldProcessor->prepareText($recordObj, 'bodytext');
