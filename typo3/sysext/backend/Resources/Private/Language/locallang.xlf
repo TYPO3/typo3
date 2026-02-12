@@ -240,6 +240,18 @@
       <trans-unit id="colorScheme.dark">
         <source>Dark mode</source>
       </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.title">
+        <source>Language changed</source>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.message">
+        <source>A reload is required for the changed to take effect.</source>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.buttonReload">
+        <source>Reload</source>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.buttonCancel">
+        <source>Cancel</source>
+      </trans-unit>
       <trans-unit id="pageTree.found_translation">
         <source>Found translation</source>
       </trans-unit>

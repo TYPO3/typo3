@@ -561,8 +561,7 @@ class EditDocumentController
                 $beUser->user['lang'] = $newLanguageKey;
                 // Re-create LANG to have the current request updated the translated page as well
                 $this->getLanguageService()->init($newLanguageKey);
-                BackendUtility::setUpdateSignal('updateModuleMenu');
-                BackendUtility::setUpdateSignal('updateTopbar');
+                BackendUtility::setUpdateSignal('updateBackendLanguage', [ 'language' => $newLanguageKey ]);
             }
 
             // If pages are being edited, we set an instruction about updating the page tree after this operation.

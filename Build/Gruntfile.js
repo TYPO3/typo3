@@ -297,6 +297,16 @@ module.exports = function (grunt) {
         tasks: ['scripts', 'bell']
       }
     },
+    'generate-types': {
+      labels: {
+        src: [
+          '<%= paths.sysext %>**/*.xlf',
+          '!<%= paths.sysext %>/**/*.*.xlf',
+          '!<%= paths.sysext %>/**/Tests/**/*.xlf',
+        ],
+        generator: './lib/generate-label-types.js',
+      },
+    },
     'process-javascript': {
       ts: {
         src: [
@@ -588,7 +598,7 @@ module.exports = function (grunt) {
    * - 3) Compiles all TypeScript files (*.ts) which are located in Sources/TypeScript/<EXTKEY>/*.ts
    * - 4) Process, minify and copy all generated JavaScript files to public folders
    */
-  grunt.registerTask('scripts', ['clear-built-js', 'concurrent:eslint_ts']);
+  grunt.registerTask('scripts', ['clear-built-js', 'generate-types:labels', 'concurrent:eslint_ts']);
   grunt.registerTask('ts', ['exec:ts', 'process-javascript:ts']);
 
   /**
@@ -628,6 +638,8 @@ module.exports = function (grunt) {
     if (grunt.file.isDir('JavaScript')) {
       grunt.file.delete('JavaScript');
     }
+
+    grunt.file.expand('types/labels/*.d.ts').map(file => grunt.file.delete(file));
   });
 
   /**
@@ -639,6 +651,24 @@ module.exports = function (grunt) {
       grunt.file.delete(fontPath, { force: true });
     }
     grunt.log.ok(`Cleared ${fontPath}.`);
+  });
+
+  grunt.task.registerMultiTask('generate-types', function () {
+    const done = this.async();
+    const { src, generator } = this.data;
+
+    const process = async (src, generator) => {
+      const files = grunt.file.expand(src);
+      const { generate } = await import(generator);
+      await Promise.all(files.map(generate));
+    };
+
+    process(src, generator)
+      .then(done)
+      .catch(e => {
+        console.error(e)
+        done(false)
+      });
   });
 
   grunt.task.registerMultiTask('process-javascript', function () {

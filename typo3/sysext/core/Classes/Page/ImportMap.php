@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Page\Event\ResolveJavaScriptImportEvent;
+use TYPO3\CMS\Core\Page\Event\ResolveVirtualJavaScriptImportEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Directive;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\HashValue;
@@ -286,6 +287,10 @@ class ImportMap
     ): array {
         $cacheBustingSpecifiers = [];
         foreach ($imports as $specifier => $address) {
+            if (is_string($address) && str_starts_with($address, 'VIRTUAL:')) {
+                $imports[$specifier] = $address;
+                continue;
+            }
             if (str_ends_with($specifier, '/')) {
                 $path = is_array($address) ? ($address['path'] ?? '') : $address;
                 $exclude = is_array($address) ? ($address['exclude'] ?? []) : [];
@@ -350,7 +355,15 @@ class ImportMap
         unset($importMap['tags']);
 
         foreach ($importMap['imports'] ?? [] as $specifier => $url) {
-            $importMap['imports'][$specifier] = $urlPrefix . $url;
+            $resolved = $urlPrefix . $url;
+            if (str_starts_with($url, 'VIRTUAL:')) {
+                $virtualName = substr($url, 8);
+                $resolved = $this->dispatchResolveVirtualJavaScriptImportEvent($virtualName);
+                if ($resolved === null) {
+                    continue;
+                }
+            }
+            $importMap['imports'][$specifier] = $resolved;
         }
 
         return $importMap;
@@ -369,6 +382,21 @@ class ImportMap
 
         return $this->eventDispatcher->dispatch(
             new ResolveJavaScriptImportEvent($specifier, $loadImportConfiguration, $this)
+        )->resolution;
+    }
+
+    /**
+     * @return ?non-empty-string
+     */
+    protected function dispatchResolveVirtualJavaScriptImportEvent(
+        string $specifier,
+    ): ?string {
+        if ($this->eventDispatcher === null) {
+            return null;
+        }
+
+        return $this->eventDispatcher->dispatch(
+            new ResolveVirtualJavaScriptImportEvent($specifier, $this)
         )->resolution;
     }
 

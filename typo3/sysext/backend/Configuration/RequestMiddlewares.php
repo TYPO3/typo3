@@ -94,10 +94,17 @@ return [
             ],
         ],
         /** internal: do not use or reference this middleware in your own code */
+        'typo3/cms-backend/js-label-importmap-resolver' => [
+            'target' => \TYPO3\CMS\Backend\Middleware\JavaScriptLabelImportMapEntryResolver::class,
+            'after' => [
+                'typo3/cms-backend/csp-headers',
+            ],
+        ],
+        /** internal: do not use or reference this middleware in your own code */
         'typo3/cms-backend/response-headers' => [
             'target' => \TYPO3\CMS\Backend\Middleware\AdditionalResponseHeaders::class,
             'after' => [
-                'typo3/cms-backend/csp-headers',
+                'typo3/cms-backend/js-label-importmap-resolver',
             ],
         ],
         /** internal: do not use or reference this middleware in your own code */

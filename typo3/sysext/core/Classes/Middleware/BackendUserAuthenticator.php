@@ -62,6 +62,9 @@ abstract class BackendUserAuthenticator implements MiddlewareInterface
      */
     protected function applyHeadersToResponse(ResponseInterface $response): ResponseInterface
     {
+        if ($response->getHeaderLine('Cache-Control')) {
+            return $response;
+        }
         $headers = [
             'Expires' => 0,
             'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',

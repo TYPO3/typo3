@@ -14,6 +14,9 @@
 import { BroadcastMessage, type BroadcastEvent } from '@typo3/backend/broadcast-message';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import Persistent from '@typo3/backend/storage/persistent';
+import Modal, { type ModalElement } from '@typo3/backend/modal';
+import { SeverityEnum } from '@typo3/backend/enum/severity';
+import labels from '~labels/backend.messages';
 
 enum Identifier {
   colorSchemeSwitch = 'typo3-backend-color-scheme-switch',
@@ -23,7 +26,6 @@ export type ColorScheme = 'auto' | 'light' | 'dark';
 export type Theme = 'modern' | 'classic' | 'fresh';
 export type TitleFormat = 'titleFirst' | 'sitenameFirst';
 export type DayOfWeek = '' | '1' | '2' | '3' | '4' | '5' | '6' | '7'; // 1=Sunday, 2=Monday, ... 7=Saturday
-export type Direction = 'rtl' | null;
 
 // Event for typo3:color-scheme:update and typo3:color-scheme:broadcast
 export interface ColorSchemeUpdateEventData {
@@ -48,7 +50,6 @@ export interface DateTimeFirstDayOfWeekUpdateEventData {
 // Event for typo3:backend-language:update and typo3:backend-language:broadcast
 export interface BackendLanguageUpdateEventData {
   language: string;
-  direction: Direction;
 }
 
 // Event for typo3:persistent:update and typo3:persistent:broadcast
@@ -77,7 +78,7 @@ class UserSettingsManager {
     document.addEventListener('typo3:color-scheme:broadcast', e => this.activateColorScheme(e.detail.payload.colorScheme));
     document.addEventListener('typo3:theme:broadcast', e => this.activateTheme(e.detail.payload.theme));
     document.addEventListener('typo3:title-format:broadcast', e => this.activateTitleFormat(e.detail.payload.format));
-    document.addEventListener('typo3:backend-language:broadcast', e => this.updateBackendLanguage(e.detail.payload.language, e.detail.payload.direction));
+    document.addEventListener('typo3:backend-language:broadcast', () => this.requestBackendLanguageRefresh());
     document.addEventListener('typo3:persistent:broadcast', e => this.updatePersistent(e.detail.payload.fieldName, e.detail.payload.value));
   }
 
@@ -114,11 +115,11 @@ class UserSettingsManager {
   }
 
   private onBackendLanguageFormatUpdate(data: BackendLanguageUpdateEventData) {
-    const { language, direction } = data;
-    this.updateBackendLanguage(language, direction);
+    const { language } = data;
+    this.requestBackendLanguageRefresh();
 
     // broadcast to other instances
-    BroadcastService.post(new BroadcastMessage<BackendLanguageUpdateEventData>('language-update', 'broadcast', { language, direction }));
+    BroadcastService.post(new BroadcastMessage<BackendLanguageUpdateEventData>('backend-language', 'broadcast', { language }));
   }
 
   private onPersistentUpdate(data: PersistentUpdateEventData) {
@@ -153,19 +154,34 @@ class UserSettingsManager {
     this.updatePersistent('dateTimeFirstDayOfWeek', dow);
   }
 
-  private updateBackendLanguage(language: string, direction: Direction): void {
-    const rootEl = document.documentElement;
-    const frame = window.frames.list_frame?.document.documentElement;
-
-    rootEl.setAttribute('lang', language);
-    frame?.setAttribute('lang', language);
-    if (direction !== null) {
-      rootEl.setAttribute('dir', direction);
-      frame?.setAttribute('dir', direction);
-    } else {
-      rootEl.removeAttribute('dir');
-      frame?.removeAttribute('dir');
+  private requestBackendLanguageRefresh(): void {
+    const className = 't3js-request-backend-language-refresh';
+    if (Modal.currentModal?.querySelector('dialog')?.classList.contains(className)) {
+      // Prevent opening multiple modals if the language
+      // is switched multiple times in another tab
+      return;
     }
+    Modal.confirm(
+      labels.get('userSettings.requestBackendLanguageRefresh.title'),
+      labels.get('userSettings.requestBackendLanguageRefresh.message'),
+      SeverityEnum.notice,
+      [
+        {
+          text: labels.get('userSettings.requestBackendLanguageRefresh.buttonCancel'),
+          btnClass: 'btn-default',
+          trigger: (e: Event, modal: ModalElement) => modal.hideModal(),
+          name: 'cancel',
+        },
+        {
+          text: labels.get('userSettings.requestBackendLanguageRefresh.buttonReload'),
+          active: true,
+          btnClass: 'btn-primary',
+          trigger: () => top.window.location.reload(),
+          name: 'ok',
+        },
+      ],
+      [className],
+    );
   }
 
   private updatePersistent(fieldName: string, value: string) {

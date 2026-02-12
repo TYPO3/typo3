@@ -300,4 +300,13 @@ return [
         'methods' => ['GET'],
         'target' => Controller\Resource\ResourceController::class . '::requestThumbnailAction',
     ],
+
+    // Language domain
+    'language_domain' => [
+        'path' => '/language/domain/{locale}/{cacheBustInfix}/{domain}',
+        'methods' => ['GET'],
+        'target' => Controller\JavaScriptLanguageDomainController::class . '::getLanguageDomainAction',
+        // Do not require a request token
+        'access' => 'public',
+    ],
 ];

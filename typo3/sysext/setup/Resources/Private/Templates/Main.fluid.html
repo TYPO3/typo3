@@ -7,11 +7,6 @@
 
 <f:section name="Before">
     <f:asset.module identifier="@typo3/backend/tabs.js"/>
-
-    <f:if condition="{isLanguageUpdate}">
-        <typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>
-        <typo3-immediate-action action="TYPO3.Backend.Topbar.refresh"></typo3-immediate-action>
-    </f:if>
 </f:section>
 
 <f:section name="Content">

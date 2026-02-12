@@ -30,6 +30,7 @@
         "pretty": true,
         "paths": {
             "@typo3/*": ["./Sources/TypeScript/*"],
+            "~labels/*": ["./types/labels/*"],
             "*": ["./types/*"]
         },
         "rootDir": "./Sources/TypeScript",

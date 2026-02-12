@@ -15,12 +15,18 @@ export const isContrib = (importValue) => {
   }
 };
 
+export const isVirtual = importValue => importValue.charAt(0) === '~';
+
 export const mapImport = (targetModule, context) => {
   if (
     targetModule.charAt(0) === '.' &&
     (context.indexOf('node_modules/lit') !== -1 || context.indexOf('node_modules/@lit/') !== -1 || context.indexOf('node_modules/@lit-labs/') !== -1)
   ) {
     return resolve(dirname(context), targetModule).replace(/^.*\/node_modules\//g, '');
+  }
+
+  if (isVirtual(targetModule)) {
+    return targetModule;
   }
 
   if (isContrib(targetModule)) {

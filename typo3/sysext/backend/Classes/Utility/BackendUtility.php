@@ -2145,7 +2145,6 @@ class BackendUtility
                             'typo3:backend-language:update',
                             [
                                 'language' => $val['parameter']['language'],
-                                'direction' => $val['parameter']['direction'] ?? null,
                             ],
                             true
                         );
