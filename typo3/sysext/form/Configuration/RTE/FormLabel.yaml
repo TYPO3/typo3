@@ -1,0 +1,20 @@
+# Load processing options
+imports:
+    - { resource: 'EXT:form/Configuration/RTE/ProcessingLabel.yaml' }
+    - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml' }
+    - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml' }
+
+# RTE configuration for form labels and short text fields
+# Contains only essential formatting options: bold, italic, link
+editor:
+  config:
+    toolbar:
+      items:
+        - bold
+        - italic
+        - '|'
+        - link
+        - '|'
+        - clipboard
+        - undo
+        - redo

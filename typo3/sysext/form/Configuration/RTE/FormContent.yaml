@@ -1,0 +1,23 @@
+# Load processing options
+imports:
+    - { resource: 'EXT:form/Configuration/RTE/ProcessingContent.yaml' }
+    - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml' }
+    - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml' }
+
+# RTE configuration for form content fields (e.g., StaticText)
+# Contains extended formatting options including lists
+editor:
+  config:
+    toolbar:
+      items:
+        - bold
+        - italic
+        - '|'
+        - link
+        - '|'
+        - bulletedList
+        - numberedList
+        - '|'
+        - clipboard
+        - undo
+        - redo

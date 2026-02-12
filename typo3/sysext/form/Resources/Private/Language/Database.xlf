@@ -1243,7 +1243,7 @@
         <source>Static text</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.StaticText.description">
-        <source>A field for unformatted text</source>
+        <source>A field for displaying text content</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.StaticText.editor.label.label">
         <source>Header</source>

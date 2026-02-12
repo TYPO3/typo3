@@ -15,6 +15,7 @@ import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import labels from '~labels/form.form_editor_javascript';
 import '@typo3/backend/element/icon-element';
+import { stripTags } from '../utility/string-utility';
 
 export interface Validator {
   identifier: string;
@@ -93,7 +94,7 @@ export class FormElementStageItem extends LitElement {
         </div>
         <div class="formeditor-element-info">
           <div class="formeditor-element-info-label">
-            <span>${this.elementLabel}</span>
+            <span>${stripTags(this.elementLabel)}</span>
             ${this.isRequired ? html`<span>*</span>` : nothing}
           </div>
           ${this.renderInfoContent()}
@@ -265,7 +266,7 @@ export class FormElementStageItem extends LitElement {
     if (this.content) {
       items.push(html`
         <div class="formeditor-element-info-text">
-          ${this.content}
+          ${stripTags(this.content)}
         </div>
       `);
     }

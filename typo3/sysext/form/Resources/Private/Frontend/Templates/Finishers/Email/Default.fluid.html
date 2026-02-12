@@ -12,7 +12,7 @@
                         <td colspan="2"><b>{formvh:translateElementProperty(element: formValue.element, property: 'label', languageKey: languageKey)}</b></td>
                     </f:then>
                     <f:else>
-                        <td valign="top" align="left">{formvh:translateElementProperty(element: formValue.element, property: 'label', languageKey: languageKey)}</td>
+                        <td valign="top" align="left">{formvh:translateElementProperty(element: formValue.element, property: 'label', languageKey: languageKey) -> f:sanitize.html() -> f:transform.html()}</td>
                         <td valign="top" align="left">
                             <f:if condition="{formValue.value}">
                                 <f:then>

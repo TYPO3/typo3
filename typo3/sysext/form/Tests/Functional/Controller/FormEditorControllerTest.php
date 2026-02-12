@@ -40,6 +40,7 @@ use TYPO3\CMS\Form\Event\BeforeFormIsSavedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\DatabaseService;
+use TYPO3\CMS\Form\Service\FormEditorEnrichmentService;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Form\Type\FormDefinitionArray;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -48,6 +49,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'form',
+        'rte_ckeditor',
     ];
 
     #[Test]
@@ -55,6 +57,8 @@ final class FormEditorControllerTest extends FunctionalTestCase
     {
         $translationServiceMock = $this->createMock(TranslationService::class);
         $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $formEditorEnrichmentServiceMock = $this->createMock(FormEditorEnrichmentService::class);
+        $formEditorEnrichmentServiceMock->method('enrichFormEditorDefinitions')->willReturnArgument(0);
         $subjectMock = $this->getAccessibleMock(
             FormEditorController::class,
             null,
@@ -73,6 +77,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 $this->createMock(DatabaseService::class),
                 $this->createMock(CacheManager::class),
                 $this->createMock(ComponentFactory::class),
+                $formEditorEnrichmentServiceMock,
             ],
         );
         $prototypeConfiguration = [
@@ -160,6 +165,8 @@ final class FormEditorControllerTest extends FunctionalTestCase
     {
         $translationServiceMock = $this->createMock(TranslationService::class);
         $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $formEditorEnrichmentServiceMock = $this->createMock(FormEditorEnrichmentService::class);
+        $formEditorEnrichmentServiceMock->method('enrichFormEditorDefinitions')->willReturnArgument(0);
         $subjectMock = $this->getAccessibleMock(
             FormEditorController::class,
             null,
@@ -178,6 +185,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 $this->createMock(DatabaseService::class),
                 $this->createMock(CacheManager::class),
                 $this->createMock(ComponentFactory::class),
+                $formEditorEnrichmentServiceMock,
             ],
         );
         $prototypeConfiguration = [
@@ -516,7 +524,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
             ->withAttribute('extbase', new ExtbaseRequestParameters())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
-        $formDefinition = (new FormDefinitionConversionService())->addHmacData([
+        $formDefinition = $this->get(FormDefinitionConversionService::class)->addHmacData([
             'type' => 'Form',
             'identifier' => 'test123_1',
             'label' => 'test123',
@@ -540,5 +548,143 @@ final class FormEditorControllerTest extends FunctionalTestCase
         self::assertInstanceOf(BeforeFormIsSavedEvent::class, $state['before-form-saved-listener']);
         self::assertEquals('1:/form_definitions/new_form.form.yaml', $state['before-form-saved-listener']->formPersistenceIdentifier);
         self::assertEquals('bar', $state['before-form-saved-listener']->form['label']);
+    }
+
+    #[Test]
+    public function getFormEditorDefinitionsEnrichesTextareaEditorsWithRteOptions(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(\TYPO3\CMS\Core\Localization\LanguageServiceFactory::class)
+            ->createFromUserPreferences($GLOBALS['BE_USER']);
+
+        $translationServiceMock = $this->createMock(TranslationService::class);
+        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+
+        $subject = $this->getAccessibleMock(
+            FormEditorController::class,
+            null,
+            [
+                $this->get(ModuleTemplateFactory::class),
+                $this->createMock(PageRenderer::class),
+                $this->createMock(IconFactory::class),
+                $this->get(FormDefinitionConversionService::class),
+                $this->createMock(FormPersistenceManagerInterface::class),
+                $this->createMock(ExtFormConfigurationManagerInterface::class),
+                $translationServiceMock,
+                $this->createMock(ConfigurationService::class),
+                $this->createMock(UriBuilder::class),
+                $this->createMock(ArrayFormFactory::class),
+                $this->createMock(ViewFactoryInterface::class),
+                $this->createMock(DatabaseService::class),
+                $this->createMock(CacheManager::class),
+                $this->createMock(ComponentFactory::class),
+                $this->get(FormEditorEnrichmentService::class),
+            ],
+        );
+
+        $prototypeConfiguration = [
+            'formEditor' => [
+                'formElementPropertyValidatorsDefinition' => [],
+            ],
+            'formElementsDefinition' => [
+                'StaticText' => [
+                    'formEditor' => [
+                        'editors' => [
+                            100 => [
+                                'identifier' => 'text',
+                                'templateName' => 'Inspector-TextareaEditor',
+                                'label' => 'Text',
+                                'propertyPath' => 'properties.text',
+                                'enableRichtext' => true,
+                            ],
+                            200 => [
+                                'identifier' => 'label',
+                                'templateName' => 'Inspector-TextEditor',
+                                'label' => 'Label',
+                                'propertyPath' => 'label',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'finishersDefinition' => [
+                'EmailToReceiver' => [
+                    'formEditor' => [
+                        'editors' => [
+                            100 => [
+                                'identifier' => 'subject',
+                                'templateName' => 'Inspector-TextEditor',
+                                'label' => 'Subject',
+                            ],
+                        ],
+                        'propertyCollections' => [
+                            'finishers' => [
+                                200 => [
+                                    'identifier' => 'EmailToReceiver',
+                                    'editors' => [
+                                        900 => [
+                                            'identifier' => 'message',
+                                            'templateName' => 'Inspector-TextareaEditor',
+                                            'label' => 'Message',
+                                            'propertyPath' => 'options.message',
+                                            'enableRichtext' => true,
+                                            'richtextConfiguration' => 'default',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $subject->_call('getFormEditorDefinitions', $prototypeConfiguration);
+
+        self::assertArrayHasKey('formElements', $result);
+        self::assertArrayHasKey('finishers', $result);
+
+        // Test 1: StaticText textarea editor should have rteOptions
+        self::assertArrayHasKey('StaticText', $result['formElements']);
+        self::assertArrayHasKey('editors', $result['formElements']['StaticText']);
+        self::assertArrayHasKey(0, $result['formElements']['StaticText']['editors'], 'First editor should be at index 0');
+        self::assertArrayHasKey(1, $result['formElements']['StaticText']['editors'], 'Second editor should be at index 1');
+
+        $textEditor = $result['formElements']['StaticText']['editors'][0];
+        self::assertArrayHasKey('rteOptions', $textEditor, 'Textarea editor with enableRichtext should have rteOptions');
+        self::assertIsArray($textEditor['rteOptions']);
+        self::assertArrayHasKey('toolbar', $textEditor['rteOptions'], 'RTE options should contain toolbar configuration');
+        self::assertArrayHasKey('language', $textEditor['rteOptions'], 'RTE options should contain language configuration');
+
+        // Test 2: Regular text editor should NOT have rteOptions
+        $labelEditor = $result['formElements']['StaticText']['editors'][1];
+        self::assertArrayNotHasKey('rteOptions', $labelEditor, 'Regular text editor should not have rteOptions');
+
+        // Test 3: PropertyCollections (Finisher) textarea editor should have rteOptions
+        self::assertArrayHasKey('EmailToReceiver', $result['finishers']);
+        self::assertArrayHasKey('propertyCollections', $result['finishers']['EmailToReceiver']);
+        self::assertArrayHasKey('finishers', $result['finishers']['EmailToReceiver']['propertyCollections']);
+        self::assertArrayHasKey(0, $result['finishers']['EmailToReceiver']['propertyCollections']['finishers'], 'First finisher should be at index 0');
+
+        $finisherItem = $result['finishers']['EmailToReceiver']['propertyCollections']['finishers'][0];
+        self::assertArrayHasKey('editors', $finisherItem);
+        self::assertArrayHasKey(0, $finisherItem['editors'], 'First editor in finisher should be at index 0');
+
+        $messageEditor = $finisherItem['editors'][0];
+        self::assertArrayHasKey('rteOptions', $messageEditor, 'Finisher textarea editor with enableRichtext should have rteOptions');
+        self::assertIsArray($messageEditor['rteOptions']);
+        self::assertArrayHasKey('toolbar', $messageEditor['rteOptions']);
+
+        // Test 4: Regular finisher editor should NOT have rteOptions
+        self::assertArrayHasKey('editors', $result['finishers']['EmailToReceiver']);
+        self::assertArrayHasKey(0, $result['finishers']['EmailToReceiver']['editors'], 'First finisher top-level editor should be at index 0');
+        $subjectEditor = $result['finishers']['EmailToReceiver']['editors'][0];
+        self::assertArrayNotHasKey('rteOptions', $subjectEditor, 'Regular finisher editor should not have rteOptions');
+
+        // Test 5: Verify language configuration is properly set
+        self::assertArrayHasKey('ui', $textEditor['rteOptions']['language']);
+        self::assertArrayHasKey('content', $textEditor['rteOptions']['language']);
+        self::assertSame('en', $textEditor['rteOptions']['language']['content'], 'Content language should be "en" for form editor');
     }
 }

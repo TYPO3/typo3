@@ -13,7 +13,7 @@
                     </f:then>
                     <f:else>
                         <dl class="{page.renderingOptions.listRowClassAttribute}">
-                            <dt class="{page.renderingOptions.labelWrapperClassAttribute}">{formvh:translateElementProperty(element: formValue.element, property: 'label')}</dt>
+                            <dt class="{page.renderingOptions.labelWrapperClassAttribute}">{formvh:translateElementProperty(element: formValue.element, property: 'label') -> f:sanitize.html() -> f:transform.html()}</dt>
                             <dd class="{page.renderingOptions.valueWrapperClassAttribute}">
                                 <f:if condition="{formValue.value}">
                                     <f:then>

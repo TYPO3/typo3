@@ -31,6 +31,7 @@ import {
   type DndUpdateEvent,
   type DndChangeEvent
 } from '@typo3/form/backend/form-editor-tree-events';
+import { stripTags } from '@typo3/form/backend/form-editor/utility/string-utility';
 import '@typo3/form/backend/form-editor-tree-container';
 
 
@@ -68,10 +69,11 @@ function getFormElementDefinition<T extends keyof import('@typo3/form/backend/fo
  * @returns FormEditorTreeNode representation
  */
 function formElementToTreeNode(formElement: FormElement): FormEditorTreeNode {
+  const rawLabel = formElement.get('label') || formElement.get('identifier');
   const node: FormEditorTreeNode = {
     identifier: formElement.get('identifier'),
     identifierPath: formElement.get('__identifierPath'),
-    label: formElement.get('label') || formElement.get('identifier'),
+    label: stripTags(rawLabel),
     type: getFormElementDefinition(formElement, 'label'),
     iconIdentifier: getFormElementDefinition(formElement, 'iconIdentifier'),
     isComposite: getFormElementDefinition(formElement, '_isCompositeFormElement'),

@@ -57,12 +57,18 @@ class ArrayFormFactory extends AbstractFormFactory
         }
         $persistenceIdentifier = $configuration['persistenceIdentifier'] ?? null;
 
+        // Get prototype configuration once and reuse it
+        $prototypeConfiguration = GeneralUtility::makeInstance(ConfigurationService::class)
+            ->getPrototypeConfiguration($prototypeName);
+
+        // Get RTE property paths for proper sanitization
+        $rtePropertyPaths = $this->getFormDefinitionConversionService()->extractRtePropertyPaths($prototypeConfiguration);
+
+        $configuration = $this->getFormDefinitionConversionService()->sanitizeHtml($configuration, $rtePropertyPaths);
+
         if ($configuration['invalid'] ?? false) {
             throw new RenderingException($configuration['label'], 1529710560);
         }
-
-        $prototypeConfiguration = GeneralUtility::makeInstance(ConfigurationService::class)
-            ->getPrototypeConfiguration($prototypeName);
 
         $form = GeneralUtility::makeInstance(
             FormDefinition::class,

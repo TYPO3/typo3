@@ -22,6 +22,8 @@ prototypes:
               templateName: Inspector-TextareaEditor
               label: formEditor.elements.StaticText.editor.staticText.label
               propertyPath: properties.text
+              enableRichtext: true
+              richtextConfiguration: form-content
             700:
               identifier: gridColumnViewPortConfiguration
               templateName: Inspector-GridColumnViewPortConfigurationEditor

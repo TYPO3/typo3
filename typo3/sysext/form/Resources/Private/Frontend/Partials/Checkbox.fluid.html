@@ -10,7 +10,7 @@
         <f:variable name="errorClass">{f:if(condition: '{validationResults.errors}', then: ' {element.rootForm.renderingOptions.fieldProperties.errorClassAttribute}')}</f:variable>
 
         <f:render partial="Field/Field" arguments="{element: element, doNotShowLabel: 1}" contentAs="elementContent">
-            <label class="{element.properties.labelClassAttribute}{errorClass}" for="{element.uniqueIdentifier}">
+            <div class="{element.properties.labelClassAttribute}{errorClass}">
                 <f:form.checkbox
                     property="{element.identifier}"
                     id="{element.uniqueIdentifier}"
@@ -20,8 +20,8 @@
                     additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
                     aria="{aria}"
                 />
-                <span class="{element.properties.labelTextClassAttribute}">{formvh:translateElementProperty(element: element, property: 'label')}<f:if condition="{element.required}"><f:render partial="Field/Required" arguments="{element: element}"/></f:if></span>
-            </label>
+                <label class="{element.properties.labelTextClassAttribute}" for="{element.uniqueIdentifier}">{formvh:translateElementProperty(element: element, property: 'label') -> f:sanitize.html() -> f:transform.html()}<f:if condition="{element.required}"><f:render partial="Field/Required" arguments="{element: element}"/></f:if></label>
+            </div>
         </f:render>
     </f:form.validationResults>
 </formvh:renderRenderable>

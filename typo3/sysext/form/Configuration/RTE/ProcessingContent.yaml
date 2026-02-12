@@ -1,0 +1,40 @@
+# ********************************************************
+# Processing configuration for form content fields
+# Extended version that allows lists
+# https://docs.typo3.org/permalink/t3tsref:rte-config-proc
+# ********************************************************
+
+processing:
+  mode: default
+  # Tags that are allowed in the content
+  # Includes list elements for extended formatting
+  allowTags:
+    - a
+    - br
+    - i
+    - strong
+    - ul
+    - ol
+    - li
+    - p
+
+  denyTags: b,u,img,div,center,pre,figure,figcaption,font,hr,sub,sup,em,blockquote,strike,span,abbr,acronym,dfn
+
+  ## Tags that are allowed outside of paragraphs
+  allowTagsOutside:
+    - ul
+    - ol
+
+  ## CONTENT TO PERSISTENCE
+  HTMLparser_db:
+
+    ## REMOVE OPEN OFFICE META DATA TAGS, WORD 2003 TAGS, LINK, META, STYLE AND TITLE TAGS, AND DEPRECATED HTML TAGS
+    removeTags: [link, meta, o:p, sdfield, style, title, font, center]
+
+    ## PROTECT CUSTOM TAGS
+    keepNonMatchedTags: protect
+
+    # HTML Sanitizer
+    htmlSanitize:
+      build: default
+

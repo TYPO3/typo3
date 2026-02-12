@@ -54,6 +54,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormCon
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\DatabaseService;
+use TYPO3\CMS\Form\Service\FormEditorEnrichmentService;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Form\Type\FormDefinitionArray;
 
@@ -84,6 +85,7 @@ class FormEditorController extends ActionController
         protected readonly DatabaseService $databaseService,
         protected readonly CacheManager $cacheManager,
         protected readonly ComponentFactory $componentFactory,
+        protected readonly FormEditorEnrichmentService $formEditorEnrichmentService,
     ) {}
 
     /**
@@ -366,6 +368,7 @@ class FormEditorController extends ActionController
             }
         }
         $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
+        $formEditorDefinitions = $this->formEditorEnrichmentService->enrichFormEditorDefinitions($formEditorDefinitions);
         return $this->translationService->translateValuesRecursive(
             $formEditorDefinitions,
             $prototypeConfiguration['formEditor']['translationFiles'] ?? []
@@ -478,8 +481,7 @@ class FormEditorController extends ActionController
         }
         $formDefinition = $this->filterEmptyArrays($formDefinition);
         $formDefinition = $this->migrateEmailFinisherRecipients($formDefinition);
-        // @todo: replace with rte parsing
-        $formDefinition = ArrayUtility::stripTagsFromValuesRecursive($formDefinition);
+
         $formDefinition = $this->transformMultiValuePropertiesForFormEditor(
             $formDefinition,
             'type',
@@ -490,6 +492,16 @@ class FormEditorController extends ActionController
             'identifier',
             $multiValueFinisherProperties
         );
+
+        $rtePropertyPaths = $this->formDefinitionConversionService->extractRtePropertyPaths($prototypeConfiguration);
+        if ($rtePropertyPaths !== []) {
+            $formDefinition = $this->formDefinitionConversionService->transformRteContentForRichTextEditor(
+                $formDefinition,
+                $rtePropertyPaths
+            );
+        }
+
+        $formDefinition = $this->formDefinitionConversionService->sanitizeHtml($formDefinition, $rtePropertyPaths);
         $formDefinition = $this->formDefinitionConversionService->addHmacData($formDefinition);
         return $this->formDefinitionConversionService->migrateFinisherConfiguration($formDefinition);
     }

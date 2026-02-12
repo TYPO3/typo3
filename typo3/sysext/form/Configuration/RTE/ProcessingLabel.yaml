@@ -1,0 +1,36 @@
+# ********************************************************
+# Sets the proc options for all default configurations
+# https://docs.typo3.org/permalink/t3tsref:rte-config-proc
+# ********************************************************
+
+processing:
+  mode: default
+  # Tags that are allowed in the content in general
+  # Note that some tags like <mark> require you to style them via custom CSS directives in your frontend.
+  allowTags:
+    - a
+    - br
+    - i
+    - strong
+
+  denyTags: b,u,img,br,div,center,pre,figure,figcaption,font,hr,sub,sup,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn
+
+  ## Tags that are allowed outside of paragraphs
+  allowTagsOutside: []
+
+  ## CONTENT TO PERSISTENCE
+  HTMLparser_db:
+
+    ## REMOVE OPEN OFFICE META DATA TAGS, WORD 2003 TAGS, LINK, META, STYLE AND TITLE TAGS, AND DEPRECATED HTML TAGS
+    ## We use this rule instead of the denyTags rule so that we can protect custom tags without protecting these unwanted tags.
+    removeTags: [link, meta, o:p, sdfield, style, title, font, center]
+
+    ## PROTECT CUSTOM TAGS
+    keepNonMatchedTags: protect
+
+    # HTML Sanitizer
+    # `htmlSanitize = false | null` to disable individually
+    htmlSanitize:
+      # either preset name as declared in `$GLOBALS['TYPO3_CONF_VARS']['SYS']['htmlSanitizer']`
+      # or class-name implementing interface `\TYPO3\HtmlSanitizer\Builder\BuilderInterface`
+      build: default

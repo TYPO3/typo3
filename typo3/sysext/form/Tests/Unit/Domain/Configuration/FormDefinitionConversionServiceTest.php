@@ -18,39 +18,39 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
+use TYPO3\CMS\Form\Service\RichTextConfigurationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FormDefinitionConversionServiceTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
+    private function createFormDefinitionConversionService(): FormDefinitionConversionService
+    {
+        $richTextConfigurationServiceMock = $this->createMock(RichTextConfigurationService::class);
+        return new FormDefinitionConversionService($richTextConfigurationServiceMock);
+    }
+
     #[Test]
     public function addHmacDataAddsHmacHashes(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
+
+        $richTextConfigurationServiceMock = $this->createMock(RichTextConfigurationService::class);
         $formDefinitionConversionService = $this->getAccessibleMock(
             FormDefinitionConversionService::class,
             [
                 'generateSessionToken',
                 'persistSessionToken',
             ],
-            [],
-            '',
-            false
+            [$richTextConfigurationServiceMock]
         );
 
         $sessionToken = '123';
         $formDefinitionConversionService->method(
             'generateSessionToken'
         )->willReturn($sessionToken);
-
-        $formDefinitionConversionService->method(
-            'persistSessionToken'
-        )->willReturn(null);
-
-        GeneralUtility::setSingletonInstance(FormDefinitionConversionService::class, $formDefinitionConversionService);
 
         $input = [
             'prototypeName' => 'standard',
@@ -132,8 +132,7 @@ final class FormDefinitionConversionServiceTest extends UnitTestCase
     #[Test]
     public function removeHmacDataRemoveHmacs(): void
     {
-        $formDefinitionConversionService = new FormDefinitionConversionService();
-        GeneralUtility::setSingletonInstance(FormDefinitionConversionService::class, $formDefinitionConversionService);
+        $formDefinitionConversionService = $this->createFormDefinitionConversionService();
 
         $input = [
             'prototypeName' => 'standard',
@@ -202,5 +201,190 @@ final class FormDefinitionConversionServiceTest extends UnitTestCase
         ];
 
         self::assertSame($expected, $formDefinitionConversionService->removeHmacData($input));
+    }
+
+    #[Test]
+    public function sanitizeHtmlRemovesScriptTags(): void
+    {
+        $formDefinitionConversionService = $this->createFormDefinitionConversionService();
+
+        $input = [
+            'label' => 'Test<script>alert("XSS")</script>End',
+            'text' => '<p>Safe content</p>',
+        ];
+
+        $result = $formDefinitionConversionService->sanitizeHtml($input);
+
+        self::assertStringNotContainsString('<script>', $result['label']);
+        self::assertStringContainsString('Test', $result['label']);
+        self::assertStringContainsString('End', $result['label']);
+        self::assertSame('Safe content', $result['text']);
+    }
+
+    #[Test]
+    public function sanitizeHtmlRemovesEventHandlerAttributes(): void
+    {
+        $formDefinitionConversionService = $this->createFormDefinitionConversionService();
+
+        $input = [
+            'label' => '<img src="test.jpg" onerror="alert(1)">',
+            'text' => '<a href="#" onclick="malicious()">Link</a>',
+        ];
+
+        $result = $formDefinitionConversionService->sanitizeHtml($input);
+
+        self::assertStringNotContainsString('onerror', $result['label']);
+        self::assertStringNotContainsString('onclick', $result['text']);
+    }
+
+    #[Test]
+    public function sanitizeHtmlRemovesJavascriptUrls(): void
+    {
+        $formDefinitionConversionService = $this->createFormDefinitionConversionService();
+
+        $input = [
+            'label' => '<a href="javascript:alert(1)">Link</a>',
+        ];
+
+        $result = $formDefinitionConversionService->sanitizeHtml($input);
+
+        self::assertStringNotContainsString('javascript:', $result['label']);
+    }
+
+    #[Test]
+    public function sanitizeHtmlRemovesDangerousTags(): void
+    {
+        $formDefinitionConversionService = $this->createFormDefinitionConversionService();
+
+        $input = [
+            'text' => '<iframe src="evil.com"></iframe><p>Safe</p>',
+            'label' => '<object data="malicious.swf"></object>',
+        ];
+
+        $result = $formDefinitionConversionService->sanitizeHtml($input);
+
+        self::assertStringNotContainsString('<iframe', $result['text']);
+        self::assertStringNotContainsString('<object', $result['label']);
+        self::assertStringContainsString('Safe', $result['text']);
+    }
+
+    #[Test]
+    public function sanitizeHtmlSanitizesRteFieldsWithHtmlSanitizer(): void
+    {
+        $formDefinitionConversionService = $this->createFormDefinitionConversionService();
+
+        $input = [
+            'type' => 'StaticText',
+            // Safe HTML content that should be preserved by the sanitizer
+            'text' => '<p><b>Bold</b> and <i>italic</i> and <a href="#">link</a></p><ul><li>Item</li></ul>',
+        ];
+
+        $rtePropertyPaths = [
+            'StaticText' => [
+                'text' => 'form-content',
+            ],
+        ];
+
+        $result = $formDefinitionConversionService->sanitizeHtml($input, $rtePropertyPaths);
+
+        // RTE fields are sanitized with HtmlSanitizer which preserves safe HTML
+        // This ensures sanitization even for form definitions from external sources (YAML files)
+        self::assertStringContainsString('<b>Bold</b>', $result['text']);
+        self::assertStringContainsString('<i>italic</i>', $result['text']);
+        self::assertStringContainsString('<p>', $result['text']);
+        self::assertStringContainsString('<ul>', $result['text']);
+        self::assertStringContainsString('<li>', $result['text']);
+    }
+
+    #[Test]
+    public function sanitizeHtmlHandlesNestedArrays(): void
+    {
+        $formDefinitionConversionService = $this->createFormDefinitionConversionService();
+
+        $input = [
+            'type' => 'Form',
+            'renderables' => [
+                [
+                    'type' => 'Page',
+                    'renderables' => [
+                        [
+                            'type' => 'StaticText',
+                            'properties' => [
+                                // Content with dangerous and safe HTML
+                                'text' => '<script>alert("XSS")</script><p>Safe content</p>',
+                            ],
+                        ],
+                        [
+                            'type' => 'Checkbox',
+                            'label' => '<b>Bold label</b>',
+                        ],
+                    ],
+                ],
+            ],
+            'finishers' => [
+                [
+                    'identifier' => 'Confirmation',
+                    'options' => [
+                        'message' => '<script>XSS</script><p>Thank you</p>',
+                    ],
+                ],
+            ],
+        ];
+
+        // Define RTE fields
+        $rtePropertyPaths = [
+            'StaticText' => [
+                'properties.text' => 'form-content',
+            ],
+            'Checkbox' => [
+                'label' => 'form-label',
+            ],
+            '_finishers' => [
+                'Confirmation' => [
+                    'options.message' => 'form-content',
+                ],
+            ],
+        ];
+
+        $result = $formDefinitionConversionService->sanitizeHtml($input, $rtePropertyPaths);
+
+        // RTE fields are sanitized - dangerous content removed, safe HTML preserved
+        self::assertStringNotContainsString('<script>', $result['renderables'][0]['renderables'][0]['properties']['text']);
+        self::assertStringContainsString('<p>Safe content</p>', $result['renderables'][0]['renderables'][0]['properties']['text']);
+        self::assertStringContainsString('<b>Bold label</b>', $result['renderables'][0]['renderables'][1]['label']);
+        self::assertStringNotContainsString('<script>', $result['finishers'][0]['options']['message']);
+        self::assertStringContainsString('<p>Thank you</p>', $result['finishers'][0]['options']['message']);
+    }
+
+    #[Test]
+    public function sanitizeHtmlHandlesEmptyStrings(): void
+    {
+        $formDefinitionConversionService = $this->createFormDefinitionConversionService();
+
+        $input = [
+            'label' => '',
+            'text' => null,
+        ];
+
+        $result = $formDefinitionConversionService->sanitizeHtml($input);
+
+        self::assertSame('', $result['label']);
+        self::assertNull($result['text']);
+    }
+
+    #[Test]
+    public function sanitizeHtmlHandlesUnicodeCharacters(): void
+    {
+        $formDefinitionConversionService = $this->createFormDefinitionConversionService();
+
+        $input = [
+            'label' => '<p>Überschrift mit Ümläutén und émojis 🎉</p>',
+        ];
+
+        $result = $formDefinitionConversionService->sanitizeHtml($input);
+
+        self::assertStringContainsString('Überschrift', $result['label']);
+        self::assertStringContainsString('Ümläutén', $result['label']);
+        self::assertStringContainsString('émojis', $result['label']);
     }
 }

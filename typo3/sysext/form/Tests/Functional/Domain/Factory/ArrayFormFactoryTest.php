@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Factory;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -75,14 +74,17 @@ final class ArrayFormFactoryTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(BeforeRenderableIsAddedToFormEvent::class, self::BEFORE_RENDERABLE_IS_ADDED_TO_FORM_LISTENER_KEY);
 
-        $arrayFormFactory = $this->getAccessibleMock(ArrayFormFactory::class, null);
-        $arrayFormFactory->injectEventDispatcher($this->get(EventDispatcherInterface::class));
+        $arrayFormFactory = $this->get(ArrayFormFactory::class);
         $configuration = [
             'identifier' => 'page-1',
             'type' => 'Page',
         ];
         $section = new FormDefinition('form-1', $prototypeConfiguration);
-        $arrayFormFactory->_call('addNestedRenderable', $configuration, $section, $request);
+
+        // Use reflection to call protected method
+        $reflection = new \ReflectionClass($arrayFormFactory);
+        $method = $reflection->getMethod('addNestedRenderable');
+        $method->invoke($arrayFormFactory, $configuration, $section, $request);
 
         self::assertInstanceOf(BeforeRenderableIsAddedToFormEvent::class, $state[self::BEFORE_RENDERABLE_IS_ADDED_TO_FORM_LISTENER_KEY]);
         if (!($state[self::BEFORE_RENDERABLE_IS_ADDED_TO_FORM_LISTENER_KEY]->renderable instanceof AbstractRenderable)) {
@@ -112,8 +114,7 @@ final class ArrayFormFactoryTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(AfterFormIsBuiltEvent::class, self::AFTER_FORM_IS_BUILT_LISTENER_KEY);
 
-        $arrayFormFactory = new ArrayFormFactory();
-        $arrayFormFactory->injectEventDispatcher($this->get(EventDispatcherInterface::class));
+        $arrayFormFactory = $this->get(ArrayFormFactory::class);
         $configuration = [
             'label' => 'Form',
             'identifier' => 'form-1',

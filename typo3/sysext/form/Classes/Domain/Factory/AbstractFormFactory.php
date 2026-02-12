@@ -22,7 +22,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Factory;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Event\AfterFormIsBuiltEvent;
 
@@ -55,14 +55,25 @@ use TYPO3\CMS\Form\Event\AfterFormIsBuiltEvent;
 abstract class AbstractFormFactory implements FormFactoryInterface
 {
     protected ?EventDispatcherInterface $eventDispatcher = null;
+    protected ?FormDefinitionConversionService $formDefinitionConversionService = null;
 
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    public function injectFormDefinitionConversionService(FormDefinitionConversionService $formDefinitionConversionService): void
+    {
+        $this->formDefinitionConversionService = $formDefinitionConversionService;
+    }
+
     protected function triggerFormBuildingFinished(FormDefinition $form): FormDefinition
     {
         return $this->eventDispatcher->dispatch(new AfterFormIsBuiltEvent($form))->form;
+    }
+
+    protected function getFormDefinitionConversionService(): FormDefinitionConversionService
+    {
+        return $this->formDefinitionConversionService;
     }
 }

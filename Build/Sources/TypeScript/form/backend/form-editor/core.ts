@@ -42,6 +42,7 @@ export type EditorConfiguration = {
   enableAddRow?: boolean,
   enableDeleteRow?: boolean,
   enableFormelementSelectionButton?: boolean,
+  enableRichtext?: boolean,
   errorCodes?: string[],
   description?: string,
   gridColumns?: Array<{
@@ -60,6 +61,7 @@ export type EditorConfiguration = {
   propertyValidatorsMode?: 'OR' | 'AND',
   removeLastAvailableRowFlashMessageTitle?: string,
   removeLastAvailableRowFlashMessageMessage?: string,
+  rteOptions?: Record<string, any>,
   selectOptions?: Array<{
     value: string,
     label: string,

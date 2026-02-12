@@ -430,6 +430,7 @@ prototypes:
                     label: formEditor.elements.Form.finisher.Confirmation.editor.message.label
                     propertyPath: options.message
                     description: formEditor.elements.Form.finisher.Confirmation.editor.message.description
+                    enableRichtext: true
                   9999:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor

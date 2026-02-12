@@ -9,9 +9,11 @@ prototypes:
               templateName: Inspector-FormElementHeaderEditor
             200:
               identifier: label
-              templateName: Inspector-TextEditor
+              templateName: Inspector-TextareaEditor
               label: formEditor.elements.FormElement.editor.label.label
               propertyPath: label
+              enableRichtext: true
+              richtextConfiguration: form-label
             230:
               identifier: elementDescription
               templateName: Inspector-TextEditor
