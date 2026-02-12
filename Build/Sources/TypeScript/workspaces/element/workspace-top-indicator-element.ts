@@ -14,6 +14,7 @@
 import { customElement, state } from 'lit/decorators.js';
 import { html, LitElement, type TemplateResult, css, nothing } from 'lit';
 import WorkspaceState, { type Workspace, type WorkspaceColor, workspaceColors, WorkspaceChangedEvent } from '@typo3/workspaces/workspace-state';
+import Persistent from '@typo3/backend/storage/persistent';
 import '@typo3/backend/element/icon-element';
 import { lll } from '@typo3/core/lit-helper';
 
@@ -88,16 +89,19 @@ export class WorkspaceTopIndicatorElement extends LitElement {
 
   @state() private currentWorkspace: Workspace | null = null;
   @state() private workspaces: Workspace[] = [];
+  @state() private showLiveIndicator: boolean = !Persistent.isset('showWorkspaceLiveIndicator') || Persistent.get('showWorkspaceLiveIndicator') == 1;
 
   public override connectedCallback(): void {
     super.connectedCallback();
     void this.loadWorkspaceData();
     document.addEventListener(WorkspaceChangedEvent.eventName, this.handleWorkspaceChanged);
+    document.addEventListener('typo3:persistent:update', this.handlePersistentUpdate);
   }
 
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
     document.removeEventListener(WorkspaceChangedEvent.eventName, this.handleWorkspaceChanged);
+    document.removeEventListener('typo3:persistent:update', this.handlePersistentUpdate);
   }
 
   protected override render(): TemplateResult | typeof nothing {
@@ -105,8 +109,8 @@ export class WorkspaceTopIndicatorElement extends LitElement {
       return nothing;
     }
 
-    // Hide only if user has just one workspace and it's the default
-    this.hidden = this.currentWorkspace.id === 0 && this.workspaces.length <= 1;
+    // Hide if in Live workspace and either only one workspace exists or user opted out
+    this.hidden = this.currentWorkspace.id === 0 && (this.workspaces.length <= 1 || !this.showLiveIndicator);
 
     return html`
       <span class="workspace-indicator-badge" title="${this.currentWorkspace.description || this.currentWorkspace.title}">
@@ -138,6 +142,13 @@ export class WorkspaceTopIndicatorElement extends LitElement {
 
   private readonly handleWorkspaceChanged = (): void => {
     void this.loadWorkspaceData();
+  };
+
+  private readonly handlePersistentUpdate = (e: Event): void => {
+    const { fieldName, value } = (e as CustomEvent).detail;
+    if (fieldName === 'showWorkspaceLiveIndicator') {
+      this.showLiveIndicator = value == 1;
+    }
   };
 }
 

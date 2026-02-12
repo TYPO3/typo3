@@ -202,6 +202,7 @@ ExtensionManagementUtility::addUserSetting(
     'displayRecentlyUsed',
     [
         'label' => 'setup.messages:displayRecentlyUsed',
+        'persistentUpdate' => true,
         'config' => [
             'type' => 'check',
             'renderType' => 'checkboxToggle',

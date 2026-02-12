@@ -393,6 +393,36 @@ final class UserSettingsSchemaTest extends UnitTestCase
     }
 
     #[Test]
+    public function getPersistentUpdateFieldNamesReturnsFieldsWithFlag(): void
+    {
+        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
+            'columns' => [
+                'displayRecentlyUsed' => [
+                    'label' => 'Display Recently Used',
+                    'persistentUpdate' => true,
+                    'config' => ['type' => 'check', 'renderType' => 'checkboxToggle', 'default' => 1],
+                ],
+                'colorScheme' => [
+                    'label' => 'Color',
+                    'config' => ['type' => 'select', 'renderType' => 'selectSingle'],
+                ],
+                'showIndicator' => [
+                    'label' => 'Show Indicator',
+                    'persistentUpdate' => true,
+                    'config' => ['type' => 'check', 'renderType' => 'checkboxToggle'],
+                ],
+            ],
+        ];
+
+        $schema = new UserSettingsSchema();
+        $keys = $schema->getPersistentUpdateFieldNames();
+
+        self::assertContains('displayRecentlyUsed', $keys);
+        self::assertContains('showIndicator', $keys);
+        self::assertNotContains('colorScheme', $keys);
+    }
+
+    #[Test]
     public function buttonTypeIsConvertedCorrectly(): void
     {
         $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [

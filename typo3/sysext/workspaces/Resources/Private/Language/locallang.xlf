@@ -405,6 +405,9 @@
       <trans-unit id="workspaceInfo.live.description">
         <source>Changes made in this workspace are published immediately and are directly visible on the live website.</source>
       </trans-unit>
+      <trans-unit id="userSetting.showWorkspaceLiveIndicator">
+        <source>Enable workspace Live indicator</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -39,6 +39,16 @@ indicator. This allows administrators to provide additional context about
 the purpose of a workspace, which editors can see by hovering over the
 workspace name.
 
+Workspace Live indicator option
+-------------------------------
+
+A user setting :guilabel:`Enable workspace Live indicator` is available in
+:guilabel:`User Settings > Personalization`. When enabled (the default), the
+top bar indicator is shown while working in the Live workspace. Users who find
+the indicator distracting can disable it. The setting takes effect immediately
+without requiring a page reload. The indicator remains visible when any
+non-Live workspace is active, regardless of this setting.
+
 Impact
 ======
 

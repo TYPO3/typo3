@@ -134,6 +134,24 @@ class UserSettingsSchema
         return in_array($key, $this->getDbColumnSettingKeys(), true);
     }
 
+    /**
+     * Returns field names that should trigger a JS persistent storage update
+     * when their value changes in User Settings, so JS components can react
+     * immediately without a page reload.
+     *
+     * @return string[]
+     */
+    public function getPersistentUpdateFieldNames(): array
+    {
+        $keys = [];
+        foreach ($this->getColumns() as $key => $config) {
+            if (!empty($config['persistentUpdate'])) {
+                $keys[] = $key;
+            }
+        }
+        return $keys;
+    }
+
     public function getDefault(string $key): mixed
     {
         $config = $this->getColumn($key);
@@ -255,6 +273,9 @@ class UserSettingsSchema
         }
         if (isset($tcaConfig['access'])) {
             $legacyConfig['access'] = $tcaConfig['access'];
+        }
+        if (!empty($tcaConfig['persistentUpdate'])) {
+            $legacyConfig['persistentUpdate'] = true;
         }
 
         return $legacyConfig;
