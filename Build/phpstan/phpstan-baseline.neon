@@ -5869,12 +5869,6 @@ parameters:
 			path: ../../typo3/sysext/impexp/Classes/Import.php
 
 		-
-			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/impexp/Classes/Import.php
-
-		-
 			message: '#^PHPDoc tag @var with type TYPO3\\CMS\\Core\\Resource\\File is not subtype of native type null\.$#'
 			identifier: varTag.nativeType
 			count: 1
