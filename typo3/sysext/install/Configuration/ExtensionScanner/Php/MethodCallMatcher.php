@@ -6841,6 +6841,13 @@ return [
             'Deprecation-108557-TCAOptionAllowedRecordTypesForPageTypes.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Page\PageRenderer->addInlineLanguageDomain' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-108963-DeprecatePageRenderer-addInlineLanguageDomain.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

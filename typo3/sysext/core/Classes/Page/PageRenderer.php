@@ -962,6 +962,11 @@ class PageRenderer implements SingletonInterface
      */
     public function addInlineLanguageDomain(string $domain): void
     {
+        trigger_error(
+            'PageRenderer->addInlineLanguageDomain is deprecated and will be removed with TYPO3 v15. Use "~label/{language.dom}" imports instead',
+            E_USER_DEPRECATED
+        );
+
         $languageService = $this->languageServiceFactory->create($this->locale);
         $allLabels = $languageService->getLabelsFromResource($domain);
 
