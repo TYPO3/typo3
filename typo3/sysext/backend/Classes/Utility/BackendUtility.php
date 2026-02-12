@@ -1818,13 +1818,12 @@ class BackendUtility
         /*****************
          *HOOK: post-processing the human readable output from a record
          ****************/
-        $null = null;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] ?? [] as $_funcRef) {
             $params = [
                 'value' => $l,
                 'colConf' => $theColConf,
             ];
-            $l = GeneralUtility::callUserFunction($_funcRef, $params, $null);
+            $l = GeneralUtility::callUserFunction($_funcRef, $params, $referenceObject);
         }
         if ($fixed_lgd_chars && $l) {
             return GeneralUtility::fixed_lgd_cs((string)$l, (int)$fixed_lgd_chars);
