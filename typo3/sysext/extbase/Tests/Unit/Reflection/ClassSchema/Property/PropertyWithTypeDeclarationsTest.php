@@ -160,8 +160,8 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
         self::assertSame(ObjectStorage::class, $propertyTypes[0]->getClassName());
 
         self::assertCount(2, $propertyTypes[0]->getCollectionKeyTypes());
-        self::assertSame('string', $propertyTypes[0]->getCollectionKeyTypes()[0]->getBuiltinType());
-        self::assertSame('int', $propertyTypes[0]->getCollectionKeyTypes()[1]->getBuiltinType());
+        self::assertSame('int', $propertyTypes[0]->getCollectionKeyTypes()[0]->getBuiltinType());
+        self::assertSame('string', $propertyTypes[0]->getCollectionKeyTypes()[1]->getBuiltinType());
 
         self::assertCount(1, $propertyTypes[0]->getCollectionValueTypes());
         self::assertSame('object', $propertyTypes[0]->getCollectionValueTypes()[0]->getBuiltinType());
@@ -177,12 +177,12 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
         $propertyTypes = $property->getTypes();
 
         self::assertCount(2, $propertyTypes);
-        self::assertSame('string', $propertyTypes[0]->getBuiltinType());
-        self::assertSame('int', $propertyTypes[1]->getBuiltinType());
+        self::assertSame('int', $propertyTypes[0]->getBuiltinType());
+        self::assertSame('string', $propertyTypes[1]->getBuiltinType());
         self::assertFalse($propertyTypes[0]->isNullable());
         self::assertFalse($propertyTypes[1]->isNullable());
         self::assertFalse($propertyTypes[1]->isNullable());
-        self::assertSame('string', $property->getPrimaryType()?->getBuiltinType());
+        self::assertSame('int', $property->getPrimaryType()?->getBuiltinType());
     }
 
     #[Test]
@@ -192,8 +192,8 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
             ->getProperty('nullableIntOrString')->getTypes();
 
         self::assertCount(2, $propertyTypes);
-        self::assertSame('string', $propertyTypes[0]->getBuiltinType());
-        self::assertSame('int', $propertyTypes[1]->getBuiltinType());
+        self::assertSame('int', $propertyTypes[0]->getBuiltinType());
+        self::assertSame('string', $propertyTypes[1]->getBuiltinType());
         self::assertTrue($propertyTypes[0]->isNullable());
         self::assertTrue($propertyTypes[1]->isNullable());
     }

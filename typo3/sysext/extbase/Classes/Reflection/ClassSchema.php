@@ -41,6 +41,8 @@ use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
 
 /**
  * A class schema
+ *
+ * @phpstan-import-type PropertyDefinitionSpec from Property
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ClassSchema
@@ -49,6 +51,9 @@ class ClassSchema
     private BitSet $bitSet;
     private static array $propertyObjects = [];
     private static array $methodObjects = [];
+    /**
+     * @var array<string, PropertyDefinitionSpec>
+     */
     private array $properties = [];
     private array $methods = [];
     private static ?PropertyInfoExtractor $propertyInfoExtractor = null;
@@ -184,11 +189,9 @@ class ClassSchema
 
             $this->properties[$propertyName]['propertyCharacteristicsBit'] = $propertyCharacteristicsBit;
 
-            /** @var Type[] $types */
-            $types = (array)self::$propertyInfoExtractor->getTypes($this->className, $propertyName, ['reflectionProperty' => $reflectionProperty]);
-
-            foreach ($types as $type) {
-                $this->properties[$propertyName]['t'][] = $type;
+            $type = self::$propertyInfoExtractor->getType($this->className, $propertyName, ['reflectionProperty' => $reflectionProperty]);
+            if ($type !== null) {
+                $this->properties[$propertyName]['t'] = $type;
             }
         }
     }

@@ -170,8 +170,8 @@ final class PropertyWithoutTypeDeclarationsTest extends UnitTestCase
         self::assertSame('object', $propertyTypes[0]->getBuiltinType());
         self::assertSame(ObjectStorage::class, $propertyTypes[0]->getClassName());
         self::assertCount(2, $propertyTypes[0]->getCollectionKeyTypes());
-        self::assertSame('string', $propertyTypes[0]->getCollectionKeyTypes()[0]->getBuiltinType());
-        self::assertSame('int', $propertyTypes[0]->getCollectionKeyTypes()[1]->getBuiltinType());
+        self::assertSame('int', $propertyTypes[0]->getCollectionKeyTypes()[0]->getBuiltinType());
+        self::assertSame('string', $propertyTypes[0]->getCollectionKeyTypes()[1]->getBuiltinType());
 
         self::assertCount(1, $propertyTypes[0]->getCollectionValueTypes());
         self::assertSame('object', $propertyTypes[0]->getCollectionValueTypes()[0]->getBuiltinType());

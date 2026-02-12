@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Validation;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\TypeAdapter;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
@@ -119,7 +119,7 @@ class ValidatorResolver implements SingletonInterface
         $objectValidator = $this->createValidator(GenericObjectValidator::class);
         foreach ($classSchema->getProperties() as $property) {
             $primaryType = $property->getPrimaryType();
-            if (!$primaryType instanceof Type) {
+            if (!$primaryType instanceof TypeAdapter) {
                 // @todo: The type is only necessary here for further analyzing whether it's a simple type or
                 //        a collection. If this is evaluated in the ClassSchema, this whole code part is not needed
                 //        any longer and can be removed.
@@ -138,7 +138,7 @@ class ValidatorResolver implements SingletonInterface
                 // @todo: Whether the property holds a simple type or not and whether it holds a collection is known in
                 //        in the ClassSchema. The information could be made available and not evaluated here again.
                 $primaryCollectionValueType = $property->getPrimaryCollectionValueType();
-                if ($primaryType->isCollection() && $primaryCollectionValueType instanceof Type) {
+                if ($primaryType->isCollection() && $primaryCollectionValueType instanceof TypeAdapter) {
                     /** @var CollectionValidator $collectionValidator */
                     $collectionValidator = $this->createValidator(
                         CollectionValidator::class,

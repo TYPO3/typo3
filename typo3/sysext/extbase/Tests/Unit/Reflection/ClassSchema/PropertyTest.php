@@ -48,16 +48,22 @@ final class PropertyTest extends UnitTestCase
         self::assertTrue($property->isPublic());
         self::assertFalse($property->isProtected());
         self::assertFalse($property->isPrivate());
+        self::assertTrue($property->isNullable());
+        self::assertNull($property->getPrimaryType());
 
         $property = $classSchema->getProperty('protectedProperty');
         self::assertFalse($property->isPublic());
         self::assertTrue($property->isProtected());
         self::assertFalse($property->isPrivate());
+        self::assertTrue($property->isNullable());
+        self::assertNull($property->getPrimaryType());
 
         $property = $classSchema->getProperty('privateProperty');
         self::assertFalse($property->isPublic());
         self::assertFalse($property->isProtected());
         self::assertTrue($property->isPrivate());
+        self::assertTrue($property->isNullable());
+        self::assertNull($property->getPrimaryType());
     }
 
     #[Test]
@@ -84,19 +90,19 @@ final class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithObjectStorageAnnotation');
 
-        $propertyTypes = $property->getTypes();
+        self::assertTrue($property->getPrimaryType()->isCollection());
+        self::assertFalse($property->getPrimaryType()->isNullable());
 
+        $propertyTypes = $property->getTypes();
         self::assertCount(1, $propertyTypes);
 
         $propertyType = reset($propertyTypes);
-
         self::assertSame(ObjectStorage::class, $propertyType->getClassName());
-
+        self::assertTrue($propertyType->isCollection());
         self::assertCount(2, $propertyType->getCollectionKeyTypes());
-        self::assertSame('string', $propertyType->getCollectionKeyTypes()[0]->getBuiltinType());
-        self::assertSame('int', $propertyType->getCollectionKeyTypes()[1]->getBuiltinType());
+        self::assertSame('int', $propertyType->getCollectionKeyTypes()[0]->getBuiltinType());
+        self::assertSame('string', $propertyType->getCollectionKeyTypes()[1]->getBuiltinType());
         self::assertCount(1, $propertyType->getCollectionValueTypes());
-
         self::assertSame(DummyClassWithAllTypesOfProperties::class, $propertyType->getCollectionValueTypes()[0]->getClassName());
     }
 
@@ -106,8 +112,11 @@ final class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithObjectStorageAnnotationWithoutFQCN');
 
+        self::assertTrue($property->getPrimaryType()->isCollection());
+        self::assertFalse($property->getPrimaryType()->isNullable());
         self::assertCount(1, $property->getTypes());
 
+        self::assertTrue($property->getTypes()[0]->isCollection());
         self::assertSame(ObjectStorage::class, $property->getTypes()[0]->getClassName());
         self::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getTypes()[0]->getCollectionValueTypes()[0]->getClassName());
     }
@@ -191,6 +200,7 @@ final class PropertyTest extends UnitTestCase
             ->getProperty('stringTypedProperty');
 
         self::assertCount(1, $property->getTypes());
+        self::assertFalse($property->getTypes()[0]->isCollection());
         self::assertSame('string', $property->getTypes()[0]->getBuiltinType());
     }
 
@@ -200,7 +210,13 @@ final class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('nullableStringTypedProperty');
 
+        self::assertTrue($property->isNullable());
+        self::assertTrue($property->getPrimaryType()->isNullable());
+        self::assertFalse($property->getPrimaryType()->isCollection());
+
         self::assertCount(1, $property->getTypes());
+        self::assertFalse($property->getTypes()[0]->isCollection());
+        self::assertTrue($property->getTypes()[0]->isNullable());
         self::assertSame('string', $property->getTypes()[0]->getBuiltinType());
     }
 
@@ -211,6 +227,7 @@ final class PropertyTest extends UnitTestCase
             ->getProperty('propertyWithObjectStorageAnnotationWithoutFQCN');
 
         self::assertTrue($property->isObjectStorageType());
+        self::assertTrue($property->getPrimaryType()->isCollection());
     }
 
     #[Test]
@@ -220,6 +237,7 @@ final class PropertyTest extends UnitTestCase
             ->getProperty('propertyWithLazyObjectStorageAnnotationWithoutFQCN');
 
         self::assertTrue($property->isObjectStorageType());
+        self::assertTrue($property->getPrimaryType()->isCollection());
     }
 
     #[Test]
