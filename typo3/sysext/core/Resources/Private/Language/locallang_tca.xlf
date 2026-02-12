@@ -183,6 +183,9 @@
       <trans-unit id="be_users.palettes.permissionLanguages" x-unused-since="14.0">
         <source>Language permissions</source>
       </trans-unit>
+      <trans-unit id="be_users.user_settings">
+        <source>User Settings</source>
+      </trans-unit>
       <trans-unit id="be_groups.title">
         <source>Title</source>
       </trans-unit>

@@ -332,6 +332,12 @@ return [
                 'group' => 'be.userManagement',
             ],
         ],
+        'user_settings' => [
+            'label' => 'core.tca:user_settings',
+            'config' => [
+                'type' => 'json',
+            ],
+        ],
     ],
     'types' => [
         '0' => [
