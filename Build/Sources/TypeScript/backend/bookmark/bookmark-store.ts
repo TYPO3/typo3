@@ -14,6 +14,7 @@
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { lll } from '@typo3/core/lit-helper';
+import labels from '~labels/core.bookmarks';
 import Modal from '../modal';
 import Notification from '../notification';
 import { SeverityEnum } from '../enum/severity';
@@ -243,7 +244,7 @@ class BookmarkStore {
       console.error('Failed to create bookmark:', error);
       return {
         success: false,
-        error: lll('core.bookmarks:error.createFailed.message'),
+        error: labels.get('error.createFailed.message'),
       };
     }
   }
@@ -277,7 +278,7 @@ class BookmarkStore {
       console.error('Failed to update bookmark:', error);
       return {
         success: false,
-        error: lll('core.bookmarks:error.updateFailed.message'),
+        error: labels.get('error.updateFailed.message'),
       };
     }
   }
@@ -292,8 +293,8 @@ class BookmarkStore {
     }
 
     const confirmModal = Modal.confirm(
-      lll('core.bookmarks:delete'),
-      lll('core.bookmarks:confirmDelete', bookmark.title),
+      labels.get('delete'),
+      labels.get('confirmDelete.title', bookmark.title),
       SeverityEnum.warning,
       [
         {
@@ -311,13 +312,13 @@ class BookmarkStore {
             const result = await this.delete(id);
             if (result.success) {
               Notification.success(
-                lll('core.bookmarks:success.deleted.title'),
-                lll('core.bookmarks:success.deleted.message')
+                labels.get('success.deleted.title'),
+                labels.get('success.deleted.message')
               );
             } else {
               Notification.error(
-                lll('core.bookmarks:error.deleteFailed.title'),
-                result.error || lll('core.bookmarks:error.deleteFailed.message')
+                labels.get('error.deleteFailed.title'),
+                result.error || labels.get('error.deleteFailed.message')
               );
             }
           },
@@ -347,7 +348,7 @@ class BookmarkStore {
       console.error('Failed to delete bookmark:', error);
       return {
         success: false,
-        error: lll('core.bookmarks:error.deleteFailed.message')
+        error: labels.get('error.deleteFailed.message')
       };
     }
   }
@@ -471,7 +472,7 @@ class BookmarkStore {
       console.error('Failed to create group:', error);
       return {
         success: false,
-        error: lll('core.bookmarks:error.groupCreateFailed.message')
+        error: labels.get('error.groupCreateFailed.message')
       };
     }
   }
@@ -497,7 +498,7 @@ class BookmarkStore {
       console.error('Failed to update group:', error);
       return {
         success: false,
-        error: lll('core.bookmarks:error.groupUpdateFailed.message')
+        error: labels.get('error.groupUpdateFailed.message')
       };
     }
   }
@@ -524,7 +525,7 @@ class BookmarkStore {
       console.error('Failed to delete group:', error);
       return {
         success: false,
-        error: lll('core.bookmarks:error.groupDeleteFailed.message')
+        error: labels.get('error.groupDeleteFailed.message')
       };
     }
   }
@@ -550,7 +551,7 @@ class BookmarkStore {
       console.error('Failed to reorder groups:', error);
       return {
         success: false,
-        error: lll('core.bookmarks:error.groupReorderFailed.message')
+        error: labels.get('error.groupReorderFailed.message')
       };
     }
   }

@@ -13,7 +13,7 @@
 
 import { html, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { lll } from '@typo3/core/lit-helper';
+import labels from '~labels/core.bookmarks';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import BookmarkStore, { BookmarkStoreChangedEvent } from '../bookmark-store';
 import Notification from '../../notification';
@@ -54,8 +54,8 @@ export class BookmarkButtonElement extends PseudoButtonLitElement {
 
   protected override render(): TemplateResult {
     const label = this.isBookmarked
-      ? lll('core.bookmarks:action.remove')
-      : lll('core.bookmarks:action.create');
+      ? labels.get('action.remove')
+      : labels.get('action.create');
 
     const labelHtml = this.hideLabelText
       ? html`<span class="visually-hidden">${label}</span>`
@@ -87,13 +87,13 @@ export class BookmarkButtonElement extends PseudoButtonLitElement {
         const result = await BookmarkStore.create(this.route, this.arguments, this.displayName);
         if (result.success) {
           Notification.success(
-            lll('core.bookmarks:success.created.title'),
-            lll('core.bookmarks:success.created.message')
+            labels.get('success.created.title'),
+            labels.get('success.created.message')
           );
         } else {
           Notification.error(
-            lll('core.bookmarks:error.createFailed.title'),
-            result.error || lll('core.bookmarks:error.createFailed.message')
+            labels.get('error.createFailed.title'),
+            result.error || labels.get('error.createFailed.message')
           );
         }
       }
@@ -132,8 +132,8 @@ export class BookmarkButtonElement extends PseudoButtonLitElement {
 
     this.setAttribute('aria-pressed', this.isBookmarked ? 'true' : 'false');
     this.title = this.isBookmarked
-      ? lll('core.bookmarks:action.remove')
-      : lll('core.bookmarks:action.create');
+      ? labels.get('action.remove')
+      : labels.get('action.create');
   }
 }
 

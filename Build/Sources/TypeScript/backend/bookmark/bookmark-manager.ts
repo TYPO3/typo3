@@ -15,7 +15,6 @@ import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { lll } from '@typo3/core/lit-helper';
 import BookmarkStore, { BookmarkStoreChangedEvent, BookmarkGroupType } from './bookmark-store';
 import type { Bookmark, BookmarkGroup, BookmarkGroupId } from './bookmark-store';
 import Modal from '../modal';
@@ -24,6 +23,7 @@ import { SeverityEnum } from '../enum/severity';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';
+import labels from '~labels/core.bookmarks';
 
 interface GroupSection {
   label: string;
@@ -173,7 +173,7 @@ export class BookmarkManagerContentElement extends LitElement {
                 @change=${(e: Event) => { this.selectedIds = (e.target as HTMLInputElement).checked ? new Set(this.bookmarks.map(bookmark => bookmark.id)) : new Set(); }}
               />
               <label class="form-check-label" for="selectAll">
-                ${allSelected ? lll('core.bookmarks:manager.deselectAll') : lll('core.bookmarks:manager.selectAll')}
+                ${allSelected ? labels.get('manager.deselectAll') : labels.get('manager.selectAll')}
               </label>
             </div>
           </div>
@@ -186,7 +186,7 @@ export class BookmarkManagerContentElement extends LitElement {
                 aria-expanded="false"
               >
                 <typo3-backend-icon identifier="actions-bookmarks" size="small"></typo3-backend-icon>
-                ${lll('core.bookmarks:manager.moveToGroup')}
+                ${labels.get('manager.moveToGroup')}
               </button>
               <ul class="dropdown-menu">
                 ${groupSections.map((section, index) => html`
@@ -209,7 +209,7 @@ export class BookmarkManagerContentElement extends LitElement {
                 @click=${this.handleBookmarkBulkDelete}
               >
                 <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
-                ${lll('core.bookmarks:manager.deleteSelected')}
+                ${labels.get('manager.deleteSelected')}
               </button>
             </div>
           ` : nothing}
@@ -222,7 +222,7 @@ export class BookmarkManagerContentElement extends LitElement {
           @click=${this.navigateToGroupListView}
         >
           <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:manager.manageGroups')}
+          ${labels.get('manager.manageGroups')}
         </button>
       </div>
     `;
@@ -232,12 +232,12 @@ export class BookmarkManagerContentElement extends LitElement {
       ${!hasBookmarks ? html`
         <div class="alert alert-info">
           <typo3-backend-icon identifier="actions-info-circle" size="small"></typo3-backend-icon>
-          <span class="ms-2">${lll('core.bookmarks:empty')}</span>
+          <span class="ms-2">${labels.get('empty')}</span>
         </div>
       ` : nothing}
       ${repeat(Array.from(groupedBookmarks.entries()), ([groupId]) => groupId, ([groupId, bookmarks]) => {
         const group = this.groups.find(group => group.id === groupId);
-        const groupLabel = group?.label || lll('core.bookmarks:notGrouped');
+        const groupLabel = group?.label || labels.get('notGrouped');
         const collapseId = `bookmark-group-${typeof groupId === 'number' ? groupId : groupId.replace(/-/g, '')}`;
         return html`
           <div
@@ -326,7 +326,7 @@ export class BookmarkManagerContentElement extends LitElement {
               />
             </span>
           ` : html`
-            <typo3-backend-icon identifier="actions-lock" size="small" title=${lll('core.bookmarks:manager.locked')}></typo3-backend-icon>
+            <typo3-backend-icon identifier="actions-lock" size="small" title=${labels.get('manager.locked')}></typo3-backend-icon>
           `}
         </td>
         <td class="col-icon">
@@ -344,7 +344,7 @@ export class BookmarkManagerContentElement extends LitElement {
             </button>
           ` : html`
             <span class="text-muted" title=${bookmark.title}>${bookmark.title}</span>
-            <typo3-backend-icon class="text-warning" identifier="actions-exclamation-triangle" size="small" title=${lll('core.bookmarks:manager.notAccessible')}></typo3-backend-icon>
+            <typo3-backend-icon class="text-warning" identifier="actions-exclamation-triangle" size="small" title=${labels.get('manager.notAccessible')}></typo3-backend-icon>
           `}
         </td>
         <td class="col-control nowrap">
@@ -353,11 +353,11 @@ export class BookmarkManagerContentElement extends LitElement {
               <button
                 type="button"
                 class="btn btn-default btn-sm"
-                title=${lll('core.bookmarks:manager.editBookmark')}
+                title=${labels.get('manager.editBookmark')}
                 @click=${() => this.navigateToBookmarkEditView(bookmark)}
               >
                 <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
-                <span class="visually-hidden">${lll('core.bookmarks:manager.editBookmark')}</span>
+                <span class="visually-hidden">${labels.get('manager.editBookmark')}</span>
               </button>
               ${isFirst ? html`
                 <span class="btn btn-default btn-sm disabled">
@@ -368,11 +368,11 @@ export class BookmarkManagerContentElement extends LitElement {
                   type="button"
                   class="btn btn-default btn-sm"
                   data-action="move-up"
-                  title=${lll('core.bookmarks:manager.moveUp')}
+                  title=${labels.get('manager.moveUp')}
                   @click=${() => this.handleBookmarkMoveUp(bookmark)}
                 >
                   <typo3-backend-icon identifier="actions-chevron-up" size="small"></typo3-backend-icon>
-                  <span class="visually-hidden">${lll('core.bookmarks:manager.moveUp')}</span>
+                  <span class="visually-hidden">${labels.get('manager.moveUp')}</span>
                 </button>
               `}
               ${isLast ? html`
@@ -384,20 +384,20 @@ export class BookmarkManagerContentElement extends LitElement {
                   type="button"
                   class="btn btn-default btn-sm"
                   data-action="move-down"
-                  title=${lll('core.bookmarks:manager.moveDown')}
+                  title=${labels.get('manager.moveDown')}
                   @click=${() => this.handleBookmarkMoveDown(bookmark)}
                 >
                   <typo3-backend-icon identifier="actions-chevron-down" size="small"></typo3-backend-icon>
-                  <span class="visually-hidden">${lll('core.bookmarks:manager.moveDown')}</span>
+                  <span class="visually-hidden">${labels.get('manager.moveDown')}</span>
                 </button>
               `}
               <span
                 class="btn btn-default btn-sm"
                 style="cursor: grab;"
-                title=${lll('core.bookmarks:manager.dragToReorder')}
+                title=${labels.get('manager.dragToReorder')}
               >
                 <typo3-backend-icon identifier="actions-drag" size="small"></typo3-backend-icon>
-                <span class="visually-hidden">${lll('core.bookmarks:manager.dragToReorder')}</span>
+                <span class="visually-hidden">${labels.get('manager.dragToReorder')}</span>
               </span>
             </div>
           ` : nothing}
@@ -416,7 +416,7 @@ export class BookmarkManagerContentElement extends LitElement {
           @click=${this.navigateToBookmarkListView}
         >
           <typo3-backend-icon identifier="actions-arrow-left" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:manager.back')}
+          ${labels.get('manager.back')}
         </button>
       </div>
       <div class="bookmark-manager-toolbar-end">
@@ -426,7 +426,7 @@ export class BookmarkManagerContentElement extends LitElement {
           @click=${() => this.handleBookmarkDelete(bookmark.id)}
         >
           <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:action.delete')}
+          ${labels.get('action.delete')}
         </button>
         <button
           type="submit"
@@ -434,7 +434,7 @@ export class BookmarkManagerContentElement extends LitElement {
           class="btn btn-sm btn-primary"
         >
           <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:action.save')}
+          ${labels.get('action.save')}
         </button>
       </div>
     `;
@@ -444,7 +444,7 @@ export class BookmarkManagerContentElement extends LitElement {
       <div class="bookmark-edit-view">
         <form id="bookmark-edit-form" @submit=${(e: Event) => this.handleBookmarkUpdate(e, bookmark)}>
           <div class="form-group">
-            <label class="form-label" for="bookmark-title">${lll('core.bookmarks:fieldTitle')}</label>
+            <label class="form-label" for="bookmark-title">${labels.get('fieldTitle')}</label>
             <input
               type="text"
               id="bookmark-title"
@@ -457,7 +457,7 @@ export class BookmarkManagerContentElement extends LitElement {
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="bookmark-group">${lll('core.bookmarks:fieldGroup')}</label>
+            <label class="form-label" for="bookmark-group">${labels.get('fieldGroup')}</label>
             <select
               id="bookmark-group"
               name="group"
@@ -478,23 +478,23 @@ export class BookmarkManagerContentElement extends LitElement {
           </div>
 
           <div class="mb-3">
-            <label class="form-label">${lll('core.bookmarks:details')}</label>
+            <label class="form-label">${labels.get('details')}</label>
             <div class="table-fit">
               <table class="table table-striped table-sm mb-0">
                 <tbody>
                   ${bookmark.href ? html`
                   <tr>
-                    <th class="nowrap">${lll('core.bookmarks:details.url')}</th>
+                    <th class="nowrap">${labels.get('details.url')}</th>
                     <td class="text-break">${this.helperStripToken(bookmark.href)}</td>
                   </tr>
                   ` : nothing}
                   <tr>
-                    <th class="nowrap">${lll('core.bookmarks:details.route')}</th>
+                    <th class="nowrap">${labels.get('details.route')}</th>
                     <td>${bookmark.route}</td>
                   </tr>
                   ${parametersRow !== null ? html`
                   <tr>
-                    <th class="nowrap align-top">${lll('core.bookmarks:details.parameters')}</th>
+                    <th class="nowrap align-top">${labels.get('details.parameters')}</th>
                     <td>${parametersRow}</td>
                   </tr>
                   ` : nothing}
@@ -519,7 +519,7 @@ export class BookmarkManagerContentElement extends LitElement {
           @click=${this.navigateToBookmarkListView}
         >
           <typo3-backend-icon identifier="actions-arrow-left" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:manager.back')}
+          ${labels.get('manager.back')}
         </button>
       </div>
       <div class="bookmark-manager-toolbar-end">
@@ -529,7 +529,7 @@ export class BookmarkManagerContentElement extends LitElement {
           @click=${this.navigateToGroupCreateView}
         >
           <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:manager.newGroup')}
+          ${labels.get('manager.newGroup')}
         </button>
       </div>
     `;
@@ -546,7 +546,7 @@ export class BookmarkManagerContentElement extends LitElement {
         ` : html`
           <div class="alert alert-info">
             <typo3-backend-icon identifier="actions-info-circle" size="small"></typo3-backend-icon>
-            <span class="ms-2">${lll('core.bookmarks:manager.noGroups')}</span>
+            <span class="ms-2">${labels.get('manager.noGroups')}</span>
           </div>
         `}
       </div>
@@ -599,11 +599,11 @@ export class BookmarkManagerContentElement extends LitElement {
             <button
               type="button"
               class="btn btn-default btn-sm"
-              title=${lll('core.bookmarks:manager.editGroup')}
+              title=${labels.get('manager.editGroup')}
               @click=${() => this.navigateToGroupEditView(group)}
             >
               <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
-              <span class="visually-hidden">${lll('core.bookmarks:manager.editGroup')}</span>
+              <span class="visually-hidden">${labels.get('manager.editGroup')}</span>
             </button>
             ${isFirst ? html`
               <span class="btn btn-default btn-sm disabled">
@@ -614,11 +614,11 @@ export class BookmarkManagerContentElement extends LitElement {
                 type="button"
                 class="btn btn-default btn-sm"
                 data-action="move-up"
-                title=${lll('core.bookmarks:manager.moveUp')}
+                title=${labels.get('manager.moveUp')}
                 @click=${() => this.handleGroupMoveUp(group)}
               >
                 <typo3-backend-icon identifier="actions-chevron-up" size="small"></typo3-backend-icon>
-                <span class="visually-hidden">${lll('core.bookmarks:manager.moveUp')}</span>
+                <span class="visually-hidden">${labels.get('manager.moveUp')}</span>
               </button>
             `}
             ${isLast ? html`
@@ -630,20 +630,20 @@ export class BookmarkManagerContentElement extends LitElement {
                 type="button"
                 class="btn btn-default btn-sm"
                 data-action="move-down"
-                title=${lll('core.bookmarks:manager.moveDown')}
+                title=${labels.get('manager.moveDown')}
                 @click=${() => this.handleGroupMoveDown(group)}
               >
                 <typo3-backend-icon identifier="actions-chevron-down" size="small"></typo3-backend-icon>
-                <span class="visually-hidden">${lll('core.bookmarks:manager.moveDown')}</span>
+                <span class="visually-hidden">${labels.get('manager.moveDown')}</span>
               </button>
             `}
             <span
               class="btn btn-default btn-sm"
               style="cursor: grab;"
-              title=${lll('core.bookmarks:manager.dragToReorder')}
+              title=${labels.get('manager.dragToReorder')}
             >
               <typo3-backend-icon identifier="actions-drag" size="small"></typo3-backend-icon>
-              <span class="visually-hidden">${lll('core.bookmarks:manager.dragToReorder')}</span>
+              <span class="visually-hidden">${labels.get('manager.dragToReorder')}</span>
             </span>
           </div>
         </td>
@@ -661,7 +661,7 @@ export class BookmarkManagerContentElement extends LitElement {
           @click=${this.navigateToGroupListView}
         >
           <typo3-backend-icon identifier="actions-arrow-left" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:manager.back')}
+          ${labels.get('manager.back')}
         </button>
       </div>
       <div class="bookmark-manager-toolbar-end">
@@ -671,7 +671,7 @@ export class BookmarkManagerContentElement extends LitElement {
           class="btn btn-sm btn-primary"
         >
           <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:manager.createGroup')}
+          ${labels.get('manager.createGroup')}
         </button>
       </div>
     `;
@@ -679,7 +679,7 @@ export class BookmarkManagerContentElement extends LitElement {
       <div class="bookmark-group-create-view">
         <form id="bookmark-group-create-form" @submit=${(e: Event) => this.handleGroupCreate(e, draft)}>
           <div class="mb-3">
-            <label class="form-label" for="group-label">${lll('core.bookmarks:manager.label')}</label>
+            <label class="form-label" for="group-label">${labels.get('manager.label')}</label>
             <input
               type="text"
               id="group-label"
@@ -707,7 +707,7 @@ export class BookmarkManagerContentElement extends LitElement {
           @click=${this.navigateToGroupListView}
         >
           <typo3-backend-icon identifier="actions-arrow-left" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:manager.back')}
+          ${labels.get('manager.back')}
         </button>
       </div>
       <div class="bookmark-manager-toolbar-end">
@@ -717,7 +717,7 @@ export class BookmarkManagerContentElement extends LitElement {
           @click=${() => this.handleGroupDelete(group)}
         >
           <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:action.delete')}
+          ${labels.get('action.delete')}
         </button>
         <button
           type="submit"
@@ -725,7 +725,7 @@ export class BookmarkManagerContentElement extends LitElement {
           class="btn btn-sm btn-primary"
         >
           <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
-          ${lll('core.bookmarks:action.save')}
+          ${labels.get('action.save')}
         </button>
       </div>
     `;
@@ -733,7 +733,7 @@ export class BookmarkManagerContentElement extends LitElement {
       <div class="bookmark-group-edit-view">
         <form id="bookmark-group-edit-form" @submit=${(e: Event) => this.handleGroupUpdate(e, group)}>
           <div class="mb-3">
-            <label class="form-label" for="group-label">${lll('core.bookmarks:manager.label')}</label>
+            <label class="form-label" for="group-label">${labels.get('manager.label')}</label>
             <input
               type="text"
               id="group-label"
@@ -776,46 +776,46 @@ export class BookmarkManagerContentElement extends LitElement {
     const result = await BookmarkStore.update(bookmark.id, bookmark.title, bookmark.groupId);
     if (result.success) {
       Notification.success(
-        lll('core.bookmarks:success.updated.title'),
-        lll('core.bookmarks:success.updated.message')
+        labels.get('success.updated.title'),
+        labels.get('success.updated.message')
       );
       this.navigateToBookmarkListView();
     } else {
       Notification.error(
-        lll('core.bookmarks:error.updateFailed.title'),
-        result.error || lll('core.bookmarks:error.unknown.message')
+        labels.get('error.updateFailed.title'),
+        result.error || labels.get('error.unknown.message')
       );
     }
   }
 
   private handleBookmarkDelete(id: number): void {
     const confirmModal = Modal.confirm(
-      lll('core.bookmarks:confirmDelete.title'),
-      lll('core.bookmarks:confirmDelete.message'),
+      labels.get('confirmDelete.title'),
+      labels.get('confirmDelete.message'),
       SeverityEnum.notice,
       [
         {
-          text: lll('core.bookmarks:action.cancel'),
+          text: labels.get('action.cancel'),
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: () => confirmModal.hideModal(),
         },
         {
-          text: lll('core.bookmarks:action.delete'),
+          text: labels.get('action.delete'),
           btnClass: 'btn-primary',
           name: 'delete',
           trigger: async () => {
             const success = await BookmarkStore.deleteMultiple([id]);
             if (success) {
               Notification.success(
-                lll('core.bookmarks:success.deleted.title'),
-                lll('core.bookmarks:success.deleted.message')
+                labels.get('success.deleted.title'),
+                labels.get('success.deleted.message')
               );
               this.navigateToBookmarkListView();
             } else {
               Notification.error(
-                lll('core.bookmarks:error.deleteFailed.title'),
-                lll('core.bookmarks:error.deleteFailed.message')
+                labels.get('error.deleteFailed.title'),
+                labels.get('error.deleteFailed.message')
               );
             }
             confirmModal.hideModal();
@@ -828,32 +828,32 @@ export class BookmarkManagerContentElement extends LitElement {
   private readonly handleBookmarkBulkDelete = (): void => {
     const ids = Array.from(this.selectedIds);
     const confirmModal = Modal.confirm(
-      lll('core.bookmarks:confirmDeleteMultiple.title'),
-      lll('core.bookmarks:confirmDeleteMultiple.message', ids.length),
+      labels.get('confirmDeleteMultiple.title'),
+      labels.get('confirmDeleteMultiple.message', ids.length),
       SeverityEnum.notice,
       [
         {
-          text: lll('core.bookmarks:action.cancel'),
+          text: labels.get('action.cancel'),
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: () => confirmModal.hideModal(),
         },
         {
-          text: lll('core.bookmarks:action.delete'),
+          text: labels.get('action.delete'),
           btnClass: 'btn-primary',
           name: 'delete',
           trigger: async () => {
             const success = await BookmarkStore.deleteMultiple(ids);
             if (success) {
               Notification.success(
-                lll('core.bookmarks:success.deletedMultiple.title'),
-                lll('core.bookmarks:success.deletedMultiple.message', ids.length)
+                labels.get('success.deletedMultiple.title'),
+                labels.get('success.deletedMultiple.message', ids.length)
               );
               this.selectedIds = new Set();
             } else {
               Notification.error(
-                lll('core.bookmarks:error.deleteFailed.title'),
-                lll('core.bookmarks:error.deleteFailed.message')
+                labels.get('error.deleteFailed.title'),
+                labels.get('error.deleteFailed.message')
               );
             }
             confirmModal.hideModal();
@@ -868,14 +868,14 @@ export class BookmarkManagerContentElement extends LitElement {
     const success = await BookmarkStore.move(ids, groupId);
     if (success) {
       Notification.success(
-        lll('core.bookmarks:success.moved.title'),
-        lll('core.bookmarks:success.moved.message', ids.length)
+        labels.get('success.moved.title'),
+        labels.get('success.moved.message', ids.length)
       );
       this.selectedIds = new Set();
     } else {
       Notification.error(
-        lll('core.bookmarks:error.moveFailed.title'),
-        lll('core.bookmarks:error.moveFailed.message')
+        labels.get('error.moveFailed.title'),
+        labels.get('error.moveFailed.message')
       );
     }
   }
@@ -909,14 +909,14 @@ export class BookmarkManagerContentElement extends LitElement {
     const result = await BookmarkStore.createGroup(draft.label.trim());
     if (result.success) {
       Notification.success(
-        lll('core.bookmarks:success.groupCreated.title'),
-        lll('core.bookmarks:success.groupCreated.message')
+        labels.get('success.groupCreated.title'),
+        labels.get('success.groupCreated.message')
       );
       this.navigateToGroupListView();
     } else {
       Notification.error(
-        lll('core.bookmarks:error.groupCreateFailed.title'),
-        result.error || lll('core.bookmarks:error.groupCreateFailed.message')
+        labels.get('error.groupCreateFailed.title'),
+        result.error || labels.get('error.groupCreateFailed.message')
       );
     }
   }
@@ -934,14 +934,14 @@ export class BookmarkManagerContentElement extends LitElement {
 
     if (result.success) {
       Notification.success(
-        lll('core.bookmarks:success.groupUpdated.title'),
-        lll('core.bookmarks:success.groupUpdated.message')
+        labels.get('success.groupUpdated.title'),
+        labels.get('success.groupUpdated.message')
       );
       this.navigateToGroupListView();
     } else {
       Notification.error(
-        lll('core.bookmarks:error.groupUpdateFailed.title'),
-        result.error || lll('core.bookmarks:error.groupUpdateFailed.message')
+        labels.get('error.groupUpdateFailed.title'),
+        result.error || labels.get('error.groupUpdateFailed.message')
       );
     }
   }
@@ -952,32 +952,32 @@ export class BookmarkManagerContentElement extends LitElement {
     }
 
     const confirmModal = Modal.confirm(
-      lll('core.bookmarks:confirmDeleteGroup.title'),
-      lll('core.bookmarks:confirmDeleteGroup.message', group.label),
+      labels.get('confirmDeleteGroup.title'),
+      labels.get('confirmDeleteGroup.message', group.label),
       SeverityEnum.notice,
       [
         {
-          text: lll('core.bookmarks:action.cancel'),
+          text: labels.get('action.cancel'),
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: () => confirmModal.hideModal(),
         },
         {
-          text: lll('core.bookmarks:action.delete'),
+          text: labels.get('action.delete'),
           btnClass: 'btn-primary',
           name: 'delete',
           trigger: async () => {
             const result = await BookmarkStore.deleteGroup(group.id as string);
             if (result.success) {
               Notification.success(
-                lll('core.bookmarks:success.groupDeleted.title'),
-                lll('core.bookmarks:success.groupDeleted.message')
+                labels.get('success.groupDeleted.title'),
+                labels.get('success.groupDeleted.message')
               );
               this.navigateToGroupListView();
             } else {
               Notification.error(
-                lll('core.bookmarks:error.groupDeleteFailed.title'),
-                result.error || lll('core.bookmarks:error.groupDeleteFailed.message')
+                labels.get('error.groupDeleteFailed.title'),
+                result.error || labels.get('error.groupDeleteFailed.message')
               );
             }
             confirmModal.hideModal();
@@ -1150,9 +1150,9 @@ export class BookmarkManagerContentElement extends LitElement {
   private helperGetGroupSections(groups: BookmarkGroup[]): GroupSection[] {
     const groupsByType = Map.groupBy(groups, (group) => group.type);
     const groupTypeLabels: Record<BookmarkGroupType, string> = {
-      [BookmarkGroupType.USER]: lll('core.bookmarks:groupType.user'),
-      [BookmarkGroupType.SYSTEM]: lll('core.bookmarks:groupType.system'),
-      [BookmarkGroupType.GLOBAL]: lll('core.bookmarks:groupType.global'),
+      [BookmarkGroupType.USER]: labels.get('groupType.user'),
+      [BookmarkGroupType.SYSTEM]: labels.get('groupType.system'),
+      [BookmarkGroupType.GLOBAL]: labels.get('groupType.global'),
     };
 
     return Array.from(groupsByType.entries()).map(([type, typeGroups]) => ({
@@ -1216,7 +1216,7 @@ export class BookmarkManagerButtonElement extends PseudoButtonLitElement {
 
     Modal.advanced({
       type: Modal.types.default,
-      title: lll('core.bookmarks:manage'),
+      title: labels.get('manage'),
       size: Modal.sizes.medium,
       severity: SeverityEnum.notice,
       content: managerElement,

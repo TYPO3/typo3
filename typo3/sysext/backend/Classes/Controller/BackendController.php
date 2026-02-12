@@ -130,7 +130,6 @@ class BackendController
                 JavaScriptModuleInstruction::create('@typo3/backend/bookmark/bookmark-store.js')
                     ->invoke('initialize', $this->bookmarkService->getBookmarks(), $this->bookmarkService->getGroups())
             );
-            $pageRenderer->addInlineLanguageDomain('core.bookmarks');
         }
         $javaScriptRenderer->addGlobalAssignment([
             'TYPO3' => [

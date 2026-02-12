@@ -14,11 +14,11 @@
 import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { lll } from '@typo3/core/lit-helper';
 import BookmarkStore, { BookmarkStoreChangedEvent } from '../bookmark-store';
 import type { Bookmark, BookmarkGroup, BookmarkGroupId } from '../bookmark-store';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/bookmark/bookmark-manager';
+import labels from '~labels/core.bookmarks';
 
 /**
  * Toolbar dropdown menu listing bookmarks grouped by category.
@@ -45,7 +45,7 @@ export class BookmarkMenuElement extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <p class="dropdown-headline">${lll('core.bookmarks:title')}</p>
+      <p class="dropdown-headline">${labels.get('title')}</p>
       ${this.renderContent()}
       <hr class="dropdown-divider" aria-hidden="true">
       <typo3-backend-bookmark-manager-button class="dropdown-item">
@@ -54,7 +54,7 @@ export class BookmarkMenuElement extends LitElement {
             <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
           </span>
           <span class="dropdown-item-column dropdown-item-column-title">
-            ${lll('core.bookmarks:manage')}
+            ${labels.get('manage')}
           </span>
         </span>
       </typo3-backend-bookmark-manager-button>
@@ -74,7 +74,7 @@ export class BookmarkMenuElement extends LitElement {
     if (this.groupedBookmarks.size === 0) {
       return html`
         <p class="dropdown-item-text">
-          ${lll('core.bookmarks:description')}
+          ${labels.get('description')}
         </p>
       `;
     }
@@ -98,7 +98,7 @@ export class BookmarkMenuElement extends LitElement {
 
     return html`
       ${!isFirst ? html`<hr class="dropdown-divider" aria-hidden="true">` : nothing}
-      ${showHeader ? html`<p class="dropdown-header" id="bookmark-group-${groupId}">${groupLabel || lll('core.bookmarks:notGrouped')}</p>` : nothing}
+      ${showHeader ? html`<p class="dropdown-header" id="bookmark-group-${groupId}">${groupLabel || labels.get('notGrouped')}</p>` : nothing}
       <ul class="dropdown-list" data-bookmarkgroup="${groupId}">
         ${repeat(bookmarks, (bookmark) => bookmark.id, (bookmark) => this.renderBookmarkItem(bookmark, groupId))}
       </ul>

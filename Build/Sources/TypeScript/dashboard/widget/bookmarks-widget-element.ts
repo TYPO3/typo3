@@ -14,7 +14,7 @@
 import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { lll } from '@typo3/core/lit-helper';
+import labels from '~labels/core.bookmarks';
 import BookmarkStore, { BookmarkStoreChangedEvent } from '@typo3/backend/bookmark/bookmark-store';
 import type { Bookmark, BookmarkGroup, BookmarkGroupId } from '@typo3/backend/bookmark/bookmark-store';
 import '@typo3/backend/bookmark/bookmark-manager';
@@ -64,7 +64,7 @@ export class BookmarksWidgetElement extends LitElement {
     if (this.groupedBookmarks.size === 0) {
       return html`
         <p class="dropdown-item-text">
-          ${lll('core.bookmarks:description')}
+          ${labels.get('description')}
         </p>
       `;
     }
@@ -91,7 +91,7 @@ export class BookmarksWidgetElement extends LitElement {
 
   private renderGroup(groupId: BookmarkGroupId, bookmarks: Bookmark[], showHeader: boolean): TemplateResult {
     const group = this.groups.find(g => g.id === groupId);
-    const groupLabel = group?.label || lll('core.bookmarks:notGrouped');
+    const groupLabel = group?.label || labels.get('notGrouped');
 
     return html`
       <table class="widget-table table table-striped table-hover">
