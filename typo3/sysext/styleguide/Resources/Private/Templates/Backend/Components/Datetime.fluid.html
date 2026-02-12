@@ -1,0 +1,255 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/element/datetime-element.js',
+        }"
+    />
+</f:section>
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+
+        <h1><f:translate key="component.datetime.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:translate key="component.datetime.introtext" domain="styleguide.messages" />
+        </p>
+
+        <h2><f:translate key="component.datetime.section.basicUsage.headline" domain="styleguide.messages" /></h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><f:translate key="component.datetime.section.basicUsage.absoluteDisplay" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.basicUsage.isoTimestamp" domain="styleguide.messages" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{examples}" as="example">
+                        <tr>
+                            <td><typo3-backend-datetime datetime="{example.timestamp}"></typo3-backend-datetime></td>
+                            <td><small class="text-muted">{example.timestamp}</small></td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </sg:example>
+
+        <h2><f:translate key="component.datetime.section.relativeTime.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.datetime.section.relativeTime.text" domain="styleguide.messages" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><f:translate key="component.datetime.section.relativeTime.relativeDisplay" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.basicUsage.isoTimestamp" domain="styleguide.messages" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{examples}" as="example" iteration="iteration">
+                        <f:if condition="{iteration.index} < 5">
+                            <tr>
+                                <td><typo3-backend-datetime datetime="{example.timestamp}" mode="relative"></typo3-backend-datetime></td>
+                                <td><small class="text-muted">{example.timestamp}</small></td>
+                            </tr>
+                        </f:if>
+                    </f:for>
+                </tbody>
+            </table>
+        </sg:example>
+
+        <h2><f:translate key="component.datetime.section.autoUpdate.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.datetime.section.autoUpdate.text" domain="styleguide.messages" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <p>
+                <f:translate key="component.datetime.section.autoUpdate.lastUpdated" domain="styleguide.messages" />
+                <typo3-backend-datetime
+                    datetime="{nowTimestamp}"
+                    mode="relative">
+                </typo3-backend-datetime>
+            </p>
+        </sg:example>
+
+        <h2><f:translate key="component.datetime.section.unixTimestamp.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.datetime.section.unixTimestamp.text" domain="styleguide.messages" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><f:translate key="component.datetime.section.unixTimestamp.format" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.unixTimestamp.value" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.unixTimestamp.absoluteDisplay" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.unixTimestamp.fluidViewHelper" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.unixTimestamp.isoReference" domain="styleguide.messages" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{unixExamples}" as="example">
+                        <tr>
+                            <td>{example.label}</td>
+                            <td><code>{example.timestamp}</code></td>
+                            <td><typo3-backend-datetime datetime="{example.timestamp}" format="datetime"></typo3-backend-datetime></td>
+                            <td><f:format.date format="{dateTimeFormat}">{example.timestamp}</f:format.date></td>
+                            <td><small class="text-muted">{example.iso}</small></td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </sg:example>
+
+        <h2><f:translate key="component.datetime.section.modeComparison.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.datetime.section.modeComparison.text" domain="styleguide.messages" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><f:translate key="component.datetime.section.basicUsage.absoluteDisplay" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.relativeTime.relativeDisplay" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.unixTimestamp.fluidViewHelper" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.basicUsage.isoTimestamp" domain="styleguide.messages" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{examples}" as="example" iteration="iteration">
+                        <f:if condition="{iteration.index} < 5">
+                            <tr>
+                                <td><typo3-backend-datetime format="datetime" datetime="{example.timestamp}"></typo3-backend-datetime></td>
+                                <td><typo3-backend-datetime format="datetime" datetime="{example.timestamp}" mode="relative"></typo3-backend-datetime></td>
+                                <td><f:format.date format="{dateTimeFormat}">{example.timestamp}</f:format.date></td>
+                                <td><small class="text-muted">{example.timestamp}</small></td>
+                            </tr>
+                        </f:if>
+                    </f:for>
+                </tbody>
+            </table>
+        </sg:example>
+
+        <h2><f:translate key="component.datetime.section.absoluteFormats.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.datetime.section.absoluteFormats.text" domain="styleguide.messages" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><f:translate key="component.datetime.section.unixTimestamp.format" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.absoluteFormats.display" domain="styleguide.messages" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code><f:translate key="component.datetime.section.absoluteFormats.dateDefault" domain="styleguide.messages" /></code></td>
+                        <td><typo3-backend-datetime datetime="{recentTimestamp}" format="date"></typo3-backend-datetime></td>
+                    </tr>
+                    <tr>
+                        <td><code><f:translate key="component.datetime.section.absoluteFormats.datetimeConfigured" domain="styleguide.messages" /></code></td>
+                        <td><typo3-backend-datetime datetime="{recentTimestamp}" format="datetime"></typo3-backend-datetime></td>
+                    </tr>
+                </tbody>
+            </table>
+        </sg:example>
+
+        <h2><f:translate key="component.datetime.section.customFormats.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.datetime.section.customFormats.text" domain="styleguide.messages" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><f:translate key="component.datetime.section.customFormats.customFormatString" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.absoluteFormats.display" domain="styleguide.messages" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>dd.MM.yyyy HH:mm</code></td>
+                        <td><typo3-backend-datetime datetime="{recentTimestamp}" format="dd.MM.yyyy HH:mm"></typo3-backend-datetime></td>
+                    </tr>
+                    <tr>
+                        <td><code>yyyy-MM-dd</code></td>
+                        <td><typo3-backend-datetime datetime="{recentTimestamp}" format="yyyy-MM-dd"></typo3-backend-datetime></td>
+                    </tr>
+                    <tr>
+                        <td><code>MMMM d, yyyy 'at' h:mm a</code></td>
+                        <td><typo3-backend-datetime datetime="{recentTimestamp}" format="MMMM d, yyyy 'at' h:mm a"></typo3-backend-datetime></td>
+                    </tr>
+                </tbody>
+            </table>
+        </sg:example>
+
+        <h2><f:translate key="component.datetime.section.threshold.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.datetime.section.threshold.text" domain="styleguide.messages" /></p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><f:translate key="component.datetime.section.basicUsage.isoTimestamp" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.threshold.withoutThreshold" domain="styleguide.messages" /></th>
+                        <th><f:translate key="component.datetime.section.threshold.withThreshold" domain="styleguide.messages" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{examples}" as="example" iteration="iteration">
+                        <f:if condition="{iteration.index} > 4">
+                            <tr>
+                                <td><small class="text-muted">{example.timestamp}</small></td>
+                                <td><typo3-backend-datetime datetime="{example.timestamp}" mode="relative"></typo3-backend-datetime></td>
+                                <td><typo3-backend-datetime datetime="{example.timestamp}" mode="relative" threshold-days="90"></typo3-backend-datetime></td>
+                            </tr>
+                        </f:if>
+                    </f:for>
+                </tbody>
+            </table>
+        </sg:example>
+
+        <h2><f:translate key="component.datetime.section.attributes.headline" domain="styleguide.messages" /></h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><f:translate key="component.datetime.section.attributes.attribute" domain="styleguide.messages" /></th>
+                    <th><f:translate key="component.datetime.section.attributes.type" domain="styleguide.messages" /></th>
+                    <th><f:translate key="component.datetime.section.attributes.description" domain="styleguide.messages" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>datetime</code></td>
+                    <td><f:translate key="component.datetime.section.attributes.datetime.type" domain="styleguide.messages" /></td>
+                    <td><f:translate key="component.datetime.section.attributes.datetime.description" domain="styleguide.messages" /></td>
+                </tr>
+                <tr>
+                    <td><code>mode</code></td>
+                    <td><f:translate key="component.datetime.section.attributes.mode.type" domain="styleguide.messages" /></td>
+                    <td><f:translate key="component.datetime.section.attributes.mode.description" domain="styleguide.messages" /></td>
+                </tr>
+                <tr>
+                    <td><code>format</code></td>
+                    <td><f:translate key="component.datetime.section.attributes.format.type" domain="styleguide.messages" /></td>
+                    <td><f:translate key="component.datetime.section.attributes.format.description" domain="styleguide.messages" /></td>
+                </tr>
+                <tr>
+                    <td><code>threshold-days</code></td>
+                    <td><f:translate key="component.datetime.section.attributes.thresholdDays.type" domain="styleguide.messages" /></td>
+                    <td><f:translate key="component.datetime.section.attributes.thresholdDays.description" domain="styleguide.messages" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</f:section>
+
+</html>

@@ -974,13 +974,13 @@ class PageRenderer implements SingletonInterface
      * Adds Javascript Inline Setting. This will occur in TYPO3.settings - object
      * The label can be used in scripts with TYPO3.setting.<key>
      *
-     * @param string $namespace
+     * @param string|null $namespace
      * @param string $key
      * @param mixed $value
      */
     public function addInlineSetting($namespace, $key, $value)
     {
-        if ($namespace) {
+        if ($namespace !== null && $namespace !== '') {
             if (strpos($namespace, '.')) {
                 $parts = explode('.', $namespace);
                 $a = &$this->inlineSettings;

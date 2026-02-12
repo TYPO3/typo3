@@ -24,7 +24,7 @@ import Notification from '@typo3/backend/notification';
 import Viewport from '@typo3/backend/viewport';
 import { FormatUtility } from '@typo3/backend/utility/format-utility';
 import { ThumbnailSize } from '@typo3/backend/element/thumbnail-element';
-import { DateTime } from 'luxon';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 
 interface Message {
   title: string;
@@ -95,11 +95,11 @@ class FileListReplaceHandler {
       .get();
     const response: ResourceInterface = await request.resolve();
 
+    await topLevelModuleImport('@typo3/backend/element/datetime-element.js');
     return this.composeEditForm(response);
   }
 
   private composeEditForm(resource: ResourceInterface): TemplateResult {
-    const format: string = (typeof opener?.top?.TYPO3 !== 'undefined' ? opener.top : top).TYPO3.settings.DateTimePicker.DateFormat;
     const thumbnailUrl = new URL(top.TYPO3.settings.Resource.thumbnailUrl, window.origin);
     thumbnailUrl.searchParams.set('identifier', resource.uid.toString(10));
 
@@ -119,7 +119,7 @@ class FileListReplaceHandler {
               <dt>${lll('file_info_filesize')}</dt>
               <dd>${FormatUtility.fileSizeAsString(resource.size)}</dd>
               <dt>${lll('file_info_creation_date')}</dt>
-              <dd>${DateTime.fromSeconds(resource.createdAt).toFormat(format[1])}</dd>
+              <dd><typo3-backend-datetime format="datetime" datetime="${resource.createdAt}"></typo3-backend-datetime></dd>
             </dl>
           </div>
         </div>

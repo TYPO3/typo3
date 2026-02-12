@@ -111,6 +111,12 @@
       <trans-unit id="action.contentNavigation.description">
         <source>A two-panel container with a resizable navigation area and a flexible content area.</source>
       </trans-unit>
+      <trans-unit id="action.datetime">
+        <source>Datetime / Relative Time</source>
+      </trans-unit>
+      <trans-unit id="action.datetime.description">
+        <source>Web component for displaying timestamps in relative format with localization support.</source>
+      </trans-unit>
       <trans-unit id="action.colorTokens">
         <source>Color Tokens</source>
       </trans-unit>
@@ -1200,6 +1206,138 @@
       </trans-unit>
       <trans-unit id="component.tree.section.pageTree.text">
         <source>Initialization of a page tree is done via TypeScript as in the code example below.</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.headline">
+        <source>Datetime Component</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.introtext">
+        <source>Web component for displaying timestamps in absolute format (default) or relative format (e.g., "2 minutes ago"). Uses Luxon for localized formatting and respects the user's backend language setting and TYPO3's configured date formats. Supports custom Luxon format strings for complete control over the display format. When using relative mode, hover over the time to see the full datetime in a tooltip.</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.headline">
+        <source>Basic Usage (Absolute Display)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.absoluteDisplay">
+        <source>Absolute Display (default)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.basicUsage.isoTimestamp">
+        <source>ISO Timestamp</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.headline">
+        <source>Relative Time Display</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.text">
+        <source>Using mode="relative", the component displays timestamps in relative format (e.g., "2 hours ago"). Hover to see the absolute datetime.</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.relativeTime.relativeDisplay">
+        <source>Relative Display</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.headline">
+        <source>Automatic Updates in Relative Mode</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.text">
+        <source>In relative mode, the component automatically updates itself with adaptive frequency based on elapsed time: &lt;1 minute updates every second, &lt;1 hour updates every minute, &lt;1 day every 5 minutes, and &gt;1 day every 30 minutes. No configuration needed!</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.autoUpdate.lastUpdated">
+        <source>Last updated:</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.headline">
+        <source>Unix Timestamp Support</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.text">
+        <source>The component automatically detects and handles Unix timestamps (in seconds).</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.format">
+        <source>Format</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.value">
+        <source>Value</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.absoluteDisplay">
+        <source>Absolute Display</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.isoReference">
+        <source>ISO Reference</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.unixTimestamp.fluidViewHelper">
+        <source>Fluid ViewHelper</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.headline">
+        <source>Mode Comparison</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.modeComparison.text">
+        <source>Side-by-side comparison of absolute (default) and relative display modes.</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.headline">
+        <source>Absolute Display Formats</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.text">
+        <source>The format attribute is optional and uses TYPO3's configured date format by default. Available values: date (default), datetime, or custom Luxon format strings. The TYPO3 configured formats are defined in $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] and $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'].</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.display">
+        <source>Display</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.dateDefault">
+        <source>date (default - TYPO3 configured date)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.absoluteFormats.datetimeConfigured">
+        <source>datetime (TYPO3 configured datetime)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.headline">
+        <source>Custom Format Strings</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.text">
+        <source>The format attribute also accepts custom Luxon format strings for complete control over the display format.</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.customFormats.customFormatString">
+        <source>Custom Format String</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.headline">
+        <source>With Threshold (Show Absolute Date for Old Timestamps)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.text">
+        <source>In relative mode, using the threshold-days attribute switches to absolute date format for timestamps older than a specified number of days.</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withoutThreshold">
+        <source>Without Threshold</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.threshold.withThreshold">
+        <source>With Threshold (90 days)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.headline">
+        <source>Attributes</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.attribute">
+        <source>Attribute</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.type">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.description">
+        <source>Description</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.type">
+        <source>string (required)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.datetime.description">
+        <source>ISO 8601 timestamp (e.g., "2024-01-15T10:30:00+01:00") or Unix timestamp</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.type">
+        <source>string (optional)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.mode.description">
+        <source>Display mode: "absolute" (default) or "relative"</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.type">
+        <source>string (optional)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.format.description">
+        <source>Format for absolute mode: "date" (default - uses $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']), "datetime" (uses ddmmyy + hhmm), or custom Luxon format string (e.g., "dd.MM.yyyy HH:mm")</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.type">
+        <source>number (optional)</source>
+      </trans-unit>
+      <trans-unit id="component.datetime.section.attributes.thresholdDays.description">
+        <source>Switch to absolute date format for timestamps older than N days (only for relative mode). Default: 0 (always relative)</source>
       </trans-unit>
       <!-- Styles: Color tokens -->
       <trans-unit id="styles.colorTokens.headline">

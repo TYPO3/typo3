@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Backend\Bookmark\BookmarkService;
 use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
+use TYPO3\CMS\Backend\Date\DateConfigurationFactory;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
@@ -41,7 +42,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -78,6 +78,7 @@ class BackendController
         protected readonly FlashMessageService $flashMessageService,
         protected readonly BackendEntryPointResolver $backendEntryPointResolver,
         protected readonly BookmarkService $bookmarkService,
+        protected readonly DateConfigurationFactory $dateConfigurationFactory,
     ) {}
 
     /**
@@ -162,12 +163,8 @@ class BackendController
         $pageRenderer->addInlineSetting('Clipboard', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('clipboard_process'));
         $pageRenderer->addInlineSetting('Wizards', 'elementBrowserUrl', (string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser'));
 
-        // Needed for FormEngine manipulation (date picker)
-        $formatter = new DateFormatter();
-        $dateFormat = [];
-        $dateFormat[0] = $formatter->convertPhpFormatToLuxon($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'Y-m-d');
-        $dateFormat[1] = $dateFormat[0] . ' ' . $formatter->convertPhpFormatToLuxon($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i');
-        $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+        // Needed for FormEngine manipulation (date picker) and DateTime components
+        $pageRenderer->addInlineSetting(null, 'DateConfiguration', $this->dateConfigurationFactory->getConfiguration('javascript'));
 
         $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;

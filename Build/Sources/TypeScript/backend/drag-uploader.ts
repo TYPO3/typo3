@@ -12,7 +12,6 @@
  */
 
 import DocumentService from '@typo3/core/document-service';
-import { DateTime } from 'luxon';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { SeverityEnum } from './enum/severity';
 import { MessageUtility } from './utility/message-utility';
@@ -27,6 +26,7 @@ import DomHelper from '@typo3/backend/utility/dom-helper';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 import '@typo3/backend/element/progress-bar-element';
 import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import { FormatUtility } from '@typo3/backend/utility/format-utility';
 
 /**
@@ -394,8 +394,8 @@ export default class DragUploader {
       ajaxCalls.push(request);
     });
 
-    Promise.all(ajaxCalls).then((): void => {
-      this.drawOverrideModal();
+    Promise.all(ajaxCalls).then(async (): Promise<void> => {
+      await this.drawOverrideModal();
       if (this.overallProgressBar) {
         this.overallProgressBar.done();
       }
@@ -472,11 +472,12 @@ export default class DragUploader {
   /**
    * Renders the modal for existing files
    */
-  public drawOverrideModal(): void {
+  public async drawOverrideModal(): Promise<void> {
     const amountOfItems = Object.keys(this.askForOverride).length;
     if (amountOfItems === 0) {
       return;
     }
+    await topLevelModuleImport('@typo3/backend/element/datetime-element.js');
     const $modalContent = document.createElement('div');
     let htmlContent = `
       <p>${TYPO3.lang['file_upload.existingfiles.description']}</p>
@@ -501,11 +502,11 @@ export default class DragUploader {
           </td>
           <td>
             ${this.askForOverride[i].original.name} (${FormatUtility.fileSizeAsString(this.askForOverride[i].original.size)})<br />
-            ${DateTime.fromSeconds(this.askForOverride[i].original.mtime).toLocaleString(DateTime.DATETIME_MED)}
+            <typo3-backend-datetime datetime="${this.askForOverride[i].original.mtime}" format="datetime"></typo3-backend-datetime>
           </td>
           <td>
             ${this.askForOverride[i].uploaded.name} (${FormatUtility.fileSizeAsString(this.askForOverride[i].uploaded.size)})<br />
-            ${DateTime.fromMillis(this.askForOverride[i].uploaded.lastModified).toLocaleString(DateTime.DATETIME_MED)}
+            <typo3-backend-datetime datetime="${Math.floor(this.askForOverride[i].uploaded.lastModified / 1000)}" format="datetime"></typo3-backend-datetime>
           </td>
           <td>
             <select class="form-select t3js-actions" data-override="${i}">

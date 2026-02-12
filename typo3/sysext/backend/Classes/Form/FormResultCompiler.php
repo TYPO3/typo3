@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form;
 
+use TYPO3\CMS\Backend\Date\DateConfigurationFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -149,12 +149,8 @@ class FormResultCompiler
             $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
         }
 
-        // Needed for FormEngine manipulation (date picker)
-        $formatter = new DateFormatter();
-        $dateFormat = [];
-        $dateFormat[0] = $formatter->convertPhpFormatToLuxon($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'Y-m-d');
-        $dateFormat[1] = $dateFormat[0] . ' ' . $formatter->convertPhpFormatToLuxon($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i');
-        $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+        // Needed for FormEngine manipulation (date picker) and DateTime components
+        $pageRenderer->addInlineSetting(null, 'DateConfiguration', GeneralUtility::makeInstance(DateConfigurationFactory::class)->getConfiguration('javascript'));
 
         $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');

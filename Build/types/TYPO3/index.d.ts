@@ -44,6 +44,7 @@ declare namespace TYPO3 {
     export namespace Clipboard {
       export const moduleUrl: string;
     }
+    export const DateConfiguration: import('@typo3/backend/type/date-configuration').DateConfiguration;
     export namespace FileCommit {
       export const moduleUrl: string;
     }

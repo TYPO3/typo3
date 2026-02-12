@@ -55,6 +55,7 @@ final class ComponentsController
         'checkboxes',
         'comboboxes',
         'contentNavigation',
+        'datetime',
         'developerTools',
         'dropdown',
         'flashMessages',
@@ -100,6 +101,8 @@ final class ComponentsController
             'cards' => $this->renderCardsView($request),
             'checkboxes' => $this->renderCheckboxesView($request),
             'comboboxes' => $this->renderComboboxesView($request),
+            'contentNavigation' => $this->renderContentNavigationView($request),
+            'datetime' => $this->renderDatetimeView($request),
             'developerTools' => $this->renderDeveloperToolsView($request),
             'dropdown' => $this->renderDropdownView($request),
             'flashMessages' => $this->renderFlashMessagesView($request),
@@ -115,7 +118,6 @@ final class ComponentsController
             'progressIndicators' => $this->renderProgressIndicatorsView($request),
             'progressTrackers' => $this->renderProgressTrackersView($request),
             'radio' => $this->renderRadioView($request),
-            'contentNavigation' => $this->renderContentNavigationView($request),
             'select' => $this->renderSelectView($request),
             'tab' => $this->renderTabView($request),
             'tables' => $this->renderTablesView($request),
@@ -506,6 +508,69 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/ContentNavigation');
+    }
+
+    private function renderDatetimeView(ServerRequestInterface $request): ResponseInterface
+    {
+        $now = new \DateTimeImmutable();
+        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'Y-m-d';
+        $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i';
+        $dateTimeFormat = $dateFormat . ' ' . $timeFormat;
+
+        $view = $this->createModuleTemplate($request, 'datetime');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'datetime',
+            'routeIdentifier' => 'styleguide_components',
+            'dateTimeFormat' => $dateTimeFormat,
+            'examples' => [
+                [
+                    'label' => '30 seconds',
+                    'timestamp' => $now->modify('-30 seconds')->format(\DateTimeInterface::ATOM),
+                ],
+                [
+                    'label' => '5 minutes',
+                    'timestamp' => $now->modify('-5 minutes')->format(\DateTimeInterface::ATOM),
+                ],
+                [
+                    'label' => '2 hours',
+                    'timestamp' => $now->modify('-2 hours')->format(\DateTimeInterface::ATOM),
+                ],
+                [
+                    'label' => '3 days, 3 hours',
+                    'timestamp' => $now->modify('-3 days')->modify('-3 hours')->format(\DateTimeInterface::ATOM),
+                ],
+                [
+                    'label' => '2 weeks',
+                    'timestamp' => $now->modify('-2 weeks')->format(\DateTimeInterface::ATOM),
+                ],
+                [
+                    'label' => '2 months',
+                    'timestamp' => $now->modify('-2 months')->format(\DateTimeInterface::ATOM),
+                ],
+                [
+                    'label' => '1 year',
+                    'timestamp' => $now->modify('-1 year')->format(\DateTimeInterface::ATOM),
+                ],
+                [
+                    'label' => '5 years',
+                    'timestamp' => $now->modify('-5 years')->format(\DateTimeInterface::ATOM),
+                ],
+            ],
+            // Unix timestamp examples
+            'unixExamples' => [
+                [
+                    'label' => 'Unix timestamp (seconds)',
+                    'timestamp' => (string)$now->modify('-1 hour')->getTimestamp(),
+                    'iso' => $now->modify('-1 hour')->format(\DateTimeInterface::ATOM),
+                ],
+            ],
+            // Separate timestamps for other examples
+            'nowTimestamp' => $now->format(\DateTimeInterface::ATOM),
+            'recentTimestamp' => $now->modify('-2 hours')->format(\DateTimeInterface::ATOM),
+            'oldTimestamp' => $now->modify('-5 years')->format(\DateTimeInterface::ATOM),
+        ]);
+        return $view->renderResponse('Backend/Components/Datetime');
     }
 
     private function renderSelectView(ServerRequestInterface $request): ResponseInterface
