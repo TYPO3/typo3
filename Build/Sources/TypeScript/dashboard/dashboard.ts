@@ -1578,7 +1578,4 @@ declare global {
 
     [newRecordWizardEventName]: CustomEvent<NewRecordWizardItemSelectedEventInterface>;
   }
-  interface FocusOptions {
-    focusVisible: boolean;
-  }
 }

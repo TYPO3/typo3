@@ -4,7 +4,6 @@
         "lib": [
             "es2023",
             "dom",
-            "dom.iterable",
             "esnext.collection"
         ],
         "module": "es2022",
@@ -15,9 +14,10 @@
         "sourceMap": false,
         "removeComments": false,
         "alwaysStrict": true,
+        "strict": false,
+        "noUncheckedSideEffectImports": false,
         "strictBindCallApply": true,
         "strictBuiltinIteratorReturn": true,
-        "downlevelIteration": true,
         "experimentalDecorators": true,
         "useDefineForClassFields": false,
         "noImplicitAny": true,
