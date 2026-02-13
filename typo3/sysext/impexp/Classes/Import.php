@@ -22,14 +22,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -116,11 +114,6 @@ class Import extends ImportExport
      * Currently registered default storage object
      */
     protected ?ResourceStorage $defaultStorage = null;
-
-    /**
-     * Name of the "fileadmin" folder where files for export/import should be located
-     */
-    protected string $fileadminFolderName = '';
 
     /**
      * When false, processSiteConfigurations() is skipped. Set to false when the caller
@@ -1615,235 +1608,21 @@ class Import extends ImportExport
                     break;
                 default:
                     // This is almost the same as handling relations:
-                    // - Creating or updating related files and adjusting the file reference to link to the new file.
                     // - Adjusting the record reference to link to the already imported record - if any.
-                    switch ((string)$softref['subst']['type']) {
-                        case 'file':
-                            $insertValue = $this->processSoftReferencesSaveFile($softref['subst']['relFileName'], $softref, $table, $uid);
-                            break;
-                        case 'db':
-                        default:
-                            [$tempTable, $tempUid] = explode(':', (string)($softref['subst']['recordRef'] ?? ':'));
-                            if (isset($this->importMapId[$tempTable][$tempUid])) {
-                                $insertValue = BackendUtility::wsMapId($tempTable, $this->importMapId[$tempTable][$tempUid]);
-                                $tokenValue = (string)$softref['subst']['tokenValue'];
-                                if (str_contains($tokenValue, ':')) {
-                                    [$tokenKey] = explode(':', $tokenValue);
-                                    $insertValue = $tokenKey . ':' . $insertValue;
-                                }
-                            }
+                    [$tempTable, $tempUid] = explode(':', (string)($softref['subst']['recordRef'] ?? ':'));
+                    if (isset($this->importMapId[$tempTable][$tempUid])) {
+                        $insertValue = BackendUtility::wsMapId($tempTable, $this->importMapId[$tempTable][$tempUid]);
+                        $tokenValue = (string)$softref['subst']['tokenValue'];
+                        if (str_contains($tokenValue, ':')) {
+                            [$tokenKey] = explode(':', $tokenValue);
+                            $insertValue = $tokenKey . ':' . $insertValue;
+                        }
                     }
             }
             // Finally, replace the soft reference token in tokenized content
             $tokenizedContent = str_replace('{softref:' . $tokenID . '}', (string)$insertValue, $tokenizedContent);
         }
         return $tokenizedContent;
-    }
-
-    /**
-     * Process a soft reference file
-     *
-     * @param string $relFileName Old Relative filename
-     * @param array $softref Soft reference
-     * @param string $table Table for which the processing occurs
-     * @param string $uid UID of record from table
-     * @return string New relative filename (value to insert instead of the softref token)
-     */
-    protected function processSoftReferencesSaveFile(string $relFileName, array $softref, string $table, string $uid): string
-    {
-        if (isset($this->dat['header']['files'][$softref['file_ID']])) {
-            // Initialize; Get directory prefix for file and find possible filename
-            $dirPrefix = PathUtility::dirname($relFileName) . '/';
-            if (str_starts_with($dirPrefix, $this->getFileadminFolderName() . '/')) {
-                // File in fileadmin/ folder:
-                // Create file (and possible resources)
-                $newFileName = $this->processSoftReferencesSaveFileCreateRelFile($dirPrefix, PathUtility::basename($relFileName), $softref['file_ID'], $table, $uid) ?: '';
-                if (strlen($newFileName)) {
-                    $relFileName = $newFileName;
-                } else {
-                    $this->addError('ERROR: No new file created for "' . $relFileName . '"');
-                }
-            } else {
-                $this->addError('ERROR: Sorry, cannot operate on files which are outside the fileadmin folder.');
-            }
-        } else {
-            $this->addError('ERROR: Could not find file ID in header.');
-        }
-        // Return (new) filename relative to public web path
-        return $relFileName;
-    }
-
-    /**
-     * Create file in directory and return the new (unique) filename
-     *
-     * @param string $origDirPrefix Directory prefix, relative, with trailing slash
-     * @param string $fileName Filename (without path)
-     * @param string $fileID File ID from import memory
-     * @param string $table Table for which the processing occurs
-     * @param string $uid UID of record from table
-     * @return string|null New relative filename, if any
-     */
-    protected function processSoftReferencesSaveFileCreateRelFile(string $origDirPrefix, string $fileName, string $fileID, string $table, string $uid): ?string
-    {
-        // If the fileID map contains an entry for this fileID then just return the relative filename of that entry;
-        // we don't want to write another unique filename for this one!
-        if (isset($this->fileIdMap[$fileID])) {
-            return PathUtility::stripPathSitePrefix($this->fileIdMap[$fileID]);
-        }
-        // Verify file mount access to dir-prefix. Returns the best alternative relative path if any
-        $dirPrefix = $this->resolveStoragePath($origDirPrefix);
-        if ($dirPrefix !== null && (!$this->update || $origDirPrefix === $dirPrefix) && $this->checkOrCreateDir($dirPrefix)) {
-            $fileHeaderInfo = $this->dat['header']['files'][$fileID];
-            $updMode = $this->update && $this->importMapId[$table][$uid] === $uid && ($this->importMode[$table . ':' . $uid] ?? '') !== self::IMPORT_MODE_AS_NEW;
-            // Create new name for file:
-            // Must have same ID in map array (just for security, is not really needed) and NOT be set "as_new".
-
-            // Write main file:
-            if ($updMode) {
-                $newName = Environment::getPublicPath() . '/' . $dirPrefix . $fileName;
-            } else {
-                // Create unique filename:
-                $fileProcObj = $this->getFileProcObj();
-                $newName = (string)$fileProcObj->getUniqueName($fileName, Environment::getPublicPath() . '/' . $dirPrefix);
-            }
-            if ($this->writeFileVerify($newName, $fileID)) {
-                // If the resource was an HTML/CSS file with resources attached, we will write those as well!
-                if (is_array($fileHeaderInfo['EXT_RES_ID'] ?? null)) {
-                    $tokenizedContent = $this->dat['files'][$fileID]['tokenizedContent'];
-                    $tokenSubstituted = false;
-                    $fileProcObj = $this->getFileProcObj();
-                    if ($updMode) {
-                        foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
-                            if ($this->dat['files'][$res_fileID]['filename']) {
-                                // Resolve original filename:
-                                $relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
-                                $absResourceFileName = Environment::getPublicPath() . '/' . $origDirPrefix . $relResourceFileName;
-                                $absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
-                                if ($absResourceFileName && str_starts_with($absResourceFileName, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')) {
-                                    $destDir = PathUtility::stripPathSitePrefix(PathUtility::dirname($absResourceFileName) . '/');
-                                    if ($this->resolveStoragePath($destDir, false) !== null && $this->checkOrCreateDir($destDir)) {
-                                        $this->writeFileVerify($absResourceFileName, $res_fileID);
-                                    } else {
-                                        $this->addError('ERROR: Could not create file in directory "' . $destDir . '"');
-                                    }
-                                } else {
-                                    $this->addError('ERROR: Could not resolve path for "' . $relResourceFileName . '"');
-                                }
-                                $tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
-                                $tokenSubstituted = true;
-                            }
-                        }
-                    } else {
-                        // Create the ressource's directory name (filename without extension, suffixed "_FILES")
-                        $resourceDir = PathUtility::dirname($newName) . '/' . preg_replace('/\\.[^.]*$/', '', PathUtility::basename($newName)) . '_FILES';
-                        if (GeneralUtility::mkdir($resourceDir)) {
-                            foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
-                                if ($this->dat['files'][$res_fileID]['filename']) {
-                                    $absResourceFileName = (string)$fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
-                                    $relResourceFileName = substr($absResourceFileName, strlen(PathUtility::dirname($resourceDir)) + 1);
-                                    $this->writeFileVerify($absResourceFileName, $res_fileID);
-                                    $tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
-                                    $tokenSubstituted = true;
-                                }
-                            }
-                        }
-                    }
-                    // If substitutions has been made, write the content to the file again:
-                    if ($tokenSubstituted) {
-                        GeneralUtility::writeFile($newName, $tokenizedContent, true);
-                    }
-                }
-                return PathUtility::stripPathSitePrefix($newName);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Writes a file from the import memory having $fileID to file name $fileName which must be an absolute path inside public web path
-     *
-     * @param string $fileName Absolute filename inside public web path to write to
-     * @param string $fileID File ID from import memory
-     * @return bool Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
-     */
-    protected function writeFileVerify(string $fileName, string $fileID): bool
-    {
-        $fileProcObj = $this->getFileProcObj();
-        if (!$fileProcObj->actionPerms['addFile']) {
-            $this->addError('ERROR: You did not have sufficient permissions to write the file "' . $fileName . '"');
-            return false;
-        }
-        // Just for security, check again. Should actually not be necessary.
-        try {
-            $this->resourceFactory->getFolderObjectFromCombinedIdentifier(PathUtility::dirname($fileName));
-        } catch (InsufficientFolderAccessPermissionsException $e) {
-            $this->addError('ERROR: Filename "' . $fileName . '" was not allowed in destination path!');
-            return false;
-        }
-        $pathInfo = GeneralUtility::split_fileref($fileName);
-        if (!$this->fileNameValidator->isValid($pathInfo['file'])) {
-            $this->addError('ERROR: Filename "' . $fileName . '" failed against extension check or deny-pattern!');
-            return false;
-        }
-        if (!GeneralUtility::getFileAbsFileName($fileName)) {
-            $this->addError('ERROR: Filename "' . $fileName . '" was not a valid relative file path!');
-            return false;
-        }
-        if (!$this->dat['files'][$fileID]) {
-            $this->addError('ERROR: File ID "' . $fileID . '" could not be found');
-            return false;
-        }
-        GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content'], true);
-        $this->fileIdMap[$fileID] = $fileName;
-        if (hash_equals(md5((string)file_get_contents($fileName)), $this->dat['files'][$fileID]['content_md5'])) {
-            return true;
-        }
-        $this->addError('ERROR: File content "' . $fileName . '" was corrupted');
-        return false;
-    }
-
-    /**
-     * Returns TRUE if directory exists  and if it doesn't it will create directory and return TRUE if that succeeded.
-     *
-     * @param string $dirPrefix Directory to create. Having a trailing slash. Must be in fileadmin/. Relative to public web path
-     * @return bool TRUE, if directory exists (was created)
-     */
-    protected function checkOrCreateDir(string $dirPrefix): bool
-    {
-        // Split dir path and remove first directory (which should be "fileadmin")
-        $filePathParts = explode('/', $dirPrefix);
-        $firstDir = array_shift($filePathParts);
-        if ($firstDir === $this->getFileadminFolderName() && GeneralUtility::getFileAbsFileName($dirPrefix)) {
-            $pathAcc = '';
-            foreach ($filePathParts as $dirname) {
-                $pathAcc .= '/' . $dirname;
-                if (strlen($dirname)) {
-                    if (!@is_dir(Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . $pathAcc)) {
-                        if (!GeneralUtility::mkdir(Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . $pathAcc)) {
-                            $this->addError('ERROR: Directory could not be created....B');
-                            return false;
-                        }
-                    }
-                } elseif ($dirPrefix === $this->getFileadminFolderName() . $pathAcc) {
-                    return true;
-                } else {
-                    $this->addError('ERROR: Directory could not be created....A');
-                }
-            }
-        }
-        return false;
-    }
-
-    protected function getFileadminFolderName(): string
-    {
-        if (empty($this->fileadminFolderName)) {
-            if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])) {
-                $this->fileadminFolderName = rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/');
-            } else {
-                $this->fileadminFolderName = 'fileadmin';
-            }
-        }
-        return $this->fileadminFolderName;
     }
 
     /**

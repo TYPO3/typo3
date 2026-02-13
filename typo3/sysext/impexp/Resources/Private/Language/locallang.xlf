@@ -411,9 +411,6 @@
       <trans-unit id="impexpcore_singlereco_descr">
         <source>Descr</source>
       </trans-unit>
-      <trans-unit id="impexpcore_singlereco_filename">
-        <source>Filename</source>
-      </trans-unit>
       <trans-unit id="impexpcore_singlereco_value">
         <source>Value</source>
       </trans-unit>

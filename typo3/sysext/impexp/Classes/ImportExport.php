@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * T3D file Import / Export library (TYPO3 Record Document)
@@ -105,11 +104,6 @@ abstract class ImportExport
      * Array of values to substitute in editable soft references.
      */
     protected array $softrefInputValues = [];
-
-    /**
-     * Mapping between the fileID from import memory and the final filenames they are written to.
-     */
-    protected array $fileIdMap = [];
 
     /**
      * Add tables names here which should not be exported with the file.
@@ -216,9 +210,6 @@ abstract class ImportExport
      */
     public function renderPreview(): array
     {
-        // @todo: Why is this done?
-        unset($this->dat['files']);
-
         $previewData = [
             'update' => $this->update,
             'showDiff' => $this->showDiff,
@@ -519,10 +510,6 @@ abstract class ImportExport
         }
         $lines[] = $line;
 
-        // File relations
-        if (is_array($record['filerefs'] ?? null)) {
-            $this->addFiles($record['filerefs'], $lines, $indent);
-        }
         // Database relations
         if (is_array($record['rels'] ?? null)) {
             $this->addRelations($record['rels'], $lines, $indent);
@@ -606,109 +593,6 @@ abstract class ImportExport
     }
 
     /**
-     * Add file relations of a record to the preview.
-     *
-     * Public access for testing purpose only.
-     *
-     * @param array $relations Array of file IDs
-     * @param array $lines Output lines array
-     * @param int $indent Indentation level
-     * @param string $tokenID Token ID if this is a soft reference (in which case it only makes sense with a single element in the $relations array!)
-     */
-    public function addFiles(array $relations, array &$lines, int $indent, string $tokenID = ''): void
-    {
-        foreach ($relations as $ID) {
-            $line = [];
-            $line['msg'] = '';
-            $fileInfo = $this->dat['header']['files'][$ID] ?? null;
-            if (!is_array($fileInfo)) {
-                if ($tokenID !== '' || $this->isSoftRefIncluded($tokenID)) {
-                    $line['msg'] = 'MISSING FILE: ' . $ID;
-                    $this->addError('MISSING FILE: ' . $ID);
-
-                    // In case of an error, this relation shall be unset,
-                    // so that no follow-up errors on the missing file
-                    // softref can occur.
-                    unset($this->remainHeader['files'][$ID]);
-                    $line['type'] = '';
-                    $lines[] = $line;
-                    continue;
-                }
-                return;
-            }
-            $line['ref'] = 'FILE';
-            $line['type'] = 'file';
-            $line['preCode'] = ''
-                . $this->renderIndent($indent + 1)
-                . $this->iconFactory
-                    ->getIcon('status-reference-hard', IconSize::SMALL)
-                    ->setTitle($line['ref'])
-                    ->render();
-            $line['title'] = htmlspecialchars($fileInfo['filename'] ?? 'Missing filename');
-            $line['showDiffContent'] = PathUtility::stripPathSitePrefix((string)($this->fileIdMap[$ID] ?? ''));
-            // If import mode and there is a soft reference, check the destination directory.
-            if ($this->mode === 'import' && $tokenID !== '') {
-                // Check folder existence
-                if (isset($fileInfo['parentRelFileName'])) {
-                    $line['msg'] = 'Seems like this file is already referenced from within an HTML/CSS file. That takes precedence. ';
-                } elseif (isset($fileInfo['relFileName'])) {
-                    $origDirPrefix = PathUtility::dirname($fileInfo['relFileName']) . '/';
-                    $dirPrefix = $this->resolveStoragePath($origDirPrefix);
-                    if ($dirPrefix === null) {
-                        $line['msg'] = 'ERROR: There are no available file mounts to write file in!';
-                    } elseif ($origDirPrefix !== $dirPrefix) {
-                        $line['msg'] = 'File will be attempted written to "' . $dirPrefix . '". ';
-                    }
-                }
-                // Check file existence
-                if (file_exists(Environment::getPublicPath() . '/' . $fileInfo['relFileName'])) {
-                    if ($this->update) {
-                        $line['updatePath'] = 'File exists.';
-                    } else {
-                        $line['msg'] .= 'File already exists! ';
-                    }
-                }
-                // Check file extension
-                $fileProcObj = $this->getFileProcObj();
-                if ($fileProcObj->actionPerms['addFile']) {
-                    $pathInfo = GeneralUtility::split_fileref(Environment::getPublicPath() . '/' . $fileInfo['relFileName']);
-                    if (!$this->fileNameValidator->isValid($pathInfo['file'])) {
-                        $line['msg'] .= 'File extension was not allowed!';
-                    }
-                } else {
-                    $line['msg'] = 'Your user profile does not allow you to create files on the server!';
-                }
-            }
-            $lines[] = $line;
-            unset($this->remainHeader['files'][$ID]);
-
-            // External resources
-            foreach ($fileInfo['EXT_RES_ID'] ?? [] as $extID) {
-                $line = [];
-                $fileInfo = $this->dat['header']['files'][$extID];
-                if (!is_array($fileInfo)) {
-                    $line['msg'] = 'MISSING External Resource FILE: ' . $extID;
-                    $this->addError('MISSING External Resource FILE: ' . $extID);
-                } else {
-                    $line['updatePath'] = $fileInfo['parentRelFileName'];
-                }
-                $line['ref'] = 'FILE';
-                $line['type'] = 'file';
-                $line['preCode'] = ''
-                    . $this->renderIndent($indent + 1)
-                    . $this->iconFactory
-                        ->getIcon('actions-insert-reference', IconSize::SMALL)
-                        ->setTitle($line['ref'])
-                        ->render();
-                $line['title'] = htmlspecialchars($fileInfo['filename']) . ' <em>(Resource)</em>';
-                $line['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIdMap[$extID]);
-                $lines[] = $line;
-                unset($this->remainHeader['files'][$extID]);
-            }
-        }
-    }
-
-    /**
      * Add soft references of a record to the preview
      *
      * @param array $softrefs Soft references
@@ -760,13 +644,6 @@ abstract class ImportExport
                         htmlspecialchars($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_record')),
                         $softref['subst']['recordRef']
                     );
-                } elseif ($softref['subst']['type'] === 'file') {
-                    $line['title'] .= sprintf(
-                        '<br>%s <strong>%s</strong> %s',
-                        $this->renderIndent($indent + 1),
-                        htmlspecialchars($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_filename')),
-                        $softref['subst']['relFileName']
-                    );
                 } elseif ($softref['subst']['type'] === 'string') {
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
@@ -788,11 +665,6 @@ abstract class ImportExport
                 [$referencedTable, $referencedUid] = explode(':', $softref['subst']['recordRef']);
                 $relations = [['table' => $referencedTable, 'id' => $referencedUid, 'tokenID' => $softref['subst']['tokenID']]];
                 $this->addRelations($relations, $lines, $indent + 1);
-            }
-            // Add files relations
-            if (($softref['subst']['type'] ?? '') === 'file') {
-                $relations = [$softref['file_ID']];
-                $this->addFiles($relations, $lines, $indent + 1, $softref['subst']['tokenID']);
             }
         }
     }

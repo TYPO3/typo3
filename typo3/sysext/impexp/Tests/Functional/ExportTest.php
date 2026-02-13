@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
@@ -193,57 +192,6 @@ final class ExportTest extends AbstractImportExportTestCase
         $subject->process();
         $previewData = $subject->renderPreview();
         self::assertEquals($renderPreviewExport, $previewData);
-    }
-
-    public static function addFilesSucceedsDataProvider(): array
-    {
-        $fileMtime = filemtime(__DIR__ . '/../../Resources/Public/Icons/status-reference-hard.png');
-        return [
-            [
-                'dat' => [
-                    'header' => [
-                        'files' => [
-                            '123456789' => [
-                                'filename' => 'filename.jpg',
-                                'relFileName' => 'filename.jpg',
-                            ],
-                        ],
-                    ],
-                ],
-                'relations' => [
-                    '123456789',
-                ],
-                'expected' => [
-                    [
-                        'ref' => 'FILE',
-                        'type' => 'file',
-                        'msg' => '',
-                        'preCode' =>
-                            '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard" aria-hidden="true">'
-                            . "\n" . "\t" . '<span class="icon-markup">'
-                            . "\n" . '<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png?' . $fileMtime . '" width="16" height="16" alt="" />'
-                            . "\n" . "\t" . '</span>' . "\n\t\n" . '</span>',
-                        'title' => 'filename.jpg',
-                        'showDiffContent' => '',
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Temporary test until there is a complex functional test which tests addFiles() implicitly.
-     */
-    #[DataProvider('addFilesSucceedsDataProvider')]
-    #[Test]
-    public function addFilesSucceeds(array $dat, array $relations, array $expected): void
-    {
-        $subject = $this->get(Export::class);
-        $lines = [];
-        $datProperty = new \ReflectionProperty($subject, 'dat');
-        $datProperty->setValue($subject, $dat);
-        $subject->addFiles($relations, $lines, 0);
-        self::assertEquals($expected, $lines);
     }
 
     #[Test]

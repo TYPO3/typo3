@@ -22,7 +22,6 @@ use Doctrine\DBAL\Result;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -45,7 +44,6 @@ use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 
 /**
@@ -218,7 +216,6 @@ class Export extends ImportExport
 
         // Files must be added after the database relations are added,
         // so that files from ALL added records are included!
-        $this->exportAddFilesFromRelations();
         $this->exportAddFilesFromSysFilesRecords();
         if ($this->includeSiteConfigurations) {
             $this->exportAddSiteConfigurations();
@@ -550,7 +547,6 @@ class Export extends ImportExport
                 //        of those a relation is bound. This is currently most likely not handled during import and
                 //        should have more test coverage.
                 $relations = $this->referenceIndex->getRelations($table, $row, 0);
-                $relations = $this->removeRedundantSoftRefsInRelations($relations);
                 // Data:
                 $this->dat['records'][$recordIdentifier] = ['data' => $sanitizedRow];
                 // There are no refindex entries for l10n_source of pages and tt_content, so we have to add them here manually for now.
@@ -671,41 +667,6 @@ class Export extends ImportExport
     }
 
     /**
-     * Relations could contain db relations to sys_file records. Some configuration combinations of TCA and
-     * SoftReferenceIndex create also soft reference relation entries for the identical file. This results
-     * in double included files, one in array "files" and one in array "file_fal".
-     * This function checks the relations for this double inclusions and removes the redundant soft reference
-     * relation.
-     */
-    protected function removeRedundantSoftRefsInRelations(array $relations): array
-    {
-        foreach ($relations as &$relation) {
-            if (isset($relation['type']) && $relation['type'] === 'db') {
-                foreach ($relation['itemArray'] as $dbRelationData) {
-                    if ($dbRelationData['table'] === 'sys_file') {
-                        if (isset($relation['softrefs']['keys']['typolink'])) {
-                            foreach ($relation['softrefs']['keys']['typolink'] as $tokenID => $softref) {
-                                if ($softref['subst']['type'] === 'file') {
-                                    $file = $this->resourceFactory->retrieveFileOrFolderObject($softref['subst']['relFileName']);
-                                    if ($file instanceof File) {
-                                        if ($file->getUid() == $dbRelationData['id']) {
-                                            unset($relation['softrefs']['keys']['typolink'][$tokenID]);
-                                        }
-                                    }
-                                }
-                            }
-                            if (empty($relation['softrefs']['keys']['typolink'])) {
-                                unset($relation['softrefs']);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return $relations;
-    }
-
-    /**
      * Database relations flattened to 1-dimensional array.
      * The list will be unique, no table/uid combination will appear twice.
      *
@@ -744,38 +705,22 @@ class Export extends ImportExport
     {
         $list = [];
         foreach ($relations as $field => $relation) {
-            if (is_array($relation['softrefs']['keys'] ?? null)) {
-                foreach ($relation['softrefs']['keys'] as $spKey => $elements) {
-                    foreach ($elements as $subKey => $el) {
-                        $lKey = $field . ':' . $spKey . ':' . $subKey;
-                        $list[$lKey] = array_merge(['field' => $field, 'spKey' => $spKey], $el);
-                        // Add file_ID key to header - slightly "risky" way of doing this because if the calculation
-                        // changes for the same value in $this->records[...] this will not work anymore!
-                        if ($el['subst']['relFileName'] ?? false) {
-                            $list[$lKey]['file_ID'] = md5(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
-                        }
-                    }
+            foreach ($relation['softrefs']['keys'] ?? [] as $spKey => $elements) {
+                foreach ($elements as $subKey => $el) {
+                    $lKey = $field . ':' . $spKey . ':' . $subKey;
+                    $list[$lKey] = array_merge(['field' => $field, 'spKey' => $spKey], $el);
                 }
             }
-            if (isset($relation['type'])) {
-                if ($relation['type'] === 'flex' && is_array($relation['flexFormRels']['softrefs'] ?? null)) {
-                    foreach ($relation['flexFormRels']['softrefs'] as $structurePath => &$subList) {
-                        if (isset($subList['keys'])) {
-                            foreach ($subList['keys'] as $spKey => $elements) {
-                                foreach ($elements as $subKey => $el) {
-                                    $lKey = $field . ':' . $structurePath . ':' . $spKey . ':' . $subKey;
-                                    $list[$lKey] = array_merge([
-                                        'field' => $field,
-                                        'spKey' => $spKey,
-                                        'structurePath' => $structurePath,
-                                    ], $el);
-                                    // Add file_ID key to header - slightly "risky" way of doing this because if the calculation
-                                    // changes for the same value in $this->records[...] this will not work anymore!
-                                    if ($el['subst']['relFileName'] ?? false) {
-                                        $list[$lKey]['file_ID'] = md5(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
-                                    }
-                                }
-                            }
+            if (($relation['type'] ?? '') === 'flex' && is_array($relation['flexFormRels']['softrefs'] ?? null)) {
+                foreach ($relation['flexFormRels']['softrefs'] as $structurePath => &$subList) {
+                    foreach ($subList['keys'] ?? [] as $spKey => $elements) {
+                        foreach ($elements as $subKey => $el) {
+                            $lKey = $field . ':' . $structurePath . ':' . $spKey . ':' . $subKey;
+                            $list[$lKey] = array_merge([
+                                'field' => $field,
+                                'spKey' => $spKey,
+                                'structurePath' => $structurePath,
+                            ], $el);
                         }
                     }
                 }
@@ -789,7 +734,6 @@ class Export extends ImportExport
      * export file.
      * This function can be called repeatedly until it returns zero added records.
      * In principle it should not allow to infinite recursion, but you better set a limit...
-     * Call this BEFORE the exportAddFilesFromRelations (so files from added relations are also included of course)
      *
      * @param int $relationLevel Recursion level
      * @return int number of records from relations found and added
@@ -923,120 +867,6 @@ class Export extends ImportExport
         return $this->tcaSchemaFactory->has($table)
             && (in_array($table, $this->relOnlyTables, true) || in_array('_ALL', $this->relOnlyTables, true))
             && $this->getBackendUser()->check('tables_select', $table);
-    }
-
-    /**
-     * This adds all files in relations.
-     * Call this method AFTER adding all records including relations.
-     */
-    protected function exportAddFilesFromRelations(): void
-    {
-        // @todo: Consider NOT using by-reference but writing final $this->dat at end of method.
-        if (!isset($this->dat['records'])) {
-            $this->addError('There were no records available.');
-            return;
-        }
-
-        foreach ($this->dat['records'] as &$record) {
-            if (!is_array($record)) {
-                continue;
-            }
-            if (!is_array($record['rels'] ?? null)) {
-                continue;
-            }
-            foreach ($record['rels'] as &$relation) {
-                // For all flex type relations:
-                if (isset($relation['type']) && $relation['type'] === 'flex') {
-                    // Database oriented soft references in flex form fields:
-                    if (isset($relation['flexFormRels']['softrefs'])) {
-                        foreach ($relation['flexFormRels']['softrefs'] as &$subList) {
-                            foreach ($subList['keys'] as &$elements) {
-                                foreach ($elements as &$el) {
-                                    if ($el['subst']['type'] === 'file' && $this->isSoftRefIncluded($el['subst']['tokenID'])) {
-                                        // Create abs path and ID for file:
-                                        $ID_absFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
-                                        $ID = md5($el['subst']['relFileName']);
-                                        if ($ID_absFile) {
-                                            if (!$this->dat['files'][$ID]) {
-                                                $fileRelationData = [
-                                                    'filename' => PathUtility::basename($ID_absFile),
-                                                    'ID_absFile' => $ID_absFile,
-                                                    'ID' => $ID,
-                                                    'relFileName' => $el['subst']['relFileName'],
-                                                ];
-                                                $this->exportAddFile($fileRelationData);
-                                            }
-                                            $el['file_ID'] = $ID;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        unset($subList, $elements, $el);
-                    }
-                }
-                // In any case, if there are soft refs:
-                foreach ($relation['softrefs']['keys'] ?? [] as &$elements) {
-                    foreach ($elements as &$el) {
-                        if (($el['subst']['type'] ?? '') === 'file' && $this->isSoftRefIncluded($el['subst']['tokenID'])) {
-                            // Create abs path and ID for file:
-                            $ID_absFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
-                            $ID = md5($el['subst']['relFileName']);
-                            if ($ID_absFile) {
-                                if (!$this->dat['files'][$ID]) {
-                                    $fileRelationData = [
-                                        'filename' => PathUtility::basename($ID_absFile),
-                                        'ID_absFile' => $ID_absFile,
-                                        'ID' => $ID,
-                                        'relFileName' => $el['subst']['relFileName'],
-                                    ];
-                                    $this->exportAddFile($fileRelationData);
-                                }
-                                $el['file_ID'] = $ID;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * This adds the file to the export
-     *
-     * @param array $fileData File information with three keys: "filename" = filename without path, "ID_absFile" = absolute filepath to the file (including the filename), "ID" = md5 hash of "ID_absFile". "relFileName" is optional for files attached to records, but mandatory for soft referenced files (since the relFileName determines where such a file should be stored!)
-     */
-    protected function exportAddFile(array $fileData): void
-    {
-        if (!@is_file($fileData['ID_absFile'])) {
-            $this->addError($fileData['ID_absFile'] . ' was not a file! Skipping.');
-            return;
-        }
-
-        $fileStat = stat($fileData['ID_absFile']);
-        $fileMd5 = md5_file($fileData['ID_absFile']);
-
-        $fileInfo = [];
-        $fileInfo['filename'] = PathUtility::basename($fileData['ID_absFile']);
-        $fileInfo['filemtime'] = $fileStat['mtime'];
-        $fileInfo['relFileRef'] = PathUtility::stripPathSitePrefix($fileData['ID_absFile']);
-        if ($fileData['relFileName']) {
-            $fileInfo['relFileName'] = $fileData['relFileName'];
-        }
-
-        // Setting this data in the header
-        $this->dat['header']['files'][$fileData['ID']] = $fileInfo;
-
-        if ($this->saveFilesOutsideExportFile) {
-            GeneralUtility::upload_copy_move(
-                $fileData['ID_absFile'],
-                $this->getOrCreateTemporaryFolderName() . '/' . $fileMd5
-            );
-        } else {
-            $fileInfo['content'] = (string)file_get_contents($fileData['ID_absFile']);
-        }
-        $fileInfo['content_md5'] = $fileMd5;
-        $this->dat['files'][$fileData['ID']] = $fileInfo;
     }
 
     /**

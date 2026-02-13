@@ -161,53 +161,6 @@ final class ImportTest extends AbstractImportExportTestCase
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
-    public static function addFilesSucceedsDataProvider(): array
-    {
-        $fileMtimeHard = filemtime(__DIR__ . '/../../Resources/Public/Icons/status-reference-hard.png');
-        return [
-            ['dat' => [
-                'header' => [
-                    'files' => [
-                        '123456789' => [
-                            'filename' => 'filename.jpg',
-                            'relFileName' => 'filename.jpg',
-                        ],
-                    ],
-                ],
-            ], 'relations' => [
-                '123456789',
-            ], 'tokenID' => '987654321'
-                , 'expected' => [
-                    [
-                        'ref' => 'FILE',
-                        'type' => 'file',
-                        'msg' => '',
-                        'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard" aria-hidden="true">
-' . "\t" . '<span class="icon-markup">
-<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png?' . $fileMtimeHard . '" width="16" height="16" alt="" />
-' . "\t" . '</span>' . "\n\t\n" . '</span>',
-                        'title' => 'filename.jpg',
-                        'showDiffContent' => '',
-                    ],
-                ], ],
-        ];
-    }
-
-    /**
-     * Temporary test until there is a complex functional test which tests addFiles() implicitly.
-     */
-    #[DataProvider('addFilesSucceedsDataProvider')]
-    #[Test]
-    public function addFilesSucceeds(array $dat, array $relations, string $tokenID, array $expected): void
-    {
-        $subject = $this->get(Import::class);
-        $datProperty = new \ReflectionProperty($subject, 'dat');
-        $datProperty->setValue($subject, $dat);
-        $lines = [];
-        $subject->addFiles($relations, $lines, 0, $tokenID);
-        self::assertEquals($expected, $lines);
-    }
-
     #[Test]
     #[DoesNotPerformAssertions]
     public function loadXmlSucceeds(): void
