@@ -114,6 +114,9 @@
       <trans-unit id="filehandlingserviceconfiguration.maxfiles.notvalid">
         <source>The maximum amount of %s file(s) is exceeded.</source>
       </trans-unit>
+      <trans-unit id="class_configuration">
+        <source>Extbase: Class Configuration</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

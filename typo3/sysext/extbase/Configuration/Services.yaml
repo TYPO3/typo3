@@ -151,3 +151,11 @@ services:
 
   Doctrine\Instantiator\InstantiatorInterface:
     class: \Doctrine\Instantiator\Instantiator
+
+  # Configuration module to inspect Extbase Class Configuration
+  extbase.configuration.module.provider.classConfiguration:
+    class: 'TYPO3\CMS\Extbase\ConfigurationModuleProvider\ClassConfigurationProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'extbaseClassConfiguration'
+        label: 'extbase.messages:class_configuration'

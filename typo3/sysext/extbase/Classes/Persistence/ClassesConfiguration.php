@@ -63,4 +63,9 @@ class ClassesConfiguration
 
         return $subClasses;
     }
+
+    public function getConfiguration(): array
+    {
+        return $this->configuration;
+    }
 }
