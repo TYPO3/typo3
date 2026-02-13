@@ -95,6 +95,7 @@ class InputSlugElement extends AbstractFormElement
         $width = $this->formMaxWidth($size);
         $baseUrl = $this->data['customData'][$this->data['fieldName']]['slugPrefix'] ?? '';
         $fieldId = StringUtility::getUniqueId('formengine-input-');
+        $renderedLabel = $this->renderLabel($fieldId);
 
         // Convert UTF-8 characters back (that is important, see Slug class when sanitizing)
         $itemValue = rawurldecode($itemValue);
@@ -120,7 +121,7 @@ class InputSlugElement extends AbstractFormElement
                 'id' => $fieldId,
             ];
             $html = [];
-            $html[] = $this->renderLabel($fieldId);
+            $html[] = $renderedLabel;
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =     $fieldInformationHtml;
             $html[] =     '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
@@ -153,6 +154,7 @@ class InputSlugElement extends AbstractFormElement
 
         $thisSlugId = 't3js-form-field-slug-id' . StringUtility::getUniqueId();
         $mainFieldHtml = [];
+        $mainFieldHtml[] = $renderedLabel;
         $mainFieldHtml[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $mainFieldHtml[] =  $fieldInformationHtml;
         $mainFieldHtml[] =  '<div class="form-control-wrap" style="max-width: ' . $width . 'px" id="' . htmlspecialchars($thisSlugId) . '">';
@@ -217,7 +219,7 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =  '</div>';
         $mainFieldHtml[] = '</div>';
 
-        $resultArray['html'] = $this->wrapWithFieldsetAndLegend(implode(LF, $mainFieldHtml));
+        $resultArray['html'] = implode(LF, $mainFieldHtml);
 
         [$commonElementPrefix] = GeneralUtility::revExplode('[', $parameterArray['itemFormElName'], 2);
         $validInputNamesToListenTo = [];
