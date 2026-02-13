@@ -23,7 +23,6 @@ use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
-use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Validator\Constraint;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Extbase\Annotation;

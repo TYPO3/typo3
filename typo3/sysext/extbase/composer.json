@@ -35,6 +35,7 @@
 		"doctrine/instantiator": "^1.5 || ^2.0",
 		"phpdocumentor/reflection-docblock": "^5.6.5",
 		"phpdocumentor/type-resolver": "^1.8.2",
+		"phpstan/phpdoc-parser": "^2.1",
 		"symfony/dependency-injection": "^7.3",
 		"symfony/property-access": "^7.3",
 		"symfony/property-info": "^7.3",
