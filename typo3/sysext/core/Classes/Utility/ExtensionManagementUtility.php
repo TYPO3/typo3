@@ -470,10 +470,10 @@ class ExtensionManagementUtility
         $positionGroupId = '';
         if (str_contains($position, ':')) {
             [$position, $positionGroupId] = explode(':', $position, 2);
-        }
-        // Referenced group was not not found, just append to the bottom
-        if (!isset($itemGroups[$positionGroupId])) {
-            $position = 'bottom';
+           // Referenced group was not not found, just append to the bottom
+           if (!isset($itemGroups[$positionGroupId])) {
+               $position = 'bottom';
+           }
         }
         switch ($position) {
             case 'after':
