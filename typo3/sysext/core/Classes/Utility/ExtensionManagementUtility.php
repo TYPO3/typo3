@@ -428,8 +428,8 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds an item group to a TCA select field, allows to add a group so addTcaSelectItem() can add a groupId
-     * with a label and its position within other groups.
+     * Adds an item group to a TCA select field. Allows to add a group so addTcaSelectItem()
+     * can add a groupId with a label and its position within other groups.
      *
      * @param string $table the table name in TCA - e.g. tt_content
      * @param string $field the field name in TCA - e.g. CType
@@ -452,8 +452,8 @@ class ExtensionManagementUtility
         if (str_contains($position, ':')) {
             [$position, $positionGroupId] = explode(':', $position, 2);
         }
-        // Referenced group was not not found, just append to the bottom
-        if (!isset($itemGroups[$positionGroupId])) {
+        // Referenced group was not found, just append to the bottom
+        if (($position === 'before' || $position === 'after') && !isset($itemGroups[$positionGroupId])) {
             $position = 'bottom';
         }
         switch ($position) {

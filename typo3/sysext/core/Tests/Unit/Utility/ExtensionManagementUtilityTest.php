@@ -1544,6 +1544,34 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                     'my_group' => 'my_group_label',
                 ],
             ],
+            'add a new group after without referenced group moved to bottom' => [
+                'my_group',
+                'my_group_label',
+                'after',
+                [
+                    'default' => 'default_label',
+                    'special' => 'special_label',
+                ],
+                [
+                    'default' => 'default_label',
+                    'special' => 'special_label',
+                    'my_group' => 'my_group_label',
+                ],
+            ],
+            'add a new group before without referenced group moved to bottom' => [
+                'my_group',
+                'my_group_label',
+                'before',
+                [
+                    'default' => 'default_label',
+                    'special' => 'special_label',
+                ],
+                [
+                    'default' => 'default_label',
+                    'special' => 'special_label',
+                    'my_group' => 'my_group_label',
+                ],
+            ],
             'add a new group which already exists does nothing' => [
                 'my_group',
                 'my_group_label',
@@ -1571,7 +1599,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
             $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'] = $existingGroups;
         }
         ExtensionManagementUtility::addTcaSelectItemGroup('tt_content', 'CType', $groupId, $groupLabel, $position);
-        self::assertEquals($expectedGroups, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']);
+        self::assertSame($expectedGroups, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']);
     }
 
     #[Test]
