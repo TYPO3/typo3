@@ -38,7 +38,7 @@ Usage with the `record-transformation` data processor:
     or
     {record -> f:render.record()}
 
-You can not only render tt_content records but any database record by defining a the rendering in Typoscript.
+You can not only render tt_content records but any database record by defining the rendering in Typoscript.
 
 ..  code-block:: typoscript
 
