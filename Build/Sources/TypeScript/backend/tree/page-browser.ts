@@ -83,7 +83,7 @@ export class PageBrowserTree extends PageTree {
    */
   private isLinkable(node: TreeNodeInterface): boolean {
     const nonViewableDoktypes: number[] = this.settings.nonViewableDoktypes ?? [199, 254];
-    return !nonViewableDoktypes.includes(Number(node.recordType));
+    return !nonViewableDoktypes.includes(node.doktype);
   }
 
   /**
