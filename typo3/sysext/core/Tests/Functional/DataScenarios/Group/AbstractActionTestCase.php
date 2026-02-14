@@ -202,7 +202,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::TABLE_Content,
             self::VALUE_ContentIdLast,
             self::FIELD_ContentElement,
-            [self::VALUE_ElementIdSecond, self::VALUE_ElementIdThird]
+            [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
         );
     }
 
@@ -213,7 +213,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['localizedContentIdFirst'], self::VALUE_LanguageIdSecond);
-        $this->recordIds['localizedContentIdSecond'] = $newTableIds[self::TABLE_Content][$this->recordIds['localizedContentIdFirst']];
+        $localizedContentIdSecond = $newTableIds[self::TABLE_Content][$this->recordIds['localizedContentIdFirst']];
+        $this->recordIds['localizedContentIdSecond'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $localizedContentIdSecond) ?? $localizedContentIdSecond;
+        $this->recordIds['localizedContentIdSecondDirect'] = $localizedContentIdSecond;
         $this->actionService->modifyRecord(
             self::TABLE_Content,
             $this->recordIds['localizedContentIdSecond'],
@@ -223,7 +225,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::TABLE_Content,
             self::VALUE_ContentIdLast,
             self::FIELD_ContentElement,
-            [self::VALUE_ElementIdSecond, self::VALUE_ElementIdThird]
+            [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
         );
     }
 

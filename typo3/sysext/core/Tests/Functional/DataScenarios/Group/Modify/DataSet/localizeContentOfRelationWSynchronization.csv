@@ -7,8 +7,8 @@
 "tt_content",,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","tx_testdatahandler_group","l10n_state"
 ,297,89,256,0,0,0,0,0,0,0,"Regular Element #1","1,2","\NULL"
-,298,89,512,0,0,0,0,0,0,0,"Regular Element #2","2,3","\NULL"
-,299,89,768,0,1,298,0,0,0,0,"[Translate to Dansk:] Regular Element #2","2,3","{""tx_testdatahandler_group"":""parent""}"
+,298,89,512,0,0,0,0,0,0,0,"Regular Element #2","1,2","\NULL"
+,299,89,768,0,1,298,0,0,0,0,"[Translate to Dansk:] Regular Element #2","1,2","{""tx_testdatahandler_group"":""parent""}"
 "tx_testdatahandler_element",,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,
 ,1,89,256,0,0,0,0,0,0,0,"Element #1",,
@@ -18,8 +18,8 @@
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
 ,"80049ddf812b303493f4ab87f14f2a1f","tt_content",297,"tx_testdatahandler_group",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",1,,0,0,2147483647,0,0,
 ,"47dd3ade32d0a07932f8897d83e514d0","tt_content",297,"tx_testdatahandler_group",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
-,"f6e90b07d64ab4b5497500ec9389e032","tt_content",298,"tx_testdatahandler_group",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
-,"3a2c17e653ab4a1f5fe0f516a5425838","tt_content",298,"tx_testdatahandler_group",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",3,,0,0,2147483647,0,0,
+,"bf70217b72785de888d3608dbe0d1675","tt_content",298,"tx_testdatahandler_group",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",1,,0,0,2147483647,0,0,
+,"2a6a15ac099a9652fdcf77cf6aa4af61","tt_content",298,"tx_testdatahandler_group",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
 ,"926002522f5d6aef95eca10810a3b88b","tt_content",299,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",298,,0,0,2147483647,0,0,
-,"1b342e83188d498d67e7976ac671184f","tt_content",299,"tx_testdatahandler_group",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
-,"57c104868bd4bd0d241b8d5ce346cad2","tt_content",299,"tx_testdatahandler_group",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",3,,0,0,2147483647,0,0,
+,"e62205d2a542e534e4e40727aea1537b","tt_content",299,"tx_testdatahandler_group",0,0,2147483647,0,,,,0,0,"tx_testdatahandler_element",1,,0,0,2147483647,0,0,
+,"66b5dbc3bd12944fb2f6caa2db433a4b","tt_content",299,"tx_testdatahandler_group",0,0,2147483647,0,,,,1,0,"tx_testdatahandler_element",2,,0,0,2147483647,0,0,
