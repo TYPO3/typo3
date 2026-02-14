@@ -105,7 +105,7 @@
 		"symfony/polyfill-php83": "^1.31",
 		"symfony/process": "^7.3",
 		"symfony/property-access": "^7.3",
-		"symfony/property-info": "^7.3",
+		"symfony/property-info": "^7.4",
 		"symfony/rate-limiter": "^7.3",
 		"symfony/routing": "^7.3",
 		"symfony/translation": "^7.3",
