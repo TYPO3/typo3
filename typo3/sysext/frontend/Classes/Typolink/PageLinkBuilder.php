@@ -23,7 +23,6 @@ use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\CacheTag;
-use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
@@ -85,7 +84,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
         protected readonly LinkVarsCalculator $linkVarsCalculator,
-        protected LinkService $linkService,
+        protected readonly LinkService $linkService,
         protected readonly TypoLinkCodecService $linkCodecService,
         protected readonly PageTypeLinkResolver $pageTypeLinkResolver,
         protected readonly LoggerInterface $logger,
@@ -292,7 +291,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
             }
         }
 
-        $this->sendCacheTagEvent($resolvedPage);
+        $this->addPageCacheTag($request, $resolvedPage);
 
         // Setting title if blank value to link
         $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $resolvedPage['title'] ?? '');
@@ -945,24 +944,19 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         return GeneralUtility::makeInstance(PageRepository::class, $context);
     }
 
-    protected function sendCacheTagEvent(array $page): void
+    protected function addPageCacheTag(ServerRequestInterface $request, array $pageRecord): void
     {
         if ($this->features->isFeatureEnabled('frontend.cache.autoTagging')) {
-            $lifetime = $this->getPageCacheTimeout($page);
-            $this->eventDispatcher->dispatch(
-                new AddCacheTagEvent(
-                    new CacheTag(sprintf('pages_%s', $page['uid']), $lifetime)
-                )
+            $lifetime = $this->cacheLifetimeCalculator->calculateLifetimeForPage(
+                $pageRecord['uid'],
+                $pageRecord,
+                $request->getAttribute('frontend.typoscript')?->getConfigArray() ?? [],
+                GeneralUtility::makeInstance(Context::class)
+            );
+            $request->getAttribute('frontend.cache.collector')?->addCacheTags(
+                new CacheTag(sprintf('pages_%s', $pageRecord['uid']), $lifetime)
             );
         }
-    }
-
-    /**
-     * Get the cache lifetime for the given page record.
-     */
-    protected function getPageCacheTimeout(array $record): int
-    {
-        return $this->cacheLifetimeCalculator->calculateLifetimeForRow('pages', $record);
     }
 
     /**
