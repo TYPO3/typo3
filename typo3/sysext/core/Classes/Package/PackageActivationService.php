@@ -46,7 +46,6 @@ class PackageActivationService
     public function __construct(
         private Registry $registry,
         private PackageManager $packageManager,
-        private CacheManager $cacheManager,
         private BootService $bootService,
         private OpcodeCacheService $opcodeCacheService,
         private EventDispatcherInterface $eventDispatcher,
@@ -61,10 +60,10 @@ class PackageActivationService
             $this->extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($extensionKey);
             $packages[$extensionKey] = $this->packageManager->getPackage($extensionKey);
         }
-        $this->cacheManager->flushCaches();
         // Load a new container as we are reloading ext_localconf.php files
         $container = $this->bootService->getContainer(false);
         $backupContainer = $this->bootService->makeCurrent($container);
+        $container->get(CacheManager::class)->flushCaches();
         $backupTca = $GLOBALS['TCA'];
         // Reload cache files and Typo3LoadedExtensions
         $this->opcodeCacheService->clearAllActive();
