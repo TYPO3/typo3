@@ -292,7 +292,7 @@ final class ActionTest extends AbstractActionTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
-            ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
+            ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
 
     #[Test]
@@ -312,7 +312,7 @@ final class ActionTest extends AbstractActionTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
-            ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
+            ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
     }
 
     #[Test]

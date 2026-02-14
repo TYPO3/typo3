@@ -246,4 +246,97 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         ]);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyNDiscardNModifyParentWHotelChild.csv');
     }
+
+    #[Test]
+    public function localizeParentContentWithLanguageSynchronization(): void
+    {
+        parent::localizeParentContentWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentChainLanguageSynchronizationSource(): void
+    {
+        parent::localizeParentContentChainLanguageSynchronizationSource();
+        $this->actionService->clearWorkspaceRecords([
+            self::TABLE_Content => [$this->recordIds['localizedContentIdFirst'], $this->recordIds['localizedContentIdSecond']],
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentChainLanguageSynchronizationSource.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentAndCreateNestedChildrenWithLanguageSynchronization(): void
+    {
+        parent::localizeParentContentAndCreateNestedChildrenWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentIdFirst']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentNCreateNestedChildrenWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizePageWithLocalizationExclude(): void
+    {
+        parent::localizePageWithLocalizationExclude();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageWExclude.csv');
+    }
+
+    #[Test]
+    public function localizePageAndAddHotelChildWithLocalizationExclude(): void
+    {
+        parent::localizePageAndAddHotelChildWithLocalizationExclude();
+        $this->actionService->clearWorkspaceRecords([
+            self::TABLE_Page => [$this->recordIds['localizedPageId'], self::VALUE_PageId],
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNAddHotelChildWExclude.csv');
+    }
+
+    #[Test]
+    public function localizePageWithLanguageSynchronization(): void
+    {
+        parent::localizePageWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizePageAndAddHotelChildWithLanguageSynchronization(): void
+    {
+        parent::localizePageAndAddHotelChildWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecords([
+            self::TABLE_Page => [$this->recordIds['localizedPageId'], self::VALUE_PageId],
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNAddHotelChildWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizePageAndAddMonoglotHotelChildWithLanguageSynchronization(): void
+    {
+        parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecords([
+            self::TABLE_Page => [$this->recordIds['localizedPageId'], self::VALUE_PageId],
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNAddMonoglotHotelChildWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizeAndCopyPageWithLanguageSynchronization(): void
+    {
+        parent::localizeAndCopyPageWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecords([
+            self::TABLE_Page => [$this->recordIds['localizedPageId'], $this->recordIds['newPageId']],
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNCopyPageWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizePageAddMonoglotHotelChildAndCopyPageWithLanguageSynchronization(): void
+    {
+        parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
+        parent::copyPage();
+        $this->actionService->clearWorkspaceRecords([
+            self::TABLE_Page => [$this->recordIds['localizedPageId'], self::VALUE_PageId, $this->recordIds['newPageId']],
+        ]);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAddMonoglotHotelChildNCopyPageWSynchronization.csv');
+    }
 }

@@ -301,6 +301,40 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function localizeContentOfRelationWithLanguageSynchronization(): void
+    {
+        parent::localizeContentOfRelationWithLanguageSynchronization();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWSynchronization.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
+            ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
+    }
+
+    #[Test]
+    public function localizeContentChainOfRelationWithLanguageSynchronizationSource(): void
+    {
+        parent::localizeContentChainOfRelationWithLanguageSynchronizationSource();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationWSynchronizationSource.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
+            ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #1', 'Element #2'));
+    }
+
+    #[Test]
     public function localizeElementOfRelation(): void
     {
         // Create and publish translated page first
