@@ -43,7 +43,7 @@ use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForRowEvent;
 #[Autoconfigure(public: true)]
 class CacheLifetimeCalculator
 {
-    protected const defaultCacheTimeout = 86400;
+    protected const defaultCacheTimeout = 365 * 86400; // 1 year
 
     public function __construct(
         #[Autowire(service: 'cache.runtime')]
@@ -56,7 +56,7 @@ class CacheLifetimeCalculator
     /**
      * Get the cache lifetime in seconds for the given record.
      */
-    public function calculateLifetimeForRow(string $tableName, array $record, int $defaultCacheTimoutInSeconds = 0): int
+    public function calculateLifetimeForRow(string $tableName, array $record, int $defaultCacheTimeoutInSeconds = 0): int
     {
         $cachedCacheLifetimeIdentifier = sprintf('calculateLifetimeForRow_%s_%d', $tableName, ($record['uid'] ?? 0));
         $cachedCacheLifetime = $this->runtimeCache->get($cachedCacheLifetimeIdentifier);
@@ -64,7 +64,7 @@ class CacheLifetimeCalculator
             return (int)$cachedCacheLifetime;
         }
 
-        $cacheTimeout = $defaultCacheTimoutInSeconds ?: self::defaultCacheTimeout;
+        $cacheTimeout = $defaultCacheTimeoutInSeconds ?: self::defaultCacheTimeout;
 
         if ($this->tcaSchemaFactory->has($tableName)) {
             $schema = $this->tcaSchemaFactory->get($tableName);
