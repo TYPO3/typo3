@@ -323,6 +323,226 @@ final class RequestBuilderTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function uploadedFileIsMergedToExtbaseArgumentsForSingleItemArgument(): void
+    {
+        $_FILES['tx_blogexample_blog']['item']['file'] = [
+            'name' => 'name.pdf',
+            'type' => 'application/pdf',
+            'tmp_name' => '/tmp/php/php1h4j1o',
+            'error' => UPLOAD_ERR_OK,
+            'size' => 98174,
+        ];
+
+        $extensionName = 'blog_example';
+        $pluginName = 'blog';
+
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
+            ],
+        ]);
+
+        $configuration = [];
+        $configuration['extensionName'] = $extensionName;
+        $configuration['pluginName'] = $pluginName;
+
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration($configuration);
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['HTTP_HOST'] = 'https://example.com/';
+        $_SERVER['SERVER_NAME'] = 'https://example.com/';
+
+        $mainRequest = ServerRequestFactory::fromGlobals()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withParsedBody(['tx_blogexample_blog' => ['item' => ['name' => 'a name']]]);
+        $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
+        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
+
+        $argument = $request->getArgument('tx_blogexample_blog');
+        self::assertSame('a name', $argument['item']['name']);
+        self::assertInstanceOf(UploadedFile::class, $argument['item']['file']);
+    }
+
+    #[Test]
+    public function uploadedFileIsMergedToExtbaseArgumentsForMultiDimensionalArgument(): void
+    {
+        $_FILES['tx_blogexample_blog']['items'] = [
+            0 => [
+                'file' => [
+                    'name' => 'name1.pdf',
+                    'type' => 'application/pdf',
+                    'tmp_name' => '/tmp/php/php1h4j1o',
+                    'error' => UPLOAD_ERR_OK,
+                    'size' => 98174,
+                ],
+            ],
+            1 => [
+                'file' => [
+                    'name' => 'name2.pdf',
+                    'type' => 'application/pdf',
+                    'tmp_name' => '/tmp/php/php1h4j1p',
+                    'error' => UPLOAD_ERR_OK,
+                    'size' => 98175,
+                ],
+            ],
+        ];
+
+        $extensionName = 'blog_example';
+        $pluginName = 'blog';
+
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
+            ],
+        ]);
+
+        $configuration = [];
+        $configuration['extensionName'] = $extensionName;
+        $configuration['pluginName'] = $pluginName;
+
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration($configuration);
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['HTTP_HOST'] = 'https://example.com/';
+        $_SERVER['SERVER_NAME'] = 'https://example.com/';
+
+        $parsedBody = [
+            'items' => [
+                0 => ['name' => 'a name 1'],
+                1 => ['name' => 'a name 2'],
+            ],
+        ];
+
+        $mainRequest = ServerRequestFactory::fromGlobals()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withParsedBody(['tx_blogexample_blog' => $parsedBody]);
+        $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
+        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
+
+        $argument = $request->getArgument('tx_blogexample_blog');
+        self::assertCount(2, $argument['items']);
+        self::assertSame('a name 1', $argument['items'][0]['name']);
+        self::assertInstanceOf(UploadedFile::class, $argument['items'][0]['file']);
+        self::assertSame('a name 2', $argument['items'][1]['name']);
+        self::assertInstanceOf(UploadedFile::class, $argument['items'][1]['file']);
+    }
+
+    #[Test]
+    public function uploadedFileIsMergedToExtbaseArgumentsForDeeplyNestedStructure(): void
+    {
+        $_FILES['tx_blogexample_blog']['item']['meta']['file'] = [
+            'name' => 'name.pdf',
+            'type' => 'application/pdf',
+            'tmp_name' => '/tmp/php/php1h4j1o',
+            'error' => UPLOAD_ERR_OK,
+            'size' => 98174,
+        ];
+
+        $extensionName = 'blog_example';
+        $pluginName = 'blog';
+
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
+            ],
+        ]);
+
+        $configuration = [];
+        $configuration['extensionName'] = $extensionName;
+        $configuration['pluginName'] = $pluginName;
+
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration($configuration);
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['HTTP_HOST'] = 'https://example.com/';
+        $_SERVER['SERVER_NAME'] = 'https://example.com/';
+
+        $mainRequest = ServerRequestFactory::fromGlobals()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withParsedBody(['tx_blogexample_blog' => ['item' => ['meta' => ['title' => 'a title'], 'name' => 'a name']]]);
+        $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
+        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
+
+        $argument = $request->getArgument('tx_blogexample_blog');
+        self::assertSame('a name', $argument['item']['name']);
+        self::assertSame('a title', $argument['item']['meta']['title']);
+        self::assertInstanceOf(UploadedFile::class, $argument['item']['meta']['file']);
+    }
+
+    #[Test]
+    public function uploadedFileReplacesOverlappingPostDataKeys(): void
+    {
+        $_FILES['tx_blogexample_blog']['item'] = [
+            'file' => [
+                'name' => 'name1.pdf',
+                'type' => 'application/pdf',
+                'tmp_name' => '/tmp/php/php1h4j1o',
+                'error' => UPLOAD_ERR_OK,
+                'size' => 98174,
+            ],
+            'data' => [
+                'name' => 'name2.txt',
+                'type' => 'text/plain',
+                'tmp_name' => '/tmp/php/php2h4j2o',
+                'error' => UPLOAD_ERR_OK,
+                'size' => 98175,
+            ],
+        ];
+
+        $extensionName = 'blog_example';
+        $pluginName = 'blog';
+
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
+            ],
+        ]);
+
+        $configuration = [];
+        $configuration['extensionName'] = $extensionName;
+        $configuration['pluginName'] = $pluginName;
+
+        $configurationManager = $this->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration($configuration);
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['HTTP_HOST'] = 'https://example.com/';
+        $_SERVER['SERVER_NAME'] = 'https://example.com/';
+
+        $mainRequest = ServerRequestFactory::fromGlobals()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withParsedBody(['tx_blogexample_blog' => ['item' => ['data' => 'should be replaced', 'name' => 'a name']]]);
+        $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
+        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $request = $this->get(RequestBuilder::class)->build($mainRequest);
+
+        $argument = $request->getArgument('tx_blogexample_blog');
+        self::assertSame('a name', $argument['item']['name']);
+        self::assertInstanceOf(UploadedFile::class, $argument['item']['file']);
+        // Verify that the uploaded file replaces the POST data value (array_replace_recursive behavior)
+        self::assertInstanceOf(UploadedFile::class, $argument['item']['data']);
+        self::assertSame('name2.txt', $argument['item']['data']->getClientFilename());
+    }
+
+    #[Test]
     public function resolveControllerClassNameThrowsInvalidControllerNameExceptionIfNonExistentControllerIsSetViaGetParameter(): void
     {
         $this->expectException(InvalidControllerNameException::class);

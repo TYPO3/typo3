@@ -130,9 +130,9 @@ class RequestBuilder implements SingletonInterface
             }
         }
 
-        // Merge UploadedFiles into request parameters, so that they
-        // are available as arguments for property mapping.
-        $parameters = array_merge_recursive($parameters, $files);
+        // Merge UploadedFiles into request parameters, so that they are available as arguments
+        // for property mapping (e.g. in ext:form or a custom file upload TypeConverter).
+        $parameters = array_replace_recursive($parameters, $files);
 
         $controllerClassName = $this->resolveControllerClassName($defaultValues, $parameters);
         $actionName = $this->resolveActionName($defaultValues, $controllerClassName, $parameters);
