@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Service\Dependency;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Dependency\DependencyCollectionAction;
 use TYPO3\CMS\Workspaces\Dependency\DependencyResolver;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntity;
-use TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor;
-use TYPO3\CMS\Workspaces\Dependency\EventCallback;
 use TYPO3\CMS\Workspaces\Dependency\ReferenceEntity;
 
 /**
@@ -38,7 +38,7 @@ class CollectionService implements SingletonInterface
     protected array $nestedDataArray;
 
     public function __construct(
-        protected readonly ElementEntityProcessor $elementEntityProcessor,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function getDependencyResolver(): DependencyResolver
@@ -46,18 +46,8 @@ class CollectionService implements SingletonInterface
         if (!isset($this->dependencyResolver)) {
             $this->dependencyResolver = GeneralUtility::makeInstance(DependencyResolver::class);
             $this->dependencyResolver->setWorkspace($this->getBackendUser()->workspace);
-            $this->dependencyResolver->setEventCallback(
-                ElementEntity::EVENT_Construct,
-                GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementCallback', ['workspace' => $this->getBackendUser()->workspace])
-            );
-            $this->dependencyResolver->setEventCallback(
-                ElementEntity::EVENT_CreateChildReference,
-                GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementChildReferenceCallback')
-            );
-            $this->dependencyResolver->setEventCallback(
-                ElementEntity::EVENT_CreateParentReference,
-                GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementParentReferenceCallback')
-            );
+            $this->dependencyResolver->setEventDispatcher($this->eventDispatcher);
+            $this->dependencyResolver->setAction(DependencyCollectionAction::Display);
         }
         return $this->dependencyResolver;
     }

@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Dependency;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Workspaces\Event\IsReferenceConsideredForDependencyEvent;
 
 /**
  * Object to hold information on a dependent database element in abstract.
@@ -32,10 +35,6 @@ class ElementEntity
 {
     public const REFERENCES_ChildOf = 'childOf';
     public const REFERENCES_ParentOf = 'parentOf';
-    public const EVENT_Construct = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::construct';
-    public const EVENT_CreateChildReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createChildReference';
-    public const EVENT_CreateParentReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createParentReference';
-    public const RESPONSE_Skip = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity->skip';
 
     protected bool $invalid = false;
     protected string $table;
@@ -55,7 +54,7 @@ class ElementEntity
         $this->id = $id;
         $this->data = $data;
         $this->dependency = $dependency;
-        $this->dependency->executeEventCallback(self::EVENT_Construct, $this);
+        $this->resolveWorkspaceState();
     }
 
     public function setInvalid(bool $invalid): void
@@ -68,41 +67,26 @@ class ElementEntity
         return $this->invalid;
     }
 
-    /**
-     * Gets the table.
-     */
     public function getTable(): string
     {
         return $this->table;
     }
 
-    /**
-     * Gets the id.
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Sets the id.
-     */
     public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * Gets the data.
-     */
     public function getData(): array
     {
         return $this->data;
     }
 
-    /**
-     * Gets a value for a particular key from the data.
-     */
     public function getDataValue(string $key): mixed
     {
         $result = null;
@@ -112,33 +96,21 @@ class ElementEntity
         return $result;
     }
 
-    /**
-     * Sets a value for a particular key in the data.
-     */
     public function setDataValue(string $key, mixed $value): void
     {
         $this->data[$key] = $value;
     }
 
-    /**
-     * Determines whether a particular key holds data.
-     */
     public function hasDataValue(string $key): bool
     {
         return isset($this->data[$key]);
     }
 
-    /**
-     * Converts this object for string representation.
-     */
     public function __toString(): string
     {
         return $this->table . ':' . $this->id;
     }
 
-    /**
-     * Gets the parent dependency object.
-     */
     public function getDependency(): DependencyResolver
     {
         return $this->dependency;
@@ -153,6 +125,13 @@ class ElementEntity
     {
         if (!isset($this->children)) {
             $this->children = [];
+
+            if ($this->isInvalid()) {
+                return $this->children;
+            }
+
+            $action = $this->dependency->getAction();
+            $eventDispatcher = $this->dependency->getEventDispatcher();
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_refindex');
@@ -178,29 +157,44 @@ class ElementEntity
                 ->executeQuery();
 
             while ($row = $result->fetchAssociative()) {
-                if ($row['ref_table'] !== '_STRING') {
-                    $arguments = [
-                        'table' => $row['ref_table'],
-                        'id' => $row['ref_uid'],
-                        'field' => $row['field'],
-                        'scope' => self::REFERENCES_ChildOf,
-                    ];
+                if ($row['ref_table'] === '_STRING') {
+                    continue;
+                }
 
-                    $callbackResponse = $this->dependency->executeEventCallback(
-                        self::EVENT_CreateChildReference,
-                        $this,
-                        $arguments
-                    );
-                    if ($callbackResponse !== self::RESPONSE_Skip) {
-                        $this->children[] = $this->getDependency()->getFactory()->getReferencedElement(
-                            $row['ref_table'],
-                            $row['ref_uid'],
+                $isDependency = false;
+                if ($eventDispatcher !== null && $action !== null) {
+                    $event = $eventDispatcher->dispatch(
+                        new IsReferenceConsideredForDependencyEvent(
+                            $row['tablename'],
+                            (int)$row['recuid'],
                             $row['field'],
-                            [],
-                            $this->getDependency()
-                        );
+                            $row['ref_table'],
+                            (int)$row['ref_uid'],
+                            $action,
+                            $this->dependency->getWorkspace(),
+                        )
+                    );
+                    $isDependency = $event->isDependency();
+                }
+
+                if (!$isDependency) {
+                    continue;
+                }
+
+                if ($action === DependencyCollectionAction::Discard) {
+                    $record = BackendUtility::getRecord($row['ref_table'], (int)$row['ref_uid']);
+                    if (VersionState::tryFrom($record['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER) {
+                        continue;
                     }
                 }
+
+                $this->children[] = $this->getDependency()->getFactory()->getReferencedElement(
+                    $row['ref_table'],
+                    (int)$row['ref_uid'],
+                    $row['field'],
+                    [],
+                    $this->getDependency()
+                );
             }
         }
         return $this->children;
@@ -215,6 +209,9 @@ class ElementEntity
     {
         if (!isset($this->parents)) {
             $this->parents = [];
+
+            $action = $this->dependency->getAction();
+            $eventDispatcher = $this->dependency->getEventDispatcher();
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_refindex');
@@ -240,26 +237,40 @@ class ElementEntity
                 ->executeQuery();
 
             while ($row = $result->fetchAssociative()) {
-                $arguments = [
-                    'table' => $row['tablename'],
-                    'id' => $row['recuid'],
-                    'field' => $row['field'],
-                    'scope' => self::REFERENCES_ParentOf,
-                ];
-                $callbackResponse = $this->dependency->executeEventCallback(
-                    self::EVENT_CreateParentReference,
-                    $this,
-                    $arguments
-                );
-                if ($callbackResponse !== self::RESPONSE_Skip) {
-                    $this->parents[] = $this->getDependency()->getFactory()->getReferencedElement(
-                        $row['tablename'],
-                        $row['recuid'],
-                        $row['field'],
-                        [],
-                        $this->getDependency()
+                $isDependency = false;
+                if ($eventDispatcher !== null && $action !== null) {
+                    $event = $eventDispatcher->dispatch(
+                        new IsReferenceConsideredForDependencyEvent(
+                            $row['tablename'],
+                            (int)$row['recuid'],
+                            $row['field'],
+                            $row['ref_table'],
+                            (int)$row['ref_uid'],
+                            $action,
+                            $this->dependency->getWorkspace(),
+                        )
                     );
+                    $isDependency = $event->isDependency();
                 }
+
+                if (!$isDependency) {
+                    continue;
+                }
+
+                if ($action === DependencyCollectionAction::Discard) {
+                    $record = BackendUtility::getRecord($row['tablename'], (int)$row['recuid']);
+                    if (VersionState::tryFrom($record['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER) {
+                        continue;
+                    }
+                }
+
+                $this->parents[] = $this->getDependency()->getFactory()->getReferencedElement(
+                    $row['tablename'],
+                    (int)$row['recuid'],
+                    $row['field'],
+                    [],
+                    $this->getDependency()
+                );
             }
         }
         return $this->parents;
@@ -355,5 +366,74 @@ class ElementEntity
         }
 
         return $this->record;
+    }
+
+    /**
+     * Resolves workspace state for this element: validates workspace awareness,
+     * resolves liveId, and marks invalid records.
+     *
+     * Only executed for Publish and Display actions (matching original behavior
+     * where Stage/Discard did not register a construct callback).
+     */
+    private function resolveWorkspaceState(): void
+    {
+        $action = $this->dependency->getAction();
+        if ($action !== DependencyCollectionAction::Publish && $action !== DependencyCollectionAction::Display) {
+            return;
+        }
+
+        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        $schema = $schemaFactory->get($this->table);
+        if (!$schema->isWorkspaceAware()) {
+            $this->invalid = true;
+            return;
+        }
+
+        $versionRecord = $this->getRecord();
+        if (empty($versionRecord)) {
+            throw new \RuntimeException(
+                'Element "' . $this->table . ':' . $this->id . '" does not exist',
+                1393960943
+            );
+        }
+
+        $workspace = $this->dependency->getWorkspace();
+
+        $deleteFieldName = $schema->hasCapability(TcaSchemaCapability::SoftDelete)
+            ? $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName()
+            : null;
+
+        if (
+            (int)$versionRecord['t3ver_oid'] > 0 && (
+                (int)$versionRecord['t3ver_wsid'] === 0
+                || !empty($deleteFieldName) && (int)$versionRecord['t3ver_wsid'] === $workspace
+                    && (int)$versionRecord[$deleteFieldName] > 0
+            )
+        ) {
+            $this->setDataValue('liveId', $this->id);
+            $this->invalid = true;
+            return;
+        }
+
+        if ($this->hasDataValue('liveId') === false) {
+            if (!empty($versionRecord['t3ver_oid']) && (int)$versionRecord['t3ver_wsid'] === $workspace) {
+                $this->setDataValue('liveId', $versionRecord['t3ver_oid']);
+            } elseif ((int)$versionRecord['t3ver_wsid'] === 0 || (int)$versionRecord['t3ver_oid'] === 0) {
+                $this->setDataValue('liveId', $this->id);
+                $versionRecord = BackendUtility::getWorkspaceVersionOfRecord(
+                    $workspace,
+                    $this->table,
+                    $this->id,
+                    ['uid', 't3ver_state']
+                );
+                if (!empty($versionRecord['uid'])) {
+                    $this->setId($versionRecord['uid']);
+                } else {
+                    $this->invalid = true;
+                }
+            } else {
+                $this->invalid = true;
+            }
+        }
     }
 }

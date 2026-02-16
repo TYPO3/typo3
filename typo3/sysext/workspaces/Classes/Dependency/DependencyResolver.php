@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Dependency;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -29,45 +30,38 @@ class DependencyResolver
     protected int $workspace = 0;
     protected ?DependencyEntityFactory $factory;
     protected array $elements = [];
-    protected array $eventCallbacks = [];
     protected ?array $outerMostParents;
+    protected ?EventDispatcherInterface $eventDispatcher = null;
+    protected ?DependencyCollectionAction $action = null;
 
-    /**
-     * Sets the current workspace.
-     */
     public function setWorkspace(int $workspace): void
     {
         $this->workspace = $workspace;
     }
 
-    /**
-     * Gets the current workspace.
-     */
     public function getWorkspace(): int
     {
         return $this->workspace;
     }
 
-    /**
-     * Sets a callback for a particular event.
-     */
-    public function setEventCallback(string $eventName, EventCallback $callback): self
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $this->eventCallbacks[$eventName] = $callback;
-        return $this;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * Executes a registered callback (if any) for a particular event.
-     */
-    public function executeEventCallback(string $eventName, object $caller, array $callerArguments = []): mixed
+    public function getEventDispatcher(): ?EventDispatcherInterface
     {
-        if (isset($this->eventCallbacks[$eventName])) {
-            /** @var EventCallback $callback */
-            $callback = $this->eventCallbacks[$eventName];
-            return $callback->execute($callerArguments, $caller, $eventName);
-        }
-        return null;
+        return $this->eventDispatcher;
+    }
+
+    public function setAction(DependencyCollectionAction $action): void
+    {
+        $this->action = $action;
+    }
+
+    public function getAction(): ?DependencyCollectionAction
+    {
+        return $this->action;
     }
 
     /**

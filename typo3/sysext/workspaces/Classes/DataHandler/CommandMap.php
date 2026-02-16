@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\DataHandler;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Workspaces\Dependency\DependencyCollectionAction;
 use TYPO3\CMS\Workspaces\Dependency\DependencyResolver;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntity;
-use TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor;
-use TYPO3\CMS\Workspaces\Dependency\EventCallback;
 
 /**
  * Handles the \TYPO3\CMS\Core\DataHandling\DataHandler command map and is
@@ -34,7 +34,7 @@ use TYPO3\CMS\Workspaces\Dependency\EventCallback;
 readonly class CommandMap
 {
     public function __construct(
-        protected ElementEntityProcessor $elementEntityProcessor,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {}
 
     /**
@@ -57,18 +57,8 @@ readonly class CommandMap
     {
         $dependency = GeneralUtility::makeInstance(DependencyResolver::class);
         $dependency->setWorkspace($workspace);
-        $dependency->setEventCallback(
-            ElementEntity::EVENT_Construct,
-            GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementCallback', ['workspace' => $workspace])
-        );
-        $dependency->setEventCallback(
-            ElementEntity::EVENT_CreateChildReference,
-            GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementChildReferenceCallback')
-        );
-        $dependency->setEventCallback(
-            ElementEntity::EVENT_CreateParentReference,
-            GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementParentReferenceCallback')
-        );
+        $dependency->setEventDispatcher($this->eventDispatcher);
+        $dependency->setAction(DependencyCollectionAction::Publish);
         foreach ($commandMap as $table => $liveIdCollection) {
             foreach ($liveIdCollection as $liveId => $commandCollection) {
                 foreach ($commandCollection as $command => $properties) {
@@ -121,14 +111,8 @@ readonly class CommandMap
     {
         $dependency = GeneralUtility::makeInstance(DependencyResolver::class);
         $dependency->setWorkspace($workspace);
-        $dependency->setEventCallback(
-            ElementEntity::EVENT_CreateChildReference,
-            GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementChildReferenceCallback')
-        );
-        $dependency->setEventCallback(
-            ElementEntity::EVENT_CreateParentReference,
-            GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementParentReferenceCallback')
-        );
+        $dependency->setEventDispatcher($this->eventDispatcher);
+        $dependency->setAction(DependencyCollectionAction::StageChange);
         foreach ($commandMap as $table => $versionIdCollection) {
             foreach ($versionIdCollection as $versionIdList => $commandCollection) {
                 foreach ($commandCollection as $command => $properties) {
@@ -189,14 +173,8 @@ readonly class CommandMap
     {
         $dependency = GeneralUtility::makeInstance(DependencyResolver::class);
         $dependency->setWorkspace($workspace);
-        $dependency->setEventCallback(
-            ElementEntity::EVENT_CreateChildReference,
-            GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createClearDependentElementChildReferenceCallback')
-        );
-        $dependency->setEventCallback(
-            ElementEntity::EVENT_CreateParentReference,
-            GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createClearDependentElementParentReferenceCallback')
-        );
+        $dependency->setEventDispatcher($this->eventDispatcher);
+        $dependency->setAction(DependencyCollectionAction::Discard);
         // Traverses the cmd[] array and fetches the accordant actions:
         foreach ($commandMap as $table => $versionIdCollection) {
             foreach ($versionIdCollection as $versionId => $commandCollection) {
@@ -276,7 +254,7 @@ readonly class CommandMap
     }
 
     /**
-     * Callback to get common properties of dependent elements for clearing.
+     * Gets common properties of dependent elements for clearing.
      */
     protected function getCommonClearProperties(ElementEntity $element): array
     {
@@ -289,7 +267,7 @@ readonly class CommandMap
     }
 
     /**
-     * Callback to get common properties of dependent elements for swapping/publishing.
+     * Gets common properties of dependent elements for swapping/publishing.
      */
     protected function getCommonSwapProperties(ElementEntity $element): array
     {
@@ -308,7 +286,7 @@ readonly class CommandMap
     }
 
     /**
-     * Callback to get common properties of dependent elements for staging.
+     * Gets common properties of dependent elements for staging.
      */
     protected function getSetStageProperties(ElementEntity $element): array
     {
