@@ -47,7 +47,7 @@ final class SelectItem implements \ArrayAccess
     {
         return new self(
             type: $type,
-            label: $item['label'] ?? $item[0],
+            label: (string)($item['label'] ?? $item[0]),
             value: $item['value'] ?? $item[1] ?? null,
             icon: $item['icon'] ?? $item[2] ?? null,
             group: $item['group'] ?? $item[3] ?? null,
