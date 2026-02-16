@@ -25,6 +25,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '../../severity';
 import Utility from '../../utility';
 import { selector } from '@typo3/core/literals';
+import backendAltDocLabels from '~labels/backend.alt_doc';
 import type AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { InlineResponseInterface } from './../inline-relation/inline-response-interface';
 
@@ -311,18 +312,18 @@ class FilesControlContainer extends HTMLElement {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-      const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', targetElement.dataset.recordInfo);
+      const title = backendAltDocLabels.get('label.confirm.delete_record.title');
+      const content = backendAltDocLabels.get('label.confirm.delete_record.content', targetElement.dataset.recordInfo);
       Modal.confirm(title, content, Severity.warning, [
         {
-          text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
+          text: backendAltDocLabels.get('buttons.confirm.delete_record.no'),
           active: true,
           btnClass: 'btn-default',
           name: 'no',
           trigger: (e: Event, modal: ModalElement) => modal.hideModal(),
         },
         {
-          text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
+          text: backendAltDocLabels.get('buttons.confirm.delete_record.yes'),
           btnClass: 'btn-warning',
           name: 'yes',
           trigger: (e: Event, modal: ModalElement): void => {

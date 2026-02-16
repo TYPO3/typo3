@@ -19,6 +19,7 @@ import SortableTable from '@typo3/backend/sortable-table';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
+import coreCommonLabels from '~labels/core.common';
 
 interface ResultItems {
   [key: string]: string
@@ -73,7 +74,7 @@ class Repository {
     if (data.hasDependencies) {
       Modal.confirm(data.title, messageElement, Severity.info, [
         {
-          text: TYPO3.lang['button.cancel'],
+          text: coreCommonLabels.get('cancel'),
           active: true,
           btnClass: 'btn-default',
           trigger: (): void => {
@@ -110,7 +111,7 @@ class Repository {
         if (data.errorCount > 0) {
           const modal = Modal.confirm(data.errorTitle, errorMessageElement, Severity.error, [
             {
-              text: TYPO3.lang['button.cancel'],
+              text: coreCommonLabels.get('cancel'),
               active: true,
               btnClass: 'btn-default',
               trigger: (): void => {

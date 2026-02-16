@@ -36,6 +36,8 @@ import '@typo3/backend/form-engine/element/extra/char-counter';
 import type { PromiseControls } from '@typo3/backend/event/interaction-request-assignment';
 import Hotkeys, { ModifierKeys } from '@typo3/backend/hotkeys';
 import RegularEvent from '@typo3/core/event/regular-event';
+import backendAltDocLabels from '~labels/backend.alt_doc';
+import coreCoreLabels from '~labels/core.core';
 
 export interface OnFieldChangeItem {
   name: string;
@@ -105,13 +107,13 @@ export default (function() {
       return;
     }
     const modal = Modal.advanced({
-      title: TYPO3.lang['FormEngine.refreshRequiredTitle'],
-      content: TYPO3.lang['FormEngine.refreshRequiredContent'],
+      title: coreCoreLabels.get('mess.refreshRequired.title'),
+      content: coreCoreLabels.get('mess.refreshRequired.content'),
       severity: Severity.warning,
       staticBackdrop: true,
       buttons: [
         {
-          text: TYPO3.lang['FormEngine.refreshRequiredCancel'] || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: coreCoreLabels.get('mess.refreshRequired.cancel'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
@@ -120,7 +122,7 @@ export default (function() {
           }
         },
         {
-          text: TYPO3.lang['FormEngine.refreshRequiredConfirm'] || TYPO3.lang['button.ok'] || 'OK',
+          text: coreCoreLabels.get('mess.refreshRequired.confirm'),
           btnClass: 'btn-' + Severity.getCssClass(Severity.warning),
           name: 'ok',
           trigger: () => {
@@ -575,7 +577,7 @@ export default (function() {
     const addOrUpdateCounter = (minCharacterCountLeft: string, event: Event) => {
       const parent = (event.currentTarget as HTMLInputElement).closest('.t3js-formengine-field-item');
       const counter = parent.querySelector('.t3js-charcounter-min');
-      const labelValue = TYPO3.lang['FormEngine.minCharactersLeft'].replace('{0}', minCharacterCountLeft);
+      const labelValue = coreCoreLabels.get('labels.remainingCharacters', minCharacterCountLeft);
       if (counter) {
         counter.querySelector('span').innerHTML = labelValue;
       } else {
@@ -791,23 +793,23 @@ export default (function() {
     callback = callback || FormEngine.preventExitIfNotSavedCallback;
 
     if (FormEngine.hasChange() || FormEngine.isNew()) {
-      const title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Unsaved changes';
-      const content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes which will be discarded if you close without saving.';
+      const title = backendAltDocLabels.get('label.confirm.close_without_save.title');
+      const content = backendAltDocLabels.get('label.confirm.close_without_save.content');
       const buttons: Array<{text: string, btnClass: string, name: string, active?: boolean}> = [
         {
-          text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'Keep editing',
+          text: backendAltDocLabels.get('buttons.confirm.close_without_save.no'),
           btnClass: 'btn-default',
           name: 'no'
         },
         {
-          text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Discard changes',
+          text: backendAltDocLabels.get('buttons.confirm.close_without_save.yes'),
           btnClass: 'btn-default',
           name: 'yes'
         }
       ];
       if ($('.has-error').length === 0) {
         buttons.push({
-          text: TYPO3.lang['buttons.confirm.save_and_close'] || 'Save and close',
+          text: backendAltDocLabels.get('buttons.confirm.save_and_close'),
           btnClass: 'btn-primary',
           name: 'save',
           active: true
@@ -991,19 +993,19 @@ export default (function() {
    * @param {Function} callback
    */
   FormEngine.showPreviewModal = function(previewUrl: string, isNew: boolean, $actionElement: JQuery, callback: PreviewActionCallback): void {
-    const title = TYPO3.lang['label.confirm.view_record_changed.title'] || 'Do you want to save before viewing?';
+    const title = backendAltDocLabels.get('label.confirm.view_record_changed.title');
     const modalCancelButtonConfiguration = {
-      text: TYPO3.lang['buttons.confirm.view_record_changed.cancel'] || 'Cancel',
+      text: backendAltDocLabels.get('buttons.confirm.view_record_changed.cancel'),
       btnClass: 'btn-default',
       name: 'cancel'
     };
     const modaldismissViewButtonConfiguration = {
-      text: TYPO3.lang['buttons.confirm.view_record_changed.no-save'] || 'View without changes',
+      text: backendAltDocLabels.get('buttons.confirm.view_record_changed.no-save'),
       btnClass: 'btn-default',
       name: 'discard'
     };
     const modalsaveViewButtonConfiguration = {
-      text: TYPO3.lang['buttons.confirm.view_record_changed.save'] || 'Save changes and view',
+      text: backendAltDocLabels.get('buttons.confirm.view_record_changed.save'),
       btnClass: 'btn-primary',
       name: 'save',
       active: true
@@ -1020,8 +1022,7 @@ export default (function() {
         modalsaveViewButtonConfiguration
       ];
       contentStrings = [
-        TYPO3.lang['label.confirm.view_record_changed.content.is-new-page']
-        || 'You need to save your changes before viewing the page. Do you want to save and view them now?'
+        backendAltDocLabels.get('label.confirm.view_record_changed.content.is-new-page')
       ];
     } else {
       modalButtons = [
@@ -1029,15 +1030,13 @@ export default (function() {
         modaldismissViewButtonConfiguration,
       ];
       contentStrings = [
-        TYPO3.lang['label.confirm.view_record_changed.content']
-        || 'You currently have unsaved changes. You can either discard these changes or save and view them.'
+        backendAltDocLabels.get('label.confirm.view_record_changed.content')
       ];
       if (FormEngine.Validation.isValid()) {
         modalButtons.push(modalsaveViewButtonConfiguration);
       } else {
         contentStrings.push(
-          TYPO3.lang['label.confirm.view_record_changed.invalid_form']
-          || 'The form appears to be invalid, therefore "Save changes and view" is not available.'
+          backendAltDocLabels.get('label.confirm.view_record_changed.invalid_form')
         );
       }
     }
@@ -1108,24 +1107,21 @@ export default (function() {
    * @param {Function} callback
    */
   FormEngine.showNewModal = function(isNew: boolean, $actionElement: JQuery, callback: NewActionCallback): void {
-    const title = TYPO3.lang['label.confirm.new_record_changed.title'] || 'Do you want to save before adding?';
-    const content = (
-      TYPO3.lang['label.confirm.new_record_changed.content']
-      || 'You need to save your changes before creating a new record. Do you want to save and create now?'
-    );
+    const title = backendAltDocLabels.get('label.confirm.new_record_changed.title');
+    const content = backendAltDocLabels.get('label.confirm.new_record_changed.content');
     let modalButtons = [];
     const modalCancelButtonConfiguration = {
-      text: TYPO3.lang['buttons.confirm.new_record_changed.cancel'] || 'Cancel',
+      text: backendAltDocLabels.get('buttons.confirm.new_record_changed.cancel'),
       btnClass: 'btn-default',
       name: 'cancel'
     };
     const modalNoButtonConfiguration = {
-      text: TYPO3.lang['buttons.confirm.new_record_changed.no'] || 'No, just add',
+      text: backendAltDocLabels.get('buttons.confirm.new_record_changed.no'),
       btnClass: 'btn-default',
       name: 'no'
     };
     const modalYesButtonConfiguration = {
-      text: TYPO3.lang['buttons.confirm.new_record_changed.yes'] || 'Yes, save and create now',
+      text: backendAltDocLabels.get('buttons.confirm.new_record_changed.yes'),
       btnClass: 'btn-primary',
       name: 'yes',
       active: true
@@ -1192,24 +1188,23 @@ export default (function() {
   };
 
   FormEngine.showDuplicateModal = function(isNew: boolean, $actionElement: JQuery, callback: DuplicateActionCallback): void {
-    const title = TYPO3.lang['label.confirm.duplicate_record_changed.title'] || 'Do you want to save before duplicating this record?';
+    const title = backendAltDocLabels.get('label.confirm.duplicate_record_changed.title');
     const content = (
-      TYPO3.lang['label.confirm.duplicate_record_changed.content']
-      || 'You currently have unsaved changes. Do you want to save your changes before duplicating this record?'
+      backendAltDocLabels.get('label.confirm.duplicate_record_changed.content')
     );
     let modalButtons = [];
     const modalCancelButtonConfiguration = {
-      text: TYPO3.lang['buttons.confirm.duplicate_record_changed.cancel'] || 'Cancel',
+      text: backendAltDocLabels.get('buttons.confirm.duplicate_record_changed.cancel'),
       btnClass: 'btn-default',
       name: 'cancel'
     };
     const modalDismissDuplicateButtonConfiguration = {
-      text: TYPO3.lang['buttons.confirm.duplicate_record_changed.no'] || 'No, just duplicate the original',
+      text: backendAltDocLabels.get('button.confirm.duplicate_record_changed.no'),
       btnClass: 'btn-default',
       name: 'no'
     };
     const modalSaveDuplicateButtonConfiguration = {
-      text: TYPO3.lang['buttons.confirm.duplicate_record_changed.yes'] || 'Yes, save and duplicate this record',
+      text: backendAltDocLabels.get('buttons.confirm.duplicate_record_changed.yes'),
       btnClass: 'btn-primary',
       name: 'yes',
       active: true
@@ -1267,8 +1262,8 @@ export default (function() {
    * @param {Function} callback
    */
   FormEngine.showDeleteModal = function($anchorElement: JQuery, callback: DeleteActionCallback): void {
-    const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-    let content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', $anchorElement.data('record-info'));
+    const title = backendAltDocLabels.get('label.confirm.delete_record.title');
+    let content = backendAltDocLabels.get('label.confirm.delete_record.content');
 
     if ($anchorElement.data('reference-count-message')) {
       content += '\n' + $anchorElement.data('reference-count-message');
@@ -1280,12 +1275,12 @@ export default (function() {
 
     const modal = Modal.confirm(title, content, Severity.warning, [
       {
-        text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
+        text: backendAltDocLabels.get('buttons.confirm.delete_record.no'),
         btnClass: 'btn-default',
         name: 'no'
       },
       {
-        text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
+        text: backendAltDocLabels.get('buttons.confirm.delete_record.yes'),
         btnClass: 'btn-warning',
         name: 'yes',
         active: true

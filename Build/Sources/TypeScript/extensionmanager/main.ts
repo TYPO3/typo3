@@ -25,6 +25,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
 import SortableTable from '@typo3/backend/sortable-table';
+import coreCommonLabels from '~labels/core.common';
 
 const securityUtility = new SecurityUtility();
 
@@ -75,7 +76,7 @@ class ExtensionManager {
             Severity.error,
             [
               {
-                text: TYPO3.lang['button.cancel'],
+                text: coreCommonLabels.get('cancel'),
                 active: true,
                 btnClass: 'btn-default',
                 trigger: (): void => {
@@ -102,7 +103,7 @@ class ExtensionManager {
             Severity.warning,
             [
               {
-                text: TYPO3.lang['button.cancel'],
+                text: coreCommonLabels.get('cancel'),
                 active: true,
                 btnClass: 'btn-default',
                 trigger: (): void => {
@@ -278,7 +279,7 @@ class ExtensionManager {
       Severity.notice,
       [
         {
-          text: TYPO3.lang['button.cancel'],
+          text: coreCommonLabels.get('cancel'),
           active: true,
           btnClass: 'btn-default',
           trigger: (e: Event, modal: ModalElement): void => modal.hideModal(),

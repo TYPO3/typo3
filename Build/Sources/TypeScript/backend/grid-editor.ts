@@ -22,6 +22,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { type StyleInfo, styleMap } from 'lit/directives/style-map.js';
 import { ref, type Ref, createRef } from 'lit/directives/ref.js';
 import { CodeMirrorElement } from '@typo3/backend/code-editor/element/code-mirror-element';
+import coreCommonLabels from '~labels/core.common';
 
 type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number, identifier: string, slideMode: SlideModes };
 
@@ -793,12 +794,12 @@ export class GridEditor extends LitElement {
         active: true,
         btnClass: 'btn-default',
         name: 'cancel',
-        text: TYPO3.lang['button.cancel'] || 'Cancel',
+        text: coreCommonLabels.get('cancel'),
       },
       {
         btnClass: 'btn-primary',
         name: 'ok',
-        text: TYPO3.lang['button.ok'] || 'OK',
+        text: coreCommonLabels.get('ok'),
       },
     ]);
     modal.userData.col = col;

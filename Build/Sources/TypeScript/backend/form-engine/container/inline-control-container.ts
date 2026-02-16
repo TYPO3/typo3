@@ -28,6 +28,8 @@ import Utility from '../../utility';
 import { selector } from '@typo3/core/literals';
 import type AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { InlineResponseInterface } from './../inline-relation/inline-response-interface';
+import backendAltDocLabels from '~labels/backend.alt_doc';
+import coreCoreLabels from '~labels/core.core';
 
 enum Selectors {
   toggleSelector = '[data-bs-toggle="formengine-inline"]',
@@ -98,7 +100,7 @@ class InlineControlContainer {
   private appearance: Appearance = null;
   private requestQueue: RequestQueue = {};
   private progressQueue: ProgressQueue = {};
-  private readonly noTitleString: string = (TYPO3.lang ? TYPO3.lang['FormEngine.noRecordTitle'] : '[No title]');
+  private readonly noTitleString: string = (coreCoreLabels.get('labels.no_title'));
 
   /**
    * @param {string} elementId
@@ -466,17 +468,17 @@ class InlineControlContainer {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-      const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', targetElement.dataset.recordInfo);
+      const title = backendAltDocLabels.get('label.confirm.delete_record.title');
+      const content = backendAltDocLabels.get('label.confirm.delete_record.content', targetElement.dataset.recordInfo);
       const modal = Modal.confirm(title, content, Severity.warning, [
         {
-          text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
+          text: backendAltDocLabels.get('buttons.confirm.delete_record.no'),
           active: true,
           btnClass: 'btn-default',
           name: 'no',
         },
         {
-          text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
+          text: backendAltDocLabels.get('buttons.confirm.delete_record.yes'),
           btnClass: 'btn-warning',
           name: 'yes',
         },

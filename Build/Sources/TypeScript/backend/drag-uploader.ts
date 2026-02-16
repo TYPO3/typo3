@@ -28,6 +28,7 @@ import '@typo3/backend/element/progress-bar-element';
 import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import { FormatUtility } from '@typo3/backend/utility/format-utility';
+import coreCoreLabels from '~labels/core.core';
 
 /**
  * Possible actions for conflicts w/ existing files
@@ -816,7 +817,7 @@ class FileQueueItem {
           .innerHTML = (
             '<button type="button" class="btn btn-link" data-contextmenu-trigger="click" data-contextmenu-uid="'
             + combinedIdentifier + '" data-contextmenu-table="sys_file" aria-label="'
-            + (TYPO3.lang['labels.contextMenu.open'] || 'Open context menu') + '">'
+            + coreCoreLabels.get('labels.contextMenu.open') + '">'
             + data.upload[0].icon + '</span></button>'
           );
       }

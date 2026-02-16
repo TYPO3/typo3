@@ -19,6 +19,7 @@ import Modal from '@typo3/backend/modal';
 import Md5 from '@typo3/backend/hashing/md5';
 import { fileListOpenElementBrowser } from '@typo3/filelist/file-list';
 import { FileListActionEvent, type FileListActionDetail, FileListActionUtility } from './file-list-actions';
+import coreCommonLabels from '~labels/core.common';
 
 /**
  * Module: @typo3/filelist/context-menu-actions
@@ -187,7 +188,7 @@ class ContextMenuActions {
       SeverityEnum.warning,
       [
         {
-          text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: dataset.buttonCloseText || coreCommonLabels.get('cancel'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
@@ -289,13 +290,13 @@ class ContextMenuActions {
       SeverityEnum.warning,
       [
         {
-          text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: dataset.buttonCloseText || coreCommonLabels.get('cancel'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: dataset.buttonOkText || TYPO3.lang['button.ok'] || 'OK',
+          text: dataset.buttonOkText || coreCommonLabels.get('ok'),
           btnClass: 'btn-warning',
           name: 'ok',
         },

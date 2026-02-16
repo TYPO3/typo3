@@ -28,6 +28,7 @@ import SubmitInterceptor from '@typo3/backend/form/submit-interceptor';
 import { FormEngineReview } from '@typo3/backend/form-engine-review';
 import type FormEngine from '@typo3/backend/form-engine';
 import type { FormEngineFieldElement } from '@typo3/backend/form-engine';
+import coreCoreLabels from '~labels/core.core';
 
 type CustomEvaluationCallback = (value: string) => string;
 type FormEngineInputParams = { field: string, evalList?: string, is_in?: string };
@@ -597,7 +598,7 @@ export default class FormEngineValidation {
   public static showErrorModal(): void {
     const modal = Modal.confirm(
       TYPO3.lang.alert || 'Alert',
-      TYPO3.lang['FormEngine.fieldsMissing'],
+      coreCoreLabels.get('labels.fieldsMissing'),
       Severity.error,
       [
         {

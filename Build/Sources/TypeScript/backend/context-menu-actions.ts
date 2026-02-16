@@ -24,6 +24,7 @@ import '@typo3/backend/new-record-wizard';
 import Utility from '@typo3/backend/utility';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import { html } from 'lit';
+import coreCommonLabels from '~labels/core.common';
 
 /**
  * @exports @typo3/backend/context-menu-actions
@@ -220,7 +221,7 @@ class ContextMenuActions {
       dataset.message,
       SeverityEnum.warning, [
         {
-          text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: dataset.buttonCloseText || coreCommonLabels.get('cancel'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
@@ -340,13 +341,13 @@ class ContextMenuActions {
       dataset.message,
       SeverityEnum.warning, [
         {
-          text: dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
+          text: dataset.buttonCloseText || coreCommonLabels.get('cancel'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: dataset.buttonOkText || TYPO3.lang['button.ok'] || 'OK',
+          text: dataset.buttonOkText || coreCommonLabels.get('ok'),
           btnClass: 'btn-warning',
           name: 'ok',
         },

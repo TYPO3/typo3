@@ -22,6 +22,7 @@ import Notification from '@typo3/backend/notification';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import coreCommonLabels from '~labels/core.common';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 enum Identifiers {
@@ -359,7 +360,7 @@ class Recycler {
       staticBackdrop: true,
       buttons: [
         {
-          text: TYPO3.lang['button.cancel'],
+          text: coreCommonLabels.get('cancel'),
           btnClass: 'btn-default',
           trigger: function(): void {
             Modal.dismiss();
@@ -439,7 +440,7 @@ class Recycler {
       staticBackdrop: true,
       buttons: [
         {
-          text: TYPO3.lang['button.cancel'],
+          text: coreCommonLabels.get('cancel'),
           btnClass: 'btn-default',
           trigger: function(): void {
             Modal.dismiss();
