@@ -321,7 +321,7 @@ type PseudoRegExp = {
 };
 
 function walkObj(data: RecurseMapInput, proc: (value: unknown) => unknown|null): RecurseMapInput {
-  if (typeof data === 'object') {
+  if (data !== null && typeof data === 'object') {
     if (Array.isArray(data)) {
       return data.map((element: RecurseMapInput) => proc(element) ?? walkObj(element, proc));
     }
@@ -336,7 +336,7 @@ function walkObj(data: RecurseMapInput, proc: (value: unknown) => unknown|null):
 
 function convertPseudoRegExp(data: RecurseMapInput): RecurseMapInput {
   return walkObj(data, (entry: PseudoRegExp | unknown): RegExp | null => {
-    if (typeof entry === 'object' && 'pattern' in entry && typeof entry.pattern === 'string') {
+    if (entry !== null && typeof entry === 'object' && 'pattern' in entry && typeof entry.pattern === 'string') {
       const pseudoRegExp = entry as PseudoRegExp;
       return new RegExp(pseudoRegExp.pattern, pseudoRegExp.flags || undefined);
     }
