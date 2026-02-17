@@ -13,6 +13,7 @@
 
 import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
+import labels from '~labels/workspaces.messages';
 
 export type SendToStageResultData = {
   sendMailTo?: SendToStageRecipient[],
@@ -39,9 +40,6 @@ export class SendToStageFormElement extends LitElement {
   @property({ type: Object })
   public data: SendToStageResultData | null = null;
 
-  @property({ type: Object })
-  public TYPO3lang: typeof TYPO3.lang | null = null;
-
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
@@ -51,13 +49,13 @@ export class SendToStageFormElement extends LitElement {
     return html`
       <form>
         ${this.data.sendMailTo !== undefined && this.data.sendMailTo.length > 0 ? html`
-          <label class="form-label">${this.TYPO3lang['window.sendToNextStageWindow.itemsWillBeSentTo']}</label>
+          <label class="form-label">${labels.get('window.sendToNextStageWindow.itemsWillBeSentTo')}</label>
           <div class="form-group">
             <button type="button" class="btn btn-default btn-xs t3js-workspace-recipients-selectall">
-              ${this.TYPO3lang['window.sendToNextStageWindow.selectAll']}
+              ${labels.get('window.sendToNextStageWindow.selectAll')}
             </button>
             <button type="button" class="btn btn-default btn-xs t3js-workspace-recipients-deselectall">
-              ${this.TYPO3lang['window.sendToNextStageWindow.deselectAll']}
+              ${labels.get('window.sendToNextStageWindow.deselectAll')}
             </button>
           </div>
           ${this.renderRecipientCheckboxes()}
@@ -65,17 +63,17 @@ export class SendToStageFormElement extends LitElement {
         ${this.data.additional !== undefined ? html`
           <div class="form-group">
             <label for="additional" class="form-label">
-              ${this.TYPO3lang['window.sendToNextStageWindow.additionalRecipients']}
+              ${labels.get('window.sendToNextStageWindow.additionalRecipients')}
             </label>
             <textarea class="form-control" name="additional" id="additional">${this.data.additional.value}</textarea>
             <div class="form-text">
-              ${this.TYPO3lang['window.sendToNextStageWindow.additionalRecipients.hint']}
+              ${labels.get('window.sendToNextStageWindow.additionalRecipients.hint')}
             </div>
           </div>
         ` : nothing}
         <div class="form-group">
           <label for="comments" class="form-label">
-            ${this.TYPO3lang['window.sendToNextStageWindow.comments']}
+            ${labels.get('window.sendToNextStageWindow.comments')}
           </label>
           <textarea class="form-control" name="comments" id="comments">${this.data.comments.value}</textarea>
         </div>

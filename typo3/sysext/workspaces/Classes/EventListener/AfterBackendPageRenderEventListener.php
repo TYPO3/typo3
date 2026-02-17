@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Workspaces\EventListener;
 
 use TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -44,16 +43,6 @@ final readonly class AfterBackendPageRenderEventListener
         if (!$this->workspaceService->hasAccessToWorkspaces()) {
             return;
         }
-        $this->pageRenderer->addInlineLanguageLabelArray([
-            'workspaces.messages:indicator.workspacePrefix' => $this->getLanguageService()->sL('workspaces.messages:indicator.workspacePrefix'),
-            'workspaces.messages:workspaceInfo.live.title' => $this->getLanguageService()->sL('workspaces.messages:workspaceInfo.live.title'),
-            'workspaces.messages:workspaceInfo.live.description' => $this->getLanguageService()->sL('workspaces.messages:workspaceInfo.live.description'),
-        ]);
         $this->pageRenderer->loadJavaScriptModule('@typo3/workspaces/workspace-state.js');
-    }
-
-    private function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

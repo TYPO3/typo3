@@ -20,6 +20,7 @@ import Workspaces from './workspaces';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 import '@typo3/workspaces/renderable/send-to-stage-form';
 import RegularEvent from '@typo3/core/event/regular-event';
+import labels from '~labels/workspaces.messages';
 
 enum Identifiers {
   topbar = '.t3js-workspace-topbar',
@@ -130,12 +131,12 @@ class Preview extends Workspaces {
    */
   private renderDiscardWindow(): void {
     const modal = Modal.confirm(
-      TYPO3.lang['window.discardAll.title'],
-      TYPO3.lang['window.discardAll.message'],
+      labels.get('window.discardAll.title'),
+      labels.get('window.discardAll.message'),
       SeverityEnum.warning,
       [
         {
-          text: TYPO3.lang.cancel,
+          text: labels.get('cancel'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
@@ -144,7 +145,7 @@ class Preview extends Workspaces {
           },
         },
         {
-          text: TYPO3.lang.ok,
+          text: labels.get('ok'),
           btnClass: 'btn-warning',
           name: 'ok',
         },

@@ -13,11 +13,11 @@
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { lll } from '@typo3/core/lit-helper';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import ModuleMenu from '@typo3/backend/module-menu';
 import { UrlFactory } from '@typo3/core/factory/url-factory';
 import '@typo3/workspaces/element/workspace-top-indicator-element';
+import labels from '~labels/workspaces.messages';
 
 export const workspaceColors = ['red', 'orange', 'yellow', 'lime', 'green', 'teal', 'blue', 'indigo', 'purple', 'magenta'] as const;
 export type WorkspaceColor = typeof workspaceColors[number];
@@ -73,9 +73,9 @@ class WorkspaceStateService {
   private get defaultWorkspace(): Workspace {
     return {
       id: 0,
-      title: lll('workspaces.messages:workspaceInfo.live.title') || 'LIVE',
+      title: labels.get('workspaceInfo.live.title'),
       color: 'red',
-      description: lll('workspaces.messages:workspaceInfo.live.description') || '',
+      description: labels.get('workspaceInfo.live.description'),
     };
   }
 

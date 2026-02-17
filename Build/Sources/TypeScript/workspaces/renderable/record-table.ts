@@ -18,6 +18,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { repeat } from 'lit/directives/repeat.js';
+import coreLabels from '~labels/core.core';
+import labels from '~labels/workspaces.messages';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/element/qrcode-modal-button';
 import 'bootstrap'; // for data-bs-toggle="dropdown"
@@ -88,42 +90,42 @@ export class RecordTableElement extends LitElement {
           <tr>
             <th>
               <div class="btn-group dropdown">
-                <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="${TYPO3.lang['labels.openSelectionOptions']}">
+                <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="${coreLabels.get('labels.openSelectionOptions')}">
                   <typo3-backend-icon identifier="actions-selection" size="small"></typo3-backend-icon>
                 </button>
                 <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                   <li>
-                    <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-all" title=${TYPO3.lang['labels.checkAll']}>
+                    <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-all" title=${coreLabels.get('labels.checkAll')}>
                       <span class="dropdown-item-columns">
                         <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                           <typo3-backend-icon identifier="actions-selection-elements-all" size="small"></typo3-backend-icon>
                         </span>
                         <span class="dropdown-item-column dropdown-item-column-title">
-                          ${TYPO3.lang['labels.checkAll']}
+                          ${coreLabels.get('labels.checkAll')}
                         </span>
                       </span>
                     </button>
                   </li>
                   <li>
-                    <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-none" title=${TYPO3.lang['labels.uncheckAll']}>
+                    <button type="button" class="dropdown-item" disabled data-multi-record-selection-check-action="check-none" title=${coreLabels.get('labels.uncheckAll')}>
                       <span class="dropdown-item-columns">
                           <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                             <typo3-backend-icon identifier="actions-selection-elements-none" size="small"></typo3-backend-icon>
                           </span>
                           <span class="dropdown-item-column dropdown-item-column-title">
-                            ${TYPO3.lang['labels.uncheckAll']}
+                            ${coreLabels.get('labels.uncheckAll')}
                           </span>
                       </span>
                     </button>
                   </li>
                   <li>
-                    <button type="button" class="dropdown-item" data-multi-record-selection-check-action="toggle" title=${TYPO3.lang['labels.toggleSelection']}>
+                    <button type="button" class="dropdown-item" data-multi-record-selection-check-action="toggle" title=${coreLabels.get('labels.toggleSelection')}>
                       <span class="dropdown-item-columns">
                           <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
                             <typo3-backend-icon identifier="actions-selection-elements-invert" size="small"></typo3-backend-icon>
                           </span>
                           <span class="dropdown-item-column dropdown-item-column-title">
-                            ${TYPO3.lang['labels.toggleSelection']}
+                            ${coreLabels.get('labels.toggleSelection')}
                           </span>
                       </span>
                     </button>
@@ -131,14 +133,14 @@ export class RecordTableElement extends LitElement {
                 </ul>
               </div>
             </th>
-            <th class="col-min">${TYPO3.lang['column.wsTitle']}</th>
-            <th class="col-language">${TYPO3.lang['labels._LOCALIZATION_']}</th>
-            <th class="col-datetime">${TYPO3.lang['column.last_change']}</th>
-            <th class="col-state">${TYPO3.lang['column.wsStateAction']}</th>
-            <th class="col-state">${TYPO3.lang['column.integrity']}</th>
-            <th>${TYPO3.lang['column.stage']}</th>
+            <th class="col-min">${labels.get('column.wsTitle')}</th>
+            <th class="col-language">${coreLabels.get('labels._LOCALIZATION_')}</th>
+            <th class="col-datetime">${labels.get('column.last_change')}</th>
+            <th class="col-state">${labels.get('column.wsStateAction')}</th>
+            <th class="col-state">${labels.get('column.integrity')}</th>
+            <th>${labels.get('column.stage')}</th>
             <th class="col-control nowrap">
-              <span class="visually-hidden">${TYPO3.lang['labels._CONTROL_']}</span>
+              <span class="visually-hidden">${coreLabels.get('labels._CONTROL_')}</span>
             </th>
           </tr>
           </thead>
@@ -172,27 +174,27 @@ export class RecordTableElement extends LitElement {
     switch (wsState) {
       case 'deleted':
         wsStateActionClass = 'danger';
-        wsStateActionLabel = TYPO3.lang['column.wsStateAction.deleted'];
+        wsStateActionLabel = labels.get('column.wsStateAction.deleted');
         break;
       case 'hidden':
         wsStateActionClass = 'secondary';
-        wsStateActionLabel = TYPO3.lang['column.wsStateAction.hidden'];
+        wsStateActionLabel = labels.get('column.wsStateAction.hidden');
         break;
       case 'modified':
         wsStateActionClass = 'warning';
-        wsStateActionLabel = TYPO3.lang['column.wsStateAction.modified'];
+        wsStateActionLabel = labels.get('column.wsStateAction.modified');
         break;
       case 'moved':
         wsStateActionClass = 'primary';
-        wsStateActionLabel = TYPO3.lang['column.wsStateAction.moved'];
+        wsStateActionLabel = labels.get('column.wsStateAction.moved');
         break;
       case 'new':
         wsStateActionClass = 'success';
-        wsStateActionLabel = TYPO3.lang['column.wsStateAction.new'];
+        wsStateActionLabel = labels.get('column.wsStateAction.new');
         break;
       default:
         wsStateActionClass = 'secondary';
-        wsStateActionLabel = TYPO3.lang['column.wsStateAction.unchanged'];
+        wsStateActionLabel = labels.get('column.wsStateAction.unchanged');
     }
 
     return html`
@@ -247,7 +249,7 @@ export class RecordTableElement extends LitElement {
               <span>${data.lastEditorRealName || data.lastEditorName}</span>
             </span>
           ` : html`
-            <span class="text-variant">${TYPO3.lang['column.editor.unknown']}</span>
+            <span class="text-variant">${labels.get('column.editor.unknown')}</span>
           `}
             ${data.lastChangedFormatted}
           </div>
@@ -280,7 +282,7 @@ export class RecordTableElement extends LitElement {
         'preview',
         'actions-version-workspace-preview',
         {
-          'title': TYPO3.lang['tooltip.viewElementAction']
+          'title': labels.get('tooltip.viewElementAction')
         }
       ),
       this.getQrCodeAction(data),
@@ -289,7 +291,7 @@ export class RecordTableElement extends LitElement {
         'open',
         'actions-open',
         {
-          'title': TYPO3.lang['tooltip.editElementAction']
+          'title': labels.get('tooltip.editElementAction')
         }
       ),
       this.getAction(
@@ -297,7 +299,7 @@ export class RecordTableElement extends LitElement {
         'version',
         'actions-version-page-open',
         {
-          'title': TYPO3.lang['tooltip.openPage']
+          'title': labels.get('tooltip.openPage')
         }
       )
     ];
@@ -315,8 +317,8 @@ export class RecordTableElement extends LitElement {
       <typo3-qrcode-modal-button
         class="btn btn-default"
         content="${data.previewUrl}"
-        modal-title="${TYPO3.lang['tooltip.qrCode'] || 'QR Code'}"
-        title="${TYPO3.lang['tooltip.qrCode'] || 'QR Code'}">
+        modal-title="${labels.get('tooltip.qrCode') || 'QR Code'}"
+        title="${labels.get('tooltip.qrCode') || 'QR Code'}">
         <typo3-backend-icon identifier="actions-qrcode" size="small"></typo3-backend-icon>
       </typo3-qrcode-modal-button>
     `;
@@ -331,7 +333,7 @@ export class RecordTableElement extends LitElement {
         'expand',
         (data.expanded ? 'actions-caret-down' : 'actions-caret-right'),
         {
-          'title': TYPO3.lang['tooltip.expand'],
+          'title': labels.get('tooltip.expand'),
           'data-bs-target': '[data-collection="' + data.Workspaces_CollectionCurrent + '"]',
           'aria-expanded': !hasSubitems || data.expanded ? 'true' : 'false',
           'data-bs-toggle': 'collapse',
@@ -342,7 +344,7 @@ export class RecordTableElement extends LitElement {
         'changes',
         'actions-document-info',
         {
-          'title': TYPO3.lang['tooltip.showChanges']
+          'title': labels.get('tooltip.showChanges')
         }
       ),
       this.getAction(
@@ -350,7 +352,7 @@ export class RecordTableElement extends LitElement {
         'publish',
         'actions-version-swap-version',
         {
-          'title': TYPO3.lang['tooltip.publish']
+          'title': labels.get('tooltip.publish')
         }
       ),
       this.getAction(
@@ -358,7 +360,7 @@ export class RecordTableElement extends LitElement {
         'remove',
         'actions-delete',
         {
-          'title': TYPO3.lang['tooltip.discardVersion']
+          'title': labels.get('tooltip.discardVersion')
         }
       )
     ];

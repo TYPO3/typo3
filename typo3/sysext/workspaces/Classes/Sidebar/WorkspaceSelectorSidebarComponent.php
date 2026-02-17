@@ -21,8 +21,6 @@ use TYPO3\CMS\Backend\Attribute\AsSidebarComponent;
 use TYPO3\CMS\Backend\Sidebar\SidebarComponentContext;
 use TYPO3\CMS\Backend\Sidebar\SidebarComponentInterface;
 use TYPO3\CMS\Backend\Sidebar\SidebarComponentResult;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -44,7 +42,6 @@ final readonly class WorkspaceSelectorSidebarComponent implements SidebarCompone
 {
     public function __construct(
         private WorkspaceService $workspaceService,
-        private PageRenderer $pageRenderer,
     ) {}
 
     public function hasAccess(SidebarComponentContext $context): bool
@@ -55,18 +52,10 @@ final readonly class WorkspaceSelectorSidebarComponent implements SidebarCompone
 
     public function getResult(SidebarComponentContext $context): SidebarComponentResult
     {
-        $this->pageRenderer->addInlineLanguageLabelArray([
-            'workspaces.messages:action.selectWorkspace' => $this->getLanguageService()->sL('workspaces.messages:action.selectWorkspace'),
-        ]);
         return new SidebarComponentResult(
             identifier: 'workspace-selector',
             html: '<typo3-backend-workspace-selector></typo3-backend-workspace-selector>',
             module: '@typo3/workspaces/element/workspace-selector-element.js',
         );
-    }
-
-    private function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

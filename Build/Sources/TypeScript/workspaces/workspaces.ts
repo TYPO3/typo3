@@ -17,6 +17,7 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { html } from 'lit';
+import labels from '~labels/workspaces.messages';
 
 export default class Workspaces {
   protected readonly ajaxRoute: string = 'workspace_dispatch';
@@ -31,12 +32,12 @@ export default class Workspaces {
     const result = response[0].result;
 
     const modal = Modal.advanced({
-      title: TYPO3.lang.actionSendToStage,
+      title: labels.get('actionSendToStage'),
       content: html`<div class="modal-loading"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`,
       severity: SeverityEnum.info,
       buttons: [
         {
-          text: TYPO3.lang.cancel,
+          text: labels.get('cancel'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
@@ -45,7 +46,7 @@ export default class Workspaces {
           },
         },
         {
-          text: TYPO3.lang.ok,
+          text: labels.get('ok'),
           btnClass: 'btn-primary',
           name: 'ok',
         },
@@ -53,8 +54,6 @@ export default class Workspaces {
       callback: (currentModal: ModalElement): void => {
         const form = currentModal.ownerDocument.createElement('typo3-workspaces-send-to-stage-form');
         form.data = result;
-        // Required to get the frame-scoped module locales to the custom element
-        form.TYPO3lang = TYPO3.lang;
 
         currentModal.querySelector('.t3js-modal-body').replaceChildren(form);
       }

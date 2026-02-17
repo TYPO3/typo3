@@ -18,6 +18,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@typo3/workspaces/renderable/diff-view';
 import '@typo3/workspaces/renderable/comment-view';
 import '@typo3/workspaces/renderable/history-view';
+import labels from '~labels/workspaces.messages';
 
 type RecordInformation = {
   path_Live: string,
@@ -42,9 +43,6 @@ export class RecordInformationElement extends LitElement {
   @property({ type: Object })
   public record: RecordInformation;
 
-  @property({ type: Object })
-  public TYPO3lang: typeof TYPO3.lang | null = null;
-
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
@@ -53,12 +51,12 @@ export class RecordInformationElement extends LitElement {
   protected override render() {
     return html`
       <div>
-        <p>${unsafeHTML(this.TYPO3lang.path.replace('{0}', this.record.path_Live))}</p>
-        <p>${unsafeHTML(this.TYPO3lang.current_step.replace('{0}', this.record.label_Stage).replace('{1}', this.record.stage_position).replace('{2}', this.record.stage_count))}</p>
+        <p>${unsafeHTML(labels.get('path').replace('{0}', this.record.path_Live))}</p>
+        <p>${unsafeHTML(labels.get('current_step').replace('{0}', this.record.label_Stage).replace('{1}', this.record.stage_position).replace('{2}', this.record.stage_count))}</p>
         <ul class="nav nav-tabs" role="tablist">
-          ${ this.record.diff.length > 0 ? this.renderNavLink(this.TYPO3lang['window.recordChanges.tabs.changeSummary'], '#workspace-changes') : nothing}
-          ${ this.record.comments.length > 0 ? this.renderNavLink(this.TYPO3lang['window.recordChanges.tabs.changeSummary'], '#workspace-comments', this.record.comments.length) : nothing}
-          ${ this.record.history.data.length > 0 ? this.renderNavLink(this.TYPO3lang['window.recordChanges.tabs.history'], '#workspace-history') : nothing}
+          ${ this.record.diff.length > 0 ? this.renderNavLink(labels.get('window.recordChanges.tabs.changeSummary'), '#workspace-changes') : nothing}
+          ${ this.record.comments.length > 0 ? this.renderNavLink(labels.get('window.recordChanges.tabs.changeSummary'), '#workspace-comments', this.record.comments.length) : nothing}
+          ${ this.record.history.data.length > 0 ? this.renderNavLink(labels.get('window.recordChanges.tabs.history'), '#workspace-history') : nothing}
         </ul>
         <div class="tab-content">
           ${ this.record.diff.length > 0 ? html`

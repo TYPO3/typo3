@@ -29,6 +29,7 @@ import { selector } from '@typo3/core/literals';
 import IconHelper from '@typo3/workspaces/utility/icon-helper';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import type { PaginationElement } from '@typo3/backend/element/pagination';
+import labels from '~labels/workspaces.messages';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -521,7 +522,6 @@ class Backend extends Workspaces {
 
       const content = document.createElement('typo3-workspaces-record-information');
       content.record = item;
-      content.TYPO3lang = TYPO3.lang;
 
       if (item.label_PrevStage !== false && tableRow.dataset.stage !== tableRow.dataset.prevStage) {
         modalButtons.push({
@@ -549,7 +549,7 @@ class Backend extends Workspaces {
         });
       }
       modalButtons.push({
-        text: TYPO3.lang.close,
+        text: labels.get('close'),
         active: true,
         btnClass: 'btn-info',
         name: 'cancel',
@@ -558,7 +558,7 @@ class Backend extends Workspaces {
 
       Modal.advanced({
         type: Modal.types.default,
-        title: TYPO3.lang['window.recordInformation'].replace('{0}', (tableRow.querySelector('.t3js-title-workspace') as HTMLElement).innerText.trim()),
+        title: labels.get('window.recordInformation').replace('{0}', (tableRow.querySelector('.t3js-title-workspace') as HTMLElement).innerText.trim()),
         content: content,
         severity: SeverityEnum.info,
         buttons: modalButtons,
@@ -590,12 +590,12 @@ class Backend extends Workspaces {
     const tableRow = target.closest('tr') as HTMLTableRowElement;
 
     const modal = Modal.confirm(
-      TYPO3.lang['window.discard.title'],
-      TYPO3.lang['window.discard.message'],
+      labels.get('window.discard.title'),
+      labels.get('window.discard.message'),
       SeverityEnum.warning,
       [
         {
-          text: TYPO3.lang.cancel,
+          text: labels.get('cancel'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
@@ -604,7 +604,7 @@ class Backend extends Workspaces {
           },
         },
         {
-          text: TYPO3.lang.ok,
+          text: labels.get('ok'),
           btnClass: 'btn-warning',
           name: 'ok',
         },
@@ -671,8 +671,8 @@ class Backend extends Workspaces {
 
   private readonly openIntegrityWarningModal = (): ModalElement => {
     const modal = Modal.confirm(
-      TYPO3.lang['window.integrity_warning.title'],
-      html`<p>${TYPO3.lang['integrity.hasIssuesDescription']}<br>${TYPO3.lang['integrity.hasIssuesQuestion']}</p>`,
+      labels.get('window.integrity_warning.title'),
+      html`<p>${labels.get('integrity.hasIssuesDescription')}<br>${labels.get('integrity.hasIssuesQuestion')}</p>`,
       SeverityEnum.warning
     );
     modal.addEventListener('button.clicked', (): void => modal.hideModal());
@@ -682,19 +682,19 @@ class Backend extends Workspaces {
 
   private renderPublishModal(row: HTMLTableRowElement): void {
     const modal = Modal.advanced({
-      title: TYPO3.lang['window.publish.title'],
-      content: TYPO3.lang['window.publish.message'],
+      title: labels.get('window.publish.title'),
+      content: labels.get('window.publish.message'),
       severity: SeverityEnum.info,
       staticBackdrop: true,
       buttons: [
         {
-          text: TYPO3.lang.cancel,
+          text: labels.get('cancel'),
           btnClass: 'btn-default',
           trigger: function(): void {
             modal.hideModal();
           },
         }, {
-          text: TYPO3.lang.label_doaction_publish,
+          text: labels.get('label_doaction_publish'),
           btnClass: 'btn-info',
           action: new DeferredAction(async (): Promise<void> => {
             await this.sendRemoteRequest(
@@ -714,19 +714,19 @@ class Backend extends Workspaces {
 
   private renderSelectionActionModal(selectedAction: string, affectedRecords: Array<object>): void {
     const modal = Modal.advanced({
-      title: TYPO3.lang['window.selectionAction.title'],
-      content: html`<p>${TYPO3.lang['tooltip.' + selectedAction + 'Selected']}</p>`,
+      title: labels.get('window.selectionAction.title'),
+      content: html`<p>${labels.get('tooltip.' + selectedAction + 'Selected' as 'tooltip.publishSelected'|'tooltip.discardSelected')}</p>`,
       severity: SeverityEnum.warning,
       staticBackdrop: true,
       buttons: [
         {
-          text: TYPO3.lang.cancel,
+          text: labels.get('cancel'),
           btnClass: 'btn-default',
           trigger: function(): void {
             modal.hideModal();
           },
         }, {
-          text: TYPO3.lang['label_doaction_' + selectedAction],
+          text: labels.get('label_doaction_' + selectedAction as 'label_doaction_publish'|'label_doaction_discard'),
           btnClass: 'btn-warning',
           action: new DeferredAction(async (): Promise<void> => {
             await this.sendRemoteRequest(
@@ -789,11 +789,11 @@ class Backend extends Workspaces {
     switch (selectedAction) {
       case 'publish':
         massAction = 'publishEntireWorkspace';
-        continueButtonLabel = TYPO3.lang.label_doaction_publish;
+        continueButtonLabel = labels.get('label_doaction_publish');
         break;
       case 'discard':
         massAction = 'discardEntireWorkspace';
-        continueButtonLabel = TYPO3.lang.label_doaction_discard;
+        continueButtonLabel = labels.get('label_doaction_discard');
         break;
       default:
         throw 'Invalid mass action ' + selectedAction + ' called.';
@@ -813,16 +813,16 @@ class Backend extends Workspaces {
     };
 
     const modal = Modal.advanced({
-      title: TYPO3.lang['window.massAction.title'],
+      title: labels.get('window.massAction.title'),
       content: html`
-        <p>${TYPO3.lang['tooltip.' + selectedAction + 'All']}</p>
-        <p>${TYPO3.lang['tooltip.affectWholeWorkspace']}</p>
+        <p>${labels.get('tooltip.' + selectedAction + 'All' as 'tooltip.publishAll'|'tooltip.discardAll')}</p>
+        <p>${labels.get('tooltip.affectWholeWorkspace')}</p>
       `,
       severity: SeverityEnum.warning,
       staticBackdrop: true,
       buttons: [
         {
-          text: TYPO3.lang.cancel,
+          text: labels.get('cancel'),
           btnClass: 'btn-default',
           trigger: function(): void {
             modal.hideModal();
@@ -926,11 +926,11 @@ class Backend extends Workspaces {
       }
 
       Modal.show(
-        TYPO3.lang.previewLink,
+        labels.get('previewLink'),
         list,
         SeverityEnum.info,
         [{
-          text: TYPO3.lang.ok,
+          text: labels.get('ok'),
           active: true,
           btnClass: 'btn-info',
           name: 'ok',

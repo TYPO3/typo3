@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { lll } from '@typo3/core/lit-helper';
 import { customElement, state, query } from 'lit/decorators.js';
 import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import WorkspaceState, { type Workspace, type WorkspaceColor, workspaceColors, WorkspaceChangedEvent } from '@typo3/workspaces/workspace-state';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/dropdown';
+import labels from '~labels/workspaces.messages';
 
 /**
  * Module: @typo3/workspaces/element/workspace-selector-element
@@ -86,7 +86,7 @@ export class WorkspaceSelectorElement extends LitElement {
         <button
           class="workspace-selector dropdown-toggle"
           type="button"
-          title="${lll('workspaces.messages:action.selectWorkspace')}"
+          title="${labels.get('action.selectWorkspace')}"
           popovertarget="workspace-menu"
         >
           <span class="workspace-selector-icon" aria-hidden="true">

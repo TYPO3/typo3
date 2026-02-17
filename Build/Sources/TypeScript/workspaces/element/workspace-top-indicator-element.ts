@@ -16,7 +16,7 @@ import { html, LitElement, type TemplateResult, css, nothing } from 'lit';
 import WorkspaceState, { type Workspace, type WorkspaceColor, workspaceColors, WorkspaceChangedEvent } from '@typo3/workspaces/workspace-state';
 import Persistent from '@typo3/backend/storage/persistent';
 import '@typo3/backend/element/icon-element';
-import { lll } from '@typo3/core/lit-helper';
+import labels from '~labels/workspaces.messages';
 
 /**
  * Module: @typo3/workspaces/element/workspace-top-indicator-element
@@ -114,7 +114,7 @@ export class WorkspaceTopIndicatorElement extends LitElement {
 
     return html`
       <span class="workspace-indicator-badge" title="${this.currentWorkspace.description || this.currentWorkspace.title}">
-        ${lll('workspaces.messages:indicator.workspacePrefix')}:
+        ${labels.get('indicator.workspacePrefix')}:
         ${this.currentWorkspace.title}
       </span>
     `;
