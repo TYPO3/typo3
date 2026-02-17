@@ -63,7 +63,6 @@ class ListController extends AbstractController
      */
     protected function initializeAction(): void
     {
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
         $this->settings['offlineMode'] = (bool)$this->extensionConfiguration->get('extensionmanager', 'offlineMode');
     }
 

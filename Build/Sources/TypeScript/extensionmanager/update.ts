@@ -16,6 +16,7 @@ import Notification from '@typo3/backend/notification';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
+import labels from '~labels/extensionmanager.messages';
 
 enum ExtensionManagerUpdateIdentifier {
   extensionTable = '#terTable',
@@ -70,7 +71,7 @@ class ExtensionManagerUpdate {
       const data = await response.resolve();
       // Something went wrong, show message
       if (data.errorMessage.length) {
-        Notification.error(TYPO3.lang['extensionList.updateFromTerFlashMessage.title'], data.errorMessage, 10);
+        Notification.error(labels.get('extensionList.updateFromTerFlashMessage.title'), data.errorMessage, 10);
       }
 
       // Message with latest updates
@@ -78,7 +79,7 @@ class ExtensionManagerUpdate {
       lastUpdate.innerText = data.timeSinceLastUpdate;
       lastUpdate.setAttribute(
         'title',
-        TYPO3.lang['extensionList.updateFromTer.lastUpdate.timeOfLastUpdate'] + data.lastUpdateTime,
+        labels.get('extensionList.updateFromTer.lastUpdate.timeOfLastUpdate') + data.lastUpdateTime,
       );
 
       if (data.updated) {
@@ -91,7 +92,7 @@ class ExtensionManagerUpdate {
       const errorMessage = error.response.statusText + '(' + error.response.status + '): ' + await error.response.text();
 
       Notification.warning(
-        TYPO3.lang['extensionList.updateFromTerFlashMessage.title'],
+        labels.get('extensionList.updateFromTerFlashMessage.title'),
         errorMessage,
         10,
       );

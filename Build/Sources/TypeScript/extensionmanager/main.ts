@@ -25,6 +25,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';
 import SortableTable from '@typo3/backend/sortable-table';
+import labels from '~labels/extensionmanager.messages';
 import coreCommonLabels from '~labels/core.common';
 
 const securityUtility = new SecurityUtility();
@@ -71,8 +72,8 @@ class ExtensionManager {
           e.preventDefault();
 
           Modal.confirm(
-            TYPO3.lang['extensionList.removalConfirmation.title'],
-            TYPO3.lang['extensionList.removalConfirmation.question'],
+            labels.get('extensionList.removalConfirmation.title'),
+            labels.get('extensionList.removalConfirmation.question'),
             Severity.error,
             [
               {
@@ -83,7 +84,7 @@ class ExtensionManager {
                   Modal.dismiss();
                 },
               }, {
-                text: TYPO3.lang['button.remove'],
+                text: labels.get('button.remove'),
                 btnClass: 'btn-danger',
                 trigger: (): void => {
                   this.removeExtensionFromDisk(target);
@@ -98,8 +99,8 @@ class ExtensionManager {
           e.preventDefault();
 
           Modal.confirm(
-            TYPO3.lang['extensionList.databaseReload.title'],
-            TYPO3.lang['extensionList.databaseReload.message'],
+            labels.get('extensionList.databaseReload.title'),
+            labels.get('extensionList.databaseReload.message'),
             Severity.warning,
             [
               {
@@ -110,7 +111,7 @@ class ExtensionManager {
                   Modal.dismiss();
                 },
               }, {
-                text: TYPO3.lang['button.reimport'],
+                text: labels.get('button.reimport'),
                 btnClass: 'btn-warning',
                 trigger: (): void => {
                   const progressBar = document.createElement('typo3-backend-progress-bar');
@@ -274,7 +275,7 @@ class ExtensionManager {
     }
 
     Modal.confirm(
-      TYPO3.lang['extensionList.updateConfirmation.questionVersionComments'],
+      labels.get('extensionList.updateConfirmation.questionVersionComments'),
       form,
       Severity.notice,
       [
@@ -284,7 +285,7 @@ class ExtensionManager {
           btnClass: 'btn-default',
           trigger: (e: Event, modal: ModalElement): void => modal.hideModal(),
         }, {
-          text: TYPO3.lang['button.updateExtension'],
+          text: labels.get('button.updateExtension'),
           btnClass: 'btn-warning',
           trigger: (e: Event, modal: ModalElement): void => {
             const progressBar = document.createElement('typo3-backend-progress-bar');

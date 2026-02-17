@@ -1,7 +1,7 @@
 <f:format.raw><f:format.json value="{
 result: result,
 extension: extension.extensionKey,
-installationTypeLanguageKey: installationTypeLanguageKey,
+isAutomaticInstallationEnabled: isAutomaticInstallationEnabled,
 errorCount: '{f:count(subject: unresolvedDependencies)}',
 errorTitle: '{f:translate(key: \'downloadExtension.dependencies.errorTitle\')}',
 errorMessage: '{f:render(partial: \'List/UnresolvedDependencies\', arguments: \'{_all}\')}',
