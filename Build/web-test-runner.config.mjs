@@ -69,6 +69,16 @@ const packages = readdirSync('Sources/TypeScript')
     existsSync(`Sources/TypeScript/${dir}/tests`)
   );
 
+const labelProvider = async (ctx, next) => {
+  if (ctx.url.startsWith('/~labels/')) {
+    ctx.status = 200;
+    ctx.set('Content-Type', 'text/javascript');
+    ctx.body = 'export default { get: key => key }';
+    return;
+  }
+  await next();
+}
+
 // https://modern-web.dev/docs/test-runner/cli-and-configuration/
 export default {
   rootDir: '../',
@@ -79,12 +89,17 @@ export default {
   nodeResolve: false,
   preserveSymlinks: true,
   browsers: commandLineBrowsers ?? defaultBrowsers,
+  middleware: [
+    labelProvider,
+  ],
   plugins: [
     esbuildPlugin({ ts: true }),
     importMapsPlugin({
       inject: {
         importMap: {
           imports: {
+            '~labels/': '/~labels/',
+
             '@open-wc/testing': './Build/node_modules/@open-wc/testing/index.js',
             '@open-wc/testing-helpers': './Build/node_modules/@open-wc/testing-helpers/index.js',
             '@open-wc/semantic-dom-diff': './Build/node_modules/@open-wc/semantic-dom-diff/index.js',
