@@ -21,7 +21,7 @@ import { animate, fadeIn, fadeOut } from '@lit-labs/motion';
 import '@typo3/backend/element/icon-element';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ClientStorage from '@typo3/backend/storage/client';
-import { lll, delay } from '@typo3/core/lit-helper';
+import { delay } from '@typo3/core/lit-helper';
 import Modal, { type ModalElement } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -31,6 +31,7 @@ import { selector } from '@typo3/core/literals';
 import DomHelper from '@typo3/backend/utility/dom-helper';
 import Notification from '@typo3/backend/notification';
 import { SettingsEditorSubmitEvent } from '@typo3/backend/settings/editor';
+import labels from '~labels/dashboard.messages';
 
 enum DashboardWidgetMoveIntend {
   start = 'start',
@@ -543,7 +544,7 @@ export class Dashboard extends LitElement {
     const content = html`
       <form>
         <div class="form-group">
-          <label class="form-label" for="dashboard-form-add-title">${lll('dashboard.title')}</label>
+          <label class="form-label" for="dashboard-form-add-title">${labels.get('dashboard.title')}</label>
           <input class="form-control" id="dashboard-form-add-title" type="text" name="title" required="required">
         </div>
         <div class="dashboard-modal-items">
@@ -574,7 +575,7 @@ export class Dashboard extends LitElement {
 
     Modal.advanced({
       type: Modal.types.default,
-      title: lll('dashboard.add'),
+      title: labels.get('dashboard.add'),
       size: Modal.sizes.medium,
       severity: SeverityEnum.notice,
       content,
@@ -598,13 +599,13 @@ export class Dashboard extends LitElement {
       },
       buttons: [
         {
-          text: lll('dashboard.add.button.close'),
+          text: labels.get('dashboard.add.button.close'),
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: (e, modal) => modal.hideModal(),
         },
         {
-          text: lll('dashboard.add.button.ok'),
+          text: labels.get('dashboard.add.button.ok'),
           btnClass: 'btn-primary',
           name: 'save',
           trigger: (e, modal) => modal.querySelector('form').requestSubmit(),
@@ -617,7 +618,7 @@ export class Dashboard extends LitElement {
     const content = html`
       <form>
         <div class="form-group">
-          <label class="form-label" for="dashboard-form-edit-title">${lll('dashboard.title')}</label>
+          <label class="form-label" for="dashboard-form-edit-title">${labels.get('dashboard.title')}</label>
           <input class="form-control" id="dashboard-form-edit-title" type="text" name="title" value=${dashboard.title || ''} required="required">
         </div>
       </form>
@@ -625,7 +626,7 @@ export class Dashboard extends LitElement {
 
     Modal.advanced({
       type: Modal.types.default,
-      title: lll('dashboard.configure'),
+      title: labels.get('dashboard.configure'),
       size: Modal.sizes.small,
       severity: SeverityEnum.notice,
       content,
@@ -649,13 +650,13 @@ export class Dashboard extends LitElement {
       },
       buttons: [
         {
-          text: lll('dashboard.configure.button.close'),
+          text: labels.get('dashboard.configure.button.close'),
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: (e, modal) => modal.hideModal(),
         },
         {
-          text: lll('dashboard.configure.button.ok'),
+          text: labels.get('dashboard.configure.button.ok'),
           btnClass: 'btn-primary',
           name: 'save',
           trigger: (e, modal) => modal.querySelector('form').requestSubmit(),
@@ -666,17 +667,17 @@ export class Dashboard extends LitElement {
 
   private deleteDashboard(dashboard: DashboardInterface): void {
     const modal = Modal.confirm(
-      lll('dashboard.delete'),
-      lll('dashboard.delete.sure'),
+      labels.get('dashboard.delete'),
+      labels.get('dashboard.delete.sure'),
       SeverityEnum.warning, [
         {
-          text: lll('dashboard.delete.cancel'),
+          text: labels.get('dashboard.delete.cancel'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: lll('dashboard.delete.ok'),
+          text: labels.get('dashboard.delete.ok'),
           btnClass: 'btn-warning',
           name: 'delete',
         },
@@ -704,9 +705,9 @@ export class Dashboard extends LitElement {
 
     const wizard = top.document.createElement('typo3-backend-new-record-wizard');
     wizard.storeName = 'dashboard-widgets';
-    wizard.searchPlaceholder = lll('widget.addToDashboard.searchLabel');
-    wizard.searchNothingFoundLabel = lll('widget.addToDashboard.searchNotFound');
-    wizard.userNotAllowedLabel = lll('widget.addToDashboard.userNotAllowed');
+    wizard.searchPlaceholder = labels.get('widget.addToDashboard.searchLabel');
+    wizard.searchNothingFoundLabel = labels.get('widget.addToDashboard.searchNotFound');
+    wizard.userNotAllowedLabel = labels.get('widget.addToDashboard.userNotAllowed');
     wizard.categories = await this.fetchCategories();
     wizard.addEventListener(newRecordWizardEventName, async (event): Promise<void> => {
       const { identifier } = event.detail.item;
@@ -732,7 +733,7 @@ export class Dashboard extends LitElement {
 
     Modal.advanced({
       type: Modal.types.default,
-      title: lll('widget.addToDashboard', this.currentDashboard.title),
+      title: labels.get('widget.addToDashboard', this.currentDashboard.title),
       size: Modal.sizes.medium,
       severity: SeverityEnum.notice,
       content: wizard,
@@ -743,7 +744,7 @@ export class Dashboard extends LitElement {
       },
       buttons: [
         {
-          text: lll('widget.add.button.close'),
+          text: labels.get('widget.add.button.close'),
           btnClass: 'btn-default',
           name: 'cancel',
         }
@@ -763,11 +764,11 @@ export class Dashboard extends LitElement {
     const createButton: TemplateResult = html`
       <button
         class="btn btn-primary btn-sm btn-dashboard-add-tab"
-        title=${lll('dashboard.add')}
+        title=${labels.get('dashboard.add')}
         @click=${() => { this.createDashboard(); }}
       >
         <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
-        <span class="visually-hidden">${lll('dashboard.add')}</span>
+        <span class="visually-hidden">${labels.get('dashboard.add')}</span>
       </button>
     `;
 
@@ -775,11 +776,11 @@ export class Dashboard extends LitElement {
       ? html`
         <button
           class="btn btn-default btn-sm"
-          title=${lll('dashboard.configure')}
+          title=${labels.get('dashboard.configure')}
           @click=${() => { this.editDashboard(this.currentDashboard); }}
         >
           <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
-          <span class="visually-hidden">${lll('dashboard.configure')}</span>
+          <span class="visually-hidden">${labels.get('dashboard.configure')}</span>
         </button>
         `
       : nothing;
@@ -788,11 +789,11 @@ export class Dashboard extends LitElement {
       ? html`
         <button
           class="btn btn-default btn-sm"
-          title=${lll('dashboard.delete')}
+          title=${labels.get('dashboard.delete')}
           @click=${() => { this.deleteDashboard(this.currentDashboard); }}
         >
           <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
-          <span class="visually-hidden">${lll('dashboard.delete')}</span>
+          <span class="visually-hidden">${labels.get('dashboard.delete')}</span>
         </button>
         `
       : nothing;
@@ -861,15 +862,15 @@ export class Dashboard extends LitElement {
       return html`
         <div class="dashboard-empty">
           <div class="dashboard-empty-content">
-            <h3>${lll('dashboard.empty.content.title')}</h3>
-            <p>${lll('dashboard.empty.content.description')}</p>
+            <h3>${labels.get('dashboard.empty.content.title')}</h3>
+            <p>${labels.get('dashboard.empty.content.description')}</p>
             <button
-              title=${lll('widget.add')}
+              title=${labels.get('widget.add')}
               class="btn btn-primary"
               @click=${() => { this.addWidget(); }}
             >
               <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
-              ${lll('dashboard.empty.content.button')}
+              ${labels.get('dashboard.empty.content.button')}
             </button>
           </div>
         </div>
@@ -884,11 +885,11 @@ export class Dashboard extends LitElement {
       <div class="dashboard-add-item">
         <button
           class="btn btn-primary btn-dashboard-add-widget"
-          title=${lll('widget.addToDashboard', this.currentDashboard.title)}
+          title=${labels.get('widget.addToDashboard', this.currentDashboard.title)}
           @click=${() => { this.addWidget(); }}
         >
           <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
-          <span class="visually-hidden">${lll('widget.addToDashboard', this.currentDashboard.title)}</span>
+          <span class="visually-hidden">${labels.get('widget.addToDashboard', this.currentDashboard.title)}</span>
         </button>
       </div>
     `;
@@ -1285,29 +1286,29 @@ export class DashboardWidget extends LitElement {
 
     const widgetContent = (widget: DashboardWidgetInterface | null) => widget
       ? unsafeHTML(widget.content)
-      : html`<div class="widget-content-main">${lll('widget.error')}</div>`;
+      : html`<div class="widget-content-main">${labels.get('widget.error')}</div>`;
 
     const settingsButton = () => html`
       <button
         type="button"
-        title=${lll('widget.settings')}
+        title=${labels.get('widget.settings')}
         class="widget-action widget-action-settings"
         @click=${this.editSettings}
       >
         <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
-        <span class="visually-hidden">${lll('widget.settings')}</span>
+        <span class="visually-hidden">${labels.get('widget.settings')}</span>
       </button>
     `;
 
     const refreshButton = (loading: boolean = false) => html`
       <button
         type="button"
-        title=${lll('widget.refresh')}
+        title=${labels.get('widget.refresh')}
         class="widget-action widget-action-refresh"
         @click=${this.handleRefresh}
       >
         ${loading ? html`<typo3-backend-spinner size="small"></typo3-backend-spinner>` : html`<typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>`}
-        <span class="visually-hidden">${lll('widget.refresh')}</span>
+        <span class="visually-hidden">${labels.get('widget.refresh')}</span>
       </button>
     `;
 
@@ -1319,23 +1320,23 @@ export class DashboardWidget extends LitElement {
           ${widget?.refreshable ? refreshButton(loading) : nothing}
           <button
             type="button"
-            title=${lll('widget.move')}
+            title=${labels.get('widget.move')}
             class="widget-action widget-action-move"
             @click=${this.handleMoveClick}
             @focusout=${this.handleMoveFocusOut}
             @keydown=${this.handleMoveKeyDown}
           >
             <typo3-backend-icon identifier=${this.moving ? 'actions-thumbtack' : 'actions-move'} size="small"></typo3-backend-icon>
-            <span class="visually-hidden">${lll('widget.move')}</span>
+            <span class="visually-hidden">${labels.get('widget.move')}</span>
           </button>
           <button
             type="button"
-            title=${lll('widget.remove')}
+            title=${labels.get('widget.remove')}
             class="widget-action widget-action-remove"
             @click=${this.handleRemove}
           >
             <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
-            <span class="visually-hidden">${lll('widget.remove')}</span>
+            <span class="visually-hidden">${labels.get('widget.remove')}</span>
           </button>
         </div>
       </div>
@@ -1467,7 +1468,7 @@ export class DashboardWidget extends LitElement {
 
     Modal.advanced({
       type: Modal.types.default,
-      title: lll('widget.settings'),
+      title: labels.get('widget.settings'),
       size: Modal.sizes.default,
       severity: SeverityEnum.notice,
       content,
@@ -1507,13 +1508,13 @@ export class DashboardWidget extends LitElement {
       },
       buttons: [
         {
-          text: lll('widget.settings.button.close'),
+          text: labels.get('widget.settings.button.close'),
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: (e, modal) => modal.hideModal(),
         },
         {
-          text: lll('widget.settings.button.save'),
+          text: labels.get('widget.settings.button.save'),
           btnClass: 'btn-primary',
           name: 'save',
           form: formName
@@ -1528,17 +1529,17 @@ export class DashboardWidget extends LitElement {
 
   private handleRemove(event: Event): void {
     const modal = Modal.confirm(
-      lll('widget.remove.confirm.title'),
-      lll('widget.remove.confirm.message'),
+      labels.get('widget.remove.confirm.title'),
+      labels.get('widget.remove.confirm.message'),
       SeverityEnum.warning, [
         {
-          text: lll('widget.remove.button.close'),
+          text: labels.get('widget.remove.button.close'),
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
         {
-          text: lll('widget.remove.button.ok'),
+          text: labels.get('widget.remove.button.ok'),
           btnClass: 'btn-warning',
           name: 'delete',
         },

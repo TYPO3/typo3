@@ -75,7 +75,6 @@ class DashboardController
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/dashboard.js');
         $this->pageRenderer->addCssFile('EXT:dashboard/Resources/Public/Css/dashboard.css');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:dashboard/Resources/Private/Language/locallang.xlf');
     }
 
     protected function getBackendUser(): BackendUserAuthentication
