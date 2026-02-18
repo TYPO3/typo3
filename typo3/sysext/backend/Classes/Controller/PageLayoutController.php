@@ -644,7 +644,9 @@ class PageLayoutController
         $pageUid = $this->id;
         if ($this->currentSelectedLanguage > 0) {
             $overlayRecord = $this->getLocalizedPageRecord($this->currentSelectedLanguage);
-            $pageUid = $overlayRecord['uid'];
+            if ($overlayRecord !== null) {
+                $pageUid = $overlayRecord['uid'];
+            }
         }
         $params = [
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
