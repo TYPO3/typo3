@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { lll } from '@typo3/core/lit-helper';
 import DocumentService from '@typo3/core/document-service';
 import Notification from '@typo3/backend/notification';
 import InfoWindow from '@typo3/backend/info-window';
@@ -26,6 +25,8 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import ContextMenu from '@typo3/backend/context-menu';
+import labels from '~labels/core.core';
+import commonLabels from '~labels/core.common';
 import type { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 import type { ResourceInterface } from '@typo3/backend/resource/resource';
 import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
@@ -238,13 +239,13 @@ export default class Filelist {
       severity: SeverityEnum.warning,
       buttons: [
         {
-          text: TYPO3.lang['button.close'] || 'Close',
+          text: commonLabels.get('close'),
           active: true,
           btnClass: 'btn-default',
           trigger: (modalEvent: Event, modal: ModalElement) => modal.hideModal(),
         },
         {
-          text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
+          text: configuration.ok || commonLabels.get('ok'),
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
           trigger: (modalEvent: Event, modal: ModalElement) => {
             Filelist.submitClipboardFormWithCommand('delete', e.target as HTMLButtonElement);
@@ -303,7 +304,7 @@ export default class Filelist {
     if (filesAndFolders.length) {
       this.triggerDownload(filesAndFolders, configuration.downloadUrl, target);
     } else {
-      Notification.warning(lll('file_download.invalidSelection'));
+      Notification.warning(labels.get('file_download.invalidSelection'));
     }
   };
 
@@ -318,7 +319,7 @@ export default class Filelist {
     }
 
     // Add notification about the download being prepared
-    Notification.info(lll('file_download.prepare'), '', 2);
+    Notification.info(labels.get('file_download.prepare'), '', 2);
     // Store the targets' (button) content and replace with a spinner
     // icon, while the download is being prepared. Also disable the
     // button for this time to prevent the user from triggering it again.
@@ -340,10 +341,10 @@ export default class Filelist {
         let fileName = response.response.headers.get('Content-Disposition');
         if (!fileName) {
           const data = await response.resolve();
-          if (data.success === false && data.status) {
-            Notification.warning(lll('file_download.' + data.status), lll('file_download.' + data.status + '.message'), 10);
+          if (data.success === false && data.status === 'noFiles') {
+            Notification.warning(labels.get('file_download.noFiles'), labels.get('file_download.noFiles.message'), 10);
           } else {
-            Notification.error(lll('file_download.error'));
+            Notification.error(labels.get('file_download.error'));
           }
           return;
         }
@@ -353,10 +354,10 @@ export default class Filelist {
         const downloadUrl = URL.createObjectURL(blob);
         this.invokeDownload(downloadUrl, fileName);
         // Add notification about successful preparation
-        Notification.success(lll('file_download.success'), '', 2);
+        Notification.success(labels.get('file_download.success'), '', 2);
       })
       .catch(() => {
-        Notification.error(lll('file_download.error'));
+        Notification.error(labels.get('file_download.error'));
       })
       .finally(() => {
         // Remove progress bar and restore target (button)
@@ -377,10 +378,10 @@ export default class Filelist {
     progressBar.start();
     (new AjaxRequest(url)).post({ resource: resource })
       .then(() => {
-        Notification.success(lll('online_media.update.success'));
+        Notification.success(labels.get('online_media.update.success'));
       })
       .catch(() => {
-        Notification.error(lll('online_media.update.error'));
+        Notification.error(labels.get('online_media.update.error'));
       })
       .finally(() => {
         progressBar.done();

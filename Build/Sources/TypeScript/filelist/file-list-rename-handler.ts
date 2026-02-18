@@ -20,6 +20,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 import Viewport from '@typo3/backend/viewport';
+import labels from '~labels/core.core';
 
 interface Message {
   title: string;
@@ -33,13 +34,13 @@ class FileListRenameHandler {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
       const modal = Modal.advanced({
-        title: TYPO3.lang['file_rename.title'] || 'Rename',
+        title: labels.get('file_rename.title'),
         type: Modal.types.default,
         size: Modal.sizes.small,
         content: this.composeEditForm(resource),
         buttons: [
           {
-            text: TYPO3.lang['file_rename.button.cancel'] || 'Cancel',
+            text: labels.get('file_rename.button.cancel'),
             btnClass: 'btn-default',
             name: 'cancel',
             trigger: (): void => {
@@ -47,7 +48,7 @@ class FileListRenameHandler {
             }
           },
           {
-            text: TYPO3.lang['file_rename.button.rename'] || 'Rename',
+            text: labels.get('file_rename.button.rename'),
             btnClass: 'btn-primary',
             name: 'rename',
             trigger: (): void => {
@@ -115,8 +116,8 @@ class FileListRenameHandler {
 
   private composeEditForm(resource: ResourceInterface): TemplateResult {
     const label = resource?.type === 'folder' ?
-      TYPO3.lang['folder_rename.label'] ?? 'New folder name' :
-      TYPO3.lang['file_rename.label'] ?? 'New filename';
+      labels.get('folder_rename.label') :
+      labels.get('file_rename.label');
     return html`
       <form>
         <label class="form-label" for="rename_target">

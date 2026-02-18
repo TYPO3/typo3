@@ -12,7 +12,6 @@
  */
 
 import { html, nothing, type TemplateResult } from 'lit';
-import { lll } from '@typo3/core/lit-helper';
 import { until } from 'lit/directives/until.js';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ResourceInterface } from '@typo3/backend/resource/resource';
@@ -25,6 +24,10 @@ import Viewport from '@typo3/backend/viewport';
 import { FormatUtility } from '@typo3/backend/utility/format-utility';
 import { ThumbnailSize } from '@typo3/backend/element/thumbnail-element';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import labels from '~labels/filelist.messages';
+import coreCommonLabels from '~labels/core.common';
+import coreCoreLabels from '~labels/core.core';
+import modFileListLabels from '~labels/filelist.mod_file_list';
 
 interface Message {
   title: string;
@@ -37,13 +40,13 @@ class FileListReplaceHandler {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
       const modal = Modal.advanced({
-        title: lll('file_replace.title', resource.name),
+        title: labels.get('file_replace.title', resource.name),
         type: Modal.types.default,
         size: Modal.sizes.small,
         content: html`${until(this.loadEditor(resource.identifier), html`<typo3-backend-spinner></typo3-backend-spinner>`)}`,
         buttons: [
           {
-            text: TYPO3.lang['file_replace.button.cancel'] || 'Cancel',
+            text: coreCommonLabels.get('cancel'),
             btnClass: 'btn-default',
             name: 'cancel',
             trigger: (): void => {
@@ -51,7 +54,7 @@ class FileListReplaceHandler {
             }
           },
           {
-            text: TYPO3.lang['file_replace.button.replace'] || 'Replace',
+            text: labels.get('file_replace.button.replace'),
             btnClass: 'btn-primary',
             name: 'rename',
             trigger: (): void => {
@@ -105,7 +108,7 @@ class FileListReplaceHandler {
 
     return html`
       <div class="file-replace-dialog">
-        ${lll('file_replace.intro', resource.name)}
+        ${labels.get('file_replace.intro', resource.name)}
         <div
           class="file-replace-dialog-summary"
         >
@@ -114,23 +117,23 @@ class FileListReplaceHandler {
           </div>` : nothing}
           <div class="file-replace-dialog-summary-info">
             <dl>
-              <dt>${lll('file_info_filename')}</dt>
+              <dt>${modFileListLabels.get('c_name')}</dt>
               <dd>${resource.name}</dd>
-              <dt>${lll('file_info_filesize')}</dt>
+              <dt>${modFileListLabels.get('c_size')}</dt>
               <dd>${FormatUtility.fileSizeAsString(resource.size)}</dd>
-              <dt>${lll('file_info_creation_date')}</dt>
+              <dt>${coreCoreLabels.get('labels.crdate')}</dt>
               <dd><typo3-backend-datetime format="datetime" datetime="${resource.createdAt}"></typo3-backend-datetime></dd>
             </dl>
           </div>
         </div>
         <form>
           <div class="form-group">
-            <label class="form-label" for="file_replace">${lll('file_replace.new_file.label')}</label>
+            <label class="form-label" for="file_replace">${labels.get('file_replace.new_file.label')}</label>
             <input id="file_replace" type="file" class="form-control" name="replace_1">
           </div>
           <div class="form-check">
             <input type="checkbox" value="1" id="keepFilename" name="keepFilename" class="form-check-input" checked>
-            <label class="form-check-label" for="keepFilename">${lll('file_replace.keepFilename.label', resource.name)}</label>
+            <label class="form-check-label" for="keepFilename">${labels.get('file_replace.keepFilename.label', resource.name)}</label>
           </div>
         </form>
       </div>

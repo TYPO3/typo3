@@ -17,6 +17,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Notification from '@typo3/backend/notification';
 import Viewport from '@typo3/backend/viewport';
+import labels from '~labels/filelist.transfer_handler';
 import { type FileListDragDropDetail, FileListDragDropEvent } from '@typo3/filelist/file-list-dragdrop';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { ResourceInterface } from '@typo3/backend/resource/resource';
@@ -49,13 +50,13 @@ class FileListTransferHandler {
       let modalText;
       if (detail.resources.length === 1) {
         const resource = detail.resources[0];
-        modalTitle = TYPO3.lang['message.transfer_resource.title'];
-        modalText = TYPO3.lang['message.transfer_resource.text']
+        modalTitle = labels.get('message.transfer_resource.title');
+        modalText = labels.get('message.transfer_resource.text')
           .replace('%s', resource.name)
           .replace('%s', target.name);
       } else {
-        modalTitle = TYPO3.lang['message.transfer_resources.title'];
-        modalText = TYPO3.lang['message.transfer_resources.text']
+        modalTitle = labels.get('message.transfer_resources.title');
+        modalText = labels.get('message.transfer_resources.text')
           .replace('%d', resources.length.toString(10))
           .replace('%s', target.name);
       }
@@ -66,7 +67,7 @@ class FileListTransferHandler {
         SeverityEnum.notice,
         [
           {
-            text: TYPO3.lang['message.button.cancel'],
+            text: labels.get('message.button.cancel'),
             active: true,
             btnClass: 'btn-default',
             name: 'cancel',
@@ -75,7 +76,7 @@ class FileListTransferHandler {
             }
           },
           {
-            text: TYPO3.lang['message.button.copy'],
+            text: labels.get('message.button.copy'),
             btnClass: 'btn-primary',
             name: 'copy',
             trigger: (): void => {
@@ -84,7 +85,7 @@ class FileListTransferHandler {
             }
           },
           {
-            text: TYPO3.lang['message.button.move'],
+            text: labels.get('message.button.move'),
             btnClass: 'btn-primary',
             name: 'move',
             trigger: (): void => {

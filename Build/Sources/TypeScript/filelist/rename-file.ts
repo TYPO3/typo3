@@ -16,6 +16,7 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Modal from '@typo3/backend/modal';
 import DocumentService from '@typo3/core/document-service';
+import labels from '~labels/filelist.messages';
 
 /**
  * Module: @typo3/filelist/rename-file
@@ -61,11 +62,10 @@ class RenameFile {
       const newFileName: string = fileNameField.value;
 
       if (fileExists && originalFileName !== newFileName) {
-        const description: string = TYPO3.lang['file_rename.exists.description']
-          .replace('{0}', originalFileName).replace(/\{1\}/g, newFileName);
+        const description: string = labels.get('file_rename.exists.description', originalFileName, newFileName);
 
         const modal = Modal.confirm(
-          TYPO3.lang['file_rename.exists.title'],
+          labels.get('file_rename.exists.title'),
           description,
           SeverityEnum.warning,
           [
@@ -73,17 +73,17 @@ class RenameFile {
               active: true,
               btnClass: 'btn-default',
               name: 'cancel',
-              text: TYPO3.lang['file_rename.actions.cancel'],
+              text: labels.get('file_rename.actions.cancel'),
             },
             {
               btnClass: 'btn-primary',
               name: 'rename',
-              text: TYPO3.lang['file_rename.actions.rename'],
+              text: labels.get('file_rename.actions.rename'),
             },
             {
               btnClass: 'btn-default',
               name: 'replace',
-              text: TYPO3.lang['file_rename.actions.override'],
+              text: labels.get('file_rename.actions.override'),
             },
           ]
         );

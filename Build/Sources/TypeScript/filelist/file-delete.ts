@@ -15,6 +15,7 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';
 import Modal from '@typo3/backend/modal';
+import labels from '~labels/backend.alt_doc';
 
 /**
  * Module: @typo3/filelist/file-delete
@@ -37,13 +38,13 @@ class FileDelete {
         if (eventTarget.dataset.filelistDeleteCheck) {
           const modal = Modal.confirm(eventTarget.dataset.title, eventTarget.dataset.content, SeverityEnum.warning, [
             {
-              text: TYPO3.lang['buttons.confirm.delete_file.no'] || 'Cancel',
+              text: labels.get('buttons.confirm.delete_file.no'),
               active: true,
               btnClass: 'btn-default',
               name: 'no',
             },
             {
-              text: TYPO3.lang['buttons.confirm.' + deleteType + '.yes'] || 'Yes, delete this file or folder',
+              text: deleteType === 'delete_folder' ? labels.get('buttons.confirm.delete_folder.yes') : labels.get('buttons.confirm.delete_file.yes'),
               btnClass: 'btn-warning',
               name: 'yes',
             },
