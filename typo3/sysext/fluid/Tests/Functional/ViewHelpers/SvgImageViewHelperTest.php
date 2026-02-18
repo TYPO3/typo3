@@ -499,26 +499,23 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
         $actual = (new TemplateView($context))->render();
         self::assertMatchesRegularExpression($expected, $actual);
 
-        $dumpTables = [
-            'sys_file_processedfile' => 1,
-        ];
+        $dumpTable = 'sys_file_processedfile';
+        $expectedRecords = 1;
 
-        foreach ($dumpTables as $dumpTable => $expectedRecords) {
-            $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($dumpTable);
-            $rows =
-                $queryBuilder
-                    ->select('*')
-                    ->from($dumpTable)
-                    ->executeQuery()
-                    ->fetchAllAssociative();
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($dumpTable);
+        $rows =
+            $queryBuilder
+                ->select('*')
+                ->from($dumpTable)
+                ->executeQuery()
+                ->fetchAllAssociative();
 
-            self::assertEquals(count($rows), $expectedRecords, sprintf('Expected post-conversion database records in %s do not match.', $dumpTable));
+        self::assertEquals(count($rows), $expectedRecords, sprintf('Expected post-conversion database records in %s do not match.', $dumpTable));
 
-            if ($dumpTable === 'sys_file_processedfile' && $expectProcessedFile) {
-                // Only SVGs count
-                if (str_ends_with($rows[0]['identifier'], '.svg')) {
-                    $this->verifySvg($rows[0], $cropResult);
-                }
+        if ($expectProcessedFile) {
+            // Only SVGs count
+            if (str_ends_with($rows[0]['identifier'], '.svg')) {
+                $this->verifySvg($rows[0], $cropResult);
             }
         }
     }

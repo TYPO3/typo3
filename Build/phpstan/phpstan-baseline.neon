@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Strict comparison using \!\=\= between Psr\\Log\\LoggerInterface and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/adminpanel/Classes/Modules/PreviewModule.php
-
-		-
 			message: '#^Instanceof between TYPO3\\CMS\\Backend\\Toolbar\\InformationStatus and TYPO3\\CMS\\Backend\\Toolbar\\InformationStatus will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 2
@@ -1015,12 +1009,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/View/FluidViewAdapter.php
 
 		-
-			message: '#^Parameter \#1 \$namespace of method TYPO3\\CMS\\Core\\Page\\PageRenderer\:\:addInlineSettingArray\(\) expects string, null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Be/PageRendererViewHelper.php
-
-		-
 			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
@@ -1033,46 +1021,10 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/FormViewHelper.php
 
 		-
-			message: '#^Call to function is_int\(\) with mixed will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/BytesViewHelper.php
-
-		-
-			message: '#^Instanceof between Psr\\Http\\Message\\ServerRequestInterface and Psr\\Http\\Message\\RequestInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/ImageViewHelper.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between mixed and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Link/TypolinkViewHelper.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between mixed and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Uri/TypolinkViewHelper.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between ''sys_file…'' and ''sys_file…'' will always evaluate to true\.$#'
-			identifier: identical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/SvgImageViewHelperTest.php
-
-		-
 			message: '#^Parameter \#2 \$imageFile of method TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer\:\:imageLinkWrap\(\) expects string\|TYPO3\\CMS\\Core\\Resource\\File\|TYPO3\\CMS\\Core\\Resource\\FileReference, TYPO3\\CMS\\Core\\Resource\\FileInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/fluid_styled_content/Classes/ViewHelpers/Link/ClickEnlargeViewHelper.php
-
-		-
-			message: '#^Parameter \#1 \$namespace of method TYPO3\\CMS\\Core\\Page\\PageRenderer\:\:addInlineSettingArray\(\) expects string, null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Controller/FormEditorController.php
 
 		-
 			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
@@ -1087,38 +1039,8 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Finishers/AbstractFinisher.php
 
 		-
-			message: '#^Instanceof between Closure and Closure will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/ClosureFinisher.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/FormDefinition.php
-
-		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/FormDefinition.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\FormElementInterface\:\:setOptions\(\)\.$#'
 			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\AbstractSection\:\:getElements\(\) should return array\<TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\FormElementInterface\> but returns array\<TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\RenderableInterface\>\.$#'
-			identifier: return.type
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
 
@@ -1127,12 +1049,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/UnknownFormElement.php
 
 		-
 			message: '#^Right side of && is always true\.$#'
@@ -1147,70 +1063,10 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Runtime/FormRuntime.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\ResourceInterface\:\:getCombinedIdentifier\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/form/Classes/EventListener/ProcessFileListActionsEventListener.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\RenderableInterface\:\:getRootForm\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/form/Classes/EventListener/ValidateAdvancedPasswordRenderable.php
-
-		-
-			message: '#^Property TYPO3\\CMS\\Form\\Mvc\\Property\\Exception\\TypeConverterException\:\:\$error \(TYPO3\\CMS\\Extbase\\Error\\Error\) in empty\(\) is not falsy\.$#'
-			identifier: empty.property
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.php
-
-		-
-			message: '#^Instanceof between DateTime and DateTime will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Validation/DateRangeValidator.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Form\\Mvc\\Property\\TypeConverter\\PseudoFile and TYPO3\\CMS\\Form\\Mvc\\Property\\TypeConverter\\PseudoFile will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Validation/FileSizeValidator.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Form\\Mvc\\Property\\TypeConverter\\PseudoFile and TYPO3\\CMS\\Form\\Mvc\\Property\\TypeConverter\\PseudoFile will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Validation/MimeTypeValidator.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\RootRenderableInterface\:\:getProperties\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Service/TranslationService.php
-
-		-
-			message: '#^Comparison operation "\<" between int\<1, max\> and 1 is always false\.$#'
-			identifier: smaller.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/form/Classes/ViewHelpers/GridColumnClassAutoConfigurationViewHelper.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\CompositeRenderableInterface and TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\RenderableInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderFormValueViewHelper.php
-
-		-
-			message: '#^Call to an undefined method DOMNameSpaceNode\|DOMNode\:\:getAttribute\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Functional/Framework/FormHandling/FormDataFactory.php
-
-		-
-			message: '#^Parameter \#1 \$node of method TYPO3\\CMS\\Form\\Tests\\Functional\\Framework\\FormHandling\\FormDataFactory\:\:isHoneypot\(\) expects DOMElement, DOMNameSpaceNode\|DOMNode given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Functional/Framework/FormHandling/FormDataFactory.php
 
 		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
@@ -1219,58 +1075,16 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Functional/Service/TranslationServiceTest.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 6
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: '#^Call to function is_callable\(\) with array\{object, ''setContentObjectRen…''\} will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer\:\:splitObj\(\) should return string but returns int\<0, max\>\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between non\-empty\-string and '''' will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
+			message: '#^Call to function is_array\(\) with null will always evaluate to false\.$#'
+			identifier: function.impossibleType
 			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between non\-empty\-string and false will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Frontend\\Category\\Collection\\CategoryCollection and TYPO3\\CMS\\Core\\Collection\\AbstractRecordCollection will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/CategoryMenuUtility.php
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
 
 		-
 			message: '#^Offset mixed on array\{\} on left side of \?\? does not exist\.$#'
@@ -1279,184 +1093,16 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between null and null will always evaluate to true\.$#'
-			identifier: identical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
-
-		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 8
-			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
-			message: '#^Parameter &\$dstImg by\-ref type of method TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder\:\:imagecopyresized\(\) expects GdImage, \(GdImage\|false\) given\.$#'
-			identifier: parameterByRef.type
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication and TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Middleware/FrontendUserAuthenticator.php
-
-		-
-			message: '#^Call to function is_string\(\) with non\-empty\-string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Resource/FilePathSanitizer.php
-
-		-
-			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/ApplicableConjunction.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/AspectDeclaration.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\Applicable\:\:getConfiguration\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/Builder.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/Builder.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/EnhancerDeclaration.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/ExceptionExpectation.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/LanguageContext.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/PageTypeDeclaration.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\TestSet and TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\TestSet will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/Permutation.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/Permutation.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/TestSet.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/Variable.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableCompiler.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableItem.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableItem.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableValue.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/Variables.php
-
-		-
-			message: '#^Unsafe usage of new static\(\)\.$#'
-			identifier: new.static
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariablesContext.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 3
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/SiteRequestTest.php
-
-		-
-			message: '#^Parameter \#2 \$replace of function str_replace expects array\<string\>\|string, array\<int, int\|null\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/SlugLinkGeneratorTest.php
 
 		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array\<string, mixed\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/impexp/Classes/Export.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Controller/SearchController.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Install\\Configuration\\PresetInterface and TYPO3\\CMS\\Install\\Configuration\\PresetInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Configuration/AbstractFeature.php
 
 		-
 			message: '#^Result of \|\| is always true\.$#'

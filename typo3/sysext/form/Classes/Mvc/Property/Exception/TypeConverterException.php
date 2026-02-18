@@ -22,10 +22,7 @@ use TYPO3\CMS\Extbase\Error\Error;
  */
 final class TypeConverterException extends \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
 {
-    /**
-     * @var Error
-     */
-    private $error;
+    private ?Error $error = null;
 
     public static function fromError(Error $error): TypeConverterException
     {
@@ -37,7 +34,7 @@ final class TypeConverterException extends \TYPO3\CMS\Extbase\Property\Exception
 
     public function getError(): Error
     {
-        if (empty($this->error)) {
+        if ($this->error === null) {
             return new Error($this->getMessage(), $this->getCode(), [$this->getPrevious()]);
         }
 

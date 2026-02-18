@@ -43,7 +43,7 @@ final class FileSizeValidator extends AbstractValidator
     /**
      * The given value is valid
      *
-     * @param FileReference|File|PseudoFile $resource
+     * @param mixed $resource
      */
     public function isValid(mixed $resource): void
     {

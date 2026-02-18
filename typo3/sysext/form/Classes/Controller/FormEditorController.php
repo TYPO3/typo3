@@ -170,7 +170,7 @@ class FormEditorController extends ActionController
                 ->invoke('dispatchFormEditor', $javaScriptModules, $formEditorAppInitialData)
         );
         array_map($pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $javaScriptModules);
-        $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
+        $pageRenderer->addInlineSettingArray('', $addInlineSettings);
         $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
         $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_form_editor_javascript.xlf');
         $stylesheets = $prototypeConfiguration['formEditor']['stylesheets'];

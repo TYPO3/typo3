@@ -512,7 +512,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
             $page = $pageRepository->getPage((int)$linkDetails['pageuid'], $disableGroupAccessCheck);
         }
 
-        if (empty($page) || !is_array($page)) {
+        if (!isset($page)) {
             return [];
         }
 

@@ -528,7 +528,7 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
 
         $expectation = str_replace(
             ['{targetPageId}'],
-            [$targetPageId],
+            [(string)$targetPageId],
             $expectation
         );
 

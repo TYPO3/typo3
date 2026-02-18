@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Form\EventListener;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Error;
+use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
 use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Service\TranslationService;
 
@@ -30,6 +31,9 @@ class ValidateAdvancedPasswordRenderable
     {
         $renderable = $event->renderable;
         if ($renderable->getType() !== 'AdvancedPassword') {
+            return;
+        }
+        if (!$renderable instanceof AbstractRenderable) {
             return;
         }
 

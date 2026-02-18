@@ -40,7 +40,7 @@ class Permutation
 
     public static function create(Variables $variables): self
     {
-        return new static($variables);
+        return new self($variables);
     }
 
     private function __construct(Variables $variables)
@@ -52,7 +52,7 @@ class Permutation
     {
         $this->results = [];
         foreach ($this->targets as $target) {
-            if (!$target instanceof TestSet) {
+            if (!$target instanceof TestSet) { // @phpstan-ignore instanceof.alwaysTrue
                 throw new \LogicException('Expected DataSet', 1578045577);
             }
             $target = $target->withMergedVariables($this->variables);

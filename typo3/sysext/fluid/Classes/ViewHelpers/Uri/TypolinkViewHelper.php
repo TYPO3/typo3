@@ -75,7 +75,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
             'parameter' => $typoLinkParameter,
             'forceAbsoluteUrl' => $absolute,
         ];
-        if (isset($arguments['language']) && $arguments['language'] !== null) {
+        if (array_key_exists('language', $arguments) && $arguments['language'] !== null) {
             $instructions['language'] = (string)$arguments['language'];
         }
         if ($addQueryString && $addQueryString !== 'false') {

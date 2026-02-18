@@ -26,7 +26,7 @@ class VariableCompiler
 
     public static function create(array $items, Variables $variables, int $flags = self::FLAG_MERGE_RECURSIVE): self
     {
-        return new static($items, $variables, $flags);
+        return new self($items, $variables, $flags);
     }
 
     public function __construct(

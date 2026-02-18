@@ -31,7 +31,7 @@ class VariableItem
 
     public static function create(string $key, $value): self
     {
-        return new static(
+        return new self(
             VariableValue::create(sprintf('[[%s]]', $key)),
             $value
         );
@@ -45,7 +45,7 @@ class VariableItem
 
     public function isArray(): bool
     {
-        return is_array($this->value);
+        return is_array($this->value); // @phpstan-ignore function.alreadyNarrowedType
     }
 
     public function apply(Variables $variables): array

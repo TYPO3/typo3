@@ -24,7 +24,7 @@ class AspectDeclaration implements Applicable
 
     public static function create(string $identifier): self
     {
-        return new static($identifier);
+        return new self($identifier);
     }
 
     private function __construct(string $identifier)

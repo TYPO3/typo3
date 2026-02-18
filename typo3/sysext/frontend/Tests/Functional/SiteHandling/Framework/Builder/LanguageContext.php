@@ -23,7 +23,7 @@ class LanguageContext implements Applicable
 
     public static function create(int $languageId): self
     {
-        return new static($languageId);
+        return new self($languageId);
     }
 
     private function __construct(int $languageId)

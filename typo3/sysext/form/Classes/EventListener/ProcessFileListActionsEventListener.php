@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\EventListener;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
@@ -32,7 +33,7 @@ class ProcessFileListActionsEventListener
     #[AsEventListener('form-framework/form-definition-files')]
     public function __invoke(ProcessFileListActionsEvent $event): void
     {
-        if (!$event->isFile()) {
+        if (!$event->isFile() || !$event->getResource() instanceof AbstractFile) {
             return;
         }
         $fullIdentifier = $event->getResource()->getCombinedIdentifier();

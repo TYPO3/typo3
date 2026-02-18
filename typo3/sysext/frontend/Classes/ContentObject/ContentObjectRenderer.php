@@ -371,15 +371,8 @@ class ContentObjectRenderer
      */
     protected $userObjectType = false;
 
-    /**
-     * @var array
-     */
-    protected $stopRendering = [];
-
-    /**
-     * @var int
-     */
-    protected $stdWrapRecursionLevel = 0;
+    protected array $stopRendering = [];
+    protected int $stdWrapRecursionLevel = 0;
 
     /**
      * Request pointer, if injected. Use getRequest() instead of reading this property directly.
@@ -594,7 +587,7 @@ class ContentObjectRenderer
      * Rendering of a "numerical array" of cObjects from TypoScript
      * Will call ->cObjGetSingle() for each cObject found and accumulate the output.
      *
-     * @param array $setup array with cObjects as values.
+     * @param mixed $setup array with cObjects as values.
      * @param string $addKey A prefix for the debugging information
      * @return string Rendered output from the cObjects in the array.
      * @see cObjGetSingle()
@@ -634,7 +627,7 @@ class ContentObjectRenderer
      * Renders a content object
      *
      * @param string $name The content object name, eg. "TEXT" or "USER" or "IMAGE"
-     * @param array $conf The array with TypoScript properties for the content object
+     * @param mixed $conf The array with TypoScript properties for the content object
      * @param string $TSkey A string label used for the internal debugging tracking.
      * @return string cObject output
      * @throws \UnexpectedValueException
@@ -1042,10 +1035,8 @@ class ContentObjectRenderer
                     'data-window-url' => $url,
                     'data-window-target' => $newWindow ? md5((string)$url) : 'thePicture',
                     'data-window-features' => rtrim($paramString, ','),
+                    'target' => $target,
                 ];
-                if ($target !== '') {
-                    $attrs['target'] = $target;
-                }
 
                 $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
                 $a1 = sprintf(
@@ -1116,13 +1107,13 @@ class ContentObjectRenderer
      * the TypoScript "stdWrap properties".
      *
      * @param string $content Input value undergoing processing in this function.
-     * @param array $conf TypoScript "stdWrap properties".
+     * @param mixed $conf TypoScript "stdWrap properties". - should be enforced to be an array at some point
      * @return string|null The processed input value
      */
     public function stdWrap($content = '', $conf = [])
     {
         $content = (string)$content;
-        if (!is_array($conf) || !$conf) {
+        if (!is_array($conf) || $conf === []) {
             return $content;
         }
 
@@ -1154,7 +1145,7 @@ class ContentObjectRenderer
         // execute each function in the predefined order
         foreach ($sortedConf as $stdWrapName) {
             // eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
-            if ((!isset($isExecuted[$stdWrapName]) || !$isExecuted[$stdWrapName]) && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
+            if (!isset($isExecuted[$stdWrapName]) && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
                 $functionName = rtrim($stdWrapName, '.');
                 $functionProperties = $functionName . '.';
                 $functionType = self::STD_WRAP_ORDER[$functionName] ?? '';
@@ -1673,7 +1664,7 @@ class ContentObjectRenderer
                     // Get separator-character which precedes the string and separates search-string from the modifiers
                     $separator = $search[0];
                     $startModifiers = strrpos($search, $separator);
-                    if ($separator !== false && $startModifiers > 0) {
+                    if ($startModifiers > 0) {
                         $modifiers = substr($search, $startModifiers + 1);
                         // remove "e" (eval-modifier), which would otherwise allow to run arbitrary PHP-code
                         $modifiers = str_replace('e', '', $modifiers);
@@ -2470,7 +2461,7 @@ class ContentObjectRenderer
      * Compares values together based on the settings in the input TypoScript array and returns the comparison result.
      * Implements the "if" function in TYPO3 TypoScript
      *
-     * @param array $conf TypoScript properties defining what to compare
+     * @param mixed $conf TypoScript properties defining what to compare, ideally an array
      */
     public function checkIf($conf): bool
     {
@@ -2743,12 +2734,11 @@ class ContentObjectRenderer
      *
      * @param string $value The string value to explode by $conf[token] and process each part
      * @param array $conf TypoScript properties for "split
-     * @return string Compiled result
      * @internal
      * @see stdWrap()
      * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::processItemStates()
      */
-    public function splitObj($value, $conf)
+    public function splitObj($value, $conf): string|int
     {
         $conf['token'] = isset($conf['token.']) ? $this->stdWrap($conf['token'] ?? '', $conf['token.']) : $conf['token'] ?? '';
         if ($conf['token'] === '') {
@@ -3423,15 +3413,12 @@ class ContentObjectRenderer
      * @param array $fileArray TypoScript properties for the imgResource type
      * @see cImage()
      */
-    public function getImgResource($file, $fileArray): ?ImageResource
+    public function getImgResource($file, array $fileArray): ?ImageResource
     {
         $importedFile = null;
         $fileReference = null;
         if (empty($file) && empty($fileArray)) {
             return null;
-        }
-        if (!is_array($fileArray)) {
-            $fileArray = (array)$fileArray;
         }
         $imageResource = null;
         if ($file === 'GIFBUILDER') {
@@ -3619,8 +3606,8 @@ class ContentObjectRenderer
      * Implements the TypoScript data type "getText". This takes a string with parameters
      * and based on those a value from somewhere in the system is returned.
      *
-     * @param string $string The parameter string, eg. "field : title" or "field : navtitle // field : title"
-     *                       In the latter case and example of how the value is FIRST split by "//" is shown
+     * @param mixed $string The parameter string, eg. "field : title" or "field : navtitle // field : title"
+     *                       In the latter case and example of how the value is FIRST split by "//" is shown. Should be a string obviously
      * @param array|null $fieldArray Alternative field array; If you set this to an array this variable will be used to
      *                               look up values for the "field" key. Otherwise, the current page record is used.
      * @return mixed The value fetched
@@ -4086,16 +4073,14 @@ class ContentObjectRenderer
      * @return int The processed integer key value.
      * @internal
      */
-    public function getKey($key, $arr)
+    public function getKey($key, array $arr): int
     {
         $key = (int)$key;
-        if (is_array($arr)) {
-            if ($key < 0) {
-                $key = count($arr) + $key;
-            }
-            if ($key < 0) {
-                $key = 0;
-            }
+        if ($key < 0) {
+            $key = count($arr) + $key;
+        }
+        if ($key < 0) {
+            $key = 0;
         }
         return $key;
     }
@@ -4278,7 +4263,7 @@ class ContentObjectRenderer
                 $callable = [$classObj, $methodName];
 
                 if (is_object($classObj) && method_exists($classObj, $parts[1]) && is_callable($callable)) {
-                    if (method_exists($classObj, 'setContentObjectRenderer') && is_callable([$classObj, 'setContentObjectRenderer'])) {
+                    if (is_callable([$classObj, 'setContentObjectRenderer'])) {
                         $classObj->setContentObjectRenderer($this);
                     }
                     $content = $callable($content, $conf, $this->getRequest()->withAttribute('currentContentObject', $this));

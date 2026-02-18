@@ -21,7 +21,7 @@ class Builder
 {
     public static function create(): self
     {
-        return new static();
+        return new self();
     }
 
     /**
@@ -205,6 +205,7 @@ class Builder
     public function compilePageTypeConfiguration(TestSet $testSet): array
     {
         $pageTypeConfiguration = [];
+        /** @var PageTypeDeclaration $pageTypeDeclaration */
         foreach ($testSet->getApplicables(PageTypeDeclaration::class) as $pageTypeDeclaration) {
             $pageTypeConfiguration = array_replace_recursive(
                 $pageTypeConfiguration,

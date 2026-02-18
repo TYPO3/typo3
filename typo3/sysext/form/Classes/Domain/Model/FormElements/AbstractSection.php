@@ -42,6 +42,11 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractCompositeRenderable;
 abstract class AbstractSection extends AbstractCompositeRenderable
 {
     /**
+     * @var FormElementInterface[]
+     */
+    protected $renderables = [];
+
+    /**
      * Constructor. Needs the identifier and type of this element
      *
      * @param string $identifier The Section identifier
@@ -50,8 +55,8 @@ abstract class AbstractSection extends AbstractCompositeRenderable
      */
     public function __construct(string $identifier, string $type)
     {
-        if (!is_string($identifier) || strlen($identifier) === 0) {
-            throw new IdentifierNotValidException('The given identifier was not a string or the string was empty.', 1477082501);
+        if ($identifier === '') {
+            throw new IdentifierNotValidException('The given identifier was empty.', 1477082501);
         }
 
         $this->identifier = $identifier;

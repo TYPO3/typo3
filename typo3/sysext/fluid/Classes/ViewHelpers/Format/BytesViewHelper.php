@@ -63,8 +63,7 @@ final class BytesViewHelper extends AbstractViewHelper
         $value = $this->renderChildren();
         if (is_numeric($value)) {
             $value = (float)$value;
-        }
-        if (!is_int($value) && !is_float($value)) {
+        } else {
             $value = 0;
         }
         $bytes = max($value, 0);

@@ -37,7 +37,7 @@ class VariableValue
 
     public static function create(string $value, ?Variables $defaultVariables = null): self
     {
-        return new static($value, $defaultVariables);
+        return new self($value, $defaultVariables);
     }
 
     public static function createUrlEncodedParams(

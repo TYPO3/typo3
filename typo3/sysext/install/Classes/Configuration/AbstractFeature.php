@@ -61,7 +61,6 @@ abstract class AbstractFeature
         $isNonCustomPresetActive = false;
         $customPresetFound = false;
         foreach ($this->presetRegistry as $presetClass) {
-            /** @var PresetInterface $presetInstance */
             $presetInstance = GeneralUtility::makeInstance($presetClass);
             if (!($presetInstance instanceof PresetInterface)) {
                 throw new Exception(

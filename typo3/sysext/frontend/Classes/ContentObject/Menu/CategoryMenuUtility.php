@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
-use TYPO3\CMS\Core\Collection\AbstractRecordCollection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
 
@@ -37,7 +36,7 @@ class CategoryMenuUtility
      *
      * @param string $selectedCategories Comma-separated list of system categories primary keys
      * @param array|null $configuration TypoScript configuration for the "special." keyword
-     * @param \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject $parentObject Back-reference to the calling object
+     * @param AbstractMenuContentObject $parentObject Back-reference to the calling object
      * @return array List of selected pages
      */
     public function collectPages($selectedCategories, $configuration, $parentObject)
@@ -55,10 +54,7 @@ class CategoryMenuUtility
                 'pages',
                 $relationField
             );
-            $categoryUid = 0;
-            if ($collection instanceof AbstractRecordCollection) {
-                $categoryUid = $collection->getUid();
-            }
+            $categoryUid = $collection->getUid();
             // Loop on the results, overlay each page record found
             foreach ($collection as $pageItem) {
                 $parentObject->getSysPage()->versionOL('pages', $pageItem, true);

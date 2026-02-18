@@ -185,7 +185,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
             return false;
         }
         while ($renderable = $renderable->getParentRenderable()) {
-            if ($renderable instanceof RenderableInterface && !$renderable->isEnabled()) {
+            if (!$renderable->isEnabled()) {
                 return false;
             }
         }

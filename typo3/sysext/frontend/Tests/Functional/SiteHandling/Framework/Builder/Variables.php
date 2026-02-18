@@ -21,7 +21,7 @@ class Variables extends \ArrayObject
 {
     public static function create(array $items = []): self
     {
-        return new static($items);
+        return new self($items);
     }
 
     public function keys(): array

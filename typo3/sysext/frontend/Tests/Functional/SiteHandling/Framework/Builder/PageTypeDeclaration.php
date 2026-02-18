@@ -27,7 +27,7 @@ class PageTypeDeclaration implements Applicable, HasGenerateParameters, HasResol
 
     public static function create(string $identifier): PageTypeDeclaration
     {
-        return new static($identifier);
+        return new self($identifier);
     }
 
     private function __construct(string $identifier)

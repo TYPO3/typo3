@@ -66,9 +66,7 @@ class FilePathSanitizer
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'])) {
             $paths = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'], true);
             foreach ($paths as $path) {
-                if (is_string($path)) {
-                    $this->allowedPaths[] = $path;
-                }
+                $this->allowedPaths[] = $path;
             }
         }
     }

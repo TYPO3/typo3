@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -182,9 +181,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
 
     private function getExceptionMessage(string $detailedMessage): string
     {
-        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)
-            && $this->renderingContext->getAttribute(ServerRequestInterface::class) instanceof RequestInterface
-        ) {
+        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
             $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
             $currentContentObject = $request->getAttribute('currentContentObject');
             if ($currentContentObject instanceof ContentObjectRenderer) {

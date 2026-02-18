@@ -56,8 +56,9 @@ final class FormDataFactory
         $xpath = new \DomXPath($document);
         $nodesWithName = $xpath->query('//*[@name]');
         foreach ($nodesWithName as $node) {
+            /** @var \DOMElement $node */
             $name = $node->getAttribute('name');
-            foreach ($node->attributes ?? [] as $attribute) {
+            foreach ($node->attributes as $attribute) {
                 $data['elementData'][$name][$attribute->nodeName] = $attribute->nodeValue;
             }
             $data['elementData'][$name]['__isHoneypot'] = $this->isHoneypot($node);

@@ -32,8 +32,8 @@ class TestSet
 
     public static function create($parentSet = null): self
     {
-        if (!$parentSet instanceof static) {
-            return new static();
+        if (!$parentSet instanceof self) {
+            return new self();
         }
         return clone $parentSet;
     }

@@ -251,9 +251,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             $this->cacheManager->flushCachesInGroupByTag('pages', 'pageId_' . $pageId);
             $this->cacheManager->getCache('fluid_template')->flush();
         } catch (NoSuchCacheException|NoSuchCacheGroupException $exception) {
-            if ($this->logger !== null) {
-                $this->logger->error($exception->getMessage(), ['exception' => $exception]);
-            }
+            $this->logger->error($exception->getMessage(), ['exception' => $exception]);
         }
     }
 }

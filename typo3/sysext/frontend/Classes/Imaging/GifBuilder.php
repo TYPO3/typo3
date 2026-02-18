@@ -955,7 +955,7 @@ class GifBuilder
             if ($blurTextImg_tmp) {
                 // Cropping the border from the mask
                 $blurTextImg = imagecreatetruecolor($w, $h);
-                $this->imagecopyresized($blurTextImg, $blurTextImg_tmp, 0, 0, $blurBorder, $blurBorder, $w, $h, $w, $h);
+                $blurTextImg = $this->imagecopyresized($blurTextImg, $blurTextImg_tmp, 0, 0, $blurBorder, $blurBorder, $w, $h, $w, $h);
                 // Adjust the mask
                 $intensity = 40;
                 if ($conf['intensity'] ?? false) {
@@ -1577,7 +1577,7 @@ class GifBuilder
                             }
                             // If this image is inside of the workArea, then go on
                             if ($Ystart < $workArea[1] + $workArea[3]) {
-                                $this->imagecopyresized($im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);
+                                $im = $this->imagecopyresized($im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);
                             }
                         }
                     }
@@ -1613,7 +1613,7 @@ class GifBuilder
      * @param int $srcWidth Source width
      * @param int $srcHeight Source height
      */
-    protected function imagecopyresized(\GdImage &$dstImg, \GdImage &$srcImg, int $dstX, int $dstY, int $srcX, int $srcY, int $dstWidth, int $dstHeight, int $srcWidth, int $srcHeight): void
+    protected function imagecopyresized(\GdImage $dstImg, \GdImage &$srcImg, int $dstX, int $dstY, int $srcX, int $srcY, int $dstWidth, int $dstHeight, int $srcWidth, int $srcHeight): \GdImage
     {
         if (!$this->saveAlphaLayer) {
             // Make true color image
@@ -1622,11 +1622,10 @@ class GifBuilder
             imagecopyresized($tmpImg, $dstImg, 0, 0, 0, 0, imagesx($dstImg), imagesy($dstImg), imagesx($dstImg), imagesy($dstImg));
             // Then copy the source image onto that (the actual operation!)
             imagecopyresized($tmpImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
-            // Set the destination image
-            $dstImg = $tmpImg;
-        } else {
-            imagecopyresized($dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
+            return $tmpImg;
         }
+        imagecopyresized($dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
+        return $dstImg;
     }
 
     /**
@@ -1797,12 +1796,8 @@ class GifBuilder
                 }
             }
             // Unlink files from process
-            if ($origName) {
-                @unlink($origName);
-            }
-            if ($postName) {
-                @unlink($postName);
-            }
+            @unlink($origName);
+            @unlink($postName);
         }
         return $retCol;
     }
@@ -2598,9 +2593,8 @@ class GifBuilder
      * If it fails creating an image from the input file a blank gray image with the dimensions of the input image will be created instead.
      *
      * @param string $sourceImg Image filename
-     * @return \GdImage Image Resource pointer
      */
-    public function imageCreateFromFile(string $sourceImg): \GdImage
+    public function imageCreateFromFile(string $sourceImg): \GdImage|false
     {
         $imgInf = pathinfo($sourceImg);
         $ext = strtolower($imgInf['extension']);

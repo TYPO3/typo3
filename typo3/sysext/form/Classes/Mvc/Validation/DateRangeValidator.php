@@ -37,7 +37,7 @@ final class DateRangeValidator extends AbstractValidator
     ];
 
     /**
-     * @param \DateTime $value The value that should be validated
+     * @param mixed $value The value that should be validated
      */
     public function isValid(mixed $value): void
     {

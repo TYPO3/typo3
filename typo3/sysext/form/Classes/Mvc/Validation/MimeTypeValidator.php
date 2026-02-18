@@ -44,7 +44,7 @@ final class MimeTypeValidator extends AbstractValidator
      *
      * Note: a value of NULL or empty string ('') is considered valid
      *
-     * @param FileReference|File|PseudoFile $resource The resource that should be validated
+     * @param mixed $resource The resource that should be validated
      */
     public function isValid(mixed $resource): void
     {

@@ -234,14 +234,14 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      *
      * @var list<FinisherInterface>
      */
-    protected $finishers = [];
+    protected array $finishers = [];
 
     /**
      * Property Mapping Rules, indexed by element identifier
      *
      * @var array<string, ProcessingRule>
      */
-    protected $processingRules = [];
+    protected array $processingRules = [];
 
     /**
      * Contains all elements of the form, indexed by identifier.
@@ -249,43 +249,39 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      *
      * @var array<string, FormElementInterface>
      */
-    protected $elementsByIdentifier = [];
+    protected array $elementsByIdentifier = [];
 
     /**
      * Form element default values in the format ['elementIdentifier' => 'default value']
      *
      * @var array<string, mixed>
      */
-    protected $elementDefaultValues = [];
+    protected array $elementDefaultValues = [];
 
     /**
      * Renderer class name to be used.
-     *
-     * @var string
      */
-    protected $rendererClassName = '';
+    protected string $rendererClassName = '';
 
     /**
      * @var array<string, array<string, mixed>>
      */
-    protected $typeDefinitions;
+    protected array $typeDefinitions = [];
 
     /**
      * @var array<string, array<string, mixed>>
      */
-    protected $validatorsDefinition;
+    protected array $validatorsDefinition = [];
 
     /**
      * @var array<string, array<string, mixed>>
      */
-    protected $finishersDefinition;
+    protected array $finishersDefinition = [];
 
     /**
      * The persistence identifier of the form
-     *
-     * @var string
      */
-    protected $persistenceIdentifier;
+    protected string $persistenceIdentifier = '';
 
     /**
      * Constructor. Creates a new FormDefinition with the given identifier.
@@ -306,8 +302,8 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
         $this->validatorsDefinition = $prototypeConfiguration['validatorsDefinition'] ?? [];
         $this->finishersDefinition = $prototypeConfiguration['finishersDefinition'] ?? [];
 
-        if (!is_string($identifier) || strlen($identifier) === 0) {
-            throw new IdentifierNotValidException('The given identifier was not a string or the string was empty.', 1477082503);
+        if ($identifier === '') {
+            throw new IdentifierNotValidException('The given identifier was empty.', 1477082503);
         }
 
         $this->identifier = $identifier;
@@ -495,7 +491,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
      */
     public function createFinisher(string $finisherIdentifier, array $options = []): FinisherInterface
     {
-        if (isset($this->finishersDefinition[$finisherIdentifier]) && is_array($this->finishersDefinition[$finisherIdentifier]) && isset($this->finishersDefinition[$finisherIdentifier]['implementationClassName'])) {
+        if (isset($this->finishersDefinition[$finisherIdentifier]['implementationClassName'])) {
             $implementationClassName = $this->finishersDefinition[$finisherIdentifier]['implementationClassName'];
             $defaultOptions = $this->finishersDefinition[$finisherIdentifier]['options'] ?? [];
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);

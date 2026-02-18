@@ -40,8 +40,8 @@ class UnknownFormElement extends AbstractRenderable implements FormElementInterf
      */
     public function __construct(string $identifier, string $type)
     {
-        if (!is_string($identifier) || strlen($identifier) === 0) {
-            throw new IdentifierNotValidException('The given identifier was not a string or the string was empty.', 1382364370);
+        if ($identifier === '') {
+            throw new IdentifierNotValidException('The given identifier was empty.', 1382364370);
         }
         $this->identifier = $identifier;
         $this->type = $type;

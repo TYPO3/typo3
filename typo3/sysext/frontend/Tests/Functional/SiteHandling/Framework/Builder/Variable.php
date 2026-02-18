@@ -29,7 +29,7 @@ class Variable
 
     public static function create(string $variableName, int $cast = self::CAST_NONE): self
     {
-        return new static($variableName, $cast);
+        return new self($variableName, $cast);
     }
 
     private function __construct(string $variableName, int $cast = self::CAST_NONE)

@@ -85,11 +85,11 @@ class RecordsContentObject extends AbstractContentObject
                 $pageRepository = $this->getPageRepository();
                 foreach ($this->itemArray as $val) {
                     $row = $this->data[$val['table']][$val['id']] ?? null;
-                    if ($row === null) {
+                    if (!is_array($row)) {
                         continue;
                     }
                     // Perform overlays if necessary (records coming from category collections are already overlaid)
-                    if ($source) {
+                    if ($source !== '') {
                         // Versioning preview
                         $pageRepository->versionOL($val['table'], $row);
                         // Language overlay
@@ -98,9 +98,10 @@ class RecordsContentObject extends AbstractContentObject
                         }
                     }
                     // Might be unset during the overlay process
-                    if (is_array($row)
-                        && $this->isRecordsPageAccessible($val['table'], $row, $conf ?? [])
-                    ) {
+                    if (!is_array($row)) {
+                        continue;
+                    }
+                    if ($this->isRecordsPageAccessible($val['table'], $row, $conf)) {
                         $renderObjName = ($conf['conf.'][$val['table']] ?? false) ? $conf['conf.'][$val['table']] : '<' . $val['table'];
                         $renderObjKey = ($conf['conf.'][$val['table']] ?? false) ? 'conf.' . $val['table'] : '';
                         $renderObjConf = ($conf['conf.'][$val['table'] . '.'] ?? false) ? $conf['conf.'][$val['table'] . '.'] : [];

@@ -102,10 +102,6 @@ class SearchController extends ActionController
      */
     protected function initialize(array $searchData = []): array
     {
-        if (!is_array($searchData)) {
-            $searchData = [];
-        }
-
         // Sets availableResultsNumbers - has to be called before request settings are read to avoid DoS attack
         $this->availableResultsNumbers = array_filter(GeneralUtility::intExplode(',', (string)($this->settings['blind']['numberOfResults'] ?? '')));
 

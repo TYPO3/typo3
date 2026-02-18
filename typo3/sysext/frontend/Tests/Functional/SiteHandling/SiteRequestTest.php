@@ -484,7 +484,7 @@ final class SiteRequestTest extends AbstractTestCase
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
     {
         self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
-        $this->writeSiteConfiguration(
+        $this->writeSiteConfiguration( // @phpstan-ignore deadCode.unreachable
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],
@@ -625,7 +625,7 @@ final class SiteRequestTest extends AbstractTestCase
     {
         self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
 
-        $this->writeSiteConfiguration(
+        $this->writeSiteConfiguration( // @phpstan-ignore deadCode.unreachable
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],
@@ -769,7 +769,7 @@ final class SiteRequestTest extends AbstractTestCase
     {
         self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
 
-        $this->writeSiteConfiguration(
+        $this->writeSiteConfiguration( // @phpstan-ignore deadCode.unreachable
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],

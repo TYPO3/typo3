@@ -81,7 +81,7 @@ final class PageRendererViewHelper extends AbstractViewHelper
             }
         }
         if (is_array($addInlineSettings)) {
-            $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
+            $pageRenderer->addInlineSettingArray('', $addInlineSettings);
         }
         // Add inline language labels
         if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {

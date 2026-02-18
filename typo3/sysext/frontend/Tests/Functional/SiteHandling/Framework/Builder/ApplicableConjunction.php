@@ -26,7 +26,7 @@ class ApplicableConjunction implements Applicable
 
     public static function create(Applicable ...$applicables): self
     {
-        return new static(...$applicables);
+        return new self(...$applicables);
     }
 
     public function __construct(Applicable ...$applicables)

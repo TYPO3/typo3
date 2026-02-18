@@ -85,9 +85,6 @@ final class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelpe
                 if ($restColumnsToDivide < 1) {
                     $restColumnsToDivide = $gridSize;
                 }
-                if ($restElements < 1) {
-                    $restElements = 1;
-                }
                 $numbersOfColumnsToUse = floor($restColumnsToDivide / $restElements);
             }
 
