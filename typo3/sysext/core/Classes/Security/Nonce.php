@@ -76,7 +76,7 @@ class Nonce implements SigningSecretInterface
 
     public function getSigningSecret(): string
     {
-        return hash('sha256', $this->binary);
+        return $this->binary;
     }
 
     public function toHashSignedJwt(): string
