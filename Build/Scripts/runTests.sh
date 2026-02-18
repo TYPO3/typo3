@@ -1345,7 +1345,7 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     composerInstallMin)
-        COMMAND="composer config platform.php ${PHP_VERSION}.0; composer update --prefer-lowest --no-progress --no-interaction; composer dumpautoload"
+        COMMAND="composer config platform.php ${PHP_VERSION}.0; composer config -jm audit.ignore '{\"CVE-2025-45769\":\"disputed\"}'; composer update --prefer-lowest --no-progress --no-interaction; composer dumpautoload"
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name composer-install-min-${SUFFIX} -e COMPOSER_CACHE_DIR=.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} ${IMAGE_PHP} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
         ;;
