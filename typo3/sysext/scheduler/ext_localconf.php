@@ -92,6 +92,13 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][Ta
     ];
 }
 
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables']['sys_http_report'] ?? false)) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables']['sys_http_report'] = [
+        'dateField' => 'changed',
+        'expirePeriod' => 30,
+    ];
+}
+
 // Save any previous option array for ip anonymization task
 // to temporary variable so it can be pre-populated by other
 // extensions and LocalConfiguration/AdditionalConfiguration
