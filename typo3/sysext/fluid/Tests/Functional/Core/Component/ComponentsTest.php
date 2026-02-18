@@ -21,9 +21,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverDelegateRegistry;
 use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Fluid\View\FluidViewFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\Core\Component\ComponentListProviderInterface;
+use TYPO3Tests\ComponentsTest\Components\ClassBasedComponentCollection;
 
 final class ComponentsTest extends FunctionalTestCase
 {
@@ -132,5 +135,59 @@ final class ComponentsTest extends FunctionalTestCase
         $view = $this->get(FluidViewFactory::class)->create(new ViewFactoryData());
         $view->getRenderingContext()->getTemplatePaths()->setTemplateSource($template);
         $view->render();
+    }
+
+    public static function componentsCanBeListedDataProvider(): array
+    {
+        return [
+            'declarative components' => [
+                'TYPO3Tests\\ComponentsTest\\ComponentsAdditionalArguments',
+                [
+                    'alternativeRenderer',
+                    'extendedRenderer',
+                    'modifiedComponent',
+                    'staticVariables',
+                    'testComponent',
+                    'toBeOverwritten',
+                ],
+            ],
+            'merged declarative components' => [
+                'TYPO3Tests\\ComponentsTest\\Components',
+                [
+                    'alternativeRenderer',
+                    'extendedRenderer',
+                    'modifiedComponent',
+                    'onlyInOverwrite',
+                    'staticVariables',
+                    'testComponent',
+                    'toBeOverwritten',
+                ],
+            ],
+            'declarative components with alternative structure' => [
+                'TYPO3Tests\\ComponentsTest\\AlternativeStructure',
+                [
+                    'alternativeStructureComponent',
+                ],
+            ],
+            'class-based component collection' => [
+                ClassBasedComponentCollection::class,
+                [
+                    'classBasedComponent',
+                ],
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('componentsCanBeListedDataProvider')]
+    public function componentsCanBeListed(string $componentNamespace, array $expectedComponents): void
+    {
+        $componentCollections = $this->get(ViewHelperResolverDelegateRegistry::class)->getAll();
+        $componentCollection = $componentCollections[$componentNamespace];
+        self::assertInstanceOf(ComponentListProviderInterface::class, $componentCollection);
+        /** @var ComponentListProviderInterface $componentCollection */
+        $sorted = $componentCollection->getAvailableComponents();
+        sort($sorted);
+        self::assertSame($expectedComponents, $sorted);
     }
 }

@@ -23,9 +23,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverDelegateRegistry;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactoryInterface;
+use TYPO3Fluid\Fluid\Core\Component\ComponentDefinitionProviderInterface;
+use TYPO3Fluid\Fluid\Core\Component\ComponentListProviderInterface;
 use TYPO3Fluid\Fluid\Schema\SchemaGenerator;
 use TYPO3Fluid\Fluid\Schema\ViewHelperFinder;
+use TYPO3Fluid\Fluid\Schema\ViewHelperMetadataFactory;
 
 /**
  * Generate schema files from fluid view helpers
@@ -38,6 +42,7 @@ final class SchemaCommand extends Command
     public function __construct(
         private readonly ClassLoader $classLoader,
         private readonly ViewHelperResolverFactoryInterface $viewHelperResolverFactory,
+        private readonly ViewHelperResolverDelegateRegistry $viewHelperResolverDelegateRegistry,
     ) {
         parent::__construct();
     }
@@ -47,6 +52,22 @@ final class SchemaCommand extends Command
         $viewHelperFinder = new ViewHelperFinder();
         $allViewHelpers = $viewHelperFinder->findViewHelpersInComposerProject($this->classLoader);
         $errors = $viewHelperFinder->getLastErrors();
+
+        // Get available component definitions and merge with ViewHelpers
+        $viewHelperMetadataFactory = new ViewHelperMetadataFactory();
+        foreach ($this->viewHelperResolverDelegateRegistry->getAll() as $delegate) {
+            if (
+                $delegate instanceof ComponentListProviderInterface &&
+                $delegate instanceof ComponentDefinitionProviderInterface
+            ) {
+                foreach ($delegate->getAvailableComponents() as $componentName) {
+                    $allViewHelpers[] = $viewHelperMetadataFactory->createFromComponentDefinition(
+                        $delegate,
+                        $delegate->getComponentDefinition($componentName)
+                    );
+                }
+            }
+        }
 
         // Group ViewHelpers by xml namespace to split them into xsd files later
         $xsdFiles = $groupedByNamespace = [];
@@ -112,6 +133,7 @@ final class SchemaCommand extends Command
             $fileName = str_replace('/', '_', $fileName);
             $fileName = preg_replace('#[^0-9a-zA-Z_]#', '', $fileName);
             GeneralUtility::writeFile($temporaryPath . 'schema_' . $fileName . '.xsd', $schema->asXml(), true);
+            $output->writeln(sprintf('Generated schema file <info>%s</info>', $temporaryPath . 'schema_' . $fileName . '.xsd'), OutputInterface::VERBOSITY_DEBUG);
         }
 
         if ($errors !== []) {

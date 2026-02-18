@@ -26,6 +26,7 @@ use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\Component\ComponentAdapter;
 use TYPO3Fluid\Fluid\Core\Component\ComponentDefinition;
 use TYPO3Fluid\Fluid\Core\Component\ComponentDefinitionProviderInterface;
+use TYPO3Fluid\Fluid\Core\Component\ComponentListProviderInterface;
 use TYPO3Fluid\Fluid\Core\Component\ComponentRendererInterface;
 use TYPO3Fluid\Fluid\Core\Component\ComponentTemplateResolverInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
@@ -37,7 +38,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperResolverDelegateInterface;
  * @internal
  */
 #[Autoconfigure(autowire: false)]
-final readonly class DeclarativeComponentCollection implements ViewHelperResolverDelegateInterface, ComponentDefinitionProviderInterface, ComponentTemplateResolverInterface
+final readonly class DeclarativeComponentCollection implements ViewHelperResolverDelegateInterface, ComponentDefinitionProviderInterface, ComponentTemplateResolverInterface, ComponentListProviderInterface
 {
     private string $templateNamePattern;
 
@@ -68,6 +69,31 @@ final readonly class DeclarativeComponentCollection implements ViewHelperResolve
         $name = array_pop($fragments);
         $path = implode('/', $fragments);
         return ltrim(str_replace(['{path}', '{name}'], [$path, $name], $this->templateNamePattern), '/');
+    }
+
+    public function getAvailableComponents(): array
+    {
+        $availableTemplates = $this->getTemplatePaths()->resolveAvailableTemplateFiles(null, null, true);
+        $templateNamePattern = self::convertTemplatePatternToRegularExpression($this->templateNamePattern);
+        $availableComponents = [];
+        foreach ($availableTemplates as $templatePath) {
+            // Remove template root path
+            foreach ($this->getTemplatePaths()->getTemplateRootPaths() as $rootPath) {
+                if (str_starts_with($templatePath, $rootPath)) {
+                    $templatePath = substr($templatePath, strlen($rootPath));
+                    break;
+                }
+            }
+            // Convert template name into ViewHelper name and validate directory structure
+            // (resolveTemplateName() in reverse)
+            if (!preg_match($templateNamePattern, $templatePath, $matches)) {
+                continue;
+            }
+            $fragments = $matches['path'] ? explode('/', $matches['path']) : [];
+            $fragments[] = $matches['name'];
+            $availableComponents[] = implode('.', array_map(lcfirst(...), $fragments));
+        }
+        return array_values(array_unique($availableComponents));
     }
 
     public function getTemplatePaths(): TemplatePaths
@@ -148,5 +174,22 @@ final readonly class DeclarativeComponentCollection implements ViewHelperResolve
     public function getNamespace(): string
     {
         return $this->namespace;
+    }
+
+    private static function convertTemplatePatternToRegularExpression(string $templateNamePattern): string
+    {
+        $delimiter = '~';
+        $pathMarker = preg_quote('{path}/', $delimiter);
+        $nameMarker = preg_quote('{name}', $delimiter);
+        $templateNamePattern = preg_quote($templateNamePattern, $delimiter);
+        if (str_contains($templateNamePattern, $pathMarker)) {
+            [$beforePath, $afterPath] = explode($pathMarker, $templateNamePattern, 2);
+            $templateNamePattern = $beforePath . '(?<path>(?:.+?/)?)' . str_replace($pathMarker, '(?P=path)', $afterPath);
+        }
+        if (str_contains($templateNamePattern, $nameMarker)) {
+            [$beforeName, $afterName] = explode($nameMarker, $templateNamePattern, 2);
+            $templateNamePattern = $beforeName . '(?<name>[^/]+?)' . str_replace($nameMarker, '(?P=name)', $afterName);
+        }
+        return $delimiter . '^' . $templateNamePattern . '$' . $delimiter;
     }
 }
