@@ -13,7 +13,8 @@
 
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { lll } from '@typo3/core/lit-helper';
+import labels from '~labels/core.wizards';
+import coreLabels from '~labels/core.core';
 import '@typo3/backend/element/icon-element';
 import Modal from '@typo3/backend/modal';
 
@@ -214,15 +215,15 @@ export class TableWizardElement extends LitElement {
   private renderTypeButton(): TemplateResult {
     return html`
       <span class="btn-group">
-        <button class="btn btn-default" type="button" title="${lll('table_smallFields')}"
+        <button class="btn btn-default" type="button" title="${labels.get('table_smallFields')}"
                 @click="${() => this.toggleType()}">
           <typo3-backend-icon identifier="${this.type === 'input' ? 'actions-chevron-expand' : 'actions-chevron-contract'}" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${lll('table_setCount')}"
+        <button class="btn btn-default" type="button" title="${labels.get('table_setCount')}"
                 @click="${(evt: Event) => this.showTableConfigurationModal(evt)}">
           <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${lll('table_showCode')}"
+        <button class="btn btn-default" type="button" title="${labels.get('table_showCode')}"
                 @click="${() => this.showTableSyntax()}">
           <typo3-backend-icon identifier="actions-code" size="small"></typo3-backend-icon>
         </button>
@@ -232,12 +233,12 @@ export class TableWizardElement extends LitElement {
 
   private renderColButtons(col: number, last: number): TemplateResult {
     const leftButton = {
-      title: col === 0 ? lll('table_end') : lll('table_left'),
+      title: col === 0 ? labels.get('table_end') : labels.get('table_left'),
       class: col === 0 ? 'bar-right' : 'left',
       target: col === 0 ? last : col - 1,
     };
     const rightButton = {
-      title: col === last ? lll('table_start') : lll('table_right'),
+      title: col === last ? labels.get('table_start') : labels.get('table_right'),
       class: col === last ? 'bar-left' : 'right',
       target: col === last ? 0 : col + 1,
     };
@@ -251,11 +252,11 @@ export class TableWizardElement extends LitElement {
                 @click="${() => this.moveColumn(col, rightButton.target)}">
           <typo3-backend-icon identifier="actions-chevron-${rightButton.class}" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${lll('table_removeColumn')}"
+        <button class="btn btn-default" type="button" title="${labels.get('table_removeColumn')}"
                 @click="${(evt: Event) => this.removeColumn(evt, col)}">
           <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${lll('table_addColumn')}"
+        <button class="btn btn-default" type="button" title="${labels.get('table_addColumn')}"
                 @click="${(evt: Event) => this.appendColumn(evt, col)}">
           <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
@@ -265,12 +266,12 @@ export class TableWizardElement extends LitElement {
 
   private renderRowButtons(row: number, last: number): TemplateResult {
     const topButton = {
-      title: row === 0 ? lll('table_bottom') : lll('table_up'),
+      title: row === 0 ? labels.get('table_bottom') : labels.get('table_up'),
       class: row === 0 ? 'bar-down' : 'up',
       target: row === 0 ? last : row - 1,
     };
     const bottomButton = {
-      title: row === last ? lll('table_top') : lll('table_down'),
+      title: row === last ? labels.get('table_top') : labels.get('table_down'),
       class: row === last ? 'bar-up' : 'down',
       target: row === last ? 0 : row + 1,
     };
@@ -284,11 +285,11 @@ export class TableWizardElement extends LitElement {
                 @click="${(evt: Event) => this.moveRow(evt, row, bottomButton.target)}">
           <typo3-backend-icon identifier="actions-chevron-${bottomButton.class}" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${lll('table_removeRow')}"
+        <button class="btn btn-default" type="button" title="${labels.get('table_removeRow')}"
                 @click="${(evt: Event) => this.removeRow(evt, row)}">
           <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
         </button>
-        <button class="btn btn-default" type="button" title="${lll('table_addRow')}"
+        <button class="btn btn-default" type="button" title="${labels.get('table_addRow')}"
                 @click="${(evt: Event) => this.appendRow(evt, row)}">
           <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         </button>
@@ -305,25 +306,25 @@ export class TableWizardElement extends LitElement {
     const modal = Modal.advanced({
       content: html`
         <div class="form-group">
-          <label for="t3js-expand-rows" class="form-label">${lll('table_rowCount')}</label>
+          <label for="t3js-expand-rows" class="form-label">${labels.get('table_rowCount')}</label>
           <input id="t3js-expand-rows" class="form-control" type="number" min="1" required value="${initRowValue}">
         </div>
         <div class="form-group">
-          <label for="t3js-expand-cols" class="form-label">${lll('table_colCount')}</label>
+          <label for="t3js-expand-cols" class="form-label">${labels.get('table_colCount')}</label>
           <input id="t3js-expand-cols" class="form-control" type="number" min="1" required value="${initTableValue}">
         </div>
       `,
-      title: lll('table_setCountHeadline'),
+      title: labels.get('table_setCountHeadline'),
       size: Modal.sizes.small,
       buttons: [
         {
-          text: lll('labels.cancel') || 'Cancel',
+          text: coreLabels.get('labels.cancel'),
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: (): void => modal.hideModal(),
         },
         {
-          text: lll('table_buttonUpdate') || 'Update',
+          text: labels.get('table_buttonUpdate'),
           active: true,
           btnClass: 'btn-primary',
           name: 'apply',
@@ -355,21 +356,21 @@ export class TableWizardElement extends LitElement {
     const modal = Modal.advanced({
       content: html`
         <div class="form-group">
-          <label for="table-wizard-textarea-raw" class="form-label">${lll('table_showCodeLabel')}</label>
+          <label for="table-wizard-textarea-raw" class="form-label">${labels.get('table_showCodeLabel')}</label>
           <textarea id="table-wizard-textarea-raw" rows="8" class="form-control">${textarea.value}</textarea>
         </div>
       `,
-      title: lll('table_showCodeHeadline'),
+      title: labels.get('table_showCodeHeadline'),
       size: Modal.sizes.small,
       buttons: [
         {
-          text: lll('labels.cancel') || 'Cancel',
+          text: coreLabels.get('labels.cancel'),
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: (): void => modal.hideModal(),
         },
         {
-          text: lll('table_buttonUpdate') || 'Update',
+          text: labels.get('table_buttonUpdate'),
           active: true,
           btnClass: 'btn-primary',
           name: 'apply',

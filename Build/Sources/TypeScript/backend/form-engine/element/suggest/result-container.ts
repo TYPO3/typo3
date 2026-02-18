@@ -13,9 +13,9 @@
 
 import { customElement, property } from 'lit/decorators.js';
 import { css, html, LitElement, type TemplateResult } from 'lit';
-import { lll } from '@typo3/core/lit-helper';
 import './result-item';
 import type { ResultItemInterface } from './result-item';
+import labels from '~labels/backend.alt_doc';
 
 @customElement('typo3-backend-formengine-suggest-result-container')
 export class ResultContainer extends LitElement {
@@ -42,7 +42,7 @@ export class ResultContainer extends LitElement {
     let content;
     if (this.results !== null) {
       if (this.results.length === 0) {
-        content = html`<div class="alert alert-info">${lll('search.no_records_found')}</div>`;
+        content = html`<div class="alert alert-info">${labels.get('search.no_records_found')}</div>`;
       } else {
         content = html`${this.results.map((result: ResultItemInterface) => this.renderResultItem(result))}`;
       }

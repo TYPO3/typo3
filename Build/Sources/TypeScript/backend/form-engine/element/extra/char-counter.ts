@@ -13,7 +13,7 @@
 
 import { customElement, property, state } from 'lit/decorators.js';
 import { html, LitElement, type TemplateResult } from 'lit';
-import { lll } from '@typo3/core/lit-helper';
+import labels from '~labels/core.core';
 
 @customElement('typo3-backend-formengine-char-counter')
 export class CharCounter extends LitElement {
@@ -50,7 +50,7 @@ export class CharCounter extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <span class="form-hint form-hint--${this.determineCounterClass()}">
-        ${lll(('FormEngine.remainingCharacters')).replace('{0}', this.remainingCharacters.toString(10))}
+        ${labels.get('labels.remainingCharacters').replace('{0}', this.remainingCharacters.toString(10))}
       </span>
     `;
   }

@@ -83,8 +83,8 @@ class FlexFormContainerContainer {
 
   private registerDelete(): void {
     new RegularEvent('click', (): void => {
-      const title = TYPO3.lang['flexform.section.delete.title'] || 'Delete this container?';
-      const content = TYPO3.lang['flexform.section.delete.message'] || 'Are you sure you want to delete this container?';
+      const title = backendAltDocLabels.get('flexform.section.delete.title');
+      const content = backendAltDocLabels.get('flexform.section.delete.message');
       const modal = Modal.confirm(title, content, Severity.warning, [
         {
           text: backendAltDocLabels.get('buttons.confirm.delete_record.no'),
