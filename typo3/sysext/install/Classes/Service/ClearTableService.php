@@ -90,6 +90,10 @@ final readonly class ClearTableService
                 'description' => 'Record locking of backend user editing',
             ],
             [
+                'name' => 'sys_http_report',
+                'description' => 'Requests with Content-Security-Policy Reports',
+            ],
+            [
                 'name' => 'sys_log',
                 'description' => 'General log table',
             ],

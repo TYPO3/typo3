@@ -83,6 +83,10 @@ ExtensionManagementUtility::addRecordType(
                     'dateField' => 'tstamp',
                     'expirePeriod' => 180,
                 ],
+                'sys_http_report' => [
+                    'dateField' => 'changed',
+                    'expirePeriod' => 30,
+                ],
                 'sys_history' => [
                     'dateField' => 'tstamp',
                     'expirePeriod' => 30,
