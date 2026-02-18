@@ -43,11 +43,6 @@ class PageProvider extends RecordProvider
             'iconIdentifier' => 'actions-view-page',
             'callbackAction' => 'viewRecord',
         ],
-        'qrcode' => [
-            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode',
-            'iconIdentifier' => 'actions-qrcode',
-            'callbackAction' => 'showQrCode',
-        ],
         'edit' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit',
             'iconIdentifier' => 'actions-page-open',
@@ -62,6 +57,11 @@ class PageProvider extends RecordProvider
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
             'callbackAction' => 'openInfoPopUp',
+        ],
+        'qrcode' => [
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:showPageQrCode',
+            'iconIdentifier' => 'actions-qrcode',
+            'callbackAction' => 'showQrCode',
         ],
         'divider1' => [
             'type' => 'divider',
