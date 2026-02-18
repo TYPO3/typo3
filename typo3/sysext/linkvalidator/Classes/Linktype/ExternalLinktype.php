@@ -381,7 +381,7 @@ class ExternalLinktype extends AbstractLinktype
                     $parts['host'] = $newDomain;
                     $url = HttpUtility::buildUrl($parts);
                 }
-            } catch (\Exception | \Throwable $e) {
+            } catch (\Throwable) {
                 // ignore error and proceed with link checking
             }
         }

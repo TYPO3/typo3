@@ -29,17 +29,13 @@ class IpLocker
     /**
      * If set to 4, the session will be locked to the user's IP address (all four numbers).
      * Reducing this to 1-3 means that only the given number of parts of the IP address is used.
-     *
-     * @var int
      */
-    protected $lockIPv4PartCount = 4;
+    protected int $lockIPv4PartCount = 4;
 
     /**
      * Same setting as lockIP but for IPv6 addresses.
-     *
-     * @var int
      */
-    protected $lockIPv6PartCount = 8;
+    protected int $lockIPv6PartCount = 8;
 
     public function __construct(int $lockIPv4PartCount, int $lockIPv6PartCount)
     {

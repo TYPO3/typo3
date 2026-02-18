@@ -154,7 +154,7 @@ class SingleFieldContainer extends AbstractContainer
             'foreign_selector' => '',
             'foreign_field' => '',
         ];
-        if (count($this->data['inlineStructure']['stable'] ?? []) > 0) {
+        if (!empty($this->data['inlineStructure']['stable'] ?? [])) {
             $searchArray = [
                 '%OR' => [
                     'config' => [
@@ -226,11 +226,11 @@ class SingleFieldContainer extends AbstractContainer
      * @param string $type Use '%AND' or '%OR' for comparison
      * @return bool The result of the comparison
      */
-    protected function arrayCompareComplex($subjectArray, $searchArray, $type = ''): bool
+    protected function arrayCompareComplex(array $subjectArray, array $searchArray, string $type = ''): bool
     {
         $localMatches = 0;
         $localEntries = 0;
-        if (is_array($searchArray) && !empty($searchArray)) {
+        if ($searchArray !== []) {
             // If no type was passed, try to determine
             if (!$type) {
                 reset($searchArray);

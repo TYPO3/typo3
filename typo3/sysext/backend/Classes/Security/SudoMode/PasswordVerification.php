@@ -102,8 +102,6 @@ class PasswordVerification
     /**
      * Initializes authentication services to be used in a foreach loop
      *
-     * @param array $loginData
-     * @param array $authInfo
      * @return \Generator<int, object>
      */
     protected function getAuthServices(BackendUserAuthentication $backendUser, array $loginData, array $authInfo): \Generator
@@ -111,11 +109,10 @@ class PasswordVerification
         $serviceChain = [];
         $subType = 'authUserBE';
         while ($service = GeneralUtility::makeInstanceService('auth', $subType, $serviceChain)) {
-            /** @var AuthenticationService $service */
-            $serviceChain[] = $service->getServiceKey();
-            if (!is_object($service)) {
+            if (!$service instanceof AuthenticationService) {
                 continue;
             }
+            $serviceChain[] = $service->getServiceKey();
             $service->initAuth($subType, $loginData, $authInfo, $backendUser);
             yield $service;
         }

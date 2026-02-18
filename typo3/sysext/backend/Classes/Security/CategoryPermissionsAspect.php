@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
+use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,6 +56,7 @@ final class CategoryPermissionsAspect
             return;
         }
 
+        /** @var DatabaseTreeDataProvider $dataProvider */
         $dataProvider = $event->getProvider();
         $treeData = $event->getTreeData();
 
@@ -65,7 +67,7 @@ final class CategoryPermissionsAspect
             // Backup child nodes to be processed.
             $treeNodeCollection = $treeData->getChildNodes();
 
-            if (!empty($categoryMountPoints) && !empty($treeNodeCollection)) {
+            if (!empty($categoryMountPoints) && $treeData->hasChildNodes()) {
                 $shallRepopulateTree = false;
 
                 // Check the rootline against categoryMountPoints when tree was filtered
@@ -105,10 +107,8 @@ final class CategoryPermissionsAspect
 
     /**
      * Recursively look up for a category mount point within a tree.
-     *
-     * @return TreeNode|null
      */
-    private function lookUpCategoryMountPointInTreeNodes(int $categoryMountPoint, TreeNodeCollection $treeNodeCollection)
+    private function lookUpCategoryMountPointInTreeNodes(int $categoryMountPoint, TreeNodeCollection $treeNodeCollection): ?TreeNode
     {
         $result = null;
 
@@ -121,7 +121,6 @@ final class CategoryPermissionsAspect
             }
 
             if ($treeNode->hasChildNodes()) {
-                /** @var TreeNode $node */
                 $node = $this->lookUpCategoryMountPointInTreeNodes($categoryMountPoint, $treeNode->getChildNodes());
                 if ($node !== null) {
                     $result = $node;
@@ -134,10 +133,8 @@ final class CategoryPermissionsAspect
 
     /**
      * Find parent uids in rootline
-     *
-     * @return array
      */
-    private function findUidsInRootline(int $uid)
+    private function findUidsInRootline(int $uid): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->categoryTableName);

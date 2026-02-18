@@ -1884,10 +1884,10 @@ class QuerySearchController
                         $this->tableArray[$from_table] = $statement->fetchAllAssociative();
                     }
 
-                    foreach (($this->tableArray[$from_table] ?? []) as $val) {
+                    foreach ($this->tableArray[$from_table] ?? [] as $val) {
                         $outArray[$tablePrefix . $val['uid']] = $this->evaluateRelationDisplayWithLabels($useSelectLabels, $useAltSelectLabels, $labelCapability, $altLabelFieldName, $val, $labelFieldSelect, $altLabelFieldSelect, $labelFieldName);
                     }
-                    if (isset($this->MOD_SETTINGS['options_sortlabel']) && $this->MOD_SETTINGS['options_sortlabel'] && is_array($outArray)) {
+                    if (isset($this->MOD_SETTINGS['options_sortlabel']) && $this->MOD_SETTINGS['options_sortlabel'] && $outArray !== []) {
                         natcasesort($outArray);
                     }
                 }

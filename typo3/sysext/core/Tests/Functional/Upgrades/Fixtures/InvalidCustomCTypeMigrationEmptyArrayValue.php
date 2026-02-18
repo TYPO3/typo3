@@ -29,7 +29,6 @@ final class InvalidCustomCTypeMigrationEmptyArrayValue extends AbstractListTypeT
 {
     protected function getListTypeToCTypeMapping(): array
     {
-        // @phpstan-ignore-next-line We are explicitly testing a phpdoc type-hint mismatch here.
         return [
             'something' => '',
             'something_else' => [],

@@ -159,8 +159,6 @@ class DebugBackendRoutesCommand extends Command
             $methodString = empty($methods) ? 'ANY' : implode('|', $methods);
 
             // Get options - works for both route types
-            // phpDoc inference is too narrow as Symfony routes are possible. Ignored in the scope of this debug output:
-            // @phpstan-ignore function.alreadyNarrowedType
             $options = method_exists($route, 'getOptions') ? $route->getOptions() : [];
             $target = $options['target'] ?? $options['_controller'] ?? '-';
 

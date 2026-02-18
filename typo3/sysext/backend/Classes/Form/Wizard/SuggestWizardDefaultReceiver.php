@@ -208,13 +208,10 @@ class SuggestWizardDefaultReceiver
                 $this->queryBuilder->andWhere($expressionBuilder->and($constraint));
             }
         }
-        if (!empty($this->allowedPages)) {
-            $pidList = array_map(intval(...), $this->allowedPages);
-            if (!empty($pidList)) {
-                $this->queryBuilder->andWhere(
-                    $expressionBuilder->in('pid', $pidList)
-                );
-            }
+        if ($this->allowedPages !== []) {
+            $this->queryBuilder->andWhere(
+                $expressionBuilder->in('pid', array_map(intval(...), $this->allowedPages))
+            );
         }
         // append an additional search condition comment
         if (isset($this->config['searchCondition']) && $this->config['searchCondition'] !== '') {

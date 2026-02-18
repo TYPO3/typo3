@@ -152,8 +152,6 @@ class UserSessionManager implements LoggerAwareInterface
      * @param UserSession $session The user session to fixate
      * @param bool $isPermanent If `true`, the session will get the `ses_permanent` flag
      * @return UserSession a new session object with an updated `ses_tstamp` (allowing to keep the session alive)
-     *
-     * @throws Backend\Exception\SessionNotCreatedException
      */
     public function fixateAnonymousSession(UserSession $session, bool $isPermanent = false): UserSession
     {
@@ -210,9 +208,6 @@ class UserSessionManager implements LoggerAwareInterface
      * @param string $sessionId The session id
      * @param array $existingSessionRecord If given, this session record will be used instead of fetching again
      * @param bool $anonymous If true session will be regenerated as anonymous session
-     *
-     * @throws Backend\Exception\SessionNotCreatedException
-     * @throws SessionNotFoundException
      */
     public function regenerateSession(
         string $sessionId,
@@ -238,7 +233,6 @@ class UserSessionManager implements LoggerAwareInterface
      * greater than "last updated + a specified grace-time").
      *
      * @return UserSession a modified user session with a last updated value if needed
-     * @throws Backend\Exception\SessionNotUpdatedException
      */
     public function updateSessionTimestamp(UserSession $session): UserSession
     {
@@ -299,8 +293,6 @@ class UserSessionManager implements LoggerAwareInterface
     /**
      * Tries to fetch a user session form the session backend.
      * If none is given, an anonymous session will be created.
-     *
-     * @return UserSession|null The created user session object or null
      */
     protected function getSessionFromSessionId(string $id): ?UserSession
     {
@@ -320,7 +312,7 @@ class UserSessionManager implements LoggerAwareInterface
             )) {
                 return UserSession::createFromRecord($id, $sessionRecord);
             }
-        } catch (SessionNotFoundException $e) {
+        } catch (SessionNotFoundException) {
             return null;
         }
 
@@ -334,12 +326,6 @@ class UserSessionManager implements LoggerAwareInterface
      *
      * Ideally, this factory encapsulates all `TYPO3_CONF_VARS` options, so
      * the actual object does not need to consider any global state.
-     *
-     * @param string $loginType
-     * @param int|null $sessionLifetime
-     * @param SessionManager|null $sessionManager
-     * @param IpLocker|null $ipLocker
-     * @return static
      */
     public static function create(string $loginType, ?int $sessionLifetime = null, ?SessionManager $sessionManager = null, ?IpLocker $ipLocker = null): self
     {
@@ -371,9 +357,6 @@ class UserSessionManager implements LoggerAwareInterface
     /**
      * Recreates a `UserSession` object from the existing session data - keeping `new` state.
      * This method shall be used to reflect updated low-level session data in corresponding `UserSession` object.
-     *
-     * @param array|null $sessionRecord
-     * @throws SessionNotFoundException
      */
     protected function recreateUserSession(UserSession $session, ?array $sessionRecord = null): UserSession
     {

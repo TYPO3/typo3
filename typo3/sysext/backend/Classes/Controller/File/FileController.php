@@ -106,7 +106,6 @@ class FileController
 
         // go and edit the new created file
         if ($request->getParsedBody()['edit'] ?? '') {
-            /** @var File $file */
             $file = $this->fileData['newfile'][0];
             if ($file !== null) {
                 $this->redirect = $this->getFileEditRedirect($file) ?? $this->redirect;

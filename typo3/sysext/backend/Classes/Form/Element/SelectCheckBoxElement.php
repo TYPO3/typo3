@@ -187,7 +187,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                 $html[] =   '</div>';
                 $html[] = '</div>';
             }
-            if (!empty($group['items']) && is_array($group['items'])) {
+            if (is_array($group['items'] ?? null)) {
                 $tableRows = [];
 
                 // Render rows

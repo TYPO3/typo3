@@ -75,10 +75,8 @@ class Router
     /**
      * Fetch all registered routes, only use in UriBuilder. Does not care about aliases,
      * so be careful with using this method.
-     *
-     * @return Route[]
      */
-    public function getRoutes(): iterable
+    public function getRoutes(): \Iterator
     {
         return $this->routeCollection->getIterator();
     }

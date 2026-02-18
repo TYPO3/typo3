@@ -98,14 +98,12 @@ abstract class AbstractContentPagePositionMap
                 )
                 ->orderBy('sorting');
 
-            if ((string)$this->cur_sys_language !== '') {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq(
-                        'sys_language_uid',
-                        $queryBuilder->createNamedParameter($this->cur_sys_language, Connection::PARAM_INT)
-                    )
-                );
-            }
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($this->cur_sys_language, Connection::PARAM_INT)
+                )
+            );
 
             $res = $queryBuilder->executeQuery();
             $lines[$colPos] = [

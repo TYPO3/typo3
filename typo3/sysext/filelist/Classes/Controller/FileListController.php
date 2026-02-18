@@ -160,7 +160,7 @@ class FileListController implements LoggerAwareInterface
             }
         } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException $permissionException) {
             $this->folderObject = null;
-            if ($storage !== null && $storage->getDriverType() === 'Local' && !$storage->isOnline()) {
+            if ($storage->getDriverType() === 'Local' && !$storage->isOnline()) {
                 // If the base folder for a local storage does not exists, the storage is marked as offline and the
                 // access permission exception is thrown. In this case we however want to display another error message.
                 // @see https://forge.typo3.org/issues/85323
@@ -670,10 +670,10 @@ class FileListController implements LoggerAwareInterface
             $this->view->addButtonToButtonBar($newButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
 
-        // Add paste button if clipboard is initialized
-        if ($this->filelist->clipObj instanceof Clipboard && $this->folderObject->checkActionPermission('write')) {
+        // Add paste button
+        if ($this->folderObject->checkActionPermission('write')) {
             $elFromTable = $this->filelist->clipObj->elFromTable('_FILE');
-            if (!empty($elFromTable)) {
+            if ($elFromTable !== []) {
                 $addPasteButton = true;
                 foreach ($elFromTable as $element) {
                     $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);

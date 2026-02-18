@@ -51,7 +51,6 @@ class ReactionResolver implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // 1. We only listen to the "reaction" endpoint
-        /** @var RouteResult $routeResult */
         $routeResult = $request->getAttribute('routing');
         if (!($routeResult instanceof RouteResult) || $routeResult->getRouteName() !== 'reaction') {
             return $handler->handle($request);

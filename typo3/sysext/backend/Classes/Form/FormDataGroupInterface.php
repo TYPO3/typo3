@@ -25,7 +25,7 @@ interface FormDataGroupInterface
      * Compile form data
      *
      * @param array $result Initialized result array
-     * @return array Result filled with data
+     * @return mixed Result filled with data @todo: should become a hard array return type in v15.0.
      */
     public function compile(array $result);
 }

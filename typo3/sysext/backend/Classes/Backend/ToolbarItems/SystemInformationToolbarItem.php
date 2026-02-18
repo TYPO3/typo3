@@ -70,13 +70,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
      * @param string $module The associated module
      * @param string $params Query string with additional parameters
      */
-    public function addSystemMessage($text, $status = InformationStatus::OK, $count = 0, $module = '', $params = ''): void
+    public function addSystemMessage($text, InformationStatus $status = InformationStatus::OK, $count = 0, $module = '', $params = ''): void
     {
         $this->systemMessageTotalCount += $count;
-
-        if (!$status instanceof InformationStatus) {
-            $status = InformationStatus::OK;
-        }
 
         // define the severity for the badge
         if ($status->isGreaterThan($this->highestSeverity)) {
@@ -101,12 +97,8 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
      * @param string $iconIdentifier The icon identifier
      * @param InformationStatus $status The status of this system information
      */
-    public function addSystemInformation($title, $value, $iconIdentifier, $status = InformationStatus::NOTICE): void
+    public function addSystemInformation($title, $value, $iconIdentifier, InformationStatus $status = InformationStatus::NOTICE): void
     {
-        if (!$status instanceof InformationStatus) {
-            $status = InformationStatus::OK;
-        }
-
         $this->systemInformation[] = [
             'title' => $title,
             'value' => $value,

@@ -367,12 +367,11 @@ class BackendUtility
             while ($uid != 0 && $loopCheck) {
                 $loopCheck--;
                 $row = self::getPageForRootline($uid, $clause, $workspaceOL, $additionalFields, $useDeleteClause);
-                if (is_array($row)) {
-                    $uid = $row['pid'];
-                    $theRowArray[] = $row;
-                } else {
+                if ($row === false) {
                     break;
                 }
+                $uid = (int)$row['pid'];
+                $theRowArray[] = $row;
             }
             $fields = [
                 'uid',
@@ -426,10 +425,10 @@ class BackendUtility
      * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
      * @param string[] $additionalFields AdditionalFields to fetch from the root line
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
-     * @return array Cached page record for the rootline
+     * @return array|false Cached page record for the rootline or false if nothing was found
      * @see BEgetRootLine
      */
-    protected static function getPageForRootline($uid, $clause, $workspaceOL, array $additionalFields = [], bool $useDeleteClause = true)
+    protected static function getPageForRootline($uid, $clause, $workspaceOL, array $additionalFields = [], bool $useDeleteClause = true): array|false
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $pageForRootlineCache = $runtimeCache->get('backendUtilityPageForRootLine') ?: [];
@@ -438,7 +437,7 @@ class BackendUtility
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
         } else {
-            /** @var Statement $statement */
+            /** @var Statement|false $statement */
             $statement = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
             if (!$statement) {
                 $queryBuilder = self::getQueryBuilderForTable('pages');
@@ -614,22 +613,20 @@ class BackendUtility
      */
     public static function readPageAccess($id, $perms_clause): array|false
     {
-        if ((string)$id !== '') {
-            $id = (int)$id;
-            if (!$id) {
-                if (static::getBackendUserAuthentication()->isAdmin()) {
-                    return ['_thePath' => '/'];
-                }
-            } else {
-                $pageinfo = self::getRecord('pages', $id, '*', $perms_clause);
-                if (($pageinfo['uid'] ?? false) && static::getBackendUserAuthentication()->isInWebMount($pageinfo, $perms_clause)) {
-                    self::workspaceOL('pages', $pageinfo);
-                    if (is_array($pageinfo)) {
-                        $recordPathResultArray = self::getRecordPath((int)$pageinfo['uid'], $perms_clause, 15, 1000);
-                        $pageinfo['_thePath'] = $recordPathResultArray[0];
-                        $pageinfo['_thePathFull'] = $recordPathResultArray[1];
-                        return $pageinfo;
-                    }
+        $id = (int)$id;
+        if (!$id) {
+            if (static::getBackendUserAuthentication()->isAdmin()) {
+                return ['_thePath' => '/'];
+            }
+        } else {
+            $pageinfo = self::getRecord('pages', $id, '*', $perms_clause);
+            if (($pageinfo['uid'] ?? false) && static::getBackendUserAuthentication()->isInWebMount($pageinfo, $perms_clause)) {
+                self::workspaceOL('pages', $pageinfo);
+                if (is_array($pageinfo)) {
+                    $recordPathResultArray = self::getRecordPath((int)$pageinfo['uid'], $perms_clause, 15, 1000);
+                    $pageinfo['_thePath'] = $recordPathResultArray[0];
+                    $pageinfo['_thePathFull'] = $recordPathResultArray[1];
+                    return $pageinfo;
                 }
             }
         }
@@ -2190,7 +2187,7 @@ class BackendUtility
      * If a key from MOD_MENU is set in the CHANGED_SETTINGS array (eg. a value is passed to the script from the outside), this value is put into the settings-array
      *
      * @param array $MOD_MENU MOD_MENU is an array that defines the options in menus.
-     * @param array $CHANGED_SETTINGS CHANGED_SETTINGS represents the array used when passing values to the script from the menus.
+     * @param mixed $CHANGED_SETTINGS CHANGED_SETTINGS represents the array used when passing values to the script from the menus.
      * @param string $modName modName is the name of this module. Used to get the correct module data.
      * @param string $type If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
      * @param string $dontValidateList dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
@@ -2199,14 +2196,14 @@ class BackendUtility
      * @return array The array $settings, which holds a key for each MOD_MENU key and the values of each key will be within the range of values for each menuitem
      */
     public static function getModuleData(
-        $MOD_MENU,
+        array $MOD_MENU,
         $CHANGED_SETTINGS,
-        $modName,
+        string $modName,
         $type = '',
         $dontValidateList = '',
         $setDefaultList = ''
     ) {
-        if ($modName && is_string($modName)) {
+        if ($modName !== '') {
             // Getting stored user-data from this module:
             $beUser = static::getBackendUserAuthentication();
             $settings = $beUser->getModuleData($modName, $type);
@@ -2219,40 +2216,36 @@ class BackendUtility
                     'constant_editor_cat' => null,
                 ];
             }
-            if (is_array($MOD_MENU)) {
-                foreach ($MOD_MENU as $key => $var) {
-                    // If a global var is set before entering here. eg if submitted, then it's substituting the current value the array.
-                    if (is_array($CHANGED_SETTINGS) && isset($CHANGED_SETTINGS[$key])) {
-                        if (is_array($CHANGED_SETTINGS[$key])) {
-                            $serializedSettings = serialize($CHANGED_SETTINGS[$key]);
-                            if ((string)$settings[$key] !== $serializedSettings) {
-                                $settings[$key] = $serializedSettings;
-                                $changed = 1;
-                            }
-                        } else {
-                            if ((string)($settings[$key] ?? '') !== (string)($CHANGED_SETTINGS[$key] ?? '')) {
-                                $settings[$key] = $CHANGED_SETTINGS[$key];
-                                $changed = 1;
-                            }
+            foreach ($MOD_MENU as $key => $var) {
+                // If a global var is set before entering here. eg if submitted, then it's substituting the current value the array.
+                if (is_array($CHANGED_SETTINGS) && isset($CHANGED_SETTINGS[$key])) {
+                    if (is_array($CHANGED_SETTINGS[$key])) {
+                        $serializedSettings = serialize($CHANGED_SETTINGS[$key]);
+                        if ((string)$settings[$key] !== $serializedSettings) {
+                            $settings[$key] = $serializedSettings;
+                            $changed = 1;
                         }
-                    }
-                    // If the $var is an array, which denotes the existence of a menu, we check if the value is permitted
-                    if (is_array($var) && (!$dontValidateList || !GeneralUtility::inList($dontValidateList, $key))) {
-                        // If the setting is an array or not present in the menu-array, MOD_MENU, then the default value is inserted.
-                        if (is_array($settings[$key] ?? null) || !isset($MOD_MENU[$key][$settings[$key] ?? null])) {
-                            $settings[$key] = (string)key($var);
+                    } else {
+                        if ((string)($settings[$key] ?? '') !== (string)($CHANGED_SETTINGS[$key] ?? '')) {
+                            $settings[$key] = $CHANGED_SETTINGS[$key];
                             $changed = 1;
                         }
                     }
-                    // Sets default values (only strings/checkboxes, not menus)
-                    if ($setDefaultList && !is_array($var)) {
-                        if (GeneralUtility::inList($setDefaultList, $key) && !isset($settings[$key])) {
-                            $settings[$key] = (string)$var;
-                        }
+                }
+                // If the $var is an array, which denotes the existence of a menu, we check if the value is permitted
+                if (is_array($var) && (!$dontValidateList || !GeneralUtility::inList($dontValidateList, $key))) {
+                    // If the setting is an array or not present in the menu-array, MOD_MENU, then the default value is inserted.
+                    if (is_array($settings[$key] ?? null) || !isset($MOD_MENU[$key][$settings[$key] ?? null])) {
+                        $settings[$key] = (string)key($var);
+                        $changed = 1;
                     }
                 }
-            } else {
-                throw new \RuntimeException('No menu', 1568119229);
+                // Sets default values (only strings/checkboxes, not menus)
+                if ($setDefaultList && !is_array($var)) {
+                    if (GeneralUtility::inList($setDefaultList, $key) && !isset($settings[$key])) {
+                        $settings[$key] = (string)$var;
+                    }
+                }
             }
             if ($changed) {
                 $beUser->pushModuleData($modName, $settings);
@@ -2729,8 +2722,8 @@ class BackendUtility
 
         $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
 
-        // Add rows to output array:
-        if (is_array($rows)) {
+        // Add rows to output array
+        if ($rows !== []) {
             $outputRows = array_merge($outputRows, $rows);
         }
         return $outputRows;

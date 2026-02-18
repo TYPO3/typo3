@@ -87,7 +87,7 @@ class FlexFormElementContainer extends AbstractContainer
                     $fakeParameterArray['fieldConf']['description'] = $flexFormFieldArray['description'];
                 }
 
-                if (isset($fakeParameterArray['fieldConf']['onChange']) && $fakeParameterArray['fieldConf']['onChange'] === 'reload') {
+                if ($fakeParameterArray['fieldConf']['onChange'] === 'reload') {
                     $confirmation = $this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE);
                     $fakeParameterArray['fieldChangeFunc']['alert'] = new ReloadOnFieldChange($confirmation);
                 }

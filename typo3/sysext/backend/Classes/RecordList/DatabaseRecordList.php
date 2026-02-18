@@ -1373,14 +1373,11 @@ class DatabaseRecordList
      * @internal
      * @see getTable()
      */
-    public function renderListHeader($table, $currentIdList)
+    public function renderListHeader(string $table, array $currentIdList): string
     {
         $lang = $this->getLanguageService();
-        $currentIdList = is_array($currentIdList) ? $currentIdList : [];
 
-        // Init:
         $theData = [];
-        // Traverse the fields:
         foreach ($this->fieldArray as $field) {
             switch ((string)$field) {
                 case '_SELECTOR_':

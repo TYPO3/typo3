@@ -238,7 +238,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
     /**
      * @param array $values Array of values to include into the parameters or which might influence the parameters
-     * @return string[] Array of parameters which have to be added to URLs
+     * @return array Array of parameters which have to be added to URLs
      */
     public function getUrlParameters(array $values): array
     {

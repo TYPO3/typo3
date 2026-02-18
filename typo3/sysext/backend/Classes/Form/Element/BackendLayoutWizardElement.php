@@ -211,7 +211,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
                         $cells[] = $cellData;
                     }
                     $rows[] = $cells;
-                    if (!empty($spannedMatrix[$i]) && is_array($spannedMatrix[$i])) {
+                    if (is_array($spannedMatrix[$i]) && $spannedMatrix[$i] !== []) {
                         ksort($spannedMatrix[$i]);
                     }
                 }

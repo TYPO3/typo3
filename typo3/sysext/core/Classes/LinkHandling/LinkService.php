@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\LinkHandling\Event\AfterLinkResolvedByStringRepresentationEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownUrnException;
-use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -85,8 +84,6 @@ class LinkService implements SingletonInterface
      * Does NOT check if the page exists or the file exists.
      *
      * @param string $linkParameter could be "fileadmin/myfile.jpg", "info@typo3.org", "13" or "http://www.typo3.org"
-     * @throws UnknownLinkHandlerException
-     * @throws InvalidPathException
      */
     public function resolve(string $linkParameter): array
     {

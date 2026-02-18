@@ -40,7 +40,7 @@ class UnorderedListTreeRenderer extends AbstractTreeRenderer
     public function renderNode(TreeRepresentationNode $node, $recursive = true)
     {
         $code = '<li><span class="' . htmlspecialchars($node->getIcon()) . '">&nbsp;</span>' . htmlspecialchars($node->getLabel());
-        if ($recursive && $node->getChildNodes() !== null) {
+        if ($recursive && $node->hasChildNodes()) {
             $this->recursionLevel++;
             $code .= $this->renderNodeCollection($node->getChildNodes());
             $this->recursionLevel--;
@@ -59,7 +59,10 @@ class UnorderedListTreeRenderer extends AbstractTreeRenderer
     {
         $this->recursionLevel = 0;
         $code = '<ul class="level' . $this->recursionLevel . '" style="margin-left:10px">';
-        $code .= $this->renderNode($tree->getRoot(), $recursive);
+        // @todo: this doc block is a hack, as it needs to be a TreeReprsentationNode
+        /** @var TreeRepresentationNode $rootNode */
+        $rootNode = $tree->getRoot();
+        $code .= $this->renderNode($rootNode, $recursive);
         $code .= '</ul>';
         return $code;
     }

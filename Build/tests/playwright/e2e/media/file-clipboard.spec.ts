@@ -47,7 +47,7 @@ test.describe('Media Clipboard', () => {
       const folder = await backend.fileTree.open('fileadmin', 'styleguide');
       await folder.click();
       await backend.fileTree.isReady();
-      await expect(backend.contentFrame.getByText(fileName)).toBeVisible();
+      await expect(backend.contentFrame.getByRole('row', { name: fileName })).toBeVisible();
     });
 
     await test.step('Add file to clipboard via Cut action', async () => {

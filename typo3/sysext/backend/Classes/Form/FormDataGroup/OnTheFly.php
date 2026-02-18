@@ -39,7 +39,6 @@ class OnTheFly implements FormDataGroupInterface
             );
         }
         foreach ($this->providerList as $providerClassName) {
-            /** @var FormDataProviderInterface $provider */
             $provider = GeneralUtility::makeInstance($providerClassName);
             if (!$provider instanceof FormDataProviderInterface) {
                 throw new \UnexpectedValueException(

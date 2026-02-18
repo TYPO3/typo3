@@ -1,214 +1,22 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Backend\\Toolbar\\InformationStatus and TYPO3\\CMS\\Backend\\Toolbar\\InformationStatus will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Backend/ToolbarItems/SystemInformationToolbarItem.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Resource\\File and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/File/FileController.php
-
-		-
-			message: '#^Offset ''onChange'' on array\{label\: string, config\: mixed, children\: mixed, onChange\: mixed, description\?\: mixed\} in isset\(\) always exists and is not nullable\.$#'
-			identifier: isset.offset
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Container/FlexFormElementContainer.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
+			message: '#^Call to function is_array\(\) with non\-empty\-array\<int\<1, max\>, 1\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Container/SingleFieldContainer.php
-
-		-
-			message: '#^Parameter \#1 \$array \(non\-empty\-list\<TYPO3\\CMS\\Backend\\Form\\Behavior\\OnFieldChangeInterface\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/AbstractFormElement.php
-
-		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/BackendLayoutWizardElement.php
 
 		-
-			message: '#^Parameter \#1 \$arr of static method TYPO3\\CMS\\Core\\Utility\\GeneralUtility\:\:implodeAttributes\(\) expects array\<string, int\|string\>, array\<string, bool\|string\> given\.$#'
-			identifier: argument.type
+			message: '#^Result of && is always true\.$#'
+			identifier: booleanAnd.alwaysTrue
 			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/ColorElement.php
+			path: ../../typo3/sysext/backend/Classes/Form/Element/BackendLayoutWizardElement.php
 
 		-
-			message: '#^Dead catch \- TYPO3\\CMS\\Core\\Resource\\Exception\\FileDoesNotExistException is never thrown in the try block\.$#'
-			identifier: catch.neverThrown
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/LinkElement.php
-
-		-
-			message: '#^Dead catch \- TYPO3\\CMS\\Core\\Resource\\Exception\\FolderDoesNotExistException is never thrown in the try block\.$#'
-			identifier: catch.neverThrown
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/LinkElement.php
-
-		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
-
-		-
-			message: '#^Parameter \#1 \$array \(non\-empty\-list\<TYPO3\\CMS\\Backend\\Form\\Behavior\\OnFieldChangeInterface\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FieldControl/EditPopup.php
-
-		-
-			message: '#^Parameter \#1 \$array \(non\-empty\-list\<TYPO3\\CMS\\Backend\\Form\\Behavior\\OnFieldChangeInterface\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FieldControl/LinkPopup.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FormDataCompiler.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Backend\\Form\\FormDataProviderInterface and TYPO3\\CMS\\Backend\\Form\\FormDataProviderInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FormDataGroup/OnTheFly.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Backend\\Form\\FormDataProviderInterface and TYPO3\\CMS\\Backend\\Form\\FormDataProviderInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FormDataGroup/OrderedProviderList.php
-
-		-
-			message: '#^Parameter \#2 \$replace of function str_replace expects array\<string\>\|string, array\<int, int\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FormDataProvider/AbstractItemProvider.php
-
-		-
-			message: '#^Argument of an invalid type string supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FormDataProvider/TcaInputPlaceholders.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Utility/FormEngineUtility.php
-
-		-
-			message: '#^Variable \$pidList in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Wizard/SuggestWizardDefaultReceiver.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Backend\\LinkHandler\\PageLinkHandler\:\:getUrlParameters\(\) should return array\<string\> but returns array\<string, array\|int\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/LinkHandler/PageLinkHandler.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Backend\\LinkHandler\\RecordLinkHandler\:\:getUrlParameters\(\) should return array\<string\> but returns array\<string, array\|int\|string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/LinkHandler/RecordLinkHandler.php
-
-		-
-			message: '#^Call to function is_array\(\) with array\<int\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Backend\\Routing\\Router\:\:getRoutes\(\) should return iterable\<TYPO3\\CMS\\Backend\\Routing\\Route\> but returns ArrayIterator\<string, Symfony\\Component\\Routing\\Route\>\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Routing/Router.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\AbstractTableConfigurationTreeDataProvider\:\:getTableName\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Security/CategoryPermissionsAspect.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Backend\\Tree\\TreeNode and null will always evaluate to true\.$#'
+			message: '#^Strict comparison using \!\=\= between non\-empty\-array\<int\<1, max\>, 1\> and array\{\} will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
-			path: ../../typo3/sysext/backend/Classes/Security/CategoryPermissionsAspect.php
-
-		-
-			message: '#^Variable \$treeNodeCollection in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Security/CategoryPermissionsAspect.php
-
-		-
-			message: '#^Call to function is_object\(\) with TYPO3\\CMS\\Core\\Authentication\\AuthenticationService will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Security/SudoMode/PasswordVerification.php
-
-		-
-			message: '#^Parameter \#1 \$node of method TYPO3\\CMS\\Backend\\Tree\\Renderer\\UnorderedListTreeRenderer\:\:renderNode\(\) expects TYPO3\\CMS\\Backend\\Tree\\TreeRepresentationNode, TYPO3\\CMS\\Backend\\Tree\\TreeNode given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/Renderer/UnorderedListTreeRenderer.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Backend\\Tree\\TreeNodeCollection and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/Renderer/UnorderedListTreeRenderer.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between numeric\-string and '''' will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/View/AbstractContentPagePositionMap.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 3
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
-			message: '#^Call to function is_array\(\) with list\<array\<string, mixed\>\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
-			message: '#^Call to function is_string\(\) with non\-falsy\-string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between numeric\-string and '''' will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
+			path: ../../typo3/sysext/backend/Classes/Form/Element/BackendLayoutWizardElement.php
 
 		-
 			message: '#^Property TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication\:\:\$writeAttemptLog \(bool\) on left side of \?\? is not nullable\.$#'
@@ -661,12 +469,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Session/UserSessionManager.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Session\\UserSessionManager\:\:create\(\) should return static\(TYPO3\\CMS\\Core\\Session\\UserSessionManager\) but returns TYPO3\\CMS\\Core\\Session\\UserSessionManager\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Session/UserSessionManager.php
-
-		-
 			message: '#^Property TYPO3\\CMS\\Core\\Settings\\Type\\BoolType\:\:\$stringMap \(array\<string, bool\>\) does not accept array\<int\|string, bool\>\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -719,12 +521,6 @@ parameters:
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/TypoScript/IncludeTree/Visitor/IncludeTreeConditionMatcherVisitor.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Upgrades/AbstractListTypeToCTypeUpdate.php
 
 		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
@@ -979,24 +775,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RepositoryTest.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Backend\\Clipboard\\Clipboard and TYPO3\\CMS\\Backend\\Clipboard\\Clipboard will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/Controller/FileListController.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Resource\\ResourceStorage and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/Controller/FileListController.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between non\-falsy\-string and '''' will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/FileList.php
-
-		-
 			message: '#^Parameter \#1 \$array \(list\<TYPO3Fluid\\Fluid\\Schema\\ViewHelperMetadata\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1
@@ -1159,40 +937,16 @@ parameters:
 			path: ../../typo3/sysext/install/Tests/Unit/SystemEnvironment/DatabaseCheck/Platform/MySqlTest.php
 
 		-
-			message: '#^Dead catch \- Exception is never thrown in the try block\.$#'
-			identifier: catch.neverThrown
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Classes/Linktype/ExternalLinktype.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
 			path: ../../typo3/sysext/lowlevel/Classes/Command/DeletedRecordsCommand.php
 
 		-
-			message: '#^Call to function is_array\(\) with array\<string, string\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Controller/QuerySearchController.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Backend\\Routing\\RouteResult and TYPO3\\CMS\\Backend\\Routing\\RouteResult will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/reactions/Classes/Http/Middleware/ReactionResolver.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
-
-		-
-			message: '#^Parameter \#1 \$array \(non\-empty\-list\<TYPO3\\CMS\\Backend\\Form\\Behavior\\OnFieldChangeInterface\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/styleguide/Classes/Form/Element/User1Element.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between false and false will always evaluate to true\.$#'

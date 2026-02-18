@@ -24,45 +24,16 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 class FileSearchDemand
 {
-    /**
-     * @var string|null
-     */
-    private $searchTerm;
-
-    /**
-     * @var Folder|null
-     */
-    private $folder;
-
-    /**
-     * @var int|null
-     */
-    private $firstResult;
-
-    /**
-     * @var int|null
-     */
-    private $maxResults;
-
-    /**
-     * @var array|null
-     */
-    private $searchFields;
-
-    /**
-     * @var array|null
-     */
-    private $orderings;
-
-    /**
-     * @var bool
-     */
-    private $recursive = false;
+    private ?string $searchTerm;
+    private ?Folder $folder = null;
+    private ?int $firstResult = null;
+    private ?int $maxResults = null;
+    private ?array $searchFields = null;
+    private ?array $orderings = null;
+    private bool $recursive = false;
 
     /**
      * Only factory methods are allowed to be used to create this object
-     *
-     * @param string|null $searchTerm
      */
     private function __construct(?string $searchTerm = null)
     {
@@ -82,6 +53,11 @@ class FileSearchDemand
     public function getSearchTerm(): ?string
     {
         return $this->searchTerm;
+    }
+
+    public function hasSearchTerm(): bool
+    {
+        return $this->searchTerm !== null;
     }
 
     public function getFolder(): ?Folder

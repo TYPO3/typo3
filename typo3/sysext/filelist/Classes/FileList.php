@@ -138,10 +138,7 @@ class FileList
      */
     protected $folderObject;
 
-    /**
-     * @var Clipboard $clipObj
-     */
-    public $clipObj;
+    public Clipboard $clipObj;
 
     // Evaluates if a resource can be downloaded
     protected ?Matcher $resourceDownloadMatcher = null;
@@ -308,7 +305,7 @@ class FileList
 
         if ($searchDemand !== null) {
             $this->searchDemand = $searchDemand;
-            if ($searchDemand->getSearchTerm() && $searchDemand->getSearchTerm() !== '') {
+            if ($searchDemand->hasSearchTerm()) {
                 $folders = [];
                 // Add special "Path" field for the search result
                 array_splice($this->fieldArray, 3, 0, '_PATH_');

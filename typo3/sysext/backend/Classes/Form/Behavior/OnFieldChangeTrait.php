@@ -23,19 +23,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 trait OnFieldChangeTrait
 {
     /**
-     * @param list<OnFieldChangeInterface> $items `fieldChangeFunc` items
+     * @param OnFieldChangeInterface[] $items `fieldChangeFunc` items
      * @return array<int, array>
      */
     protected function getOnFieldChangeItems(array $items): array
     {
-        if (empty($items)) {
+        if ($items === []) {
             return [];
         }
         return array_map(
             static function (OnFieldChangeInterface $item): array {
                 return $item->toArray();
             },
-            // omitting array keys
             array_values($items)
         );
     }
@@ -47,7 +46,7 @@ trait OnFieldChangeTrait
      */
     protected function getOnFieldChangeAttrs(string $event, array $items): array
     {
-        if (empty($items)) {
+        if ($items === []) {
             return [];
         }
         $onFieldChangeItems = $this->getOnFieldChangeItems($items);

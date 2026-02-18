@@ -81,7 +81,7 @@ class FormEngineUtility
      */
     public static function overrideFieldConf($fieldConfig, $TSconfig)
     {
-        if (is_array($TSconfig)) {
+        if (is_array($TSconfig)) { // @phpstan-ignore function.alreadyNarrowedType
             $TSconfig = GeneralUtility::removeDotsFromTS($TSconfig);
             $type = $fieldConfig['type'] ?? '';
             if (isset($TSconfig['config']) && is_array($TSconfig['config']) && is_array(static::$allowOverrideMatrix[$type] ?? null)) {

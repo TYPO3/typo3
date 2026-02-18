@@ -55,7 +55,7 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
      * PHP internally, which is why string-casting is performed later on.
      * @see https://3v4l.org/JNPfU
      *
-     * @return array<string|int, string>
+     * @return array<string|int, mixed>
      */
     abstract protected function getListTypeToCTypeMapping(): array;
 
