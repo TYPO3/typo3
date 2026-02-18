@@ -219,7 +219,7 @@ final class ActionTest extends AbstractActionTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', 'Regular Element #2 (copy 1)'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', '[Translate to Dansk:] Regular Element #3', 'Regular Element #2'));
     }
 
     #[Test]

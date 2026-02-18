@@ -352,6 +352,22 @@ class DataHandler
     protected array $remapStackActions = [];
 
     /**
+     * A list of fields which should not be processed. They are still written - just passed through no-questions-asked!
+     */
+    protected array $nonFields = [
+        'uid',
+        'perms_userid',
+        'perms_groupid',
+        'perms_user',
+        'perms_group',
+        'perms_everybody',
+        't3ver_oid',
+        't3ver_wsid',
+        't3ver_state',
+        't3ver_stage',
+    ];
+
+    /**
      * Registry object to gather reference index update requests and perform updates after
      * main processing has been done. It is created upon first start() call and hand over
      * when dealing with internal sub instances. The final update() call is done at the end of
@@ -3295,7 +3311,7 @@ class DataHandler
                                 if ($table === 'pages') {
                                     $this->copyPages($id, $target);
                                 } else {
-                                    $this->copyRecord($table, $id, $target, true, [], '', 0, $ignoreLocalization);
+                                    $this->copyRecord($table, $id, $target, true, [], $ignoreLocalization);
                                 }
                                 $procId = $this->copyMappingArray[$table][$id] ?? null;
                                 if (is_array($pasteUpdate) && $procId > 0) {
@@ -3397,15 +3413,13 @@ class DataHandler
      * @param int $destPid >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
      * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
      * @param array $overrideValues Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
-     * @param string $excludeFields Commalist of fields to exclude from the copy process (might get default values)
-     * @param int $language Language ID
      * @param bool $ignoreLocalization If TRUE, any localization routine is skipped
      * @return int|null ID of new record, if any
      * @internal should only be used from within DataHandler
      */
-    public function copyRecord($table, $uid, $destPid, $first = false, $overrideValues = [], $excludeFields = '', $language = 0, $ignoreLocalization = false): ?int
+    public function copyRecord(string $table, int $uid, int $destPid, bool $first = false, array $overrideValues = [], bool $ignoreLocalization = false): ?int
     {
-        $uid = ($origUid = (int)$uid);
+        $uid = ($origUid = $uid);
         // Only copy if the table has a Schema, a uid is given and the record wasn't copied before:
         if (!$this->tcaSchemaFactory->has($table) || $uid === 0) {
             return null;
@@ -3450,13 +3464,11 @@ class DataHandler
         $fullLanguageCheckNeeded = $table !== 'pages';
         // Used to check language and general editing rights
         $accessResult = $this->BE_USER->checkRecordEditAccess($table, $row, false, $fullLanguageCheckNeeded);
-        if (!$ignoreLocalization && ($language <= 0 || !$this->BE_USER->checkLanguageAccess($language)) && !$accessResult->isAllowed) {
+        if (!$ignoreLocalization && !$accessResult->isAllowed) {
             $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" without having permissions to do so [{reason}]', null, ['table' => $table, 'uid' => $uid, 'reason' => $accessResult->errorMessage]);
             return null;
         }
 
-        $data = [];
-        $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,' . $excludeFields, true));
         BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
         if ($schema->hasCapability(TcaSchemaCapability::Workspace)
             && $this->BE_USER->workspace > 0
@@ -3477,45 +3489,55 @@ class DataHandler
         // Page TSconfig related:
         $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
         $tE = $this->getTableEntries($table, $TSConfig);
+        // Determine the record's own language for field processing
+        $recordLanguage = 0;
+        if ($schema->isLanguageAware()) {
+            $recordLanguage = (int)($row[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0);
+        }
+
+        $data = [];
+        // @todo: make this configurable via an event
+        $nonFields = $this->nonFields;
         // Traverse ALL fields of the selected record:
         foreach ($row as $field => $value) {
-            if (!in_array($field, $nonFields, true)) {
-                // Preparation/Processing of the value:
-                // "pid" is hardcoded of course:
-                // isset() won't work here, since values can be NULL in each of the arrays
-                // except setDefaultOnCopyArray, since we exploded that from a string
-                if ($field === 'pid') {
-                    $value = $destPid;
-                } elseif (array_key_exists($field, $overrideValues)) {
-                    // Override value...
-                    $value = $overrideValues[$field];
-                } elseif (array_key_exists($field, $copyAfterFields)) {
-                    // Copy-after value if available:
-                    $value = $copyAfterFields[$field];
-                } else {
-                    // Hide at copy may override:
-                    if ($first && $field === $disabledField?->getName()
-                        && $schema->hasCapability(TcaSchemaCapability::HideRecordsAtCopy)
-                        && !($this->BE_USER->uc['neverHideAtCopy'] ?? false)
-                        && !($tE['disableHideAtCopy'] ?? false)
-                    ) {
-                        $value = 1;
-                    }
-                    // Prepend label on copy:
-                    if ($first && $field === $labelFieldName
-                        && $schema->hasCapability(TcaSchemaCapability::PrependLabelTextAtCopy)
-                        && !($tE['disablePrependAtCopy'] ?? false)
-                    ) {
-                        $value = $this->getCopyHeader($table, $this->resolvePid($table, $destPid), $field, $this->clearPrefixFromValue($table, $value), 0);
-                    }
-                    // Get TCA configuration for the field (respecting columnsOverrides):
-                    $conf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $row);
-                    // Processing based on the TCA config field type (files, references, flexforms...)
-                    $value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $tscPID, $language);
-                }
-                // Add value to array.
-                $data[$table][$theNewID][$field] = $value;
+            if (in_array($field, $nonFields, true)) {
+                continue;
             }
+            // Preparation/Processing of the value:
+            // "pid" is hardcoded of course:
+            // isset() won't work here, since values can be NULL in each of the arrays
+            // except setDefaultOnCopyArray, since we exploded that from a string
+            if ($field === 'pid') {
+                $value = $destPid;
+            } elseif (array_key_exists($field, $overrideValues)) {
+                // Override value...
+                $value = $overrideValues[$field];
+            } elseif (array_key_exists($field, $copyAfterFields)) {
+                // Copy-after value if available:
+                $value = $copyAfterFields[$field];
+            } else {
+                // Hide at copy may override:
+                if ($first && $field === $disabledField?->getName()
+                    && $schema->hasCapability(TcaSchemaCapability::HideRecordsAtCopy)
+                    && !($this->BE_USER->uc['neverHideAtCopy'] ?? false)
+                    && !($tE['disableHideAtCopy'] ?? false)
+                ) {
+                    $value = 1;
+                }
+                // Prepend label on copy:
+                if ($first && $field === $labelFieldName
+                    && $schema->hasCapability(TcaSchemaCapability::PrependLabelTextAtCopy)
+                    && !($tE['disablePrependAtCopy'] ?? false)
+                ) {
+                    $value = $this->getCopyHeader($table, $this->resolvePid($table, $destPid), $field, $this->clearPrefixFromValue($table, $value), 0);
+                }
+                // Get TCA configuration for the field (respecting columnsOverrides):
+                $conf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $row);
+                // Processing based on the TCA config field type (files, references, flexforms...)
+                $value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $tscPID, $recordLanguage);
+            }
+            // Add value to array.
+            $data[$table][$theNewID][$field] = $value;
         }
         // Overriding values:
         if ($schema->hasCapability(TcaSchemaCapability::EditLock)) {
@@ -3539,8 +3561,7 @@ class DataHandler
             }
         }
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
-        unset($copyTCE);
-        if (!$ignoreLocalization && $language == 0 && $schema->isLanguageAware()) {
+        if (!$ignoreLocalization && $recordLanguage === 0 && $schema->isLanguageAware()) {
             // repointing the new translation records to the parent record we just created
             /** @var LanguageAwareSchemaCapability $languageCapability */
             $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
@@ -3549,7 +3570,7 @@ class DataHandler
             if ($languageCapability->hasTranslationSourceField()) {
                 $overrideValues[$languageCapability->getTranslationSourceField()->getName()] = 0;
             }
-            $this->copyL10nOverlayRecords($table, $uid, $destPid, $first, $overrideValues, $excludeFields);
+            $this->copyL10nOverlayRecords($table, $uid, $destPid, $first, $overrideValues);
         }
 
         return $theNewSQLID;
@@ -3751,7 +3772,7 @@ class DataHandler
      * @return int|null Returns the new ID of the record (if applicable)
      * @internal should only be used from within DataHandler
      */
-    public function copyRecord_raw($table, $uid, $pid, $overrideArray = [], array $workspaceOptions = []): ?int
+    public function copyRecord_raw(string $table, $uid, $pid, array $overrideArray = [], array $workspaceOptions = []): ?int
     {
         $uid = (int)$uid;
         // Stop any actions if the record is marked to be deleted:
@@ -3771,26 +3792,29 @@ class DataHandler
 
         $schema = $this->tcaSchemaFactory->get($table);
 
-        // Set up fields which should not be processed. They are still written - just passed through no-questions-asked!
-        $nonFields = ['uid', 'pid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 't3ver_stage', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody'];
+        // @todo: make this configurable via an event
+        $nonFields = $this->nonFields;
 
         // Merge in override array.
         $row = array_merge($row, $overrideArray);
         // Traverse ALL fields of the selected record:
         foreach ($row as $field => $value) {
-            /** @var string $field */
-            if (!in_array($field, $nonFields, true)) {
+            if (in_array($field, $nonFields, true)) {
+                continue;
+            }
+            if ($field === 'pid') {
+                $value = $pid;
+            } else {
                 // Get TCA configuration for the field (respecting columnsOverrides):
                 $conf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $row);
                 if ($conf !== []) {
                     // Processing based on the TCA config field type (files, references, flexforms...)
                     $value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $pid, 0, $workspaceOptions);
                 }
-                // Add value to array.
-                $row[$field] = $value;
             }
+            // Add value to array.
+            $row[$field] = $value;
         }
-        $row['pid'] = $pid;
         // Setting original UID:
         if ($schema->hasCapability(TcaSchemaCapability::AncestorReferenceField)) {
             $row[$schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName()] = $uid;
@@ -3802,8 +3826,8 @@ class DataHandler
         // pointing to that record need a reference index update. This is for instance the case in FAL, if a sys_file_reference
         // that refers e.g. to a tt_content record is marked as deleted. The tt_content record then needs a reference index update.
         // This scenario seems to currently only show up if in workspaces, so the refindex update is restricted to this for now.
-        if (!empty($workspaceOptions)) {
-            $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, (int)$row['uid'], (int)$this->BE_USER->workspace);
+        if ($workspaceOptions !== []) {
+            $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, (int)$row['uid'], $this->BE_USER->workspace);
         }
 
         if ($theNewSQLID) {
@@ -3961,7 +3985,7 @@ class DataHandler
                 if ($recordLocalization) {
                     $dbAnalysis->itemArray[$index]['id'] = $recordLocalization->getUid();
                 } elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize-' . $language) === false) {
-                    $dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
+                    $dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], (int)$item['id'], (int)$language);
                 }
             }
             $purgeItems = true;
@@ -4010,13 +4034,11 @@ class DataHandler
         // Walk through the items, copy them and remember the new id:
         foreach ($dbAnalysis->itemArray as $k => $v) {
             $newId = null;
-            $childTableIsWorkspaceAware = $this->tcaSchemaFactory->has($v['table'])
-                ? $this->tcaSchemaFactory->get($v['table'])->isWorkspaceAware()
-                : false;
+            $childTableIsWorkspaceAware = $this->tcaSchemaFactory->has($v['table']) && $this->tcaSchemaFactory->get($v['table'])->isWorkspaceAware();
             // If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
             if ($language > 0 && $schema->isLanguageAware() && $language != ($row[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0)) {
                 // Children should be localized when the parent gets localized the first time, just do it:
-                $newId = $this->localize($v['table'], $v['id'], $language);
+                $newId = $this->localize($v['table'], (int)$v['id'], (int)$language);
             } else {
                 if (!MathUtility::canBeInterpretedAsInteger($realDestPid)) {
                     $newId = $this->copyRecord($v['table'], $v['id'], -(int)($v['id']));
@@ -4105,11 +4127,8 @@ class DataHandler
      *
      * @param int $uid uid default language record
      * @param int $destPid Position to copy to
-     * @param bool $first
-     * @param array $overrideValues
-     * @param string $excludeFields
      */
-    protected function copyL10nOverlayRecords(string $table, int $uid, $destPid, $first = false, $overrideValues = [], $excludeFields = ''): void
+    protected function copyL10nOverlayRecords(string $table, int $uid, int $destPid, bool $first = false, array $overrideValues = []): void
     {
         if (!$this->tcaSchemaFactory->has($table)) {
             return;
@@ -4122,10 +4141,6 @@ class DataHandler
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
         $languageField = $languageCapability->getLanguageField()->getName();
         $transOrigPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
-        // Nothing to do if records of this table are not localizable
-        if (empty($languageField) || empty($transOrigPointerField)) {
-            return;
-        }
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()
@@ -4218,9 +4233,9 @@ class DataHandler
         foreach ($l10nRecords as $record) {
             $localizedDestPid = (int)($localizedDestPids[$record[$languageField]] ?? 0);
             if ($localizedDestPid < 0) {
-                $newUid = $this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues, $excludeFields, $record[$languageField]);
+                $newUid = $this->copyRecord($table, $record['uid'], $localizedDestPid, $first, $overrideValues);
             } else {
-                $newUid = $this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues, $excludeFields, $record[$languageField]);
+                $newUid = $this->copyRecord($table, $record['uid'], $destPid < 0 ? $tscPID : $destPid, $first, $overrideValues);
             }
             $languageSourceMap[$record['uid']] = $newUid;
         }
@@ -4230,11 +4245,10 @@ class DataHandler
     /**
      * Remap languageSource field to uids of newly created records
      *
-     * @param string $table Table name
      * @param array $l10nRecords array of localized records from the page we're copying from (source records)
      * @param array $languageSourceMap array mapping source records uids to newly copied uids
      */
-    protected function copy_remapTranslationSourceField($table, $l10nRecords, $languageSourceMap): void
+    protected function copy_remapTranslationSourceField(string $table, array $l10nRecords, array $languageSourceMap): void
     {
         if (!$this->tcaSchemaFactory->has($table)) {
             return;
@@ -4251,8 +4265,8 @@ class DataHandler
         $translationSourceFieldName = $languageCapability->getTranslationSourceField()->getName();
         $translationParentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
 
-        //We can avoid running these update queries by sorting the $l10nRecords by languageSource dependency (in copyL10nOverlayRecords)
-        //and first copy records depending on default record (and map the field).
+        // We can avoid running these update queries by sorting the $l10nRecords by languageSource dependency (in copyL10nOverlayRecords)
+        // and first copy records depending on default record (and map the field).
         foreach ($l10nRecords as $record) {
             $oldSourceUid = $record[$translationSourceFieldName];
             if ($oldSourceUid <= 0 && $record[$translationParentFieldName] > 0) {
@@ -4734,19 +4748,17 @@ class DataHandler
      * @param string $table Table name
      * @param int $uid Record uid (to be localized)
      * @param int $language Language ID
-     * @return int|bool The uid (int) of the new translated record or FALSE (bool) if something went wrong
+     * @return int|false The uid (int) of the new translated record or FALSE (bool) if something went wrong
      * @internal should only be used from within DataHandler
      */
-    public function localize($table, $uid, $language)
+    public function localize(string $table, int $uid, int $language): int|false
     {
-        $newId = false;
-        $uid = (int)$uid;
-        if (!$this->tcaSchemaFactory->has($table) || !$uid || $this->isNestedElementCallRegistered($table, $uid, 'localize-' . (string)$language) !== false) {
+        if (!$this->tcaSchemaFactory->has($table) || !$uid || $this->isNestedElementCallRegistered($table, $uid, 'localize-' . $language) !== false) {
             return false;
         }
 
         $schema = $this->tcaSchemaFactory->get($table);
-        $this->registerNestedElementCall($table, $uid, 'localize-' . (string)$language);
+        $this->registerNestedElementCall($table, $uid, 'localize-' . $language);
         if (!$schema->isLanguageAware()) {
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Localization failed; "languageField" and "transOrigPointerField" must be defined for the table {table}', null, ['table' => $table]);
             return false;
@@ -4783,7 +4795,7 @@ class DataHandler
 
         $pageId = (int)BackendUtility::getRealPageId($table, $uid);
         // Try to fetch the site language from the pages' associated site
-        $siteLanguage = $this->getSiteLanguageForPage($pageId, (int)$language);
+        $siteLanguage = $this->getSiteLanguageForPage($pageId, $language);
         if ($siteLanguage === null) {
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Language ID "{languageId}" not found for page {pageId}', null, ['languageId' => (int)$language, 'pageId' => $pageId]);
             return false;
@@ -4791,12 +4803,8 @@ class DataHandler
 
         // Make sure that records which are translated from another language than the default language have a correct
         // localization source set themselves, before translating them to another language.
-        if ((int)$row[$translationOriginPointerFieldName] !== 0
-            && $row[$languageFieldName] > 0) {
-            $localizationParentRecord = BackendUtility::getRecord(
-                $table,
-                $row[$translationOriginPointerFieldName]
-            );
+        if ((int)$row[$translationOriginPointerFieldName] !== 0 && $row[$languageFieldName] > 0) {
+            $localizationParentRecord = BackendUtility::getRecord($table, $row[$translationOriginPointerFieldName]);
             if ((int)$localizationParentRecord[$languageFieldName] !== 0) {
                 $this->log($table, $localizationParentRecord['uid'], SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Localization failed: Source record {table}:{originalRecordId} contained a reference to an original record that is not a default record (which is strange)', null, ['table' => $table, 'originalRecordId' => $localizationParentRecord['uid']]);
                 return false;
@@ -4804,14 +4812,12 @@ class DataHandler
         }
 
         // Default language records must never have a localization parent as they are the origin of any translation.
-        if ((int)$row[$translationOriginPointerFieldName] !== 0
-            && (int)$row[$languageFieldName] === 0) {
+        if ((int)$row[$translationOriginPointerFieldName] !== 0 && (int)$row[$languageFieldName] === 0) {
             $this->log($table, $row['uid'], SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Localization failed: Source record {table}:{uid} contained a reference to an original default record but is a default record itself (which is strange)', null, ['table' => $table, 'uid' => (int)$row['uid']]);
             return false;
         }
 
         $recordLocalization = $this->localizationRepository->getRecordTranslation($table, $row, $language, $this->BE_USER->workspace);
-
         if ($recordLocalization) {
             $this->log(
                 $table,
@@ -4832,9 +4838,10 @@ class DataHandler
         }
 
         // Initialize:
-        $overrideValues = [];
+        $overrideValues = [
+            $languageFieldName => $language,
+        ];
         // Set override values:
-        $overrideValues[$languageFieldName] = (int)$language;
         // If the translated record is a default language record, set it's uid as localization parent of the new record.
         // If translating from any other language, no override is needed; we just can copy the localization parent of
         // the original record (which is pointing to the correspondent default language record) to the new record.
@@ -4912,47 +4919,152 @@ class DataHandler
             }
         }
 
-        if ($table !== 'pages') {
-            // Get the uid of record after which this localized record should be inserted
-            $previousUid = $this->getPreviousLocalizedRecordUid($table, $uid, $row['pid'], $language);
-            // Execute the copy:
-            $newId = $this->copyRecord($table, $uid, -$previousUid, true, $overrideValues, '', $language);
+        if ($table === 'pages') {
+            $newId = $this->localizePage($uid, $row, $language, $overrideValues);
         } else {
-            // Create new page which needs to contain the same pid as the original page
-            $overrideValues['pid'] = $row['pid'];
-            // Take over the hidden state of the original language state, this is done due to legacy reasons where-as
-            // pages_language_overlay was set to "hidden -> default=0" but pages hidden -> default 1"
-            if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
-                $hiddenField = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getField();
-                $hiddenFieldName = $hiddenField->getName();
-                $overrideValues[$hiddenFieldName] = $row[$hiddenFieldName] ?? $hiddenField->getDefaultValue();
-                // Override by TCA "hideAtCopy" or pageTS "disableHideAtCopy"
-                // Only for visible pages to get the same behaviour as for copy
-                if (!$overrideValues[$hiddenFieldName]) {
-                    $TSConfig = BackendUtility::getPagesTSconfig($uid)['TCEMAIN.'] ?? [];
-                    $tableEntries = $this->getTableEntries($table, $TSConfig);
-                    if (
-                        $schema->hasCapability(TcaSchemaCapability::HideRecordsAtCopy)
-                        && !($this->BE_USER->uc['neverHideAtCopy'] ?? false)
-                        && !($tableEntries['disableHideAtCopy'] ?? false)
-                    ) {
-                        $overrideValues[$hiddenFieldName] = 1;
-                    }
-                }
-            }
-            $temporaryId = StringUtility::getUniqueId('NEW');
-            $copyTCE = $this->getLocalTCE();
-            $copyTCE->start([$table => [$temporaryId => $overrideValues]], [], $this->BE_USER, $this->referenceIndexUpdater);
-            $copyTCE->process_datamap();
-            // Getting the new UID as if it had been copied:
-            $theNewSQLID = $copyTCE->substNEWwithIDs[$temporaryId];
-            if ($theNewSQLID) {
-                $this->copyMappingArray[$table][$uid] = $theNewSQLID;
-                $newId = $theNewSQLID;
-            }
+            $newId = $this->localizeRecord($table, $uid, $row, $language, $overrideValues);
         }
 
-        return $newId;
+        return $newId ?? false;
+    }
+
+    /**
+     * Creates a localized version of a record for the given target language.
+     *
+     * This method is called from localize() for non-page records. Unlike copyRecord(),
+     * it does not apply "copy-after" fields, "prepend label at copy", or copy l10n overlays.
+     * The $row is pre-fetched and workspace-overlaid by localize().
+     *
+     * @param string $table Table name
+     * @param int $uid Record uid (source record to localize)
+     * @param array $row Pre-fetched and workspace-overlaid record
+     * @param int $language Target language ID (always > 0)
+     * @param array $overrideValues Override values prepared by localize() (language field, translation pointers, etc.)
+     * @return int|null UID of the new localized record, or null on failure
+     */
+    protected function localizeRecord(string $table, int $uid, array $row, int $language, array $overrideValues): ?int
+    {
+        $schema = $this->tcaSchemaFactory->get($table);
+
+        $row = BackendUtility::purgeComputedPropertiesFromRecord($row);
+        if ($schema->hasCapability(TcaSchemaCapability::Workspace)
+            && $this->BE_USER->workspace > 0
+            && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
+        ) {
+            return null;
+        }
+
+        // Compute sorting: place after the previous localized record
+        $previousUid = $this->getPreviousLocalizedRecordUid($table, $uid, $row['pid'], $language);
+        $destPid = -$previousUid;
+
+        $tscPID = (int)BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
+        $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
+        $tE = $this->getTableEntries($table, $TSConfig);
+
+        $theNewID = StringUtility::getUniqueId('NEW');
+        $disabledField = $schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)
+            ? $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getField()
+            : null;
+
+        // @todo: make this configurable via an event
+        $nonFields = $this->nonFields;
+        $data = [];
+
+        foreach ($row as $field => $value) {
+            if (in_array($field, $nonFields, true)) {
+                continue;
+            }
+            if ($field === 'pid') {
+                $value = $destPid;
+            } elseif (array_key_exists($field, $overrideValues)) {
+                $value = $overrideValues[$field];
+            } else {
+                // Hide at copy may override — only apply if source record was visible
+                if ($field === $disabledField?->getName()
+                    && !$value
+                    && $schema->hasCapability(TcaSchemaCapability::HideRecordsAtCopy)
+                    && !($this->BE_USER->uc['neverHideAtCopy'] ?? false)
+                    && !($tE['disableHideAtCopy'] ?? false)
+                ) {
+                    $value = 1;
+                }
+                $conf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field, $row);
+                $value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $tscPID, $language);
+            }
+            $data[$table][$theNewID][$field] = $value;
+        }
+
+        if ($schema->hasCapability(TcaSchemaCapability::EditLock)) {
+            $data[$table][$theNewID][$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] = 0;
+        }
+        if ($schema->hasCapability(TcaSchemaCapability::AncestorReferenceField)) {
+            $data[$table][$theNewID][$schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName()] = $uid;
+        }
+
+        $copyTCE = $this->getLocalTCE();
+        $copyTCE->start($data, [], $this->BE_USER, $this->referenceIndexUpdater);
+        $copyTCE->process_datamap();
+        $theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID] ?? null;
+        if ($theNewSQLID) {
+            $this->copyMappingArray[$table][$uid] = $theNewSQLID;
+            if (isset($copyTCE->autoVersionIdMap[$table][$theNewSQLID])) {
+                $this->autoVersionIdMap[$table][$theNewSQLID] = $copyTCE->autoVersionIdMap[$table][$theNewSQLID];
+            }
+        }
+        $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
+
+        return $theNewSQLID;
+    }
+
+    /**
+     * Creates a localized version of a record for the given target language.
+     * *
+     * @param int $uid Record uid (source record to localize)
+     * @param array $row Pre-fetched and workspace-overlaid record
+     * @param int $language Target language ID (always > 0)
+     * @param array $overrideValues Override values prepared by localize() (language field, translation pointers, etc.)
+     */
+    protected function localizePage(int $uid, array $row, int $language, array $overrideValues): ?int
+    {
+        $table = 'pages';
+        $schema = $this->tcaSchemaFactory->get('pages');
+        // Create new page which needs to contain the same pid as the original page
+        $overrideValues['pid'] = $row['pid'];
+        // Take over the hidden state of the original language state, this is done due to legacy reasons where-as
+        // pages_language_overlay was set to "hidden -> default=0" but pages hidden -> default 1"
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            $hiddenField = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getField();
+            $hiddenFieldName = $hiddenField->getName();
+            $overrideValues[$hiddenFieldName] = $row[$hiddenFieldName] ?? $hiddenField->getDefaultValue();
+            // Override by TCA "hideAtCopy" or pageTS "disableHideAtCopy"
+            // Only for visible pages to get the same behavior as for copy
+            if (!$overrideValues[$hiddenFieldName]) {
+                $TSConfig = BackendUtility::getPagesTSconfig($uid)['TCEMAIN.'] ?? [];
+                $tableEntries = $this->getTableEntries('pages', $TSConfig);
+                if (
+                    $schema->hasCapability(TcaSchemaCapability::HideRecordsAtCopy)
+                    && !($this->BE_USER->uc['neverHideAtCopy'] ?? false)
+                    && !($tableEntries['disableHideAtCopy'] ?? false)
+                ) {
+                    $overrideValues[$hiddenFieldName] = 1;
+                }
+            }
+        }
+        $temporaryId = StringUtility::getUniqueId('NEW');
+        $copyTCE = $this->getLocalTCE();
+        $copyTCE->start([$table => [$temporaryId => $overrideValues]], [], $this->BE_USER, $this->referenceIndexUpdater);
+        $copyTCE->process_datamap();
+        // Getting the new UID as if it had been copied:
+        $theNewSQLID = $copyTCE->substNEWwithIDs[$temporaryId] ?? null;
+        if ($theNewSQLID) {
+            $this->copyMappingArray[$table][$uid] = $theNewSQLID;
+            if (isset($copyTCE->autoVersionIdMap[$table][$theNewSQLID])) {
+                $this->autoVersionIdMap[$table][$theNewSQLID] = $copyTCE->autoVersionIdMap[$table][$theNewSQLID];
+            }
+        }
+        $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
+        return $theNewSQLID;
     }
 
     /**
@@ -5058,10 +5170,10 @@ class DataHandler
         // Perform synchronization/localization: Possibly add unlocalized records for original language:
         if ($action === 'localize' || $action === 'synchronize') {
             foreach ($elementsOriginal as $item) {
-                if ($this->isRecordLocalized((string)$item['table'], (int)$item['id'], (int)$language)) {
+                if ($this->isRecordLocalized((string)$item['table'], (int)$item['id'], $language)) {
                     continue;
                 }
-                $item['id'] = $this->localize($item['table'], $item['id'], $language);
+                $item['id'] = $this->localize($item['table'], (int)$item['id'], $language);
 
                 if (is_int($item['id'])) {
                     $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
@@ -5074,10 +5186,10 @@ class DataHandler
                     continue;
                 }
                 $item = $elementsOriginal[$childId];
-                if ($this->isRecordLocalized((string)$item['table'], (int)$item['id'], (int)$language)) {
+                if ($this->isRecordLocalized((string)$item['table'], (int)$item['id'], $language)) {
                     continue;
                 }
-                $item['id'] = $this->localize($item['table'], $item['id'], $language);
+                $item['id'] = $this->localize($item['table'], (int)$item['id'], $language);
                 if (is_int($item['id'])) {
                     $item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
                 }
@@ -5112,7 +5224,7 @@ class DataHandler
             $this->updateDB($table, $id, $updateFields, (int)$parentRecord['pid']);
         }
         if (isset($parentRecord['_ORIG_uid']) && (int)$parentRecord['_ORIG_uid'] !== (int)$id) {
-            // If there is a ws overlay of the record, then the relation has been attached to *this*
+            // If there is a workspace overlay of the record, then the relation has been attached to *this*
             // record, even though the uids point to live. We still need to update refindex of the overlay
             // to reflect this relation.
             $this->updateRefIndex($table, (int)$parentRecord['_ORIG_uid']);
