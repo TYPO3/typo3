@@ -9275,7 +9275,15 @@ class DataHandler
     {
         $result = $fieldArray;
         $schema = $this->tcaSchemaFactory->get($table);
+        $connection = $this->connectionPool->getConnectionForTable($table);
+        $tableInfo = $connection->getSchemaInformation()->getTableInfo($table);
         foreach ($fieldArray as $field => $value) {
+            // Sanitize empty strings for integer database columns to avoid
+            // "Incorrect integer value: ''" errors on MariaDB/MySQL strict mode.
+            if ($value === '' && $tableInfo->getColumnInfo($field)?->getType() instanceof IntegerType) {
+                $result[$field] = 0;
+                continue;
+            }
             if (MathUtility::canBeInterpretedAsInteger($value) || !$schema->hasField($field)) {
                 continue;
             }

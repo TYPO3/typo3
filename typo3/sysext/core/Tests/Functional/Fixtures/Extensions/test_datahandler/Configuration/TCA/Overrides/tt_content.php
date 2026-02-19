@@ -64,6 +64,15 @@ defined('TYPO3') or die();
                 'default' => '',
             ],
         ],
+        'tx_testdatahandler_group_int' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Group with a single relation stored in an integer column',
+            'config' => [
+                'type' => 'group',
+                'allowed' => 'tx_testdatahandler_element',
+                'maxitems' => 1,
+            ],
+        ],
         'tx_testdatahandler_radio' => [
             'exclude' => true,
             'label' => 'DataHandler Test Radio',
