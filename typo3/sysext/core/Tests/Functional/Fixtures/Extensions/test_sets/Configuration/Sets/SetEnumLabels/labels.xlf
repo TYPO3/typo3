@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:test_sets/Configuration/Sets/SetEnumLabels/labels.xlf" date="2026-02-19T00:00:00Z" product-name="test_sets">
+    <header/>
+    <body>
+      <trans-unit id="label">
+        <source>Test Set Fixture Enum Labels</source>
+      </trans-unit>
+      <trans-unit id="settings.foo.enumDerived">
+        <source>Enum derived from labels.xlf</source>
+      </trans-unit>
+      <trans-unit id="settings.description.foo.enumDerived">
+        <source>Description derived from labels.xlf</source>
+      </trans-unit>
+      <trans-unit id="settings.explicit.foo.enumExplicit.optionExplicitLll">
+        <source>Explicit option via LLL</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

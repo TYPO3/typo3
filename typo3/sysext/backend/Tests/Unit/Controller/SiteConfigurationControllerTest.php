@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -174,6 +176,53 @@ final class SiteConfigurationControllerTest extends UnitTestCase
         self::assertEquals(
             $expected,
             $mockedSiteConfigurationController->_call('getMergeSiteData', $currentSiteConfig, $newSiteConfig)
+        );
+    }
+
+    #[Test]
+    public function resolveSettingLabelsResolvesEnumLabelsWithLanguageService(): void
+    {
+        $subject = $this->getAccessibleMock(SiteConfigurationController::class, ['getLanguageService'], [], '', false);
+        $languageService = $this->createMock(LanguageService::class);
+        $languageService
+            ->method('sL')
+            ->willReturnCallback(static fn(string $label): string => match ($label) {
+                'LLL:EXT:my_site/Configuration/Sets/MySite/labels.xlf:settings.my.enumSetting' => 'Setting label',
+                'my_site.labels:settings.description.my.enumSetting' => 'Setting description',
+                'LLL:EXT:my_site/Configuration/Sets/MySite/labels.xlf:settings.explicit.my.enumSetting.optionExplicit' => 'Translated option explicit',
+                default => $label,
+            });
+        $subject->method('getLanguageService')->willReturn($languageService);
+
+        $settingDefinition = new SettingDefinition(
+            key: 'my.enumSetting',
+            type: 'string',
+            default: 'optionExplicit',
+            label: 'LLL:EXT:my_site/Configuration/Sets/MySite/labels.xlf:settings.my.enumSetting',
+            description: 'my_site.labels:settings.description.my.enumSetting',
+            enum: [
+                'optionExplicit' => 'LLL:EXT:my_site/Configuration/Sets/MySite/labels.xlf:settings.explicit.my.enumSetting.optionExplicit',
+                'optionLiteral' => 'Option literal from YAML',
+                'optionEmptyLiteral' => '',
+                'optionKeyOnly' => 'optionKeyOnly',
+            ],
+        );
+
+        $reflection = new \ReflectionClass(SiteConfigurationController::class);
+        $method = $reflection->getMethod('resolveSettingLabels');
+
+        /** @var SettingDefinition $resolvedSettingDefinition */
+        $resolvedSettingDefinition = $method->invoke($subject, $settingDefinition);
+        self::assertSame('Setting label', $resolvedSettingDefinition->label);
+        self::assertSame('Setting description', $resolvedSettingDefinition->description);
+        self::assertSame(
+            [
+                'optionExplicit' => 'Translated option explicit',
+                'optionLiteral' => 'Option literal from YAML',
+                'optionEmptyLiteral' => '',
+                'optionKeyOnly' => 'optionKeyOnly',
+            ],
+            $resolvedSettingDefinition->enum
         );
     }
 }

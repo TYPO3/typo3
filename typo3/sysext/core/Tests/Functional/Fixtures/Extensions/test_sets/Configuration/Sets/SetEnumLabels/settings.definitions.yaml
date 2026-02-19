@@ -1,0 +1,15 @@
+settings:
+  foo.enumDerived:
+    type: string
+    default: optionDerivedLiteralA
+    enum:
+      optionDerivedLiteralA: 'Derived literal option A'
+      optionDerivedLiteralB: 'Derived literal option B'
+  foo.enumExplicit:
+    type: string
+    default: optionExplicitLll
+    enum:
+      optionExplicitLll: '{label}:settings.explicit.foo.enumExplicit.optionExplicitLll'
+      optionExplicitLiteral: 'Explicit literal option'
+      optionExplicitKeyOnly:
+      optionExplicitEmptyLabel: ''

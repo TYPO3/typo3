@@ -1035,6 +1035,10 @@ readonly class SiteConfigurationController
             ...get_object_vars($definition),
             'label' => $languageService->sL($definition->label),
             'description' => $definition->description !== null ? $languageService->sL($definition->description) : null,
+            'enum' => array_map(
+                static fn(string|int|float|bool $label): string => $languageService->sL((string)$label),
+                $definition->enum
+            ),
         ]);
     }
 

@@ -72,7 +72,7 @@ class YamlSetDefinitionProvider
         $settingsDefinitionsFile = $path . '/settings.definitions.yaml';
         if (is_file($settingsDefinitionsFile)) {
             try {
-                $settingsDefinitions = Yaml::parseFile($settingsDefinitionsFile);
+                $settingsDefinitions = Yaml::parseFile($settingsDefinitionsFile, Yaml::PARSE_OBJECT | Yaml::PARSE_OBJECT_FOR_MAP);
             } catch (ParseException $e) {
                 $source = $virtualSetPath . basename($settingsDefinitionsFile);
                 throw new InvalidSettingsDefinitionsException(
@@ -82,7 +82,7 @@ class YamlSetDefinitionProvider
                     $setName
                 );
             }
-            if (!is_array($settingsDefinitions['settings'] ?? null)) {
+            if (!is_object($settingsDefinitions->settings ?? null)) {
                 $source = $virtualSetPath . basename($settingsDefinitionsFile);
                 throw new InvalidSettingsDefinitionsException(
                     'Missing "settings" key in settings definitions. Source: ' . $source,
@@ -91,8 +91,19 @@ class YamlSetDefinitionProvider
                     $setName
                 );
             }
-            $set['settingsDefinitions'] = $settingsDefinitions['settings'] ?? [];
-            $set['categoryDefinitions'] = $settingsDefinitions['categories'] ?? [];
+            // YAML maps are decoded as objects. Normalize them to arrays so
+            // settings/category definitions can be handled uniformly below.
+            $set['settingsDefinitions'] = array_map(
+                static fn(?object $value): ?array => $value === null ? null : (array)$value,
+                get_object_vars($settingsDefinitions->settings)
+            );
+            $set['categoryDefinitions'] = [];
+            if (isset($settingsDefinitions->categories)) {
+                $set['categoryDefinitions'] = array_map(
+                    static fn(?object $value): ?array => $value === null ? null : (array)$value,
+                    get_object_vars($settingsDefinitions->categories)
+                );
+            }
         }
 
         $settingsFile = $path . '/settings.yaml';
@@ -163,9 +174,48 @@ class YamlSetDefinitionProvider
         }
 
         foreach (($set['settingsDefinitions'] ?? []) as $setting => $options) {
+            // Cast objects to arrays
+            if (is_object($options['options'] ?? null)) {
+                $options['options'] = (array)$options['options'];
+            }
+
+            if (is_array($options['enum'] ?? null)) {
+                $options['enum'] = array_combine(
+                    $options['enum'],
+                    array_map(
+                        static fn(string|int|float|bool $value): string => sprintf(
+                            '{label}:settings.%s.enum.%s',
+                            $setting,
+                            is_bool($value) ? ($value ? 'true' : 'false') : (string)$value
+                        ),
+                        $options['enum']
+                    )
+                );
+            } elseif (is_object($options['enum'] ?? null)) {
+                $options['enum'] = (array)$options['enum'];
+            }
+            if (is_array($options['enum'] ?? null)) {
+                foreach ($options['enum'] as $enumValue => $enumLabel) {
+                    if ($enumLabel === null) {
+                        $options['enum'][$enumValue] = (string)$enumValue;
+                    }
+                }
+            }
+
+            if (is_object($options['tags'] ?? null)) {
+                $options['tags'] = array_values((array)$options['tags']);
+            }
             if ($labels) {
-                $options['label'] ??= 'LLL:' . $labels . ':settings.' . $setting;
-                $options['description'] ??= 'LLL:' . $labels . ':settings.description.' . $setting;
+                $domain = 'LLL:' . $labels . ':';
+                $options['label'] ??= $domain . 'settings.' . $setting;
+                $options['description'] ??= $domain . 'settings.description.' . $setting;
+                if (is_array($options['enum'] ?? null)) {
+                    foreach ($options['enum'] as $enumValue => $enumLabel) {
+                        if (is_string($enumLabel) && str_starts_with($enumLabel, '{label}:')) {
+                            $options['enum'][$enumValue] = $domain . substr($enumLabel, 8);
+                        }
+                    }
+                }
             }
             $settingDefinitionData = [...['key' => $setting], ...$options];
             try {

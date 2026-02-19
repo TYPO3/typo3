@@ -19,10 +19,15 @@ namespace TYPO3\CMS\Core\Settings;
 
 readonly class SettingDefinition
 {
+    /**
+     * @param array<int|string, string|int|float|bool> $enum
+     * @param list<string> $tags
+     * @param array<string, mixed> $options
+     */
     public function __construct(
         public string $key,
         public string $type,
-        public string|int|float|bool|array|null $default,
+        public string|int|float|bool|array|object|null $default,
         public string $label,
         public ?string $description = null,
         public bool $readonly = false,

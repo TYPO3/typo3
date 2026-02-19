@@ -49,4 +49,41 @@ final class YamlSetDefinitionProviderTest extends FunctionalTestCase
 
         self::assertSame($expected, $actual->settings);
     }
+
+    #[Test]
+    public function getDerivesEnumSettingLabelsAndDescriptionFromLabelsXlf(): void
+    {
+        $setPath = $this->instancePath . '/typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_sets/Configuration/Sets/SetEnumLabels/config.yaml';
+
+        $setDefinition = $this->subject->get(new \SplFileInfo($setPath), 'EXT:test_sets/Configuration/Sets/SetEnumLabels/');
+        $settingsDefinitions = [];
+        foreach ($setDefinition->settingsDefinitions as $settingDefinition) {
+            $settingsDefinitions[$settingDefinition->key] = $settingDefinition;
+        }
+
+        self::assertSame(
+            'LLL:EXT:test_sets/Configuration/Sets/SetEnumLabels/labels.xlf:settings.foo.enumDerived',
+            $settingsDefinitions['foo.enumDerived']->label
+        );
+        self::assertSame(
+            'LLL:EXT:test_sets/Configuration/Sets/SetEnumLabels/labels.xlf:settings.description.foo.enumDerived',
+            $settingsDefinitions['foo.enumDerived']->description
+        );
+        self::assertSame(
+            [
+                'optionDerivedLiteralA' => 'Derived literal option A',
+                'optionDerivedLiteralB' => 'Derived literal option B',
+            ],
+            $settingsDefinitions['foo.enumDerived']->enum
+        );
+        self::assertSame(
+            [
+                'optionExplicitLll' => 'LLL:EXT:test_sets/Configuration/Sets/SetEnumLabels/labels.xlf:settings.explicit.foo.enumExplicit.optionExplicitLll',
+                'optionExplicitLiteral' => 'Explicit literal option',
+                'optionExplicitKeyOnly' => 'optionExplicitKeyOnly',
+                'optionExplicitEmptyLabel' => '',
+            ],
+            $settingsDefinitions['foo.enumExplicit']->enum
+        );
+    }
 }
