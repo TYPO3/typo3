@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'MetaData Extraction Test',
     'description' => 'MetaData Extraction Test',
     'category' => 'example',
-    'version' => '14.1.0',
+    'version' => '14.1.1',
     'state' => 'beta',
     'author' => 'Anja Leichsenring',
     'author_email' => 'aleichsenring@ab-softlab.de',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '14.1.0',
+            'typo3' => '14.1.1',
         ],
         'conflicts' => [],
         'suggests' => [],
