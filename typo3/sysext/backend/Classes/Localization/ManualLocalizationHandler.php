@@ -222,7 +222,7 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
             // Redirect to page layout module with the target language
             return (string)$this->uriBuilder->buildUriFromRoute('web_layout', [
                 'id' => $uid,
-                'language' => $targetLanguage,
+                'languages' => [$targetLanguage],
             ]);
         }
 
@@ -250,7 +250,7 @@ class ManualLocalizationHandler implements LocalizationHandlerInterface
                     'web_layout',
                     [
                         'id' => $record['pid'],
-                        'language' => $targetLanguage,
+                        'languages' => [$targetLanguage],
                     ]
                 );
             }
