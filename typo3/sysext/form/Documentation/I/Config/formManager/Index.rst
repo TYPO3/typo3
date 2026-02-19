@@ -133,33 +133,6 @@ translationFiles
       The translation file(s) which should be used to translate parts of the form manager.
 
 
-.. _formmanager.javascripttranslationfile:
-
-javaScriptTranslationFile
--------------------------
-
-:aspect:`Option path`
-      formManager.javaScriptTranslationFile
-
-:aspect:`Data type`
-      string
-
-:aspect:`Needed by`
-      Backend (form manager)
-
-:aspect:`Mandatory`
-      Yes
-
-:aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-
-         javaScriptTranslationFile: 'EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf'
-
-:aspect:`Description`
-      Internal setting. Path for the inline language labels for the form manager app.
-
-
 .. _formmanager.selectableprototypesconfiguration:
 
 selectablePrototypesConfiguration

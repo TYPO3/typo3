@@ -152,7 +152,6 @@ formManager:
     100: 'EXT:form/Resources/Public/Css/form.css'
   translationFiles:
     10: 'EXT:form/Resources/Private/Language/Database.xlf'
-  javaScriptTranslationFile: 'EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf'
   selectablePrototypesConfiguration:
     100:
       identifier: standard

@@ -13,6 +13,7 @@
 
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import labels from '~labels/form.form_editor_javascript';
 
 /**
  * Module: @typo3/form/backend/form-editor/component/page-stage-item
@@ -34,7 +35,7 @@ export class PageStageItem extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    const displayTitle = this.pageTitle || TYPO3.lang['formEditor.step.name.empty'];
+    const displayTitle = this.pageTitle || labels.get('formEditor.step.name.empty');
 
     return html`
       <h2 class="formeditor-page-title">

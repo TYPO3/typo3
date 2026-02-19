@@ -99,9 +99,6 @@ class FormManagerController extends ActionController
             'stylesheets' => $formSettings['formManager']['stylesheets'],
             'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData($formSettings)),
         ]);
-        if (!empty($formSettings['formManager']['javaScriptTranslationFile'])) {
-            $this->pageRenderer->addInlineLanguageLabelFile($formSettings['formManager']['javaScriptTranslationFile']);
-        }
         $javaScriptModules = array_map(
             static fn(string $name) => JavaScriptModuleInstruction::create($name),
             array_filter(

@@ -41,6 +41,7 @@ import type {
   ValidationResultsRecursive,
   Validator
 } from '@typo3/form/backend/form-editor/core';
+import failsafeLabels from '~labels/form.form_editor_fail_safe_error_handling_javascript';
 
 const assert = Core.assert;
 
@@ -681,11 +682,11 @@ export class FormEditor {
         throw error;
       }
       Notification.error(
-        TYPO3.lang['formEditor.error.headline'],
-        TYPO3.lang['formEditor.error.message']
+        failsafeLabels.get('formEditor.error.headline'),
+        failsafeLabels.get('formEditor.error.message')
         + '\r\n'
         + '\r\n'
-        + TYPO3.lang['formEditor.error.technicalReason']
+        + failsafeLabels.get('formEditor.error.technicalReason')
         + '\r\n'
         + error.message);
     }

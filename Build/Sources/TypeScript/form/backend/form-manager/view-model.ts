@@ -23,6 +23,8 @@ import Notification from '@typo3/backend/notification';
 import SecurityUtility from '@typo3/core/security-utility';
 import { selector } from '@typo3/core/literals';
 import type { FormManager } from '@typo3/form/backend/form-manager';
+import labels from '~labels/form.form_manager_javascript';
+import wizardLabels from '~labels/core.wizard';
 
 const securityUtility = new SecurityUtility();
 
@@ -63,7 +65,7 @@ function newFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 1
      */
-    MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.notice, TYPO3.lang['formManager.newFormWizard.step1.progressLabel'], async function(slide) {
+    MultiStepWizard.addSlide('new-form-step-1', labels.get('formManager.newFormWizard.step1.title'), '', Severity.notice, labels.get('formManager.newFormWizard.step1.progressLabel'), async function(slide) {
       const addIconMarkup = await Icons.getIcon('actions-plus', Icons.sizes.small);
       const duplicateIconMarkup = await Icons.getIcon('form-page', Icons.sizes.large);
       const blankIconMarkup = await Icons.getIcon('apps-pagetree-page-default', Icons.sizes.large);
@@ -78,7 +80,7 @@ function newFormSetup(formManagerApp: FormManager): void {
 
       const folders = formManagerApp.getAccessibleFormStorageFolders();
       if (folders.length === 0) {
-        html = '<h5 class="form-section-headline">' + TYPO3.lang['formManager.newFormWizard.step1.noStorages'] + '</h5>';
+        html = '<h5 class="form-section-headline">' + labels.get('formManager.newFormWizard.step1.noStorages') + '</h5>';
         slide.html(html);
         formManagerApp.assert(false, 'No accessible form storage folders', 1477506500);
       }
@@ -88,30 +90,30 @@ function newFormSetup(formManagerApp: FormManager): void {
         + '<div class="card-header">'
         + '<div class="card-icon">' + blankIconMarkup + '</div>'
         + '<div class="card-header-body">'
-        + '<h2 class="card-title">' + TYPO3.lang['formManager.blankForm.label'] + '</h2>'
-        + '<span class="card-subtitle">' + TYPO3.lang['formManager.blankForm.subtitle'] + '</span>'
+        + '<h2 class="card-title">' + labels.get('formManager.blankForm.label') + '</h2>'
+        + '<span class="card-subtitle">' + labels.get('formManager.blankForm.subtitle') + '</span>'
         + '</div>'
         + '</div>'
         + '<div class="card-body">'
-        + '<p class="card-text">' + TYPO3.lang['formManager.blankForm.description'] + '</p>'
+        + '<p class="card-text">' + labels.get('formManager.blankForm.description') + '</p>'
         + '</div>'
         + '<div class="card-footer">'
-        + '<button type="button" class="btn btn-default" data-inline="1" value="blank" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + TYPO3.lang['formManager.blankForm.label'] + '</button>'
+        + '<button type="button" class="btn btn-default" data-inline="1" value="blank" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + labels.get('formManager.blankForm.label') + '</button>'
         + '</div>'
         + '</div>'
         + '<div class="card card-size-medium">'
         + '<div class="card-header">'
         + '<div class="card-icon">' + duplicateIconMarkup + '</div>'
         + '<div class="card-header-body">'
-        + '<h2 class="card-title">' + TYPO3.lang['formManager.predefinedForm.label'] + '</h2>'
-        + '<span class="card-subtitle">' + TYPO3.lang['formManager.predefinedForm.subtitle'] + '</span>'
+        + '<h2 class="card-title">' + labels.get('formManager.predefinedForm.label') + '</h2>'
+        + '<span class="card-subtitle">' + labels.get('formManager.predefinedForm.subtitle') + '</span>'
         + '</div>'
         + '</div>'
         + '<div class="card-body">'
-        + '<p class="card-text">' + TYPO3.lang['formManager.predefinedForm.description'] + '</p>'
+        + '<p class="card-text">' + labels.get('formManager.predefinedForm.description') + '</p>'
         + '</div>'
         + '<div class="card-footer">'
-        + '<button type="button" class="btn btn-default" data-inline="1" value="predefined" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + TYPO3.lang['formManager.predefinedForm.label'] + '</button>'
+        + '<button type="button" class="btn btn-default" data-inline="1" value="predefined" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + labels.get('formManager.predefinedForm.label') + '</button>'
         + '</div>'
         + '</div>'
         + '</div>';
@@ -133,7 +135,7 @@ function newFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 2
      */
-    MultiStepWizard.addSlide('new-form-step-2', TYPO3.lang['formManager.newFormWizard.step2.title'], '', Severity.notice, top.TYPO3.lang['wizard.progressStep.configure'], function(slide, settings) {
+    MultiStepWizard.addSlide('new-form-step-2', labels.get('formManager.newFormWizard.step2.title'), '', Severity.notice, wizardLabels.get('wizard.progressStep.configure'), function(slide, settings) {
       let html, savePathSelect;
 
       MultiStepWizard.lockNextStep();
@@ -188,30 +190,30 @@ function newFormSetup(formManagerApp: FormManager): void {
       html = '';
 
       if (settings.newFormMode === 'blank') {
-        html += '<h5 class="form-section-headline">' + TYPO3.lang['formManager.blankForm.label'] + '</h5>';
+        html += '<h5 class="form-section-headline">' + labels.get('formManager.blankForm.label') + '</h5>';
         MultiStepWizard.set('templatePath', 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml');
-        MultiStepWizard.set('templatePathName', TYPO3.lang['formManager.blankForm.label']);
+        MultiStepWizard.set('templatePathName', labels.get('formManager.blankForm.label'));
       } else {
-        html += '<h5 class="form-section-headline">' + TYPO3.lang['formManager.predefinedForm.label'] + '</h5>';
+        html += '<h5 class="form-section-headline">' + labels.get('formManager.predefinedForm.label') + '</h5>';
         if (prototypes.length > 1) {
           html += '<div class="form-group">'
-            + '<label class="form-label" for="new-form-prototype-name">' + TYPO3.lang['formManager.form_prototype'] + '</label>'
+            + '<label class="form-label" for="new-form-prototype-name">' + labels.get('formManager.form_prototype') + '</label>'
             + $(prototypeNameSelect)[0].outerHTML
             + '</div>';
         }
 
         if (templates.length > 1) {
           html += '<div class="form-group">'
-            + '<label class="form-label" for="new-form-template">' + TYPO3.lang['formManager.form_template'] + '</label>'
-            + '<div class="form-description">' + TYPO3.lang['formManager.form_template_description'] + '</div>'
+            + '<label class="form-label" for="new-form-template">' + labels.get('formManager.form_template') + '</label>'
+            + '<div class="form-description">' + labels.get('formManager.form_template_description') + '</div>'
             + $(templateSelect)[0].outerHTML
             + '</div>';
         }
       }
 
       html += '<div class="form-group">'
-        + '<label class="form-label" for="new-form-name">' + TYPO3.lang['formManager.form_name'] + '</label>'
-        + '<div class="form-description">' + TYPO3.lang['formManager.form_name_description'] + '</div>';
+        + '<label class="form-label" for="new-form-name">' + labels.get('formManager.form_name') + '</label>'
+        + '<div class="form-description">' + labels.get('formManager.form_name_description') + '</div>';
 
       if (settings.formName) {
         html += '<input class="form-control" id="new-form-name" data-identifier="newFormName" value="' + securityUtility.encodeHtml(settings.formName) + '" />';
@@ -228,8 +230,8 @@ function newFormSetup(formManagerApp: FormManager): void {
 
       if (savePathSelect) {
         html += '<div class="form-group">'
-          + '<label class="form-label" for="new-form-save-path">' + TYPO3.lang['formManager.form_save_path'] + '</label>'
-          + '<div class="form-description">' + TYPO3.lang['formManager.form_save_path_description'] + '</div>'
+          + '<label class="form-label" for="new-form-save-path">' + labels.get('formManager.form_save_path') + '</label>'
+          + '<div class="form-description">' + labels.get('formManager.form_save_path_description') + '</div>'
           + $(savePathSelect)[0].outerHTML
           + '</div>';
       }
@@ -321,7 +323,7 @@ function newFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 3
      */
-    MultiStepWizard.addSlide('new-form-step-3', TYPO3.lang['formManager.newFormWizard.step3.title'], '', Severity.notice, TYPO3.lang['formManager.newFormWizard.step3.progressLabel'], async function(slide, settings) {
+    MultiStepWizard.addSlide('new-form-step-3', labels.get('formManager.newFormWizard.step3.title'), '', Severity.notice, labels.get('formManager.newFormWizard.step3.progressLabel'), async function(slide, settings) {
       const formPrototypeIconMarkup = await Icons.getIcon('actions-cog', Icons.sizes.small);
       const formTemplateIconMarkup = await Icons.getIcon('actions-file-t3d', Icons.sizes.small);
       const formNameIconMarkup = await Icons.getIcon('actions-tag', Icons.sizes.small);
@@ -329,15 +331,15 @@ function newFormSetup(formManagerApp: FormManager): void {
       const modal = MultiStepWizard.setup.$carousel.closest('.modal');
       const nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
-      let html = '<h5 class="form-section-headline">' + TYPO3.lang['formManager.newFormWizard.step3.check'] + '</h5>'
-        + '<p>' + TYPO3.lang['formManager.newFormWizard.step3.message'] + '</p>'
+      let html = '<h5 class="form-section-headline">' + labels.get('formManager.newFormWizard.step3.check') + '</h5>'
+        + '<p>' + labels.get('formManager.newFormWizard.step3.message') + '</p>'
         + '<div class="alert alert-notice">';
 
       if (settings.prototypeNameName) {
         html += '<div class="row my-1">'
           + '<div class="col col-sm-6">'
           + formPrototypeIconMarkup + ' '
-          + TYPO3.lang['formManager.form_prototype']
+          + labels.get('formManager.form_prototype')
           + '</div>'
           + '<div class="col">'
           + securityUtility.encodeHtml(settings.prototypeNameName)
@@ -349,7 +351,7 @@ function newFormSetup(formManagerApp: FormManager): void {
         html += '<div class="row my-1">'
           + '<div class="col col-sm-6">'
           + formTemplateIconMarkup + ' '
-          + TYPO3.lang['formManager.form_template']
+          + labels.get('formManager.form_template')
           + '</div>'
           + '<div class="col">'
           + securityUtility.encodeHtml(settings.templatePathName)
@@ -360,7 +362,7 @@ function newFormSetup(formManagerApp: FormManager): void {
       html += '<div class="row my-1">'
         + '<div class="col col-sm-6">'
         + formNameIconMarkup + ' '
-        + TYPO3.lang['formManager.form_name']
+        + labels.get('formManager.form_name')
         + '</div>'
         + '<div class="col">'
         + securityUtility.encodeHtml(settings.formName)
@@ -369,7 +371,7 @@ function newFormSetup(formManagerApp: FormManager): void {
         + '<div class="row my-1">'
         + '<div class="col col-sm-6">'
         + formStorageMarkup + ' '
-        + TYPO3.lang['formManager.form_save_path']
+        + labels.get('formManager.form_save_path')
         + '</div>'
         + '<div class="col">'
         + securityUtility.encodeHtml(settings.savePathName)
@@ -402,7 +404,7 @@ function newFormSetup(formManagerApp: FormManager): void {
         if (data.status === 'success') {
           document.location = data.url;
         } else {
-          Notification.error(TYPO3.lang['formManager.newFormWizard.step4.errorTitle'], TYPO3.lang['formManager.newFormWizard.step4.errorMessage'] + ' ' + data.message);
+          Notification.error(labels.get('formManager.newFormWizard.step4.errorTitle'), labels.get('formManager.newFormWizard.step4.errorMessage') + ' ' + data.message);
         }
         MultiStepWizard.dismiss();
       }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -431,7 +433,7 @@ function removeFormSetup(formManagerApp: FormManager): void {
     const that = $(e.currentTarget);
 
     modalButtons.push({
-      text: TYPO3.lang['formManager.cancel'],
+      text: labels.get('formManager.cancel'),
       active: true,
       btnClass: 'btn-default',
       name: 'cancel',
@@ -441,7 +443,7 @@ function removeFormSetup(formManagerApp: FormManager): void {
     });
 
     modalButtons.push({
-      text: TYPO3.lang['formManager.remove_form'],
+      text: labels.get('formManager.remove_form'),
       active: true,
       btnClass: 'btn-danger',
       name: 'createform',
@@ -460,8 +462,8 @@ function removeFormSetup(formManagerApp: FormManager): void {
     });
 
     Modal.show(
-      TYPO3.lang['formManager.remove_form_title'],
-      TYPO3.lang['formManager.remove_form_message'].replace('{0}', that.data('formName')),
+      labels.get('formManager.remove_form_title'),
+      labels.get('formManager.remove_form_message').replace('{0}', that.data('formName')),
       Severity.error ,
       modalButtons
     );
@@ -479,7 +481,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 1
      */
-    MultiStepWizard.addSlide('duplicate-form-step-1', TYPO3.lang['formManager.duplicateFormWizard.step1.title'].replace('{0}', that.data('formName')), '', Severity.notice, top.TYPO3.lang['wizard.progressStep.configure'], function(slide) {
+    MultiStepWizard.addSlide('duplicate-form-step-1', labels.get('formManager.duplicateFormWizard.step1.title').replace('{0}', that.data('formName')), '', Severity.notice, wizardLabels.get('wizard.progressStep.configure'), function(slide) {
       let html, savePathSelect;
 
       MultiStepWizard.lockPrevStep();
@@ -502,10 +504,10 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
       }
 
       html = '<div class="duplicate-form-modal">'
-        + '<h2 class="h3 form-section-headline">' + TYPO3.lang['formManager.new_form_name'] + '</h2>'
+        + '<h2 class="h3 form-section-headline">' + labels.get('formManager.new_form_name') + '</h2>'
         + '<div class="form-group">'
-        + '<label class="form-label for="duplicate-form-name">' + TYPO3.lang['formManager.form_name'] + '</label>'
-        + '<div class="form-description">' + TYPO3.lang['formManager.form_name_description'] + '</div>'
+        + '<label class="form-label for="duplicate-form-name">' + labels.get('formManager.form_name') + '</label>'
+        + '<div class="form-description">' + labels.get('formManager.form_name_description') + '</div>'
         + '<div class="formengine-field-item t3js-formengine-field-item">'
         + '<input id="duplicate-form-name" class="form-control has-error" data-identifier="duplicateFormName" />'
         + '</div>'
@@ -513,8 +515,8 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
 
       if (savePathSelect) {
         html += '<div class="form-group">'
-          + '<label class="form-label" for="duplicate-form-save-path">' + TYPO3.lang['formManager.form_save_path'] + '</label>'
-          + '<div class="form-description">' + TYPO3.lang['formManager.form_save_path_description'] + '</div>'
+          + '<label class="form-label" for="duplicate-form-save-path">' + labels.get('formManager.form_save_path') + '</label>'
+          + '<div class="form-description">' + labels.get('formManager.form_save_path_description') + '</div>'
           + '<div class="formengine-field-item t3js-formengine-field-item">'
           + $(savePathSelect)[0].outerHTML
           + '</div>'
@@ -562,7 +564,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
     /**
      * Wizard step 2
      */
-    MultiStepWizard.addSlide('duplicate-form-step-2', TYPO3.lang['formManager.duplicateFormWizard.step2.title'], '', Severity.notice, TYPO3.lang['formManager.duplicateFormWizard.step2.progressLabel'], async function(slide, settings) {
+    MultiStepWizard.addSlide('duplicate-form-step-2', labels.get('formManager.duplicateFormWizard.step2.title'), '', Severity.notice, labels.get('formManager.duplicateFormWizard.step2.progressLabel'), async function(slide, settings) {
       const formTemplateIconMarkup = await Icons.getIcon('actions-file-t3d', Icons.sizes.small);
       const formNameIconMarkup = await Icons.getIcon('actions-tag', Icons.sizes.small);
       const formStorageMarkup = await Icons.getIcon('actions-database', Icons.sizes.small);
@@ -573,15 +575,15 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
       const modal = MultiStepWizard.setup.$carousel.closest('.modal');
       const nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
-      const html = '<h5 class="form-section-headline">' + TYPO3.lang['formManager.duplicateFormWizard.step2.check'] + '</h5>'
-        + '<p>' + TYPO3.lang['formManager.newFormWizard.step3.message'] + '</p>'
+      const html = '<h5 class="form-section-headline">' + labels.get('formManager.duplicateFormWizard.step2.check') + '</h5>'
+        + '<p>' + labels.get('formManager.newFormWizard.step3.message') + '</p>'
         + '<div class="alert alert-notice">'
         + '<div class="dropdown-table-row">'
         + '<div class="dropdown-table-column dropdown-table-icon">'
         + formTemplateIconMarkup
         + '</div>'
         + '<div class="dropdown-table-column dropdown-table-title">'
-        + TYPO3.lang['formManager.form_copied']
+        + labels.get('formManager.form_copied')
         + '</div>'
         + '<div class="dropdown-table-column dropdown-table-value">'
         + securityUtility.encodeHtml(settings.confirmationDuplicateFormName)
@@ -592,7 +594,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
         + formNameIconMarkup
         + '</div>'
         + '<div class="dropdown-table-column dropdown-table-title">'
-        + TYPO3.lang['formManager.form_name']
+        + labels.get('formManager.form_name')
         + '</div>'
         + '<div class="dropdown-table-column dropdown-table-value">'
         + securityUtility.encodeHtml(settings.formName)
@@ -603,7 +605,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
         + formStorageMarkup
         + '</div>'
         + '<div class="dropdown-table-column dropdown-table-title">'
-        + TYPO3.lang['formManager.form_save_path']
+        + labels.get('formManager.form_save_path')
         + '</div>'
         + '<div class="dropdown-table-column dropdown-table-value">'
         + securityUtility.encodeHtml(settings.confirmationDuplicateFormSavePath)
@@ -636,7 +638,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
         if (data.status === 'success') {
           document.location = data.url;
         } else {
-          Notification.error(TYPO3.lang['formManager.duplicateFormWizard.step3.errorTitle'], TYPO3.lang['formManager.duplicateFormWizard.step3.errorMessage'] + ' ' + data.message);
+          Notification.error(labels.get('formManager.duplicateFormWizard.step3.errorTitle'), labels.get('formManager.duplicateFormWizard.step3.errorMessage') + ' ' + data.message);
         }
         MultiStepWizard.dismiss();
       }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -668,7 +670,7 @@ function showReferencesSetup(formManagerApp: FormManager): void {
       const modalButtons = [];
 
       modalButtons.push({
-        text: TYPO3.lang['formManager.cancel'],
+        text: labels.get('formManager.cancel'),
         active: true,
         btnClass: 'btn-default',
         name: 'cancel',
@@ -681,15 +683,15 @@ function showReferencesSetup(formManagerApp: FormManager): void {
       const editIconMarkup = await Icons.getIcon('actions-open', Icons.sizes.small);
 
       if (referencesLength > 0) {
-        html = '<h2 class="h3">' + TYPO3.lang['formManager.references.headline'].replace('{0}', securityUtility.encodeHtml($that.data('formName'))) + '</h2>'
+        html = '<h2 class="h3">' + labels.get('formManager.references.headline').replace('{0}', securityUtility.encodeHtml($that.data('formName'))) + '</h2>'
           + '<div class="table-fit">'
           + '<table id="forms" class="table table-striped table-hover">'
           + '<thead>'
           + '<tr>'
           + '<th class="col-icon"></th>'
-          + '<th class="col-recordtitle">' + TYPO3.lang['formManager.table.field.title'] + '</th>'
-          + '<th>' + TYPO3.lang['formManager.table.field.uid'] + '</th>'
-          + '<th class="col-control nowrap"><span class="visually-hidden">' + TYPO3.lang['formManager.table.field._CONTROL_'] + '</span></th>'
+          + '<th class="col-recordtitle">' + labels.get('formManager.table.field.title') + '</th>'
+          + '<th>' + labels.get('formManager.table.field.uid') + '</th>'
+          + '<th class="col-control nowrap"><span class="visually-hidden">' + labels.get('formManager.table.field.control') + '</span></th>'
           + '</tr>'
           + '</thead>'
           + '<tbody>';
@@ -703,7 +705,7 @@ function showReferencesSetup(formManagerApp: FormManager): void {
             + '<td>' + securityUtility.encodeHtml(data.references[i].recordUid) + '</td>'
             + '<td class="col-control">'
             + '<div class="btn-group" role="group">'
-            + '<a href="' + securityUtility.encodeHtml(data.references[i].recordEditUrl) + '" data-identifier="referenceLink" class="btn btn-default" title="' + TYPO3.lang['formManager.btn.edit.title'] + '">'
+            + '<a href="' + securityUtility.encodeHtml(data.references[i].recordEditUrl) + '" data-identifier="referenceLink" class="btn btn-default" title="' + labels.get('formManager.btn.edit.title') + '">'
             + editIconMarkup
             + '</a>'
             + '</div>'
@@ -716,9 +718,9 @@ function showReferencesSetup(formManagerApp: FormManager): void {
           + '</div>';
       } else {
         html = '<div>'
-          + '<h1>' + TYPO3.lang['formManager.references.title'].replace('{0}', securityUtility.encodeHtml(data.formPersistenceIdentifier)) + '</h1>'
+          + '<h1>' + labels.get('formManager.references.title').replace('{0}', securityUtility.encodeHtml(data.formPersistenceIdentifier)) + '</h1>'
           + '</div>'
-          + '<div>' + TYPO3.lang['formManager.no_references'] + '</div>';
+          + '<div>' + labels.get('formManager.no_references') + '</div>';
       }
 
       html = $(html);
@@ -729,7 +731,7 @@ function showReferencesSetup(formManagerApp: FormManager): void {
       });
 
       Modal.show(
-        TYPO3.lang['formManager.references.title'].replace('{0}', $that.data('formName')),
+        labels.get('formManager.references.title').replace('{0}', $that.data('formName')),
         html,
         Severity.notice,
         modalButtons
