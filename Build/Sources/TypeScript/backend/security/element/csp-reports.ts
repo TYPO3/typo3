@@ -16,7 +16,7 @@ import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
-import { lll } from '@typo3/core/lit-helper';
+import labels from '~labels/backend.modules.content_security_policy';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import 'bootstrap'; // for data-bs-toggle="dropdown"
 
@@ -148,16 +148,16 @@ export class CspReports extends LitElement {
               <table class="table table-striped">
                 <thead>
                 <tr>
-                  <th>${lll('label.created') || 'Created'}</th>
-                  <th>${lll('label.scope') || 'Scope'}</th>
-                  <th>${lll('label.violation') || 'Violation'}</th>
-                  <th>${lll('label.uri') || 'URI'}</th>
+                  <th>${labels.get('module.label.created')}</th>
+                  <th>${labels.get('module.label.scope')}</th>
+                  <th>${labels.get('module.label.violation')}</th>
+                  <th>${labels.get('module.label.uri')}</th>
                   <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 ${this.reports.length === 0 ? html`
-                  <tr><td colspan="5">${lll('label.label.noEntriesAvailable') || 'No entries available.'}</td></tr>
+                  <tr><td colspan="5">${labels.get('module.label.noEntriesAvailable')}</td></tr>
                 ` : nothing}
                 ${this.reports.map((report: SummarizedCspReport) => html`
                   <tr class=${classMap({ 'table-info': this.selectedReport === report })} data-mutation-group=${report.mutationHashes.join('-')}
@@ -165,7 +165,7 @@ export class CspReports extends LitElement {
                       @keydown=${(e: KeyboardEvent) => this.handleReportKeydown(e, report)}
                       tabindex="0"
                       role="button"
-                      aria-label="${lll('label.showDetails', report.details.effectiveDirective, report.details.blockedUri) || 'Show details'}">
+                      aria-label="${labels.get('module.label.showDetails', report.details.effectiveDirective, report.details.blockedUri)}">
                     <td>${report.created}</td>
                     <td>${report.scope}</td>
                     <td>
@@ -192,15 +192,15 @@ export class CspReports extends LitElement {
   protected renderNavigation(): TemplateResult {
     return html`
       <div class="btn-toolbar">
-        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="${lll('label.scope') || 'Scope'}">
-          ${null === this.selectedScope ? lll('label.all') || 'ALL' : this.selectedScope}
+        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="${labels.get('module.label.scope')}">
+          ${null === this.selectedScope ? labels.get('module.label.all') : this.selectedScope}
         </button>
         <ul class="dropdown-menu">
-          <button class="dropdown-item dropdown-item-spaced" title="${lll('label.all') || 'ALL'}" @click=${() => this.selectScope(null)}>
+          <button class="dropdown-item dropdown-item-spaced" title="${labels.get('module.label.all')}" @click=${() => this.selectScope(null)}>
             <span class="${null === this.selectedScope ? 'text-primary' : '' }">
               <typo3-backend-icon identifier="${null === this.selectedScope ? 'actions-dot' : 'empty-empty'}" size="small"></typo3-backend-icon>
             </span>
-            ${lll('label.all') || 'ALL'}
+            ${labels.get('module.label.all')}
           </button>
           ${this.scopes.map((scope: string) => html`
             <li>
@@ -212,8 +212,8 @@ export class CspReports extends LitElement {
               </button>
             </li>`)}
         </ul>
-        <button type="button" class="btn btn-danger" title="${lll('label.removeAll') || 'Remove all'}" @click=${() => this.invokeDeleteReportsAction()}>
-          ${lll('label.removeAll') || 'Remove all'}
+        <button type="button" class="btn btn-danger" title="${labels.get('module.label.removeAll')}" @click=${() => this.invokeDeleteReportsAction()}>
+          ${labels.get('module.label.removeAll')}
           ${this.selectedScope !== null ? html`"${this.selectedScope}"` : nothing}
         </button>
       </div>`;
@@ -224,7 +224,7 @@ export class CspReports extends LitElement {
       <div class="infolist-info-norecord">
         <div class="card mb-0">
           <div class="card-body">
-            <p>${ lll('label.guide.no_record_selected') || 'Select a row to see more information.'}</p>
+            <p>${labels.get('module.label.guide.no_record_selected')}</p>
           </div>
         </div>
       </div>
@@ -237,44 +237,44 @@ export class CspReports extends LitElement {
       <div class="infolist-info-record">
         <div class="card mb-0" tabindex="-1" id="report-details" @keydown=${(e: KeyboardEvent) => this.handleDetailsKeydown(e)}>
           <div class="card-header">
-            <h3>${ lll('label.details') || 'Details'}</h3>
+            <h3>${labels.get('module.label.details')}</h3>
           </div>
           <div class="card-body">
             <dl>
-              <dt>${ lll('label.directive') || 'Directive'} / ${ lll('label.disposition') || 'Disposition'}</dt>
+              <dt>${labels.get('module.label.directive')} / ${labels.get('module.label.disposition')}</dt>
               <dd>${report.details.effectiveDirective} / ${report.details.disposition}</dd>
 
-              <dt>${ lll('label.document_uri') || 'Document URI'}</dt>
+              <dt>${labels.get('module.label.document_uri')}</dt>
               <dd>${report.details.documentUri} ${this.renderCodeLocation(report)}</dd>
 
               ${report.details.sourceFile && report.details.sourceFile !== report.details.documentUri ? html`
-                <dt>${ lll('label.source_file') || 'Source File'}</dt>
+                <dt>${labels.get('module.label.source_file')}</dt>
                 <dd>${report.details.sourceFile}</dd>
               ` : nothing}
 
-              <dt>${ lll('label.blocked_uri') || 'Blocked URI'}</dt>
+              <dt>${labels.get('module.label.blocked_uri')}</dt>
               <dd>${report.details.blockedUri}</dd>
 
               ${report.details.scriptSample ? html`
-                <dt>${ lll('label.sample') || 'Sample'}</dt>
+                <dt>${labels.get('module.label.sample')}</dt>
                 <dd><code>${report.details.scriptSample}</code></dd>
               ` : nothing}
 
               ${report.meta.agent ? html`
-                <dt>${ lll('label.user_agent') || 'User Agent'}</dt>
+                <dt>${labels.get('module.label.user_agent')}</dt>
                 <dd><code>${report.meta.agent}</code></dd>
               ` : nothing}
 
-              <dt>${ lll('label.uuid') || 'UUID'}</dt>
+              <dt>${labels.get('module.label.uuid')}</dt>
               <dd><code>${report.uuid}</code></dd>
 
-              <dt>${ lll('label.summary') || 'Summary'}</dt>
+              <dt>${labels.get('module.label.summary')}</dt>
               <dd><code>${report.summary}</code></dd>
             </dl>
           </div>
           ${this.suggestions.length > 0 ? html`
             <div class="card-header">
-              <h3>${ lll('label.suggestions') || 'Suggestions'}</h3>
+              <h3>${labels.get('module.label.suggestions')}</h3>
             </div>
           ` : nothing}
           ${this.suggestions.map((suggestion: MutationSuggestion) => html`
@@ -288,7 +288,7 @@ export class CspReports extends LitElement {
               `)}
               <button class="btn btn-primary" @click=${() => this.invokeMutateReportAction(report, suggestion)}>
                 <typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon>
-                ${ lll('button.apply') || 'Apply'}
+                ${labels.get('module.button.apply')}
               </button>
             </div>
           `)}
@@ -296,15 +296,15 @@ export class CspReports extends LitElement {
           <div class="card-footer">
             <button class="btn btn-default" @click=${() => this.selectReport(null)}>
               <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
-              ${ lll('button.close') || 'Close'}
+              ${labels.get('module.button.close')}
             </button>
             <button class="btn btn-default" @click=${() => this.invokeMuteReportAction(report)}>
               <typo3-backend-icon identifier="actions-ban" size="small"></typo3-backend-icon>
-              ${ lll('button.mute') || 'Mute'}
+              ${labels.get('module.button.mute')}
             </button>
             <button class="btn btn-default" @click=${() => this.invokeDeleteReportAction(report)}>
               <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
-              ${ lll('button.delete') || 'Delete'}
+              ${labels.get('module.button.delete')}
             </button>
           </div>
         </div>

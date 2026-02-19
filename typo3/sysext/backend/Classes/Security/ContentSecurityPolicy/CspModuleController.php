@@ -53,11 +53,6 @@ class CspModuleController
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addInlineLanguageLabelFile(
-            'EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf',
-            'module.',
-            'module.'
-        );
         $view = $this->moduleTemplateFactory->create($request);
         $this->registerDocHeaderButtons($view, $request->getAttribute('module'));
         $view->assignMultiple([
