@@ -41,7 +41,7 @@ readonly class PageTypeLinkResolver
      */
     public function resolvePageLinkUrl(array $pageRecord, ServerRequestInterface $request, ?ContentObjectRenderer $contentObjectRenderer = null): string
     {
-        if ($pageRecord['doktype'] !== PageRepository::DOKTYPE_LINK) {
+        if ((int)($pageRecord['doktype'] ?? 0) !== PageRepository::DOKTYPE_LINK) {
             throw new \RuntimeException(
                 sprintf('This class may only be used with pages of doktype "Link" (3), doktype %s is not supported', $pageRecord['doktype']),
                 1762776856,
@@ -94,7 +94,7 @@ readonly class PageTypeLinkResolver
      */
     public function resolveTypolinkParts(array $pageRecord): array
     {
-        if ($pageRecord['doktype'] !== PageRepository::DOKTYPE_LINK) {
+        if ((int)($pageRecord['doktype'] ?? 0) !== PageRepository::DOKTYPE_LINK) {
             throw new \RuntimeException(
                 sprintf('This class may only be used with pages of doktype "Link" (3), doktype %s is not supported', $pageRecord['doktype']),
                 1762776917,
