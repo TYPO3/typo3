@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9aae7de209af1ae2694b7e70d4ecf02",
+    "content-hash": "75629145ba4334280a526b5cef79c9da",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5265,16 +5265,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "5.1.0",
+            "version": "5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "cf489f651e121d963051199c96055f1d822b3cdd"
+                "reference": "9d563f3b169593548b01f45447f74e7cf454a268"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/cf489f651e121d963051199c96055f1d822b3cdd",
-                "reference": "cf489f651e121d963051199c96055f1d822b3cdd",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/9d563f3b169593548b01f45447f74e7cf454a268",
+                "reference": "9d563f3b169593548b01f45447f74e7cf454a268",
                 "shasum": ""
             },
             "require": {
@@ -5320,7 +5320,7 @@
                 "issues": "https://github.com/TYPO3/Fluid/issues",
                 "source": "https://github.com/TYPO3/Fluid"
             },
-            "time": "2026-02-02T18:23:36+00:00"
+            "time": "2026-02-20T13:34:40+00:00"
         },
         {
             "name": "webmozart/assert",
