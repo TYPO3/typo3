@@ -52,7 +52,7 @@ class CategoryAccumulator
 
         $categorizedSettings = [];
         foreach ($settingsDefinitions as $definition) {
-            $category = $definition->category ?? null;
+            $category = $definition->category ?? '';
             $categorizedSettings[isset($categories[$category]) ? $category : 'other'][] = $definition;
         }
 
