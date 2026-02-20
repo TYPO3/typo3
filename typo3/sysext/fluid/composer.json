@@ -34,8 +34,8 @@
 	"require": {
 		"symfony/dependency-injection": "^7.3",
 		"symfony/finder": "^7.3",
-		"typo3/cms-core": "14.1.1",
-		"typo3/cms-extbase": "14.1.1",
+		"typo3/cms-core": "14.1.*@dev",
+		"typo3/cms-extbase": "14.1.*@dev",
 		"typo3fluid/fluid": "^5.0.3"
 	},
 	"conflict": {
