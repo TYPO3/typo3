@@ -20,7 +20,7 @@
 	},
 	"require": {
 		"ext-libxml": "*",
-		"typo3/cms-core": "12.4.43"
+		"typo3/cms-core": "12.4.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
