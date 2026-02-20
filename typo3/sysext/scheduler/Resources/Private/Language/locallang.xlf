@@ -139,7 +139,7 @@
         <source>Following extractors have been registered and will be used when running this task</source>
       </trans-unit>
       <trans-unit id="label.fileStorageExtraction.registeredExtractors.without_extractors">
-        <source>There currently is no extractor registered. This task will have no effect!</source>
+        <source>There currently is no extractor registered. This task will have no effect.</source>
       </trans-unit>
       <trans-unit id="label.tableGarbageCollection.allTables">
         <source>Clean all available tables</source>
@@ -346,7 +346,7 @@
         <source>%s registered scheduler tasks can not be executed</source>
       </trans-unit>
       <trans-unit id="msg.invalidTaskClass.infobox.message">
-        <source><![CDATA[<a href="#scheduler-task-group-missing">Please check the erroneous tasks!</a>]]></source>
+        <source><![CDATA[<a href="#scheduler-task-group-missing">Please check the erroneous tasks.</a>]]></source>
       </trans-unit>
       <trans-unit id="msg.schedulerSetupCheck">
         <source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
@@ -499,7 +499,7 @@
         <source>Optimize MySQL database tables</source>
       </trans-unit>
       <trans-unit id="optimizeDatabaseTable.description">
-        <source>This task executes "OPTIMIZE TABLE" statements on the selected database tables. This helps to reduce storage space and improve I/O efficiency. Warning! Tables will be locked during the optimization process.</source>
+        <source>This task executes "OPTIMIZE TABLE" statements on the selected database tables. This helps to reduce storage space and improve I/O efficiency. Warning: tables will be locked during the optimization process.</source>
       </trans-unit>
       <trans-unit id="ipAnonymization.name">
         <source>Anonymize IP addresses in database tables</source>
