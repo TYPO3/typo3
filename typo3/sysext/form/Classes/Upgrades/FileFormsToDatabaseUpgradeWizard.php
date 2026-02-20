@@ -38,6 +38,7 @@ use TYPO3\CMS\Form\Service\FormTransferService;
  * After successful migration, the original YAML files are deleted from
  * file storage to avoid duplicates.
  *
+ * @since 14.2
  * @internal
  */
 #[UpgradeWizard('formFileFormsToDatabaseMigration')]

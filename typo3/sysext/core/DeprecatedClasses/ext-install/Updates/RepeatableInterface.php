@@ -20,6 +20,6 @@ namespace TYPO3\CMS\Install\Updates;
 use TYPO3\CMS\Core\Upgrades\RepeatableInterface as CoreInterface;
 
 /**
- * @deprecated since v14.0, will be removed in TYPO34 v15.0. Use \TYPO3\CMS\Core\Upgrades\RepeatableInterface instead.
+ * @deprecated since v14.0, will be removed in TYPO3 v15.0. Use \TYPO3\CMS\Core\Upgrades\RepeatableInterface instead.
  */
 interface RepeatableInterface extends CoreInterface {}

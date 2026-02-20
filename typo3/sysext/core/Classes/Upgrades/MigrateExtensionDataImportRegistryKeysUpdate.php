@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This wizard updates sys_registry entries that were stored with file paths to use
  * extension keys as prefix instead, making them independent of file path changes.
  *
+ * @since 14.0
  * @internal This class is only meant to be used within `EXT:core` and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('migrateExtensionDataImportRegistryKeys')]
@@ -71,6 +72,9 @@ readonly class MigrateExtensionDataImportRegistryKeysUpdate implements CoreUpgra
             $oldKey = $row['entry_key'];
             $value = $row['entry_value'];
 
+            if ($oldKey === '') {
+                continue;
+            }
             // Skip entries that already use the new format (contain ":")
             if (str_contains($oldKey, ':') && !str_starts_with($oldKey, 'EXT:')) {
                 continue;
@@ -142,12 +146,15 @@ readonly class MigrateExtensionDataImportRegistryKeysUpdate implements CoreUpgra
         // Pattern 3: composer-based mode (vendor/...), in this case we take the last path part before
         // "Initialisation/Files" or "ext_tables_static+adt.sql"
         $pathSegments = GeneralUtility::revExplode('/', $pathKey, 2);
+        if (count($pathSegments) !== 2) {
+            return null;
+        }
         if ($pathSegments[1] === 'Files' || $pathSegments[1] === 'dataImported') {
             $pathSegments[0] = GeneralUtility::revExplode('/', $pathSegments[0], 2)[0];
             $pathSegments[1] = 'Initialisation/' . $pathSegments[1];
         }
         if (preg_match('#^([^/]+)/(.+)$#', $pathSegments[0], $matches) && in_array($pathSegments[1], ['Initialisation/Files', 'Initialisation/dataImported', 'ext_tables_static+adt.sql'])) {
-            $extensionKey = GeneralUtility::revExplode('/', $matches[0], 2)[1];
+            $extensionKey = (GeneralUtility::revExplode('/', $matches[0], 2)[1] ?? '');
             $extensionKey = str_replace('-', '_', $extensionKey); // Normalize dashes to underscores
             if (str_starts_with($extensionKey, 'cms_')) {
                 $extensionKey = substr($extensionKey, strlen('cms_'));

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Attribute\UpgradeWizard as CoreAttributeUpgradeWizard;
 
 /**
  * Service tag to autoconfigure upgrade wizards
- * @deprecated since v14.0, will be removed in TYPO34 v15.0. Use \TYPO3\CMS\Core\Attribute\UpgradeWizard instead.
+ * @deprecated since v14.0, will be removed in TYPO3 v15.0. Use \TYPO3\CMS\Core\Attribute\UpgradeWizard instead.
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class UpgradeWizard extends CoreAttributeUpgradeWizard {}

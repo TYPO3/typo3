@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Migrates user profile settings from the serialized "uc" field
  * to the new "user_settings" JSON field.
  *
+ * @since 14.2
  * @internal This class is only meant to be used within EXT:backend and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('setup_userSettingsMigration')]

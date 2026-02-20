@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Resource\MimeTypeCompatibilityTypeGuesser;
 /**
  * @since 12.4
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
+ * @todo Was added as part of security relase, keep for v14, remove in v15 earliest)
  */
 #[UpgradeWizard('sysFileMimeTypeMigration')]
 readonly class SysFileMimeTypeMigration implements UpgradeWizardInterface, RepeatableInterface

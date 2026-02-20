@@ -24,6 +24,6 @@ use TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate as CoreImplementation;
  * `list_type` to `CType` update for deprecated "plugin" content element usages.
  *
  * @since 13.4
- * @deprecated since v14.0, will be removed in TYPO34 v15.0. Use \TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate instead.
+ * @deprecated since v14.0, will be removed in TYPO3 v15.0. Use \TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate instead.
  */
 abstract class AbstractListTypeToCTypeUpdate extends CoreImplementation {}
