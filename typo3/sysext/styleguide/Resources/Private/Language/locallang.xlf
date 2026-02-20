@@ -1235,7 +1235,7 @@
         <source>Automatic Updates in Relative Mode</source>
       </trans-unit>
       <trans-unit id="component.datetime.section.autoUpdate.text">
-        <source>In relative mode, the component automatically updates itself with adaptive frequency based on elapsed time: &lt;1 minute updates every second, &lt;1 hour updates every minute, &lt;1 day every 5 minutes, and &gt;1 day every 30 minutes. No configuration needed!</source>
+        <source>In relative mode, the component automatically updates itself with adaptive frequency based on elapsed time: &lt;1 minute updates every second, &lt;1 hour updates every minute, &lt;1 day every 5 minutes, and &gt;1 day every 30 minutes. No configuration needed.</source>
       </trans-unit>
       <trans-unit id="component.datetime.section.autoUpdate.lastUpdated">
         <source>Last updated:</source>
