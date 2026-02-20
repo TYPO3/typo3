@@ -6,11 +6,11 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Test Extension for NullToDefaultUpdateWizardTest',
     'description' => 'Test Extension for NullToDefaultUpdateWizardTest',
     'category' => 'example',
-    'version' => '13.4.26',
+    'version' => '13.4.27',
     'state' => 'stable',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.26',
+            'typo3' => '13.4.27',
         ],
         'conflicts' => [],
         'suggests' => [],
