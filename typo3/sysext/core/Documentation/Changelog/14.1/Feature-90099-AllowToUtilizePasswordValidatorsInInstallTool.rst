@@ -13,7 +13,7 @@ Description
 
 The TYPO3 Install Tool password can now utilize validators as defined
 via the :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['installTool']['validators']`
-array. By default, this re-uses the 'default' validator
+array. By default, this re-uses the `default` validator
 :php:`\TYPO3\CMS\Core\PasswordPolicy\Validator\CorePasswordValidator` with the configuration:
 
 ..  code-block:: php

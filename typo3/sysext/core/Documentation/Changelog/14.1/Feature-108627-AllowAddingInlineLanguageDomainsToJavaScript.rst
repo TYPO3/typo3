@@ -16,7 +16,7 @@ all labels from a language domain and making them available in JavaScript
 via the :js:`TYPO3.lang` object.
 
 The domain name follows the format `extension.domain` (e.g. `core.common`,
-'core.modules.media').
+`core.modules.media`).
 The language file is resolved automatically by the LanguageService, resolving
 to files like :file:`EXT:core/Resources/Private/Language/locallang_common.xlf`
 and :file:`EXT:core/Resources/Private/Language/Modules/media.xlf`.

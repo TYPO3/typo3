@@ -368,7 +368,7 @@ The default Extbase repository magic method
 TypoScript rendering usage via `record-transformation`
 ------------------------------------------------------
 
-Database records using 'country' type fields can be rendered with the
+Database records using `country` type fields can be rendered with the
 TypoScript-based record-transformation rendering (data processor).
 
 You can specify how a field containing a country is rendered in the output

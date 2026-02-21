@@ -19,7 +19,7 @@ start on "Monday" instead of "Sunday" due to their cultural habits.
 
 Thus, the "first day of a week" has been decoupled from the locale selection
 and can be configured on a per-user setting. By default, it still inherits
-the locale's default' setting, if not changed (for example, english=sunday
+the locale's default setting, if not changed (for example, english=sunday
 and german=monday).
 
 Inside the user settings and tab panel :guilabel:`Backend appearance`, a new dropdown
