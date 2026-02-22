@@ -103,22 +103,4 @@
         flex-wrap: wrap;
         gap: .25rem;
     }
-
-    &-actions {
-        [data-recordlist-action="new"] {
-            order: 1;
-        }
-
-        [data-recordlist-action="download"] {
-            order: 2;
-        }
-
-        [data-recordlist-action="columns"] {
-            order: 3;
-        }
-
-        [data-recordlist-action="toggle"] {
-            order: 99;
-        }
-    }
 }

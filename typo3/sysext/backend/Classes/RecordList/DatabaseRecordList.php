@@ -747,10 +747,10 @@ class DatabaseRecordList
         if (!$onlyShowRecordsInSingleTableMode) {
             // Add the "new record" button
             $tableActions .= $this->createActionButtonNewRecord($table) ?? '';
-            // Show the select box
-            $tableActions .= $this->createActionButtonColumnSelector($table) ?? '';
             // Create the Download button
             $tableActions .= $this->createActionButtonDownload($table, $totalItems) ?? '';
+            // Show the select box
+            $tableActions .= $this->createActionButtonColumnSelector($table) ?? '';
             // Render collapse button if in multi table mode
             $tableActions .= $this->createActionButtonCollapse($table) ?? '';
         }

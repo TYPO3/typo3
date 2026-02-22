@@ -3041,10 +3041,6 @@ typo3-backend-wizard .wizard-actions{border-top:var(--wizard-border-width) solid
 .recordlist-heading-row,.recordlist-heading-title{flex-grow:1;max-width:100%}
 .recordlist-heading-title{font-weight:700;width:250px}
 .recordlist-heading-actions,.recordlist-heading-selection{align-items:center;display:flex;flex-wrap:wrap;gap:.25rem}
-.recordlist-heading-actions [data-recordlist-action=new]{order:1}
-.recordlist-heading-actions [data-recordlist-action=download]{order:2}
-.recordlist-heading-actions [data-recordlist-action=columns]{order:3}
-.recordlist-heading-actions [data-recordlist-action=toggle]{order:99}
 .resource-tiles{--typo3-resource-tiles-grid-spacing:.5rem;--typo3-resource-tiles-grid-width:150px;display:grid;gap:var(--typo3-resource-tiles-grid-spacing);grid-template-columns:repeat(auto-fill,var(--typo3-resource-tiles-grid-width));-webkit-user-select:none;-moz-user-select:none;user-select:none}
 .resource-tiles-container{container-type:inline-size;margin-bottom:var(--typo3-spacing)}
 @container (min-width: 480px){
