@@ -70,10 +70,7 @@
                     <td>
                         <f:render
                             section="backendUserData"
-                            arguments="{
-                                backendUserUid: record.backendUserUid,
-                                backendUser: record.backendUser.0
-                            }"
+                            arguments="{backendUser: record.backendUser}"
                         />
                     </td>
                 </tr>
@@ -83,10 +80,7 @@
                         <td>
                             <f:render
                                 section="backendUserData"
-                                arguments="{
-                                    backendUserUid: record.deletedBackendUserUid,
-                                    backendUser: record.deletedBackendUser.0
-                                }"
+                                arguments="{backendUser: record.deletedBackendUser}"
                             />
                         </td>
                     </tr>
@@ -102,9 +96,9 @@
 
 <f:section name="backendUserData">
     <div class="media">
-        <f:if condition="{backendUserUid} && {backendUser.username}">
+        <f:if condition="{backendUser.uid} && {backendUser.username}">
             <div class="media-left">
-                <be:avatar backendUser="{backendUserUid}" showIcon="true" />
+                <be:avatar backendUser="{backendUser.uid}" showIcon="true" />
             </div>
         </f:if>
         <div class="media-body">
@@ -124,7 +118,7 @@
                     <f:translate
                         key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:record.userDeleted"
                         arguments="{
-                            0: '{backendUserUid}'
+                            0: '{backendUser.uid}'
                         }"
                     />
                 </f:else>

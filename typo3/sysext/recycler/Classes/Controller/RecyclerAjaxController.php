@@ -212,11 +212,9 @@ class RecyclerAjaxController
                     'pageTitle' => $pageTitle,
                     'crdate' => $creationDate,
                     'tstamp' => $lastUpdateDate,
-                    'backendUserUid' => $ownerUid,
                     'backendUser' => $this->getBackendUserInformation($ownerUid),
                     'title' => BackendUtility::getRecordTitle($table, $row),
                     'path' => $this->getRecordPath((int)$row['pid']),
-                    'deletedBackendUserUid' => $deleteUserUid,
                     'deletedBackendUser' => $this->getBackendUserInformation($deleteUserUid),
                     'isParentDeleted' => $table === 'pages' && $this->isParentPageDeleted((int)$row['pid']),
                 ];
@@ -246,7 +244,7 @@ class RecyclerAjaxController
     }
 
     /**
-     * Gets the username and real name of a given backend user
+     * Gets the backend user details
      */
     protected function getBackendUserInformation(int $userId): array
     {
@@ -254,19 +252,12 @@ class RecyclerAjaxController
             return [];
         }
         $cacheId = 'recycler-user-' . $userId;
-        $username = $this->runtimeCache->get($cacheId);
-        $userData = [];
-        if ($username === false) {
-            $backendUser = BackendUtility::getRecord('be_users', $userId, 'username, realName', '', false);
-            if ($backendUser !== null) {
-                $userData[] = [
-                    'username' => $backendUser['username'] ?? '',
-                    'realName' => $backendUser['realName'] ?? '',
-                ];
-            }
-            $this->runtimeCache->set($cacheId, $username);
+        $userData = $this->runtimeCache->get($cacheId);
+        if ($userData === false) {
+            $userData = BackendUtility::getRecord('be_users', $userId, 'uid, username, realName', '', false);
+            $this->runtimeCache->set($cacheId, $userData);
         }
-        return $userData;
+        return $userData ?? [];
     }
 
     /**
