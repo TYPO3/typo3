@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -303,7 +304,7 @@ readonly class GridDataService
             $preparedEntry['previous_stage_title'] = $this->stagesService->getStageTitle((int)$entry['history_data']['current']);
             $preparedEntry['user_uid'] = (int)$entry['userid'];
             $preparedEntry['user_username'] = is_array($beUserRecord) ? $beUserRecord['username'] : '';
-            $preparedEntry['tstamp'] = BackendUtility::datetime($entry['tstamp']);
+            $preparedEntry['tstamp'] = DateTimeFactory::createFromTimestamp((int)$entry['tstamp'])->format(\DateTimeInterface::ATOM);
             $preparedEntry['user_comment'] = $entry['history_data']['comment'];
             $preparedEntry['user_avatar'] = $beUserRecord ? $this->avatar->render($beUserRecord) : '';
             $commentsForRecord[] = $preparedEntry;
@@ -421,10 +422,10 @@ readonly class GridDataService
                 $versionArray['value_nextStage'] = $nextStage->uid ?? 0;
                 $versionArray['value_prevStage'] = $previousStage->uid ?? 0;
                 $versionArray['path_Workspace'] = BackendUtility::getRecordPath((int)$record['wspid'], '', 0);
-                $versionArray['lastChangedFormatted'] = '';
+                $versionArray['lastChanged'] = '';
                 if (array_key_exists('tstamp', $versionRecord)) {
                     // @todo: Avoid hard coded access to 'tstamp' and use table TCA 'ctrl' 'tstamp' value instead, if set.
-                    $versionArray['lastChangedFormatted'] = BackendUtility::datetime((int)$versionRecord['tstamp']);
+                    $versionArray['lastChanged'] = DateTimeFactory::createFromTimestamp((int)$versionRecord['tstamp'])->format(\DateTimeInterface::ATOM);
                 }
                 $history = $this->historyService->getHistory($table, (int)$record['uid']);
                 $versionArray['lastEditorId'] = isset($history[0]['user_uid']) ? (int)$history[0]['user_uid'] : 0;

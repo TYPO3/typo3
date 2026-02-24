@@ -16,12 +16,13 @@ import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { nl2br } from '@typo3/core/directive/nl2br';
+import labels from '~labels/workspaces.messages';
 
 type Comment = {
   user_comment: string;
   previous_stage_title: string;
   stage_title: string;
-  tstamp: number;
+  tstamp: string;
   user_username: string;
   user_avatar: string
 };
@@ -64,7 +65,8 @@ export class CommentViewElement extends LitElement {
               ${comment.previous_stage_title} ⇾ ${comment.stage_title}
             </span>
             <span class="badge badge-info">
-              ${comment.tstamp}
+              ${comment.tstamp ? labels.get('comment.tstamp.value', { tstamp: new Date(comment.tstamp) }) : nothing}
+            </span>
           </div>
         </div>
       </div>

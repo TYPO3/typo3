@@ -46,7 +46,7 @@ export type RecordData = {
   value_nextStage: number,
   value_prevStage: number,
   path_Workspace: string,
-  lastChangedFormatted: string,
+  lastChanged: string,
   lastEditorId: number,
   lastEditorName: string,
   lastEditorRealName: string,
@@ -267,7 +267,7 @@ export class RecordTableElement extends LitElement {
           ` : html`
             <span class="text-variant">${labels.get('column.editor.unknown')}</span>
           `}
-            ${data.lastChangedFormatted}
+            ${data.lastChanged ? labels.get('column.last_change.value', { last_change: new Date(data.lastChanged) }) : nothing}
           </div>
         </td>
         <td class="col-state">
