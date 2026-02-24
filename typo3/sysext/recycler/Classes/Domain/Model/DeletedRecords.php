@@ -36,10 +36,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Model class for the 'recycler' extension.
+ * Each GeneralUtility::makeInstance() call must return a fresh
+ * DeletedRecords instance so that loadData() and getTotalCount()
+ * in the controller do not accumulate state across calls.
+ *
  * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
-#[Autoconfigure(public: true)]
+#[Autoconfigure(public: true, shared: false)]
 class DeletedRecords
 {
     /**
