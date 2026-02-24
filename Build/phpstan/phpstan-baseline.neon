@@ -1573,12 +1573,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
 		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
-
-		-
 			message: '#^Parameter \#2 \$folder of method TYPO3\\CMS\\Core\\Resource\\ResourceStorage\:\:checkFolderActionPermission\(\) expects TYPO3\\CMS\\Core\\Resource\\Folder\|null, TYPO3\\CMS\\Core\\Resource\\FolderInterface given\.$#'
 			identifier: argument.type
 			count: 1
@@ -6491,12 +6485,6 @@ parameters:
 			identifier: identical.alwaysTrue
 			count: 2
 			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
-
-		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/CronCommand/CronCommand.php
 
 		-
 			message: '#^Comparison operation "\<" between int\<1, max\> and 1 is always false\.$#'
