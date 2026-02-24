@@ -129,6 +129,9 @@
       <trans-unit id="column.last_change">
         <source>Last changed</source>
       </trans-unit>
+      <trans-unit id="column.last_change.value">
+        <source>{last_change, date, medium} {last_change, time, medium}</source>
+      </trans-unit>
       <trans-unit id="column.editor.unknown">
         <source>Unknown</source>
       </trans-unit>
@@ -266,6 +269,9 @@
       </trans-unit>
       <trans-unit id="window.recordChanges.tabs.changeSummary">
         <source>Summary of changes</source>
+      </trans-unit>
+      <trans-unit id="comment.tstamp.value">
+        <source>{tstamp, date, medium} {tstamp, time, medium}</source>
       </trans-unit>
       <trans-unit id="window.recordChanges.tabs.comments">
         <source>Comments</source>
