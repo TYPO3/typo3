@@ -4183,12 +4183,6 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
 
 		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/CronCommand/CronCommand.php
-
-		-
 			message: '#^Comparison operation "\<" between int\<1, max\> and 1 is always false\.$#'
 			identifier: smaller.alwaysFalse
 			count: 1
