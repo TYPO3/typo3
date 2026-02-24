@@ -402,6 +402,17 @@ class DataHandler
      */
     protected static array $recordPidsForDeletedRecords = [];
 
+    /**
+     * Remove system fields that should not be processed during record copying.
+     *
+     * @param array $row Record row to filter
+     * @return array Filtered row without nonFields (uid, perms_*, t3ver_*)
+     */
+    protected function removeNonCopyableFields(array $row): array
+    {
+        return array_diff_key($row, array_flip($this->nonFields));
+    }
+
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CacheManager $cacheManager,
@@ -3495,13 +3506,9 @@ class DataHandler
         }
 
         $data = [];
-        // @todo: make this configurable via an event
-        $nonFields = $this->nonFields;
+        $row = $this->removeNonCopyableFields($row);
         // Traverse ALL fields of the selected record:
         foreach ($row as $field => $value) {
-            if (in_array($field, $nonFields, true)) {
-                continue;
-            }
             // Preparation/Processing of the value:
             // "pid" is hardcoded of course:
             // isset() won't work here, since values can be NULL in each of the arrays
@@ -3791,16 +3798,18 @@ class DataHandler
 
         $schema = $this->tcaSchemaFactory->get($table);
 
-        // @todo: make this configurable via an event
-        $nonFields = $this->nonFields;
-
-        // Merge in override array.
+        // Merge in override array (t3ver_* overrides from versionizeRecord, etc.)
         $row = array_merge($row, $overrideArray);
+
+        // Preserve system field values (perms_*, t3ver_*) — they must reach insertNewCopyVersion
+        $preservedSystemFields = array_intersect_key($row, array_flip($this->nonFields));
+        unset($preservedSystemFields['uid']);
+
+        // Remove non-copyable fields for the processing loop
+        $row = $this->removeNonCopyableFields($row);
+
         // Traverse ALL fields of the selected record:
         foreach ($row as $field => $value) {
-            if (in_array($field, $nonFields, true)) {
-                continue;
-            }
             if ($field === 'pid') {
                 $value = $pid;
             } else {
@@ -3814,6 +3823,9 @@ class DataHandler
             // Add value to array.
             $row[$field] = $value;
         }
+
+        // Re-add preserved system fields for insertNewCopyVersion
+        $row = array_merge($row, $preservedSystemFields);
         // Setting original UID:
         if ($schema->hasCapability(TcaSchemaCapability::AncestorReferenceField)) {
             $row[$schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName()] = $uid;
@@ -3826,7 +3838,7 @@ class DataHandler
         // that refers e.g. to a tt_content record is marked as deleted. The tt_content record then needs a reference index update.
         // This scenario seems to currently only show up if in workspaces, so the refindex update is restricted to this for now.
         if ($workspaceOptions !== []) {
-            $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, (int)$row['uid'], $this->BE_USER->workspace);
+            $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, $uid, $this->BE_USER->workspace);
         }
 
         if ($theNewSQLID) {
@@ -4966,14 +4978,10 @@ class DataHandler
             ? $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getField()
             : null;
 
-        // @todo: make this configurable via an event
-        $nonFields = $this->nonFields;
+        $row = $this->removeNonCopyableFields($row);
         $data = [];
 
         foreach ($row as $field => $value) {
-            if (in_array($field, $nonFields, true)) {
-                continue;
-            }
             if ($field === 'pid') {
                 $value = $destPid;
             } elseif (array_key_exists($field, $overrideValues)) {
