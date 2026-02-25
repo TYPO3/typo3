@@ -57,6 +57,7 @@ use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Service\FormEditorEnrichmentService;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Form\Type\FormDefinitionArray;
+use TYPO3\CMS\Form\Utility\DateRangeValidatorPatterns;
 
 /**
  * The form editor controller
@@ -149,6 +150,9 @@ class FormEditorController extends ActionController
         $addInlineSettings = [
             'FormEditor' => [
                 'typo3WinBrowserUrl' => (string)$this->coreUriBuilder->buildUriFromRoute('wizard_element_browser'),
+                'dateEditor' => [
+                    'absolutePattern' => DateRangeValidatorPatterns::RFC3339_FULL_DATE,
+                ],
             ],
         ];
         $addInlineSettings = array_replace_recursive(

@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Validation;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
-use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Form\Utility\DateRangeValidatorPatterns;
 
 /**
@@ -26,8 +27,9 @@ use TYPO3\CMS\Form\Utility\DateRangeValidatorPatterns;
  *
  * Scope: frontend
  */
-final class DateRangeValidator extends AbstractValidator
+final class DateRangeValidator extends AbstractValidator implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
     /**
      * @var array
      */
@@ -43,6 +45,9 @@ final class DateRangeValidator extends AbstractValidator
     public function isValid(mixed $value): void
     {
         $options = $this->validateOptions();
+        if ($options === null) {
+            return;
+        }
 
         if (!($value instanceof \DateTime)) {
             $this->addError(
@@ -87,22 +92,30 @@ final class DateRangeValidator extends AbstractValidator
     }
 
     /**
-     * Checks if this validator is correctly configured
+     * Checks if this validator is correctly configured.
      *
-     * @throws InvalidValidationOptionsException if the configured validation options are incorrect
+     * Returns the resolved options array on success, or null if a date
+     * option is misconfigured. In the latter case a generic validation
+     * error is added for the end user and the technical details are logged.
      */
-    private function validateOptions(): array
+    private function validateOptions(): ?array
     {
         $options = $this->options;
         if (!empty($this->options['minimum'])) {
             $minimum = $this->parseDate($this->options['minimum']);
             if ($minimum === null) {
-                $message = sprintf(
-                    'The option "minimum" (%s) could not be converted to DateTime. Use format "%s" or a relative expression (e.g. "today", "-18 years").',
-                    $this->options['minimum'],
-                    $this->options['format']
+                $this->logger->error('DateRangeValidator: The option "minimum" ({value}) could not be converted to DateTime. Use format "{format}" or a relative expression (e.g. "today", "-18 years").', [
+                    'value' => $this->options['minimum'],
+                    'format' => $this->options['format'],
+                ]);
+                $this->addError(
+                    $this->translateErrorMessage(
+                        'validation.error.1748345955',
+                        'form'
+                    ),
+                    1748345955
                 );
-                throw new InvalidValidationOptionsException($message, 1521293813);
+                return null;
             }
             $minimum->modify('midnight');
             $options['minimum'] = $minimum;
@@ -111,12 +124,18 @@ final class DateRangeValidator extends AbstractValidator
         if (!empty($this->options['maximum'])) {
             $maximum = $this->parseDate($this->options['maximum']);
             if ($maximum === null) {
-                $message = sprintf(
-                    'The option "maximum" (%s) could not be converted to DateTime. Use format "%s" or a relative expression (e.g. "today", "-18 years").',
-                    $this->options['maximum'],
-                    $this->options['format']
+                $this->logger->error('DateRangeValidator: The option "maximum" ({value}) could not be converted to DateTime. Use format "{format}" or a relative expression (e.g. "today", "-18 years").', [
+                    'value' => $this->options['maximum'],
+                    'format' => $this->options['format'],
+                ]);
+                $this->addError(
+                    $this->translateErrorMessage(
+                        'validation.error.1748345955',
+                        'form'
+                    ),
+                    1748345955
                 );
-                throw new InvalidValidationOptionsException($message, 1521293814);
+                return null;
             }
             $maximum->modify('midnight');
             $options['maximum'] = $maximum;
@@ -129,7 +148,8 @@ final class DateRangeValidator extends AbstractValidator
      *
      * Supports:
      * - Absolute dates matching the configured format (e.g. "2025-03-17")
-     * - Relative date expressions supported by PHP's DateTime parser (e.g. "today", "-18 years", "+1 month")
+     * - Any relative date expression accepted by PHP's DateTime parser
+     *   (e.g. "today", "-18 years", "last sunday", "first day of next month")
      */
     private function parseDate(string $value): ?\DateTime
     {
@@ -138,25 +158,6 @@ final class DateRangeValidator extends AbstractValidator
             return $date;
         }
 
-        if (!self::isRelativeDateExpression($value)) {
-            return null;
-        }
-
-        try {
-            return new \DateTime($value);
-        } catch (\Exception) {
-            return null;
-        }
-    }
-
-    /**
-     * Check if the value is a recognized relative date expression.
-     *
-     * Only explicit relative expressions are accepted to prevent
-     * ambiguous strings (e.g. "1972-01") from being silently interpreted.
-     */
-    private static function isRelativeDateExpression(string $value): bool
-    {
-        return (bool)preg_match(DateRangeValidatorPatterns::RELATIVE_DATE_PCRE, trim($value));
+        return DateRangeValidatorPatterns::parseRelativeDateExpression($value);
     }
 }

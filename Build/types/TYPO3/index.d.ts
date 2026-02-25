@@ -51,6 +51,9 @@ declare namespace TYPO3 {
     }
     export namespace FormEditor {
       export const typo3WinBrowserUrl: string;
+      export const dateEditor: {
+        readonly absolutePattern: string;
+      };
     }
     export namespace FormEngine {
       export const moduleUrl: string;

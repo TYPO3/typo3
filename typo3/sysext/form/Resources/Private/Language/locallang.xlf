@@ -102,6 +102,9 @@
       <trans-unit id="validation.error.1521293687">
         <source>You must select a date after %s.</source>
       </trans-unit>
+      <trans-unit id="validation.error.1748345955">
+        <source>This field cannot be validated due to a configuration error. Please contact the website owner.</source>
+      </trans-unit>
       <trans-unit id="validation.error.1556283177">
         <source>Password does not match confirmation</source>
       </trans-unit>

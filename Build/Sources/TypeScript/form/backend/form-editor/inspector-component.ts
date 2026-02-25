@@ -28,6 +28,10 @@ import {
   PropertyGridEditorUpdateEvent
 } from '@typo3/form/backend/form-editor/component/property-grid-editor';
 import '@typo3/rte-ckeditor/ckeditor5';
+import '@typo3/form/backend/form-editor/component/date-editor';
+import {
+  DateEditorChangeEvent
+} from '@typo3/form/backend/form-editor/component/date-editor';
 
 import type { FormEditor } from '@typo3/form/backend/form-editor';
 import type {
@@ -95,6 +99,7 @@ const defaultConfiguration: Configuration = {
     'Inspector-Typo3WinBrowserEditor': 'Inspector-Typo3WinBrowserEditor',
     'Inspector-ValidatorsEditor': 'Inspector-ValidatorsEditor',
     'Inspector-ValidationErrorMessageEditor': 'Inspector-ValidationErrorMessageEditor',
+    'Inspector-DateEditor': 'Inspector-DateEditor',
 
     inspectorFinishers: 'inspectorFinishers',
     inspectorValidators: 'inspectorValidators',
@@ -283,6 +288,14 @@ function renderEditorDispatcher(
       break;
     case 'Inspector-Typo3WinBrowserEditor':
       renderTypo3WinBrowserEditor(
+        editorConfiguration,
+        editorHtml,
+        collectionElementIdentifier,
+        collectionName
+      );
+      break;
+    case 'Inspector-DateEditor':
+      renderDateEditor(
         editorConfiguration,
         editorHtml,
         collectionElementIdentifier,
@@ -2259,6 +2272,92 @@ export function buildTitleByFormElement(formElement?: FormElement): HTMLElement 
   const span = document.createElement('span');
   span.textContent = label;
   return span;
+}
+
+/**
+ * Inspector editor for date constraints using the <typo3-form-date-editor> web component.
+ *
+ * Delegates UI rendering and state management to the web component.
+ * Handles syncing the composed value to the form element model and additionalElementPropertyPaths.
+ * The regex patterns from DateRangeValidatorPatterns (PHP) are passed via TYPO3.settings
+ * (injected by FormEditorController) to the web component as attributes, so JS and PHP
+ * always share the same validation logic.
+ */
+export function renderDateEditor(
+  editorConfiguration: EditorConfiguration,
+  editorHtml: HTMLElement | JQuery,
+  collectionElementIdentifier: string,
+  collectionName: keyof FormEditorDefinitions
+): void {
+  assert(
+    'object' === $.type(editorConfiguration),
+    'Invalid parameter "editorConfiguration"',
+    1740000001
+  );
+  assert(
+    'object' === $.type(editorHtml),
+    'Invalid parameter "editorHtml"',
+    1740000002
+  );
+  assert(
+    getUtility().isNonEmptyString(editorConfiguration.propertyPath),
+    'Invalid configuration "propertyPath"',
+    1740000003
+  );
+
+  const propertyPath = getFormEditorApp().buildPropertyPath(
+    editorConfiguration.propertyPath,
+    collectionElementIdentifier,
+    collectionName
+  );
+
+  // Set editor label and description
+  getHelper().getTemplatePropertyDomElement('label', editorHtml)
+    .append(editorConfiguration.label || '');
+  renderDescription(editorConfiguration, editorHtml);
+
+  // Locate the web component
+  const editorElement = editorHtml instanceof HTMLElement
+    ? editorHtml.querySelector('typo3-form-date-editor')
+    : editorHtml.get(0).querySelector('typo3-form-date-editor');
+
+  // Pass the absolute date pattern from DateRangeValidatorPatterns (PHP) to the web component.
+  // The pattern is injected via TYPO3.settings by FormEditorController and is required
+  // for distinguishing absolute dates (YYYY-MM-DD) from relative expressions.
+  const dateEditorSettings = TYPO3.settings.FormEditor.dateEditor;
+  assert(
+    getUtility().isNonEmptyString(dateEditorSettings.absolutePattern),
+    'Missing required TYPO3.settings.FormEditor.dateEditor.absolutePattern',
+    1740000004
+  );
+  editorElement.setAttribute('absolute-pattern', dateEditorSettings.absolutePattern);
+
+  // Set initial value from form element model
+  editorElement.value = getCurrentlySelectedFormElement().get(propertyPath) || '';
+
+  validateCollectionElement(propertyPath, editorHtml);
+
+  // Listen for changes from the web component
+  editorElement.addEventListener(DateEditorChangeEvent.eventName, (event: DateEditorChangeEvent) => {
+    const value = event.value;
+
+    getCurrentlySelectedFormElement().set(propertyPath, value);
+
+    if (
+      !getUtility().isUndefinedOrNull(editorConfiguration.additionalElementPropertyPaths)
+      && 'array' === $.type(editorConfiguration.additionalElementPropertyPaths)
+    ) {
+      for (let i = 0, len = editorConfiguration.additionalElementPropertyPaths.length; i < len; ++i) {
+        if (value === '') {
+          getCurrentlySelectedFormElement().unset(editorConfiguration.additionalElementPropertyPaths[i]);
+        } else {
+          getCurrentlySelectedFormElement().set(editorConfiguration.additionalElementPropertyPaths[i], value);
+        }
+      }
+    }
+
+    validateCollectionElement(propertyPath, editorHtml);
+  });
 }
 
 export function renderDescription(

@@ -88,14 +88,6 @@ class FormatDateRenderableBeforeRendering
 
     private function parseRelativeDate(string $value): ?\DateTime
     {
-        if (!preg_match(DateRangeValidatorPatterns::RELATIVE_DATE_PCRE, trim($value))) {
-            return null;
-        }
-
-        try {
-            return new \DateTime($value);
-        } catch (\Exception) {
-            return null;
-        }
+        return DateRangeValidatorPatterns::parseRelativeDateExpression($value);
     }
 }

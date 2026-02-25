@@ -131,21 +131,19 @@ function getPublisherSubscriber(): PublisherSubscriber {
  */
 const RFC3339_FULL_DATE_PATTERN = /^([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/i;
 
-/**
- * Relative date expressions supported by PHP's strtotime(), e.g.:
- * "today", "now", "yesterday", "tomorrow", "-18 years", "+1 month", "last day of december"
- *
- * This pattern intentionally covers common practical expressions rather than
- * the full strtotime() grammar, to provide meaningful editor feedback.
- */
-const RELATIVE_DATE_PATTERN = /^(today|now|yesterday|tomorrow|[+-]?\s*\d+\s+(year|month|week|day|hour|minute|second)s?(\s+ago)?(\s*[+-]?\s*\d+\s+(year|month|week|day|hour|minute|second)s?(\s+ago)?)*)$/i;
-
 function isAbsoluteDate(value: string): boolean {
   return RFC3339_FULL_DATE_PATTERN.test(value);
 }
 
+/**
+ * A relative date expression is any non-empty string that is NOT an absolute
+ * date (YYYY-MM-DD). Actual validation is performed server-side by PHP's
+ * DateTime parser, which supports the full strtotime() grammar (e.g.
+ * "last sunday", "first day of next month", "+1 month +3 days").
+ */
 function isRelativeDateExpression(value: string): boolean {
-  return RELATIVE_DATE_PATTERN.test(value);
+  const trimmed = value.trim();
+  return trimmed.length > 0 && !isAbsoluteDate(trimmed);
 }
 
 function addPropertyValidators(): void {

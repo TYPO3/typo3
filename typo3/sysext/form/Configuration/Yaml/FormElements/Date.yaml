@@ -24,10 +24,9 @@ prototypes:
               propertyPath: renderingOptions.enabled
             300:
               identifier: defaultValue
-              templateName: Inspector-TextEditor
+              templateName: Inspector-DateEditor
               label: formEditor.elements.TextMixin.editor.defaultValue.label
               propertyPath: defaultValue
-              placeholder: formEditor.elements.Date.editor.defaultValue.placeholder
               propertyValidators:
                 10: RFC3339FullDateOrEmpty
             550:
@@ -131,9 +130,8 @@ prototypes:
                     label: formEditor.elements.DatePicker.validators.DateRange.editor.header.label
                   250:
                     identifier: minimum
-                    templateName: Inspector-TextEditor
+                    templateName: Inspector-DateEditor
                     label: formEditor.elements.DatePicker.validators.DateRange.editor.minimum
-                    placeholder: formEditor.elements.DatePicker.validators.DateRange.editor.minimum.placeholder
                     propertyPath: options.minimum
                     propertyValidators:
                       10: RFC3339FullDateOrEmpty
@@ -141,9 +139,8 @@ prototypes:
                       10: properties.fluidAdditionalAttributes.min
                   300:
                     identifier: maximum
-                    templateName: Inspector-TextEditor
+                    templateName: Inspector-DateEditor
                     label: formEditor.elements.DatePicker.validators.DateRange.editor.maximum
-                    placeholder: formEditor.elements.DatePicker.validators.DateRange.editor.maximum.placeholder
                     propertyPath: options.maximum
                     propertyValidators:
                       10: RFC3339FullDateOrEmpty

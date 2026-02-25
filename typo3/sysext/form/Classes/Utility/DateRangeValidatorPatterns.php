@@ -26,14 +26,41 @@ final class DateRangeValidatorPatterns
 {
     public const RFC3339_FULL_DATE = '\d{4}-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01])';
 
-    /**
-     * Covers the subset of PHP's strtotime() syntax explicitly supported by the
-     * DateRange validator. Only explicit expressions are accepted to prevent
-     * ambiguous strings from being silently misinterpreted.
-     */
-    public const RELATIVE_DATE = '(today|now|yesterday|tomorrow|[+-]?\s*\d+\s+(year|month|week|day|hour|minute|second)s?(\s+ago)?(\s*[+-]?\s*\d+\s+(year|month|week|day|hour|minute|second)s?(\s+ago))*)';
-
     public const RFC3339_FULL_DATE_PCRE = '/^' . self::RFC3339_FULL_DATE . '$/';
 
-    public const RELATIVE_DATE_PCRE = '/^' . self::RELATIVE_DATE . '$/i';
+    /**
+     * Check whether a string is a relative date expression.
+     *
+     * A relative date is defined as any non-empty string that does NOT match
+     * an RFC 3339 full-date (YYYY-MM-DD). Actual validity is determined by
+     * PHP's DateTime parser (strtotime).
+     */
+    public static function isRelativeDateExpression(string $value): bool
+    {
+        $trimmed = trim($value);
+        if ($trimmed === '') {
+            return false;
+        }
+        // If it matches an absolute date, it's not a relative expression
+        if (preg_match(self::RFC3339_FULL_DATE_PCRE, $trimmed)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Try to parse a relative date expression using PHP's DateTime parser.
+     * Returns the resulting DateTime or null if the expression is invalid.
+     */
+    public static function parseRelativeDateExpression(string $value): ?\DateTime
+    {
+        if (!self::isRelativeDateExpression($value)) {
+            return null;
+        }
+        try {
+            return new \DateTime(trim($value));
+        } catch (\Exception) {
+            return null;
+        }
+    }
 }

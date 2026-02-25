@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_relative_date_editor.xlf" date="2025-02-25T00:00:00Z" product-name="form">
+    <header/>
+    <body>
+      <trans-unit id="mode.no">
+        <source>No value</source>
+      </trans-unit>
+      <trans-unit id="mode.today">
+        <source>Today</source>
+      </trans-unit>
+      <trans-unit id="mode.absolute">
+        <source>Absolute date</source>
+      </trans-unit>
+      <trans-unit id="mode.relative">
+        <source>Relative date</source>
+      </trans-unit>
+      <trans-unit id="direction.past">
+        <source>past</source>
+      </trans-unit>
+      <trans-unit id="direction.future">
+        <source>future</source>
+      </trans-unit>
+      <trans-unit id="unit.days">
+        <source>{count, plural, one {Day} other {Days}}</source>
+      </trans-unit>
+      <trans-unit id="unit.weeks">
+        <source>{count, plural, one {Week} other {Weeks}}</source>
+      </trans-unit>
+      <trans-unit id="unit.months">
+        <source>{count, plural, one {Month} other {Months}}</source>
+      </trans-unit>
+      <trans-unit id="unit.years">
+        <source>{count, plural, one {Year} other {Years}}</source>
+      </trans-unit>
+      <trans-unit id="mode.custom">
+        <source>Custom relative expression</source>
+      </trans-unit>
+      <trans-unit id="custom.placeholder">
+        <source>e.g. "sunday next month"</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
