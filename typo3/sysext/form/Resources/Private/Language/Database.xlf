@@ -307,7 +307,7 @@
         <source>Invalid file size format, valid e.g. "10B|K|M|G"</source>
       </trans-unit>
       <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label">
-        <source>Invalid date format. Valid format: Y-m-d (2018-03-17)</source>
+        <source>Invalid date format. Use Y-m-d (e.g. 2018-03-17) or a relative expression (e.g. today, -18 years)</source>
       </trans-unit>
       <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label">
         <source>Invalid pattern</source>

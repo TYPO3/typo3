@@ -135,4 +135,122 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         self::assertEquals(1521293686, $firstError->getCode());
         self::assertTrue($result->hasErrors());
     }
+
+    #[Test]
+    public function relativeMinimumTodayRejectsPastDate(): void
+    {
+        $input = new \DateTime('yesterday');
+        $options = ['minimum' => 'today'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        $result = $validator->validate($input);
+        self::assertTrue($result->hasErrors());
+        self::assertEquals(1521293687, $result->getFirstError()->getCode());
+    }
+
+    #[Test]
+    public function relativeMinimumTodayAcceptsTodayDate(): void
+    {
+        $input = new \DateTime('today');
+        $options = ['minimum' => 'today'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        self::assertFalse($validator->validate($input)->hasErrors());
+    }
+
+    #[Test]
+    public function relativeMaximumTodayRejectsFutureDate(): void
+    {
+        $input = new \DateTime('tomorrow');
+        $options = ['maximum' => 'today'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        $result = $validator->validate($input);
+        self::assertTrue($result->hasErrors());
+        self::assertEquals(1521293686, $result->getFirstError()->getCode());
+    }
+
+    #[Test]
+    public function relativeMaximumTodayAcceptsTodayDate(): void
+    {
+        $input = new \DateTime('today');
+        $options = ['maximum' => 'today'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        self::assertFalse($validator->validate($input)->hasErrors());
+    }
+
+    #[Test]
+    public function relativeMaximumMinus18YearsRejectsRecentDate(): void
+    {
+        $input = new \DateTime('-1 year');
+        $options = ['maximum' => '-18 years'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        $result = $validator->validate($input);
+        self::assertTrue($result->hasErrors());
+    }
+
+    #[Test]
+    public function relativeMaximumMinus18YearsAcceptsOldEnoughDate(): void
+    {
+        $input = new \DateTime('-20 years');
+        $options = ['maximum' => '-18 years'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        self::assertFalse($validator->validate($input)->hasErrors());
+    }
+
+    #[Test]
+    public function relativeMinimumWithPositiveOffsetAcceptsFutureDate(): void
+    {
+        $input = new \DateTime('+2 months');
+        $options = ['minimum' => '+1 month'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        self::assertFalse($validator->validate($input)->hasErrors());
+    }
+
+    #[Test]
+    public function mixedAbsoluteMinimumAndRelativeMaximumWorks(): void
+    {
+        $input = new \DateTime('today');
+        $options = ['minimum' => '2020-01-01', 'maximum' => 'today'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        self::assertFalse($validator->validate($input)->hasErrors());
+    }
+
+    #[Test]
+    public function validateOptionsThrowsExceptionForNonsenseRelativeExpression(): void
+    {
+        $this->expectException(InvalidValidationOptionsException::class);
+        $this->expectExceptionCode(1521293813);
+        $options = ['minimum' => 'foobar', 'maximum' => ''];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        $validator->validate(new \DateTime());
+    }
+
+    #[Test]
+    public function relativeYesterdayExpressionIsAccepted(): void
+    {
+        $input = new \DateTime('-2 days');
+        $options = ['minimum' => 'yesterday'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        $result = $validator->validate($input);
+        self::assertTrue($result->hasErrors());
+    }
+
+    #[Test]
+    public function relativeTomorrowExpressionIsAccepted(): void
+    {
+        $input = new \DateTime('+2 days');
+        $options = ['maximum' => 'tomorrow'];
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
+        $result = $validator->validate($input);
+        self::assertTrue($result->hasErrors());
+    }
 }

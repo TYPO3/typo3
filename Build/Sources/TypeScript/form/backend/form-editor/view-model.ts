@@ -126,6 +126,28 @@ function getPublisherSubscriber(): PublisherSubscriber {
   return getFormEditorApp().getPublisherSubscriber();
 }
 
+/**
+ * RFC 3339 full-date format: YYYY-MM-DD
+ */
+const RFC3339_FULL_DATE_PATTERN = /^([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/i;
+
+/**
+ * Relative date expressions supported by PHP's strtotime(), e.g.:
+ * "today", "now", "yesterday", "tomorrow", "-18 years", "+1 month", "last day of december"
+ *
+ * This pattern intentionally covers common practical expressions rather than
+ * the full strtotime() grammar, to provide meaningful editor feedback.
+ */
+const RELATIVE_DATE_PATTERN = /^(today|now|yesterday|tomorrow|[+-]?\s*\d+\s+(year|month|week|day|hour|minute|second)s?(\s+ago)?(\s*[+-]?\s*\d+\s+(year|month|week|day|hour|minute|second)s?(\s+ago)?)*)$/i;
+
+function isAbsoluteDate(value: string): boolean {
+  return RFC3339_FULL_DATE_PATTERN.test(value);
+}
+
+function isRelativeDateExpression(value: string): boolean {
+  return RELATIVE_DATE_PATTERN.test(value);
+}
+
 function addPropertyValidators(): void {
   getFormEditorApp().addPropertyValidationValidator('NotEmpty', function(formElement, propertyPath) {
     const value = formElement.get(propertyPath);
@@ -212,7 +234,8 @@ function addPropertyValidators(): void {
     if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
       return undefined;
     }
-    if (!formElement.get(propertyPath).match(/^([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/i)) {
+    const value = formElement.get(propertyPath);
+    if (!isAbsoluteDate(value) && !isRelativeDateExpression(value)) {
       return getFormEditorApp().getFormElementPropertyValidatorDefinition('RFC3339FullDate').errorMessage || 'invalid value';
     }
     return undefined;
@@ -222,7 +245,8 @@ function addPropertyValidators(): void {
     if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
       return undefined;
     }
-    if (formElement.get(propertyPath).length > 0 && !formElement.get(propertyPath).match(/^([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/i)) {
+    const value = formElement.get(propertyPath);
+    if (value.length > 0 && !isAbsoluteDate(value) && !isRelativeDateExpression(value)) {
       return getFormEditorApp().getFormElementPropertyValidatorDefinition('RFC3339FullDate').errorMessage || 'invalid value';
     }
     return undefined;
