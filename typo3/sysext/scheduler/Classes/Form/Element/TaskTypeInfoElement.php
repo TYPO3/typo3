@@ -64,7 +64,7 @@ class TaskTypeInfoElement extends AbstractFormElement
             $resultArray['html'] = '<div class="alert alert-warning">' . htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskType')) . ': <code>' . htmlspecialchars($selectedValue) . '</code></div>';
         }
 
-        $resultArray['additionalHiddenFields'][] = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($selectedValue) . '" />';
+        $resultArray['html'] .= '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($selectedValue) . '" />';
         return $resultArray;
     }
 }

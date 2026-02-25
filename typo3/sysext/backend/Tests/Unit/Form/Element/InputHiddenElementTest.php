@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class InputHiddenElementTest extends UnitTestCase
 {
     #[Test]
-    public function renderReturnsElementsAsAdditionalHiddenFields(): void
+    public function renderReturnsHiddenFieldInHtml(): void
     {
         $data = [
             'parameterArray' => [
@@ -38,9 +38,8 @@ final class InputHiddenElementTest extends UnitTestCase
         $subject = new InputHiddenElement();
         $subject->setData($data);
         $result = $subject->render();
-        $additionalHiddenFieldsResult = array_pop($result['additionalHiddenFields']);
-        self::assertStringContainsString('name="foo"', $additionalHiddenFieldsResult);
-        self::assertStringContainsString('value="bar"', $additionalHiddenFieldsResult);
-        self::assertStringContainsString('type="hidden"', $additionalHiddenFieldsResult);
+        self::assertStringContainsString('name="foo"', $result['html']);
+        self::assertStringContainsString('value="bar"', $result['html']);
+        self::assertStringContainsString('type="hidden"', $result['html']);
     }
 }

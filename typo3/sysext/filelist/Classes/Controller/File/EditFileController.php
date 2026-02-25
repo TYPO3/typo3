@@ -170,6 +170,7 @@ class EditFileController
         $view->assignMultiple([
             'moduleUrlTceFile' => (string)$this->uriBuilder->buildUriFromRoute('tce_file'),
             'fileName' => $file->getName(),
+            // @deprecated since v14.2, hiddenFieldsHtml will be removed in v15. Kept for BC with third-party FormEngine elements.
             'form' => ($formResult->html ?? '') . implode(LF, $formResult->hiddenFieldsHtml),
         ]);
         $content = $view->render('File/EditFile');

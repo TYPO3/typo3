@@ -84,8 +84,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
         $javaScriptModules = [];
 
         return [
-            // @todo deprecate additionalHiddenFields in TYPO3 v12.0 - this return key is essentially
-            //       useless. Elements can simply submit their hidden HTML fields in the html key.
+            // @deprecated since v14.2, will be removed in v15. Add hidden fields to the 'html' key directly.
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
@@ -111,6 +110,10 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
             $existing['html'] .= LF . $childReturn['html'];
         }
         foreach ($childReturn['additionalHiddenFields'] ?? [] as $value) {
+            trigger_error(
+                'Using "additionalHiddenFields" in FormEngine result arrays has been deprecated and will be removed in TYPO3 v15. Add hidden fields to the "html" key directly.',
+                E_USER_DEPRECATED
+            );
             $existing['additionalHiddenFields'][] = $value;
         }
         foreach ($childReturn['stylesheetFiles'] ?? [] as $value) {

@@ -30,7 +30,7 @@ final readonly class FormResult
         public array $stylesheetFiles = [],
         public array $inlineData = [],
         public array $additionalInlineLanguageLabelFiles = [],
-        // @todo: @internal please note that this option might get deprecated soon and will then be replaced without further notice
+        /** @deprecated since v14.2, will be removed in v15. Add hidden fields to the 'html' key directly. */
         public array $hiddenFieldsHtml = [],
     ) {}
 }

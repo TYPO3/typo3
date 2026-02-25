@@ -97,7 +97,8 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
      */
     protected function renderFieldControl(): array
     {
-        $alternativeResult =  [
+        $alternativeResult = [
+            // @deprecated since v14.2, will be removed in v15. Add hidden fields to the 'html' key directly.
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],

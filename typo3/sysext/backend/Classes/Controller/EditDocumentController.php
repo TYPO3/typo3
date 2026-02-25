@@ -318,6 +318,7 @@ class EditDocumentController
             <input type="hidden" name="popViewId" value="' . htmlspecialchars((string)$lastEl?->viewId) . '" />
             <input type="hidden" name="closeDoc" value="0" />
             <input type="hidden" name="returnNewPageId" value="' . ($this->returnNewPageId ? 1 : 0) . '" />';
+            // @deprecated since v14.2, will be removed in v15. Kept for BC with third-party FormEngine elements.
             $body .= implode(LF, $formResults->getHiddenFieldsHtml());
             $body .= '</form>';
         }

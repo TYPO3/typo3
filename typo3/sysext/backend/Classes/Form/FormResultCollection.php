@@ -110,6 +110,7 @@ class FormResultCollection implements \IteratorAggregate, \Countable
 
     /**
      * @return string[]
+     * @deprecated since v14.2, will be removed in v15. Add hidden fields to the 'html' key directly.
      */
     public function getHiddenFieldsHtml(): array
     {
