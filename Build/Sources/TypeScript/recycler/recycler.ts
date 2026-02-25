@@ -235,6 +235,7 @@ class Recycler {
   private async loadAvailableTables(): Promise<AjaxResponse> {
     const tableSelector = document.querySelector(Identifiers.tableSelector) as HTMLSelectElement;
     const depthSelector = document.querySelector(Identifiers.depthSelector) as HTMLSelectElement;
+    const currentTableSelection = tableSelector.options.length > 0 ? tableSelector.value : TYPO3.settings.Recycler.tableSelection;
 
     NProgress.start();
     tableSelector.value = '';
@@ -264,8 +265,8 @@ class Recycler {
 
       if (tables.length > 0) {
         tableSelector.append(...tables);
-        if (TYPO3.settings.Recycler.tableSelection !== '') {
-          tableSelector.value = TYPO3.settings.Recycler.tableSelection;
+        if (currentTableSelection !== '') {
+          tableSelector.value = currentTableSelection;
         }
       }
 
