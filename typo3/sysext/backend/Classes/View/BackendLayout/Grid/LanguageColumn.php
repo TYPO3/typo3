@@ -92,9 +92,24 @@ class LanguageColumn extends AbstractGridObject
             && $this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage());
     }
 
+    public function getPageRecordUid(): int
+    {
+        return $this->context->getLocalizedPageRecord()['uid'] ?? $this->context->getPageRecord()['uid'];
+    }
+
     public function getPageEditUrl(): string
     {
-        $pageRecordUid = $this->context->getLocalizedPageRecord()['uid'] ?? $this->context->getPageRecord()['uid'];
+        return (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('record_edit_contextual', $this->getPageEditUrlParameters());
+    }
+
+    public function getFullPageEditUrl(): string
+    {
+        return (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('record_edit', $this->getPageEditUrlParameters());
+    }
+
+    private function getPageEditUrlParameters(): array
+    {
+        $pageRecordUid = $this->getPageRecordUid();
         $urlParameters = [
             'edit' => [
                 'pages' => [
@@ -108,7 +123,7 @@ class LanguageColumn extends AbstractGridObject
         if (($languageField = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages')->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()) !== '') {
             $urlParameters['overrideVals']['pages'][$languageField] = $this->context->getSiteLanguage()->getLanguageId();
         }
-        return (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('record_edit', $urlParameters);
+        return $urlParameters;
     }
 
     public function getAllowViewPage(): bool

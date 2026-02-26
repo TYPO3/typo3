@@ -1,0 +1,39 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<div class="module contextual-record-edit" data-module-id="{moduleId}" data-module-name="{moduleName}">
+    <div class="contextual-record-edit-header">
+        <div class="contextual-record-edit-title-group">
+            <span class="contextual-record-edit-title">{recordTitle}</span>
+            <f:if condition="{fullEditUrl}">
+                <a href="{fullEditUrl}" class="btn btn-default btn-borderless t3js-contextual-fullscreen" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:openFullEditView')}">
+                    <core:icon identifier="actions-expand" size="small" />
+                </a>
+            </f:if>
+        </div>
+        <div class="contextual-record-edit-actions">
+            <button type="submit" form="ContextualRecordEditController" class="btn btn-primary t3js-contextual-save" disabled>
+                <core:icon identifier="actions-check" size="small" />
+                <span class="contextual-record-edit-button-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save" /></span>
+            </button>
+            <button type="button" class="btn btn-default t3js-contextual-close">
+                <core:icon identifier="actions-close" size="small" />
+                <span class="contextual-record-edit-button-label"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close" /></span>
+            </button>
+        </div>
+    </div>
+    <div class="module-body contextual-record-edit-body t3js-module-body">
+        <f:if condition="{uiBlock}">
+            <div id="t3js-ui-block" class="ui-block">
+                <core:icon identifier="spinner-circle" size="large" />
+            </div>
+        </f:if>
+        <f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
+        <f:format.raw>{bodyHtml}</f:format.raw>
+    </div>
+</div>
+
+</html>

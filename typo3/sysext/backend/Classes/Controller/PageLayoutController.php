@@ -597,19 +597,19 @@ class PageLayoutController
         if ($primaryLanguageId > 0 && ($overlayRecord = $this->pageContext->languageInformation->getTranslationRecord($primaryLanguageId)) !== null) {
             $pageUid = $overlayRecord['uid'];
         }
-        $params = [
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-            'module' => 'web_layout',
-            'edit' => [
-                'pages' => [
-                    $pageUid => 'edit',
-                ],
-            ],
-        ];
 
-        return $this->componentFactory->createLinkButton()
-            ->setHref((string)$this->uriBuilder->buildUriFromRoute('record_edit', $params))
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'))
+        $editParams = [
+            'edit' => ['pages' => [$pageUid => 'edit']],
+            'module' => 'web_layout',
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+        ];
+        return $this->componentFactory->createGenericButton()
+            ->setTag('typo3-backend-contextual-record-edit-trigger')
+            ->setAttributes([
+                'url' => (string)$this->uriBuilder->buildUriFromRoute('record_edit_contextual', $editParams),
+                'edit-url' => (string)$this->uriBuilder->buildUriFromRoute('record_edit', $editParams),
+            ])
+            ->setLabel($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'))
             ->setShowLabelText(true)
             ->setIcon($this->iconFactory->getIcon('actions-page-open', IconSize::SMALL));
     }

@@ -281,6 +281,12 @@ return [
         ],
     ],
 
+    // Lightweight contextual edit form for the context panel
+    'record_edit_contextual' => [
+        'path' => '/record/edit/contextual',
+        'target' => Controller\ContextualRecordEditController::class . '::mainAction',
+    ],
+
     // Image processing
     'image_processing' => [
         'path' => '/image/process',

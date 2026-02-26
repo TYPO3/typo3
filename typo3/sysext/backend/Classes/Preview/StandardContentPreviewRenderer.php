@@ -401,18 +401,17 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             && $backendUser->checkRecordEditAccess($table, $record)->isAllowed
             && (new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $record->getPid()) ?? [])))->editContentPermissionIsGranted()
         ) {
-            $urlParameters = [
-                'edit' => [
-                    $table => [
-                        $record->getUid() => 'edit',
-                    ],
-                ],
-                'module' => 'web_layout',
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $table . '-' . $record->getUid(),
-            ];
+            $returnUrl = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $table . '-' . $record->getUid();
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-            return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:edit')) . '">' . $linkText . '</a>';
+            $editParams = [
+                'edit' => [$table => [$record->getUid() => 'edit']],
+                'returnUrl' => $returnUrl,
+            ];
+            return '<typo3-backend-contextual-record-edit-trigger'
+                . ' url="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('record_edit_contextual', $editParams)) . '"'
+                . ' edit-url="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('record_edit', $editParams)) . '"'
+                . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:edit')) . '"'
+                . '>' . $linkText . '</typo3-backend-contextual-record-edit-trigger>';
         }
         return $linkText;
     }

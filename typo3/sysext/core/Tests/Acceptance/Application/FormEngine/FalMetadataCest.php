@@ -31,6 +31,9 @@ final class FalMetadataCest
      */
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
+        // Ensure we are in the top-level frame (a prior test may have ended
+        // inside a context-panel iframe which would break navigation).
+        $I->switchToMainFrame();
         $I->useExistingSession('admin');
         $this->goToPageModule($I, $pageTree);
     }
@@ -104,10 +107,7 @@ final class FalMetadataCest
         $I->amGoingTo('Check metadata of sys_file_reference displayed in tt_content');
         $this->goToPageModule($I, $pageTree);
         $I->switchToWindow('typo3-backend');
-        $I->switchToContentFrame();
-        $I->click('tt_content with image');
-        $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->waitForText('Edit Page Content "tt_content with image" on page "styleguide TCA demo"');
+        $this->openRecordInContextPanel($I, 'tt_content with image');
         $I->click('Images');
         if (count($I->grabMultiple('.panel-collapsed .form-irre-header')) > 0) {
             $I->click('.panel-collapsed .form-irre-header');
@@ -203,10 +203,7 @@ final class FalMetadataCest
         $I->amGoingTo('Check if deactivating null checkboxes focuses text fields');
         $this->goToPageModule($I, $pageTree);
         $I->switchToWindow('typo3-backend');
-        $I->switchToContentFrame();
-        $I->click('tt_content with image');
-        $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->waitForText('Edit Page Content "tt_content with image" on page "styleguide TCA demo"');
+        $this->openRecordInContextPanel($I, 'tt_content with image');
         $I->click('Images');
         if (count($I->grabMultiple('.panel-collapsed .form-irre-header')) > 0) {
             $I->click('.panel-collapsed .form-irre-header');
@@ -233,7 +230,7 @@ final class FalMetadataCest
             $I->assertEquals(true, $focus);
 
             // Remove focus from field, otherwise codeception can't find other checkboxes
-            $I->click('.form-irre-object .form-section');
+            $I->executeJS('document.activeElement?.blur()');
         }
     }
 
@@ -247,5 +244,20 @@ final class FalMetadataCest
         $pageTree->openPath(['styleguide TCA demo']);
         $I->switchToContentFrame();
         $I->waitForText('styleguide TCA demo');
+    }
+
+    /**
+     * Click a content element in the page module to open it in the context panel,
+     * then switch into the context panel iframe.
+     */
+    private function openRecordInContextPanel(ApplicationTester $I, string $recordTitle): void
+    {
+        $I->switchToContentFrame();
+        $I->click('//typo3-backend-contextual-record-edit-trigger[contains(., "' . $recordTitle . '")]');
+        $I->switchToMainFrame();
+        $I->waitForElement('iframe[name="context_panel_frame"]', 10);
+        $I->switchToIFrame('context_panel_frame');
+        $I->waitForElementNotVisible('#t3js-ui-block');
+        $I->waitForText($recordTitle);
     }
 }

@@ -1,0 +1,230 @@
+//
+// Contextual record editing layout
+// Used when FormEngine is rendered inside a modal or context panel
+//
+
+.contextual-record-edit {
+    --contextual-record-edit-bg: var(--typo3-surface-base);
+    --contextual-record-edit-border-color: color-mix(in srgb, var(--contextual-record-edit-bg), var(--typo3-text-color-base) 15%);
+    --contextual-record-edit-active-color: var(--typo3-state-primary-bg);
+    --contextual-record-edit-danger-color: var(--typo3-state-danger-color);
+    --contextual-record-edit-danger-bg: var(--typo3-state-danger-bg);
+    --contextual-record-edit-success-color: var(--typo3-state-success-color);
+    --contextual-record-edit-success-bg: var(--typo3-state-success-bg);
+
+    // Hide the record title and record info footer
+    h1,
+    .typo3-TCEforms > .text-end {
+        display: none;
+    }
+
+    //
+    // Modernized tabs UI
+    //
+    .nav-tabs {
+        --typo3-nav-tabs-bg: transparent;
+        --typo3-nav-tabs-border-width: 0;
+        flex-wrap: nowrap;
+        border-bottom: 2px solid var(--contextual-record-edit-border-color);
+        gap: 0;
+
+        .nav-link {
+            border: 0;
+            border-radius: 0;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            background: transparent;
+            padding: .5rem 1rem;
+            white-space: nowrap;
+
+            &:hover {
+                background: transparent;
+                border-bottom-color: var(--contextual-record-edit-border-color);
+            }
+        }
+
+        .nav-link.active,
+        .nav-item.show .nav-link {
+            &,
+            &:hover {
+                background: transparent;
+                border-bottom-color: var(--contextual-record-edit-active-color);
+                color: var(--contextual-record-edit-active-color);
+            }
+        }
+    }
+
+    //
+    // Tab overflow dropdown (shown when tabs don't fit in one line)
+    //
+    .nav-tabs-overflow {
+        margin-inline-start: auto;
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: .375rem;
+            padding: .5rem;
+
+            &.dropdown-toggle:after {
+                display: none;
+            }
+
+            &:has(.nav-tabs-overflow-label:not(:empty)) {
+                border-bottom-color: var(--contextual-record-edit-active-color);
+                color: var(--contextual-record-edit-active-color);
+            }
+        }
+
+        .nav-tabs-overflow-label:not(:empty) {
+            font-size: .75rem;
+            max-width: 10ch;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .dropdown-item.active {
+            font-weight: bold;
+        }
+
+        .dropdown-item-danger {
+            color: var(--contextual-record-edit-danger-color);
+            background-color: var(--contextual-record-edit-danger-bg);
+        }
+    }
+
+    //
+    // Flat form sections — no card borders, no backgrounds, compact spacing
+    //
+    .form-section {
+        --typo3-form-section-bg: transparent;
+        --typo3-form-section-radius: 0;
+        --typo3-form-section-padding-x: 0;
+        border-left: 0;
+        border-right: 0;
+        border-top: 0;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        typo3-formengine-container-files {
+            .form-group,
+            .panel-group {
+                margin-bottom: 0;
+            }
+        }
+
+        // Restore defaults for nested form sections (inline/IRRE records)
+        .form-section {
+            --typo3-form-section-bg: var(--typo3-surface-container-low);
+            --typo3-form-section-radius: var(--typo3-component-border-radius);
+            --typo3-form-section-padding-x: 1rem;
+            border-left: var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color);
+            border-right: var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color);
+            border-top: var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color);
+        }
+    }
+
+    .form-section + .form-section {
+        margin-top: 0;
+    }
+
+    .form-section-headline {
+        border: 0;
+        padding-bottom: 0;
+    }
+
+    .form-label {
+        font-size: .8125rem;
+        margin-bottom: .125rem;
+    }
+
+    //
+    // Tab content spacing
+    //
+    .tab-content > .tab-pane {
+        padding-top: .75rem;
+    }
+
+    .form-section-tabs {
+        --typo3-nav-tabs-bg: transparent;
+    }
+
+    //
+    // File element: Improved "allowed file types" styling
+    //
+    typo3-formengine-container-files .form-text {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+
+        .badge-list {
+            margin-top: .5rem;
+        }
+
+        .badge-success {
+            --typo3-badge-color: #fff;
+            --typo3-badge-bg: #1b1b3a;
+            --typo3-badge-border-color: #1b1b3a;
+            --typo3-badge-border-radius: .375rem;
+        }
+    }
+}
+
+.contextual-record-edit-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .5rem 1rem;
+    overflow: hidden;
+    background: var(--contextual-record-edit-bg);
+    border-bottom: 1px solid var(--contextual-record-edit-border-color);
+}
+
+.contextual-record-edit-title-group {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.contextual-record-edit-title {
+    font-weight: bold;
+    font-size: .875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.contextual-record-edit-actions {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-shrink: 0;
+}
+
+.contextual-record-edit-button-label {
+    @media (max-width: 500px) {
+        display: none;
+    }
+}
+
+.contextual-record-edit-saved-indicator {
+    font-size: .75rem;
+    padding: .125rem .5rem;
+    border-radius: .25rem;
+    color: var(--contextual-record-edit-success-color);
+    background-color: var(--contextual-record-edit-success-bg);
+    opacity: 1;
+    transition: opacity .5s ease;
+}
+
+.contextual-record-edit-body {
+    padding: 1rem;
+}

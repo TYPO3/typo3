@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+import{property as l,customElement as u}from"lit/decorators.js";import{PseudoButtonLitElement as g}from"@typo3/backend/element/pseudo-button.js";import{Placements as p,createContextPanel as y,Sizes as v}from"@typo3/backend/element/context-panel.js";import E from"@typo3/backend/notification.js";import m from"@typo3/backend/storage/persistent.js";import f from"~labels/backend.alt_doc";var c=function(s,t,o,n){var r=arguments.length,e=r<3?t:n===null?n=Object.getOwnPropertyDescriptor(t,o):n,a;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")e=Reflect.decorate(s,t,o,n);else for(var d=s.length-1;d>=0;d--)(a=s[d])&&(e=(r<3?a(e):r>3?a(t,o,e):a(t,o))||e);return r>3&&e&&Object.defineProperty(t,o,e),e};let i=class extends g{constructor(){super(...arguments),this.placement=p.end}async buttonActivated(){if(m.isset("contextualRecordEdit")&&m.get("contextualRecordEdit")==0){top?.TYPO3?.Backend?.ContentContainer&&top.TYPO3.Backend.ContentContainer.setUrl(this.editUrl);return}const t=await y({url:this.url,size:v.medium,placement:this.placement||p.end});this.setupMessageHandling(t)}setupMessageHandling(t){const o=top;let n="";const r=e=>{e.origin===window.location.origin&&(e.data?.actionName==="typo3:editform:saved"&&(n=e.data.recordTitle??""),e.data?.actionName==="typo3:editform:closed"&&t.close(),e.data?.actionName==="typo3:editform:navigate"&&t.close())};o.addEventListener("message",r),t.addEventListener("typo3-context-panel-close-request",e=>{e.preventDefault(),t.querySelector("iframe")?.contentWindow?.postMessage({actionName:"typo3:editform:requestclose"},window.location.origin)}),t.addEventListener("typo3-context-panel-hidden",()=>{o.removeEventListener("message",r),t.remove(),n!==""?(top.document.dispatchEvent(new CustomEvent("typo3:pagetree:refresh")),top.TYPO3?.Backend?.ContentContainer&&top.TYPO3.Backend.ContentContainer.refresh(),E.success(f.get("notification.record_updated.title"),f.get("notification.record_updated.message",[n]))):this.focus()})}};c([l({type:String})],i.prototype,"url",void 0),c([l({type:String,attribute:"edit-url"})],i.prototype,"editUrl",void 0),c([l({type:String})],i.prototype,"placement",void 0),i=c([u("typo3-backend-contextual-record-edit-trigger")],i);export{i as ContextualRecordEditTriggerElement};

@@ -111,6 +111,12 @@
       <trans-unit id="action.contentNavigation.description">
         <source>A two-panel container with a resizable navigation area and a flexible content area.</source>
       </trans-unit>
+      <trans-unit id="action.contextPanel">
+        <source>Context Panel</source>
+      </trans-unit>
+      <trans-unit id="action.contextPanel.description">
+        <source>Sliding panel that appears from the edge of the viewport for contextual content like editing forms.</source>
+      </trans-unit>
       <trans-unit id="action.datetime">
         <source>Datetime / Relative Time</source>
       </trans-unit>
@@ -739,6 +745,61 @@
       </trans-unit>
       <trans-unit id="component.listGroups.section.state.headline">
         <source>State</source>
+      </trans-unit>
+      <!-- Component: Context Panel -->
+      <trans-unit id="component.contextPanel.headline">
+        <source>Context Panel</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.introtext">
+        <source>The context panel is an offcanvas web component (&lt;code&gt;typo3-backend-context-panel&lt;/code&gt;) that slides in from the edge of the viewport. It supports three content modes: &lt;strong&gt;content&lt;/strong&gt; (inline HTML), &lt;strong&gt;iframe&lt;/strong&gt; (loads a URL in an iframe), and &lt;strong&gt;ajax&lt;/strong&gt; (fetches a URL and renders the response). Use the &lt;code&gt;createContextPanel()&lt;/code&gt; factory function to create and open panels programmatically.</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.playground.headline">
+        <source>Playground</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.playground.description">
+        <source>Interactively test different context panel configurations by selecting options below.</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.playground.placement">
+        <source>Placement</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.playground.size">
+        <source>Size</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.playground.staticBackdrop">
+        <source>Static backdrop</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.playground.openPanel">
+        <source>Open context panel</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.playground.yes">
+        <source>Yes</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.playground.no">
+        <source>No</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.size.headline">
+        <source>Size</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.size.description">
+        <source>Control the width (or height for top/bottom placements) of the panel.</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.placement.headline">
+        <source>Placement</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.placement.description">
+        <source>Position the panel at different edges of the viewport.</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.staticBackdrop.headline">
+        <source>Static backdrop</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.staticBackdrop.description">
+        <source>When enabled, clicking the backdrop does not close the panel. Instead, the panel shakes to indicate that it requires explicit dismissal.</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.type.headline">
+        <source>Content type</source>
+      </trans-unit>
+      <trans-unit id="component.contextPanel.section.type.description">
+        <source>The panel supports three content modes: &lt;strong&gt;content&lt;/strong&gt; renders inline HTML directly, &lt;strong&gt;iframe&lt;/strong&gt; loads a URL in an embedded iframe, and &lt;strong&gt;ajax&lt;/strong&gt; fetches a URL and renders the response as inline HTML.</source>
       </trans-unit>
       <!-- Component: Modal -->
       <trans-unit id="component.modal.headline">

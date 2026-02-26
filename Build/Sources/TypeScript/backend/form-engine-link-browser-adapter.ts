@@ -122,7 +122,40 @@ export default (function() {
       opener = window.opener;
     }
 
+    // Verify the resolved opener contains the target form (e.g. when editing
+    // in a context panel iframe, list_frame resolves to the content frame
+    // which is the wrong window). Fall back to searching all frames in top.
+    const formName = LinkBrowser.parameters?.formName;
+    if (formName && !FormEngineLinkBrowserAdapter.windowHasForm(opener, formName)) {
+      const found = FormEngineLinkBrowserAdapter.findFormWindow(formName);
+      if (found) {
+        opener = found;
+      }
+    }
+
     return opener;
+  };
+
+  FormEngineLinkBrowserAdapter.windowHasForm = function(win: Window, formName: string): boolean {
+    return win?.document?.querySelector('form[name="' + formName + '"]') !== null;
+  };
+
+  FormEngineLinkBrowserAdapter.findFormWindow = function(formName: string): Window | null {
+    try {
+      for (let i = 0; i < top.frames.length; i++) {
+        try {
+          const frame = top.frames[i];
+          if (frame !== window && FormEngineLinkBrowserAdapter.windowHasForm(frame, formName)) {
+            return frame;
+          }
+        } catch {
+          // Cross-origin frame, skip
+        }
+      }
+    } catch {
+      // Cannot access top.frames
+    }
+    return null;
   };
 
   return FormEngineLinkBrowserAdapter;

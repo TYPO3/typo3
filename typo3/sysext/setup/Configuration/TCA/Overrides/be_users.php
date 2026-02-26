@@ -212,6 +212,19 @@ ExtensionManagementUtility::addUserSetting(
     'after:showHiddenFilesAndFolders'
 );
 ExtensionManagementUtility::addUserSetting(
+    'contextualRecordEdit',
+    [
+        'label' => 'setup.messages:contextualRecordEdit',
+        'persistentUpdate' => true,
+        'config' => [
+            'type' => 'check',
+            'renderType' => 'checkboxToggle',
+            'default' => 1,
+        ],
+    ],
+    'after:edit_docModuleUpload'
+);
+ExtensionManagementUtility::addUserSetting(
     'copyLevels',
     [
         'label' => 'setup.messages:copyLevels',

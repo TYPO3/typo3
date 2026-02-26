@@ -42,6 +42,9 @@
       <trans-unit id="edit_docModuleUpload">
         <source>File upload directly in Doc-module</source>
       </trans-unit>
+      <trans-unit id="contextualRecordEdit">
+        <source>Use quick editing for records in the page module</source>
+      </trans-unit>
       <trans-unit id="showHiddenFilesAndFolders">
         <source>Show hidden files and folders in the filelist</source>
       </trans-unit>

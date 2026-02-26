@@ -3316,6 +3316,36 @@ typo3-qrcode .url-info-section.copy-success input{background:var(--typo3-qrcode-
 typo3-qrcode .url-info-section.copy-success .btn,typo3-qrcode .url-info-section.copy-success input{box-shadow:0 0 0 .1rem var(--typo3-qrcode-url-success-box-shadow)}
 typo3-qrcode .url-info-section.copy-error input{background:var(--typo3-qrcode-url-error-bg)}
 typo3-qrcode .url-info-section.copy-error .btn,typo3-qrcode .url-info-section.copy-error input{box-shadow:0 0 0 .1rem var(--typo3-qrcode-url-error-box-shadow)}
+typo3-backend-context-panel{display:contents}
+.context-panel-backdrop{background-color:rgba(0,0,0,.5);inset:0;opacity:0;pointer-events:none;position:fixed;transition:opacity .15s ease-in-out;z-index:1090}
+.context-panel-backdrop.context-panel-visible{opacity:1;pointer-events:auto}
+.context-panel{--typo3-context-panel-bg:var(--typo3-surface-base);--typo3-context-panel-border-radius:1.5rem 0 0 1.5rem;--typo3-context-panel-shadow:0 0 24px light-dark(rgba(0,0,0,.12),rgba(0,0,0,.4));background-color:var(--typo3-context-panel-bg);border-radius:var(--typo3-context-panel-border-radius);bottom:0;box-shadow:none;display:flex;flex-direction:column;outline:none;overflow:hidden;position:fixed;top:0;transition:transform .3s ease-in-out,box-shadow .3s ease-in-out;z-index:1100}
+.context-panel-end{right:0;transform:translateX(100%)}
+.context-panel-end.context-panel-visible{box-shadow:var(--typo3-context-panel-shadow);transform:translateX(0)}
+.context-panel-start{left:0;--typo3-context-panel-border-radius:0 1.5rem 1.5rem 0;transform:translateX(-100%)}
+.context-panel-start.context-panel-visible{box-shadow:var(--typo3-context-panel-shadow);transform:translateX(0)}
+.context-panel-top{bottom:auto;left:0;right:0;top:0;--typo3-context-panel-border-radius:0 0 1.5rem 1.5rem;transform:translateY(-100%)}
+.context-panel-top.context-panel-visible{box-shadow:var(--typo3-context-panel-shadow);transform:translateY(0)}
+.context-panel-bottom{bottom:0;left:0;right:0;top:auto;--typo3-context-panel-border-radius:1.5rem 1.5rem 0 0;transform:translateY(100%)}
+.context-panel-bottom.context-panel-visible{box-shadow:var(--typo3-context-panel-shadow);transform:translateY(0)}
+.context-panel-small{max-width:600px;min-width:400px;width:30%}
+.context-panel-medium{max-width:40vw;min-width:600px;width:40%}
+.context-panel-large{max-width:60vw;min-width:50vw;width:60%}
+.context-panel-bottom.context-panel-small,.context-panel-top.context-panel-small{height:30%;max-height:400px;max-width:none;min-height:200px;min-width:0;width:auto}
+.context-panel-bottom.context-panel-medium,.context-panel-top.context-panel-medium{height:40%;max-height:50vh;max-width:none;min-height:300px;min-width:0;width:auto}
+.context-panel-bottom.context-panel-large,.context-panel-top.context-panel-large{height:60%;max-height:70vh;max-width:none;min-height:40vh;min-width:0;width:auto}
+@media (max-width:768px){
+.context-panel.context-panel{bottom:0;height:80dvh;left:0;max-height:none;max-width:none;min-height:0;min-width:0;right:0;top:auto;width:auto;--typo3-context-panel-border-radius:1.5rem 1.5rem 0 0;transform:translateY(100%)}
+.context-panel.context-panel.context-panel-visible{transform:translateY(0)}}
+.context-panel-body{flex:1;overflow:hidden}
+.context-panel-body iframe{border:0;height:100%;width:100%}
+.context-panel-content{height:100%;overflow-y:auto;padding:1rem}
+@keyframes context-panel-shake{
+0%,to{transform:translateX(0)}
+25%{transform:translateX(-6px)}
+50%{transform:translateX(4px)}
+75%{transform:translateX(-2px)}}
+.context-panel-shake{animation:context-panel-shake .3s ease-in-out}
 typo3-backend-workspace-selector{--workspace-selector-min-width:42px;--workspace-selector-min-height:42px;--workspace-selector-padding:4px;--workspace-selector-icon-size:32px;--workspace-selector-icon-border-radius:calc(var(--workspace-selector-border-radius) - var(--workspace-selector-padding));--workspace-selector-bg:var(--typo3-scaffold-sidebar-bg);--workspace-selector-color:var(--typo3-scaffold-sidebar-color);--workspace-selector-transition-color:var(--typo3-transition-color);--workspace-selector-border-radius:var(--typo3-component-border-radius);--workspace-selector-border-color:color-mix(in srgb,var(--workspace-selector-bg),var(--workspace-selector-color) 20%);--workspace-selector-hover-color:var(--workspace-selector-color);--workspace-selector-hover-bg:color-mix(in srgb,var(--workspace-selector-bg),var(--workspace-selector-color) 10%);--workspace-selector-hover-border-color:color-mix(in srgb,var(--workspace-selector-bg),var(--workspace-selector-color) 30%);--workspace-selector-focus-color:var(--workspace-selector-color);--workspace-selector-focus-bg:color-mix(in srgb,var(--workspace-selector-bg),var(--workspace-selector-color) 15%);--workspace-selector-focus-border-color:color-mix(in srgb,var(--workspace-selector-bg),var(--workspace-selector-color) 35%);container-type:inline-size;display:block;min-height:var(--workspace-selector-min-width);min-width:var(--workspace-selector-min-width);position:relative}
 typo3-backend-workspace-selector>.dropdown{anchor-scope:--workspace-selector}
 typo3-backend-workspace-selector .workspace-selector{--typo3-icons-accent:currentColor;align-items:center;background-color:var(--workspace-selector-active-bg,var(--workspace-selector-bg));border:1px solid var(--workspace-selector-active-border-color,var(--workspace-selector-border-color));border-radius:var(--workspace-selector-border-radius);color:var(--workspace-selector-active-color,var(--workspace-selector-color));display:flex;justify-content:center;min-height:var(--workspace-selector-min-width);min-width:var(--workspace-selector-min-width);outline:none;overflow:hidden;padding:var(--workspace-selector-padding);pointer-events:none;text-align:start;transition:background-color .2s ease-in-out,color .2s ease-in-out,border-color .2s ease-in-out;width:100%;anchor-name:--workspace-selector}
@@ -3523,6 +3553,39 @@ textarea.formengine-textarea{resize:none}
 .sticky-form-actions{--typo3-stickyform-bg:var(--typo3-surface-base);--typo3-stickyform-border-width:var(--typo3-component-border-width);--typo3-stickyform-border-color:var(--typo3-component-border-color);--typo3-stickyform-padding-y:1rem;--typo3-stickyform-padding-x:1rem;--typo3-stickyform-spacing:1rem;background:var(--typo3-stickyform-bg);border-bottom:var(--typo3-stickyform-border-width) solid var(--typo3-stickyform-border-color);display:flex;gap:var(--typo3-stickyform-spacing);margin-inline:calc(var(--typo3-stickyform-padding-x)*-1);margin-bottom:var(--typo3-stickyform-spacing);padding:var(--typo3-stickyform-padding-y) var(--typo3-stickyform-padding-x);position:-webkit-sticky;position:sticky;top:0;z-index:2}
 .modal-body:has(.sticky-form-actions){padding-top:0}
 .multi-record-selection-actions-wrapper{margin:.5rem 0;min-height:calc(var(--typo3-input-sm-padding-y)*2 + var(--typo3-input-border-width)*2 + var(--typo3-input-font-size)*var(--typo3-input-line-height))}
+.contextual-record-edit{--contextual-record-edit-bg:var(--typo3-surface-base);--contextual-record-edit-border-color:color-mix(in srgb,var(--contextual-record-edit-bg),var(--typo3-text-color-base) 15%);--contextual-record-edit-active-color:var(--typo3-state-primary-bg);--contextual-record-edit-danger-color:var(--typo3-state-danger-color);--contextual-record-edit-danger-bg:var(--typo3-state-danger-bg);--contextual-record-edit-success-color:var(--typo3-state-success-color);--contextual-record-edit-success-bg:var(--typo3-state-success-bg)}
+.contextual-record-edit .h1,.contextual-record-edit .typo3-TCEforms>.text-end,.contextual-record-edit h1,.contextual-record-edit typo3-backend-editable-page-title{display:none}
+.contextual-record-edit .nav-tabs{--typo3-nav-tabs-bg:transparent;--typo3-nav-tabs-border-width:0;border-bottom:2px solid var(--contextual-record-edit-border-color);flex-wrap:nowrap;gap:0}
+.contextual-record-edit .nav-tabs .nav-link{background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0;margin-bottom:-2px;padding:.5rem 1rem;white-space:nowrap}
+.contextual-record-edit .nav-tabs .nav-link:hover{background:transparent;border-bottom-color:var(--contextual-record-edit-border-color)}
+.contextual-record-edit .nav-tabs .nav-item.show .nav-link,.contextual-record-edit .nav-tabs .nav-item.show .nav-link:hover,.contextual-record-edit .nav-tabs .nav-link.active,.contextual-record-edit .nav-tabs .nav-link.active:hover{background:transparent;border-bottom-color:var(--contextual-record-edit-active-color);color:var(--contextual-record-edit-active-color)}
+.contextual-record-edit .nav-tabs-overflow{-webkit-margin-start:auto;margin-inline-start:auto}
+.contextual-record-edit .nav-tabs-overflow .nav-link{align-items:center;display:flex;gap:.375rem;padding:.5rem}
+.contextual-record-edit .nav-tabs-overflow .nav-link.dropdown-toggle:after{display:none}
+.contextual-record-edit .nav-tabs-overflow .nav-link:has(.nav-tabs-overflow-label:not(:empty)){border-bottom-color:var(--contextual-record-edit-active-color);color:var(--contextual-record-edit-active-color)}
+.contextual-record-edit .nav-tabs-overflow .nav-tabs-overflow-label:not(:empty){font-size:.75rem;max-width:10ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.contextual-record-edit .nav-tabs-overflow .dropdown-item.active{font-weight:700}
+.contextual-record-edit .nav-tabs-overflow .dropdown-item-danger{background-color:var(--contextual-record-edit-danger-bg);color:var(--contextual-record-edit-danger-color)}
+.contextual-record-edit .form-section{--typo3-form-section-bg:transparent;--typo3-form-section-radius:0;--typo3-form-section-padding-x:0;border-left:0;border-right:0;border-top:0}
+.contextual-record-edit .form-section:last-child{border-bottom:0}
+.contextual-record-edit .form-section typo3-formengine-container-files .form-group,.contextual-record-edit .form-section typo3-formengine-container-files .panel-group{margin-bottom:0}
+.contextual-record-edit .form-section .form-section{--typo3-form-section-bg:var(--typo3-surface-container-low);--typo3-form-section-radius:var(--typo3-component-border-radius);--typo3-form-section-padding-x:1rem;border-left:var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color);border-right:var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color);border-top:var(--typo3-form-section-border-width) solid var(--typo3-form-section-border-color)}
+.contextual-record-edit .form-section+.form-section{margin-top:0}
+.contextual-record-edit .form-section-headline{border:0;padding-bottom:0}
+.contextual-record-edit .form-label{font-size:.8125rem;margin-bottom:.125rem}
+.contextual-record-edit .tab-content>.tab-pane{padding-top:.75rem}
+.contextual-record-edit .form-section-tabs{--typo3-nav-tabs-bg:transparent}
+.contextual-record-edit typo3-formengine-container-files .form-text{margin-bottom:1rem;margin-top:1rem}
+.contextual-record-edit typo3-formengine-container-files .form-text .badge-list{margin-top:.5rem}
+.contextual-record-edit typo3-formengine-container-files .form-text .badge-success{--typo3-badge-color:#fff;--typo3-badge-bg:#1b1b3a;--typo3-badge-border-color:#1b1b3a;--typo3-badge-border-radius:.375rem}
+.contextual-record-edit-header{align-items:center;background:var(--contextual-record-edit-bg);border-bottom:1px solid var(--contextual-record-edit-border-color);display:flex;gap:.75rem;overflow:hidden;padding:.5rem 1rem;position:-webkit-sticky;position:sticky;top:0;z-index:10}
+.contextual-record-edit-title-group{align-items:center;display:flex;flex:1;gap:.25rem;min-width:0}
+.contextual-record-edit-title{font-size:.875rem;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.contextual-record-edit-actions{align-items:center;display:flex;flex-shrink:0;gap:.5rem}
+@media (max-width:500px){
+.contextual-record-edit-button-label{display:none}}
+.contextual-record-edit-saved-indicator{background-color:var(--contextual-record-edit-success-bg);border-radius:.25rem;color:var(--contextual-record-edit-success-color);font-size:.75rem;opacity:1;padding:.125rem .5rem;transition:opacity .5s ease}
+.contextual-record-edit-body{padding:1rem}
 .localization-wizard .option{margin-bottom:.25rem}
 .localization-fieldset{display:grid;gap:calc(var(--typo3-spacing)/4)}
 .localization-fieldset+.localization-fieldset{margin-top:var(--typo3-spacing)}

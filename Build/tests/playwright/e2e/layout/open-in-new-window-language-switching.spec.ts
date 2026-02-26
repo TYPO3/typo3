@@ -17,9 +17,19 @@ test('Switch between languages in "Open in new window"', async ({
 
   const standalonePage =
     await test.step('open standalone edit window', async () => {
+      // Click "Edit page properties" which opens the contextual record edit panel
       await backend.contentFrame
         .getByRole('button', { name: 'Edit page properties' })
         .click();
+
+      // Wait for context panel iframe and navigate to full edit view
+      const contextPanel = page.frameLocator('iframe[name="context_panel_frame"]');
+      await expect(contextPanel.locator('.contextual-record-edit')).toBeVisible();
+      await contextPanel
+        .getByTitle('Open full editing view')
+        .click();
+
+      // Now the content frame has the full EditDocumentController
       await expect(
         backend.contentFrame.getByRole('heading', { name: 'Edit Page' }),
       ).toBeVisible();

@@ -106,6 +106,16 @@ class ElementBrowser {
       } else if (window.opener) {
         this.opener = window.opener;
       }
+
+      // Verify the resolved opener contains the edit form (e.g. when editing
+      // in a context panel iframe, list_frame resolves to the content frame
+      // which is the wrong window). Fall back to searching all frames in top.
+      if (this.opener && !this.windowHasEditForm(this.opener)) {
+        const editFormWindow = this.findEditFormWindow();
+        if (editFormWindow) {
+          this.opener = editFormWindow;
+        }
+      }
     }
 
     return this.opener;
@@ -156,6 +166,28 @@ class ElementBrowser {
     close();
   };
 
+
+  private windowHasEditForm(win: Window): boolean {
+    return win?.document?.querySelector('form[name="editform"]') !== null;
+  }
+
+  private findEditFormWindow(): Window | null {
+    try {
+      for (let i = 0; i < top.frames.length; i++) {
+        try {
+          const frame = top.frames[i];
+          if (frame !== window && this.windowHasEditForm(frame)) {
+            return frame;
+          }
+        } catch {
+          // Cross-origin frame, skip
+        }
+      }
+    } catch {
+      // Cannot access top.frames
+    }
+    return null;
+  }
 
   private addElement(label: string, value: string, close: boolean): void {
     if (this.getParent()) {

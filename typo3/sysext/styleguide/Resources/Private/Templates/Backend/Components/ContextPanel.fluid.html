@@ -1,0 +1,278 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="component.contextPanel.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.contextPanel.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <f:asset.script identifier="contextPanelDemoHelper" useNonce="true">
+            window.__contextPanelCloseButton = '<div style="padding: 1rem; padding-bottom: 0; text-align: end;"><button type="button" class="btn btn-default btn-sm" data-close-context-panel><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon> Close</button></div>';
+            top.document.addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-close-context-panel]');
+                if (btn) {
+                    btn.closest('typo3-backend-context-panel')?.close();
+                }
+            });
+        </f:asset.script>
+
+        <h2><f:translate key="component.contextPanel.section.playground.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.contextPanel.section.playground.description" domain="styleguide.messages" /></p>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="context-panel-demo-placement" class="form-label"><f:translate key="component.contextPanel.section.playground.placement" domain="styleguide.messages" /></label>
+                <select id="context-panel-demo-placement" class="form-select">
+                    <f:for each="{placements}" as="placement">
+                        <option value="{placement}">{placement}</option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="context-panel-demo-size" class="form-label"><f:translate key="component.contextPanel.section.playground.size" domain="styleguide.messages" /></label>
+                <select id="context-panel-demo-size" class="form-select">
+                    <f:for each="{sizes}" as="size">
+                        <option value="{size}">{size}</option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="context-panel-demo-static-backdrop" class="form-label"><f:translate key="component.contextPanel.section.playground.staticBackdrop" domain="styleguide.messages" /></label>
+                <select id="context-panel-demo-static-backdrop" class="form-select">
+                    <option value="yes"><f:translate key="component.contextPanel.section.playground.yes" domain="styleguide.messages" /></option>
+                    <option value="no"><f:translate key="component.contextPanel.section.playground.no" domain="styleguide.messages" /></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="context-panel-demo-trigger"
+                >
+                    <f:translate key="component.contextPanel.section.playground.openPanel" domain="styleguide.messages" />
+                </button>
+            </div>
+        </div>
+        <f:asset.script identifier="contextPanelDemo" useNonce="true">
+            (async () => {
+                const { createContextPanel } = await import('@typo3/backend/element/context-panel.js');
+
+                const placementSelect = document.getElementById('context-panel-demo-placement');
+                const sizeSelect = document.getElementById('context-panel-demo-size');
+                const staticBackdropSelect = document.getElementById('context-panel-demo-static-backdrop');
+                const trigger = document.getElementById('context-panel-demo-trigger');
+
+                trigger.addEventListener('click', async () => {
+                    const panel = await createContextPanel({
+                        type: 'content',
+                        content: window.__contextPanelCloseButton + '<div style="padding: 1rem;"><h3>Context Panel Demo</h3><p>This panel was opened with the selected configuration.</p><p>Placement: <strong>' + placementSelect.value + '</strong></p><p>Size: <strong>' + sizeSelect.value + '</strong></p><p>Static backdrop: <strong>' + staticBackdropSelect.value + '</strong></p></div>',
+                        placement: placementSelect.value,
+                        size: sizeSelect.value,
+                        staticBackdrop: staticBackdropSelect.value === 'yes',
+                    });
+                    panel.addEventListener('typo3-context-panel-hidden', () => {
+                        panel.remove();
+                    });
+                });
+            })();
+        </f:asset.script>
+
+        <h2><f:translate key="component.contextPanel.section.size.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.contextPanel.section.size.description" domain="styleguide.messages" /></p>
+        <f:variable name="codeSnippetSize">
+            import { createContextPanel } from '@typo3/backend/element/context-panel.js';
+
+            // Available sizes: 'small', 'medium', 'large'
+            const panel = await createContextPanel({
+                type: 'content',
+                content: '<p>Panel content</p>',
+                size: 'small', // or 'medium', 'large'
+            });
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="javascript" customCode="{codeSnippetSize}">
+            <div class="example-container">
+                <f:for each="{sizes}" as="size">
+                    <div class="example-item">
+                        <button type="button" class="btn btn-default" data-context-panel-size="{size}">Open {size} panel</button>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+        <f:asset.script identifier="contextPanelSizeDemo" useNonce="true">
+            (async () => {
+                const { createContextPanel } = await import('@typo3/backend/element/context-panel.js');
+
+                document.querySelectorAll('[data-context-panel-size]').forEach((button) => {
+                    button.addEventListener('click', async () => {
+                        const size = button.dataset.contextPanelSize;
+                        const panel = await createContextPanel({
+                            type: 'content',
+                            content: window.__contextPanelCloseButton + '<div style="padding: 1rem;"><h3>' + size.charAt(0).toUpperCase() + size.slice(1) + ' Panel</h3><p>This is a context panel with size <strong>' + size + '</strong>.</p></div>',
+                            size: size,
+                        });
+                        panel.addEventListener('typo3-context-panel-hidden', () => {
+                            panel.remove();
+                        });
+                    });
+                });
+            })();
+        </f:asset.script>
+
+        <h2><f:translate key="component.contextPanel.section.placement.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.contextPanel.section.placement.description" domain="styleguide.messages" /></p>
+        <f:variable name="codeSnippetPlacement">
+            import { createContextPanel } from '@typo3/backend/element/context-panel.js';
+
+            // Available placements: 'end', 'start', 'top', 'bottom'
+            const panel = await createContextPanel({
+                type: 'content',
+                content: '<p>Panel content</p>',
+                placement: 'end', // or 'start', 'top', 'bottom'
+            });
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="javascript" customCode="{codeSnippetPlacement}">
+            <div class="example-container">
+                <f:for each="{placements}" as="placement">
+                    <div class="example-item">
+                        <button type="button" class="btn btn-default" data-context-panel-placement="{placement}">Open {placement} panel</button>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+        <f:asset.script identifier="contextPanelPlacementDemo" useNonce="true">
+            (async () => {
+                const { createContextPanel } = await import('@typo3/backend/element/context-panel.js');
+
+                document.querySelectorAll('[data-context-panel-placement]').forEach((button) => {
+                    button.addEventListener('click', async () => {
+                        const placement = button.dataset.contextPanelPlacement;
+                        const panel = await createContextPanel({
+                            type: 'content',
+                            content: window.__contextPanelCloseButton + '<div style="padding: 1rem;"><h3>' + placement.charAt(0).toUpperCase() + placement.slice(1) + ' Panel</h3><p>This panel slides in from the <strong>' + placement + '</strong> edge.</p></div>',
+                            placement: placement,
+                        });
+                        panel.addEventListener('typo3-context-panel-hidden', () => {
+                            panel.remove();
+                        });
+                    });
+                });
+            })();
+        </f:asset.script>
+
+        <h2><f:translate key="component.contextPanel.section.staticBackdrop.headline" domain="styleguide.messages" /></h2>
+        <p><f:sanitize.html><f:translate key="component.contextPanel.section.staticBackdrop.description" domain="styleguide.messages" /></f:sanitize.html></p>
+        <f:variable name="codeSnippetStaticBackdrop">
+            import { createContextPanel } from '@typo3/backend/element/context-panel.js';
+
+            // Static backdrop (default: true)
+            const panel = await createContextPanel({
+                type: 'content',
+                content: '<p>Panel content</p>',
+                staticBackdrop: false, // clicking backdrop closes panel
+            });
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="javascript" customCode="{codeSnippetStaticBackdrop}">
+            <div class="example-container">
+                <div class="example-item">
+                    <button type="button" class="btn btn-default" id="context-panel-static-backdrop-on">Open with static backdrop (default)</button>
+                </div>
+                <div class="example-item">
+                    <button type="button" class="btn btn-default" id="context-panel-static-backdrop-off">Open without static backdrop</button>
+                </div>
+            </div>
+        </sg:example>
+        <f:asset.script identifier="contextPanelStaticBackdropDemo" useNonce="true">
+            (async () => {
+                const { createContextPanel } = await import('@typo3/backend/element/context-panel.js');
+
+                document.getElementById('context-panel-static-backdrop-on').addEventListener('click', async () => {
+                    const panel = await createContextPanel({
+                        type: 'content',
+                        content: window.__contextPanelCloseButton + '<div style="padding: 1rem;"><h3>Static Backdrop</h3><p>Clicking the backdrop will <strong>not</strong> close this panel. It will shake instead.</p></div>',
+                        staticBackdrop: true,
+                    });
+                    panel.addEventListener('typo3-context-panel-hidden', () => {
+                        panel.remove();
+                    });
+                });
+
+                document.getElementById('context-panel-static-backdrop-off').addEventListener('click', async () => {
+                    const panel = await createContextPanel({
+                        type: 'content',
+                        content: window.__contextPanelCloseButton + '<div style="padding: 1rem;"><h3>Non-static Backdrop</h3><p>Clicking the backdrop <strong>will</strong> close this panel.</p></div>',
+                        staticBackdrop: false,
+                    });
+                    panel.addEventListener('typo3-context-panel-hidden', () => {
+                        panel.remove();
+                    });
+                });
+            })();
+        </f:asset.script>
+
+        <h2><f:translate key="component.contextPanel.section.type.headline" domain="styleguide.messages" /></h2>
+        <p><f:sanitize.html><f:translate key="component.contextPanel.section.type.description" domain="styleguide.messages" /></f:sanitize.html></p>
+        <f:variable name="codeSnippetType">
+            import { createContextPanel } from '@typo3/backend/element/context-panel.js';
+
+            // Content type: inline HTML
+            const panel = await createContextPanel({
+                type: 'content',
+                content: '<p>Inline HTML content</p>',
+            });
+
+            // Iframe type: loads URL in iframe
+            const panel = await createContextPanel({
+                type: 'iframe',
+                url: '/typo3/some-module',
+            });
+
+            // Ajax type: fetches URL, renders response
+            const panel = await createContextPanel({
+                type: 'ajax',
+                url: '/typo3/ajax/some-endpoint',
+            });
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="javascript" customCode="{codeSnippetType}">
+            <div class="example-container">
+                <div class="example-item">
+                    <button type="button" class="btn btn-default" id="context-panel-type-content">Open content panel</button>
+                </div>
+            </div>
+        </sg:example>
+        <f:asset.script identifier="contextPanelTypeDemo" useNonce="true">
+            (async () => {
+                const { createContextPanel } = await import('@typo3/backend/element/context-panel.js');
+
+                document.getElementById('context-panel-type-content').addEventListener('click', async () => {
+                    const panel = await createContextPanel({
+                        type: 'content',
+                        content: window.__contextPanelCloseButton + '<div style="padding: 1rem;"><h3>Content Panel</h3><p>This panel renders inline HTML directly using the <strong>content</strong> type.</p><p>The other types (<strong>iframe</strong> and <strong>ajax</strong>) require a URL to load content from.</p></div>',
+                    });
+                    panel.addEventListener('typo3-context-panel-hidden', () => {
+                        panel.remove();
+                    });
+                });
+            })();
+        </f:asset.script>
+
+    </div>
+
+</f:section>
+
+</html>

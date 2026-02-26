@@ -395,6 +395,20 @@ class GridColumnItem extends AbstractGridObject
         return $uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-' . $this->table . '-' . $this->record->getUid();
     }
 
+    public function getContextualEditUrl(): string
+    {
+        $urlParameters = [
+            'edit' => [
+                $this->table => [
+                    $this->record->getUid() => 'edit',
+                ],
+            ],
+            'module' => 'web_layout',
+            'returnUrl' => $this->context->getReturnUrl() . '#element-' . $this->table . '-' . $this->record->getUid(),
+        ];
+        return (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('record_edit_contextual', $urlParameters);
+    }
+
     public function getTypeColumn(): string
     {
         // @todo This only supports local record types due to usages in this class
