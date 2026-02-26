@@ -96,7 +96,18 @@ class ClearCacheToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
 
         $event = new ModifyClearCacheActionsEvent($this->cacheActions, $this->optionValues);
         $event = $eventDispatcher->dispatch($event);
-        $this->cacheActions = $event->getCacheActions();
+        $this->cacheActions = array_map(static function (array $cacheAction): array {
+            if (!isset($cacheAction['endpoint']) && isset($cacheAction['href'])) {
+                trigger_error(
+                    'CacheAction key "href" is deprecated since TYPO3 v14. Use "endpoint" instead.',
+                    E_USER_DEPRECATED
+                );
+                $cacheAction['endpoint'] = (string)$cacheAction['href'];
+                unset($cacheAction['href']);
+            }
+            return $cacheAction;
+        }, $event->getCacheActions());
+
         $this->optionValues = $event->getCacheActionIdentifiers();
     }
 

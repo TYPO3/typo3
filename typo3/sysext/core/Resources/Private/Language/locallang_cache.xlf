@@ -19,6 +19,12 @@
         <source>Clear frontend and page-related caches, all system-related caches, including localization, extension configuration, file and opcode caches. Rebuilding these caches may take some time.</source>
       </trans-unit>
       <!-- Notifications -->
+      <trans-unit id="notification.success.title">
+        <source>Caches cleared</source>
+      </trans-unit>
+      <trans-unit id="notification.success.message">
+        <source>Caches have been cleared.</source>
+      </trans-unit>
       <trans-unit id="notification.error.title">
         <source>An error occurred</source>
       </trans-unit>

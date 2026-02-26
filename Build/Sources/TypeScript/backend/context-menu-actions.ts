@@ -304,15 +304,15 @@ class ContextMenuActions {
     (new AjaxRequest(TYPO3.settings.ajaxUrls.clearcache_page)).post({ id: uid }).then(
       async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
-        if (data.success === true) {
-          Notification.success(
-            data.title,
-            data.message
+        if (data?.success === false) {
+          Notification.error(
+            data.title ?? cacheLabels.get('notification.error.title'),
+            data.message ?? cacheLabels.get('notification.error.message'),
           );
         } else {
-          Notification.error(
-            data.title,
-            data.message
+          Notification.success(
+            data?.title ?? cacheLabels.get('notification.success.title'),
+            data?.message ?? cacheLabels.get('notification.success.message'),
           );
         }
       },

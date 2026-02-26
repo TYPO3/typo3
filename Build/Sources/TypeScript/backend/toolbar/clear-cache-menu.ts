@@ -71,10 +71,17 @@ class ClearCacheMenu {
     (new AjaxRequest(ajaxUrl)).post({}).then(
       async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
-        Notification.success(
-          data.title,
-          data.message
-        );
+        if (data?.success === false) {
+          Notification.error(
+            data.title ?? cacheLabels.get('notification.error.title'),
+            data.message ?? cacheLabels.get('notification.error.message'),
+          );
+        } else {
+          Notification.success(
+            data?.title ?? cacheLabels.get('notification.success.title'),
+            data?.message ?? cacheLabels.get('notification.success.message'),
+          );
+        }
       },
       (): void => {
         Notification.error(
