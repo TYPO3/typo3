@@ -471,12 +471,12 @@ function validateCollectionElement(propertyPath: string, editorHtml: HTMLElement
  */
 function getFirstAvailableValidationErrorMessage(errorCodes: string[], propertyData: PropertyData): string | null {
   assert(
-    'array' === $.type(errorCodes),
+    Array.isArray(errorCodes),
     'Invalid configuration "errorCodes"',
     1489932939
   );
   assert(
-    'array' === $.type(propertyData),
+    Array.isArray(propertyData),
     'Invalid configuration "propertyData"',
     1489932940
   );
@@ -503,14 +503,14 @@ function renewValidationErrorMessages(
   value: string
 ): PropertyData {
   assert(
-    'array' === $.type(propertyData),
+    Array.isArray(propertyData),
     'Invalid configuration "propertyData"',
     1489932942
   );
 
   if (
     !getUtility().isUndefinedOrNull(errorCodes)
-    && 'array' === $.type(errorCodes)
+    && Array.isArray(errorCodes)
   ) {
     const errorCodeSubset: PropertyData = [];
     for (let i = 0, len1 = errorCodes.length; i < len1; ++i) {
@@ -620,7 +620,7 @@ export function renderEditors(
   getInspectorDomElement().off().empty();
 
   const formElementTypeDefinition = getFormElementDefinition(formElement, undefined);
-  if ('array' !== $.type(formElementTypeDefinition.editors)) {
+  if (!Array.isArray(formElementTypeDefinition.editors)) {
     return;
   }
 
@@ -642,7 +642,7 @@ export function renderEditors(
     renderEditorDispatcher(formElementTypeDefinition.editors[i], html);
   }
 
-  if ('function' === $.type(callback)) {
+  if (typeof callback === 'function') {
     callback();
   }
 }
@@ -673,7 +673,7 @@ export function renderCollectionElementEditors(
     collectionElementIdentifier,
     collectionName
   );
-  if ('array' !== $.type(collectionElementConfiguration.editors)) {
+  if (!Array.isArray(collectionElementConfiguration.editors)) {
     return;
   }
 
@@ -801,7 +801,7 @@ export function renderCollectionElementSelectionEditor(
     1475423100
   );
   assert(
-    'array' === $.type(editorConfiguration.selectOptions),
+    Array.isArray(editorConfiguration.selectOptions),
     'Invalid configuration "selectOptions"',
     1475423101
   );
@@ -1098,7 +1098,7 @@ export function renderTextEditor(
 
   if (
     !getUtility().isUndefinedOrNull(editorConfiguration.additionalElementPropertyPaths)
-    && 'array' === $.type(editorConfiguration.additionalElementPropertyPaths)
+    && Array.isArray(editorConfiguration.additionalElementPropertyPaths)
   ) {
     for (let i = 0, len = editorConfiguration.additionalElementPropertyPaths.length; i < len; ++i) {
       getCurrentlySelectedFormElement().set(editorConfiguration.additionalElementPropertyPaths[i], propertyData);
@@ -1119,7 +1119,7 @@ export function renderTextEditor(
     validateCollectionElement(propertyPath, editorHtml);
     if (
       !getUtility().isUndefinedOrNull(editorConfiguration.additionalElementPropertyPaths)
-      && 'array' === $.type(editorConfiguration.additionalElementPropertyPaths)
+      && Array.isArray(editorConfiguration.additionalElementPropertyPaths)
     ) {
       for (let i = 0, len = editorConfiguration.additionalElementPropertyPaths.length; i < len; ++i) {
         if (
@@ -1179,7 +1179,7 @@ export function renderValidationErrorMessageEditor(
 
   if (
     !getUtility().isUndefinedOrNull(propertyData)
-    && 'array' === $.type(propertyData)
+    && Array.isArray(propertyData)
   ) {
     const validationErrorMessage = getFirstAvailableValidationErrorMessage(editorConfiguration.errorCodes, propertyData);
 
@@ -1308,7 +1308,7 @@ export function renderSingleSelectEditor(
     1475421051
   );
   assert(
-    'array' === $.type(editorConfiguration.selectOptions),
+    Array.isArray(editorConfiguration.selectOptions),
     'Invalid configuration "selectOptions"',
     1475421052
   );
@@ -1382,7 +1382,7 @@ export function renderMultiSelectEditor(
     1485712402
   );
   assert(
-    'array' === $.type(editorConfiguration.selectOptions),
+    Array.isArray(editorConfiguration.selectOptions),
     'Invalid configuration "selectOptions"',
     1485712403
   );
@@ -1461,7 +1461,7 @@ export function renderGridColumnViewPortConfigurationEditor(
     1489528244
   );
   assert(
-    'array' === $.type(editorConfiguration.configurationOptions.viewPorts),
+    Array.isArray(editorConfiguration.configurationOptions.viewPorts),
     'Invalid configurationOptions "viewPorts"',
     1489528245
   );
@@ -1535,7 +1535,7 @@ export function renderGridColumnViewPortConfigurationEditor(
 
     getHelper().getTemplatePropertyDomElement('numbersOfColumnsToUse-propertyPath', numbersOfColumnsTemplateClone).on('keyup paste change', function(this: HTMLInputElement) {
       const that = $(this);
-      if (!$.isNumeric(that.val())) {
+      if (that.val() === '' || isNaN(Number(that.val()))) {
         that.val('');
       }
       getCurrentlySelectedFormElement().set(propertyPath, that.val());
@@ -1597,17 +1597,17 @@ export function renderPropertyGridEditor(
     1475419227
   );
   assert(
-    'boolean' === $.type(editorConfiguration.enableAddRow),
+    typeof editorConfiguration.enableAddRow === 'boolean',
     'Invalid configuration "enableAddRow"',
     1475419228
   );
   assert(
-    'boolean' === $.type(editorConfiguration.enableDeleteRow),
+    typeof editorConfiguration.enableDeleteRow === 'boolean',
     'Invalid configuration "enableDeleteRow"',
     1475419230
   );
   assert(
-    'boolean' === $.type(editorConfiguration.isSortable),
+    typeof editorConfiguration.isSortable === 'boolean',
     'Invalid configuration "isSortable"',
     1475419229
   );
@@ -1944,7 +1944,7 @@ export function renderCheckboxEditor(
 
   if (
     useDefaultEnabled
-    || ('boolean' === $.type(propertyData) && propertyData)
+    || (typeof propertyData === 'boolean' && propertyData)
     || propertyData === 'true'
     || propertyData === 1
     || propertyData === '1'

@@ -111,7 +111,7 @@ function showRemoveElementModal<T extends keyof PublisherSubscriberTopicArgument
     1478889049
   );
   assert(
-    'array' === $.type(publisherTopicArguments),
+    Array.isArray(publisherTopicArguments),
     'Invalid parameter "formElement"',
     1478889044
   );
@@ -164,7 +164,7 @@ function insertElementsModalSetup(
     for (const key of Object.keys(configuration)) {
       if (
         key === 'disableElementTypes'
-        && 'array' === $.type(configuration[key])
+        && Array.isArray(configuration[key])
       ) {
         for (let i = 0, len = configuration[key].length; i < len; ++i) {
           $(
@@ -179,7 +179,7 @@ function insertElementsModalSetup(
 
       if (
         key === 'onlyEnableElementTypes'
-        && 'array' === $.type(configuration[key])
+        && Array.isArray(configuration[key])
       ) {
         $(
           getHelper().getDomElementDataAttribute(
@@ -215,7 +215,7 @@ function _validationErrorsModalSetup(
   let formElement, newRowItem;
 
   assert(
-    'array' === $.type(validationResults),
+    Array.isArray(validationResults),
     'Invalid parameter "validationResults"',
     1479161268
   );

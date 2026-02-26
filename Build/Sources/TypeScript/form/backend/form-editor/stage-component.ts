@@ -207,7 +207,7 @@ function renderNestedSortableListItem(formElement: FormElement): JQuery {
     childList.addClass(getHelper().getDomElementClassName('sortable'));
     childList.addClass('formeditor-list');
     const childFormElements = formElement.get('renderables');
-    if ('array' === $.type(childFormElements)) {
+    if (Array.isArray(childFormElements)) {
       for (let i = 0, len = childFormElements.length; i < len; ++i) {
         childList.append(renderNestedSortableListItem(childFormElements[i]));
       }
@@ -356,7 +356,7 @@ export function getAllFormElementDomElements(): JQuery {
  */
 export function renderFormDefinitionPageAsSortableList(pageIndex: number): JQuery {
   assert(
-    'number' === $.type(pageIndex),
+    typeof pageIndex === 'number',
     'Invalid parameter "pageIndex"',
     1478721208
   );
@@ -566,7 +566,7 @@ export function renderAbstractStageArea(pageIndex: number, callback: () => void)
     addSortableEvents();
   }
 
-  if ('function' === $.type(callback)) {
+  if (typeof callback === 'function') {
     callback();
   }
 }
@@ -649,7 +649,7 @@ export function renderFormElementStageItem(formElement: FormElement, template: J
   const validatorList: Validator[] = [];
   let hasNotEmptyValidator = false;
 
-  if ('array' === $.type(validators) && validators.length > 0) {
+  if (Array.isArray(validators) && validators.length > 0) {
     for (let i = 0, len = validators.length; i < len; ++i) {
       if ('NotEmpty' === validators[i].identifier) {
         hasNotEmptyValidator = true;
@@ -689,7 +689,7 @@ export function renderFormElementStageItem(formElement: FormElement, template: J
 
     if (getFormEditorApp().getUtility().isUndefinedOrNull(defaultValue)) {
       defaultValue = {};
-    } else if ('string' === $.type(defaultValue)) {
+    } else if (typeof defaultValue === 'string') {
       defaultValue = { 0: defaultValue };
     }
 
@@ -708,17 +708,18 @@ export function renderFormElementStageItem(formElement: FormElement, template: J
           selected: isSelected
         });
       }
-    } else if ('array' === $.type(propertyValue)) {
-      for (const propertyValueKey of Object.keys(propertyValue)) {
+    } else if (Array.isArray(propertyValue)) {
+      const entries = propertyValue as Record<string, any>;
+      for (const propertyValueKey of Object.keys(entries)) {
         let label: string;
         let value: string;
 
-        if (getUtility().isUndefinedOrNull(propertyValue[propertyValueKey]._label)) {
-          label = propertyValue[propertyValueKey];
+        if (getUtility().isUndefinedOrNull(entries[propertyValueKey]._label)) {
+          label = entries[propertyValueKey];
           value = propertyValueKey;
         } else {
-          label = propertyValue[propertyValueKey]._label;
-          value = propertyValue[propertyValueKey]._value;
+          label = entries[propertyValueKey]._label;
+          value = entries[propertyValueKey]._value;
         }
 
         let isSelected = false;
@@ -752,7 +753,7 @@ export function renderFormElementStageItem(formElement: FormElement, template: J
           mimeTypesList.push(allowedMimeTypesValue[key]);
         }
       }
-    } else if ('array' === $.type(allowedMimeTypesValue)) {
+    } else if (Array.isArray(allowedMimeTypesValue)) {
       for (let i = 0, len = allowedMimeTypesValue.length; i < len; ++i) {
         mimeTypesList.push(allowedMimeTypesValue[i]);
       }
@@ -812,7 +813,7 @@ export function eachTemplateProperty(
     const propertyPath = $(element).attr(getHelper().getDomElementDataAttribute('templateProperty'));
     const propertyValue = formElement.get(propertyPath);
 
-    if ('function' === $.type(callback)) {
+    if (typeof callback === 'function') {
       callback(propertyPath, propertyValue, element as HTMLElement);
     }
   });
@@ -823,7 +824,7 @@ export function renderCheckboxTemplate(formElement: FormElement, template: JQuer
 
   eachTemplateProperty(formElement, template, function(propertyPath, propertyValue, domElement) {
     if (
-      ('boolean' === $.type(propertyValue) && propertyValue)
+      (typeof propertyValue === 'boolean' && propertyValue)
       || propertyValue === 'true'
       || propertyValue === 1
       || propertyValue === '1'
@@ -880,7 +881,7 @@ export function renderSimpleTemplateWithValidators(formElement: FormElement, tem
   $(getHelper().getDomElementDataIdentifierSelector('validatorsContainer'), $(template)).empty();
   const validators = formElement.get('validators');
 
-  if ('array' === $.type(validators)) {
+  if (Array.isArray(validators)) {
     let validatorsCountWithoutRequired = 0;
     if (validators.length > 0) {
       for (let i = 0, len = validators.length; i < len; ++i) {
@@ -960,7 +961,7 @@ export function renderSelectTemplates(formElement: FormElement, template: JQuery
 
   if (getFormEditorApp().getUtility().isUndefinedOrNull(defaultValue)) {
     defaultValue = {};
-  } else if ('string' === $.type(defaultValue)) {
+  } else if (typeof defaultValue === 'string') {
     defaultValue = { 0: defaultValue };
   }
 
@@ -968,12 +969,13 @@ export function renderSelectTemplates(formElement: FormElement, template: JQuery
     for (const propertyValueKey of Object.keys(propertyValue)) {
       appendMultiValue(propertyValue[propertyValueKey], propertyValueKey, defaultValue);
     }
-  } else if ('array' === $.type(propertyValue)) {
-    for (const propertyValueKey of Object.keys(propertyValue)) {
-      if (getUtility().isUndefinedOrNull(propertyValue[propertyValueKey]._label)) {
-        appendMultiValue(propertyValue[propertyValueKey], propertyValueKey, defaultValue);
+  } else if (Array.isArray(propertyValue)) {
+    const entries = propertyValue as Record<string, any>;
+    for (const propertyValueKey of Object.keys(entries)) {
+      if (getUtility().isUndefinedOrNull(entries[propertyValueKey]._label)) {
+        appendMultiValue(entries[propertyValueKey], propertyValueKey, defaultValue);
       } else {
-        appendMultiValue(propertyValue[propertyValueKey]._label, propertyValue[propertyValueKey]._value, defaultValue);
+        appendMultiValue(entries[propertyValueKey]._label, entries[propertyValueKey]._value, defaultValue);
       }
     }
   }
@@ -1004,7 +1006,7 @@ export function renderFileUploadTemplates(formElement: FormElement, template: JQ
     for (const propertyValueKey of Object.keys(propertyValue)) {
       appendMultiValue(propertyValue[propertyValueKey]);
     }
-  } else if ('array' === $.type(propertyValue)) {
+  } else if (Array.isArray(propertyValue)) {
     for (let i = 0, len = propertyValue.length; i < len; ++i) {
       appendMultiValue(propertyValue[i]);
     }

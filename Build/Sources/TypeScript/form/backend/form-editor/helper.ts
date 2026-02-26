@@ -97,7 +97,7 @@ export function buildDomElementSelectorHelper(
     'Invalid parameter "patternIdentifier" (' + patternIdentifier + ')',
     1478801251
   );
-  assert('array' === $.type(replacements), 'Invalid parameter "replacements"', 1478801252);
+  assert(Array.isArray(replacements), 'Invalid parameter "replacements"', 1478801252);
 
   newString = configuration.domElementSelectorPattern[patternIdentifier];
   for (let i = 0, len = replacements.length; i < len; ++i) {

@@ -329,12 +329,12 @@ export class Utility {
 
       if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
         simpleObject[key] = this.convertToSimpleObject(value);
-      } else if ('function' !== $.type(value) && 'undefined' !== $.type(value)) {
+      } else if (typeof value !== 'function' && typeof value !== 'undefined') {
         simpleObject[key] = value;
       }
     }
 
-    if ('array' === $.type(childFormElements)) {
+    if (Array.isArray(childFormElements)) {
       simpleObject.renderables = [];
       for (let i = 0, len = childFormElements.length; i < len; ++i) {
         simpleObject.renderables.push(this.convertToSimpleObject(childFormElements[i]));
@@ -361,9 +361,9 @@ export class PropertyValidationService {
     collectionName: string,
     configuration: PropertyValidatorConfiguration
   ): void {
+    assert(Array.isArray(validators), 'Invalid parameter "validators"', 1475661026);
+    assert(Array.isArray(validators), 'Invalid parameter "validators"', 1479238074);
     assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475661025);
-    assert('array' === $.type(validators), 'Invalid parameter "validators"', 1475661026);
-    assert('array' === $.type(validators), 'Invalid parameter "validators"', 1479238074);
 
     const formElementIdentifierPath = formElement.get('__identifierPath');
     propertyPath = utility.buildPropertyPath(propertyPath, collectionElementIdentifier, collectionName, formElement);
@@ -440,8 +440,8 @@ export class PropertyValidationService {
    */
   public addValidator(validatorIdentifier: string, func: Validator): void {
     assert(utility.isNonEmptyString(validatorIdentifier), 'Invalid parameter "validatorIdentifier"', 1475669143);
-    assert('function' === $.type(func), 'Invalid parameter "func"', 1475669144);
-    assert('function' !== $.type(this.validators[validatorIdentifier]), 'The validator "' + validatorIdentifier + '" is already registered', 1475669145);
+    assert(typeof func === 'function', 'Invalid parameter "func"', 1475669144);
+    assert(typeof this.validators[validatorIdentifier] !== 'function', 'The validator "' + validatorIdentifier + '" is already registered', 1475669145);
 
     this.validators[validatorIdentifier] = func;
   }
@@ -474,7 +474,7 @@ export class PropertyValidationService {
       configuration = propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].configuration;
       for (let i = 0, len = propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators.length; i < len; ++i) {
         const validatorIdentifier = propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators[i];
-        if ('function' !== $.type(this.validators[validatorIdentifier])) {
+        if (typeof this.validators[validatorIdentifier] !== 'function') {
           continue;
         }
         const validationResult = this.validators[validatorIdentifier](formElement, propertyPath);
@@ -522,7 +522,7 @@ export class PropertyValidationService {
   public validationResultsHasErrors(
     validationResults: ValidationResultsRecursive
   ): boolean {
-    assert('array' === $.type(validationResults), 'Invalid parameter "validationResults"', 1478613477);
+    assert(Array.isArray(validationResults), 'Invalid parameter "validationResults"', 1478613477);
 
     for (let i = 0, len = validationResults.length; i < len; ++i) {
       for (let j = 0, len2 = validationResults[i].validationResults.length; j < len2; ++j) {
@@ -559,7 +559,7 @@ export class PropertyValidationService {
     }
 
     const formElements = formElement.get('renderables');
-    if ('array' === $.type(formElements)) {
+    if (Array.isArray(formElements)) {
       for (let i = 0, len = formElements.length; i < len; ++i) {
         this.validateFormElementRecursive(formElements[i], returnAfterFirstMatch, validationResults);
         if (returnAfterFirstMatch && this.validationResultsHasErrors(validationResults)) {
@@ -590,13 +590,13 @@ export class PropertyValidationService {
         }
         for (let i = 0, len1 = formElementTypeDefinition.propertyCollections[collectionName].length; i < len1; ++i) {
           if (
-            'array' !== $.type(formElementTypeDefinition.propertyCollections[collectionName][i].editors)
+            !Array.isArray(formElementTypeDefinition.propertyCollections[collectionName][i].editors)
             || repository.getIndexFromPropertyCollectionElementByIdentifier(formElementTypeDefinition.propertyCollections[collectionName][i].identifier, collectionName, formElement) === -1
           ) {
             continue;
           }
           for (let j = 0, len2 = formElementTypeDefinition.propertyCollections[collectionName][i].editors.length; j < len2; ++j) {
-            if ('array' !== $.type(formElementTypeDefinition.propertyCollections[collectionName][i].editors[j].propertyValidators)) {
+            if (!Array.isArray(formElementTypeDefinition.propertyCollections[collectionName][i].editors[j].propertyValidators)) {
               continue;
             }
             const propertyValidatorConfiguration: PropertyValidatorConfiguration = {
@@ -659,7 +659,7 @@ export class PublisherSubscriber {
     func: NoInfer<PublisherSubscriberFunction<T>>
   ): string {
     assert(utility.isNonEmptyString(topic), 'Invalid parameter "topic"', 1475358067);
-    assert('function' === $.type(func), 'Invalid parameter "func"', 1475411986);
+    assert(typeof func === 'function', 'Invalid parameter "func"', 1475411986);
 
     if (utility.isUndefinedOrNull(this.topics[topic])) {
       this.topics[topic] = <PublisherSubscriberTopics[T]>[];
@@ -712,7 +712,7 @@ function extendModel<D extends object, T extends ModelData<D>>(
   disablePublishersOnSet = !!disablePublishersOnSet;
   pathPrefix = pathPrefix || '';
 
-  if ($.isEmptyObject(modelExtension)) {
+  if (typeof modelExtension === 'object' && Object.keys(modelExtension).length === 0) {
     assert('' !== pathPrefix, 'Empty path is not allowed', 1474640022);
     modelToExtend.on(pathPrefix, 'core/formElement/somePropertyChanged');
     modelToExtend.set(pathPrefix, modelExtension, disablePublishersOnSet);
@@ -782,7 +782,7 @@ export class Model<D extends object, T extends ModelData<D>> {
       firstPartOfPath = path.slice(0, path.indexOf('.'));
       path = path.slice(firstPartOfPath.length + 1);
 
-      if ($.isNumeric(firstPartOfPath)) {
+      if (!isNaN(Number(firstPartOfPath))) {
         firstPartOfPath = parseInt(firstPartOfPath, 10);
       }
 
@@ -793,14 +793,14 @@ export class Model<D extends object, T extends ModelData<D>> {
       // of the next path segment, the target type is guessed(!), thus e.g.
       // "key" results in having an object, "123" results in having an array
       if ('undefined' === $.type(obj[firstPartOfPath])) {
-        if ($.isNumeric(nextPartOfPath)) {
+        if (!isNaN(Number(nextPartOfPath))) {
           obj[firstPartOfPath] = [];
         } else {
           obj[firstPartOfPath] = {};
         }
       // in case the previous guess was wrong, the initialized array
       // is converted to an object when a non-numeric path segment is found
-      } else if (false === $.isNumeric(nextPartOfPath) && 'array' === $.type(obj[firstPartOfPath])) {
+      } else if (isNaN(Number(nextPartOfPath)) && Array.isArray(obj[firstPartOfPath])) {
         obj[firstPartOfPath] = { ...(obj[firstPartOfPath] as Array<unknown>) };
       }
       obj = obj[firstPartOfPath] as Record<string, unknown>;
@@ -859,7 +859,7 @@ export class Model<D extends object, T extends ModelData<D>> {
     assert(utility.isNonEmptyString(key), 'Invalid parameter "key"', 1475361757);
     assert(utility.isNonEmptyString(topicName), 'Invalid parameter "topicName"', 1475361758);
 
-    if ('array' !== $.type(this.publisherTopics[key])) {
+    if (!Array.isArray(this.publisherTopics[key])) {
       this.publisherTopics[key] = [];
     }
     if (this.publisherTopics[key].indexOf(topicName) === -1) {
@@ -875,7 +875,7 @@ export class Model<D extends object, T extends ModelData<D>> {
     assert(utility.isNonEmptyString(key), 'Invalid parameter "key"', 1475361759);
     assert(utility.isNonEmptyString(topicName), 'Invalid parameter "topicName"', 1475361760);
 
-    if ('array' === $.type(this.publisherTopics[key])) {
+    if (Array.isArray(this.publisherTopics[key])) {
       this.publisherTopics[key] = this.publisherTopics[key].filter(
         (currentTopicName) => topicName !== currentTopicName
       );
@@ -1021,7 +1021,7 @@ export class Repository {
 
     // formElement != Page / SummaryPage && referenceFormElement == Page / Fieldset / GridRow
     if (!formElementTypeDefinition._isTopLevelFormElement && referenceFormElementTypeDefinition._isCompositeFormElement) {
-      if ('array' !== $.type(referenceFormElement.get('renderables'))) {
+      if (!Array.isArray(referenceFormElement.get('renderables'))) {
         referenceFormElement.set('renderables', [], disablePublishersOnSet);
       }
 
@@ -1054,9 +1054,9 @@ export class Repository {
     }
 
     if (registerPropertyValidators) {
-      if ('array' === $.type(formElementTypeDefinition.editors)) {
+      if (Array.isArray(formElementTypeDefinition.editors)) {
         for (let i = 0, len1 = formElementTypeDefinition.editors.length; i < len1; ++i) {
-          if ('array' !== $.type(formElementTypeDefinition.editors[i].propertyValidators)) {
+          if (!Array.isArray(formElementTypeDefinition.editors[i].propertyValidators)) {
             continue;
           }
 
@@ -1158,7 +1158,7 @@ export class Repository {
 
       formElement.set('__identifierPath', newIdentifierPath, disablePublishersOnSet);
       const formElements = formElement.get('renderables');
-      if ('array' === $.type(formElements)) {
+      if (Array.isArray(formElements)) {
         for (let i = 0, len = formElements.length; i < len; ++i) {
           reSetIdentifierPath(formElements[i], formElement.get('__identifierPath'));
         }
@@ -1338,7 +1338,7 @@ export class Repository {
       }
 
       const formElements = formElement.get('renderables');
-      if ('array' === $.type(formElements)) {
+      if (Array.isArray(formElements)) {
         for (let i = 0, len = formElements.length; i < len; ++i) {
           collect(formElements[i]);
         }
@@ -1365,7 +1365,7 @@ export class Repository {
 
       if (!identifierFound) {
         formElements = formElement.get('renderables');
-        if ('array' === $.type(formElements)) {
+        if (Array.isArray(formElements)) {
           for (let i = 0, len = formElements.length; i < len; ++i) {
             checkIdentifier(formElements[i]);
             if (identifierFound) {
@@ -1452,7 +1452,7 @@ export class Repository {
     collection: Collection
   ): undefined | CollectionEntry {
     assert(utility.isNonEmptyString(collectionElementIdentifier), 'Invalid parameter "collectionElementIdentifier"', 1475375281);
-    assert('array' === $.type(collection), 'Invalid parameter "collection"', 1475375282);
+    assert(Array.isArray(collection), 'Invalid parameter "collection"', 1475375282);
 
     for (let i = 0, len = collection.length; i < len; ++i) {
       if (collection[i].identifier === collectionElementIdentifier) {
@@ -1478,7 +1478,7 @@ export class Repository {
     assert(utility.isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475375285);
 
     const collection = formElement.get(collectionName);
-    if ('array' === $.type(collection)) {
+    if (Array.isArray(collection)) {
       for (let i = 0, len = collection.length; i < len; ++i) {
         if (collection[i].identifier === collectionElementIdentifier) {
           return i;
@@ -1502,8 +1502,8 @@ export class Repository {
     disablePublishersOnSet?: boolean
   ): FormElement {
     let collection, newCollectionElementIndex;
-    assert('object' === $.type(collectionElementToAdd), 'Invalid parameter "collectionElementToAdd"', 1475375686);
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475375687);
+    assert(typeof collectionElementToAdd === 'object' && collectionElementToAdd !== null, 'Invalid parameter "collectionElementToAdd"', 1475375686);
+    assert(typeof formElement === 'object' && formElement !== null, 'Invalid parameter "formElement"', 1475375687);
     assert(utility.isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475375688);
 
     if (utility.isUndefinedOrNull(disablePublishersOnSet)) {
@@ -1512,7 +1512,7 @@ export class Repository {
     disablePublishersOnSet = !!disablePublishersOnSet;
 
     collection = formElement.get(collectionName);
-    if ('array' !== $.type(collection)) {
+    if (!Array.isArray(collection)) {
       extendModel(formElement, [], collectionName, true);
       collection = formElement.get(collectionName);
     }
@@ -1655,7 +1655,7 @@ export class Factory {
       }
 
       predefinedDefaults[collectionName] = predefinedDefaults[collectionName] || {};
-      collections[collectionName] = <Record<string, CollectionElementConfiguration>>$.extend(
+      collections[collectionName] = <Record<string, CollectionElementConfiguration>>Object.assign(
         predefinedDefaults[collectionName] || {},
         configuration[collectionName as keyof typeof configuration]
       );
@@ -1715,9 +1715,9 @@ export class Factory {
     }
 
     if (registerPropertyValidators) {
-      if ('array' === $.type(formElementTypeDefinition.editors)) {
+      if (Array.isArray(formElementTypeDefinition.editors)) {
         for (let i = 0, len1 = formElementTypeDefinition.editors.length; i < len1; ++i) {
-          if ('array' !== $.type(formElementTypeDefinition.editors[i].propertyValidators)) {
+          if (!Array.isArray(formElementTypeDefinition.editors[i].propertyValidators)) {
             continue;
           }
 
@@ -1743,7 +1743,7 @@ export class Factory {
       }
     }
 
-    if ('array' === $.type(rawChildFormElements)) {
+    if (Array.isArray(rawChildFormElements)) {
       currentChildFormElements = [];
       for (let i = 0, len = rawChildFormElements.length; i < len; ++i) {
         currentChildFormElements.push(this.createFormElement(rawChildFormElements[i], identifierPath, formElement, registerPropertyValidators, disablePublishersOnSet));
@@ -1776,7 +1776,7 @@ export class Factory {
       collectionElementPresets = {};
     }
 
-    return $.extend(collectionElementPresets, collectionElementConfiguration);
+    return Object.assign(collectionElementPresets, collectionElementConfiguration);
   }
 }
 
@@ -1848,7 +1848,7 @@ export class DataBackend {
    * @throws 1475377782
    */
   public renderFormDefinitionPage(pageIndex: number): void {
-    assert($.isNumeric(pageIndex), 'Invalid parameter "pageIndex"', 1475377781);
+    assert(!isNaN(Number(pageIndex)), 'Invalid parameter "pageIndex"', 1475377781);
     assert(utility.isNonEmptyString(this.endpoints.formPageRenderer), 'The endpoint "formPageRenderer" is not configured', 1473447677);
 
     if (runningAjaxRequests.renderFormDefinitionPage) {
@@ -1954,7 +1954,7 @@ export class ApplicationStateStack {
       'Invalid parameter "type"', 1477932754
     );
 
-    if ('undefined' === $.type(this.stack[this.stackPointer])) {
+    if (typeof this.stack[this.stackPointer] === 'undefined') {
       return undefined;
     }
     return (this.stack[this.stackPointer][type]) as R;
@@ -1982,7 +1982,7 @@ export class ApplicationStateStack {
    * @throws 1477846933
    */
   public setMaximalStackSize(stackSize: number): void {
-    assert('number' === $.type(stackSize), 'Invalid parameter "size"', 1477846933);
+    assert(typeof stackSize === 'number', 'Invalid parameter "size"', 1477846933);
     this.stackSize = stackSize;
   }
 
@@ -2002,7 +2002,7 @@ export class ApplicationStateStack {
    * @throws 1477852138
    */
   public setCurrentStackPointer(stackPointer: number): void {
-    assert('number' === $.type(stackPointer), 'Invalid parameter "size"', 1477852138);
+    assert(typeof stackPointer === 'number', 'Invalid parameter "size"', 1477852138);
     if (stackPointer < 0) {
       this.stackPointer = 0;
     } else if (stackPointer > this.stack.length - 1) {

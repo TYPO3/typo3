@@ -151,14 +151,15 @@ function isRelativeDateExpression(value: string): boolean {
 function addPropertyValidators(): void {
   getFormEditorApp().addPropertyValidationValidator('NotEmpty', function(formElement, propertyPath) {
     const value = formElement.get(propertyPath);
-    if (!value || value === '' || $.isArray(value) && !value.length) {
+    if (!value || value === '' || Array.isArray(value) && !value.length) {
       return getFormEditorApp().getFormElementPropertyValidatorDefinition('NotEmpty').errorMessage || 'invalid value';
     }
     return undefined;
   });
 
   getFormEditorApp().addPropertyValidationValidator('Integer', function(formElement, propertyPath) {
-    if (!$.isNumeric(formElement.get(propertyPath))) {
+    const value = formElement.get(propertyPath);
+    if (value === '' || value === null || isNaN(Number(value))) {
       return getFormEditorApp().getFormElementPropertyValidatorDefinition('Integer').errorMessage || 'invalid value';
     }
     return undefined;
@@ -168,7 +169,7 @@ function addPropertyValidators(): void {
     if (getUtility().isUndefinedOrNull(formElement.get(propertyPath))) {
       return undefined;
     }
-    if (formElement.get(propertyPath).length > 0 && !$.isNumeric(formElement.get(propertyPath))) {
+    if (formElement.get(propertyPath).length > 0 && isNaN(Number(formElement.get(propertyPath)))) {
       return getFormEditorApp().getFormElementPropertyValidatorDefinition('Integer').errorMessage || 'invalid value';
     }
     return undefined;
@@ -293,7 +294,7 @@ function loadAdditionalModules(_additionalViewModelModules: AdditionalViewModelM
     additionalViewModelModules = _additionalViewModelModules as AdditionalViewModelModules;
   }
 
-  if ('array' !== $.type(additionalViewModelModules)) {
+  if (!Array.isArray(additionalViewModelModules)) {
     getPublisherSubscriber().publish('view/ready');
     return;
   }
@@ -304,7 +305,7 @@ function loadAdditionalModules(_additionalViewModelModules: AdditionalViewModelM
     for (let i = 0; i < additionalViewModelModulesLength; ++i) {
       loadModule(additionalViewModelModules[i]).then(function(additionalViewModelModule) {
         assert(
-          'function' === $.type(additionalViewModelModule.bootstrap),
+          typeof additionalViewModelModule.bootstrap === 'function',
           'The module "' + additionalViewModelModules[i].name + '" does not implement the method "bootstrap"',
           1475425785
         );
@@ -326,7 +327,7 @@ function loadAdditionalModules(_additionalViewModelModules: AdditionalViewModelM
  */
 function structureComponentSetup(): void {
   assert(
-    'function' === $.type(TreeComponent.bootstrap),
+    typeof TreeComponent.bootstrap === 'function',
     'The structure component does not implement the method "bootstrap"',
     1478268639
   );
@@ -348,7 +349,7 @@ function structureComponentSetup(): void {
  */
 function modalsComponentSetup(): void {
   assert(
-    'function' === $.type(ModalsComponent.bootstrap),
+    typeof ModalsComponent.bootstrap === 'function',
     'The modals component does not implement the method "bootstrap"',
     1478895106
   );
@@ -360,7 +361,7 @@ function modalsComponentSetup(): void {
  */
 function inspectorsComponentSetup(): void {
   assert(
-    'function' === $.type(InspectorComponent.bootstrap),
+    typeof InspectorComponent.bootstrap === 'function',
     'The inspector component does not implement the method "bootstrap"',
     1478895106
   );
@@ -372,7 +373,7 @@ function inspectorsComponentSetup(): void {
  */
 function stageComponentSetup(): void {
   assert(
-    'function' === $.type(InspectorComponent.bootstrap),
+    typeof InspectorComponent.bootstrap === 'function',
     'The stage component does not implement the method "bootstrap"',
     1478986610
   );
@@ -994,9 +995,9 @@ export function removePropertyCollectionElement(
     collectionElementIdentifier,
     collectionName
   );
-  if ('array' === $.type(collectionElementConfiguration.editors)) {
+  if (Array.isArray(collectionElementConfiguration.editors)) {
     for (let i = 0, len1 = collectionElementConfiguration.editors.length; i < len1; ++i) {
-      if ('array' === $.type(collectionElementConfiguration.editors[i].additionalElementPropertyPaths)) {
+      if (Array.isArray(collectionElementConfiguration.editors[i].additionalElementPropertyPaths)) {
         for (let j = 0, len2 = collectionElementConfiguration.editors[i].additionalElementPropertyPaths.length; j < len2; ++j) {
           getCurrentlySelectedFormElement().unset(collectionElementConfiguration.editors[i].additionalElementPropertyPaths[j], true);
         }
@@ -1070,7 +1071,7 @@ export function refreshSelectedElementItemsBatch(toolbarUseFadeEffect?: boolean)
  * @throws 1478651734
  */
 export function selectPageBatch(pageIndex: number): void {
-  assert('number' === $.type(pageIndex), 'Invalid parameter "pageIndex"', 1478651732);
+  assert(typeof pageIndex === 'number', 'Invalid parameter "pageIndex"', 1478651732);
   assert(pageIndex >= 0, 'Invalid parameter "pageIndex"', 1478651733);
   assert(pageIndex < getRootFormElement().get('renderables').length, 'Invalid parameter "pageIndex"', 1478651734);
 

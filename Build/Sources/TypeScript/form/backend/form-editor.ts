@@ -194,7 +194,7 @@ export class FormEditor {
    * @throws 1475378544
    */
   public setUnsavedContent(unsavedContent: boolean): void {
-    assert('boolean' === $.type(unsavedContent), 'Invalid parameter "unsavedContent"', 1475378544);
+    assert(typeof unsavedContent === 'boolean', 'Invalid parameter "unsavedContent"', 1475378544);
     this.unsavedContent = unsavedContent;
   }
 
@@ -426,7 +426,7 @@ export class FormEditor {
 
     if (this.getUtility().isUndefinedOrNull(referenceCollectionElementIdentifier)) {
       collection = formElement.get(collectionName);
-      if ('array' === $.type(collection) && collection.length > 0) {
+      if (Array.isArray(collection) && collection.length > 0) {
         referenceCollectionElementIdentifier = collection[collection.length - 1].identifier;
       }
     }
@@ -513,8 +513,8 @@ export class FormEditor {
 
     formElement = this.getRepository().findFormElement(formElement);
 
-    assert('string' === $.type(collectionElementToMove), 'Invalid parameter "collectionElementToMove"', 1477404352);
-    assert('string' === $.type(referenceCollectionElement), 'Invalid parameter "referenceCollectionElement"', 1477404353);
+    assert(typeof collectionElementToMove === 'string', 'Invalid parameter "collectionElementToMove"', 1477404352);
+    assert(typeof referenceCollectionElement === 'string', 'Invalid parameter "referenceCollectionElement"', 1477404353);
     assert('after' === position || 'before' === position, 'Invalid position "' + position + '"', 1477404354);
     assert(this.getUtility().isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1477404355);
 
@@ -627,7 +627,7 @@ export class FormEditor {
    * @throws 1475446442
    */
   public renderFormPage(pageIndex: number): void {
-    assert('number' === $.type(pageIndex), 'Invalid parameter "pageIndex"', 1475446442);
+    assert(typeof pageIndex === 'number', 'Invalid parameter "pageIndex"', 1475446442);
     this.getDataBackend().renderFormDefinitionPage(pageIndex);
   }
 
@@ -764,7 +764,7 @@ export class FormEditor {
    * @throws 1475492374
    */
   private viewSetup(additionalViewModelModules: AdditionalViewModelModules): void {
-    assert('function' === $.type(this.viewModel.bootstrap), 'The view model does not implement the method "bootstrap"', 1475492374);
+    assert(typeof this.viewModel.bootstrap === 'function', 'The view model does not implement the method "bootstrap"', 1475492374);
 
     if (this.getUtility().isUndefinedOrNull(additionalViewModelModules)) {
       additionalViewModelModules = [];
@@ -776,7 +776,7 @@ export class FormEditor {
    * @throws 1475492032
    */
   private mediatorSetup(): void {
-    assert('function' === $.type(this.mediator.bootstrap), 'The mediator does not implement the method "bootstrap"', 1475492032);
+    assert(typeof this.mediator.bootstrap === 'function', 'The mediator does not implement the method "bootstrap"', 1475492032);
     this.mediator.bootstrap(formEditorInstance, this.viewModel);
   }
 
@@ -789,7 +789,7 @@ export class FormEditor {
   ): void {
     assert('object' === $.type(rootFormElement), 'Invalid parameter "rootFormElement"', 1475379751);
 
-    if ('number' !== $.type(maximumUndoSteps)) {
+    if (typeof maximumUndoSteps !== 'number') {
       maximumUndoSteps = 10;
     }
     this.getApplicationStateStack().setMaximalStackSize(maximumUndoSteps);
