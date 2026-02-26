@@ -379,6 +379,10 @@ class ExtendedFileUtility extends BasicFileUtility
                 foreach ($refIndexRecords as $fileReferenceRow) {
                     if ($fileReferenceRow['tablename'] === 'sys_file_reference') {
                         $row = $this->transformFileReferenceToRecordReference($fileReferenceRow);
+                        if ($row === null) {
+                            $brokenReferences[] = $fileReferenceRow['ref_uid'];
+                            continue;
+                        }
                         $shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 
                         if ($shortcutRecord) {
@@ -535,10 +539,8 @@ class ExtendedFileUtility extends BasicFileUtility
     /**
      * Maps results from the fal file reference table on the
      * structure of  the normal reference index table.
-     *
-     * @return array
      */
-    protected function transformFileReferenceToRecordReference(array $referenceRecord)
+    protected function transformFileReferenceToRecordReference(array $referenceRecord): ?array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
         $queryBuilder->getRestrictions()->removeAll();
@@ -553,6 +555,10 @@ class ExtendedFileUtility extends BasicFileUtility
             )
             ->executeQuery()
             ->fetchAssociative();
+
+        if ($fileReference === false) {
+            return null;
+        }
 
         return [
             'recuid' => $fileReference['uid_foreign'],
