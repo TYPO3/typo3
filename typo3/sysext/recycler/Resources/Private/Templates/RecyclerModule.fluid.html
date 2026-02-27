@@ -20,17 +20,23 @@
                 <div class="form-group">
                     <label for="depth" class="form-label"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:filter.depth" /></label>
                     <select name="depth" id="depth" class="form-select">
-                        <option value="0"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
-                        <option value="1"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
-                        <option value="2"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
-                        <option value="3"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
-                        <option value="4"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
-                        <option value="999"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
+                        <option value="0" {f:if(condition:'{depthSelection} == 0', then:'selected="selected"')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+                        <option value="1" {f:if(condition:'{depthSelection} == 1', then:'selected="selected"')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1" /></option>
+                        <option value="2" {f:if(condition:'{depthSelection} == 2', then:'selected="selected"')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2" /></option>
+                        <option value="3" {f:if(condition:'{depthSelection} == 3', then:'selected="selected"')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3" /></option>
+                        <option value="4" {f:if(condition:'{depthSelection} == 4', then:'selected="selected"')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4" /></option>
+                        <option value="999" {f:if(condition:'{depthSelection} == 999', then:'selected="selected"')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="pages" class="form-label"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:filter.type" /></label>
-                    <select name="pages" id="pages" class="form-select"></select>
+                    <select name="pages" id="pages" class="form-select">
+                        <f:for each="{tables}" as="tableInfo">
+                            <option value="{tableInfo.0}"
+                                {f:if(condition:'{tableInfo.0} == {tableSelection}', then:'selected="selected"')}
+                            >{tableInfo.2} ({tableInfo.1})</option>
+                        </f:for>
+                    </select>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-default" disabled>
@@ -40,24 +46,62 @@
             </div>
         </form>
         <f:render section="multiRecordSelectionActions" arguments="{allowDelete: allowDelete}"/>
-        <div class="table-fit mb-0" id="itemsInRecycler" hidden>
-            <table class="table table-hover">
-                <caption class="visually-hidden"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.caption.recently_deleted_records" /></caption>
-                <thead>
-                    <tr>
-                        <th class="col-checkbox"><f:render section="multiRecordSelectionCheckboxActions" /></th>
-                        <th class="col-path"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.record" /></th>
-                        <th class="col-time"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.uid" /></th>
-                        <th class="col-path"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pageTitle" /></th>
-                        <th class="col-time"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pid" /></th>
-                        <th class="col-datetime"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.tstamp" /></th>
-                        <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
-                    </tr>
-                </thead>
-                <tbody data-multi-record-selection-row-selection="true">
-                </tbody>
-            </table>
-        </div>
+        <f:if condition="{totalItems}">
+            <f:then>
+                <div class="table-fit mb-0" id="itemsInRecycler">
+                    <table class="table table-hover">
+                        <caption class="visually-hidden"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.caption.recently_deleted_records" /></caption>
+                        <thead>
+                            <tr>
+                                <th class="col-checkbox"><f:render section="multiRecordSelectionCheckboxActions" /></th>
+                                <th class="col-path"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.record" /></th>
+                                <th class="col-time"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.uid" /></th>
+                                <th class="col-path"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pageTitle" /></th>
+                                <th class="col-time"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pid" /></th>
+                                <th class="col-datetime"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.tstamp" /></th>
+                                <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
+                            </tr>
+                        </thead>
+                        <tbody data-multi-record-selection-row-selection="true">
+                            <f:for each="{groupedRecords}" as="table">
+                                <f:if condition="{showTableHeader}">
+                                    <tr>
+                                        <th colspan="7">{table.information.title} {f:if(condition: showTableName, then:'<code>[{table.information.table}]</code>')}</th>
+                                    </tr>
+                                </f:if>
+                                <f:for each="{table.records}" as="record">
+                                    <f:render
+                                        partial="RecordsTable/DeletedRecord"
+                                        arguments="{record: record, allowDelete: allowDelete, table: table.information.table}"
+                                    />
+                                </f:for>
+                            </f:for>
+                        </tbody>
+                    </table>
+                </div>
+            </f:then>
+            <f:else>
+                <typo3-backend-alert id="no-recycler-records" severity="info" message="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:alert.noDeletedRecords')}" show-icon></typo3-backend-alert>
+                <div class="table-fit mb-0" id="itemsInRecycler" hidden>
+                    <table class="table table-hover">
+                        <caption class="visually-hidden"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.caption.recently_deleted_records" /></caption>
+                        <thead>
+                            <tr>
+                                <th class="col-checkbox"><f:render section="multiRecordSelectionCheckboxActions" /></th>
+                                <th class="col-path"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.record" /></th>
+                                <th class="col-time"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.uid" /></th>
+                                <th class="col-path"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pageTitle" /></th>
+                                <th class="col-time"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.pid" /></th>
+                                <th class="col-datetime"><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.tstamp" /></th>
+                                <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
+                            </tr>
+                        </thead>
+                        <tbody data-multi-record-selection-row-selection="true">
+                        </tbody>
+                    </table>
+                </div>
+            </f:else>
+        </f:if>
         <f:render section="multiRecordSelectionActions" arguments="{allowDelete: allowDelete}"/>
         <nav>
         </nav>

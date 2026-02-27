@@ -25,11 +25,11 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Recycler\Service\RecyclerService;
 
 /**
  * Backend Module for the 'recycler' extension.
@@ -40,10 +40,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 readonly class RecyclerModuleController
 {
     public function __construct(
-        protected IconFactory $iconFactory,
         protected PageRenderer $pageRenderer,
         protected ModuleTemplateFactory $moduleTemplateFactory,
         protected ComponentFactory $componentFactory,
+        protected RecyclerService $recyclerService,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -53,17 +53,22 @@ readonly class RecyclerModuleController
         $pageRecord = BackendUtility::readPageAccess($id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
         $view = $this->moduleTemplateFactory->create($request);
 
-        // read configuration
         $recordsPageLimit = MathUtility::forceIntegerInRange((int)($backendUser->getTSConfig()['mod.']['recycler.']['recordsPageLimit'] ?? 25), 1);
         $allowDelete = $backendUser->isAdmin() || ($backendUser->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
         $moduleData = $request->getAttribute('moduleData');
+        $depthSelection = (int)$moduleData->get('depthSelection');
+        $tableSelection = (string)$moduleData->get('tableSelection');
+
+        $tables = $this->recyclerService->getAvailableTables($id, $depthSelection);
+        $result = $this->recyclerService->getDeletedRecords($id, $tableSelection, $depthSelection, '', 1, $recordsPageLimit);
 
         $this->pageRenderer->addInlineSettingArray('Recycler', [
             'pagingSize' => $recordsPageLimit,
             'startUid' => $id,
             'deleteDisable' => !$allowDelete,
-            'depthSelection' => (string)$moduleData->get('depthSelection'),
-            'tableSelection' => (string)$moduleData->get('tableSelection'),
+            'depthSelection' => (string)$depthSelection,
+            'tableSelection' => $tableSelection,
+            'totalItems' => $result['totalItems'],
         ]);
         $this->pageRenderer->loadJavaScriptModule('@typo3/recycler/recycler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
@@ -80,13 +85,17 @@ readonly class RecyclerModuleController
         $this->registerDocHeaderButtons($view, $id, $pageRecord);
 
         $view->assign('allowDelete', $allowDelete);
+        $view->assign('tables', $tables);
+        $view->assign('depthSelection', $depthSelection);
+        $view->assign('tableSelection', $tableSelection);
+        $view->assign('groupedRecords', $result['groupedRecords']);
+        $view->assign('totalItems', $result['totalItems']);
+        $view->assign('showTableHeader', empty($tableSelection));
+        $view->assign('showTableName', $backendUser->shallDisplayDebugInformation());
 
         return $view->renderResponse('RecyclerModule');
     }
 
-    /**
-     * Registers doc header buttons.
-     */
     protected function registerDocHeaderButtons(ModuleTemplate $view, int $id, array $pageRecord): void
     {
         $languageService = $this->getLanguageService();

@@ -174,13 +174,8 @@ class Recycler {
   private initialize(): void {
     this.registerEvents();
 
-    if (TYPO3.settings.Recycler.depthSelection > 0) {
-      (document.querySelector(Identifiers.depthSelector) as HTMLInputElement).value = String(TYPO3.settings.Recycler.depthSelection);
-    }
-
-    this.loadAvailableTables().then((): void => {
-      this.loadDeletedElements();
-    });
+    const totalItems = TYPO3.settings.Recycler.totalItems ?? 0;
+    this.buildPaginator(totalItems);
   }
 
   /**

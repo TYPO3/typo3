@@ -19,27 +19,15 @@ namespace TYPO3\CMS\Recycler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\History\RecordHistory;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Pagination\ArrayPaginator;
-use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\TcaSchema;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
+use TYPO3\CMS\Recycler\Service\RecyclerService;
 
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX requests.
@@ -51,12 +39,7 @@ class RecyclerAjaxController
 {
     public function __construct(
         protected readonly BackendViewFactory $backendViewFactory,
-        #[Autowire(service: 'cache.runtime')]
-        protected readonly FrontendInterface $runtimeCache,
-        protected readonly IconFactory $iconFactory,
-        protected readonly ConnectionPool $connectionPool,
-        protected readonly RecordHistory $recordHistory,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly RecyclerService $recyclerService,
     ) {}
 
     public function getTablesAction(ServerRequestInterface $request): ResponseInterface
@@ -65,7 +48,7 @@ class RecyclerAjaxController
         $startUid = (int)($queryParams['startUid'] ?? 0);
         $depth = (int)($queryParams['depth'] ?? 0);
 
-        return new JsonResponse($this->getTables($startUid, $depth));
+        return new JsonResponse($this->recyclerService->getAvailableTables($startUid, $depth));
     }
 
     public function getDeletedRecordsAction(ServerRequestInterface $request): ResponseInterface
@@ -82,34 +65,17 @@ class RecyclerAjaxController
         $startUid = (int)($queryParams['startUid'] ?? 0);
         $depth = (int)($queryParams['depth'] ?? 0);
 
-        $model = GeneralUtility::makeInstance(DeletedRecords::class);
-        $model->loadData($startUid, $table, $depth, $filterTxt);
-
-        $flatRecords = [];
-        foreach ($model->getDeletedRows() as $tableName => $rows) {
-            foreach ($rows as $row) {
-                $flatRecords[] = ['_table' => $tableName, ...$row];
-            }
-        }
-
-        $paginator = new ArrayPaginator($flatRecords, $currentPage, $itemsPerPage);
-
-        $paginatedGrouped = [];
-        foreach ($paginator->getPaginatedItems() as $item) {
-            $tableName = $item['_table'];
-            unset($item['_table']);
-            $paginatedGrouped[$tableName][] = $item;
-        }
+        $result = $this->recyclerService->getDeletedRecords($startUid, $table, $depth, $filterTxt, $currentPage, $itemsPerPage);
 
         $view = $this->backendViewFactory->create($request);
         $view->assign('showTableHeader', empty($table));
         $view->assign('showTableName', $this->getBackendUser()->shallDisplayDebugInformation());
         $view->assign('allowDelete', $this->isDeleteAllowed());
-        $view->assign('groupedRecords', $this->transform($paginatedGrouped));
+        $view->assign('groupedRecords', $result['groupedRecords']);
 
         return new JsonResponse([
             'rows' => $view->render('Ajax/RecordsTable'),
-            'totalItems' => count($flatRecords),
+            'totalItems' => $result['totalItems'],
         ]);
     }
 
@@ -169,7 +135,6 @@ class RecyclerAjaxController
     protected function isDeleteAllowed(): bool
     {
         $backendUser = $this->getBackendUser();
-
         if ($backendUser->isAdmin()) {
             return true;
         }
@@ -177,240 +142,8 @@ class RecyclerAjaxController
         return (bool)($backendUser->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
     }
 
-    /**
-     * Transforms the rows for the deleted records by grouping them
-     * by their corresponding table and processing the raw record data.
-     *
-     * @param array<string, array> $deletedRowsArray
-     */
-    protected function transform(array $deletedRowsArray): array
-    {
-        $groupedRecords = [];
-        $lang = $this->getLanguageService();
-
-        foreach ($deletedRowsArray as $table => $rows) {
-            $schema = $this->tcaSchemaFactory->get($table);
-            $groupedRecords[$table]['information'] = [
-                'table' => $table,
-                'title' => $schema->getTitle($lang->sL(...)) ?: BackendUtility::getNoRecordTitle(),
-            ];
-            foreach ($rows as $row) {
-                $pageTitle = $this->getPageTitle((int)$row['pid']);
-                $ownerInformation = $this->recordHistory->getCreationInformationForRecord($table, $row);
-                $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['usertype'] === 'BE' ? $ownerInformation['userid'] : 0);
-                $deleteUserUid = $this->recordHistory->getUserIdFromDeleteActionForRecord($table, (int)$row['uid']);
-
-                $creationDate = '';
-                if ($schema->hasCapability(TcaSchemaCapability::CreatedAt)) {
-                    $creationDate = BackendUtility::datetime($row[$schema->getCapability(TcaSchemaCapability::CreatedAt)->getFieldName()]);
-                }
-                $lastUpdateDate = '';
-                if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
-                    $lastUpdateDate = BackendUtility::datetime($row[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()]);
-                }
-                $groupedRecords[$table]['records'][] = [
-                    'uid' => $row['uid'],
-                    'pid' => $row['pid'],
-                    'icon' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),
-                    'pageTitle' => $pageTitle,
-                    'crdate' => $creationDate,
-                    'tstamp' => $lastUpdateDate,
-                    'backendUser' => $this->getBackendUserInformation($ownerUid),
-                    'title' => BackendUtility::getRecordTitle($table, $row),
-                    'path' => $this->getRecordPath((int)$row['pid']),
-                    'deletedBackendUser' => $this->getBackendUserInformation($deleteUserUid),
-                    'isParentDeleted' => $table === 'pages' && $this->isParentPageDeleted((int)$row['pid']),
-                ];
-            }
-        }
-
-        return $groupedRecords;
-    }
-
-    /**
-     * Gets the page title of the given page id
-     */
-    protected function getPageTitle(int $pageId): string
-    {
-        $cacheId = 'recycler-pagetitle-' . $pageId;
-        $pageTitle = $this->runtimeCache->get($cacheId);
-        if ($pageTitle === false) {
-            if ($pageId === 0) {
-                $pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-            } else {
-                $recordInfo = BackendUtility::getRecord('pages', (string)$pageId, '*', '', false);
-                $pageTitle = $recordInfo['title'] ?? '';
-            }
-            $this->runtimeCache->set($cacheId, $pageTitle);
-        }
-        return $pageTitle;
-    }
-
-    /**
-     * Gets the backend user details
-     */
-    protected function getBackendUserInformation(int $userId): array
-    {
-        if ($userId === 0) {
-            return [];
-        }
-        $cacheId = 'recycler-user-' . $userId;
-        $userData = $this->runtimeCache->get($cacheId);
-        if ($userData === false) {
-            $userData = BackendUtility::getRecord('be_users', $userId, 'uid, username, realName', '', false);
-            $this->runtimeCache->set($cacheId, $userData);
-        }
-        return $userData ?? [];
-    }
-
-    /**
-     * Returns the path (visually) of a page $uid, fx. "/First page/Second page/Another subpage"
-     * Each part of the path will be limited to $titleLimit characters
-     * Deleted pages are filtered out.
-     *
-     * @param int $uid Page uid for which to create record path
-     * @return string Path of record (string) OR array with short/long title if $fullTitleLimit is set.
-     */
-    protected function getRecordPath(int $uid): string
-    {
-        $output = '/';
-        if ($uid === 0) {
-            return $output;
-        }
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll();
-
-        $loopCheck = 100;
-        while ($loopCheck > 0) {
-            $loopCheck--;
-
-            $queryBuilder
-                ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid', 't3ver_state')
-                ->from('pages')
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)));
-            $row = $queryBuilder->executeQuery()->fetchAssociative();
-            if ($row !== false) {
-                BackendUtility::workspaceOL('pages', $row);
-                if (is_array($row)) {
-                    $uid = (int)$row['pid'];
-                    $output = '/' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], 1000)) . $output;
-                    if ($row['deleted']) {
-                        $output = '<span class="text-danger">' . $output . '</span>';
-                    }
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-        return $output;
-    }
-
-    /**
-     * Check if parent record is deleted
-     */
-    protected function isParentPageDeleted(int $pid): bool
-    {
-        if ($pid === 0) {
-            return false;
-        }
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll();
-
-        $deleted = $queryBuilder
-            ->select('deleted')
-            ->from('pages')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)))
-            ->executeQuery()
-            ->fetchOne();
-
-        return (bool)$deleted;
-    }
-
-    /**
-     * @param int $startUid UID from selected page
-     * @param int $depth How many levels recursive
-     * @return array The tables to be displayed
-     */
-    protected function getTables(int $startUid, int $depth): array
-    {
-        $deletedRecordsTotal = 0;
-        $lang = $this->getLanguageService();
-        $tables = [];
-
-        foreach ($this->getRelevantSchemata() as $tableName => $schema) {
-            $deletedField = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
-            // Determine whether the table has deleted records
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
-
-            $deletedCount = $queryBuilder->count('uid')
-                ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->neq(
-                        $deletedField,
-                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                    )
-                )
-                ->executeQuery()
-                ->fetchOne();
-
-            if (!$deletedCount) {
-                continue;
-            }
-            /* @var DeletedRecords $deletedDataObject */
-            $deletedDataObject = GeneralUtility::makeInstance(DeletedRecords::class);
-            $deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
-            if (isset($deletedData[$tableName]) && $deletedRecordsInTable = count($deletedData[$tableName])) {
-                $deletedRecordsTotal += $deletedRecordsInTable;
-                $tables[] = [
-                    $tableName,
-                    $deletedRecordsInTable,
-                    $schema->getTitle($lang->sL(...)) ?: $tableName,
-                ];
-            }
-        }
-
-        array_unshift($tables, [
-            '',
-            $deletedRecordsTotal,
-            $lang->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:label_allrecordtypes'),
-        ]);
-        return $tables;
-    }
-
-    /**
-     * Returns the modifiable tables of the current user, which have a SoftDelete field.
-     *
-     * @return TcaSchema[]
-     */
-    protected function getRelevantSchemata(): array
-    {
-        $schemata = [];
-        $tables = explode(',', $this->getBackendUser()->groupData['tables_modify']);
-        foreach ($this->tcaSchemaFactory->all() as $name => $schema) {
-            if (!$schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
-                continue;
-            }
-            if ($this->getBackendUser()->isAdmin()) {
-                $schemata[$name] = $schema;
-                continue;
-            }
-            if (in_array($name, $tables, true)) {
-                $schemata[$name] = $schema;
-            }
-        }
-        return $schemata;
-    }
-
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }
