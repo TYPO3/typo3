@@ -404,6 +404,11 @@ return [
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
+                'fieldWizard' => [
+                    'shortcutValidation' => [
+                        'disabled' => false,
+                    ],
+                ],
             ],
         ],
         'shortcut_mode' => [

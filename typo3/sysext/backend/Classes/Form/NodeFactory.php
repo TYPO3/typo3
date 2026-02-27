@@ -128,6 +128,7 @@ class NodeFactory
         'otherLanguageThumbnails' => FieldWizard\OtherLanguageThumbnails::class,
         'recordsOverview' => FieldWizard\RecordsOverview::class,
         'selectIcons' => FieldWizard\SelectIcons::class,
+        'shortcutValidation' => FieldWizard\ShortcutValidation::class,
         'tableList' => FieldWizard\TableList::class,
 
         // Element controls
