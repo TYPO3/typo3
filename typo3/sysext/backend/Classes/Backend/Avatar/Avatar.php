@@ -115,7 +115,6 @@ class Avatar
     protected function validateAvatarProviders(): void
     {
         foreach ($this->avatarProviders as $provider) {
-            /* @phpstan-ignore instanceof.alwaysTrue */
             if (!($provider instanceof AvatarProviderInterface)) {
                 throw new \RuntimeException(
                     sprintf(

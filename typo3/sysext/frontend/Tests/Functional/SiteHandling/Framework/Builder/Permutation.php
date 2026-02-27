@@ -52,7 +52,7 @@ class Permutation
     {
         $this->results = [];
         foreach ($this->targets as $target) {
-            if (!$target instanceof TestSet) { // @phpstan-ignore instanceof.alwaysTrue
+            if (!$target instanceof TestSet) {
                 throw new \LogicException('Expected DataSet', 1578045577);
             }
             $target = $target->withMergedVariables($this->variables);

@@ -32,10 +32,6 @@ use PHPStan\Type\VerbosityLevel;
  */
 class UnneededInstanceOfRule implements Rule
 {
-    public function __construct(
-        private readonly bool $treatPhpDocTypesAsCertain,
-    ) {}
-
     public function getNodeType(): string
     {
         return Node\Expr\Instanceof_::class;
@@ -43,7 +39,7 @@ class UnneededInstanceOfRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        $instanceofType = $this->treatPhpDocTypesAsCertain ? $scope->getType($node) : $scope->getNativeType($node);
+        $instanceofType = $scope->getNativeType($node);
 
         if ($instanceofType instanceof ConstantBooleanType) {
             return [];
@@ -59,10 +55,10 @@ class UnneededInstanceOfRule implements Rule
             $className = $scope->resolveName($node->class);
             $classType = new ObjectType($className);
         } else {
-            $classType = $this->treatPhpDocTypesAsCertain ? $scope->getType($node->class) : $scope->getNativeType($node->class);
+            $classType = $scope->getNativeType($node->class);
         }
 
-        $exprType = $this->treatPhpDocTypesAsCertain ? $scope->getType($node->expr) : $scope->getNativeType($node->expr);
+        $exprType = $scope->getNativeType($node->expr);
         if (TypeCombinator::containsNull($exprType)) {
             $nonNullType = TypeCombinator::removeNull($exprType);
 

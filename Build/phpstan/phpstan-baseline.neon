@@ -1,10 +1,28 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Offset 1 on array\{non\-falsy\-string, non\-empty\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/EventListener/FailedLoginAttemptNotification.php
+
+		-
 			message: '#^Strict comparison using \!\=\= between non\-empty\-array\<int\<1, max\>, 1\> and array\{\} will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/BackendLayoutWizardElement.php
+
+		-
+			message: '#^Offset 1 on array\{non\-falsy\-string, non\-empty\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: ../../typo3/sysext/belog/Classes/Domain/Model/LogEntry.php
+
+		-
+			message: '#^Offset 1 on array\{non\-falsy\-string, non\-empty\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: ../../typo3/sysext/belog/Classes/ViewHelpers/FormatDetailsViewHelper.php
 
 		-
 			message: '#^Property TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication\:\:\$writeAttemptLog \(bool\) on left side of \?\? is not nullable\.$#'
@@ -29,12 +47,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/AuthenticationService.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Cache/CacheManager.php
 
 		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
@@ -67,34 +79,40 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Core/BootService.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between non\-empty\-string and '''' will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Crypto/HashService.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 3
+			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: '#^Call to function is_array\(\) with array\{int\|string\} will always evaluate to true\.$#'
+			message: '#^Call to function is_array\(\) with array\{mixed\} will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 2
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Database\\Schema\\TableDiff and TYPO3\\CMS\\Core\\Database\\Schema\\TableDiff will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
+			message: '#^Left side of \|\| is always false\.$#'
+			identifier: booleanOr.leftAlwaysFalse
 			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
+
+		-
+			message: '#^Offset 1 on array\{non\-falsy\-string, non\-empty\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
 			message: '#^Class TYPO3\\CMS\\Core\\Database\\Schema\\SchemaDiff extends @final class Doctrine\\DBAL\\Schema\\SchemaDiff\.$#'
@@ -127,22 +145,16 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Html/SimpleParser.php
 
 		-
-			message: '#^Call to function is_array\(\) with array\<string\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
+			message: '#^Offset mixed on array\{\} on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
 			count: 2
-			path: ../../typo3/sysext/core/Classes/Http/Message.php
+			path: ../../typo3/sysext/core/Classes/Localization/LanguagePackService.php
 
 		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
+			message: '#^Strict comparison using \=\=\= between '''' and ''excludeFromUpdates'' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
 			count: 1
-			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Log\\LogRecord and TYPO3\\CMS\\Core\\Log\\LogRecord will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Log/Logger.php
+			path: ../../typo3/sysext/core/Classes/Localization/LanguagePackService.php
 
 		-
 			message: '#^Cannot assign offset ''address'' to string\.$#'
@@ -187,12 +199,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Messaging\\FlashMessage and TYPO3\\CMS\\Core\\Messaging\\FlashMessage will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Messaging/FlashMessageQueue.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface\:\:require\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -223,28 +229,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Rendering/YouTubeRenderer.php
 
 		-
-			message: '#^Call to function is_callable\(\) with callable\(\)\: mixed will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Search/Result/DriverFilteredSearchResult.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(TYPO3\\CMS\\Core\\Routing\\Aspect\\AspectInterface\)\: mixed\)\|null, Closure\(array\|Countable, 0\|1\=\)\: int\<0, max\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/PageRouter.php
-
-		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/PageSlugCandidateProvider.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between non\-empty\-array\<string, int\> and array\{\} will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Routing/RouteSorter.php
 
 		-
 			message: '#^Property TYPO3\\CMS\\Core\\Schema\\PassiveRelation\:\:\$flexPointer is never read, only written\.$#'
@@ -289,21 +277,9 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Schema/Struct/FlexSheet.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Schema\\Struct\\SelectItem and TYPO3\\CMS\\Core\\Schema\\Struct\\SelectItem will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Schema/Struct/SelectItemCollection.php
-
-		-
-			message: '#^Parameter \#1 \$array \(array\<string, TYPO3\\CMS\\Core\\Security\\Nonce\>\) to function array_filter does not contain falsy values, the array will always stay the same\.$#'
-			identifier: arrayFilter.same
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Security/NoncePool.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/core/Classes/Service/MarkerBasedTemplateService.php
 
 		-
@@ -319,42 +295,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/ArrayTreeRenderer.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\TypoScript\\AST\\Visitor\\AstVisitorInterface and TYPO3\\CMS\\Core\\TypoScript\\AST\\Visitor\\AstVisitorInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/TypoScript/AST/Traverser/AstTraverser.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\TypoScript\\IncludeTree\\Visitor\\IncludeTreeVisitorInterface and TYPO3\\CMS\\Core\\TypoScript\\IncludeTree\\Visitor\\IncludeTreeVisitorInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/TypoScript/IncludeTree/Traverser/ConditionVerdictAwareIncludeTreeTraverser.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\TypoScript\\IncludeTree\\Visitor\\IncludeTreeVisitorInterface and TYPO3\\CMS\\Core\\TypoScript\\IncludeTree\\Visitor\\IncludeTreeVisitorInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/TypoScript/IncludeTree/Traverser/IncludeTreeTraverser.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Context\\UserAspect and TYPO3\\CMS\\Core\\Context\\UserAspect will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 2
-			path: ../../typo3/sysext/core/Classes/TypoScript/IncludeTree/Visitor/IncludeTreeConditionMatcherVisitor.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Context\\WorkspaceAspect and TYPO3\\CMS\\Core\\Context\\WorkspaceAspect will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/TypoScript/IncludeTree/Visitor/IncludeTreeConditionMatcherVisitor.php
-
-		-
-			message: '#^Call to function is_callable\(\) with array\{TYPO3\\CMS\\Core\\Authentication\\AbstractAuthenticationService, ''init''\} will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
-
-		-
 			message: '#^Call to function is_callable\(\) with callable\-string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -367,10 +307,22 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between class\-string\<T of object \(method TYPO3\\CMS\\Core\\Utility\\GeneralUtility\:\:makeInstance\(\), argument\)\> and '''' will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
+			message: '#^Parameter \#1 \$array \(list\<int\|string\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
+
+		-
+			message: '#^Offset 1 on array\{non\-falsy\-string, non\-empty\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: ../../typo3/sysext/core/Tests/Functional/DataScenarios/AbstractDataHandlerActionTestCase.php
+
+		-
+			message: '#^Offset 1 on array\{non\-falsy\-string, non\-empty\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: ../../typo3/sysext/core/Tests/Unit/Log/Fixtures/LogDataTraitTestAccessor.php
 
 		-
 			message: '#^Offset non\-empty\-string on array\{\} on left side of \?\? does not exist\.$#'
@@ -379,40 +331,10 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
 
 		-
-			message: '#^Right side of && is always false\.$#'
-			identifier: booleanAnd.rightAlwaysFalse
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\JoinConditionInterface\:\:getProperty1Name\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
-
-		-
-			message: '#^Call to function is_int\(\) with int will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement and TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 3
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbBackend.php
-
-		-
-			message: '#^Left side of && is always true\.$#'
-			identifier: booleanAnd.leftAlwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between int\|string and null will always evaluate to true\.$#'
@@ -425,12 +347,6 @@ parameters:
 			identifier: property.onlyWritten
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/ObjectStorage.php
-
-		-
-			message: '#^Call to function is_string\(\) with non\-empty\-string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Repository.php
 
 		-
 			message: '#^Parameter \#1 \$originalResource of method TYPO3\\CMS\\Extbase\\Domain\\Model\\File\:\:setOriginalResource\(\) expects TYPO3\\CMS\\Core\\Resource\\File\|TYPO3\\CMS\\Core\\Resource\\FileReference\|TYPO3\\CMS\\Core\\Resource\\Folder, TYPO3\\CMS\\Core\\Resource\\ResourceInterface given\.$#'
@@ -463,7 +379,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RepositoryTest.php
 
 		-
-			message: '#^Parameter \#1 \$array \(list\<TYPO3Fluid\\Fluid\\Schema\\ViewHelperMetadata\>\) of array_values is already a list, call has no effect\.$#'
+			message: '#^Parameter \#1 \$array \(list\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/Command/SchemaCommand.php
@@ -493,18 +409,6 @@ parameters:
 			path: ../../typo3/sysext/fluid_styled_content/Classes/ViewHelpers/Link/ClickEnlargeViewHelper.php
 
 		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/AbstractFinisher.php
-
-		-
-			message: '#^Result of && is always false\.$#'
-			identifier: booleanAnd.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Finishers/AbstractFinisher.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\FormElementInterface\:\:setOptions\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -515,18 +419,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
-
-		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/Renderable/AbstractRenderable.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\CompositeRenderableInterface and TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\RenderableInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Runtime/FormRuntime.php
 
 		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Form\\Domain\\Model\\Renderable\\RootRenderableInterface\:\:getProperties\(\)\.$#'
@@ -559,12 +451,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
 
 		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
-
-		-
 			message: '#^Result of \|\| is always true\.$#'
 			identifier: booleanOr.alwaysTrue
 			count: 1
@@ -587,12 +473,6 @@ parameters:
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/MethodArgumentUnusedMatcher.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between object\|resource and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 4
-			path: ../../typo3/sysext/install/Classes/Service/SetupDatabaseService.php
 
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
@@ -601,13 +481,7 @@ parameters:
 			path: ../../typo3/sysext/lowlevel/Classes/Command/DeletedRecordsCommand.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
+			message: '#^Offset 1 on array\{non\-falsy\-string, non\-empty\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
 			count: 1
-			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between false and false will always evaluate to true\.$#'
-			identifier: identical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntity.php
+			path: ../../typo3/sysext/lowlevel/Classes/Command/ListSysLogCommand.php

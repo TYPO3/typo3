@@ -260,7 +260,6 @@ readonly class ImageProcessingInstructions
         int $cropOffsetVertical,
         int $cropOffsetHorizontal
     ): Area {
-        // @phpstan-ignore greater.alwaysTrue, greater.alwaysTrue, booleanAnd.alwaysTrue (defensive runtime validation despite type declarations)
         if (!($width > 0 && $height > 0 && $cropArea->getWidth() > 0 && $cropArea->getHeight() > 0)) {
             throw new \InvalidArgumentException('Apply crop scale must use concrete width and height', 1709810881);
         }
