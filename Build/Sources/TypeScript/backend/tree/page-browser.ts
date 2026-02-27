@@ -165,6 +165,9 @@ export class PageBrowser extends LitElement {
     return this.getConfiguration()
       .then((configuration: Configuration): TemplateResult => {
         const initialized = () => {
+          if (this.activePageId) {
+            this.tree.ensureActiveNodeLoaded(this.activePageId);
+          }
           // set up toolbar now with updated properties
           const toolbar = this.querySelector('typo3-backend-tree-toolbar') as TreeToolbar;
           toolbar.tree = this.tree;
