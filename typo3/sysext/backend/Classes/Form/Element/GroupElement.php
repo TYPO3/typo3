@@ -84,6 +84,10 @@ class GroupElement extends AbstractFormElement
             'renderType' => 'defaultLanguageDifferences',
             'after' => [ 'otherLanguageContent' ],
         ],
+        'shortcutValidation' => [
+            'renderType' => 'shortcutValidation',
+            'after' => [ 'defaultLanguageDifferences' ],
+        ],
     ];
 
     public function __construct(
