@@ -36,7 +36,7 @@ final readonly class DateTimeFactory
         );
     }
 
-    public static function createFomDatabaseValueAndTCAConfig(int|string|null $value, array $fieldConfig): ?\DateTimeImmutable
+    public static function createFromDatabaseValueAndTCAConfig(int|string|null $value, array $fieldConfig): ?\DateTimeImmutable
     {
         $persistenceType = in_array($fieldConfig['dbType'] ?? null, QueryHelper::getDateTimeTypes(), true) ? $fieldConfig['dbType'] : null;
         $isNative = $persistenceType !== null;

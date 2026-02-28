@@ -349,7 +349,7 @@ class DataMapper
         $targetType = \DateTime::class
     ) {
         if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling')) {
-            $dateTime = DateTimeFactory::createFomDatabaseValueAndTCAConfig(
+            $dateTime = DateTimeFactory::createFromDatabaseValueAndTCAConfig(
                 $value,
                 // Reconstruct TCA from our ColumnMap
                 [

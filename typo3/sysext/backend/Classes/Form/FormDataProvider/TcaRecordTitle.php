@@ -350,7 +350,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                 //       DatabaseRowDateTimeFields to use unqualified ISO8601 localtime in #105549.
                 $datetime = new \DateTimeImmutable((new \DateTimeImmutable($value))->format('Y-m-d\TH:i:s'));
             } else {
-                $datetime = DateTimeFactory::createFomDatabaseValueAndTCAConfig($value, $fieldConfig);
+                $datetime = DateTimeFactory::createFromDatabaseValueAndTCAConfig($value, $fieldConfig);
             }
             if ($datetime === null) {
                 return '';

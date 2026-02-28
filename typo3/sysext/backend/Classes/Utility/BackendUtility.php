@@ -1760,7 +1760,7 @@ class BackendUtility
                 break;
             case 'datetime':
                 try {
-                    $datetime = DateTimeFactory::createFomDatabaseValueAndTCAConfig($value, $theColConf);
+                    $datetime = DateTimeFactory::createFromDatabaseValueAndTCAConfig($value, $theColConf);
                     $format = DateTimeFactory::getFormatFromTCAConfig($theColConf);
                 } catch (\InvalidArgumentException) {
                     $datetime = false;

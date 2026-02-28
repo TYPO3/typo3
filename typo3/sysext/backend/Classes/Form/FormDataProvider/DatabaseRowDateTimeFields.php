@@ -44,7 +44,7 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
             }
             try {
                 // Create a (fake UTC-0) ISO-8601 date from current field data or null
-                $result['databaseRow'][$column] = DateTimeFactory::createFomDatabaseValueAndTCAConfig(
+                $result['databaseRow'][$column] = DateTimeFactory::createFromDatabaseValueAndTCAConfig(
                     $result['databaseRow'][$column] ?? null,
                     $columnConfig['config'] ?? [],
                 )?->format('Y-m-d\TH:i:s\+\0\0\:\0\0');
