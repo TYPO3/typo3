@@ -24,7 +24,7 @@
 ####
 
 
-### Begin: Compression ###
+### Begin: Compression ### 
 
 <IfModule mod_deflate.c>
 	# Force compression for mangled `Accept-Encoding` request headers
