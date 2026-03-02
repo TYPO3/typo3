@@ -10,8 +10,8 @@
             <ul class="pagination mb-0">
                 <li class="page-item">
                     <span id="recordlist-pagination" class="page-link">
-                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator" arguments="{firstElement: firstElement, lastElement: lastElement}" />
-                        <span class="visually-hidden">, <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator" arguments="{currentPage: currentPage, totalPages: totalPages}"/></span>
+                        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator" arguments="{0: firstElement, 1: lastElement}" />
+                        <span class="visually-hidden">, <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator" arguments="{0: currentPage, 1: totalPages}"/></span>
                     </span>
                 </li>
                 <f:comment>First page and previous page</f:comment>
@@ -32,7 +32,7 @@
                 </f:variable>
                 <li class="page-item">
                     <span class="page-link">
-                        <f:format.raw><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator" arguments="{pageInput: pageInput, totalPages: totalPages}"/></f:format.raw></span>
+                        <f:format.raw><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator" arguments="{0: pageInput, 1: totalPages}"/></f:format.raw></span>
                     </span>
                 </li>
 
