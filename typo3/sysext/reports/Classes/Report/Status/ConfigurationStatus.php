@@ -69,7 +69,7 @@ class ConfigurationStatus implements StatusProviderInterface
      *
      * @return \TYPO3\CMS\Reports\Status An object representing whether the reference index is empty or not
      */
-    protected function getReferenceIndexStatus()
+    protected function getReferenceIndexStatus(): ReportStatus
     {
         $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
@@ -100,7 +100,7 @@ class ConfigurationStatus implements StatusProviderInterface
      *
      * @return bool TRUE if memcached is used, FALSE otherwise.
      */
-    protected function isMemcachedUsed()
+    protected function isMemcachedUsed(): bool
     {
         $memcachedUsed = false;
         $memcachedServers = $this->getConfiguredMemcachedServers();
@@ -115,14 +115,14 @@ class ConfigurationStatus implements StatusProviderInterface
      *
      * @return array An array of configured memcached server connections.
      */
-    protected function getConfiguredMemcachedServers()
+    protected function getConfiguredMemcachedServers(): array
     {
         $configurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
         $memcachedServers = [];
         foreach ($configurations as $table => $conf) {
             if (is_array($conf)) {
                 foreach ($conf as $value) {
-                    if ($value === MemcachedBackend::class) {
+                    if ($value === MemcachedBackend::class && is_array($configurations[$table]['options']['servers'])) {
                         $memcachedServers = $configurations[$table]['options']['servers'];
                         break;
                     }
@@ -137,7 +137,7 @@ class ConfigurationStatus implements StatusProviderInterface
      *
      * @return \TYPO3\CMS\Reports\Status An object representing whether TYPO3 can connect to the configured memcached servers
      */
-    protected function getMemcachedConnectionStatus()
+    protected function getMemcachedConnectionStatus(): ReportStatus
     {
         $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
@@ -146,7 +146,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $defaultMemcachedPort = ini_get('memcache.default_port');
         $defaultMemcachedPort = MathUtility::canBeInterpretedAsInteger($defaultMemcachedPort) ? (int)$defaultMemcachedPort : 11211;
         $memcachedServers = $this->getConfiguredMemcachedServers();
-        if (function_exists('memcache_connect') && is_array($memcachedServers)) {
+        if (function_exists('memcache_connect') && $memcachedServers !== []) {
             foreach ($memcachedServers as $testServer) {
                 $configuredServer = $testServer;
                 if (str_starts_with($testServer, 'unix://')) {
@@ -185,7 +185,7 @@ class ConfigurationStatus implements StatusProviderInterface
      *
      * @return \TYPO3\CMS\Reports\Status The writable status for 'others'
      */
-    protected function getCreatedFilesWorldWritableStatus()
+    protected function getCreatedFilesWorldWritableStatus(): ReportStatus
     {
         $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
@@ -203,7 +203,7 @@ class ConfigurationStatus implements StatusProviderInterface
      *
      * @return \TYPO3\CMS\Reports\Status The writable status for 'others'
      */
-    protected function getCreatedDirectoriesWorldWritableStatus()
+    protected function getCreatedDirectoriesWorldWritableStatus(): ReportStatus
     {
         $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_ok');
         $message = '';
@@ -218,10 +218,8 @@ class ConfigurationStatus implements StatusProviderInterface
 
     /**
      * Checks if the default connection is a MySQL compatible database instance.
-     *
-     * @return bool
      */
-    protected function isMysqlUsed()
+    protected function isMysqlUsed(): bool
     {
         $platform = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
@@ -232,10 +230,8 @@ class ConfigurationStatus implements StatusProviderInterface
 
     /**
      * Checks the character set of the default database and reports an error if it is not utf-8.
-     *
-     * @return ReportStatus
      */
-    protected function getMysqlDatabaseUtf8Status()
+    protected function getMysqlDatabaseUtf8Status(): ReportStatus
     {
         $collationConstraint = null;
         $charset = '';

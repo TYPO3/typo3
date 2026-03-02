@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Upgrades\ReferenceIndexUpdatedPrerequisite as CoreReferenceIn
 
 /**
  * @internal
- * @deprecated since v14.0, will be removed in TYPO34 v15.0. Use \TYPO3\CMS\Core\Upgrades\ReferenceIndexUpdatedPrerequisite instead.
+ * @deprecated since v14.0, will be removed in TYPO3 v15.0. Use \TYPO3\CMS\Core\Upgrades\ReferenceIndexUpdatedPrerequisite instead.
  * @todo Make \TYPO3\CMS\Core\Upgrades\ReferenceIndexUpdatedPrerequisite with TYPO3 v15.
  * @phpstan-ignore class.extendsFinalByPhpDoc
  */

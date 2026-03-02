@@ -4575,7 +4575,7 @@ class DataHandler
                 }
             }
         }
-        if ($recordWasMoved) {
+        if ($recordWasMoved) {// @phpstan-ignore if.alwaysFalse (hook result is not taken into account)
             // Return if a hook handled move
             return;
         }
@@ -5291,7 +5291,7 @@ class DataHandler
                 /** @var bool $recordWasDeleted */
             }
         }
-        if ($recordWasDeleted) {
+        if ($recordWasDeleted) { // @phpstan-ignore if.alwaysFalse (hook result is not taken into account)
             return;
         }
 
@@ -6144,7 +6144,7 @@ class DataHandler
         }
 
         $userWorkspace = $this->BE_USER->workspace;
-        if ($recordWasDiscarded
+        if ($recordWasDiscarded // @phpstan-ignore booleanOr.leftAlwaysFalse (hook result is not taken into account)
             || $userWorkspace === 0
             || !$this->tcaSchemaFactory->has($table)
             || !$this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)

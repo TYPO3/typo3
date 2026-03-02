@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Upgrades\DatabaseUpdatedPrerequisite as CoreDatabaseUpdatedPr
  * Prerequisite for upgrade wizards to ensure the database is up-to-date
  *
  * @internal
- * @deprecated since v14.0, will be removed in TYPO34 v15.0. Use \TYPO3\CMS\Core\Upgrades\DatabaseUpdatedPrerequisite instead.
+ * @deprecated since v14.0, will be removed in TYPO3 v15.0. Use \TYPO3\CMS\Core\Upgrades\DatabaseUpdatedPrerequisite instead.
  * @todo Make {@see CoreDatabaseUpdatedPrerequisite} final in TYPO3 v15.
  * @phpstan-ignore class.extendsFinalByPhpDoc
  */

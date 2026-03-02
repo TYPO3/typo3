@@ -197,7 +197,7 @@ readonly class MarkerBasedTemplateService
      * boolean TRUE.
      *
      * @param string $content The content stream, typically HTML template content.
-     * @param array $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
+     * @param array|null $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
      * @param string $wrap A wrap value - [part 1] | [part 2] - for the markers before substitution
      * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
      * @param bool $deleteUnused If set, all unused marker are deleted.
@@ -505,14 +505,12 @@ readonly class MarkerBasedTemplateService
                 $markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($row[$field], $respectXhtml) : $row[$field];
             }
         } else {
-            if (is_array($row)) {
-                foreach ($row as $field => $value) {
-                    if (!MathUtility::canBeInterpretedAsInteger($field)) {
-                        if ($htmlSpecialCharsValue) {
-                            $value = htmlspecialchars($value);
-                        }
-                        $markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($value, $respectXhtml) : $value;
+            foreach ($row as $field => $value) {
+                if (!MathUtility::canBeInterpretedAsInteger($field)) {
+                    if ($htmlSpecialCharsValue) {
+                        $value = htmlspecialchars($value);
                     }
+                    $markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($value, $respectXhtml) : $value;
                 }
             }
         }
