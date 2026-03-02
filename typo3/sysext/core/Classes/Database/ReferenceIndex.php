@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -574,6 +575,32 @@ class ReferenceIndex
         }
     }
 
+    /**
+     * Fields of a foreign side MM record evaluated by compileReferenceIndexRowsForRecord().
+     * Selecting only those keeps the memory footprint low: The rows of all relations of a
+     * field are held at once, and a single record can have many thousand of them.
+     *
+     * @return non-empty-list<string>
+     */
+    private function getForeignSideRecordFields(string $tableName): array
+    {
+        $fields = ['uid'];
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        foreach ([
+            TcaSchemaCapability::RestrictionDisabledField,
+            TcaSchemaCapability::RestrictionStartTime,
+            TcaSchemaCapability::RestrictionEndTime,
+        ] as $capability) {
+            if ($schema->hasCapability($capability)) {
+                $fields[] = $schema->getCapability($capability)->getFieldName();
+            }
+        }
+        if ($schema->hasCapability(TcaSchemaCapability::Workspace)) {
+            $fields[] = 't3ver_state';
+        }
+        return $fields;
+    }
+
     private function compileReferenceIndexRowsForRecord(string $tableName, array $record, int $workspaceUid): array
     {
         $relations = [];
@@ -617,14 +644,52 @@ class ReferenceIndex
                     && $field instanceof RelationalFieldTypeInterface
                     && $field->getRelationshipType() === RelationshipType::ManyToMany
                 ) {
+                    // Fetching each foreign row on its own is very expensive with a high number of MM relations.
+                    // Fetch them per foreign table instead, restricted to the few fields evaluated below.
+                    // @todo: It would be better if RelationHandler would not return soft-deleted MM rows. Unsure
+                    //        how to do that since RH only works on the MM table, but it could then also return
+                    //        the full foreign row along the way.
+                    // @todo: Still expensive. Maybe instead make RelationHandler return the needed foreign row
+                    //        fields in some hopefully more efficient way, or refactor so this does not have to
+                    //        be done on every save.
+                    $recordUids = [];
+                    foreach ($itemArray as $item) {
+                        // uid as key to not fetch the same row twice if a record is related more than once.
+                        $recordUids[(string)$item['table']][(int)$item['id']] = (int)$item['id'];
+                    }
+                    $records = [];
+                    foreach ($recordUids as $foreignTableName => $uids) {
+                        $connection = $this->connectionPool->getConnectionForTable($foreignTableName);
+                        // Ensure number of predicates is hard capped: Depending on the database platform, we are limited by
+                        // a) the length of the resulting query (minimum should be 1M Bytes) and
+                        // b) the memory available to the range optimizer (see https://dev.mysql.com/doc/refman/9.3/en/range-optimization.html)
+                        // For mysql, the memory limit of range optimization defaults to 8MB. Each predicate in IN() uses approx.
+                        // 230 bytes which leaves us with a maximum of around 35000 when giving a little padding.
+                        // Other platforms (including MariaDB) do not have this limit, PlatformInformation::getMaxBindParameters()
+                        // is used as a conservative cap for them, in line with DataMapProcessor::fetchDependentElements().
+                        // If this cap is removed, this should either be refactored to use a temporary table or maintainers of
+                        // large TYPO3 instances using mysql should be advised to increase their configuration of range_optimizer_max_mem_size
+                        $chunkSize = $connection->getDatabasePlatform() instanceof DoctrineMySQLPlatform
+                            ? 35000
+                            : PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+                        foreach (array_chunk($uids, $chunkSize) as $uidsChunked) {
+                            $query = $connection->createQueryBuilder();
+                            $query->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                            $query
+                                ->select(...$this->getForeignSideRecordFields($foreignTableName))
+                                ->from($foreignTableName)
+                                ->where(
+                                    $query->expr()->in('uid', $query->quoteArrayBasedValueListToIntegerList($uidsChunked))
+                                );
+                            foreach ($query->executeQuery()->fetchAllAssociative() as $row) {
+                                $records[$foreignTableName][(int)$row['uid']] = $row;
+                            }
+                        }
+                    }
+
                     foreach ($itemArray as $itemKey => $item) {
                         // Get rid of soft-deleted foreign records, those should not create refindex entries
-                        // @todo: It would be better if RelationHandler would not return soft-deleted MM rows. Unsure
-                        //        how to do that since RH only works on the MM table, but it could then also return
-                        //        the full foreign row along the way.
-                        // @todo: Expensive. This code could be optimized to fetch multiple records at once per foreign
-                        //        table, or make RH return full foreign rows in some hopefully efficient way.
-                        $foreignSideRecord = BackendUtility::getRecord($item['table'], (int)$item['id']);
+                        $foreignSideRecord = $records[$item['table']][(int)$item['id']] ?? null;
                         if ($foreignSideRecord === null) {
                             // @todo: This mixes up ref_sorting when rows are removed here. Shouldn't be
                             //        very problematic, though.
