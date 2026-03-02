@@ -36,7 +36,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Extbase\Authorization\AuthorizationFailureReason;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionAuthorizationDeniedEvent;
 use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent;
 use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionRateLimitResponseEvent;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -53,6 +55,7 @@ use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Security\HashScope;
+use TYPO3\CMS\Extbase\Service\ActionAuthorizationService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Service\FileHandlingService;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -60,6 +63,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
@@ -106,6 +110,7 @@ abstract class ActionController implements ControllerInterface
     protected RequestInterface $request;
     protected UriBuilder $uriBuilder;
     protected RateLimiterFactoryInterface $rateLimiterFactory;
+    protected ActionAuthorizationService $actionAuthorizationService;
 
     /**
      * Contains the settings of the current extension
@@ -208,6 +213,11 @@ abstract class ActionController implements ControllerInterface
     public function injectRateLimiterFactory(RateLimiterFactoryInterface $rateLimiterFactory): void
     {
         $this->rateLimiterFactory = $rateLimiterFactory;
+    }
+
+    public function injectActionAuthorizationService(ActionAuthorizationService $actionAuthorizationService): void
+    {
+        $this->actionAuthorizationService = $actionAuthorizationService;
     }
 
     /**
@@ -458,6 +468,10 @@ abstract class ActionController implements ControllerInterface
                 $this->fileHandlingService->applyDeletionsToArgument($argument);
                 $this->fileHandlingService->mapUploadedFilesToArgument($argument);
                 $preparedArguments[] = $argument->getValue();
+            }
+
+            if (($authorizeResponse = $this->performAuthorizationChecks($request, $preparedArguments)) !== null) {
+                return $authorizeResponse;
             }
 
             if (($rateLimitResponse = $this->handleRateLimit($request)) !== null) {
@@ -916,6 +930,7 @@ abstract class ActionController implements ControllerInterface
      * a possible defined rate limit for the action method and generates an appropriate response
      * if the limit is reached.
      *
+     * @internal
      * @return ResponseInterface|null The rate-limited response if the limit is exceeded, or null if no rate-limiting applies.
      */
     protected function handleRateLimit(RequestInterface $request): ?ResponseInterface
@@ -945,11 +960,69 @@ abstract class ActionController implements ControllerInterface
         $response = $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8')
             ->withStatus(429)
-            ->withBody($this->streamFactory->createStream(($message)));
+            ->withBody($this->streamFactory->createStream($message));
 
         $event = $this->eventDispatcher->dispatch(
             new BeforeActionRateLimitResponseEvent($request, static::class, $this->actionMethodName, $rateLimit, $response)
         );
+
+        return $event->getResponse();
+    }
+
+    /**
+     * Performs authorization checks for actions with the #[Authorize] attribute. If access is denied, a HTTP 403
+     * response is propagated. This behavior can be customized by implementing a event listener for the
+     * {@see BeforeActionAuthorizationDeniedEvent}.
+     *
+     * @internal
+     */
+    protected function performAuthorizationChecks(RequestInterface $request, array $preparedArguments): ?ResponseInterface
+    {
+        $authorizeAttributes = $this->reflectionService
+            ->getClassSchema(static::class)
+            ->getMethod($this->actionMethodName)
+            ->getAuthorize();
+
+        if ($authorizeAttributes === []) {
+            return null;
+        }
+
+        $result = $this->actionAuthorizationService->checkAuthorization(
+            $this,
+            $authorizeAttributes,
+            $preparedArguments
+        );
+
+        if ($result->isAllowed()) {
+            return null;
+        }
+
+        $message = match ($result->failureReason) {
+            AuthorizationFailureReason::NOT_LOGGED_IN => 'Access denied: Login required',
+            AuthorizationFailureReason::MISSING_GROUP => 'Access denied: Insufficient permissions',
+            AuthorizationFailureReason::CALLBACK_DENIED, null => 'Access denied',
+        };
+
+        $event = $this->eventDispatcher->dispatch(
+            new BeforeActionAuthorizationDeniedEvent(
+                $request,
+                static::class,
+                $this->actionMethodName,
+                $result->failedAttribute,
+                $result->failureReason,
+            )
+        );
+
+        if (!$event->getResponse()) {
+            $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
+                $this->request,
+                $message,
+                [
+                    'code' => PageAccessFailureReasons::ACCESS_DENIED_GENERAL,
+                ]
+            );
+            throw new PropagateResponseException($response, 1761287264);
+        }
 
         return $event->getResponse();
     }

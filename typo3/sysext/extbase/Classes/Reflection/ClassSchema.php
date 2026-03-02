@@ -216,6 +216,7 @@ class ClassSchema
             $this->methods[$methodName]['public'] = $reflectionMethod->isPublic();
             $this->methods[$methodName]['params'] = [];
             $this->methods[$methodName]['rateLimit'] = null;
+            $this->methods[$methodName]['authorize'] = [];
             $isAction = $this->bitSet->get(self::BIT_CLASS_IS_CONTROLLER) && str_ends_with($methodName, 'Action');
 
             /** @var array<string, list<Attribute\Validate>> $validateAttributes */
@@ -226,6 +227,9 @@ class ClassSchema
             // @todo Remove validation attribute and annotation parts with v15
             if ($isAction) {
                 $rateLimit = null;
+
+                /** @var list<Attribute\Authorize> $authorize */
+                $authorize = [];
                 foreach ($reflectionMethod->getAttributes() as $attribute) {
                     $attributeInstance = $attribute->newInstance();
 
@@ -233,11 +237,13 @@ class ClassSchema
                         Attribute\Validate::class, Annotation\Validate::class => $validateAttributes[$attributeInstance->param ?? ''][] = $attributeInstance,
                         Attribute\IgnoreValidation::class, Annotation\IgnoreValidation::class => $ignoreValidationAttributes[$attributeInstance->argumentName ?? ''][] = $attributeInstance,
                         Attribute\RateLimit::class => $rateLimit = $attributeInstance,
+                        Attribute\Authorize::class => $authorize[] = $attributeInstance,
                         default => '' // non-extbase attributes
                     };
                 }
 
                 $this->methods[$methodName]['rateLimit'] = $rateLimit;
+                $this->methods[$methodName]['authorize'] = $authorize;
             }
 
             $docComment = $reflectionMethod->getDocComment();

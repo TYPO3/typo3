@@ -6,3 +6,6 @@ services:
 
   TYPO3Tests\ActionControllerTest\Controller\TestController:
     public: true
+
+  TYPO3Tests\ActionControllerTest\Controller\AccessCheckController:
+    public: true
