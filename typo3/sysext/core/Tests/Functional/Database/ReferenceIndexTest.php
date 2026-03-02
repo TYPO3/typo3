@@ -59,6 +59,15 @@ final class ReferenceIndexTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function updateIndexHandlesManyToManyForeignSideRowsOfMultipleTables(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesManyToManyForeignSideRowsOfMultipleTablesImport.csv');
+        $result = $this->get(ReferenceIndex::class)->updateIndex(false);
+        self::assertSame('Record sys_category:28 had 2 added indexes and 0 deleted indexes', $result['errors'][0]);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesManyToManyForeignSideRowsOfMultipleTablesResult.csv');
+    }
+
+    #[Test]
     public function updateIndexHandlesSoftrefForDbField(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForDbFieldImport.csv');
