@@ -22,8 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-
-use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
+use TYPO3Fluid\Fluid\View\Exception\InvalidPartialException;
 
 /**
  * Overrides the default f:render implementation by EXT:fluid via Fluid's
@@ -124,7 +123,7 @@ final class RenderViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHel
                     $path = substr($path, strlen(Environment::getPublicPath() . '/'));
                 }
                 $debugInfo['Partial'] = 'Partial: ' . $path;
-            } catch (InvalidTemplateResourceException) {
+            } catch (InvalidPartialException) {
                 $debugInfo['Partial'] = 'Partial not found: ' . $partial;
             }
         }

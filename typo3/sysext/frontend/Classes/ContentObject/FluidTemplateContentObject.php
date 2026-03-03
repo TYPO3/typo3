@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
@@ -24,6 +25,9 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
+use TYPO3Fluid\Fluid\View\Exception\InvalidLayoutException;
+use TYPO3Fluid\Fluid\View\Exception\InvalidPartialException;
+use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
 /**
  * Contains FLUIDTEMPLATE class object
@@ -135,8 +139,28 @@ class FluidTemplateContentObject extends AbstractContentObject
         $variables = $this->contentDataProcessor->process($this->cObj, $conf, $variables);
         $view->assignMultiple($variables);
 
-        // Rendering the view internally set's the template (paths). This is required for following asset rendering
-        $content = $view->render($templateFilename);
+        try {
+            // View needs to be rendered before the following asset rendering because it
+            // sets the template (paths) internally.
+            $content = $view->render($templateFilename);
+        } catch (InvalidTemplateResourceException $e) {
+            // Only add a FLUIDTEMPLATE specific message in case the exception has been thrown for the given template
+            if ($e instanceof InvalidPartialException || $e instanceof InvalidLayoutException || $templateFilename === '' || $e->templateName !== 'Default/' . $templateFilename) {
+                throw $e;
+            }
+            throw new InvalidTemplateResourceException(
+                sprintf(
+                    'FLUIDTEMPLATE TypoScript object: Failed to resolve a template file for templateName "%s". See also: %s. The following paths were checked: "%s"',
+                    $templateFilename,
+                    (new Typo3Information())->getDocsLink('t3tsref:cobj-template'),
+                    implode('", "', $e->evaluatedTemplatePaths),
+                ),
+                1772572794,
+                $e,
+                $e->templateName,
+                $e->evaluatedTemplatePaths,
+            );
+        }
 
         $this->renderFluidTemplateAssetsIntoPageRenderer($view, $variables);
 

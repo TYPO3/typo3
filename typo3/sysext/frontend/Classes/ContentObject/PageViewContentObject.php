@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
+use TYPO3Fluid\Fluid\View\Exception\InvalidLayoutException;
+use TYPO3Fluid\Fluid\View\Exception\InvalidPartialException;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
 /**
@@ -111,25 +113,22 @@ final class PageViewContentObject extends AbstractContentObject
         try {
             return $view->render($pageLayoutName);
         } catch (InvalidTemplateResourceException $e) {
-            // Only add a PAGEVIEW specific message in case the exception has been thrown for the given $templateFileName.
-            // @todo: Improve error handling once raw data is provided by Fluid
-            $templateFileName = $pageLayoutName . '.html';
-            if (str_contains($e->getMessage(), $templateFileName)) {
-                $templateFileName = 'Pages/' . $templateFileName;
-                $checkedPaths = implode(', ', array_map(static fn($path) => $path . $templateFileName, $paths));
-                throw new InvalidTemplateResourceException(
-                    sprintf(
-                        'PAGEVIEW TypoScript object: Failed to resolve the expected template file "%s" for layout "%s". See also: %s. The following paths were checked: %s',
-                        $templateFileName,
-                        $pageLayoutName,
-                        (new Typo3Information())->getDocsLink('t3tsref:cobj-pageview'),
-                        $checkedPaths,
-                    ),
-                    1742058289,
-                    $e
-                );
+            // Only add a PAGEVIEW specific message in case the exception has been thrown for the given template.
+            if ($e instanceof InvalidPartialException || $e instanceof InvalidLayoutException || $e->templateName !== 'Default/' . $pageLayoutName) {
+                throw $e;
             }
-            throw $e;
+            throw new InvalidTemplateResourceException(
+                sprintf(
+                    'PAGEVIEW TypoScript object: Failed to resolve a template file for page layout "%s". See also: %s. The following paths were checked: "%s"',
+                    $pageLayoutName,
+                    (new Typo3Information())->getDocsLink('t3tsref:cobj-pageview'),
+                    implode('", "', $e->evaluatedTemplatePaths),
+                ),
+                1742058289,
+                $e,
+                $e->templateName,
+                $e->evaluatedTemplatePaths,
+            );
         }
     }
 

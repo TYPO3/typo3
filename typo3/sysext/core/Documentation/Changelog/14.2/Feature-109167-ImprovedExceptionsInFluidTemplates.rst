@@ -22,6 +22,10 @@ exception messages thrown by Fluid in several ways:
 *   Fluid Standalone 5.2 (also backported to Fluid 4.6) introduces more granular
     exception classes that can be used by ViewHelpers to classify runtime errors.
     These classifications are also part of the error message.
+*   When a referenced Fluid template cannot be found, the exception message
+    contains a full list of the candidates that have been tried. Also,
+    the exception contains the context in which the template file is missing
+    (e. g. `FLUIDTEMPLATE` or `PAGEVIEW`).
 
 In order for this to work with custom ViewHelper implementations, ViewHelpers
 need to use the base ViewHelper exception class or one of its child classes:
@@ -69,6 +73,25 @@ Examples
     TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException in /var/www/html/typo3conf/ext/theme/Resources/Private/Components/Test/Test.fluid.html:
     The side "none" supplied to Fluid's format.trim ViewHelper is not supported.
     (/var/www/html/vendor/typo3fluid/fluid/src/ViewHelpers/Format/TrimViewHelper.php:118)
+
+..  code-block:: plaintext
+    :caption: Missing template file for PAGEVIEW
+
+    #1742058289 TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException
+    PAGEVIEW TypoScript object: Failed to resolve a template file for page layout "default". See also: https://docs.typo3.org/permalink/t3tsref:cobj-pageview@14.2.
+    The following paths were checked:
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/Default/default.fluid.html",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/Default/default.html",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/Default/default",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/Default/Default.fluid.html",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/Default/Default.html",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/Default/Default",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/default.fluid.html",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/default.html",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/default",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/Default.fluid.html",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/Default.html",
+    "/var/www/html/typo3conf/ext/dummy/Resources/Private/Templates/Pages/Default"
 
 Impact
 ======

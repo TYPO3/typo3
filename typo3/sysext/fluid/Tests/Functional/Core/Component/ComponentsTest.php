@@ -190,4 +190,33 @@ final class ComponentsTest extends FunctionalTestCase
         sort($sorted);
         self::assertSame($expectedComponents, $sorted);
     }
+
+    #[Test]
+    public function missingComponentTemplateExceptionHasContextInformation(): void
+    {
+        self::expectException(\TYPO3Fluid\Fluid\Core\Parser\Exception::class);
+        self::expectExceptionCode(1407060572);
+        $this->expectExceptionMessage('Error: The ViewHelper "<test:missingComponent>" could not be resolved.');
+        $this->expectExceptionMessage('The component template "MissingComponent/MissingComponent" in format ".html" could not be found in the configured template paths.');
+        $this->expectExceptionMessage('"' . implode('", "', [
+            // With default controller name "Default"
+            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/Default/MissingComponent/MissingComponent.fluid.html',
+            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/Default/MissingComponent/MissingComponent.html',
+            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/Default/MissingComponent/MissingComponent',
+            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/Default/MissingComponent/MissingComponent.fluid.html',
+            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/Default/MissingComponent/MissingComponent.html',
+            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/Default/MissingComponent/MissingComponent',
+            // Without default controller name
+            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/MissingComponent/MissingComponent.fluid.html',
+            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/MissingComponent/MissingComponent.html',
+            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/MissingComponent/MissingComponent',
+            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/MissingComponent/MissingComponent.fluid.html',
+            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/MissingComponent/MissingComponent.html',
+            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/MissingComponent/MissingComponent',
+        ]) . '"');
+        /** @var FluidViewAdapter */
+        $view = $this->get(FluidViewFactory::class)->create(new ViewFactoryData());
+        $view->getRenderingContext()->getTemplatePaths()->setTemplateSource('{namespace test=TYPO3Tests\\ComponentsTest\\Components}<test:missingComponent />');
+        $view->render();
+    }
 }
