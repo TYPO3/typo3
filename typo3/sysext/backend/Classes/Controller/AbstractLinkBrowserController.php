@@ -503,6 +503,14 @@ abstract class AbstractLinkBrowserController
                     value="' . htmlspecialchars($this->linkAttributeValues['params'] ?? '') . '" />
             </div>';
 
+        $fieldRenderingDefinitions['rel'] = '
+            <!-- Selecting rel for link: -->
+            <div class="element-browser-form-group">
+                <label for="lrel" class="form-label">' . htmlspecialchars($lang->sL('backend.browse_links:linkRelationship')) . '</label>
+                <input id="lrel" type="text" name="lrel" class="form-control"
+                    value="' . htmlspecialchars($this->linkAttributeValues['rel'] ?? '') . '" />
+            </div>';
+
         return $fieldRenderingDefinitions;
     }
 

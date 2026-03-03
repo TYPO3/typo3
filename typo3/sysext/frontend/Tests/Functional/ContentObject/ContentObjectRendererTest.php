@@ -4425,6 +4425,27 @@ content="benni">',
                 ],
                 '<a href="http://typo3.org" target="_blank" rel="noreferrer" title="Open new window" class="url-class">TYPO3</a>',
             ],
+            'Link to url with rel attribute in parameter' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org _blank url-class "Open new window" - nofollow',
+                ],
+                '<a href="http://typo3.org" target="_blank" rel="noreferrer nofollow" title="Open new window" class="url-class">TYPO3</a>',
+            ],
+            'Link to url with rel attribute in parameter without target' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org - url-class "Open new window" - nofollow',
+                ],
+                '<a href="http://typo3.org" rel="nofollow" title="Open new window" class="url-class">TYPO3</a>',
+            ],
+            'Link to url with rel attribute already containing noreferrer' => [
+                'TYPO3',
+                [
+                    'parameter' => 'http://typo3.org _blank url-class "Open new window" - "noreferrer nofollow"',
+                ],
+                '<a href="http://typo3.org" target="_blank" rel="noreferrer nofollow" title="Open new window" class="url-class">TYPO3</a>',
+            ],
             'Link to url with attributes in parameter and custom target name' => [
                 'TYPO3',
                 [

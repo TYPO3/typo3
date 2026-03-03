@@ -155,7 +155,7 @@ $tca = [
                 'size' => 50,
                 'appearance' => [
                     'browserTitle' => 'seo.db:pages.canonical_link',
-                    'allowedOptions' => ['params', 'rel'],
+                    'allowedOptions' => ['params'],
                 ],
             ],
         ],

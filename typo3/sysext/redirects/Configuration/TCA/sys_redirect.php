@@ -173,7 +173,7 @@ return [
                 'required' => true,
                 'allowedTypes' => ['page', 'file', 'url', 'record'],
                 'appearance' => [
-                    'allowedOptions' => ['params', 'rel'],
+                    'allowedOptions' => ['params'],
                 ],
             ],
         ],

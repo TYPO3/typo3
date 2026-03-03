@@ -68,6 +68,31 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
                 ],
                 '19 _blank css-class "testtitle with whitespace" &x=y',
             ],
+            'full parameter usage with rel' => [
+                [
+                    'url' => '19',
+                    'target' => '_blank',
+                    'class' => 'css-class',
+                    'title' => 'testtitle with whitespace',
+                    'additionalParams' => '&x=y',
+                    'rel' => 'noopener',
+                ],
+                '19 _blank css-class "testtitle with whitespace" &x=y noopener',
+            ],
+            'rel without additional parameters' => [
+                [
+                    'url' => 'foo',
+                    'rel' => 'nofollow',
+                ],
+                'foo - - - - nofollow',
+            ],
+            'rel with multiple values' => [
+                [
+                    'url' => 'foo',
+                    'rel' => 'noopener nofollow',
+                ],
+                'foo - - - - "noopener nofollow"',
+            ],
             'crazy title and partial items only' => [
                 [
                     'url' => 'foo',
@@ -170,6 +195,49 @@ final class TypoLinkCodecServiceTest extends UnitTestCase
             ],
             'full parameter usage' => [
                 '19 _blank css-class "testtitle with whitespace" &X=y',
+                [
+                    'url' => '19',
+                    'target' => '_blank',
+                    'class' => 'css-class',
+                    'title' => 'testtitle with whitespace',
+                    'additionalParams' => '&X=y',
+                ],
+            ],
+            'full parameter usage with rel' => [
+                '19 _blank css-class "testtitle with whitespace" &X=y noopener',
+                [
+                    'url' => '19',
+                    'target' => '_blank',
+                    'class' => 'css-class',
+                    'title' => 'testtitle with whitespace',
+                    'additionalParams' => '&X=y',
+                    'rel' => 'noopener',
+                ],
+            ],
+            'rel without additional parameters' => [
+                '19 - - - - nofollow',
+                [
+                    'url' => '19',
+                    'target' => '',
+                    'class' => '',
+                    'title' => '',
+                    'additionalParams' => '',
+                    'rel' => 'nofollow',
+                ],
+            ],
+            'rel with multiple values' => [
+                '19 - - - - "noopener nofollow"',
+                [
+                    'url' => '19',
+                    'target' => '',
+                    'class' => '',
+                    'title' => '',
+                    'additionalParams' => '',
+                    'rel' => 'noopener nofollow',
+                ],
+            ],
+            'empty rel symbol does not set rel key' => [
+                '19 _blank css-class "testtitle with whitespace" &X=y -',
                 [
                     'url' => '19',
                     'target' => '_blank',

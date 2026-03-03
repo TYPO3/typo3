@@ -332,9 +332,10 @@ class LinkElement extends AbstractFormElement
             }
             if ($value) {
                 $label = match ((string)$key) {
-                    'class' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:class'),
-                    'title' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:title'),
-                    'additionalParams' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:params'),
+                    'class' => $this->getLanguageService()->sL('backend.browse_links:class'),
+                    'title' => $this->getLanguageService()->sL('backend.browse_links:title'),
+                    'additionalParams' => $this->getLanguageService()->sL('backend.browse_links:params'),
+                    'rel' => $this->getLanguageService()->sL('backend.browse_links:linkRelationship'),
                     default => (string)$key
                 };
                 $additionalAttributes[] = '<span><strong>' . htmlspecialchars($label) . ': </strong> ' . htmlspecialchars($value) . '</span>';

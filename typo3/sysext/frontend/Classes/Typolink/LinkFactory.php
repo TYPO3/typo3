@@ -70,7 +70,7 @@ readonly class LinkFactory
             $linkParameter = trim((string)($linkConfiguration['parameter'] ?? ''));
         }
         try {
-            [$linkParameter, $target, $classList, $title] = $this->resolveTypolinkParameterString($linkParameter, $linkConfiguration);
+            [$linkParameter, $target, $classList, $title, $rel] = $this->resolveTypolinkParameterString($linkParameter, $linkConfiguration);
         } catch (UnableToLinkException $e) {
             $this->logger->warning($e->getMessage(), ['linkConfiguration' => $linkConfiguration]);
             throw $e;
@@ -84,6 +84,9 @@ readonly class LinkFactory
 
         // Enrich the link result with resolved attributes and run post processing
         $linkResult = $this->addAdditionalAnchorTagAttributes($linkResult, $linkConfiguration, $contentObjectRenderer);
+        if ($rel !== '') {
+            $linkResult = $linkResult->withAttribute('rel', $rel);
+        }
 
         // Check, if the target is coded as a JS open window link:
         $linkResult = $this->addJavaScriptOpenWindowInformationAttributes($linkResult, $linkConfiguration, $contentObjectRenderer);
@@ -238,6 +241,7 @@ readonly class LinkFactory
             $linkParameterParts['target'],
             $linkParameterParts['class'],
             $linkParameterParts['title'],
+            $linkParameterParts['rel'] ?? '',
         ];
     }
 

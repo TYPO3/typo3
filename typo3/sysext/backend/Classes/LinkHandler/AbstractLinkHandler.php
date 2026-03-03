@@ -35,8 +35,6 @@ abstract class AbstractLinkHandler
     /**
      * Available additional link attributes
      *
-     * 'rel' only works in RTE, still we have to declare support for it.
-     *
      * @var string[]
      */
     protected $linkAttributes = ['target', 'title', 'class', 'params', 'rel'];
