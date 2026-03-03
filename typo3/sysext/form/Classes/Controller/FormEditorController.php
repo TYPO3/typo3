@@ -234,8 +234,8 @@ class FormEditorController extends ActionController
     ): ResponseInterface {
         $prototypeName = $prototypeName ?: $formDefinition['prototypeName'] ?? 'standard';
         $formDefinition = $formDefinition->getArrayCopy();
+        $formDefinition['renderingOptions']['previewMode'] = true;
         $formDefinition = $this->arrayFormFactory->build($formDefinition, $prototypeName, $this->request);
-        $formDefinition->setRenderingOption('previewMode', true);
 
         if ($formPersistenceIdentifier !== null) {
             $formDefinition->setRenderingOption('formPersistenceIdentifier', $formPersistenceIdentifier);

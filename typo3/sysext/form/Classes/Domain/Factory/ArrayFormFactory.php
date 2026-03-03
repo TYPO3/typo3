@@ -70,6 +70,13 @@ class ArrayFormFactory extends AbstractFormFactory
             'Form',
             $persistenceIdentifier
         );
+        // Set renderingOptions before processing renderables, so that options
+        // like 'previewMode' are available during initializeFormElement().
+        if (isset($configuration['renderingOptions'])) {
+            foreach ($configuration['renderingOptions'] as $key => $value) {
+                $form->setRenderingOption($key, $value);
+            }
+        }
         if (isset($configuration['renderables'])) {
             foreach ($configuration['renderables'] as $pageConfiguration) {
                 $this->addNestedRenderable($pageConfiguration, $form, $request);
