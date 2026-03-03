@@ -1658,6 +1658,12 @@ final class GeneralUtilityTest extends UnitTestCase
             false,  // do not keep empty values
             'href="https://example.com"',
         ];
+        yield 'Input with integer attribute key' => [
+            ['title' => 'example', 2011 => ''],
+            true,
+            true,
+            'title="example" 2011=""',
+        ];
     }
 
     #[DataProvider('implodeAttributesDataProvider')]
