@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Model\FormElements;
 
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -74,17 +76,23 @@ class FileUpload extends AbstractFormElement
             UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_CONFLICT_MODE => 'rename',
         ];
 
-        $saveToFileMountIdentifier = $this->getProperties()['saveToFileMount'] ?? '';
-        if ($this->checkSaveFileMountAccess($saveToFileMountIdentifier)) {
-            $uploadConfiguration[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER] = $saveToFileMountIdentifier;
-        } else {
-            // @todo Why should uploaded files be stored to the same directory as the *.form.yaml definitions?
-            $persistenceIdentifier = $this->getRootForm()->getPersistenceIdentifier();
-            if (!empty($persistenceIdentifier)) {
-                $pathinfo = PathUtility::pathinfo($persistenceIdentifier);
-                $saveToFileMountIdentifier = $pathinfo['dirname'];
-                if ($this->checkSaveFileMountAccess($saveToFileMountIdentifier)) {
-                    $uploadConfiguration[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER] = $saveToFileMountIdentifier;
+        // In preview mode (Form Editor backend module), skip upload folder resolution
+        // entirely. File uploads are non-functional during preview and resolving the
+        // target folder may throw access permission exceptions for backend users who
+        // do not have access to the configured upload storage.
+        if (!($this->getRootForm()->getRenderingOptions()['previewMode'] ?? false)) {
+            $saveToFileMountIdentifier = $this->getProperties()['saveToFileMount'] ?? '';
+            if ($this->checkSaveFileMountAccess($saveToFileMountIdentifier)) {
+                $uploadConfiguration[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER] = $saveToFileMountIdentifier;
+            } else {
+                // @todo Why should uploaded files be stored to the same directory as the *.form.yaml definitions?
+                $persistenceIdentifier = $this->getRootForm()->getPersistenceIdentifier();
+                if (!empty($persistenceIdentifier)) {
+                    $pathinfo = PathUtility::pathinfo($persistenceIdentifier);
+                    $saveToFileMountIdentifier = $pathinfo['dirname'];
+                    if ($this->checkSaveFileMountAccess($saveToFileMountIdentifier)) {
+                        $uploadConfiguration[UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER] = $saveToFileMountIdentifier;
+                    }
                 }
             }
         }
@@ -109,7 +117,7 @@ class FileUpload extends AbstractFormElement
         try {
             $resourceFactory->getFolderObjectFromCombinedIdentifier($saveToFileMountIdentifier);
             return true;
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException | InsufficientFolderAccessPermissionsException | FolderDoesNotExistException $e) {
             return false;
         }
     }

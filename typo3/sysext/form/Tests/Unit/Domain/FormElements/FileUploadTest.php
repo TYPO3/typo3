@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration as ExtbasePropertyMappingConfiguration;
@@ -268,5 +270,103 @@ final class FileUploadTest extends UnitTestCase
         $this->fileUpload->initializeFormElement();
 
         self::assertTrue($validators->offsetExists($notEmptyValidator));
+    }
+
+    #[Test]
+    public function initializeFormElementSkipsUploadFolderResolutionInPreviewMode(): void
+    {
+        // In preview mode, ResourceFactory should never be called
+        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory->expects($this->never())->method('getFolderObjectFromCombinedIdentifier');
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+
+        $this->processingRule
+            ->method('getValidators')
+            ->willReturn(new \SplObjectStorage());
+
+        $this->fileUpload
+            ->method('getProperties')
+            ->willReturn(['saveToFileMount' => '2:/secureUploads/']);
+
+        // Set previewMode rendering option on the root form
+        $this->rootForm->setRenderingOption('previewMode', true);
+
+        // Expect the upload configuration to NOT contain an upload folder key
+        $this->extbasePropertyMappingConfiguration
+            ->expects($this->atLeastOnce())
+            ->method('setTypeConverterOptions')
+            ->willReturnCallback(function (string $typeConverter, array $options): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayNotHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $options);
+
+                return $this->extbasePropertyMappingConfiguration;
+            });
+
+        $this->fileUpload->initializeFormElement();
+    }
+
+    #[Test]
+    public function initializeFormElementHandlesInsufficientFolderAccessPermissionsGracefully(): void
+    {
+        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory->method('getFolderObjectFromCombinedIdentifier')
+            ->willThrowException(new InsufficientFolderAccessPermissionsException('Access denied', 1430317630));
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+
+        $this->processingRule
+            ->method('getValidators')
+            ->willReturn(new \SplObjectStorage());
+
+        $this->rootForm
+            ->method('getPersistenceIdentifier')
+            ->willReturn('');
+
+        $this->fileUpload
+            ->method('getProperties')
+            ->willReturn(['saveToFileMount' => '2:/secureUploads/']);
+
+        // Should not throw, and should not contain an upload folder since access is denied
+        $this->extbasePropertyMappingConfiguration
+            ->expects($this->atLeastOnce())
+            ->method('setTypeConverterOptions')
+            ->willReturnCallback(function (string $typeConverter, array $options): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayNotHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $options);
+
+                return $this->extbasePropertyMappingConfiguration;
+            });
+
+        $this->fileUpload->initializeFormElement();
+    }
+
+    #[Test]
+    public function initializeFormElementHandlesFolderDoesNotExistExceptionGracefully(): void
+    {
+        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory->method('getFolderObjectFromCombinedIdentifier')
+            ->willThrowException(new FolderDoesNotExistException('Folder not found', 1314516809));
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+
+        $this->processingRule
+            ->method('getValidators')
+            ->willReturn(new \SplObjectStorage());
+
+        $this->rootForm
+            ->method('getPersistenceIdentifier')
+            ->willReturn('');
+
+        $this->fileUpload
+            ->method('getProperties')
+            ->willReturn(['saveToFileMount' => '2:/nonExistentFolder/']);
+
+        // Should not throw, and should not contain an upload folder since folder doesn't exist
+        $this->extbasePropertyMappingConfiguration
+            ->expects($this->atLeastOnce())
+            ->method('setTypeConverterOptions')
+            ->willReturnCallback(function (string $typeConverter, array $options): ExtbasePropertyMappingConfiguration {
+                $this->assertArrayNotHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $options);
+
+                return $this->extbasePropertyMappingConfiguration;
+            });
+
+        $this->fileUpload->initializeFormElement();
     }
 }
