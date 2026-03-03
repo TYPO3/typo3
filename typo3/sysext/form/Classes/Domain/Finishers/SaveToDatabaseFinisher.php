@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
+use Doctrine\DBAL\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -312,7 +313,14 @@ class SaveToDatabaseFinisher extends AbstractFinisher
                 );
             } else {
                 $this->databaseConnection->insert($table, $databaseData);
-                $insertedUid = (int)$this->databaseConnection->lastInsertId();
+                try {
+                    $insertedUid = (int)$this->databaseConnection->lastInsertId();
+                } catch (Exception) {
+                    // Some database tables like sys_category_record_mm may not
+                    // have an "identity" (uid column). In this case DBAL may
+                    // throw an exception, which we gracefully handle here.
+                    $insertedUid = 0;
+                }
                 $this->finisherContext->getFinisherVariableProvider()->add(
                     $this->shortFinisherIdentifier,
                     'insertedUids.' . $iterationCount,
