@@ -336,7 +336,14 @@ class SaveToDatabaseFinisher extends AbstractFinisher
                 );
             } else {
                 $this->databaseConnection->insert($table, $databaseData);
-                $insertedUid = (int)$this->databaseConnection->lastInsertId();
+                try {
+                    $insertedUid = (int)$this->databaseConnection->lastInsertId();
+                } catch (Exception) {
+                    // Some database tables like sys_category_record_mm may not
+                    // have an "identity" (uid column). In this case DBAL may
+                    // throw an exception, which we gracefully handle here.
+                    $insertedUid = 0;
+                }
                 $this->finisherContext->getFinisherVariableProvider()->add(
                     $this->shortFinisherIdentifier,
                     'insertedUids.' . $iterationCount,
