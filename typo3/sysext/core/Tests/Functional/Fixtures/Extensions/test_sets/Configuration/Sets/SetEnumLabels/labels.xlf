@@ -15,6 +15,18 @@
       <trans-unit id="settings.explicit.foo.enumExplicit.optionExplicitLll">
         <source>Explicit option via LLL</source>
       </trans-unit>
+      <trans-unit id="settings.foo.enumList">
+        <source>Enum list style</source>
+      </trans-unit>
+      <trans-unit id="settings.description.foo.enumList">
+        <source>Description for enum list style</source>
+      </trans-unit>
+      <trans-unit id="settings.foo.enumList.enum.optionListA">
+        <source>Option list A</source>
+      </trans-unit>
+      <trans-unit id="settings.foo.enumList.enum.optionListB">
+        <source>Option list B</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

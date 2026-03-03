@@ -15,6 +15,18 @@
       <trans-unit id="settings.description.camino.colorScheme">
         <source>Select the main color scheme</source>
       </trans-unit>
+      <trans-unit id="settings.camino.colorScheme.enum.theme-caramel-cream">
+        <source>Caramel Cream</source>
+      </trans-unit>
+      <trans-unit id="settings.camino.colorScheme.enum.theme-ocean-breeze">
+        <source>Ocean Breeze</source>
+      </trans-unit>
+      <trans-unit id="settings.camino.colorScheme.enum.theme-forest-mist">
+        <source>Forest Mist</source>
+      </trans-unit>
+      <trans-unit id="settings.camino.colorScheme.enum.theme-violet-velvet">
+        <source>Violet Velvet</source>
+      </trans-unit>
       <trans-unit id="settings.camino.header.fixedPosition">
         <source>Header: Fixed position</source>
       </trans-unit>

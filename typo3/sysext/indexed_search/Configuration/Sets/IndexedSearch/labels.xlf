@@ -33,6 +33,12 @@
       <trans-unit id="settings.description.indexedsearch.pagination_type">
         <source>Select between simple pagination (all pages) and sliding window pagination.</source>
       </trans-unit>
+      <trans-unit id="settings.indexedsearch.pagination_type.enum.simple">
+        <source>Simple</source>
+      </trans-unit>
+      <trans-unit id="settings.indexedsearch.pagination_type.enum.slidingWindow">
+        <source>Sliding window</source>
+      </trans-unit>
       <trans-unit id="settings.indexedsearch.page_links">
         <source>Maximum number of links shown for sliding window pagination</source>
       </trans-unit>

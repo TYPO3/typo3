@@ -13,3 +13,9 @@ settings:
       optionExplicitLiteral: 'Explicit literal option'
       optionExplicitKeyOnly:
       optionExplicitEmptyLabel: ''
+  foo.enumList:
+    type: string
+    default: optionListA
+    enum:
+      - optionListA
+      - optionListB

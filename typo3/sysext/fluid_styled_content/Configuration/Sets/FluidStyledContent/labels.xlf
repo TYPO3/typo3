@@ -30,11 +30,29 @@
       <trans-unit id="settings.description.styles.content.image.lazyLoading">
         <source>Can be `lazy` (browsers could choose to load images later), `eager` (load images right away) or `auto` (browser will determine whether the image should be lazy loaded or not)</source>
       </trans-unit>
+      <trans-unit id="settings.styles.content.image.lazyLoading.enum.lazy">
+        <source>Lazy</source>
+      </trans-unit>
+      <trans-unit id="settings.styles.content.image.lazyLoading.enum.eager">
+        <source>Eager</source>
+      </trans-unit>
+      <trans-unit id="settings.styles.content.image.lazyLoading.enum.auto">
+        <source>Auto</source>
+      </trans-unit>
       <trans-unit id="settings.styles.content.image.imageDecoding">
         <source>Default settings for an image decoding hint to the browser</source>
       </trans-unit>
       <trans-unit id="settings.description.styles.content.image.imageDecoding">
         <source>Can be `sync` (synchronously for atomic presentation with other content), `async` (asynchronously to avoid delaying presentation of other content), `auto` (no preference in decoding mode) or an empty value to omit the usage of the decoding attribute (same as `auto`)</source>
+      </trans-unit>
+      <trans-unit id="settings.styles.content.image.imageDecoding.enum.sync">
+        <source>Sync</source>
+      </trans-unit>
+      <trans-unit id="settings.styles.content.image.imageDecoding.enum.async">
+        <source>Asynchronous</source>
+      </trans-unit>
+      <trans-unit id="settings.styles.content.image.imageDecoding.enum.auto">
+        <source>Auto</source>
       </trans-unit>
       <trans-unit id="settings.styles.content.textmedia.maxW">
         <source>Max Image/Media Width</source>

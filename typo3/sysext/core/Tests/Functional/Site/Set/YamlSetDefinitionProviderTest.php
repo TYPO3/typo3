@@ -85,5 +85,20 @@ final class YamlSetDefinitionProviderTest extends FunctionalTestCase
             ],
             $settingsDefinitions['foo.enumExplicit']->enum
         );
+        self::assertSame(
+            'LLL:EXT:test_sets/Configuration/Sets/SetEnumLabels/labels.xlf:settings.foo.enumList',
+            $settingsDefinitions['foo.enumList']->label
+        );
+        self::assertSame(
+            'LLL:EXT:test_sets/Configuration/Sets/SetEnumLabels/labels.xlf:settings.description.foo.enumList',
+            $settingsDefinitions['foo.enumList']->description
+        );
+        self::assertSame(
+            [
+                'optionListA' => 'LLL:EXT:test_sets/Configuration/Sets/SetEnumLabels/labels.xlf:settings.foo.enumList.enum.optionListA',
+                'optionListB' => 'LLL:EXT:test_sets/Configuration/Sets/SetEnumLabels/labels.xlf:settings.foo.enumList.enum.optionListB',
+            ],
+            $settingsDefinitions['foo.enumList']->enum
+        );
     }
 }

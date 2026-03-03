@@ -93,9 +93,13 @@ final readonly class CheckIntegritySetLabels
         ];
 
         $settingsDefinitions = Yaml::parseFile(dirname($labelFile) . '/settings.definitions.yaml');
-        foreach (($settingsDefinitions['settings'] ?? []) as $key => $_) {
+        foreach (($settingsDefinitions['settings'] ?? []) as $key => $options) {
+            if (is_object($options)) {
+                $options = (array)$options;
+            }
             $requiredLabels[] = 'settings.' . $key;
             $optionalLabels[] = 'settings.description.' . $key;
+            array_push($requiredLabels, ...$this->collectRequiredEnumLabels((string)$key, $options['enum'] ?? null));
         }
         foreach (($settingsDefinitions['categories'] ?? []) as $key => $_) {
             $requiredLabels[] = 'categories.' . $key;
@@ -133,6 +137,52 @@ final readonly class CheckIntegritySetLabels
         $pattern = '/typo3\/sysext\/(?<extName>[a-z].+?)\//';
         preg_match_all($pattern, $filename, $matches, PREG_SET_ORDER, 0);
         return $matches[0]['extName'];
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function collectRequiredEnumLabels(string $settingKey, mixed $enumDefinition): array
+    {
+        if (is_object($enumDefinition)) {
+            $enumDefinition = (array)$enumDefinition;
+        }
+        if (!is_array($enumDefinition)) {
+            return [];
+        }
+
+        if (array_is_list($enumDefinition)) {
+            $requiredLabels = [];
+            foreach ($enumDefinition as $enumValue) {
+                if (!is_scalar($enumValue)) {
+                    continue;
+                }
+                $requiredLabels[] = sprintf('settings.%s.enum.%s', $settingKey, $this->normalizeEnumValue($enumValue));
+            }
+            return $requiredLabels;
+        }
+
+        $requiredLabels = [];
+        foreach ($enumDefinition as $enumLabel) {
+            if (!is_string($enumLabel) || !str_starts_with($enumLabel, '{label}:')) {
+                continue;
+            }
+            $requiredLabel = substr($enumLabel, 8);
+            if ($requiredLabel === '') {
+                continue;
+            }
+            $requiredLabels[] = $requiredLabel;
+        }
+        return $requiredLabels;
+    }
+
+    private function normalizeEnumValue(string|int|float|bool $enumValue): string
+    {
+        if (is_bool($enumValue)) {
+            return $enumValue ? 'true' : 'false';
+        }
+
+        return (string)$enumValue;
     }
 }
 

@@ -21,6 +21,24 @@
       <trans-unit id="settings.description.felogin.recursive">
         <source>If set, also subfolder at configured recursive levels of the User Storage Page will be used</source>
       </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.0">
+        <source>0</source>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.1">
+        <source>1</source>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.2">
+        <source>2</source>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.3">
+        <source>3</source>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.4">
+        <source>4</source>
+      </trans-unit>
+      <trans-unit id="settings.felogin.recursive.enum.255">
+        <source>255</source>
+      </trans-unit>
       <trans-unit id="settings.felogin.showForgotPassword">
         <source>Display Password Recovery Link</source>
       </trans-unit>

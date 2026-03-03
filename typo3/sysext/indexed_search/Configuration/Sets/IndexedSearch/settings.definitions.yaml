@@ -28,8 +28,8 @@ settings:
     default: 'simple'
     type: string
     enum:
-      simple: 'Simple'
-      slidingWindow: 'Sliding window'
+      - simple
+      - slidingWindow
     category: indexedsearch
   indexedsearch.page_links:
     default: 10

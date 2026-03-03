@@ -18,17 +18,17 @@ settings:
     default: lazy
     type: string
     enum:
-      lazy: 'Lazy'
-      eager: 'Eager'
-      auto: 'Auto'
+      - lazy
+      - eager
+      - auto
     category: fsc.content
   styles.content.image.imageDecoding:
     default: ''
     type: string
     enum:
-      sync: 'Sync'
-      async: 'Asynchronous'
-      auto: 'Auto'
+      - sync
+      - async
+      - auto
     category: fsc.content
   styles.content.textmedia.maxW:
     default: 600
