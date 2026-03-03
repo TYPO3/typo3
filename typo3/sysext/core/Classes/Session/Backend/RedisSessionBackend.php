@@ -216,10 +216,16 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
         foreach ($this->getAll() as $sessionRecord) {
             if (!($sessionRecord['ses_userid'] ?? false)) {
                 if ($maximumAnonymousLifetime > 0 && ($sessionRecord['ses_tstamp'] + $maximumAnonymousLifetime) < $GLOBALS['EXEC_TIME']) {
-                    $this->redis->del($this->getSessionKeyName($sessionRecord['ses_id']));
+                    $result = $this->redis->del($this->getSessionKeyName($sessionRecord['ses_id']));
+                    if ($result === false) {
+                        $this->logRedisCommandFailure('del', 'collectGarbage()');
+                    }
                 }
             } elseif (($sessionRecord['ses_tstamp'] + $maximumLifetime) < $GLOBALS['EXEC_TIME']) {
-                $this->redis->del($this->getSessionKeyName($sessionRecord['ses_id']));
+                $result = $this->redis->del($this->getSessionKeyName($sessionRecord['ses_id']));
+                if ($result === false) {
+                    $this->logRedisCommandFailure('del', 'collectGarbage()');
+                }
             }
         }
     }
@@ -339,5 +345,17 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
     protected function getSessionTimeout(): int
     {
         return (int)($GLOBALS['TYPO3_CONF_VARS'][$this->identifier]['sessionTimeout'] ?? 86400);
+    }
+
+    protected function logRedisCommandFailure(string $command, string $method): void
+    {
+        $this->logger->warning(
+            'Redis command {command} failed in {method}.',
+            [
+                'command' => $command,
+                'method' => $method,
+                'error' => $this->redis->getLastError(),
+            ]
+        );
     }
 }
