@@ -4,10 +4,10 @@
     <header/>
     <body>
       <trans-unit id="showCheckintegrityInfoInReports.enable">
-        <source>Show information in reports if checkintegrity was not run.</source>
+        <source>Show report warning if checkintegrity has not been run.</source>
       </trans-unit>
       <trans-unit id="showCheckintegrityInfoInReports.seconds">
-        <source>Number of seconds to consider last checkintegrity report.</source>
+        <source>Set validity period (seconds) for the last checkintegrity report.</source>
       </trans-unit>
     </body>
   </file>
