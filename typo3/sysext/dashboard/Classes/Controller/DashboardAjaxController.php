@@ -259,8 +259,8 @@ class DashboardAjaxController
         $categories = [
             new Category(
                 key: $dashboardWidget->getType(),
-                label: $this->getLanguageService()->sl($dashboardWidget->getTitle()),
-                description: $this->getLanguageService()->sl($dashboardWidget->getDescription()),
+                label: $this->getLanguageService()->sL($dashboardWidget->getTitle()),
+                description: $this->getLanguageService()->sL($dashboardWidget->getDescription()),
                 icon: $dashboardWidget->getIconIdentifier(),
                 settings: array_map(
                     fn(SettingDefinition $definition): EditableSetting => new EditableSetting(
