@@ -132,7 +132,7 @@ return [
                 'size' => 1,
                 'suggestOptions' => [
                     'default' => [
-                        'additionalSearchFields' => 'nav_title, url',
+                        'additionalSearchFields' => 'nav_title, link',
                         'addWhere' => 'AND pages.doktype = 1',
                     ],
                 ],

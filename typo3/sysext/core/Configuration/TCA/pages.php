@@ -396,7 +396,7 @@ return [
                 'relationship' => 'manyToOne',
                 'suggestOptions' => [
                     'default' => [
-                        'additionalSearchFields' => 'nav_title, url',
+                        'additionalSearchFields' => 'nav_title',
                         'addWhere' => ' AND pages.uid != ###THIS_UID###',
                     ],
                 ],
@@ -442,7 +442,7 @@ return [
                 'relationship' => 'manyToOne',
                 'suggestOptions' => [
                     'default' => [
-                        'additionalSearchFields' => 'nav_title, url',
+                        'additionalSearchFields' => 'nav_title',
                         'addWhere' => ' AND pages.uid != ###THIS_UID###',
                     ],
                 ],
