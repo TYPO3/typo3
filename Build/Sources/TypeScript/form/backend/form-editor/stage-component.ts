@@ -288,7 +288,7 @@ export function buildTitleByFormElement(formElement?: FormElement): HTMLElement 
   if (getUtility().isUndefinedOrNull(formElement)) {
     formElement = getRootFormElement();
   }
-  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1479037151);
+  assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1479037151);
 
   const span = document.createElement('span');
   span.textContent = formElement.get('label') ? formElement.get('label') : formElement.get('identifier');
@@ -430,7 +430,7 @@ export function removeAllStageToolbars(): void {
  */
 export function createAbstractViewFormElementToolbar(formElement: FormElement): JQuery {
   let template: JQuery;
-  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1479035778);
+  assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1479035778);
 
   const formElementTypeDefinition = getFormElementDefinition(formElement, undefined);
   if (formElementTypeDefinition._isTopLevelFormElement) {
@@ -613,7 +613,7 @@ export function renderPreviewStageArea(html: string): void {
  * @throws 1768924251
  */
 export function renderTopLevelStageItem(formElement: FormElement, template: JQuery): void {
-  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1768924251);
+  assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1768924251);
 
   const stageItem = document.createElement('typo3-form-page-stage-item') as PageStageItem;
 
@@ -626,7 +626,7 @@ export function renderTopLevelStageItem(formElement: FormElement, template: JQue
  * @throws 1768924252
  */
 export function renderFormElementStageItem(formElement: FormElement, template: JQuery): void {
-  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1768924252);
+  assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1768924252);
 
   const stageItem = document.createElement('typo3-form-form-element-stage-item') as FormElementStageItem;
 
@@ -684,7 +684,7 @@ export function renderFormElementStageItem(formElement: FormElement, template: J
       defaultValue = { 0: defaultValue };
     }
 
-    if ('object' === $.type(propertyValue)) {
+    if (typeof propertyValue === 'object' && propertyValue !== null && !Array.isArray(propertyValue)) {
       for (const propertyValueKey of Object.keys(propertyValue)) {
         let isSelected = false;
         for (const defaultValueKey of Object.keys(defaultValue)) {
@@ -738,7 +738,7 @@ export function renderFormElementStageItem(formElement: FormElement, template: J
   const mimeTypesList: string[] = [];
 
   if (allowedMimeTypesValue) {
-    if ('object' === $.type(allowedMimeTypesValue)) {
+    if (typeof allowedMimeTypesValue === 'object' && allowedMimeTypesValue !== null && !Array.isArray(allowedMimeTypesValue)) {
       for (const key of Object.keys(allowedMimeTypesValue)) {
         if (!isNaN(Number(key))) {
           mimeTypesList.push(allowedMimeTypesValue[key]);
@@ -829,7 +829,7 @@ export function renderCheckboxTemplate(formElement: FormElement, template: JQuer
  * @throws 1479035696
  */
 export function renderSimpleTemplate(formElement: FormElement, template: JQuery): void {
-  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1479035696);
+  assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1479035696);
 
   eachTemplateProperty(formElement, template, (propertyPath, propertyValue: string, domElement) => {
     setTemplateTextContent(domElement, propertyValue);
@@ -860,7 +860,7 @@ export function renderSimpleTemplate(formElement: FormElement, template: JQuery)
  * @throws 1479035674
  */
 export function renderSimpleTemplateWithValidators(formElement: FormElement, template: JQuery): void {
-  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1479035674);
+  assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1479035674);
 
   renderSimpleTemplate(formElement, template);
 
@@ -956,7 +956,7 @@ export function renderSelectTemplates(formElement: FormElement, template: JQuery
     defaultValue = { 0: defaultValue };
   }
 
-  if ('object' === $.type(propertyValue)) {
+  if (typeof propertyValue === 'object' && propertyValue !== null && !Array.isArray(propertyValue)) {
     for (const propertyValueKey of Object.keys(propertyValue)) {
       appendMultiValue(propertyValue[propertyValueKey], propertyValueKey, defaultValue);
     }
@@ -993,7 +993,7 @@ export function renderFileUploadTemplates(formElement: FormElement, template: JQ
       .append(rowTemplate.html());
   };
 
-  if ('object' === $.type(propertyValue)) {
+  if (typeof propertyValue === 'object' && propertyValue !== null && !Array.isArray(propertyValue)) {
     for (const propertyValueKey of Object.keys(propertyValue)) {
       appendMultiValue(propertyValue[propertyValueKey]);
     }
@@ -1014,7 +1014,7 @@ export function bootstrap(
   customConfiguration?: Configuration
 ): typeof import('./stage-component') {
   formEditorApp = _formEditorApp;
-  assert('object' === $.type(appendToDomElement), 'Invalid parameter "appendToDomElement"', 1478992119);
+  assert(typeof appendToDomElement === 'object' && appendToDomElement !== null && !Array.isArray(appendToDomElement), 'Invalid parameter "appendToDomElement"', 1478992119);
   stageDomElement = $(appendToDomElement);
   configuration = $.extend(true, defaultConfiguration, customConfiguration || {});
   Helper.bootstrap(formEditorApp);

@@ -317,7 +317,7 @@ export class Utility {
    * @throws 1475377782
    */
   public convertToSimpleObject(formElement: object): object {
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475377782);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475377782);
 
     const simpleObject: Record<string, unknown> & { renderables? : Array<object> } = {};
     const objectData = ('getObjectData' in formElement && typeof formElement.getObjectData === 'function') ? formElement.getObjectData() : formElement;
@@ -365,7 +365,7 @@ export class PropertyValidationService {
   ): void {
     assert(Array.isArray(validators), 'Invalid parameter "validators"', 1475661026);
     assert(Array.isArray(validators), 'Invalid parameter "validators"', 1479238074);
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475661025);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475661025);
 
     const formElementIdentifierPath = formElement.get('__identifierPath');
     propertyPath = utility.buildPropertyPath(propertyPath, collectionElementIdentifier, collectionName, formElement);
@@ -396,7 +396,7 @@ export class PropertyValidationService {
     formElement: FormElement,
     propertyPath: string
   ): void {
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475700618);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475700618);
     assert(utility.isNonEmptyString(propertyPath), 'Invalid parameter "propertyPath"', 1475706896);
 
     const formElementIdentifierPath = formElement.get('__identifierPath');
@@ -419,7 +419,7 @@ export class PropertyValidationService {
    * @throws 1475668189
    */
   public removeAllValidatorIdentifiersFromFormElement(formElement: FormElement): void {
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475668189);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475668189);
 
     const registeredValidators: Record<string, {[key: string]: {validators: ValidatorsConfig, configuration: PropertyValidatorConfiguration}}> = {};
     const propertyValidationServiceRegisteredValidators = getApplicationStateStack().getCurrentState('propertyValidationServiceRegisteredValidators');
@@ -457,7 +457,7 @@ export class PropertyValidationService {
     propertyPath: string
   ): ValidationResults {
     let configuration;
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475676517);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475676517);
     assert(utility.isNonEmptyString(propertyPath), 'Invalid parameter "propertyPath"', 1475676518);
 
     const formElementIdentifierPath = formElement.get('__identifierPath');
@@ -470,8 +470,8 @@ export class PropertyValidationService {
 
     if (
       !utility.isUndefinedOrNull(propertyValidationServiceRegisteredValidators[formElementIdentifierPath])
-      && 'object' === $.type(propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath])
-      && 'array' === $.type(propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators)
+      && typeof propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath] === 'object' && propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath] !== null && !Array.isArray(propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath])
+      && Array.isArray(propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators)
     ) {
       configuration = propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].configuration;
       for (let i = 0, len = propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators.length; i < len; ++i) {
@@ -502,7 +502,7 @@ export class PropertyValidationService {
    * @throws 1475749668
    */
   public validateFormElement(formElement: FormElement): ValidationResultsWithPath {
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475749668);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475749668);
 
     const formElementIdentifierPath = formElement.get('__identifierPath');
     const validationResults: ValidationResultsWithPath = [];
@@ -547,7 +547,7 @@ export class PropertyValidationService {
     returnAfterFirstMatch: boolean,
     validationResults?: ValidationResultsRecursive
   ): ValidationResultsRecursive {
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475756764);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475756764);
     returnAfterFirstMatch = !!returnAfterFirstMatch;
 
     validationResults = validationResults || <ValidationResultsRecursive>[];
@@ -579,7 +579,7 @@ export class PropertyValidationService {
   public addValidatorIdentifiersFromFormElementPropertyCollections(
     formElement: FormElement
   ): void {
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475707334);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475707334);
 
     const formElementTypeDefinition = repository.getFormEditorDefinition('formElements', formElement.get('type'));
 
@@ -708,8 +708,8 @@ function extendModel<D extends object, T extends ModelData<D>>(
   pathPrefix: string,
   disablePublishersOnSet: boolean
 ): void {
-  assert('object' === $.type(modelToExtend), 'Invalid parameter "modelToExtend"', 1475358069);
-  assert('object' === $.type(modelExtension) || 'array' === $.type(modelExtension), 'Invalid parameter "modelExtension"', 1475358070);
+  assert(typeof modelToExtend === 'object' && modelToExtend !== null && !Array.isArray(modelToExtend), 'Invalid parameter "modelToExtend"', 1475358069);
+  assert(typeof modelExtension === 'object' && modelExtension !== null, 'Invalid parameter "modelExtension"', 1475358070);
 
   disablePublishersOnSet = !!disablePublishersOnSet;
   pathPrefix = pathPrefix || '';
@@ -794,7 +794,7 @@ export class Model<D extends object, T extends ModelData<D>> {
       // initialize objects case they are undefined by looking up the type
       // of the next path segment, the target type is guessed(!), thus e.g.
       // "key" results in having an object, "123" results in having an array
-      if ('undefined' === $.type(obj[firstPartOfPath])) {
+      if (typeof obj[firstPartOfPath] === 'undefined') {
         if (!isNaN(Number(nextPartOfPath))) {
           obj[firstPartOfPath] = [];
         } else {
@@ -961,7 +961,7 @@ export class Repository {
    * @throws 1475364394
    */
   public setFormEditorDefinitions(formEditorDefinitions: FormEditorDefinitions): void {
-    assert('object' === $.type(formEditorDefinitions), 'Invalid parameter "formEditorDefinitions"', 1475364394);
+    assert(typeof formEditorDefinitions === 'object' && formEditorDefinitions !== null && !Array.isArray(formEditorDefinitions), 'Invalid parameter "formEditorDefinitions"', 1475364394);
 
     for (const _key1 of Object.keys(formEditorDefinitions)) {
       const key1 = _key1 as keyof FormEditorDefinitions;
@@ -1009,8 +1009,8 @@ export class Repository {
     disablePublishersOnSet: boolean
   ): FormElement {
     let enclosingCompositeFormElement, parentFormElementsArray, referenceFormElementElements;
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475436224);
-    assert('object' === $.type(referenceFormElement), 'Invalid parameter "referenceFormElement"', 1475364956);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475436224);
+    assert(typeof referenceFormElement === 'object' && referenceFormElement !== null && !Array.isArray(referenceFormElement), 'Invalid parameter "referenceFormElement"', 1475364956);
 
     if (utility.isUndefinedOrNull(disablePublishersOnSet)) {
       disablePublishersOnSet = true;
@@ -1102,8 +1102,8 @@ export class Repository {
     disablePublishersOnSet = !!disablePublishersOnSet;
     removeRegisteredPropertyValidators = !!removeRegisteredPropertyValidators;
 
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475364957);
-    assert('object' === $.type(formElement.get('__parentRenderable')), 'Removing the root element is not allowed', 1472553024);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475364957);
+    assert(typeof formElement.get('__parentRenderable') === 'object' && formElement.get('__parentRenderable') !== null && !Array.isArray(formElement.get('__parentRenderable')), 'Removing the root element is not allowed', 1472553024);
 
     const parentFormElementElements = formElement.get('__parentRenderable').get('renderables');
     parentFormElementElements.splice(parentFormElementElements.indexOf(formElement), 1);
@@ -1131,9 +1131,9 @@ export class Repository {
   ): FormElement {
     let referenceFormElementParentElements,
       referenceFormElementElements, referenceFormElementIndex;
-    assert('object' === $.type(formElementToMove), 'Invalid parameter "formElementToMove"', 1475364958);
+    assert(typeof formElementToMove === 'object' && formElementToMove !== null && !Array.isArray(formElementToMove), 'Invalid parameter "formElementToMove"', 1475364958);
     assert('after' === position || 'before' === position || 'inside' === position, 'Invalid position "' + position + '"', 1475364959);
-    assert('object' === $.type(referenceFormElement), 'Invalid parameter "referenceFormElement"', 1475364960);
+    assert(typeof referenceFormElement === 'object' && referenceFormElement !== null && !Array.isArray(referenceFormElement), 'Invalid parameter "referenceFormElement"', 1475364960);
 
     if (utility.isUndefinedOrNull(disablePublishersOnSet)) {
       disablePublishersOnSet = true;
@@ -1145,7 +1145,7 @@ export class Repository {
 
     this.removeFormElement(formElementToMove, false);
     const reSetIdentifierPath = (formElement: FormElement, pathPrefix: string): void => {
-      assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475364961);
+      assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475364961);
       assert(utility.isNonEmptyString(pathPrefix), 'Invalid parameter "pathPrefix"', 1475364962);
 
       const oldIdentifierPath = formElement.get('__identifierPath');
@@ -1248,7 +1248,7 @@ export class Repository {
     formElement: FormElement
   ): number {
     let enclosingCompositeFormElementWhichIsOnTopLevel;
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475364963);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475364963);
 
     const formElementTypeDefinition = this.getFormEditorDefinition('formElements', formElement.get('type'));
 
@@ -1270,8 +1270,8 @@ export class Repository {
     formElement: FormElement
   ): FormElement {
     let formElementTypeDefinition;
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475364964);
-    assert('object' === $.type(formElement.get('__parentRenderable')), 'The root element is never encloused by anything', 1472556223);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475364964);
+    assert(typeof formElement.get('__parentRenderable') === 'object' && formElement.get('__parentRenderable') !== null && !Array.isArray(formElement.get('__parentRenderable')), 'The root element is never encloused by anything', 1472556223);
 
     formElementTypeDefinition = this.getFormEditorDefinition('formElements', formElement.get('type'));
     while (!formElementTypeDefinition._isTopLevelFormElement) {
@@ -1289,7 +1289,7 @@ export class Repository {
     formElement: FormElement
   ): FormElement | null {
     let formElementTypeDefinition;
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1490520271);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1490520271);
 
     formElementTypeDefinition = this.getFormEditorDefinition('formElements', formElement.get('type'));
     while (!formElementTypeDefinition._isGridRowFormElement) {
@@ -1312,7 +1312,7 @@ export class Repository {
     formElement: FormElement
   ): FormElement | null {
     let formElementTypeDefinition;
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475364965);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475364965);
 
     formElementTypeDefinition = this.getFormEditorDefinition('formElements', formElement.get('type'));
     while (!formElementTypeDefinition._isCompositeFormElement) {
@@ -1331,7 +1331,7 @@ export class Repository {
   public getNonCompositeNonToplevelFormElements(): FormElement[] {
     const nonCompositeNonToplevelFormElements: FormElement[] = [];
     const collect = (formElement: FormElement): void => {
-      assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475364961);
+      assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475364961);
 
       const formElementTypeDefinition = this.getFormEditorDefinition('formElements', formElement.get('type'));
 
@@ -1429,7 +1429,7 @@ export class Repository {
           }
         }
 
-        assert('null' !== $.type(obj), 'Could not find form element "' + key + '" in path "' + identifierPath + '"', 1472424334);
+        assert(obj !== null, 'Could not find form element "' + key + '" in path "' + identifierPath + '"', 1472424334);
         formElement = obj;
       } else {
         assert(false, 'No form elements found', 1472424330);
@@ -1476,7 +1476,7 @@ export class Repository {
     formElement: FormElement
   ): number {
     assert(utility.isNonEmptyString(collectionElementIdentifier), 'Invalid parameter "collectionElementIdentifier"', 1475375283);
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475375284);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475375284);
     assert(utility.isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475375285);
 
     const collection = formElement.get(collectionName);
@@ -1555,11 +1555,11 @@ export class Repository {
     disablePublishersOnSet?: boolean
   ): void {
     assert(utility.isNonEmptyString(collectionElementIdentifier), 'Invalid parameter "collectionElementIdentifier"', 1475375689);
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475375690);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475375690);
     assert(utility.isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475375691);
 
     const collection = formElement.get(collectionName);
-    assert('array' === $.type(collection), 'The collection "' + collectionName + '" does not exist', 1475375692);
+    assert(Array.isArray(collection), 'The collection "' + collectionName + '" does not exist', 1475375692);
 
     if (utility.isUndefinedOrNull(disablePublishersOnSet)) {
       disablePublishersOnSet = true;
@@ -1592,14 +1592,14 @@ export class Repository {
     let referenceCollectionElement;
 
     assert('after' === position || 'before' === position, 'Invalid position "' + position + '"', 1477404485);
-    assert('string' === $.type(referenceCollectionElementIdentifier), 'Invalid parameter "referenceCollectionElementIdentifier"', 1477404486);
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1477404488);
+    assert(typeof referenceCollectionElementIdentifier === 'string', 'Invalid parameter "referenceCollectionElementIdentifier"', 1477404486);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1477404488);
 
     const collection = formElement.get(collectionName);
-    assert('array' === $.type(collection), 'The collection "' + collectionName + '" does not exist', 1477404490);
+    assert(Array.isArray(collection), 'The collection "' + collectionName + '" does not exist', 1477404490);
 
     const collectionElementToMove = this.findCollectionElementByIdentifierPath(collectionElementToMoveIdentifier, collection);
-    assert('object' === $.type(collectionElementToMove), 'Invalid parameter "collectionElementToMove"', 1477404484);
+    assert(typeof collectionElementToMove === 'object' && collectionElementToMove !== null && !Array.isArray(collectionElementToMove), 'Invalid parameter "collectionElementToMove"', 1477404484);
 
     this.removePropertyCollectionElementByIdentifier(formElement, collectionElementToMoveIdentifier, collectionName);
 
@@ -1635,7 +1635,7 @@ export class Factory {
     disablePublishersOnSet?: boolean
   ): FormElement {
     let currentChildFormElements;
-    assert('object' === $.type(configuration), 'Invalid parameter "configuration"', 1475375693);
+    assert(typeof configuration === 'object' && configuration !== null && !Array.isArray(configuration), 'Invalid parameter "configuration"', 1475375693);
     assert(utility.isNonEmptyString(configuration.identifier), '"identifier" must not be empty', 1475436040);
     assert(utility.isNonEmptyString(configuration.type), '"type" must not be empty', 1475604050);
 
@@ -1767,7 +1767,7 @@ export class Factory {
   ): PropertyCollectionElement {
     let collectionElementPresets;
     assert(utility.isNonEmptyString(collectionElementIdentifier), 'Invalid parameter "collectionElementIdentifier"', 1475377160);
-    assert('object' === $.type(collectionElementConfiguration), 'Invalid parameter "collectionElementConfiguration"', 1475377161);
+    assert(typeof collectionElementConfiguration === 'object' && collectionElementConfiguration !== null && !Array.isArray(collectionElementConfiguration), 'Invalid parameter "collectionElementConfiguration"', 1475377161);
     assert(utility.isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475377162);
 
     collectionElementConfiguration.identifier = collectionElementIdentifier;
@@ -1791,7 +1791,7 @@ export class DataBackend {
    * @throws 1475377488
    */
   public setEndpoints(endpoints: Endpoints): void {
-    assert('object' === $.type(endpoints), 'Invalid parameter "endpoints"', 1475377488);
+    assert(typeof endpoints === 'object' && endpoints !== null && !Array.isArray(endpoints), 'Invalid parameter "endpoints"', 1475377488);
     this.endpoints = endpoints;
   }
 
@@ -1898,7 +1898,7 @@ export class ApplicationStateStack {
     applicationState: ApplicationState,
     disablePublishersOnSet: boolean
   ): void {
-    assert('object' === $.type(applicationState), 'Invalid parameter "applicationState"', 1477847415);
+    assert(typeof applicationState === 'object' && applicationState !== null && !Array.isArray(applicationState), 'Invalid parameter "applicationState"', 1477847415);
     disablePublishersOnSet = !!disablePublishersOnSet;
 
     $.extend(applicationState, {
@@ -1927,7 +1927,7 @@ export class ApplicationStateStack {
     applicationState: ApplicationState,
     disablePublishersOnSet?: boolean
   ): void {
-    assert('object' === $.type(applicationState), 'Invalid parameter "applicationState"', 1477872641);
+    assert(typeof applicationState === 'object' && applicationState !== null && !Array.isArray(applicationState), 'Invalid parameter "applicationState"', 1477872641);
 
     if (this.stackPointer > 0) {
       this.stack.splice(0, this.stackPointer);

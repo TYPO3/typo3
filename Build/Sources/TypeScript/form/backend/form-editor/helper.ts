@@ -78,7 +78,7 @@ export function setConfiguration(
   this: typeof import('./helper'),
   customConfiguration: Partial<Configuration>
 ): typeof import('./helper') {
-  assert('object' === $.type(customConfiguration), 'Invalid parameter "partialConfiguration"', 1478950623);
+  assert(typeof customConfiguration === 'object' && customConfiguration !== null && !Array.isArray(customConfiguration), 'Invalid parameter "partialConfiguration"', 1478950623);
   configuration = $.extend(true, defaultConfiguration, customConfiguration);
   return this;
 }

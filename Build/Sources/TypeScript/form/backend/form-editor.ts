@@ -106,7 +106,7 @@ export class FormEditor {
    * @throws 1519855175
    */
   public setFormDefinition(formDefinition: FormElementDefinition): void {
-    assert('object' === $.type(formDefinition), 'Invalid parameter "formDefinition"', 1519855175);
+    assert(typeof formDefinition === 'object' && formDefinition !== null && !Array.isArray(formDefinition), 'Invalid parameter "formDefinition"', 1519855175);
     this.getApplicationStateStack().setCurrentState('formDefinition', this.getFactory().createFormElement(formDefinition, undefined, undefined, true));
   }
 
@@ -268,7 +268,7 @@ export class FormEditor {
       _referenceFormElement = this.getCurrentlySelectedFormElement();
     }
     const referenceFormElement = this.getRepository().findFormElement(_referenceFormElement);
-    assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1475434337);
+    assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1475434337);
     return this.getRepository().addFormElement(formElement, referenceFormElement, true, disablePublishersOnSet);
   }
 
@@ -421,7 +421,7 @@ export class FormEditor {
     }
     const formElement = this.getRepository().findFormElement(_formElement);
 
-    assert('object' === $.type(collectionElement), 'Invalid parameter "collectionElement"', 1475443301);
+    assert(typeof collectionElement === 'object' && collectionElement !== null && !Array.isArray(collectionElement), 'Invalid parameter "collectionElement"', 1475443301);
     assert(this.getUtility().isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475443300);
 
     if (this.getUtility().isUndefinedOrNull(referenceCollectionElementIdentifier)) {
@@ -451,7 +451,7 @@ export class FormEditor {
   ): PropertyCollectionElement {
     assert(this.getUtility().isNonEmptyString(collectionElementIdentifier), 'Invalid parameter "collectionElementIdentifier"', 1475378559);
     assert(this.getUtility().isNonEmptyString(collectionName), 'Invalid parameter "collectionName"', 1475378560);
-    if ('object' !== $.type(collectionElementConfiguration)) {
+    if (typeof collectionElementConfiguration !== 'object' || collectionElementConfiguration === null || Array.isArray(collectionElementConfiguration)) {
       collectionElementConfiguration = {} as CollectionElementConfiguration;
     }
 
@@ -590,7 +590,7 @@ export class FormEditor {
    */
   public getCurrentlySelectedPage(): FormElement {
     const currentPage = this.getRepository().getRootFormElement().get('renderables')[this.getCurrentlySelectedPageIndex()];
-    assert('object' === $.type(currentPage), 'No page found', 1477786068);
+    assert(typeof currentPage === 'object' && currentPage !== null && !Array.isArray(currentPage), 'No page found', 1477786068);
     return currentPage;
   }
 
@@ -727,7 +727,7 @@ export class FormEditor {
    * @throws 1475927876
    */
   private dataBackendSetup(endpoints: Endpoints, prototypeName: string, formPersistenceIdentifier: string): void {
-    assert('object' === $.type(endpoints), 'Invalid parameter "endpoints"', 1475379748);
+    assert(typeof endpoints === 'object' && endpoints !== null && !Array.isArray(endpoints), 'Invalid parameter "endpoints"', 1475379748);
     assert(this.getUtility().isNonEmptyString(prototypeName), 'Invalid parameter "prototypeName"', 1475927876);
     assert(this.getUtility().isNonEmptyString(formPersistenceIdentifier), 'Invalid parameter "formPersistenceIdentifier"', 1475379749);
 
@@ -740,7 +740,7 @@ export class FormEditor {
    * @throws 1475379750
    */
   private repositorySetup(formEditorDefinitions: FormEditorDefinitions): void {
-    assert('object' === $.type(formEditorDefinitions), 'Invalid parameter "formEditorDefinitions"', 1475379750);
+    assert(typeof formEditorDefinitions === 'object' && formEditorDefinitions !== null && !Array.isArray(formEditorDefinitions), 'Invalid parameter "formEditorDefinitions"', 1475379750);
 
     this.getRepository().setFormEditorDefinitions(formEditorDefinitions);
   }
@@ -772,7 +772,7 @@ export class FormEditor {
     rootFormElement: FormElementDefinition,
     maximumUndoSteps: number
   ): void {
-    assert('object' === $.type(rootFormElement), 'Invalid parameter "rootFormElement"', 1475379751);
+    assert(typeof rootFormElement === 'object' && rootFormElement !== null && !Array.isArray(rootFormElement), 'Invalid parameter "rootFormElement"', 1475379751);
 
     if (typeof maximumUndoSteps !== 'number') {
       maximumUndoSteps = 10;

@@ -612,7 +612,7 @@ export function addStructureValidationResults(): void {
 
             // Also set legacy CSS class for backward compatibility
             const parentElement = getStructure().getTreeNode(parentPath);
-            if ('object' === $.type(parentElement)) {
+            if (typeof parentElement === 'object' && parentElement !== null && !Array.isArray(parentElement)) {
               setElementValidationErrorClass(parentElement, 'validationChildHasErrors');
             }
           }

@@ -160,7 +160,7 @@ function insertElementsModalSetup(
     1478910954
   );
 
-  if ('object' === $.type(configuration)) {
+  if (typeof configuration === 'object' && configuration !== null && !Array.isArray(configuration)) {
     for (const key of Object.keys(configuration)) {
       if (
         key === 'disableElementTypes'
@@ -267,7 +267,7 @@ function _validationErrorsModalSetup(
  * @throws 1479162557
  */
 function _buildTitleByFormElement(formElement: FormElement): HTMLElement {
-  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1479162557);
+  assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1479162557);
 
   const span = document.createElement('span');
   span.textContent = formElement.get('label') ? formElement.get('label') : formElement.get('identifier');

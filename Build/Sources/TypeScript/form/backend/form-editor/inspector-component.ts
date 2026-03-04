@@ -565,7 +565,7 @@ function renewValidationErrorMessages(
  */
 function setRandomIds(html: JQuery): void {
   assert(
-    'object' === $.type(html),
+    typeof html === 'object' && html !== null && !Array.isArray(html),
     'Invalid input "html"',
     1523904699
   );
@@ -799,12 +799,12 @@ export function renderCollectionElementSelectionEditor(
     1478362968
   );
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1475423098
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1475423099
   );
@@ -908,8 +908,8 @@ export function renderFormElementHeaderEditor(
   editorConfiguration: EditorConfiguration,
   editorHtml: HTMLElement | JQuery,
 ): void {
-  assert('object' === $.type(editorConfiguration), 'Invalid parameter "editorConfiguration"', 1475421525);
-  assert('object' === $.type(editorHtml), 'Invalid parameter "editorHtml"', 1475421526);
+  assert(typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration), 'Invalid parameter "editorConfiguration"', 1475421525);
+  assert(typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml), 'Invalid parameter "editorHtml"', 1475421526);
 
   Icons.getIcon(
     getFormElementDefinition(getCurrentlySelectedFormElement(), 'iconIdentifier'),
@@ -936,7 +936,7 @@ export function renderCollectionElementHeaderEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1475421258
   );
@@ -946,7 +946,7 @@ export function renderCollectionElementHeaderEditor(
     1475421257
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1475421259
   );
@@ -1032,7 +1032,7 @@ export function renderFileMaxSizeEditor(
   editorHtml: HTMLElement | JQuery,
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1475421258
   );
@@ -1042,7 +1042,7 @@ export function renderFileMaxSizeEditor(
     1475421257
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1475421259
   );
@@ -1067,12 +1067,12 @@ export function renderTextEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1475421053
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1475421054
   );
@@ -1159,12 +1159,12 @@ export function renderValidationErrorMessageEditor(
   editorHtml: HTMLElement | JQuery
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1489874121
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1489874122
   );
@@ -1226,12 +1226,12 @@ export function renderCountrySelectEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1674826430
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1674826431
   );
@@ -1301,12 +1301,12 @@ export function renderSingleSelectEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1475421048
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1475421049
   );
@@ -1375,12 +1375,12 @@ export function renderMultiSelectEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1485712399
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1485712400
   );
@@ -1459,12 +1459,12 @@ export function renderGridColumnViewPortConfigurationEditor(
   editorHtml: HTMLElement | JQuery
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1489528242
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1489528243
   );
@@ -1600,12 +1600,12 @@ export function renderPropertyGridEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1475419226
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1475419227
   );
@@ -1777,12 +1777,12 @@ export function renderRequiredValidatorEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1475417093
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1475417094
   );
@@ -1922,12 +1922,12 @@ export function renderCheckboxEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1476218671
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1476218672
   );
@@ -1987,12 +1987,12 @@ export function renderTextareaEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1475412567
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1475412568
   );
@@ -2082,12 +2082,12 @@ export function renderTypo3WinBrowserEditor(
   collectionName: keyof FormEditorDefinitions
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1477300587
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1477300588
   );
@@ -2158,8 +2158,8 @@ export function renderRemoveElementEditor(
   collectionElementIdentifier: string,
   collectionName: keyof FormEditorDefinitions
 ): void {
-  assert('object' === $.type(editorConfiguration), 'Invalid parameter "editorConfiguration"', 1475412563);
-  assert('object' === $.type(editorHtml), 'Invalid parameter "editorHtml"', 1475412564);
+  assert(typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration), 'Invalid parameter "editorConfiguration"', 1475412563);
+  assert(typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml), 'Invalid parameter "editorHtml"', 1475412564);
 
   if (getUtility().isUndefinedOrNull(collectionElementIdentifier)) {
 
@@ -2194,12 +2194,12 @@ export function renderFormElementSelectorEditorAddition(
   propertyPath: string
 ): void {
   assert(
-    'object' === $.type(editorConfiguration),
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
     'Invalid parameter "editorConfiguration"',
     1484574704
   );
   assert(
-    'object' === $.type(editorHtml),
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
     'Invalid parameter "editorHtml"',
     1484574705
   );
@@ -2258,7 +2258,7 @@ export function buildTitleByFormElement(formElement?: FormElement): HTMLElement 
   if (getUtility().isUndefinedOrNull(formElement)) {
     formElement = getCurrentlySelectedFormElement();
   }
-  assert('object' === $.type(formElement), 'Invalid parameter "formElement"', 1478967319);
+  assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1478967319);
 
   let label;
   if (formElement.get('type') === 'Form') {
