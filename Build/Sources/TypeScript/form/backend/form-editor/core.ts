@@ -15,6 +15,8 @@
  * Module: @typo3/form/backend/form-editor/core
  */
 import $ from 'jquery';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 export type EditorConfiguration = {
   identifier: string,
@@ -118,8 +120,8 @@ type RootFormElementDefinition = {
 export type FormElementDefinition = BaseFormElementDefinition & Partial<RootFormElementDefinition>;
 
 export interface AjaxRequests {
-  saveForm?: JQueryXHR;
-  renderFormDefinitionPage?: JQueryXHR;
+  saveForm?: AjaxRequest;
+  renderFormDefinitionPage?: AjaxRequest;
 }
 
 export interface Endpoints {
@@ -1821,22 +1823,27 @@ export class DataBackend {
       runningAjaxRequests.saveForm.abort();
     }
 
-    runningAjaxRequests.saveForm = $.post(this.endpoints.saveForm, {
+    const request = new AjaxRequest(this.endpoints.saveForm);
+    runningAjaxRequests.saveForm = request;
+    request.post({
       formPersistenceIdentifier: this.persistenceIdentifier,
       formDefinition: JSON.stringify(utility.convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition')))
-    }, (data, textStatus, jqXHR): void => {
-      if (runningAjaxRequests.saveForm !== jqXHR) {
+    }).then(async (response: AjaxResponse): Promise<void> => {
+      if (runningAjaxRequests.saveForm !== request) {
         return;
       }
       runningAjaxRequests.saveForm = null;
+      const data = await response.resolve();
       if (data.status === 'success') {
         publisherSubscriber.publish('core/ajax/saveFormDefinition/success', [data]);
       } else {
         publisherSubscriber.publish('core/ajax/saveFormDefinition/error', [data]);
       }
-    });
-    runningAjaxRequests.saveForm.fail((jqXHR, textStatus, errorThrown): void => {
-      publisherSubscriber.publish('core/ajax/error', [jqXHR, textStatus, errorThrown]);
+    }).catch(async (error: unknown): Promise<void> => {
+      if (error instanceof AjaxResponse) {
+        const responseBody = await error.resolve();
+        publisherSubscriber.publish('core/ajax/error', [error.response.statusText, responseBody]);
+      }
     });
   }
 
@@ -1855,20 +1862,25 @@ export class DataBackend {
       runningAjaxRequests.renderFormDefinitionPage.abort();
     }
 
-    runningAjaxRequests.renderFormDefinitionPage = $.post(this.endpoints.formPageRenderer, {
+    const request = new AjaxRequest(this.endpoints.formPageRenderer);
+    runningAjaxRequests.renderFormDefinitionPage = request;
+    request.post({
       formDefinition: JSON.stringify(utility.convertToSimpleObject(getApplicationStateStack().getCurrentState('formDefinition'))),
       pageIndex: pageIndex,
       prototypeName: this.prototypeName,
       formPersistenceIdentifier: this.persistenceIdentifier
-    }, (data: string, textStatus, jqXHR): void => {
-      if (runningAjaxRequests.renderFormDefinitionPage !== jqXHR) {
+    }).then(async (response: AjaxResponse): Promise<void> => {
+      if (runningAjaxRequests.renderFormDefinitionPage !== request) {
         return;
       }
       runningAjaxRequests.renderFormDefinitionPage = null;
+      const data = await response.resolve();
       publisherSubscriber.publish('core/ajax/renderFormDefinitionPage/success', [data, pageIndex]);
-    });
-    runningAjaxRequests.renderFormDefinitionPage.fail((jqXHR, textStatus, errorThrown): void => {
-      publisherSubscriber.publish('core/ajax/error', [jqXHR, textStatus, errorThrown]);
+    }).catch(async (error: unknown): Promise<void> => {
+      if (error instanceof AjaxResponse) {
+        const responseBody = await error.resolve();
+        publisherSubscriber.publish('core/ajax/error', [error.response.statusText, responseBody]);
+      }
     });
   }
 }
@@ -2076,9 +2088,8 @@ declare global {
       currentStackSize: number
     ];
     'core/ajax/error': readonly [
-      jqXHR: JQueryXHR,
-      textStatus: string,
-      errorThrown: string
+      statusText: string,
+      responseBody: string
     ];
     'core/ajax/renderFormDefinitionPage/success': readonly [
       htmldata: string,

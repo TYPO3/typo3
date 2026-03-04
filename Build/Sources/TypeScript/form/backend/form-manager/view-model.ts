@@ -20,6 +20,8 @@ import Severity from '@typo3/backend/severity';
 import Icons from '@typo3/backend/icons';
 import Notification from '@typo3/backend/notification';
 import SecurityUtility from '@typo3/core/security-utility';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { FormManager } from '@typo3/form/backend/form-manager';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
@@ -59,7 +61,7 @@ function removeFormSetup(formManagerApp: FormManager): void {
     const modalButtons = [];
 
     e.preventDefault();
-    const that = $(e.currentTarget);
+    const that = e.currentTarget as HTMLElement;
 
     modalButtons.push({
       text: formManagerLabels.get('formManager.cancel'),
@@ -77,9 +79,10 @@ function removeFormSetup(formManagerApp: FormManager): void {
       btnClass: 'btn-danger',
       name: 'createform',
       trigger: function(e: Event, modal: ModalElement) {
-        $.post(formManagerApp.getAjaxEndpoint('delete'), {
-          formPersistenceIdentifier: that.data('formPersistenceIdentifier'),
-        }, function(data) {
+        new AjaxRequest(formManagerApp.getAjaxEndpoint('delete')).post({
+          formPersistenceIdentifier: that.dataset.formPersistenceIdentifier,
+        }).then(async (response: AjaxResponse): Promise<void> => {
+          const data = await response.resolve();
           if (data.status === 'success') {
             document.location = data.url;
           } else {
@@ -92,7 +95,7 @@ function removeFormSetup(formManagerApp: FormManager): void {
 
     Modal.show(
       formManagerLabels.get('formManager.remove_form_title'),
-      formManagerLabels.get('formManager.remove_form_message', { '0': that.data('formName') }),
+      formManagerLabels.get('formManager.remove_form_message', { '0': that.dataset.formName }),
       Severity.error ,
       modalButtons
     );
@@ -102,11 +105,11 @@ function removeFormSetup(formManagerApp: FormManager): void {
 function duplicateFormSetup(formManagerApp: FormManager): void {
   $(Identifiers.duplicateFormModalTrigger).on('click', async function(e: Event) {
     e.preventDefault();
-    const formElement = $(e.currentTarget);
+    const formElement = e.currentTarget as HTMLElement;
     await topLevelModuleImport('@typo3/form/backend/form-wizard/form-wizard.js');
     const duplicateForm = {
-      name: formElement.data('formName'),
-      persistenceIdentifier: formElement.data('formPersistenceIdentifier')
+      name: formElement.dataset.formName,
+      persistenceIdentifier: formElement.dataset.formPersistenceIdentifier
     };
 
     const content = html`
@@ -116,7 +119,7 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
         ></typo3-backend-form-wizard>
     `;
     Modal.advanced({
-      title: formManagerLabels.get('formManager.duplicateFormWizard.step1.title', { '0': formElement.data('formName') }),
+      title: formManagerLabels.get('formManager.duplicateFormWizard.step1.title', { '0': formElement.dataset.formName }),
       content: content,
       severity: SeverityEnum.notice,
       size: Modal.sizes.medium,
@@ -129,10 +132,11 @@ function duplicateFormSetup(formManagerApp: FormManager): void {
 function showReferencesSetup(formManagerApp: FormManager): void {
   $(Identifiers.showReferences).on('click', (e: Event): void => {
     e.preventDefault();
-    const $that = $(e.currentTarget);
-    const url = formManagerApp.getAjaxEndpoint('references') + '&formPersistenceIdentifier=' + $that.data('formPersistenceIdentifier');
+    const currentTarget = e.currentTarget as HTMLElement;
+    const url = formManagerApp.getAjaxEndpoint('references') + '&formPersistenceIdentifier=' + currentTarget.dataset.formPersistenceIdentifier;
 
-    $.get(url, async function(data) {
+    new AjaxRequest(url).get().then(async (response: AjaxResponse): Promise<void> => {
+      const data = await response.resolve();
       let html;
       const modalButtons = [];
 
@@ -198,14 +202,14 @@ function showReferencesSetup(formManagerApp: FormManager): void {
       });
 
       Modal.show(
-        formManagerLabels.get('formManager.references.title', { '0': $that.data('formName') }),
+        formManagerLabels.get('formManager.references.title', { '0': currentTarget.dataset.formName }),
         html,
         Severity.notice,
         modalButtons
       );
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-      if (jqXHR.status !== 0) {
-        Notification.error(textStatus, errorThrown, 2);
+    }).catch((error: unknown): void => {
+      if (error instanceof AjaxResponse) {
+        Notification.error(error.response.statusText, String(error.response.status), 2);
       }
     });
   });

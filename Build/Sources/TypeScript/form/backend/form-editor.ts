@@ -722,21 +722,6 @@ export class FormEditor {
   }
 
   /**
-   * @publish ajax/beforeSend
-   * @publish ajax/complete
-   */
-  private ajaxSetup(): void {
-    $.ajaxSetup({
-      beforeSend: () => {
-        this.getPublisherSubscriber().publish('ajax/beforeSend');
-      },
-      complete: () => {
-        this.getPublisherSubscriber().publish('ajax/complete');
-      }
-    });
-  }
-
-  /**
    * @throws 1475379748
    * @throws 1475379749
    * @throws 1475927876
@@ -804,7 +789,6 @@ export class FormEditor {
 
   private bootstrap(): void {
     this.mediatorSetup();
-    this.ajaxSetup();
     this.dataBackendSetup(this.configuration.endpoints, this.configuration.prototypeName, this.configuration.formPersistenceIdentifier);
     this.repositorySetup(this.configuration.formEditorDefinitions);
     this.applicationStateStackSetup(this.configuration.formDefinition, this.configuration.maximumUndoSteps);
@@ -841,7 +825,5 @@ declare global {
     'core/currentlySelectedFormElementChanged': readonly [
       formElement: FormElement
     ];
-    'ajax/beforeSend': undefined;
-    'ajax/complete': undefined;
   }
 }

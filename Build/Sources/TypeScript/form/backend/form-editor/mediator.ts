@@ -178,12 +178,10 @@ function subscribeEvents(): void {
    */
   getPublisherSubscriber().subscribe('core/ajax/error', (
     topic: string,
-    [jqXHR, textStatus, errorThrown]: [JQueryXHR, string, string]
+    [statusText, responseBody]: [string, string]
   ): void => {
-    if (jqXHR.status !== 0) {
-      getViewModel().showErrorFlashMessage(textStatus, errorThrown);
-      getViewModel().renderPreviewStageArea(jqXHR.responseText);
-    }
+    getViewModel().showErrorFlashMessage(statusText, responseBody);
+    getViewModel().renderPreviewStageArea(responseBody);
   });
 
   /* *********************************************************
