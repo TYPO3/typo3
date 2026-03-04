@@ -151,21 +151,7 @@ readonly class SchedulerTaskRepository
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->select(
-            't.uid',
-            't.crdate',
-            't.deleted',
-            't.description',
-            't.nextexecution',
-            't.lastexecution_time',
-            't.lastexecution_failure',
-            't.lastexecution_context',
-            't.serialized_task_object',
-            't.disable',
-            't.tasktype',
-            't.parameters',
-            't.execution_details',
-            't.serialized_executions',
-            't.task_group',
+            't.*'
         )
             ->from(self::TABLE_NAME, 't')
             ->setMaxResults(1);
