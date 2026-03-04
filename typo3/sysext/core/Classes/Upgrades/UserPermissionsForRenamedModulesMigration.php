@@ -41,6 +41,7 @@ class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterfac
         'web_info' => 'content_status',
         'workspaces_admin' => 'workspaces_publish',
         'site_redirects' => 'redirects',
+        'web_linkvalidator' => 'linkvalidator_checklinks',
     ];
 
     /**
@@ -50,6 +51,7 @@ class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterfac
      */
     protected array $requiredParentModules = [
         'redirects' => 'link_management',
+        'linkvalidator_checklinks' => 'link_management',
     ];
 
     public function getTitle(): string

@@ -10,7 +10,7 @@
         <source>Manage redirects, QR Codes and Short URLs</source>
       </trans-unit>
       <trans-unit id="description">
-        <source>Manage redirects, QR codes and Short URLs to navigation and access points.</source>
+        <source>Manage redirects, QR codes and Short URLs to navigation and access points and validate links inside the system.</source>
       </trans-unit>
     </body>
   </file>

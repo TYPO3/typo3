@@ -1,0 +1,36 @@
+..  include:: /Includes.rst.txt
+
+..  _important-109147-1741107600:
+
+=======================================================================
+Important: #109147 - Move linkvalidator module to Link Management group
+=======================================================================
+
+See :issue:`109147`
+
+Description
+===========
+
+The linkvalidator module (:guilabel:`Check Links`) has been moved from the
+:guilabel:`Status / Info` module group (`content_status`) to the
+:guilabel:`Link Management` module group (`link_management`), alongside
+Redirects and QR Codes.
+
+Since the "Link Management" parent module does not provide a page tree
+navigation component, the linkvalidator module now brings its own
+`navigationComponent` to retain the page tree.
+
+Additionaly, the module identifier is changed from `web_linkvalidator` to
+`linkvalidator_checklinks`.
+
+Impact
+======
+
+The linkvalidator module now appears under :guilabel:`Link Management` in the
+backend module menu instead of :guilabel:`Status / Info`.
+
+An upgrade wizard ensures that backend users and groups with `web_linkvalidator`
+permissions are migrated to `linkvalidator_checklinks` and automatically receive
+access to the `link_management` parent module.
+
+..  index:: Backend, ext:linkvalidator
