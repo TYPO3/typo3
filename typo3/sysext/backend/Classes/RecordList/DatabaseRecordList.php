@@ -2733,17 +2733,17 @@ class DatabaseRecordList
         [$subSchemaDivisorFieldName, $fieldsSubSchemaTypes] = $this->searchableSchemaFieldsCollector->getSchemaFieldSubSchemaTypes($table);
         // Get fields from ctrl section of TCA first
         if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
-            $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
+            $constraints[] = $expressionBuilder->eq($table . '.uid', (int)$this->searchString);
             foreach ($searchableFields as $field) {
                 $searchConstraint = null;
                 if ($field instanceof NumberFieldType || $field instanceof DateTimeFieldType) {
                     $searchConstraint = $expressionBuilder->and(
-                        $expressionBuilder->eq($field->getName(), (int)$this->searchString),
-                        $expressionBuilder->eq($tablePidField, $currentPid)
+                        $expressionBuilder->eq($table . '.' . $field->getName(), (int)$this->searchString),
+                        $expressionBuilder->eq($table . '.' . $tablePidField, $currentPid)
                     );
                 } else {
                     $searchConstraint = $expressionBuilder->like(
-                        $field->getName(),
+                        $table . '.' . $field->getName(),
                         $queryBuilder->quote('%' . $this->searchString . '%')
                     );
                 }
@@ -2760,7 +2760,7 @@ class DatabaseRecordList
                     $searchConstraint = $queryBuilder->expr()->and(
                         $searchConstraint,
                         $queryBuilder->expr()->in(
-                            $subSchemaDivisorFieldName,
+                            $table . '.' . $subSchemaDivisorFieldName,
                             $queryBuilder->quoteArrayBasedValueListToStringList($fieldsSubSchemaTypes[$field->getName()])
                         ),
                     );
@@ -2772,7 +2772,7 @@ class DatabaseRecordList
             $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->searchString) . '%');
             foreach ($searchableFields as $field) {
                 $searchConstraint = $expressionBuilder->comparison(
-                    'LOWER(' . $queryBuilder->castFieldToTextType($field->getName()) . ')',
+                    'LOWER(' . $queryBuilder->castFieldToTextType($table . '.' . $field->getName()) . ')',
                     'LIKE',
                     'LOWER(' . $like . ')'
                 );
@@ -2788,7 +2788,7 @@ class DatabaseRecordList
                     $searchConstraint = $queryBuilder->expr()->and(
                         $searchConstraint,
                         $queryBuilder->expr()->in(
-                            $subSchemaDivisorFieldName,
+                            $table . '.' . $subSchemaDivisorFieldName,
                             $queryBuilder->quoteArrayBasedValueListToStringList($fieldsSubSchemaTypes[$field->getName()])
                         ),
                     );
