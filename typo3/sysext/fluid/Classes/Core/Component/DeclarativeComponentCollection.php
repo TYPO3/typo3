@@ -39,14 +39,18 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperResolverDelegateInterface;
 #[Autoconfigure(autowire: false)]
 final readonly class DeclarativeComponentCollection implements ViewHelperResolverDelegateInterface, ComponentDefinitionProviderInterface, ComponentTemplateResolverInterface
 {
+    private string $templateNamePattern;
+
     public function __construct(
         private FrontendInterface $cache,
         private EventDispatcherInterface $eventDispatcher,
         private string $namespace,
         private array $templatePaths,
-        private string $templateNamePattern = '{path}/{name}/{name}',
+        string $templateNamePattern = '{path}/{name}/{name}',
         private bool $additionalArgumentsAllowed = false,
-    ) {}
+    ) {
+        $this->templateNamePattern = trim($templateNamePattern, '/');
+    }
 
     public function withTemplateNamePattern(string $templateNamePattern): static
     {
@@ -63,7 +67,7 @@ final readonly class DeclarativeComponentCollection implements ViewHelperResolve
         $fragments = array_map(ucfirst(...), explode('.', $viewHelperName));
         $name = array_pop($fragments);
         $path = implode('/', $fragments);
-        return str_replace(['{path}', '{name}'], [$path, $name], $this->templateNamePattern);
+        return ltrim(str_replace(['{path}', '{name}'], [$path, $name], $this->templateNamePattern), '/');
     }
 
     public function getTemplatePaths(): TemplatePaths
