@@ -272,6 +272,7 @@ return [
             'enable' => true,
             'parameters' => [
                 'edit' => true,
+                'defVals' => true,
                 'columnsOnly' => true,
                 'module' => true,
             ],
