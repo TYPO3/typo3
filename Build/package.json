@@ -8,8 +8,8 @@
   "private": true,
   "license": "GPL-2.0+",
   "engines": {
-    "node": ">=22.18.0 <23.0.0",
-    "npm": ">=11.5.2"
+    "node": ">=24.14.0 <25.0.0",
+    "npm": ">=11.9.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.0",
