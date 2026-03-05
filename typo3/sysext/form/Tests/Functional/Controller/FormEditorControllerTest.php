@@ -529,7 +529,7 @@ final class FormEditorControllerTest extends FunctionalTestCase
             'identifier' => 'test123_1',
             'label' => 'test123',
             'prototypeName' => 'standard',
-        ]);
+        ], '1:/form_definitions/test_form.form.yaml');
 
         $parsedBody = [
             'formPersistenceIdentifier' => '1:/form_definitions/test_form.form.yaml',

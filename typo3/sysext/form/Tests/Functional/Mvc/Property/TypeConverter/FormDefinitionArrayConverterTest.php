@@ -52,12 +52,9 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
                 return $formDefinition;
             }
         );
+        $formDefinitionConversionServiceMock->method('retrieveSessionToken')->willReturn('123');
 
         $configurationServiceMock = $this->createMock(ConfigurationService::class);
-
-        $backendUserMock = $this->createMock(BackendUserAuthentication::class);
-        $backendUserMock->method('getSessionData')->willReturn('123');
-        $GLOBALS['BE_USER'] = $backendUserMock;
 
         $subject = new FormDefinitionArrayConverter(
             $formDefinitionValidationServiceMock,
@@ -163,7 +160,8 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
     public function convertFromThrowsExceptionIfPrototypeNameWasChanged(): void
     {
         $backendUserMock = $this->createMock(BackendUserAuthentication::class);
-        $backendUserMock->method('getSessionData')->willReturn('123');
+        $backendUserMock->method('getSessionData')->with('extFormProtectionSessionTokens')
+            ->willReturn(['1:/form_definitions/test.form.yaml' => '123']);
         $GLOBALS['BE_USER'] = $backendUserMock;
 
         $this->expectException(PropertyException::class);
@@ -171,6 +169,7 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
         $input = [
             'prototypeName' => 'foo',
             'identifier' => 'test',
+            '_formPersistenceIdentifier' => '1:/form_definitions/test.form.yaml',
             '_orig_prototypeName' => [
                 'value' => 'standard',
                 'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
@@ -188,7 +187,8 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
     public function convertFromThrowsExceptionIfIdentifierWasChanged(): void
     {
         $backendUserMock = $this->createMock(BackendUserAuthentication::class);
-        $backendUserMock->method('getSessionData')->willReturn('123');
+        $backendUserMock->method('getSessionData')->with('extFormProtectionSessionTokens')
+            ->willReturn(['1:/form_definitions/test.form.yaml' => '123']);
         $GLOBALS['BE_USER'] = $backendUserMock;
 
         $this->expectException(PropertyException::class);
@@ -196,6 +196,7 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
         $input = [
             'prototypeName' => 'standard',
             'identifier' => 'xxx',
+            '_formPersistenceIdentifier' => '1:/form_definitions/test.form.yaml',
             '_orig_prototypeName' => [
                 'value' => 'standard',
                 'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),

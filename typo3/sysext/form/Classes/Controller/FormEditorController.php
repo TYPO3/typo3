@@ -121,7 +121,7 @@ class FormEditorController extends ActionController
         }
         $formDefinition['prototypeName'] = $prototypeName;
         $prototypeConfiguration = $this->configurationService->getPrototypeConfiguration($prototypeName);
-        $formDefinition = $this->transformFormDefinitionForFormEditor($prototypeConfiguration, $formDefinition);
+        $formDefinition = $this->transformFormDefinitionForFormEditor($prototypeConfiguration, $formDefinition, $formPersistenceIdentifier);
         $formEditorDefinitions = $this->getFormEditorDefinitions($prototypeConfiguration);
         $additionalViewModelJavaScriptModules = array_map(
             static fn(string $name) => JavaScriptModuleInstruction::create($name),
@@ -222,7 +222,7 @@ class FormEditorController extends ActionController
             $this->formPersistenceManager->save($formPersistenceIdentifier, $formDefinition, $formSettings);
             $this->flushPageCache($formPersistenceIdentifier);
             $prototypeConfiguration = $this->configurationService->getPrototypeConfiguration($formDefinition['prototypeName']);
-            $formDefinition = $this->transformFormDefinitionForFormEditor($prototypeConfiguration, $formDefinition);
+            $formDefinition = $this->transformFormDefinitionForFormEditor($prototypeConfiguration, $formDefinition, $formPersistenceIdentifier);
             $response['formDefinition'] = $formDefinition;
         } catch (PersistenceManagerException $e) {
             $response = [
@@ -457,7 +457,7 @@ class FormEditorController extends ActionController
     /**
      * @todo move this to FormDefinitionConversionService
      */
-    protected function transformFormDefinitionForFormEditor(array $prototypeConfiguration, array $formDefinition): array
+    protected function transformFormDefinitionForFormEditor(array $prototypeConfiguration, array $formDefinition, string $formPersistenceIdentifier): array
     {
         /** @var array<string, list<string>> $multiValueFormElementProperties */
         $multiValueFormElementProperties = [];
@@ -506,7 +506,7 @@ class FormEditorController extends ActionController
         }
 
         $formDefinition = $this->formDefinitionConversionService->sanitizeHtml($formDefinition, $rtePropertyPaths);
-        $formDefinition = $this->formDefinitionConversionService->addHmacData($formDefinition);
+        $formDefinition = $this->formDefinitionConversionService->addHmacData($formDefinition, $formPersistenceIdentifier);
         return $this->formDefinitionConversionService->migrateFinisherConfiguration($formDefinition);
     }
 

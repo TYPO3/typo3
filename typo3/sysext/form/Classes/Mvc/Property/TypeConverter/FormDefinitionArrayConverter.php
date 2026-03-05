@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Property\TypeConverter;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
@@ -62,8 +61,12 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
         }
 
         // Extend the hmac hashing key with the "per form editor session (load / save)" unique key.
+        // The form persistence identifier is embedded in the form definition by addHmacData()
+        // to allow looking up the correct per-form session token.
         // @see \TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService::addHmacData
-        $sessionToken = $this->retrieveSessionToken();
+        $formPersistenceIdentifier = $rawFormDefinitionArray['_formPersistenceIdentifier'] ?? '';
+        unset($rawFormDefinitionArray['_formPersistenceIdentifier']);
+        $sessionToken = $this->retrieveSessionToken($formPersistenceIdentifier);
 
         $prototypeName = $rawFormDefinitionArray['prototypeName'] ?? null;
         $identifier = $rawFormDefinitionArray['identifier'] ?? null;
@@ -168,9 +171,9 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
         return $array;
     }
 
-    protected function retrieveSessionToken(): string
+    protected function retrieveSessionToken(string $formPersistenceIdentifier): string
     {
-        return $this->getBackendUser()->getSessionData('extFormProtectionSessionToken');
+        return $this->formDefinitionConversionService->retrieveSessionToken($formPersistenceIdentifier);
     }
 
     /**
@@ -192,10 +195,5 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
             // If prototype configuration is not available, return empty array
             return [];
         }
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

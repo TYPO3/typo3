@@ -49,11 +49,11 @@ class FormDefinitionConversionService
      * "_orig_<propertyName>" will be used to validate the form definition on saving.
      * @see \TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService::validateFormDefinitionProperties()
      */
-    public function addHmacData(array $formDefinition): array
+    public function addHmacData(array $formDefinition, string $formPersistenceIdentifier): array
     {
         // Extend the hmac hashing key with a "per form editor session" unique key.
         $sessionToken = $this->generateSessionToken();
-        $this->persistSessionToken($sessionToken);
+        $this->persistSessionToken($sessionToken, $formPersistenceIdentifier);
 
         $converterDto = GeneralUtility::makeInstance(ConverterDto::class, $formDefinition);
 
@@ -70,14 +70,23 @@ class FormDefinitionConversionService
             )
         );
 
-        return $converterDto->getFormDefinition();
+        $result = $converterDto->getFormDefinition();
+
+        // Embed the form persistence identifier so the TypeConverter can
+        // look up the correct per-form session token when saving.
+        $result['_formPersistenceIdentifier'] = $formPersistenceIdentifier;
+
+        return $result;
     }
 
     /**
-     * Remove the "_orig_<propertyName>" values from the form definition.
+     * Remove the "_orig_<propertyName>" values and the
+     * "_formPersistenceIdentifier" marker from the form definition.
      */
     public function removeHmacData(array $formDefinition): array
     {
+        unset($formDefinition['_formPersistenceIdentifier']);
+
         $converterDto = GeneralUtility::makeInstance(ConverterDto::class, $formDefinition);
 
         GeneralUtility::makeInstance(ArrayProcessor::class, $formDefinition)->forEach(
@@ -117,9 +126,26 @@ class FormDefinitionConversionService
         return $converterDto->getFormDefinition();
     }
 
-    protected function persistSessionToken(string $sessionToken): void
+    protected function persistSessionToken(string $sessionToken, string $formPersistenceIdentifier): void
     {
-        $this->getBackendUser()->setAndSaveSessionData('extFormProtectionSessionToken', $sessionToken);
+        $tokens = $this->getBackendUser()->getSessionData('extFormProtectionSessionTokens') ?? [];
+        if (!is_array($tokens)) {
+            $tokens = [];
+        }
+        $tokens[$formPersistenceIdentifier] = $sessionToken;
+        $this->getBackendUser()->setAndSaveSessionData('extFormProtectionSessionTokens', $tokens);
+    }
+
+    /**
+     * Retrieve the session token for a specific form persistence identifier.
+     */
+    public function retrieveSessionToken(string $formPersistenceIdentifier): string
+    {
+        $tokens = $this->getBackendUser()->getSessionData('extFormProtectionSessionTokens');
+        if (is_array($tokens) && isset($tokens[$formPersistenceIdentifier]) && is_string($tokens[$formPersistenceIdentifier])) {
+            return $tokens[$formPersistenceIdentifier];
+        }
+        return '';
     }
 
     public function sanitizeHtml(array $rawFormDefinitionArray, array $rtePropertyPaths = [], string $defaultBuild = 'default'): array
