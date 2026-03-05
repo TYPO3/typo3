@@ -161,7 +161,7 @@ final class ContentAreaViewHelperTest extends FunctionalTestCase
         $view = new TemplateView($context);
         $view->assign('contentArea', $contentArea);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage('The "contentArea" argument must be an instance of');
         $this->expectExceptionCode(1770212183);
 

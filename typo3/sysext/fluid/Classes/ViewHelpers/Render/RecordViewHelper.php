@@ -26,7 +26,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Event\ModifyRenderedRecordEvent;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to render a record object using its TypoScript definition.
@@ -73,7 +73,7 @@ final class RecordViewHelper extends AbstractViewHelper
     {
         $record = $this->renderChildren();
         if (!$record instanceof RecordInterface) {
-            throw new \InvalidArgumentException('The "record" argument must be an instance of ' . RecordInterface::class, 1770215699);
+            throw new InvalidArgumentValueException('The "record" argument must be an instance of ' . RecordInterface::class, 1770215699);
         }
 
         $request = $this->getRequest();
@@ -99,7 +99,7 @@ final class RecordViewHelper extends AbstractViewHelper
 
         $setup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         if (!isset($setup[$table])) {
-            throw new Exception(
+            throw new InvalidArgumentValueException(
                 'No Content Object definition found at TypoScript object path "' . $table . '"',
                 1769184455
             );

@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to provide edit links (only the URI) to records. The ViewHelper will
@@ -53,13 +54,13 @@ final class EditRecordViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentValueException
      * @throws RouteNotFoundException
      */
     public function render(): string
     {
         if ($this->arguments['uid'] < 1) {
-            throw new \InvalidArgumentException('Uid must be a positive integer, ' . $this->arguments['uid'] . ' given.', 1526128259);
+            throw new InvalidArgumentValueException('Uid must be a positive integer, ' . $this->arguments['uid'] . ' given.', 1526128259);
         }
         $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class) ?
             $this->renderingContext->getAttribute(ServerRequestInterface::class) : null;

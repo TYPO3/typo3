@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to render CObjects (objects containing rendering definitions for records/elements),
@@ -65,8 +65,6 @@ final class CObjectViewHelper extends AbstractViewHelper
 
     /**
      * Renders the TypoScript object in the given TypoScript setup path.
-     *
-     * @throws Exception
      */
     public function render(): string
     {
@@ -98,7 +96,7 @@ final class CObjectViewHelper extends AbstractViewHelper
         $setup = self::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
             if (!array_key_exists($segment . '.', $setup)) {
-                throw new Exception(
+                throw new InvalidArgumentValueException(
                     'TypoScript object path "' . $typoscriptObjectPath . '" does not exist',
                     1253191023
                 );
@@ -106,7 +104,7 @@ final class CObjectViewHelper extends AbstractViewHelper
             $setup = $setup[$segment . '.'];
         }
         if (!isset($setup[$lastSegment])) {
-            throw new Exception(
+            throw new InvalidArgumentValueException(
                 'No Content Object definition found at TypoScript object path "' . $typoscriptObjectPath . '"',
                 1540246570
             );

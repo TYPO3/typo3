@@ -21,6 +21,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentException;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * Use this ViewHelper to provide 'create new record' links.
@@ -119,16 +121,16 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws RouteNotFoundException
      */
     public function render(): string
     {
         if ($this->arguments['uid'] && $this->arguments['pid']) {
-            throw new \InvalidArgumentException('Can\'t handle both uid and pid for new records', 1526129969);
+            throw new InvalidArgumentException('Can\'t handle both uid and pid for new records', 1526129969);
         }
         if (isset($this->arguments['uid']) && $this->arguments['uid'] >= 0) {
-            throw new \InvalidArgumentException('Uid must be negative integer, ' . $this->arguments['uid'] . ' given', 1526134901);
+            throw new InvalidArgumentValueException('Uid must be negative integer, ' . $this->arguments['uid'] . ' given', 1526134901);
         }
 
         $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class) ?

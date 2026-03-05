@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to render a given media file (audio/video/images) with the correct HTML tag.
@@ -63,9 +63,6 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render a given media file.
-     *
-     * @throws \UnexpectedValueException
-     * @throws Exception
      */
     public function render(): string
     {
@@ -81,11 +78,11 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         }
 
         if (!$file instanceof FileInterface) {
-            throw new \UnexpectedValueException('Supplied file object type ' . get_class($file) . ' must be FileInterface.', 1454252193);
+            throw new InvalidArgumentValueException('Supplied file object type ' . get_class($file) . ' must be FileInterface.', 1454252193);
         }
 
         if ((string)($this->arguments['fileExtension'] ?? '') && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$this->arguments['fileExtension'])) {
-            throw new Exception(
+            throw new InvalidArgumentValueException(
                 'The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
                 . ' as a valid image file extension and can not be processed.',
                 1619030957

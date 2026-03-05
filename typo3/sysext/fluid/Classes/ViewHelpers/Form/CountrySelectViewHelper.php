@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Country\CountryFilter;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper which renders a `<select>` tag with all or specific countries as options.
@@ -119,7 +119,7 @@ final class CountrySelectViewHelper extends AbstractFormFieldViewHelper
                     $options[$code] = $name;
                     break;
                 default:
-                    throw new Exception('Argument "optionLabelField" of <f:form.countrySelect> must either be set to "localizedName", "name", "officialName", or "localizedOfficialName".', 1674076708);
+                    throw new InvalidArgumentValueException('Argument "optionLabelField" of <f:form.countrySelect> must either be set to "localizedName", "name", "officialName", or "localizedOfficialName".', 1674076708);
             }
         }
         if ($this->arguments['sortByOptionLabel']) {

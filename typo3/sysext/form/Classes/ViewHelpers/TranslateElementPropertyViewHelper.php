@@ -21,7 +21,7 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * Translate form element properties.
@@ -79,7 +79,7 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
             ) {
                 continue;
             }
-            throw new Exception(
+            throw new InvalidArgumentValueException(
                 sprintf(
                     'Arguments "%s" either must be string or array',
                     $argumentName

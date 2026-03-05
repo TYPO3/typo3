@@ -26,7 +26,6 @@ use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Service\FileHandlingService;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
  * ViewHelper which renders a checkbox field used for file upload deletion in Extbase forms.
@@ -77,7 +76,7 @@ final class UploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
         $extensionName = $extbaseRequestParams->getControllerExtensionName();
         $pluginName = $extbaseRequestParams->getPluginName();
         if ($extensionName === '' || $pluginName === '') {
-            throw new Exception('ExtensionName or PluginName not set in Extbase request', 1719660837);
+            throw new \RuntimeException('ExtensionName or PluginName not set in Extbase request', 1719660837);
         }
 
         $deleteData = [

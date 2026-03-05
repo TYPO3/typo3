@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\SystemResource\Type\PublicResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\MissingArgumentException;
 
 /**
  * ViewHelper for creating URIs to resources (assets).
@@ -65,7 +66,6 @@ final class ResourceViewHelper extends AbstractViewHelper
      * Render the URI to the resource. The filename is used from child content.
      *
      * @return string The URI to the resource
-     * @throws \RuntimeException
      */
     public function render(): string
     {
@@ -105,7 +105,7 @@ final class ResourceViewHelper extends AbstractViewHelper
     private function resolveSystemUri(): string
     {
         if (!isset($this->arguments['path'])) {
-            throw new \RuntimeException('ViewHelper f:uri.resource needs either "resource", or "path" argument to be set', 1759231234);
+            throw new MissingArgumentException('ViewHelper f:uri.resource needs either "resource", or "path" argument to be set', 1759231234);
         }
         $path = $this->arguments['path'];
         try {

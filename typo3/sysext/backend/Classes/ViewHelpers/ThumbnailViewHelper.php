@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper for the backend which generates an `<img>` tag with the special URI to render thumbnails deferred.
@@ -67,13 +68,10 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('context', 'string', 'context for image rendering', false, ProcessedFile::CONTEXT_IMAGEPREVIEW);
     }
 
-    /**
-     * @throws Exception
-     */
     public function render(): string
     {
         if (($this->arguments['src'] === '' && $this->arguments['image'] === null) || ($this->arguments['src'] !== '' && $this->arguments['image'] !== null)) {
-            throw new Exception('You must either specify a string src or a File object.', 1533290762);
+            throw new InvalidArgumentValueException('You must either specify a string src or a File object.', 1533290762);
         }
 
         try {

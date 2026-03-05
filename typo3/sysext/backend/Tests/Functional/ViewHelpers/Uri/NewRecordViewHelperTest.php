@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentException;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class NewRecordViewHelperTest extends FunctionalTestCase
@@ -129,7 +131,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderThrowsExceptionForUidAndPid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1526136338);
 
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
@@ -141,7 +143,7 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
     #[Test]
     public function renderThrowsExceptionForInvalidUidArgument(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionCode(1526136362);
 
         $context = $this->get(RenderingContextFactory::class)->create([], $this->request);

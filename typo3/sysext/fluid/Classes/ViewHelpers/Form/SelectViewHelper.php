@@ -19,7 +19,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
+use TYPO3Fluid\Fluid\Core\ViewHelper\MissingArgumentException;
 
 /**
  * ViewHelper which renders a `<select>` dropdown list for use within a form.
@@ -161,10 +162,10 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
             }
             if (is_array($value)) {
                 if (!$this->hasArgument('optionValueField')) {
-                    throw new \InvalidArgumentException('Missing parameter "optionValueField" in SelectViewHelper for array value options.', 1682693720);
+                    throw new MissingArgumentException('Missing parameter "optionValueField" in SelectViewHelper for array value options.', 1682693720);
                 }
                 if (!$this->hasArgument('optionLabelField')) {
-                    throw new \InvalidArgumentException('Missing parameter "optionLabelField" in SelectViewHelper for array value options.', 1682693721);
+                    throw new MissingArgumentException('Missing parameter "optionLabelField" in SelectViewHelper for array value options.', 1682693721);
                 }
                 $key = ObjectAccess::getPropertyPath($value, (string)$this->arguments['optionValueField']);
                 $value = ObjectAccess::getPropertyPath($value, (string)$this->arguments['optionLabelField']);
@@ -177,7 +178,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
                     if (method_exists($key, '__toString')) {
                         $key = (string)$key;
                     } else {
-                        throw new Exception('Identifying value for object of class "' . get_debug_type($value) . '" was an object.', 1247827428);
+                        throw new InvalidArgumentValueException('Identifying value for object of class "' . get_debug_type($value) . '" was an object.', 1247827428);
                     }
                 }
             } elseif (!$this->persistenceManager->isNewObject($value)) {
@@ -185,7 +186,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
             } elseif (is_object($value) && method_exists($value, '__toString')) {
                 $key = (string)$value;
             } elseif (is_object($value)) {
-                throw new Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
+                throw new InvalidArgumentValueException('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
             }
             if ($this->hasArgument('optionLabelField')) {
                 $value = ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
@@ -193,7 +194,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
                     if (method_exists($value, '__toString')) {
                         $value = (string)$value;
                     } else {
-                        throw new Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
+                        throw new InvalidArgumentValueException('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
                     }
                 }
             } elseif (is_object($value) && method_exists($value, '__toString')) {

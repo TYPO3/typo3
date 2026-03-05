@@ -27,6 +27,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to resize, crop or convert a given image (if required) and return
@@ -80,8 +81,6 @@ final class ImageViewHelper extends AbstractViewHelper
 
     /**
      * Resizes the image (if required) and returns its path. If the image was not resized, the path will be equal to $src
-     *
-     * @throws Exception
      */
     public function render(): string
     {
@@ -91,10 +90,10 @@ final class ImageViewHelper extends AbstractViewHelper
         $cropString = $this->arguments['crop'];
         $absolute = $this->arguments['absolute'];
         if (($src === '' && $image === null) || ($src !== '' && $image !== null)) {
-            throw new Exception(self::getExceptionMessage('You must either specify a string src or a File object.', $this->renderingContext), 1460976233);
+            throw new InvalidArgumentValueException(self::getExceptionMessage('You must either specify a string src or a File object.', $this->renderingContext), 1460976233);
         }
         if ((string)$this->arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$this->arguments['fileExtension'])) {
-            throw new Exception(
+            throw new InvalidArgumentValueException(
                 self::getExceptionMessage(
                     'The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
                     . ' as a valid image file extension and can not be processed.',

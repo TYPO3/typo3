@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to format an object implementing `\DateTimeInterface` into human-readable output.
@@ -64,9 +64,6 @@ final class DateViewHelper extends AbstractViewHelper
         $this->registerArgument('timezone', 'string', 'Timezone for the date');
     }
 
-    /**
-     * @throws Exception
-     */
     public function render(): string
     {
         $format = $this->arguments['format'] ?? '';
@@ -94,7 +91,7 @@ final class DateViewHelper extends AbstractViewHelper
                 : (int)strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
             $dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
             if ($dateTimestamp === false) {
-                throw new Exception('"' . $date . '" could not be converted to a timestamp. Probably due to a parsing error.', 1241722579);
+                throw new InvalidArgumentValueException('"' . $date . '" could not be converted to a timestamp. Probably due to a parsing error.', 1241722579);
             }
             $date = (new \DateTime())->setTimestamp($dateTimestamp);
         }

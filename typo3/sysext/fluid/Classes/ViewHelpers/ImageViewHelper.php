@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to resize, crop or convert a given image (if required) and render
@@ -83,17 +84,16 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
      * Resizes a given image (if required) and renders the respective img tag.
      *
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Image/
-     * @throws Exception
      */
     public function render(): string
     {
         $src = (string)$this->arguments['src'];
         if (($src === '' && $this->arguments['image'] === null) || ($src !== '' && $this->arguments['image'] !== null)) {
-            throw new Exception($this->getExceptionMessage('You must either specify a string src or a File object.'), 1382284106);
+            throw new InvalidArgumentValueException($this->getExceptionMessage('You must either specify a string src or a File object.'), 1382284106);
         }
 
         if ((string)$this->arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$this->arguments['fileExtension'])) {
-            throw new Exception(
+            throw new InvalidArgumentValueException(
                 $this->getExceptionMessage(
                     'The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
                     . ' as a valid image file extension and can not be processed.',

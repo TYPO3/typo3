@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\ContentArea;
 use TYPO3\CMS\Fluid\Event\ModifyRenderedContentAreaEvent;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to render a content area as provided by the page-content processor.
@@ -73,7 +74,7 @@ final class ContentAreaViewHelper extends AbstractViewHelper
     {
         $contentArea = $this->renderChildren();
         if (!$contentArea instanceof ContentArea) {
-            throw new \InvalidArgumentException('The "contentArea" argument must be an instance of ' . ContentArea::class, 1770212183);
+            throw new InvalidArgumentValueException('The "contentArea" argument must be an instance of ' . ContentArea::class, 1770212183);
         }
 
         $result = '';

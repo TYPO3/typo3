@@ -133,6 +133,7 @@ final readonly class DeclarativeComponentCollection implements ViewHelperResolve
         $parsedTemplate = $renderingContext->getTemplateParser()->parse(
             $this->getTemplatePaths()->getTemplateSource('Default', $templateName),
             $this->getTemplatePaths()->getTemplateIdentifier('Default', $templateName),
+            $this->getTemplatePaths()->resolveTemplateFileForControllerAndActionAndFormat('Default', $templateName),
         );
         $componentDefinition = new ComponentDefinition(
             $viewHelperName,

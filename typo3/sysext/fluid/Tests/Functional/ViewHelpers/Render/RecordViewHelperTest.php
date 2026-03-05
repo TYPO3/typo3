@@ -143,7 +143,7 @@ final class RecordViewHelperTest extends FunctionalTestCase
         $view = new TemplateView($context);
         $view->assign('record', $record);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage('The "record" argument must be an instance of');
         $this->expectExceptionCode(1770215699);
 

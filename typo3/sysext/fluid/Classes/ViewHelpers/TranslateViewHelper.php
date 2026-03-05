@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface as ExtbaseRequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\MissingArgumentException;
 
 /**
  * ViewHelper to provide a translation for language keys ("locallang"/"LLL").
@@ -76,9 +77,6 @@ final class TranslateViewHelper extends AbstractViewHelper
 
     /**
      * Return array element by key.
-     *
-     * @throws Exception
-     * @throws \RuntimeException
      */
     public function render(): string
     {
@@ -94,7 +92,7 @@ final class TranslateViewHelper extends AbstractViewHelper
         }
         $id = (string)$id;
         if ($id === '') {
-            throw new Exception('An argument "key" or "id" has to be provided', 1351584844);
+            throw new MissingArgumentException('An argument "key" or "id" has to be provided', 1351584844);
         }
         $request = null;
         if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
@@ -133,7 +131,7 @@ final class TranslateViewHelper extends AbstractViewHelper
         if (empty($extensionName) && empty($default)) {
             // Throw exception in case neither an extension key nor a extbase request
             // are given, since the "short key" shouldn't be considered as a label.
-            throw new \RuntimeException(
+            throw new Exception(
                 'ViewHelper f:translate in non-extbase context needs attribute "domain" or "extensionName" to resolve'
                 . ' key="' . $id . '" without path. Either set attribute "domain" or "extensionName" together with the short'
                 . ' key "yourKey" to result'

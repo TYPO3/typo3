@@ -30,6 +30,7 @@ use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTML;
 use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTMLString;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to render content based on records and fields from a TCA schema.
@@ -95,7 +96,7 @@ final class TextViewHelper extends AbstractViewHelper
         }
 
         if (!$input instanceof RecordInterface && !$input instanceof DomainObjectInterface) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentValueException(
                 'The record argument must be an instance of ' . PageInformation::class . ' or ' . RecordInterface::class . ' or ' . DomainObjectInterface::class . ' . Given: ' . get_debug_type($input),
                 1770539910,
             );
@@ -104,7 +105,7 @@ final class TextViewHelper extends AbstractViewHelper
         ['table' => $table, 'fullType' => $fullType, 'value' => $value] = $this->extractInformation($input, $field);
 
         if (!is_string($value)) {
-            throw new \InvalidArgumentException('The value of the field "' . $table . '.' . $field . '" must be a string. Given: ' . get_debug_type($value), 1770321858);
+            throw new InvalidArgumentValueException('The value of the field "' . $table . '.' . $field . '" must be a string. Given: ' . get_debug_type($value), 1770321858);
         }
 
         $fieldSchema = $this->tcaSchema->get($fullType)->getField($field);
@@ -127,7 +128,7 @@ final class TextViewHelper extends AbstractViewHelper
             );
         }
 
-        throw new \InvalidArgumentException('The field "' . $table . '.' . $field . '" is not supported. Given: ' . get_debug_type($fieldSchema), 1770618219);
+        throw new InvalidArgumentValueException('The field "' . $table . '.' . $field . '" is not supported. Given: ' . get_debug_type($fieldSchema), 1770618219);
     }
 
     /**
@@ -170,7 +171,7 @@ final class TextViewHelper extends AbstractViewHelper
                 return $value;
             }
         }
-        throw new \InvalidArgumentException('The record type field "' . $recordTypeFieldName . '" does not exist in the given model ' . $input::class . '.', 1771507212);
+        throw new InvalidArgumentValueException('The record type field "' . $recordTypeFieldName . '" does not exist in the given model ' . $input::class . '.', 1771507212);
     }
 
     private function getResultingValue(DomainObjectInterface $input, DataMap $dataMap, string $field): mixed
@@ -181,6 +182,6 @@ final class TextViewHelper extends AbstractViewHelper
             }
         }
 
-        throw new \InvalidArgumentException('Could not find the field "' . $field . '" in the given model ' . $input::class . '.', 1771507213);
+        throw new InvalidArgumentValueException('Could not find the field "' . $field . '" in the given model ' . $input::class . '.', 1771507213);
     }
 }

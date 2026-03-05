@@ -32,7 +32,8 @@ use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserDomainClassToStrin
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleBackedEnum;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserRoleEnum;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
+use TYPO3Fluid\Fluid\Core\ViewHelper\MissingArgumentException;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class SelectViewHelperTest extends FunctionalTestCase
@@ -125,7 +126,7 @@ EOT;
         $view = new TemplateView($context);
         $view->assign('options', $options);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(MissingArgumentException::class);
         $this->expectExceptionMessage('Missing parameter "optionValueField" in SelectViewHelper for array value options.');
         $this->expectExceptionCode(1682693720);
 
@@ -157,7 +158,7 @@ EOT;
         $view = new TemplateView($context);
         $view->assign('options', $options);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(MissingArgumentException::class);
         $this->expectExceptionMessage('Missing parameter "optionLabelField" in SelectViewHelper for array value options.');
         $this->expectExceptionCode(1682693721);
 
@@ -477,7 +478,7 @@ EOT;
         $view = new TemplateView($context);
         $view->assign('options', $options);
 
-        $this->expectException(Exception::class);
+        $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionCode(1247826696);
 
         $view->render();

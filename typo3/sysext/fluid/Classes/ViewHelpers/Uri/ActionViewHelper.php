@@ -28,6 +28,7 @@ use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\MissingArgumentException;
 
 /**
  * ViewHelper for creating URIs to Extbase actions (within Controllers).
@@ -124,7 +125,7 @@ final class ActionViewHelper extends AbstractViewHelper
             && is_string($action) && $action !== ''
         );
         if (!$allExtbaseArgumentsAreSet) {
-            throw new \RuntimeException(
+            throw new MissingArgumentException(
                 'ViewHelper f:link.action / f:uri.action needs either all extbase arguments set'
                 . ' ("extensionName", "pluginName", "controller", "action")'
                 . ' or needs a request implementing extbase RequestInterface.',

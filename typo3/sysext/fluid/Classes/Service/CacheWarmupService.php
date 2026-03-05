@@ -47,6 +47,7 @@ readonly class CacheWarmupService
                     $this->renderingContextFactory->create()->getTemplateCompiler()->store(
                         $result->identifier,
                         $result->parsedTemplate,
+                        $result->path,
                     );
                 } catch (\Exception $e) {
                     $result = $result->withErrors([...$result->errors, $e]);

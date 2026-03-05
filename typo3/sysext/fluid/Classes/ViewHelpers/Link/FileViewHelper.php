@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper for creating links to a file (FAL).
@@ -63,7 +63,7 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
         $file = $this->arguments['file'];
 
         if (!($file instanceof FileInterface)) {
-            throw new Exception('Argument \'file\' must be an instance of ' . FileInterface::class, 1621511632);
+            throw new InvalidArgumentValueException('Argument \'file\' must be an instance of ' . FileInterface::class, 1621511632);
         }
 
         // Get the public URL. This url is either be defined by a GeneratePublicUrlForResourceEvent,

@@ -145,7 +145,7 @@ final class TextViewHelperTest extends FunctionalTestCase
                 'bodytext' => ['not-a-string'],
             ]),
             'templateSource' => '<f:render.text record="{record}" field="bodytext" />',
-            'exception' => \InvalidArgumentException::class,
+            'exception' => InvalidArgumentValueException::class,
             'exceptionCode' => 1770321858,
             'exceptionMessage' => 'The value of the field "tt_content.bodytext" must be a string. Given: array',
         ];
@@ -159,7 +159,7 @@ final class TextViewHelperTest extends FunctionalTestCase
         yield 'throwsForInvalidRecordObjectInline' => [
             'record' => new \stdClass(),
             'templateSource' => '{record -> f:render.text(field: "bodytext")}',
-            'exception' => \InvalidArgumentException::class,
+            'exception' => InvalidArgumentValueException::class,
             'exceptionCode' => 1770539910,
             'exceptionMessage' => 'The record argument must be an instance of',
         ];
@@ -168,14 +168,14 @@ final class TextViewHelperTest extends FunctionalTestCase
         yield 'extbaseModel without type information' => [
             'record' => $ttContent,
             'templateSource' => '<f:render.text record="{record}" field="header" />',
-            'exception' => \InvalidArgumentException::class,
+            'exception' => InvalidArgumentValueException::class,
             'exceptionCode' => 1771507212,
             'exceptionMessage' => 'The record type field "CType" does not exist in the given model TYPO3Tests\BlogExample\Domain\Model\TtContent',
         ];
         yield 'extbaseModel with out the given field' => [
             'record' => self::createExtbaseModel('<b>My Page</b>'),
             'templateSource' => '<f:render.text record="{record}" field="header" />',
-            'exception' => \InvalidArgumentException::class,
+            'exception' => InvalidArgumentValueException::class,
             'exceptionCode' => 1771507213,
             'exceptionMessage' => 'Could not find the field "header" in the given model TYPO3Tests\BlogExample\Domain\Model\Blog.',
         ];
