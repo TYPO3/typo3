@@ -28,6 +28,6 @@ export class LocalizationSubmissionService implements SubmissionServiceInterface
         recordUid: this.context.recordUid,
         data: this.context.getDataStore()
       });
-    return await await response.resolve();
+    return await response.resolve();
   }
 }

@@ -48,7 +48,6 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
   }
 
   public render(): TemplateResult {
-
     return html`
       ${this.renderPredefinedFormFields()}
       ${this.renderSavePath()}
@@ -128,7 +127,7 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
     return html `
       <div class="form-group">
         <label class="form-label" for="new-form-save-path">${formManagerLabels.get('formManager.form_save_path')}</label>
-        <div class="form-description" for="new-form-save-path">${formManagerLabels.get('formManager.form_save_path_description')}</div>
+        <div class="form-description">${formManagerLabels.get('formManager.form_save_path_description')}</div>
         <select class="new-form-save-path form-select" id="new-form-save-path" data-identifier="newFormSavePath">
           ${storageFolders.map(option => html`
             <option
@@ -143,8 +142,8 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
       </div>`;
   }
 
-
   private renderFormNameInput(): TemplateResult {
+    this.focusInput('#new-form-name');
     return html `
       <div class="form-group">
         <label class="form-label" for="new-form-name">${formManagerLabels.get('formManager.form_name')}</label>
@@ -154,13 +153,12 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
                data-identifier="newFormName"
                name="newFormName"
                .value=${this.data.formName}
-               @change=${(e: Event) => this.setValue({ formName: (e.target as HTMLInputElement).value })}
+               @input=${(e: Event) => this.setValue({ formName: (e.target as HTMLInputElement).value })}
         />
       </div>`;
   }
 
   private renderPredefinedFormFields(): TemplateResult | typeof nothing {
-
     const prototypes = this.context.formManager.getPrototypes() ?? [];
 
     if (this.context.getStoreData('mode') !== MODE.Predefined || prototypes.length < 1) {
@@ -219,6 +217,15 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
     this.setValue({
       prototype: currentPrototype,
       template: (currentTemplates[0]?.value ?? '')
+    });
+  }
+
+  private focusInput(selector: string): void {
+    this.context.wizard.updateComplete.then(() => {
+      const input = this.context.wizard.renderRoot.querySelector<HTMLInputElement>(selector);
+      if (input) {
+        input.focus();
+      }
     });
   }
 }
