@@ -88,6 +88,88 @@ final class FormRuntimeTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function variantWithStepTypePageConditionDoesNotEnableElementWhenCurrentPageIsNull(): void
+    {
+        $container = $this->get('service_container');
+        $subject = $this->getAccessibleMock(FormRuntime::class, null, [
+            $container,
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            new HashService(),
+            $this->createMock(ValidatorResolver::class),
+            $this->createMock(Context::class),
+            $this->get(EventDispatcherInterface::class),
+        ]);
+
+        $formDefinition = $this->buildFormDefinitionWithDisabledElementAndPageVariant();
+        $subject->setFormDefinition($formDefinition);
+        $subject->setRequest($this->request);
+        $subject->_call('initializeFormStateFromRequest');
+
+        // currentPage is null (simulates finisher context)
+        self::assertNull($subject->getCurrentPage());
+
+        $subject->_call('processVariants');
+
+        $element = $formDefinition->getElementByIdentifier('text-1');
+        self::assertFalse($element->isEnabled(), 'Element must remain disabled when currentPage is null');
+    }
+
+    #[Test]
+    public function variantWithStepTypePageConditionEnablesElementOnRegularPage(): void
+    {
+        $container = $this->get('service_container');
+        $subject = $this->getAccessibleMock(FormRuntime::class, null, [
+            $container,
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            new HashService(),
+            $this->createMock(ValidatorResolver::class),
+            $this->createMock(Context::class),
+            $this->get(EventDispatcherInterface::class),
+        ]);
+
+        $formDefinition = $this->buildFormDefinitionWithDisabledElementAndPageVariant();
+        $subject->setFormDefinition($formDefinition);
+        $subject->setRequest($this->request);
+        $subject->_call('initializeFormStateFromRequest');
+        $subject->overrideCurrentPage(0);
+
+        self::assertSame('Page', $subject->getCurrentPage()->getType());
+
+        $subject->_call('processVariants');
+
+        $element = $formDefinition->getElementByIdentifier('text-1');
+        self::assertTrue($element->isEnabled(), 'Element must be enabled on a regular Page step');
+    }
+
+    #[Test]
+    public function variantWithStepTypePageConditionDoesNotEnableElementOnSummaryPage(): void
+    {
+        $container = $this->get('service_container');
+        $subject = $this->getAccessibleMock(FormRuntime::class, null, [
+            $container,
+            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            new HashService(),
+            $this->createMock(ValidatorResolver::class),
+            $this->createMock(Context::class),
+            $this->get(EventDispatcherInterface::class),
+        ]);
+
+        $formDefinition = $this->buildFormDefinitionWithDisabledElementAndPageVariantAndSummaryPage();
+        $subject->setFormDefinition($formDefinition);
+        $subject->setRequest($this->request);
+        $subject->_call('initializeFormStateFromRequest');
+        // Override to the SummaryPage (index 1)
+        $subject->overrideCurrentPage(1);
+
+        self::assertSame('SummaryPage', $subject->getCurrentPage()->getType());
+
+        $subject->_call('processVariants');
+
+        $element = $formDefinition->getElementByIdentifier('text-1');
+        self::assertFalse($element->isEnabled(), 'Element must remain disabled on a SummaryPage step');
+    }
+
+    #[Test]
     public function afterCurrentPageIsResolvedEventIsTriggered(): void
     {
         $container = $this->get('service_container');
@@ -194,6 +276,83 @@ final class FormRuntimeTest extends FunctionalTestCase
                             'label' => 'Text',
                         ],
                     ],
+                ],
+            ],
+        ], null, new ServerRequest());
+    }
+
+    private function buildFormDefinitionWithDisabledElementAndPageVariant(): FormDefinition
+    {
+        return $this->formFactory->build([
+            'type' => 'Form',
+            'identifier' => 'test',
+            'label' => 'test',
+            'prototypeName' => 'standard',
+            'renderables' => [
+                [
+                    'type' => 'Page',
+                    'identifier' => 'page-1',
+                    'label' => 'Page',
+                    'renderables' => [
+                        [
+                            'type' => 'Text',
+                            'identifier' => 'text-1',
+                            'label' => 'Text',
+                            'renderingOptions' => [
+                                'enabled' => false,
+                            ],
+                            'variants' => [
+                                [
+                                    'identifier' => 'showOnlyOnPages',
+                                    'renderingOptions' => [
+                                        'enabled' => true,
+                                    ],
+                                    'condition' => 'stepType == "Page"',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], null, new ServerRequest());
+    }
+
+    private function buildFormDefinitionWithDisabledElementAndPageVariantAndSummaryPage(): FormDefinition
+    {
+        return $this->formFactory->build([
+            'type' => 'Form',
+            'identifier' => 'test',
+            'label' => 'test',
+            'prototypeName' => 'standard',
+            'renderables' => [
+                [
+                    'type' => 'Page',
+                    'identifier' => 'page-1',
+                    'label' => 'Page',
+                    'renderables' => [
+                        [
+                            'type' => 'Text',
+                            'identifier' => 'text-1',
+                            'label' => 'Text',
+                            'renderingOptions' => [
+                                'enabled' => false,
+                            ],
+                            'variants' => [
+                                [
+                                    'identifier' => 'showOnlyOnPages',
+                                    'renderingOptions' => [
+                                        'enabled' => true,
+                                    ],
+                                    'condition' => 'stepType == "Page"',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'type' => 'SummaryPage',
+                    'identifier' => 'summary-1',
+                    'label' => 'Summary',
                 ],
             ],
         ], null, new ServerRequest());
