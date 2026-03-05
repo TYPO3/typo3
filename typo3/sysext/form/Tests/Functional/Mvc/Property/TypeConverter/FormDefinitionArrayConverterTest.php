@@ -47,6 +47,7 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
             '',
             false
         );
+
         $subjectMock->method('retrieveSessionToken')->willReturn('123');
         $subjectMock->method('getFormDefinitionValidationService')->willReturn($formDefinitionValidationServiceMock);
 
@@ -150,6 +151,7 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
         $input = [
             'prototypeName' => 'foo',
             'identifier' => 'test',
+            '_formPersistenceIdentifier' => '1:/form_definitions/test.form.yaml',
             '_orig_prototypeName' => [
                 'value' => 'standard',
                 'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),
@@ -172,6 +174,7 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
         $input = [
             'prototypeName' => 'standard',
             'identifier' => 'xxx',
+            '_formPersistenceIdentifier' => '1:/form_definitions/test.form.yaml',
             '_orig_prototypeName' => [
                 'value' => 'standard',
                 'hmac' => (new HashService())->hmac(serialize(['test', 'prototypeName', 'standard']), '123'),

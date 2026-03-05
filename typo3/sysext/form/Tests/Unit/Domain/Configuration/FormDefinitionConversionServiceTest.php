@@ -72,7 +72,7 @@ final class FormDefinitionConversionServiceTest extends UnitTestCase
             ],
         ];
 
-        $data = $formDefinitionConversionService->addHmacData($input);
+        $data = $formDefinitionConversionService->addHmacData($input, '1:/form_definitions/test.form.yaml');
 
         $expected = [
             'prototypeName' => 'standard',
@@ -124,6 +124,7 @@ final class FormDefinitionConversionServiceTest extends UnitTestCase
                 'value' => 1,
                 'hmac' => $data['_orig_heinz']['hmac'],
             ],
+            '_formPersistenceIdentifier' => '1:/form_definitions/test.form.yaml',
         ];
 
         self::assertSame($expected, $data);
