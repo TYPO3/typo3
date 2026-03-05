@@ -32,7 +32,7 @@ final class EmptyValidator extends AbstractValidator
      *
      * @var bool
      */
-    protected $acceptsEmptyValues = true;
+    protected $acceptsEmptyValues = false;
 
     /**
      * Checks if the given property ($propertyValue) is empty (NULL, empty string, empty array or empty object).
