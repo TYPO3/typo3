@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Error;
 
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Error\Http\AbstractClientErrorException;
+use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -61,7 +62,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
             $this->getTitle($exception),
             $this->getMessage($exception),
             $this->discloseExceptionInformation($exception) ? $exception->getCode() : 0,
-            503
+            $this->getHttpStatusCodeFromException($exception)
         );
     }
 
@@ -116,7 +117,7 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
      */
     protected function getTitle(\Throwable $exception)
     {
-        if ($this->discloseExceptionInformation($exception) && method_exists($exception, 'getTitle') && $exception->getTitle() !== '') {
+        if ($this->discloseExceptionInformation($exception) && $exception instanceof StatusException && $exception->getTitle() !== '') {
             return $exception->getTitle();
         }
         return $this->defaultTitle;

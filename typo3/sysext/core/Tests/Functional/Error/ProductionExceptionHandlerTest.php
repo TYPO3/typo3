@@ -24,6 +24,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Error\ProductionExceptionHandler;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ProductionExceptionHandlerTest extends FunctionalTestCase
@@ -143,5 +144,59 @@ final class ProductionExceptionHandlerTest extends FunctionalTestCase
 
         self::assertEquals('critical', $logger->records[0]['level']);
         self::assertEquals($expectedUrl, $logger->records[0]['context']['request_url']);
+    }
+
+    #[Test]
+    public function echoExceptionWebDisplays500ForGenericException(): void
+    {
+        ob_start();
+        $this->subject->echoExceptionWeb(new \Exception('test', 1234567890));
+        $output = ob_get_clean();
+        self::assertMatchesRegularExpression('/class="typo3-error-page-statuscode">\s*500\s*</', $output);
+    }
+
+    #[Test]
+    public function echoExceptionWebDisplays500ForInternalServerErrorException(): void
+    {
+        $exception = new StatusException(
+            [HttpUtility::HTTP_STATUS_500],
+            'Internal Server Error',
+            'Internal Server Error (500)',
+            1234567891
+        );
+        ob_start();
+        $this->subject->echoExceptionWeb($exception);
+        $output = ob_get_clean();
+        self::assertMatchesRegularExpression('/class="typo3-error-page-statuscode">\s*500\s*</', $output);
+    }
+
+    #[Test]
+    public function echoExceptionWebDisplays404ForNotFoundException(): void
+    {
+        $exception = new StatusException(
+            [HttpUtility::HTTP_STATUS_404],
+            'Page Not Found',
+            'Page Not Found (404)',
+            1234567892
+        );
+        ob_start();
+        $this->subject->echoExceptionWeb($exception);
+        $output = ob_get_clean();
+        self::assertMatchesRegularExpression('/class="typo3-error-page-statuscode">\s*404\s*</', $output);
+    }
+
+    #[Test]
+    public function echoExceptionWebDisplays403ForForbiddenException(): void
+    {
+        $exception = new StatusException(
+            [HttpUtility::HTTP_STATUS_403],
+            'Forbidden',
+            'Forbidden (403)',
+            1234567893
+        );
+        ob_start();
+        $this->subject->echoExceptionWeb($exception);
+        $output = ob_get_clean();
+        self::assertMatchesRegularExpression('/class="typo3-error-page-statuscode">\s*403\s*</', $output);
     }
 }
