@@ -20,6 +20,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -200,16 +201,33 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
      */
     protected function sendStatusHeaders(\Throwable $exception)
     {
-        if (method_exists($exception, 'getStatusHeaders')) {
-            $headers = $exception->getStatusHeaders();
-        } else {
-            $headers = [HttpUtility::HTTP_STATUS_500];
-        }
+        $headers = $exception instanceof StatusException
+            ? $exception->getStatusHeaders()
+            : [HttpUtility::HTTP_STATUS_500];
         if (!headers_sent()) {
             foreach ($headers as $header) {
                 header($header);
             }
         }
+    }
+
+    /**
+     * Derives the numeric HTTP status code from the exception.
+     *
+     * Mirrors the logic of {@see sendStatusHeaders()}: returns the status code
+     * from the HTTP status line of a StatusException, or 500 for any other exception.
+     */
+    protected function getHttpStatusCodeFromException(\Throwable $exception): int
+    {
+        if (!($exception instanceof StatusException)) {
+            return 500;
+        }
+        foreach ($exception->getStatusHeaders() ?? [] as $header) {
+            if (preg_match('/^HTTP\/[\d.]+\s+(\d{3})/', $header, $matches)) {
+                return (int)$matches[1];
+            }
+        }
+        return 500;
     }
 
     protected function getBackendUser(): ?BackendUserAuthentication
