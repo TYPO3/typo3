@@ -495,8 +495,7 @@ export function createAbstractViewFormElementToolbar(formElement: FormElement): 
 
 export function createAndAddAbstractViewFormElementToolbar(
   selectedFormElementDomElement: JQuery,
-  formElement: FormElement,
-  useFadeEffect: boolean
+  formElement: FormElement
 ): void {
   if (getUtility().isUndefinedOrNull(formElement)) {
     formElement = getCurrentlySelectedFormElement();
@@ -513,15 +512,7 @@ export function createAndAddAbstractViewFormElementToolbar(
     return;
   }
 
-  // Fallback to old jQuery-based toolbar
-  if (useFadeEffect) {
-    createAbstractViewFormElementToolbar(formElement).fadeOut(0, function(this: HTMLElement) {
-      selectedFormElementDomElement.prepend($(this));
-      $(getHelper().getDomElementDataIdentifierSelector('abstractViewToolbar'), selectedFormElementDomElement).fadeIn('fast');
-    });
-  } else {
-    selectedFormElementDomElement.prepend(createAbstractViewFormElementToolbar(formElement));
-  }
+  selectedFormElementDomElement.prepend(createAbstractViewFormElementToolbar(formElement));
 }
 
 export function hideFormElementStageItemToolbar(): void {

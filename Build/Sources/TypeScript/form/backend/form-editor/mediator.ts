@@ -361,7 +361,7 @@ function subscribeEvents(): void {
     getFormEditorApp().setCurrentlySelectedFormElement(draggedFormElementIdentifierPath);
     getViewModel().renewStructure();
     getViewModel().setPreviewMode(false);
-    getViewModel().renderAbstractStageArea(false, false);
+    getViewModel().renderAbstractStageArea();
     getViewModel().refreshSelectedElementItemsBatch();
     getViewModel().addAbstractViewValidationResults();
     getViewModel().renderInspectorEditors();
@@ -484,16 +484,10 @@ function subscribeEvents(): void {
     topic: string,
     [formElementIdentifierPath]: [string]
   ): void => {
-    let oldPageIndex;
     if (getCurrentlySelectedFormElement().get('__identifierPath') !== formElementIdentifierPath) {
-      oldPageIndex = getFormEditorApp().getCurrentlySelectedPageIndex();
       getFormEditorApp().setCurrentlySelectedFormElement(formElementIdentifierPath);
       getViewModel().setPreviewMode(false);
-      if (oldPageIndex !== getFormEditorApp().getCurrentlySelectedPageIndex()) {
-        getViewModel().renderAbstractStageArea();
-      } else {
-        getViewModel().renderAbstractStageArea(false);
-      }
+      getViewModel().renderAbstractStageArea();
       getViewModel().renderPagination();
       getViewModel().addAbstractViewValidationResults();
       getViewModel().renderInspectorEditors();
@@ -511,7 +505,7 @@ function subscribeEvents(): void {
     formElement.set('label', newLabel);
     getViewModel().getStructure().setTreeNodeTitle(null, formElement);
     if(getCurrentlySelectedFormElement().get('__identifierPath') === formElementIdentifierPath) {
-      getViewModel().renderInspectorEditors(formElementIdentifierPath, false);
+      getViewModel().renderInspectorEditors(formElementIdentifierPath);
     }
   });
 
@@ -746,7 +740,7 @@ function subscribeEvents(): void {
       if (getViewModel().getPreviewMode()) {
         getFormEditorApp().renderCurrentFormPage();
       } else {
-        getViewModel().renderAbstractStageArea(false, false);
+        getViewModel().renderAbstractStageArea();
       }
       getViewModel().addStructureValidationResults();
     }
@@ -793,14 +787,14 @@ function subscribeEvents(): void {
    * @subscribe view/collectionElement/moved
    */
   getPublisherSubscriber().subscribe('view/collectionElement/moved', (): void => {
-    getViewModel().renderInspectorEditors(undefined, false);
+    getViewModel().renderInspectorEditors();
   });
 
   /**
    * @subscribe view/collectionElement/removed
    */
   getPublisherSubscriber().subscribe('view/collectionElement/removed', (): void => {
-    getViewModel().renderInspectorEditors(undefined, false);
+    getViewModel().renderInspectorEditors();
   });
 
   /**
@@ -910,21 +904,14 @@ function subscribeEvents(): void {
     topic: string,
     [formElementIdentifierPath]: [string]
   ): void => {
-    let oldPageIndex;
     if (getCurrentlySelectedFormElement().get('__identifierPath') !== formElementIdentifierPath) {
-      oldPageIndex = getFormEditorApp().getCurrentlySelectedPageIndex();
       getFormEditorApp().setCurrentlySelectedFormElement(formElementIdentifierPath);
 
       if (getViewModel().getPreviewMode()) {
         getViewModel().setPreviewMode(false);
       }
 
-      if (oldPageIndex !== getFormEditorApp().getCurrentlySelectedPageIndex()) {
-        getViewModel().renderAbstractStageArea();
-      } else {
-        getViewModel().renderAbstractStageArea(false);
-      }
-
+      getViewModel().renderAbstractStageArea();
       getViewModel().renderPagination();
       getViewModel().renderInspectorEditors();
     }

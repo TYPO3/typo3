@@ -679,24 +679,8 @@ export function getInspector(): typeof InspectorComponent {
   return inspectorsComponent;
 }
 
-export function renderInspectorEditors(formElement?: FormElement | string, useFadeEffect?: boolean): void {
-  if (getUtility().isUndefinedOrNull(useFadeEffect)) {
-    useFadeEffect = true;
-  }
-
-  const render = (callback?: () => void): void => {
-    getInspector().renderEditors(formElement, callback);
-  };
-
-  if (useFadeEffect) {
-    getInspector().getInspectorDomElement().fadeOut('fast', function() {
-      render(function() {
-        getInspector().getInspectorDomElement().fadeIn('fast');
-      });
-    });
-  } else {
-    render();
-  }
+export function renderInspectorEditors(formElement?: FormElement | string): void {
+  getInspector().renderEditors(formElement);
 }
 
 export function showInspectorSidebar(): void {
@@ -745,15 +729,7 @@ export function renderUndoRedo(): void {
  * @publish view/stage/abstract/render/postProcess
  * @publish view/stage/abstract/render/preProcess
  */
-export function renderAbstractStageArea(useFadeEffect?: boolean, toolbarUseFadeEffect?: boolean): void {
-  if (getUtility().isUndefinedOrNull(useFadeEffect)) {
-    useFadeEffect = true;
-  }
-
-  if (getUtility().isUndefinedOrNull(toolbarUseFadeEffect)) {
-    toolbarUseFadeEffect = true;
-  }
-
+export function renderAbstractStageArea(): void {
   setButtonActive($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderViewModeAbstract')));
   removeButtonActive($(getHelper().getDomElementDataIdentifierSelector('buttonHeaderViewModePreview')));
 
@@ -789,26 +765,15 @@ export function renderAbstractStageArea(useFadeEffect?: boolean, toolbarUseFadeE
       showComponent($(getHelper().getDomElementDataIdentifierSelector('stageNewElementRow')));
     }
 
-    refreshSelectedElementItemsBatch(toolbarUseFadeEffect);
+    refreshSelectedElementItemsBatch();
     getPublisherSubscriber().publish('view/stage/abstract/render/postProcess');
   };
 
-  if (useFadeEffect) {
-    $(getHelper().getDomElementDataIdentifierSelector('stageSection')).fadeOut(400, function() {
-      render(function() {
-        getPublisherSubscriber().publish('view/stage/abstract/render/preProcess');
-        $(getHelper().getDomElementDataIdentifierSelector('stageSection')).fadeIn(400);
-        renderPostProcess();
-        getPublisherSubscriber().publish('view/stage/abstract/render/postProcess');
-      });
-    });
-  } else {
-    render(function() {
-      getPublisherSubscriber().publish('view/stage/abstract/render/preProcess');
-      renderPostProcess();
-      getPublisherSubscriber().publish('view/stage/abstract/render/postProcess');
-    });
-  }
+  render(function() {
+    getPublisherSubscriber().publish('view/stage/abstract/render/preProcess');
+    renderPostProcess();
+    getPublisherSubscriber().publish('view/stage/abstract/render/postProcess');
+  });
 }
 
 /**
@@ -822,12 +787,9 @@ export function renderPreviewStageArea(html: string): void {
     .addClass(getHelper().getDomElementClassName('viewModePreview'))
     .removeClass(getHelper().getDomElementClassName('viewModeAbstract'));
 
-  $(getHelper().getDomElementDataIdentifierSelector('stageSection')).fadeOut(400, function() {
-    hideComponent($(getHelper().getDomElementDataIdentifierSelector('buttonStageNewElementBottom')));
-    getStage().renderPreviewStageArea(html);
-    $(getHelper().getDomElementDataIdentifierSelector('stageSection')).fadeIn(400);
-    getPublisherSubscriber().publish('view/stage/preview/render/postProcess');
-  });
+  hideComponent($(getHelper().getDomElementDataIdentifierSelector('buttonStageNewElementBottom')));
+  getStage().renderPreviewStageArea(html);
+  getPublisherSubscriber().publish('view/stage/preview/render/postProcess');
 }
 
 export function addAbstractViewValidationResults(): void {
@@ -1032,11 +994,7 @@ export function removePropertyCollectionElement(
  * Batch methods
  * ************************************************************/
 
-export function refreshSelectedElementItemsBatch(toolbarUseFadeEffect?: boolean): void {
-  if (getUtility().isUndefinedOrNull(toolbarUseFadeEffect)) {
-    toolbarUseFadeEffect = true;
-  }
-
+export function refreshSelectedElementItemsBatch(): void {
   const formElementTypeDefinition = getFormElementDefinition(getCurrentlySelectedFormElement(), undefined);
 
   getStage().removeAllStageToolbars();
@@ -1053,7 +1011,7 @@ export function refreshSelectedElementItemsBatch(toolbarUseFadeEffect?: boolean)
       addStagePanelSelection();
     } else {
       selectedElement.addClass(getHelper().getDomElementClassName('selectedFormElement'));
-      getStage().createAndAddAbstractViewFormElementToolbar(selectedElement, undefined, toolbarUseFadeEffect);
+      getStage().createAndAddAbstractViewFormElementToolbar(selectedElement, undefined);
     }
 
     getStage().getAllFormElementDomElements().parent().removeClass(getHelper().getDomElementClassName('selectedCompositFormElement'));
@@ -1092,7 +1050,7 @@ export function onViewReadyBatch(): void {
 
   setStageHeadline();
   setStructureRootElementTitle();
-  renderAbstractStageArea(false);
+  renderAbstractStageArea();
   renewStructure();
   addStructureRootElementSelection();
   renderInspectorEditors();
