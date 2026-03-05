@@ -1059,7 +1059,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $this->getFormState()->getFormValues(),
             $this->getRequest()->getArguments()
         );
-        $page = $this->getCurrentPage() ?? $this->getFormDefinition()->getPageByIndex(0);
+        $page = $this->getCurrentPage();
+        $stepIdentifier = $page !== null ? $page->getIdentifier() : '';
+        $stepType = $page !== null ? $page->getType() : '';
 
         $finisherIdentifier = '';
         if ($this->getCurrentFinisher() !== null) {
@@ -1079,8 +1081,8 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             [
                 'formRuntime' => $this,
                 'formValues' => $formValues,
-                'stepIdentifier' => $page->getIdentifier(),
-                'stepType' => $page->getType(),
+                'stepIdentifier' => $stepIdentifier,
+                'stepType' => $stepType,
                 'finisherIdentifier' => $finisherIdentifier,
                 'contentObject' => $contentObjectData,
                 'request' => new RequestWrapper($this->getRequest()),
