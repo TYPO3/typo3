@@ -1695,6 +1695,10 @@ export function renderPropertyGridEditor(
     propertyGridEditor.formElements = getFormElementSelectorEntries();
   }
 
+  // Ensure 'defaultValue' has a registered publisher topic so that
+  // set('defaultValue', ...) fires the 'core/formElement/somePropertyChanged' event.
+  getCurrentlySelectedFormElement().on(propertyPathPrefix + 'defaultValue', 'core/formElement/somePropertyChanged');
+
   propertyGridEditor.addEventListener(PropertyGridEditorUpdateEvent.eventName, (event: PropertyGridEditorUpdateEvent) => {
     const entries = event.data;
     const defaultValues: (string | number)[] = [];
@@ -1719,11 +1723,15 @@ export function renderPropertyGridEditor(
     if (multiSelection) {
       getCurrentlySelectedFormElement().set(propertyPathPrefix + 'defaultValue', defaultValues);
     } else {
-      getCurrentlySelectedFormElement().set(propertyPathPrefix + 'defaultValue', defaultValues[0] ?? '', true);
+      getCurrentlySelectedFormElement().set(propertyPathPrefix + 'defaultValue', defaultValues[0] ?? '');
     }
 
-    getCurrentlySelectedFormElement().set(propertyPathPrefix + editorConfiguration.propertyPath, newData);
-    validateCollectionElement(propertyPathPrefix + editorConfiguration.propertyPath, editorHtml);
+    const optionsPropertyPath = propertyPathPrefix + editorConfiguration.propertyPath;
+    const oldData = getCurrentlySelectedFormElement().get(optionsPropertyPath);
+    if (JSON.stringify(oldData) !== JSON.stringify(newData)) {
+      getCurrentlySelectedFormElement().set(optionsPropertyPath, newData);
+    }
+    validateCollectionElement(optionsPropertyPath, editorHtml);
   });
 
   validateCollectionElement(propertyPathPrefix + editorConfiguration.propertyPath, editorHtml);
