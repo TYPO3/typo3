@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\RateLimiter\RateLimiterFactoryInterface;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -55,7 +54,6 @@ use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Security\HashScope;
-use TYPO3\CMS\Extbase\Service\ActionAuthorizationService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extbase\Service\FileHandlingService;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -109,8 +107,8 @@ abstract class ActionController implements ControllerInterface
     protected FileHandlingService $fileHandlingService;
     protected RequestInterface $request;
     protected UriBuilder $uriBuilder;
-    protected RateLimiterFactoryInterface $rateLimiterFactory;
-    protected ActionAuthorizationService $actionAuthorizationService;
+    protected RateLimitRegistry $rateLimitRegistry;
+    protected AuthorizeRegistry $authorizeRegistry;
 
     /**
      * Contains the settings of the current extension
@@ -210,14 +208,14 @@ abstract class ActionController implements ControllerInterface
         $this->fileHandlingService = $fileHandlingService;
     }
 
-    public function injectRateLimiterFactory(RateLimiterFactoryInterface $rateLimiterFactory): void
+    public function injectRateLimitRegistry(RateLimitRegistry $rateLimitRegistry): void
     {
-        $this->rateLimiterFactory = $rateLimiterFactory;
+        $this->rateLimitRegistry = $rateLimitRegistry;
     }
 
-    public function injectActionAuthorizationService(ActionAuthorizationService $actionAuthorizationService): void
+    public function injectAuthorizeRegistry(AuthorizeRegistry $authorizeRegistry): void
     {
-        $this->actionAuthorizationService = $actionAuthorizationService;
+        $this->authorizeRegistry = $authorizeRegistry;
     }
 
     /**
@@ -935,17 +933,12 @@ abstract class ActionController implements ControllerInterface
      */
     protected function handleRateLimit(RequestInterface $request): ?ResponseInterface
     {
-        $rateLimit = $this->reflectionService
-            ->getClassSchema(static::class)
-            ->getMethod($this->actionMethodName)
-            ->getRateLimit();
-
-        if (!$rateLimit) {
+        $rateLimiter = $this->rateLimitRegistry->createLimiter(static::class, $this->actionMethodName, $this->request);
+        if ($rateLimiter === null) {
             return null;
         }
 
-        $identifier = strtolower(str_replace('\\', '-', static::class) . '-' . $this->actionMethodName);
-        $rateLimiter = $this->rateLimiterFactory->createRequestBasedLimiter($this->request, $rateLimit->getConfiguration($identifier));
+        $rateLimit = $this->rateLimitRegistry->getRateLimit(static::class, $this->actionMethodName);
         $limit = $rateLimiter->consume();
         if ($limit->isAccepted()) {
             return null;
@@ -978,22 +971,9 @@ abstract class ActionController implements ControllerInterface
      */
     protected function performAuthorizationChecks(RequestInterface $request, array $preparedArguments): ?ResponseInterface
     {
-        $authorizeAttributes = $this->reflectionService
-            ->getClassSchema(static::class)
-            ->getMethod($this->actionMethodName)
-            ->getAuthorize();
+        $result = $this->authorizeRegistry->checkAuthorization($this, $this->actionMethodName, $preparedArguments);
 
-        if ($authorizeAttributes === []) {
-            return null;
-        }
-
-        $result = $this->actionAuthorizationService->checkAuthorization(
-            $this,
-            $authorizeAttributes,
-            $preparedArguments
-        );
-
-        if ($result->isAllowed()) {
+        if ($result === null || $result->isAllowed()) {
             return null;
         }
 

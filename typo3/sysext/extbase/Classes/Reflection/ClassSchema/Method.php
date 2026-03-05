@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Reflection\ClassSchema;
 
-use TYPO3\CMS\Extbase\Attribute\Authorize;
-use TYPO3\CMS\Extbase\Attribute\RateLimit;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodParameterException;
 
 /**
@@ -39,8 +37,6 @@ class Method
             'public' => false,
             'protected' => false,
             'private' => false,
-            'rateLimit' => null,
-            'authorize' => [],
         ];
 
         foreach ($defaults as $key => $defaultValue) {
@@ -83,19 +79,6 @@ class Method
         }
 
         return $this->parameters[$parameterName];
-    }
-
-    public function getRateLimit(): ?RateLimit
-    {
-        return $this->definition['rateLimit'];
-    }
-
-    /**
-     * @return array<Authorize>
-     */
-    public function getAuthorize(): array
-    {
-        return $this->definition['authorize'];
     }
 
     public function isPublic(): bool

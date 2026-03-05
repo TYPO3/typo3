@@ -29,4 +29,6 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
     });
 
     $container->addCompilerPass(new TypeConverterPass('extbase.type_converter'));
+    $container->addCompilerPass(new DependencyInjection\RateLimitPass('extbase.action_controller'));
+    $container->addCompilerPass(new DependencyInjection\AuthorizePass('extbase.action_controller'));
 };
