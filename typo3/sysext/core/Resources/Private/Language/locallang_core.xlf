@@ -544,7 +544,7 @@
         <source>Generate password</source>
       </trans-unit>
       <trans-unit id="labels.generatePassword.failed">
-        <source>A password could not be generated</source>
+        <source>Password generation failed. This could be due to a misconfiguration issue; please check the Administration log for details or contact your system administrator.</source>
       </trans-unit>
       <trans-unit id="labels.new_section">
         <source>Create new</source>
