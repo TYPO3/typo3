@@ -1471,6 +1471,11 @@ class BackendUtility
             if (is_array($ctrlLabelValue)) {
                 $ctrlLabelValue = '';
             }
+            // => also, if the value is a DateTimeInterface, convert it to timestamp as when the $row is still
+            //    unprocessed (happens e.g., with IRRE - processed - vs listing of records - unprocessed)
+            if ($ctrlLabelValue instanceof \DateTimeInterface) {
+                $ctrlLabelValue = $ctrlLabelValue->getTimestamp();
+            }
             $recordTitle = self::getProcessedValue($table, $ctrlLabel, (string)$ctrlLabelValue, 0, false, false, $row['uid'] ?? null, true, 0, $row) ?? '';
             if ($labelCapability->getAdditionalFieldNames() !== []
                 && ($labelCapability->alwaysRenderAdditionalFields() || $recordTitle === '')) {
