@@ -15,6 +15,7 @@
     "@axe-core/playwright": "^4.9.0",
     "@ckeditor/ckeditor5-dev-utils": "^46.1.0",
     "@csstools/postcss-sass": "^5.1.1",
+    "@lodder/grunt-postcss": "^3.1.1",
     "@open-wc/testing": "^4.0.0",
     "@playwright/test": "^1.43.1",
     "@rollup/plugin-commonjs": "^28.0.3",
@@ -147,7 +148,6 @@
     "@lit-labs/motion": "^1.0.8",
     "@lit/reactive-element": "^2.0.4",
     "@lit/task": "^1.0.1",
-    "@lodder/grunt-postcss": "^3.1.1",
     "@popperjs/core": "^2.11.6",
     "@typo3/icons": "^4.4.1",
     "alwan": "^2.3.0",
@@ -178,5 +178,19 @@
   },
   "resolutions": {
     "colors": "<1.4.1"
+  },
+  "overrides": {
+    "globule": {
+      "minimatch": "^3.1.5"
+    },
+    "grunt": {
+      "minimatch": "^3.1.5"
+    },
+    "lintspaces": {
+      "minimatch": "^3.1.5"
+    },
+    "mocha": {
+      "serialize-javascript": "^7.0.3"
+    }
   }
 }
