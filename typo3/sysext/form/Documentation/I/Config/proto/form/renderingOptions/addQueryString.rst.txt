@@ -6,7 +6,7 @@ renderingOptions.addQueryString
       prototypes.<prototypeIdentifier>.formElementsDefinition.Form.renderingOptions.addQueryString
 
 :aspect:`Data type`
-      bool
+      bool/string
 
 :aspect:`Needed by`
       Frontend
@@ -54,4 +54,4 @@ renderingOptions.addQueryString
       ToDo
 
 :aspect:`Description`
-      Fluid f:form viewHelper option ``addQueryString``
+      Corresponds to the Fluid ``f:form`` ViewHelper option ``addQueryString``.
