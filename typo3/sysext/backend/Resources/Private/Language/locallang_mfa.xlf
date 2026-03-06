@@ -142,7 +142,7 @@
         <source>Go back</source>
       </trans-unit>
       <trans-unit id="auth.locked">
-        <source>This provider is temporarily locked.</source>
+        <source>This provider is locked. Unlocking may require administrative intervention. Recovery codes can be used to circumvent the lock.</source>
       </trans-unit>
       <trans-unit id="auth.alternativeProviders">
         <source>Alternative providers</source>
