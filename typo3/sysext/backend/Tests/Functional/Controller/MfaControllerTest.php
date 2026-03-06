@@ -161,7 +161,7 @@ final class MfaControllerTest extends FunctionalTestCase
         $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertStringContainsString('This provider is temporarily locked!', $response->getBody()->__toString());
+        self::assertStringContainsString('This provider is locked.', $response->getBody()->__toString());
     }
 
     #[Test]
