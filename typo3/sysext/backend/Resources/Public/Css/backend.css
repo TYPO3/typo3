@@ -3584,7 +3584,6 @@ textarea.formengine-textarea{resize:none}
 .contextual-record-edit .form-section-tabs{--typo3-nav-tabs-bg:transparent}
 .contextual-record-edit typo3-formengine-container-files .form-text{margin-bottom:1rem;margin-top:1rem}
 .contextual-record-edit typo3-formengine-container-files .form-text .badge-list{margin-top:.5rem}
-.contextual-record-edit typo3-formengine-container-files .form-text .badge-success{--typo3-badge-color:#fff;--typo3-badge-bg:#1b1b3a;--typo3-badge-border-color:#1b1b3a;--typo3-badge-border-radius:.375rem}
 .contextual-record-edit-header{align-items:center;background:var(--contextual-record-edit-bg);border-bottom:1px solid var(--contextual-record-edit-border-color);display:flex;gap:.75rem;overflow:hidden;padding:.5rem 1rem;position:-webkit-sticky;position:sticky;top:0;z-index:10}
 .contextual-record-edit-title-group{align-items:center;display:flex;flex:1;gap:.25rem;min-width:0}
 .contextual-record-edit-title{font-size:.875rem;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
