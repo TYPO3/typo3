@@ -485,7 +485,7 @@ class InlineControlContainer extends AbstractContainer
                     ' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedRelations')) . '
                     <br>
                     <ul class="badge-list">
-                    ' . implode(' ', array_map(static fn(string $item): string => '<li><span class="badge badge-success">' . strtoupper($item) . '</span></li>', $allowed)) . '
+                    ' . implode(' ', array_map(static fn(string $item): string => '<li><span class="badge badge-secondary">' . strtoupper($item) . '</span></li>', $allowed)) . '
                     </ul>
                 </div>';
         }

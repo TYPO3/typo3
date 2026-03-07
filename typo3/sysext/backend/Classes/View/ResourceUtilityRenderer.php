@@ -120,7 +120,7 @@ class ResourceUtilityRenderer
         $allowedTextFileList = [];
         foreach ($textFileExt as $fileExt) {
             if ($fileNameVerifier->isValid('.' . $fileExt)) {
-                $allowedTextFileList[] = '<li class="badge badge-success">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
+                $allowedTextFileList[] = '<li class="badge badge-secondary">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
             }
         }
 
@@ -179,7 +179,7 @@ class ResourceUtilityRenderer
             if ($fileNameVerifier->isValid('.' . $fileExt)
                 && ($fileExtensionFilter === null || $fileExtensionFilter->isAllowed($fileExt))
             ) {
-                $allowedOnlineMediaList[] = '<li class="badge badge-success">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
+                $allowedOnlineMediaList[] = '<li class="badge badge-secondary">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
             }
         }
 
@@ -243,7 +243,7 @@ class ResourceUtilityRenderer
 
         foreach ($list as $fileExt) {
             if (($fileExt === '*' && !$denyList) || $fileNameVerifier->isValid('.' . $fileExt)) {
-                $allowedFileExtensionsList[] = '<li class="badge badge-' . ($denyList ? 'danger' : 'success') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
+                $allowedFileExtensionsList[] = '<li class="badge ' . ($denyList ? 'badge-danger' : 'badge-secondary') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
             }
         }
 
@@ -306,7 +306,7 @@ class ResourceUtilityRenderer
 
         foreach ($list as $fileExt) {
             if (($fileExt === '*' && !$denyList) || $fileNameVerifier->isValid('.' . $fileExt)) {
-                $allowedFileExtensionsList[] = '<li class="badge badge-' . ($denyList ? 'danger' : 'success') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
+                $allowedFileExtensionsList[] = '<li class="badge ' . ($denyList ? 'badge-danger' : 'badge-secondary') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
             }
         }
 

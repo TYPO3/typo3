@@ -37,7 +37,7 @@ export class OnlineMediaFormElement extends LitElement {
             ${this.allowedExtensionsHelpText}<br>
             <ul class="badge-list">
             ${this.allowedExtensions.split(',').map((ext: string) => html`
-              <li><span class="badge badge-success">${ext.trim().toUpperCase()}</span></li>
+              <li><span class="badge badge-secondary">${ext.trim().toUpperCase()}</span></li>
             `)}
             </ul>
           </div>
