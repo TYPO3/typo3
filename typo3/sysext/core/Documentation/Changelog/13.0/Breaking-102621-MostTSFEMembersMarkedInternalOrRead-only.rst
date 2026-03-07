@@ -54,10 +54,10 @@ TYPO3 v13.4, see :ref:`deprecation-105230-1728374467`.
 * :php:`TypoScriptFrontendController->contentPid` - Avoid usages altogether, available as :php:`@internal` call using
   :php:`$request->getAttribute('frontend.page.information')->getContentFromPid()`
 * :php:`TypoScriptFrontendController->sys_page` - Avoid altogether, create own instance using :php:`GeneralUtility::makeInstance(PageRepository::class)`
-* :php:`TypoScriptFrontendController->config` - Use :php:`$request->getAttribute('frontend.typoscript')->getConfigArray()` instead of :php:`config['config']`
+* :php:`TypoScriptFrontendController->config['config']` - Use :php:`$request->getAttribute('frontend.typoscript')->getConfigArray()` instead`
+* :php:`TypoScriptFrontendController->config['rootLine']` - Use :php:`$request->getAttribute('frontend.page.information')->getLocalRootLine()` instead
 * :php:`TypoScriptFrontendController->cObj` - Create an own :php:`ContentObjectRenderer` instance, call :php:`setRequest($request)`
   and :php:`start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages')`
-* :php:`TypoScriptFrontendController->config['rootLine']` - Use :php:`$request->getAttribute('frontend.page.information')->getLocalRootLine()` instead
 
 The following public class properties have been marked :php:`@internal` - in general
 all properties not listed above. They contain information usually not relevant within
@@ -94,7 +94,7 @@ The following methods have been marked :php:`@internal` and may vanish anytime:
 * :php:`TypoScriptFrontendController->uniqueHash()`
 * :php:`TypoScriptFrontendController->set_cache_timeout_default()`
 * :php:`TypoScriptFrontendController->set_no_cache()` - Use :php:`$request->getAttribute('frontend.cache.instruction')->disableCache()` instead
-* :php:`TypoScriptFrontendController->sL()` - Use :php:`GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($request->getAttribute('language'))->sL()`` instead
+* :php:`TypoScriptFrontendController->sL()` - Use :php:`GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($request->getAttribute('language'))->sL()` instead
 * :php:`TypoScriptFrontendController->get_cache_timeout()`
 * :php:`TypoScriptFrontendController->getRequestedId()` - Use :php:`$request->getAttribute('routing')->getPageId()` instead
 * :php:`TypoScriptFrontendController->getLanguage()` - Use :php:`$request->getAttribute('language') ?? $request->getAttribute('site')->getDefaultLanguage()` instead
