@@ -220,11 +220,13 @@ class PasswordRecoveryController extends ActionController
             ->getDefaultHashInstance('FE')
             ->getHashedPassword($newPass);
 
-        $user = $this->userRepository->findOneByForgotPasswordHash($this->hashService->hmac($hash, self::class, HashAlgo::SHA3_256));
+        $hmac = $this->hashService->hmac($hash, self::class, HashAlgo::SHA3_256);
+        $user = $this->userRepository->findOneByForgotPasswordHash($hmac);
+
         $event = new PasswordChangeEvent($user, $hashedPassword, $newPass, $this->request);
         $this->eventDispatcher->dispatch($event);
 
-        $this->userRepository->updatePasswordAndInvalidateHash($this->hashService->hmac($hash, self::class, HashAlgo::SHA3_256), $hashedPassword);
+        $this->userRepository->updatePasswordAndInvalidateHash($hmac, $hashedPassword);
         $this->invalidateUserSessions($user['uid']);
 
         $this->addFlashMessage($this->getTranslation('change_password_done_message'));
