@@ -1,0 +1,23 @@
+diff --git a/node_modules/@ckeditor/ckeditor5-engine/src/view/domconverter.js b/node_modules/@ckeditor/ckeditor5-engine/src/view/domconverter.js
+index a4001e3..9476436 100644
+--- a/node_modules/@ckeditor/ckeditor5-engine/src/view/domconverter.js
++++ b/node_modules/@ckeditor/ckeditor5-engine/src/view/domconverter.js
+@@ -159,8 +159,7 @@ export default class DomConverter {
+         if (attributeKey.startsWith('on')) {
+             return false;
+         }
+-        if (attributeKey === 'srcdoc' &&
+-            attributeValue.match(/\bon\S+\s*=|javascript:|<\s*\/*script/i)) {
++        if (attributeKey === 'srcdoc') {
+             return false;
+         }
+         if (elementName === 'img' &&
+@@ -170,7 +169,7 @@ export default class DomConverter {
+         if (elementName === 'source' && attributeKey === 'srcset') {
+             return true;
+         }
+-        if (attributeValue.match(/^\s*(javascript:|data:(image\/svg|text\/x?html))/i)) {
++        if (attributeValue.replace(/\s+/g, '').match(/^(javascript:|data:(image\/svg|text\/x?html))/i)) {
+             return false;
+         }
+         return true;
