@@ -139,7 +139,7 @@
         <source>Short URL</source>
       </trans-unit>
       <trans-unit id="sys_redirect.short_url.description">
-        <source>The short URL can either be assigned manually or generated. Once saved for the first time, the short URL can no longer be changed.</source>
+        <source>Enter a Short URL or generate a random one automatically. Once saved, the Short URL cannot be changed.</source>
       </trans-unit>
       <trans-unit id="sys_redirect.short_url.shortUrlGenerator">
         <source>Generate Short URL</source>

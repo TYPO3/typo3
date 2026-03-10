@@ -10,7 +10,7 @@
         <source>Short URLs Administration</source>
       </trans-unit>
       <trans-unit id="description">
-        <source>This is the administration area for Short URLs.</source>
+        <source>Create and manage Short URLs that redirect to longer links for easier sharing and tracking.</source>
       </trans-unit>
       <trans-unit id="heading_text">
         <source>Short URL Management</source>
@@ -19,10 +19,10 @@
         <source>Add Short URL</source>
       </trans-unit>
       <trans-unit id="not_found_with_filter.message">
-        <source>With the current set of filters applied, no Short URL could be found.</source>
+        <source>No Short URL could be found with the current set of filters applied.</source>
       </trans-unit>
       <trans-unit id="not_found.title">
-        <source>No Short URLs found.</source>
+        <source>No Short URLs found</source>
       </trans-unit>
       <trans-unit id="not_found.message">
         <source>There are currently no Short URLs found in the database.</source>
@@ -34,7 +34,7 @@
         <source>Delete Short URLs</source>
       </trans-unit>
       <trans-unit id="delete.message">
-        <source>Are you sure you want to delete all marked Short URLs?</source>
+        <source>Delete all marked Short URLs permanently? You cannot undo this action.</source>
       </trans-unit>
       <trans-unit id="show">
         <source>Show Short URL</source>
