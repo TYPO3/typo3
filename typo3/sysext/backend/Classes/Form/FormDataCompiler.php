@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Create and return a defined array of data ready to be used by the
  * container / element render part of FormEngine
  */
-class FormDataCompiler
+readonly class FormDataCompiler
 {
     /**
      * Main entry method maps given data input array and sanitizes some

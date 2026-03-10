@@ -20,7 +20,17 @@ namespace TYPO3\CMS\Backend\Controller\Page;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Form\Processor\SelectItemProcessor;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck;
+use TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca;
+use TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
+use TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -30,11 +40,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -46,15 +53,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class NewMultiplePagesController
+readonly class NewMultiplePagesController
 {
     public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly SelectItemProcessor $selectItemProcessor,
-        protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly ComponentFactory $componentFactory,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected TcaSchemaFactory $tcaSchemaFactory,
+        protected ComponentFactory $componentFactory,
+        protected FormDataCompiler $formDataCompiler,
     ) {}
 
     /**
@@ -112,7 +117,7 @@ class NewMultiplePagesController
                 $view->assign('visiblePages', $visiblePages);
             } else {
                 $hasNewPagesData = false;
-                $view->assign('pageTypes', $this->getTypeSelectData($pageUid));
+                $view->assign('pageTypes', $this->getTypeSelectData($pageUid, $request));
             }
             $view->assign('hasNewPagesData', $hasNewPagesData);
         }
@@ -178,40 +183,34 @@ class NewMultiplePagesController
     /**
      * Page selector type data
      */
-    protected function getTypeSelectData(int $pageUid): array
+    protected function getTypeSelectData(int $pageUid, ServerRequestInterface $request): array
     {
-        $tsConfig = BackendUtility::getPagesTSconfig($pageUid);
-        $pagesTsConfig = $tsConfig['TCEFORM.']['pages.'] ?? [];
+        $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
+        $formDataGroup->setProviderList([
+            InitializeProcessedTca::class,
+            DatabaseParentPageRow::class,
+            DatabaseUserPermissionCheck::class,
+            DatabaseEffectivePid::class,
+            UserTsConfig::class,
+            PageTsConfig::class,
+            DatabaseRowInitializeNew::class,
+            DatabaseUniqueUidNewRow::class,
+            TcaSelectItems::class,
+        ]);
+        $selectItems = $this->formDataCompiler->compile(
+            [
+                'command' => 'new',
+                'request' => $request,
+                'tableName' => 'pages',
+                'vanillaUid' => $pageUid,
+            ],
+            $formDataGroup
+        )['processedTca']['columns']['doktype']['config']['items'] ?? [];
 
-        // Find all available doktypes for the current user
-        $types = [];
-        $schema = $this->tcaSchemaFactory->get('pages');
-        foreach ($schema->getSubSchemata() as $type => $subSchema) {
-            $types[] = (int)$type;
-        }
-
-        if (!$this->getBackendUser()->isAdmin() && isset($this->getBackendUser()->groupData['pagetypes_select'])) {
-            $types = GeneralUtility::intExplode(',', $this->getBackendUser()->groupData['pagetypes_select'], true);
-        }
-        $removeItems = isset($pagesTsConfig['doktype.']['removeItems']) ? GeneralUtility::intExplode(',', $pagesTsConfig['doktype.']['removeItems'], true) : [];
-        $allowedPageTypes = array_diff($types, $removeItems);
-
-        $pageTypeConfig = $schema->getField($schema->getSubSchemaTypeInformation()->getFieldName())->getConfiguration();
-        $availablePageTypes = $this->pageDoktypeRegistry->getAllDoktypes();
-
-        // Filter out unavailable types.
-        $availablePageTypes = array_filter(
-            $availablePageTypes,
-            fn(SelectItem $item): bool => $item->isDivider() || in_array($item->getValue(), $allowedPageTypes, false)
-        );
-
-        // Sort items.
-        $sortedItems = $this->selectItemProcessor->groupAndSortItems($availablePageTypes, $pageTypeConfig['itemGroups'], $pageTypeConfig['sortItems'] ?? []);
-
-        // Collect already sorted items and group them by group label.
         $groupedData = [];
         $groupLabel = '';
-        foreach ($sortedItems as $selectItem) {
+
+        foreach ($selectItems as $selectItem) {
             // If it is a group, save the group label for the children underneath.
             if ($selectItem['value'] === '--div--') {
                 // Dividers defined inside the items array are not translated
