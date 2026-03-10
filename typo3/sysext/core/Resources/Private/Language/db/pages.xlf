@@ -51,6 +51,56 @@
         <source>Type</source>
       </segment>
     </unit>
+    <unit id="doktype.be_user_section">
+      <segment>
+        <source>Backend User Section</source>
+      </segment>
+    </unit>
+    <unit id="doktype.default">
+      <segment>
+        <source>Standard Page</source>
+      </segment>
+    </unit>
+    <unit id="doktype.link">
+      <segment>
+        <source>Link</source>
+      </segment>
+    </unit>
+    <unit id="doktype.mountpoint">
+      <segment>
+        <source>Mount Point</source>
+      </segment>
+    </unit>
+    <unit id="doktype.shortcut">
+      <segment>
+        <source>Shortcut</source>
+      </segment>
+    </unit>
+    <unit id="doktype.spacer">
+      <segment>
+        <source>Menu Separator</source>
+      </segment>
+    </unit>
+    <unit id="doktype.sysfolder">
+      <segment>
+        <source>Folder</source>
+      </segment>
+    </unit>
+    <unit id="doktype.group.link">
+      <segment>
+        <source>Link</source>
+      </segment>
+    </unit>
+    <unit id="doktype.group.page">
+      <segment>
+        <source>Page</source>
+      </segment>
+    </unit>
+    <unit id="doktype.group.special">
+      <segment>
+        <source>Special</source>
+      </segment>
+    </unit>
     <unit id="extend_to_subpages">
       <segment>
         <source>Extend to Subpages</source>

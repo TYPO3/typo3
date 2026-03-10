@@ -66,40 +66,40 @@
       <trans-unit id="pages.palettes.config" x-unused-since="14.0">
         <source>Page TSconfig</source>
       </trans-unit>
-      <trans-unit id="pages.doktype_formlabel">
+      <trans-unit id="pages.doktype_formlabel" x-unused-since="14.2">
         <source>Type</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.I.0">
+      <trans-unit id="pages.doktype.I.0" x-unused-since="14.2">
         <source>Advanced</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.I.2">
+      <trans-unit id="pages.doktype.I.2" x-unused-since="14.2">
         <source>Shortcut</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.I.3">
+      <trans-unit id="pages.doktype.I.3" x-unused-since="14.2">
         <source>Not in Menu</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.I.4">
+      <trans-unit id="pages.doktype.I.4" x-unused-since="14.2">
         <source>Backend User Section</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.I.5">
+      <trans-unit id="pages.doktype.I.5" x-unused-since="14.2">
         <source>Mount Point</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.I.7">
+      <trans-unit id="pages.doktype.I.7" x-unused-since="14.2">
         <source>Menu Separator</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.link">
+      <trans-unit id="pages.doktype.link" x-unused-since="14.2">
         <source>Link</source>
       </trans-unit>
       <trans-unit id="pages.doktype.I.8" x-unused-since="14.0">
         <source>Link to External URL</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.div.page">
+      <trans-unit id="pages.doktype.div.page" x-unused-since="14.2">
         <source>Page</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.div.link">
+      <trans-unit id="pages.doktype.div.link" x-unused-since="14.2">
         <source>Link</source>
       </trans-unit>
-      <trans-unit id="pages.doktype.div.special">
+      <trans-unit id="pages.doktype.div.special" x-unused-since="14.2">
         <source>Special</source>
       </trans-unit>
       <trans-unit id="pages.title_formlabel">

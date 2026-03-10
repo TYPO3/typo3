@@ -402,13 +402,13 @@
       <trans-unit id="pages.nav_hide_toggle_formlabel">
         <source>Page enabled in menus</source>
       </trans-unit>
-      <trans-unit id="doktype.I.0">
+      <trans-unit id="doktype.I.0" x-unused-since="14.2">
         <source>Standard</source>
       </trans-unit>
-      <trans-unit id="doktype.I.1">
+      <trans-unit id="doktype.I.1" x-unused-since="14.2">
         <source>SysFolder</source>
       </trans-unit>
-      <trans-unit id="doktype.I.folder">
+      <trans-unit id="doktype.I.folder" x-unused-since="14.2">
         <source>Folder</source>
       </trans-unit>
       <trans-unit id="title">
