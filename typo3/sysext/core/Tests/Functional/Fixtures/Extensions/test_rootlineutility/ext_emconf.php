@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'RootlineUtility Testing test_rootlineutility',
     'description' => 'RootlineUtility Testing test_rootlineutility',
     'category' => 'example',
-    'version' => '13.4.27',
+    'version' => '13.4.28',
     'state' => 'beta',
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.27',
+            'typo3' => '13.4.28',
         ],
         'conflicts' => [],
         'suggests' => [],
