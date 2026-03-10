@@ -14,6 +14,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.9.1",
     "@ckeditor/ckeditor5-dev-utils": "^42.0.1",
+    "@lodder/grunt-postcss": "^3.1.1",
     "@open-wc/testing": "^4.0.0",
     "@playwright/test": "^1.45.3",
     "@rollup/plugin-commonjs": "^25.0.7",
@@ -155,7 +156,6 @@
     "@lezer/lr": "^1.4.2",
     "@lit/reactive-element": "^2.0.4",
     "@lit/task": "^1.0.1",
-    "@lodder/grunt-postcss": "^3.1.1",
     "@popperjs/core": "^2.11.6",
     "@typo3/icons": "^4.3.1",
     "autosize": "^6.0.1",
@@ -190,7 +190,38 @@
   },
   "overrides": {
     "postcss": "^8.4",
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "lodash": "^4.17.23",
+    "lodash-es": "^4.17.23",
+    "globule": {
+      "minimatch": "^3.1.5"
+    },
+    "grunt": {
+      "minimatch": "^3.1.5"
+    },
+    "lintspaces": {
+      "minimatch": "^3.1.5"
+    },
+    "eslint": {
+      "minimatch": "^3.1.5"
+    },
+    "@eslint/config-array": {
+      "minimatch": "^3.1.5"
+    },
+    "@eslint/eslintrc": {
+      "minimatch": "^3.1.5"
+    },
+    "@rollup/plugin-commonjs": {
+      "glob": {
+        "minimatch": "^5.1.8"
+      }
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^9.0.7"
+    },
+    "serialize-javascript": "^7.0.3",
+    "diff": "^5.2.2",
+    "tar": "^7.5.10"
   },
   "resolutions": {
     "colors": "<1.4.1"
