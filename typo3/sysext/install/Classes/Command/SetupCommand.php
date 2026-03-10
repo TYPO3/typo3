@@ -136,8 +136,8 @@ class SetupCommand extends Command
             ->addOption(
                 'create-site',
                 null,
-                InputOption::VALUE_OPTIONAL,
-                'Create a basic site setup (root page and site configuration) with the given domain',
+                InputOption::VALUE_REQUIRED,
+                'Create a basic site setup (root page and site configuration) with the given domain, ex. "https://my.domain.tld/"',
                 false
             )
             ->addOption(
@@ -622,10 +622,10 @@ EOT
     protected function getSiteSetup(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string|bool
     {
         $urlValidator = static function ($url) {
-            if (empty($url) || in_array(strtolower($url), ['no', 'n'], true)) {
+            if (!is_string($url) || in_array(strtolower($url), ['no', 'n'], true)) {
                 return false;
             }
-            if (!GeneralUtility::isValidUrl($url)) {
+            if (empty($url) || !GeneralUtility::isValidUrl($url)) {
                 throw new \RuntimeException(
                     'Invalid URL provided for the site name. Please provide a valid URL.',
                     1669747625,
@@ -659,11 +659,17 @@ EOT
 
     /**
      * Get a value from
-     * 1. environment variable
-     * 2. cli option
+     *
+     * 1. cli option `$option`
+     * 2. environment variable `$envVar`
+     *
+     * Note that cli option has higher precedences and wins over environment variable.
      */
     protected function getFallbackValueEnvOrOption(InputInterface $input, string $option, string $envVar): string|false
     {
-        return $input->hasParameterOption('--' . $option) ? $input->getOption($option) : getenv($envVar);
+        $value = ($input->hasParameterOption('--' . $option))
+            ? $input->getOption($option)
+            : getenv($envVar);
+        return is_string($value) ? $value : false;
     }
 }
