@@ -339,6 +339,21 @@
       <trans-unit id="staleUnusedElementsWarningTitle">
         <source>Unused elements detected on this page</source>
       </trans-unit>
+      <trans-unit id="orphanedLanguageWarningTitle">
+        <source>Records in untranslated languages</source>
+      </trans-unit>
+      <trans-unit id="orphanedLanguageWarning.untranslated">
+        <source>This page contains records in languages it has not been translated into: %s.</source>
+      </trans-unit>
+      <trans-unit id="orphanedLanguageWarning.notConfigured">
+        <source>This page contains records in languages that are not configured for this site.</source>
+      </trans-unit>
+      <trans-unit id="orphanedLanguageWarning.createPageTranslation">
+        <source>Translate the page into the named languages to edit their records in this module.</source>
+      </trans-unit>
+      <trans-unit id="orphanedLanguageWarning.reviewInRecordsModule">
+        <source>Review them in the Records module.</source>
+      </trans-unit>
       <trans-unit id="localize.chooseLanguage">
         <source>Choose your language</source>
       </trans-unit>

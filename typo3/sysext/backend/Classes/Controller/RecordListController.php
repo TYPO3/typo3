@@ -31,6 +31,7 @@ use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Security\SudoMode\Exception\VerificationRequiredException;
+use TYPO3\CMS\Backend\Service\PageLanguageInformationService;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LanguageSelectorBuilder;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LanguageSelectorMode;
@@ -87,6 +88,7 @@ class RecordListController
         protected readonly PageContextFactory $pageContextFactory,
         protected readonly LanguageSelectorBuilder $languageSelectorBuilder,
         protected readonly RecordIdentityRenderer $recordIdentityRenderer,
+        protected readonly PageLanguageInformationService $pageLanguageInformationService,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -185,6 +187,8 @@ class RecordListController
         $dbList->pageRow = $this->pageContext->pageRecord ?? [];
         $dbList->modTSconfig = $this->modTSconfig;
         $dbList->setLanguagesAllowedForUser($siteLanguages);
+        $orphanedLanguageIds = $this->pageLanguageInformationService->getOrphanedLanguageIds($this->pageContext->languageInformation, $backendUser);
+        $dbList->setOrphanedLanguageIds($orphanedLanguageIds);
         $clickTitleMode = trim($this->modTSconfig['clickTitleMode'] ?? '');
         $dbList->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
         if (isset($this->modTSconfig['tableDisplayOrder'])) {
@@ -228,6 +232,14 @@ class RecordListController
         $view->setTitle($languageService->translate('title', 'backend.modules.list'), $title);
         if (empty($tableListHtml)) {
             $this->addNoRecordsFlashMessage($view, $this->table);
+        }
+        if ($orphanedLanguageIds !== []) {
+            $view->addFlashMessage(
+                $this->pageLanguageInformationService->getOrphanedLanguageMessage($this->pageContext->languageInformation, $orphanedLanguageIds, $languageService)
+                    . ' ' . $languageService->sL('core.mod_web_list:orphanedLanguageWarning.marked'),
+                $languageService->sL('backend.layout:orphanedLanguageWarningTitle'),
+                ContextualFeedbackSeverity::WARNING
+            );
         }
         if ($this->pageContext->pageRecord) {
             $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageContext->pageRecord);

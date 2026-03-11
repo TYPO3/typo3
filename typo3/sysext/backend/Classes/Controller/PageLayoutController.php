@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Service\PageLanguageInformationService;
 use TYPO3\CMS\Backend\Service\PageLinkMessageProvider;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
@@ -95,6 +96,7 @@ class PageLayoutController
         private readonly SchemaLabelResolver $schemaLabelResolver,
         private readonly Context $context,
         private readonly RecordIdentityRenderer $recordIdentityRenderer,
+        private readonly PageLanguageInformationService $pageLanguageInformationService,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -134,6 +136,26 @@ class PageLayoutController
         $pageLocalizationRecord = $this->pageContext->languageInformation->getTranslationRecord($primaryLanguageId);
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
+
+        $orphanedLanguageIds = [];
+        if ($this->moduleProvider->accessGranted('records', $this->getBackendUser())) {
+            $orphanedLanguageIds = $this->pageLanguageInformationService->getOrphanedLanguageIds(
+                $this->pageContext->languageInformation,
+                $this->getBackendUser()
+            );
+        }
+        if ($orphanedLanguageIds !== []) {
+            $orphanedLanguageMessage = $this->pageLanguageInformationService->getOrphanedLanguageMessage($this->pageContext->languageInformation, $orphanedLanguageIds, $languageService);
+            // Site languages the page is not translated into can be created in the language selector
+            if (array_intersect($orphanedLanguageIds, array_keys($this->pageContext->languageInformation->availableLanguages)) !== []) {
+                $orphanedLanguageMessage .= ' ' . $languageService->sL('backend.layout:orphanedLanguageWarning.createPageTranslation');
+            }
+            $view->addFlashMessage(
+                $orphanedLanguageMessage . ' ' . $languageService->sL('backend.layout:orphanedLanguageWarning.reviewInRecordsModule'),
+                $languageService->sL('backend.layout:orphanedLanguageWarningTitle'),
+                ContextualFeedbackSeverity::WARNING
+            );
+        }
 
         $view->setTitle($languageService->translate('title', 'backend.modules.layout'), $this->pageContext->getPageTitle());
         $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageContext->pageRecord);
