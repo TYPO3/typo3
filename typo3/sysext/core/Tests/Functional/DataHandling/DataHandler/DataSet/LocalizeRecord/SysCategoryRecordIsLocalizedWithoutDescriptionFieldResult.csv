@@ -1,0 +1,4 @@
+"sys_category"
+,"uid","pid","sys_language_uid","l10n_parent","title","description"
+,1,0,0,0,"Category title","Category description"
+,2,0,1,1,"Category title",""

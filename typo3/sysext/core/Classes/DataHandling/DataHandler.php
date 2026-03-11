@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\Event\BeforeRemoveNonCopyableFieldsEvent;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
@@ -72,7 +73,6 @@ use TYPO3\CMS\Core\Schema\Field\FieldTranslationBehaviour;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
 use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
-use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -403,14 +403,17 @@ class DataHandler
     protected static array $recordPidsForDeletedRecords = [];
 
     /**
-     * Remove system fields that should not be processed during record copying.
+     * Remove fields that should not be processed during record copying.
      *
      * @param array $row Record row to filter
      * @return array Filtered row without nonFields (uid, perms_*, t3ver_*)
      */
-    protected function removeNonCopyableFields(array $row): array
+    protected function removeNonCopyableFields(string $table, array $row, string $callingOperation): array
     {
-        return array_diff_key($row, array_flip($this->nonFields));
+        $beforeRemoveNonCopyableFieldsEvent = $this->eventDispatcher->dispatch(
+            new BeforeRemoveNonCopyableFieldsEvent($table, $row, $callingOperation, $this->nonFields),
+        );
+        return array_diff_key($row, array_flip($beforeRemoveNonCopyableFieldsEvent->getNonCopyableFields()));
     }
 
     public function __construct(
@@ -3506,7 +3509,8 @@ class DataHandler
         }
 
         $data = [];
-        $row = $this->removeNonCopyableFields($row);
+        $row = $this->removeNonCopyableFields($table, $row, 'copyRecord');
+
         // Traverse ALL fields of the selected record:
         foreach ($row as $field => $value) {
             // Preparation/Processing of the value:
@@ -3806,7 +3810,7 @@ class DataHandler
         unset($preservedSystemFields['uid']);
 
         // Remove non-copyable fields for the processing loop
-        $row = $this->removeNonCopyableFields($row);
+        $row = $this->removeNonCopyableFields($table, $row, 'copyRecord_raw');
 
         // Traverse ALL fields of the selected record:
         foreach ($row as $field => $value) {
@@ -4986,7 +4990,7 @@ class DataHandler
             ? $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getField()
             : null;
 
-        $row = $this->removeNonCopyableFields($row);
+        $row = $this->removeNonCopyableFields($table, $row, 'localizeRecord');
         $data = [];
 
         foreach ($row as $field => $value) {

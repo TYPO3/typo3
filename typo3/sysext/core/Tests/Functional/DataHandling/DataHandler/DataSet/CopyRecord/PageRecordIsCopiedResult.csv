@@ -1,0 +1,5 @@
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody","description"
+,1,0,128,"Root",0,15,""
+,2,1,128,"Dummy 1-2",0,15,"This is a description"
+,3,1,64,"Dummy 1-2 (copy 1)",0,0,"This is a description"
