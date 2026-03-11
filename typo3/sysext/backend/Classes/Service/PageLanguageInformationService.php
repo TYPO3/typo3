@@ -26,8 +26,10 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\LanguageMarker;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -228,6 +230,196 @@ final readonly class PageLanguageInformationService
         }
 
         return $existingTranslations;
+    }
+
+    /**
+     * Get the languages of records on the page which cannot be selected in the language
+     * menu, because the page has no translation into them or the site does not configure
+     * them. Languages the user has no access to are left out. The root level has no page
+     * translations and is therefore not checked.
+     *
+     * Not part of getLanguageInformationForPage(), since it queries every language-aware
+     * table and only the modules listing these records need it.
+     *
+     * @return int[] Sorted language IDs
+     */
+    public function getOrphanedLanguageIds(
+        PageLanguageInformation $languageInformation,
+        BackendUserAuthentication $backendUser
+    ): array {
+        $pageId = $languageInformation->pageId;
+        if ($pageId === 0) {
+            return [];
+        }
+        $cacheKey = 'PageLanguageInformation_orphaned_' . $pageId . '_' . $backendUser->workspace . '_' . $backendUser->getUserId();
+        $cachedLanguageIds = $this->runtimeCache->get($cacheKey);
+        if (is_array($cachedLanguageIds)) {
+            return $cachedLanguageIds;
+        }
+        $selectableLanguageIds = $languageInformation->getAllExistingLanguageIds();
+        $recordLanguageIds = array_unique([
+            ...array_keys($this->fetchExistingTranslations($pageId, $backendUser)),
+            ...$this->fetchRecordLanguageIds($pageId, $selectableLanguageIds, $backendUser),
+        ]);
+        $orphanedLanguageIds = array_values(array_filter(
+            $recordLanguageIds,
+            static fn(int $languageId): bool => !in_array($languageId, $selectableLanguageIds, true)
+                && $backendUser->checkLanguageAccess($languageId)
+        ));
+        sort($orphanedLanguageIds);
+        $this->runtimeCache->set($cacheKey, $orphanedLanguageIds);
+        return $orphanedLanguageIds;
+    }
+
+    /**
+     * Describe orphaned languages for editors: the titles of site languages the page
+     * has not been translated into, and a general note for languages the site does
+     * not configure, whose IDs carry no meaning for editors.
+     *
+     * @param int[] $orphanedLanguageIds
+     */
+    public function getOrphanedLanguageMessage(
+        PageLanguageInformation $languageInformation,
+        array $orphanedLanguageIds,
+        LanguageService $languageService
+    ): string {
+        $untranslatedLanguageTitles = [];
+        $hasUnconfiguredLanguages = false;
+        foreach ($orphanedLanguageIds as $languageId) {
+            if (isset($languageInformation->availableLanguages[$languageId])) {
+                $untranslatedLanguageTitles[] = $languageInformation->availableLanguages[$languageId]->getTitle();
+            } else {
+                $hasUnconfiguredLanguages = true;
+            }
+        }
+        $sentences = [];
+        if ($untranslatedLanguageTitles !== []) {
+            $sentences[] = sprintf(
+                $languageService->sL('backend.layout:orphanedLanguageWarning.untranslated'),
+                implode(', ', $untranslatedLanguageTitles)
+            );
+        }
+        if ($hasUnconfiguredLanguages) {
+            $sentences[] = $languageService->sL('backend.layout:orphanedLanguageWarning.notConfigured');
+        }
+        return implode(' ', $sentences);
+    }
+
+    /**
+     * Distinct language IDs of translated records on the page, which are not selectable,
+     * limited to the records the Records module lists: tables the user may list and which
+     * are not hidden (TCA, mod.web_list.hideTables, mod.web_list.table.<table>.hideTable),
+     * records which are not moved away in the current workspace, and translations only if
+     * they are not hidden by mod.web_list.hideTranslations and are listed below their
+     * parent, which is the case if the parent is on the same page.
+     *
+     * @param int[] $selectableLanguageIds
+     * @return int[]
+     */
+    private function fetchRecordLanguageIds(int $pageId, array $selectableLanguageIds, BackendUserAuthentication $backendUser): array
+    {
+        $listModuleTsConfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_list.'] ?? [];
+        $hiddenTables = GeneralUtility::trimExplode(',', (string)($listModuleTsConfig['hideTables'] ?? ''), true);
+        $hideTranslations = (string)($listModuleTsConfig['hideTranslations'] ?? '');
+        $languageIds = [];
+        foreach ($this->tcaSchemaFactory->all() as $schema) {
+            $tableName = $schema->getName();
+            if ($tableName === 'pages'
+                || !$schema->isLanguageAware()
+                || !$schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->canExistOnPages()
+                || !$backendUser->check('tables_select', $tableName)
+            ) {
+                continue;
+            }
+            // Same as DatabaseRecordList::getTablesToRender()
+            $hideTable = $schema->hasCapability(TcaSchemaCapability::HideInUi)
+                || in_array($tableName, $hiddenTables, true)
+                || in_array('*', $hiddenTables, true);
+            if ((bool)($listModuleTsConfig['table.'][$tableName . '.']['hideTable'] ?? $hideTable)) {
+                continue;
+            }
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $languageField = $languageCapability->getLanguageField()->getName();
+            $translationParentField = $languageCapability->getTranslationOriginPointerField()->getName();
+            $queryBuilder = $this->getListedRecordsQueryBuilder($tableName, $pageId, $backendUser, [$languageField, $translationParentField]);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->gt($languageField, $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT))
+            );
+            if ($selectableLanguageIds !== []) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->notIn($languageField, $queryBuilder->createNamedParameter($selectableLanguageIds, Connection::PARAM_INT_ARRAY))
+                );
+            }
+            if ($hideTranslations === '*' || GeneralUtility::inList($hideTranslations, $tableName)) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq($translationParentField, 0));
+            }
+            $translationParentIds = [];
+            foreach ($this->fetchListedRecords($tableName, $queryBuilder, $backendUser) as $row) {
+                $languageId = (int)$row[$languageField];
+                $translationParentId = (int)$row[$translationParentField];
+                if ($translationParentId === 0) {
+                    $languageIds[$languageId] = $languageId;
+                } else {
+                    $translationParentIds[$languageId][] = $translationParentId;
+                }
+            }
+            $translationParentIds = array_diff_key($translationParentIds, $languageIds);
+            if ($translationParentIds === []) {
+                continue;
+            }
+            // Translations are listed below their parent, if it is a record in default language on the same page
+            $queryBuilder = $this->getListedRecordsQueryBuilder($tableName, $pageId, $backendUser, [$languageField, $translationParentField]);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter(array_unique(array_merge(...array_values($translationParentIds))), Connection::PARAM_INT_ARRAY)),
+                $queryBuilder->expr()->eq($languageField, $queryBuilder->createNamedParameter(LanguageMarker::DEFAULT_LANGUAGE, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq($translationParentField, 0)
+            );
+            $listedParentIds = array_column($this->fetchListedRecords($tableName, $queryBuilder, $backendUser), 'uid');
+            foreach ($translationParentIds as $languageId => $parentIds) {
+                if (array_intersect($parentIds, $listedParentIds) !== []) {
+                    $languageIds[$languageId] = $languageId;
+                }
+            }
+        }
+        return array_values($languageIds);
+    }
+
+    /**
+     * @param string[] $fields
+     */
+    private function getListedRecordsQueryBuilder(string $tableName, int $pageId, BackendUserAuthentication $backendUser, array $fields): QueryBuilder
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(new DeletedRestriction())
+            ->add(new WorkspaceRestriction($backendUser->workspace));
+        if ($this->tcaSchemaFactory->get($tableName)->isWorkspaceAware()) {
+            $fields = [...$fields, 't3ver_oid', 't3ver_state', 't3ver_wsid'];
+        }
+        return $queryBuilder
+            ->select('uid', 'pid', ...$fields)
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT))
+            );
+    }
+
+    /**
+     * Fetch the records with workspace overlay, leaving out records moved away in the
+     * workspace, like DatabaseRecordList does.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function fetchListedRecords(string $tableName, QueryBuilder $queryBuilder, BackendUserAuthentication $backendUser): array
+    {
+        $rows = [];
+        foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $row) {
+            BackendUtility::workspaceOL($tableName, $row, $backendUser->workspace, true);
+            if (is_array($row)) {
+                $rows[] = $row;
+            }
+        }
+        return $rows;
     }
 
     /**

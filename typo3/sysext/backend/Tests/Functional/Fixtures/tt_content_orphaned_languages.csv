@@ -1,0 +1,11 @@
+"pages"
+,"uid","pid","title","sys_language_uid","l10n_parent"
+,1202,1000,"XX: Features in unknown language",9,1200
+,1211,1200,"FR: Frontend Editing",1,1210
+"tt_content"
+,"uid","pid","header","CType","sys_language_uid","l18n_parent"
+,9001,1200,"EN: Features content","text",0,0
+,9002,1200,"FR: Content without page translation","text",1,0
+,9003,1200,"XX: Content in unknown language","text",9,0
+,9004,1200,"FR: Connected translation without page translation","text",1,9001
+,9005,1210,"FR: Content on subpage with page translation","text",1,0

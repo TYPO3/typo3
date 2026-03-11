@@ -1,0 +1,42 @@
+"pages"
+,"uid","pid","title","perms_everybody","sys_language_uid","l10n_parent","TSconfig"
+,1,0,"Page with German translation",31,0,0,""
+,2,0,"German translation of page 1",31,1,1,""
+,3,0,"Page with translation in unknown language",31,0,0,""
+,4,0,"Translation of page 3 in unknown language 7",31,7,3,""
+,5,0,"Page with record moved away in workspace 1",31,0,0,""
+,6,0,"Page with record moved here in workspace 1",31,0,0,""
+,7,0,"Page hiding content in the Records module",31,0,0,"mod.web_list.hideTables = tt_content"
+,8,0,"Page hiding translations in the Records module",31,0,0,"mod.web_list.hideTranslations = *"
+,9,0,"Page with translations without parent on the page",31,0,0,""
+"tt_content"
+,"uid","pid","header","sys_language_uid","l18n_parent","deleted","t3ver_wsid","t3ver_oid","t3ver_state"
+,1,1,"Default",0,0,0,0,0,0
+,2,1,"German",1,1,0,0,0,0
+,3,1,"French without page translation",2,1,0,0,0,0
+,4,1,"Unknown language 5",5,0,0,0,0,0
+,5,1,"Spanish, new in workspace 1",3,0,0,1,0,1
+,6,1,"Deleted, unknown language 4",4,0,1,0,0,0
+,7,5,"Unknown language 9, moved to page 6 in workspace 1",9,0,0,0,0,0
+,8,6,"Move of record 7 in workspace 1",9,0,0,1,7,4
+,9,7,"Unknown language 5 in table hidden by TSconfig",5,0,0,0,0,0
+,10,8,"Default",0,0,0,0,0,0
+,11,8,"French translation hidden by TSconfig",2,10,0,0,0,0
+,12,8,"Unknown language 5",5,0,0,0,0,0
+,13,9,"French translation of a missing record",2,99,0,0,0,0
+,14,9,"French translation of a record on page 1",2,1,0,0,0,0
+"sys_category"
+,"uid","pid","title","sys_language_uid","l10n_parent"
+,1,0,"Root category",0,0
+,2,0,"Root category German",1,1
+,3,1,"Category in unknown language 6",6,0
+,4,7,"Category in unknown language 6",6,0
+"sys_workspace"
+,"uid","pid","title"
+,1,0,"Workspace"
+"be_users"
+,"uid","pid","username","usergroup","deleted","admin"
+,10,0,"editor-with-language-restriction",10,0,0
+"be_groups"
+,"uid","pid","title","deleted","db_mountpoints","tables_select","allowed_languages"
+,10,0,"editors with language restriction",0,1,"tt_content,sys_category","0,2"

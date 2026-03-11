@@ -417,6 +417,14 @@ class DatabaseRecordList
     protected array $languagesAllowedForUser = [];
 
     /**
+     * Languages of records on the listed page which cannot be selected,
+     * because the page has no translation into them or the site does not configure them.
+     *
+     * @var int[]
+     */
+    protected array $orphanedLanguageIds = [];
+
+    /**
      * A runtime first-level cache to avoid unneeded calls to BackendUtility::getRecord()
      */
     protected array $pagePermsCache = [];
@@ -836,15 +844,19 @@ class DatabaseRecordList
                     // Guard clause so we can quickly return if a record is localized to "all languages"
                     // It should only be possible to localize a record off default (uid 0)
                     $filterLanguages = $this->getSelectedLanguageIds();
+                    // Translations in orphaned languages of records on the listed page are shown as well
+                    $translationFilterLanguages = $table !== 'pages' && $record->getPid() === $this->id
+                        ? [...$filterLanguages, ...$this->orphanedLanguageIds]
+                        : $filterLanguages;
                     $rowLanguage = ($languageFieldName !== '' ? ($record->getRawRecord()->toArray()[$languageFieldName] ?? false) : false);
                     if ($l10nEnabled && $rowLanguage !== LanguageMarker::ALL_LANGUAGES) {
                         $translationsRaw = $this->translateTools->translationInfo($table, $record->getUid(), 0, $record->getRawRecord()->toArray(), '*');
                         if (is_array($translationsRaw)) {
                             $translationEnabled = true;
                             $translations = $translationsRaw['translations'] ?? [];
-                            // Filter translations to only show those in selected languages
-                            $translations = array_filter($translations, static function (array $translation) use ($languageFieldName, $filterLanguages): bool {
-                                return in_array((int)($translation[$languageFieldName] ?? LanguageMarker::DEFAULT_LANGUAGE), $filterLanguages, true);
+                            // Filter translations to only show those in selected or orphaned languages
+                            $translations = array_filter($translations, static function (array $translation) use ($languageFieldName, $translationFilterLanguages): bool {
+                                return in_array((int)($translation[$languageFieldName] ?? LanguageMarker::DEFAULT_LANGUAGE), $translationFilterLanguages, true);
                             });
                         }
                     }
@@ -1246,6 +1258,10 @@ class DatabaseRecordList
             $tagAttributes['class'][] = 'active';
         }
         $tagAttributes['class'][] = 't3js-entity';
+
+        if ($this->isRecordInOrphanedLanguage($table, $record)) {
+            $tagAttributes['class'][] = 'outdated';
+        }
 
         // Preparing and getting the data-array
         $theData = [];
@@ -2604,14 +2620,29 @@ class DatabaseRecordList
             $filterLanguages = $this->getSelectedLanguageIds();
             if (!empty($filterLanguages)) {
                 $allowedLanguages = [LanguageMarker::ALL_LANGUAGES, ...$filterLanguages];
+                $languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+                $languageConstraint = $queryBuilder->expr()->in(
+                    $languageFieldName,
+                    $queryBuilder->createNamedParameter($allowedLanguages, Connection::PARAM_INT_ARRAY)
+                );
+                // Records in orphaned languages of the listed page are shown regardless of the
+                // selection: records stored on the page, or translations of the page itself.
+                if ($this->orphanedLanguageIds !== [] && ($table !== 'pages' || $this->showOnlyTranslatedRecords)) {
+                    $orphanedLanguageConstraint = $queryBuilder->expr()->in(
+                        $languageFieldName,
+                        $queryBuilder->createNamedParameter($this->orphanedLanguageIds, Connection::PARAM_INT_ARRAY)
+                    );
+                    if ($table !== 'pages') {
+                        $orphanedLanguageConstraint = $queryBuilder->expr()->and(
+                            $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)),
+                            $orphanedLanguageConstraint
+                        );
+                    }
+                    $languageConstraint = $queryBuilder->expr()->or($languageConstraint, $orphanedLanguageConstraint);
+                }
 
                 // Filter to only show records in the selected languages
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->in(
-                        $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
-                        $queryBuilder->createNamedParameter($allowedLanguages, Connection::PARAM_INT_ARRAY)
-                    )
-                );
+                $queryBuilder->andWhere($languageConstraint);
 
                 // For tables other than 'pages', only show original records (l10n_parent = 0).
                 // Page translations need to appear as separate records, but content translations
@@ -2639,7 +2670,7 @@ class DatabaseRecordList
             $queryBuilder->andWhere($queryBuilder->expr()->in(
                 $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
                 $queryBuilder->quoteArrayBasedValueListToIntegerList(
-                    array_keys($this->languagesAllowedForUser)
+                    [...array_keys($this->languagesAllowedForUser), ...$this->orphanedLanguageIds]
                 )
             ));
         }
@@ -3346,15 +3377,48 @@ class DatabaseRecordList
         }
 
         $languageInformation = $this->translateTools->getSystemLanguages($pageId);
-        $title = htmlspecialchars($languageInformation[$languageUid]['title'] ?? '');
         $indent = !$this->showOnlyTranslatedRecords && $this->isLocalized($record) ? '<span class="indent indent-inline-block" style="--indent-level: 1"></span> ' : '';
-        if ($languageInformation[$languageUid]['flagIcon'] ?? false) {
-            return $indent . $this->iconFactory
-                ->getIcon($languageInformation[$languageUid]['flagIcon'], IconSize::SMALL)
+
+        $title = htmlspecialchars($languageInformation[$languageUid]['title'] ?? '');
+        $flagIcon = $languageInformation[$languageUid]['flagIcon'] ?? '';
+        $warningIcon = '';
+        if ($this->isRecordInOrphanedLanguage($table, $record)) {
+            if (isset($languageInformation[$languageUid])) {
+                $warning = $this->getLanguageService()->sL('core.mod_web_list:orphanedLanguage.noPageTranslation');
+            } else {
+                $warning = sprintf($this->getLanguageService()->sL('core.mod_web_list:orphanedLanguage'), $languageUid);
+                $title = htmlspecialchars($warning);
+                $flagIcon = '';
+            }
+            $warningIcon = $this->iconFactory
+                ->getIcon('actions-exclamation-triangle', IconSize::SMALL)
+                ->setTitle($warning)
+                ->render() . ' ';
+        }
+        if ($flagIcon) {
+            return $indent . $warningIcon . $this->iconFactory
+                ->getIcon($flagIcon, IconSize::SMALL)
                 ->setTitle($title)
                 ->render() . ' ' . $title;
         }
-        return $title;
+        return $warningIcon === '' ? $title : $indent . $warningIcon . $title;
+    }
+
+    /**
+     * Whether the record is on the listed page (or, for pages, is a translation of it) and
+     * in a language that cannot be selected for that page.
+     */
+    protected function isRecordInOrphanedLanguage(string $table, RecordInterface $record): bool
+    {
+        $schema = $this->tcaSchemaFactory->get($table);
+        if ($this->orphanedLanguageIds === [] || !$schema->isLanguageAware()) {
+            return false;
+        }
+        if ($table === 'pages' ? !$this->showOnlyTranslatedRecords : $record->getPid() !== $this->id) {
+            return false;
+        }
+        $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+        return in_array((int)($record->getRawRecord()?->toArray()[$languageField] ?? 0), $this->orphanedLanguageIds, true);
     }
 
     /**
@@ -3614,6 +3678,15 @@ class DatabaseRecordList
     public function setLanguagesAllowedForUser(array $languagesAllowedForUser): DatabaseRecordList
     {
         $this->languagesAllowedForUser = $languagesAllowedForUser;
+        return $this;
+    }
+
+    /**
+     * @param int[] $orphanedLanguageIds
+     */
+    public function setOrphanedLanguageIds(array $orphanedLanguageIds): DatabaseRecordList
+    {
+        $this->orphanedLanguageIds = $orphanedLanguageIds;
         return $this;
     }
 

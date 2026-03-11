@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\RecordList\Event\AfterRecordListRowPreparedEvent;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Service\PageLanguageInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\RawRecord;
@@ -375,6 +376,94 @@ final class DatabaseRecordListTest extends FunctionalTestCase
         // The localization panel should NOT be present at all
         // because only default language is selected and page has no translations
         self::assertStringNotContainsString('t3js-action-localize', $listHtml);
+    }
+
+    #[Test]
+    public function recordsInLanguagesWithoutPageTranslationAreListedAndMarked(): void
+    {
+        $xpath = $this->renderListOfPageWithOrphanedLanguages('tt_content');
+
+        self::assertSame([9002, 9003, 9004], $this->getMarkedRowUids($xpath, 'tt_content'));
+        self::assertCount(1, $xpath->query('//tr[@data-table="tt_content"][@data-uid="9001"]'));
+        $languageColumn = $xpath->query('//tr[@data-uid="9002"]')->item(0)->textContent;
+        self::assertStringContainsString('French', $languageColumn);
+        self::assertStringContainsString('Unknown language [ID: 9]', $xpath->query('//tr[@data-uid="9003"]')->item(0)->textContent);
+    }
+
+    #[Test]
+    public function translationsOfSubpagesInOrphanedLanguagesAreNotListedOrMarked(): void
+    {
+        $xpath = $this->renderListOfPageWithOrphanedLanguages('pages');
+
+        self::assertCount(1, $xpath->query('//tr[@data-table="pages"][@data-uid="1210"]'));
+        self::assertCount(0, $xpath->query('//tr[@data-table="pages"][@data-uid="1211"]'));
+        self::assertSame([], $this->getMarkedRowUids($xpath, 'pages'));
+    }
+
+    #[Test]
+    public function recordsOfSubpagesInOrphanedLanguagesAreNotListedOrMarkedInSearch(): void
+    {
+        $xpath = $this->renderListOfPageWithOrphanedLanguages('tt_content', false, 'Content', 1);
+
+        self::assertCount(0, $xpath->query('//tr[@data-table="tt_content"][@data-uid="9005"]'));
+        self::assertSame([9002, 9003, 9004], $this->getMarkedRowUids($xpath, 'tt_content'));
+    }
+
+    #[Test]
+    public function pageTranslationInOrphanedLanguageIsListedAndMarked(): void
+    {
+        $xpath = $this->renderListOfPageWithOrphanedLanguages('pages', true);
+
+        self::assertSame([1202], $this->getMarkedRowUids($xpath, 'pages'));
+    }
+
+    private function renderListOfPageWithOrphanedLanguages(string $table, bool $showOnlyTranslatedRecords = false, string $searchString = '', int $searchLevels = 0): \DOMXPath
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/tt_content_orphaned_languages.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1000, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', '/fr'),
+                $this->buildLanguageConfiguration('FR-CA', '/fr-ca'),
+                $this->buildLanguageConfiguration('ES', '/es'),
+            ]
+        );
+        $site = $this->get(SiteFinder::class)->getSiteByIdentifier('test');
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
+            ->withAttribute('site', $site);
+        $pageContext = $this->get(PageContextFactory::class)->createWithLanguages($request, 1200, [0], $this->backendUser);
+        $orphanedLanguageIds = $this->get(PageLanguageInformationService::class)
+            ->getOrphanedLanguageIds($pageContext->languageInformation, $this->backendUser);
+        self::assertSame([1, 9], $orphanedLanguageIds);
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request->withAttribute('pageContext', $pageContext));
+        $recordList->setLanguagesAllowedForUser($site->getAvailableLanguages($this->backendUser, false, 1200));
+        $recordList->setOrphanedLanguageIds($orphanedLanguageIds);
+        $recordList->showOnlyTranslatedRecords($showOnlyTranslatedRecords);
+        $recordList->start(1200, $table, 0, $searchString, $searchLevels);
+
+        $listHtml = preg_replace('/(<svg.*<\/svg>)/Uui', '', $showOnlyTranslatedRecords ? $recordList->getTable($table) : $recordList->generateList());
+        libxml_use_internal_errors(true);
+        $dom = new \DOMDocument();
+        $dom->loadHTML($listHtml ?: '<html></html>');
+        return new \DOMXPath($dom);
+    }
+
+    /**
+     * @return int[]
+     */
+    private function getMarkedRowUids(\DOMXPath $xpath, string $table): array
+    {
+        $uids = [];
+        foreach ($xpath->query('//tr[@data-table="' . $table . '"][contains(concat(" ", @class, " "), " outdated ")]/@data-uid') as $uidAttribute) {
+            $uids[] = (int)$uidAttribute->nodeValue;
+        }
+        sort($uids);
+        return $uids;
     }
 
     #[Test]
