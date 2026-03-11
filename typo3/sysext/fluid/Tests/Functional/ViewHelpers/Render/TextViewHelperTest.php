@@ -31,6 +31,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\Parser\UnsafeHTML;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 use TYPO3Fluid\Fluid\View\TemplateView;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\TtContent;
@@ -151,7 +152,7 @@ final class TextViewHelperTest extends FunctionalTestCase
         yield 'throwsForInvalidRecordObject' => [
             'record' => new \stdClass(),
             'templateSource' => '<f:render.text record="{record}" field="bodytext" />',
-            'exception' => \InvalidArgumentException::class,
+            'exception' => InvalidArgumentValueException::class,
             'exceptionCode' => 1256475113,
             'exceptionMessage' => 'The argument "record" was registered with type',
         ];

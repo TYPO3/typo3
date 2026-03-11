@@ -31,6 +31,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Event\ModifyRenderedRecordEvent;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class RecordViewHelperTest extends FunctionalTestCase
@@ -122,7 +123,7 @@ final class RecordViewHelperTest extends FunctionalTestCase
         $view = new TemplateView($context);
         $view->assign('record', $record);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage('The argument "record" was registered with type');
         $this->expectExceptionCode(1256475113);
 

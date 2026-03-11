@@ -34,6 +34,7 @@ use TYPO3\CMS\Fluid\Event\ModifyRenderedContentAreaEvent;
 use TYPO3\CMS\Fluid\Event\ModifyRenderedRecordEvent;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ContentAreaViewHelperTest extends FunctionalTestCase
@@ -140,7 +141,7 @@ final class ContentAreaViewHelperTest extends FunctionalTestCase
         $view = new TemplateView($context);
         $view->assign('contentArea', $contentArea);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage('The argument "contentArea" was registered with type');
         $this->expectExceptionCode(1256475113);
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10885c0ab3e97557e20d96850864394c",
+    "content-hash": "d8f625ddc2d014a5299edf5cd3602fc6",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5280,16 +5280,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "5.1.1",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "9d563f3b169593548b01f45447f74e7cf454a268"
+                "reference": "dce7467c2bfd4c8fea3edbb7983664bdc6f51882"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/9d563f3b169593548b01f45447f74e7cf454a268",
-                "reference": "9d563f3b169593548b01f45447f74e7cf454a268",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/dce7467c2bfd4c8fea3edbb7983664bdc6f51882",
+                "reference": "dce7467c2bfd4c8fea3edbb7983664bdc6f51882",
                 "shasum": ""
             },
             "require": {
@@ -5299,12 +5299,12 @@
             "require-dev": {
                 "ext-json": "*",
                 "ext-simplexml": "*",
-                "friendsofphp/php-cs-fixer": "^3.59.3",
-                "phpstan/phpstan": "^2.1.17",
-                "phpstan/phpstan-phpunit": "^2.0.6",
-                "phpunit/phpunit": "^11.5.22 || ^12.2.1",
-                "psr/container": "^2.0",
-                "t3docs/fluid-documentation-generator": "^4.3"
+                "friendsofphp/php-cs-fixer": "^3.94.2",
+                "phpstan/phpstan": "^2.1.40",
+                "phpstan/phpstan-phpunit": "^2.0.16",
+                "phpunit/phpunit": "^11.5.55 || ^12.5.14 || ^13.0.5",
+                "psr/container": "^2.0.2",
+                "t3docs/fluid-documentation-generator": "^4.4.2"
             },
             "suggest": {
                 "ext-json": "PHP JSON is needed when using JSONVariableProvider: A relatively rare use case",
@@ -5335,7 +5335,7 @@
                 "issues": "https://github.com/TYPO3/Fluid/issues",
                 "source": "https://github.com/TYPO3/Fluid"
             },
-            "time": "2026-02-20T13:34:40+00:00"
+            "time": "2026-03-11T11:10:11+00:00"
         },
         {
             "name": "webmozart/assert",
