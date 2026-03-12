@@ -10,12 +10,16 @@
 <f:render partial="Pages/Header" arguments="{_all}"/>
 
 <f:render section="Stage" optional="true">
+    <!--TYPO3SEARCH_begin-->
     <f:render.contentArea contentArea="{content.stage}"/>
+    <!--TYPO3SEARCH_end-->
 </f:render>
 
 <main class="page__content {f:if(condition: '{site.configuration.settings.camino.header.fixedPosition}', then: 'page__content--fixed')}">
     <f:render section="Main" optional="true">
+        <!--TYPO3SEARCH_begin-->
         <f:render.contentArea contentArea="{content.content}"/>
+        <!--TYPO3SEARCH_end-->
     </f:render>
 </main>
 
