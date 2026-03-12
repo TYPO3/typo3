@@ -609,7 +609,7 @@ class SetupModuleController
                             'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' . $more .
                             ' value="' . $avatarFileUid . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
 
-                    $html .= '<typo3-formengine-container-files><div class="form-group"><div class="form-group"><div class="form-control-wrap">';
+                    $html .= '<div class="form-group"><div class="form-group"><div class="form-control-wrap">';
                     $html .= '<button type="button" id="add_button_' . htmlspecialchars($fieldName)
                         . '" class="btn btn-default"'
                         . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.openFileBrowser')) . '"'
@@ -627,7 +627,7 @@ class SetupModuleController
                         . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:avatar.clear'))
                         . '</button>';
                     }
-                    $html .= '</div></div></div></typo3-formengine-container-files>';
+                    $html .= '</div></div></div>';
                     break;
                 case 'mfa':
                     $label = $this->getLabel($config['label'] ?? '');
