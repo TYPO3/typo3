@@ -413,6 +413,12 @@ class RedirectRepository
             );
         }
 
+        if ($demand->hasIntegrityStatus()) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('integrity_status', $queryBuilder->createNamedParameter($demand->getIntegrityStatus(), Connection::PARAM_STR))
+            );
+        }
+
         $queryBuilder->executeStatement();
     }
 
