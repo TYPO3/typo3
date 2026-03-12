@@ -87,7 +87,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     public function renderPageModulePreviewHeader(GridColumnItem $item): string
     {
         $this->initialize();
-        $record = $item->getRecord();
+        $record = $item->getRecord()->getRawRecord() ?? $item->getRecord();
         $request = $item->getContext()->getCurrentRequest();
         $schema = $this->tcaSchemaFactory->get($item->getTable());
         $outHeader = '';
@@ -263,7 +263,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     {
         $this->initialize();
         $info = [];
-        $record = $item->getRecord();
+        $record = $item->getRecord()->getRawRecord() ?? $item->getRecord();
         $schema = $this->tcaSchemaFactory->get($item->getTable());
         if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
             $info[] = $this->fieldProcessor->prepareFieldWithLabel($record, $schema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName());
@@ -325,7 +325,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     {
         $fieldArr = is_array($fieldList) ? $fieldList : explode(',', $fieldList);
         foreach ($fieldArr as $field) {
-            $fieldValue = $this->fieldProcessor->prepareFieldWithLabel($item->getRecord(), $field);
+            $fieldValue = $this->fieldProcessor->prepareFieldWithLabel($item->getRecord()->getRawRecord() ?? $item->getRecord(), $field);
             if ($fieldValue !== null) {
                 $info[] = $fieldValue;
             }

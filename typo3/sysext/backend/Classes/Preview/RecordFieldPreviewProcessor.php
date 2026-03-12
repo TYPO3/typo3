@@ -66,7 +66,9 @@ final class RecordFieldPreviewProcessor
             if ($value !== '' && $value !== null) {
                 $itemLabels = $this->getItemLabels($record);
                 $fieldValue = BackendUtility::getProcessedValue($table, $fieldName, $value, 0, false, false, $record->getUid(), true, $record->getPid(), $record->getRawRecord()->toArray()) ?? '';
-                return htmlspecialchars((string)($itemLabels[$fieldName] ?? '')) . ': ' . htmlspecialchars((string)$fieldValue);
+                if ($fieldValue !== '') {
+                    return htmlspecialchars((string)($itemLabels[$fieldName] ?? '')) . ': ' . htmlspecialchars((string)$fieldValue);
+                }
             }
         }
         return null;
@@ -82,7 +84,9 @@ final class RecordFieldPreviewProcessor
             $value = $record->get($fieldName);
             if ($value !== '' && $value !== null) {
                 $fieldValue = BackendUtility::getProcessedValue($table, $fieldName, $value, 0, false, false, $record->getUid(), true, $record->getPid(), $record->getRawRecord()->toArray()) ?? '';
-                return htmlspecialchars((string)$fieldValue);
+                if ($fieldValue !== '') {
+                    return htmlspecialchars((string)$fieldValue);
+                }
             }
         }
         return null;
