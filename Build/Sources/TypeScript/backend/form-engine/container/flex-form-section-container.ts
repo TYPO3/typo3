@@ -107,7 +107,6 @@ class FlexFormSectionContainer {
 
     this.updateToggleAllState();
     this.flexformContainerContainers.splice(e.newIndex, 0, this.flexformContainerContainers.splice(e.oldIndex, 1)[0]);
-    document.dispatchEvent(new Event('formengine:flexform:sorting-changed'));
   };
 
   private registerToggleAll(): void {

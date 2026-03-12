@@ -754,7 +754,6 @@ class InlineControlContainer extends HTMLElement {
 
     (<HTMLInputElement>formField).value = records.join(',');
     FormEngine.markFieldAsChanged(formField);
-    document.dispatchEvent(new Event('inline:sorting-changed'));
     document.dispatchEvent(new Event('change'));
 
     this.redrawSortingButtons(this.objectGroup, records);

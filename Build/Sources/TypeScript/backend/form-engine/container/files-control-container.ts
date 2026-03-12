@@ -536,7 +536,6 @@ class FilesControlContainer extends HTMLElement {
 
     (<HTMLInputElement>formField).value = records.join(',');
     FormEngine.markFieldAsChanged(formField);
-    document.dispatchEvent(new Event('formengine:files:sorting-changed'));
     document.dispatchEvent(new Event('change'));
 
     this.redrawSortingButtons(this.container.dataset.objectGroup, records);
