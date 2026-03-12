@@ -94,24 +94,19 @@ interface UniqueDefinitionUsed {
   uid: string | number;
 }
 
-class InlineControlContainer {
-  private container: HTMLElement = null;
+class InlineControlContainer extends HTMLElement {
   private ajaxDispatcher: AjaxDispatcher = null;
   private appearance: Appearance = null;
   private requestQueue: RequestQueue = {};
   private progressQueue: ProgressQueue = {};
   private readonly noTitleString: string = (coreCoreLabels.get('labels.no_title'));
 
-  /**
-   * @param {string} elementId
-   */
-  constructor(elementId: string) {
-    DocumentService.ready().then((document: Document): void => {
-      this.container = <HTMLElement>document.getElementById(elementId);
-      this.ajaxDispatcher = new AjaxDispatcher(this.container.dataset.objectGroup);
+  public get objectGroup(): string {
+    return this.dataset.objectGroup;
+  }
 
-      this.registerEvents();
-    });
+  public get formField(): string {
+    return this.dataset.formField;
   }
 
   /**
@@ -253,7 +248,13 @@ class InlineControlContainer {
     selectElement.insertBefore(readdOption, selectElement.options[index]);
   }
 
-  private registerEvents(): void {
+  public connectedCallback(): void {
+    this.ajaxDispatcher = new AjaxDispatcher(this.objectGroup);
+    this.registerEvents();
+  }
+
+  private async registerEvents(): Promise<void> {
+    await DocumentService.ready();
     this.registerInfoButton();
     this.registerSort();
     this.registerCreateRecordButton();
@@ -269,7 +270,7 @@ class InlineControlContainer {
     new RegularEvent('message', this.handlePostMessage).bindTo(window);
 
     if (this.getAppearance().useSortable) {
-      const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
+      const recordListContainer = <HTMLDivElement>document.getElementById(this.id + '_records');
       // tslint:disable-next-line:no-unused-expression
       new Sortable(recordListContainer, {
         group: recordListContainer.getAttribute('id'),
@@ -287,7 +288,7 @@ class InlineControlContainer {
       e.stopImmediatePropagation();
 
       this.loadRecordDetails(targetElement.closest(Selectors.toggleSelector).parentElement.dataset.objectId);
-    }).delegateTo(this.container, `${Selectors.toggleSelector} .form-irre-header-cell:not(${Selectors.controlSectionSelector}`);
+    }).delegateTo(this, `${Selectors.toggleSelector} .form-irre-header-cell:not(${Selectors.controlSectionSelector}`);
   }
 
   private registerSort(): void {
@@ -299,7 +300,7 @@ class InlineControlContainer {
         (<HTMLDivElement>targetElement.closest('[data-object-id]')).dataset.objectId,
         <SortDirections>targetElement.dataset.direction,
       );
-    }).delegateTo(this.container, Selectors.controlSectionSelector + ' [data-action="sort"]');
+    }).delegateTo(this, Selectors.controlSectionSelector + ' [data-action="sort"]');
   }
 
   private registerCreateRecordButton(): void {
@@ -308,14 +309,14 @@ class InlineControlContainer {
       e.stopImmediatePropagation();
 
       if (this.isBelowMax()) {
-        let objectId = this.container.dataset.objectGroup;
+        let objectId = this.objectGroup;
         if (typeof targetElement.dataset.recordUid !== 'undefined') {
           objectId += Separators.structureSeparator + targetElement.dataset.recordUid;
         }
 
-        this.importRecord([objectId, (this.container.querySelector(Selectors.createNewRecordBySelectorSelector) as HTMLInputElement)?.value], targetElement.dataset.recordUid ?? null);
+        this.importRecord([objectId, (this.querySelector(Selectors.createNewRecordBySelectorSelector) as HTMLInputElement)?.value], targetElement.dataset.recordUid ?? null);
       }
-    }).delegateTo(this.container, Selectors.createNewRecordButtonSelector);
+    }).delegateTo(this, Selectors.createNewRecordButtonSelector);
   }
 
   private registerCreateRecordBySelector(): void {
@@ -326,8 +327,8 @@ class InlineControlContainer {
       const selectTarget = <HTMLSelectElement>targetElement;
       const recordUid = selectTarget.options[selectTarget.selectedIndex].getAttribute('value');
 
-      this.importRecord([this.container.dataset.objectGroup, recordUid]);
-    }).delegateTo(this.container, Selectors.createNewRecordBySelectorSelector);
+      this.importRecord([this.objectGroup, recordUid]);
+    }).delegateTo(this, Selectors.createNewRecordBySelectorSelector);
   }
 
   /**
@@ -343,7 +344,7 @@ class InlineControlContainer {
         throw 'No object group defined for message';
       }
 
-      if (e.data.objectGroup !== this.container.dataset.objectGroup) {
+      if (e.data.objectGroup !== this.objectGroup) {
         // Received message isn't provisioned for current InlineControlContainer instance
         return;
       }
@@ -367,7 +368,7 @@ class InlineControlContainer {
     }
 
     if (e.data.actionName === 'typo3:foreignRelation:delete') {
-      if (e.data.objectGroup !== this.container.dataset.objectGroup) {
+      if (e.data.objectGroup !== this.objectGroup) {
         // Received message isn't provisioned for current FilesContainer instance
         return;
       }
@@ -385,7 +386,7 @@ class InlineControlContainer {
    * @param {string} selectedValue
    */
   private createRecord(uid: string, markup: string, afterUid: string = null, selectedValue: string = null): void {
-    let objectId = this.container.dataset.objectGroup;
+    let objectId = this.objectGroup;
     if (afterUid !== null) {
       objectId += Separators.structureSeparator + afterUid;
     }
@@ -394,7 +395,7 @@ class InlineControlContainer {
       InlineControlContainer.getInlineRecordContainer(objectId).insertAdjacentHTML('afterend', markup);
       this.memorizeAddRecord(uid, afterUid, selectedValue);
     } else {
-      document.getElementById(this.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', markup);
+      document.getElementById(this.id + '_records').insertAdjacentHTML('beforeend', markup);
       this.memorizeAddRecord(uid, null, selectedValue);
     }
   }
@@ -451,7 +452,7 @@ class InlineControlContainer {
       Icons.getIcon(toggleIcon, Icons.sizes.small).then((markup: string): void => {
         target.replaceChild(document.createRange().createContextualFragment(markup), target.querySelector('.t3js-icon'));
       });
-    }).delegateTo(this.container, Selectors.enableDisableRecordButtonSelector);
+    }).delegateTo(this, Selectors.enableDisableRecordButtonSelector);
   }
 
   private registerInfoButton(): void {
@@ -460,7 +461,7 @@ class InlineControlContainer {
       e.stopImmediatePropagation();
 
       InfoWindow.showItem(this.dataset.infoTable, this.dataset.infoUid);
-    }).delegateTo(this.container, Selectors.infoWindowButton);
+    }).delegateTo(this, Selectors.infoWindowButton);
   }
 
   private registerDeleteButton(): void {
@@ -491,7 +492,7 @@ class InlineControlContainer {
 
         modal.hideModal();
       });
-    }).delegateTo(this.container, Selectors.deleteRecordButtonSelector);
+    }).delegateTo(this, Selectors.deleteRecordButtonSelector);
   }
 
   /**
@@ -504,11 +505,11 @@ class InlineControlContainer {
 
       this.ajaxDispatcher.send(
         this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_synchronizelocalize')),
-        [this.container.dataset.objectGroup, targetElement.dataset.type],
+        [this.objectGroup, targetElement.dataset.type],
       ).then(async (response: InlineResponseInterface): Promise<void> => {
-        document.getElementById(this.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
+        document.getElementById(this.id + '_records').insertAdjacentHTML('beforeend', response.data);
 
-        const objectIdPrefix = this.container.dataset.objectGroup + Separators.structureSeparator;
+        const objectIdPrefix = this.objectGroup + Separators.structureSeparator;
         for (const itemUid of response.compilerInput.delete) {
           this.deleteRecord(objectIdPrefix + itemUid, true);
         }
@@ -522,7 +523,7 @@ class InlineControlContainer {
           this.memorizeAddRecord(item.uid, null, item.selectedValue);
         }
       });
-    }).delegateTo(this.container, Selectors.synchronizeLocalizeRecordButtonSelector);
+    }).delegateTo(this, Selectors.synchronizeLocalizeRecordButtonSelector);
   }
 
   private registerUniqueSelectFieldChanged(): void {
@@ -542,7 +543,7 @@ class InlineControlContainer {
         }
         this.updateUnique(<HTMLSelectElement>targetElement, formField, objectUid);
       }
-    }).delegateTo(this.container, Selectors.uniqueValueSelectors);
+    }).delegateTo(this, Selectors.uniqueValueSelectors);
   }
 
   private registerRevertUniquenessAction(): void {
@@ -551,7 +552,7 @@ class InlineControlContainer {
       e.stopImmediatePropagation();
 
       this.revertUnique(targetElement.dataset.uid);
-    }).delegateTo(this.container, Selectors.revertUniqueness);
+    }).delegateTo(this, Selectors.revertUniqueness);
   }
 
   /**
@@ -582,7 +583,7 @@ class InlineControlContainer {
 
           FormEngine.reinitialize();
           FormEngineValidation.initializeInputFields();
-          FormEngineValidation.validate(this.container);
+          FormEngineValidation.validate(this);
 
           if (this.hasObjectGroupDefinedUniqueConstraints()) {
             const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
@@ -670,7 +671,7 @@ class InlineControlContainer {
     FormEngine.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('change'));
 
-    this.redrawSortingButtons(this.container.dataset.objectGroup, records);
+    this.redrawSortingButtons(this.objectGroup, records);
     this.setUnique(newUid, selectedValue);
 
     if (!this.isBelowMax()) {
@@ -679,7 +680,7 @@ class InlineControlContainer {
 
     FormEngine.reinitialize();
     FormEngineValidation.initializeInputFields();
-    FormEngineValidation.validate(this.container);
+    FormEngineValidation.validate(this);
   }
 
   /**
@@ -701,7 +702,7 @@ class InlineControlContainer {
       FormEngine.markFieldAsChanged(formField);
       document.dispatchEvent(new Event('change'));
 
-      this.redrawSortingButtons(this.container.dataset.objectGroup, records);
+      this.redrawSortingButtons(this.objectGroup, records);
     }
 
     return records;
@@ -714,7 +715,7 @@ class InlineControlContainer {
   private changeSortingByButton(objectId: string, direction: SortDirections): void {
     const currentRecordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
     const recordUid = currentRecordContainer.dataset.objectUid;
-    const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
+    const recordListContainer = <HTMLDivElement>document.getElementById(this.id + '_records');
     const records = Array.from(recordListContainer.children).map((child: HTMLElement) => child.dataset.objectUid);
     const position = records.indexOf(recordUid);
     let isChanged = false;
@@ -730,7 +731,7 @@ class InlineControlContainer {
     }
 
     if (isChanged) {
-      const objectIdPrefix = this.container.dataset.objectGroup + Separators.structureSeparator;
+      const objectIdPrefix = this.objectGroup + Separators.structureSeparator;
       const adjustment = direction === SortDirections.UP ? 1 : 0;
       currentRecordContainer.parentElement.insertBefore(
         InlineControlContainer.getInlineRecordContainer(objectIdPrefix + records[position - adjustment]),
@@ -747,8 +748,8 @@ class InlineControlContainer {
       return;
     }
 
-    const recordListContainer = <HTMLDivElement>document.getElementById(this.container.getAttribute('id') + '_records');
-    const records = Array.from(recordListContainer.querySelectorAll(selector`[data-object-parent-group="${this.container.dataset.objectGroup}"][data-placeholder-record="0"]`))
+    const recordListContainer = <HTMLDivElement>document.getElementById(this.id + '_records');
+    const records = Array.from(recordListContainer.querySelectorAll(selector`[data-object-parent-group="${this.objectGroup}"][data-placeholder-record="0"]`))
       .map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
@@ -756,7 +757,7 @@ class InlineControlContainer {
     document.dispatchEvent(new Event('inline:sorting-changed'));
     document.dispatchEvent(new Event('change'));
 
-    this.redrawSortingButtons(this.container.dataset.objectGroup, records);
+    this.redrawSortingButtons(this.objectGroup, records);
   }
 
   /**
@@ -770,7 +771,7 @@ class InlineControlContainer {
     recordContainer.classList.add('t3js-inline-record-deleted');
 
     if (!InlineControlContainer.isNewRecord(objectId) && !forceDirectRemoval) {
-      const deleteCommandInput = this.container.querySelector(selector`[name="cmd${recordContainer.dataset.fieldName}[delete]"]`);
+      const deleteCommandInput = this.querySelector(selector`[name="cmd${recordContainer.dataset.fieldName}[delete]"]`);
       deleteCommandInput.removeAttribute('disabled');
 
       // Move input field to inline container so we can remove the record container
@@ -779,7 +780,7 @@ class InlineControlContainer {
 
     new RegularEvent('transitionend', (): void => {
       recordContainer.remove();
-      FormEngineValidation.validate(this.container);
+      FormEngineValidation.validate(this);
     }).bindTo(recordContainer);
 
     this.revertUnique(objectUid);
@@ -795,7 +796,7 @@ class InlineControlContainer {
    * @param {boolean} visible
    */
   private toggleContainerControls(visible: boolean): void {
-    const controlContainer = this.container.querySelectorAll(
+    const controlContainer = this.querySelectorAll(
       ':scope > ' + Selectors.controlContainer
     );
     controlContainer.forEach((container: HTMLElement): void => {
@@ -835,7 +836,7 @@ class InlineControlContainer {
           continue;
         }
 
-        const recordObjectId = this.container.dataset.objectGroup + Separators.structureSeparator + recordUid;
+        const recordObjectId = this.objectGroup + Separators.structureSeparator + recordUid;
         const recordContainer = InlineControlContainer.getInlineRecordContainer(recordObjectId);
         if (recordContainer.classList.contains(States.visible)) {
           InlineControlContainer.collapseElement(recordContainer, recordObjectId);
@@ -856,7 +857,7 @@ class InlineControlContainer {
    * @return HTMLInputElement | void
    */
   private getFormFieldForElements(): HTMLInputElement | null {
-    const formFields = document.getElementsByName(this.container.dataset.formField);
+    const formFields = document.getElementsByName(this.formField);
     if (formFields.length > 0) {
       return <HTMLInputElement>formFields[0];
     }
@@ -926,14 +927,14 @@ class InlineControlContainer {
       return true;
     }
 
-    if (typeof TYPO3.settings.FormEngineInline.config[this.container.dataset.objectGroup] !== 'undefined') {
+    if (typeof TYPO3.settings.FormEngineInline.config[this.objectGroup] !== 'undefined') {
       const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
-      if (records.length >= TYPO3.settings.FormEngineInline.config[this.container.dataset.objectGroup].max) {
+      if (records.length >= TYPO3.settings.FormEngineInline.config[this.objectGroup].max) {
         return false;
       }
 
       if (this.hasObjectGroupDefinedUniqueConstraints()) {
-        const unique = TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup];
+        const unique = TYPO3.settings.FormEngineInline.unique[this.objectGroup];
         if (unique.used.length >= unique.max && unique.max >= 0) {
           return false;
         }
@@ -952,7 +953,7 @@ class InlineControlContainer {
       return false;
     }
 
-    const unique: UniqueDefinition = TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup];
+    const unique: UniqueDefinition = TYPO3.settings.FormEngineInline.unique[this.objectGroup];
     const values = InlineControlContainer.getValuesFromHashMap(unique.used);
 
     if (unique.type === 'select' && values.indexOf(uid) !== -1) {
@@ -979,7 +980,7 @@ class InlineControlContainer {
       return;
     }
 
-    const unique: UniqueDefinition = TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup];
+    const unique: UniqueDefinition = TYPO3.settings.FormEngineInline.unique[this.objectGroup];
     if (unique.type !== 'select') {
       return;
     }
@@ -1008,13 +1009,13 @@ class InlineControlContainer {
       return;
     }
     const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.getElementById(
-      this.container.dataset.objectGroup + '_selector',
+      this.objectGroup + '_selector',
     );
-    const unique: UniqueDefinition = TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup];
+    const unique: UniqueDefinition = TYPO3.settings.FormEngineInline.unique[this.objectGroup];
     if (unique.type === 'select') {
       if (!(unique.selector && unique.max === -1)) {
         const formField = this.getFormFieldForElements();
-        const recordObjectId = this.container.dataset.objectGroup + Separators.structureSeparator + recordUid;
+        const recordObjectId = this.objectGroup + Separators.structureSeparator + recordUid;
         const recordContainer = InlineControlContainer.getInlineRecordContainer(recordObjectId);
         let uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
           '[name="data[' + unique.table + '][' + recordUid + '][' + unique.field + ']"]',
@@ -1031,7 +1032,7 @@ class InlineControlContainer {
               selectedValue = uniqueValueField.options[0].value;
               uniqueValueField.options[0].selected = true;
               this.updateUnique(uniqueValueField, formField, recordUid);
-              this.handleChangedField(uniqueValueField, this.container.dataset.objectGroup + '[' + recordUid + ']');
+              this.handleChangedField(uniqueValueField, this.objectGroup + '[' + recordUid + ']');
             }
           }
           for (const value of values) {
@@ -1085,12 +1086,12 @@ class InlineControlContainer {
     if (!this.hasObjectGroupDefinedUniqueConstraints()) {
       return;
     }
-    const unique = TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup];
+    const unique = TYPO3.settings.FormEngineInline.unique[this.objectGroup];
     const oldValue = unique.used[recordUid];
 
     if (unique.selector === 'select') {
       const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.getElementById(
-        this.container.dataset.objectGroup + '_selector',
+        this.objectGroup + '_selector',
       );
       InlineControlContainer.removeSelectOptionByValue(selectorElement, srcElement.value);
       if (typeof oldValue !== 'undefined') {
@@ -1130,8 +1131,8 @@ class InlineControlContainer {
       return;
     }
 
-    const unique = TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup];
-    const recordObjectId = this.container.dataset.objectGroup + Separators.structureSeparator + recordUid;
+    const unique = TYPO3.settings.FormEngineInline.unique[this.objectGroup];
+    const recordObjectId = this.objectGroup + Separators.structureSeparator + recordUid;
     const recordContainer = InlineControlContainer.getInlineRecordContainer(recordObjectId);
 
     const uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
@@ -1150,7 +1151,7 @@ class InlineControlContainer {
       if (unique.selector === 'select') {
         if (!isNaN(parseInt(uniqueValue, 10))) {
           const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.getElementById(
-            this.container.dataset.objectGroup + '_selector',
+            this.objectGroup + '_selector',
           );
           InlineControlContainer.reAddSelectOption(selectorElement, uniqueValue, unique);
         }
@@ -1188,7 +1189,7 @@ class InlineControlContainer {
    */
   private hasObjectGroupDefinedUniqueConstraints(): boolean {
     return typeof TYPO3.settings.FormEngineInline.unique !== 'undefined'
-      && typeof TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup] !== 'undefined';
+      && typeof TYPO3.settings.FormEngineInline.unique[this.objectGroup] !== 'undefined';
   }
 
   /**
@@ -1212,9 +1213,9 @@ class InlineControlContainer {
     if (this.appearance === null) {
       this.appearance = {};
 
-      if (typeof this.container.dataset.appearance === 'string') {
+      if (typeof this.dataset.appearance === 'string') {
         try {
-          this.appearance = JSON.parse(this.container.dataset.appearance);
+          this.appearance = JSON.parse(this.dataset.appearance);
         } catch (e) {
           console.error(e);
         }
@@ -1225,4 +1226,10 @@ class InlineControlContainer {
   }
 }
 
-export default InlineControlContainer;
+window.customElements.define('typo3-formengine-container-inline', InlineControlContainer);
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-formengine-container-inline': InlineControlContainer;
+  }
+}

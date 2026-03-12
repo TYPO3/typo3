@@ -272,19 +272,15 @@ class InlineControlContainer extends AbstractContainer
         }
 
         $formGroupAttributes = [
-            'class' => 'form-group',
             'id' => $nameObject,
-            'data-uid' => (string)$row['uid'],
-            'data-local-table' => (string)$top['table'],
-            'data-local-field' => (string)$top['field'],
-            'data-foreign-table' => (string)$foreign_table,
+            'class' => 'form-group',
             'data-object-group' => $nameObject . '-' . $foreign_table,
             'data-form-field' => $nameForm,
             'data-appearance' => (string)json_encode($config['appearance'] ?? ''),
         ];
 
-        // Wrap all inline fields of a record with a <div> (like a container)
-        $html = '<div ' . GeneralUtility::implodeAttributes($formGroupAttributes, true) . '>';
+        // Wrap all inline fields of a record with a custom element (container)
+        $html = '<typo3-formengine-container-inline ' . GeneralUtility::implodeAttributes($formGroupAttributes, true) . '>';
 
         $fieldInformationResult = $this->renderFieldInformation();
         $html .= $fieldInformationResult['html'];
@@ -363,7 +359,7 @@ class InlineControlContainer extends AbstractContainer
         $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $this->javaScriptModules);
         $resultArray['javaScriptModules'][] = JavaScriptModuleInstruction::create(
             '@typo3/backend/form-engine/container/inline-control-container.js'
-        )->instance($nameObject);
+        );
 
         // Publish the uids of the child records in the given order to the browser
         $html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $sortableRecordUids) . '" '
@@ -376,7 +372,7 @@ class InlineControlContainer extends AbstractContainer
             . '"'
             . ' class="inlineRecord" />';
         // Close the wrap for all inline fields (container)
-        $html .= '</div>';
+        $html .= '</typo3-formengine-container-inline>';
 
         $resultArray['html'] = $this->wrapWithFieldsetAndLegend($html);
         return $resultArray;
