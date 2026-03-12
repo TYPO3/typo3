@@ -225,7 +225,7 @@ class ServerResponseCheck implements CheckInterface
             UriBuilder::ABSOLUTE_URL
         );
         try {
-            $client = new Client(['timeout' => 10]);
+            $client = new Client($this->getHttpClientOptions());
             $response = $client->request('GET', (string)$url, [
                 'headers' => ['Host' => $randomHost],
                 'allow_redirects' => false,
@@ -264,7 +264,7 @@ class ServerResponseCheck implements CheckInterface
     protected function processFileDeclarations(FlashMessageQueue $messageQueue): void
     {
         $promises = [];
-        $client = new Client(['timeout' => 10]);
+        $client = new Client($this->getHttpClientOptions());
         foreach ($this->fileDeclarations as $fileDeclaration) {
             $promises[] = $client->requestAsync('GET', $fileDeclaration->getUrl());
         }
@@ -375,5 +375,14 @@ class ServerResponseCheck implements CheckInterface
             return $before . htmlspecialchars($value) . $after;
         }
         return $value;
+    }
+
+    protected function getHttpClientOptions(): array
+    {
+        $options = ['timeout' => 10];
+        if (isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
+            $options['auth'] = [$_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']];
+        }
+        return $options;
     }
 }
