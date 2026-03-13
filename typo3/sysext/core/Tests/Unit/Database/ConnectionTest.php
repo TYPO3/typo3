@@ -409,7 +409,27 @@ final class ConnectionTest extends UnitTestCase
         self::assertSame('Mock 5.7.11', $connectionMock->getPlatformServerVersion());
     }
 
-    private function createConnectionMock(?AbstractPlatform $platform = null): Connection&MockObject
+    #[Test]
+    public function getPlatformServerVersionPrefersServerVersionFromParams(): void
+    {
+        $connectionMock = $this->createConnectionMock(null, ['serverVersion' => '10.11.16-MariaDB-ubu2204']);
+        $connectionMock
+            ->method('getServerVersion')
+            ->willReturn('10.6.0');
+        self::assertSame('Mock 10.11.16-MariaDB-ubu2204', $connectionMock->getPlatformServerVersion());
+    }
+
+    #[Test]
+    public function getPlatformServerVersionPrefersPrimaryServerVersionFromParams(): void
+    {
+        $connectionMock = $this->createConnectionMock(null, ['primary' => ['serverVersion' => '10.11.16-MariaDB-ubu2204']]);
+        $connectionMock
+            ->method('getServerVersion')
+            ->willReturn('10.6.0');
+        self::assertSame('Mock 10.11.16-MariaDB-ubu2204', $connectionMock->getPlatformServerVersion());
+    }
+
+    private function createConnectionMock(?AbstractPlatform $platform = null, array $params = []): Connection&MockObject
     {
         $platform ??= new MockPlatform();
         $connectionMock = $this->getMockBuilder(Connection::class)
@@ -426,7 +446,7 @@ final class ConnectionTest extends UnitTestCase
                     'getServerVersion',
                 ]
             )
-            ->setConstructorArgs([[], $this->createMock(AbstractMySQLDriver::class), new Configuration(), null])
+            ->setConstructorArgs([$params, $this->createMock(AbstractMySQLDriver::class), new Configuration(), null])
             ->getMock();
         $connectionMock
             ->method('getExpressionBuilder')
