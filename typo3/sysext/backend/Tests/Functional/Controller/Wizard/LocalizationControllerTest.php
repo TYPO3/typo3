@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Wizard;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Wizard\LocalizationController;
 use TYPO3\CMS\Backend\Localization\LocalizationMode;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -547,5 +549,87 @@ final class LocalizationControllerTest extends FunctionalTestCase
         $result = json_decode((string)$response->getBody(), true);
         self::assertCount(1, $result, 'Should only return one source language after content is added');
         self::assertEquals(0, $result[0]['uid'], 'Should only offer English as source language');
+    }
+
+    public static function rootLevelRecordPermissionDataProvider(): \Generator
+    {
+        foreach (['getTargets', 'getModes', 'getSources'] as $endpoint) {
+            yield $endpoint . ' for admin' => [$endpoint, 1, 200];
+            yield $endpoint . ' for editor with tables_modify' => [$endpoint, 10, 200];
+            yield $endpoint . ' for editor without tables_modify' => [$endpoint, 11, 403];
+        }
+    }
+
+    #[DataProvider('rootLevelRecordPermissionDataProvider')]
+    #[Test]
+    public function wizardEndpointsCheckTableAccessForRootLevelRecords(string $endpoint, int $backendUserId, int $expectedStatusCode): void
+    {
+        $request = $this->setUpRootLevelScenario($backendUserId);
+        $subject = $this->get(LocalizationController::class);
+
+        $response = match ($endpoint) {
+            'getTargets' => $subject->getTargets($request),
+            'getModes' => $subject->getModes($request),
+            'getSources' => $subject->getSources($request),
+            default => self::fail('Unknown endpoint ' . $endpoint),
+        };
+
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function rootLevelRecordOfTableKeepingTheRootLevelRestrictionIsDeniedForEditors(): void
+    {
+        unset($GLOBALS['TCA']['sys_file_metadata']['ctrl']['security']['ignoreRootLevelRestriction']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $request = $this->setUpRootLevelScenario(10);
+
+        $response = $this->get(LocalizationController::class)->getTargets($request);
+
+        self::assertEquals(403, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function getTargetsReturnsTargetLanguagesForRootLevelRecord(): void
+    {
+        $request = $this->setUpRootLevelScenario(10);
+
+        $response = $this->get(LocalizationController::class)->getTargets($request);
+
+        self::assertEquals(200, $response->getStatusCode());
+        $result = json_decode((string)$response->getBody(), true);
+        self::assertEquals([1, 2], array_column($result, 'uid'), 'Dansk and Deutsch are offered as targets');
+    }
+
+    #[Test]
+    public function getTargetsRespectsLanguageAccessForRootLevelRecord(): void
+    {
+        $request = $this->setUpRootLevelScenario(12);
+
+        $response = $this->get(LocalizationController::class)->getTargets($request);
+
+        self::assertEquals(200, $response->getStatusCode());
+        $result = json_decode((string)$response->getBody(), true);
+        self::assertEquals([1], array_column($result, 'uid'), 'Only Dansk is allowed for this editor');
+    }
+
+    /**
+     * Imports a sys_file_metadata record on the root level, initializes the given
+     * backend user and returns the request for the wizard endpoints.
+     */
+    private function setUpRootLevelScenario(int $backendUserId): ServerRequest
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_editors.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_file_metadata.csv');
+        $backendUser = $this->setUpBackendUser($backendUserId);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $request = new ServerRequest();
+
+        return $request->withQueryParams([
+            'recordType' => 'sys_file_metadata',
+            'recordUid' => 1,
+            'targetLanguage' => self::LANGUAGE_PRESETS['DA']['id'],
+        ]);
     }
 }

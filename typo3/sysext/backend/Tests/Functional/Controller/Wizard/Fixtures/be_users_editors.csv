@@ -1,0 +1,10 @@
+"be_groups"
+,"uid","pid","title","tables_select","tables_modify","allowed_languages"
+,10,0,"Editor with sys_file_metadata access","sys_file_metadata","sys_file_metadata",""
+,11,0,"Editor without sys_file_metadata access","tt_content","tt_content",""
+,12,0,"Editor restricted to Dansk","sys_file_metadata","sys_file_metadata","1"
+"be_users"
+,"uid","pid","username","usergroup","admin","deleted","disable"
+,10,0,"editor-with-table-access",10,0,0,0
+,11,0,"editor-without-table-access",11,0,0,0
+,12,0,"editor-language-restricted",12,0,0,0
