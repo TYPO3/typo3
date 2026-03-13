@@ -1,0 +1,1695 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="lo" datatype="plaintext" original="EXT:core/Resources/Private/Language/countries.xlf" product-name="typo3/cms-core">
+    <body>
+      <trans-unit id="AD.name" approved="yes">
+        <source>Andorra</source>
+        <target>ປະເທດອັງດອກ</target>
+      </trans-unit>
+      <trans-unit id="AD.official_name" approved="yes">
+        <source>Principality of Andorra</source>
+        <target>ລາຊະລັດ ອັງດອກ</target>
+      </trans-unit>
+      <trans-unit id="AE.name" approved="yes">
+        <source>United Arab Emirates</source>
+        <target>ສະຫະລັດອາຣັບເອມີເຣດ</target>
+      </trans-unit>
+      <trans-unit id="AF.name" approved="yes">
+        <source>Afghanistan</source>
+        <target>ອັບການິດສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="AF.official_name" approved="yes">
+        <source>Islamic Republic of Afghanistan</source>
+        <target>ສາທາລະນະລັດ ອິດສະລາມ ອັບການິດສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="AG.name" approved="yes">
+        <source>Antigua and Barbuda</source>
+        <target>ແອນຕິກາ ແລະ ບາບູດາ</target>
+      </trans-unit>
+      <trans-unit id="AI.name" approved="yes">
+        <source>Anguilla</source>
+        <target>ອັງກິລາ</target>
+      </trans-unit>
+      <trans-unit id="AL.name" approved="yes">
+        <source>Albania</source>
+        <target>ອານບານີ</target>
+      </trans-unit>
+      <trans-unit id="AL.official_name" approved="yes">
+        <source>Republic of Albania</source>
+        <target>ສາທາລະນະລັດ ອານບານີ</target>
+      </trans-unit>
+      <trans-unit id="AM.name" approved="yes">
+        <source>Armenia</source>
+        <target>ປະເທດອາກເມນີ</target>
+      </trans-unit>
+      <trans-unit id="AM.official_name" approved="yes">
+        <source>Republic of Armenia</source>
+        <target>ສາທາລະນະລັດ ອາກເມນີ</target>
+      </trans-unit>
+      <trans-unit id="AO.name" approved="yes">
+        <source>Angola</source>
+        <target>ປະເທດອັງໂກລາ</target>
+      </trans-unit>
+      <trans-unit id="AO.official_name" approved="yes">
+        <source>Republic of Angola</source>
+        <target>ສາທາລະນະລັດ ອັງໂກລາ</target>
+      </trans-unit>
+      <trans-unit id="AQ.name" approved="yes">
+        <source>Antarctica</source>
+        <target>ແອນຕາກຕິກາ</target>
+      </trans-unit>
+      <trans-unit id="AR.name" approved="yes">
+        <source>Argentina</source>
+        <target>ອາກຊັງຕີນ</target>
+      </trans-unit>
+      <trans-unit id="AR.official_name" approved="yes">
+        <source>Argentine Republic</source>
+        <target>ສາທາລະນະລັດ ອາກຊັງຕີນ</target>
+      </trans-unit>
+      <trans-unit id="AS.name" approved="yes">
+        <source>American Samoa</source>
+        <target>ອາເມຣິກັນຊາມົວ</target>
+      </trans-unit>
+      <trans-unit id="AT.name" approved="yes">
+        <source>Austria</source>
+        <target>ປະເທດໂອຕະລິດ</target>
+      </trans-unit>
+      <trans-unit id="AT.official_name" approved="yes">
+        <source>Republic of Austria</source>
+        <target>ສາທາລະນະລັດ ໂອຕະລິດ</target>
+      </trans-unit>
+      <trans-unit id="AU.name" approved="yes">
+        <source>Australia</source>
+        <target>ປະເທດອົດສະຕາລີ</target>
+      </trans-unit>
+      <trans-unit id="AW.name" approved="yes">
+        <source>Aruba</source>
+        <target>ອາຣູບາ</target>
+      </trans-unit>
+      <trans-unit id="AX.name" approved="yes">
+        <source>Åland Islands</source>
+        <target>ໝູ່ເກາະໂອແລນ</target>
+      </trans-unit>
+      <trans-unit id="AZ.name" approved="yes">
+        <source>Azerbaijan</source>
+        <target>ປະເທດອາແຊກບາຍຊັງ</target>
+      </trans-unit>
+      <trans-unit id="AZ.official_name" approved="yes">
+        <source>Republic of Azerbaijan</source>
+        <target>ສາທາລະນະລັດ ອາແຊກບາຍຊັງ</target>
+      </trans-unit>
+      <trans-unit id="BA.name" approved="yes">
+        <source>Bosnia and Herzegovina</source>
+        <target>ປະເທດບົດສະນີແຮກເຊໂກວີນ</target>
+      </trans-unit>
+      <trans-unit id="BA.official_name" approved="yes">
+        <source>Republic of Bosnia and Herzegovina</source>
+        <target>ສາທາລະນະລັດ ບົດສະນີ ແລະ ແຮກເຊໂກວີນ</target>
+      </trans-unit>
+      <trans-unit id="BB.name" approved="yes">
+        <source>Barbados</source>
+        <target>ບາບາໂດດ</target>
+      </trans-unit>
+      <trans-unit id="BD.name" approved="yes">
+        <source>Bangladesh</source>
+        <target>ປະເທດບັງກະລາເທດ</target>
+      </trans-unit>
+      <trans-unit id="BD.official_name" approved="yes">
+        <source>People's Republic of Bangladesh</source>
+        <target>ສາທາລະນະລັດ ປະຊາຊົນ ບັງກະລາເທດ</target>
+      </trans-unit>
+      <trans-unit id="BE.name" approved="yes">
+        <source>Belgium</source>
+        <target>ປະເທດແບນຊິກ</target>
+      </trans-unit>
+      <trans-unit id="BE.official_name" approved="yes">
+        <source>Kingdom of Belgium</source>
+        <target>ລາຊະອານາຈັກ ແບນຊິກ</target>
+      </trans-unit>
+      <trans-unit id="BF.name" approved="yes">
+        <source>Burkina Faso</source>
+        <target>ບູກິນາ ຟາໂຊ</target>
+      </trans-unit>
+      <trans-unit id="BG.name" approved="yes">
+        <source>Bulgaria</source>
+        <target>ປະເທດບູນກາລີ</target>
+      </trans-unit>
+      <trans-unit id="BG.official_name" approved="yes">
+        <source>Republic of Bulgaria</source>
+        <target>ສາທາລະນະລັດ ບູນກາລີ</target>
+      </trans-unit>
+      <trans-unit id="BH.name" approved="yes">
+        <source>Bahrain</source>
+        <target>ບາເຣນ</target>
+      </trans-unit>
+      <trans-unit id="BH.official_name" approved="yes">
+        <source>Kingdom of Bahrain</source>
+        <target>ລາຊະອານາຈັກ ບາເຣນ</target>
+      </trans-unit>
+      <trans-unit id="BI.name" approved="yes">
+        <source>Burundi</source>
+        <target>ບູຣຸນດີ</target>
+      </trans-unit>
+      <trans-unit id="BI.official_name" approved="yes">
+        <source>Republic of Burundi</source>
+        <target>ສາທາລະນະລັດ ບູຣຸນດີ</target>
+      </trans-unit>
+      <trans-unit id="BJ.name" approved="yes">
+        <source>Benin</source>
+        <target>ເບນິນ</target>
+      </trans-unit>
+      <trans-unit id="BJ.official_name" approved="yes">
+        <source>Republic of Benin</source>
+        <target>ສາທາລະນະລັດ ເບນິນ</target>
+      </trans-unit>
+      <trans-unit id="BL.name" approved="yes">
+        <source>Saint Barthélemy</source>
+        <target>ເຊນ ບາເທເລມີ</target>
+      </trans-unit>
+      <trans-unit id="BM.name" approved="yes">
+        <source>Bermuda</source>
+        <target>ເບີມິວດາ</target>
+      </trans-unit>
+      <trans-unit id="BN.name" approved="yes">
+        <source>Brunei Darussalam</source>
+        <target>ບຣູໄນ ດາຣຸດຊາລາມ</target>
+      </trans-unit>
+      <trans-unit id="BO.name" approved="yes">
+        <source>Bolivia, Plurinational State of</source>
+        <target>ໂບລີວີ, ລັດພະຫຸຊົນຊາດ</target>
+      </trans-unit>
+      <trans-unit id="BO.official_name" approved="yes">
+        <source>Plurinational State of Bolivia</source>
+        <target>ລັດພະຫຸຊົນຊາດ ໂບລີວີ</target>
+      </trans-unit>
+      <trans-unit id="BQ.name" approved="yes">
+        <source>Bonaire, Sint Eustatius and Saba</source>
+        <target>ໂບແນ, ຊິນເອືອສະຕາຊຽດ ແລະ ຊາບາ</target>
+      </trans-unit>
+      <trans-unit id="BQ.official_name" approved="yes">
+        <source>Bonaire, Sint Eustatius and Saba</source>
+        <target>ໂບແນ, ຊິນເອືອສະຕາຊຽດ ແລະ ຊາບາ</target>
+      </trans-unit>
+      <trans-unit id="BR.name" approved="yes">
+        <source>Brazil</source>
+        <target>ປະເທດບະເລຊິນ</target>
+      </trans-unit>
+      <trans-unit id="BR.official_name" approved="yes">
+        <source>Federative Republic of Brazil</source>
+        <target>ສາທາລະນະລັດ ສະຫະພັນ ບະເລຊິນ</target>
+      </trans-unit>
+      <trans-unit id="BS.name" approved="yes">
+        <source>Bahamas</source>
+        <target>ບາຮາມາ</target>
+      </trans-unit>
+      <trans-unit id="BS.official_name" approved="yes">
+        <source>Commonwealth of the Bahamas</source>
+        <target>ເຄືອລັດ ບາຮາມາ</target>
+      </trans-unit>
+      <trans-unit id="BT.name" approved="yes">
+        <source>Bhutan</source>
+        <target>ພູຖານ</target>
+      </trans-unit>
+      <trans-unit id="BT.official_name" approved="yes">
+        <source>Kingdom of Bhutan</source>
+        <target>ລາຊະອານາຈັກ ພູຖານ</target>
+      </trans-unit>
+      <trans-unit id="BV.name" approved="yes">
+        <source>Bouvet Island</source>
+        <target>ເກາະບູເວ</target>
+      </trans-unit>
+      <trans-unit id="BW.name" approved="yes">
+        <source>Botswana</source>
+        <target>ບອດສະວານາ</target>
+      </trans-unit>
+      <trans-unit id="BW.official_name" approved="yes">
+        <source>Republic of Botswana</source>
+        <target>ສາທາລະນະລັດ ບອດສະວານາ</target>
+      </trans-unit>
+      <trans-unit id="BY.name" approved="yes">
+        <source>Belarus</source>
+        <target>ປະເທດບີເອໂລລຸດ</target>
+      </trans-unit>
+      <trans-unit id="BY.official_name" approved="yes">
+        <source>Republic of Belarus</source>
+        <target>ສາທາລະນະລັດ ບີເອໂລລຸດ</target>
+      </trans-unit>
+      <trans-unit id="BZ.name" approved="yes">
+        <source>Belize</source>
+        <target>ເບລີ</target>
+      </trans-unit>
+      <trans-unit id="CA.name" approved="yes">
+        <source>Canada</source>
+        <target>ປະເທດການາດາ</target>
+      </trans-unit>
+      <trans-unit id="CC.name" approved="yes">
+        <source>Cocos (Keeling) Islands</source>
+        <target>ໝູ່ເກາະໂກໂກ້ (ຄີລິງ)</target>
+      </trans-unit>
+      <trans-unit id="CD.name" approved="yes">
+        <source>Congo, The Democratic Republic of the</source>
+        <target>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ກົງໂກ</target>
+      </trans-unit>
+      <trans-unit id="CF.name" approved="yes">
+        <source>Central African Republic</source>
+        <target>ສາທາລະນະລັດ ອາຟຣິກາກາງ</target>
+      </trans-unit>
+      <trans-unit id="CG.name" approved="yes">
+        <source>Congo</source>
+        <target>ກົງໂກ</target>
+      </trans-unit>
+      <trans-unit id="CG.official_name" approved="yes">
+        <source>Republic of the Congo</source>
+        <target>ສາທາລະນະລັດ ກົງໂກ</target>
+      </trans-unit>
+      <trans-unit id="CH.name" approved="yes">
+        <source>Switzerland</source>
+        <target>ປະເທດສະວິດ</target>
+      </trans-unit>
+      <trans-unit id="CH.official_name" approved="yes">
+        <source>Swiss Confederation</source>
+        <target>ສະມາພັນທະລັດ ສະວິດ</target>
+      </trans-unit>
+      <trans-unit id="CI.name" approved="yes">
+        <source>Côte d'Ivoire</source>
+        <target>ໂກດ ດີວົວ</target>
+      </trans-unit>
+      <trans-unit id="CI.official_name" approved="yes">
+        <source>Republic of Côte d'Ivoire</source>
+        <target>ສາທາລະນະລັດ ໂກດ ດີວົວ</target>
+      </trans-unit>
+      <trans-unit id="CK.name" approved="yes">
+        <source>Cook Islands</source>
+        <target>ໝູ່ເກາະຄຸກ</target>
+      </trans-unit>
+      <trans-unit id="CL.name" approved="yes">
+        <source>Chile</source>
+        <target>ປະເທດຊີລີ</target>
+      </trans-unit>
+      <trans-unit id="CL.official_name" approved="yes">
+        <source>Republic of Chile</source>
+        <target>ສາທາລະນະລັດ ຊີລີ</target>
+      </trans-unit>
+      <trans-unit id="CM.name" approved="yes">
+        <source>Cameroon</source>
+        <target>ກາເມີຣູນ</target>
+      </trans-unit>
+      <trans-unit id="CM.official_name" approved="yes">
+        <source>Republic of Cameroon</source>
+        <target>ສາທາລະນະລັດ ກາເມີຣູນ</target>
+      </trans-unit>
+      <trans-unit id="CN.name" approved="yes">
+        <source>China</source>
+        <target>ຈີນ</target>
+      </trans-unit>
+      <trans-unit id="CN.official_name" approved="yes">
+        <source>People's Republic of China</source>
+        <target>ສາທາລະນະລັດ ປະຊາຊົນ ຈີນ</target>
+      </trans-unit>
+      <trans-unit id="CO.name" approved="yes">
+        <source>Colombia</source>
+        <target>ປະເທດໂກລົມບີ</target>
+      </trans-unit>
+      <trans-unit id="CO.official_name" approved="yes">
+        <source>Republic of Colombia</source>
+        <target>ສາທາລະນະລັດ ໂກລົມບີ</target>
+      </trans-unit>
+      <trans-unit id="CR.name" approved="yes">
+        <source>Costa Rica</source>
+        <target>ປະເທດກົດສະຕາລິກາ</target>
+      </trans-unit>
+      <trans-unit id="CR.official_name" approved="yes">
+        <source>Republic of Costa Rica</source>
+        <target>ສາທາລະນະລັດ ກົດສະຕາລິກາ</target>
+      </trans-unit>
+      <trans-unit id="CU.name" approved="yes">
+        <source>Cuba</source>
+        <target>ກູບາ</target>
+      </trans-unit>
+      <trans-unit id="CU.official_name" approved="yes">
+        <source>Republic of Cuba</source>
+        <target>ສາທາລະນະລັດ ກູບາ</target>
+      </trans-unit>
+      <trans-unit id="CV.name" approved="yes">
+        <source>Cabo Verde</source>
+        <target>ກາໂບ ເວີດ</target>
+      </trans-unit>
+      <trans-unit id="CV.official_name" approved="yes">
+        <source>Republic of Cabo Verde</source>
+        <target>ສາທາລະນະລັດ ກາໂບ ເວີດ</target>
+      </trans-unit>
+      <trans-unit id="CW.name" approved="yes">
+        <source>Curaçao</source>
+        <target>ກູຣາເຊົາ</target>
+      </trans-unit>
+      <trans-unit id="CW.official_name" approved="yes">
+        <source>Curaçao</source>
+        <target>ກູຣາເຊົາ</target>
+      </trans-unit>
+      <trans-unit id="CX.name" approved="yes">
+        <source>Christmas Island</source>
+        <target>ເກາະຄຣິສມາດ</target>
+      </trans-unit>
+      <trans-unit id="CY.name" approved="yes">
+        <source>Cyprus</source>
+        <target>ປະເທດຊີບ</target>
+      </trans-unit>
+      <trans-unit id="CY.official_name" approved="yes">
+        <source>Republic of Cyprus</source>
+        <target>ສາທາລະນະລັດ ຊີບ</target>
+      </trans-unit>
+      <trans-unit id="CZ.name" approved="yes">
+        <source>Czechia</source>
+        <target>ເຊັກເກຍ</target>
+      </trans-unit>
+      <trans-unit id="CZ.official_name" approved="yes">
+        <source>Czech Republic</source>
+        <target>ສາທາລະນະລັດແຊັກ</target>
+      </trans-unit>
+      <trans-unit id="DE.name" approved="yes">
+        <source>Germany</source>
+        <target>ປະເທດເຢັຽລະມັນ</target>
+      </trans-unit>
+      <trans-unit id="DE.official_name" approved="yes">
+        <source>Federal Republic of Germany</source>
+        <target>ສະຫະພັນ ສາທາລະນະລັດ ເຢຍລະມັນ</target>
+      </trans-unit>
+      <trans-unit id="DJ.name" approved="yes">
+        <source>Djibouti</source>
+        <target>ຈີບູຕີ</target>
+      </trans-unit>
+      <trans-unit id="DJ.official_name" approved="yes">
+        <source>Republic of Djibouti</source>
+        <target>ສາທາລະນະລັດ ຈີບູຕີ</target>
+      </trans-unit>
+      <trans-unit id="DK.name" approved="yes">
+        <source>Denmark</source>
+        <target>ປະເທດດານມາກ</target>
+      </trans-unit>
+      <trans-unit id="DK.official_name" approved="yes">
+        <source>Kingdom of Denmark</source>
+        <target>ລາຊະອານາຈັກ ດານມາກ</target>
+      </trans-unit>
+      <trans-unit id="DM.name" approved="yes">
+        <source>Dominica</source>
+        <target>ໂດມິນິກາ</target>
+      </trans-unit>
+      <trans-unit id="DM.official_name" approved="yes">
+        <source>Commonwealth of Dominica</source>
+        <target>ເຄືອລັດ ໂດມິນິກາ</target>
+      </trans-unit>
+      <trans-unit id="DO.name" approved="yes">
+        <source>Dominican Republic</source>
+        <target>ສາທາລະນະລັດ ໂດມິນິກັນ</target>
+      </trans-unit>
+      <trans-unit id="DZ.name" approved="yes">
+        <source>Algeria</source>
+        <target>ອານຈີເຣຍ</target>
+      </trans-unit>
+      <trans-unit id="DZ.official_name" approved="yes">
+        <source>People's Democratic Republic of Algeria</source>
+        <target>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນ ອານຈີເຣຍ</target>
+      </trans-unit>
+      <trans-unit id="EC.name" approved="yes">
+        <source>Ecuador</source>
+        <target>ປະເທດເອກົວເຕີ</target>
+      </trans-unit>
+      <trans-unit id="EC.official_name" approved="yes">
+        <source>Republic of Ecuador</source>
+        <target>ສາທາລະນະລັດ ເອກົວເຕີ</target>
+      </trans-unit>
+      <trans-unit id="EE.name" approved="yes">
+        <source>Estonia</source>
+        <target>ເອດໂຕນີ</target>
+      </trans-unit>
+      <trans-unit id="EE.official_name" approved="yes">
+        <source>Republic of Estonia</source>
+        <target>ສາທາລະນະລັດ ເອດໂຕນີ</target>
+      </trans-unit>
+      <trans-unit id="EG.name" approved="yes">
+        <source>Egypt</source>
+        <target>ເອຢິບ</target>
+      </trans-unit>
+      <trans-unit id="EG.official_name" approved="yes">
+        <source>Arab Republic of Egypt</source>
+        <target>ສາທາລະນະລັດ ອາຣັບ ເອຢິບ</target>
+      </trans-unit>
+      <trans-unit id="EH.name" approved="yes">
+        <source>Western Sahara</source>
+        <target>ຊາຮາຣາ ຕາເວັນຕົກ</target>
+      </trans-unit>
+      <trans-unit id="ER.name" approved="yes">
+        <source>Eritrea</source>
+        <target>ເອຣິເທຣຍ</target>
+      </trans-unit>
+      <trans-unit id="ER.official_name" approved="yes">
+        <source>the State of Eritrea</source>
+        <target>ລັດ ເອຣິເທຣຍ</target>
+      </trans-unit>
+      <trans-unit id="ES.name" approved="yes">
+        <source>Spain</source>
+        <target>ປະເທດແອສະປາຍ</target>
+      </trans-unit>
+      <trans-unit id="ES.official_name" approved="yes">
+        <source>Kingdom of Spain</source>
+        <target>ລາຊະອານາຈັກ ແອສະປາຍ</target>
+      </trans-unit>
+      <trans-unit id="ET.name" approved="yes">
+        <source>Ethiopia</source>
+        <target>ເອທິໂອເປຍ</target>
+      </trans-unit>
+      <trans-unit id="ET.official_name" approved="yes">
+        <source>Federal Democratic Republic of Ethiopia</source>
+        <target>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ສະຫະພັນ ເອທິໂອເປຍ</target>
+      </trans-unit>
+      <trans-unit id="FI.name" approved="yes">
+        <source>Finland</source>
+        <target>ປະເທດແຟງລັງ</target>
+      </trans-unit>
+      <trans-unit id="FI.official_name" approved="yes">
+        <source>Republic of Finland</source>
+        <target>ສາທາລະນະລັດ ແຟງລັງ</target>
+      </trans-unit>
+      <trans-unit id="FJ.name" approved="yes">
+        <source>Fiji</source>
+        <target>ຟິຈິ</target>
+      </trans-unit>
+      <trans-unit id="FJ.official_name" approved="yes">
+        <source>Republic of Fiji</source>
+        <target>ສາທາລະນະລັດ ຟິຈິ</target>
+      </trans-unit>
+      <trans-unit id="FK.name" approved="yes">
+        <source>Falkland Islands (Malvinas)</source>
+        <target>ໝູ່ເກາະຟອກແລນ (ມາວີນັດ)</target>
+      </trans-unit>
+      <trans-unit id="FM.name" approved="yes">
+        <source>Micronesia, Federated States of</source>
+        <target>ສະຫະພັນທະລັດ ໄມໂຄຣນີເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="FM.official_name" approved="yes">
+        <source>Federated States of Micronesia</source>
+        <target>ສະຫະພັນທະລັດ ໄມໂຄຣນີເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="FO.name" approved="yes">
+        <source>Faroe Islands</source>
+        <target>ໝູ່ເກາະຟາໂຣ</target>
+      </trans-unit>
+      <trans-unit id="FR.name" approved="yes">
+        <source>France</source>
+        <target>ປະເທດຝະລັ່ງ</target>
+      </trans-unit>
+      <trans-unit id="FR.official_name" approved="yes">
+        <source>French Republic</source>
+        <target>ສາທາລະນະລັດ ຝຣັ່ງ</target>
+      </trans-unit>
+      <trans-unit id="GA.name" approved="yes">
+        <source>Gabon</source>
+        <target>ກາບອງ</target>
+      </trans-unit>
+      <trans-unit id="GA.official_name" approved="yes">
+        <source>Gabonese Republic</source>
+        <target>ສາທາລະນະລັດ ກາບອງ</target>
+      </trans-unit>
+      <trans-unit id="GB.name" approved="yes">
+        <source>United Kingdom</source>
+        <target>ສະຫະລາຊະອານາຈັກ</target>
+      </trans-unit>
+      <trans-unit id="GB.official_name" approved="yes">
+        <source>United Kingdom of Great Britain and Northern Ireland</source>
+        <target>ສະຫະລາຊະອານາຈັກ ບຣິເຕນໃຫຍ່ ແລະ ອຽກລັງເໜືອ</target>
+      </trans-unit>
+      <trans-unit id="GD.name" approved="yes">
+        <source>Grenada</source>
+        <target>ເກຣນາດາ</target>
+      </trans-unit>
+      <trans-unit id="GE.name" approved="yes">
+        <source>Georgia</source>
+        <target>ປະເທດເຊອັອກຊີ</target>
+      </trans-unit>
+      <trans-unit id="GF.name" approved="yes">
+        <source>French Guiana</source>
+        <target>ກຸຍຢານ ຝຣັ່ງ</target>
+      </trans-unit>
+      <trans-unit id="GG.name" approved="yes">
+        <source>Guernsey</source>
+        <target>ເກີນຊີ</target>
+      </trans-unit>
+      <trans-unit id="GH.name" approved="yes">
+        <source>Ghana</source>
+        <target>ການາ</target>
+      </trans-unit>
+      <trans-unit id="GH.official_name" approved="yes">
+        <source>Republic of Ghana</source>
+        <target>ສາທາລະນະລັດ ການາ</target>
+      </trans-unit>
+      <trans-unit id="GI.name" approved="yes">
+        <source>Gibraltar</source>
+        <target>ຍິບຣອນຕາ</target>
+      </trans-unit>
+      <trans-unit id="GL.name" approved="yes">
+        <source>Greenland</source>
+        <target>ກຣີນແລນ</target>
+      </trans-unit>
+      <trans-unit id="GM.name" approved="yes">
+        <source>Gambia</source>
+        <target>ແກມເບຍ</target>
+      </trans-unit>
+      <trans-unit id="GM.official_name" approved="yes">
+        <source>Republic of the Gambia</source>
+        <target>ສາທາລະນະລັດ ແກມເບຍ</target>
+      </trans-unit>
+      <trans-unit id="GN.name" approved="yes">
+        <source>Guinea</source>
+        <target>ກິນີ</target>
+      </trans-unit>
+      <trans-unit id="GN.official_name" approved="yes">
+        <source>Republic of Guinea</source>
+        <target>ສາທາລະນະລັດ ກິນີ</target>
+      </trans-unit>
+      <trans-unit id="GP.name" approved="yes">
+        <source>Guadeloupe</source>
+        <target>ກົວເດີລູບ</target>
+      </trans-unit>
+      <trans-unit id="GQ.name" approved="yes">
+        <source>Equatorial Guinea</source>
+        <target>ອິຄົວໂທຣຽລ ກິນີ</target>
+      </trans-unit>
+      <trans-unit id="GQ.official_name" approved="yes">
+        <source>Republic of Equatorial Guinea</source>
+        <target>ສາທາລະນະລັດ ອິຄົວໂທຣຽລ ກິນີ</target>
+      </trans-unit>
+      <trans-unit id="GR.name" approved="yes">
+        <source>Greece</source>
+        <target>ປະເທດກະແລັດ</target>
+      </trans-unit>
+      <trans-unit id="GR.official_name" approved="yes">
+        <source>Hellenic Republic</source>
+        <target>ສາທາລະນະລັດ ກະແລັດ</target>
+      </trans-unit>
+      <trans-unit id="GS.name" approved="yes">
+        <source>South Georgia and the South Sandwich Islands</source>
+        <target>ເກາະເຊົາຈໍເຈຍ ແລະ ໝູ່ເກາະເຊົາແຊນວິດ</target>
+      </trans-unit>
+      <trans-unit id="GT.name" approved="yes">
+        <source>Guatemala</source>
+        <target>ປະເທດກົວເຕມາລາ</target>
+      </trans-unit>
+      <trans-unit id="GT.official_name" approved="yes">
+        <source>Republic of Guatemala</source>
+        <target>ສາທາລະນະລັດ ກົວເຕມາລາ</target>
+      </trans-unit>
+      <trans-unit id="GU.name" approved="yes">
+        <source>Guam</source>
+        <target>ກວມ</target>
+      </trans-unit>
+      <trans-unit id="GW.name" approved="yes">
+        <source>Guinea-Bissau</source>
+        <target>ກິນີ-ບິດເຊົາ</target>
+      </trans-unit>
+      <trans-unit id="GW.official_name" approved="yes">
+        <source>Republic of Guinea-Bissau</source>
+        <target>ສາທາລະນະລັດ ກິນີ-ບິດເຊົາ</target>
+      </trans-unit>
+      <trans-unit id="GY.name" approved="yes">
+        <source>Guyana</source>
+        <target>ປະເທດກຸຍຢານ</target>
+      </trans-unit>
+      <trans-unit id="GY.official_name" approved="yes">
+        <source>Republic of Guyana</source>
+        <target>ສາທາລະນະລັດ ກຸຍຢານ</target>
+      </trans-unit>
+      <trans-unit id="HK.name" approved="yes">
+        <source>Hong Kong</source>
+        <target>ຮົງກົງ</target>
+      </trans-unit>
+      <trans-unit id="HK.official_name" approved="yes">
+        <source>Hong Kong Special Administrative Region of China</source>
+        <target>ເຂດບໍລິຫານພິເສດຮົງກົງ ແຫ່ງ ສາທາລະນະລັດ ປະຊາຊົນ ຈີນ</target>
+      </trans-unit>
+      <trans-unit id="HM.name" approved="yes">
+        <source>Heard Island and McDonald Islands</source>
+        <target>ເກາະເຮີດ ແລະ ໝູ່ເກາະແມັກໂດນັລ</target>
+      </trans-unit>
+      <trans-unit id="HN.name" approved="yes">
+        <source>Honduras</source>
+        <target>ຮອນດູຣັດ</target>
+      </trans-unit>
+      <trans-unit id="HN.official_name" approved="yes">
+        <source>Republic of Honduras</source>
+        <target>ສາທາລະນະລັດ ຮອນດູຣັດ</target>
+      </trans-unit>
+      <trans-unit id="HR.name" approved="yes">
+        <source>Croatia</source>
+        <target>ປະເທດກະໂລອາຊີ</target>
+      </trans-unit>
+      <trans-unit id="HR.official_name" approved="yes">
+        <source>Republic of Croatia</source>
+        <target>ສາທາລະນະລັດ ກະໂລອາຊີ</target>
+      </trans-unit>
+      <trans-unit id="HT.name" approved="yes">
+        <source>Haiti</source>
+        <target>ເຮຕິ</target>
+      </trans-unit>
+      <trans-unit id="HT.official_name" approved="yes">
+        <source>Republic of Haiti</source>
+        <target>ສາທາລະນະລັດ ເຮຕິ</target>
+      </trans-unit>
+      <trans-unit id="HU.name" approved="yes">
+        <source>Hungary</source>
+        <target>ປະເທດຮົງກະລີ</target>
+      </trans-unit>
+      <trans-unit id="HU.official_name" approved="yes">
+        <source>Hungary</source>
+        <target>ປະເທດຮົງກະລີ</target>
+      </trans-unit>
+      <trans-unit id="ID.name" approved="yes">
+        <source>Indonesia</source>
+        <target>ປະເທດອິນໂດເນເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="ID.official_name" approved="yes">
+        <source>Republic of Indonesia</source>
+        <target>ສາທາລະນະລັດ ອິນໂດເນເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="IE.name" approved="yes">
+        <source>Ireland</source>
+        <target>ປະເທດອຽກລັງ</target>
+      </trans-unit>
+      <trans-unit id="IL.name" approved="yes">
+        <source>Israel</source>
+        <target>ອິດສະຣາແອນ</target>
+      </trans-unit>
+      <trans-unit id="IL.official_name" approved="yes">
+        <source>State of Israel</source>
+        <target>ລັດ ອິດສະຣາແອນ</target>
+      </trans-unit>
+      <trans-unit id="IM.name" approved="yes">
+        <source>Isle of Man</source>
+        <target>ເກາະແມນ</target>
+      </trans-unit>
+      <trans-unit id="IN.name" approved="yes">
+        <source>India</source>
+        <target>ອິນເດຍ</target>
+      </trans-unit>
+      <trans-unit id="IN.official_name" approved="yes">
+        <source>Republic of India</source>
+        <target>ສາທາລະນະລັດ ອິນເດຍ</target>
+      </trans-unit>
+      <trans-unit id="IO.name" approved="yes">
+        <source>British Indian Ocean Territory</source>
+        <target>ເຂດແດນມະຫາສະໝຸດອິນເດຍຂອງອັງກິດ</target>
+      </trans-unit>
+      <trans-unit id="IQ.name" approved="yes">
+        <source>Iraq</source>
+        <target>ອີຣັກ</target>
+      </trans-unit>
+      <trans-unit id="IQ.official_name" approved="yes">
+        <source>Republic of Iraq</source>
+        <target>ສາທາລະນະລັດ ອີຣັກ</target>
+      </trans-unit>
+      <trans-unit id="IR.name" approved="yes">
+        <source>Iran, Islamic Republic of</source>
+        <target>ອີຣານ, ສາທາລະນະລັດ ອິດສະລາມ</target>
+      </trans-unit>
+      <trans-unit id="IR.official_name" approved="yes">
+        <source>Islamic Republic of Iran</source>
+        <target>ສາທາລະນະລັດ ອິດສະລາມ ອີຣານ</target>
+      </trans-unit>
+      <trans-unit id="IS.name" approved="yes">
+        <source>Iceland</source>
+        <target>ອິດສະລັງ</target>
+      </trans-unit>
+      <trans-unit id="IS.official_name" approved="yes">
+        <source>Republic of Iceland</source>
+        <target>ສາທາລະນະລັດ ອິດສະລັງ</target>
+      </trans-unit>
+      <trans-unit id="IT.name" approved="yes">
+        <source>Italy</source>
+        <target>ອິຕາລີ</target>
+      </trans-unit>
+      <trans-unit id="IT.official_name" approved="yes">
+        <source>Italian Republic</source>
+        <target>ສາທາລະນະລັດ ອິຕາລີ</target>
+      </trans-unit>
+      <trans-unit id="JE.name" approved="yes">
+        <source>Jersey</source>
+        <target>ເຈີຊີ</target>
+      </trans-unit>
+      <trans-unit id="JM.name" approved="yes">
+        <source>Jamaica</source>
+        <target>ຈາໄມກາ</target>
+      </trans-unit>
+      <trans-unit id="JO.name" approved="yes">
+        <source>Jordan</source>
+        <target>ຈໍແດນ</target>
+      </trans-unit>
+      <trans-unit id="JO.official_name" approved="yes">
+        <source>Hashemite Kingdom of Jordan</source>
+        <target>ລາຊະອານາຈັກ ຮາຊິໄມ ຈໍແດນ</target>
+      </trans-unit>
+      <trans-unit id="JP.name" approved="yes">
+        <source>Japan</source>
+        <target>ປະເທດຍີ່ປຸ່ນ</target>
+      </trans-unit>
+      <trans-unit id="KE.name" approved="yes">
+        <source>Kenya</source>
+        <target>ເຄນຢາ</target>
+      </trans-unit>
+      <trans-unit id="KE.official_name" approved="yes">
+        <source>Republic of Kenya</source>
+        <target>ສາທາລະນະລັດ ເຄນຢາ</target>
+      </trans-unit>
+      <trans-unit id="KG.name" approved="yes">
+        <source>Kyrgyzstan</source>
+        <target>ຄີກີສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="KG.official_name" approved="yes">
+        <source>Kyrgyz Republic</source>
+        <target>ສາທາລະນະລັດ ຄີກີດ</target>
+      </trans-unit>
+      <trans-unit id="KH.name" approved="yes">
+        <source>Cambodia</source>
+        <target>ປະເທດກຳປູເຈຍ</target>
+      </trans-unit>
+      <trans-unit id="KH.official_name" approved="yes">
+        <source>Kingdom of Cambodia</source>
+        <target>ລາຊະອານາຈັກ ກຳປູເຈຍ</target>
+      </trans-unit>
+      <trans-unit id="KI.name" approved="yes">
+        <source>Kiribati</source>
+        <target>ຄິຣິບາດ</target>
+      </trans-unit>
+      <trans-unit id="KI.official_name" approved="yes">
+        <source>Republic of Kiribati</source>
+        <target>ສາທາລະນະລັດ ຄິຣິບາດ</target>
+      </trans-unit>
+      <trans-unit id="KM.name" approved="yes">
+        <source>Comoros</source>
+        <target>ໂກໂມໂຣດ</target>
+      </trans-unit>
+      <trans-unit id="KM.official_name" approved="yes">
+        <source>Union of the Comoros</source>
+        <target>ສະຫະພາບ ໂກໂມໂຣດ</target>
+      </trans-unit>
+      <trans-unit id="KN.name" approved="yes">
+        <source>Saint Kitts and Nevis</source>
+        <target>ເຊນ ຄິດ ແລະ ເນວິດ</target>
+      </trans-unit>
+      <trans-unit id="KP.name" approved="yes">
+        <source>Korea, Democratic People's Republic of</source>
+        <target>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນ ເກົາຫຼີ</target>
+      </trans-unit>
+      <trans-unit id="KP.official_name" approved="yes">
+        <source>Democratic People's Republic of Korea</source>
+        <target>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນ ເກົາຫຼີ</target>
+      </trans-unit>
+      <trans-unit id="KR.name" approved="yes">
+        <source>Korea, Republic of</source>
+        <target>ສາທາລະນະລັດ ເກົາຫຼີ</target>
+      </trans-unit>
+      <trans-unit id="KW.name" approved="yes">
+        <source>Kuwait</source>
+        <target>ຄູເວດ</target>
+      </trans-unit>
+      <trans-unit id="KW.official_name" approved="yes">
+        <source>State of Kuwait</source>
+        <target>ລັດ ຄູເວດ</target>
+      </trans-unit>
+      <trans-unit id="KY.name" approved="yes">
+        <source>Cayman Islands</source>
+        <target>ໝູ່ເກາະເຄແມນ</target>
+      </trans-unit>
+      <trans-unit id="KZ.name" approved="yes">
+        <source>Kazakhstan</source>
+        <target>ກາຊັກສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="KZ.official_name" approved="yes">
+        <source>Republic of Kazakhstan</source>
+        <target>ສາທາລະນະລັດ ກາຊັກສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="LA.name" approved="yes">
+        <source>Lao People's Democratic Republic</source>
+        <target>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</target>
+      </trans-unit>
+      <trans-unit id="LB.name" approved="yes">
+        <source>Lebanon</source>
+        <target>ເລບານອນ</target>
+      </trans-unit>
+      <trans-unit id="LB.official_name" approved="yes">
+        <source>Lebanese Republic</source>
+        <target>ສາທາລະນະລັດ ເລບານອນ</target>
+      </trans-unit>
+      <trans-unit id="LC.name" approved="yes">
+        <source>Saint Lucia</source>
+        <target>ເຊນ ລູເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="LI.name" approved="yes">
+        <source>Liechtenstein</source>
+        <target>ປະເທດລິກເຕນສະຕາຍ</target>
+      </trans-unit>
+      <trans-unit id="LI.official_name" approved="yes">
+        <source>Principality of Liechtenstein</source>
+        <target>ລາຊະລັດ ລິກເຕນສະຕາຍ</target>
+      </trans-unit>
+      <trans-unit id="LK.name" approved="yes">
+        <source>Sri Lanka</source>
+        <target>ປະເທດສີລັງກາ</target>
+      </trans-unit>
+      <trans-unit id="LK.official_name" approved="yes">
+        <source>Democratic Socialist Republic of Sri Lanka</source>
+        <target>ສາທາລະນະລັດ ສັງຄົມນິຍົມ ປະຊາທິປະໄຕ ສີລັງກາ</target>
+      </trans-unit>
+      <trans-unit id="LR.name" approved="yes">
+        <source>Liberia</source>
+        <target>ໄລບີເຣຍ</target>
+      </trans-unit>
+      <trans-unit id="LR.official_name" approved="yes">
+        <source>Republic of Liberia</source>
+        <target>ສາທາລະນະລັດ ໄລບີເຣຍ</target>
+      </trans-unit>
+      <trans-unit id="LS.name" approved="yes">
+        <source>Lesotho</source>
+        <target>ເລໂຊໂທ</target>
+      </trans-unit>
+      <trans-unit id="LS.official_name" approved="yes">
+        <source>Kingdom of Lesotho</source>
+        <target>ລາຊະອານາຈັກ ເລໂຊໂທ</target>
+      </trans-unit>
+      <trans-unit id="LT.name" approved="yes">
+        <source>Lithuania</source>
+        <target>ປະເທດລີຕົວນີ</target>
+      </trans-unit>
+      <trans-unit id="LT.official_name" approved="yes">
+        <source>Republic of Lithuania</source>
+        <target>ສາທາລະນະລັດ ລີຕົວນີ</target>
+      </trans-unit>
+      <trans-unit id="LU.name" approved="yes">
+        <source>Luxembourg</source>
+        <target>ປະເທດລູກຊຳບວກ</target>
+      </trans-unit>
+      <trans-unit id="LU.official_name" approved="yes">
+        <source>Grand Duchy of Luxembourg</source>
+        <target>ລາຊະລັດ ລູກຊຳບວກ</target>
+      </trans-unit>
+      <trans-unit id="LV.name" approved="yes">
+        <source>Latvia</source>
+        <target>ປະເທດແລດໂຕນີ</target>
+      </trans-unit>
+      <trans-unit id="LV.official_name" approved="yes">
+        <source>Republic of Latvia</source>
+        <target>ສາທາລະນະລັດ ແລດໂຕນີ</target>
+      </trans-unit>
+      <trans-unit id="LY.name" approved="yes">
+        <source>Libya</source>
+        <target>ລີບີ</target>
+      </trans-unit>
+      <trans-unit id="LY.official_name" approved="yes">
+        <source>Libya</source>
+        <target>ລີບີ</target>
+      </trans-unit>
+      <trans-unit id="MA.name" approved="yes">
+        <source>Morocco</source>
+        <target>ໂມຣັອກໂຄ</target>
+      </trans-unit>
+      <trans-unit id="MA.official_name" approved="yes">
+        <source>Kingdom of Morocco</source>
+        <target>ລາຊະອານາຈັກ ໂມຣັອກໂຄ</target>
+      </trans-unit>
+      <trans-unit id="MC.name" approved="yes">
+        <source>Monaco</source>
+        <target>ປະເທດໂມນາໂກ</target>
+      </trans-unit>
+      <trans-unit id="MC.official_name" approved="yes">
+        <source>Principality of Monaco</source>
+        <target>ລາຊະລັດ ໂມນາໂກ</target>
+      </trans-unit>
+      <trans-unit id="MD.name" approved="yes">
+        <source>Moldova, Republic of</source>
+        <target>ສາທາລະນະລັດ ມອນໂດວາ</target>
+      </trans-unit>
+      <trans-unit id="MD.official_name" approved="yes">
+        <source>Republic of Moldova</source>
+        <target>ສາທາລະນະລັດ ມອນໂດວາ</target>
+      </trans-unit>
+      <trans-unit id="ME.name" approved="yes">
+        <source>Montenegro</source>
+        <target>ມອນເຕເນໂກຣ</target>
+      </trans-unit>
+      <trans-unit id="ME.official_name" approved="yes">
+        <source>Montenegro</source>
+        <target>ມອນເຕເນໂກຣ</target>
+      </trans-unit>
+      <trans-unit id="MF.name" approved="yes">
+        <source>Saint Martin (French part)</source>
+        <target>ເຊນ ມາຕິນ (ເຂດຝຣັ່ງ)</target>
+      </trans-unit>
+      <trans-unit id="MG.name" approved="yes">
+        <source>Madagascar</source>
+        <target>ມາດາກາສະກາ</target>
+      </trans-unit>
+      <trans-unit id="MG.official_name" approved="yes">
+        <source>Republic of Madagascar</source>
+        <target>ສາທາລະນະລັດ ມາດາກາສະກາ</target>
+      </trans-unit>
+      <trans-unit id="MH.name" approved="yes">
+        <source>Marshall Islands</source>
+        <target>ໝູ່ເກາະມາຊໍ</target>
+      </trans-unit>
+      <trans-unit id="MH.official_name" approved="yes">
+        <source>Republic of the Marshall Islands</source>
+        <target>ສາທາລະນະລັດ ໝູ່ເກາະມາຊໍ</target>
+      </trans-unit>
+      <trans-unit id="MK.name" approved="yes">
+        <source>North Macedonia</source>
+        <target>ມາເຊໂດເນຍເໜືອ</target>
+      </trans-unit>
+      <trans-unit id="MK.official_name" approved="yes">
+        <source>Republic of North Macedonia</source>
+        <target>ສາທາລະນະລັດ ມາເຊໂດເນຍເໜືອ</target>
+      </trans-unit>
+      <trans-unit id="ML.name" approved="yes">
+        <source>Mali</source>
+        <target>ມາລີ</target>
+      </trans-unit>
+      <trans-unit id="ML.official_name" approved="yes">
+        <source>Republic of Mali</source>
+        <target>ສາທາລະນະລັດ ມາລີ</target>
+      </trans-unit>
+      <trans-unit id="MM.name" approved="yes">
+        <source>Myanmar</source>
+        <target>ປະເທດມຽນມາ</target>
+      </trans-unit>
+      <trans-unit id="MM.official_name" approved="yes">
+        <source>Republic of Myanmar</source>
+        <target>ສາທາລະນະລັດ ແຫ່ງ ສະຫະພາບ ມຽນມາ</target>
+      </trans-unit>
+      <trans-unit id="MN.name" approved="yes">
+        <source>Mongolia</source>
+        <target>ມົງໂກລີ</target>
+      </trans-unit>
+      <trans-unit id="MO.name" approved="yes">
+        <source>Macao</source>
+        <target>ມາເກົ້າ</target>
+      </trans-unit>
+      <trans-unit id="MO.official_name" approved="yes">
+        <source>Macao Special Administrative Region of China</source>
+        <target>ເຂດບໍລິຫານພິເສດມາເກົ້າ ແຫ່ງ ສາທາລະນະລັດ ປະຊາຊົນ ຈີນ</target>
+      </trans-unit>
+      <trans-unit id="MP.name" approved="yes">
+        <source>Northern Mariana Islands</source>
+        <target>ໝູ່ເກາະນໍເທີນມາເຣຍນາ</target>
+      </trans-unit>
+      <trans-unit id="MP.official_name" approved="yes">
+        <source>Commonwealth of the Northern Mariana Islands</source>
+        <target>ເຄືອລັດ ໝູ່ເກາະນໍເທີນມາເຣຍນາ</target>
+      </trans-unit>
+      <trans-unit id="MQ.name" approved="yes">
+        <source>Martinique</source>
+        <target>ມາຕິນິກ</target>
+      </trans-unit>
+      <trans-unit id="MR.name" approved="yes">
+        <source>Mauritania</source>
+        <target>ມໍຣິຕາເນຍ</target>
+      </trans-unit>
+      <trans-unit id="MR.official_name" approved="yes">
+        <source>Islamic Republic of Mauritania</source>
+        <target>ສາທາລະນະລັດ ອິດສະລາມ ມໍຣິຕາເນຍ</target>
+      </trans-unit>
+      <trans-unit id="MS.name" approved="yes">
+        <source>Montserrat</source>
+        <target>ມອນເຊີລັດ</target>
+      </trans-unit>
+      <trans-unit id="MT.name" approved="yes">
+        <source>Malta</source>
+        <target>ປະເທດມັນ</target>
+      </trans-unit>
+      <trans-unit id="MT.official_name" approved="yes">
+        <source>Republic of Malta</source>
+        <target>ສາທາລະນະລັດ ມັນຕາ</target>
+      </trans-unit>
+      <trans-unit id="MU.name" approved="yes">
+        <source>Mauritius</source>
+        <target>ມໍຣິເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="MU.official_name" approved="yes">
+        <source>Republic of Mauritius</source>
+        <target>ສາທາລະນະລັດ ມໍຣິເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="MV.name" approved="yes">
+        <source>Maldives</source>
+        <target>ມັລດີບ</target>
+      </trans-unit>
+      <trans-unit id="MV.official_name" approved="yes">
+        <source>Republic of Maldives</source>
+        <target>ສາທາລະນະລັດ ມັລດີບ</target>
+      </trans-unit>
+      <trans-unit id="MW.name" approved="yes">
+        <source>Malawi</source>
+        <target>ມາລາວີ</target>
+      </trans-unit>
+      <trans-unit id="MW.official_name" approved="yes">
+        <source>Republic of Malawi</source>
+        <target>ສາທາລະນະລັດ ມາລາວີ</target>
+      </trans-unit>
+      <trans-unit id="MX.name" approved="yes">
+        <source>Mexico</source>
+        <target>ປະເທດເມັກຊິກ</target>
+      </trans-unit>
+      <trans-unit id="MX.official_name" approved="yes">
+        <source>United Mexican States</source>
+        <target>ສະຫະລັດ ເມັກຊິກ</target>
+      </trans-unit>
+      <trans-unit id="MY.name" approved="yes">
+        <source>Malaysia</source>
+        <target>ປະເທດມາເລເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="MZ.name" approved="yes">
+        <source>Mozambique</source>
+        <target>ໂມຊຳບິກ</target>
+      </trans-unit>
+      <trans-unit id="MZ.official_name" approved="yes">
+        <source>Republic of Mozambique</source>
+        <target>ສາທາລະນະລັດ ໂມຊຳບິກ</target>
+      </trans-unit>
+      <trans-unit id="NA.name" approved="yes">
+        <source>Namibia</source>
+        <target>ນາມິເບຍ</target>
+      </trans-unit>
+      <trans-unit id="NA.official_name" approved="yes">
+        <source>Republic of Namibia</source>
+        <target>ສາທາລະນະລັດ ນາມິເບຍ</target>
+      </trans-unit>
+      <trans-unit id="NC.name" approved="yes">
+        <source>New Caledonia</source>
+        <target>ນິວ ກາເລໂດເນຍ</target>
+      </trans-unit>
+      <trans-unit id="NE.name" approved="yes">
+        <source>Niger</source>
+        <target>ນີເຈີ</target>
+      </trans-unit>
+      <trans-unit id="NE.official_name" approved="yes">
+        <source>Republic of the Niger</source>
+        <target>ສາທາລະນະລັດ ນີເຈີ</target>
+      </trans-unit>
+      <trans-unit id="NF.name" approved="yes">
+        <source>Norfolk Island</source>
+        <target>ເກາະນໍຟອກ</target>
+      </trans-unit>
+      <trans-unit id="NG.name" approved="yes">
+        <source>Nigeria</source>
+        <target>ໄນຈີເຣຍ</target>
+      </trans-unit>
+      <trans-unit id="NG.official_name" approved="yes">
+        <source>Federal Republic of Nigeria</source>
+        <target>ສະຫະພັນ ສາທາລະນະລັດ ໄນຈີເຣຍ</target>
+      </trans-unit>
+      <trans-unit id="NI.name" approved="yes">
+        <source>Nicaragua</source>
+        <target>ນິກາຣາກົວ</target>
+      </trans-unit>
+      <trans-unit id="NI.official_name" approved="yes">
+        <source>Republic of Nicaragua</source>
+        <target>ສາທາລະນະລັດ ນິກາຣາກົວ</target>
+      </trans-unit>
+      <trans-unit id="NL.name" approved="yes">
+        <source>Netherlands</source>
+        <target>ປະເທດໂຮນລັງ</target>
+      </trans-unit>
+      <trans-unit id="NL.official_name" approved="yes">
+        <source>Kingdom of the Netherlands</source>
+        <target>ລາຊະອານາຈັກ ໂຮນລັງ</target>
+      </trans-unit>
+      <trans-unit id="NO.name" approved="yes">
+        <source>Norway</source>
+        <target>ປະເທດນອກແວດ</target>
+      </trans-unit>
+      <trans-unit id="NO.official_name" approved="yes">
+        <source>Kingdom of Norway</source>
+        <target>ລາຊະອານາຈັກ ນອກແວດ</target>
+      </trans-unit>
+      <trans-unit id="NP.name" approved="yes">
+        <source>Nepal</source>
+        <target>ເນປານ</target>
+      </trans-unit>
+      <trans-unit id="NP.official_name" approved="yes">
+        <source>Federal Democratic Republic of Nepal</source>
+        <target>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ສະຫະພັນ ເນປານ</target>
+      </trans-unit>
+      <trans-unit id="NR.name" approved="yes">
+        <source>Nauru</source>
+        <target>ນາອູຣູ</target>
+      </trans-unit>
+      <trans-unit id="NR.official_name" approved="yes">
+        <source>Republic of Nauru</source>
+        <target>ສາທາລະນະລັດ ນາອູຣູ</target>
+      </trans-unit>
+      <trans-unit id="NU.name" approved="yes">
+        <source>Niue</source>
+        <target>ນີອູເອ</target>
+      </trans-unit>
+      <trans-unit id="NU.official_name" approved="yes">
+        <source>Niue</source>
+        <target>ນີອູເອ</target>
+      </trans-unit>
+      <trans-unit id="NZ.name" approved="yes">
+        <source>New Zealand</source>
+        <target>ປະເທດນູແວນ ເຊລັງ</target>
+      </trans-unit>
+      <trans-unit id="OM.name" approved="yes">
+        <source>Oman</source>
+        <target>ໂອມານ</target>
+      </trans-unit>
+      <trans-unit id="OM.official_name" approved="yes">
+        <source>Sultanate of Oman</source>
+        <target>ລັດ ໂອມານ</target>
+      </trans-unit>
+      <trans-unit id="PA.name" approved="yes">
+        <source>Panama</source>
+        <target>ປານາມາ</target>
+      </trans-unit>
+      <trans-unit id="PA.official_name" approved="yes">
+        <source>Republic of Panama</source>
+        <target>ສາທາລະນະລັດ ປານາມາ</target>
+      </trans-unit>
+      <trans-unit id="PE.name" approved="yes">
+        <source>Peru</source>
+        <target>ປະເທດເປຣູ</target>
+      </trans-unit>
+      <trans-unit id="PE.official_name" approved="yes">
+        <source>Republic of Peru</source>
+        <target>ສາທາລະນະລັດ ເປຣູ</target>
+      </trans-unit>
+      <trans-unit id="PF.name" approved="yes">
+        <source>French Polynesia</source>
+        <target>ເຟຣນຊ໌ ໂປລິນີເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="PG.name" approved="yes">
+        <source>Papua New Guinea</source>
+        <target>ປະເທດປາປົວຊີນູແວນກີເນ</target>
+      </trans-unit>
+      <trans-unit id="PG.official_name" approved="yes">
+        <source>Independent State of Papua New Guinea</source>
+        <target>ລັດເອກະລາດ ປາປົວຊີນູແວນກີເນ</target>
+      </trans-unit>
+      <trans-unit id="PH.name" approved="yes">
+        <source>Philippines</source>
+        <target>ປະເທດຟີລິບປິນ</target>
+      </trans-unit>
+      <trans-unit id="PH.official_name" approved="yes">
+        <source>Republic of the Philippines</source>
+        <target>ສາທາລະນະລັດ ຟີລິບປິນ</target>
+      </trans-unit>
+      <trans-unit id="PK.name" approved="yes">
+        <source>Pakistan</source>
+        <target>ປາກິດສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="PK.official_name" approved="yes">
+        <source>Islamic Republic of Pakistan</source>
+        <target>ສາທາລະນະລັດ ອິດສະລາມ ປາກິດສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="PL.name" approved="yes">
+        <source>Poland</source>
+        <target>ປະເທດໂປໂລຍ</target>
+      </trans-unit>
+      <trans-unit id="PL.official_name" approved="yes">
+        <source>Republic of Poland</source>
+        <target>ສາທາລະນະລັດ ໂປໂລຍ</target>
+      </trans-unit>
+      <trans-unit id="PM.name" approved="yes">
+        <source>Saint Pierre and Miquelon</source>
+        <target>ເຊນ ປີແອ ແລະ ມິເກວລອນ</target>
+      </trans-unit>
+      <trans-unit id="PN.name" approved="yes">
+        <source>Pitcairn</source>
+        <target>ພິດແຄນ</target>
+      </trans-unit>
+      <trans-unit id="PR.name" approved="yes">
+        <source>Puerto Rico</source>
+        <target>ເປີໂຕ ຣິໂກ</target>
+      </trans-unit>
+      <trans-unit id="PS.name" approved="yes">
+        <source>Palestine, State of</source>
+        <target>ລັດ ປາເລດສະຕິນ</target>
+      </trans-unit>
+      <trans-unit id="PS.official_name" approved="yes">
+        <source>the State of Palestine</source>
+        <target>ລັດ ປາເລດສະຕິນ</target>
+      </trans-unit>
+      <trans-unit id="PT.name" approved="yes">
+        <source>Portugal</source>
+        <target>ປະເທດປອກຕຸຍການ</target>
+      </trans-unit>
+      <trans-unit id="PT.official_name" approved="yes">
+        <source>Portuguese Republic</source>
+        <target>ສາທາລະນະລັດ ປອກຕຸຍການ</target>
+      </trans-unit>
+      <trans-unit id="PW.name" approved="yes">
+        <source>Palau</source>
+        <target>ປາເລົາ</target>
+      </trans-unit>
+      <trans-unit id="PW.official_name" approved="yes">
+        <source>Republic of Palau</source>
+        <target>ສາທາລະນະລັດ ປາເລົາ</target>
+      </trans-unit>
+      <trans-unit id="PY.name" approved="yes">
+        <source>Paraguay</source>
+        <target>ປະເທດປາຣາກວາຍ</target>
+      </trans-unit>
+      <trans-unit id="PY.official_name" approved="yes">
+        <source>Republic of Paraguay</source>
+        <target>ສາທາລະນະລັດ ປາຣາກວາຍ</target>
+      </trans-unit>
+      <trans-unit id="QA.name" approved="yes">
+        <source>Qatar</source>
+        <target>ປະເທດກາຕາ</target>
+      </trans-unit>
+      <trans-unit id="QA.official_name" approved="yes">
+        <source>State of Qatar</source>
+        <target>ລັດ ກາຕາ</target>
+      </trans-unit>
+      <trans-unit id="RE.name" approved="yes">
+        <source>Réunion</source>
+        <target>ເຣອູນີຢົງ</target>
+      </trans-unit>
+      <trans-unit id="RO.name" approved="yes">
+        <source>Romania</source>
+        <target>ປະເທດລູມານີ</target>
+      </trans-unit>
+      <trans-unit id="RS.name" approved="yes">
+        <source>Serbia</source>
+        <target>ປະເທດແຊກບີ</target>
+      </trans-unit>
+      <trans-unit id="RS.official_name" approved="yes">
+        <source>Republic of Serbia</source>
+        <target>ສາທາລະນະລັດ ແຊກບີ</target>
+      </trans-unit>
+      <trans-unit id="RU.name" approved="yes">
+        <source>Russian Federation</source>
+        <target>ສະຫະພັນທະລັດ ຣັດເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="RW.name" approved="yes">
+        <source>Rwanda</source>
+        <target>ຣວັນດາ</target>
+      </trans-unit>
+      <trans-unit id="RW.official_name" approved="yes">
+        <source>Rwandese Republic</source>
+        <target>ສາທາລະນະລັດ ຣວັນດາ</target>
+      </trans-unit>
+      <trans-unit id="SA.name" approved="yes">
+        <source>Saudi Arabia</source>
+        <target>ຊາອຸດິ ອາຣາເບຍ</target>
+      </trans-unit>
+      <trans-unit id="SA.official_name" approved="yes">
+        <source>Kingdom of Saudi Arabia</source>
+        <target>ລາຊະອານາຈັກ ຊາອຸດິ ອາຣາເບຍ</target>
+      </trans-unit>
+      <trans-unit id="SB.name" approved="yes">
+        <source>Solomon Islands</source>
+        <target>ໝູ່ເກາະໂຊໂລມອນ</target>
+      </trans-unit>
+      <trans-unit id="SC.name" approved="yes">
+        <source>Seychelles</source>
+        <target>ເຊເຊລ</target>
+      </trans-unit>
+      <trans-unit id="SC.official_name" approved="yes">
+        <source>Republic of Seychelles</source>
+        <target>ສາທາລະນະລັດ ເເຊເຊລ</target>
+      </trans-unit>
+      <trans-unit id="SD.name" approved="yes">
+        <source>Sudan</source>
+        <target>ຊູດານ</target>
+      </trans-unit>
+      <trans-unit id="SD.official_name" approved="yes">
+        <source>Republic of the Sudan</source>
+        <target>ສາທາລະນະລັດ ຊູດານ</target>
+      </trans-unit>
+      <trans-unit id="SE.name" approved="yes">
+        <source>Sweden</source>
+        <target>ປະເທດຊູແອດ</target>
+      </trans-unit>
+      <trans-unit id="SE.official_name" approved="yes">
+        <source>Kingdom of Sweden</source>
+        <target>ລາຊະອານາຈັກ ຊູແອດ</target>
+      </trans-unit>
+      <trans-unit id="SG.name" approved="yes">
+        <source>Singapore</source>
+        <target>ປະເທດສິງກະໂປ</target>
+      </trans-unit>
+      <trans-unit id="SG.official_name" approved="yes">
+        <source>Republic of Singapore</source>
+        <target>ສາທາລະນະລັດ ສິງກະໂປ</target>
+      </trans-unit>
+      <trans-unit id="SH.name" approved="yes">
+        <source>Saint Helena, Ascension and Tristan da Cunha</source>
+        <target>ເຊນ ເຮເລນາ, ອາເຊນຊັນ ແລະ ຕຣິສຕັນ ດາ ກູນຮາ</target>
+      </trans-unit>
+      <trans-unit id="SI.name" approved="yes">
+        <source>Slovenia</source>
+        <target>ປະເທດສະໂລເວນີ</target>
+      </trans-unit>
+      <trans-unit id="SI.official_name" approved="yes">
+        <source>Republic of Slovenia</source>
+        <target>ສາທາລະນະລັດ ສະໂລເວນີ</target>
+      </trans-unit>
+      <trans-unit id="SJ.name" approved="yes">
+        <source>Svalbard and Jan Mayen</source>
+        <target>ສະວາບາດ ແລະ ແຈນ ມາເຢນ</target>
+      </trans-unit>
+      <trans-unit id="SK.name" approved="yes">
+        <source>Slovakia</source>
+        <target>ປະເທດສະໂລວາກີ</target>
+      </trans-unit>
+      <trans-unit id="SK.official_name" approved="yes">
+        <source>Slovak Republic</source>
+        <target>ສາທາລະນະລັດ ສະໂລວາກີ</target>
+      </trans-unit>
+      <trans-unit id="SL.name" approved="yes">
+        <source>Sierra Leone</source>
+        <target>ເຊຍຣາ ລີໂອນ</target>
+      </trans-unit>
+      <trans-unit id="SL.official_name" approved="yes">
+        <source>Republic of Sierra Leone</source>
+        <target>ສາທາລະນະລັດ ເຊຍຣາ ລີໂອນ</target>
+      </trans-unit>
+      <trans-unit id="SM.name" approved="yes">
+        <source>San Marino</source>
+        <target>ປະເທດແຊັງມາແລງ</target>
+      </trans-unit>
+      <trans-unit id="SM.official_name" approved="yes">
+        <source>Republic of San Marino</source>
+        <target>ສາທາລະນະລັດ ແຊັງມາແລງ</target>
+      </trans-unit>
+      <trans-unit id="SN.name" approved="yes">
+        <source>Senegal</source>
+        <target>ເຊເນການ</target>
+      </trans-unit>
+      <trans-unit id="SN.official_name" approved="yes">
+        <source>Republic of Senegal</source>
+        <target>ສາທາລະນະລັດ ເຊເນການ</target>
+      </trans-unit>
+      <trans-unit id="SO.name" approved="yes">
+        <source>Somalia</source>
+        <target>ໂຊມາເລຍ</target>
+      </trans-unit>
+      <trans-unit id="SO.official_name" approved="yes">
+        <source>Federal Republic of Somalia</source>
+        <target>ສະຫະພັນ ສາທາລະນະລັດ ໂຊມາເລຍ</target>
+      </trans-unit>
+      <trans-unit id="SR.name" approved="yes">
+        <source>Suriname</source>
+        <target>ປະເທດຊູຣີນາມ</target>
+      </trans-unit>
+      <trans-unit id="SR.official_name" approved="yes">
+        <source>Republic of Suriname</source>
+        <target>ສາທາລະນະລັດ ຊູຣີນາມ</target>
+      </trans-unit>
+      <trans-unit id="SS.name" approved="yes">
+        <source>South Sudan</source>
+        <target>ຊູດານໃຕ້</target>
+      </trans-unit>
+      <trans-unit id="SS.official_name" approved="yes">
+        <source>Republic of South Sudan</source>
+        <target>ສາທາລະນະລັດ ຊູດານໃຕ້</target>
+      </trans-unit>
+      <trans-unit id="ST.name" approved="yes">
+        <source>Sao Tome and Principe</source>
+        <target>ເຊົາ ໂທເມ ແລະ ພຣິນຊິບ</target>
+      </trans-unit>
+      <trans-unit id="ST.official_name" approved="yes">
+        <source>Democratic Republic of Sao Tome and Principe</source>
+        <target>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ເຊົາ ໂທເມ ແລະ ພຣິນຊິບ</target>
+      </trans-unit>
+      <trans-unit id="SV.name" approved="yes">
+        <source>El Salvador</source>
+        <target>ເອລ ຊານວາດໍ</target>
+      </trans-unit>
+      <trans-unit id="SV.official_name" approved="yes">
+        <source>Republic of El Salvador</source>
+        <target>ສາທາລະນະລັດ ເອລ ຊານວາດໍ</target>
+      </trans-unit>
+      <trans-unit id="SX.name" approved="yes">
+        <source>Sint Maarten (Dutch part)</source>
+        <target>ຊິນ ມາເທັນ (ເຂດໂຮນລັງ)</target>
+      </trans-unit>
+      <trans-unit id="SX.official_name" approved="yes">
+        <source>Sint Maarten (Dutch part)</source>
+        <target>ຊິນ ມາເທັນ (ເຂດໂຮນລັງ)</target>
+      </trans-unit>
+      <trans-unit id="SY.name" approved="yes">
+        <source>Syrian Arab Republic</source>
+        <target>ສາທາລະນະລັດ ອາຣັບ ຊີເຣຍ</target>
+      </trans-unit>
+      <trans-unit id="SZ.name" approved="yes">
+        <source>Eswatini</source>
+        <target>ເອສະວາຕິນີ</target>
+      </trans-unit>
+      <trans-unit id="SZ.official_name" approved="yes">
+        <source>Kingdom of Eswatini</source>
+        <target>ລາຊະອານາຈັກ ເອສະວາຕິນີ</target>
+      </trans-unit>
+      <trans-unit id="TC.name" approved="yes">
+        <source>Turks and Caicos Islands</source>
+        <target>ໝູ່ເກາະເທີກ ແລະ ໄຄໂຄດ</target>
+      </trans-unit>
+      <trans-unit id="TD.name" approved="yes">
+        <source>Chad</source>
+        <target>ຊາດ</target>
+      </trans-unit>
+      <trans-unit id="TD.official_name" approved="yes">
+        <source>Republic of Chad</source>
+        <target>ສາທາລະນະລັດ ຊາດ</target>
+      </trans-unit>
+      <trans-unit id="TF.name" approved="yes">
+        <source>French Southern Territories</source>
+        <target>ເຂດແດນທາງໃຕ້ຂອງຝຣັ່ງ</target>
+      </trans-unit>
+      <trans-unit id="TG.name" approved="yes">
+        <source>Togo</source>
+        <target>ໂຕໂກ</target>
+      </trans-unit>
+      <trans-unit id="TG.official_name" approved="yes">
+        <source>Togolese Republic</source>
+        <target>ສາທາລະນະລັດ ໂຕໂກ</target>
+      </trans-unit>
+      <trans-unit id="TH.name" approved="yes">
+        <source>Thailand</source>
+        <target>ປະເທດໄທ</target>
+      </trans-unit>
+      <trans-unit id="TH.official_name" approved="yes">
+        <source>Kingdom of Thailand</source>
+        <target>ລາຊະອານາຈັກ ໄທ</target>
+      </trans-unit>
+      <trans-unit id="TJ.name" approved="yes">
+        <source>Tajikistan</source>
+        <target>ທາຈິກິດສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="TJ.official_name" approved="yes">
+        <source>Republic of Tajikistan</source>
+        <target>ສາທາລະນະລັດ ທາຈິກິດສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="TK.name" approved="yes">
+        <source>Tokelau</source>
+        <target>ໂຕເກເລົາ</target>
+      </trans-unit>
+      <trans-unit id="TL.name" approved="yes">
+        <source>Timor-Leste</source>
+        <target>ຕີມໍ-ເລດເຕ</target>
+      </trans-unit>
+      <trans-unit id="TL.official_name" approved="yes">
+        <source>Democratic Republic of Timor-Leste</source>
+        <target>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ຕີມໍ-ເລດເຕ</target>
+      </trans-unit>
+      <trans-unit id="TM.name" approved="yes">
+        <source>Turkmenistan</source>
+        <target>ຕວກເມນິດສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="TN.name" approved="yes">
+        <source>Tunisia</source>
+        <target>ຕູນິເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="TN.official_name" approved="yes">
+        <source>Republic of Tunisia</source>
+        <target>ສາທາລະນະລັດ ຕູນິເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="TO.name" approved="yes">
+        <source>Tonga</source>
+        <target>ຕອງກາ</target>
+      </trans-unit>
+      <trans-unit id="TO.official_name" approved="yes">
+        <source>Kingdom of Tonga</source>
+        <target>ລາຊະອານາຈັກ ຕອງກາ</target>
+      </trans-unit>
+      <trans-unit id="TR.name" approved="yes">
+        <source>Türkiye</source>
+        <target>ຕຸຣກີ</target>
+      </trans-unit>
+      <trans-unit id="TR.official_name" approved="yes">
+        <source>Republic of Türkiye</source>
+        <target>ສາທາລະນະລັດ ຕຸລະກີ</target>
+      </trans-unit>
+      <trans-unit id="TT.name" approved="yes">
+        <source>Trinidad and Tobago</source>
+        <target>ຕຣິນິດາດ ແລະ ໂຕບາໂກ</target>
+      </trans-unit>
+      <trans-unit id="TT.official_name" approved="yes">
+        <source>Republic of Trinidad and Tobago</source>
+        <target>ສາທາລະນະລັດ ຕຣິນິດາດ ແລະ ໂຕບາໂກ</target>
+      </trans-unit>
+      <trans-unit id="TV.name" approved="yes">
+        <source>Tuvalu</source>
+        <target>ຕູວາລູ</target>
+      </trans-unit>
+      <trans-unit id="TW.name" approved="yes">
+        <source>Taiwan, Province of China</source>
+        <target>ໄຕ້ຫວັນ, ແຂວງຂອງຈີນ</target>
+      </trans-unit>
+      <trans-unit id="TW.official_name" approved="yes">
+        <source>Taiwan, Province of China</source>
+        <target>ໄຕ້ຫວັນ, ແຂວງຂອງຈີນ</target>
+      </trans-unit>
+      <trans-unit id="TZ.name" approved="yes">
+        <source>Tanzania, United Republic of</source>
+        <target>ຕັງຊານີ, ສະຫະສາທາລະນະລັດ</target>
+      </trans-unit>
+      <trans-unit id="TZ.official_name" approved="yes">
+        <source>United Republic of Tanzania</source>
+        <target>ສະຫະສາທາລະນະລັດ ຕັງຊານີ</target>
+      </trans-unit>
+      <trans-unit id="UA.name" approved="yes">
+        <source>Ukraine</source>
+        <target>ປະເທດອູກະແລນ</target>
+      </trans-unit>
+      <trans-unit id="UG.name" approved="yes">
+        <source>Uganda</source>
+        <target>ອູການດາ</target>
+      </trans-unit>
+      <trans-unit id="UG.official_name" approved="yes">
+        <source>Republic of Uganda</source>
+        <target>ສາທາລະນະລັດ ອູການດາ</target>
+      </trans-unit>
+      <trans-unit id="UM.name" approved="yes">
+        <source>United States Minor Outlying Islands</source>
+        <target>ໝູ່ເກາະນ້ອຍຮອບນອກຂອງສະຫະລັດ</target>
+      </trans-unit>
+      <trans-unit id="US.name" approved="yes">
+        <source>United States</source>
+        <target>ສະຫະລັດ</target>
+      </trans-unit>
+      <trans-unit id="US.official_name" approved="yes">
+        <source>United States of America</source>
+        <target>ສະຫະລັດອາເມລິກາ</target>
+      </trans-unit>
+      <trans-unit id="UY.name" approved="yes">
+        <source>Uruguay</source>
+        <target>ປະເທດອູຣູກວາຍ</target>
+      </trans-unit>
+      <trans-unit id="UY.official_name" approved="yes">
+        <source>Eastern Republic of Uruguay</source>
+        <target>ສາທາລະນະລັດ ຕາເວັນອອກ ອູຣູກວາຍ</target>
+      </trans-unit>
+      <trans-unit id="UZ.name" approved="yes">
+        <source>Uzbekistan</source>
+        <target>ອຸດເບກິດສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="UZ.official_name" approved="yes">
+        <source>Republic of Uzbekistan</source>
+        <target>ສາທາລະນະລັດ ອຸດເບກິດສະຖານ</target>
+      </trans-unit>
+      <trans-unit id="VA.name" approved="yes">
+        <source>Holy See (Vatican City State)</source>
+        <target>ນະຄອນລັດວາຕິກັນ</target>
+      </trans-unit>
+      <trans-unit id="VC.name" approved="yes">
+        <source>Saint Vincent and the Grenadines</source>
+        <target>ເຊນ ວິນເຊນ ແລະ ເກຣນາດີນ</target>
+      </trans-unit>
+      <trans-unit id="VE.name" approved="yes">
+        <source>Venezuela, Bolivarian Republic of</source>
+        <target>ເວເນຊູເອລາ, ສາທາລະນະລັດ ໂບລີວາຣຽນ</target>
+      </trans-unit>
+      <trans-unit id="VE.official_name" approved="yes">
+        <source>Bolivarian Republic of Venezuela</source>
+        <target>ສາທາລະນະລັດ ໂບລີວາຣຽນ ເວເນຊູເອລາ</target>
+      </trans-unit>
+      <trans-unit id="VG.name" approved="yes">
+        <source>Virgin Islands, British</source>
+        <target>ໝູ່ເກາະເວີຈິນຂອງອັງກິດ</target>
+      </trans-unit>
+      <trans-unit id="VG.official_name" approved="yes">
+        <source>British Virgin Islands</source>
+        <target>ໝູ່ເກາະເວີຈິນຂອງອັງກິດ</target>
+      </trans-unit>
+      <trans-unit id="VI.name" approved="yes">
+        <source>Virgin Islands, U.S.</source>
+        <target>ໝູ່ເກາະເວີຈິນຂອງສະຫະລັດ.</target>
+      </trans-unit>
+      <trans-unit id="VI.official_name" approved="yes">
+        <source>Virgin Islands of the United States</source>
+        <target>ໝູ່ເກາະເວີຈິນຂອງສະຫະລັດ</target>
+      </trans-unit>
+      <trans-unit id="VN.name" approved="yes">
+        <source>Viet Nam</source>
+        <target>ຫວຽດນາມ</target>
+      </trans-unit>
+      <trans-unit id="VN.official_name" approved="yes">
+        <source>Socialist Republic of Viet Nam</source>
+        <target>ສາທາລະນະລັດ ສັງຄົມນິຍົມ ຫວຽດນາມ</target>
+      </trans-unit>
+      <trans-unit id="VU.name" approved="yes">
+        <source>Vanuatu</source>
+        <target>ວານົວຕູ</target>
+      </trans-unit>
+      <trans-unit id="VU.official_name" approved="yes">
+        <source>Republic of Vanuatu</source>
+        <target>ສາທາລະນະລັດ ວານົວຕູ</target>
+      </trans-unit>
+      <trans-unit id="WF.name" approved="yes">
+        <source>Wallis and Futuna</source>
+        <target>ວາລິດ ແລະ ຟູຕູນາ</target>
+      </trans-unit>
+      <trans-unit id="WS.name" approved="yes">
+        <source>Samoa</source>
+        <target>ຊາມົວ</target>
+      </trans-unit>
+      <trans-unit id="WS.official_name" approved="yes">
+        <source>Independent State of Samoa</source>
+        <target>ລັດເອກະລາດ ຊາມົວ</target>
+      </trans-unit>
+      <trans-unit id="YE.name" approved="yes">
+        <source>Yemen</source>
+        <target>ເຢເມນ</target>
+      </trans-unit>
+      <trans-unit id="YE.official_name" approved="yes">
+        <source>Republic of Yemen</source>
+        <target>ສາທາລະນະລັດ ເຢເມນ</target>
+      </trans-unit>
+      <trans-unit id="YT.name" approved="yes">
+        <source>Mayotte</source>
+        <target>ມາຢັອດ</target>
+      </trans-unit>
+      <trans-unit id="ZA.name" approved="yes">
+        <source>South Africa</source>
+        <target>ອາຟຣິກາໃຕ້</target>
+      </trans-unit>
+      <trans-unit id="ZA.official_name" approved="yes">
+        <source>Republic of South Africa</source>
+        <target>ສາທາລະນະລັດ ອາຟຣິກາໃຕ້</target>
+      </trans-unit>
+      <trans-unit id="ZM.name" approved="yes">
+        <source>Zambia</source>
+        <target>ແຊມເບຍ</target>
+      </trans-unit>
+      <trans-unit id="ZM.official_name" approved="yes">
+        <source>Republic of Zambia</source>
+        <target>ສາທາລະນະລັດ ແຊມເບຍ</target>
+      </trans-unit>
+      <trans-unit id="ZW.name" approved="yes">
+        <source>Zimbabwe</source>
+        <target>ຊິມບັບເວ</target>
+      </trans-unit>
+      <trans-unit id="ZW.official_name" approved="yes">
+        <source>Republic of Zimbabwe</source>
+        <target>ສາທາລະນະລັດ ຊິມບັບເວ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

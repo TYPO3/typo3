@@ -1,0 +1,1955 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="lo" datatype="plaintext" original="EXT:core/Resources/Private/Language/countries.xlf" product-name="typo3/cms-core">
+    <body>
+      <trans-unit id="aa" approved="yes">
+        <source>Afar</source>
+        <target>ອາຟາ</target>
+      </trans-unit>
+      <trans-unit id="ab" approved="yes">
+        <source>Abkhazian</source>
+        <target>ອັບຄາຊຽນ</target>
+      </trans-unit>
+      <trans-unit id="ace" approved="yes">
+        <source>Achinese</source>
+        <target>ອາເຈ</target>
+      </trans-unit>
+      <trans-unit id="ach" approved="yes">
+        <source>Acoli</source>
+        <target>ອາໂຄລີ</target>
+      </trans-unit>
+      <trans-unit id="ada" approved="yes">
+        <source>Adangme</source>
+        <target>ອາດັງມີ</target>
+      </trans-unit>
+      <trans-unit id="ady" approved="yes">
+        <source>Adyghe; Adygei</source>
+        <target>າດີກີ</target>
+      </trans-unit>
+      <trans-unit id="ae" approved="yes">
+        <source>Avestan</source>
+        <target>ອາເວສຕັນ</target>
+      </trans-unit>
+      <trans-unit id="af" approved="yes">
+        <source>Afrikaans</source>
+        <target>ອາຟຣິກາ</target>
+      </trans-unit>
+      <trans-unit id="afa" approved="yes">
+        <source>Afro-Asiatic languages</source>
+        <target>ພາສາຕະກຸນ ອາໂຟຣ-ອາຊີ</target>
+      </trans-unit>
+      <trans-unit id="afh" approved="yes">
+        <source>Afrihili</source>
+        <target>ອາຟຣີຮີລີ</target>
+      </trans-unit>
+      <trans-unit id="ain" approved="yes">
+        <source>Ainu</source>
+        <target>ໄອນຸ</target>
+      </trans-unit>
+      <trans-unit id="ak" approved="yes">
+        <source>Akan</source>
+        <target>ອາການ</target>
+      </trans-unit>
+      <trans-unit id="akk" approved="yes">
+        <source>Akkadian</source>
+        <target>ອັກຄາຮດຽນ</target>
+      </trans-unit>
+      <trans-unit id="ale" approved="yes">
+        <source>Aleut</source>
+        <target>ອາລີຢຸດ</target>
+      </trans-unit>
+      <trans-unit id="alg" approved="yes">
+        <source>Algonquian languages</source>
+        <target>ພາສາອານກອນຄວຽນ</target>
+      </trans-unit>
+      <trans-unit id="alt" approved="yes">
+        <source>Southern Altai</source>
+        <target>ອັນໄຕໃຕ້</target>
+      </trans-unit>
+      <trans-unit id="am" approved="yes">
+        <source>Amharic</source>
+        <target>ອຳຮາຣິກ</target>
+      </trans-unit>
+      <trans-unit id="an" approved="yes">
+        <source>Aragonese</source>
+        <target>ອາຣາໂກນີດ</target>
+      </trans-unit>
+      <trans-unit id="ang" approved="yes">
+        <source>English, Old (ca. 450-1100)</source>
+        <target>ອັງກິດ, ບູຮານ (ປະມານ 450-1100)</target>
+      </trans-unit>
+      <trans-unit id="anp" approved="yes">
+        <source>Angika</source>
+        <target>ອັງກິກາ</target>
+      </trans-unit>
+      <trans-unit id="apa" approved="yes">
+        <source>Apache languages</source>
+        <target>ພາສາອາປາເຊ</target>
+      </trans-unit>
+      <trans-unit id="ar" approved="yes">
+        <source>Arabic</source>
+        <target>ອາຣັບ</target>
+      </trans-unit>
+      <trans-unit id="arc" approved="yes">
+        <source>Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)</source>
+        <target>ອາຣາເມອິກທາງການ (700-300 ກ່ອນ ຄ.ສ); ອາຣາເມອິກຈັກກະພັດ</target>
+      </trans-unit>
+      <trans-unit id="arn" approved="yes">
+        <source>Mapudungun; Mapuche</source>
+        <target>ມາປູດຸນກຸນ; ມາປູເຊ</target>
+      </trans-unit>
+      <trans-unit id="arp" approved="yes">
+        <source>Arapaho</source>
+        <target>ອາຣາປາໂຮ</target>
+      </trans-unit>
+      <trans-unit id="art" approved="yes">
+        <source>Artificial languages</source>
+        <target>ພາສາປະດິດ</target>
+      </trans-unit>
+      <trans-unit id="arw" approved="yes">
+        <source>Arawak</source>
+        <target>ອາຣາວັກ</target>
+      </trans-unit>
+      <trans-unit id="as" approved="yes">
+        <source>Assamese</source>
+        <target>ອັດສຳ</target>
+      </trans-unit>
+      <trans-unit id="ast" approved="yes">
+        <source>Asturian; Bable; Leonese; Asturleonese</source>
+        <target>ອັດຕູຣຽນ</target>
+      </trans-unit>
+      <trans-unit id="ath" approved="yes">
+        <source>Athapascan languages</source>
+        <target>ພາສາອາທາປາສການ</target>
+      </trans-unit>
+      <trans-unit id="aus" approved="yes">
+        <source>Australian languages</source>
+        <target>ພາສາອົດສະຕຣາລີ</target>
+      </trans-unit>
+      <trans-unit id="av" approved="yes">
+        <source>Avaric</source>
+        <target>ອາວາຣິກ</target>
+      </trans-unit>
+      <trans-unit id="awa" approved="yes">
+        <source>Awadhi</source>
+        <target>ອະວະດີ</target>
+      </trans-unit>
+      <trans-unit id="ay" approved="yes">
+        <source>Aymara</source>
+        <target>ໄອມາຣາ</target>
+      </trans-unit>
+      <trans-unit id="az" approved="yes">
+        <source>Azerbaijani</source>
+        <target>ອາເຊີໄບຈານ</target>
+      </trans-unit>
+      <trans-unit id="ba" approved="yes">
+        <source>Bashkir</source>
+        <target>ບາສເກຍ</target>
+      </trans-unit>
+      <trans-unit id="bad" approved="yes">
+        <source>Banda languages</source>
+        <target>ພາສາບັນດາ</target>
+      </trans-unit>
+      <trans-unit id="bai" approved="yes">
+        <source>Bamileke languages</source>
+        <target>ພາສາບາມິເລເກ</target>
+      </trans-unit>
+      <trans-unit id="bal" approved="yes">
+        <source>Baluchi</source>
+        <target>ບາລູຊີ</target>
+      </trans-unit>
+      <trans-unit id="ban" approved="yes">
+        <source>Balinese</source>
+        <target>ບາລີ</target>
+      </trans-unit>
+      <trans-unit id="bas" approved="yes">
+        <source>Basa</source>
+        <target>ບາຊາ</target>
+      </trans-unit>
+      <trans-unit id="bat" approved="yes">
+        <source>Baltic languages</source>
+        <target>ພາສາບອລຕິກ</target>
+      </trans-unit>
+      <trans-unit id="be" approved="yes">
+        <source>Belarusian</source>
+        <target>ເບລາຣຸດ</target>
+      </trans-unit>
+      <trans-unit id="bej" approved="yes">
+        <source>Beja; Bedawiyet</source>
+        <target>ເບຈາ</target>
+      </trans-unit>
+      <trans-unit id="bem" approved="yes">
+        <source>Bemba</source>
+        <target>ເບມບາ</target>
+      </trans-unit>
+      <trans-unit id="ber" approved="yes">
+        <source>Berber languages</source>
+        <target>ພາສາເບີເບີ</target>
+      </trans-unit>
+      <trans-unit id="bg" approved="yes">
+        <source>Bulgarian</source>
+        <target>ບຸນກາຣີ</target>
+      </trans-unit>
+      <trans-unit id="bho" approved="yes">
+        <source>Bhojpuri</source>
+        <target>ໂບຈປູຣີ</target>
+      </trans-unit>
+      <trans-unit id="bi" approved="yes">
+        <source>Bislama</source>
+        <target>ບິດສະລາມາ</target>
+      </trans-unit>
+      <trans-unit id="bih" approved="yes">
+        <source>Bihari languages</source>
+        <target>ພາສາບິຮາຣີ</target>
+      </trans-unit>
+      <trans-unit id="bik" approved="yes">
+        <source>Bikol</source>
+        <target>ບິກົນ</target>
+      </trans-unit>
+      <trans-unit id="bin" approved="yes">
+        <source>Bini; Edo</source>
+        <target>ບິນີ; ເອໂດ</target>
+      </trans-unit>
+      <trans-unit id="bla" approved="yes">
+        <source>Siksika</source>
+        <target>ຊິກສິກາ</target>
+      </trans-unit>
+      <trans-unit id="bm" approved="yes">
+        <source>Bambara</source>
+        <target>ບຳບາຣາ</target>
+      </trans-unit>
+      <trans-unit id="bn" approved="yes">
+        <source>Bengali</source>
+        <target>ເບັງກາລີ</target>
+      </trans-unit>
+      <trans-unit id="bnt" approved="yes">
+        <source>Bantu languages</source>
+        <target>ພາສາບັນຕູ</target>
+      </trans-unit>
+      <trans-unit id="bo" approved="yes">
+        <source>Tibetan</source>
+        <target>ທິເບດ</target>
+      </trans-unit>
+      <trans-unit id="br" approved="yes">
+        <source>Breton</source>
+        <target>ເບຣຕັນ</target>
+      </trans-unit>
+      <trans-unit id="bra" approved="yes">
+        <source>Braj</source>
+        <target>ບຣາຈ</target>
+      </trans-unit>
+      <trans-unit id="bs" approved="yes">
+        <source>Bosnian</source>
+        <target>ບອດສະເນຍ</target>
+      </trans-unit>
+      <trans-unit id="btk" approved="yes">
+        <source>Batak languages</source>
+        <target>ພາສາບາຕັກ</target>
+      </trans-unit>
+      <trans-unit id="bua" approved="yes">
+        <source>Buriat</source>
+        <target>ບູຣຽດ</target>
+      </trans-unit>
+      <trans-unit id="bug" approved="yes">
+        <source>Buginese</source>
+        <target>ບູກີ</target>
+      </trans-unit>
+      <trans-unit id="byn" approved="yes">
+        <source>Blin; Bilin</source>
+        <target>ບລິນ</target>
+      </trans-unit>
+      <trans-unit id="ca" approved="yes">
+        <source>Catalan; Valencian</source>
+        <target>ກາຕາລັງ</target>
+      </trans-unit>
+      <trans-unit id="cad" approved="yes">
+        <source>Caddo</source>
+        <target>ຄັດໂດ</target>
+      </trans-unit>
+      <trans-unit id="cai" approved="yes">
+        <source>Central American Indian languages</source>
+        <target>ພາສາອິນດຽນ ອາເມລິກາກາງ</target>
+      </trans-unit>
+      <trans-unit id="car" approved="yes">
+        <source>Galibi Carib</source>
+        <target>ກາລີບີ ຄາຣິບ</target>
+      </trans-unit>
+      <trans-unit id="cau" approved="yes">
+        <source>Caucasian languages</source>
+        <target>ພາສາຄໍເຄຊຽນ</target>
+      </trans-unit>
+      <trans-unit id="ce" approved="yes">
+        <source>Chechen</source>
+        <target>ເຊເຊນ</target>
+      </trans-unit>
+      <trans-unit id="ceb" approved="yes">
+        <source>Cebuano</source>
+        <target>ເຊບູ</target>
+      </trans-unit>
+      <trans-unit id="cel" approved="yes">
+        <source>Celtic languages</source>
+        <target>ພາສາເຊລຕິກ</target>
+      </trans-unit>
+      <trans-unit id="ch" approved="yes">
+        <source>Chamorro</source>
+        <target>ຊາມໍໂຣ</target>
+      </trans-unit>
+      <trans-unit id="chb" approved="yes">
+        <source>Chibcha</source>
+        <target>ຊິບຊາ</target>
+      </trans-unit>
+      <trans-unit id="chg" approved="yes">
+        <source>Chagatai</source>
+        <target>ຊາກາໄຕ</target>
+      </trans-unit>
+      <trans-unit id="chk" approved="yes">
+        <source>Chuukese</source>
+        <target>ຊູເກດ</target>
+      </trans-unit>
+      <trans-unit id="chm" approved="yes">
+        <source>Mari</source>
+        <target>ມາຣີ</target>
+      </trans-unit>
+      <trans-unit id="chn" approved="yes">
+        <source>Chinook jargon</source>
+        <target>ຊິນຸກ</target>
+      </trans-unit>
+      <trans-unit id="cho" approved="yes">
+        <source>Choctaw</source>
+        <target>ຊອກທໍ</target>
+      </trans-unit>
+      <trans-unit id="chp" approved="yes">
+        <source>Chipewyan; Dene Suline</source>
+        <target>ຊີພີວຽນ</target>
+      </trans-unit>
+      <trans-unit id="chr" approved="yes">
+        <source>Cherokee</source>
+        <target>ເຊໂຣກີ</target>
+      </trans-unit>
+      <trans-unit id="chy" approved="yes">
+        <source>Cheyenne</source>
+        <target>ເຊເຢນ</target>
+      </trans-unit>
+      <trans-unit id="cmc" approved="yes">
+        <source>Chamic languages</source>
+        <target>ພາສາຊາມິກ</target>
+      </trans-unit>
+      <trans-unit id="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>ມອນເຕເນໂກຣ</target>
+      </trans-unit>
+      <trans-unit id="co" approved="yes">
+        <source>Corsican</source>
+        <target>ຄໍຊິກັນ</target>
+      </trans-unit>
+      <trans-unit id="cop" approved="yes">
+        <source>Coptic</source>
+        <target>ຄອບຕິກ</target>
+      </trans-unit>
+      <trans-unit id="cpe" approved="yes">
+        <source>Creoles and pidgins, English based</source>
+        <target>ພາສາຄຣີໂອ ແລະ ພິດຈິນ (ພື້ນຖານພາສາອັງກິດ)</target>
+      </trans-unit>
+      <trans-unit id="cpf" approved="yes">
+        <source>Creoles and pidgins, French-based</source>
+        <target>ພາສາຄຣີໂອ ແລະ ພິດຈິນ (ພື້ນຖານພາສາຝຣັ່ງ)</target>
+      </trans-unit>
+      <trans-unit id="cpp" approved="yes">
+        <source>Creoles and pidgins, Portuguese-based</source>
+        <target>ພາສາຄຣີໂອ ແລະ ພິດຈິນ (ພື້ນຖານພາສາປອກຕຸຍການ)</target>
+      </trans-unit>
+      <trans-unit id="cr" approved="yes">
+        <source>Cree</source>
+        <target>ຄຣີ</target>
+      </trans-unit>
+      <trans-unit id="crh" approved="yes">
+        <source>Crimean Tatar; Crimean Turkish</source>
+        <target>ຕາດໄຄຣເມຍ</target>
+      </trans-unit>
+      <trans-unit id="crp" approved="yes">
+        <source>Creoles and pidgins</source>
+        <target>ພາສາຄຣີໂອ ແລະ ພິດຈິນ</target>
+      </trans-unit>
+      <trans-unit id="cs" approved="yes">
+        <source>Czech</source>
+        <target>ເຊັກ</target>
+      </trans-unit>
+      <trans-unit id="csb" approved="yes">
+        <source>Kashubian</source>
+        <target>ຄາຊູບຽນ</target>
+      </trans-unit>
+      <trans-unit id="cu" approved="yes">
+        <source>Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic</source>
+        <target>ເຊີດ ສະລາວິກ; ສະລາໂວນິກ ບູຮານ</target>
+      </trans-unit>
+      <trans-unit id="cus" approved="yes">
+        <source>Cushitic languages</source>
+        <target>ພາສາຄູຊິຕິກ</target>
+      </trans-unit>
+      <trans-unit id="cv" approved="yes">
+        <source>Chuvash</source>
+        <target>ຊູວາດ</target>
+      </trans-unit>
+      <trans-unit id="cy" approved="yes">
+        <source>Welsh</source>
+        <target>ເວວ</target>
+      </trans-unit>
+      <trans-unit id="da" approved="yes">
+        <source>Danish</source>
+        <target>ດານິດ</target>
+      </trans-unit>
+      <trans-unit id="dak" approved="yes">
+        <source>Dakota</source>
+        <target>ດາໂກຕາ</target>
+      </trans-unit>
+      <trans-unit id="dar" approved="yes">
+        <source>Dargwa</source>
+        <target>ດາກວາ</target>
+      </trans-unit>
+      <trans-unit id="day" approved="yes">
+        <source>Land Dayak languages</source>
+        <target>ພາສາແລນດາຍັກ</target>
+      </trans-unit>
+      <trans-unit id="de" approved="yes">
+        <source>German</source>
+        <target>ເຢຍລະມັນ</target>
+      </trans-unit>
+      <trans-unit id="del" approved="yes">
+        <source>Delaware</source>
+        <target>ເດລາແວ</target>
+      </trans-unit>
+      <trans-unit id="den" approved="yes">
+        <source>Slave (Athapascan)</source>
+        <target>ສະລາວີ (ອາທາປາສການ)</target>
+      </trans-unit>
+      <trans-unit id="dgr" approved="yes">
+        <source>Tlicho; Dogrib</source>
+        <target>ທລິໂຊ; ດອກຣິບ</target>
+      </trans-unit>
+      <trans-unit id="din" approved="yes">
+        <source>Dinka</source>
+        <target>ດິນກາ</target>
+      </trans-unit>
+      <trans-unit id="doi" approved="yes">
+        <source>Dogri</source>
+        <target>ດອກຣີ</target>
+      </trans-unit>
+      <trans-unit id="dra" approved="yes">
+        <source>Dravidian languages</source>
+        <target>ພາສາດຣາວິດຽນ</target>
+      </trans-unit>
+      <trans-unit id="dsb" approved="yes">
+        <source>Lower Sorbian</source>
+        <target>ຊໍບຽນຕໍ່າ</target>
+      </trans-unit>
+      <trans-unit id="dua" approved="yes">
+        <source>Duala</source>
+        <target>ດູອາລາ</target>
+      </trans-unit>
+      <trans-unit id="dum" approved="yes">
+        <source>Dutch, Middle (ca. 1050-1350)</source>
+        <target>ດັດຊ໌, ຍຸກກາງ (ປະມານ 1050-1350)</target>
+      </trans-unit>
+      <trans-unit id="dv" approved="yes">
+        <source>Divehi; Dhivehi; Maldivian</source>
+        <target>ດິເວຮິ; ມັນດີຟ</target>
+      </trans-unit>
+      <trans-unit id="dyu" approved="yes">
+        <source>Dyula</source>
+        <target>ດູລາ</target>
+      </trans-unit>
+      <trans-unit id="dz" approved="yes">
+        <source>Dzongkha</source>
+        <target>ດີຊອງຄາ</target>
+      </trans-unit>
+      <trans-unit id="ee" approved="yes">
+        <source>Ewe</source>
+        <target>ເອເວ</target>
+      </trans-unit>
+      <trans-unit id="efi" approved="yes">
+        <source>Efik</source>
+        <target>ເອຟິກ</target>
+      </trans-unit>
+      <trans-unit id="egy" approved="yes">
+        <source>Egyptian (Ancient)</source>
+        <target>ເອຢິບ (ບູຮານ)</target>
+      </trans-unit>
+      <trans-unit id="eka" approved="yes">
+        <source>Ekajuk</source>
+        <target>ເອຄາຈຸກ</target>
+      </trans-unit>
+      <trans-unit id="el" approved="yes">
+        <source>Greek, Modern (1453-)</source>
+        <target>ເກຣັກ, ຍຸກໃໝ່ (1453-)</target>
+      </trans-unit>
+      <trans-unit id="elx" approved="yes">
+        <source>Elamite</source>
+        <target>ເອລາໄມ</target>
+      </trans-unit>
+      <trans-unit id="en" approved="yes">
+        <source>English</source>
+        <target>ອັງກິດ</target>
+      </trans-unit>
+      <trans-unit id="enm" approved="yes">
+        <source>English, Middle (1100-1500)</source>
+        <target>ອັງກິດ, ຍຸກກາງ (1100-1500)</target>
+      </trans-unit>
+      <trans-unit id="eo" approved="yes">
+        <source>Esperanto</source>
+        <target>ເອສເປຣັນໂຕ</target>
+      </trans-unit>
+      <trans-unit id="es" approved="yes">
+        <source>Spanish; Castilian</source>
+        <target>ແອັດສະປາຍ</target>
+      </trans-unit>
+      <trans-unit id="et" approved="yes">
+        <source>Estonian</source>
+        <target>ແອັດສະໂຕນີ</target>
+      </trans-unit>
+      <trans-unit id="eu" approved="yes">
+        <source>Basque</source>
+        <target>ບັສກ໌</target>
+      </trans-unit>
+      <trans-unit id="ewo" approved="yes">
+        <source>Ewondo</source>
+        <target>ເອວອນໂດ</target>
+      </trans-unit>
+      <trans-unit id="fa" approved="yes">
+        <source>Persian</source>
+        <target>ເປີເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="fan" approved="yes">
+        <source>Fang</source>
+        <target>ຟາງ</target>
+      </trans-unit>
+      <trans-unit id="fat" approved="yes">
+        <source>Fanti</source>
+        <target>ຟານຕິ</target>
+      </trans-unit>
+      <trans-unit id="ff" approved="yes">
+        <source>Fulah</source>
+        <target>ຟູລາ</target>
+      </trans-unit>
+      <trans-unit id="fi" approved="yes">
+        <source>Finnish</source>
+        <target>ແຟງລັງ</target>
+      </trans-unit>
+      <trans-unit id="fil" approved="yes">
+        <source>Filipino; Pilipino</source>
+        <target>ຟິລິບປິນ</target>
+      </trans-unit>
+      <trans-unit id="fiu" approved="yes">
+        <source>Finno-Ugrian languages</source>
+        <target>ພາສາຟິນໂນ-ອູກຣິກ</target>
+      </trans-unit>
+      <trans-unit id="fj" approved="yes">
+        <source>Fijian</source>
+        <target>ຟິຈິ</target>
+      </trans-unit>
+      <trans-unit id="fo" approved="yes">
+        <source>Faroese</source>
+        <target>ຟາໂຣ</target>
+      </trans-unit>
+      <trans-unit id="fon" approved="yes">
+        <source>Fon</source>
+        <target>ຟອນ</target>
+      </trans-unit>
+      <trans-unit id="fr" approved="yes">
+        <source>French</source>
+        <target>ຝຣັ່ງ</target>
+      </trans-unit>
+      <trans-unit id="frm" approved="yes">
+        <source>French, Middle (ca. 1400-1600)</source>
+        <target>ຝຣັ່ງ, ຍຸກກາງ (ປະມານ 1400-1600)</target>
+      </trans-unit>
+      <trans-unit id="fro" approved="yes">
+        <source>French, Old (842-ca. 1400)</source>
+        <target>ຝຣັ່ງ, ບູຮານ (842-ປະມານ 1400)</target>
+      </trans-unit>
+      <trans-unit id="frr" approved="yes">
+        <source>Northern Frisian</source>
+        <target>ຟຣິຊຽນເໜືອ</target>
+      </trans-unit>
+      <trans-unit id="frs" approved="yes">
+        <source>Eastern Frisian</source>
+        <target>ຟຣິຊຽນຕາເວັນອອກ</target>
+      </trans-unit>
+      <trans-unit id="fur" approved="yes">
+        <source>Friulian</source>
+        <target>ຟຣີອູລຽນ</target>
+      </trans-unit>
+      <trans-unit id="fy" approved="yes">
+        <source>Western Frisian</source>
+        <target>ຟຣິຊຽນຕາເວັນຕົກ</target>
+      </trans-unit>
+      <trans-unit id="ga" approved="yes">
+        <source>Irish</source>
+        <target>ໄອຣິສ</target>
+      </trans-unit>
+      <trans-unit id="gaa" approved="yes">
+        <source>Ga</source>
+        <target>ກາ</target>
+      </trans-unit>
+      <trans-unit id="gay" approved="yes">
+        <source>Gayo</source>
+        <target>ກາໂຢ</target>
+      </trans-unit>
+      <trans-unit id="gba" approved="yes">
+        <source>Gbaya</source>
+        <target>ບາຍາ</target>
+      </trans-unit>
+      <trans-unit id="gd" approved="yes">
+        <source>Gaelic; Scottish Gaelic</source>
+        <target>ເກລິກ; ສະກັອດທິດ ເກລິກ</target>
+      </trans-unit>
+      <trans-unit id="gem" approved="yes">
+        <source>Germanic languages</source>
+        <target>ພາສາເຈີແມນິກ</target>
+      </trans-unit>
+      <trans-unit id="gez" approved="yes">
+        <source>Geez</source>
+        <target>ກີຊ</target>
+      </trans-unit>
+      <trans-unit id="gil" approved="yes">
+        <source>Gilbertese</source>
+        <target>ກິນເບີເທດ</target>
+      </trans-unit>
+      <trans-unit id="gl" approved="yes">
+        <source>Galician</source>
+        <target>ກາລິຊຽນ</target>
+      </trans-unit>
+      <trans-unit id="gmh" approved="yes">
+        <source>German, Middle High (ca. 1050-1500)</source>
+        <target>ເຢຍລະມັນສູງ, ຍຸກກາງ (ປະມານ 1050-1500)</target>
+      </trans-unit>
+      <trans-unit id="gn" approved="yes">
+        <source>Guarani</source>
+        <target>ກົວຣານີ</target>
+      </trans-unit>
+      <trans-unit id="goh" approved="yes">
+        <source>German, Old High (ca. 750-1050)</source>
+        <target>ເຢຍລະມັນສູງ, ບູຮານ (ປະມານ 750-1050)</target>
+      </trans-unit>
+      <trans-unit id="gon" approved="yes">
+        <source>Gondi</source>
+        <target>ກອນດີ</target>
+      </trans-unit>
+      <trans-unit id="gor" approved="yes">
+        <source>Gorontalo</source>
+        <target>ໂກຣອນຕາໂລ</target>
+      </trans-unit>
+      <trans-unit id="got" approved="yes">
+        <source>Gothic</source>
+        <target>ໂກທິກ</target>
+      </trans-unit>
+      <trans-unit id="grb" approved="yes">
+        <source>Grebo</source>
+        <target>ເກຣໂບ</target>
+      </trans-unit>
+      <trans-unit id="grc" approved="yes">
+        <source>Greek, Ancient (to 1453)</source>
+        <target>ເກຣັກ, ບູຮານ (ເຖິງປີ 1453)</target>
+      </trans-unit>
+      <trans-unit id="gsw" approved="yes">
+        <source>Swiss German; Alemannic; Alsatian</source>
+        <target>ສະວິດ ເຢຍລະມັນ</target>
+      </trans-unit>
+      <trans-unit id="gu" approved="yes">
+        <source>Gujarati</source>
+        <target>ກູຈາຣາຕີ</target>
+      </trans-unit>
+      <trans-unit id="gv" approved="yes">
+        <source>Manx</source>
+        <target>ແມງຊ໌</target>
+      </trans-unit>
+      <trans-unit id="gwi" approved="yes">
+        <source>Gwich'in</source>
+        <target>ກວິດຊິນ</target>
+      </trans-unit>
+      <trans-unit id="ha" approved="yes">
+        <source>Hausa</source>
+        <target>ເຮົາຊາ</target>
+      </trans-unit>
+      <trans-unit id="hai" approved="yes">
+        <source>Haida</source>
+        <target>ໄຮດາ</target>
+      </trans-unit>
+      <trans-unit id="haw" approved="yes">
+        <source>Hawaiian</source>
+        <target>ຮາວາຍ</target>
+      </trans-unit>
+      <trans-unit id="he" approved="yes">
+        <source>Hebrew</source>
+        <target>ຮີບຣູ</target>
+      </trans-unit>
+      <trans-unit id="hi" approved="yes">
+        <source>Hindi</source>
+        <target>ຮິນດິ</target>
+      </trans-unit>
+      <trans-unit id="hil" approved="yes">
+        <source>Hiligaynon</source>
+        <target>ຮິລິໄກນອນ</target>
+      </trans-unit>
+      <trans-unit id="him" approved="yes">
+        <source>Himachali languages; Western Pahari languages</source>
+        <target>ພາສາຫິມາຊາລີ</target>
+      </trans-unit>
+      <trans-unit id="hit" approved="yes">
+        <source>Hittite</source>
+        <target>ຮິດຕິ</target>
+      </trans-unit>
+      <trans-unit id="hmn" approved="yes">
+        <source>Hmong; Mong</source>
+        <target>ມົ້ງ</target>
+      </trans-unit>
+      <trans-unit id="ho" approved="yes">
+        <source>Hiri Motu</source>
+        <target>ຮິຣິ ໂມຕູ</target>
+      </trans-unit>
+      <trans-unit id="hr" approved="yes">
+        <source>Croatian</source>
+        <target>ໂຄຣເອເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="hsb" approved="yes">
+        <source>Upper Sorbian</source>
+        <target>ຊໍບຽນສູງ</target>
+      </trans-unit>
+      <trans-unit id="ht" approved="yes">
+        <source>Haitian; Haitian Creole</source>
+        <target>ເຮຕິ; ເຮຕິ ຄຣີໂອ</target>
+      </trans-unit>
+      <trans-unit id="hu" approved="yes">
+        <source>Hungarian</source>
+        <target>ຮັງກາຣີ</target>
+      </trans-unit>
+      <trans-unit id="hup" approved="yes">
+        <source>Hupa</source>
+        <target>ຮູປາ</target>
+      </trans-unit>
+      <trans-unit id="hy" approved="yes">
+        <source>Armenian</source>
+        <target>ອາກເມນີ</target>
+      </trans-unit>
+      <trans-unit id="hz" approved="yes">
+        <source>Herero</source>
+        <target>ເຮເຣໂຣ</target>
+      </trans-unit>
+      <trans-unit id="ia" approved="yes">
+        <source>Interlingua (International Auxiliary Language Association)</source>
+        <target>ອິນເຕີລິງກວາ</target>
+      </trans-unit>
+      <trans-unit id="iba" approved="yes">
+        <source>Iban</source>
+        <target>ອີບັນ</target>
+      </trans-unit>
+      <trans-unit id="id" approved="yes">
+        <source>Indonesian</source>
+        <target>ອິນໂດເນເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="ie" approved="yes">
+        <source>Interlingue; Occidental</source>
+        <target>ອິນເຕີລິງກວາ</target>
+      </trans-unit>
+      <trans-unit id="ig" approved="yes">
+        <source>Igbo</source>
+        <target>ອິກໂບ</target>
+      </trans-unit>
+      <trans-unit id="ii" approved="yes">
+        <source>Sichuan Yi; Nuosu</source>
+        <target>ນົວຊູ</target>
+      </trans-unit>
+      <trans-unit id="ijo" approved="yes">
+        <source>Ijo languages</source>
+        <target>ພາສາອີໂຈ</target>
+      </trans-unit>
+      <trans-unit id="ik" approved="yes">
+        <source>Inupiaq</source>
+        <target>ອິນູປຽກ</target>
+      </trans-unit>
+      <trans-unit id="ilo" approved="yes">
+        <source>Iloko</source>
+        <target>ອີໂລໂກ</target>
+      </trans-unit>
+      <trans-unit id="inc" approved="yes">
+        <source>Indic languages</source>
+        <target>ພາສາອິນດິກ</target>
+      </trans-unit>
+      <trans-unit id="ine" approved="yes">
+        <source>Indo-European languages</source>
+        <target>ພາສາອິນໂດ-ຢູໂຣປຽນ</target>
+      </trans-unit>
+      <trans-unit id="inh" approved="yes">
+        <source>Ingush</source>
+        <target>ອິນກຸດ</target>
+      </trans-unit>
+      <trans-unit id="io" approved="yes">
+        <source>Ido</source>
+        <target>ອີໂດ</target>
+      </trans-unit>
+      <trans-unit id="ira" approved="yes">
+        <source>Iranian languages</source>
+        <target>ພາສາອິຣານ</target>
+      </trans-unit>
+      <trans-unit id="iro" approved="yes">
+        <source>Iroquoian languages</source>
+        <target>ພາສາອີໂຣຄວຽນ</target>
+      </trans-unit>
+      <trans-unit id="is" approved="yes">
+        <source>Icelandic</source>
+        <target>ໄອສແລນ</target>
+      </trans-unit>
+      <trans-unit id="it" approved="yes">
+        <source>Italian</source>
+        <target>ອິຕາລີ</target>
+      </trans-unit>
+      <trans-unit id="iu" approved="yes">
+        <source>Inuktitut</source>
+        <target>ອິນຸກຕິຕຸດ</target>
+      </trans-unit>
+      <trans-unit id="ja" approved="yes">
+        <source>Japanese</source>
+        <target>ຍີ່ປຸ່ນ</target>
+      </trans-unit>
+      <trans-unit id="jbo" approved="yes">
+        <source>Lojban</source>
+        <target>ໂລຈບັນ</target>
+      </trans-unit>
+      <trans-unit id="jpr" approved="yes">
+        <source>Judeo-Persian</source>
+        <target>ຈູດີໂອ-ເປີເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="jrb" approved="yes">
+        <source>Judeo-Arabic</source>
+        <target>ຈູດີໂອ-ອາຣັບ</target>
+      </trans-unit>
+      <trans-unit id="jv" approved="yes">
+        <source>Javanese</source>
+        <target>ຊະວາ</target>
+      </trans-unit>
+      <trans-unit id="ka" approved="yes">
+        <source>Georgian</source>
+        <target>ຈໍເຈຍ</target>
+      </trans-unit>
+      <trans-unit id="kaa" approved="yes">
+        <source>Kara-Kalpak</source>
+        <target>ຄາຣາ-ຄານປັກ</target>
+      </trans-unit>
+      <trans-unit id="kab" approved="yes">
+        <source>Kabyle</source>
+        <target>ຄາໄບ</target>
+      </trans-unit>
+      <trans-unit id="kac" approved="yes">
+        <source>Kachin; Jingpho</source>
+        <target>ຄາຊິນ; ຈິງໂພ</target>
+      </trans-unit>
+      <trans-unit id="kam" approved="yes">
+        <source>Kamba</source>
+        <target>ຄຳບາ</target>
+      </trans-unit>
+      <trans-unit id="kar" approved="yes">
+        <source>Karen languages</source>
+        <target>ພາສາກະຫຼ່ຽງ</target>
+      </trans-unit>
+      <trans-unit id="kaw" approved="yes">
+        <source>Kawi</source>
+        <target>ກາວີ</target>
+      </trans-unit>
+      <trans-unit id="kbd" approved="yes">
+        <source>Kabardian</source>
+        <target>ຄາບາດຽນ</target>
+      </trans-unit>
+      <trans-unit id="kg" approved="yes">
+        <source>Kongo</source>
+        <target>ຄອງໂກ</target>
+      </trans-unit>
+      <trans-unit id="kha" approved="yes">
+        <source>Khasi</source>
+        <target>ຄາຊີ</target>
+      </trans-unit>
+      <trans-unit id="khi" approved="yes">
+        <source>Khoisan languages</source>
+        <target>ພາສາຄອຍຊານ</target>
+      </trans-unit>
+      <trans-unit id="kho" approved="yes">
+        <source>Khotanese; Sakan</source>
+        <target>ໂຄຕານີດ</target>
+      </trans-unit>
+      <trans-unit id="ki" approved="yes">
+        <source>Kikuyu; Gikuyu</source>
+        <target>ກິກູຢູ</target>
+      </trans-unit>
+      <trans-unit id="kj" approved="yes">
+        <source>Kuanyama; Kwanyama</source>
+        <target>ຄວນຢາມາ</target>
+      </trans-unit>
+      <trans-unit id="kk" approved="yes">
+        <source>Kazakh</source>
+        <target>ຄາຊັກ</target>
+      </trans-unit>
+      <trans-unit id="kl" approved="yes">
+        <source>Kalaallisut; Greenlandic</source>
+        <target>ກຣີນແລນດິກ</target>
+      </trans-unit>
+      <trans-unit id="km" approved="yes">
+        <source>Central Khmer</source>
+        <target>ຂະແມ</target>
+      </trans-unit>
+      <trans-unit id="kmb" approved="yes">
+        <source>Kimbundu</source>
+        <target>ຄິມບູນດູ</target>
+      </trans-unit>
+      <trans-unit id="kn" approved="yes">
+        <source>Kannada</source>
+        <target>ກັນນາດາ</target>
+      </trans-unit>
+      <trans-unit id="ko" approved="yes">
+        <source>Korean</source>
+        <target>ເກົາຫຼີ</target>
+      </trans-unit>
+      <trans-unit id="kok" approved="yes">
+        <source>Konkani</source>
+        <target>ກອນການີ</target>
+      </trans-unit>
+      <trans-unit id="kos" approved="yes">
+        <source>Kosraean</source>
+        <target>ຄອດແຣນ</target>
+      </trans-unit>
+      <trans-unit id="kpe" approved="yes">
+        <source>Kpelle</source>
+        <target>ກເປເລ</target>
+      </trans-unit>
+      <trans-unit id="kr" approved="yes">
+        <source>Kanuri</source>
+        <target>ຄານູຣີ</target>
+      </trans-unit>
+      <trans-unit id="krc" approved="yes">
+        <source>Karachay-Balkar</source>
+        <target>ຄາຣາໄຊ-ບານກາ</target>
+      </trans-unit>
+      <trans-unit id="krl" approved="yes">
+        <source>Karelian</source>
+        <target>ຄາຣີລຽນ</target>
+      </trans-unit>
+      <trans-unit id="kro" approved="yes">
+        <source>Kru languages</source>
+        <target>ພາສາຄຣູ</target>
+      </trans-unit>
+      <trans-unit id="kru" approved="yes">
+        <source>Kurukh</source>
+        <target>ຄູຣຸກ</target>
+      </trans-unit>
+      <trans-unit id="ks" approved="yes">
+        <source>Kashmiri</source>
+        <target>ແຄດເມຍ</target>
+      </trans-unit>
+      <trans-unit id="ku" approved="yes">
+        <source>Kurdish</source>
+        <target>ເຄີດິສ</target>
+      </trans-unit>
+      <trans-unit id="kum" approved="yes">
+        <source>Kumyk</source>
+        <target>ຄູມິກ</target>
+      </trans-unit>
+      <trans-unit id="kut" approved="yes">
+        <source>Kutenai</source>
+        <target>ຄູເຕໄນ</target>
+      </trans-unit>
+      <trans-unit id="kv" approved="yes">
+        <source>Komi</source>
+        <target>ໂຄມິ</target>
+      </trans-unit>
+      <trans-unit id="kw" approved="yes">
+        <source>Cornish</source>
+        <target>ຄໍນິດ</target>
+      </trans-unit>
+      <trans-unit id="ky" approved="yes">
+        <source>Kirghiz; Kyrgyz</source>
+        <target>ເຄີກິດ</target>
+      </trans-unit>
+      <trans-unit id="la" approved="yes">
+        <source>Latin</source>
+        <target>ລາຕິນ</target>
+      </trans-unit>
+      <trans-unit id="lad" approved="yes">
+        <source>Ladino</source>
+        <target>ລາດິໂນ</target>
+      </trans-unit>
+      <trans-unit id="lah" approved="yes">
+        <source>Lahnda</source>
+        <target>ລານດາ</target>
+      </trans-unit>
+      <trans-unit id="lam" approved="yes">
+        <source>Lamba</source>
+        <target>ລຳບາ</target>
+      </trans-unit>
+      <trans-unit id="lb" approved="yes">
+        <source>Luxembourgish; Letzeburgesch</source>
+        <target>ລຸກຊຳບວກ</target>
+      </trans-unit>
+      <trans-unit id="lez" approved="yes">
+        <source>Lezghian</source>
+        <target>ເລດກຽນ</target>
+      </trans-unit>
+      <trans-unit id="lg" approved="yes">
+        <source>Ganda</source>
+        <target>ການດາ</target>
+      </trans-unit>
+      <trans-unit id="li" approved="yes">
+        <source>Limburgan; Limburger; Limburgish</source>
+        <target>ລິມເບີກິດ</target>
+      </trans-unit>
+      <trans-unit id="ln" approved="yes">
+        <source>Lingala</source>
+        <target>ລິງກາລາ</target>
+      </trans-unit>
+      <trans-unit id="lo" approved="yes">
+        <source>Lao</source>
+        <target>ລາວ</target>
+      </trans-unit>
+      <trans-unit id="lol" approved="yes">
+        <source>Mongo</source>
+        <target>ມອງໂກ</target>
+      </trans-unit>
+      <trans-unit id="loz" approved="yes">
+        <source>Lozi</source>
+        <target>ໂລຊີ</target>
+      </trans-unit>
+      <trans-unit id="lt" approved="yes">
+        <source>Lithuanian</source>
+        <target>ລິທົວເນຍ</target>
+      </trans-unit>
+      <trans-unit id="lu" approved="yes">
+        <source>Luba-Katanga</source>
+        <target>ລູບາ-ຄາຕັງກາ</target>
+      </trans-unit>
+      <trans-unit id="lua" approved="yes">
+        <source>Luba-Lulua</source>
+        <target>ລູບາ-ລູລົວ</target>
+      </trans-unit>
+      <trans-unit id="lui" approved="yes">
+        <source>Luiseno</source>
+        <target>ລຸຍເຊໂນ</target>
+      </trans-unit>
+      <trans-unit id="lun" approved="yes">
+        <source>Lunda</source>
+        <target>ລຸນດາ</target>
+      </trans-unit>
+      <trans-unit id="luo" approved="yes">
+        <source>Luo (Kenya and Tanzania)</source>
+        <target>ລູໂອ</target>
+      </trans-unit>
+      <trans-unit id="lus" approved="yes">
+        <source>Lushai</source>
+        <target>ລູໄຊ</target>
+      </trans-unit>
+      <trans-unit id="lv" approved="yes">
+        <source>Latvian</source>
+        <target>ລັດເວຍ</target>
+      </trans-unit>
+      <trans-unit id="mad" approved="yes">
+        <source>Madurese</source>
+        <target>ມາດູເຣດ</target>
+      </trans-unit>
+      <trans-unit id="mag" approved="yes">
+        <source>Magahi</source>
+        <target>ມາກາຮີ</target>
+      </trans-unit>
+      <trans-unit id="mai" approved="yes">
+        <source>Maithili</source>
+        <target>ໄມທິລີ</target>
+      </trans-unit>
+      <trans-unit id="mak" approved="yes">
+        <source>Makasar</source>
+        <target>ມາຄາຊາ</target>
+      </trans-unit>
+      <trans-unit id="man" approved="yes">
+        <source>Mandingo</source>
+        <target>ມັນດິງໂກ</target>
+      </trans-unit>
+      <trans-unit id="map" approved="yes">
+        <source>Austronesian languages</source>
+        <target>ພາສາອອດໂຕຣເນຊຽນ</target>
+      </trans-unit>
+      <trans-unit id="mas" approved="yes">
+        <source>Masai</source>
+        <target>ມາໄຊ</target>
+      </trans-unit>
+      <trans-unit id="mdf" approved="yes">
+        <source>Moksha</source>
+        <target>ມອກຊາ</target>
+      </trans-unit>
+      <trans-unit id="mdr" approved="yes">
+        <source>Mandar</source>
+        <target>ມັນດາ</target>
+      </trans-unit>
+      <trans-unit id="men" approved="yes">
+        <source>Mende</source>
+        <target>ເມນເດ</target>
+      </trans-unit>
+      <trans-unit id="mg" approved="yes">
+        <source>Malagasy</source>
+        <target>ມາລາກາຊີ</target>
+      </trans-unit>
+      <trans-unit id="mga" approved="yes">
+        <source>Irish, Middle (900-1200)</source>
+        <target>ໄອຣິສ, ຍຸກກາງ (900-1200)</target>
+      </trans-unit>
+      <trans-unit id="mh" approved="yes">
+        <source>Marshallese</source>
+        <target>ມາແຊລເລດ</target>
+      </trans-unit>
+      <trans-unit id="mi" approved="yes">
+        <source>Maori</source>
+        <target>ເມົາຣີ</target>
+      </trans-unit>
+      <trans-unit id="mic" approved="yes">
+        <source>Mi'kmaq; Micmac</source>
+        <target>ມິກແມກ</target>
+      </trans-unit>
+      <trans-unit id="min" approved="yes">
+        <source>Minangkabau</source>
+        <target>ມິນັງກາບາວ</target>
+      </trans-unit>
+      <trans-unit id="mis" approved="yes">
+        <source>Uncoded languages</source>
+        <target>ພາສາທີ່ບໍ່ມີລະຫັດ</target>
+      </trans-unit>
+      <trans-unit id="mk" approved="yes">
+        <source>Macedonian</source>
+        <target>ມາເຊໂດນີ</target>
+      </trans-unit>
+      <trans-unit id="mkh" approved="yes">
+        <source>Mon-Khmer languages</source>
+        <target>ພາສາມອນ-ຂະແມ</target>
+      </trans-unit>
+      <trans-unit id="ml" approved="yes">
+        <source>Malayalam</source>
+        <target>ມາລາຢາລຳ</target>
+      </trans-unit>
+      <trans-unit id="mn" approved="yes">
+        <source>Mongolian</source>
+        <target>ມອງໂກລີ</target>
+      </trans-unit>
+      <trans-unit id="mnc" approved="yes">
+        <source>Manchu</source>
+        <target>ແມນຈູ</target>
+      </trans-unit>
+      <trans-unit id="mni" approved="yes">
+        <source>Manipuri</source>
+        <target>ມະນີປຸຣີ</target>
+      </trans-unit>
+      <trans-unit id="mno" approved="yes">
+        <source>Manobo languages</source>
+        <target>ພາສາມາໂນໂບ</target>
+      </trans-unit>
+      <trans-unit id="moh" approved="yes">
+        <source>Mohawk</source>
+        <target>ໂມຮອກ</target>
+      </trans-unit>
+      <trans-unit id="mos" approved="yes">
+        <source>Mossi</source>
+        <target>ມອສຊີ</target>
+      </trans-unit>
+      <trans-unit id="mr" approved="yes">
+        <source>Marathi</source>
+        <target>ມາຣາທີ</target>
+      </trans-unit>
+      <trans-unit id="ms" approved="yes">
+        <source>Malay</source>
+        <target>ມາເລ</target>
+      </trans-unit>
+      <trans-unit id="mt" approved="yes">
+        <source>Maltese</source>
+        <target>ມອນຕາ</target>
+      </trans-unit>
+      <trans-unit id="mul" approved="yes">
+        <source>Multiple languages</source>
+        <target>ຫຼາຍພາສາ</target>
+      </trans-unit>
+      <trans-unit id="mun" approved="yes">
+        <source>Munda languages</source>
+        <target>ພາສາມຸນດາ</target>
+      </trans-unit>
+      <trans-unit id="mus" approved="yes">
+        <source>Creek</source>
+        <target>ຄຣີກ</target>
+      </trans-unit>
+      <trans-unit id="mwl" approved="yes">
+        <source>Mirandese</source>
+        <target>ມິຣັນດິດ</target>
+      </trans-unit>
+      <trans-unit id="mwr" approved="yes">
+        <source>Marwari</source>
+        <target>ມາຣວາຣີ</target>
+      </trans-unit>
+      <trans-unit id="my" approved="yes">
+        <source>Burmese</source>
+        <target>ພະມ້າ</target>
+      </trans-unit>
+      <trans-unit id="myn" approved="yes">
+        <source>Mayan languages</source>
+        <target>ພາສາມາຍັນ</target>
+      </trans-unit>
+      <trans-unit id="myv" approved="yes">
+        <source>Erzya</source>
+        <target>ເອີຍາ</target>
+      </trans-unit>
+      <trans-unit id="na" approved="yes">
+        <source>Nauru</source>
+        <target>ນາອູຣູ</target>
+      </trans-unit>
+      <trans-unit id="nah" approved="yes">
+        <source>Nahuatl languages</source>
+        <target>ພາສານາວັດ</target>
+      </trans-unit>
+      <trans-unit id="nai" approved="yes">
+        <source>North American Indian languages</source>
+        <target>ພາສາອິນດຽນ ອາເມລິກາເໜືອ</target>
+      </trans-unit>
+      <trans-unit id="nap" approved="yes">
+        <source>Neapolitan</source>
+        <target>ເນໂປລີຕັນ</target>
+      </trans-unit>
+      <trans-unit id="nb" approved="yes">
+        <source>Norwegian Bokmål</source>
+        <target>ນອກແວ ບຸກມອນ</target>
+      </trans-unit>
+      <trans-unit id="nd" approved="yes">
+        <source>North Ndebele</source>
+        <target>ອັນເດເບເລເໜືອ</target>
+      </trans-unit>
+      <trans-unit id="nds" approved="yes">
+        <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
+        <target>ເຢຍລະມັນຕໍ່າ; ແຊັກຊອນຕໍ່າ</target>
+      </trans-unit>
+      <trans-unit id="ne" approved="yes">
+        <source>Nepali</source>
+        <target>ເນປານ</target>
+      </trans-unit>
+      <trans-unit id="new" approved="yes">
+        <source>Nepal Bhasa; Newar; Newari</source>
+        <target>ເນວາຣີ</target>
+      </trans-unit>
+      <trans-unit id="ng" approved="yes">
+        <source>Ndonga</source>
+        <target>ເອັນດອງກາ</target>
+      </trans-unit>
+      <trans-unit id="nia" approved="yes">
+        <source>Nias</source>
+        <target>ນິອາສ</target>
+      </trans-unit>
+      <trans-unit id="nic" approved="yes">
+        <source>Niger-Kordofanian languages</source>
+        <target>ພາສານິເຈີ-ຄໍໂດຟາເນຍ</target>
+      </trans-unit>
+      <trans-unit id="niu" approved="yes">
+        <source>Niuean</source>
+        <target>ນີອູເອ</target>
+      </trans-unit>
+      <trans-unit id="nl" approved="yes">
+        <source>Dutch; Flemish</source>
+        <target>ດັດຊ໌</target>
+      </trans-unit>
+      <trans-unit id="nn" approved="yes">
+        <source>Norwegian Nynorsk</source>
+        <target>ນອກແວ ນີນອກ</target>
+      </trans-unit>
+      <trans-unit id="no" approved="yes">
+        <source>Norwegian</source>
+        <target>ນອກແວ</target>
+      </trans-unit>
+      <trans-unit id="nog" approved="yes">
+        <source>Nogai</source>
+        <target>ໂນໄກ</target>
+      </trans-unit>
+      <trans-unit id="non" approved="yes">
+        <source>Norse, Old</source>
+        <target>ນອດສ໌, ບູຮານ</target>
+      </trans-unit>
+      <trans-unit id="nqo" approved="yes">
+        <source>N'Ko</source>
+        <target>ເອັນໂກ</target>
+      </trans-unit>
+      <trans-unit id="nr" approved="yes">
+        <source>South Ndebele</source>
+        <target>ອັນເດເບເລໃຕ້</target>
+      </trans-unit>
+      <trans-unit id="nso" approved="yes">
+        <source>Pedi; Sepedi; Northern Sotho</source>
+        <target>ພີດີ; ໂຊໂທເໜືອ</target>
+      </trans-unit>
+      <trans-unit id="nub" approved="yes">
+        <source>Nubian languages</source>
+        <target>ພາສານູບຽນ</target>
+      </trans-unit>
+      <trans-unit id="nv" approved="yes">
+        <source>Navajo; Navaho</source>
+        <target>ນາວາໂຮ</target>
+      </trans-unit>
+      <trans-unit id="nwc" approved="yes">
+        <source>Classical Newari; Old Newari; Classical Nepal Bhasa</source>
+        <target>ເນວາຣີດັ້ງເດີມ</target>
+      </trans-unit>
+      <trans-unit id="ny" approved="yes">
+        <source>Chichewa; Chewa; Nyanja</source>
+        <target>ຊີວາ</target>
+      </trans-unit>
+      <trans-unit id="nym" approved="yes">
+        <source>Nyamwezi</source>
+        <target>ນາມເວຊີ</target>
+      </trans-unit>
+      <trans-unit id="nyn" approved="yes">
+        <source>Nyankole</source>
+        <target>ນັນໂຄເລ</target>
+      </trans-unit>
+      <trans-unit id="nyo" approved="yes">
+        <source>Nyoro</source>
+        <target>ໂຍໂຣ</target>
+      </trans-unit>
+      <trans-unit id="nzi" approved="yes">
+        <source>Nzima</source>
+        <target>ຊີມາ</target>
+      </trans-unit>
+      <trans-unit id="oc" approved="yes">
+        <source>Occitan (post 1500)</source>
+        <target>ອັອກຊີຕັນ</target>
+      </trans-unit>
+      <trans-unit id="oj" approved="yes">
+        <source>Ojibwa</source>
+        <target>ໂອຈິບວາ</target>
+      </trans-unit>
+      <trans-unit id="om" approved="yes">
+        <source>Oromo</source>
+        <target>ໂອໂຣໂມ</target>
+      </trans-unit>
+      <trans-unit id="or" approved="yes">
+        <source>Oriya</source>
+        <target>ໂອຣິຍາ</target>
+      </trans-unit>
+      <trans-unit id="os" approved="yes">
+        <source>Ossetian; Ossetic</source>
+        <target>ອອດເຊຕິກ</target>
+      </trans-unit>
+      <trans-unit id="osa" approved="yes">
+        <source>Osage</source>
+        <target>ໂອເຊຈ</target>
+      </trans-unit>
+      <trans-unit id="ota" approved="yes">
+        <source>Turkish, Ottoman (1500-1928)</source>
+        <target>ຕຸຣາກີ, ອອດໂຕມັນ (1500-1928)</target>
+      </trans-unit>
+      <trans-unit id="oto" approved="yes">
+        <source>Otomian languages</source>
+        <target>ພາສາໂອໂຕເມຍ</target>
+      </trans-unit>
+      <trans-unit id="pa" approved="yes">
+        <source>Panjabi; Punjabi</source>
+        <target>ປັນຈາບີ</target>
+      </trans-unit>
+      <trans-unit id="paa" approved="yes">
+        <source>Papuan languages</source>
+        <target>ພາສາປາປົວ</target>
+      </trans-unit>
+      <trans-unit id="pag" approved="yes">
+        <source>Pangasinan</source>
+        <target>ປາງກາຊີິນັນ</target>
+      </trans-unit>
+      <trans-unit id="pal" approved="yes">
+        <source>Pahlavi</source>
+        <target>ປາລາວີ</target>
+      </trans-unit>
+      <trans-unit id="pam" approved="yes">
+        <source>Pampanga; Kapampangan</source>
+        <target>ປາມປາງກາ</target>
+      </trans-unit>
+      <trans-unit id="pap" approved="yes">
+        <source>Papiamento</source>
+        <target>ປາປີອາເມນໂຕ</target>
+      </trans-unit>
+      <trans-unit id="pau" approved="yes">
+        <source>Palauan</source>
+        <target>ປາເລົາ</target>
+      </trans-unit>
+      <trans-unit id="peo" approved="yes">
+        <source>Persian, Old (ca. 600-400 B.C.)</source>
+        <target>ເປີເຊຍ, ບູຮານ (ປະມານ 600-400 ກ່ອນ ຄ.ສ.)</target>
+      </trans-unit>
+      <trans-unit id="phi" approved="yes">
+        <source>Philippine languages</source>
+        <target>ພາສາຟິລິບປິນ</target>
+      </trans-unit>
+      <trans-unit id="phn" approved="yes">
+        <source>Phoenician</source>
+        <target>ຟີນິເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="pi" approved="yes">
+        <source>Pali</source>
+        <target>ປາລີ</target>
+      </trans-unit>
+      <trans-unit id="pl" approved="yes">
+        <source>Polish</source>
+        <target>ໂປໂລຍ</target>
+      </trans-unit>
+      <trans-unit id="pon" approved="yes">
+        <source>Pohnpeian</source>
+        <target>ພອນເປ</target>
+      </trans-unit>
+      <trans-unit id="pra" approved="yes">
+        <source>Prakrit languages</source>
+        <target>ພາສາປຣາກຣິດ</target>
+      </trans-unit>
+      <trans-unit id="pro" approved="yes">
+        <source>Provençal, Old (to 1500); Occitan, Old (to 1500)</source>
+        <target>ໂປຣວອງຊານ, ບູຮານ</target>
+      </trans-unit>
+      <trans-unit id="ps" approved="yes">
+        <source>Pushto; Pashto</source>
+        <target>ປາສໂຕ</target>
+      </trans-unit>
+      <trans-unit id="pt" approved="yes">
+        <source>Portuguese</source>
+        <target>ປອກຕຸຍການ</target>
+      </trans-unit>
+      <trans-unit id="qaa-qtz" approved="yes">
+        <source>Reserved for local use</source>
+        <target>ສະຫງວນໄວ້ສຳລັບການນຳໃຊ້ທ້ອງຖິ່ນ</target>
+      </trans-unit>
+      <trans-unit id="qu" approved="yes">
+        <source>Quechua</source>
+        <target>ເກຊົວ</target>
+      </trans-unit>
+      <trans-unit id="raj" approved="yes">
+        <source>Rajasthani</source>
+        <target>ຣາຈັດສະຖານີ</target>
+      </trans-unit>
+      <trans-unit id="rap" approved="yes">
+        <source>Rapanui</source>
+        <target>ຣາປານຸຍ</target>
+      </trans-unit>
+      <trans-unit id="rar" approved="yes">
+        <source>Rarotongan; Cook Islands Maori</source>
+        <target>ຣາໂຣຕອງການ</target>
+      </trans-unit>
+      <trans-unit id="rm" approved="yes">
+        <source>Romansh</source>
+        <target>ໂຣມັນ</target>
+      </trans-unit>
+      <trans-unit id="rn" approved="yes">
+        <source>Rundi</source>
+        <target>ຣຸນດີ</target>
+      </trans-unit>
+      <trans-unit id="ro" approved="yes">
+        <source>Romanian; Moldavian; Moldovan</source>
+        <target>ໂຣມາເນຍ; ມອນໂດວາ</target>
+      </trans-unit>
+      <trans-unit id="roa" approved="yes">
+        <source>Romance languages</source>
+        <target>ພາສາໂຣມານ</target>
+      </trans-unit>
+      <trans-unit id="rom" approved="yes">
+        <source>Romany</source>
+        <target>ໂຣມານີ</target>
+      </trans-unit>
+      <trans-unit id="ru" approved="yes">
+        <source>Russian</source>
+        <target>ລັດເຊຍ</target>
+      </trans-unit>
+      <trans-unit id="rup" approved="yes">
+        <source>Aromanian; Arumanian; Macedo-Romanian</source>
+        <target>ອາໂຣມາເນຍ</target>
+      </trans-unit>
+      <trans-unit id="rw" approved="yes">
+        <source>Kinyarwanda</source>
+        <target>ຄິນຢາຣວັນດາ</target>
+      </trans-unit>
+      <trans-unit id="sa" approved="yes">
+        <source>Sanskrit</source>
+        <target>ສັນສະກິດ</target>
+      </trans-unit>
+      <trans-unit id="sad" approved="yes">
+        <source>Sandawe</source>
+        <target>ຊັນດາເວ</target>
+      </trans-unit>
+      <trans-unit id="sah" approved="yes">
+        <source>Yakut</source>
+        <target>ຢາກຸດ</target>
+      </trans-unit>
+      <trans-unit id="sai" approved="yes">
+        <source>South American Indian languages</source>
+        <target>ພາສາອິນດຽນ ອາເມລິກາໃຕ້</target>
+      </trans-unit>
+      <trans-unit id="sal" approved="yes">
+        <source>Salishan languages</source>
+        <target>ພາສາຊາລິຊັນ</target>
+      </trans-unit>
+      <trans-unit id="sam" approved="yes">
+        <source>Samaritan Aramaic</source>
+        <target>ຊາມາຣິຕັນ ອາຣາເມອິກ</target>
+      </trans-unit>
+      <trans-unit id="sas" approved="yes">
+        <source>Sasak</source>
+        <target>ຊາຊັກ</target>
+      </trans-unit>
+      <trans-unit id="sat" approved="yes">
+        <source>Santali</source>
+        <target>ຊານຕາລີ</target>
+      </trans-unit>
+      <trans-unit id="sc" approved="yes">
+        <source>Sardinian</source>
+        <target>ຊາດິເນຍ</target>
+      </trans-unit>
+      <trans-unit id="scn" approved="yes">
+        <source>Sicilian</source>
+        <target>ຊີຊີລຽນ</target>
+      </trans-unit>
+      <trans-unit id="sco" approved="yes">
+        <source>Scots</source>
+        <target>ສະກັອດ</target>
+      </trans-unit>
+      <trans-unit id="sd" approved="yes">
+        <source>Sindhi</source>
+        <target>ຊິນດິ</target>
+      </trans-unit>
+      <trans-unit id="se" approved="yes">
+        <source>Northern Sami</source>
+        <target>ຊາມິເໜືອ</target>
+      </trans-unit>
+      <trans-unit id="sel" approved="yes">
+        <source>Selkup</source>
+        <target>ເຊລຄຸບ</target>
+      </trans-unit>
+      <trans-unit id="sem" approved="yes">
+        <source>Semitic languages</source>
+        <target>ພາສາເຊມິຕິກ</target>
+      </trans-unit>
+      <trans-unit id="sg" approved="yes">
+        <source>Sango</source>
+        <target>ຊາງໂກ</target>
+      </trans-unit>
+      <trans-unit id="sga" approved="yes">
+        <source>Irish, Old (to 900)</source>
+        <target>ໄອຣິສ, ບູຮານ (ເຖິງປີ 900)</target>
+      </trans-unit>
+      <trans-unit id="sgn" approved="yes">
+        <source>Sign Languages</source>
+        <target>ພາສາມື</target>
+      </trans-unit>
+      <trans-unit id="shn" approved="yes">
+        <source>Shan</source>
+        <target>ໄທໃຫຍ່</target>
+      </trans-unit>
+      <trans-unit id="si" approved="yes">
+        <source>Sinhala; Sinhalese</source>
+        <target>ສິງຫົນ</target>
+      </trans-unit>
+      <trans-unit id="sid" approved="yes">
+        <source>Sidamo</source>
+        <target>ຊີດາໂມ</target>
+      </trans-unit>
+      <trans-unit id="sio" approved="yes">
+        <source>Siouan languages</source>
+        <target>ພາສາຊູ</target>
+      </trans-unit>
+      <trans-unit id="sit" approved="yes">
+        <source>Sino-Tibetan languages</source>
+        <target>ພາສາຈີນ-ທິເບດ</target>
+      </trans-unit>
+      <trans-unit id="sk" approved="yes">
+        <source>Slovak</source>
+        <target>ສະໂລວັກ</target>
+      </trans-unit>
+      <trans-unit id="sl" approved="yes">
+        <source>Slovenian</source>
+        <target>ສະໂລວີນີ</target>
+      </trans-unit>
+      <trans-unit id="sla" approved="yes">
+        <source>Slavic languages</source>
+        <target>ພາສາສະລາວິກ</target>
+      </trans-unit>
+      <trans-unit id="sm" approved="yes">
+        <source>Samoan</source>
+        <target>ຊາມົວ</target>
+      </trans-unit>
+      <trans-unit id="sma" approved="yes">
+        <source>Southern Sami</source>
+        <target>ຊາມິໃຕ້</target>
+      </trans-unit>
+      <trans-unit id="smi" approved="yes">
+        <source>Sami languages</source>
+        <target>ພາສາຊາມິ</target>
+      </trans-unit>
+      <trans-unit id="smj" approved="yes">
+        <source>Lule Sami</source>
+        <target>ລູເລ ຊາມິ</target>
+      </trans-unit>
+      <trans-unit id="smn" approved="yes">
+        <source>Inari Sami</source>
+        <target>ອິນາຣິ ຊາມິ</target>
+      </trans-unit>
+      <trans-unit id="sms" approved="yes">
+        <source>Skolt Sami</source>
+        <target>ສະກອນ ຊາມິ</target>
+      </trans-unit>
+      <trans-unit id="sn" approved="yes">
+        <source>Shona</source>
+        <target>ໂຊນາ</target>
+      </trans-unit>
+      <trans-unit id="snk" approved="yes">
+        <source>Soninke</source>
+        <target>ໂຊນິນເກ</target>
+      </trans-unit>
+      <trans-unit id="so" approved="yes">
+        <source>Somali</source>
+        <target>ໂຊມາລີ</target>
+      </trans-unit>
+      <trans-unit id="sog" approved="yes">
+        <source>Sogdian</source>
+        <target>ຊອກດຽນ</target>
+      </trans-unit>
+      <trans-unit id="son" approved="yes">
+        <source>Songhai languages</source>
+        <target>ພາສາຊອງໄຮ</target>
+      </trans-unit>
+      <trans-unit id="sq" approved="yes">
+        <source>Albanian</source>
+        <target>ອານບານີ</target>
+      </trans-unit>
+      <trans-unit id="sr" approved="yes">
+        <source>Serbian</source>
+        <target>ແຊກບີ</target>
+      </trans-unit>
+      <trans-unit id="srn" approved="yes">
+        <source>Sranan Tongo</source>
+        <target>ສະຣານັນ ຕອງໂກ</target>
+      </trans-unit>
+      <trans-unit id="srr" approved="yes">
+        <source>Serer</source>
+        <target>ເຊເຣີ</target>
+      </trans-unit>
+      <trans-unit id="ss" approved="yes">
+        <source>Swati</source>
+        <target>ສະວາຕິ</target>
+      </trans-unit>
+      <trans-unit id="ssa" approved="yes">
+        <source>Nilo-Saharan languages</source>
+        <target>ພາສານີໂລ-ຊາຫາຣາ</target>
+      </trans-unit>
+      <trans-unit id="st" approved="yes">
+        <source>Sotho, Southern</source>
+        <target>ໂຊໂທໃຕ້</target>
+      </trans-unit>
+      <trans-unit id="su" approved="yes">
+        <source>Sundanese</source>
+        <target>ຊຸນດາ</target>
+      </trans-unit>
+      <trans-unit id="suk" approved="yes">
+        <source>Sukuma</source>
+        <target>ຊູຄູມາ</target>
+      </trans-unit>
+      <trans-unit id="sus" approved="yes">
+        <source>Susu</source>
+        <target>ຊູຊູ</target>
+      </trans-unit>
+      <trans-unit id="sux" approved="yes">
+        <source>Sumerian</source>
+        <target>ຊູເມຣຽນ</target>
+      </trans-unit>
+      <trans-unit id="sv" approved="yes">
+        <source>Swedish</source>
+        <target>ສະວີເດັນ</target>
+      </trans-unit>
+      <trans-unit id="sw" approved="yes">
+        <source>Swahili</source>
+        <target>ສະວາຮີລີ</target>
+      </trans-unit>
+      <trans-unit id="syc" approved="yes">
+        <source>Classical Syriac</source>
+        <target>ຊີຣີແອກດັ້ງເດີມ</target>
+      </trans-unit>
+      <trans-unit id="syr" approved="yes">
+        <source>Syriac</source>
+        <target>ຊີຣີແອກ</target>
+      </trans-unit>
+      <trans-unit id="ta" approved="yes">
+        <source>Tamil</source>
+        <target>ທະມິນ</target>
+      </trans-unit>
+      <trans-unit id="tai" approved="yes">
+        <source>Tai languages</source>
+        <target>ພາສາໄຕ</target>
+      </trans-unit>
+      <trans-unit id="te" approved="yes">
+        <source>Telugu</source>
+        <target>ເຕລູກູ</target>
+      </trans-unit>
+      <trans-unit id="tem" approved="yes">
+        <source>Timne</source>
+        <target>ທິມເນ</target>
+      </trans-unit>
+      <trans-unit id="ter" approved="yes">
+        <source>Tereno</source>
+        <target>ເຕເຣໂນ</target>
+      </trans-unit>
+      <trans-unit id="tet" approved="yes">
+        <source>Tetum</source>
+        <target>ເຕຕຸມ</target>
+      </trans-unit>
+      <trans-unit id="tg" approved="yes">
+        <source>Tajik</source>
+        <target>ທາຈິກ</target>
+      </trans-unit>
+      <trans-unit id="th" approved="yes">
+        <source>Thai</source>
+        <target>ໄທ</target>
+      </trans-unit>
+      <trans-unit id="ti" approved="yes">
+        <source>Tigrinya</source>
+        <target>ຕິກຣິນຢາ</target>
+      </trans-unit>
+      <trans-unit id="tig" approved="yes">
+        <source>Tigre</source>
+        <target>ຕິເກຣ</target>
+      </trans-unit>
+      <trans-unit id="tiv" approved="yes">
+        <source>Tiv</source>
+        <target>ທີວ</target>
+      </trans-unit>
+      <trans-unit id="tk" approved="yes">
+        <source>Turkmen</source>
+        <target>ເທີກເມນ</target>
+      </trans-unit>
+      <trans-unit id="tkl" approved="yes">
+        <source>Tokelau</source>
+        <target>ໂຕເກເລົາ</target>
+      </trans-unit>
+      <trans-unit id="tl" approved="yes">
+        <source>Tagalog</source>
+        <target>ຕາກາລັອກ</target>
+      </trans-unit>
+      <trans-unit id="tlh" approved="yes">
+        <source>Klingon; tlhIngan-Hol</source>
+        <target>ຄລິງອອນ</target>
+      </trans-unit>
+      <trans-unit id="tli" approved="yes">
+        <source>Tlingit</source>
+        <target>ທລິງກິດ</target>
+      </trans-unit>
+      <trans-unit id="tmh" approved="yes">
+        <source>Tamashek</source>
+        <target>ທາມາເຊັກ</target>
+      </trans-unit>
+      <trans-unit id="tn" approved="yes">
+        <source>Tswana</source>
+        <target>ສະວານາ</target>
+      </trans-unit>
+      <trans-unit id="to" approved="yes">
+        <source>Tonga (Tonga Islands)</source>
+        <target>ຕອງກາ</target>
+      </trans-unit>
+      <trans-unit id="tog" approved="yes">
+        <source>Tonga (Nyasa)</source>
+        <target>ຕອງກາ (ນີອາຊາ)</target>
+      </trans-unit>
+      <trans-unit id="tpi" approved="yes">
+        <source>Tok Pisin</source>
+        <target>ທັອກ ພິຊິນ</target>
+      </trans-unit>
+      <trans-unit id="tr" approved="yes">
+        <source>Turkish</source>
+        <target>ຕຸຣາກີ</target>
+      </trans-unit>
+      <trans-unit id="ts" approved="yes">
+        <source>Tsonga</source>
+        <target>ຊອງກາ</target>
+      </trans-unit>
+      <trans-unit id="tsi" approved="yes">
+        <source>Tsimshian</source>
+        <target>ຊິມຊຽນ</target>
+      </trans-unit>
+      <trans-unit id="tt" approved="yes">
+        <source>Tatar</source>
+        <target>ຕາດ</target>
+      </trans-unit>
+      <trans-unit id="tum" approved="yes">
+        <source>Tumbuka</source>
+        <target>ທຸມບູກາ</target>
+      </trans-unit>
+      <trans-unit id="tup" approved="yes">
+        <source>Tupi languages</source>
+        <target>ພາສາຕູປີ</target>
+      </trans-unit>
+      <trans-unit id="tut" approved="yes">
+        <source>Altaic languages</source>
+        <target>ພາສາອັນໄຕ</target>
+      </trans-unit>
+      <trans-unit id="tvl" approved="yes">
+        <source>Tuvalu</source>
+        <target>ຕູວາລູ</target>
+      </trans-unit>
+      <trans-unit id="tw" approved="yes">
+        <source>Twi</source>
+        <target>ທວີ</target>
+      </trans-unit>
+      <trans-unit id="ty" approved="yes">
+        <source>Tahitian</source>
+        <target>ຕາຮິຕິ</target>
+      </trans-unit>
+      <trans-unit id="tyv" approved="yes">
+        <source>Tuvinian</source>
+        <target>ຕູວາ</target>
+      </trans-unit>
+      <trans-unit id="udm" approved="yes">
+        <source>Udmurt</source>
+        <target>ອຸດມູດ</target>
+      </trans-unit>
+      <trans-unit id="ug" approved="yes">
+        <source>Uighur; Uyghur</source>
+        <target>ອຸຍກູ</target>
+      </trans-unit>
+      <trans-unit id="uga" approved="yes">
+        <source>Ugaritic</source>
+        <target>ອູກາຣິຕິກ</target>
+      </trans-unit>
+      <trans-unit id="uk" approved="yes">
+        <source>Ukrainian</source>
+        <target>ອູແກຣນ</target>
+      </trans-unit>
+      <trans-unit id="umb" approved="yes">
+        <source>Umbundu</source>
+        <target>ອຸມບູນດູ</target>
+      </trans-unit>
+      <trans-unit id="und" approved="yes">
+        <source>Undetermined</source>
+        <target>ບໍ່ລະບຸ</target>
+      </trans-unit>
+      <trans-unit id="ur" approved="yes">
+        <source>Urdu</source>
+        <target>ອູຣດູ</target>
+      </trans-unit>
+      <trans-unit id="uz" approved="yes">
+        <source>Uzbek</source>
+        <target>ອຸດສະເບກ</target>
+      </trans-unit>
+      <trans-unit id="vai" approved="yes">
+        <source>Vai</source>
+        <target>ໄວ</target>
+      </trans-unit>
+      <trans-unit id="ve" approved="yes">
+        <source>Venda</source>
+        <target>ເວນດາ</target>
+      </trans-unit>
+      <trans-unit id="vi" approved="yes">
+        <source>Vietnamese</source>
+        <target>ຫວຽດນາມ</target>
+      </trans-unit>
+      <trans-unit id="vo" approved="yes">
+        <source>Volapük</source>
+        <target>ໂວລາພຸກ</target>
+      </trans-unit>
+      <trans-unit id="vot" approved="yes">
+        <source>Votic</source>
+        <target>ໂວຕິກ</target>
+      </trans-unit>
+      <trans-unit id="wa" approved="yes">
+        <source>Walloon</source>
+        <target>ວາລູນ</target>
+      </trans-unit>
+      <trans-unit id="wak" approved="yes">
+        <source>Wakashan languages</source>
+        <target>ພາສາວາກາຊັນ</target>
+      </trans-unit>
+      <trans-unit id="wal" approved="yes">
+        <source>Wolaitta; Wolaytta</source>
+        <target>ໂວໄລຕາ</target>
+      </trans-unit>
+      <trans-unit id="war" approved="yes">
+        <source>Waray</source>
+        <target>ວາເຣ</target>
+      </trans-unit>
+      <trans-unit id="was" approved="yes">
+        <source>Washo</source>
+        <target>ວາໂຊ</target>
+      </trans-unit>
+      <trans-unit id="wen" approved="yes">
+        <source>Sorbian languages</source>
+        <target>ພາສາຊໍບຽນ</target>
+      </trans-unit>
+      <trans-unit id="wo" approved="yes">
+        <source>Wolof</source>
+        <target>ໂວລັອບ</target>
+      </trans-unit>
+      <trans-unit id="xal" approved="yes">
+        <source>Kalmyk; Oirat</source>
+        <target>ການມິກ</target>
+      </trans-unit>
+      <trans-unit id="xh" approved="yes">
+        <source>Xhosa</source>
+        <target>ໂຄຊາ</target>
+      </trans-unit>
+      <trans-unit id="yao" approved="yes">
+        <source>Yao</source>
+        <target>ຢາວ</target>
+      </trans-unit>
+      <trans-unit id="yap" approved="yes">
+        <source>Yapese</source>
+        <target>ຢາບ</target>
+      </trans-unit>
+      <trans-unit id="yi" approved="yes">
+        <source>Yiddish</source>
+        <target>ຢິດດິສ</target>
+      </trans-unit>
+      <trans-unit id="yo" approved="yes">
+        <source>Yoruba</source>
+        <target>ໂຢຣູບາ</target>
+      </trans-unit>
+      <trans-unit id="ypk" approved="yes">
+        <source>Yupik languages</source>
+        <target>ພາສາຢູປິກ</target>
+      </trans-unit>
+      <trans-unit id="za" approved="yes">
+        <source>Zhuang; Chuang</source>
+        <target>ຈວງ</target>
+      </trans-unit>
+      <trans-unit id="zap" approved="yes">
+        <source>Zapotec</source>
+        <target>ຊາໂປເທກ</target>
+      </trans-unit>
+      <trans-unit id="zbl" approved="yes">
+        <source>Blissymbols; Blissymbolics; Bliss</source>
+        <target>ສັນຍາລັກບລິສ</target>
+      </trans-unit>
+      <trans-unit id="zen" approved="yes">
+        <source>Zenaga</source>
+        <target>ເຊນາກາ</target>
+      </trans-unit>
+      <trans-unit id="zgh" approved="yes">
+        <source>Standard Moroccan Tamazight</source>
+        <target>ທາມາໄຊ ໂມຣັອກໂກ</target>
+      </trans-unit>
+      <trans-unit id="zh" approved="yes">
+        <source>Chinese</source>
+        <target>ຈີນ</target>
+      </trans-unit>
+      <trans-unit id="znd" approved="yes">
+        <source>Zande languages</source>
+        <target>ພາສາຊານເດ</target>
+      </trans-unit>
+      <trans-unit id="zu" approved="yes">
+        <source>Zulu</source>
+        <target>ຊູລູ</target>
+      </trans-unit>
+      <trans-unit id="zun" approved="yes">
+        <source>Zuni</source>
+        <target>ຊູນິ</target>
+      </trans-unit>
+      <trans-unit id="zxx" approved="yes">
+        <source>No linguistic content; Not applicable</source>
+        <target>ບໍ່ມີເນື້ອຫາທາງພາສາ; ບໍ່ສາມາດໃຊ້ໄດ້</target>
+      </trans-unit>
+      <trans-unit id="zza" approved="yes">
+        <source>Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki</source>
+        <target>ຊາຊາ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
