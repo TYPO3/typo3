@@ -164,8 +164,9 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
     {
         $value = $this->routeValuePrefix . $this->purgeRouteValuePrefix($value);
         $result = $this->findByRouteFieldValue($value);
-        if (($result[$this->languageParentFieldName] ?? null) > 0) {
-            return (string)$result[$this->languageParentFieldName];
+        $translatedValue = $this->languageParentFieldName ? ($result[$this->languageParentFieldName] ?? null) : null;
+        if ($translatedValue) {
+            return (string)$translatedValue;
         }
         if (isset($result['uid'])) {
             return (string)$result['uid'];
