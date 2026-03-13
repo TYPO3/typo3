@@ -161,9 +161,7 @@ readonly class LocalizationController
             $page = (int)$record['pid'];
         }
 
-        // Get page record for permission checks
-        $pageRecord = BackendUtility::readPageAccess($page, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-        if (!$pageRecord) {
+        if (!$this->hasLocalizationAccess($page, $recordType)) {
             return new JsonResponse(null, 403);
         }
 
@@ -242,9 +240,7 @@ readonly class LocalizationController
             $page = (int)$record['pid'];
         }
 
-        // Get page record for permission checks
-        $pageRecord = BackendUtility::readPageAccess($page, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-        if (!$pageRecord) {
+        if (!$this->hasLocalizationAccess($page, $recordType)) {
             return new JsonResponse(null, 403);
         }
 
@@ -287,9 +283,7 @@ readonly class LocalizationController
             $page = (int)$record['pid'];
         }
 
-        // Get page record for permission checks
-        $pageRecord = BackendUtility::readPageAccess($page, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-        if (!$pageRecord) {
+        if (!$this->hasLocalizationAccess($page, $recordType)) {
             return new JsonResponse(null, 403);
         }
 
@@ -765,6 +759,34 @@ readonly class LocalizationController
         // If any connected record exists, return TRANSLATE mode
         // Otherwise, all records are free mode, return COPY
         return $hasConnected ? LocalizationMode::TRANSLATE : LocalizationMode::COPY;
+    }
+
+    /**
+     * Whether the current backend user may use the localization wizard for a record
+     * of the given type, living on the given page.
+     *
+     * Records on the root level (pid = 0), e.g. sys_file_metadata, can't be checked
+     * against a page record: there is no row in "pages" for uid 0, so
+     * BackendUtility::readPageAccess() succeeds there for admins only. Therefore, for
+     * localizable tables whose root level restriction is lifted for non-admins, the
+     * "tables_modify" permission of the table itself is authoritative instead. Note
+     * that this is stricter than the check for pid > 0, which only requires PAGE_SHOW
+     * on the page and never looks at the table at all.
+     */
+    private function hasLocalizationAccess(int $pageId, string $recordType): bool
+    {
+        if ($pageId === 0) {
+            if (!$this->getBackendUser()->check('tables_modify', $recordType)) {
+                return false;
+            }
+            $schema = $this->schemaFactory->get($recordType);
+            if ($schema->hasCapability(TcaSchemaCapability::Language)
+                && $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()
+            ) {
+                return true;
+            }
+        }
+        return (bool)BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
     }
 
     private function getBackendUser(): BackendUserAuthentication
