@@ -446,12 +446,7 @@ class InlineControlContainer extends AbstractContainer
         $languageService = $this->getLanguageService();
         $groupFieldConfiguration = $inlineConfiguration['selectorOrUniqueConfiguration']['config'];
         $objectPrefix = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($inlineStructure, $this->data['inlineFirstPid']) . '-' . $inlineConfiguration['foreign_table'];
-        $elementBrowserEnabled = true;
-        if (is_array($groupFieldConfiguration['appearance'] ?? null)
-            && isset($inlineConfiguration['appearance']['elementBrowserEnabled'])
-        ) {
-            $elementBrowserEnabled = (bool)$inlineConfiguration['appearance']['elementBrowserEnabled'];
-        }
+        $elementBrowserEnabled = (bool)($inlineConfiguration['appearance']['elementBrowserEnabled'] ?? true);
         // Remove any white-spaces from the allowed extension lists
         $allowed = GeneralUtility::trimExplode(',', (string)($groupFieldConfiguration['allowed'] ?? ''), true);
         $buttonStyle = '';
