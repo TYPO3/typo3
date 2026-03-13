@@ -150,10 +150,10 @@ readonly class StageChangeNotification
     {
         $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
         $emailObject = $this->emailFactory->createWithOverrides(
-            templateRootPaths: $emailConfig['templateRootPaths'] ?? [],
-            layoutRootPaths: $emailConfig['layoutRootPaths'] ?? [],
-            partialRootPaths: $emailConfig['partialRootPaths'] ?? [],
-            request: $request instanceof ServerRequestInterface ? $request : null,
+            $emailConfig['templateRootPaths'] ?? [],
+            $emailConfig['layoutRootPaths'] ?? [],
+            $emailConfig['partialRootPaths'] ?? [],
+            $request instanceof ServerRequestInterface ? $request : null,
         );
         $emailObject
             ->to(new Address($recipientData['email'], $recipientData['realName'] ?? ''))

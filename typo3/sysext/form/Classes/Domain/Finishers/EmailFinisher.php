@@ -202,10 +202,10 @@ class EmailFinisher extends AbstractFinisher
     protected function initializeFluidEmail(FormRuntime $formRuntime): FluidEmail
     {
         $mailMessage = $this->templatedEmailFactory->createWithOverrides(
-            templateRootPaths: $this->options['templateRootPaths'] ?? [],
-            layoutRootPaths: $this->options['layoutRootPaths'] ?? [],
-            partialRootPaths: $this->options['partialRootPaths'] ?? [],
-            request: $this->finisherContext->getRequest(),
+            $this->options['templateRootPaths'] ?? [],
+            $this->options['layoutRootPaths'] ?? [],
+            $this->options['partialRootPaths'] ?? [],
+            $this->finisherContext->getRequest(),
         );
 
         if (!isset($this->options['templateName']) || $this->options['templateName'] === '') {

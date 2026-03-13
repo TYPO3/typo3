@@ -108,8 +108,10 @@ class SystemStatusUpdateTask extends AbstractTask
         $request = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface ? $GLOBALS['TYPO3_REQUEST'] : null;
         // @todo DI should be used to inject the MailerInterface in v15.0
         $email = GeneralUtility::makeInstance(TemplatedEmailFactory::class)->createWithOverrides(
-            templateRootPaths: [20 => 'EXT:reports/Resources/Private/Templates/Email/'],
-            request: $request,
+            [20 => 'EXT:reports/Resources/Private/Templates/Email/'],
+            [],
+            [],
+            $request,
         );
         $email
             ->to(...$sendEmailsTo)

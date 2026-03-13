@@ -419,7 +419,7 @@ class ValidatorTask extends AbstractTask
     protected function getFluidEmail(): FluidEmail
     {
         $fluidEmail = GeneralUtility::makeInstance(TemplatedEmailFactory::class)->createWithOverrides(
-            templateRootPaths: [20 => 'EXT:linkvalidator/Resources/Private/Templates/Email/'],
+            [20 => 'EXT:linkvalidator/Resources/Private/Templates/Email/'],
         );
 
         if ($this->emailTemplateName === '' || !$this->templateFilesExist($this->getTemplateRootPaths())) {

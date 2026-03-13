@@ -50,7 +50,7 @@ readonly class TemplatedEmailFactory
      */
     public function createFromRequest(ServerRequestInterface $request): FluidEmail
     {
-        return $this->createWithOverrides(request: $request);
+        return $this->createWithOverrides([], [], [], $request);
     }
 
     /**

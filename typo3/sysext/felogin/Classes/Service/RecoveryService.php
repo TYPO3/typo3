@@ -106,10 +106,10 @@ class RecoveryService
         ];
 
         $mail = $this->templatedEmailFactory->createWithOverrides(
-            templateRootPaths: $this->settings['email']['templateRootPaths'] ?? [],
-            layoutRootPaths: $this->settings['email']['layoutRootPaths'] ?? [],
-            partialRootPaths: $this->settings['email']['partialRootPaths'] ?? [],
-            request: $request,
+            $this->settings['email']['templateRootPaths'] ?? [],
+            $this->settings['email']['layoutRootPaths'] ?? [],
+            $this->settings['email']['partialRootPaths'] ?? [],
+            $request,
         );
         $mail->subject($this->getEmailSubject())
             ->from($this->recoveryConfiguration->getSender())
