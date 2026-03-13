@@ -1,0 +1,168 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+namespace TYPO3\CMS\Backend\Form;
+
+use TYPO3\CMS\Backend\Date\DateConfigurationFactory;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * This is form engine - Class for creating the backend editing forms.
+ *
+ * @internal This class and its exposed method and method signatures will change
+ *
+ * @deprecated This class is unused and only exists to support legacy form rendering.
+ *             Please switch to using FormResultFactory and FormResultHandler instead.
+ *             Will be removed in v15.
+ */
+class FormResultCompiler
+{
+    /**
+     * @var array HTML of additional hidden fields rendered by sub containers
+     */
+    protected array $hiddenFieldAccum = [];
+
+    /**
+     * Data array from IRRE pushed to frontend as json array
+     */
+    protected array $inlineData = [];
+
+    /**
+     * List of additional style sheet files to load
+     */
+    protected array $stylesheetFiles = [];
+
+    /**
+     * Additional language label files to include.
+     */
+    protected array $additionalInlineLanguageLabelFiles = [];
+
+    /**
+     * Array with instances of JavaScriptModuleInstruction.
+     *
+     * @var list<JavaScriptModuleInstruction>
+     */
+    protected array $javaScriptModules = [];
+
+    /**
+     * Merge existing data with the given result array
+     *
+     * @param array $resultArray Array returned by child
+     * @internal Temporary method to use FormEngine class as final data merger
+     */
+    public function mergeResult(array $resultArray): void
+    {
+        foreach ($resultArray['javaScriptModules'] ?? [] as $module) {
+            if (!$module instanceof JavaScriptModuleInstruction) {
+                throw new \LogicException(
+                    sprintf(
+                        'Module must be a %s, type "%s" given',
+                        JavaScriptModuleInstruction::class,
+                        gettype($module)
+                    ),
+                    1663860283
+                );
+            }
+            $this->javaScriptModules[] = $module;
+        }
+        foreach ($resultArray['additionalHiddenFields'] as $element) {
+            $this->hiddenFieldAccum[] = $element;
+        }
+        foreach ($resultArray['stylesheetFiles'] as $stylesheetFile) {
+            if (!in_array($stylesheetFile, $this->stylesheetFiles)) {
+                $this->stylesheetFiles[] = $stylesheetFile;
+            }
+        }
+
+        if (!empty($resultArray['inlineData'])) {
+            $resultArrayInlineData = $this->inlineData;
+            $resultInlineData = $resultArray['inlineData'];
+            ArrayUtility::mergeRecursiveWithOverrule($resultArrayInlineData, $resultInlineData);
+            $this->inlineData = $resultArrayInlineData;
+        }
+
+        if (!empty($resultArray['additionalInlineLanguageLabelFiles'])) {
+            foreach ($resultArray['additionalInlineLanguageLabelFiles'] as $additionalInlineLanguageLabelFile) {
+                $this->additionalInlineLanguageLabelFiles[] = $additionalInlineLanguageLabelFile;
+            }
+        }
+    }
+
+    /**
+     * Adds CSS files BEFORE the form is drawn
+     */
+    public function addCssFiles(): void
+    {
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        foreach ($this->stylesheetFiles as $stylesheetFile) {
+            $pageRenderer->addCssFile($stylesheetFile);
+        }
+    }
+
+    /**
+     * Prints necessary JavaScript for TCEforms (after the form HTML).
+     * currently this is used to transform page-specific options in the TYPO3.Settings array for JS
+     * so the JS module can access these values
+     */
+    public function printNeededJSFunctions(): string
+    {
+        // set variables to be accessible for JS
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
+        // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
+        $html = implode(LF, $this->hiddenFieldAccum);
+        // load the main module for FormEngine with all important JS functions
+        $this->javaScriptModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine.js')
+            ->invoke(
+                'initialize',
+                (string)$uriBuilder->buildUriFromRoute('wizard_element_browser')
+            );
+
+        foreach ($this->javaScriptModules as $module) {
+            $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
+        }
+
+        // Needed for FormEngine manipulation (date picker) and DateTime components
+        $pageRenderer->addInlineSetting(null, 'DateConfiguration', GeneralUtility::makeInstance(DateConfigurationFactory::class)->getConfiguration('javascript'));
+
+        $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
+        foreach ($this->additionalInlineLanguageLabelFiles as $additionalInlineLanguageLabelFile) {
+            $pageRenderer->addInlineLanguageLabelFile($additionalInlineLanguageLabelFile);
+        }
+
+        // Add JS required for inline fields
+        if ($this->inlineData !== []) {
+            $pageRenderer->addInlineSettingArray('FormEngineInline', $this->inlineData);
+        }
+
+        return $html;
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+}

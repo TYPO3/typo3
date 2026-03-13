@@ -2771,4 +2771,9 @@ return [
             'Deprecation-109027-MoveLanguageUpdateCommandAndEventsToEXTcore.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Form\FormResultCompiler' => [
+        'restFiles' => [
+            'Deprecation-109230-FormResultCompiler.rst',
+        ],
+    ],
 ];
