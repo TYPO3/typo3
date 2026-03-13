@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Database;
 
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\Connection\StaticServerVersionProvider;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
 use Doctrine\DBAL\ParameterType;
@@ -26,6 +27,7 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Result;
+use Doctrine\DBAL\ServerVersionProvider;
 use Doctrine\DBAL\Types\Type;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -352,7 +354,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     public function getPlatformServerVersion(): string
     {
         $platform = $this->getDatabasePlatform();
-        $version = trim($this->getServerVersion());
+        $version = trim($this->typo3_getServerVersionProvider()->getServerVersion());
         if ($version !== '') {
             $version = ' ' . $version;
         }
@@ -466,5 +468,29 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
     {
         /** @var \Closure(\Doctrine\DBAL\Connection):T $func Required to satisfy PHPStan. */
         return parent::transactional($func);
+    }
+
+    /**
+     * Returns the suitable `ServerVersionProvider`, which could be the connection itself or
+     * a `StaticServerVersionProvider` based on either of following configuration values:
+     *
+     * - $params['serverVersion']
+     * - $params['primary']['serverVersion']
+     *
+     * This is an extract from {@see \Doctrine\DBAL\Connection::getDatabasePlatform()} and handled as internal for
+     * now and will be tried to provide upstream making it API and is the reason why it is a prefixed method.
+     *
+     * It's currently only used in internal {@see self::getPlatformServerVersion()}.
+     *
+     * @internal only and not part of public API.
+     */
+    protected function typo3_getServerVersionProvider(): ServerVersionProvider
+    {
+        $params = $this->getParams();
+        return match (true) {
+            isset($params['serverVersion']) => new StaticServerVersionProvider($params['serverVersion']),
+            isset($params['primary']['serverVersion']) => new StaticServerVersionProvider($params['primary']['serverVersion']),
+            default => $this,
+        };
     }
 }
