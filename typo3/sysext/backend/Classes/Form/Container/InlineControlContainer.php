@@ -161,9 +161,6 @@ class InlineControlContainer extends AbstractContainer
         ];
         $configJson = (string)json_encode($config);
         $this->inlineData['config'][$nameObject . '-' . $foreign_table] = [
-            'min' => $config['minitems'],
-            'max' => $config['maxitems'],
-            'sortable' => $config['appearance']['useSortable'] ?? false,
             'top' => [
                 'table' => $top['table'],
                 'uid' => $top['uid'],
@@ -271,20 +268,21 @@ class InlineControlContainer extends AbstractContainer
             $newRecordButton = $this->getLevelInteractionButton('newRecord', $config);
         }
 
-        $formGroupAttributes = [
-            'id' => $nameObject,
-            'class' => 'form-group',
-            'data-object-group' => $nameObject . '-' . $foreign_table,
-            'data-form-field' => $nameForm,
-            'data-appearance' => (string)json_encode($config['appearance'] ?? ''),
-        ];
+        $fieldInformationResult = $this->renderFieldInformation();
+        $html = $fieldInformationResult['html'];
+        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         // Wrap all inline fields of a record with a custom element (container)
-        $html = '<typo3-formengine-container-inline ' . GeneralUtility::implodeAttributes($formGroupAttributes, true) . '>';
-
-        $fieldInformationResult = $this->renderFieldInformation();
-        $html .= $fieldInformationResult['html'];
-        $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
+        $formGroupAttributes = [
+            'id' => $nameObject,
+            'data-object-group' => $nameObject . '-' . $foreign_table,
+            'data-form-field' => $nameForm,
+            'data-expand-single' => (bool)($config['appearance']['expandSingle'] ?? false) ? 'true' : 'false',
+            'data-sortable' => (bool)($config['appearance']['useSortable'] ?? false) ? 'true' : 'false',
+            'data-min' => (int)($config['minitems'] ?? 0),
+            'data-max' => (int)($config['maxitems'] ?? 0),
+        ];
+        $html .= '<typo3-formengine-container-inline ' . GeneralUtility::implodeAttributes($formGroupAttributes, true) . '>';
 
         // Add the level buttons before all child records:
         if (in_array($config['appearance']['levelLinksPosition'] ?? null, ['both', 'top'], true)) {
@@ -392,7 +390,7 @@ class InlineControlContainer extends AbstractContainer
         $attributes = [];
         switch ($type) {
             case 'newRecord':
-                $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createnew'));
+                $title = htmlspecialchars($languageService->sL('core.core:cm.createnew'));
                 $icon = 'actions-plus';
                 $attributes['class'] = 'btn btn-default t3js-create-new-button';
                 $attributes['data-type'] = 'newRecord';
@@ -401,7 +399,7 @@ class InlineControlContainer extends AbstractContainer
                 }
                 if (!empty($conf['appearance']['newRecordLinkAddTitle'])) {
                     $title = htmlspecialchars(sprintf(
-                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createnew.link'),
+                        $languageService->sL('core.core:cm.createnew.link'),
                         $languageService->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'])
                     ));
                 } elseif (isset($conf['appearance']['newRecordLinkTitle']) && $conf['appearance']['newRecordLinkTitle'] !== '') {
@@ -409,15 +407,15 @@ class InlineControlContainer extends AbstractContainer
                 }
                 break;
             case 'localize':
-                $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords'));
+                $title = htmlspecialchars($languageService->sL('core.misc:localizeAllRecords'));
                 $icon = 'actions-document-localize';
                 $attributes['class'] = 'btn btn-default t3js-synchronizelocalize-button';
                 $attributes['data-type'] = 'localize';
                 break;
             case 'synchronize':
-                $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeWithOriginalLanguage'));
+                $title = htmlspecialchars($languageService->sL('core.misc:synchronizeWithOriginalLanguage'));
                 $icon = 'actions-document-synchronize';
-                $attributes['class'] = 'btn btn-default inlineNewButton t3js-synchronizelocalize-button';
+                $attributes['class'] = 'btn btn-default t3js-synchronizelocalize-button';
                 $attributes['data-type'] = 'synchronize';
                 break;
             default:
@@ -458,7 +456,7 @@ class InlineControlContainer extends AbstractContainer
             if (!empty($inlineConfiguration['appearance']['createNewRelationLinkTitle'])) {
                 $createNewRelationText = htmlspecialchars($languageService->sL($inlineConfiguration['appearance']['createNewRelationLinkTitle']));
             } else {
-                $createNewRelationText = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createNewRelation'));
+                $createNewRelationText = htmlspecialchars($languageService->sL('core.core:cm.createNewRelation'));
             }
             $item .= '
                 <button type="button" class="btn btn-default t3js-element-browser" data-mode="db"
@@ -473,7 +471,7 @@ class InlineControlContainer extends AbstractContainer
         if (!empty($allowed)) {
             $item .= '
                 <div class="form-text">
-                    ' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.allowedRelations')) . '
+                    ' . htmlspecialchars($languageService->sL('core.core:cm.allowedRelations')) . '
                     <br>
                     <ul class="badge-list">
                     ' . implode(' ', array_map(static fn(string $item): string => '<li><span class="badge badge-secondary">' . strtoupper($item) . '</span></li>', $allowed)) . '
@@ -527,7 +525,7 @@ class InlineControlContainer extends AbstractContainer
             if (!empty($config['appearance']['createNewRelationLinkTitle'])) {
                 $createNewRelationText = htmlspecialchars($this->getLanguageService()->sL($config['appearance']['createNewRelationLinkTitle']));
             } else {
-                $createNewRelationText = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createNewRelation'));
+                $createNewRelationText = htmlspecialchars($this->getLanguageService()->sL('core.core:cm.createNewRelation'));
             }
             $item .= '
                 <button type="button" class="btn btn-default t3js-create-new-button" title="' . $createNewRelationText . '">

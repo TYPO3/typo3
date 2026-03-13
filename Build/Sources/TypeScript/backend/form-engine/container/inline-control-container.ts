@@ -69,11 +69,6 @@ interface ProgressQueue {
   [key: string]: ProgressBarElement;
 }
 
-interface Appearance {
-  expandSingle?: boolean;
-  useSortable?: boolean;
-}
-
 export interface UniqueDefinition {
   elTable: string;
   field: string;
@@ -96,7 +91,6 @@ interface UniqueDefinitionUsed {
 
 class InlineControlContainer extends HTMLElement {
   private ajaxDispatcher: AjaxDispatcher = null;
-  private appearance: Appearance = null;
   private requestQueue: RequestQueue = {};
   private progressQueue: ProgressQueue = {};
   private readonly noTitleString: string = (coreCoreLabels.get('labels.no_title'));
@@ -107,6 +101,22 @@ class InlineControlContainer extends HTMLElement {
 
   public get formField(): string {
     return this.dataset.formField;
+  }
+
+  public get expandSingle(): boolean {
+    return this.dataset.expandSingle === 'true';
+  }
+
+  public get sortable(): boolean {
+    return this.dataset.sortable === 'true';
+  }
+
+  public get min(): number {
+    return parseInt(this.dataset.min, 10) || 0;
+  }
+
+  public get max(): number {
+    return parseInt(this.dataset.max, 10) || 0;
   }
 
   /**
@@ -269,9 +279,8 @@ class InlineControlContainer extends HTMLElement {
 
     new RegularEvent('message', this.handlePostMessage).bindTo(window);
 
-    if (this.getAppearance().useSortable) {
+    if (this.sortable) {
       const recordListContainer = <HTMLDivElement>document.getElementById(this.id + '_records');
-      // tslint:disable-next-line:no-unused-expression
       new Sortable(recordListContainer, {
         group: recordListContainer.getAttribute('id'),
         handle: '.sortableHandle',
@@ -615,7 +624,7 @@ class InlineControlContainer extends HTMLElement {
    */
   private collapseExpandRecord(objectId: string): void {
     const recordElement = InlineControlContainer.getInlineRecordContainer(objectId);
-    const expandSingle = this.getAppearance().expandSingle === true;
+    const expandSingle = this.expandSingle;
     const isCollapsed: boolean = recordElement.classList.contains(States.collapsed);
     let collapse: Array<string> = [];
     const expand: Array<string> = [];
@@ -926,17 +935,15 @@ class InlineControlContainer extends HTMLElement {
       return true;
     }
 
-    if (typeof TYPO3.settings.FormEngineInline.config[this.objectGroup] !== 'undefined') {
-      const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
-      if (records.length >= TYPO3.settings.FormEngineInline.config[this.objectGroup].max) {
-        return false;
-      }
+    const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+    if (this.max > 0 && records.length >= this.max) {
+      return false;
+    }
 
-      if (this.hasObjectGroupDefinedUniqueConstraints()) {
-        const unique = TYPO3.settings.FormEngineInline.unique[this.objectGroup];
-        if (unique.used.length >= unique.max && unique.max >= 0) {
-          return false;
-        }
+    if (this.hasObjectGroupDefinedUniqueConstraints()) {
+      const unique = TYPO3.settings.FormEngineInline.unique[this.objectGroup];
+      if (unique.used.length >= unique.max && unique.max >= 0) {
+        return false;
       }
     }
 
@@ -1205,24 +1212,6 @@ class InlineControlContainer extends HTMLElement {
     document.getElementById(objectId + '_label').textContent = value.length ? value : this.noTitleString;
   }
 
-  /**
-   * @return {Object}
-   */
-  private getAppearance(): Appearance {
-    if (this.appearance === null) {
-      this.appearance = {};
-
-      if (typeof this.dataset.appearance === 'string') {
-        try {
-          this.appearance = JSON.parse(this.dataset.appearance);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
-
-    return this.appearance;
-  }
 }
 
 window.customElements.define('typo3-formengine-container-inline', InlineControlContainer);
