@@ -24,6 +24,7 @@ By default, the ViewHelper renders the content area as-is, but EventListeners
 can listen to the :php:`\TYPO3\CMS\Fluid\Event\ModifyRenderedContentAreaEvent` and modify the output.
 
 You need to use the `PAGEVIEW` config like this:
+
 ..  code-block:: typoscript
 
     page = PAGE
