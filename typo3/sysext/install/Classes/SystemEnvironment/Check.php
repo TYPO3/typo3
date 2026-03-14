@@ -215,6 +215,14 @@ class Check implements CheckInterface
         $recommendedMemoryLimit = 128;
         $memoryLimit = $this->getBytesFromSizeMeasurement((string)ini_get('memory_limit'));
         if ($memoryLimit <= 0) {
+            if (Environment::isCli()) {
+                // "0" memory limit for CLI is usually "just fine". Do not cause a report for this in CLI mode (but in web mode)
+                $this->messageQueue->enqueue(new FlashMessage(
+                    'Maximum PHP memory limit is set to zero; this is commonly set in PHP CLI mode, which is currently active for this check.',
+                    'Unlimited memory limit for PHP (CLI)',
+                ));
+                return;
+            }
             $this->messageQueue->enqueue(new FlashMessage(
                 'PHP is configured not to limit memory usage at all. This is a risk'
                     . ' and should be avoided in production setup. In general it\'s best practice to limit this.'
@@ -319,6 +327,14 @@ class Check implements CheckInterface
         $recommendedMaximumExecutionTime = 240;
         $currentMaximumExecutionTime = ini_get('max_execution_time');
         if ($currentMaximumExecutionTime == 0) {
+            if (Environment::isCli()) {
+                // "0" execution time for CLI is usually "just fine". Do not cause a report for this in CLI mode (but in web mode)
+                $this->messageQueue->enqueue(new FlashMessage(
+                    'Maximum PHP script execution time is set to zero; this is commonly set in PHP CLI mode, which is currently active for this check.',
+                    'Infinite PHP script execution time',
+                ));
+                return;
+            }
             $this->messageQueue->enqueue(new FlashMessage(
                 'max_execution_time=0' . LF
                     . 'While TYPO3 is fine with this, you risk a denial-of-service for your system if for whatever'
