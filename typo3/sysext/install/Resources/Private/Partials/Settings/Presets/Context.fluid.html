@@ -23,12 +23,18 @@
     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
         <div class="panel-body">
             <p>
-                In this panel it is possible to select a configuration preset which optimizes multiple settings
-                to be suited best for production or development environments.
-                The "Live" preset configures your TYPO3 installation for maximum performance
-                and suppresses debug and error messages, so that nothing is disclosed to website visitors.
-                The "Debug" preset enables most debug and error messages which is helpful during development.
-                As a third option it is possible to manually customize each setting for specific needs.
+                Choose a configuration preset optimized for development or production environments.
+            </p>
+            <p>
+                The <strong>Live</strong> preset prioritizes performance and hides debug and error
+                messages from website visitors.
+            </p>
+            <p>
+                The <strong>Debug</strong> preset enables detailed debug and error messages to support
+                development and troubleshooting.
+            </p>
+            <p>
+                Select <strong>Custom configuration</strong> to adjust each setting individually.
             </p>
             <f:for each="{feature.presetsOrderedByPriority}" as="preset">
                 <f:render partial="Settings/Presets/{feature.name}/{preset.name}" arguments="{_all}" />

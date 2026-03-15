@@ -1,13 +1,17 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-    The Configuration Module recommends configuration settings based on information found in your environments setup.
+    Review and apply recommended configuration presets based on the detected environment setup.
 </p>
 <p>
-    TYPO3 can also be run in a specific application context, by setting an environment variable in the web server configuration. The application context can then be accessed e.g. in the system/additional.php file or TypoScript configuration to customize settings accordingly.
+    TYPO3 can also run in a specific application context defined through an environment variable
+    in the web server configuration. This context can be accessed in <code>system/additional.php</code>
+    or in TypoScript to customize configuration accordingly.
 </p>
 <p>
-    Changed values are written to system/settings.php. The optional file system/additional.php is not controlled by the TYPO3’s core and may override certain settings. Administrators must maintain system/additional.php manually and should be used with caution.
+    Changed values are written to <code>system/settings.php</code>. The optional file
+    <code>system/additional.php</code> is not managed by the TYPO3 core and may override certain
+    settings. Administrators must maintain this file manually and should use it with caution.
 </p>
 
 <f:render partial="Generic/ConfigurationNotWritable" arguments="{_all}"/>

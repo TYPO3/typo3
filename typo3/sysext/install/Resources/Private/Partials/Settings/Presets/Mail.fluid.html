@@ -23,14 +23,16 @@
     <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
         <div class="panel-body">
             <p>
-                Mailer agent in TYPO3 CMS can use the sendmail command line tool
-                if transport is configured to sendmail. The tool path needs to be
-                configured correctly depending on the binary that is available
-                on the system.
+                Configure how TYPO3 sends email messages.
             </p>
             <p>
-                This module detects the current sendmail path from PHP settings
-                and allows to set the correct value in TYPO3 settings.
+                TYPO3 can use the <strong>sendmail</strong> command line tool when the mail
+                transport is set to <code>sendmail</code>.
+                The correct executable path depends on the binary available on your system
+            </p>
+            <p>
+                The current sendmail path is detected from the PHP configuration and can be applied
+                to the TYPO3 settings.
             </p>
             <f:for each="{feature.presetsOrderedByPriority}" as="preset">
                 <f:render partial="Settings/Presets/{feature.name}/{preset.name}" arguments="{_all}" />

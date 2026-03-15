@@ -23,33 +23,42 @@
     <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
         <div class="panel-body">
             <p>
-                TYPO3 features a flexible caching system with a default configuration that is ideal for most use cases.
-                Depending on your individual hosting setup, the performance of your TYPO3 instance can be optimized even further
-                by adjusting the storage type below.
+                Configure how TYPO3 caches are stored to optimize performance for your hosting environment.
             </p>
             <p>
-                Storing the caches in the database is usually the best choice for standard environments as well as for
-                installations where a network file system (NFS) is used and file system access impacts the performance and
-                should be avoided (high disk I/O).
-                The file-based storage for TYPO3 caches is more efficient in shared hosting environments or if a distributed
-                database is used.
-                For more complex, high-end installations, memory-based caches such as Redis or Memcached should be considered
-                which require additional configuration in &quot;system/settings.php&quot;.
+                <strong>The default configuration</strong> works well for most installations. Depending on your setup,
+                performance can be improved by choosing a different cache storage type.<br>
+                <strong>Database storage</strong> is typically the best choice for standard environments and installations
+                using network file systems (NFS), where frequent file access may reduce performance.<br>
+                <strong>File-based caches</strong> can be more efficient in shared hosting environments or when using
+                distributed databases.<br>
+                For advanced installations, <strong>memory-based cache backends</strong> such as Redis
+                or Memcached can provide additional performance improvements. These require further
+                configuration in <code>system/settings.php.</code>
             </p>
             <p>
-                To configure the storage type for each cache independently, custom cache settings can be configured.
+                Select <strong>Custom settings</strong> to configure the storage backend for each
+                cache individually.
             </p>
+
+            <p>Cache types:</p>
             <dl>
                 <dt>Page</dt>
-                <dd>Stores the content that can be cached of a single page.</dd>
+                <dd>Stores the cached content of individual pages.</dd>
+
                 <dt>Page Section</dt>
-                <dd>Stores TypoScript information, instructions how to generate a page and how data should be handled that cannot be cached.</dd>
+                <dd>Stores TypoScript instructions and data required to generate page content and the
+                handling of non-cacheable objects.</dd>
+
                 <dt>Hash</dt>
-                <dd>Various internal information for generating pages, e.g. the structure of frontend menus.</dd>
+                <dd>Stores internal data used during page generation, such as menu structures.</dd>
+
                 <dt>Rootline</dt>
-                <dd>Stores all information of a &quot;rootline&quot; of pages (all pages up to the very first page in the page tree), including translated pages, start- and endtime. Also used for link generation and menus.</dd>
+                <dd>Stores the full hierarchy of pages leading to the current page, including translation
+                and timing information. Used for menus and link generation.</dd>
+
                 <dt>Image Sizes</dt>
-                <dd>Image sizes are stored separately to reduce file system access.</dd>
+                <dd>Stores calculated image dimensions separately to reduce file system access.</dd>
             </dl>
             <f:for each="{feature.presetsOrderedByPriority}" as="preset">
                 <f:render partial="Settings/Presets/{feature.name}/{preset.name}" arguments="{_all}" />
