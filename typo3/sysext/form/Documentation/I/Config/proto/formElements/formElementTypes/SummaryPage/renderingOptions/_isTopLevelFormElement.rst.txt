@@ -23,7 +23,7 @@ renderingOptions._isTopLevelFormElement
 :aspect:`Default value (for prototype 'standard')`
       .. code-block:: yaml
          :linenos:
-         :emphasize-lines: 4
+         :emphasize-lines: 3
 
          SummaryPage:
            renderingOptions:
