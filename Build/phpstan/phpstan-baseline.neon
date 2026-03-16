@@ -31,6 +31,12 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
 
 		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/NewContentElementController.php
+
+		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -223,12 +229,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/InlineStackProcessor.php
 
 		-
-			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, list\<array\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/InlineStackProcessor.php
-
-		-
 			message: '#^Variable \$unstable in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.variable
 			count: 1
@@ -273,6 +273,12 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with array\<int\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
+
+		-
+			message: '#^Offset 0 on array\{non\-falsy\-string, string\} in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.offset
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
@@ -1659,6 +1665,12 @@ parameters:
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Resource\\Folder and TYPO3\\CMS\\Core\\Resource\\Folder will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
 
@@ -3175,6 +3187,12 @@ parameters:
 			path: ../../typo3/sysext/filelist/Classes/Dto/ResourceCollection.php
 
 		-
+			message: '#^Offset 0 on array\{non\-falsy\-string, non\-falsy\-string\} in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.offset
+			count: 1
+			path: ../../typo3/sysext/filelist/Classes/FileList.php
+
+		-
 			message: '#^Strict comparison using \!\=\= between non\-falsy\-string and '''' will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
@@ -3769,7 +3787,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/Controller/ShowImageControllerTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with list\{0\?\: string, 1\?\: non\-empty\-string\} will always evaluate to true\.$#'
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\{\}\|array\{non\-falsy\-string, non\-empty\-string\} will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/SvgImageRenderingTest.php
