@@ -63,6 +63,11 @@ class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
 
     public function has(string $id): bool
     {
+        // If there are no sheets, no value can be determined.
+        if ($this->sheets === []) {
+            return false;
+        }
+
         [$sheetName, $propertyPath] = $this->processId($id);
 
         if ($sheetName !== '' && !isset($this->sheets[$sheetName])) {
