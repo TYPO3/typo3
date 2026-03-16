@@ -865,7 +865,7 @@ final class LosslessTokenizer implements TokenizerInterface
         $this->lineStream->append(
             (new IdentifierFunctionLine())
                 ->setIdentifierTokenStream($this->identifierStream)
-                ->setFunctionNameToken($functionNameToken) /** @phpstan-ignore-line phpstan is wrong here. We *know* a $functionNameToken exists. */
+                ->setFunctionNameToken($functionNameToken)
                 ->setTokenStream($this->tokenStream)
                 ->setFunctionValueTokenStream($functionValueStream)
         );

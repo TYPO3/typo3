@@ -43,6 +43,12 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
 
 		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/NewContentElementController.php
+
+		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -307,12 +313,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/InlineStackProcessor.php
 
 		-
-			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, list\<array\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/InlineStackProcessor.php
-
-		-
 			message: '#^Variable \$unstable in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.variable
 			count: 1
@@ -379,7 +379,13 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
 		-
-			message: '#^Offset 0 on list\{0\?\: string, 1\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			message: '#^Expression in empty\(\) is not falsy\.$#'
+			identifier: empty.expr
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
+
+		-
+			message: '#^Offset 0 on array\{non\-falsy\-string, string\} on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.offset
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
@@ -1573,6 +1579,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
 		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
+
+		-
 			message: '#^Parameter \#2 \$folder of method TYPO3\\CMS\\Core\\Resource\\ResourceStorage\:\:checkFolderActionPermission\(\) expects TYPO3\\CMS\\Core\\Resource\\Folder\|null, TYPO3\\CMS\\Core\\Resource\\FolderInterface given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2373,6 +2385,12 @@ parameters:
 		-
 			message: '#^Method TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility\:\:func_rename\(\) should return TYPO3\\CMS\\Core\\Resource\\File but returns TYPO3\\CMS\\Core\\Resource\\FileInterface\|TYPO3\\CMS\\Core\\Resource\\Folder\|null\.$#'
 			identifier: return.type
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/File/ExtendedFileUtility.php
 
@@ -4525,6 +4543,12 @@ parameters:
 			path: ../../typo3/sysext/filelist/Classes/Dto/ResourceCollection.php
 
 		-
+			message: '#^Offset 0 on array\{non\-falsy\-string, non\-falsy\-string\} in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.offset
+			count: 1
+			path: ../../typo3/sysext/filelist/Classes/FileList.php
+
+		-
 			message: '#^Strict comparison using \!\=\= between non\-falsy\-string and '''' will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
@@ -5125,9 +5149,15 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
-			message: '#^Offset ''cache\.'' on non\-empty\-array on left side of \?\? always exists and is not nullable\.$#'
+			message: '#^Offset ''cache\.'' on non\-empty\-array\<mixed, mixed\> on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.offset
-			count: 3
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
+
+		-
+			message: '#^Offset ''cache\.'' on non\-empty\-array\<mixed\> on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 2
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
@@ -5179,7 +5209,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between array\{0\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 1\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 2\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 3\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 4\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 5\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 6\?\: TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression\} and array\{\} will always evaluate to true\.$#'
+			message: '#^Strict comparison using \!\=\= between list\{0\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 1\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 2\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 3\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 4\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 5\?\: string\|TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression, 6\?\: TYPO3\\CMS\\Core\\Database\\Query\\Expression\\CompositeExpression\} and array\{\} will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
