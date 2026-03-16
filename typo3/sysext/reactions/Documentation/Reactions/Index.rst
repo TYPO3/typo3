@@ -6,6 +6,9 @@
 Reactions
 =========
 
+..  hint::
+    Registered reaction types are listed in :guilabel:`System -> Configuration`.
+
 ..  card-grid::
     :columns: 1
     :columns-md: 2
