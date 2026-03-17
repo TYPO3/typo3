@@ -117,7 +117,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
                 // Cookies are handled using the $_COOKIE superglobal
                 continue;
             }
-            if (!empty($value)) {
+            if ($value !== '') {
                 if (str_starts_with($key, 'HTTP_')) {
                     $name = str_replace('_', ' ', substr($key, 5));
                     $name = str_replace(' ', '-', ucwords(strtolower($name)));
