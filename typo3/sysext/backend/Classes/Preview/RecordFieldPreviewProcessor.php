@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -100,7 +101,10 @@ final class RecordFieldPreviewProcessor
         if ($record->has($fieldName)) {
             $input = $record->get($fieldName);
             if (is_string($input) && $input !== '') {
-                $input = strip_tags($input);
+                $isSimpleText = $this->schemaFactory->get($record->getFullType())->getField($fieldName)->isType(TableColumnType::INPUT);
+                if (!$isSimpleText) {
+                    $input = strip_tags($input);
+                }
                 $input = GeneralUtility::fixed_lgd_cs($input, $maxLength);
                 return nl2br(htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8', false));
             }

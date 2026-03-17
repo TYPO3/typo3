@@ -25,6 +25,10 @@ use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Schema\Field\FieldCollection;
+use TYPO3\CMS\Core\Schema\Field\InputFieldType;
+use TYPO3\CMS\Core\Schema\Field\TextFieldType;
+use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -38,6 +42,16 @@ final class RecordFieldPreviewProcessorTest extends UnitTestCase
     {
         parent::setUp();
         $tcaSchemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $tcaSchema = new TcaSchema(
+            'tt_content.text',
+            new FieldCollection([
+                'header' => new InputFieldType('header', []),
+                'bodytext' => new TextFieldType('bodytext', []),
+            ]),
+            [],
+            null,
+        );
+        $tcaSchemaFactory->method('get')->willReturn($tcaSchema);
         $uriBuilder = $this->createMock(UriBuilder::class);
         $iconFactory = $this->createMock(IconFactory::class);
         // Class is final, not mocking, not really actively used in what we're testing here
@@ -58,44 +72,62 @@ final class RecordFieldPreviewProcessorTest extends UnitTestCase
         yield 'script tag - content preserved, tags stripped' => [
             '<script>alert("XSS")</script>',
             'alert(&quot;XSS&quot;)',
+            'bodytext',
         ];
         yield 'img onerror - self-closing tag removed entirely' => [
             '<img src=x onerror=alert("XSS")>',
             '', // Empty string after strip_tags (but not null because input was not empty)
+            'bodytext',
         ];
         yield 'svg onload - self-closing tag removed entirely' => [
             '<svg onload=alert("XSS")>',
             '',
+            'bodytext',
         ];
         yield 'anchor with javascript protocol - text content preserved' => [
             '<a href="javascript:alert(\'XSS\')">click me</a>',
             'click me',
+            'bodytext',
         ];
         yield 'div with event handler - text content preserved' => [
             '<div onmouseover="alert(\'XSS\')">hover text</div>',
             'hover text',
+            'bodytext',
         ];
         yield 'nested tags - inner content preserved' => [
             '<p><strong>Bold</strong> and <em>italic</em></p>',
             'Bold and italic',
+            'bodytext',
         ];
         // Note: strip_tags() interprets <, > as a malformed tag and removes it
         yield 'special characters after strip_tags - ampersand and quotes escaped' => [
             'Text with &, " and \' chars',
             'Text with &amp;, &quot; and &#039; chars',
+            'bodytext',
         ];
         yield 'already encoded entities - double encoded' => [
             '&lt;script&gt;',
             '&lt;script&gt;', // strip_tags keeps these, htmlspecialchars with double_encode=false keeps them
+            'bodytext',
+        ];
+        yield 'type=input escapes HTML tags instead of stripping them' => [
+            '<p><strong>Bold</strong> and <em>italic</em></p>',
+            '&lt;p&gt;&lt;strong&gt;Bold&lt;/strong&gt; and &lt;em&gt;italic&lt;/em&gt;&lt;/p&gt;',
+            'header',
+        ];
+        yield 'type=input escapes angle brackets in plain text' => [
+            '<Left Right>',
+            '&lt;Left Right&gt;',
+            'header',
         ];
     }
 
     #[Test]
     #[DataProvider('xssPayloadsForPrepareTextDataProvider')]
-    public function prepareTextStripsTagsAndEscapesContent(string $payload, string $expected): void
+    public function prepareTextStripsTagsAndEscapesContent(string $payload, string $expected, string $filedName): void
     {
-        $record = $this->createRecord(['bodytext' => $payload]);
-        $result = $this->subject->prepareText($record, 'bodytext');
+        $record = $this->createRecord([$filedName => $payload]);
+        $result = $this->subject->prepareText($record, $filedName);
 
         self::assertSame($expected, $result);
     }

@@ -133,10 +133,9 @@ mod.web_layout {
       camino_textmedia_teaser = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/TextmediaTeaser.fluid.html
       camino_textmedia_teaser_grid = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/TextmediaTeaserGrid.fluid.html
       camino_textteaser = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Textteaser.fluid.html
-      text = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Textmedia.fluid.html
+      text = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Text.fluid.html
       textmedia = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Textmedia.fluid.html
-      textpic = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Textmedia.fluid.html
+      textpic = EXT:theme_camino/Resources/Private/Templates/ContentPreviews/Textpic.fluid.html
     }
   }
 }
-
