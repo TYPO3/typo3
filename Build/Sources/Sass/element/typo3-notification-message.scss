@@ -6,7 +6,7 @@
 //  <typo3-notification-message />
 // </div>
 //
-#alert-container {
+#alert-container[popover] {
     --typo3-alert-container-color: var(--typo3-text-color-base);
     --typo3-alert-container-bg: var(--typo3-surface-container-high);
     --typo3-alert-contanier-border-radius: var(--typo3-component-border-radius);
@@ -16,8 +16,6 @@
     --typo3-alert-container-offset: calc(var(--typo3-spacing) * 1.5);
     --typo3-alert-container-bar-shadow: var(--typo3-component-box-shadow-strong);
     width: 400px;
-    position: fixed;
-    z-index: 10000;
     color: var(--typo3-alert-container-color);
     max-width: calc(100% - (var(--typo3-alert-container-offset) * 2));
     bottom: var(--typo3-alert-container-offset);
@@ -25,14 +23,10 @@
     border: 1px solid var(--typo3-alert-container-border-color);
     border-radius: var(--typo3-alert-contanier-border-radius);
     box-shadow: var(--typo3-alert-container-shadow);
-    overflow: hidden;
-
-    @media (max-width: 767px) {
-        inset-inline-start: 50%;
-        transform: translateX(-50%);
-    }
+    inset: auto 0 var(--typo3-alert-container-offset);
 
     @media (min-width: 768px) {
+        inset-inline-start: auto;
         inset-inline-end: calc(var(--typo3-spacing) * 1.5);
     }
 

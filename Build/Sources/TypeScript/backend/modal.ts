@@ -317,6 +317,7 @@ export class ModalElement extends LitElement {
             ${this.buttons.map(button => this.renderModalButton(button))}
           </div>
         `}
+        <div class="alert-container"></div>
       </dialog>
     `;
   }
@@ -956,6 +957,7 @@ class Modal {
         const lastIndex = this.instances.length - 1;
         this.instances.splice(lastIndex, 1);
         this.currentModal = this.instances[lastIndex - 1];
+        remountAlertContainer(this.currentModal);
       }
     });
 
@@ -969,11 +971,37 @@ class Modal {
       this.instances.push(currentModal);
     });
 
+    currentModal.addEventListener('typo3-modal-shown', (): void => {
+      remountAlertContainer(currentModal);
+    });
+
     document.body.appendChild(currentModal);
 
     return currentModal;
   }
 }
+
+const remountAlertContainer = (modal: ModalElement | undefined) => {
+  const alertContainer = document.querySelector<HTMLDivElement>('#alert-container');
+  if (alertContainer) {
+    const isOpen = alertContainer.matches(':popover-open');
+    let target: HTMLElement = document.body;
+    if (modal) {
+      target = modal.querySelector('.alert-container') ?? target;
+    }
+
+    if ('moveBefore' in target) {
+      target.moveBefore(alertContainer, null);
+    } else {
+      (target as HTMLElement).appendChild(alertContainer);
+    }
+
+    if (isOpen) {
+      alertContainer.hidePopover();
+      alertContainer.showPopover();
+    }
+  }
+};
 
 let modalObject: Modal = null;
 try {
