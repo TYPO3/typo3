@@ -16,14 +16,22 @@
     --typo3-alert-container-offset: calc(var(--typo3-spacing) * 1.5);
     --typo3-alert-container-bar-shadow: var(--typo3-component-box-shadow-strong);
     width: 400px;
-    color: var(--typo3-alert-container-color);
     max-width: calc(100% - (var(--typo3-alert-container-offset) * 2));
+    padding: 0;
     bottom: var(--typo3-alert-container-offset);
-    background-color: var(--typo3-alert-container-bg);
-    border: 1px solid var(--typo3-alert-container-border-color);
-    border-radius: var(--typo3-alert-contanier-border-radius);
-    box-shadow: var(--typo3-alert-container-shadow);
     inset: auto 0 var(--typo3-alert-container-offset);
+    border-radius: var(--typo3-alert-contanier-border-radius);
+    border: 1px solid transparent;
+    background: none;
+    color: var(--typo3-alert-container-color);
+    transition: background-color .1s ease-in, border .1s ease-in, box-shadow .1s ease-in;
+    overflow: visible;
+
+    &:has(.alert-list > * + *) {
+        background-color: var(--typo3-alert-container-bg);
+        border: 1px solid var(--typo3-alert-container-border-color);
+        box-shadow: var(--typo3-alert-container-shadow);
+    }
 
     @media (min-width: 768px) {
         inset-inline-start: auto;
@@ -36,7 +44,10 @@
         padding: var(--typo3-alert-container-padding);
         gap: var(--typo3-alert-container-padding);
         max-height: calc(50dvh);
-        overflow-y: auto;
+
+        &:has(> * + *) {
+            overflow-y: auto;
+        }
         outline-offset: -2px;
 
         &:focus-visible {
@@ -58,6 +69,11 @@ typo3-notification-message {
     display: block;
 
     .alert {
+        transition: box-shadow .1s ease-in;
         --typo3-alert-margin-bottom: 0;
+    }
+
+    &:first-child:last-child .alert {
+        box-shadow: var(--typo3-alert-container-shadow);
     }
 }
