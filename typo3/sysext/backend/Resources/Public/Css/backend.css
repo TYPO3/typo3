@@ -3627,7 +3627,6 @@ textarea.formengine-textarea{resize:none}
 .contextual-record-edit-actions{align-items:center;display:flex;flex-shrink:0;gap:.5rem}
 @media (max-width:500px){
 .contextual-record-edit-button-label{display:none}}
-.contextual-record-edit-saved-indicator{background-color:var(--contextual-record-edit-success-bg);border-radius:.25rem;color:var(--contextual-record-edit-success-color);font-size:.75rem;opacity:1;padding:.125rem .5rem;transition:opacity .5s ease}
 .contextual-record-edit-body{padding:1rem}
 .localization-wizard .option{margin-bottom:.25rem}
 .localization-fieldset{display:grid;gap:calc(var(--typo3-spacing)/4)}

@@ -53,16 +53,6 @@
     }
 }
 
-.contextual-record-edit-saved-indicator {
-    font-size: .75rem;
-    padding: .125rem .5rem;
-    border-radius: .25rem;
-    color: var(--contextual-record-edit-success-color);
-    background-color: var(--contextual-record-edit-success-bg);
-    opacity: 1;
-    transition: opacity .5s ease;
-}
-
 .contextual-record-edit-body {
     padding: 1rem;
 }

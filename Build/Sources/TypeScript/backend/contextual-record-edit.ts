@@ -223,7 +223,6 @@ class ContextualRecordEdit {
         },
         window.location.origin
       );
-      this.showSavedIndicator();
     }
 
     if (this.options.closed) {
@@ -259,22 +258,6 @@ class ContextualRecordEdit {
     } else {
       this.notifyParentClose();
     }
-  }
-
-  private showSavedIndicator(): void {
-    const actions = document.querySelector('.contextual-record-edit-actions');
-    if (!actions) {
-      return;
-    }
-    const indicator = document.createElement('span');
-    indicator.className = 'contextual-record-edit-saved-indicator';
-    indicator.innerHTML = '<typo3-backend-icon identifier="actions-check" size="small"></typo3-backend-icon> '
-      + labels.get('notification.record_saved.title.singular');
-    actions.prepend(indicator);
-    setTimeout((): void => {
-      indicator.style.opacity = '0';
-      indicator.addEventListener('transitionend', () => indicator.remove());
-    }, 2000);
   }
 
   private focusFirstElement(): void {
