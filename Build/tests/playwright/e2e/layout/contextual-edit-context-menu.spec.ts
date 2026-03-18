@@ -23,6 +23,16 @@ async function contextMenuTriggerInSheet(sheet: Locator): Promise<Locator> {
   return trigger;
 }
 
+// Clears the notification afterwards, so the next save can not be confirmed by a stale one
+async function expectRecordSaved(page: Page): Promise<void> {
+  const notifications = page.locator('#alert-container typo3-notification-message');
+  await expect(notifications.filter({ hasText: 'Record saved' })).toBeVisible();
+  await page.evaluate(() => {
+    document.dispatchEvent(new CustomEvent('typo3-notification-clear-all', { bubbles: true, composed: true }));
+  });
+  await expect(notifications).toHaveCount(0);
+}
+
 test.describe.serial('context menu in the contextual record edit sheet', () => {
   test.beforeEach(async ({ backend }) => {
     await backend.gotoModule('web_layout');
@@ -100,7 +110,7 @@ test.describe.serial('context menu in the contextual record edit sheet', () => {
       await nestedSheet.getByLabel('Page Title').fill(title);
       await nestedSheet.getByLabel('Page Title').press('Tab');
       await nestedSheet.locator('button[name="_savedok"]').click();
-      await expect(nestedSheet.locator('.contextual-record-edit-saved-indicator')).toBeVisible();
+      await expectRecordSaved(page);
       await nestedSheet.locator('.t3js-contextual-close').click();
       await expect(sheets).toHaveCount(1);
 
@@ -190,7 +200,7 @@ test.describe.serial('context menu in the contextual record edit sheet', () => {
     await nestedSheet.getByLabel('Subtitle').fill('saved on top');
     await nestedSheet.getByLabel('Subtitle').press('Tab');
     await nestedSheet.locator('button[name="_savedok"]').click();
-    await expect(nestedSheet.locator('.contextual-record-edit-saved-indicator')).toBeVisible();
+    await expectRecordSaved(page);
     await nestedSheet.locator('.t3js-contextual-close').click();
 
     await expect(confirm).toBeVisible();
@@ -222,7 +232,7 @@ test.describe.serial('context menu in the contextual record edit sheet', () => {
       }, { fieldName, parentPageId });
       await sheet.locator('button[name="_savedok"]').click();
       sheet = await backend.modal.getModalContent();
-      await expect(sheet.locator('.contextual-record-edit-saved-indicator')).toBeVisible();
+      await expectRecordSaved(page);
       await sheet.getByRole('tab', { name: 'Appearance' }).click();
       await expect(sheet.locator(`.form-section:has(${contentFromPidField}) .col-title`)).toContainText('styleguide TCA demo');
     });
@@ -240,12 +250,12 @@ test.describe.serial('context menu in the contextual record edit sheet', () => {
     await nestedSheet.getByLabel('Subtitle').fill('saved on top');
     await nestedSheet.getByLabel('Subtitle').press('Tab');
     await nestedSheet.locator('button[name="_savedok"]').click();
-    await expect(nestedSheet.locator('.contextual-record-edit-saved-indicator')).toBeVisible();
+    await expectRecordSaved(page);
     await nestedSheet.locator('.t3js-contextual-close').click();
 
     await confirm.getByRole('button', { name: 'Save', exact: true }).click();
     await expect(sheet.locator('.has-change')).toHaveCount(0);
-    await expect(sheet.locator('.contextual-record-edit-saved-indicator')).toBeVisible();
+    await expectRecordSaved(page);
     await sheet.getByRole('tab', { name: 'General' }).click();
     await expect(sheet.getByLabel('Subtitle')).toHaveValue('saved from the prompt');
     await sheet.locator('.t3js-contextual-close').click();

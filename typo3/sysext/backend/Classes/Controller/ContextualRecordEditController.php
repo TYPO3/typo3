@@ -44,9 +44,14 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -109,6 +114,7 @@ readonly class ContextualRecordEditController
         $flags = ['edit' => [$table => [$uid => 'edit']]];
         if ($saveSucceeded) {
             $flags['justSaved'] = '1';
+            $this->enqueueSaveNotification($table, $uid);
         }
         return $this->redirectToSelf($queryParams, $flags);
     }
@@ -439,6 +445,36 @@ readonly class ContextualRecordEditController
                     </div>
                 </div>
             </div>';
+    }
+
+    private function enqueueSaveNotification(string $table, int $uid): void
+    {
+        $labelCapability = $this->tcaSchemaFactory->get($table)->getCapability(TcaSchemaCapability::Label);
+        $labelFields = $labelCapability->getAllLabelFieldNames();
+        $row = [
+            'uid' => $uid,
+        ];
+        foreach ($labelFields as $labelField) {
+            if (!isset($row[$labelField])) {
+                $tmpRecord = BackendUtility::getRecord($table, $uid, $labelFields);
+                if ($tmpRecord !== null) {
+                    $row = array_merge($row, $tmpRecord);
+                }
+                break;
+            }
+        }
+        $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), (int)$this->getBackendUser()->uc['titleLen']);
+
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE);
+        $flashMessage = GeneralUtility::makeInstance(
+            FlashMessage::class,
+            $this->getLanguageService()->translate('notification.record_saved.message', 'backend.alt_doc', [$recordTitle]),
+            $this->getLanguageService()->translate('notification.record_saved.title.singular', 'backend.alt_doc'),
+            ContextualFeedbackSeverity::OK,
+            true
+        );
+        $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 
     private function getBackendUser(): BackendUserAuthentication
