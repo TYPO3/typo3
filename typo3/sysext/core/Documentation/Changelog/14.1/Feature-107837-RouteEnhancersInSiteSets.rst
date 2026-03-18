@@ -55,7 +55,7 @@ configuration across multiple files:
     :caption: EXT:my_extension/Configuration/Sets/MySet/route-enhancers.yaml
 
     imports:
-      - { resource: 'route-enhancers/*.yaml' }
+      - { resource: 'route-enhancers/*.yaml', glob: true }
 
     routeEnhancers:
       # Additional enhancers can be defined here
