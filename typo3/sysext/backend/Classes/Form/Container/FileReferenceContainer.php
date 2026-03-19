@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -215,6 +216,7 @@ class FileReferenceContainer extends AbstractContainer
         $headerImage = '';
         $headerBadge = '';
         $isMissing = false;
+        $fileObject = null;
         if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) {
             $fileUid = $databaseRow[self::FOREIGN_SELECTOR][0]['uid'] ?? null;
             if (!empty($fileUid)) {
@@ -230,7 +232,7 @@ class FileReferenceContainer extends AbstractContainer
                         $headerBadge = '
                             <div class="panel-badge">
                                 <span class="badge badge-danger">'
-                                    . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')) . '
+                            . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')) . '
                                 </span>
                             </div>';
                     } elseif ($fileObject->isImage() || $fileObject->isMediaFile()) {
@@ -258,7 +260,6 @@ class FileReferenceContainer extends AbstractContainer
                         }
                     }
                 } catch (\InvalidArgumentException $e) {
-                    $fileObject = null;
                 }
             }
         }
@@ -283,14 +284,14 @@ class FileReferenceContainer extends AbstractContainer
                 ' . $headerBadge . '
             </button>
             <div class="panel-actions t3js-formengine-irre-control">
-                ' . $this->renderFileReferenceHeaderControl() . '
+                ' . $this->renderFileReferenceHeaderControl($fileObject) . '
             </div>';
     }
 
     /**
      * Render the control-icons for a file reference (e.g. create new, sorting, delete, disable/enable).
      */
-    protected function renderFileReferenceHeaderControl(): string
+    protected function renderFileReferenceHeaderControl(?File $file = null): string
     {
         $controls = [];
         $databaseRow = $this->data['databaseRow'];
@@ -362,6 +363,7 @@ class FileReferenceContainer extends AbstractContainer
             if (!$isNewItem
                 && ($languageField = ($sysFileMetadataTableTca?->getRawConfiguration()['languageField'] ?? false))
                 && $backendUser->check('tables_modify', 'sys_file_metadata')
+                && $file && $file->checkActionPermission('editMeta')
                 && $event->isControlEnabled('edit')
             ) {
                 $languageId = (int)(is_array($databaseRow[$languageField] ?? null)
