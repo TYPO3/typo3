@@ -91,6 +91,12 @@ class DatabaseWriter extends AbstractWriter
             'data' => $data,
         ];
 
+        // sys_log uses tstamp for garbage collection via TableGarbageCollectionTask.
+        // Without it, tstamp defaults to 0 (1970-01-01), causing immediate deletion (see #109290).
+        if ($this->logTable === 'sys_log') {
+            $fieldValues['tstamp'] = (int)$record->getCreated();
+        }
+
         GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($this->logTable)
             ->insert($this->logTable, $fieldValues);

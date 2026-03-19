@@ -58,4 +58,20 @@ final class DatabaseWriterTest extends FunctionalTestCase
 
         self::assertEquals($logRecordData, $rowInDatabase);
     }
+
+    #[Test]
+    public function writeLogSetsTstampForSysLog(): void
+    {
+        $created = 1469740000.9;
+        $logRecord = new LogRecord('aComponent', \Psr\Log\LogLevel::DEBUG, 'aMessage', [], '5862c0e7838ad');
+        $logRecord->setCreated($created);
+
+        (new DatabaseWriter())->writeLog($logRecord);
+
+        $row = (new ConnectionPool())->getConnectionForTable('sys_log')
+            ->select(['tstamp'], 'sys_log', ['request_id' => '5862c0e7838ad'])
+            ->fetchAssociative();
+
+        self::assertSame((int)$created, $row['tstamp']);
+    }
 }
