@@ -56,11 +56,23 @@ class ContextMenuController
         $clipboard->initializeClipboard($request);
         $clipboard->lockToNormal();
 
-        $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
-        $clipboard->setCmd($CB);
-        $clipboard->cleanCurrent();
+        $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
+        $clipboardCommand = array_replace_recursive($queryParams['CB'] ?? [], $parsedBody['CB'] ?? []);
 
+        // URL-decoded keys are required for the clipboard to recognize file identifiers (e.g. _FILE|...)
+        if (isset($clipboardCommand['el']) && is_array($clipboardCommand['el'])) {
+            $decodedElements = [];
+            foreach ($clipboardCommand['el'] as $key => $value) {
+                $decodedElements[urldecode((string)$key)] = $value;
+            }
+            $clipboardCommand['el'] = $decodedElements;
+        }
+
+        $clipboard->setCmd($clipboardCommand);
+        $clipboard->cleanCurrent();
         $clipboard->endClipboard();
+
         return new JsonResponse([]);
     }
 }
