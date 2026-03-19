@@ -7,3 +7,7 @@ page {
 [traverse(page, "uid") == 4]
   page.10.value = tech-sub
 [end]
+
+[traverse(page, "uid") == 5]
+  page.10.value = tech-sub-t3
+[end]
