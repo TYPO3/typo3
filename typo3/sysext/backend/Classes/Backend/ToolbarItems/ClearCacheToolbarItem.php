@@ -171,7 +171,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
      */
     public function getIndex(): int
     {
-        return 25;
+        return 20;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

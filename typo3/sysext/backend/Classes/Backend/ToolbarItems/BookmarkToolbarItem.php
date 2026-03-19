@@ -92,6 +92,6 @@ class BookmarkToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
      */
     public function getIndex(): int
     {
-        return 20;
+        return 40;
     }
 }

@@ -90,7 +90,7 @@ class OpenDocumentToolbarItem implements ToolbarItemInterface, RequestAwareToolb
      */
     public function getIndex(): int
     {
-        return 30;
+        return 50;
     }
 
     private function getBackendUser(): BackendUserAuthentication

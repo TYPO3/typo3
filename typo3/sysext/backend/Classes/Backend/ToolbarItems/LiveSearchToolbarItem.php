@@ -88,7 +88,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
      */
     public function getIndex(): int
     {
-        return 80;
+        return 10;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

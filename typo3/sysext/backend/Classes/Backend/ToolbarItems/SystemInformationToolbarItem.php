@@ -164,7 +164,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
      */
     public function getIndex(): int
     {
-        return 75;
+        return 30;
     }
 
     /**
