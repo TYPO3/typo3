@@ -163,4 +163,37 @@ final class MultiSiteTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/tech/tech-sub')));
         self::assertStringContainsString('tech-sub', (string)$response->getBody());
     }
+
+    #[Test]
+    public function subpageSlugIdenticalToSiteBasePathSegmentIsResolvedByCorrectSite(): void
+    {
+        // Regression test for https://forge.typo3.org/issues/109259
+        // Page uid=5 has slug '/t3' under site 'acme' (base '/t3/'), making its full URL '/t3/t3'.
+        // Site 'website' (base '/') also matches this URL, so both compete in SiteMatcher.
+        // The 'website' > 'acme' alphabetical ordering ensures the identifier tiebreaker
+        // picks the wrong site when path scores are incorrectly equal (strpos bug).
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/MultiSiteTestPageImport.csv');
+        $this->writeSiteConfiguration(
+            'website',
+            [
+                'rootPageId' => 1,
+                'base' => '/',
+                'dependencies' => ['typo3tests/site1'],
+            ],
+            [$this->buildDefaultLanguageConfiguration('EN', '/')]
+        );
+        $this->writeSiteConfiguration(
+            'acme',
+            [
+                'rootPageId' => 2,
+                'base' => '/t3/',
+                'dependencies' => ['typo3tests/site2'],
+            ],
+            [$this->buildDefaultLanguageConfiguration('EN', '/')]
+        );
+
+        $response = $this->executeFrontendSubRequest(new InternalRequest('https://acme.com/t3/t3/'));
+
+        self::assertStringContainsString('tech-sub-t3', (string)$response->getBody());
+    }
 }

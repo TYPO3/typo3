@@ -74,7 +74,7 @@ class MatchedRoute
         }
         // otherwise, find length of complete match that does not contain tail
         // example: complete: `/french/other`, tail: `/other` -> `strlen` of `/french`
-        return strpos($completeMatch, $tailMatch);
+        return strrpos($completeMatch, $tailMatch);
     }
 
     public function getSiteIdentifier(): string
