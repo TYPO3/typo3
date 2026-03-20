@@ -62,7 +62,7 @@ How to change values
 
 See the :ref:`Page TSconfig reference,
 chapter Setting Page TSconfig <t3tsref:setting-page-tsconfig>`. This chapter
-also expains how to verify the settings.
+also explains how to verify the settings.
 
 ..  _config-typo3-global-configuration:
 
