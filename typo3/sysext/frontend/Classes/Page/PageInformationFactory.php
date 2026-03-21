@@ -594,6 +594,8 @@ final readonly class PageInformationFactory
      *        in below implementation, we could potentially join or sub select sys_template
      *        records already when pages rootline is queried. This will save one query.
      *        This could be done when we manage to switch PageRepository / RootlineUtility to a CTE.
+     *        @see \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::getTypoScriptSetup()
+     *        for similar usage.
      * @throws PageInformationCreationFailedException
      * @throws StatusException
      */
