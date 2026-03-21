@@ -1,0 +1,6 @@
+"sys_file"
+,"uid","storage","missing","tstamp","last_indexed"
+,1,1,0,1000,0
+,2,1,1,1000,0
+,3,2,0,1000,0
+,4,2,0,500,1000
