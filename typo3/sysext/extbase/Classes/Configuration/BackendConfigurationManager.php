@@ -194,7 +194,22 @@ final readonly class BackendConfigurationManager
         ];
         if ($currentPageId > 0) {
             $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $currentPageId)->get();
-            $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
+            // When the site acts as a TypoScript root, limit sys_template lookup to
+            // pages within this site by truncating the rootline at the site root page.
+            // This mirrors the frontend behavior and prevents sys_template records from
+            // parent sites from leaking into the backend TypoScript evaluation.
+            // @see \TYPO3\CMS\Frontend\Page\PageInformationFactory::setSysTemplateRows()
+            $rootLineForSysTemplates = $rootLine;
+            if ($site instanceof Site && $site->isTypoScriptRoot()) {
+                $rootLineForSysTemplates = [];
+                foreach ($rootLine as $index => $rootlinePage) {
+                    $rootLineForSysTemplates[$index] = $rootlinePage;
+                    if ((int)($rootlinePage['uid'] ?? 0) === $site->getRootPageId()) {
+                        break;
+                    }
+                }
+            }
+            $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLineForSysTemplates, $request);
             ksort($rootLine);
         }
 
