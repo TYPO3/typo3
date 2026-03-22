@@ -691,7 +691,10 @@ class FileListController implements LoggerAwareInterface
                 if ($addPasteButton) {
                     $confirmText = $this->filelist->clipObj
                         ->confirmMsgText('_FILE', $this->folderObject->getReadablePath(), 'into');
-                    $pastButtonTitle = $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_paste');
+                    $pasteButtonTitle = $lang->translate('paste_clipboard', 'core.components.clipboard');
+                    $closeText = $lang->translate('cancel', 'core.action');
+                    $okLabel = $this->filelist->clipObj->currentMode() === 'copy' ? 'copy' : 'move';
+                    $okText = $lang->translate($okLabel, 'core.action');
                     $pasteButton = $this->componentFactory->createLinkButton()
                         ->setHref($this->filelist->clipObj
                             ->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier()))
@@ -699,10 +702,12 @@ class FileListController implements LoggerAwareInterface
                         ->setDataAttributes([
                             'severity' => 'warning',
                             'content' => $confirmText,
-                            'title' => $pastButtonTitle,
+                            'title' => $pasteButtonTitle,
+                            'button-close-text' => $closeText,
+                            'button-ok-text' => $okText,
                         ])
                         ->setShowLabelText(true)
-                        ->setTitle($pastButtonTitle)
+                        ->setTitle($pasteButtonTitle)
                         ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL));
                     $this->view->addButtonToButtonBar($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
                 }

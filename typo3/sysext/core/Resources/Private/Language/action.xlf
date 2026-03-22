@@ -6,9 +6,19 @@
         <source>Cancel</source>
       </segment>
     </unit>
+    <unit id="copy">
+      <segment>
+        <source>Copy</source>
+      </segment>
+    </unit>
     <unit id="delete">
       <segment>
         <source>Delete</source>
+      </segment>
+    </unit>
+    <unit id="move">
+      <segment>
+        <source>Move</source>
       </segment>
     </unit>
   </file>
