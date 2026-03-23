@@ -110,7 +110,7 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
             $message = '';
             if ($verbose) {
                 foreach ($statusObjects as $statusObject) {
-                    $message .= '### ' . $statusObject->getTitle() . ': ' . $statusObject->getSeverity()->value . CRLF;
+                    $message .= '### ' . $statusObject->getTitle() . ': ' . $statusObject->getSeverity()->name . CRLF;
                 }
             }
 
