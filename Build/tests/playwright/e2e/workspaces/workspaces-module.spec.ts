@@ -14,8 +14,7 @@ test.describe.serial('Workspace Module', () => {
 
     await backend.pageTree.isReady();
     await backend.pageTree.dragNewPageTo(backend.pageTree.root);
-    const pageWizard = new PageWizard(page);
-    pageWizard.createDefaultPageAfterDrag(backend.modal, testPageTitle);
+    await PageWizard.createDefaultPageAfterDrag(backend.modal, testPageTitle);
     await backend.pageTree.refresh();
     await backend.pageTree.open(testPageTitle);
   });
