@@ -10,8 +10,7 @@ test('Delete page and check recycler', async ({ page, backend }) => {
     await backend.pageTree.isReady();
     const targetNode = backend.pageTree.tree.locator('.node', { hasText: 'styleguide TCA demo' });
     await backend.pageTree.dragNewPageTo(targetNode);
-    const pageWizard = new PageWizard(page);
-    await pageWizard.createDefaultPageAfterDrag(backend.modal, newPageTitle);
+    await PageWizard.createDefaultPageAfterDrag(backend.modal, newPageTitle);
     await backend.gotoModule('records');
 
     await test.step('Add sys note on new page', async () => {

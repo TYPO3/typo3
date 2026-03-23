@@ -14,18 +14,6 @@ export class PageTree {
   }
 
   /**
-   * Create a new page using drag and drop
-   *
-   * @param targetElement The element to drag the new node on
-   * @param title The page title to be used
-   * @param nodeType Derived from data-node-type, defaults to 1 (Standard)
-   */
-  async create(targetElement: Locator, title, nodeType = 1) {
-    await this.dragNewPageTo(targetElement, nodeType);
-    await this.fill(title);
-  }
-
-  /**
    * Drag new node type to tree
    *
    * @param targetElement The element to drag the new node on
@@ -55,27 +43,6 @@ export class PageTree {
   async refresh() {
     await this.page.dispatchEvent('body', 'typo3:pagetree:refresh');
     await this.isReady();
-  }
-
-  /**
-   * Fill in the node currently in editing mode
-   *
-   * @param title
-   */
-  async fill(title: string) {
-    // Intercept "page create" request
-    const newPageProcessedResponse = this.page.waitForResponse(response =>
-      response.url().includes('/typo3/ajax/record/process') && response.status() === 200
-    );
-
-    const nodeEditLocator = this.page.locator('.node-edit');
-    // Wait for the edit field to appear after drag and drop
-    await expect(nodeEditLocator).toBeAttached();
-    await nodeEditLocator.fill(title);
-    await this.page.keyboard.press('Enter');
-
-    await newPageProcessedResponse;
-    await expect(nodeEditLocator).not.toBeAttached();
   }
 
   /**
