@@ -697,12 +697,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: '#^Call to function is_array\(\) with array\{int\|string\} will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -2443,12 +2437,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
 
 		-
-			message: '#^Offset non\-empty\-string on array\{\} on left side of \?\? does not exist\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/MvcPropertyMappingConfigurationService.php
-
-		-
 			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
 			identifier: argument.type
 			count: 2
@@ -3197,12 +3185,6 @@ parameters:
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/filelist/Classes/FileList.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<TYPO3Fluid\\Fluid\\Schema\\ViewHelperMetadata\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/Command/SchemaCommand.php
 
 		-
 			message: '#^Method TYPO3Fluid\\Fluid\\View\\ViewInterface\:\:render\(\) invoked with 1 parameter, 0 required\.$#'
