@@ -7514,14 +7514,179 @@ content="benni">',
         };
     }
 
-    #[Test]
-    public function mergeTSRefResolvesRecursive(): void
+    public static function mergeTSRefDataProvider(): array
     {
-        $typoScriptString =
-            "lib.foo = TEXT\n" .
-            "lib.foo.value = foo\n" .
-            "lib.bar =< lib.foo\n" .
-            "lib.bar.value = bar\n";
+        return [
+            'Referenced after reference and empty' => [
+                'typoScriptString' =>
+                    "lib.bar =< lib.foo\n" .
+                    "lib.bar.value = bar\n" .
+                    "lib.foo = TEXT\n",
+                'propertyValue' => '< lib.bar',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT', // From lib.foo
+                    'tempKey.' => [
+                        'value' => 'bar', // From lib.bar
+                    ],
+                ],
+            ],
+            'Referenced after reference and not empty, value makes sense' => [
+                'typoScriptString' =>
+                    "lib.bar =< lib.foo\n" .
+                    "lib.bar.value = bar\n" .
+                    "lib.foo = TEXT\n" .
+                    'lib.foo.value = foo',
+                'propertyValue' => '< lib.bar',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT', // From lib.foo
+                    'tempKey.' => [
+                        'value' => 'bar', // From lib.bar
+                    ],
+                ],
+            ],
+            'Referenced after reference and not empty, value makes no sense' => [
+                'typoScriptString' =>
+                    "lib.bar =< lib.foo\n" .
+                    "lib.bar.value = bar\n" .
+                    "lib.foo = TEXT\n" .
+                    'lib.foo.makes = no_sense',
+                'propertyValue' => '< lib.bar',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT', // From lib.foo
+                    'tempKey.' => [
+                        'makes' => 'no_sense', // From lib.foo
+                        'value' => 'bar', // From lib.bar
+                    ],
+                ],
+            ],
+            'Referenced before reference and empty' => [
+                'typoScriptString' =>
+                    "lib.foo = TEXT\n" .
+                    "lib.bar =< lib.foo\n" .
+                    "lib.bar.value = bar\n",
+                'propertyValue' => '< lib.bar',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT', // From lib.foo
+                    'tempKey.' => [
+                        'value' => 'bar', // From lib.bar
+                    ],
+                ],
+            ],
+            'Referenced before reference and not empty, value makes sense' => [
+                'typoScriptString' =>
+                    "lib.foo = TEXT\n" .
+                    "lib.foo.value = foo\n" .
+                    "lib.bar =< lib.foo\n" .
+                    "lib.bar.value = bar\n",
+                'propertyValue' => '< lib.bar',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT', // From lib.foo
+                    'tempKey.' => [
+                        'value' => 'bar', // From lib.bar
+                    ],
+                ],
+            ],
+            'Referenced before reference and not empty, value makes no sense' => [
+                'typoScriptString' =>
+                    "lib.foo = TEXT\n" .
+                    "lib.foo.makes = no_sense\n" .
+                    "lib.bar =< lib.foo\n" .
+                    "lib.bar.value = bar\n",
+                'propertyValue' => '< lib.bar',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT', // From lib.foo
+                    'tempKey.' => [
+                        'makes' => 'no_sense', // From lib.foo
+                        'value' => 'bar', // From lib.bar
+                    ],
+                ],
+            ],
+            'Referenced before nested reference' => [
+                'typoScriptString' =>
+                    "lib.bar =< lib.foo\n" .
+                    "lib.bar.value = bar\n" .
+                    "lib.foo =< lib.foobar\n" .
+                    "lib.foobar = TEXT\n" .
+                    'lib.foobar.value = foobar',
+                'propertyValue' => '< lib.bar',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT', // From lib.foo
+                    'tempKey.' => [
+                        'value' => 'bar', // From lib.bar
+                    ],
+                ],
+            ],
+            'Referenced scalar target without subtree' => [
+                'typoScriptString' => "lib.bar = TEXT\n",
+                'propertyValue' => '< lib.bar',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT',
+                    'tempKey.' => [],
+                ],
+            ],
+            'Referenced target is not defined' => [
+                'typoScriptString' => "lib.foo = TEXT\n",
+                'propertyValue' => '< lib.doesNotExist',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'lib.doesNotExist',
+                    'tempKey.' => [],
+                ],
+            ],
+            'Referenced multi-segment target' => [
+                'typoScriptString' =>
+                    "lib.foo.bar = TEXT\n" .
+                    "lib.foo.bar.value = hi\n",
+                'propertyValue' => '< lib.foo.bar',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT',
+                    'tempKey.' => [
+                        'value' => 'hi',
+                    ],
+                ],
+            ],
+            'Non-reference value is returned unchanged' => [
+                'typoScriptString' => "lib.foo = TEXT\n",
+                'propertyValue' => 'TEXT',
+                'override' => [],
+                'expected' => [
+                    'tempKey' => 'TEXT',
+                    'tempKey.' => [],
+                ],
+            ],
+            'Override retains nested reference' => [
+                'typoScriptString' =>
+                    "lib.bar = TEXT\n" .
+                    "lib.bar.value = fromLibBar\n" .
+                    "lib.other = COA\n",
+                'propertyValue' => '< lib.bar',
+                'override' => [
+                    'sub' => '< lib.other',
+                ],
+                'expected' => [
+                    'tempKey' => 'TEXT', // From lib.bar
+                    'tempKey.' => [
+                        'value' => 'fromLibBar', // From lib.bar
+                        'sub' => '< lib.other', // Override preserved, not recursively resolved
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('mergeTSRefDataProvider')]
+    #[Test]
+    public function mergeTSRefResolvesRecursive(string $typoScriptString, string $propertyValue, array $override, array $expected): void
+    {
         $lineStream = (new LossyTokenizer())->tokenize($typoScriptString);
         $typoScriptAst = (new AstBuilder(new NoopEventDispatcher()))->build($lineStream, new RootNode());
         $typoScriptAttribute = new FrontendTypoScript(new RootNode(), [], [], []);
@@ -7531,14 +7696,8 @@ content="benni">',
         $contentObjectRenderer = new ContentObjectRenderer();
         $contentObjectRenderer->setRequest($request);
         $inputArray = [
-            'tempKey' => '< lib.bar',
-            'tempKey.' => [],
-        ];
-        $expected = [
-            'tempKey' => 'TEXT', // From lib.foo
-            'tempKey.' => [
-                'value' => 'bar', // From lib.bar
-            ],
+            'tempKey' => $propertyValue,
+            'tempKey.' => $override,
         ];
         $result = $contentObjectRenderer->mergeTSRef($inputArray, 'tempKey');
         self::assertSame($expected, $result);
