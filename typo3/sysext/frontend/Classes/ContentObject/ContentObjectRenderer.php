@@ -4465,13 +4465,8 @@ class ContentObjectRenderer
         $resolvedValue = $dottedSourceIdentifier;
         $resolvedConfig = $fullTypoScriptArray;
         foreach ($dottedSourceIdentifierArray as $identifierPart) {
-            if (!isset($resolvedConfig[$identifierPart . '.'])) {
-                $resolvedValue = $dottedSourceIdentifier;
-                $resolvedConfig = $overrideConfig;
-                break;
-            }
             $resolvedValue = $resolvedConfig[$identifierPart] ?? $resolvedValue;
-            $resolvedConfig = $resolvedConfig[$identifierPart . '.'];
+            $resolvedConfig = $resolvedConfig[$identifierPart . '.'] ?? [];
         }
         $resolvedConfig = array_replace_recursive($resolvedConfig, $overrideConfig);
         $typoScriptArray[$propertyName] = $resolvedValue;
