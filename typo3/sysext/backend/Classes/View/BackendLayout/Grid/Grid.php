@@ -66,7 +66,10 @@ class Grid extends AbstractGridObject
 
     public function getSpan(): int
     {
-        if (!isset($this->rows[0]) || $this->context->getDrawingConfiguration()->isLanguageComparisonMode()) {
+        if (!isset($this->rows[0])
+            || ($this->context->getDrawingConfiguration()->isLanguageComparisonMode()
+                && $this->context->getDrawingConfiguration()->getSelectedLanguageId() !== 0)
+        ) {
             return 1;
         }
         $span = 0;
