@@ -55,6 +55,17 @@ class ReferenceIndex
     private const int HASH_VERSION = 1;
 
     /**
+     * Number of records fetched per query when traversing a table in
+     * updateIndex(). Both mysqli and pdo_mysql buffer the full result set
+     * client side, so an unbounded query materializes the entire table in
+     * memory. 5000 rows cap this at roughly 100MB for wide tables like
+     * tt_content, while keeping the number of queries low.
+     *
+     * @var positive-int
+     */
+    private const int RECORD_CHUNK_SIZE = 5000;
+
+    /**
      * Key list of tables to exclude from ReferenceIndex. Only $GLOBALS['TCA'] need to be listed here, if at all.
      * This is a performance improvement to skip tables "irrelevant" in refindex scope.
      * An event may alter this.
@@ -322,23 +333,42 @@ class ReferenceIndex
                 }
             }
 
-            // Traverse all records in table, not including soft-deleted records
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $queryResult = $queryBuilder
-                ->select('*')
-                ->from($tableName)
-                ->orderBy('uid')
-                ->executeQuery();
-            while ($record = $queryResult->fetchAssociative()) {
-                $progressListener?->advance();
-                if ($isWorkspacesLoaded && $tableHasLocalSideMmRelation && (int)($record['t3ver_wsid'] ?? 0) === 0) {
-                    // If we have a record that can be the local side of a workspace relation, workspace records
-                    // may point to it, even though the record has no workspace overlay. See workspace ManyToMany
-                    // Modify addCategoryRelation as example. In those cases, we need to iterate all active workspaces
-                    // and update refindex for all foreign workspace records that point to it.
-                    foreach ($listOfActiveWorkspaces as $workspaceId) {
-                        $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, $workspaceId, $record);
+            // Traverse all records in table, not including soft-deleted records.
+            // Records are fetched in chunks using keyset pagination on the primary
+            // key: database drivers buffer the full result set client side, so a
+            // single unbounded query would materialize the entire table in memory.
+            $lastUid = 0;
+            do {
+                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $queryResult = $queryBuilder
+                    ->select('*')
+                    ->from($tableName)
+                    ->where($queryBuilder->expr()->gt('uid', $queryBuilder->createNamedParameter($lastUid, Connection::PARAM_INT)))
+                    ->orderBy('uid')
+                    ->setMaxResults(self::RECORD_CHUNK_SIZE)
+                    ->executeQuery();
+                $recordsInChunk = 0;
+                while ($record = $queryResult->fetchAssociative()) {
+                    $recordsInChunk++;
+                    $lastUid = (int)$record['uid'];
+                    $progressListener?->advance();
+                    if ($isWorkspacesLoaded && $tableHasLocalSideMmRelation && (int)($record['t3ver_wsid'] ?? 0) === 0) {
+                        // If we have a record that can be the local side of a workspace relation, workspace records
+                        // may point to it, even though the record has no workspace overlay. See workspace ManyToMany
+                        // Modify addCategoryRelation as example. In those cases, we need to iterate all active workspaces
+                        // and update refindex for all foreign workspace records that point to it.
+                        foreach ($listOfActiveWorkspaces as $workspaceId) {
+                            $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, $workspaceId, $record);
+                            $numberOfHandledRecords++;
+                            if ($result['addedNodes'] || $result['deletedNodes']) {
+                                $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
+                                $errors[] = $error;
+                                $progressListener?->log($error, LogLevel::WARNING);
+                            }
+                        }
+                    } else {
+                        $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, (int)($record['t3ver_wsid'] ?? 0), $record);
                         $numberOfHandledRecords++;
                         if ($result['addedNodes'] || $result['deletedNodes']) {
                             $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
@@ -346,16 +376,9 @@ class ReferenceIndex
                             $progressListener?->log($error, LogLevel::WARNING);
                         }
                     }
-                } else {
-                    $result = $this->updateRefIndexTable($tableName, (int)$record['uid'], $testOnly, (int)($record['t3ver_wsid'] ?? 0), $record);
-                    $numberOfHandledRecords++;
-                    if ($result['addedNodes'] || $result['deletedNodes']) {
-                        $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
-                        $errors[] = $error;
-                        $progressListener?->log($error, LogLevel::WARNING);
-                    }
                 }
-            }
+                $queryResult->free();
+            } while ($recordsInChunk >= self::RECORD_CHUNK_SIZE);
             $progressListener?->finish();
         }
 
