@@ -55,9 +55,8 @@ final class TaskGroupsCest
         $I->switchToContentFrame();
         // second item on first tab (see fieldset)
         $fieldset = '.tab-pane.active > fieldset:nth-of-type(2)';
-        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div.form-wizards-wrap';
-        $select = $formWizardsWrap . ' > div:nth-of-type(1) > select';
-        $I->seeOptionIsSelected($select, $this->groupName . ' [tx_scheduler_task_group_1]');
+        $select = $fieldset . ' div.t3js-formengine-field-item select';
+        $I->seeOptionIsSelected($select, $this->groupName . ' [1]');
         $I->click('.module-docheader button[title="Save"]');
         // Show the "Edit record" screen (= it is saved)
         $I->waitForElement('.typo3-TCEforms', 3);

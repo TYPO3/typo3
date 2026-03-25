@@ -42,31 +42,14 @@ return [
         'task_group' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.task_group',
             'config' => [
-                'type' => 'group',
-                'allowed' => 'tx_scheduler_task_group',
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_scheduler_task_group',
+                'items' => [
+                    ['label' => '', 'value' => 0],
+                ],
                 'size' => 1,
-                'maxitems' => 1,
                 'default' => 0,
-                'hideSuggest' => true,
-                'fieldWizard' => [
-                    'tableList' => [
-                        'disabled' => true,
-                    ],
-                    'recordsOverview' => [
-                        'disabled' => true,
-                    ],
-                ],
-                'fieldControl' => [
-                    'editPopup' => [
-                        'disabled' => true,
-                    ],
-                    'addRecord' => [
-                        'disabled' => false,
-                    ],
-                    'listModule' => [
-                        'disabled' => true,
-                    ],
-                ],
             ],
         ],
         'priority' => [
