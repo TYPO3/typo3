@@ -734,7 +734,6 @@ class FileList
         return '<br><img src="' . htmlspecialchars($thumbnailUrl) . '" ' .
             'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
             'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
-            'title="' . htmlspecialchars($resourceView->getName()) . '" ' .
             'loading="lazy" ' .
             'alt="" />';
     }
