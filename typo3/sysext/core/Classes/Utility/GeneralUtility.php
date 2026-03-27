@@ -2821,13 +2821,21 @@ class GeneralUtility
     }
 
     /**
-     * Creates an instance of a class taking into account the class-extensions
-     * API of TYPO3. USE THIS method instead of the PHP `new` keyword.
-     * For example, `$obj = new myclass;` should be
-     * `$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("myclass")` instead.
+     * Creates an instance of the given class while applying TYPO3 specific mechanisms
+     * such as XCLASSes, singleton handling and integration with public services from
+     * the dependency injection container.
+     *
+     * This method is primarily intended for TYPO3 core and infrastructure code that
+     * must participate in these mechanisms. In extension and application code, prefer
+     * constructor- or method-based dependency injection and direct use of the DI
+     * container configuration where possible. Use this method only to support XCLASSes
+     * and to access public services from the DI container.
+     *
+     * Instead of: `$obj = new MyClass();`
+     * Use: `$obj = GeneralUtility::makeInstance(MyClass::class)`
      *
      * You can also pass arguments for a constructor:
-     * `GeneralUtility::makeInstance(\myClass::class, $arg1, $arg2, ..., $argN)`
+     * `GeneralUtility::makeInstance(MyClass::class, $arg1, $arg2, ..., $argN)`
      *
      * @template T of object
      * @param class-string<T> $className name of the class to instantiate, must not be empty and not start with a backslash
