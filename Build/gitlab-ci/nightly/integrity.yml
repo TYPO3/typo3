@@ -94,7 +94,7 @@ phpstan php 8.2 locked:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s phpstan -p 8.2
+    - Build/Scripts/runTests.sh -s phpstan -p 8.2 -- --no-progress
 
 phpstan php 8.2 max:
   stage: integrity
@@ -105,4 +105,4 @@ phpstan php 8.2 max:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s phpstan -p 8.2
+    - Build/Scripts/runTests.sh -s phpstan -p 8.2 -- --no-progress
