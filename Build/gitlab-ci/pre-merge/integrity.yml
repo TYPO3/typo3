@@ -90,7 +90,7 @@ phpstan php 8.1 pre-merge:
       - "12.4"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s phpstan -p 8.1
+    - Build/Scripts/runTests.sh -s phpstan -p 8.1 -- --no-progress
 
 documentation rendering pre-merge:
   stage: main
