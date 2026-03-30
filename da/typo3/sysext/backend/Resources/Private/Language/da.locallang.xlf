@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="onlineDocumentation" approved="yes">
+        <source>TYPO3 Online Documentation</source>
+        <target state="final">TYPO3 Online dokumentation</target>
+      </trans-unit>
+      <trans-unit id="opensInANewWindow" approved="yes">
+        <source>opens in a new window</source>
+        <target state="final">åbner i et nyt vindue</target>
+      </trans-unit>
+      <trans-unit id="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Ingen moduler er registreret. Kontakt din systemadministrator om dette.</target>
+      </trans-unit>
+      <trans-unit id="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Vis referencer</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Ingen foldere tilgængelige</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">Du har ikke adgang til nogen folder. Kontakt din administrator for at tilpasse rettighederne til din brugerkonto.</target>
+      </trans-unit>
+      <trans-unit id="login.header" approved="yes">
+        <source>Login</source>
+        <target state="final">Log ind</target>
+      </trans-unit>
+      <trans-unit id="login.region.footnote" approved="yes">
+        <source>Footnote</source>
+        <target state="final">Fodnote</target>
+      </trans-unit>
+      <trans-unit id="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Log ind med brugernavn og adgangskode</target>
+      </trans-unit>
+      <trans-unit id="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Brugernavn</target>
+      </trans-unit>
+      <trans-unit id="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Adgangskode</target>
+      </trans-unit>
+      <trans-unit id="login.togglePassword" approved="yes">
+        <source>Toggle password visibility</source>
+        <target state="final">Skift synlighed for adgangskode</target>
+      </trans-unit>
+      <trans-unit id="login.password_forget" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Glemt din adgangskode?</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock" approved="yes">
+        <source>Attention: Caps lock enabled</source>
+        <target state="final">Advarsel: Caps Lock aktiveret</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslockStatus" approved="yes">
+        <source>Caps lock enabled</source>
+        <target state="final">Caps lås aktiveret</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password" approved="yes">
+        <source>The password you just pasted has leading and / or trailing whitespace.</source>
+        <target state="final">Den adgangskode, du lige har indsat har begyndende og/eller efterfølgende mellemrum/blanktegn.</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password.action-link" approved="yes">
+        <source>Remove whitespace</source>
+        <target state="final">Fjern mellemrum/blanktegn</target>
+      </trans-unit>
+      <trans-unit id="login.news.header" approved="yes">
+        <source>System News</source>
+        <target state="final">Systemnyheder</target>
+      </trans-unit>
+      <trans-unit id="login.news.date" approved="yes">
+        <source>Date</source>
+        <target state="final">Dato</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Forrige</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Næste</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.loginProvider" approved="yes">
+        <source>Login Provider</source>
+        <target state="final">Login leverandør</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.typo3" approved="yes">
+        <source>Further information about TYPO3</source>
+        <target state="final">Yderligere oplysninger om TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">Dit log-ind forsøg mislykkedes</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Vær forsigtig med at stave dit brugernavn og adgangskode korrekt, herunder store/små bogstaver.</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript" approved="yes">
+        <source>Please activate JavaScript</source>
+        <target state="final">Aktivér venligst JavaScript</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies" approved="yes">
+        <source>Please activate Cookies</source>
+        <target state="final">Aktivér venligst cookies</target>
+      </trans-unit>
+      <trans-unit id="login.error.referrer" approved="yes">
+        <source>TYPO3 relies on HTTP referrers for security reasons in the backend. It looks like your browser was not able to send this information, which may be due to privacy or security settings.</source>
+        <target state="final">TYPO3 er afhængig af HTTP referrers i backend af sikkerhedsmæssige årsager. Det ser ud til, at din browser ikke var i stand til at sende disse oplysninger, hvilket kan skyldes privatlivs- eller sikkerhedsindstillinger.</target>
+      </trans-unit>
+      <trans-unit id="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Verificér log-ind data ...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Log ind</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Mere om TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 logo</target>
+      </trans-unit>
+      <trans-unit id="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Donér</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild" approved="yes">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target state="final">Elementet med uid %2$s fra tabellen %1$s kunne ikke hentes fra databasen. Den form for data-inkonsistens kan optræde, hvis et base-element er blevet slettet, men det aktuelle element %3$s med uid %4$s stadig peger på det. For at løse dette, skal du enten slette det aktuelle element, eller gendanne det slettede element ved hjælp af recycler modulet.
+				</target>
+      </trans-unit>
+      <trans-unit id="modulemenu.label" approved="yes">
+        <source>Module Menu</source>
+        <target state="final">Modul-menu</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.title" approved="yes">
+        <source>No module access</source>
+        <target state="final">Ingen moduladgang</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.message" approved="yes">
+        <source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
+        <target state="final">Du er blevet omdirigeret til modulet "%s, fordi du i øjeblikket ikke kan få adgang til modulet "%s. Enten har du ikke de nødvendige tilladelser eller adgangen er ikke mulig lige nu, f.eks. på grund af begrænsninger i arbejdsrummet.</target>
+      </trans-unit>
+      <trans-unit id="clearcache.title" approved="yes">
+        <source>Page cache</source>
+        <target state="final">Side cache</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.success" approved="yes">
+        <source>Successfully cleared page cache</source>
+        <target state="final">Sidecache ryddet med succes</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.error" approved="yes">
+        <source>Page cache could not be cleared</source>
+        <target state="final">Sidecache kunne ikke ryddes</target>
+      </trans-unit>
+      <trans-unit id="error.linkHandlerTitleMissing" approved="yes">
+        <source>[title missing]</source>
+        <target state="final">[titel mangler]</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">Opret ny mappe</target>
+      </trans-unit>
+      <trans-unit id="create_folder.placeholder" approved="yes">
+        <source>Your new folder name</source>
+        <target state="final">Dit nye mappenavn</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">Opret mappe</target>
+      </trans-unit>
+      <trans-unit id="row.deletePlaceholder.title" approved="yes">
+        <source>The live pendant of this record will be deleted when this workspace record is published.</source>
+        <target state="final">Det aktuelle modstykke af dette element vil blive slettet, når elementet i dette arbejdsrum er offentliggjort.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.title" approved="yes">
+        <source>%s%s on page "%s" [%d]</source>
+        <target state="final">%s%s på side "%s" [%d]</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.filterLabel" approved="yes">
+        <source>Database records</source>
+        <target state="final">Database elementer</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.typeLabel" approved="yes">
+        <source>Database record</source>
+        <target state="final">Database element</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.filterLabel" approved="yes">
+        <source>Pages</source>
+        <target state="final">Sider</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.typeLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Side</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.filterLabel" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">Backend-moduler</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.typeLabel" approved="yes">
+        <source>Backend module</source>
+        <target state="final">Backend-modul</target>
+      </trans-unit>
+      <trans-unit id="resultItem.backendModuleProvider.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">Åbn modul</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Module action</source>
+        <target state="final">Modulhandling</target>
+      </trans-unit>
+      <trans-unit id="pagelayout.moduleMenu.dropdown.label" approved="yes">
+        <source>Display mode</source>
+        <target state="final">Visningstilstand</target>
+      </trans-unit>
+      <trans-unit id="editdocument.moduleMenu.dropdown.label" approved="yes">
+        <source>Record language</source>
+        <target state="final">Elementsprog</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.overview" approved="yes">
+        <source>Module overview</source>
+        <target state="final">Moduloversigt</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">Åbn modul</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModuleWithTitle" approved="yes">
+        <source>Open %1s module</source>
+        <target state="final">Åbn %1s modul</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.title" approved="yes">
+        <source>No modules available</source>
+        <target state="final">Ingen moduler tilgængelige</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.message" approved="yes">
+        <source>There are no submodules available or you do not have access to any of them. Please contact your administrator if you believe this is an error.</source>
+        <target state="final">Der er ingen undermoduler tilgængelige, eller du har ikke adgang til nogen af dem. Kontakt venligst din administrator, hvis du mener, at dette er en fejl.</target>
+      </trans-unit>
+      <trans-unit id="theme" approved="yes">
+        <source>Theme</source>
+        <target state="final">Tema</target>
+      </trans-unit>
+      <trans-unit id="theme.classic" approved="yes">
+        <source>Classic</source>
+        <target state="final">Klassisk</target>
+      </trans-unit>
+      <trans-unit id="theme.modern" approved="yes">
+        <source>Modern</source>
+        <target state="final">Moderne</target>
+      </trans-unit>
+      <trans-unit id="theme.fresh" approved="yes">
+        <source>Fresh</source>
+        <target state="final">Frisk</target>
+      </trans-unit>
+      <trans-unit id="colorScheme" approved="yes">
+        <source>Color scheme</source>
+        <target state="final">Farveskema</target>
+      </trans-unit>
+      <trans-unit id="toggleColorScheme" approved="yes">
+        <source>Toggle color scheme between light and dark mode</source>
+        <target state="final">Skift farvesammensætning mellem lys og mørk tilstand</target>
+      </trans-unit>
+      <trans-unit id="colorSchemeToggleDisabled" approved="yes">
+        <source>Due to your current accessibility settings, the color scheme cannot be changed.</source>
+        <target state="final">På grund af dine aktuelle tilgængelighedsindstillinger kan farveskema ikke ændres.</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.auto" approved="yes">
+        <source>Auto detect</source>
+        <target state="final">Sæt automatisk</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.light" approved="yes">
+        <source>Light mode</source>
+        <target state="final">Lys tilstand</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.dark" approved="yes">
+        <source>Dark mode</source>
+        <target state="final">Mørk tilstand</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.title" approved="yes">
+        <source>Language changed</source>
+        <target state="final">Sprog ændret</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.message" approved="yes">
+        <source>A reload is required for the changed to take effect.</source>
+        <target state="final">En genindlæsning er nødvendig for at ændringen kan træde i kraft.</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.buttonReload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Genindlæs</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.buttonCancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_translation" approved="yes">
+        <source>Found translation</source>
+        <target state="final">Fandt oversættelse</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_translation" approved="yes">
+        <source>Found in translation: %s</source>
+        <target state="final">Fundet i oversættelse: %s</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_multiple_translations" approved="yes">
+        <source>Found in multiple translations</source>
+        <target state="final">Fundet i flere oversættelser</target>
+      </trans-unit>
+      <trans-unit id="pageTree.searchResult" approved="yes">
+        <source>Search result</source>
+        <target state="final">Søgeresultat</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_frontend_uri" approved="yes">
+        <source>Found by URI</source>
+        <target state="final">Fundet af URI</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation" approved="yes">
+        <source>Navigation</source>
+        <target state="final">Navigation</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.show" approved="yes">
+        <source>Show navigation</source>
+        <target state="final">Vis navigation</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.hide" approved="yes">
+        <source>Hide navigation</source>
+        <target state="final">Skjul navigation</target>
+      </trans-unit>
+      <trans-unit id="collapse_state_search.numberOfSearchMatches" approved="yes">
+        <source>{count, plural, =0 {no matches} =1 {one match} other {# matches}}</source>
+        <target state="final">{count, plural, one {}=0 {ingen matches} =1 {en match} other {# matches}}</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
