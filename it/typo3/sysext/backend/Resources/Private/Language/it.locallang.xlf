@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="onlineDocumentation" approved="yes">
+        <source>TYPO3 Online Documentation</source>
+        <target state="final">Documentazione online di TYPO3</target>
+      </trans-unit>
+      <trans-unit id="opensInANewWindow" approved="yes">
+        <source>opens in a new window</source>
+        <target state="final">si apre in una nuova finestra</target>
+      </trans-unit>
+      <trans-unit id="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Nessun modulo è stato registrato. Si prega di contattare l'amministratore del sistema.</target>
+      </trans-unit>
+      <trans-unit id="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Mostra riferimenti</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Nessuna cartella disponibile</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">Non hai accesso a nessuna cartella. Chiedi all'amministratore di correggere i permessi di accesso per il tuo account.</target>
+      </trans-unit>
+      <trans-unit id="login.header" approved="yes">
+        <source>Login</source>
+        <target state="final">Accesso</target>
+      </trans-unit>
+      <trans-unit id="login.region.footnote" approved="yes">
+        <source>Footnote</source>
+        <target state="final">Nota a piè di pagina</target>
+      </trans-unit>
+      <trans-unit id="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Accedi con nome utente e password</target>
+      </trans-unit>
+      <trans-unit id="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Nome utente</target>
+      </trans-unit>
+      <trans-unit id="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Password</target>
+      </trans-unit>
+      <trans-unit id="login.togglePassword" approved="yes">
+        <source>Toggle password visibility</source>
+        <target state="final">Mostra/Nascondi password</target>
+      </trans-unit>
+      <trans-unit id="login.password_forget" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Hai dimenticato la tua password?</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock" approved="yes">
+        <source>Attention: Caps lock enabled</source>
+        <target state="final">Attenzione: blocco maiuscole attivo</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslockStatus" approved="yes">
+        <source>Caps lock enabled</source>
+        <target state="final">Blocco maiuscole abilitato</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password" approved="yes">
+        <source>The password you just pasted has leading and / or trailing whitespace.</source>
+        <target state="final">La password che hai incollato contiene spazi bianchi iniziali e / o finali.</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password.action-link" approved="yes">
+        <source>Remove whitespace</source>
+        <target state="final">Rimuovi gli spazi</target>
+      </trans-unit>
+      <trans-unit id="login.news.header" approved="yes">
+        <source>System News</source>
+        <target state="final">News di Sistema</target>
+      </trans-unit>
+      <trans-unit id="login.news.date" approved="yes">
+        <source>Date</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Precedente</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Successivo</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.loginProvider" approved="yes">
+        <source>Login Provider</source>
+        <target state="final">Provider di Autenticazione</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.typo3" approved="yes">
+        <source>Further information about TYPO3</source>
+        <target state="final">Ulteriori informazioni su TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">Tentativo di accesso non riuscito</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Assicurati di scrivere correttamente il tuo nome utente e la tua password, inclusi i caratteri maiuscoli/minuscoli.</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript" approved="yes">
+        <source>Please activate JavaScript</source>
+        <target state="final">Si prega di attivare JavaScript</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies" approved="yes">
+        <source>Please activate Cookies</source>
+        <target state="final">Si prega di attivare i cookie</target>
+      </trans-unit>
+      <trans-unit id="login.error.referrer" approved="yes">
+        <source>TYPO3 relies on HTTP referrers for security reasons in the backend. It looks like your browser was not able to send this information, which may be due to privacy or security settings.</source>
+        <target state="final">TYPO3 si basa su referrer HTTP per motivi di sicurezza nel backend. Sembra che il tuo browser non sia stato in grado di inviare queste informazioni, il che potrebbe essere dovuto alla privacy o alle impostazioni di sicurezza.</target>
+      </trans-unit>
+      <trans-unit id="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Sto verificando i dati di accesso ...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Accedi</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Maggiori informazioni su TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">Logo TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Fai una donazione</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild" approved="yes">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target state="final">Il record con uid %2$s dalla tabella %1$s non può essere recuperato dal database. Questa incongruenza dei dati può verificarsi se
+				un record base è stato cancellato, ma il record intermedio dalla tabella %3$s con uid %4$s punta ancora ad esso. Per correggere
+				questa situazione, elimina il record intermedio o recupera il record cancellato utilizzando il modulo Cestino.
+				</target>
+      </trans-unit>
+      <trans-unit id="modulemenu.label" approved="yes">
+        <source>Module Menu</source>
+        <target state="final">Menù del Modulo</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.title" approved="yes">
+        <source>No module access</source>
+        <target state="final">Nessun accesso al modulo</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.message" approved="yes">
+        <source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
+        <target state="final">Sei stato reindirizzato al modulo "%s", perché attualmente non puoi accedere al modulo "%s. Non hai i permessi necessari oppure l'accesso non è temporaneamente possibile, ad esempio a causa di restrizioni del workspace.</target>
+      </trans-unit>
+      <trans-unit id="clearcache.title" approved="yes">
+        <source>Page cache</source>
+        <target state="final">Cache di pagina</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.success" approved="yes">
+        <source>Successfully cleared page cache</source>
+        <target state="final">Cache di pagina cancellata con successo</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.error" approved="yes">
+        <source>Page cache could not be cleared</source>
+        <target state="final">La cache della pagina non può essere cancellata</target>
+      </trans-unit>
+      <trans-unit id="error.linkHandlerTitleMissing" approved="yes">
+        <source>[title missing]</source>
+        <target state="final">[titolo mancante]</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">Crea nuova cartella</target>
+      </trans-unit>
+      <trans-unit id="create_folder.placeholder" approved="yes">
+        <source>Your new folder name</source>
+        <target state="final">Nome della nuova cartella</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">Crea cartella</target>
+      </trans-unit>
+      <trans-unit id="row.deletePlaceholder.title" approved="yes">
+        <source>The live pendant of this record will be deleted when this workspace record is published.</source>
+        <target state="final">La versione pendente Live, di questo record, sarà eliminata quando il record di questo workspace verrà pubblicato.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.title" approved="yes">
+        <source>%s%s on page "%s" [%d]</source>
+        <target state="final">%s%s alla pagina "%s" [%d]</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.filterLabel" approved="yes">
+        <source>Database records</source>
+        <target state="final">I record del database</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.typeLabel" approved="yes">
+        <source>Database record</source>
+        <target state="final">Il record del database</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.filterLabel" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pagine</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.typeLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Pagina</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.filterLabel" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">Moduli del Backend</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.typeLabel" approved="yes">
+        <source>Backend module</source>
+        <target state="final">Modulo del Backend</target>
+      </trans-unit>
+      <trans-unit id="resultItem.backendModuleProvider.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">Apri modulo</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Module action</source>
+        <target state="final">Azione modulo</target>
+      </trans-unit>
+      <trans-unit id="pagelayout.moduleMenu.dropdown.label" approved="yes">
+        <source>Display mode</source>
+        <target state="final">Modalità di visualizzazione</target>
+      </trans-unit>
+      <trans-unit id="editdocument.moduleMenu.dropdown.label" approved="yes">
+        <source>Record language</source>
+        <target state="final">Lingua record</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.overview" approved="yes">
+        <source>Module overview</source>
+        <target state="final">Panoramica modulo</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">Apri modulo</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModuleWithTitle" approved="yes">
+        <source>Open %1s module</source>
+        <target state="final">Apri il modulo %1s</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.title" approved="yes">
+        <source>No modules available</source>
+        <target state="final">Nessun modulo disponibile</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.message" approved="yes">
+        <source>There are no submodules available or you do not have access to any of them. Please contact your administrator if you believe this is an error.</source>
+        <target state="final">Non ci sono sottomoduli disponibili o non hai accesso a nessuno di essi. Si prega di contattare l'amministratore se si ritiene che questo sia un errore.</target>
+      </trans-unit>
+      <trans-unit id="theme" approved="yes">
+        <source>Theme</source>
+        <target state="final">Tema</target>
+      </trans-unit>
+      <trans-unit id="theme.classic" approved="yes">
+        <source>Classic</source>
+        <target state="final">Classico</target>
+      </trans-unit>
+      <trans-unit id="theme.modern" approved="yes">
+        <source>Modern</source>
+        <target state="final">Moderno</target>
+      </trans-unit>
+      <trans-unit id="theme.fresh" approved="yes">
+        <source>Fresh</source>
+        <target state="final">Vivace</target>
+      </trans-unit>
+      <trans-unit id="colorScheme" approved="yes">
+        <source>Color scheme</source>
+        <target state="final">Schema colori</target>
+      </trans-unit>
+      <trans-unit id="toggleColorScheme" approved="yes">
+        <source>Toggle color scheme between light and dark mode</source>
+        <target state="final">Commuta lo schema colore tra la modalità chiara e quella scura</target>
+      </trans-unit>
+      <trans-unit id="colorSchemeToggleDisabled" approved="yes">
+        <source>Due to your current accessibility settings, the color scheme cannot be changed.</source>
+        <target state="final">A causa delle impostazioni di accessibilità attuali, lo schema di colori non può essere modificato.</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.auto" approved="yes">
+        <source>Auto detect</source>
+        <target state="final">Rilevamento automatico</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.light" approved="yes">
+        <source>Light mode</source>
+        <target state="final">Modalità chiara</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.dark" approved="yes">
+        <source>Dark mode</source>
+        <target state="final">Modalità scura</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.title" approved="yes">
+        <source>Language changed</source>
+        <target state="final">Lingua cambiata</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.message" approved="yes">
+        <source>A reload is required for the changed to take effect.</source>
+        <target state="final">È necessario aggiornare la pagina per rendere effettive le modifiche.</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.buttonReload" approved="yes">
+        <source>Reload</source>
+        <target state="final">Aggiorna</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.buttonCancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annulla</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_translation" approved="yes">
+        <source>Found translation</source>
+        <target state="final">Trovata traduzione</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_translation" approved="yes">
+        <source>Found in translation: %s</source>
+        <target state="final">Trovato nella traduzione: %s</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_multiple_translations" approved="yes">
+        <source>Found in multiple translations</source>
+        <target state="final">Trovato in più traduzioni</target>
+      </trans-unit>
+      <trans-unit id="pageTree.searchResult" approved="yes">
+        <source>Search result</source>
+        <target state="final">Risultati ricerca</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_frontend_uri" approved="yes">
+        <source>Found by URI</source>
+        <target state="final">Trovato via URI</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation" approved="yes">
+        <source>Navigation</source>
+        <target state="final">Navigazione</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.show" approved="yes">
+        <source>Show navigation</source>
+        <target state="final">Mostra navigazione</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.hide" approved="yes">
+        <source>Hide navigation</source>
+        <target state="final">Nascondi navigazione</target>
+      </trans-unit>
+      <trans-unit id="collapse_state_search.numberOfSearchMatches" approved="yes">
+        <source>{count, plural, =0 {no matches} =1 {one match} other {# matches}}</source>
+        <target state="final">{count, plural, one {}=0 {nessuna corrispondenza} =1 {una corrispondenza} other {# corrispondenze}}</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
