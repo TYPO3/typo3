@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">मॉड्यूल्स रजिस्टर्ड नहीं किया गया है.कृपया अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें.</target>
+      </trans-unit>
+      <trans-unit id="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">रेफरेन्सेस दिखाए</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">फोल्डर उपलब्ध नहीं है</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">आपके पास कोई भी फोल्डर के एक्सेस नहीं है.कृपया अपने एडमिनिस्ट्रेटर को आपके खाते की अनुमति के बारे में पूछिए.</target>
+      </trans-unit>
+      <trans-unit id="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">यूज़रनेम और पासवर्ड के साथ लॉगिन</target>
+      </trans-unit>
+      <trans-unit id="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">यूजरनाम</target>
+      </trans-unit>
+      <trans-unit id="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">पासवर्ड</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">पिछला</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">अगला</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">आपका लोगिन प्र्यास सफल नहीं हुआ</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">सही ढंग से अपने यूज़रनेम और पासवर्ड को बड़े / छोटे अक्षर सहित स्पेल करे.</target>
+      </trans-unit>
+      <trans-unit id="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">लोग इन डेटा को परखना</target>
+      </trans-unit>
+      <trans-unit id="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">लॉगइन</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Typo3 के बारे में अधिक</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 लोगो</target>
+      </trans-unit>
+      <trans-unit id="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">डोनेट</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
