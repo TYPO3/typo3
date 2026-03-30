@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Izbriši</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Ste prepričani, da želite izbrisati ta zapis?</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Razveljavi / Ponovi zadnjo spremembo (pred %s)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Poglej zgodovino sprememb zapisov</target>
+      </trans-unit>
+      <trans-unit id="editWholeRecord" approved="yes">
+        <source>Edit whole record</source>
+        <target state="final">Uredi celoten zapis</target>
+      </trans-unit>
+      <trans-unit id="openDocs" approved="yes">
+        <source>OPEN DOCUMENTS</source>
+        <target state="final">ODPRTI DOKUMENTI</target>
+      </trans-unit>
+      <trans-unit id="noDocuments" approved="yes">
+        <source>No open documents</source>
+        <target state="final">Ni odprtih dokumentov</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg" approved="yes">
+        <source>There are no open documents available to edit.</source>
+        <target state="final">Ni odprtih dokumentov, ki bi jih lahko urejali.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg2" approved="yes">
+        <source>You can go to %s to find the page or the record you wish to edit.</source>
+        <target state="final">Lahko se pomaknete do %s, da poiščete stran ali zapis, ki jo želite spremeniti.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_pagemodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;Page module</source>
+        <target state="final">modul Web&gt;Stran</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_OR" approved="yes">
+        <source>or</source>
+        <target state="final">ali</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_listmodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;List module</source>
+        <target state="final">modul Web&gt;Seznam</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.save_and_close" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Shrani in zapri</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.content" approved="yes">
+        <source>You need to save your changes before creating a new record. Do you want to save and create now?</source>
+        <target state="final">Preden ustvarite nov zapis, morate shraniti spremembe. Ali želite shraniti in ustvariti zdaj?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.yes" approved="yes">
+        <source>Yes, save and create now</source>
+        <target state="final">Da, shrani in ustvari zdaj</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.title" approved="yes">
+        <source>Do you want to save before viewing?</source>
+        <target state="final">Ali želite shraniti pred zapiranjem?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.save" approved="yes">
+        <source>Save changes and view</source>
+        <target state="final">Shrani spremembe in prikaži</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.yes" approved="yes">
+        <source>Yes, delete this file</source>
+        <target state="final">Da, izbriši datoteko</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_folder.yes" approved="yes">
+        <source>Yes, delete this folder</source>
+        <target state="final">Da, izbriši mapo</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.content" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">Ali ste prepričani, da želite izbrisati zapis '%s'?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.singular" approved="yes">
+        <source>Record saved</source>
+        <target state="final">Zapis shranjen</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.plural" approved="yes">
+        <source>Records saved</source>
+        <target state="final">Zapis shranjen</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.message" approved="yes">
+        <source>Record "%s" has been successfully saved.</source>
+        <target state="final">Zapis "%s" je bil uspešno shranjen.</target>
+      </trans-unit>
+      <trans-unit id="search.find_record" approved="yes">
+        <source>Find records</source>
+        <target state="final">Najdi zapise</target>
+      </trans-unit>
+      <trans-unit id="search.no_records_found" approved="yes">
+        <source>No records found</source>
+        <target state="final">Ni najdenih zapisov</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
