@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf" date="2018-03-15T09:39:00Z" product-name="adminpanel" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>TypoScript</source>
+        <target state="final">TypoScript</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" approved="yes">
+        <source>(%s Messages)</source>
+        <target state="final">(%s zpráv)</target>
+      </trans-unit>
+      <trans-unit id="treeDisplay" approved="yes">
+        <source>Tree display</source>
+        <target state="final">Zobrazení stromu</target>
+      </trans-unit>
+      <trans-unit id="displayTimes" approved="yes">
+        <source>Display all times</source>
+        <target state="final">Zobrazit vždy</target>
+      </trans-unit>
+      <trans-unit id="displayMessages" approved="yes">
+        <source>Display messages</source>
+        <target state="final">Zobrazit zprávy</target>
+      </trans-unit>
+      <trans-unit id="displayContent" approved="yes">
+        <source>Display content</source>
+        <target state="final">Zobrazit obsah</target>
+      </trans-unit>
+      <trans-unit id="trackContentRendering" approved="yes">
+        <source>Track content rendering</source>
+        <target state="final">Sledovat renderování obsahu</target>
+      </trans-unit>
+      <trans-unit id="forceTemplateParsing" approved="yes">
+        <source>Force TS Rendering</source>
+        <target state="final">Vynutit renderování TS</target>
+      </trans-unit>
+      <trans-unit id="sub.waterfall.label" approved="yes">
+        <source>TS Tree</source>
+        <target state="final">Strom TS</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
