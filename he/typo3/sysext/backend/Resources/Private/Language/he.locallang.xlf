@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">כניסה באמצעות שם משתמש וסיסמה</target>
+      </trans-unit>
+      <trans-unit id="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">בדיקה נתוני משתמש...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">התחברות</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
