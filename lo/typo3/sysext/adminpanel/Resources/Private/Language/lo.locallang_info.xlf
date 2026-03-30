@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_info.xlf" date="2018-03-12T13:52:01Z" product-name="adminpanel" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>Info</source>
+        <target state="final">ຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfoLoadAndMemory" approved="yes">
+        <source>(Load Time: %1$u ms, Memory: %2$s)</source>
+        <target state="final">(ເວລາໂຫຼດ: %1$u ms, ໜ່ວຍຄວາມຈຳ: %2$s)</target>
+      </trans-unit>
+      <trans-unit id="imagesOnPage" approved="yes">
+        <source>Images on this page</source>
+        <target state="final">ຮູບພາບໃນໜ້ານີ້</target>
+      </trans-unit>
+      <trans-unit id="imagesSize" approved="yes">
+        <source>Total image file sizes</source>
+        <target state="final">ຂະໜາດໄຟລ໌ຮູບພາບທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="DocumentSize" approved="yes">
+        <source>Document size</source>
+        <target state="final">ຂະໜາດເອກະສານ</target>
+      </trans-unit>
+      <trans-unit id="pageUid" approved="yes">
+        <source>Page Uid</source>
+        <target state="final">Uid ຂອງໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="pageType" approved="yes">
+        <source>Page type</source>
+        <target state="final">ປະເພດໜ້າ</target>
+      </trans-unit>
+      <trans-unit id="groupList" approved="yes">
+        <source>Frontenduser group combination</source>
+        <target state="final">ການລວມກຸ່ມຜູ້ໃຊ້ Frontend</target>
+      </trans-unit>
+      <trans-unit id="noCache" approved="yes">
+        <source>Page cached</source>
+        <target state="final">ໜ້າທີ່ຖືກເກັບໄວ້ໃນແຄຊ໌</target>
+      </trans-unit>
+      <trans-unit id="noCache_yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">ແມ່ນ</target>
+      </trans-unit>
+      <trans-unit id="noCache_no" approved="yes">
+        <source>No</source>
+        <target state="final">ບໍ່</target>
+      </trans-unit>
+      <trans-unit id="countUserInt" approved="yes">
+        <source>Count of USER_INT objects</source>
+        <target state="final">ຈຳນວນວັດຖຸ USER_INT</target>
+      </trans-unit>
+      <trans-unit id="feuserName" approved="yes">
+        <source>Name of logged in FE-User</source>
+        <target state="final">ຊື່ຂອງຜູ້ໃຊ້ FE ທີ່ເຂົ້າສູ່ລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="feuserId" approved="yes">
+        <source>Id of logged in FE-User</source>
+        <target state="final">Id ຂອງຜູ້ໃຊ້ FE ທີ່ເຂົ້າສູ່ລະບົບ</target>
+      </trans-unit>
+      <trans-unit id="totalParsetime" approved="yes">
+        <source>Total parsetime</source>
+        <target state="final">ເວລາປະມວນຜົນທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="noUserInt" approved="yes">
+        <source>There are no USER_INT objects on this page.</source>
+        <target state="final">ບໍ່ມີວັດຖຸ USER_INT ໃນໜ້ານີ້.</target>
+      </trans-unit>
+      <trans-unit id="key" approved="yes">
+        <source>Key</source>
+        <target state="final">ຄີ (Key)</target>
+      </trans-unit>
+      <trans-unit id="value" approved="yes">
+        <source>Value</source>
+        <target state="final">ຄ່າ (Value)</target>
+      </trans-unit>
+      <trans-unit id="sub.general.label" approved="yes">
+        <source>General</source>
+        <target state="final">ທົ່ວໄປ</target>
+      </trans-unit>
+      <trans-unit id="sub.php.label" approved="yes">
+        <source>PHP</source>
+        <target state="final">PHP</target>
+      </trans-unit>
+      <trans-unit id="sub.request.label" approved="yes">
+        <source>REQUEST</source>
+        <target state="final">REQUEST</target>
+      </trans-unit>
+      <trans-unit id="sub.userint.label" approved="yes">
+        <source>USER_INT</source>
+        <target state="final">USER_INT</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
