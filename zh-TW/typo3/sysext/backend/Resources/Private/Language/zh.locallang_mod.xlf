@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="zh-TW">
+    <header/>
+    <body>
+      <!-- @deprecated since v14, will be removed in v15. Delete whole file. -->
+    </body>
+  </file>
+</xliff>
