@@ -68,39 +68,43 @@ final readonly class PolymorphicDeserializer
 
     public function parseClassNames(string $payload): array
     {
+        // Build string ranges once upfront to avoid re-scanning the payload per class-name token
+        $stringRanges = [];
+        if (preg_match_all('/s:(\d+):"/', $payload, $stringMatches, PREG_OFFSET_CAPTURE)) {
+            foreach ($stringMatches[0] as $i => $match) {
+                $contentStart = $match[1] + strlen($match[0]);
+                $stringRanges[] = [$contentStart, $contentStart + (int)$stringMatches[1][$i][0]];
+            }
+        }
+
         $classNames = [];
         if (preg_match_all('/[CO]:(?P<length>\d+):"(?P<className>[^"]+)"/', $payload, $matches, PREG_OFFSET_CAPTURE)) {
             foreach ($matches['className'] as $i => $classNameMatch) {
+                // Offset of the custom-class/object pattern
                 $className = $classNameMatch[0];
-                // Offset of the full O:... pattern
                 $matchOffset = (int)$matches[0][$i][1];
                 $declaredLength = (int)$matches['length'][$i][0];
 
-                // Validate: 1) length matches, 2) not inside a string value
-                if (strlen($className) === $declaredLength && !$this->isInsideString($payload, $matchOffset)) {
+                if (strlen($className) !== $declaredLength) {
+                    continue;
+                }
+                if (in_array($className, $classNames, true)) {
+                    continue;
+                }
+                // Validate: not inside a string value
+                $insideString = false;
+                foreach ($stringRanges as [$start, $end]) {
+                    if ($matchOffset >= $start && $matchOffset < $end) {
+                        $insideString = true;
+                        break;
+                    }
+                }
+                if (!$insideString) {
                     $classNames[] = $className;
                 }
             }
         }
         return $classNames;
-    }
-
-    private function isInsideString(string $payload, int $offset): bool
-    {
-        if (preg_match_all('/s:(\d+):"/', $payload, $stringMatches, PREG_OFFSET_CAPTURE)) {
-            foreach ($stringMatches[0] as $i => $match) {
-                $stringDefOffset = $match[1];
-                $stringLength = (int)$stringMatches[1][$i][0];
-                // String content starts after s:LENGTH:"
-                $contentStart = $stringDefOffset + strlen($match[0]);
-                $contentEnd = $contentStart + $stringLength;
-
-                if ($offset >= $contentStart && $offset < $contentEnd) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**
