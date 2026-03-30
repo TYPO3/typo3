@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Prikaži sklice</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Mape niso na voljo</target>
+      </trans-unit>
+      <trans-unit id="login.header" approved="yes">
+        <source>Login</source>
+        <target state="final">Prijava</target>
+      </trans-unit>
+      <trans-unit id="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Uporabniško ime</target>
+      </trans-unit>
+      <trans-unit id="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Geslo</target>
+      </trans-unit>
+      <trans-unit id="login.password_forget" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Ali ste pozabili geslo?</target>
+      </trans-unit>
+      <trans-unit id="login.news.header" approved="yes">
+        <source>System News</source>
+        <target state="final">Sistem novic</target>
+      </trans-unit>
+      <trans-unit id="login.news.date" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Prejšnji</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Naprej</target>
+      </trans-unit>
+      <trans-unit id="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Prijava</target>
+      </trans-unit>
+      <trans-unit id="clearcache.title" approved="yes">
+        <source>Page cache</source>
+        <target state="final">Predpomnilnik strani</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.success" approved="yes">
+        <source>Successfully cleared page cache</source>
+        <target state="final">Uspešno počiščen predpomnilnik strani</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">Ustvari novo mapo</target>
+      </trans-unit>
+      <trans-unit id="create_folder.placeholder" approved="yes">
+        <source>Your new folder name</source>
+        <target state="final">Novo ime mape</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">Ustvari mapo</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.filterLabel" approved="yes">
+        <source>Pages</source>
+        <target state="final">Strani</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.typeLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Stran</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
