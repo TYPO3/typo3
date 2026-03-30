@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="lo">
+    <header/>
+    <body>
+      <trans-unit id="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">ລຶບ</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">ເຈົ້າມັ້ນໃຈບໍ່ວ່າຕ້ອງການລຶບຂໍ້ມູນນີ້?</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">ກັບຄືນ/ເຮັດຄືນ ການປ່ຽນແປງຫຼ້າສຸດ (%s ທີ່ຜ່ານມາ)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">ເບິ່ງປະຫວັດການປ່ຽນແປງຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="editWholeRecord" approved="yes">
+        <source>Edit whole record</source>
+        <target state="final">ແກ້ໄຂຂໍ້ມູນທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="openDocs" approved="yes">
+        <source>OPEN DOCUMENTS</source>
+        <target state="final">ເປີດເອກະສານ</target>
+      </trans-unit>
+      <trans-unit id="noDocuments" approved="yes">
+        <source>No open documents</source>
+        <target state="final">ບໍ່ມີເອກະສານທີ່ເປີດຢູ່</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg" approved="yes">
+        <source>There are no open documents available to edit.</source>
+        <target state="final">ບໍ່ມີເອກະສານທີ່ເປີດຢູ່ເພື່ອແກ້ໄຂ.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg2" approved="yes">
+        <source>You can go to %s to find the page or the record you wish to edit.</source>
+        <target state="final">ເຈົ້າສາມາດໄປທີ່ %s ເພື່ອຊອກຫາໜ້າ ຫຼື ຂໍ້ມູນທີ່ຕ້ອງການແກ້ໄຂ.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg3" approved="yes">
+        <source>You can select one of your most recently edited records from this list</source>
+        <target state="final">ເຈົ້າສາມາດເລືອກຂໍ້ມູນທີ່ໄດ້ແກ້ໄຂຫຼ້າສຸດຈາກລາຍການນີ້</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_pagemodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;Page module</source>
+        <target state="final">ໂມດູນ Web&gt;Page</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_OR" approved="yes">
+        <source>or</source>
+        <target state="final">ຫຼື</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_listmodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;List module</source>
+        <target state="final">ໂມດູນ Web&gt;List</target>
+      </trans-unit>
+      <trans-unit id="noEditForm" approved="yes">
+        <source>Edit form could not be loaded</source>
+        <target state="final">ບໍ່ສາມາດໂຫຼດແບບຟອມແກ້ໄຂໄດ້</target>
+      </trans-unit>
+      <trans-unit id="noEditForm.message" approved="yes">
+        <source>The edit form could not be loaded for the requested records. This might be due to insufficient permissions.</source>
+        <target state="final">ບໍ່ສາມາດໂຫຼດແບບຟອມແກ້ໄຂສຳລັບຂໍ້ມູນທີ່ຮ້ອງຂໍ. ນີ້ອາດຈະເປັນຍ້ອນສິດການເຂົ້າເຖິງບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="noFieldsEditForm" approved="yes">
+        <source>No fields to edit</source>
+        <target state="final">ບໍ່ມີຟິວໃຫ້ແກ້ໄຂ</target>
+      </trans-unit>
+      <trans-unit id="noFieldsEditForm.message" approved="yes">
+        <source>There are no editable fields available for the requested record. This might be due to insufficient permissions or a configuration mismatch.</source>
+        <target state="final">ບໍ່ມີຟິວທີ່ສາມາດແກ້ໄຂໄດ້ສຳລັບຂໍ້ມູນທີ່ຮ້ອງຂໍ. ນີ້ອາດຈະເປັນຍ້ອນສິດການເຂົ້າເຖິງບໍ່ພຽງພໍ.</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="button.confirm.duplicate_record_changed.no" approved="yes">
+        <source>No, just duplicate the original</source>
+        <target state="final">ບໍ່, ພຽງແຕ່ສຳເນົາຕົ້ນສະບັບ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.yes" approved="yes">
+        <source>Yes, save and duplicate this record</source>
+        <target state="final">ແມ່ນແລ້ວ, ບັນທຶກ ແລະ ສຳເນົາຂໍ້ມູນນີ້</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.yes" approved="yes">
+        <source>Discard changes</source>
+        <target state="final">ຖິ້ມການປ່ຽນແປງ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.no" approved="yes">
+        <source>Keep editing</source>
+        <target state="final">ແກ້ໄຂຕໍ່ໄປ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.save_and_close" approved="yes">
+        <source>Save and close</source>
+        <target state="final">ບັນທຶກ ແລະ ປິດ</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.title" approved="yes">
+        <source>Do you want to save before duplicating this record?</source>
+        <target state="final">ເຈົ້າຕ້ອງການບັນທຶກກ່ອນທີ່ຈະສຳເນົາຂໍ້ມູນນີ້ບໍ່?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. Do you want to save your changes before duplicating this record?</source>
+        <target state="final">ໃນຕອນນີ້ມີການປ່ຽນແປງທີ່ຍັງບໍ່ທັນໄດ້ບັນທຶກ. ເຈົ້າຕ້ອງການບັນທຶກການປ່ຽນແປງກ່ອນທີ່ຈະສຳເນົາຂໍ້ມູນນີ້ບໍ່?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.title" approved="yes">
+        <source>Do you want to save before adding?</source>
+        <target state="final">ເຈົ້າຕ້ອງການບັນທຶກກ່ອນທີ່ຈະເພີ່ມບໍ່?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.content" approved="yes">
+        <source>You need to save your changes before creating a new record. Do you want to save and create now?</source>
+        <target state="final">ເຈົ້າຕ້ອງບັນທຶກການປ່ຽນແປງກ່ອນທີ່ຈະສ້າງຂໍ້ມູນໃໝ່. ເຈົ້າຕ້ອງການບັນທຶກ ແລະ ສ້າງຕອນນີ້ເລີຍບໍ່?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.no" approved="yes">
+        <source>No, just add</source>
+        <target state="final">ບໍ່, ພຽງແຕ່ເພີ່ມ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.yes" approved="yes">
+        <source>Yes, save and create now</source>
+        <target state="final">ແມ່ນແລ້ວ, ບັນທຶກ ແລະ ສ້າງຕອນນີ້ເລີຍ</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.title" approved="yes">
+        <source>Do you want to save before viewing?</source>
+        <target state="final">ເຈົ້າຕ້ອງການບັນທຶກກ່ອນທີ່ຈະເບິ່ງບໍ່?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. You can either discard these changes or save and view them.</source>
+        <target state="final">ໃນຕອນນີ້ມີການປ່ຽນແປງທີ່ຍັງບໍ່ທັນໄດ້ບັນທຶກ. ເຈົ້າສາມາດຖິ້ມການປ່ຽນແປງເຫຼົ່ານີ້ ຫຼື ບັນທຶກ ແລະ ເບິ່ງພວກມັນໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.invalid_form" approved="yes">
+        <source>The form appears to be invalid, therefore "Save changes and view" is not available.</source>
+        <target state="final">ແບບຟອມເບິ່ງຄືວ່າບໍ່ຖືກຕ້ອງ, ດັ່ງນັ້ນ "ບັນທຶກການປ່ຽນແປງ ແລະ ເບິ່ງ" ຈຶ່ງບໍ່ສາມາດໃຊ້ງານໄດ້.</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content.is-new-page" approved="yes">
+        <source>You need to save your changes before viewing the page. Do you want to save and view them now?</source>
+        <target state="final">ເຈົ້າຕ້ອງບັນທຶກການປ່ຽນແປງກ່ອນທີ່ຈະເບິ່ງໜ້ານີ້. ເຈົ້າຕ້ອງການບັນທຶກ ແລະ ເບິ່ງຕອນນີ້ເລີຍບໍ່?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.no-save" approved="yes">
+        <source>View without changes</source>
+        <target state="final">ເບິ່ງໂດຍບໍ່ມີການປ່ຽນແປງ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.save" approved="yes">
+        <source>Save changes and view</source>
+        <target state="final">ບັນທຶກການປ່ຽນແປງ ແລະ ເບິ່ງ</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.title" approved="yes">
+        <source>Unsaved changes</source>
+        <target state="final">ການປ່ຽນແປງທີ່ຍັງບໍ່ທັນໄດ້ບັນທຶກ</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.content" approved="yes">
+        <source>You currently have unsaved changes which will be discarded if you close without saving.</source>
+        <target state="final">ໃນຕອນນີ້ມີການປ່ຽນແປງທີ່ຍັງບໍ່ທັນໄດ້ບັນທຶກ ເຊິ່ງຈະຖືກຖິ້ມໄປຖ້າເຈົ້າປິດໂດຍບໍ່ບັນທຶກ.</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.yes" approved="yes">
+        <source>Yes, delete this file</source>
+        <target state="final">ແມ່ນແລ້ວ, ລຶບໄຟລ໌ນີ້</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_folder.yes" approved="yes">
+        <source>Yes, delete this folder</source>
+        <target state="final">ແມ່ນແລ້ວ, ລຶບໂຟນເດີນີ້</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.yes" approved="yes">
+        <source>Delete</source>
+        <target state="final">ລຶບ</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">ລຶບຂໍ້ມູນນີ້ບໍ່?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.content" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">ເຈົ້າມັ້ນໃຈບໍ່ວ່າຕ້ອງການລຶບຂໍ້ມູນ '%s'?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">ຍົກເລີກ</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.yes" approved="yes">
+        <source>Yes, delete these elements</source>
+        <target state="final">ແມ່ນແລ້ວ, ລຶບອົງປະກອບເຫຼົ່ານີ້</target>
+      </trans-unit>
+      <trans-unit id="label.alert.save_with_error.title" approved="yes">
+        <source>You have errors in your form!</source>
+        <target state="final">ມີຂໍ້ຜິດພາດໃນແບບຟອມຂອງທ່ານ!</target>
+      </trans-unit>
+      <trans-unit id="label.alert.save_with_error.content" approved="yes">
+        <source>Please check the form, there is at least one error in your form.</source>
+        <target state="final">ກະລຸນາກວດສອບແບບຟອມ, ມີຢ່າງໜ້ອຍໜຶ່ງຂໍ້ຜິດພາດໃນແບບຟອມຂອງທ່ານ.</target>
+      </trans-unit>
+      <trans-unit id="buttons.alert.save_with_error.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">ຕົກລົງ</target>
+      </trans-unit>
+      <trans-unit id="buttons.reviewFailedValidationFields" approved="yes">
+        <source>Review fields with failed validations</source>
+        <target state="final">ກວດສອບຟິວທີ່ການກວດສອບຄວາມຖືກຕ້ອງບໍ່ສຳເລັດ</target>
+      </trans-unit>
+      <trans-unit id="buttons.pageTsConfig" approved="yes">
+        <source>PageTS Config</source>
+        <target state="final">ການກຳນົດຄ່າ PageTS</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.singular" approved="yes">
+        <source>Record saved</source>
+        <target state="final">ບັນທຶກຂໍ້ມູນແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.plural" approved="yes">
+        <source>Records saved</source>
+        <target state="final">ບັນທຶກຂໍ້ມູນທັງໝົດແລ້ວ</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.message" approved="yes">
+        <source>Record "%s" has been successfully saved.</source>
+        <target state="final">ຂໍ້ມູນ "%s" ໄດ້ຖືກບັນທຶກສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="notification.mass_saving.message" approved="yes">
+        <source>%s records have been successfully saved.</source>
+        <target state="final">ຂໍ້ມູນ %s ລາຍການ ໄດ້ຖືກບັນທຶກສຳເລັດແລ້ວ.</target>
+      </trans-unit>
+      <trans-unit id="search.find_record" approved="yes">
+        <source>Find records</source>
+        <target state="final">ຊອກຫາຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="search.no_records_found" approved="yes">
+        <source>No records found</source>
+        <target state="final">ບໍ່ພົບຂໍ້ມູນ</target>
+      </trans-unit>
+      <trans-unit id="flexform.section.delete.title" approved="yes">
+        <source>Delete this container?</source>
+        <target state="final">ລຶບຄອນເທນເນີນີ້ບໍ່?</target>
+      </trans-unit>
+      <trans-unit id="flexform.section.delete.message" approved="yes">
+        <source>Are you sure you want to delete this container?</source>
+        <target state="final">ເຈົ້າມັ້ນໃຈບໍ່ວ່າຕ້ອງການລຶບຄອນເທນເນີນີ້?</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem" approved="yes">
+        <source>Filter by item</source>
+        <target state="final">ກັ່ນຕອງຕາມລາຍການ</target>
+      </trans-unit>
+      <trans-unit id="tcatree.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">ຂະຫຍາຍທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="tcatree.collapseAll" approved="yes">
+        <source>Collapse all</source>
+        <target state="final">ຫຍໍ້ທັງໝົດ</target>
+      </trans-unit>
+      <trans-unit id="tcatree.toggleHideUnchecked" approved="yes">
+        <source>Toggle hide unchecked</source>
+        <target state="final">ສະຫຼັບການຊ່ອນອັນທີ່ບໍ່ໄດ້ເລືອກ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
