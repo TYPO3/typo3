@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>Debug</source>
+        <target state="final">Debuguj</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfoErrorsAndSQL" approved="yes">
+        <source>(%1$u Errors/Warnings, SQL: %2$ux / %3$u ms)</source>
+        <target state="final">(%1$u błędów/ostrzeżeń, SQL: %2$ux / %3$u ms)</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">Rejestr zdarzeń</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">Komponent</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Poziom</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">Grupuj według komponentu</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">Grupuj według poziomu</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" approved="yes">
+        <source>Display only levels equal or higher to</source>
+        <target state="final">Wyświetlaj tylko poziomy równe lub wyższe od</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" approved="yes">
+        <source>No log entries.</source>
+        <target state="final">Brak wpisów w dzienniku.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" approved="yes">
+        <source>Events</source>
+        <target state="final">Wydarzenia</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" approved="yes">
+        <source>Query</source>
+        <target state="final">Zapytanie</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" approved="yes">
+        <source>Queries</source>
+        <target state="final">Zapytania</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" approved="yes">
+        <source>SQL Debug</source>
+        <target state="final">Debugowanie SQL</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" approved="yes">
+        <source>SQL Query</source>
+        <target state="final">Zapytanie SQL</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" approved="yes">
+        <source>Total Time [ms]</source>
+        <target state="final">Całkowity czas [ms]</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.total" approved="yes">
+        <source>Total</source>
+        <target state="final">Łącznie</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">Tytuł strony</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider" approved="yes">
+        <source>Used provider</source>
+        <target state="final">Użyty dostawca</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tytuł</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider" approved="yes">
+        <source>Provider</source>
+        <target state="final">Dostawca</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders" approved="yes">
+        <source>Skipped providers (provided no title)</source>
+        <target state="final">Pominięci dostawcy (brak tytułu)</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nazwa</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled" approved="yes">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+        <target state="final">Nie można pobrać informacji o tytule strony (dostawcy), gdy strona używa cache.</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo" approved="yes">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+        <target state="final">Wyświetl tę stronę bez użycia cache lub wyłącz cache w panelu administracyjnym.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
