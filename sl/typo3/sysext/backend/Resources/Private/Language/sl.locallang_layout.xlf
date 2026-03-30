@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Page content</source>
+        <target state="final">Vsebina strani</target>
+      </trans-unit>
+      <trans-unit id="noEditItems" approved="yes">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target state="final">Žal nimate pravic za urejanje elementov na tej strani!</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" approved="yes">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target state="final">Žal nimate pravic za urejanje te strani!</target>
+      </trans-unit>
+      <trans-unit id="moveUp" approved="yes">
+        <source>Move record up</source>
+        <target state="final">Premakni podatkovni niz gor</target>
+      </trans-unit>
+      <trans-unit id="moveDown" approved="yes">
+        <source>Move record down</source>
+        <target state="final">Premakni podatkovni niz dol</target>
+      </trans-unit>
+      <trans-unit id="unHide" approved="yes">
+        <source>Un-hide</source>
+        <target state="final">Razkrij</target>
+      </trans-unit>
+      <trans-unit id="hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Skrij</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Uredi</target>
+      </trans-unit>
+      <trans-unit id="newAfter" approved="yes">
+        <source>New record after this one</source>
+        <target state="final">Nov podatkovni niz za trenutnim</target>
+      </trans-unit>
+      <trans-unit id="move_record" approved="yes">
+        <source>Re-position current content element</source>
+        <target state="final">Ponovno uvrsti trenutni vsebinski element</target>
+      </trans-unit>
+      <trans-unit id="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Premakni stran</target>
+      </trans-unit>
+      <trans-unit id="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Izbriši</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">Ali ste prepričani, da želite izbrisati zapis?</target>
+      </trans-unit>
+      <trans-unit id="pasteIntoColumn" approved="yes">
+        <source>Paste into this column</source>
+        <target state="final">Prilepi v ta stolpec</target>
+      </trans-unit>
+      <trans-unit id="pasteAfterRecord" approved="yes">
+        <source>Paste after this record</source>
+        <target state="final">Prilepi za tem zapisom</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.title.paste" approved="yes">
+        <source>Paste record</source>
+        <target state="final">Prilepi zapis</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.paste" approved="yes">
+        <source>Do you want to paste the record to this position?</source>
+        <target state="final">Ali želite prilepiti zapis?</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.paste" approved="yes">
+        <source>Paste</source>
+        <target state="final">Prilepi</target>
+      </trans-unit>
+      <trans-unit id="editColumn" approved="yes">
+        <source>Edit this column</source>
+        <target state="final">Uredi ta stolpec</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties_curLang" approved="yes">
+        <source>Edit translation properties</source>
+        <target state="final">Uredi nastavitev prevoda</target>
+      </trans-unit>
+      <trans-unit id="editInRTE" approved="yes">
+        <source>Edit in Rich Text Editor</source>
+        <target state="final">Uredi v bogatem urejevalniku teksta</target>
+      </trans-unit>
+      <trans-unit id="newPageContent" approved="yes">
+        <source>Create page content</source>
+        <target state="final">Ustvari vsebino strani</target>
+      </trans-unit>
+      <trans-unit id="newPageContent_translate" approved="yes">
+        <source>Translate</source>
+        <target state="final">Prevedi</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2" approved="yes">
+        <source>New content</source>
+        <target state="final">Nova vsebina</target>
+      </trans-unit>
+      <trans-unit id="content" approved="yes">
+        <source>Content</source>
+        <target state="final">Vsebina</target>
+      </trans-unit>
+      <trans-unit id="records" approved="yes">
+        <source>records</source>
+        <target state="final">zapisi</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" approved="yes">
+        <source>Page information</source>
+        <target state="final">Podatki o strani</target>
+      </trans-unit>
+      <trans-unit id="goToTable" approved="yes">
+        <source>Go to table</source>
+        <target state="final">Pojdi na tabelo</target>
+      </trans-unit>
+      <trans-unit id="internalNotes" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">Notranje opombe</target>
+      </trans-unit>
+      <trans-unit id="hiddenCE" approved="yes">
+        <source>Show hidden content elements</source>
+        <target state="final">Pokaži skrite elemente</target>
+      </trans-unit>
+      <trans-unit id="new_language" approved="yes">
+        <source>Create a new translation of this page</source>
+        <target state="final">Ustvarite nov prevod te strani</target>
+      </trans-unit>
+      <trans-unit id="newLabel" approved="yes">
+        <source>NEW</source>
+        <target state="final">NOVO</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Privzeto</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Uredi lastnosti strani</target>
+      </trans-unit>
+      <trans-unit id="editPageTitle" approved="yes">
+        <source>Edit the page title</source>
+        <target state="final">Uredi naslov strani</target>
+      </trans-unit>
+      <trans-unit id="editPageTitle.input.field.label" approved="yes">
+        <source>Enter a page title</source>
+        <target state="final">Vnesi naslov strani</target>
+      </trans-unit>
+      <trans-unit id="editPageLanguageOverlayProperties" approved="yes">
+        <source>Edit page language overlay properties</source>
+        <target state="final">Uredi lastnosti jezikovnega prekrivanja</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Ustvari nov zapis</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" approved="yes">
+        <source>New Page Content</source>
+        <target state="final">Nova vsebina strani</target>
+      </trans-unit>
+      <trans-unit id="CEonThisPage" approved="yes">
+        <source>Content elements on this page</source>
+        <target state="final">Vsebinski elementi na strani</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Create new page</source>
+        <target state="final">Ustvari novo stran</target>
+      </trans-unit>
+      <trans-unit id="newPage2" approved="yes">
+        <source>New page</source>
+        <target state="final">Nova stran</target>
+      </trans-unit>
+      <trans-unit id="noAccess" approved="yes">
+        <source>No edit access</source>
+        <target state="final">Ni dostopa za urejanje</target>
+      </trans-unit>
+      <trans-unit id="notAssigned" approved="yes">
+        <source>Not assigned</source>
+        <target state="final">Ni dodeljeno</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Zadeva</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Avtor</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age" approved="yes">
+        <source>Age</source>
+        <target state="final">Starost</target>
+      </trans-unit>
+      <trans-unit id="tt_board_RE" approved="yes">
+        <source>RE</source>
+        <target state="final">ODG</target>
+      </trans-unit>
+      <trans-unit id="gridView" approved="yes">
+        <source>Grid-View</source>
+        <target state="final">Mrežni pogled</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_2" approved="yes">
+        <source>Alternative note</source>
+        <target state="final">Druge opombe</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo" approved="yes">
+        <source>Todo</source>
+        <target state="final">Seznam nalog</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Razširjeno</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Razširjeno</target>
+      </trans-unit>
+      <trans-unit id="m_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Privzeto</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_content" approved="yes">
+        <source>Please select a page in the page tree to edit page content.</source>
+        <target state="final">Za urejanje vsebine strani izberite stran v drevesu strani.</target>
+      </trans-unit>
+      <trans-unit id="pI_hits10days" approved="yes">
+        <source>Last 10 days</source>
+        <target state="final">Zadnjih 10 dni</target>
+      </trans-unit>
+      <trans-unit id="pageIsExternalLinkMessage" x-unused-since="14.0" approved="yes">
+        <source>Page is a link to the following external URL: %s</source>
+        <target state="final">Stran je povezava na naslednji zunanji naslov URL: %s</target>
+      </trans-unit>
+      <trans-unit id="goToListModule" approved="yes">
+        <source>Go to list module</source>
+        <target state="final">Pojdi na modul Seznam</target>
+      </trans-unit>
+      <trans-unit id="localize.chooseLanguage" approved="yes">
+        <source>Choose your language</source>
+        <target state="final">Izberite svoj jezik</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.translate" approved="yes">
+        <source>Translate</source>
+        <target state="final">Prevedi</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Prekliči</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
