@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf" date="2018-03-15T09:39:00Z" product-name="adminpanel" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>TypoScript</source>
+        <target state="final">TypoScript</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" approved="yes">
+        <source>(%s Messages)</source>
+        <target state="final">(%s Meldungen)</target>
+      </trans-unit>
+      <trans-unit id="treeDisplay" approved="yes">
+        <source>Tree display</source>
+        <target state="final">Baumanzeige</target>
+      </trans-unit>
+      <trans-unit id="displayTimes" approved="yes">
+        <source>Display all times</source>
+        <target state="final">Alle Zeiten anzeigen</target>
+      </trans-unit>
+      <trans-unit id="displayMessages" approved="yes">
+        <source>Display messages</source>
+        <target state="final">Meldungen anzeigen</target>
+      </trans-unit>
+      <trans-unit id="displayContent" approved="yes">
+        <source>Display content</source>
+        <target state="final">Inhalt anzeigen</target>
+      </trans-unit>
+      <trans-unit id="trackContentRendering" approved="yes">
+        <source>Track content rendering</source>
+        <target state="final">Inhaltsdarstellung verfolgen</target>
+      </trans-unit>
+      <trans-unit id="forceTemplateParsing" approved="yes">
+        <source>Force TS Rendering</source>
+        <target state="final">TS-Rendering erzwingen</target>
+      </trans-unit>
+      <trans-unit id="sub.waterfall.label" approved="yes">
+        <source>TS Tree</source>
+        <target state="final">TS-Baum</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
