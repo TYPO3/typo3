@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mod.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <!-- @deprecated since v14, will be removed in v15. Delete whole file. -->
+      <trans-unit id="mlang_labels_tablabel" x-unused-since="14.0" approved="yes">
+        <source>Page content</source>
+        <target state="final">Вміст сторінки</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" x-unused-since="14.0" approved="yes">
+        <source>This module allows you to create and edit webpages, view page hit statistics, manage different languages and columns of content per page and access special page contents like guestbooks and shopping items.</source>
+        <target state="final">Цей модуль дозволяє створювати і редагувати веб-сторінки, переглянути статистику відвідування сторінки, керувати різними мовами і колонками вмісту на сторінці, а також отримувати доступ до особливих записів сторінки, таких як гостьові книги і товари магазину.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" x-unused-since="14.0" approved="yes">
+        <source>Page</source>
+        <target state="final">Сторінка</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
