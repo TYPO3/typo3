@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="onlineDocumentation">
+        <source>TYPO3 Online Documentation</source>
+        <target>crwdns211200:0crwdne211200:0</target>
+      </trans-unit>
+      <trans-unit id="opensInANewWindow">
+        <source>opens in a new window</source>
+        <target>crwdns310790:0crwdne310790:0</target>
+      </trans-unit>
+      <trans-unit id="no_modules_registered">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target>crwdns50088:0crwdne50088:0</target>
+      </trans-unit>
+      <trans-unit id="show_references">
+        <source>Show references</source>
+        <target>crwdns50090:0crwdne50090:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginLogo">
+        <source>Logo: Replace the TYPO3 logo above the login form (e.g. fileadmin/images/login-logo.png, EXT:my_theme/Resources/Public/Images/login-logo.png, or //domain.tld/login-logo.png).</source>
+        <target>crwdns393650:0crwdne393650:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginLogoAlt">
+        <source>Logo Alt-Text: Define the alternative text used as the alt attribute for the custom login logo image.</source>
+        <target>crwdns393652:0crwdne393652:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginHighlightColor">
+        <source>Highlight Color: Define the accent color used for highlights on the login screen.</source>
+        <target>crwdns393654:0crwdne393654:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginBackgroundImage">
+        <source>Background Image: Set the image used as the background for the login screen (e.g. fileadmin/images/my-background.jpg, EXT:my_theme/Resources/Public/Images/my-background.jpg, or //domain.tld/my-background.png).</source>
+        <target>crwdns393656:0crwdne393656:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginFootnote">
+        <source>Footnote: Enter the text displayed on the login screen, for example to provide copyright information for the background image (e.g. background image © 2017 by John Doe) or a short description.</source>
+        <target>crwdns393658:0crwdne393658:0</target>
+      </trans-unit>
+      <trans-unit id="config.backendLogo">
+        <source>Logo: Set the logo used in the top-left corner of the TYPO3 backend instead of the TYPO3 logo (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png).</source>
+        <target>crwdns393660:0crwdne393660:0</target>
+      </trans-unit>
+      <trans-unit id="config.backendFavicon">
+        <source>Favicon: Set the favicon used instead of the TYPO3 default (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico).</source>
+        <target>crwdns393662:0crwdne393662:0</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title">
+        <source>No folders available</source>
+        <target>crwdns50114:0crwdne50114:0</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target>crwdns50116:0crwdne50116:0</target>
+      </trans-unit>
+      <trans-unit id="login.header">
+        <source>Login</source>
+        <target>crwdns129228:0crwdne129228:0</target>
+      </trans-unit>
+      <trans-unit id="login.region.footnote">
+        <source>Footnote</source>
+        <target>crwdns129230:0crwdne129230:0</target>
+      </trans-unit>
+      <trans-unit id="login.link">
+        <source>Login with username and password</source>
+        <target>crwdns50118:0crwdne50118:0</target>
+      </trans-unit>
+      <trans-unit id="login.username">
+        <source>Username</source>
+        <target>crwdns50120:0crwdne50120:0</target>
+      </trans-unit>
+      <trans-unit id="login.password">
+        <source>Password</source>
+        <target>crwdns50122:0crwdne50122:0</target>
+      </trans-unit>
+      <trans-unit id="login.togglePassword">
+        <source>Toggle password visibility</source>
+        <target>crwdns279109:0crwdne279109:0</target>
+      </trans-unit>
+      <trans-unit id="login.password_forget">
+        <source>Forgot your password?</source>
+        <target>crwdns85810:0crwdne85810:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock">
+        <source>Attention: Caps lock enabled</source>
+        <target>crwdns380788:0crwdne380788:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslockStatus">
+        <source>Caps lock enabled</source>
+        <target>crwdns129256:0crwdne129256:0</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password">
+        <source>The password you just pasted has leading and / or trailing whitespace.</source>
+        <target>crwdns374514:0crwdne374514:0</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password.action-link">
+        <source>Remove whitespace</source>
+        <target>crwdns374516:0crwdne374516:0</target>
+      </trans-unit>
+      <trans-unit id="login.news.header">
+        <source>System News</source>
+        <target>crwdns132524:0crwdne132524:0</target>
+      </trans-unit>
+      <trans-unit id="login.news.date">
+        <source>Date</source>
+        <target>crwdns132526:0crwdne132526:0</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous">
+        <source>Previous</source>
+        <target>crwdns50128:0crwdne50128:0</target>
+      </trans-unit>
+      <trans-unit id="login.news.next">
+        <source>Next</source>
+        <target>crwdns50130:0crwdne50130:0</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.loginProvider">
+        <source>Login Provider</source>
+        <target>crwdns129234:0crwdne129234:0</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.typo3">
+        <source>Further information about TYPO3</source>
+        <target>crwdns129236:0crwdne129236:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.message">
+        <source>Your login attempt did not succeed</source>
+        <target>crwdns50132:0crwdne50132:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.description">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target>crwdns50134:0crwdne50134:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript">
+        <source>Please activate JavaScript</source>
+        <target>crwdns380790:0crwdne380790:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies">
+        <source>Please activate Cookies</source>
+        <target>crwdns380792:0crwdne380792:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.referrer">
+        <source>TYPO3 relies on HTTP referrers for security reasons in the backend. It looks like your browser was not able to send this information, which may be due to privacy or security settings.</source>
+        <target>crwdns380794:0crwdne380794:0</target>
+      </trans-unit>
+      <trans-unit id="login.process">
+        <source>Verifying Login Data ...</source>
+        <target>crwdns50140:0crwdne50140:0</target>
+      </trans-unit>
+      <trans-unit id="login.submit">
+        <source>Login</source>
+        <target>crwdns50142:0crwdne50142:0</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink">
+        <source>More about TYPO3</source>
+        <target>crwdns50144:0crwdne50144:0</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo">
+        <source>TYPO3 logo</source>
+        <target>crwdns50146:0crwdne50146:0</target>
+      </trans-unit>
+      <trans-unit id="login.donate">
+        <source>Donate</source>
+        <target>crwdns50148:0crwdne50148:0</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target>crwdns85690:0%2$scrwdnd85690:0%1$scrwdnd85690:0%3$scrwdnd85690:0%4$scrwdne85690:0
+				</target>
+      </trans-unit>
+      <trans-unit id="modulemenu.label">
+        <source>Module Menu</source>
+        <target>crwdns132276:0crwdne132276:0</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.title">
+        <source>No module access</source>
+        <target>crwdns301528:0crwdne301528:0</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.message">
+        <source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
+        <target>crwdns301530:0%scrwdnd301530:0%scrwdne301530:0</target>
+      </trans-unit>
+      <trans-unit id="clearcache.title">
+        <source>Page cache</source>
+        <target>crwdns225500:0crwdne225500:0</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.success">
+        <source>Successfully cleared page cache</source>
+        <target>crwdns225502:0crwdne225502:0</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.error">
+        <source>Page cache could not be cleared</source>
+        <target>crwdns225504:0crwdne225504:0</target>
+      </trans-unit>
+      <trans-unit id="error.linkHandlerTitleMissing">
+        <source>[title missing]</source>
+        <target>crwdns225506:0crwdne225506:0</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title">
+        <source>Create new folder</source>
+        <target>crwdns225508:0crwdne225508:0</target>
+      </trans-unit>
+      <trans-unit id="create_folder.placeholder">
+        <source>Your new folder name</source>
+        <target>crwdns225510:0crwdne225510:0</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit">
+        <source>Create folder</source>
+        <target>crwdns225512:0crwdne225512:0</target>
+      </trans-unit>
+      <trans-unit id="row.deletePlaceholder.title">
+        <source>The live pendant of this record will be deleted when this workspace record is published.</source>
+        <target>crwdns225514:0crwdne225514:0</target>
+      </trans-unit>
+      <trans-unit id="shortcut.title">
+        <source>%s%s on page "%s" [%d]</source>
+        <target>crwdns225516:0%scrwdnd225516:0%scrwdnd225516:0%scrwdnd225516:0%dcrwdne225516:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.filterLabel">
+        <source>Database records</source>
+        <target>crwdns226469:0crwdne226469:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.typeLabel">
+        <source>Database record</source>
+        <target>crwdns226471:0crwdne226471:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.filterLabel">
+        <source>Pages</source>
+        <target>crwdns226473:0crwdne226473:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.typeLabel">
+        <source>Page</source>
+        <target>crwdns226475:0crwdne226475:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.filterLabel">
+        <source>Backend modules</source>
+        <target>crwdns338138:0crwdne338138:0</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.typeLabel">
+        <source>Backend module</source>
+        <target>crwdns338140:0crwdne338140:0</target>
+      </trans-unit>
+      <trans-unit id="resultItem.backendModuleProvider.openModule">
+        <source>Open module</source>
+        <target>crwdns338142:0crwdne338142:0</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label">
+        <source>Module action</source>
+        <target>crwdns312864:0crwdne312864:0</target>
+      </trans-unit>
+      <trans-unit id="pagelayout.moduleMenu.dropdown.label">
+        <source>Display mode</source>
+        <target>crwdns312866:0crwdne312866:0</target>
+      </trans-unit>
+      <trans-unit id="editdocument.moduleMenu.dropdown.label">
+        <source>Record language</source>
+        <target>crwdns312868:0crwdne312868:0</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.overview">
+        <source>Module overview</source>
+        <target>crwdns377930:0crwdne377930:0</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModule">
+        <source>Open module</source>
+        <target>crwdns377932:0crwdne377932:0</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.openModuleWithTitle">
+        <source>Open %1s module</source>
+        <target>crwdns378148:0%1scrwdne378148:0</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.title">
+        <source>No modules available</source>
+        <target>crwdns377934:0crwdne377934:0</target>
+      </trans-unit>
+      <trans-unit id="submoduleOverview.noAccess.message">
+        <source>There are no submodules available or you do not have access to any of them. Please contact your administrator if you believe this is an error.</source>
+        <target>crwdns377936:0crwdne377936:0</target>
+      </trans-unit>
+      <trans-unit id="theme">
+        <source>Theme</source>
+        <target>crwdns342580:0crwdne342580:0</target>
+      </trans-unit>
+      <trans-unit id="theme.classic">
+        <source>Classic</source>
+        <target>crwdns342582:0crwdne342582:0</target>
+      </trans-unit>
+      <trans-unit id="theme.modern">
+        <source>Modern</source>
+        <target>crwdns342584:0crwdne342584:0</target>
+      </trans-unit>
+      <trans-unit id="theme.fresh">
+        <source>Fresh</source>
+        <target>crwdns380920:0crwdne380920:0</target>
+      </trans-unit>
+      <trans-unit id="colorScheme">
+        <source>Color scheme</source>
+        <target>crwdns342586:0crwdne342586:0</target>
+      </trans-unit>
+      <trans-unit id="toggleColorScheme">
+        <source>Toggle color scheme between light and dark mode</source>
+        <target>crwdns342588:0crwdne342588:0</target>
+      </trans-unit>
+      <trans-unit id="colorSchemeToggleDisabled">
+        <source>Due to your current accessibility settings, the color scheme cannot be changed.</source>
+        <target>crwdns377884:0crwdne377884:0</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.auto">
+        <source>Auto detect</source>
+        <target>crwdns342590:0crwdne342590:0</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.light">
+        <source>Light mode</source>
+        <target>crwdns342592:0crwdne342592:0</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.dark">
+        <source>Dark mode</source>
+        <target>crwdns342594:0crwdne342594:0</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.title">
+        <source>Language changed</source>
+        <target>crwdns392530:0crwdne392530:0</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.message">
+        <source>A reload is required for the changed to take effect.</source>
+        <target>crwdns392532:0crwdne392532:0</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.buttonReload">
+        <source>Reload</source>
+        <target>crwdns392534:0crwdne392534:0</target>
+      </trans-unit>
+      <trans-unit id="userSettings.requestBackendLanguageRefresh.buttonCancel">
+        <source>Cancel</source>
+        <target>crwdns392536:0crwdne392536:0</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_translation">
+        <source>Found translation</source>
+        <target>crwdns384084:0crwdne384084:0</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_translation">
+        <source>Found in translation: %s</source>
+        <target>crwdns384086:0%scrwdne384086:0</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_multiple_translations">
+        <source>Found in multiple translations</source>
+        <target>crwdns384088:0crwdne384088:0</target>
+      </trans-unit>
+      <trans-unit id="pageTree.searchResult">
+        <source>Search result</source>
+        <target>crwdns384090:0crwdne384090:0</target>
+      </trans-unit>
+      <trans-unit id="pageTree.found_in_frontend_uri">
+        <source>Found by URI</source>
+        <target>crwdns390768:0crwdne390768:0</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation">
+        <source>Navigation</source>
+        <target>crwdns386054:0crwdne386054:0</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.show">
+        <source>Show navigation</source>
+        <target>crwdns386056:0crwdne386056:0</target>
+      </trans-unit>
+      <trans-unit id="viewport.navigation.hide">
+        <source>Hide navigation</source>
+        <target>crwdns386058:0crwdne386058:0</target>
+      </trans-unit>
+      <trans-unit id="collapse_state_search.numberOfSearchMatches">
+        <source>{count, plural, =0 {no matches} =1 {one match} other {# matches}}</source>
+        <target>crwdns393002:0count={count}crwdne393002:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
