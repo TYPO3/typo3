@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="onlineDocumentation" approved="yes">
+        <source>TYPO3 Online Documentation</source>
+        <target state="final">TYPO3 Online dokumentace</target>
+      </trans-unit>
+      <trans-unit id="opensInANewWindow" approved="yes">
+        <source>opens in a new window</source>
+        <target state="final">otevře se v novém okně</target>
+      </trans-unit>
+      <trans-unit id="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Nebyly zaregistrovány žádné moduly. Obraťte se na správce systému.</target>
+      </trans-unit>
+      <trans-unit id="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Ukázat odkazy</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Žádné složky nejsou k dispozici</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">Nemáte přístup k žádné složce. Požádejte prosím administrátora, aby pro váš účet opravil oprávnění k přístupu.</target>
+      </trans-unit>
+      <trans-unit id="login.header" approved="yes">
+        <source>Login</source>
+        <target state="final">Přihlášení</target>
+      </trans-unit>
+      <trans-unit id="login.region.footnote" approved="yes">
+        <source>Footnote</source>
+        <target state="final">Poznámka pod čarou</target>
+      </trans-unit>
+      <trans-unit id="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Přihlášení pomocí uživatelského jména a hesla</target>
+      </trans-unit>
+      <trans-unit id="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Uživatelské jméno</target>
+      </trans-unit>
+      <trans-unit id="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Heslo</target>
+      </trans-unit>
+      <trans-unit id="login.togglePassword" approved="yes">
+        <source>Toggle password visibility</source>
+        <target state="final">Zobrazit/skrýt heslo</target>
+      </trans-unit>
+      <trans-unit id="login.password_forget" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Zapomenuté heslo?</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslockStatus" approved="yes">
+        <source>Caps lock enabled</source>
+        <target state="final">Caps Lock je zapnutý</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password" approved="yes">
+        <source>The password you just pasted has leading and / or trailing whitespace.</source>
+        <target state="final">Heslo, které jste právě vložili, má na začátku a / nebo na konci mezeru.</target>
+      </trans-unit>
+      <trans-unit id="login.warning.whitespace-around-password.action-link" approved="yes">
+        <source>Remove whitespace</source>
+        <target state="final">Odstranit mezery</target>
+      </trans-unit>
+      <trans-unit id="login.news.header" approved="yes">
+        <source>System News</source>
+        <target state="final">Systémové novinky</target>
+      </trans-unit>
+      <trans-unit id="login.news.date" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Předchozí</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Další</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.loginProvider" approved="yes">
+        <source>Login Provider</source>
+        <target state="final">Poskytovatel přihlašování</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.typo3" approved="yes">
+        <source>Further information about TYPO3</source>
+        <target state="final">Další informace o TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">Váš pokus o přihlášení se nezdařil</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Ujistěte se, že správně zadáte své uživatelské jméno a heslo včetně malých a velkých písmen.</target>
+      </trans-unit>
+      <trans-unit id="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Ověřování dat přihlášení ...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Přihlášení</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Více o TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 logo</target>
+      </trans-unit>
+      <trans-unit id="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Darujte</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild" approved="yes">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target state="final">Záznam s uid %2$s z tabulky %1$s nelze načíst z databáze. K této nekonzistenci dat může dojít, pokud byl odstraněn základní záznam, ale přechodný záznam z tabulky %3$s s uid %4$s na něj stále odkazuje. Chcete-li tuto situaci vyřešit, buď vymažte přechodný záznam nebo obnovte odstraněný záznam pomocí modulu pro recyklaci.
+				</target>
+      </trans-unit>
+      <trans-unit id="modulemenu.label" approved="yes">
+        <source>Module Menu</source>
+        <target state="final">Nabídka modulů</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.title" approved="yes">
+        <source>No module access</source>
+        <target state="final">Není přístup k žádnému modulu</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.message" approved="yes">
+        <source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
+        <target state="final">Byl jste přesměrován na modul "%s", protože momentálně nemáte přístup k modulu "%s". Nemáte potřebná oprávnění nebo přístup není dočasně možný, např. kvůli omezení pracovního prostoru.</target>
+      </trans-unit>
+      <trans-unit id="clearcache.title" approved="yes">
+        <source>Page cache</source>
+        <target state="final">Cache stránky</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.success" approved="yes">
+        <source>Successfully cleared page cache</source>
+        <target state="final">Úspěšně vyčištěna cache stránky</target>
+      </trans-unit>
+      <trans-unit id="clearcache.message.error" approved="yes">
+        <source>Page cache could not be cleared</source>
+        <target state="final">Cache stránky nemohla být vyčištěna</target>
+      </trans-unit>
+      <trans-unit id="error.linkHandlerTitleMissing" approved="yes">
+        <source>[title missing]</source>
+        <target state="final">[název chybí]</target>
+      </trans-unit>
+      <trans-unit id="create_folder.title" approved="yes">
+        <source>Create new folder</source>
+        <target state="final">Vytvořit novou složku</target>
+      </trans-unit>
+      <trans-unit id="create_folder.placeholder" approved="yes">
+        <source>Your new folder name</source>
+        <target state="final">Název nové složky</target>
+      </trans-unit>
+      <trans-unit id="create_folder.submit" approved="yes">
+        <source>Create folder</source>
+        <target state="final">Vytvořit složku</target>
+      </trans-unit>
+      <trans-unit id="row.deletePlaceholder.title" approved="yes">
+        <source>The live pendant of this record will be deleted when this workspace record is published.</source>
+        <target state="final">Původní produkční záznamy budou odstraněny spolu s nasazením tohoto pracovního prostoru.</target>
+      </trans-unit>
+      <trans-unit id="shortcut.title" approved="yes">
+        <source>%s%s on page "%s" [%d]</source>
+        <target state="final">%s%s na stránce "%s" [%d]</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.filterLabel" approved="yes">
+        <source>Database records</source>
+        <target state="final">Databázové záznamy</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.typeLabel" approved="yes">
+        <source>Database record</source>
+        <target state="final">Záznam v databázi</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.filterLabel" approved="yes">
+        <source>Pages</source>
+        <target state="final">Stránky</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.typeLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">Stránka</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.filterLabel" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">Moduly backendu</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.typeLabel" approved="yes">
+        <source>Backend module</source>
+        <target state="final">Modul backendu</target>
+      </trans-unit>
+      <trans-unit id="resultItem.backendModuleProvider.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">Otevřít modul</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Module action</source>
+        <target state="final">Modul akce</target>
+      </trans-unit>
+      <trans-unit id="pagelayout.moduleMenu.dropdown.label" approved="yes">
+        <source>Display mode</source>
+        <target state="final">Zobrazovací mód</target>
+      </trans-unit>
+      <trans-unit id="editdocument.moduleMenu.dropdown.label" approved="yes">
+        <source>Record language</source>
+        <target state="final">Jazyk záznamu</target>
+      </trans-unit>
+      <trans-unit id="theme" approved="yes">
+        <source>Theme</source>
+        <target state="final">Vzhled</target>
+      </trans-unit>
+      <trans-unit id="theme.classic" approved="yes">
+        <source>Classic</source>
+        <target state="final">Klasické</target>
+      </trans-unit>
+      <trans-unit id="theme.modern" approved="yes">
+        <source>Modern</source>
+        <target state="final">Moderní</target>
+      </trans-unit>
+      <trans-unit id="colorScheme" approved="yes">
+        <source>Color scheme</source>
+        <target state="final">Barevné schéma</target>
+      </trans-unit>
+      <trans-unit id="toggleColorScheme" approved="yes">
+        <source>Toggle color scheme between light and dark mode</source>
+        <target state="final">Přepnout barevné schéma mezi světlým a tmavým režimem</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.auto" approved="yes">
+        <source>Auto detect</source>
+        <target state="final">Automatická detekce</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.light" approved="yes">
+        <source>Light mode</source>
+        <target state="final">Světlý režim</target>
+      </trans-unit>
+      <trans-unit id="colorScheme.dark" approved="yes">
+        <source>Dark mode</source>
+        <target state="final">Tmavý režim</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
