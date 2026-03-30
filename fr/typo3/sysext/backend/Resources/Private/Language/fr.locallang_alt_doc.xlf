@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Supprimer</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Etes-vous sûr de vouloir supprimer cet enregistrement ?</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Annuler / Rétablir le dernier changement (%s)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Visualiser l'historique des changements</target>
+      </trans-unit>
+      <trans-unit id="editWholeRecord" approved="yes">
+        <source>Edit whole record</source>
+        <target state="final">Editer l'enregistrement complet</target>
+      </trans-unit>
+      <trans-unit id="openDocs" approved="yes">
+        <source>OPEN DOCUMENTS</source>
+        <target state="final">DOCUMENTS OUVERTS</target>
+      </trans-unit>
+      <trans-unit id="noDocuments" approved="yes">
+        <source>No open documents</source>
+        <target state="final">Aucun document ouvert</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg" approved="yes">
+        <source>There are no open documents available to edit.</source>
+        <target state="final">Il n'y a aucun document ouvert disponible à éditer.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg2" approved="yes">
+        <source>You can go to %s to find the page or the record you wish to edit.</source>
+        <target state="final">Vous pouvez aller à %s pour trouver la page ou l'enregistrement que vous souhaitez éditer.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg3" approved="yes">
+        <source>You can select one of your most recently edited records from this list</source>
+        <target state="final">Vous pouvez choisir un de vos enregistrements récemment édités depuis cette liste</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_pagemodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;Page module</source>
+        <target state="final">le module Web&gt;Page</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_OR" approved="yes">
+        <source>or</source>
+        <target state="final">ou</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_listmodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;List module</source>
+        <target state="final">le module Web&gt;Liste</target>
+      </trans-unit>
+      <trans-unit id="noEditForm" approved="yes">
+        <source>Edit form could not be loaded</source>
+        <target state="final">Le formulaire d'édition n'a pas pu être chargé</target>
+      </trans-unit>
+      <trans-unit id="noEditForm.message" approved="yes">
+        <source>The edit form could not be loaded for the requested records. This might be due to insufficient permissions.</source>
+        <target state="final">Le formulaire d'édition n'a pas pu être chargé pour les enregistrements demandés. Cela peut être lié à des permissions insuffisantes.</target>
+      </trans-unit>
+      <trans-unit id="noFieldsEditForm" approved="yes">
+        <source>No fields to edit</source>
+        <target state="final">Aucun champ à modifier</target>
+      </trans-unit>
+      <trans-unit id="noFieldsEditForm.message" approved="yes">
+        <source>There are no editable fields available for the requested record. This might be due to insufficient permissions or a configuration mismatch.</source>
+        <target state="final">Il n'y a pas de champ modifiable disponible pour l'enregistrement demandé. C'est peut-être en raison de permissions insuffisantes ou d'une configuration incorrecte.</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="button.confirm.duplicate_record_changed.no" approved="yes">
+        <source>No, just duplicate the original</source>
+        <target state="final">Non, juste dupliquer l'original</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.yes" approved="yes">
+        <source>Yes, save and duplicate this record</source>
+        <target state="final">Oui, sauvegarder et dupliquer cet enregistrement</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.yes" approved="yes">
+        <source>Discard changes</source>
+        <target state="final">Abandonner les modifications</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.no" approved="yes">
+        <source>Keep editing</source>
+        <target state="final">Poursuivre les modifications</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.save_and_close" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Enregistrer et fermer</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.title" approved="yes">
+        <source>Do you want to save before duplicating this record?</source>
+        <target state="final">Souhaitez-vous enregistrer avant de dupliquer l'enregistrement ?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. Do you want to save your changes before duplicating this record?</source>
+        <target state="final">Vous avez actuellement des modifications non-enregistrées. Souhaitez-vous enregistrer ces changements avant de dupliquer l'enregistrement ?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.title" approved="yes">
+        <source>Do you want to save before adding?</source>
+        <target state="final">Souhaitez-vous enregistrer avant l'ajout ?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.content" approved="yes">
+        <source>You need to save your changes before creating a new record. Do you want to save and create now?</source>
+        <target state="final">Vous devez enregistrer vos modifications avant de créer un nouvel enregistrement. Souhaitez-vous enregistrer et créer maintenant ?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.no" approved="yes">
+        <source>No, just add</source>
+        <target state="final">Non, uniquement ajouter</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.yes" approved="yes">
+        <source>Yes, save and create now</source>
+        <target state="final">Oui, enregistrer et créer</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.title" approved="yes">
+        <source>Do you want to save before viewing?</source>
+        <target state="final">Souhaitez-vous enregistrer avant de visualiser ?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. You can either discard these changes or save and view them.</source>
+        <target state="final">Vous avez actuellement des modifications non-enregistrées. Vous pouvez soit abandonner ces changements soit les enregistrer avant de les visualiser.</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.invalid_form" approved="yes">
+        <source>The form appears to be invalid, therefore "Save changes and view" is not available.</source>
+        <target state="final">Le formulaire semble être invalide, c'est pourquoi « Enregistrer les modifications et visualiser » n'est pas disponible.</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content.is-new-page" approved="yes">
+        <source>You need to save your changes before viewing the page. Do you want to save and view them now?</source>
+        <target state="final">Vous devez enregistrer vos modifications avant de visualiser la page. Souhaitez-vous les enregistrer et les voir maintenant ?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.no-save" approved="yes">
+        <source>View without changes</source>
+        <target state="final">Visualiser sans les modifications</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.save" approved="yes">
+        <source>Save changes and view</source>
+        <target state="final">Enregistrer les modifications et visualiser</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.title" approved="yes">
+        <source>Unsaved changes</source>
+        <target state="final">Modifications non enregistrées</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.content" approved="yes">
+        <source>You currently have unsaved changes which will be discarded if you close without saving.</source>
+        <target state="final">Vous avez actuellement des modifications non enregistrées qui seront abandonnées si vous fermez sans enregistrer.</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.yes" approved="yes">
+        <source>Yes, delete this file</source>
+        <target state="final">Oui, supprimer ce fichier</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_folder.yes" approved="yes">
+        <source>Yes, delete this folder</source>
+        <target state="final">Oui, supprimer ce dossier</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.yes" approved="yes">
+        <source>Delete</source>
+        <target state="final">Supprimer</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">Supprimer cet enregistrement?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.content" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">Êtes-vous sûr de vouloir supprimer l’enregistrement '%s' ?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuler</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.yes" approved="yes">
+        <source>Yes, delete these elements</source>
+        <target state="final">Oui, supprimer ces éléments</target>
+      </trans-unit>
+      <trans-unit id="label.alert.save_with_error.title" approved="yes">
+        <source>You have errors in your form!</source>
+        <target state="final">Votre formulaire contient des erreurs !</target>
+      </trans-unit>
+      <trans-unit id="label.alert.save_with_error.content" approved="yes">
+        <source>Please check the form, there is at least one error in your form.</source>
+        <target state="final">Veuillez vérifier votre formulaire, il comporte au moins une erreur.</target>
+      </trans-unit>
+      <trans-unit id="buttons.alert.save_with_error.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="buttons.reviewFailedValidationFields" approved="yes">
+        <source>Review fields with failed validations</source>
+        <target state="final">Vérifier les champs ayant des erreurs de validation</target>
+      </trans-unit>
+      <trans-unit id="buttons.pageTsConfig" approved="yes">
+        <source>PageTS Config</source>
+        <target state="final">Configuration du PageTS</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.singular" approved="yes">
+        <source>Record saved</source>
+        <target state="final">Enregistrement sauvegardé</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.plural" approved="yes">
+        <source>Records saved</source>
+        <target state="final">Enregistrements sauvegardés</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.message" approved="yes">
+        <source>Record "%s" has been successfully saved.</source>
+        <target state="final">L'enregistrement "%s" a été sauvegardé avec succès.</target>
+      </trans-unit>
+      <trans-unit id="notification.mass_saving.message" approved="yes">
+        <source>%s records have been successfully saved.</source>
+        <target state="final">%s enregistrements ont été enregistrés avec succès.</target>
+      </trans-unit>
+      <trans-unit id="search.find_record" approved="yes">
+        <source>Find records</source>
+        <target state="final">Rechercher des enregistrements</target>
+      </trans-unit>
+      <trans-unit id="search.no_records_found" approved="yes">
+        <source>No records found</source>
+        <target state="final">Aucun enregistrement trouvé</target>
+      </trans-unit>
+      <trans-unit id="flexform.section.delete.title" approved="yes">
+        <source>Delete this container?</source>
+        <target state="final">Supprimer ce conteneur ?</target>
+      </trans-unit>
+      <trans-unit id="flexform.section.delete.message" approved="yes">
+        <source>Are you sure you want to delete this container?</source>
+        <target state="final">Confirmez-vous la suppression de ce conteneur ?</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem" approved="yes">
+        <source>Filter by item</source>
+        <target state="final">Filtrer par élément</target>
+      </trans-unit>
+      <trans-unit id="tcatree.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Tout déplier</target>
+      </trans-unit>
+      <trans-unit id="tcatree.collapseAll" approved="yes">
+        <source>Collapse all</source>
+        <target state="final">Tout replier</target>
+      </trans-unit>
+      <trans-unit id="tcatree.toggleHideUnchecked" approved="yes">
+        <source>Toggle hide unchecked</source>
+        <target state="final">Afficher/maquer les options décochées</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
