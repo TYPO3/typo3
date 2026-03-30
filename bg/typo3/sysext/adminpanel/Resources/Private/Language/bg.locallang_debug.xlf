@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="bg">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>Debug</source>
+        <target state="final">Дебъг</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfoErrorsAndSQL" approved="yes">
+        <source>(%1$u Errors/Warnings, SQL: %2$ux / %3$u ms)</source>
+        <target state="final">(%1$u Грешки/Предупреждения, SQL: %2$ux / %3$u ms)</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">Журнал</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" approved="yes">
+        <source>Log Message</source>
+        <target state="final">Съобщение в журнала</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">Компонент</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Ниво</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">Групиране по компонент</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">Групиране по ниво</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" approved="yes">
+        <source>Display only levels equal or higher to</source>
+        <target state="final">Покажи единствено нива равни на или по-големи от</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" approved="yes">
+        <source>No log entries.</source>
+        <target state="final">Няма записи в журнала.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" approved="yes">
+        <source>Events</source>
+        <target state="final">Събития</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" approved="yes">
+        <source>Query Information</source>
+        <target state="final">Информация за заявка</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" approved="yes">
+        <source>Query</source>
+        <target state="final">Заявка</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" approved="yes">
+        <source>Queries</source>
+        <target state="final">Заявки</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" approved="yes">
+        <source>Backtrace</source>
+        <target state="final">Обратно трасиране</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" approved="yes">
+        <source>SQL Debug</source>
+        <target state="final">SQL дебъгване</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" approved="yes">
+        <source>SQL Query</source>
+        <target state="final">SQL Заявка</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" approved="yes">
+        <source>Count</source>
+        <target state="final">Брой</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" approved="yes">
+        <source>Total Time [ms]</source>
+        <target state="final">Общо време [ms]</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.total" approved="yes">
+        <source>Total</source>
+        <target state="final">Общо</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">Заглавие на страница</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider" approved="yes">
+        <source>Used provider</source>
+        <target state="final">Използван доставчик</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Заглавие</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider" approved="yes">
+        <source>Provider</source>
+        <target state="final">Доставчик</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders" approved="yes">
+        <source>Skipped providers (provided no title)</source>
+        <target state="final">Пропуснати доставчици (осигурени по заглавие)</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Име</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.allProviders" approved="yes">
+        <source>All providers checked in order</source>
+        <target state="final">Всички доставчици, проверени в ред</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled" approved="yes">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+        <target state="final">Не е възможно да получите информация за заглавие на страница (от доставчици), когато страницата е кеширана.</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo" approved="yes">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+        <target state="final">Вижте страницата без кеш, или изключете кеширането през този админ панел.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.eventClassName" approved="yes">
+        <source>Event class name</source>
+        <target state="final">Име на клас на събитие</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.count" approved="yes">
+        <source>Dispatch count (%1d)</source>
+        <target state="final">Брой изпращания (%1d)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
