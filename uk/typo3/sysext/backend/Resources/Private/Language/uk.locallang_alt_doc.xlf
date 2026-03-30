@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Видалити</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Ви впевнені, що бажаєте видалити цей запис?</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Відмінити/Відновити останню зміну (%s тому)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Переглянути історію зміни запису</target>
+      </trans-unit>
+      <trans-unit id="editWholeRecord" approved="yes">
+        <source>Edit whole record</source>
+        <target state="final">Редагувати увесь запис</target>
+      </trans-unit>
+      <trans-unit id="openDocs" approved="yes">
+        <source>OPEN DOCUMENTS</source>
+        <target state="final">ВІДКРИТІ ДОКУМЕНТИ</target>
+      </trans-unit>
+      <trans-unit id="noDocuments" approved="yes">
+        <source>No open documents</source>
+        <target state="final">Немає відкритих документів</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg" approved="yes">
+        <source>There are no open documents available to edit.</source>
+        <target state="final">Нема доступних для редагування відкритих документів.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg2" approved="yes">
+        <source>You can go to %s to find the page or the record you wish to edit.</source>
+        <target state="final">Ви можете знайти цю сторінку чи запис в %s, щоб відредагувати.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg3" approved="yes">
+        <source>You can select one of your most recently edited records from this list</source>
+        <target state="final">Ви можете вибрати один із останніх відредагованих записів із цього списку</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_pagemodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;Page module</source>
+        <target state="final">модуль Веб&gt;Сторінка</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_OR" approved="yes">
+        <source>or</source>
+        <target state="final">чи</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_listmodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;List module</source>
+        <target state="final">модуль Веб&gt;Список</target>
+      </trans-unit>
+      <trans-unit id="noEditForm" approved="yes">
+        <source>Edit form could not be loaded</source>
+        <target state="final">Не вдалося завантажити форму редагування</target>
+      </trans-unit>
+      <trans-unit id="noEditForm.message" approved="yes">
+        <source>The edit form could not be loaded for the requested records. This might be due to insufficient permissions.</source>
+        <target state="final">Не вдалося завантажити форму редагування для запитуваних записів. Це може бути пов'язано з браком прав.</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="button.confirm.duplicate_record_changed.no" approved="yes">
+        <source>No, just duplicate the original</source>
+        <target state="final">Ні, просто дублювати оригінал</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.yes" approved="yes">
+        <source>Yes, save and duplicate this record</source>
+        <target state="final">Так, зберегти і дублювати цей запис</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.save_and_close" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Зберегти і закрити</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.title" approved="yes">
+        <source>Do you want to save before duplicating this record?</source>
+        <target state="final">Бажаєте зберегти перед дублюванням цього запису?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. Do you want to save your changes before duplicating this record?</source>
+        <target state="final">Зараз у вас є незбережені зміни. Бажаєте зберегти зміни перед дублюванням цього запису?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.title" approved="yes">
+        <source>Do you want to save before adding?</source>
+        <target state="final">Зберегти перед додаванням?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.content" approved="yes">
+        <source>You need to save your changes before creating a new record. Do you want to save and create now?</source>
+        <target state="final">Вам потрібно зберегти зміни перед створенням нового запису. Бажаєте зберегти і створити новий?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.no" approved="yes">
+        <source>No, just add</source>
+        <target state="final">Ні, лише додати</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.yes" approved="yes">
+        <source>Yes, save and create now</source>
+        <target state="final">Так, зберегти і створити новий</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.title" approved="yes">
+        <source>Do you want to save before viewing?</source>
+        <target state="final">Зберегти перед переглядом?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. You can either discard these changes or save and view them.</source>
+        <target state="final">Ви маєте незбережені зміни. Ви можете або скасувати ці зміни або зберегти і переглянути їх.</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content.is-new-page" approved="yes">
+        <source>You need to save your changes before viewing the page. Do you want to save and view them now?</source>
+        <target state="final">Вам потрібно зберегти зміни перед переглядом сторінки. Зберегти та переглянути їх зараз?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.no-save" approved="yes">
+        <source>View without changes</source>
+        <target state="final">Переглянути без змін</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.save" approved="yes">
+        <source>Save changes and view</source>
+        <target state="final">Зберегти зміни та переглянути</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.yes" approved="yes">
+        <source>Yes, delete this file</source>
+        <target state="final">Так, видалити цей файл</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_folder.yes" approved="yes">
+        <source>Yes, delete this folder</source>
+        <target state="final">Так, видалити цю теку</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">Видалити цей запис?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.content" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">Ви впевнені, що хочете видалити запис '%s'?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.yes" approved="yes">
+        <source>Yes, delete these elements</source>
+        <target state="final">Так, видалити ці елементи</target>
+      </trans-unit>
+      <trans-unit id="buttons.reviewFailedValidationFields" approved="yes">
+        <source>Review fields with failed validations</source>
+        <target state="final">Перегляньте поля з помилками</target>
+      </trans-unit>
+      <trans-unit id="buttons.pageTsConfig" approved="yes">
+        <source>PageTS Config</source>
+        <target state="final">PageTS Config</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.singular" approved="yes">
+        <source>Record saved</source>
+        <target state="final">Запис збережено</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.plural" approved="yes">
+        <source>Records saved</source>
+        <target state="final">Записи збережено</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.message" approved="yes">
+        <source>Record "%s" has been successfully saved.</source>
+        <target state="final">Запис "%s" успішно збережено.</target>
+      </trans-unit>
+      <trans-unit id="search.find_record" approved="yes">
+        <source>Find records</source>
+        <target state="final">Знайти записи</target>
+      </trans-unit>
+      <trans-unit id="search.no_records_found" approved="yes">
+        <source>No records found</source>
+        <target state="final">Записів не знайдено</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
