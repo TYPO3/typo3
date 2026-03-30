@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Slet</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Er du sikker på, at du ønsker at slette dette element?</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Fortryd/Gendan seneste ændring (%s siden)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Vis elementets ændringshistorik</target>
+      </trans-unit>
+      <trans-unit id="editWholeRecord" approved="yes">
+        <source>Edit whole record</source>
+        <target state="final">Rediger hele elementet</target>
+      </trans-unit>
+      <trans-unit id="openDocs" approved="yes">
+        <source>OPEN DOCUMENTS</source>
+        <target state="final">ÅBNE DOKUMENTER</target>
+      </trans-unit>
+      <trans-unit id="noDocuments" approved="yes">
+        <source>No open documents</source>
+        <target state="final">Ingen åbne dokumenter</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg" approved="yes">
+        <source>There are no open documents available to edit.</source>
+        <target state="final">Der er ingen åbne dokumenter at redigere.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg2" approved="yes">
+        <source>You can go to %s to find the page or the record you wish to edit.</source>
+        <target state="final">Du kan gå til %s for at finde den side eller det element, du ønsker at redigere.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg3" approved="yes">
+        <source>You can select one of your most recently edited records from this list</source>
+        <target state="final">Du kan vælge en af dine senest redigerede elementer fra denne liste</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_pagemodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;Page module</source>
+        <target state="final">Web&gt;Side modulet</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_OR" approved="yes">
+        <source>or</source>
+        <target state="final">eller</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_listmodule" x-unused-since="14.0" approved="yes">
+        <source>the Web&gt;List module</source>
+        <target state="final">Web&gt;Liste modulet</target>
+      </trans-unit>
+      <trans-unit id="noEditForm" approved="yes">
+        <source>Edit form could not be loaded</source>
+        <target state="final">Redigeringsformularen kunne ikke gemmes</target>
+      </trans-unit>
+      <trans-unit id="noEditForm.message" approved="yes">
+        <source>The edit form could not be loaded for the requested records. This might be due to insufficient permissions.</source>
+        <target state="final">Redigeringsformularen kunne ikke indlæses for de ønskede elementer. Dette kan skyldes utilstrækkelige tilladelser.</target>
+      </trans-unit>
+      <trans-unit id="noFieldsEditForm" approved="yes">
+        <source>No fields to edit</source>
+        <target state="final">Ingen felter at redigere</target>
+      </trans-unit>
+      <trans-unit id="noFieldsEditForm.message" approved="yes">
+        <source>There are no editable fields available for the requested record. This might be due to insufficient permissions or a configuration mismatch.</source>
+        <target state="final">Der er ingen redigérbare felter tilgængelige for det forespurgte element. Dette kan skyldes utilstrækkelige tilladelser eller en forkert konfiguration.</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="button.confirm.duplicate_record_changed.no" approved="yes">
+        <source>No, just duplicate the original</source>
+        <target state="final">Nu kan du blot duplikere originalen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.yes" approved="yes">
+        <source>Yes, save and duplicate this record</source>
+        <target state="final">Ja, gem og duplikér dette element</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.yes" approved="yes">
+        <source>Discard changes</source>
+        <target state="final">Fortryd ændringer</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.no" approved="yes">
+        <source>Keep editing</source>
+        <target state="final">Fortsæt redigering</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.save_and_close" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Gem og luk</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.title" approved="yes">
+        <source>Do you want to save before duplicating this record?</source>
+        <target state="final">Ønsker du at gennem før du duplikerer dette element?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. Do you want to save your changes before duplicating this record?</source>
+        <target state="final">Du har i øjeblikket ændringer der ikke er gemt. Vil du gemme dine ændringer før dublering af elementet?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.title" approved="yes">
+        <source>Do you want to save before adding?</source>
+        <target state="final">Vil du gemme før tilføjning?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.content" approved="yes">
+        <source>You need to save your changes before creating a new record. Do you want to save and create now?</source>
+        <target state="final">Du skal gemme dine ændringer, før du opretter et nyt element. Vil du gemme og oprette nu?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.no" approved="yes">
+        <source>No, just add</source>
+        <target state="final">Nej, kun tilføj</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.yes" approved="yes">
+        <source>Yes, save and create now</source>
+        <target state="final">Ja, gem og opret nu</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.title" approved="yes">
+        <source>Do you want to save before viewing?</source>
+        <target state="final">Vil du gemme før visning?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. You can either discard these changes or save and view them.</source>
+        <target state="final">Du har i øjeblikket ændringer der ikke er gemt. Du kan enten kassere disse ændringer, eller gemme og vise dem.</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.invalid_form" approved="yes">
+        <source>The form appears to be invalid, therefore "Save changes and view" is not available.</source>
+        <target state="final">Formularen ser ud til at være ugyldig, så derfor er "Gem ændringer og vis" ikke tilgængelig.</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content.is-new-page" approved="yes">
+        <source>You need to save your changes before viewing the page. Do you want to save and view them now?</source>
+        <target state="final">Du skal gemme dine ændringer, før visning af siden. Vil du gemme og vise dem nu?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.no-save" approved="yes">
+        <source>View without changes</source>
+        <target state="final">Se uden at gemme</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.save" approved="yes">
+        <source>Save changes and view</source>
+        <target state="final">Gem ændringer og vis</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.title" approved="yes">
+        <source>Unsaved changes</source>
+        <target state="final">Ikke gemte ændringer</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.content" approved="yes">
+        <source>You currently have unsaved changes which will be discarded if you close without saving.</source>
+        <target state="final">Du har i øjeblikket ikke gemte ændringer, som vil blive kasseret, hvis du lukker uden at gemme.</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.yes" approved="yes">
+        <source>Yes, delete this file</source>
+        <target state="final">Ja, slet filen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_folder.yes" approved="yes">
+        <source>Yes, delete this folder</source>
+        <target state="final">Ja, slet denne folder</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.yes" approved="yes">
+        <source>Delete</source>
+        <target state="final">Slet</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">Slet dette element?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.content" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">Er du sikker på, at du vil slette elementet '%s'?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annullér</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.yes" approved="yes">
+        <source>Yes, delete these elements</source>
+        <target state="final">Ja, slet disse elementer</target>
+      </trans-unit>
+      <trans-unit id="label.alert.save_with_error.title" approved="yes">
+        <source>You have errors in your form!</source>
+        <target state="final">Du har fejl i din formular!</target>
+      </trans-unit>
+      <trans-unit id="label.alert.save_with_error.content" approved="yes">
+        <source>Please check the form, there is at least one error in your form.</source>
+        <target state="final">Tjek venligst formularen, der er mindst én fejl i din formular.</target>
+      </trans-unit>
+      <trans-unit id="buttons.alert.save_with_error.ok" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+      </trans-unit>
+      <trans-unit id="buttons.reviewFailedValidationFields" approved="yes">
+        <source>Review fields with failed validations</source>
+        <target state="final">Gennemse felter med fejlede valideringer</target>
+      </trans-unit>
+      <trans-unit id="buttons.pageTsConfig" approved="yes">
+        <source>PageTS Config</source>
+        <target state="final">PageTS konfiguration</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.singular" approved="yes">
+        <source>Record saved</source>
+        <target state="final">Element gemt</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.title.plural" approved="yes">
+        <source>Records saved</source>
+        <target state="final">Elementer gemt</target>
+      </trans-unit>
+      <trans-unit id="notification.record_saved.message" approved="yes">
+        <source>Record "%s" has been successfully saved.</source>
+        <target state="final">Element "%s" er blevet gemt med succes.</target>
+      </trans-unit>
+      <trans-unit id="notification.mass_saving.message" approved="yes">
+        <source>%s records have been successfully saved.</source>
+        <target state="final">%s elementer er blevet gemt.</target>
+      </trans-unit>
+      <trans-unit id="search.find_record" approved="yes">
+        <source>Find records</source>
+        <target state="final">Find elementer</target>
+      </trans-unit>
+      <trans-unit id="search.no_records_found" approved="yes">
+        <source>No records found</source>
+        <target state="final">Ingen elementer fundet</target>
+      </trans-unit>
+      <trans-unit id="flexform.section.delete.title" approved="yes">
+        <source>Delete this container?</source>
+        <target state="final">Slet denne container?</target>
+      </trans-unit>
+      <trans-unit id="flexform.section.delete.message" approved="yes">
+        <source>Are you sure you want to delete this container?</source>
+        <target state="final">Er du sikker på, at du vil slette denne container?</target>
+      </trans-unit>
+      <trans-unit id="tcatree.findItem" approved="yes">
+        <source>Filter by item</source>
+        <target state="final">Filtrer efter element</target>
+      </trans-unit>
+      <trans-unit id="tcatree.expandAll" approved="yes">
+        <source>Expand all</source>
+        <target state="final">Udvid alle</target>
+      </trans-unit>
+      <trans-unit id="tcatree.collapseAll" approved="yes">
+        <source>Collapse all</source>
+        <target state="final">Sammenfold alle</target>
+      </trans-unit>
+      <trans-unit id="tcatree.toggleHideUnchecked" approved="yes">
+        <source>Toggle hide unchecked</source>
+        <target state="final">Skift skjul afmarkerede</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
