@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="title" approved="yes">
+        <source>Page content</source>
+        <target state="final">Вміст сторінки</target>
+      </trans-unit>
+      <trans-unit id="noEditItems" approved="yes">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target state="final">Вибачте, у Вас немає прав для редагування елементів цієї сторінки!</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" approved="yes">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target state="final">Вибачте, у Вас немає прав для редагування цієї сторінки!</target>
+      </trans-unit>
+      <trans-unit id="moveUp" approved="yes">
+        <source>Move record up</source>
+        <target state="final">Пересунути запис вище</target>
+      </trans-unit>
+      <trans-unit id="moveDown" approved="yes">
+        <source>Move record down</source>
+        <target state="final">Пересунути запис нижче</target>
+      </trans-unit>
+      <trans-unit id="unHide" approved="yes">
+        <source>Un-hide</source>
+        <target state="final">Показати</target>
+      </trans-unit>
+      <trans-unit id="hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Сховати</target>
+      </trans-unit>
+      <trans-unit id="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Редагувати</target>
+      </trans-unit>
+      <trans-unit id="newAfter" approved="yes">
+        <source>New record after this one</source>
+        <target state="final">Новий запис після цього</target>
+      </trans-unit>
+      <trans-unit id="move_record" approved="yes">
+        <source>Re-position current content element</source>
+        <target state="final">Перемістити поточний елемент вмісту</target>
+      </trans-unit>
+      <trans-unit id="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Пересунути сторінку</target>
+      </trans-unit>
+      <trans-unit id="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Вилучити</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete the record '%s'?</source>
+        <target state="final">Ви впевнені, що хочете видалити запис '%s'?</target>
+      </trans-unit>
+      <trans-unit id="pasteIntoColumn" approved="yes">
+        <source>Paste into this column</source>
+        <target state="final">Вставте в цей стовпець</target>
+      </trans-unit>
+      <trans-unit id="pasteAfterRecord" approved="yes">
+        <source>Paste after this record</source>
+        <target state="final">Вставте після цього запису</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.title.paste" approved="yes">
+        <source>Paste record</source>
+        <target state="final">Вставити запис</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.paste" approved="yes">
+        <source>Do you want to paste the record to this position?</source>
+        <target state="final">Бажаєте вставити запис у цю позицію?</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.paste" approved="yes">
+        <source>Paste</source>
+        <target state="final">Вставити</target>
+      </trans-unit>
+      <trans-unit id="editColumn" approved="yes">
+        <source>Edit this column</source>
+        <target state="final">Редагувати колонку</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties_curLang" approved="yes">
+        <source>Edit translation properties</source>
+        <target state="final">Редагувати властивості перекладу</target>
+      </trans-unit>
+      <trans-unit id="editInRTE" approved="yes">
+        <source>Edit in Rich Text Editor</source>
+        <target state="final">Редагувати в розширеному текстовому редакторі (RTE)</target>
+      </trans-unit>
+      <trans-unit id="newPageContent" approved="yes">
+        <source>Create page content</source>
+        <target state="final">Створення вмісту сторінки</target>
+      </trans-unit>
+      <trans-unit id="newPageContent_translate" approved="yes">
+        <source>Translate</source>
+        <target state="final">Перекласти</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2" approved="yes">
+        <source>New content</source>
+        <target state="final">Новий вміст</target>
+      </trans-unit>
+      <trans-unit id="content" approved="yes">
+        <source>Content</source>
+        <target state="final">Вміст</target>
+      </trans-unit>
+      <trans-unit id="newInColumn" approved="yes">
+        <source>Create new record in top of this column</source>
+        <target state="final">Створіть новий запис у верхній частині цього стовпця</target>
+      </trans-unit>
+      <trans-unit id="records" approved="yes">
+        <source>records</source>
+        <target state="final">записи</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" approved="yes">
+        <source>Page information</source>
+        <target state="final">Інформація про сторінку</target>
+      </trans-unit>
+      <trans-unit id="goToTable" approved="yes">
+        <source>Go to table</source>
+        <target state="final">Перейти до таблиці</target>
+      </trans-unit>
+      <trans-unit id="internalNotes" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">Внутрішні нотатки</target>
+      </trans-unit>
+      <trans-unit id="clearCache" approved="yes">
+        <source>Click here to clear cache for this page.</source>
+        <target state="final">Натисніть тут, щоб очистити кеш для цієї сторінки.</target>
+      </trans-unit>
+      <trans-unit id="hiddenCE" approved="yes">
+        <source>Show hidden content elements</source>
+        <target state="final">Показати приховані елементи вмісту</target>
+      </trans-unit>
+      <trans-unit id="new_language" approved="yes">
+        <source>Create a new translation of this page</source>
+        <target state="final">Створіть новий переклад цієї сторінки</target>
+      </trans-unit>
+      <trans-unit id="newLabel" approved="yes">
+        <source>NEW</source>
+        <target state="final">НОВИЙ</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">За замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="editLanguageHeader" approved="yes">
+        <source>Edit language header</source>
+        <target state="final">Редагувати заголовок мови</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Редагувати властивості сторінки</target>
+      </trans-unit>
+      <trans-unit id="editPageTitle" approved="yes">
+        <source>Edit the page title</source>
+        <target state="final">Редагувати заголовок сторінки</target>
+      </trans-unit>
+      <trans-unit id="editPageLanguageOverlayProperties" approved="yes">
+        <source>Edit page language overlay properties</source>
+        <target state="final">Редагувати властивості накладання мови на сторінці</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed pages</source>
+        <target state="final">Редагувати поле '%s' вибраних сторінок</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Створити новий запис</target>
+      </trans-unit>
+      <trans-unit id="CEonThisPage" approved="yes">
+        <source>Content elements on this page</source>
+        <target state="final">Елементи вмісту на цій сторінці</target>
+      </trans-unit>
+      <trans-unit id="newPage" approved="yes">
+        <source>Create new page</source>
+        <target state="final">Створити нову сторінку</target>
+      </trans-unit>
+      <trans-unit id="newPage2" approved="yes">
+        <source>New page</source>
+        <target state="final">Нова сторінка</target>
+      </trans-unit>
+      <trans-unit id="noAccess" approved="yes">
+        <source>No edit access</source>
+        <target state="final">Немає прав для редагування</target>
+      </trans-unit>
+      <trans-unit id="noAccess_msg" approved="yes">
+        <source>You do not have access to edit the requested record.</source>
+        <target state="final">Ви не маєте доступу до редагування цього запису.</target>
+      </trans-unit>
+      <trans-unit id="notAssigned" approved="yes">
+        <source>Not assigned</source>
+        <target state="final">Не прив’язано</target>
+      </trans-unit>
+      <trans-unit id="unusedColPos" approved="yes">
+        <source>Unused</source>
+        <target state="final">Не використовується</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Скасувати/повторити останню зміну (%s тому)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Переглянути історію змін запису</target>
+      </trans-unit>
+      <trans-unit id="viewContent" approved="yes">
+        <source>Viewing content of</source>
+        <target state="final">Перегляд вмісту</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Тема</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Дата</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age" approved="yes">
+        <source>Age</source>
+        <target state="final">Вік</target>
+      </trans-unit>
+      <trans-unit id="tt_board_RE" approved="yes">
+        <source>RE</source>
+        <target state="final">RE</target>
+      </trans-unit>
+      <trans-unit id="gridView" approved="yes">
+        <source>Grid-View</source>
+        <target state="final">У вигляді сітки</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_0" approved="yes">
+        <source>List topics only</source>
+        <target state="final">Перелік лише тем</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_expand" approved="yes">
+        <source>Expand Threads</source>
+        <target state="final">Розгорніть теми</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_0" approved="yes">
+        <source>Short List</source>
+        <target state="final">Короткий список</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_1" approved="yes">
+        <source>Address list</source>
+        <target state="final">Список адрес</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_2" approved="yes">
+        <source>Personal info</source>
+        <target state="final">Персональні дані</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_1" approved="yes">
+        <source>Whole URL</source>
+        <target state="final">Повна URL-адреса</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_2" approved="yes">
+        <source>Alternative note</source>
+        <target state="final">Альтернативний текст</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Дата</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date_ext" approved="yes">
+        <source>Date - extended</source>
+        <target state="final">Дата - розширена</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo" approved="yes">
+        <source>Todo</source>
+        <target state="final">Todo</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo_ext" approved="yes">
+        <source>Todo - extended</source>
+        <target state="final">Зробити - розширено</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Розширений</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Розширений</target>
+      </trans-unit>
+      <trans-unit id="m_default" approved="yes">
+        <source>Default</source>
+        <target state="final">За замовчуванням</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_content" approved="yes">
+        <source>Please select a page in the page tree to edit page content.</source>
+        <target state="final">Виберіть сторінку в дереві сторінок для редагування вмісту.</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser" approved="yes">
+        <source>Created by</source>
+        <target state="final">Створено</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate" approved="yes">
+        <source>Created date</source>
+        <target state="final">Дата створення</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange" approved="yes">
+        <source>Last change</source>
+        <target state="final">Востаннє змінено</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent" approved="yes">
+        <source>Last change, content</source>
+        <target state="final">Остання зміна, вміст</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsTotal" approved="yes">
+        <source>Total Hits</source>
+        <target state="final">Загальна кількість звернень</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsPeriod" approved="yes">
+        <source>Hits Period</source>
+        <target state="final">Період звернень</target>
+      </trans-unit>
+      <trans-unit id="pI_hits24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">Останні 24 години</target>
+      </trans-unit>
+      <trans-unit id="pI_hits10days" approved="yes">
+        <source>Last 10 days</source>
+        <target state="final">Останні 10 днів</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid_title" approved="yes">
+        <source>Page uses content from this page: %s</source>
+        <target state="final">Сторінка використовує вміст з цієї сторінки: %s</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid_invalid_title" approved="yes">
+        <source>Page is defined to use content from PID %s, but this page does not exist or is inaccessible</source>
+        <target state="final">Сторінка визначена для використання вмісту з PID %s, але ця сторінка не існує або недоступна</target>
+      </trans-unit>
+      <trans-unit id="content_on_pid_title" approved="yes">
+        <source>This content is also shown on: %s</source>
+        <target state="final">Цей вміст також показується на: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsExternalLinkMessage" x-unused-since="14.0" approved="yes">
+        <source>Page is a link to the following external URL: %s</source>
+        <target state="final">Сторінка є посиланням на наступний зовнішній URL: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsInternalLinkMessage" approved="yes">
+        <source>Page is a link to the following page: %s</source>
+        <target state="final">Сторінка є посиланням на наступну сторінку: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link but there is actually no valid target defined.</source>
+        <target state="final">Сторінка налаштована як посилання, але фактично не визначена ціль.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link but there is actually no target defined which is accessible in the frontend.</source>
+        <target state="final">Сторінка налаштована як посилання, але фактично не визначена ціль, яка доступна у інтерфейсі.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredFirstSubpageMessage" approved="yes">
+        <source>Page is configured to be a link to the first subpage but there is actually no such page accessible in the frontend.</source>
+        <target state="final">Сторінка налаштована на посилання на першу підсторінку, але такої сторінки немає доступної з фронтенду.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredParentPageMessage" approved="yes">
+        <source>Page is configured to be a link to the parent page but there is actually no such page accessible in the frontend.</source>
+        <target state="final">Сторінка налаштована на посилання на батьківську сторінку, але такої сторінки немає доступної з фронтенду.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredExternalLinkMessage" x-unused-since="14.0" approved="yes">
+        <source>Page is configured to be an external link but there is actually no URL defined.</source>
+        <target state="final">Сторінка налаштована на зовнішнє посилання, але не визначено URL-адреси.</target>
+      </trans-unit>
+      <trans-unit id="goToListModule" approved="yes">
+        <source>Go to list module</source>
+        <target state="final">Перейти до модуля списку</target>
+      </trans-unit>
+      <trans-unit id="goToListModuleMessage" approved="yes">
+        <source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
+        <target state="final">Поточна сторінка є папкою. Папки зазвичай не містять елементів вмісту, але використовуються для збору інших типів записів.</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarning" approved="yes">
+        <source>Make sure that this behavior is intended and does not pose a problem for you. We highlighted the problematic records for you.</source>
+        <target state="final">Переконайтеся, що така поведінка є цілеспрямованою та не створює для вас проблеми. Ми виділили для вас проблемні записи.</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarningTitle" approved="yes">
+        <source>Inconsistent content detected in language "%s"</source>
+        <target state="final">Виявлено невідповідний вміст мовою "%s"</target>
+      </trans-unit>
+      <trans-unit id="languageModeFree" approved="yes">
+        <source>Free Mode</source>
+        <target state="final">Вільний режим</target>
+      </trans-unit>
+      <trans-unit id="languageModeConnected" approved="yes">
+        <source>Connected Mode</source>
+        <target state="final">Режим підключення</target>
+      </trans-unit>
+      <trans-unit id="languageModeMixed" approved="yes">
+        <source>Mixed Mode</source>
+        <target state="final">Змішаний режим</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarning" approved="yes">
+        <source>These elements don't belong to any of the available columns of this page. You should either delete them or move them to existing columns. We highlighted the problematic records for you.</source>
+        <target state="final">Ці елементи не належать до жодного з доступних стовпців цієї сторінки. Ви повинні видалити їх або перемістити до наявних стовпців. Ми виділили для вас проблемні записи.</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarningTitle" approved="yes">
+        <source>Unused elements detected on this page</source>
+        <target state="final">На цій сторінці виявлено невикористані елементи</target>
+      </trans-unit>
+      <trans-unit id="localize.chooseLanguage" approved="yes">
+        <source>Choose your language</source>
+        <target state="final">Виберіть свою мову</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header" approved="yes">
+        <source>Localize record "{0}" into {1}</source>
+        <target state="final">Локалізувати запис "{0}" у {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header_page" approved="yes">
+        <source>Localize page "{0}" into {1}</source>
+        <target state="final">Локалізувати сторінку "{0}" на {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.translate" approved="yes">
+        <source>Translate</source>
+        <target state="final">Перекласти</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Скопіювати</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Скасувати</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Далі</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.process" approved="yes">
+        <source>Start processing</source>
+        <target state="final">Почати обробку</target>
+      </trans-unit>
+      <trans-unit id="localize.view.chooseLanguage" approved="yes">
+        <source>Choose the language from which you want to localize the content</source>
+        <target state="final">Виберіть мову, якою ви хочете локалізувати вміст</target>
+      </trans-unit>
+      <trans-unit id="localize.view.summary" approved="yes">
+        <source>Record summary</source>
+        <target state="final">Резюме запису</target>
+      </trans-unit>
+      <trans-unit id="localize.view.processing" approved="yes">
+        <source>Processing...</source>
+        <target state="final">Триває обробка...</target>
+      </trans-unit>
+      <trans-unit id="localize.progress.step" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">Крок {0} із {1}</target>
+      </trans-unit>
+      <trans-unit id="error.invalidBackendLayout" approved="yes">
+        <source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>
+        <target state="final">Вибраний макет сторінки налаштовано неправильно, немає стовпців, які можна редагувати. Оновіть макет серверної частини, щоб мати принаймні один параметр "colPos".</target>
+      </trans-unit>
+      <trans-unit id="dragdrop.copy.message" approved="yes">
+        <source>Press CTRL to copy</source>
+        <target state="final">Натисніть CTRL, щоб скопіювати</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
