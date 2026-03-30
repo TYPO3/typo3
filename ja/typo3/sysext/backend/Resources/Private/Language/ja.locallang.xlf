@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="opensInANewWindow" approved="yes">
+        <source>opens in a new window</source>
+        <target state="final">新しいウィンドウに開く</target>
+      </trans-unit>
+      <trans-unit id="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">ユーザ名</target>
+      </trans-unit>
+      <trans-unit id="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">パスワード</target>
+      </trans-unit>
+      <trans-unit id="login.togglePassword" approved="yes">
+        <source>Toggle password visibility</source>
+        <target state="final">パスワードの表示を切り替える</target>
+      </trans-unit>
+      <trans-unit id="login.password_forget" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">パスワードをお忘れですか？</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">次へ</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">ログインできませんでした</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">大文字と小文字を含め、ユーザー名とパスワードのスペルを間違えないように注意してください。</target>
+      </trans-unit>
+      <trans-unit id="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">ログインデータの確認中...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">ログイン</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">TYPO3の詳細</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.title" approved="yes">
+        <source>No module access</source>
+        <target state="final">モジュールへのアクセスがありません</target>
+      </trans-unit>
+      <trans-unit id="module.noAccess.message" approved="yes">
+        <source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
+        <target state="final">現在、「%s」モジュールにアクセスできないため、「%s」モジュールにリダイレクトされました。 必要な権限がないか、一時的にアクセスできません。例えば、ワークスペースの制限のためです。</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.filterLabel" approved="yes">
+        <source>Database records</source>
+        <target state="final">データベースのレコード</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.databaseRecordProvider.typeLabel" approved="yes">
+        <source>Database record</source>
+        <target state="final">データベースのレコード</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.filterLabel" approved="yes">
+        <source>Pages</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.pageRecordProvider.typeLabel" approved="yes">
+        <source>Page</source>
+        <target state="final">ページ</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.filterLabel" approved="yes">
+        <source>Backend modules</source>
+        <target state="final">バックエンドモジュール</target>
+      </trans-unit>
+      <trans-unit id="liveSearch.backendModuleProvider.typeLabel" approved="yes">
+        <source>Backend module</source>
+        <target state="final">バックエンドモジュール</target>
+      </trans-unit>
+      <trans-unit id="resultItem.backendModuleProvider.openModule" approved="yes">
+        <source>Open module</source>
+        <target state="final">モジュールを開く</target>
+      </trans-unit>
+      <trans-unit id="moduleMenu.dropdown.label" approved="yes">
+        <source>Module action</source>
+        <target state="final">モジュールアクション</target>
+      </trans-unit>
+      <trans-unit id="pagelayout.moduleMenu.dropdown.label" approved="yes">
+        <source>Display mode</source>
+        <target state="final">表示モード</target>
+      </trans-unit>
+      <trans-unit id="editdocument.moduleMenu.dropdown.label" approved="yes">
+        <source>Record language</source>
+        <target state="final">言語を記録</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
