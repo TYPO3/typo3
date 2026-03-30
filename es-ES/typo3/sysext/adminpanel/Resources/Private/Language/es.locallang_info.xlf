@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_info.xlf" date="2018-03-12T13:52:01Z" product-name="adminpanel" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="module.label" approved="yes">
+        <source>Info</source>
+        <target state="final">Info</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfoLoadAndMemory" approved="yes">
+        <source>(Load Time: %1$u ms, Memory: %2$s)</source>
+        <target state="final">(Tiempo de carga: %1$u ms, Memoria: %2$s)</target>
+      </trans-unit>
+      <trans-unit id="imagesOnPage" approved="yes">
+        <source>Images on this page</source>
+        <target state="final">Imágenes en esta página</target>
+      </trans-unit>
+      <trans-unit id="imagesSize" approved="yes">
+        <source>Total image file sizes</source>
+        <target state="final">Tamaño total de la imagen</target>
+      </trans-unit>
+      <trans-unit id="DocumentSize" approved="yes">
+        <source>Document size</source>
+        <target state="final">Tamaño del documento</target>
+      </trans-unit>
+      <trans-unit id="pageUid" approved="yes">
+        <source>Page Uid</source>
+        <target state="final">Página Uid</target>
+      </trans-unit>
+      <trans-unit id="pageType" approved="yes">
+        <source>Page type</source>
+        <target state="final">Tipo de página</target>
+      </trans-unit>
+      <trans-unit id="groupList" approved="yes">
+        <source>Frontenduser group combination</source>
+        <target state="final">Combinación de grupos Frontenduser</target>
+      </trans-unit>
+      <trans-unit id="noCache" approved="yes">
+        <source>Page cached</source>
+        <target state="final">Página Cacheada</target>
+      </trans-unit>
+      <trans-unit id="noCache_yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Sí</target>
+      </trans-unit>
+      <trans-unit id="noCache_no" approved="yes">
+        <source>No</source>
+        <target state="final">No</target>
+      </trans-unit>
+      <trans-unit id="countUserInt" approved="yes">
+        <source>Count of USER_INT objects</source>
+        <target state="final">Número de objetos USER_INT</target>
+      </trans-unit>
+      <trans-unit id="feuserName" approved="yes">
+        <source>Name of logged in FE-User</source>
+        <target state="final">Nombre de FE-Usuario Registrado</target>
+      </trans-unit>
+      <trans-unit id="feuserId" approved="yes">
+        <source>Id of logged in FE-User</source>
+        <target state="final">ID del usuario de frontend conectado</target>
+      </trans-unit>
+      <trans-unit id="totalParsetime" approved="yes">
+        <source>Total parsetime</source>
+        <target state="final">Parsetime total</target>
+      </trans-unit>
+      <trans-unit id="noUserInt" approved="yes">
+        <source>There are no USER_INT objects on this page.</source>
+        <target state="final">No hay objetos USER_INT en esta página.</target>
+      </trans-unit>
+      <trans-unit id="key" approved="yes">
+        <source>Key</source>
+        <target state="final">Clave</target>
+      </trans-unit>
+      <trans-unit id="value" approved="yes">
+        <source>Value</source>
+        <target state="final">Valor</target>
+      </trans-unit>
+      <trans-unit id="sub.general.label" approved="yes">
+        <source>General</source>
+        <target state="final">General</target>
+      </trans-unit>
+      <trans-unit id="sub.php.label" approved="yes">
+        <source>PHP</source>
+        <target state="final">PHP</target>
+      </trans-unit>
+      <trans-unit id="sub.request.label" approved="yes">
+        <source>REQUEST</source>
+        <target state="final">SOLICITUD</target>
+      </trans-unit>
+      <trans-unit id="sub.userint.label" approved="yes">
+        <source>USER_INT</source>
+        <target state="final">USER_INT</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
