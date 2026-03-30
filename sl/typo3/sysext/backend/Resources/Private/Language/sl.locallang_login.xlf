@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="sl">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">Odjava</target>
+      </trans-unit>
+      <trans-unit id="newsheadline" approved="yes">
+        <source>Important Messages</source>
+        <target state="final">Pomembna sporočila</target>
+      </trans-unit>
+      <trans-unit id="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">Avtorske pravice</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
