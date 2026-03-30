@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="he">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">יציאה</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" approved="yes">
+        <source>What is OpenId?</source>
+        <target state="final">מה זה OpenID?</target>
+      </trans-unit>
+      <trans-unit id="headline" approved="yes">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target state="final">כניסה למערכת ניהול של ###SITENAME###</target>
+      </trans-unit>
+      <trans-unit id="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">אפס טופס זה</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms" approved="yes">
+        <source>TYPO3 CMS</source>
+        <target state="final">מערכת TYPO3</target>
+      </trans-unit>
+      <trans-unit id="version.short" approved="yes">
+        <source>ver.</source>
+        <target state="final">גרסה</target>
+      </trans-unit>
+      <trans-unit id="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">כל הזכויות שמורות</target>
+      </trans-unit>
+      <trans-unit id="details.link" x-unused-since="12.4" approved="yes">
+        <source>Go to %s for details.</source>
+        <target state="final">לפרטים נוספים נא לפנות ל%s.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
