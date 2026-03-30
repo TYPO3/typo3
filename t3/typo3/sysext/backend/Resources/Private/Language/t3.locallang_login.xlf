@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout">
+        <source>Log Out</source>
+        <target>crwdns50610:0crwdne50610:0</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId">
+        <source>What is OpenId?</source>
+        <target>crwdns50612:0crwdne50612:0</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target>crwdns50614:0crwdne50614:0</target>
+      </trans-unit>
+      <trans-unit id="headline">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target>crwdns50622:0crwdne50622:0</target>
+      </trans-unit>
+      <trans-unit id="info.about">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target>crwdns50624:0crwdne50624:0</target>
+      </trans-unit>
+      <trans-unit id="info.reset">
+        <source>Reset this form</source>
+        <target>crwdns50626:0crwdne50626:0</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target>crwdns50628:0crwdne50628:0</target>
+      </trans-unit>
+      <trans-unit id="clear">
+        <source>Clear this field!</source>
+        <target>crwdns50630:0crwdne50630:0</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserHeadline">
+        <source>Unsupported Browser</source>
+        <target>crwdns50632:0crwdne50632:0</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowser">
+        <source>You are using an unsupported browser version.</source>
+        <target>crwdns50634:0crwdne50634:0</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserInternetExplorer">
+        <source>Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" rel="noreferrer" /&gt;a more modern browser version&lt;/a&gt;.</source>
+        <target>crwdns81079:0crwdne81079:0</target>
+      </trans-unit>
+      <trans-unit id="newsheadline">
+        <source>Important Messages</source>
+        <target>crwdns50638:0crwdne50638:0</target>
+      </trans-unit>
+      <trans-unit id="error.login">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target>crwdns50640:0crwdne50640:0</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore">
+        <source>Ignore!</source>
+        <target>crwdns50642:0crwdne50642:0</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation">
+        <source>For more information or further help click here</source>
+        <target>crwdns50644:0crwdne50644:0</target>
+      </trans-unit>
+      <trans-unit id="warranty.by" x-unused-since="12.4">
+        <source>Warranty is supplied by %s; %sdetails about licenses.%s</source>
+        <target>crwdns355534:0%scrwdnd355534:0%scrwdnd355534:0%scrwdne355534:0</target>
+      </trans-unit>
+      <trans-unit id="no.warranty" x-unused-since="12.4">
+        <source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY; %sdetails about licenses.%s</source>
+        <target>crwdns355536:0%scrwdnd355536:0%scrwdne355536:0</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms">
+        <source>TYPO3 CMS</source>
+        <target>crwdns50650:0crwdne50650:0</target>
+      </trans-unit>
+      <trans-unit id="typo3.altText">
+        <source>TYPO3 CMS logo</source>
+        <target>crwdns129254:0crwdne129254:0</target>
+      </trans-unit>
+      <trans-unit id="version.short">
+        <source>ver.</source>
+        <target>crwdns50652:0crwdne50652:0</target>
+      </trans-unit>
+      <trans-unit id="copyright">
+        <source>Copyright</source>
+        <target>crwdns50654:0crwdne50654:0</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target>crwdns50656:0crwdne50656:0</target>
+      </trans-unit>
+      <trans-unit id="extension.trademark">
+        <source>TYPO3 is a registered %strademark%s.</source>
+        <target>crwdns381118:0%scrwdnd381118:0%scrwdne381118:0</target>
+      </trans-unit>
+      <trans-unit id="details.link" x-unused-since="12.4">
+        <source>Go to %s for details.</source>
+        <target>crwdns50658:0%scrwdne50658:0</target>
+      </trans-unit>
+      <trans-unit id="free.software">
+        <source>This is free software, and you are welcome to redistribute it under certain conditions; %sdetails about licenses.%s</source>
+        <target>crwdns355538:0%scrwdnd355538:0%scrwdne355538:0</target>
+      </trans-unit>
+      <trans-unit id="free_software_and_warranty">
+        <source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see %sdetails about licenses.%s</source>
+        <target>crwdns381250:0%scrwdnd381250:0%scrwdne381250:0</target>
+      </trans-unit>
+      <trans-unit id="free_software_and_custom_warranty">
+        <source>Warranty is supplied by %s. This is free software, and you are welcome to redistribute it under certain conditions, see %sdetails about licenses.%s</source>
+        <target>crwdns381252:0%scrwdnd381252:0%scrwdnd381252:0%scrwdne381252:0</target>
+      </trans-unit>
+      <trans-unit id="keep.notice">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target>crwdns50662:0crwdne50662:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
