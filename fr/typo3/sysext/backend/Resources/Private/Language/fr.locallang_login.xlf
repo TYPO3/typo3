@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">Déconnexion</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" approved="yes">
+        <source>What is OpenId?</source>
+        <target state="final">Qu'est-ce qu'OpenID ?</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces" approved="yes">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target state="final">Backend, Frontend, Backend traditionnel</target>
+      </trans-unit>
+      <trans-unit id="headline" approved="yes">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target state="final">Connexion au backend TYPO3 du site ###SITENAME###</target>
+      </trans-unit>
+      <trans-unit id="info.about" approved="yes">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target state="final">Ceci est l'accès au backend TYPO3. You devez posséder un login et un mot de passe pour accéder à cette interface d'administration. Si vous êtes un visiteur du site ###SITENAME###, veuillez poursuivre votre visite sur le site public : ###SITELINK###</target>
+      </trans-unit>
+      <trans-unit id="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">Réinitialiser le formulaire</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" approved="yes">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="final">(Note : les Cookies et le JavaScript doivent être activés !)</target>
+      </trans-unit>
+      <trans-unit id="clear" approved="yes">
+        <source>Clear this field!</source>
+        <target state="final">Réinitialiser le champ !</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserHeadline" approved="yes">
+        <source>Unsupported Browser</source>
+        <target state="final">Navigateur non supporté</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowser" approved="yes">
+        <source>You are using an unsupported browser version.</source>
+        <target state="final">Vous utilisez une version d'un navigateur non supportée.</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserInternetExplorer" approved="yes">
+        <source>Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" rel="noreferrer" /&gt;a more modern browser version&lt;/a&gt;.</source>
+        <target state="final">Veuillez installer &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" rel="noreferrer" /&gt;une version plus récente du navigateur&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="newsheadline" approved="yes">
+        <source>Important Messages</source>
+        <target state="final">Messages importants</target>
+      </trans-unit>
+      <trans-unit id="error.login" approved="yes">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Votre tentative de connexion a échoué. Veuillez vérifier votre login et votre mot de passe, en incluant les majuscules et les minuscules.</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore" approved="yes">
+        <source>Ignore!</source>
+        <target state="final">Ignorer !</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation" approved="yes">
+        <source>For more information or further help click here</source>
+        <target state="final">Pour plus d'information ou de l'aide veuillez cliquer ici</target>
+      </trans-unit>
+      <trans-unit id="warranty.by" x-unused-since="12.4" approved="yes">
+        <source>Warranty is supplied by %s; %sdetails about licenses.%s</source>
+        <target state="final">La garantie est fournie par %s; %sdétails sur les licences.%s</target>
+      </trans-unit>
+      <trans-unit id="no.warranty" x-unused-since="12.4" approved="yes">
+        <source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY; %sdetails about licenses.%s</source>
+        <target state="final">TYPO3 CMS est livré SANS AUCUNE GARANTIE ; %sdétails sur les licences.%s</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms" approved="yes">
+        <source>TYPO3 CMS</source>
+        <target state="final">CMS TYPO3</target>
+      </trans-unit>
+      <trans-unit id="typo3.altText" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">Logo TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="version.short" approved="yes">
+        <source>ver.</source>
+        <target state="final">ver.</target>
+      </trans-unit>
+      <trans-unit id="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">Copyright</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright" approved="yes">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target state="final">Les copyright des extensions appartiennent à leur propriétaires respectifs.</target>
+      </trans-unit>
+      <trans-unit id="extension.trademark" approved="yes">
+        <source>TYPO3 is a registered %strademark%s.</source>
+        <target state="final">TYPO3 est une %smarque déposée%s.</target>
+      </trans-unit>
+      <trans-unit id="details.link" x-unused-since="12.4" approved="yes">
+        <source>Go to %s for details.</source>
+        <target state="final">Rendez-vous à %s pour plus de détails.</target>
+      </trans-unit>
+      <trans-unit id="free.software" approved="yes">
+        <source>This is free software, and you are welcome to redistribute it under certain conditions; %sdetails about licenses.%s</source>
+        <target state="final">Ceci est un logiciel libre, et vous êtes autorisés à le redistribuer sous certaines conditions; %sdétails sur les licences.%s</target>
+      </trans-unit>
+      <trans-unit id="free_software_and_warranty" approved="yes">
+        <source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see %sdetails about licenses.%s</source>
+        <target state="final">TYPO3 CMS est livré avec ABSOLUMENT AUCUNE GARANTIE. Ceci est un logiciel libre, et vous êtes invités à le redistribuer sous certaines conditions, voir les détails %sà propos des licences.%s</target>
+      </trans-unit>
+      <trans-unit id="free_software_and_custom_warranty" approved="yes">
+        <source>Warranty is supplied by %s. This is free software, and you are welcome to redistribute it under certain conditions, see %sdetails about licenses.%s</source>
+        <target state="final">La garantie est fournie par %s. Ceci est un logiciel libre, et vous êtes invités à le redistribuer sous certaines conditions, voir les détails %sdans les licences.%s</target>
+      </trans-unit>
+      <trans-unit id="keep.notice" approved="yes">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target state="final">Masquer cette note est interdit par la loi.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
