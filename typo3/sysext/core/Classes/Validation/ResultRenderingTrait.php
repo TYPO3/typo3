@@ -17,18 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Validation;
 
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\TranslatorInterface;
 
 trait ResultRenderingTrait
 {
-    public function renderResultException(ResultException $exception, ?LanguageService $languageService = null): string
+    public function renderResultException(ResultException $exception, ?TranslatorInterface $translator = null): string
     {
         return sprintf(
             '%s: %s',
             $exception->getMessage(),
             implode(
                 ' | ',
-                $this->compileResultMessages($exception->messages, $languageService)
+                $this->compileResultMessages($exception->messages, $translator)
             )
         );
     }
@@ -37,11 +37,11 @@ trait ResultRenderingTrait
      * @param list<ResultMessage> $messages
      * @return list<string>
      */
-    public function compileResultMessages(array $messages, ?LanguageService $languageService = null): array
+    public function compileResultMessages(array $messages, ?TranslatorInterface $translator = null): array
     {
         return array_map(
-            static fn(ResultMessage $message): string => $message->labelBag !== null && $languageService !== null
-                ? $message->labelBag->compile($languageService)
+            static fn(ResultMessage $message): string => $message->labelBag !== null && $translator !== null
+                ? $message->labelBag->compile($translator)
                 : $message->message,
             $messages
         );

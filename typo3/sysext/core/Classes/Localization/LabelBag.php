@@ -41,17 +41,16 @@ final class LabelBag
     /**
      * Compiles the given label key and substituted label arguments if given.
      */
-    public function compile(LanguageService $languageService): string
+    public function compile(TranslatorInterface $translator): string
     {
-        $label = $languageService->sL($this->key);
-        return sprintf(
-            $label,
-            ...$this->arguments
-        ) ?: sprintf(
-            'Error: could not translate key "%s" with value "%s" and %d argument(s)!',
-            $this->key,
-            $label,
-            count($this->arguments)
-        );
+        try {
+            return $translator->label($this->key, $this->arguments, $this->key);
+        } catch (\ValueError $e) {
+            return sprintf(
+                'Error: could not translate key "%s" and %d argument(s)!',
+                $this->key,
+                count($this->arguments)
+            );
+        }
     }
 }
