@@ -153,7 +153,7 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
         }
         $extensionData = $this->decodeExchangeData($downloadedContent);
         if (!empty($extensionData['extKey']) && is_string($extensionData['extKey'])) {
-            $fileHandler->unpackExtensionFromExtensionDataArray($extensionData['extKey'], $extensionData);
+            $fileHandler->unpackExtensionFromExtensionDataArray($extensionData['extKey'], $extensionData, $extensionData['version'] ?? $version);
         } else {
             throw new VerificationFailedException('Downloaded t3x file could not be extracted', 1334426698);
         }
