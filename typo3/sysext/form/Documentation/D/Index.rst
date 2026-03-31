@@ -11,6 +11,7 @@ mainly addresses your concerns as a developer.
 ..  toctree::
     :maxdepth: 1
 
+    Events/Index
     FormEditor/Index
     FrontendRendering/Index
 

@@ -761,10 +761,9 @@ the :ref:`FluidFormRenderer Options<apireference-frontendrendering-fluidformrend
 Custom form element implementations
 -----------------------------------
 
-:t3ext:`form` ships a decent amount of hooks which are available at crucial
-points of the life cycle of a `FormElement`. Most of the time, own
-implementations are therefore unnecessary. An own form element can be
-defined by:
+PSR-14 events are available at crucial points in the life cycle of a
+`FormElement`. Most of the time, own class implementations are therefore
+unnecessary. A custom form element can be defined by:
 
 *   writing some configuration, and
 *   utilizing the standard implementation of :php:`TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement`.
@@ -777,11 +776,12 @@ defined by:
           CustomFormElementIdentifier:
             implementationClassName: 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
 
-With the provided hooks, this `FormElement` can now be manipulated.
+With the provided PSR-14 events, this `FormElement` can now be manipulated at runtime.
 
 ..  seealso::
-    *   :ref:`Hooks for runtime manipulation <apireference-frontendrendering-runtimemanipulation-hooks>`
-    *   :ref:`PSR-14 events <apireference-frontendrendering-runtimemanipulation-events>`
+    *   :ref:`PSR-14 events overview for EXT:form <apireference-events>` –
+        tables of all events and registration instructions
+    *   :ref:`Runtime manipulation events <apireference-frontendrendering-runtimemanipulation-events>`
 
 If you insist on your own implementation, the abstract class :php:`TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement`
 offers a perfect entry point. In addition, we recommend checking-out :php:`TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable`.
@@ -887,10 +887,7 @@ Runtime manipulation
 
 ..  _concepts-frontendrendering-runtimemanipulation-hooks:
 
-Hooks
------
-
-:t3ext:`form` implements a decent amount of hooks that allow the manipulation of
+:t3ext:`form` implements a decent amount of events that allow the manipulation of
 your forms during runtime. In this way, it is possible to, for example,
 
 *   ... prefill form elements with values from your database,
@@ -898,7 +895,7 @@ your forms during runtime. In this way, it is possible to, for example,
 *   ... mark a form element as mandatory depending of the chosen value of another
     form element.
 
-Please check out the ':ref:`API reference section<apireference-frontendrendering-runtimemanipulation-hooks>`'
+Please check out the :ref:`PSR-14 events overview <apireference-events>`
 for more details.
 
 ..  _concepts-frontendrendering-runtimemanipulation-typoscriptoverrides:

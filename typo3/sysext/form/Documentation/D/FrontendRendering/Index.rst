@@ -383,34 +383,15 @@ Signature::
    public function initializeFormElement();
 
 
-You can use this method to prefill form element data for example from database tables.
-All the classes you can see above extends from the ``TYPO3\CMS\Form\Domain\Model\FormElement\AbstractFormElement``.
-``AbstractFormElement`` implements this method like this::
+Override this method in a custom :php:`FormElement` class to prefill data
+(e.g. from a database) when the element is added to the form. Properties
+from the prototype configuration have already been applied; properties from
+the form YAML definition are applied afterwards.
 
-   public function initializeFormElement()
-   {
-       if (
-           isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
-           && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'])
-       ) {
-           foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] as $className) {
-               $hookObj = GeneralUtility::makeInstance($className);
-               if (method_exists($hookObj, 'initializeFormElement')) {
-                   $hookObj->initializeFormElement(
-                       $this
-                   );
-               }
-           }
-       }
-   }
-
-If you extend your custom implementation from ``AbstractFormElement`` (and you should do this),
-it enables you to override the 'initializeFormElement' method within your custom implementation class.
-If you do not call the parents 'initializeFormElement' then no hook will be thrown.
-
-If your use case for a custom form element implementation means that you only want to initialize you form element
-programmatically (e.g to get database data) and no other special things are to do, you might prefer the hook.
-You only need a class which connects to this hook. Then detect the form element you wish to initialize.
+..  tip::
+    If you only need to initialize an element without writing a full custom
+    class, listen to the :php:`BeforeRenderableIsAddedToFormEvent` PSR-14
+    event instead. See :ref:`apireference-events-frontend`.
 
 
 .. _apireference-frontendrendering-programmatically-apimethods:
@@ -432,7 +413,8 @@ overrideCurrentPage()
 
 Override the current page taken from the request, rendering the page with index $pageIndex instead.
 This is typically not needed in production code.
-You might prefer the hook :ref:`afterInitializeCurrentPage <apireference-frontendrendering-runtimemanipulation-hooks-afterinitializecurrentpage>`
+To control page flow dynamically, listen to
+:ref:`AfterCurrentPageIsResolvedEvent <apireference-events-frontend>` instead.
 
 Signature::
 
@@ -1278,7 +1260,7 @@ triggerFormBuildingFinished()
 '''''''''''''''''''''''''''''
 
 Helper to be called by every ``FormFactory`` which extends from ``AbstractFormFactory`` after
-everything has been built to call the "afterBuildingFinished" hook on all form elements.
+the form has been built. Dispatches the :php:`AfterFormIsBuiltEvent` PSR-14 event.
 
 Signature::
 
@@ -1312,7 +1294,8 @@ TYPO3\\CMS\\Form\\Domain\\Renderer\\RendererInterface
 render()
 ''''''''
 
-Renders the FormDefinition. This method is expected to call the ``beforeRendering`` hook on each form element::
+Renders the FormDefinition. This method dispatches the
+:php:`BeforeRenderableIsRenderedEvent` PSR-14 event on each renderable::
 
    public function render(): string;
 
@@ -1337,343 +1320,15 @@ Get the current ``FormRuntime``::
    public function getFormRuntime(): FormRuntime;
 
 
-.. _apireference-frontendrendering-runtimemanipulation:
+..  _apireference-frontendrendering-runtimemanipulation:
 
 Runtime manipulation
 --------------------
 
-.. _apireference-frontendrendering-runtimemanipulation-hooks:
+..  _apireference-frontendrendering-runtimemanipulation-events:
 
-Hooks
-^^^^^
+All PSR-14 events available for frontend runtime manipulation – including the
+former hooks they replace – are documented in:
 
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-initializeformelement:
-
-initializeFormElement
-+++++++++++++++++++++
-
-You can connect to this hook and initialize a form element without defining a
-custom implementation to access the element's ``initializeFormElement`` method.
-You only need a class which connects to this hook. Then detect the form
-element you wish to initialize. For example, you can use this hook to prefill
-form element data from database tables. Note that this hook will be called
-**after** all properties from the prototype configuration are set in the form
-element but **before** the properties from the form definition are set in the
-form element. If you want to prefill form element data after the complete
-form element is configured you should use the
-:ref:`afterBuildingFinished<apireference-frontendrendering-runtimemanipulation-hooks-afterbuildingfinished>` hook.
-
-The initializeFormElement hook is invoked by the methods ``TYPO3\CMS\Form\Domain\Model\FormElements\Page::createElement()``
-and ``TYPO3\CMS\Form\Domain\Model\FormElements\Section::createElement()``.
-That means the hook will **not** be triggered for ``Pages``. At this point
-you do not have access to submitted form element values.
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-initializeformelement-connect:
-
-Connect to the hook
-'''''''''''''''''''
-
-::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'][<useATimestampAsKeyPlease>]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-.. note::
-
-   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
-   means?
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-initializeformelement-use:
-
-Use the hook
-''''''''''''
-
-::
-
-   /**
-    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
-    * @return void
-    */
-   public function initializeFormElement(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
-   {
-       if ($renderable->getUniqueIdentifier() === 'contactForm-text-1') {
-           $renderable->setDefaultValue('foo');
-       }
-   }
-
-
-.. _useATimestampAsKeyPlease:
-
-What does <useATimestampAsKeyPlease> mean?
-++++++++++++++++++++++++++++++++++++++++++
-
-Timestamps are recommended for hooks such as those of the form framework, as
-seen in the following example::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'][<useATimestampAsKeyPlease>]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-Leaving the section ``<useATimestampAsKeyPlease>`` as is is not recommended.
-It does nothing except cause the extension to fail and an error message to be
-delivered. Nor should it be replaced with a function like time(), as the key
-should be unalterable. Instead, replace this section with the current UNIX
-timestamp the moment you are implementing the hook. Check out the following
-example::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'][1507018413]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-The purpose of timestamps is to prevent conflicts that arise when two or more
-extensions within one TYPO3 installation use identical keys (e.g.
-``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement']['foo'])``.
-When timestamps are used, even a one-second difference in the time different
-hooks were connected ensures that one hook does not override the other.
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-beforeremovefromparentrenderable:
-
-beforeRemoveFromParentRenderable
-++++++++++++++++++++++++++++++++
-
-This hook is invoked by the methods ``TYPO3\CMS\Form\Domain\Model\FormDefinition::removePage()``,  ``TYPO3\CMS\Form\Domain\Model\FormElements\Page::removeElement()``
-and ``TYPO3\CMS\Form\Domain\Model\FormElements\Section::removeElement()``
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-beforeremovefromparentrenderable-connect:
-
-Connect to the hook
-'''''''''''''''''''
-
-::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRemoveFromParentRenderable'][<useATimestampAsKeyPlease>]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-.. note::
-
-   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
-   means?
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-beforeremovefromparentrenderable-use:
-
-Use the hook
-''''''''''''
-
-::
-
-   /**
-    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
-    * @return void
-    */
-   public function beforeRemoveFromParentRenderable(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
-   {
-   }
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-afterbuildingfinished:
-
-afterBuildingFinished
-+++++++++++++++++++++
-
-This hook is called for each form element after the class ``TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory``
-has built the entire form. This hook is triggered just before the
-``FormRuntime`` object is generated. At this point, no run-time information
-(e.g. assigned form values) is yet available. It can, for example, be used to
-generate new form elements within complex forms. The ``ArrayFormFactory`` is
-used by EXT:form via the ``RenderViewHelper`` to render forms using a ``form
-definition`` YAML file. Each form factory implementation must deal with the
-calling of this hook themselves. EXT:form itself uses this hook to initialize
-the property-mapper configuration for ``FileUpload`` elements.
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-afterbuildingfinished-connect:
-
-Connect to the hook
-'''''''''''''''''''
-
-::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][<useATimestampAsKeyPlease>]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-.. note::
-
-   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
-   means?
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-afterbuildingfinished-use:
-
-Use the hook
-''''''''''''
-
-::
-
-   /**
-    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
-    * @return void
-    */
-   public function afterBuildingFinished(\TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable)
-   {
-   }
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-afterinitializecurrentpage:
-
-afterInitializeCurrentPage
-++++++++++++++++++++++++++
-
-EXT:form automatically detects the page that should be shown and allow users
-only to jump to the directly following (or previous) pages. This hook enables
-you to implement a custom behavior, for example pages that are shown only when
-other form elements have specific values.
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-afterinitializecurrentpage-connect:
-
-Connect to the hook
-'''''''''''''''''''
-
-::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterInitializeCurrentPage'][<useATimestampAsKeyPlease>]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-.. note::
-
-   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
-   means?
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-afterinitializecurrentpage-use:
-
-Use the hook
-''''''''''''
-
-::
-
-   /**
-    * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
-    * @param null|\TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $currentPage
-    * @param null|\TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $lastPage
-    * @param mixed $elementValue submitted value of the element *before post processing*
-    * @return null|\TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface
-    */
-   public function afterInitializeCurrentPage(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $currentPage = null, \TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface $lastPage = null, array $requestArguments = []): ?\TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface
-   {
-       return $currentPage;
-   }
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-aftersubmit:
-
-afterSubmit
-+++++++++++
-
-You can use it for example for dynamic validations which depends on other submitted form element values.
-This hook is invoked by the ``FormRuntime`` for each form element **before** values are property mapped, validated and pushed within the FormRuntime's ``FormState``.
-If the first page is submitted at the first time you cannot access the form element values from the first page by just calling ``$formRuntime['<someOtherFormElementIdentifier>']`` to access
-the submitted form element values from the first page. In this case you can access the submitted raw data through ``$requestArguments``.
-EXT:form itself uses this hook to dynamically add validation errors for ``AdvancedPassword`` form elements.
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-aftersubmit-connect:
-
-Connect to the hook
-'''''''''''''''''''
-
-::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterSubmit'][<useATimestampAsKeyPlease>]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-.. note::
-
-   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
-   means?
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-aftersubmit-use:
-
-Use the hook
-''''''''''''
-
-::
-
-   /**
-    * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
-    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable
-    * @param mixed $elementValue submitted value of the element *before post processing*
-    * @param array $requestArguments submitted raw request values
-    * @return mixed element value that should be used for further processing
-    */
-   public function afterSubmit(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface $renderable, $elementValue, array $requestArguments = [])
-   {
-       return $elementValue;
-   }
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering:
-
-beforeRendering
-+++++++++++++++
-
-This is a hook that is invoked by the rendering system before the corresponding element is rendered.
-Use this to access previously submitted values and/or modify the ``FormRuntime`` before an element is outputted to the browser.
-This hook is called after all validations and property mappings are done.
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering-connect:
-
-Connect to the hook
-'''''''''''''''''''
-
-::
-
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeRendering'][<useATimestampAsKeyPlease>]
-       = \VENDOR\YourNamespace\YourClass::class;
-
-
-.. note::
-
-   Wondering what :ref:`useATimestampAsKeyPlease<useATimestampAsKeyPlease>`
-   means?
-
-
-.. _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering-use:
-
-Use the hook
-''''''''''''
-
-::
-
-   /**
-    * @param \TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime
-    * @param \TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface $renderable
-    * @return void
-    */
-   public function beforeRendering(\TYPO3\CMS\Form\Domain\Runtime\FormRuntime $formRuntime, \TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface $renderable)
-   {
-   }
-
-
-.. _apireference-frontendrendering-runtimemanipulation-events:
-
-PSR-14 event
-^^^^^^^^^^^^
-
-The following PSR-14 event is available to extend the functionality:
-
-AfterFormDefinitionLoadedEvent
-++++++++++++++++++++++++++++++
-
-Modify loaded form definitions. :ref:`More details <t3coreapi:AfterFormDefinitionLoadedEvent>`
+..  seealso::
+    :ref:`PSR-14 events overview for EXT:form <apireference-events>`
