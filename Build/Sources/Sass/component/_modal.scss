@@ -27,10 +27,11 @@
     max-width: calc(100dvw - (var(--typo3-modal-offset) * var(--typo3-modal-offset-multiplier-x)));
     padding: 0;
     border: var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);
+    outline-offset: calc(var(--typo3-modal-border-width) * -1);
+    outline: var(--typo3-modal-border-width) solid var(--typo3-modal-border-color);
     border-radius: var(--typo3-modal-border-radius);
     box-shadow: var(--typo3-modal-shadow);
     background: transparent; // Avoid background bleed
-    outline: none;
 
     &-header {
         font-weight: bold;

@@ -1,6 +1,12 @@
 //
 // Colors
 //
+@property --token-color-primary-base {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #{map-get($state-colors, 'primary')};
+}
+
 @layer color {
     :root {
         --typo3-color-neutral-origin: hsl(from #{$neutral-base} h s 50%);
@@ -12,8 +18,14 @@
             --token-color-#{$name}-base: #{$value};
         }
 
+        // Harmonize all state colors (except primary) with the accent color.
+        --typo3-color-state-harmonize: 5%;
+        --token-color-primary-base: #{'attr(data-accent type(<color>),'} #{map-get($state-colors, 'primary')}#{')'};
+
         @each $name, $value in $state-colors {
-            --token-color-#{$name}-base: #{$value};
+            @if $name != 'primary' {
+                --token-color-#{$name}-base: color-mix(in srgb, #{$value}, var(--token-color-primary-base) var(--typo3-color-state-harmonize));
+            }
         }
 
         @layer neutral {
@@ -77,7 +89,7 @@
     --typo3-zindex-header: 990;
 
     // Colors
-    --typo3-text-color-base: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-15));
+    --typo3-text-color-base: light-dark(var(--token-color-neutral-90), var(--token-color-neutral-10));
     --typo3-text-color-link: var(--typo3-text-color-base);
     --typo3-text-color-variant: color-mix(in srgb, currentColor, transparent 35%);
     --typo3-text-color-primary: light-dark(var(--token-color-primary-60), var(--token-color-primary-30));
@@ -91,14 +103,14 @@
     --typo3-text-color-default: var(--typo3-text-color-base);
 
     // Surfaces
-    --typo3-surface-dim: light-dark(var(--token-color-neutral-15), var(--token-color-neutral-93));
-    --typo3-surface-base: light-dark(var(--token-color-neutral-4), var(--token-color-neutral-91));
-    --typo3-surface-bright: light-dark(var(--token-color-neutral-1), var(--token-color-neutral-80));
-    --typo3-surface-container-lowest: light-dark(var(--token-color-neutral-1), var(--token-color-neutral-93));
-    --typo3-surface-container-low: light-dark(var(--token-color-neutral-3), var(--token-color-neutral-92));
-    --typo3-surface-container-base: light-dark(var(--token-color-neutral-5), var(--token-color-neutral-90));
-    --typo3-surface-container-high: light-dark(var(--token-color-neutral-10), var(--token-color-neutral-85));
-    --typo3-surface-container-highest: light-dark(var(--token-color-neutral-15), var(--token-color-neutral-80));
+    --typo3-surface-dim: light-dark(var(--token-color-neutral-13), var(--token-color-neutral-92));
+    --typo3-surface-base: light-dark(var(--token-color-neutral-7), var(--token-color-neutral-84));
+    --typo3-surface-bright: light-dark(var(--token-color-neutral-1), var(--token-color-neutral-76));
+    --typo3-surface-container-lowest: light-dark(var(--token-color-neutral-1), var(--token-color-neutral-92));
+    --typo3-surface-container-low: light-dark(var(--token-color-neutral-4), var(--token-color-neutral-88));
+    --typo3-surface-container-base: light-dark(var(--token-color-neutral-7), var(--token-color-neutral-84));
+    --typo3-surface-container-high: light-dark(var(--token-color-neutral-10), var(--token-color-neutral-80));
+    --typo3-surface-container-highest: light-dark(var(--token-color-neutral-13), var(--token-color-neutral-76));
     --typo3-surface-primary: light-dark(var(--token-color-primary-60), var(--token-color-primary-70));
     --typo3-surface-primary-text: light-dark(var(--token-color-primary-1), var(--token-color-primary-1));
     --typo3-surface-container-primary: light-dark(var(--token-color-primary-10), var(--token-color-primary-90));
@@ -506,7 +518,7 @@
     --typo3-icons-close: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%23fff'%3e%3cpath d='M11.9 5.5 9.4 8l2.5 2.5c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0L8 9.4l-2.5 2.5c-.2.2-.5.2-.7 0l-.7-.7c-.2-.2-.2-.5 0-.7L6.6 8 4.1 5.5c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0L8 6.6l2.5-2.5c.2-.2.5-.2.7 0l.7.7c.2.2.2.5 0 .7z'/%3e%3c/g%3e%3c/svg%3e");
     --typo3-icons-check: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%23fff'%3e%3cpath d='m13.3 4.8-.7-.7c-.2-.2-.5-.2-.7 0L6.5 9.5 4 6.9c-.2-.2-.5-.2-.7 0l-.6.7c-.2.2-.2.5 0 .7l3.6 3.6c.2.2.5.2.7 0l6.4-6.4c.1-.2.1-.5-.1-.7z'/%3e%3c/g%3e%3c/svg%3e");
     --typo3-icons-chevron-down: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cg fill='%23fff'%3e%3cpath d='m4.464 6.05-.707.707L8 11l4.243-4.243-.707-.707L8 9.586z'/%3e%3c/g%3e%3c/svg%3e");
-    --typo3-icons-accent: light-dark(var(--token-color-primary-60), var(--token-color-primary-40));
+    --typo3-icons-accent: light-dark(var(--token-color-primary-45), var(--token-color-primary-35));
 
     // Scaffold
     --typo3-scaffold-color: var(--typo3-text-color-base);
@@ -545,6 +557,7 @@
 
 [data-theme="classic"] {
     --typo3-color-neutral-mix: 0%;
+    --typo3-color-state-harmonize: 0%;
     --typo3-icons-accent: light-dark(#ff8700, #ff8700);
 
     .scaffold-header,
@@ -554,20 +567,20 @@
 }
 
 [data-theme="fresh"] {
-    --typo3-color-neutral-mix: 20%;
-    --token-color-primary-base: #5033c7;
+    --typo3-color-neutral-mix: 12%;
+    --token-color-primary-base: #{'attr(data-accent type(<color>),'} #5033c7#{')'};
     --token-color-secondary-base: hsl(from var(--token-color-primary-base) h 10% l);
 
     // Scaffold
     --typo3-scaffold-header-color: var(--typo3-surface-primary-text);
-    --typo3-scaffold-header-bg: light-dark(hsl(from var(--typo3-surface-primary) h 40% 20), hsl(from var(--typo3-surface-primary) h 20% 10));
+    --typo3-scaffold-header-bg: light-dark(hsl(from var(--token-color-primary-base) h calc(s * .67) 20%), hsl(from var(--token-color-primary-base) h calc(s * .42) 20%));
     --typo3-scaffold-header-box-shadow: none;
     --typo3-scaffold-sidebar-color: var(--typo3-surface-primary-text);
-    --typo3-scaffold-sidebar-bg: light-dark(hsl(from var(--typo3-surface-primary) h 40% 20%), hsl(from var(--typo3-surface-primary) h 20% 10%));
+    --typo3-scaffold-sidebar-bg: light-dark(hsl(from var(--token-color-primary-base) h calc(s * .67) 20%), hsl(from var(--token-color-primary-base) h calc(s * .42) 20%));
     --typo3-scaffold-sidebar-border-width: 0;
 
     .scaffold-sidebar {
-        --typo3-icons-accent: light-dark(#bf9aff, #b68cff);
+        --typo3-icons-accent: light-dark(hsl(from var(--token-color-primary-base) h s 75%), hsl(from var(--token-color-primary-base) h s 70%));
     }
 
     @media (min-width: 992px) {
