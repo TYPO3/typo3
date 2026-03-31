@@ -619,6 +619,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Log\LogManager::class)->getLogger(Resource\ProcessedFileRepository::class),
             $container->get(Database\ConnectionPool::class),
             $container->get(Context\Context::class),
+            $container->get('cache.runtime'),
         ]);
     }
 

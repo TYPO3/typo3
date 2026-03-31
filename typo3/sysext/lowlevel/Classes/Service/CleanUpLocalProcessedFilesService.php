@@ -20,36 +20,41 @@ namespace TYPO3\CMS\Lowlevel\Service;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * @internal not part of TYPO3's Core API
  */
-class CleanUpLocalProcessedFilesService
+final readonly class CleanUpLocalProcessedFilesService
 {
-    protected const TABLE_NAME = 'sys_file_processedfile';
-    protected const DRIVER = 'Local';
+    public function __construct(
+        private ProcessedFileRepository $processedFileRepository,
+        private StorageRepository $storageRepository,
+        private ConnectionPool $connectionPool,
+    ) {}
 
     /**
      * Find processed files without a reference
-     * @param int $limit  Limit (deprecated)
+     *
      * @param bool $fullReset  When true also removes entries that have an empty identifier or storage
+     * @return \SplFileInfo[]
      */
-    public function getFilesToClean(int $limit = 0, bool $fullReset = false): array
+    public function getFilesToClean(bool $fullReset = false): array
     {
-        $queryBuilder = $this->getQueryBuilderWithoutRestrictions();
-        $localStorages = GeneralUtility::makeInstance(StorageRepository::class)->findByStorageType(self::DRIVER);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_processedfile');
+        // sys_file_processedfile has no TCA enablecolumns, so there is nothing to remove
+        // here. Kept defensively in case that ever changes.
+        $queryBuilder->getRestrictions()->removeAll();
+        $localStorages = $this->storageRepository->findByStorageType('Local');
 
         $queryBuilder
             ->count('*')
-            ->from(self::TABLE_NAME)
+            ->from('sys_file_processedfile')
             ->where(
                 // processed file identifier (placeholder pos 1)
                 $queryBuilder->expr()->eq(
@@ -96,16 +101,20 @@ class CleanUpLocalProcessedFilesService
 
     /**
      * Find records which reference non-existing files
+     *
      * @param bool $fullReset  When true also removes entries that have an empty identifier or storage
+     * @return array<int, array<string, mixed>>
      */
     public function getRecordsToClean(bool $fullReset = false): array
     {
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        $queryBuilder = $this->getQueryBuilderWithoutRestrictions();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_processedfile');
+        // Neither sys_file_processedfile nor sys_file_storage have TCA enablecolumns, so
+        // there is nothing to remove here. Kept defensively in case that ever changes.
+        $queryBuilder->getRestrictions()->removeAll();
         $conditions = [
             $queryBuilder->expr()->eq(
                 'sfs.driver',
-                $queryBuilder->createNamedParameter(self::DRIVER)
+                $queryBuilder->createNamedParameter('Local')
             ),
         ];
 
@@ -128,7 +137,7 @@ class CleanUpLocalProcessedFilesService
 
         $queryBuilder
             ->select('sfp.storage', 'sfp.identifier', 'sfp.uid')
-            ->from(self::TABLE_NAME, 'sfp')
+            ->from('sys_file_processedfile', 'sfp')
             ->leftJoin(
                 'sfp',
                 'sys_file_storage',
@@ -146,7 +155,7 @@ class CleanUpLocalProcessedFilesService
                 continue;
             }
 
-            $storage = $storageRepository->findByUid((int)$processedFile['storage']);
+            $storage = $this->storageRepository->findByUid((int)$processedFile['storage']);
             $processedPathAndFileIdentifier = (string)$processedFile['identifier'];
 
             // Storage does no longer have that file => delete entry
@@ -158,17 +167,22 @@ class CleanUpLocalProcessedFilesService
         return $processedToDelete;
     }
 
+    public function deleteRecord(array $recordUids): int
+    {
+        return $this->processedFileRepository->removeByUids($recordUids);
+    }
+
     /**
      * Recursive generation of file information for files of the given folder.
      * As this could be a lot of files the generator method is used to reduce memory usage.
      *
      * @return \SplFileInfo[]
      */
-    protected function getFilesOfFolderRecursive(Folder $folder): iterable
+    private function getFilesOfFolderRecursive(Folder $folder): iterable
     {
         try {
             $basePath = $this->getAbsoluteBasePath($folder->getStorage()->getConfiguration());
-        } catch (InvalidPathException|InvalidConfigurationException $invalidPathException) {
+        } catch (InvalidPathException|InvalidConfigurationException) {
             return [];
         }
 
@@ -187,17 +201,14 @@ class CleanUpLocalProcessedFilesService
         }
     }
 
-    protected function getAbsoluteBasePath(array $configuration): string
+    private function getAbsoluteBasePath(array $configuration): string
     {
-        if (!array_key_exists('basePath', $configuration) || empty($configuration['basePath'])) {
-            throw new InvalidConfigurationException(
-                'Configuration must contain base path.',
-                1640297535
-            );
-        }
+        $absoluteBasePath = ($configuration['basePath'] ?? null) ?: throw new InvalidConfigurationException(
+            'Configuration must contain base path.',
+            1640297535
+        );
 
-        $absoluteBasePath = $configuration['basePath'];
-        if (!empty($configuration['pathType']) && $configuration['pathType'] === 'relative') {
+        if (($configuration['pathType'] ?? '') === 'relative') {
             $relativeBasePath = $configuration['basePath'];
             $absoluteBasePath = Environment::getPublicPath() . '/' . $relativeBasePath;
         }
@@ -211,30 +222,5 @@ class CleanUpLocalProcessedFilesService
         }
 
         return $absoluteBasePath;
-    }
-
-    public function deleteRecord(array $recordUids): int
-    {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(self::TABLE_NAME);
-        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
-        $deletedRecords = 0;
-        foreach (array_chunk($recordUids, $maxBindParameters) as $chunk) {
-            $queryBuilder = $connection->createQueryBuilder();
-            $queryBuilder->getRestrictions()->removeAll();
-            $deletedRecords += $queryBuilder->delete(self::TABLE_NAME)
-                ->where(
-                    $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY))
-                )
-                ->executeStatement();
-        }
-        return $deletedRecords;
-    }
-
-    protected function getQueryBuilderWithoutRestrictions(): QueryBuilder
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
-        $queryBuilder->getRestrictions()->removeAll();
-
-        return $queryBuilder;
     }
 }
