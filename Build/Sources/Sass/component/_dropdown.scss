@@ -105,7 +105,6 @@
     --typo3-dropdown-header-padding-x: var(--typo3-list-item-padding-x);
     --typo3-dropdown-header-padding-y: var(--typo3-list-item-padding-y);
     display: none;
-    position: absolute;
     min-width: var(--typo3-dropdown-min-width);
     max-width: calc(100dvw - 1.25rem);
     max-height: calc(100dvh - 1.25rem);
