@@ -29,6 +29,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationFileAlreadyExistsException;
@@ -57,6 +58,7 @@ class SetupCommand extends Command
         private readonly SetupService $setupService,
         private readonly ConfigurationManager $configurationManager,
         private readonly LateBootService $lateBootService,
+        private readonly FailsafePackageManager $packageManager,
     ) {
         parent::__construct($name);
     }
@@ -141,6 +143,14 @@ class SetupCommand extends Command
                 false
             )
             ->addOption(
+                'distribution',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                $this->packageManager->isPackageActive('impexp')
+                    ? 'Import a distribution during site creation (package key, e.g. "theme_camino")'
+                    : '[disabled] Requires typo3/cms-impexp to be installed'
+            )
+            ->addOption(
                 'server-type',
                 null,
                 InputOption::VALUE_OPTIONAL,
@@ -178,6 +188,7 @@ TYPO3_DB_DBNAME=db \
 TYPO3_SETUP_ADMIN_EMAIL=admin@example.com \
 TYPO3_SETUP_ADMIN_USERNAME=admin \
 TYPO3_SETUP_CREATE_SITE="https://your-typo3-site.com/" \
+TYPO3_SETUP_DISTRIBUTION="theme_camino" \
 TYPO3_PROJECT_NAME="Automated Setup" \
 TYPO3_SERVER_TYPE="apache" \
 ./bin/typo3 setup --force
@@ -247,27 +258,18 @@ EOT
         $siteName = $this->getProjectName($questionHelper, $input, $output);
         $this->setupService->setSiteName($siteName);
 
-        $siteUrl = $this->getSiteSetup($questionHelper, $input, $output);
-        if ($siteUrl) {
-            [$pageId, $contentId] = $this->setupService->createSite();
-            $dependencies = $this->setupService->getDefaultSiteSetDependencies();
-            $siteIdentifier = 'main';
-            $this->setupService->createSiteConfiguration($siteIdentifier, (int)$pageId, $siteUrl, $dependencies);
-            if ($this->setupService->hasDefaultTheme()) {
-                $this->setupService->initializeDefaultThemeContent($pageId, $contentId);
-            } elseif ($dependencies !== []) {
-                // No default theme but fluid_styled_content is available - write PAGE setup to site config
-                if (!$this->setupService->writeSiteSetupTypoScript($siteIdentifier)) {
-                    // Some error occurred while trying to write setup to new site, fall back to sys_template record
-                    $this->setupService->createSysTemplateRecord($pageId);
-                }
-            } else {
-                // In case no site set is available, create a fallback sys_template record
-                $this->setupService->createSysTemplateRecord($pageId);
+        $selectedDistribution = $this->getDistribution($questionHelper, $input, $output);
+        if ($selectedDistribution !== null) {
+            // Distribution handles all site creation (pages, content, site configuration)
+            $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
+            $this->setupService->importDistributionData($container, $selectedDistribution);
+        } else {
+            $siteUrl = $this->getSiteSetup($questionHelper, $input, $output);
+            if ($siteUrl) {
+                $this->setupService->createSite('main', $siteUrl);
             }
+            $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
         }
-
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
         $this->setupDatabaseService->markWizardsDone($container);
         $this->writeSuccess($output, 'Congratulations - TYPO3 Setup is done.');
 
@@ -659,6 +661,53 @@ EOT
         }
 
         return $urlValidator($createSiteFromCli);
+    }
+
+    protected function getDistribution(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): ?string
+    {
+        $distributionFromCli = $this->getFallbackValueEnvOrOption($input, 'distribution', 'TYPO3_SETUP_DISTRIBUTION');
+
+        if (!$this->packageManager->isPackageActive('impexp')) {
+            if ($distributionFromCli !== false) {
+                throw new \RuntimeException(
+                    sprintf('Distribution "%s" is not installable, please require typo3/cms-impexp.', $distributionFromCli),
+                    1775034287
+                );
+            }
+            return null;
+        }
+
+        $distributions = $this->setupService->getAvailableDistributions();
+        if ($distributionFromCli !== false) {
+            if (!isset($distributions[$distributionFromCli])) {
+                throw new \RuntimeException(
+                    sprintf('Distribution "%s" is not available.', $distributionFromCli),
+                    1775034288
+                );
+            }
+
+            $createSiteFromCli = $this->getFallbackValueEnvOrOption($input, 'create-site', 'TYPO3_SETUP_CREATE_SITE');
+            if ($createSiteFromCli !== false) {
+                throw new \RuntimeException(
+                    'The --distribution and --create-site commandline options may not be used at the same time',
+                    1775034289
+                );
+            }
+
+            return $distributionFromCli;
+        }
+
+        if ($input->isInteractive()) {
+            $choices = ['none' => 'Do not import a distribution'];
+            foreach ($distributions as $packageKey => $info) {
+                $choices[$packageKey] = $info['title'];
+            }
+            $question = new ChoiceQuestion('Select a distribution to import [default: none]', $choices, 'none');
+            $answer = $questionHelper->ask($input, $output, $question);
+            return $answer === 'none' ? null : $answer;
+        }
+
+        return null;
     }
 
     protected function writeSuccess(OutputInterface $output, string $message): void

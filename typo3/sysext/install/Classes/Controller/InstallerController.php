@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -539,9 +538,14 @@ final class InstallerController
     {
         $view = $this->initializeView($request);
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
+        $distributions = [];
+        if ($this->packageManager->isPackageActive('impexp')) {
+            $distributions = $this->setupService->getAvailableDistributions();
+        }
         $view->assignMultiple([
             'composerMode' => Environment::isComposerMode(),
-            'hasDefaultTheme' => $this->setupService->hasDefaultTheme(),
+            'offerToCreateBasicSite' => $this->packageManager->isPackageActive('fluid_styled_content'),
+            'distributions' => $distributions,
             'executeDefaultConfigurationToken' => $formProtection->generateToken('installTool', 'executeDefaultConfiguration'),
         ]);
         return new JsonResponse([
@@ -555,40 +559,26 @@ final class InstallerController
      */
     public function executeDefaultConfigurationAction(ServerRequestInterface $request): ResponseInterface
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
         // Use the container here instead of makeInstance() to use the factory of the container for building the UriBuilder
         $uriBuilder = $container->get(UriBuilder::class);
         $nextStepUrl = $uriBuilder->buildUriFromRoute('login');
         // Let the admin user redirect to the distributions page on first login
-        if ($request->getParsedBody()['install']['values']['sitesetup'] === 'createsite') {
-            // Create a root page and site configuration with appropriate site set dependencies
-            [$pageId, $contentId] = $this->setupService->createSite();
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            if (!($normalizedParams instanceof NormalizedParams)) {
-                $normalizedParams = NormalizedParams::createFromRequest($request);
-            }
-            // Check for siteUrl, despite there currently is no UI to provide it,
-            // to allow TYPO3 Console (for TYPO3 v10) to set this value to something reasonable,
-            // because on cli there is no way to find out which hostname the site is supposed to have.
-            // In the future this controller should be refactored to a generic service, where site URL is
-            // just one input argument.
-            $siteUrl = $request->getParsedBody()['install']['values']['siteUrl'] ?? $normalizedParams->getSiteUrl();
-            $dependencies = $this->setupService->getDefaultSiteSetDependencies();
-            $siteIdentifier = 'main';
-            $this->setupService->createSiteConfiguration($siteIdentifier, (int)$pageId, $siteUrl, $dependencies);
-            if ($this->setupService->hasDefaultTheme()) {
-                $this->setupService->initializeDefaultThemeContent($pageId, $contentId);
-            } elseif ($dependencies !== []) {
-                // No default theme but fluid_styled_content is available - write PAGE setup to site config
-                if (!$this->setupService->writeSiteSetupTypoScript($siteIdentifier)) {
-                    // Some error occurred while trying to write setup to new site, fall back to sys_template record
-                    $this->setupService->createSysTemplateRecord($pageId);
-                }
-            } else {
-                // In case no site set is available, create a fallback sys_template record
-                $this->setupService->createSysTemplateRecord($pageId);
-            }
-        } elseif ($request->getParsedBody()['install']['values']['sitesetup'] === 'loaddistribution'
+        $siteSetup = $request->getParsedBody()['install']['values']['sitesetup'] ?? '';
+
+        $selectedDistribution = '';
+        if (str_starts_with($siteSetup, 'createsite:')) {
+            $selectedDistribution = substr($siteSetup, strlen('createsite:'));
+            $siteSetup = 'createsite';
+        }
+
+        if ($siteSetup === 'createsite' && $selectedDistribution !== '' && $this->packageManager->isPackageActive('impexp')) {
+            // Distribution handles all site creation (pages, content, site configuration)
+            $this->setupService->importDistributionData($container, $selectedDistribution);
+        } elseif ($siteSetup === 'createsite') {
+            $siteUrl = $request->getAttribute('normalizedParams')->getSiteUrl();
+            $this->setupService->createSite('main', $siteUrl);
+        } elseif ($siteSetup === 'loaddistribution'
             && !Environment::isComposerMode()
             && $this->packageManager->isPackageActive('extensionmanager')
         ) {
@@ -604,9 +594,11 @@ final class InstallerController
                 )
             );
         }
+
         if (($request->getParsedBody()['install']['values']['backendgroups'] ?? '') === 'creategroups') {
             $this->setupService->createBackendUserGroups();
         }
+
         // Mark upgrade wizards as done
         $this->setupDatabaseService->markWizardsDone($container);
 

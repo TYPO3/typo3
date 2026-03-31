@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Service;
 
+use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -30,10 +32,13 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Impexp\Exception\ImportFailedException;
+use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Install\Command\BackendUserGroupType;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
@@ -77,40 +82,36 @@ readonly class SetupService
      * @param string[] $dependencies Site set identifiers to add as dependencies
      * @throws SiteConfigurationWriteException
      */
-    public function createSiteConfiguration(string $identifier, int $rootPageId, string $siteUrl, array $dependencies = []): void
+    private function createSiteConfiguration(string $identifier, int $rootPageId, string $siteUrl, array $dependencies = []): void
     {
         // Create a default site configuration called "main" as best practice
         $this->siteWriter->createNewBasicSite($identifier, $rootPageId, $siteUrl, $dependencies);
     }
 
     /**
-     * Returns the default site set dependencies based on installed packages. If the default
-     * theme is installed, it will be used. Otherwise, falls back to fluid_styled_content.
+     * Returns all available packages that ship initialisation data (data.xml or data.t3d)
+     * which can be imported during installation.
      *
-     * @return string[] Site set identifiers
-     * @todo Implement a proper mechanism to detect/register a "default theme" instead of hardcoding a package name.
-     *       This could be a configuration option, a special composer type, or a registry where themes can register
-     *       themselves as the default. For now, we check for the specific package name.
+     * @return array<string, array{packageKey: string, title: string, description: string}> Keyed by package key
      */
-    public function getDefaultSiteSetDependencies(): array
+    public function getAvailableDistributions(): array
     {
-        // Check for default theme (currently theme_camino)
-        if (isset($this->packageManager->getAvailablePackages()['theme_camino'])) {
-            return ['typo3/theme-camino'];
+        $distributions = [];
+        foreach ($this->packageManager->getAvailablePackages() as $packageKey => $package) {
+            $packagePath = $package->getPackagePath();
+            if (!file_exists($packagePath . 'Initialisation/data.xml')
+                && !file_exists($packagePath . 'Initialisation/data.t3d')
+            ) {
+                continue;
+            }
+            $metaData = $package->getPackageMetaData();
+            $distributions[$packageKey] = [
+                'packageKey' => $packageKey,
+                'title' => $metaData->getTitle() ?: $packageKey,
+                'description' => $metaData->getDescription() ?: '',
+            ];
         }
-        if (isset($this->packageManager->getAvailablePackages()['fluid_styled_content'])) {
-            return ['typo3/fluid-styled-content', 'typo3/fluid-styled-content-css'];
-        }
-
-        return [];
-    }
-
-    /**
-     * Check if the default theme is available.
-     */
-    public function hasDefaultTheme(): bool
-    {
-        return isset($this->packageManager->getAvailablePackages()['theme_camino']);
+        return $distributions;
     }
 
     /**
@@ -215,7 +216,10 @@ readonly class SetupService
         $this->packageManager->recreatePackageStatesFileIfMissing(true);
     }
 
-    public function createSite(): array
+    /**
+     * Create a root page and site configuration with appropriate site set dependencies, if available
+     */
+    public function createSite(string $siteIdentifier, string $siteUrl): int
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $databaseConnectionForPages = $connectionPool->getConnectionForTable('pages');
@@ -236,9 +240,8 @@ readonly class SetupService
                 'perms_everybody' => 1,
             ]
         );
-        $pageId = $databaseConnectionForPages->lastInsertId();
+        $pageId = (int)$databaseConnectionForPages->lastInsertId();
 
-        // Create welcome content element
         $databaseConnectionForContent = $connectionPool->getConnectionForTable('tt_content');
         $databaseConnectionForContent->insert(
             'tt_content',
@@ -253,58 +256,84 @@ readonly class SetupService
             ]
         );
 
-        return [$pageId, $databaseConnectionForContent->lastInsertId()];
+        $dependencies = [];
+        if ($this->packageManager->isPackageActive('fluid_styled_content')) {
+            $dependencies = ['typo3/fluid-styled-content', 'typo3/fluid-styled-content-css'];
+        }
+        $this->createSiteConfiguration($siteIdentifier, $pageId, $siteUrl, $dependencies);
+        $this->writeSiteSetupTypoScript($siteIdentifier);
+
+        return $pageId;
     }
 
     /**
-     * @todo This is a hack to preselect the backend layout for the default theme and update the default content element.
-     *       This is really ugly but the same like checking for the specific package name in getDefaultSiteSetDependencies().
-     *       We need a registry, which can be read by the service to determine the default theme and necessary post creation actions.
+     * Import a distribution's initialisation data (pages, content elements, files)
+     * using the impexp import mechanism. Requires a fully booted container because
+     * the import relies on TCA, DataHandler and other runtime services.
+     *
+     * @param ContainerInterface $container The fully booted (non-failsafe) DI container
+     * @param string $packageKey The extension key of the distribution to import
      */
-    public function initializeDefaultThemeContent(string $pageId, $contentId): void
+    public function importDistributionData(ContainerInterface $container, string $packageKey): void
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $package = $this->packageManager->getAvailablePackages()[$packageKey] ?? null;
+        if ($package === null) {
+            return;
+        }
 
-        $connectionPool->getConnectionForTable('pages')->update(
-            'pages',
-            [
-                'backend_layout' => 'pagets__CaminoStartpage',
-                'backend_layout_next_level' => 'pagets__CaminoContentpage',
-            ],
-            [
-                'uid' => $pageId,
-            ]
-        );
+        $importFile = $package->getPackagePath() . 'Initialisation/data.xml';
+        if (!file_exists($importFile)) {
+            $importFile = $package->getPackagePath() . 'Initialisation/data.t3d';
+            if (!file_exists($importFile)) {
+                return;
+            }
+        }
 
-        $connectionPool->getConnectionForTable('tt_content')->update(
-            'tt_content',
-            [
-                'bodytext' => 'This website is made with <a href="https://typo3.org" target="_blank">TYPO3</a>  and the Camino Theme.</p>',
-            ],
-            [
-                'uid' => $contentId,
-            ]
-        );
+        // Bootstrap a backend user context required by the import engine.
+        // Use the first admin user created during installation.
+        $previousBackendUser = $GLOBALS['BE_USER'] ?? null;
+        $previousLanguageService = $GLOBALS['LANG'] ?? null;
+
+        try {
+            $backendUser = new BackendUserAuthentication();
+            $backendUser->user = $this->getFirstAdminUser();
+            $backendUser->workspace = 0;
+            $GLOBALS['BE_USER'] = $backendUser;
+
+            $GLOBALS['LANG'] = $container->get(LanguageServiceFactory::class)->create('en');
+
+            $import = $container->get(Import::class);
+            $import->setPid(0);
+            $import->loadFile($importFile);
+            $import->importData();
+        } catch (ImportFailedException) {
+            // importData() performs all writes first, then throws if there were
+            // non-critical errors. The data is already imported at this point,
+            // so we can safely continue with the installation.
+        } finally {
+            $GLOBALS['BE_USER'] = $previousBackendUser;
+            $GLOBALS['LANG'] = $previousLanguageService;
+        }
     }
 
     /**
      * Writes a setup.typoscript file to the site configuration directory with basic PAGE rendering.
      */
-    public function writeSiteSetupTypoScript(string $siteIdentifier): bool
+    private function writeSiteSetupTypoScript(string $siteIdentifier): void
     {
         $siteConfigPath = Environment::getConfigPath() . '/sites/' . $siteIdentifier;
         $typoScriptContent = <<<'TYPOSCRIPT'
 page = PAGE
-page.10 = TEXT
-page.10.value (
-   <div style="width: 800px; margin: 15% auto;">
-      <div style="width: 300px;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 42"><path d="M60.2 14.4v27h-3.8v-27h-6.7v-3.3h17.1v3.3h-6.6zm20.2 12.9v14h-3.9v-14l-7.7-16.2h4.1l5.7 12.2 5.7-12.2h3.9l-7.8 16.2zm19.5 2.6h-3.6v11.4h-3.8V11.1s3.7-.3 7.3-.3c6.6 0 8.5 4.1 8.5 9.4 0 6.5-2.3 9.7-8.4 9.7m.4-16c-2.4 0-4.1.3-4.1.3v12.6h4.1c2.4 0 4.1-1.6 4.1-6.3 0-4.4-1-6.6-4.1-6.6m21.5 27.7c-7.1 0-9-5.2-9-15.8 0-10.2 1.9-15.1 9-15.1s9 4.9 9 15.1c.1 10.6-1.8 15.8-9 15.8m0-27.7c-3.9 0-5.2 2.6-5.2 12.1 0 9.3 1.3 12.4 5.2 12.4 3.9 0 5.2-3.1 5.2-12.4 0-9.4-1.3-12.1-5.2-12.1m19.9 27.7c-2.1 0-5.3-.6-5.7-.7v-3.1c1 .2 3.7.7 5.6.7 2.2 0 3.6-1.9 3.6-5.2 0-3.9-.6-6-3.7-6H138V24h3.1c3.5 0 3.7-3.6 3.7-5.3 0-3.4-1.1-4.8-3.2-4.8-1.9 0-4.1.5-5.3.7v-3.2c.5-.1 3-.7 5.2-.7 4.4 0 7 1.9 7 8.3 0 2.9-1 5.5-3.3 6.3 2.6.2 3.8 3.1 3.8 7.3 0 6.6-2.5 9-7.3 9"/><path fill="#FF8700" d="M31.7 28.8c-.6.2-1.1.2-1.7.2-5.2 0-12.9-18.2-12.9-24.3 0-2.2.5-3 1.3-3.6C12 1.9 4.3 4.2 1.9 7.2 1.3 8 1 9.1 1 10.6c0 9.5 10.1 31 17.3 31 3.3 0 8.8-5.4 13.4-12.8M28.4.5c6.6 0 13.2 1.1 13.2 4.8 0 7.6-4.8 16.7-7.2 16.7-4.4 0-9.9-12.1-9.9-18.2C24.5 1 25.6.5 28.4.5"/></svg>
-      </div>
-   </div>
+page.10 = COA
+page.10.stdWrap.wrap = <div style="max-width: 800px; margin: 2em auto;">|</div>
+page.10.10 = TEXT
+page.10.10.value (
+  <div style="width: 300px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 42"><path d="M60.2 14.4v27h-3.8v-27h-6.7v-3.3h17.1v3.3h-6.6zm20.2 12.9v14h-3.9v-14l-7.7-16.2h4.1l5.7 12.2 5.7-12.2h3.9l-7.8 16.2zm19.5 2.6h-3.6v11.4h-3.8V11.1s3.7-.3 7.3-.3c6.6 0 8.5 4.1 8.5 9.4 0 6.5-2.3 9.7-8.4 9.7m.4-16c-2.4 0-4.1.3-4.1.3v12.6h4.1c2.4 0 4.1-1.6 4.1-6.3 0-4.4-1-6.6-4.1-6.6m21.5 27.7c-7.1 0-9-5.2-9-15.8 0-10.2 1.9-15.1 9-15.1s9 4.9 9 15.1c.1 10.6-1.8 15.8-9 15.8m0-27.7c-3.9 0-5.2 2.6-5.2 12.1 0 9.3 1.3 12.4 5.2 12.4 3.9 0 5.2-3.1 5.2-12.4 0-9.4-1.3-12.1-5.2-12.1m19.9 27.7c-2.1 0-5.3-.6-5.7-.7v-3.1c1 .2 3.7.7 5.6.7 2.2 0 3.6-1.9 3.6-5.2 0-3.9-.6-6-3.7-6H138V24h3.1c3.5 0 3.7-3.6 3.7-5.3 0-3.4-1.1-4.8-3.2-4.8-1.9 0-4.1.5-5.3.7v-3.2c.5-.1 3-.7 5.2-.7 4.4 0 7 1.9 7 8.3 0 2.9-1 5.5-3.3 6.3 2.6.2 3.8 3.1 3.8 7.3 0 6.6-2.5 9-7.3 9"/><path fill="#FF8700" d="M31.7 28.8c-.6.2-1.1.2-1.7.2-5.2 0-12.9-18.2-12.9-24.3 0-2.2.5-3 1.3-3.6C12 1.9 4.3 4.2 1.9 7.2 1.3 8 1 9.1 1 10.6c0 9.5 10.1 31 17.3 31 3.3 0 8.8-5.4 13.4-12.8M28.4.5c6.6 0 13.2 1.1 13.2 4.8 0 7.6-4.8 16.7-7.2 16.7-4.4 0-9.9-12.1-9.9-18.2C24.5 1 25.6.5 28.4.5"/></svg>
+  </div>
 )
-page.100 = CONTENT
-page.100 {
+page.10.20 = CONTENT
+page.10.20 {
     table = tt_content
     select {
         orderBy = sorting
@@ -312,43 +341,7 @@ page.100 {
     }
 }
 TYPOSCRIPT;
-        return GeneralUtility::writeFile($siteConfigPath . '/setup.typoscript', $typoScriptContent);
-    }
-
-    /**
-     * Creates a sys_template record with basic PAGE rendering.
-     */
-    public function createSysTemplateRecord($pageUid): void
-    {
-        // add a root sys_template with fluid_styled_content and a default PAGE typoscript snippet
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template')->insert(
-            'sys_template',
-            [
-                'pid' => $pageUid,
-                'crdate' => time(),
-                'tstamp' => time(),
-                'title' => 'Main TypoScript Rendering',
-                'root' => 1,
-                'clear' => 3,
-                'include_static_file' => '',
-                'constants' => '',
-                'config' => 'page = PAGE
-page.10 = TEXT
-page.10.value (
-   <div style="width: 800px; margin: 15% auto;">
-      <div style="width: 300px;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 42"><path d="M60.2 14.4v27h-3.8v-27h-6.7v-3.3h17.1v3.3h-6.6zm20.2 12.9v14h-3.9v-14l-7.7-16.2h4.1l5.7 12.2 5.7-12.2h3.9l-7.8 16.2zm19.5 2.6h-3.6v11.4h-3.8V11.1s3.7-.3 7.3-.3c6.6 0 8.5 4.1 8.5 9.4 0 6.5-2.3 9.7-8.4 9.7m.4-16c-2.4 0-4.1.3-4.1.3v12.6h4.1c2.4 0 4.1-1.6 4.1-6.3 0-4.4-1-6.6-4.1-6.6m21.5 27.7c-7.1 0-9-5.2-9-15.8 0-10.2 1.9-15.1 9-15.1s9 4.9 9 15.1c.1 10.6-1.8 15.8-9 15.8m0-27.7c-3.9 0-5.2 2.6-5.2 12.1 0 9.3 1.3 12.4 5.2 12.4 3.9 0 5.2-3.1 5.2-12.4 0-9.4-1.3-12.1-5.2-12.1m19.9 27.7c-2.1 0-5.3-.6-5.7-.7v-3.1c1 .2 3.7.7 5.6.7 2.2 0 3.6-1.9 3.6-5.2 0-3.9-.6-6-3.7-6H138V24h3.1c3.5 0 3.7-3.6 3.7-5.3 0-3.4-1.1-4.8-3.2-4.8-1.9 0-4.1.5-5.3.7v-3.2c.5-.1 3-.7 5.2-.7 4.4 0 7 1.9 7 8.3 0 2.9-1 5.5-3.3 6.3 2.6.2 3.8 3.1 3.8 7.3 0 6.6-2.5 9-7.3 9"/><path fill="#FF8700" d="M31.7 28.8c-.6.2-1.1.2-1.7.2-5.2 0-12.9-18.2-12.9-24.3 0-2.2.5-3 1.3-3.6C12 1.9 4.3 4.2 1.9 7.2 1.3 8 1 9.1 1 10.6c0 9.5 10.1 31 17.3 31 3.3 0 8.8-5.4 13.4-12.8M28.4.5c6.6 0 13.2 1.1 13.2 4.8 0 7.6-4.8 16.7-7.2 16.7-4.4 0-9.9-12.1-9.9-18.2C24.5 1 25.6.5 28.4.5"/></svg>
-      </div>
-      <h2>Welcome to your default website</h2>
-      <div><p>This website is made with <a href="https://typo3.org" target="_blank">TYPO3</a>.</p></div>
-   </div>
-)
-',
-                'description' => 'This is an Empty Site Package TypoScript record.
-
-For each website you need a TypoScript record on the main page of your website (on the top level). For better maintenance all TypoScript should be extracted into external files via @import \'EXT:site_myproject/Configuration/TypoScript/setup.typoscript\'',
-            ]
-        );
+        GeneralUtility::writeFile($siteConfigPath . '/setup.typoscript', $typoScriptContent);
     }
 
     /**
@@ -470,6 +463,23 @@ For each website you need a TypoScript record on the main page of your website (
                 ['uid' => $recordId]
             );
         }
+    }
+
+    private function getFirstAdminUser(): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $row = $queryBuilder->select('*')
+            ->from('be_users')
+            ->where(
+                $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \Doctrine\DBAL\ParameterType::INTEGER))
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+        if (!is_array($row)) {
+            throw new \RuntimeException('No admin backend user found for import context', 1743400000);
+        }
+        return $row;
     }
 
     private function makePathRelativeToProjectDirectory(string $absolutePath): string

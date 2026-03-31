@@ -13,72 +13,77 @@
             Your TYPO3 installation is ready. You can now set up your first website.
         </p>
 
-        <f:if condition="!{composerMode}">
-            <p>
-                If you would like to view a list of pre-configured distributions select "Download list of distributions" from the list below.
-                Note: This may take some time to load.
-            </p>
-        </f:if>
-        <f:if condition="{hasDefaultTheme}">
-            <f:then>
-                <p>
-                    The Installation Wizard can create a starter website with the default TYPO3 theme.
-                    This includes a root page, site configuration, and frontend rendering ready to use.
-                </p>
-            </f:then>
-            <f:else>
-                <p>
-                    The Installation Wizard can create a starter website with basic frontend rendering.
-                    This includes a root page, site configuration, and content element support.
-                </p>
-            </f:else>
-        </f:if>
-
         <form method="post" spellcheck="false">
-            <div class="form-group">
-                <f:if condition="!{composerMode}">
+
+            <f:if condition="{distributions}">
+                <div class="panel panel-default">
+                    <h3 class="panel-heading">Available distributions</h3>
+                    <div class="panel-body">
+                        <p>
+                            Import a pre-configured distribution with demo content, pages, and site configuration.
+                        </p>
+                        <f:for each="{distributions}" as="distribution" iteration="iterator">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="create-site-{distribution.packageKey}" name="install[values][sitesetup]" value="createsite:{distribution.packageKey}"{f:if(condition: iterator.isFirst, then: ' checked="checked"')} />
+                                <label class="form-check-label" for="create-site-{distribution.packageKey}">
+                                    <strong>{distribution.title}</strong>
+                                    <f:if condition="{distribution.description}">
+                                        <br /><small>{distribution.description}</small>
+                                    </f:if>
+                                </label>
+                            </div>
+                        </f:for>
+                    </div>
+                </div>
+            </f:if>
+
+            <div class="panel panel-default">
+                <h3 class="panel-heading">Other options</h3>
+                <div class="panel-body">
+                    <f:if condition="!{composerMode}">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
+                            <label class="form-check-label" for="load-distributions">
+                                <strong>Browse all distributions</strong>
+                                <br /><small>View a list of available distributions after login</small>
+                            </label>
+                        </div>
+                    </f:if>
+                    <f:if condition="{offerToCreateBasicSite}">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="create-site" name="install[values][sitesetup]" value="createsite"{f:if(condition: '{distributions -> f:count()} == 0', then: ' checked="checked"')} />
+                            <label class="form-check-label" for="create-site">
+                                <strong>Create a basic starter website</strong>
+                                <br /><small>Set up a root page, site configuration and basic content rendering</small>
+                            </label>
+                        </div>
+                    </f:if>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
-                        <label class="form-check-label" for="load-distributions">
-                            Download list of distributions
+                        <input class="form-check-input" type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" />
+                        <label class="form-check-label" for="do-nothing">
+                            <strong>Skip setup</strong>
+                            <br /><small>Do nothing, take me straight to the backend</small>
                         </label>
                     </div>
-                </f:if>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" id="create-site" name="install[values][sitesetup]" value="createsite"{f:if(condition: hasDefaultTheme, then: ' checked="checked"')} />
-                    <label class="form-check-label" for="create-site">
-                        <f:if condition="{hasDefaultTheme}">
-                            <f:then>Create starter website with default theme</f:then>
-                            <f:else>Create starter website with basic rendering</f:else>
-                        </f:if>
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing"{f:if(condition: '!{hasDefaultTheme}', then: ' checked="checked"')} />
-                    <label class="form-check-label" for="do-nothing">
-                        Do nothing, take me straight to the backend
-                    </label>
                 </div>
             </div>
 
-            <h3>Pre-configured backend user groups</h3>
-            <p>
-                If you would like to have pre-configured and ready to use base backend user groups "Editor" and "Advanced Editor", select this option.
-                You can rename these preset backend user groups after their creation.
-            </p>
-
-            <div class="form-group">
-                <div class="form-check form-check-type-toggle">
-                    <input class="form-check-input" type="checkbox" id="create-groups" name="install[values][backendgroups]" value="creategroups" />
-                    <label class="form-check-label" for="create-groups">
-                        Create default backend user groups
-                    </label>
+            <div class="panel panel-default">
+                <h3 class="panel-heading">Pre-configured backend user groups</h3>
+                <div class="panel-body">
+                    <div class="form-check form-check-type-toggle">
+                        <input class="form-check-input" type="checkbox" id="create-groups" name="install[values][backendgroups]" value="creategroups" />
+                        <label class="form-check-label" for="create-groups">
+                            <strong>Create default backend user groups</strong>
+                            <br /><small>Pre-configured "Editor" and "Advanced Editor" groups, ready to use</small>
+                        </label>
+                    </div>
                 </div>
             </div>
 
             <div class="text-end">
                 <button type="submit" class="btn btn-primary t3js-installer-defaultConfiguration-execute">
-                    Open the TYPO3 Backend
+                    Finish installation
                 </button>
             </div>
         </form>

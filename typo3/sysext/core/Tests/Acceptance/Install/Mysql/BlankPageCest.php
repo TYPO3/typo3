@@ -60,7 +60,7 @@ final class BlankPageCest
         // DefaultConfiguration step - Create empty page
         $I->waitForText('Installation complete', 60);
         $I->click('#create-site');
-        $I->click('Open the TYPO3 Backend');
+        $I->click('Finish installation');
 
         // Verify backend login successful
         $I->waitForElement('#t3-username');

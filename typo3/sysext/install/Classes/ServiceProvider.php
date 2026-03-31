@@ -389,6 +389,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Service\SetupService::class),
             $container->get(ConfigurationManager::class),
             $container->get(LateBootService::class),
+            $container->get(FailsafePackageManager::class),
         );
     }
 
