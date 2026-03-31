@@ -43,6 +43,7 @@ final class WarmupCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $formatter = new FormatterHelper();
+        $io->note('This command only considers templates that are using the *.fluid.* file extension.');
         $errors = $deprecations = 0;
         $results = $this->cacheWarmupService->warmupTemplatesInAllPackages();
         $templatesCount = count($results);

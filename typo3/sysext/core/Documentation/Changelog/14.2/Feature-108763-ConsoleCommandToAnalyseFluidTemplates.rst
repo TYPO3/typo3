@@ -3,7 +3,7 @@
 ..  _feature-108763-1769331943:
 
 =============================================================
-Feature: #108763 - Console command to analyse Fluid templates
+Feature: #108763 - Console command to analyze Fluid templates
 =============================================================
 
 See :issue:`108763`
@@ -11,7 +11,7 @@ See :issue:`108763`
 Description
 ===========
 
-The `fluid:analyse` console command is introduced, which analyses
+The `fluid:analyze` console command is introduced, which analyses
 Fluid templates in the current project for correct Fluid syntax and alerts
 about deprecations that are emitted during template parsing.
 
@@ -19,7 +19,7 @@ Usage:
 
 ..  code-block:: bash
 
-    vendor/bin/typo3 fluid:analyse
+    vendor/bin/typo3 fluid:analyze
 
 Example output:
 
@@ -31,7 +31,7 @@ Example output:
 In its initial implementation, the command automatically finds all Fluid
 templates within the current project based on the `*.fluid.*` file extension (See
 :ref:`Feature: #108166 - Fluid file extension and template resolving <feature-108166-1763400992>`)
-and analyses them. By default, TYPO3's system extensions are skipped, this can
+and analyzes them. By default, TYPO3's system extensions are skipped, this can
 be adjusted by specifying the `—-include-system-extensions` CLI option.
 
 The following errors and deprecations are currently supported:
@@ -61,7 +61,7 @@ and the number of errors/deprecations (or success).
 Deprecating ViewHelpers
 -----------------------
 
-The `fluid:analyse` console command can catch deprecations of whole ViewHelpers
+The `fluid:analyze` console command can catch deprecations of whole ViewHelpers
 if the deprecation is emitted during parse time of a template. This is possible
 by implementing the :php-short:`\TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperNodeInitializedEventInterface`:
 
@@ -128,7 +128,8 @@ be triggered if the argument is actually used in a template.
 Impact
 ======
 
-The new `fluid:analyse` console command can be used to check basic validity of Fluid
-templates in a project and can discover deprecated functionality used in template files.
+The new `fluid:analyze` console command can be used to check basic validity of Fluid
+templates in a project that use the `*.fluid.*` file extension and can discover deprecated
+functionality used in template files.
 
 ..  index:: CLI, Fluid, ext:fluid

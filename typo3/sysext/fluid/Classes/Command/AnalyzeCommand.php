@@ -30,16 +30,16 @@ use TYPO3\CMS\Fluid\Service\TemplateFinder;
 use TYPO3Fluid\Fluid\Validation\TemplateValidator;
 
 /**
- * Analyses Fluid templates for syntax errors and deprecated functionality
+ * Analyzes Fluid templates for syntax errors and deprecated functionality
  *
  * @internal: Specific command implementation, not API itself.
  */
 #[AsCommand(
-    'fluid:analyse',
-    'Analyses Fluid templates for syntax errors and deprecated functionality.',
-    ['fluid:analyze'],
+    'fluid:analyze',
+    'Analyzes Fluid templates for syntax errors and deprecated functionality.',
+    ['fluid:analyse'],
 )]
-final class AnalyseCommand extends Command
+final class AnalyzeCommand extends Command
 {
     public function __construct(
         private readonly TemplateFinder $templateFinder,
@@ -62,6 +62,8 @@ final class AnalyseCommand extends Command
     {
         $formatter = new FormatterHelper();
         $io = new SymfonyStyle($input, $output);
+
+        $io->note('This command only analyzes templates that are using the *.fluid.* file extension.');
 
         $templates = $this->templateFinder->findTemplatesInAllPackages($input->getOption('include-system-extensions'));
         $templatesCount = count($templates);
@@ -103,11 +105,11 @@ final class AnalyseCommand extends Command
         if ($output->isVerbose()) {
             if ($errors > 0) {
                 $output->writeln('');
-                $io->error(sprintf('%d error(s) found in %d analysed templates.', $errors, $templatesCount));
+                $io->error(sprintf('%d error(s) found in %d analyzed templates.', $errors, $templatesCount));
             }
             if ($deprecations > 0) {
                 $output->writeln('');
-                $io->warning(sprintf('%d deprecation(s) found in %d analysed templates.', $deprecations, $templatesCount));
+                $io->warning(sprintf('%d deprecation(s) found in %d analyzed templates.', $deprecations, $templatesCount));
             }
             if ($errors === 0 && $deprecations === 0) {
                 $io->success(sprintf('%d templates analyzed without errors or deprecations.', $templatesCount));
