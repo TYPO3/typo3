@@ -365,7 +365,7 @@ class CommandUtility
             foreach ($paths as $path) {
                 // Make absolute path of relative
                 if (!str_starts_with($path, '/')) {
-                    $path = Environment::getPublicPath() . '/' . $path;
+                    $path = Environment::getProjectPath() . '/' . $path;
                 }
                 if (!isset(self::$paths[$path])) {
                     if (@is_dir($path)) {

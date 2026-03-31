@@ -2520,7 +2520,6 @@ class GeneralUtility
         return PathUtility::isAbsolutePath($path) && static::validPathStr($path)
             && (
                 str_starts_with($path, Environment::getProjectPath())
-                || str_starts_with($path, Environment::getPublicPath())
                 || PathUtility::isAllowedAdditionalPath($path)
             );
     }
@@ -2534,10 +2533,10 @@ class GeneralUtility
     public static function copyDirectory(string $source, string $destination): void
     {
         if (!str_contains($source, Environment::getProjectPath() . '/')) {
-            $source = Environment::getPublicPath() . '/' . $source;
+            $source = Environment::getProjectPath() . '/' . $source;
         }
         if (!str_contains($destination, Environment::getProjectPath() . '/')) {
-            $destination = Environment::getPublicPath() . '/' . $destination;
+            $destination = Environment::getProjectPath() . '/' . $destination;
         }
         if (static::isAllowedAbsPath($source) && static::isAllowedAbsPath($destination)) {
             static::mkdir_deep($destination);

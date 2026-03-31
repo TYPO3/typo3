@@ -76,11 +76,6 @@ class Environment
     /**
      * @var string
      */
-    protected static $relativePublicPath;
-
-    /**
-     * @var string
-     */
     protected static $currentScript;
 
     /**
@@ -97,6 +92,13 @@ class Environment
      * @var string
      */
     protected static $configPath;
+
+    // Storage for derived values
+    protected static string $labelsPath;
+    protected static string $relativePublicPath;
+    protected static string $extensionsBasePath;
+    protected static string $frameworkBasePath;
+    protected static string $packageStatesFile;
 
     /**
      * Sets up the Environment. Please note that this is not public API and only used within the very early
@@ -121,14 +123,25 @@ class Environment
         self::$context = $context;
         self::$projectPath = $projectPath;
         self::$publicPath = $publicPath;
-        self::$relativePublicPath = '';
-        if ($projectPath !== $publicPath) {
-            self::$relativePublicPath = substr($publicPath, strlen($projectPath) + 1) . '/';
-        }
         self::$varPath = $varPath;
         self::$configPath = $configPath;
         self::$currentScript = $currentScript;
         self::$os = $os;
+
+        // Derived values
+        self::$relativePublicPath = substr($publicPath, strlen($projectPath) + 1) . '/';
+        self::$labelsPath = $varPath . '/labels';
+        self::$extensionsBasePath = $projectPath . '/packages/ext';
+        self::$frameworkBasePath = $projectPath . '/packages/sysext';
+        self::$packageStatesFile = $projectPath . '/packages/PackageStates.php';
+        if ($projectPath === $publicPath) {
+            // Classic mode, legacy directory layout with everything in document root
+            self::$relativePublicPath = '';
+            self::$labelsPath = $configPath . '/l10n';
+            self::$extensionsBasePath = $projectPath . '/typo3conf/ext';
+            self::$frameworkBasePath = $projectPath . '/typo3/sysext';
+            self::$packageStatesFile = $configPath . '/PackageStates.php';
+        }
     }
 
     /**
@@ -237,10 +250,7 @@ class Environment
      */
     public static function getLabelsPath(): string
     {
-        if (self::$publicPath === self::$projectPath) {
-            return self::getPublicPath() . '/typo3conf/l10n';
-        }
-        return self::getVarPath() . '/labels';
+        return self::$labelsPath;
     }
 
     /**
@@ -249,7 +259,7 @@ class Environment
      */
     public static function getFrameworkBasePath(): string
     {
-        return self::getPublicPath() . '/typo3/sysext';
+        return self::$frameworkBasePath;
     }
 
     /**
@@ -257,7 +267,15 @@ class Environment
      */
     public static function getExtensionsPath(): string
     {
-        return self::getPublicPath() . '/typo3conf/ext';
+        return self::$extensionsBasePath;
+    }
+
+    /**
+     * @internal Only for use in Bootstrap and PackageManager
+     */
+    public static function getPackageStatesFile(): string
+    {
+        return self::$packageStatesFile;
     }
 
     /**
@@ -272,7 +290,7 @@ class Environment
      */
     public static function getLegacyConfigPath(): string
     {
-        return self::getPublicPath() . '/typo3conf';
+        return self::getProjectPath() . '/typo3conf';
     }
 
     /**

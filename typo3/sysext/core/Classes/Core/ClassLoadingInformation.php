@@ -98,7 +98,7 @@ class ClassLoadingInformation
         $activeExtensionPackages = static::getActiveExtensionPackages();
 
         $generator = new ClassLoadingInformationGenerator();
-        $classInfoFiles = $generator->buildAutoloadInformationFiles(self::isTestingContext(), Environment::getPublicPath() . '/', $activeExtensionPackages);
+        $classInfoFiles = $generator->buildAutoloadInformationFiles(self::isTestingContext(), Environment::getProjectPath() . '/', $activeExtensionPackages);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile'], true);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File'], true);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_INCLUDE_FILENAME, $classInfoFiles['includesFile'], true);
@@ -201,9 +201,9 @@ class ClassLoadingInformation
     protected static function getClassLoadingInformationDirectory()
     {
         if (self::isTestingContext()) {
-            return Environment::getLegacyConfigPath() . '/' . self::AUTOLOAD_INFO_DIR_TESTS;
+            return dirname(Environment::getExtensionsPath()) . '/' . self::AUTOLOAD_INFO_DIR_TESTS;
         }
-        return Environment::getLegacyConfigPath() . '/' . self::AUTOLOAD_INFO_DIR;
+        return dirname(Environment::getExtensionsPath()) . '/' . self::AUTOLOAD_INFO_DIR;
     }
 
     /**

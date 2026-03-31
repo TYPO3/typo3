@@ -208,7 +208,7 @@ readonly class Bootstrap
     public static function checkIfEssentialConfigurationExists(ConfigurationManager $configurationManager): bool
     {
         if (!Environment::isComposerMode()
-            && !file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php')
+            && !file_exists(Environment::getPackageStatesFile())
         ) {
             // Early return in case system is not properly set up
             return false;
@@ -285,7 +285,7 @@ readonly class Bootstrap
     public static function createPackageCache(FrontendInterface $coreCache): PackageCacheInterface
     {
         if (!Environment::isComposerMode()) {
-            return new PackageStatesPackageCache(Environment::getLegacyConfigPath() . '/PackageStates.php', $coreCache);
+            return new PackageStatesPackageCache(Environment::getPackageStatesFile(), $coreCache);
         }
 
         $composerInstallersPath = InstalledVersions::getInstallPath('typo3/cms-composer-installers');
