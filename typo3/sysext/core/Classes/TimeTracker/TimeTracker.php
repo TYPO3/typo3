@@ -266,7 +266,7 @@ class TimeTracker implements SingletonInterface
         if (!$this->finishtime) {
             $this->finish();
         }
-        return $this->getDifferenceToStarttime($this->finishtime ?? null);
+        return $this->getDifferenceToStarttime($this->finishtime);
     }
 
     /**

@@ -4231,6 +4231,12 @@ parameters:
 			path: ../../typo3/sysext/seo/Classes/XmlSitemap/XmlSitemapRenderer.php
 
 		-
+			message: '#^Strict comparison using \=\=\= between 1\|2\|4 and 0 will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
+
+		-
 			message: '#^Parameter \#1 \$array \(non\-empty\-list\<TYPO3\\CMS\\Backend\\Form\\Behavior\\OnFieldChangeInterface\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1
