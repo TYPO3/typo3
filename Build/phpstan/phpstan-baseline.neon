@@ -6559,6 +6559,12 @@ parameters:
 			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
 
 		-
+			message: '#^Strict comparison using \=\=\= between 1\|2\|4 and 0 will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
+
+		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
 			count: 1
