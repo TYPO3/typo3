@@ -52,7 +52,7 @@ class FileHandlingUtility
     /**
      * Unpack an extension in t3x data format and write files
      */
-    public function unpackExtensionFromExtensionDataArray(string $extensionKey, array $extensionData): void
+    public function unpackExtensionFromExtensionDataArray(string $extensionKey, array $extensionData, string $version): void
     {
         $files = $extensionData['FILES'] ?? [];
         $emConfData = $extensionData['EM_CONF'] ?? [];
@@ -62,6 +62,7 @@ class FileHandlingUtility
         $this->createDirectoriesForExtensionFiles($directories, $extensionDir);
         $this->writeExtensionFiles($files, $extensionDir);
         $this->writeEmConfToFile($extensionKey, $emConfData, $extensionDir);
+        $this->enrichComposerJsonWithComposerCapableFields($extensionKey, $extensionDir, $version);
         $this->reloadPackageInformation($extensionKey);
     }
 
@@ -125,6 +126,53 @@ class FileHandlingUtility
             $this->logger->error('Extracting the extension archive failed', ['exception' => $e]);
             throw new ExtensionManagerException('Extracting the extension archive failed: ' . $e->getMessage(), 1565777179, $e);
         }
+        $this->enrichComposerJsonWithComposerCapableFields($fileName, $extensionDir);
+    }
+
+    /**
+     * Enriches an extension's composer.json with version and providesPackages
+     * if these fields are not yet present. The version is taken from the
+     * provided $version parameter, or read from ext_emconf.php as fallback.
+     * Packages listed in require/suggest that are neither TYPO3 framework
+     * packages nor known Composer dependencies are added as provided packages,
+     * as they cannot be installed via Composer in classic mode.
+     */
+    protected function enrichComposerJsonWithComposerCapableFields(string $extensionKey, string $extensionDir, string $version = ''): void
+    {
+        $composerJsonPath = $extensionDir . 'composer.json';
+        $composerJson = json_decode(file_get_contents($composerJsonPath), true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($composerJson)) {
+            throw new ExtensionManagerException('Reading the composer.json failed', 1775064630);
+        }
+        $hasVersion = isset($composerJson['version']) || isset($composerJson['extra']['typo3/cms']['version']);
+        $hasProvidesPackages = isset($composerJson['extra']['typo3/cms']['Package']['providesPackages']);
+        if ($hasVersion && $hasProvidesPackages) {
+            return;
+        }
+        if (!$hasVersion) {
+            if ($version === '') {
+                $emConf = $this->emConfUtility->includeEmConf($extensionKey, $extensionDir);
+                $version = is_array($emConf) ? ($emConf['version'] ?? '') : '';
+            }
+            if ($version !== '') {
+                $composerJson['extra']['typo3/cms']['version'] = $version;
+            }
+        }
+        if (!$hasProvidesPackages) {
+            $providesPackages = [];
+            $possiblyProvidedPackages = array_merge(
+                array_keys($composerJson['require'] ?? []),
+                array_keys($composerJson['suggest'] ?? [])
+            );
+            foreach ($possiblyProvidedPackages as $packageName) {
+                if ($this->packageManager->isFrameworkPackage($packageName) || $this->packageManager->isComposerDependency($packageName)) {
+                    continue;
+                }
+                $providesPackages[$packageName] = '';
+            }
+            $composerJson['extra']['typo3/cms']['Package']['providesPackages'] = $providesPackages !== [] ? $providesPackages : new \stdClass();
+        }
+        GeneralUtility::writeFile($composerJsonPath, json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
     }
 
     /**

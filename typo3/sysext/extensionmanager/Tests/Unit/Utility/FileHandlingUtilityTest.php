@@ -157,6 +157,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
             [
                 'makeAndClearExtensionDir',
                 'writeEmConfToFile',
+                'enrichComposerJsonWithComposerCapableFields',
                 'extractDirectoriesFromExtensionData',
                 'createDirectoriesForExtensionFiles',
                 'writeExtensionFiles',
@@ -168,7 +169,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         );
         $subject->expects($this->once())->method('extractDirectoriesFromExtensionData')->willReturn([]);
         $subject->expects($this->once())->method('makeAndClearExtensionDir')->with($extensionKey)->willReturn('my_path');
-        $subject->unpackExtensionFromExtensionDataArray($extensionKey, []);
+        $subject->unpackExtensionFromExtensionDataArray($extensionKey, [], '1.0.0');
     }
 
     #[Test]
@@ -226,6 +227,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
             [
                 'makeAndClearExtensionDir',
                 'writeEmConfToFile',
+                'enrichComposerJsonWithComposerCapableFields',
                 'extractDirectoriesFromExtensionData',
                 'createDirectoriesForExtensionFiles',
                 'writeExtensionFiles',
@@ -240,7 +242,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $subject->expects($this->once())->method('makeAndClearExtensionDir')->with($extensionData['extKey'])->willReturn('my_path');
         $subject->expects($this->once())->method('writeExtensionFiles')->with($cleanedFiles);
         $subject->expects($this->once())->method('reloadPackageInformation')->with('test');
-        $subject->unpackExtensionFromExtensionDataArray('test', $extensionData);
+        $subject->unpackExtensionFromExtensionDataArray('test', $extensionData, '1.0.0');
     }
 
     #[Test]
@@ -331,6 +333,215 @@ final class FileHandlingUtilityTest extends UnitTestCase
         $subject->_call('createDirectoriesForExtensionFiles', $directories, $rootPath);
         self::assertDirectoryExists($rootPath . 'doc/');
         self::assertDirectoryExists($rootPath . 'mod/doc/');
+    }
+
+    #[Test]
+    public function enrichComposerJsonWithComposerCapableFieldsAddsVersionAndProvidesPackages(): void
+    {
+        $extKey = $this->createFakeExtension();
+        $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
+        file_put_contents($rootPath . 'composer.json', json_encode([
+            'name' => 'vendor/' . $extKey,
+            'type' => 'typo3-cms-extension',
+            'extra' => [
+                'typo3/cms' => [
+                    'extension-key' => $extKey,
+                ],
+            ],
+        ]));
+        file_put_contents($rootPath . 'ext_emconf.php', '<?php $EM_CONF[$_EXTKEY] = ["version" => "2.3.4"];');
+        $emConfUtility = new EmConfUtility();
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            null,
+            [
+                $this->createMock(PackageManager::class),
+                $emConfUtility,
+                $this->createMock(OpcodeCacheService::class),
+                $this->createMock(ZipService::class),
+                $this->createMock(LanguageServiceFactory::class),
+                new NullLogger(),
+            ]
+        );
+        $subject->_call('enrichComposerJsonWithComposerCapableFields', $extKey, $rootPath);
+        $composerJson = json_decode(file_get_contents($rootPath . 'composer.json'), true);
+        self::assertArrayNotHasKey('version', $composerJson);
+        self::assertSame('2.3.4', $composerJson['extra']['typo3/cms']['version']);
+        self::assertSame([], (array)$composerJson['extra']['typo3/cms']['Package']['providesPackages']);
+    }
+
+    #[Test]
+    public function enrichComposerJsonWithComposerCapableFieldsDoesNotOverwriteExistingValues(): void
+    {
+        $extKey = $this->createFakeExtension();
+        $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
+        file_put_contents($rootPath . 'composer.json', json_encode([
+            'name' => 'vendor/' . $extKey,
+            'type' => 'typo3-cms-extension',
+            'version' => '1.0.0',
+            'extra' => [
+                'typo3/cms' => [
+                    'extension-key' => $extKey,
+                    'Package' => [
+                        'providesPackages' => ['some/package' => ''],
+                    ],
+                ],
+            ],
+        ]));
+        file_put_contents($rootPath . 'ext_emconf.php', '<?php $EM_CONF[$_EXTKEY] = ["version" => "2.3.4"];');
+        $emConfUtility = new EmConfUtility();
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            null,
+            [
+                $this->createMock(PackageManager::class),
+                $emConfUtility,
+                $this->createMock(OpcodeCacheService::class),
+                $this->createMock(ZipService::class),
+                $this->createMock(LanguageServiceFactory::class),
+                new NullLogger(),
+            ]
+        );
+        $subject->_call('enrichComposerJsonWithComposerCapableFields', $extKey, $rootPath);
+        $composerJson = json_decode(file_get_contents($rootPath . 'composer.json'), true);
+        self::assertSame('1.0.0', $composerJson['version']);
+        self::assertArrayNotHasKey('version', $composerJson['extra']['typo3/cms']);
+        self::assertSame(['some/package' => ''], $composerJson['extra']['typo3/cms']['Package']['providesPackages']);
+    }
+
+    #[Test]
+    public function enrichComposerJsonWithComposerCapableFieldsDoesNotOverwriteExistingExtraVersion(): void
+    {
+        $extKey = $this->createFakeExtension();
+        $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
+        file_put_contents($rootPath . 'composer.json', json_encode([
+            'name' => 'vendor/' . $extKey,
+            'type' => 'typo3-cms-extension',
+            'extra' => [
+                'typo3/cms' => [
+                    'extension-key' => $extKey,
+                    'version' => '3.0.0',
+                ],
+            ],
+        ]));
+        file_put_contents($rootPath . 'ext_emconf.php', '<?php $EM_CONF[$_EXTKEY] = ["version" => "2.3.4"];');
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            null,
+            [
+                $this->createMock(PackageManager::class),
+                new EmConfUtility(),
+                $this->createMock(OpcodeCacheService::class),
+                $this->createMock(ZipService::class),
+                $this->createMock(LanguageServiceFactory::class),
+                new NullLogger(),
+            ]
+        );
+        $subject->_call('enrichComposerJsonWithComposerCapableFields', $extKey, $rootPath);
+        $composerJson = json_decode(file_get_contents($rootPath . 'composer.json'), true);
+        self::assertArrayNotHasKey('version', $composerJson);
+        self::assertSame('3.0.0', $composerJson['extra']['typo3/cms']['version']);
+        self::assertSame([], (array)$composerJson['extra']['typo3/cms']['Package']['providesPackages']);
+    }
+
+    #[Test]
+    public function enrichComposerJsonWithComposerCapableFieldsAddsProvidesPackagesWithoutExtEmConf(): void
+    {
+        $extKey = $this->createFakeExtension();
+        $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
+        file_put_contents($rootPath . 'composer.json', json_encode([
+            'name' => 'vendor/' . $extKey,
+            'type' => 'typo3-cms-extension',
+        ]));
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            null,
+            [
+                $this->createMock(PackageManager::class),
+                new EmConfUtility(),
+                $this->createMock(OpcodeCacheService::class),
+                $this->createMock(ZipService::class),
+                $this->createMock(LanguageServiceFactory::class),
+                new NullLogger(),
+            ]
+        );
+        $subject->_call('enrichComposerJsonWithComposerCapableFields', $extKey, $rootPath);
+        $composerJson = json_decode(file_get_contents($rootPath . 'composer.json'), true);
+        self::assertArrayNotHasKey('version', $composerJson);
+        self::assertArrayNotHasKey('version', $composerJson['extra']['typo3/cms']);
+        self::assertSame([], (array)$composerJson['extra']['typo3/cms']['Package']['providesPackages']);
+    }
+
+    #[Test]
+    public function enrichComposerJsonWithComposerCapableFieldsUsesProvidedVersion(): void
+    {
+        $extKey = $this->createFakeExtension();
+        $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
+        file_put_contents($rootPath . 'composer.json', json_encode([
+            'name' => 'vendor/' . $extKey,
+            'type' => 'typo3-cms-extension',
+        ]));
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            null,
+            [
+                $this->createMock(PackageManager::class),
+                new EmConfUtility(),
+                $this->createMock(OpcodeCacheService::class),
+                $this->createMock(ZipService::class),
+                $this->createMock(LanguageServiceFactory::class),
+                new NullLogger(),
+            ]
+        );
+        $subject->_call('enrichComposerJsonWithComposerCapableFields', $extKey, $rootPath, '5.0.0');
+        $composerJson = json_decode(file_get_contents($rootPath . 'composer.json'), true);
+        self::assertArrayNotHasKey('version', $composerJson);
+        self::assertSame('5.0.0', $composerJson['extra']['typo3/cms']['version']);
+        self::assertSame([], (array)$composerJson['extra']['typo3/cms']['Package']['providesPackages']);
+    }
+
+    #[Test]
+    public function enrichComposerJsonWithComposerCapableFieldsDerivesProvidesPackagesFromRequirements(): void
+    {
+        $extKey = $this->createFakeExtension();
+        $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
+        file_put_contents($rootPath . 'composer.json', json_encode([
+            'name' => 'vendor/' . $extKey,
+            'type' => 'typo3-cms-extension',
+            'require' => [
+                'typo3/cms-core' => '^14.4',
+                'php' => '^8.2',
+                'vendor/bundled-library' => '^2.0',
+            ],
+            'suggest' => [
+                'vendor/optional-library' => 'For additional features',
+            ],
+        ]));
+        $packageManager = $this->createMock(PackageManager::class);
+        $packageManager->method('isFrameworkPackage')->willReturnCallback(
+            static fn(string $packageName): bool => $packageName === 'typo3/cms-core'
+        );
+        $packageManager->method('isComposerDependency')->willReturnCallback(
+            static fn(string $packageName): bool => $packageName === 'php'
+        );
+        $subject = $this->getAccessibleMock(
+            FileHandlingUtility::class,
+            null,
+            [
+                $packageManager,
+                new EmConfUtility(),
+                $this->createMock(OpcodeCacheService::class),
+                $this->createMock(ZipService::class),
+                $this->createMock(LanguageServiceFactory::class),
+                new NullLogger(),
+            ]
+        );
+        $subject->_call('enrichComposerJsonWithComposerCapableFields', $extKey, $rootPath, '5.0.0');
+        $composerJson = json_decode(file_get_contents($rootPath . 'composer.json'), true);
+        self::assertSame(
+            ['vendor/bundled-library' => '', 'vendor/optional-library' => ''],
+            $composerJson['extra']['typo3/cms']['Package']['providesPackages']
+        );
     }
 
     #[Test]
