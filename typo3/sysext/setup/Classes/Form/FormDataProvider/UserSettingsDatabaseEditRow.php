@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Setup\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\UserSettingsSchema;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -57,10 +59,36 @@ readonly class UserSettingsDatabaseEditRow implements FormDataProviderInterface
         $result['databaseRow']['pid'] = 0;
         $result['databaseRow']['password'] = $backendUser->user['password'] ?? '';
         $result['databaseRow']['password2'] = $backendUser->user['password'] ?? '';
+        $result['databaseRow']['avatar'] = $this->getAvatarFileUid((int)$backendUser->user['uid']);
 
         // Load user settings from uc array
         $result['databaseRow']['user_settings'] = $backendUser->getUserSettings()->toArray();
         return $result;
+    }
+
+    protected function getAvatarFileUid(int $beUserId): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+        $file = $queryBuilder->select('uid_local')
+            ->from('sys_file_reference')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tablenames',
+                    $queryBuilder->createNamedParameter('be_users')
+                ),
+                $queryBuilder->expr()->eq(
+                    'fieldname',
+                    $queryBuilder->createNamedParameter('avatar')
+                ),
+                $queryBuilder->expr()->eq(
+                    'uid_foreign',
+                    $queryBuilder->createNamedParameter($beUserId, Connection::PARAM_INT)
+                )
+            )
+            ->executeQuery()
+            ->fetchOne();
+
+        return (int)$file;
     }
 
     protected function getBackendUser(): BackendUserAuthentication
