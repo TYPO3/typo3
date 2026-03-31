@@ -136,7 +136,7 @@ class ElementInformationController
             $typeRenderObj = GeneralUtility::makeInstance($className);
             if (is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
                 if ($typeRenderObj->isValid($this->type, $this)) {
-                    $view->assign('hookContent', $typeRenderObj->render($this->type, $this));
+                    $view->assign('hookContent', $typeRenderObj->render($this->type, $this, $view));
                     return $view->renderResponse('ContentElement/ElementInformation');
                 }
             }
@@ -157,7 +157,7 @@ class ElementInformationController
     /**
      * Get page title with icon, table title and record title
      */
-    protected function getPageTitle(): array
+    public function getPageTitle(): array
     {
         $pageTitle = [
             'title' => BackendUtility::getRecordTitle($this->table, $this->row),
@@ -176,6 +176,26 @@ class ElementInformationController
             $pageTitle['icon'] = $this->iconFactory->getIconForRecord($this->table, $this->row, IconSize::SMALL);
         }
         return $pageTitle;
+    }
+
+    public function getTable(): ?string
+    {
+        return $this->table;
+    }
+
+    public function getRow(): array
+    {
+        return $this->row;
+    }
+
+    public function getFileObject(): ?File
+    {
+        return $this->fileObject;
+    }
+
+    public function getFolderObject(): ?Folder
+    {
+        return $this->folderObject;
     }
 
     /**
