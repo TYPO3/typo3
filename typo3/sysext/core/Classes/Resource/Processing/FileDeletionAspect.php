@@ -30,10 +30,10 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 
 /**
- * The aspect cleans up database records, processed files and file references
+ * Clean up database records, processed files and file references
  *
- * We do not have AOP in TYPO3 for now, thus the aspect which
- * deals with deleted files is a list of PSR-14 event listeners which react on file deletion.
+ * The aspect which deals with deleted files is a list of PSR-14
+ * event listeners which react on file deletion.
  *
  * @internal this is a list of Event Listeners, and not part of TYPO3 Core API.
  */
@@ -84,12 +84,7 @@ final readonly class FileDeletionAspect
                 ]
             );
         } elseif ($fileObject instanceof ProcessedFile) {
-            $this->connectionPool->getConnectionForTable('sys_file_processedfile')->delete(
-                'sys_file_processedfile',
-                [
-                    'uid' => $fileObject->getUid(),
-                ]
-            );
+            $this->processedFileRepository->remove($fileObject);
         }
     }
 
@@ -104,7 +99,7 @@ final readonly class FileDeletionAspect
 
         if ($metaDataUid <= 0) {
             // No metadata record exists for the given file. The file might not
-            // have been indexed or the meta data record was deleted manually.
+            // have been indexed or the metadata record was deleted manually.
             return;
         }
 

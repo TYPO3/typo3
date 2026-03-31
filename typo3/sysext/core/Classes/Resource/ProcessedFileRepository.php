@@ -19,9 +19,12 @@ namespace TYPO3\CMS\Core\Resource;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 use TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry;
@@ -42,6 +45,8 @@ readonly class ProcessedFileRepository
         private LoggerInterface $logger,
         private ConnectionPool $connectionPool,
         private Context $context,
+        #[Autowire(service: 'cache.runtime')]
+        private FrontendInterface $runtimeCache,
     ) {}
 
     /**
@@ -137,6 +142,8 @@ readonly class ProcessedFileRepository
 
             $uid = $connection->lastInsertId();
             $processedFile->updateProperties(['uid' => $uid]);
+
+            $this->flushRuntimeCacheOfOriginal($processedFile);
         }
     }
 
@@ -163,6 +170,8 @@ readonly class ProcessedFileRepository
                 ],
                 ['configuration' => Connection::PARAM_LOB]
             );
+
+            $this->flushRuntimeCacheOfOriginal($processedFile);
         }
     }
 
@@ -174,31 +183,15 @@ readonly class ProcessedFileRepository
         // Creating a task object to only fetch cleaned configuration properties
         $task = $this->prepareTaskObject($file, $taskType, $configuration);
         $configuration = $task->getConfiguration();
+        $configurationSha1 = sha1((new ConfigurationService())->serialize($configuration));
 
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_processedfile');
-        $databaseRow = $queryBuilder
-            ->select('*')
-            ->from('sys_file_processedfile')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'original',
-                    $queryBuilder->createNamedParameter($file->getUid(), Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq('task_type', $queryBuilder->createNamedParameter($taskType)),
-                $queryBuilder->expr()->eq(
-                    'configurationsha1',
-                    $queryBuilder->createNamedParameter(sha1((new ConfigurationService())->serialize($configuration)))
-                )
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-
-        if (is_array($databaseRow)) {
-            $processedFile = $this->createDomainObject($databaseRow);
-        } else {
-            $processedFile = $this->createNewProcessedFileObject($file, $taskType, $configuration);
+        foreach ($this->getAllByOriginal($file, $taskType) as $databaseRow) {
+            if ($databaseRow['configurationsha1'] === $configurationSha1) {
+                return $this->createDomainObject($databaseRow);
+            }
         }
-        return $processedFile;
+
+        return $this->createNewProcessedFileObject($file, $taskType, $configuration);
     }
 
     /**
@@ -206,20 +199,8 @@ readonly class ProcessedFileRepository
      */
     public function findAllByOriginalFile(File $file): array
     {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_processedfile');
-        $result = $queryBuilder
-            ->select('*')
-            ->from('sys_file_processedfile')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'original',
-                    $queryBuilder->createNamedParameter($file->getUid(), Connection::PARAM_INT)
-                )
-            )
-            ->executeQuery();
-
         $itemList = [];
-        while ($row = $result->fetchAssociative()) {
+        foreach ($this->getAllByOriginal($file) as $row) {
             $itemList[] = $this->createDomainObject($row);
         }
         return $itemList;
@@ -279,7 +260,121 @@ readonly class ProcessedFileRepository
             $connection->delete('sys_file_processedfile', ['storage' => $storageUid], [Connection::PARAM_INT]);
         }
 
+        $this->runtimeCache->flushByTag('processed-files');
+
         return $errorCount;
+    }
+
+    /**
+     * Removes a single processed file database row.
+     */
+    public function remove(ProcessedFile $processedFile): void
+    {
+        if (!$processedFile->isPersisted()) {
+            return;
+        }
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_processedfile');
+        $queryBuilder
+            ->delete('sys_file_processedfile')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($processedFile->getUid(), Connection::PARAM_INT)
+                )
+            )
+            ->executeStatement();
+
+        $this->flushRuntimeCacheOfOriginal($processedFile);
+    }
+
+    /**
+     * Removes processed file database rows by uid. The original files are unknown
+     * on this path, so the whole runtime cache is flushed to keep it coherent.
+     */
+    public function removeByUids(array $uids): int
+    {
+        if ($uids === []) {
+            return 0;
+        }
+        $connection = $this->connectionPool->getConnectionForTable('sys_file_processedfile');
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+        $deletedRecords = 0;
+        foreach (array_chunk($uids, $maxBindParameters) as $chunk) {
+            $queryBuilder = $connection->createQueryBuilder();
+            $deletedRecords += $queryBuilder
+                ->delete('sys_file_processedfile')
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'uid',
+                        $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
+                    )
+                )
+                ->executeStatement();
+        }
+
+        $this->runtimeCache->flushByTag('processed-files');
+
+        return $deletedRecords;
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    protected function getAllByOriginal(File $file, ?string $taskType = null): array
+    {
+        $cacheIdentifier = 'processed-file-repository-original-' . $file->getUid();
+        if ($taskType !== null) {
+            $cacheIdentifier .= '-tasktype-' . md5($taskType);
+        }
+
+        $cachedRows = $this->runtimeCache->get($cacheIdentifier);
+        if (is_array($cachedRows)) {
+            return $cachedRows;
+        }
+
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_processedfile');
+        $where = [
+            $queryBuilder->expr()->eq(
+                'original',
+                $queryBuilder->createNamedParameter($file->getUid(), Connection::PARAM_INT)
+            ),
+        ];
+        if ($taskType !== null) {
+            $where[] = $queryBuilder->expr()->eq('task_type', $queryBuilder->createNamedParameter($taskType));
+        }
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('sys_file_processedfile')
+            ->where(...$where)
+            ->executeQuery();
+
+        $rows = [];
+        while (($row = $result->fetchAssociative()) !== false) {
+            $rows[] = $row;
+        }
+
+        $this->runtimeCache->set($cacheIdentifier, $rows, ['processed-files', $this->getRuntimeCacheTagOfOriginal($file)]);
+
+        return $rows;
+    }
+
+    protected function flushRuntimeCacheOfOriginal(array|ProcessedFile|File|int $files): void
+    {
+        if (!is_array($files)) {
+            $files = [$files];
+        }
+        $tags = array_map($this->getRuntimeCacheTagOfOriginal(...), $files);
+        $this->runtimeCache->flushByTags($tags);
+    }
+
+    protected function getRuntimeCacheTagOfOriginal(ProcessedFile|File|int $file): string
+    {
+        return 'processed-file-original-' . match (true) {
+            $file instanceof ProcessedFile => $file->getOriginalFile()->getUid(),
+            $file instanceof File => $file->getUid(),
+            default => $file
+        };
     }
 
     /**

@@ -71,7 +71,7 @@ class CleanUpLocalProcessedFilesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $files = $this->cleanProcessedFilesService->getFilesToClean(0, $input->getOption('all'));
+        $files = $this->cleanProcessedFilesService->getFilesToClean($input->getOption('all'));
         $records = $this->cleanProcessedFilesService->getRecordsToClean($input->getOption('all'));
 
         if ($output->isVerbose()) {
