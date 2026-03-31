@@ -20,6 +20,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Package\Cache\PackageCacheEntry;
 use TYPO3\CMS\Core\Package\Cache\PackageCacheInterface;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
@@ -922,7 +923,14 @@ class PackageManager implements SingletonInterface
         $packageKey = $this->getPackageKeyFromManifest($composerManifest, $manifestPath);
         $extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath, $packageKey);
         if ($extensionManagerConfiguration !== null) {
-            trigger_error(sprintf('Extension "%s" is having a ext_emconf.php file, which is deprecated. Use composer.json exclusively instead.', $packageKey), E_USER_DEPRECATED);
+            trigger_error(
+                sprintf(
+                    'Extension "%s" is having an ext_emconf.php file, which is deprecated. Additionally the composer.json is missing "version" and "providesPackages" declaration. See %s for details.',
+                    $packageKey,
+                    Typo3Information::getDocsLink('changelog:deprecation-108345-1774126701'),
+                ),
+                E_USER_DEPRECATED
+            );
             $composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(
                 $packageKey,
                 $extensionManagerConfiguration,

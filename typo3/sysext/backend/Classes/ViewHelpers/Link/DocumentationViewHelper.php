@@ -65,7 +65,7 @@ final class DocumentationViewHelper extends AbstractTagBasedViewHelper
     {
         // Note: This ViewHelper cannot use DI, because it is used in the Install-Tool context where constructor-based DI does not work.
         //       Typo3Information is a simple DO so we do not need to utilize makeInstance() here.
-        $this->tag->addAttribute('href', (new Typo3Information())->getDocsLink($this->arguments['identifier']));
+        $this->tag->addAttribute('href', Typo3Information::getDocsLink($this->arguments['identifier']));
         $this->tag->addAttribute('target', '_blank');
         $this->tag->addAttribute('rel', 'noreferrer');
         $this->tag->setContent($this->renderChildren());

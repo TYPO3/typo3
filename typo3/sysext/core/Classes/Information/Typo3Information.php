@@ -121,12 +121,13 @@ class Typo3Information
      * For example, specifying an identifier like 't3coreapi:troubleshooting-php-troubleshooting-opcode' will return
      * 'https://docs.typo3.org/permalink/t3coreapi:troubleshooting-php-troubleshooting-opcode@14.0'
      */
-    public function getDocsLink(string $identifier): string
+    public static function getDocsLink(string $identifier): string
     {
+        // Static by intention: This method must be usable during early bootstrap to allow
+        // creating docs links before DI is ready, for instance in DI warmup deprecation messages.
         if (str_contains($identifier, '@')) {
             throw new \InvalidArgumentException('The identifier must not contain the "@" character.', 1728643940);
         }
-
         return sprintf(self::URL_DOCS, $identifier, (new Typo3Version())->getBranch());
     }
 }

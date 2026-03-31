@@ -121,7 +121,7 @@ final class PageViewContentObject extends AbstractContentObject
                 sprintf(
                     'PAGEVIEW TypoScript object: Failed to resolve a template file for page layout "%s". See also: %s. The following paths were checked: "%s"',
                     $pageLayoutName,
-                    (new Typo3Information())->getDocsLink('t3tsref:cobj-pageview'),
+                    Typo3Information::getDocsLink('t3tsref:cobj-pageview'),
                     implode('", "', $e->evaluatedTemplatePaths),
                 ),
                 1742058289,

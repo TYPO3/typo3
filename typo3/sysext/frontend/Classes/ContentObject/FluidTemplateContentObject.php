@@ -154,7 +154,7 @@ class FluidTemplateContentObject extends AbstractContentObject
                 sprintf(
                     'FLUIDTEMPLATE TypoScript object: Failed to resolve a template file for templateName "%s". See also: %s. The following paths were checked: "%s"',
                     $templateFilename,
-                    (new Typo3Information())->getDocsLink('t3tsref:cobj-template'),
+                    Typo3Information::getDocsLink('t3tsref:cobj-template'),
                     implode('", "', $e->evaluatedTemplatePaths),
                 ),
                 1772572794,

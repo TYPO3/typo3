@@ -621,7 +621,7 @@ class Check implements CheckInterface
                     . ' it is compiled without --with-eaccelerator-doc-comment-inclusion flag.'
                     . ' This compile flag must be specified, otherwise TYPO3 CMS will not work.' . LF
                     . 'For more information take a look in our documentation ' .
-                    (new Typo3Information())->getDocsLink('t3coreapi:troubleshooting-php-troubleshooting-opcode') . '.',
+                    Typo3Information::getDocsLink('t3coreapi:troubleshooting-php-troubleshooting-opcode') . '.',
                 'PHP Doc comment reflection broken',
                 ContextualFeedbackSeverity::ERROR
             ));
