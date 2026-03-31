@@ -107,7 +107,7 @@ class ContainerBuilder
         $globalConfigDir = Environment::getConfigPath();
         // If the config folder is outside of the document root, we allow further services per-project
         // This is usually the case in composer-based installations
-        if (Environment::isComposerMode() && Environment::getPublicPath() !== Environment::getProjectPath()) {
+        if (Environment::getPublicPath() !== Environment::getProjectPath()) {
             if (file_exists($globalConfigDir . '/system/services.php')) {
                 $phpFileLoader = new PhpFileLoader($containerBuilder, new FileLocator($globalConfigDir . '/system'));
                 $phpFileLoader->load('services.php');

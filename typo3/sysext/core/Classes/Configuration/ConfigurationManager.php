@@ -147,11 +147,7 @@ class ConfigurationManager
     public function getSystemConfigurationFileLocation(bool $relativeToProjectRoot = false): string
     {
         // For composer-based installations, the file is in config/system/settings.php
-        if (Environment::getProjectPath() !== Environment::getPublicPath()) {
-            $path = Environment::getConfigPath() . '/system/settings.php';
-        } else {
-            $path = Environment::getLegacyConfigPath() . '/system/settings.php';
-        }
+        $path = Environment::getConfigPath() . '/system/settings.php';
         if ($relativeToProjectRoot) {
             return substr($path, strlen(Environment::getProjectPath()) + 1);
         }
@@ -178,10 +174,7 @@ class ConfigurationManager
     public function getAdditionalConfigurationFileLocation()
     {
         // For composer-based installations, the file is in config/system/additional.php
-        if (Environment::getProjectPath() !== Environment::getPublicPath()) {
-            return Environment::getConfigPath() . '/system/additional.php';
-        }
-        return Environment::getLegacyConfigPath() . '/system/additional.php';
+        return Environment::getConfigPath() . '/system/additional.php';
     }
 
     /**

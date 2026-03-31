@@ -423,7 +423,7 @@ $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'miscfile_ext\'] = \'zip,xml\';
 $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'features\'][\'security.system.enforceAllowedFileExtensions\'] = ' . ($enforceAllowedFileExtensions ? 'true' : 'false') . ';
 $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'features\'][\'security.system.enforceFileExtensionMimeTypeConsistency\'] = ' . ($enforceFileExtensionMimeTypeConsistency ? 'true' : 'false') . ';
 ';
-        file_put_contents(Environment::getLegacyConfigPath() . '/system/additional.php', $additionalConfVars);
+        file_put_contents(Environment::getConfigPath() . '/system/additional.php', $additionalConfVars);
 
         $postLink = '/de/home';
         $args = [

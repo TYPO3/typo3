@@ -112,8 +112,8 @@ final class RenderViewHelper extends AbstractViewHelper implements ViewHelperNod
                 'EXT:',
                 $path
             );
-            if (str_starts_with($path, Environment::getPublicPath())) {
-                $path = substr($path, strlen(Environment::getPublicPath() . '/'));
+            if (str_starts_with($path, Environment::getProjectPath())) {
+                $path = substr($path, strlen(Environment::getProjectPath() . '/'));
             }
             $debugInfo['Partial'] = 'Partial: ' . $path;
         }

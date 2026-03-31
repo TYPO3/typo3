@@ -73,7 +73,7 @@ class AssetPublishCommand extends Command
         $output->writeln('<bold>Publishing assets from extensions…</bold>');
 
         $exitCode = self::SUCCESS;
-        foreach ($this->packageManager->getActivePackages() as $package) {
+        foreach ($this->packageManager->getAvailablePackages() as $package) {
             $messages = $resourcePublisher->publishResources($package);
             if ($package->isPartOfMinimalUsableSystem()) {
                 // Publish resources for install tool, if it is installed
