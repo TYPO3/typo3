@@ -5226,7 +5226,7 @@ class ContentObjectRenderer
 
     protected function shallDebug(): bool
     {
-        $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')->getConfigArray();
+        $typoScriptConfigArray = $this->getRequest()->getAttribute('frontend.typoscript')?->getConfigArray();
         if (isset($typoScriptConfigArray['debug'])) {
             return (bool)($typoScriptConfigArray['debug']);
         }
