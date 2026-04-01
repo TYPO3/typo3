@@ -335,11 +335,11 @@ abstract class AbstractLinkBrowserController
     }
 
     /**
-     * Add the currently set URL to the view
+     * Add the currently set Link URL to the view
      */
     protected function renderCurrentUrl(ViewInterface $view): void
     {
-        $view->assign('currentUrl', $this->currentLinkHandler->formatCurrentUrl());
+        $view->assign('currentLink', $this->currentLinkHandler->formatCurrentUrl());
     }
 
     /**

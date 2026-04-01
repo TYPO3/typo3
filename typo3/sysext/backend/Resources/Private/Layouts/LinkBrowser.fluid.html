@@ -12,11 +12,11 @@
     </f:then>
     <f:else>
         <div class="element-browser">
-            <f:if condition="{currentUrl}">
+            <f:if condition="{currentLink}">
                 <div class="element-browser-header">
                     <div class="element-browser-header-title">
                         <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:currentLink" />:</strong>
-                        {currentUrl}
+                        {currentLink}
                     </div>
                     <f:if condition="{removeCurrentLink}">
                         <div class="element-browser-header-actions">
