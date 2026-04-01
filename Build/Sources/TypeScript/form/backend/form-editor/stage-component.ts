@@ -583,7 +583,7 @@ function wireAbstractViewFormElementToolbarEventListeners(toolbar: HTMLElement, 
   }
 
   qs('abstractViewToolbarRemoveElement')?.addEventListener('click', function() {
-    getViewModel().showRemoveFormElementModal();
+    getViewModel().showRemoveFormElementModal(formElement);
   });
 }
 
@@ -631,7 +631,7 @@ export function createAndAddAbstractViewFormElementToolbar(
     });
 
     toolbar.addEventListener('toolbar-remove-element', () => {
-      getViewModel().showRemoveFormElementModal();
+      getViewModel().showRemoveFormElementModal(formElement);
     });
   }
 
@@ -908,7 +908,7 @@ export function renderFormElementStageItem(formElement: FormElement, template: H
   });
 
   stageItem.addEventListener('toolbar-remove-element', () => {
-    getViewModel().showRemoveFormElementModal();
+    getViewModel().showRemoveFormElementModal(formElement);
   });
 
   template.replaceChildren(stageItem);
