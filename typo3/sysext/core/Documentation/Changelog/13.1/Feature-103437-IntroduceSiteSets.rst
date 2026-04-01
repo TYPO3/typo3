@@ -17,7 +17,7 @@ blocks for the scope of a site.
 
 Extensions can provide multiple sets in order to ship presets for different
 sites or subsets (think of frameworks) where selected features are exposed
-as a subset (example: `typo3/seo-xml-sitemap`).
+as a subset (example: `typo3/seo-sitemap`).
 
 A set is defined in an extension's subfolder in :file:`Configuration/Sets/`, for
 example :file:`EXT:my_extension/Configuration/Sets/MySet/config.yaml`.
