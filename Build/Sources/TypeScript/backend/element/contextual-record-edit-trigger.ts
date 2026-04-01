@@ -61,12 +61,14 @@ export class ContextualRecordEditTriggerElement extends PseudoButtonLitElement {
   private setupMessageHandling(modal: ModalElement): void {
     const messageTarget = top;
     let savedRecordTitle = '';
+    let hasSaved = false;
     let closeConfirmed = false;
     const messageHandler = (event: MessageEvent): void => {
       if (event.origin !== window.location.origin) {
         return;
       }
       if (event.data?.actionName === 'typo3:editform:saved') {
+        hasSaved = true;
         savedRecordTitle = event.data.recordTitle ?? '';
       }
       if (event.data?.actionName === 'typo3:editform:closed') {
@@ -94,14 +96,14 @@ export class ContextualRecordEditTriggerElement extends PseudoButtonLitElement {
 
     modal.addEventListener('typo3-modal-hidden', () => {
       messageTarget.removeEventListener('message', messageHandler);
-      if (savedRecordTitle !== '') {
+      if (hasSaved) {
         top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
         if (top.TYPO3?.Backend?.ContentContainer) {
           top.TYPO3.Backend.ContentContainer.refresh();
         }
         Notification.success(
           labels.get('notification.record_updated.title'),
-          labels.get('notification.record_updated.message', [savedRecordTitle]),
+          savedRecordTitle !== '' ? labels.get('notification.record_updated.message', [savedRecordTitle]) : undefined,
         );
       } else {
         this.focus();
