@@ -170,9 +170,11 @@ class ColorElement extends AbstractFormElement
 
         $colorPickerAttribute = [
             'swatches' => json_encode(array_values($colorDefinitions)),
-            'opacity' => $opacityEnabled ? 'true' : 'false',
             'color' => htmlspecialchars((string)$itemValue),
         ];
+        if ($opacityEnabled) {
+            $colorPickerAttribute['opacity'] = 'true';
+        }
 
         $mainFieldHtml = [];
         $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
