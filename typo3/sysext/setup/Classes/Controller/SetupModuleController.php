@@ -307,7 +307,7 @@ class SetupModuleController
             // Options which should trigger direct JS persistent update, because
             // their new state needs to be available in JS components right away.
             foreach ($this->userSettingsSchema->getPersistentUpdateFieldNames() as $fieldName) {
-                $fieldValue = (isset($d[$fieldName]) ? 'on' : 0);
+                $fieldValue = ((int)($d[$fieldName] ?? 0)) ? 'on' : 0;
                 if ($fieldValue !== ($backendUser->uc[$fieldName] ?? null)) {
                     $this->persistentUpdate[] = [
                         'fieldName' => $fieldName,
