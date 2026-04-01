@@ -47,10 +47,5 @@
 			},
 			"extension-key": "theme_camino"
 		}
-	},
-	"autoload": {
-		"psr-4": {
-			"TYPO3\\ThemeCamino\\": "Classes/"
-		}
 	}
 }

@@ -274,8 +274,7 @@
 			"TYPO3\\CMS\\Tstemplate\\": "typo3/sysext/tstemplate/Classes/",
 			"TYPO3\\CMS\\Viewpage\\": "typo3/sysext/viewpage/Classes/",
 			"TYPO3\\CMS\\Webhooks\\": "typo3/sysext/webhooks/Classes/",
-			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/",
-			"TYPO3\\ThemeCamino\\": "typo3/sysext/theme_camino/Classes/"
+			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/"
 		},
 		"files": [
 			"typo3/sysext/core/Resources/PHP/GlobalDebugFunctions.php"
