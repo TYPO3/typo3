@@ -1,0 +1,11 @@
+prototypes:
+  standard:
+    formEditor:
+      dynamicJavaScriptModules:
+        additionalViewModelModules:
+          10: '@vendor/my-extension/backend/form-editor/view-model.js'
+      formEditorPartials:
+        FormElement-MyCustomElement: 'Stage/MyCustomElement'
+      formEditorFluidConfiguration:
+        partialRootPaths:
+          100: 'EXT:my_extension/Resources/Private/Backend/Partials/FormEditor/'
