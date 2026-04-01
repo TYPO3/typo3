@@ -6,7 +6,8 @@
 processing:
   mode: default
   # Tags that are allowed in the content in general
-  # Note that some tags like <mark> require you to style them via custom CSS directives in your frontend.
+  # If you adapt this preset, you need to ship your own Checkbox.fluid.html template alongside it
+  # and adapt the `stripTags` call
   allowTags:
     - a
     - br
