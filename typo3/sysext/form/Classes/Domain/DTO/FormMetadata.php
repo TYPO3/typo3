@@ -185,4 +185,24 @@ final readonly class FormMetadata
     {
         return $this->with(['actions' => $actions]);
     }
+
+    /**
+     * Returns a comparable scalar value for the given sort field.
+     *
+     * Field names in SearchCriteria::ORDER_FIELDS are intentionally kept
+     * identical to the property names of this class, so a dynamic lookup
+     * is sufficient. Unknown fields yield null and are skipped by the
+     * caller. Booleans are cast to int for correct numeric ordering.
+     */
+    public function getSortableValue(string $field): int|string|null
+    {
+        if (!property_exists($this, $field)) {
+            return null;
+        }
+        $value = $this->$field;
+        if (is_bool($value)) {
+            return (int)$value;
+        }
+        return is_int($value) || is_string($value) ? $value : null;
+    }
 }

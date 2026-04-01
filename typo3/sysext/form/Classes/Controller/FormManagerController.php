@@ -96,8 +96,8 @@ class FormManagerController extends ActionController
             'paginator' => $arrayPaginator,
             'pagination' => $pagination,
             'searchTerm' => $searchTerm,
-            'orderField' => $orderField,
-            'orderDirection' => $orderDirection,
+            'orderField' => $searchCriteria->orderField,
+            'orderDirection' => $searchCriteria->orderDirection,
             'hasForms' => $hasForms,
             'stylesheets' => $formSettings['formManager']['stylesheets'],
             'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData($formSettings)),
@@ -378,26 +378,9 @@ class FormManagerController extends ActionController
      */
     protected function getAvailableFormDefinitions(array $formSettings, SearchCriteria $searchCriteria): array
     {
-        $allReferencesForFileUid = $this->databaseService->getAllReferencesForFileUid();
-        $allReferencesForPersistenceIdentifier = $this->databaseService->getAllReferencesForPersistenceIdentifier();
-        $allReferencesForFormDefinitionUid = $this->databaseService->getAllReferencesForFormDefinitionUid();
         $availableFormDefinitions = [];
 
         foreach ($this->formPersistenceManager->listForms($formSettings, $searchCriteria) as $formMetadata) {
-            $referenceCount = 0;
-            if (isset($formMetadata->fileUid)
-                && array_key_exists($formMetadata->fileUid, $allReferencesForFileUid)
-            ) {
-                $referenceCount = $allReferencesForFileUid[$formMetadata->fileUid];
-            } elseif ($formMetadata->persistenceIdentifier && array_key_exists($formMetadata->persistenceIdentifier, $allReferencesForFormDefinitionUid)) {
-                $referenceCount = $allReferencesForFormDefinitionUid[$formMetadata->persistenceIdentifier];
-            } elseif ($formMetadata->persistenceIdentifier && array_key_exists($formMetadata->persistenceIdentifier, $allReferencesForPersistenceIdentifier)) {
-                $referenceCount = $allReferencesForPersistenceIdentifier[$formMetadata->persistenceIdentifier];
-            }
-
-            if ($referenceCount > 0) {
-                $formMetadata = $formMetadata->withReferenceCount($referenceCount);
-            }
 
             if ($formMetadata->persistenceIdentifier && !$formMetadata->invalid && !$formMetadata->readOnly) {
                 $editUrl = (string)$this->coreUriBuilder->buildUriFromRoute(

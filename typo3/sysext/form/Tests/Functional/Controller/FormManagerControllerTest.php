@@ -133,7 +133,6 @@ final class FormManagerControllerTest extends FunctionalTestCase
     public function getAvailableFormDefinitionsReturnsProcessedArray(): void
     {
         $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
-        $databaseServiceMock = $this->createMock(DatabaseService::class);
         $subjectMock = $this->getAccessibleMock(
             FormManagerController::class,
             null,
@@ -141,7 +140,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->get(ModuleTemplateFactory::class),
                 $this->createMock(PageRenderer::class),
                 $this->createMock(IconFactory::class),
-                $databaseServiceMock,
+                $this->createMock(DatabaseService::class),
                 $formPersistenceManagerMock,
                 $this->createMock(ExtFormConfigurationManagerInterface::class),
                 $this->createMock(TranslationService::class),
@@ -162,18 +161,12 @@ final class FormManagerControllerTest extends FunctionalTestCase
             storageType: 'filemount',
             duplicateIdentifier: false,
         );
+        // Reference count enrichment now happens inside FormPersistenceManager::listForms().
+        // The mock therefore returns already-enriched metadata.
         $formPersistenceManagerMock->method('listForms')->willReturn([
-            0 => $formMetadata,
-        ]);
-        $databaseServiceMock->method('getAllReferencesForFileUid')->willReturn([
-            0 => 0,
-        ]);
-        $databaseServiceMock->method('getAllReferencesForPersistenceIdentifier')->willReturn([
-            '1:/user_uploads/someFormName.yaml' => 2,
-        ]);
-        $expected = [
             0 => $formMetadata->withReferenceCount(2),
-        ];
+        ]);
+
         self::assertSame(2, $subjectMock->_call('getAvailableFormDefinitions', [], new SearchCriteria(''))[0]->referenceCount);
     }
 

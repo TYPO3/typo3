@@ -35,7 +35,13 @@ final readonly class SearchCriteria
     private const ORDER_ASCENDING = 'asc';
     private const ORDER_DESCENDING = 'desc';
     private const DEFAULT_ORDER_FIELD = 'name';
-    private const ORDER_FIELDS = ['name', 'identifier', 'persistenceIdentifier', 'prototypeName'];
+
+    /**
+     * Allowed sort fields. Each entry MUST match a public property name of
+     * FormMetadata exactly, because FormMetadata::getSortableValue() uses
+     * dynamic property access ($this->$field) instead of an explicit mapping.
+     */
+    private const ORDER_FIELDS = ['name', 'identifier', 'persistenceIdentifier', 'prototypeName', 'storageLocation', 'duplicateIdentifier', 'referenceCount'];
 
     public string $orderField;
     public string $orderDirection;

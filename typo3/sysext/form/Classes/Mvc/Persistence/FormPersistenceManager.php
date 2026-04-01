@@ -33,6 +33,7 @@ use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Form\Mvc\Persistence\Event\AfterFormDefinitionLoadedEvent;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
+use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Storage\StorageAdapterFactory;
 
 /**
@@ -53,6 +54,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
         private FrontendInterface $runtimeCache,
         private EventDispatcherInterface $eventDispatcher,
         private TypoScriptService $typoScriptService,
+        private DatabaseService $databaseService,
     ) {}
 
     /**
@@ -166,6 +168,25 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
                         $forms[$index] = $formMetadata->withDuplicateIdentifier(true);
                     }
                 }
+            }
+        }
+
+        $allReferencesForFileUid = $this->databaseService->getAllReferencesForFileUid();
+        $allReferencesForPersistenceIdentifier = $this->databaseService->getAllReferencesForPersistenceIdentifier();
+        $allReferencesForFormDefinitionUid = $this->databaseService->getAllReferencesForFormDefinitionUid();
+
+        foreach ($forms as $index => $formMetadata) {
+            if (isset($formMetadata->fileUid) && array_key_exists($formMetadata->fileUid, $allReferencesForFileUid)) {
+                $referenceCount = $allReferencesForFileUid[$formMetadata->fileUid];
+            } elseif ($formMetadata->persistenceIdentifier && array_key_exists($formMetadata->persistenceIdentifier, $allReferencesForFormDefinitionUid)) {
+                $referenceCount = $allReferencesForFormDefinitionUid[$formMetadata->persistenceIdentifier];
+            } elseif ($formMetadata->persistenceIdentifier && array_key_exists($formMetadata->persistenceIdentifier, $allReferencesForPersistenceIdentifier)) {
+                $referenceCount = $allReferencesForPersistenceIdentifier[$formMetadata->persistenceIdentifier];
+            } else {
+                $referenceCount = 0;
+            }
+            if ($referenceCount > 0) {
+                $forms[$index] = $formMetadata->withReferenceCount($referenceCount);
             }
         }
 
@@ -332,26 +353,19 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
 
         usort($forms, static function (FormMetadata $a, FormMetadata $b) use ($keys, $sortMultiplier) {
             foreach ($keys as $key) {
-                $aValue = match ($key) {
-                    'name' => $a->name,
-                    'identifier' => $a->identifier,
-                    'persistenceIdentifier' => $a->persistenceIdentifier,
-                    'prototypeName' => $a->prototypeName,
-                    default => null,
-                };
-                $bValue = match ($key) {
-                    'name' => $b->name,
-                    'identifier' => $b->identifier,
-                    'persistenceIdentifier' => $b->persistenceIdentifier,
-                    'prototypeName' => $b->prototypeName,
-                    default => null,
-                };
+                $aValue = $a->getSortableValue($key);
+                $bValue = $b->getSortableValue($key);
 
-                if ($aValue !== null && $bValue !== null) {
-                    $diff = strcasecmp((string)$aValue, (string)$bValue);
-                    if ($diff) {
-                        return $diff * $sortMultiplier;
-                    }
+                if ($aValue === null || $bValue === null) {
+                    continue;
+                }
+
+                $diff = (is_int($aValue) && is_int($bValue))
+                    ? $aValue - $bValue
+                    : strcasecmp((string)$aValue, (string)$bValue);
+
+                if ($diff !== 0) {
+                    return $diff * $sortMultiplier;
                 }
             }
             return 0;

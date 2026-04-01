@@ -50,11 +50,10 @@
                 <table id="forms" class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th class="col-icon"></th>
-                            <th class="col-50 col-responsive">
+                            <th class="col-50 col-responsive" colspan="2">
                                 <f:render section="listHeaderSorting" arguments="{field: 'name', label: 'formManager.form_name', searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}"/>
                             </th>
-                            <th class="col-50 col-path">
+                            <th class="col-path">
                                 <f:render section="listHeaderSorting" arguments="{field: 'storageLocation', label: 'formManager.location', searchTerm: searchTerm, orderField: orderField, orderDirection: orderDirection}"/>
                             </th>
                             <th class="col-state">
@@ -72,15 +71,15 @@
                         <f:for each="{paginator.paginatedItems}" as="form">
                             <tr>
                                 <td class="col-icon">
-                                    <span title="identifier={form.identifier}"><core:icon identifier="content-form" /></span>
+                                    <span title="identifier={form.identifier}"><core:icon identifier="content-form" overlay="{f:if(condition: form.invalid, then: 'overlay-missing', else: '{f:if(condition: form.readOnly, then: \'overlay-locked\')}')}" /></span>
                                 </td>
                                 <td class="col-50 col-responsive">
                                     <f:if condition="{form.invalid} || {form.readOnly}">
                                         <f:then>
                                             {form.name}
-                                            <f:if condition="{form.readOnly} && !{form.invalid}">
-                                                <span class="badge badge-info" title="{f:translate(key: 'form.database:formManager.readOnly')}">
-                                                    <core:icon identifier="actions-lock" size="small" />
+                                            <f:if condition="{form.invalid}">
+                                                <span class="badge badge-danger">
+                                                    <f:translate key="form.database:formManager.invalid" />
                                                 </span>
                                             </f:if>
                                         </f:then>
