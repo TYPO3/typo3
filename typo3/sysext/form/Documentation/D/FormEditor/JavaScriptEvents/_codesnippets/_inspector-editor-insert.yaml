@@ -1,0 +1,18 @@
+prototypes:
+  standard:
+    formEditor:
+      dynamicJavaScriptModules:
+        additionalViewModelModules:
+          10: '@vendor/my-extension/backend/form-editor/view-model.js'
+      formEditorPartials:
+        Inspector-MyCustomEditor: 'Inspector/MyCustomEditor'
+      formEditorFluidConfiguration:
+        partialRootPaths:
+          100: 'EXT:my_extension/Resources/Private/Backend/Partials/FormEditor/'
+    formElementsDefinition:
+      Text:
+        formEditor:
+          editors:
+            600:
+              templateName: 'Inspector-MyCustomEditor'
+              myOption: 'example'
