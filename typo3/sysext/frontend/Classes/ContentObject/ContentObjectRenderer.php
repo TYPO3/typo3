@@ -1597,7 +1597,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_fieldRequired($content = '', $conf = [])
     {
-        if (!trim($this->data[$conf['fieldRequired'] ?? null] ?? '')) {
+        $fieldName = (string)($conf['fieldRequired'] ?? '');
+        if ($fieldName !== '' && !trim($this->data[$fieldName] ?? '')) {
             $content = '';
             $this->stopRendering[$this->stdWrapRecursionLevel] = true;
         }

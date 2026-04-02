@@ -42,15 +42,18 @@ class DatabaseRowDefaultAsReadonly implements FormDataProviderInterface
                 // defaultAsReadonly is not set for this field
                 continue;
             }
-            if (!($result['databaseRow'][$result['processedTca']['ctrl']['languageField'] ?? null] ?? false)
-                || !($result['databaseRow'][$result['processedTca']['ctrl']['transOrigPointerField'] ?? null] ?? false)
+            $languageField = (string)($result['processedTca']['ctrl']['languageField'] ?? '');
+            $transOrigPointerField = (string)($result['processedTca']['ctrl']['transOrigPointerField'] ?? '');
+            if ($languageField === '' || $transOrigPointerField === ''
+                || !($result['databaseRow'][$languageField] ?? false)
+                || !($result['databaseRow'][$transOrigPointerField] ?? false)
             ) {
-                // The current record is not an overlay. Note: This check might have already took place
+                // The current record is not an overlay. Note: This check might already have taken place
                 // while creating the default language row. However, since this field might be set by
                 // other data providers unintentional, we check this here again to be sure.
                 continue;
             }
-            if ((int)$result['databaseRow'][$result['processedTca']['ctrl']['transOrigPointerField']] !== (int)$result['defaultLanguageRow']['uid']) {
+            if ((int)$result['databaseRow'][$transOrigPointerField] !== (int)$result['defaultLanguageRow']['uid']) {
                 // The current records "transOrigPointerField" doesn't point to the current default language row
                 continue;
             }
