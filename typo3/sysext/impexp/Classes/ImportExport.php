@@ -654,7 +654,8 @@ abstract class ImportExport
                 }
             }
             $line['_softRefInfo'] = $softref;
-            $mode = $this->softrefCfg[$softref['subst']['tokenID'] ?? null]['mode'] ?? '';
+            $tokenID = (string)($softref['subst']['tokenID'] ?? '');
+            $mode = $tokenID === '' ? '' : ($this->softrefCfg[$tokenID]['mode'] ?? '');
             if (isset($softref['error']) && $mode !== Import::SOFTREF_IMPORT_MODE_EDITABLE && $mode !== Import::SOFTREF_IMPORT_MODE_EXCLUDE) {
                 $line['msg'] .= $softref['error'];
             }
@@ -663,7 +664,7 @@ abstract class ImportExport
             // Add database relations
             if (($softref['subst']['type'] ?? '') === 'db') {
                 [$referencedTable, $referencedUid] = explode(':', $softref['subst']['recordRef']);
-                $relations = [['table' => $referencedTable, 'id' => $referencedUid, 'tokenID' => $softref['subst']['tokenID']]];
+                $relations = [['table' => $referencedTable, 'id' => $referencedUid, 'tokenID' => $tokenID]];
                 $this->addRelations($relations, $lines, $indent + 1);
             }
         }

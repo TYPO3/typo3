@@ -41,12 +41,14 @@ class GuzzleClientFactory
         // but is preserved for maximum compatibility for now. It may vanish in a major release without notice.
         $stack = ($httpOptions['handler'] ?? null) instanceof HandlerStack ? $httpOptions['handler'] : HandlerStack::create();
 
-        $allowedHosts = $httpOptions['allowed_hosts'][$context] ?? null;
-        if (is_array($allowedHosts)) {
-            $stack->push(
-                new AllowedHostsMiddleware($context, array_filter($allowedHosts, is_string(...))),
-                'typo3_allowed_hosts'
-            );
+        if ($context !== null) {
+            $allowedHosts = $httpOptions['allowed_hosts'][$context] ?? null;
+            if (is_array($allowedHosts)) {
+                $stack->push(
+                    new AllowedHostsMiddleware($context, array_filter($allowedHosts, is_string(...))),
+                    'typo3_allowed_hosts'
+                );
+            }
         }
         unset($httpOptions['allowed_hosts']);
 

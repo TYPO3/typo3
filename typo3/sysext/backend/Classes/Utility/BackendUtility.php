@@ -2240,7 +2240,7 @@ class BackendUtility
                 // If the $var is an array, which denotes the existence of a menu, we check if the value is permitted
                 if (is_array($var) && (!$dontValidateList || !GeneralUtility::inList($dontValidateList, $key))) {
                     // If the setting is an array or not present in the menu-array, MOD_MENU, then the default value is inserted.
-                    if (is_array($settings[$key] ?? null) || !isset($MOD_MENU[$key][$settings[$key] ?? null])) {
+                    if (is_array($settings[$key] ?? null) || !isset($settings[$key]) || !isset($var[$settings[$key]])) {
                         $settings[$key] = (string)key($var);
                         $changed = 1;
                     }
