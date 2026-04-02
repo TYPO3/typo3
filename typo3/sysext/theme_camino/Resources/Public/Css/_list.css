@@ -1,4 +1,6 @@
-.list {
+.list,
+.rich-text ul,
+.rich-text ol {
     li {
         --margin-bottom-list-item: 0;
         --margin-top-list-item: 0;
@@ -8,6 +10,7 @@
 }
 
 
-.list--unordered {
+.list--unordered,
+.rich-text ul {
     list-style-type: unset;
 }
