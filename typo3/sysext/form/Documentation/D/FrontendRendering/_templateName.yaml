@@ -1,0 +1,6 @@
+prototypes:
+  standard:
+    formElementsDefinition:
+      Foo:
+        renderingOptions:
+          templateName: 'Text'

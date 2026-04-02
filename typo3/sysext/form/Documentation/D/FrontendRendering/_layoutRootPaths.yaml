@@ -1,0 +1,8 @@
+prototypes:
+  standard:
+    formElementsDefinition:
+      Form:
+        renderingOptions:
+          layoutRootPaths:
+            10: 'EXT:form/Resources/Private/Frontend/Layouts/'
+            20: 'EXT:my_sitepackage/Resources/Private/Forms/Frontend/Layouts/'

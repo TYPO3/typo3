@@ -1,0 +1,8 @@
+prototypes:
+  standard:
+    formElementsDefinition:
+      Form:
+        renderingOptions:
+          partialRootPaths:
+            10: 'EXT:form/Resources/Private/Frontend/Partials/'
+            20: 'EXT:my_sitepackage/Resources/Private/Forms/Frontend/Partials/'

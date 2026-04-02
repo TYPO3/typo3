@@ -1,0 +1,8 @@
+prototypes:
+  standard:
+    formElementsDefinition:
+      Form:
+        renderingOptions:
+          templateRootPaths:
+            10: 'EXT:form/Resources/Private/Frontend/Templates/'
+            20: 'EXT:my_sitepackage/Resources/Private/Forms/Frontend/Templates/'
