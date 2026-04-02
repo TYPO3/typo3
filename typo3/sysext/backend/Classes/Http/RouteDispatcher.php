@@ -98,9 +98,6 @@ class RouteDispatcher extends Dispatcher
             return null;
         }
         $referrerFlags = GeneralUtility::trimExplode(',', $route->getOption('referrer') ?? '', true);
-        if (!in_array('required', $referrerFlags, true)) {
-            return null;
-        }
         return $this->referrerEnforcer->handle(
             $request,
             [

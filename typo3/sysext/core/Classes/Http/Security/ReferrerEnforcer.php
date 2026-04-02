@@ -40,15 +40,19 @@ abstract readonly class ReferrerEnforcer
     protected const int TYPE_REFERRER_EMPTY = 1;
     protected const int TYPE_REFERRER_SAME_SITE = 2;
     protected const int TYPE_REFERRER_SAME_ORIGIN = 4;
+    protected const int TYPE_REFERRER_CROSS_SITE = 8;
 
     public function handle(ServerRequestInterface $request, array $options): ?ResponseInterface
     {
+        $flags = $options['flags'] ?? [];
+        if ($flags === []) {
+            return null;
+        }
         $referrerType = $this->resolveReferrerType($request);
         // valid referrer, no more actions required
         if ($referrerType & self::TYPE_REFERRER_SAME_ORIGIN) {
             return null;
         }
-        $flags = $options['flags'] ?? [];
         $expiration = $options['expiration'] ?? 5;
         $nonce = $request->getAttribute('nonce');
         // referrer is missing and route requested to refresh
@@ -58,6 +62,7 @@ abstract readonly class ReferrerEnforcer
                 in_array('refresh-always', $flags, true)
                 || ($referrerType & self::TYPE_REFERRER_EMPTY && in_array('refresh-empty', $flags, true))
                 || ($referrerType & self::TYPE_REFERRER_SAME_SITE && in_array('refresh-same-site', $flags, true))
+                || ($referrerType & self::TYPE_REFERRER_CROSS_SITE && in_array('refresh-cross-site', $flags, true))
             )
         ) {
             $refreshUri = $request->getUri();
@@ -86,6 +91,11 @@ abstract readonly class ReferrerEnforcer
                 GeneralUtility::implodeAttributes($attributes, true)
             ));
         }
+
+        if (!in_array('required', $flags, true)) {
+            return null;
+        }
+
         $subject = $options['subject'] ?? '';
         if ($referrerType & self::TYPE_REFERRER_EMPTY) {
             // still empty referrer or invalid referrer, deny route invocation

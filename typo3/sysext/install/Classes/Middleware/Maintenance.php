@@ -326,7 +326,7 @@ class Maintenance implements MiddlewareInterface
             return null;
         }
         return new ReferrerEnforcer()->handle($request, [
-            'flags' => ['refresh-always'],
+            'flags' => ['required', 'refresh-always'],
             'subject' => 'Install Tool',
         ]);
     }
