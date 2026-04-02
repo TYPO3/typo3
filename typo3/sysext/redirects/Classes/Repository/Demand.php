@@ -318,6 +318,10 @@ class Demand
         return ($this->page - 1) * $this->limit;
     }
 
+    /**
+     * This is actually used for the backend filter and therefore only takes properties into account, which
+     * can be filtered for. For example "redirect_type" is not checked because it is not part of the filter.
+     */
     public function getParameters(): array
     {
         $parameters = [];
@@ -326,9 +330,6 @@ class Demand
         }
         if ($this->hasSourceHosts()) {
             $parameters['source_host'] = $this->getFirstSourceHost();
-        }
-        if ($this->hasRedirectType()) {
-            $parameters['redirect_type'] = $this->getRedirectType();
         }
         if ($this->hasTarget()) {
             $parameters['target'] = $this->getTarget();
@@ -349,5 +350,22 @@ class Demand
             $parameters['integrity_status'] = $this->getIntegrityStatus();
         }
         return $parameters;
+    }
+
+    public function getUriParameters(): array
+    {
+        $arguments = [
+            'demand' => $this->getParameters(),
+        ];
+        if ($this->getOrderField() !== self::DEFAULT_ORDER_FIELD) {
+            $arguments['orderField'] = $this->getOrderField();
+        }
+        if ($this->getOrderDirection() !== self::ORDER_ASCENDING) {
+            $arguments['orderDirection'] = $this->getOrderDirection();
+        }
+        if ($this->getPage() > 1) {
+            $arguments['page'] = $this->getPage();
+        }
+        return $arguments;
     }
 }

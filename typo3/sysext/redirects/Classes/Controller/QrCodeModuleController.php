@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Template\Components\MultiRecordSelection\Action;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -58,17 +59,20 @@ class QrCodeModuleController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request);
         $demand = Demand::fromRequest($request);
-        $redirectType = $demand->getRedirectType();
+        if ($request->getMethod() === 'POST') {
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('qrcodes', $demand->getUriParameters()));
+        }
 
+        $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle(
             $this->getLanguageService()->translate('title', 'redirects.modules.qrcodes')
         );
 
         $view->makeDocHeaderModuleMenu();
-        $this->registerDocHeaderButtons($view);
+        $this->registerDocHeaderButtons($view, $demand);
 
+        $redirectType = $demand->getRedirectType();
         $requestUri = $request->getAttribute('normalizedParams')->getRequestUri();
         $languageService = $this->getLanguageService();
         $pagination = $this->modulePaginationService->preparePagination($demand);
@@ -79,12 +83,7 @@ class QrCodeModuleController
             'demand' => $demand,
             'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
             'pagination' => $pagination,
-            'returnUrl' => $this->uriBuilder->buildUriFromRoute('qrcodes', [
-                'page' => $pagination['current'],
-                'demand' =>  $demand->getParameters(),
-                'orderField' => $demand->getOrderField(),
-                'orderDirection' => $demand->getOrderDirection(),
-            ]),
+            'returnUrl' => $this->uriBuilder->buildUriFromRoute('qrcodes', $demand->getUriParameters()),
             'actions' => [
                 new Action(
                     'edit',
@@ -118,7 +117,7 @@ class QrCodeModuleController
     /**
      * Create document header buttons for QR codes
      */
-    protected function registerDocHeaderButtons(ModuleTemplate $view): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view, Demand $demand): void
     {
         $languageService = $this->getLanguageService();
 
@@ -144,7 +143,8 @@ class QrCodeModuleController
 
         $view->getDocHeaderComponent()->setShortcutContext(
             'qrcodes',
-            $languageService->translate('short_description', 'redirects.modules.qrcodes')
+            $languageService->translate('short_description', 'redirects.modules.qrcodes'),
+            $demand->getUriParameters(),
         );
     }
 

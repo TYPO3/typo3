@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -61,20 +62,23 @@ class ManagementController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request);
         $demand = Demand::fromRequest($request);
-        $redirectType = $demand->getRedirectType();
+        if ($request->getMethod() === 'POST') {
+            return new RedirectResponse($this->uriBuilder->buildUriFromRoute('redirects', $demand->getUriParameters()));
+        }
 
+        $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle(
             $this->getLanguageService()->translate('title', 'redirects.modules.redirects')
         );
         $view->makeDocHeaderModuleMenu();
-        $this->registerDocHeaderButtons($view);
+        $this->registerDocHeaderButtons($view, $demand);
 
         if (!$this->canListRedirects()) {
             return $view->renderResponse('Management/Overview');
         }
 
+        $redirectType = $demand->getRedirectType();
         $event = $this->eventDispatcher->dispatch(
             new ModifyRedirectManagementControllerViewDataEvent(
                 $demand,
@@ -105,12 +109,7 @@ class ManagementController
             'pagination' => $pagination,
             'canEditRedirects' => $hasEditPermissions,
             'canListRedirects' => true,
-            'returnUrl' => $this->uriBuilder->buildUriFromRoute('redirects', [
-                'page' => $pagination['current'],
-                'demand' =>  $demand->getParameters(),
-                'orderField' => $demand->getOrderField(),
-                'orderDirection' => $demand->getOrderDirection(),
-            ]),
+            'returnUrl' => $this->uriBuilder->buildUriFromRoute('redirects', $demand->getUriParameters()),
             'actions' => $hasEditPermissions ? [
                 new Action(
                     'edit',
@@ -154,7 +153,7 @@ class ManagementController
     /**
      * Create document header buttons
      */
-    protected function registerDocHeaderButtons(ModuleTemplate $view): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view, Demand $demand): void
     {
         $languageService = $this->getLanguageService();
 
@@ -183,7 +182,8 @@ class ManagementController
         // Shortcut
         $view->getDocHeaderComponent()->setShortcutContext(
             'redirects',
-            $languageService->translate('short_description', 'redirects.modules.redirects')
+            $languageService->translate('short_description', 'redirects.modules.redirects'),
+            $demand->getUriParameters(),
         );
     }
 
