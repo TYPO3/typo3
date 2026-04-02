@@ -125,7 +125,18 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
             return null;
         }
         $resource = $this->getValueAttribute();
-        if ($resource instanceof FileReference || $resource instanceof ObjectStorage) {
+        if ($resource instanceof ObjectStorage) {
+            return $resource;
+        }
+        if ($resource instanceof FileReference) {
+            // When multiple uploads are enabled but the stored value is a single
+            // FileReference, wrap it in an ObjectStorage so that the Fluid template's
+            // f:for ViewHelper receives an iterable instead of crashing.
+            if ($this->arguments['multiple']) {
+                $storage = new ObjectStorage();
+                $storage->attach($resource);
+                return $storage;
+            }
             return $resource;
         }
         return $this->propertyMapper->convert($resource, FileReference::class);

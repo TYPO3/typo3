@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Mvc\Property;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -63,9 +64,14 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
         ) {
             return;
         }
-        $propertyMappingConfiguration = $renderable->getRootForm()
-            ->getProcessingRule($renderable->getIdentifier())
-            ->getPropertyMappingConfiguration();
+        $processingRule = $renderable->getRootForm()
+            ->getProcessingRule($renderable->getIdentifier());
+
+        if ($renderable->getProperties()['multiple'] ?? false) {
+            $processingRule->setDataType(ObjectStorage::class);
+        }
+
+        $propertyMappingConfiguration = $processingRule->getPropertyMappingConfiguration();
 
         $propertyMappingConfiguration->setTypeConverterOption(
             UploadedFileReferenceConverter::class,

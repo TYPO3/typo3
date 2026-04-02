@@ -987,6 +987,79 @@ final class MultipleFileUploadTest extends FunctionalTestCase
         self::assertCount(1, $result);
     }
 
+    /**
+     * Regression test for bug: resubmitting a multi-upload form with exactly
+     * one previously uploaded file caused an exception because the converter
+     * returned a single PseudoFileReference instead of an ObjectStorage.
+     *
+     * The root cause was that FileUpload::initializeFormElement() always set
+     * dataType to FileReference::class, causing isMultiUploadTarget() to fail
+     * when __submittedFiles had only one entry. The fix in
+     * PropertyMappingConfiguration sets dataType to ObjectStorage::class for
+     * multiple uploads, so this test verifies the converter works correctly
+     * with ObjectStorage as the target type for single-file resubmissions.
+     */
+    #[Test]
+    public function convertFromReturnsObjectStorageForSingleSubmittedFileInMultiUploadContext(): void
+    {
+        $subject = $this->get(UploadedFileReferenceConverter::class);
+        $hashService = $this->get(HashService::class);
+
+        $testFilePath = $this->createTestFile('test-multi-resubmit.pdf');
+
+        $configuration = new PropertyMappingConfiguration();
+        $configuration->setTypeConverterOptions(
+            UploadedFileReferenceConverter::class,
+            [
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER => '1:/user_upload/',
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED => 'test-seed-multi-resubmit',
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_CONFLICT_MODE => 'rename',
+            ]
+        );
+
+        $uploadSource = [
+            'error' => \UPLOAD_ERR_OK,
+            'name' => 'test-multi-resubmit.pdf',
+            'type' => 'application/pdf',
+            'tmp_name' => $testFilePath,
+            'size' => filesize($testFilePath),
+        ];
+
+        /** @var FileReference $uploadedFile */
+        $uploadedFile = $subject->convertFrom($uploadSource, FileReference::class, [], $configuration);
+        $fileUid = $uploadedFile->getOriginalResource()->getOriginalFile()->getUid();
+
+        $resourcePointer = $hashService->appendHmac(
+            'file:' . $fileUid,
+            HashScope::ResourcePointer->prefix()
+        );
+
+        // Simulate resubmission of a multi-upload element with exactly 1 existing
+        // file. The key difference is using ObjectStorage::class as target type,
+        // which is what PropertyMappingConfiguration now sets for multiple=true.
+        $source = [
+            '__submittedFiles' => [
+                0 => [
+                    'submittedFile' => [
+                        'resourcePointer' => $resourcePointer,
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $subject->convertFrom($source, ObjectStorage::class, [], $configuration);
+
+        self::assertInstanceOf(ObjectStorage::class, $result);
+        self::assertCount(1, $result);
+
+        $fileNames = [];
+        foreach ($result as $fileReference) {
+            self::assertInstanceOf(FileReference::class, $fileReference);
+            $fileNames[] = $fileReference->getOriginalResource()->getOriginalFile()->getName();
+        }
+        self::assertContains('test-multi-resubmit.pdf', $fileNames);
+    }
+
     #[Test]
     public function convertFromDeletesExistingFileFromSubmittedFiles(): void
     {
