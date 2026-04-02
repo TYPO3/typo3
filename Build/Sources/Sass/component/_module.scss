@@ -46,6 +46,7 @@ body:has(.module) *:target {
         "moduleDocHeaderNavigation"
         "moduleDocHeaderButtons"
         "moduleBody";
+    grid-template-columns: 100%;
     grid-template-rows: auto auto 1fr;
     position: relative;
     min-height: 100%;
@@ -112,6 +113,13 @@ body:has(.module) *:target {
 
     &-column-grow {
         flex-grow: 1;
+    }
+
+    &-column-breadcrumb {
+        flex-grow: 1;
+        flex-basis: 120px;
+        // min-width is `auto` by default, use 0 for flex-basis to be respected
+        min-width: 0;
     }
 
     &-container {

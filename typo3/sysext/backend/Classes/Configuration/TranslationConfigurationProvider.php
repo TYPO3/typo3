@@ -27,10 +27,10 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -66,17 +66,17 @@ readonly class TranslationConfigurationProvider
         }
         $allSystemLanguages = [];
         if ($pageId === 0) {
-            // Used for e.g. filelist, where there is no site selected
+            // Used for e.g. filelist, where there is no site selected.
             // This also means that there is no "-1" (All Languages) selectable.
+            // Languages are consolidated across all sites with unique titles.
             $sites = $this->siteFinder->getAllSites();
             foreach ($sites as $site) {
-                $allSystemLanguages = $this->addSiteLanguagesToConsolidatedList(
+                $this->addSiteLanguagesToConsolidatedList(
                     $allSystemLanguages,
                     $site->getAvailableLanguages($this->getBackendUserAuthentication()),
-                    $site,
-                    true
                 );
             }
+            $this->computeSystemLanguagesTitleAndFlag($allSystemLanguages, true);
         } else {
             try {
                 $site = $this->siteFinder->getSiteByPageId($pageId);
@@ -87,34 +87,47 @@ readonly class TranslationConfigurationProvider
             if (!isset($siteLanguages[0])) {
                 $siteLanguages[0] = $site->getDefaultLanguage();
             }
-            $allSystemLanguages = $this->addSiteLanguagesToConsolidatedList(
-                $allSystemLanguages,
-                $siteLanguages,
-                $site,
-                false
-            );
+            $this->addSiteLanguagesToConsolidatedList($allSystemLanguages, $siteLanguages);
+            $this->computeSystemLanguagesTitleAndFlag($allSystemLanguages);
         }
         ksort($allSystemLanguages);
         $this->runtimeCache->set($cacheKey, $allSystemLanguages);
         return $allSystemLanguages;
     }
 
-    protected function addSiteLanguagesToConsolidatedList(array $allSystemLanguages, array $languagesOfSpecificSite, SiteInterface $site, bool $includeSiteSuffix): array
+    protected function addSiteLanguagesToConsolidatedList(array &$allSystemLanguages, array $languagesOfSpecificSite): void
     {
         foreach ($languagesOfSpecificSite as $language) {
             $languageId = $language->getLanguageId();
-            if (isset($allSystemLanguages[$languageId])) {
-                // Language already provided by another site, just add the label separately
-                $allSystemLanguages[$languageId]['title'] .= ', ' . $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']';
-            } else {
-                $allSystemLanguages[$languageId] = [
-                    'uid' => $languageId,
-                    'title' => $language->getTitle() . ($includeSiteSuffix ? ' [Site: ' . $site->getIdentifier() . ']' : ''),
-                    'flagIcon' => $language->getFlagIdentifier(),
-                ];
-            }
+            $allSystemLanguages[$languageId] ??= [
+                'uid' => $languageId,
+                'titlesMap' => [],
+                'flagsMap' => [],
+            ];
+            $allSystemLanguages[$languageId]['titlesMap'][$language->getTitle()] = true;
+            $allSystemLanguages[$languageId]['flagsMap'][$language->getFlagIdentifier()] = true;
         }
-        return $allSystemLanguages;
+    }
+
+    protected function computeSystemLanguagesTitleAndFlag(array &$allSystemLanguages, bool $showIdInTitle = false): void
+    {
+        foreach ($allSystemLanguages as &$language) {
+            $language['title'] = implode(', ', array_keys($language['titlesMap']));
+            if ($language['uid'] === 0 && count($language['titlesMap']) > 1) {
+                // "Default" label for language 0 with multiple titles.
+                $language['title'] = $this->getLanguageService()->translate('LGL.defaultLanguage', 'core.general');
+            }
+            if ($showIdInTitle) {
+                $language['title'] .= ' [' . $language['uid'] . ']';
+            }
+
+            $language['flagIcon'] = array_key_first($language['flagsMap']);
+            if (count($language['titlesMap']) > 1 || count($language['flagsMap']) > 1) {
+                $language['flagIcon'] = 'flags-multiple';
+            }
+
+            unset($language['titlesMap'], $language['flagsMap']);
+        }
     }
 
     /**
@@ -223,5 +236,10 @@ readonly class TranslationConfigurationProvider
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
