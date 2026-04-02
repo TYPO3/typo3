@@ -50,13 +50,13 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login', // requestUri
                 'https://example.org/typo3/index.php', // referrer
-                [], // options
+                ['flags' => ['required']], // options
                 null, // response
             ],
             [
                 'https://example.org/typo3/login',
                 '',
-                ['flags' => ['refresh-empty']],
+                ['flags' => ['required', 'refresh-empty']],
                 self::buildRefreshContentPattern(
                     'https://example.org/typo3/login'
                 ),
@@ -64,7 +64,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login',
                 'https://example.org/?eID=handler',
-                ['flags' => ['refresh-same-site']],
+                ['flags' => ['required', 'refresh-same-site']],
                 self::buildRefreshContentPattern(
                     'https://example.org/typo3/login'
                 ),
@@ -72,7 +72,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login',
                 'https://other-example.site/security/',
-                ['flags' => ['refresh-always']],
+                ['flags' => ['required', 'refresh-always']],
                 self::buildRefreshContentPattern(
                     'https://example.org/typo3/login'
                 ),
@@ -81,13 +81,13 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login?query=parameter',
                 'https://example.org/typo3/index.php',
-                [],
+                ['flags' => ['required']],
                 null,
             ],
             [
                 'https://example.org/typo3/login?query=parameter',
                 '',
-                ['flags' => ['refresh-empty']],
+                ['flags' => ['required', 'refresh-empty']],
                 self::buildRefreshContentPattern(
                     'https://example.org/typo3/login?query=parameter'
                 ),
@@ -95,7 +95,25 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login?query=parameter',
                 'https://example.org/?eID=handler',
-                ['flags' => ['refresh-same-site']],
+                ['flags' => ['required', 'refresh-same-site']],
+                self::buildRefreshContentPattern(
+                    'https://example.org/typo3/login?query=parameter'
+                ),
+            ],
+            [
+                'https://example.org/typo3/login?query=parameter',
+                'https://example.org/',
+                ['flags' => ['refresh-cross-site']],
+                null,
+            ],
+            [
+                'https://example.org/typo3/login?query=parameter',
+                'https://other-example.site/security/',
+                // no 'required' flag on purpose, referrer may
+                // be omitted, but if a cross site referrer
+                // is present, it needs to be refreshed
+                // to use a local referrer (to receive SameSite=strict cookies)
+                ['flags' => ['refresh-cross-site']],
                 self::buildRefreshContentPattern(
                     'https://example.org/typo3/login?query=parameter'
                 ),
@@ -103,7 +121,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login?query=parameter',
                 'https://other-example.site/security/',
-                ['flags' => ['refresh-always']],
+                ['flags' => ['required', 'refresh-always']],
                 self::buildRefreshContentPattern(
                     'https://example.org/typo3/login?query=parameter'
                 ),
@@ -111,7 +129,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login?query=parameter&referrer-refresh=0',
                 'https://other-example.site/security/',
-                ['flags' => ['refresh-always']],
+                ['flags' => ['required', 'refresh-always']],
                 self::buildRefreshContentPattern(
                     'https://example.org/typo3/login?query=parameter'
                 ),
@@ -119,7 +137,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login?query=parameter&nested[array][key]=value+blank&referrer-refresh=0',
                 'https://other-example.site/security/',
-                ['flags' => ['refresh-always']],
+                ['flags' => ['required', 'refresh-always']],
                 self::buildRefreshContentPattern(
                     'https://example.org/typo3/login?query=parameter&nested%5Barray%5D%5Bkey%5D=value%20blank'
                 ),
@@ -128,7 +146,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
     }
 
     /**
-     * @param string[] $options
+     * @param array{flags?: list<string>} $options
      */
     #[DataProvider('validReferrerIsHandledDataProvider')]
     #[Test]
@@ -151,28 +169,28 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login', // requestUri
                 'https://example.org/?eID=handler', // referrer
-                [], // options
+                ['flags' => ['required']], // options
             ],
             [
                 'https://example.org/typo3/login',
                 'https://example.org/?eID=handler',
-                ['flags' => ['refresh-empty']],
+                ['flags' => ['required', 'refresh-empty']],
             ],
             [
                 'https://example.org/typo3/login',
                 'https://example.org.security/?eID=handler',
-                ['flags' => ['refresh-same-site']],
+                ['flags' => ['required', 'refresh-same-site']],
             ],
             [
                 'https://example.org/typo3/login',
                 'https://other-example.site/security/',
-                [],
+                ['flags' => ['required']],
             ],
         ];
     }
 
     /**
-     * @param string[] $options
+     * @param array{flags?: list<string>} $options
      */
     #[DataProvider('invalidReferrerIsHandledDataProvider')]
     #[Test]
@@ -195,7 +213,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
             'https://example.org/typo3/login',
             ''
         );
-        $subject->handle($request, []);
+        $subject->handle($request, ['flags' => ['required']]);
     }
 
     #[Test]

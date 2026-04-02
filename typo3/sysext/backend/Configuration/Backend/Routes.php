@@ -18,6 +18,8 @@ return [
     'login' => [
         'path' => '/login',
         'access' => 'public',
+        // Refresh cross-site requests in order to obtain our SameSite=strict cookie
+        'referrer' => 'refresh-cross-site',
         'target' => Controller\LoginController::class . '::formAction',
     ],
 

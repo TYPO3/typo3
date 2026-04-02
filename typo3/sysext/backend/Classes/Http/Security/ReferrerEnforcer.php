@@ -49,6 +49,6 @@ readonly class ReferrerEnforcer extends CoreReferrerEnforcer
         if (str_starts_with($referrer, $requestHost)) {
             return self::TYPE_REFERRER_SAME_SITE;
         }
-        return 0;
+        return self::TYPE_REFERRER_CROSS_SITE;
     }
 }

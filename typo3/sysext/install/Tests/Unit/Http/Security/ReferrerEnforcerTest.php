@@ -121,7 +121,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
         $this->expectExceptionCode(1588095936);
         $subject = $this->buildSubject();
         $request = $this->buildPreparedRequest($scriptName, $requestUri, $referrer);
-        $subject->handle($request, []);
+        $subject->handle($request, ['flags' => ['required']]);
     }
 
     #[DataProvider('nonSameOriginReferrerIsRejectedDataProvider')]
@@ -130,7 +130,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
     {
         $subject = $this->buildSubject();
         $request = $this->buildPreparedRequest($scriptName, $requestUri, $referrer);
-        $response = $subject->handle($request, ['flags' => ['refresh-always']]);
+        $response = $subject->handle($request, ['flags' => ['required', 'refresh-always']]);
         self::assertStringContainsString('id="referrer-refresh"', (string)$response->getBody());
     }
 
@@ -141,7 +141,38 @@ final class ReferrerEnforcerTest extends UnitTestCase
         $this->expectExceptionCode(1588095935);
         $subject = $this->buildSubject();
         $request = $this->buildPreparedRequest('/index.php', 'https://example.org/?__typo3_install', '');
-        $subject->handle($request, []);
+        $subject->handle($request, ['flags' => ['required']]);
+    }
+
+    /**
+     * The flags below are the ones \TYPO3\CMS\Install\Middleware\Maintenance
+     * passes, with `referrer-refresh` already set, so the HTML refresh does not
+     * apply a second time and the deny path is what remains.
+     */
+    #[DataProvider('nonSameOriginReferrerIsRejectedDataProvider')]
+    #[Test]
+    public function nonSameOriginReferrerIsRejectedWithInstallToolFlags(
+        string $scriptName,
+        string $requestUri,
+        string $referrer
+    ): void {
+        $this->expectException(InvalidReferrerException::class);
+        $this->expectExceptionCode(1588095936);
+        $subject = $this->buildSubject();
+        $request = $this->buildPreparedRequest($scriptName, $requestUri, $referrer)
+            ->withQueryParams(['referrer-refresh' => time() + 100]);
+        $subject->handle($request, ['flags' => ['required', 'refresh-always']]);
+    }
+
+    #[Test]
+    public function missingReferrerIsRejectedWithInstallToolFlags(): void
+    {
+        $this->expectException(MissingReferrerException::class);
+        $this->expectExceptionCode(1588095935);
+        $subject = $this->buildSubject();
+        $request = $this->buildPreparedRequest('/index.php', 'https://example.org/?__typo3_install', '')
+            ->withQueryParams(['referrer-refresh' => time() + 100]);
+        $subject->handle($request, ['flags' => ['required', 'refresh-always']]);
     }
 
     private function buildSubject(): ReferrerEnforcer

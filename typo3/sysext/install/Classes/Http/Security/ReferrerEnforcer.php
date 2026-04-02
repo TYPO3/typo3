@@ -62,6 +62,6 @@ readonly class ReferrerEnforcer extends CoreReferrerEnforcer
 
             return self::TYPE_REFERRER_SAME_SITE;
         }
-        return 0;
+        return self::TYPE_REFERRER_CROSS_SITE;
     }
 }
