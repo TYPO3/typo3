@@ -22,6 +22,11 @@ The ViewHelper is record-aware: it receives the full record and the field name, 
 renders the field according to the field's TCA configuration. This includes handling
 of both plain text and rich text fields.
 
+By default, accessing a field that is not available on the provided record raises an
+exception. To support shared templates that should keep rendering even if a field is
+missing, the optional boolean argument :html:`optional` can be set to :html:`true`.
+In that case, the ViewHelper returns :html:`null` instead.
+
 The input can be a :php:`\TYPO3\CMS\Core\Domain\RecordInterface`,
 :php:`\TYPO3\CMS\Frontend\Page\PageInformation`, or
 :php:`\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface`.
@@ -54,6 +59,21 @@ without further configuration in the template.
     {f:render.text(record: record, field: 'title')}
     or
     {record -> f:render.text(field: 'title')}
+
+Usage with optional fields:
+
+..  code-block:: html
+    :caption: SharedHeader.fluid.html
+
+    <f:variable name="header">{record -> f:render.text(field: 'header', optional: true)}</f:variable>
+
+This is useful for shared partials, for example in :html:`fluid_styled_content`.
+There, a header partial can be reused by content elements whose transformed record
+does not provide a :html:`header` or :html:`subheader` field. Without
+:html:`optional="true"`, rendering such a partial would raise a
+:php:`RecordPropertyNotFoundException`. With :html:`optional="true"`, the ViewHelper
+returns :html:`null` and the partial can continue to handle the missing value
+gracefully.
 
 Usage with an Extbase model (property name differs from database field name):
 
@@ -113,6 +133,12 @@ When migrating from formatting ViewHelpers like :html:`<f:format.nl2br>` or
 :html:`<f:format.html>` to :html:`<f:render.text>`, the main difference is that the
 new ViewHelper is aware of the record it belongs to and renders the field based on
 the record's TCA schema.
+
+If a template intentionally accesses fields that may not be available on every
+provided record, for example shared :html:`fluid_styled_content` header partials used
+by custom content elements without a visible :html:`header` field, use the
+:html:`optional` argument to preserve the previous behavior of treating the missing
+field as empty output.
 
 Impact
 ======

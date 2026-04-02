@@ -43,7 +43,7 @@ final class TextViewHelperTest extends FunctionalTestCase
 
     #[Test]
     #[DataProvider('renderingDataProvider')]
-    public function render(mixed $record, string $templateSource, string $expected): void
+    public function render(mixed $record, string $templateSource, ?string $expected): void
     {
         $context = $this->get(RenderingContextFactory::class)->create([], $this->createRequest());
         $context->getTemplatePaths()->setTemplateSource($templateSource);
@@ -52,15 +52,23 @@ final class TextViewHelperTest extends FunctionalTestCase
         $view->assign('record', $record);
 
         $result = $view->render();
-        self::assertInstanceOf(UnsafeHTML::class, $result);
-        self::assertSame($expected, (string)$result);
+        if ($expected === null) {
+            self::assertNull($result);
+        } else {
+            self::assertInstanceOf(UnsafeHTML::class, $result);
+            self::assertSame($expected, (string)$result);
+        }
 
         $view = new TemplateView($context);
         $view->assign('record', $record);
 
         $result = $view->render();
-        self::assertInstanceOf(UnsafeHTML::class, $result);
-        self::assertSame($expected, (string)$result);
+        if ($expected === null) {
+            self::assertNull($result);
+        } else {
+            self::assertInstanceOf(UnsafeHTML::class, $result);
+            self::assertSame($expected, (string)$result);
+        }
     }
 
     public static function renderingDataProvider(): \Generator
@@ -110,6 +118,16 @@ final class TextViewHelperTest extends FunctionalTestCase
             'record' => self::createExtbaseModel('<b>My Page</b>'),
             'templateSource' => '<f:render.text record="{record}" field="title" />',
             'expected' => '&lt;b&gt;My Page&lt;/b&gt;',
+        ];
+        yield 'with optional flag, not available record property' => [
+            'record' => self::createRecord([]),
+            'templateSource' => '{record -> f:render.text(field: "notAvailable", optional: "{true}")}',
+            'expected' => null,
+        ];
+        yield 'with optional flag, not available field in extbaseModel' => [
+            'record' => self::createExtbaseModel('<b>My Page</b>'),
+            'templateSource' => '<f:render.text record="{record}" field="header" optional="{true}" />',
+            'expected' => null,
         ];
         $ttContent = new TtContentWithCType();
         $ttContent->setHeader('<b>My Page</b>');
@@ -163,6 +181,13 @@ final class TextViewHelperTest extends FunctionalTestCase
             'exceptionCode' => 1770539910,
             'exceptionMessage' => 'The record argument must be an instance of',
         ];
+        yield 'throws for record property not found' => [
+            'record' => self::createRecord([]),
+            'templateSource' => '{record -> f:render.text(field: "notAvailable")}',
+            'exception' => InvalidArgumentValueException::class,
+            'exceptionCode' => 1775553111,
+            'exceptionMessage' => 'Record property "notAvailable" is not available.',
+        ];
         $ttContent = new TtContent();
         $ttContent->setHeader('<b>My Page</b>');
         yield 'extbaseModel without type information' => [
@@ -172,11 +197,11 @@ final class TextViewHelperTest extends FunctionalTestCase
             'exceptionCode' => 1771507212,
             'exceptionMessage' => 'The record type field "CType" does not exist in the given model TYPO3Tests\BlogExample\Domain\Model\TtContent',
         ];
-        yield 'extbaseModel with out the given field' => [
+        yield 'extbaseModel without the given field' => [
             'record' => self::createExtbaseModel('<b>My Page</b>'),
             'templateSource' => '<f:render.text record="{record}" field="header" />',
             'exception' => InvalidArgumentValueException::class,
-            'exceptionCode' => 1771507213,
+            'exceptionCode' => 1775553111,
             'exceptionMessage' => 'Could not find the field "header" in the given model TYPO3Tests\BlogExample\Domain\Model\Blog.',
         ];
     }

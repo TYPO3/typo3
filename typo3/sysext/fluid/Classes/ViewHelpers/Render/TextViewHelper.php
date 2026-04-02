@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Render;
 
+use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Schema\Field\InputFieldType;
@@ -34,7 +35,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
 /**
  * ViewHelper to render content based on records and fields from a TCA schema.
- * Handles the processing of both simple and rich text fields.
+ * Handles the processing of both simple and rich text fields. By default,
+ * accessing a missing field raises an error. Set `optional` to `true` to
+ * return null instead.
  *
  * Can also handle extbase models, you still need to provide the field name, not the property name.
  *
@@ -42,6 +45,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
  *   <f:render.text record="{page}" field="bodytext" />
  *   {record -> f:render.text(field: 'title')}
  *   <f:render.text field="subheader">{record}</f:render.text>
+ *   {record -> f:render.text(field: 'subheader', optional: true)}
  * ```
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-render-text
@@ -70,6 +74,7 @@ final class TextViewHelper extends AbstractViewHelper
 
         $this->registerArgument('record', PageInformation::class . '|' . RecordInterface::class . '|' . DomainObjectInterface::class, 'A Record API Object or extbase model');
         $this->registerArgument('field', 'string', 'The database field that should be rendered (even if extbase model is used).', true);
+        $this->registerArgument('optional', 'boolean', 'If the provided field does not exist in the record, null will be returned.', false, false);
     }
 
     public function getContentArgumentName(): string
@@ -88,7 +93,7 @@ final class TextViewHelper extends AbstractViewHelper
         // for extensions that wouldn't be possible otherwise.
     }
 
-    public function render(): UnsafeHTML
+    public function render(): ?UnsafeHTML
     {
         $input = $this->renderChildren();
         $field = $this->arguments['field'];
@@ -104,7 +109,14 @@ final class TextViewHelper extends AbstractViewHelper
             );
         }
 
-        ['table' => $table, 'fullType' => $fullType, 'value' => $value] = $this->extractInformation($input, $field);
+        try {
+            ['table' => $table, 'fullType' => $fullType, 'value' => $value] = $this->extractInformation($input, $field);
+        } catch (RecordPropertyNotFoundException $exception) {
+            if ($this->arguments['optional']) {
+                return null;
+            }
+            throw new InvalidArgumentValueException($exception->getMessage(), 1775553111, $exception);
+        }
 
         if (!is_string($value)) {
             throw new InvalidArgumentValueException('The value of the field "' . $table . '.' . $field . '" must be a string. Given: ' . get_debug_type($value), 1770321858);
@@ -183,7 +195,6 @@ final class TextViewHelper extends AbstractViewHelper
                 return $value ?? '';
             }
         }
-
-        throw new InvalidArgumentValueException('Could not find the field "' . $field . '" in the given model ' . $input::class . '.', 1771507213);
+        throw new RecordPropertyNotFoundException('Could not find the field "' . $field . '" in the given model ' . $input::class . '.', 1771507213);
     }
 }
