@@ -936,7 +936,7 @@ class PackageManager implements SingletonInterface
     private function isComposerOnlyCapable(\stdClass $manifest): bool
     {
         return isset($manifest->extra->{'typo3/cms'}->Package->providesPackages)
-            && $manifest->version !== null;
+            && ($manifest->version ?? null) !== null;
     }
 
     /**
