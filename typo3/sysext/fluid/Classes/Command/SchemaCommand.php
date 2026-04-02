@@ -29,6 +29,7 @@ use TYPO3Fluid\Fluid\Core\Component\ComponentDefinitionProviderInterface;
 use TYPO3Fluid\Fluid\Core\Component\ComponentListProviderInterface;
 use TYPO3Fluid\Fluid\Schema\SchemaGenerator;
 use TYPO3Fluid\Fluid\Schema\ViewHelperFinder;
+use TYPO3Fluid\Fluid\Schema\ViewHelperMetadata;
 use TYPO3Fluid\Fluid\Schema\ViewHelperMetadataFactory;
 
 /**
@@ -69,48 +70,7 @@ final class SchemaCommand extends Command
             }
         }
 
-        // Group ViewHelpers by xml namespace to split them into xsd files later
-        $xsdFiles = $groupedByNamespace = [];
-        foreach ($allViewHelpers as $viewHelper) {
-            $xsdFiles[$viewHelper->xmlNamespace] ??= [];
-            $xsdFiles[$viewHelper->xmlNamespace][] = $viewHelper;
-
-            $groupedByNamespace[$viewHelper->namespace] ??= [];
-            $groupedByNamespace[$viewHelper->namespace][] = $viewHelper;
-        }
-
-        // Special handling of TYPO3's global ViewHelper namespaces which allows
-        // merging of several PHP namespaces into one Fluid namespace. If a configured
-        // global Fluid namespace has more than one PHP namespace, ViewHelpers can be
-        // overridden by subsequent namespaces if they are defined with the same name.
-        // For example, both Fluid Standalone and EXT:fluid define <f:render>,
-        // but EXT:fluid is the higher item in the namespace array, so it will be part
-        // of the xsd file, while the <f:render> from Fluid Standalone will be omitted.
-        $viewHelperResolver = $this->viewHelperResolverFactory->create();
-        foreach ($viewHelperResolver->getNamespaces() as $mergedNamespace) {
-            // If a global namespace has only one item, it is already covered by the
-            // default handling above
-            if (count($mergedNamespace) < 2) {
-                continue;
-            }
-
-            // Last PHP namespace defines the xml namespace
-            $targetNamespace = end($mergedNamespace);
-            if (!isset($groupedByNamespace[$targetNamespace])) {
-                continue;
-            }
-            $xmlNamespace = $groupedByNamespace[$targetNamespace][0]->xmlNamespace;
-
-            // Combine PHP namespaces into one XML namespace
-            // Subsequent ViewHelpers with the same name can override
-            $xsdFiles[$xmlNamespace] = [];
-            foreach ($mergedNamespace as $namespace) {
-                foreach ($groupedByNamespace[$namespace] ?? [] as $viewHelper) {
-                    $xsdFiles[$xmlNamespace][$viewHelper->name] = $viewHelper;
-                }
-            }
-            $xsdFiles[$xmlNamespace] = array_values($xsdFiles[$xmlNamespace]);
-        }
+        $xsdFiles = $this->combineViewHelperNamespaces($allViewHelpers, $this->viewHelperResolverFactory->create()->getNamespaces());
 
         // Create transient folder if necessary
         $temporaryPath = Environment::getVarPath() . '/transient/';
@@ -151,5 +111,57 @@ final class SchemaCommand extends Command
         }
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * @param ViewHelperMetadata[] $viewHelpers
+     * @param array<string, string[]> $globalNamespaces
+     * @return array<string, ViewHelperMetadata[]>
+     */
+    private static function combineViewHelperNamespaces(array $viewHelpers, array $globalNamespaces): array
+    {
+        // Group ViewHelpers by xml namespace to split them into xsd files later
+        $viewHelperNamespaces = $groupedByNamespace = [];
+        foreach ($viewHelpers as $viewHelper) {
+            $viewHelperNamespaces[$viewHelper->xmlNamespace] ??= [];
+            $viewHelperNamespaces[$viewHelper->xmlNamespace][] = $viewHelper;
+
+            $groupedByNamespace[$viewHelper->namespace] ??= [];
+            $groupedByNamespace[$viewHelper->namespace][] = $viewHelper;
+        }
+
+        // Special handling of TYPO3's global ViewHelper namespaces which allows
+        // merging of several PHP namespaces into one Fluid namespace. If a configured
+        // global Fluid namespace has more than one PHP namespace, ViewHelpers can be
+        // overridden by subsequent namespaces if they are defined with the same name.
+        // For example, both Fluid Standalone and EXT:fluid define <f:render>,
+        // but EXT:fluid is the higher item in the namespace array, so it will be part
+        // of the xsd file, while the <f:render> from Fluid Standalone will be omitted.
+        foreach ($globalNamespaces as $mergedNamespace) {
+            // If a global namespace has only one item, it is already covered by the
+            // default handling above
+            if (count($mergedNamespace) < 2) {
+                continue;
+            }
+
+            // Last PHP namespace defines the xml namespace
+            $targetNamespace = end($mergedNamespace);
+            if (!isset($groupedByNamespace[$targetNamespace])) {
+                continue;
+            }
+            $xmlNamespace = $groupedByNamespace[$targetNamespace][0]->xmlNamespace;
+
+            // Combine PHP namespaces into one XML namespace; basically, all previous
+            // namespaces are "pulled" into the current namespace and then overlayed with
+            // it, so that ViewHelpers with the same name can override
+            $viewHelperNamespaces[$xmlNamespace] = [];
+            foreach ($mergedNamespace as $namespace) {
+                foreach ($groupedByNamespace[$namespace] ?? [] as $viewHelper) {
+                    $viewHelperNamespaces[$xmlNamespace][$viewHelper->tagName] = $viewHelper;
+                }
+            }
+            $viewHelperNamespaces[$xmlNamespace] = array_values($viewHelperNamespaces[$xmlNamespace]);
+        }
+        return $viewHelperNamespaces;
     }
 }
