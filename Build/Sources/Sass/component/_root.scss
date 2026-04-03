@@ -20,7 +20,7 @@
 
         // Harmonize all state colors (except primary) with the accent color.
         --typo3-color-state-harmonize: 5%;
-        --token-color-primary-base: #{'attr(data-accent type(<color>),'} #{map-get($state-colors, 'primary')}#{')'};
+        --token-color-primary-base: #{map-get($state-colors, 'primary')};
 
         @each $name, $value in $state-colors {
             @if $name != 'primary' {
@@ -568,7 +568,7 @@
 
 [data-theme="fresh"] {
     --typo3-color-neutral-mix: 12%;
-    --token-color-primary-base: #{'attr(data-accent type(<color>),'} #5033c7#{')'};
+    --token-color-primary-base: #5033c7;
     --token-color-secondary-base: hsl(from var(--token-color-primary-base) h 10% l);
 
     // Scaffold
