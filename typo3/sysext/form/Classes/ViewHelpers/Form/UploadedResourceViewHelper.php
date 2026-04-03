@@ -30,6 +30,8 @@ use TYPO3\CMS\Form\Security\HashScope;
  * uploaded image will be correctly used.
  *
  * Scope: frontend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-form-uploadedresource
  */
 final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
 {

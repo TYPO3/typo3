@@ -34,6 +34,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * and return the rendered content.
  *
  * Scope: frontend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-renderrenderable
  */
 final class RenderRenderableViewHelper extends AbstractViewHelper
 {

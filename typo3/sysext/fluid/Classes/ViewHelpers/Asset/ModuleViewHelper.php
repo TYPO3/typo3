@@ -35,6 +35,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * In the AssetCollector, the "identifier" attribute is used as a unique identifier. Thus, if modules are added multiple
  * times using the same module identifier, the asset will only be served once.
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-asset-module
  */
 final class ModuleViewHelper extends AbstractViewHelper
 {

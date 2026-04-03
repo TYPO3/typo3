@@ -35,6 +35,8 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  * Note: Requires jQuery UI to be included on the page.
  *
  * Scope: frontend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-form-datepicker
  */
 final class DatePickerViewHelper extends AbstractFormFieldViewHelper
 {

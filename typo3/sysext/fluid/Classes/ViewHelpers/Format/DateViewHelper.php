@@ -38,8 +38,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *   <f:format.date pattern="dd. MMMM yyyy" locale="de-DE">{dateObject}</f:format.date>
  * ```
  *
- * @see https://www.php.net/manual/datetime.format.php
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-format-date
+ * @see https://www.php.net/manual/datetime.format.php
  * @see \DateTimeInterface
  */
 final class DateViewHelper extends AbstractViewHelper

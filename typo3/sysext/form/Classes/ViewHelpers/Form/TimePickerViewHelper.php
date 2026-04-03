@@ -30,6 +30,8 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  * Displays two select-boxes for hour and minute selection.
  *
  * Scope: frontend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-form-timepicker
  */
 final class TimePickerViewHelper extends AbstractFormFieldViewHelper
 {

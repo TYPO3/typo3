@@ -17,6 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
+/**
+ * A ViewHelper to render a section, a partial, a specified section in a partial
+ * or a delegate ParsedTemplateInterface implementation.
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-render
+ */
 final class RenderViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper
 {
     public function initializeArguments(): void

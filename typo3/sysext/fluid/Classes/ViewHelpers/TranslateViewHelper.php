@@ -37,8 +37,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *   <f:translate key="someKey" arguments="{0: 'dog', 'fox'}" />
  * ```
  *
- * @see https://php.net/sprintf
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-translate
+ * @see https://php.net/sprintf
  */
 final class TranslateViewHelper extends AbstractViewHelper
 {

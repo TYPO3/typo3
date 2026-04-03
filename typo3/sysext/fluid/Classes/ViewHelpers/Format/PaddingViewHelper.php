@@ -27,8 +27,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *   <f:format.padding padLength="10" padString="!" padType="right">TYPO3</f:format.padding>
  * ```
  *
- * @see https://www.php.net/manual/en/function.str-pad
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-format-padding
+ * @see https://www.php.net/manual/en/function.str-pad
  */
 final class PaddingViewHelper extends AbstractViewHelper
 {

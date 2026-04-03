@@ -94,6 +94,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *    <a href="/typo3/record/edit?edit[a_table][17]=new&returnUrl=foo/bar&defVals[a_table][a_field]=value">
  *        New record
  *    </a>
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-link-newrecord
  */
 final class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {
