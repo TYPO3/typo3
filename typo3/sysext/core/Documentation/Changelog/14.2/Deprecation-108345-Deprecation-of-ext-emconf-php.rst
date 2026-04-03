@@ -26,7 +26,6 @@ in `composer.json`:
         "name": "vendor/example",
         "type": "typo3-cms-extension",
         "description": "example",
-        "version": "1.0.0",
         "license": "GPL-2.0-or-later",
         "require": {
             "typo3/cms-core": "^14.2",
@@ -36,6 +35,7 @@ in `composer.json`:
         "extra": {
             "typo3/cms": {
                 "extension-key": "example_extension",
+                "version": "1.0.0",
                 "Package": {
                     "providesPackages": {
                         "symfony/dotenv": ""
@@ -52,7 +52,6 @@ in `composer.json`:
         "name": "vendor/example2",
         "type": "typo3-cms-extension",
         "description": "example",
-        "version": "1.0.0",
         "license": "GPL-2.0-or-later",
         "require": {
             "typo3/cms-core": "^14.2"
@@ -60,6 +59,7 @@ in `composer.json`:
         "extra": {
             "typo3/cms": {
                 "extension-key": "example2_extension",
+                "version": "1.0.0",
                 "Package": {
                     "providesPackages": {}
                 }
@@ -68,9 +68,19 @@ in `composer.json`:
     }
 
 For compatibility with TYPO3 classic mode, third-party extensions
-must set the exact extension version in the top-level `"version"` field
-of `composer.json`. This version should match the version previously
+must set the exact extension version in `extra.typo3/cms.version`
+or in the top level `version` field of `composer.json`.
+This version must match the version previously
 defined in `ext_emconf.php` and the released Git tag.
+
+Fixture extensions used in tests can set any version number, for example `1.0.0`,
+but a version number must still be provided to avoid deprecation messages.
+
+During testing, the version number is not evaluated.
+
+TYPO3 Core extensions may omit the version number
+in `composer.json`, because their version can and will be derived from
+php`\TYPO3\CMS\Core\Information\Typo3Version`.
 
 If an extension depends on regular Composer packages, these packages
 must be declared in
@@ -81,6 +91,13 @@ If an extension does not depend on any regular Composer packages,
 to avoid deprecation messages and to declare future compatibility
 with TYPO3 classic mode.
 
+If strict `composer.json` validation is required and the extension is published
+to Packagist as well, where setting the top level `version` field is not recommended,
+it is recommended to set the version via `extra.typo3/cms.version`.
+
+If the `version` field is set anyway, it is recommended to omit `extra.typo3/cms.version`
+to avoid redundant data points.
+
 Impact
 ======
 
@@ -88,7 +105,8 @@ There is no impact on Composer-based TYPO3 installations.
 
 TYPO3 classic installations will trigger a deprecation message
 for extensions that still ship `ext_emconf.php` but do not yet define
-both the `"version"` field and `providesPackages` in `composer.json`.
+both `extra.typo3/cms.version` (or `"version"` field ) *and* `providesPackages`
+in `composer.json`.
 
 Affected installations
 ======================
@@ -109,6 +127,6 @@ if their extensions should remain compatible with TYPO3 classic mode.
 For the time being, `ext_emconf.php` may still need to be kept for
 third-party tooling such as TYPO3 TER or Tailor. However, once the
 required metadata is correctly defined in `composer.json`,
-TYPO3 will no longer need to evaluate `ext_emconf.php`.
+TYPO3 will no longer evaluate `ext_emconf.php`.
 
 .. index:: ext:core, NotScanned

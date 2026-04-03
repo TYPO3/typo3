@@ -150,16 +150,17 @@ class Package implements PackageInterface
         } else {
             $title = $description;
         }
+        $manifest = $this->getValueFromComposerManifest();
         $this->packageMetaData->setTitle($title);
         $this->packageMetaData->setDescription($description);
-        $this->packageMetaData->setPackageType((string)$this->getValueFromComposerManifest('type'));
+        $this->packageMetaData->setPackageType($manifest->type ?? '');
         $isFrameworkPackage = $this->packageMetaData->isFrameworkType();
-        $version = (string)($this->getValueFromComposerManifest('version') ?? '1.0.0');
+        $version = $manifest->extra->{'typo3/cms'}->{'version'} ?? $manifest->version ?? '1.0.0+no-version-set';
         if ($isFrameworkPackage) {
             $version = str_replace('-dev', '', (new Typo3Version())->getVersion());
         }
         $this->packageMetaData->setVersion($version);
-        $requirements = $this->getValueFromComposerManifest('require');
+        $requirements = $manifest->require ?? null;
         if ($requirements !== null) {
             foreach ($requirements as $packageName => $versionConstraints) {
                 if ($this->ignoreDependencyInPackageConstraint($packageName, $packageManager, $isBuildingPackageArtifact)) {
@@ -174,7 +175,7 @@ class Package implements PackageInterface
                 );
             }
         }
-        $suggestions = $this->getValueFromComposerManifest('suggest');
+        $suggestions = $manifest->suggest ?? null;
         if ($suggestions !== null) {
             foreach ($suggestions as $packageName => $description) {
                 if ($this->ignoreDependencyInPackageConstraint($packageName, $packageManager, $isBuildingPackageArtifact)) {
@@ -184,7 +185,7 @@ class Package implements PackageInterface
                 $this->packageMetaData->addConstraint($constraint);
             }
         }
-        $conflicts = $this->getValueFromComposerManifest('conflict');
+        $conflicts = $manifest->conflict ?? null;
         if ($conflicts !== null) {
             foreach ($conflicts as $packageName => $versionConstraints) {
                 if ($this->ignoreDependencyInPackageConstraint($packageName, $packageManager, $isBuildingPackageArtifact)) {
