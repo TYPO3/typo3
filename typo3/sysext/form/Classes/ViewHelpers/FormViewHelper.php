@@ -32,6 +32,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  * Custom form ViewHelper that renders the form state instead of referrer fields
  *
  * Scope: frontend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-form
  */
 final class FormViewHelper extends FluidFormViewHelper
 {

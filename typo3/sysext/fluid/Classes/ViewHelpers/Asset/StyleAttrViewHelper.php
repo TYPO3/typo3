@@ -31,6 +31,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * ```
  *    <div style="{f:asset.styleAttr(value: 'color: green; text-decoration: underline;', csp: true)}">...</div>
  * ```
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-asset-styleattr
  */
 final class StyleAttrViewHelper extends AbstractViewHelper
 {

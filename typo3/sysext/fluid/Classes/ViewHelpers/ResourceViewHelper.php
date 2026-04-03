@@ -29,8 +29,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *   {styleSheet -> f:resource() -> f:uri.resource()}
  * ```
  *
- * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-uri-resource
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-resource
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-uri-resource
  */
 final class ResourceViewHelper extends AbstractViewHelper
 {

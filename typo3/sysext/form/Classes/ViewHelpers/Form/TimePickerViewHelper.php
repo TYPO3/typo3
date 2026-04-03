@@ -31,6 +31,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  *
  * Scope: frontend
  *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-form-timepicker
  * @deprecated since v14, will be removed in v15.
  */
 final class TimePickerViewHelper extends AbstractFormFieldViewHelper

@@ -24,6 +24,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Return the max file size for use in the form editor
  *
  * Scope: backend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-be-maximumfilesize
  * @internal
  */
 final class MaximumFileSizeViewHelper extends AbstractViewHelper

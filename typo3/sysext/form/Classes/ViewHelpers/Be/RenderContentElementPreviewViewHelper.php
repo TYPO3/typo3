@@ -40,6 +40,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Render a content element preview like the page module
  *
  * Scope: backend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-be-rendercontentelementpreview
  * @internal
  */
 #[Autoconfigure(public: true)]

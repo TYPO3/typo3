@@ -38,6 +38,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Renders a single value of a form
  *
  * Scope: frontend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-renderformvalue
  */
 final class RenderFormValueViewHelper extends AbstractViewHelper
 {

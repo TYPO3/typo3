@@ -45,6 +45,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * The factory class must implement :php:`TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface`.
  *
  * Scope: frontend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-render
  */
 final class RenderViewHelper extends AbstractViewHelper
 {

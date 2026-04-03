@@ -29,6 +29,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *    </f:if>
  * ```
  *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-type-isarray
  * @internal This experimental ViewHelper is not part of TYPO3 Core API and may change or vanish any time.
  */
 final class IsArrayViewHelper extends AbstractViewHelper

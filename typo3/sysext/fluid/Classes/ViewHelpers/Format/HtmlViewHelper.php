@@ -42,8 +42,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Instead, use `<f:sanitize.html>` within backend context to secure a given HTML string
  * or `<f:transform.html>` to parse links in HTML.
  *
- * @see https://docs.typo3.org/permalink/t3tsref:parsefunc
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-format-html
+ * @see https://docs.typo3.org/permalink/t3tsref:parsefunc
  */
 final class HtmlViewHelper extends AbstractViewHelper
 {

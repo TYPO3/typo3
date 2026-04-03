@@ -45,6 +45,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *        See documentation
  *    </a>
  *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-link-documentation
  * @internal not part of TYPO3 Core API.
  */
 final class DocumentationViewHelper extends AbstractTagBasedViewHelper

@@ -51,9 +51,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\MissingArgumentException;
  *   <f:translate key="someKey" arguments="{0: 'dog', 1: 'fox'}" />
  * ```
  *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-translate
  * @see https://php.net/sprintf
  * @see https://unicode-org.github.io/icu/userguide/format_parse/messages/
- * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-translate
  */
 final class TranslateViewHelper extends AbstractViewHelper
 {

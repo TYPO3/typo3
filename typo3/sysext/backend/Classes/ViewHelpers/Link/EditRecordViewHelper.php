@@ -59,6 +59,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
  *    <a href="/typo3/record/edit?edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly[pages]=title,subtitle">
  *        Edit record
  *    </a>
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-link-editrecord
  */
 final class EditRecordViewHelper extends AbstractTagBasedViewHelper
 {

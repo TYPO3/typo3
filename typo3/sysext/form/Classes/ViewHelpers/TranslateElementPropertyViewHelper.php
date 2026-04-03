@@ -27,6 +27,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
  * Translate form element properties.
  *
  * Scope: frontend / backend
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-translateelementproperty
  */
 final class TranslateElementPropertyViewHelper extends AbstractViewHelper
 {

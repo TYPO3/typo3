@@ -38,11 +38,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
  *
  * Can also handle extbase models, you still need to provide the field name, not the property name.
  *
- * ````html
+ * ```html
  *   <f:render.text record="{page}" field="bodytext" />
  *   {record -> f:render.text(field: 'title')}
  *   <f:render.text field="subheader">{record}</f:render.text>
- * ````
+ * ```
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-render-text
  */
 final class TextViewHelper extends AbstractViewHelper
 {

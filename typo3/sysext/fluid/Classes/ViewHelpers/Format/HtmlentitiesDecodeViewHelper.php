@@ -26,8 +26,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *   <f:format.htmlentitiesDecode>{textWithEntities}</f:format.htmlentitiesDecode>
  * ```
  *
- * @see https://www.php.net/html_entity_decode
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-format-htmlentitiesdecode
+ * @see https://www.php.net/html_entity_decode
  */
 final class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
 {

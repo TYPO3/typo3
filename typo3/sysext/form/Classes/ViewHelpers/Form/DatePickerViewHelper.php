@@ -35,6 +35,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  *
  * Scope: frontend
  *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-form-datepicker
  * @deprecated since v14, will be removed in v15. Use the native HTML5 date input (Date form element) instead.
  */
 final class DatePickerViewHelper extends AbstractFormFieldViewHelper
