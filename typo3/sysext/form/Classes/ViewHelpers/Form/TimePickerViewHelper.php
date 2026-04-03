@@ -25,6 +25,9 @@ use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
+use TYPO3Fluid\Fluid\Core\Parser\ParsingState;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperNodeInitializedEventInterface;
 
 /**
  * Displays two select-boxes for hour and minute selection.
@@ -34,7 +37,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-form-timepicker
  * @deprecated since v14, will be removed in v15.
  */
-final class TimePickerViewHelper extends AbstractFormFieldViewHelper
+final class TimePickerViewHelper extends AbstractFormFieldViewHelper implements ViewHelperNodeInitializedEventInterface
 {
     /**
      * @var string
@@ -60,11 +63,6 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
      */
     public function render(): string
     {
-        trigger_error(
-            'The TimePickerViewHelper is deprecated since TYPO3 v14 and will be removed in v15.',
-            E_USER_DEPRECATED
-        );
-
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
         $this->tag->addAttribute('name', $name . '[hour]');
@@ -138,5 +136,13 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
         }
         $minuteSelector->setContent($options);
         return $minuteSelector->render();
+    }
+
+    public static function nodeInitializedEvent(ViewHelperNode $node, array $arguments, ParsingState $parsingState): void
+    {
+        trigger_error(
+            'The TimePickerViewHelper is deprecated since TYPO3 v14 and will be removed in v15.',
+            E_USER_DEPRECATED
+        );
     }
 }

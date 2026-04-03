@@ -27,6 +27,9 @@ use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
+use TYPO3Fluid\Fluid\Core\Parser\ParsingState;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperNodeInitializedEventInterface;
 
 /**
  * Display a jQuery date picker.
@@ -38,7 +41,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-form-form-datepicker
  * @deprecated since v14, will be removed in v15. Use the native HTML5 date input (Date form element) instead.
  */
-final class DatePickerViewHelper extends AbstractFormFieldViewHelper
+final class DatePickerViewHelper extends AbstractFormFieldViewHelper implements ViewHelperNodeInitializedEventInterface
 {
     /**
      * @var string
@@ -72,11 +75,6 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
      */
     public function render(): string
     {
-        trigger_error(
-            'The DatePickerViewHelper is deprecated since TYPO3 v14 and will be removed in v15. Use the native HTML5 date input (Date form element) instead.',
-            E_USER_DEPRECATED
-        );
-
         $enableDatePicker = $this->arguments['enableDatePicker'];
         $dateFormat = $this->arguments['dateFormat'];
         $previewMode = (bool)$this->arguments['previewMode'];
@@ -170,5 +168,13 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
             'y' => 'y',
         ];
         return strtr($dateFormat, $replacements);
+    }
+
+    public static function nodeInitializedEvent(ViewHelperNode $node, array $arguments, ParsingState $parsingState): void
+    {
+        trigger_error(
+            'The DatePickerViewHelper is deprecated since TYPO3 v14 and will be removed in v15. Use the native HTML5 date input (Date form element) instead.',
+            E_USER_DEPRECATED
+        );
     }
 }
