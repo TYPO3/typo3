@@ -35,4 +35,15 @@ final readonly class EditableSetting implements \JsonSerializable
     {
         return get_object_vars($this);
     }
+
+    public function getRenderedValue(): string
+    {
+        if (is_array($this->value)) {
+            return implode(', ', $this->value);
+        }
+        if (is_scalar($this->value)) {
+            return (string)$this->value;
+        }
+        return '';
+    }
 }
