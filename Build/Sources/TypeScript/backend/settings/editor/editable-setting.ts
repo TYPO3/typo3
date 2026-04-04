@@ -125,7 +125,7 @@ export class EditableSettingElement extends LitElement {
       value: Array.isArray(value) ? JSON.stringify(value) : String(value),
       debug: this.mode === SettingsMode.advanced,
       readonly: definition.readonly,
-      enum: JSON.stringify(definition.enum),
+      enum: Object.keys(definition.enum).length > 0 ? JSON.stringify(definition.enum) : false,
       default: Array.isArray(definition.default) ? JSON.stringify(definition.default) : String(definition.default),
       options: JSON.stringify(definition.options),
     };
