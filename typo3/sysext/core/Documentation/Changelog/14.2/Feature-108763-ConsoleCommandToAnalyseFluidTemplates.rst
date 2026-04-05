@@ -56,6 +56,49 @@ pipeline fail.
 Verbose output allows to get feedback of analyzed templates
 and the number of errors/deprecations (or success).
 
+..  _feature-108763-1769331943-tool-integration:
+
+Integration with other tools
+----------------------------
+
+The command also supports input of a template string via `STDIN` as well as machine-readable
+output as JSON. This enables better integration with other development-related tooling.
+
+Usage:
+
+..  code-block:: bash
+
+    echo "<formvh:form.timePicker /> {_invalidVariable}" | vendor/bin/typo3 fluid:analyze --stdin --json
+
+Example output (formatted):
+
+..  code-block:: json
+
+    {
+        "identifier": "template__5adb1a7702b9dcbf",
+        "path": "php:\/\/stdin",
+        "errors": [
+            {
+                "file": "\/var\/www\/html\/vendor\/typo3fluid\/fluid\/src\/Core\/Parser\/TemplateParser.php",
+                "line": 130,
+                "message": "Fluid parse error in template php:\/\/stdin, line 2 at character 27. Error: Variable identifiers cannot start with a \"_\": _invalidVariable (error code 1765900762). Template source chunk:    {_invalidVariable}\n",
+                "templateLocation": {
+                    "identifierOrPath": "php:\/\/stdin",
+                    "line": 2,
+                    "character": 27
+                }
+            }
+        ],
+        "deprecations": [
+            {
+                "file": "\/var\/www\/html\/typo3\/sysext\/form\/Classes\/ViewHelpers\/Form\/TimePickerViewHelper.php",
+                "line": 143,
+                "message": "The TimePickerViewHelper is deprecated since TYPO3 v14 and will be removed in v15."
+            }
+        ]
+    }
+
+
 ..  _feature-108763-1769331943-deprecating-viewhelpers:
 
 Deprecating ViewHelpers

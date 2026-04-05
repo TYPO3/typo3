@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Service\TemplateFinder;
 use TYPO3Fluid\Fluid\Validation\TemplateValidator;
+use TYPO3Fluid\Fluid\Validation\TemplateValidatorResult;
 
 /**
  * Analyzes Fluid templates for syntax errors and deprecated functionality
@@ -56,16 +57,38 @@ final class AnalyzeCommand extends Command
             InputOption::VALUE_NONE,
             'Include template files that belong to TYPO3 system extensions',
         );
+        $this->addOption(
+            'stdin',
+            null,
+            InputOption::VALUE_NONE,
+            'Analyze template string that is provided via STDIN',
+        );
+        $this->addOption(
+            'json',
+            null,
+            InputOption::VALUE_NONE,
+            'Output results as JSON',
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $templates = $input->getOption('stdin')
+            ? ['php://stdin']
+            : $this->templateFinder->findTemplatesInAllPackages($input->getOption('include-system-extensions'));
+
+        if ($input->getOption('json')) {
+            $result = $this->validateTemplateFiles($templates);
+            $result = $input->getOption('stdin') ? $result['php://stdin'] : $result;
+            $output->writeln(json_encode($result));
+            return Command::SUCCESS;
+        }
+
         $formatter = new FormatterHelper();
         $io = new SymfonyStyle($input, $output);
 
         $io->note('This command only analyzes templates that are using the *.fluid.* file extension.');
 
-        $templates = $this->templateFinder->findTemplatesInAllPackages($input->getOption('include-system-extensions'));
         $templatesCount = count($templates);
         if ($output->isVeryVerbose()) {
             $io->success(sprintf('%d templates will be analyzed:', $templatesCount));
@@ -75,10 +98,7 @@ final class AnalyzeCommand extends Command
                 $output->writeln(sprintf('<info>%d</info> %s', $index, $template));
             }
         }
-        $results = (new TemplateValidator())->validateTemplateFiles(
-            $templates,
-            $this->renderingContextFactory->create(),
-        );
+        $results = $this->validateTemplateFiles($templates);
         $errors = $deprecations = 0;
         foreach ($results as $result) {
             $templateFile = $result->path;
@@ -116,5 +136,16 @@ final class AnalyzeCommand extends Command
             }
         }
         return $errors > 0 ? Command::FAILURE : Command::SUCCESS;
+    }
+
+    /**
+     * @return TemplateValidatorResult[]
+     */
+    private function validateTemplateFiles(array $templates): array
+    {
+        return (new TemplateValidator())->validateTemplateFiles(
+            $templates,
+            $this->renderingContextFactory->create(),
+        );
     }
 }
