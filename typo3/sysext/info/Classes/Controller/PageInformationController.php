@@ -692,6 +692,7 @@ readonly class PageInformationController
 
     protected function getBackendLayouts(array $row, string $field): array
     {
+        $languageService = $this->getLanguageService();
         $configuration = ['row' => $row, 'table' => 'pages', 'field' => $field, 'items' => []];
         // Below we call the itemsProcFunc to retrieve properly resolved backend layout items,
         // including the translated labels and the correct field values (backend layout identifiers).
@@ -699,7 +700,7 @@ readonly class PageInformationController
         $backendLayouts = [];
         foreach ($configuration['items'] ?? [] as $backendLayout) {
             if (($backendLayout['label'] ?? false) && ($backendLayout['value'] ?? false)) {
-                $backendLayouts[$backendLayout['value']] = $backendLayout['label'];
+                $backendLayouts[$backendLayout['value']] = $languageService->sL($backendLayout['label']) ?: $backendLayout['label'];
             }
         }
         return $backendLayouts;
