@@ -40,7 +40,7 @@ readonly class ColumnMapFactory
         private ReflectionService $reflectionService,
     ) {}
 
-    public function create(FieldTypeInterface $field, string $propertyName, string $className): ColumnMap
+    public function create(FieldTypeInterface $field, string $propertyName, string $className, bool $isPersistable = true): ColumnMap
     {
         $propertyType = null;
         $propertyCollectionValueType = null;
@@ -92,6 +92,7 @@ readonly class ColumnMapFactory
                 dateTimeFormat: $field->getFormat(),
                 dateTimeStorageFormat: $field->getPersistenceType(),
                 isNullable: $field->isNullable(),
+                isPersistable: $isPersistable,
             );
         }
 
@@ -113,6 +114,7 @@ readonly class ColumnMapFactory
                 childKeyFieldName: !empty($columnConfiguration['MM_opposite_field']) ? 'uid_local' : 'uid_foreign',
                 childSortByFieldName: !empty($columnConfiguration['MM_opposite_field']) ? 'sorting_foreign' : 'sorting',
                 isNullable: $field->isNullable(),
+                isPersistable: $isPersistable,
             );
         }
 
@@ -131,6 +133,7 @@ readonly class ColumnMapFactory
                 childSortByFieldName: $columnConfiguration['foreign_sortby'] ?? null,
                 childTableDefaultSortings: $columnConfiguration['foreign_default_sortby'] ?? null,
                 isNullable: $field->isNullable(),
+                isPersistable: $isPersistable,
             );
         }
 
@@ -149,6 +152,7 @@ readonly class ColumnMapFactory
                 parentTableFieldName: $columnConfiguration['foreign_table_field'] ?? null,
                 childSortByFieldName: $columnConfiguration['foreign_sortby'] ?? null,
                 isNullable: $field->isNullable(),
+                isPersistable: $isPersistable,
             );
         }
 
@@ -169,6 +173,7 @@ readonly class ColumnMapFactory
                 type: $tableColumnType,
                 typeOfRelation: $relation,
                 isNullable: $field->isNullable(),
+                isPersistable: $isPersistable,
             );
         }
 
@@ -178,6 +183,7 @@ readonly class ColumnMapFactory
                 columnName: $columnName,
                 type: $tableColumnType,
                 typeOfRelation: $relation,
+                isPersistable: $isPersistable,
             );
         }
 
@@ -201,6 +207,7 @@ readonly class ColumnMapFactory
                 type: $tableColumnType,
                 typeOfRelation: Relation::HAS_MANY,
                 isNullable: $field->isNullable(),
+                isPersistable: $isPersistable,
             );
         }
 
@@ -208,6 +215,7 @@ readonly class ColumnMapFactory
             columnName: $columnName,
             type: $tableColumnType,
             isNullable: $field->isNullable(),
+            isPersistable: $isPersistable,
         );
     }
 }

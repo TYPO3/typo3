@@ -70,7 +70,7 @@ final readonly class DataMap
 
     public function isPersistableProperty(string $propertyName): bool
     {
-        return isset($this->columnMaps[$propertyName]);
+        return isset($this->columnMaps[$propertyName]) && $this->columnMaps[$propertyName]->isPersistable;
     }
 
     // Getters below could be removed but don't harm much and kept as b/w compat for now.

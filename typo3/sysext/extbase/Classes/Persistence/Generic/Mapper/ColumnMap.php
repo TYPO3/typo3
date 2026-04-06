@@ -44,6 +44,7 @@ final readonly class ColumnMap
      *                                          TCA "foreign_sortby" with TCA "foreign_table"
      * @param string|null $childTableDefaultSortings name of the fields with direction results from child's table are sorted by default:
      *                                               TCA "foreign_default_sortby" with TCA "foreign_table"
+     * @param bool $isPersistable Whether Extbase may write this column. Columns that only exist via a TCA "ctrl" capability are managed by the Core and therefore not persistable.
      */
     public function __construct(
         public string $columnName,
@@ -60,6 +61,7 @@ final readonly class ColumnMap
         public ?string $childSortByFieldName = null,
         public ?string $childTableDefaultSortings = null,
         public bool $isNullable = false,
+        public bool $isPersistable = true,
     ) {}
 
     // Getters below could be removed but don't harm much and kept as b/w compat for now.

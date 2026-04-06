@@ -45,6 +45,7 @@ use TYPO3Tests\TestDataMapper\Domain\Model\CustomDateTime;
 use TYPO3Tests\TestDataMapper\Domain\Model\Enum\IntegerBackedEnum;
 use TYPO3Tests\TestDataMapper\Domain\Model\Enum\StringBackedEnum;
 use TYPO3Tests\TestDataMapper\Domain\Model\Example;
+use TYPO3Tests\TestDataMapper\Domain\Model\SystemCapabilities;
 use TYPO3Tests\TestDataMapper\Domain\Model\TraversableDomainObjectExample;
 
 final class DataMapperTest extends FunctionalTestCase
@@ -649,5 +650,42 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertNull($retrievedComment);
 
         self::assertCSVDataSet(__DIR__ . '/Fixtures/DataMapperCustomRestrictionFields.csv');
+    }
+
+    #[Test]
+    public function capabilityFieldsAreMapped(): void
+    {
+        $time = time();
+        $starttime = $time;
+        $endtime = $time + 3600;
+        $row = [
+            'uid' => 1,
+            'description' => 'description',
+            'tstamp' => $time,
+            'crdate' => $time,
+            'deleted' => 0,
+            'sorting' => 128,
+            'hidden' => 0,
+            'starttime' => $starttime,
+            'endtime' => $endtime,
+            'fe_group' => '-1',
+            'editlock' => 1,
+        ];
+
+        $dataMapper = $this->get(DataMapper::class);
+        /** @var SystemCapabilities[] $mappedObjectArray */
+        $mappedObjectArray = $dataMapper->map(SystemCapabilities::class, [$row]);
+        self::assertInstanceOf(SystemCapabilities::class, $mappedObjectArray[0]);
+        self::assertEquals(1, $mappedObjectArray[0]->getUid());
+        self::assertEquals('description', $mappedObjectArray[0]->description);
+        self::assertEquals($time, $mappedObjectArray[0]->crdate->format('U'));
+        self::assertEquals($time, $mappedObjectArray[0]->tstamp->format('U'));
+        self::assertFalse($mappedObjectArray[0]->deleted);
+        self::assertEquals(128, $mappedObjectArray[0]->sorting);
+        self::assertFalse($mappedObjectArray[0]->hidden);
+        self::assertEquals($starttime, $mappedObjectArray[0]->starttime->format('U'));
+        self::assertEquals($endtime, $mappedObjectArray[0]->endtime->format('U'));
+        self::assertEquals('-1', $mappedObjectArray[0]->feGroup);
+        self::assertTrue($mappedObjectArray[0]->editlock);
     }
 }

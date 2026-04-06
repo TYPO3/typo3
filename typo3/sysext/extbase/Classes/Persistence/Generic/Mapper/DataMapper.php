@@ -234,9 +234,6 @@ class DataMapper
         }
         foreach ($classSchema->getDomainObjectProperties() as $property) {
             $propertyName = $property->getName();
-            if (!$dataMap->isPersistableProperty($propertyName)) {
-                continue;
-            }
             $columnMap = $dataMap->getColumnMap($propertyName);
             if ($columnMap === null) {
                 continue;

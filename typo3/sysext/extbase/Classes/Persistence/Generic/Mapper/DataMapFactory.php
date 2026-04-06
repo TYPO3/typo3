@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Field\PassthroughFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
@@ -115,9 +116,33 @@ readonly class DataMapFactory
             if ($schema->hasCapability(TcaSchemaCapability::Language)) {
                 $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
             }
-            foreach ($schema->getFields() as $columnName => $columnDefinition) {
+            $fields = iterator_to_array($schema->getFields());
+            $nonPersistableFields = [];
+            // These are the system capabilities for which TYPO3 does not create a default
+            // "columns" definition. Their fields belong to the core, so Extbase may hydrate
+            // them but must never write them back.
+            $nonPersistableCapabilities = [
+                TcaSchemaCapability::SoftDelete,
+                TcaSchemaCapability::CreatedAt,
+                TcaSchemaCapability::UpdatedAt,
+                TcaSchemaCapability::SortByField,
+            ];
+            foreach ($nonPersistableCapabilities as $capability) {
+                if (!$schema->hasCapability($capability)) {
+                    continue;
+                }
+                $fieldName = $schema->getCapability($capability)->getFieldName();
+                // Fields that have a "columns" definition of their own are already part of
+                // the field list and keep their established read and write behaviour.
+                if ($schema->hasField($fieldName)) {
+                    continue;
+                }
+                $fields[$fieldName] = new PassthroughFieldType($fieldName, []);
+                $nonPersistableFields[$fieldName] = true;
+            }
+            foreach ($fields as $columnName => $columnDefinition) {
                 $propertyName = $fieldNameToPropertyNameMapping[$columnName] ?? GeneralUtility::underscoredToLowerCamelCase($columnName);
-                $columnMaps[$propertyName] = $this->columnMapFactory->create($columnDefinition, $propertyName, $className);
+                $columnMaps[$propertyName] = $this->columnMapFactory->create($columnDefinition, $propertyName, $className, !isset($nonPersistableFields[$columnName]));
             }
         }
 
