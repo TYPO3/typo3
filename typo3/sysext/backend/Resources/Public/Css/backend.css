@@ -3288,9 +3288,8 @@ typo3-backend-icon[size=mega]{height:var(--icon-size-mega,64px);width:var(--icon
 typo3-backend-security-csp-reports .infolist-container{container-type:inline-size}
 typo3-backend-security-csp-reports .infolist{display:flex;flex-direction:column;gap:var(--typo3-spacing)}
 typo3-backend-security-csp-reports .infolist-info{display:none}
-typo3-backend-security-csp-reports .infolist-overlay{position:relative;z-index:10}
 @container (max-width: 899px){
-typo3-backend-security-csp-reports .infolist-info-showrecord{background:rgba(0,0,0,.5);display:block;height:100%;left:0;position:absolute;top:0;width:100%}}
+typo3-backend-security-csp-reports .infolist-info-showrecord{background:rgba(0,0,0,.5);display:block;height:100%;left:0;padding:1.5rem;position:absolute;top:0;width:100%}}
 @container (min-width: 900px){
 typo3-backend-security-csp-reports .infolist{display:grid;grid-template:"header header" "content info";grid-template-columns:auto 400px}
 typo3-backend-security-csp-reports .infolist-header{grid-area:header}

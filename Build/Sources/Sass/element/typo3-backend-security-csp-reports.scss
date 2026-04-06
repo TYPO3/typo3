@@ -13,13 +13,6 @@ typo3-backend-security-csp-reports {
         display: none;
     }
 
-    .infolist-overlay {
-        position: relative;
-        z-index: 10;
-    }
-}
-
-typo3-backend-security-csp-reports {
     @container (max-width: 899px) {
         .infolist-info-showrecord {
             display: block;
@@ -29,6 +22,7 @@ typo3-backend-security-csp-reports {
             left: 0;
             height: 100%;
             width: 100%;
+            padding: 1.5rem;
         }
     }
 

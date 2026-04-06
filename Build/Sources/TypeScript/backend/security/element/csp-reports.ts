@@ -133,16 +133,11 @@ export class CspReports extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <div class="infolist-container infolist-overlay">
+      <div class="infolist-container">
         <div class="infolist">
           <div class="infolist-header">
             ${this.renderNavigation()}
           </div>
-        </div>
-      </div>
-
-      <div class="infolist-container">
-        <div class="infolist">
           <div class="infolist-content">
             <div class="table-fit mb-0">
               <table class="table table-striped">
