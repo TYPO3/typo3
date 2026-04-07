@@ -10,16 +10,16 @@
 <f:form action="login" target="_top" fieldNamePrefix="">
     <fieldset>
         <legend>
-            <f:translate key="logout"/>
+            <f:translate domain="felogin.messages" key="logout"/>
         </legend>
         <div>
             <label for="tx-felogin-input-logout">
-                <f:translate key="username"/>
+                <f:translate domain="felogin.messages" key="username"/>
             </label>
             {user.username}
         </div>
         <div>
-            <f:form.submit value="{f:translate(key: 'logout')}" name="submit" id="tx-felogin-input-logout"/>
+            <f:form.submit id="tx-felogin-input-logout" name="submit" value="{f:translate(domain: 'felogin.messages', key: 'logout')}"/>
         </div>
 
         <div class="felogin-hidden">

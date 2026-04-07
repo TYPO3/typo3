@@ -24,17 +24,17 @@
 <f:section name="content">
     <fieldset>
         <legend>
-            <f:translate key="login"/>
+            <f:translate domain="felogin.messages" key="login"/>
         </legend>
         <div>
             <label for="tx-felogin-input-username">
-                <f:translate key="username"/>
+                <f:translate domain="felogin.messages" key="username"/>
             </label>
             <f:form.textfield name="user" required="true" autocomplete="username" id="tx-felogin-input-username"/>
         </div>
         <div>
             <label for="tx-felogin-input-password">
-                <f:translate key="password"/>
+                <f:translate domain="felogin.messages" key="password"/>
             </label>
             <f:form.password name="pass" required="required" autocomplete="current-password" id="tx-felogin-input-password"/>
         </div>
@@ -42,7 +42,7 @@
         <f:if condition="{permaloginStatus} > -1">
             <div>
                 <label for="permalogin">
-                    <f:translate id="permalogin"/>
+                    <f:translate domain="felogin.messages" key="permalogin"/>
                 </label>
                 <f:if condition="{permaloginStatus} == 1">
                     <f:then>
@@ -58,7 +58,7 @@
         </f:if>
 
         <div>
-            <f:form.submit value="{f:translate(key: 'login')}" name="submit"/>
+            <f:form.submit name="submit" value="{f:translate(domain: 'felogin.messages', key: 'login')}"/>
         </div>
 
         <div class="felogin-hidden">

@@ -15,19 +15,19 @@
         </legend>
         <div>
             <label for="tx-felogin-input-data">
-                <f:translate key="enter_your_data"/>
+                <f:translate domain="felogin.messages" key="enter_your_data"/>
             </label>
             <f:form.textfield name="userIdentifier" id="tx-felogin-input-data"/>
         </div>
         <div>
-            <f:form.submit value="{f:translate(key: 'reset_password')}"/>
+            <f:form.submit value="{f:translate(domain: 'felogin.messages', key: 'reset_password')}"/>
         </div>
     </fieldset>
 </f:form>
 
 <p>
     <f:link.action action="login" controller="Login">
-        <f:translate key="forgot_header_backToLogin"/>
+        <f:translate domain="felogin.messages" key="forgot_header_backToLogin"/>
     </f:link.action>
 </p>
 </html>
