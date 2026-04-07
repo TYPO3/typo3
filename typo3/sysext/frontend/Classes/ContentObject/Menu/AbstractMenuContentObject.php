@@ -1396,7 +1396,16 @@ abstract class AbstractMenuContentObject
         $cacheIdentifierPagesNextLevel = 'menucontentobject-is-submenu-pages-next-level-' . $this->menuNumber . '-' . sha1(json_encode($pageIdsOnSameLevel));
         $cachePagesNextLevel = $runtimeCache->get($cacheIdentifierPagesNextLevel);
         if (!is_array($cachePagesNextLevel)) {
-            $cachePagesNextLevel = $this->sys_page->getMenu($pageIdsOnSameLevel, 'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide,shortcut,shortcut_mode,l18n_cfg,sys_language_uid,l10n_parent,t3ver_wsid,t3ver_oid,t3ver_state', 'sorting', '', true, $this->disableGroupAccessCheck);
+            // Use * to ensure all fields required by checkShortcuts validation are available.
+            $fullPages = $this->sys_page->getMenu($pageIdsOnSameLevel, '*', 'sorting', '', true, $this->disableGroupAccessCheck);
+            // Cache only the fields actually used in the foreach loop below.
+            $cachePagesNextLevel = array_map(
+                static fn(array $page) => array_intersect_key(
+                    $page,
+                    array_flip(['uid', 'pid', 'doktype', 'nav_hide', 'l18n_cfg', '_LOCALIZED_UID']),
+                ),
+                $fullPages,
+            );
             $runtimeCache->set($cacheIdentifierPagesNextLevel, $cachePagesNextLevel);
         }
 
