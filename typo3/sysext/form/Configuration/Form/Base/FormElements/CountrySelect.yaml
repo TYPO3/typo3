@@ -22,6 +22,12 @@ prototypes:
               templateName: Inspector-CheckboxEditor
               label: formEditor.elements.FormElement.editor.enabled.label
               propertyPath: renderingOptions.enabled
+            245:
+              identifier: defaultValue
+              templateName: Inspector-CountrySingleSelectEditor
+              label: formEditor.elements.CountrySelect.editor.defaultValue.label
+              propertyPath: defaultValue
+              description: formEditor.elements.CountrySelect.editor.defaultValue.description
             250:
               identifier: inactiveOption
               templateName: Inspector-TextEditor
@@ -112,6 +118,7 @@ prototypes:
               identifier: removeButton
               templateName: Inspector-RemoveElementEditor
           predefinedDefaults:
+            defaultValue: ''
             properties:
               options: {  }
           label: formEditor.elements.CountrySelect.label

@@ -107,6 +107,7 @@ prototypes:
         Inspector-Typo3WinBrowserEditor: Inspector/Typo3WinBrowserEditor
         Inspector-MaximumFileSizeEditor: Inspector/MaximumFileSizeEditor
         Inspector-CountrySelectEditor: Inspector/CountrySelectEditor
+        Inspector-CountrySingleSelectEditor: Inspector/CountrySingleSelectEditor
         Inspector-DateEditor: Inspector/DateEditor
 
       formElementPropertyValidatorsDefinition:

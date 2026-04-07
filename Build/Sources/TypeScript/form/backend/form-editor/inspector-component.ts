@@ -248,6 +248,14 @@ function renderEditorDispatcher(
         collectionName
       );
       break;
+    case 'Inspector-CountrySingleSelectEditor':
+      renderCountrySingleSelectEditor(
+        editorConfiguration,
+        editorHtml,
+        collectionElementIdentifier,
+        collectionName
+      );
+      break;
     case 'Inspector-SingleSelectEditor':
       renderSingleSelectEditor(
         editorConfiguration,
@@ -1284,6 +1292,64 @@ export function renderCountrySelectEditor(
       selectValues.push((opt as any)._dataValue);
     });
     getCurrentlySelectedFormElement().set(propertyPath, selectValues);
+    validateCollectionElement(propertyPath, editorHtml);
+  });
+}
+
+export function renderCountrySingleSelectEditor(
+  editorConfiguration: EditorConfiguration,
+  editorHtml: HTMLElement,
+  collectionElementIdentifier: string,
+  collectionName: keyof FormEditorDefinitions
+): void {
+  assert(
+    typeof editorConfiguration === 'object' && editorConfiguration !== null && !Array.isArray(editorConfiguration),
+    'Invalid parameter "editorConfiguration"',
+    1743955200
+  );
+  assert(
+    typeof editorHtml === 'object' && editorHtml !== null && !Array.isArray(editorHtml),
+    'Invalid parameter "editorHtml"',
+    1743955201
+  );
+  assert(
+    getUtility().isNonEmptyString(editorConfiguration.label),
+    'Invalid configuration "label"',
+    1743955202
+  );
+  assert(
+    getUtility().isNonEmptyString(editorConfiguration.propertyPath),
+    'Invalid configuration "propertyPath"',
+    1743955203
+  );
+
+  const propertyPath = getFormEditorApp().buildPropertyPath(
+    editorConfiguration.propertyPath,
+    collectionElementIdentifier,
+    collectionName
+  );
+
+  getHelper().getTemplatePropertyElement('label', editorHtml)
+    ?.append(document.createTextNode(editorConfiguration.label));
+  renderDescription(editorConfiguration, editorHtml);
+
+  const selectElement = getHelper().getTemplatePropertyElement('selectOptions', editorHtml) as HTMLSelectElement | null;
+  const propertyData: string = getCurrentlySelectedFormElement().get(propertyPath) || '';
+  validateCollectionElement(propertyPath, editorHtml);
+
+  const options = Array.from(selectElement?.querySelectorAll('option') ?? []);
+  selectElement?.replaceChildren();
+
+  for (let i = 0, len = options.length; i < len; ++i) {
+    const selected = options[i].value === propertyData;
+    const option = new Option(options[i].text, i.toString(), false, selected);
+    option.dataset.value = options[i].value;
+    selectElement?.append(option);
+  }
+
+  selectElement?.addEventListener('change', function(this: HTMLSelectElement) {
+    const selectedOpt = this.querySelector<HTMLOptionElement>('option:checked');
+    getCurrentlySelectedFormElement().set(propertyPath, selectedOpt?.dataset.value ?? '');
     validateCollectionElement(propertyPath, editorHtml);
   });
 }

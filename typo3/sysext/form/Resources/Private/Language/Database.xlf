@@ -1263,6 +1263,12 @@ If you need higher values contact your administrator for help.
       <trans-unit id="formEditor.elements.CountrySelect.editor.excludeCountries.label">
         <source>Exclude countries</source>
       </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.defaultValue.label">
+        <source>Default value</source>
+      </trans-unit>
+      <trans-unit id="formEditor.elements.CountrySelect.editor.defaultValue.description">
+        <source>Ensure the selected country is not excluded by the configured country filters.</source>
+      </trans-unit>
       <trans-unit id="formEditor.elements.UnknownElement">
         <source>Unknown element</source>
       </trans-unit>
