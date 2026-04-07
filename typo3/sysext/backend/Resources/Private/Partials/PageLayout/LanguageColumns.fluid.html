@@ -16,30 +16,36 @@
                         data-language-title="{languageColumn.context.siteLanguage.title}"
                         data-flag-identifier="{languageColumn.context.siteLanguage.flagIdentifier}"
                     >
-                        <h2>{languageColumn.context.siteLanguage.title}</h2>
-                        <f:if condition="{languageColumn.context.languageMode}">
-                            <span class="badge badge-{languageColumn.context.languageModeLabelClass}">{languageColumn.context.languageMode}</span>
-                        </f:if>
-                        <f:if condition="{languageColumn.translationData.hasElementsWithWorkspaceDeletePlaceholders}">
-                            <span class="badge badge-warning"
-                                data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageContainsWorkspaceDeletePlaceholderRecords')}"
-                                data-bs-toggle="popover"
-                                data-bs-placement="auto"
-                                data-bs-trigger="hover focus"
-                            >
-                                !
-                            </span>
-                        </f:if>
-                    </td>
-                </f:for>
-            </tr>
-            <tr>
-                <f:for each="{languageColumns}" as="languageColumn">
-                    <td class="t3-page-column t3-page-lang-label nowrap">
-                        <div class="btn-group">
+                        <typo3-backend-editable-page-title
+                            pageTitle="{languageColumn.context.localizedPageTitle}"
+                            pageId="{context.pageId}"
+                            localizedPageId="{languageColumn.pageRecordUid}"
+                            {languageColumn.allowEditPage ? 'editable' : ''}
+                        >
+                            {languageColumn.context.localizedPageTitle}
+                        </typo3-backend-editable-page-title>
+                        <div>
+                            <core:icon identifier="{languageColumn.context.siteLanguage.flagIdentifier}" />
+                            {languageColumn.context.siteLanguage.title}
+                            <f:if condition="{languageColumn.context.languageMode}">
+                                <span class="badge badge-{languageColumn.context.languageModeLabelClass}">{languageColumn.context.languageMode}</span>
+                            </f:if>
+                            <f:if condition="{languageColumn.translationData.hasElementsWithWorkspaceDeletePlaceholders}">
+                                <span class="badge badge-warning"
+                                    data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageContainsWorkspaceDeletePlaceholderRecords')}"
+                                    data-bs-toggle="popover"
+                                    data-bs-placement="auto"
+                                    data-bs-trigger="hover focus"
+                                >
+                                    !
+                                </span>
+                            </f:if>
+                        </div>
+                        <div class="mt-2">
                             <f:if condition="{languageColumn.allowViewPage}">
                                 <button class="btn btn-default btn-sm" {f:if(condition: languageColumn.previewUrlAttributes, then: '{languageColumn.previewUrlAttributes -> f:format.raw()}', else: 'disabled="true"')} title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')}">
                                     <core:icon identifier="actions-view" />
+                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage" />
                                 </button>
                             </f:if>
                             <f:if condition="{languageColumn.allowEditPage}">
@@ -47,9 +53,10 @@
                                     url="{languageColumn.pageEditUrl}"
                                     edit-url="{languageColumn.fullPageEditUrl}"
                                     class="btn btn-default btn-sm"
-                                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:edit')}"
+                                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties')}"
                                 >
                                     <core:icon identifier="actions-open" />
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties" />
                                 </typo3-backend-contextual-record-edit-trigger>
                             </f:if>
                             <f:if condition="{allowEditContent} && {languageColumn.context.siteLanguage.languageId} && {languageColumn.translationData.untranslatedRecordUids}">
@@ -65,8 +72,6 @@
                                 </typo3-backend-localization-button>
                             </f:if>
                         </div>
-                        {languageColumn.pageIcon -> f:format.raw()}
-                        {languageColumn.context.localizedPageTitle -> f:format.crop(maxCharacters: maxTitleLength)}
                     </td>
                 </f:for>
             </tr>

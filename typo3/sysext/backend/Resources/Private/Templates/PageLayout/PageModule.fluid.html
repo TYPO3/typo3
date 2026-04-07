@@ -26,14 +26,16 @@
 
 <f:section name="Content">
 
-    <typo3-backend-editable-page-title
-        pageTitle="{localizedPageTitle}"
-        pageId="{pageId}"
-        localizedPageId="{localizedPageId}"
-        {isPageEditable ? 'editable' : ''}
-    >
-        {localizedPageTitle}
-    </typo3-backend-editable-page-title>
+    <f:if condition="!{pageLayoutContext.drawingConfiguration.languageComparisonMode}">
+        <typo3-backend-editable-page-title
+            pageTitle="{localizedPageTitle}"
+            pageId="{pageId}"
+            localizedPageId="{localizedPageId}"
+            {isPageEditable ? 'editable' : ''}
+        >
+            {localizedPageTitle}
+        </typo3-backend-editable-page-title>
+    </f:if>
 
     <f:for each="{infoBoxes}" as="infoBox">
         <f:be.infobox state="{infoBox.state}">
