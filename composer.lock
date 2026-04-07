@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89f2d7135ce641ccf3a69596c46cb67e",
+    "content-hash": "3f5d9d5270803e54c353778ed1e8e947",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5358,16 +5358,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "5.2.0",
+            "version": "5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "dce7467c2bfd4c8fea3edbb7983664bdc6f51882"
+                "reference": "f1a7aa9759f4cd98f0d598cce73b5ecaec06da26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/dce7467c2bfd4c8fea3edbb7983664bdc6f51882",
-                "reference": "dce7467c2bfd4c8fea3edbb7983664bdc6f51882",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/f1a7aa9759f4cd98f0d598cce73b5ecaec06da26",
+                "reference": "f1a7aa9759f4cd98f0d598cce73b5ecaec06da26",
                 "shasum": ""
             },
             "require": {
@@ -5378,6 +5378,7 @@
                 "ext-json": "*",
                 "ext-simplexml": "*",
                 "friendsofphp/php-cs-fixer": "^3.94.2",
+                "infection/infection": "^0.32.6",
                 "phpstan/phpstan": "^2.1.40",
                 "phpstan/phpstan-phpunit": "^2.0.16",
                 "phpunit/phpunit": "^11.5.55 || ^12.5.14 || ^13.0.5",
@@ -5413,7 +5414,7 @@
                 "issues": "https://github.com/TYPO3/Fluid/issues",
                 "source": "https://github.com/TYPO3/Fluid"
             },
-            "time": "2026-03-11T11:10:11+00:00"
+            "time": "2026-04-07T17:50:28+00:00"
         },
         {
             "name": "webmozart/assert",
