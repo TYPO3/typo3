@@ -23,9 +23,12 @@
                         <core:icon identifier="actions-open" />
                     </typo3-backend-contextual-record-edit-trigger>
                     <f:if condition="{item.visibilityToggling}">
-                        <a class="btn btn-sm btn-default btn-borderless" href="{item.visibilityToggleUrl}" title="{item.visibilityToggleTitle}">
-                            <core:icon identifier="actions-edit-{item.visibilityToggleIconName}" />
-                        </a>
+                        <button type="button"
+                            class="btn btn-sm btn-default btn-borderless"
+                            data-action="content-element-visibility-toggle"
+                            title="{item.visibilityToggleTitle}">
+                            <typo3-backend-icon identifier="actions-edit-{item.visibilityToggleIconName}" size="small"></typo3-backend-icon>
+                        </button>
                     </f:if>
                     <f:if condition="{item.delible}">
                         <a class="btn btn-default btn-borderless t3js-modal-trigger"

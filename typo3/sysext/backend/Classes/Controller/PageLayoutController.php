@@ -127,9 +127,6 @@ class PageLayoutController
         $pageLocalizationRecord = $this->pageContext->languageInformation->getTranslationRecord($primaryLanguageId);
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
-        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::create('@typo3/backend/page-actions.js')
-        );
 
         $view->setTitle($languageService->translate('title', 'backend.modules.layout'), $this->pageContext->getPageTitle());
         $view->getDocHeaderComponent()->setPageBreadcrumb($this->pageContext->pageRecord);
@@ -457,18 +454,15 @@ class PageLayoutController
                 ->setLabel($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
                 ->setIcon($this->iconFactory->getIcon('actions-cog'))
                 ->setShowLabelText(true);
-            $viewSettingsButton->addItem(
-                $this->componentFactory->createDropDownToggle()
-                    ->setTag('button')
-                    ->setActive((bool)$this->moduleData->get('showHidden'))
-                    ->setLabel($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:hiddenCE') . ' (' . $this->getNumberOfHiddenElements() . ')')
-                    ->setIcon($this->iconFactory->getIcon('actions-eye'))
-                    ->setAttributes([
-                        'id' => 'pageLayoutToggleShowHidden',
-                        'type' => 'button',
-                        'data-pageaction-showhidden' => $this->moduleData->get('showHidden') ? '1' : '0',
-                    ])
-            );
+            $this->pageRenderer->loadJavaScriptModule('@typo3/backend/layout-module/toggle-hidden-element.js');
+            $toggleHidden = $this->componentFactory->createDropDownGeneric();
+            $toggleHidden->setTag('typo3-backend-page-layout-toggle-hidden');
+            $toggleHiddenAttributes = ['count' => (string)$this->getNumberOfHiddenElements()];
+            if ((bool)$this->moduleData->get('showHidden')) {
+                $toggleHiddenAttributes['active'] = 'active';
+            }
+            $toggleHidden->setAttributes($toggleHiddenAttributes);
+            $viewSettingsButton->addItem($toggleHidden);
             $view->addButtonToButtonBar($viewSettingsButton, ButtonBar::BUTTON_POSITION_RIGHT, 0);
         }
 
