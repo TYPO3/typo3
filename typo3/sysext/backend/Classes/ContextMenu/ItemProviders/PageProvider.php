@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -162,10 +161,7 @@ class PageProvider extends RecordProvider
         ],
     ];
 
-    /**
-     * @var bool
-     */
-    protected $languageAccess = false;
+    protected bool $languageAccess = false;
 
     /**
      * Checks if the provider can add items to the menu
@@ -256,7 +252,7 @@ class PageProvider extends RecordProvider
     /**
      * Saves calculated permissions for a page to speed things up
      */
-    protected function initPermissions()
+    protected function initPermissions(): void
     {
         $this->pagePermissions = new Permission($this->backendUser->calcPerms($this->record));
         $this->languageAccess = $this->hasLanguageAccess();
@@ -454,20 +450,16 @@ class PageProvider extends RecordProvider
 
     /**
      * Returns true if current record is a root page
-     *
-     * @return bool
      */
-    protected function isRoot()
+    protected function isRoot(): bool
     {
         return (int)$this->identifier === 0;
     }
 
     /**
      * Returns true if current record is a web mount
-     *
-     * @return bool
      */
-    protected function isWebMount()
+    protected function isWebMount(): bool
     {
         return in_array($this->identifier, $this->backendUser->getWebmounts());
     }
@@ -491,15 +483,13 @@ class PageProvider extends RecordProvider
             $attributes += $this->getPasteAdditionalAttributes('after');
         }
         if ($itemName === 'pagesSort') {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $attributes += [
-                'data-pages-sort-url' => (string)$uriBuilder->buildUriFromRoute('pages_sort', ['id' => $this->record['uid'] ?? null]),
+                'data-pages-sort-url' => (string)$this->uriBuilder->buildUriFromRoute('pages_sort', ['id' => $this->record['uid'] ?? null]),
             ];
         }
         if ($itemName === 'pagesNewMultiple') {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $attributes += [
-                'data-pages-new-multiple-url' => (string)$uriBuilder->buildUriFromRoute('pages_new', ['id' => $this->record['uid'] ?? 0]),
+                'data-pages-new-multiple-url' => (string)$this->uriBuilder->buildUriFromRoute('pages_new', ['id' => $this->record['uid'] ?? 0]),
             ];
         }
 
