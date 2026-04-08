@@ -37,9 +37,7 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"suggest": {
-		"typo3/cms-setup": "*"
-	},
+	"suggest": {},
 	"extra": {
 		"branch-alias": {
 			"dev-main": "14.3.x-dev"

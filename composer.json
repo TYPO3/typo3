@@ -155,6 +155,7 @@
 	"extra": {
 		"typo3/class-alias-loader": {
 			"class-alias-maps": [
+				"typo3/sysext/backend/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/core/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/frontend/Migrations/Code/ClassAliasMap.php",
 				"typo3/sysext/extbase/Migrations/Code/ClassAliasMap.php"
@@ -229,7 +230,6 @@
 		"typo3/cms-rte-ckeditor": "self.version",
 		"typo3/cms-scheduler": "self.version",
 		"typo3/cms-seo": "self.version",
-		"typo3/cms-setup": "self.version",
 		"typo3/cms-styleguide": "self.version",
 		"typo3/cms-sys-note": "self.version",
 		"typo3/cms-tstemplate": "self.version",
@@ -266,9 +266,9 @@
 			"TYPO3\\CMS\\Redirects\\": "typo3/sysext/redirects/Classes/",
 			"TYPO3\\CMS\\Reports\\": "typo3/sysext/reports/Classes/",
 			"TYPO3\\CMS\\RteCKEditor\\": "typo3/sysext/rte_ckeditor/Classes/",
+			"TYPO3\\CMS\\Setup\\Event\\": "typo3/sysext/backend/DeprecatedClasses/Setup/Event/",
 			"TYPO3\\CMS\\Scheduler\\": "typo3/sysext/scheduler/Classes/",
 			"TYPO3\\CMS\\Seo\\": "typo3/sysext/seo/Classes/",
-			"TYPO3\\CMS\\Setup\\": "typo3/sysext/setup/Classes/",
 			"TYPO3\\CMS\\Styleguide\\": "typo3/sysext/styleguide/Classes/",
 			"TYPO3\\CMS\\SysNote\\": "typo3/sysext/sys_note/Classes/",
 			"TYPO3\\CMS\\Tstemplate\\": "typo3/sysext/tstemplate/Classes/",
@@ -315,7 +315,6 @@
 			"TYPO3\\CMS\\RteCKEditor\\Tests\\": "typo3/sysext/rte_ckeditor/Tests/",
 			"TYPO3\\CMS\\Scheduler\\Tests\\": "typo3/sysext/scheduler/Tests/",
 			"TYPO3\\CMS\\Seo\\Tests\\": "typo3/sysext/seo/Tests/",
-			"TYPO3\\CMS\\Setup\\Tests\\": "typo3/sysext/setup/Tests/",
 			"TYPO3\\CMS\\Styleguide\\Tests\\": "typo3/sysext/styleguide/Tests/",
 			"TYPO3\\CMS\\SysNote\\Tests\\": "typo3/sysext/sys_note/Tests/",
 			"TYPO3\\CMS\\Viewpage\\Tests\\": "typo3/sysext/viewpage/Tests/",

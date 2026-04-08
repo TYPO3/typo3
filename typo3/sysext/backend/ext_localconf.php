@@ -24,3 +24,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 // ext:container does this to apply own logic.
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['contentElementRestriction'] = DataHandlerContentElementRestrictionHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['contentElementRestriction'] = DataHandlerContentElementRestrictionHook::class;
+
+// Initialize empty structure for backward compatibility with extensions
+// that add fields via $GLOBALS['TYPO3_USER_SETTINGS']['columns'].
+// Core settings are now defined in Configuration/TCA/Overrides/be_users.php.
+// Access to settings should go through UserSettingsSchema which merges both sources.
+// @deprecated since TYPO3 v14, remove in TYPO3 v15
+$GLOBALS['TYPO3_USER_SETTINGS'] = [
+    'columns' => [],
+    'showitem' => '',
+];

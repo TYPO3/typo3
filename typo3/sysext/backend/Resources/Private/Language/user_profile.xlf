@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/user_profile.xlf" date="2011-10-17T20:22:37Z" product-name="backend">
+    <header/>
+    <body>
+      <trans-unit id="user_settings">
+        <source>User Settings</source>
+      </trans-unit>
+      <trans-unit id="language">
+        <source>Language</source>
+      </trans-unit>
+      <trans-unit id="language_unavailable">
+        <source>The selected language "%s" is not available before the language files are installed.</source>
+      </trans-unit>
+      <trans-unit id="language_unavailable.admin">
+        <source>You can use "Manage Language Packs" in the Maintenance module to easily download new language files.</source>
+      </trans-unit>
+      <trans-unit id="language_unavailable.user">
+        <source>Please ask your system administrator to do this.</source>
+      </trans-unit>
+      <trans-unit id="simulate">
+        <source>Simulate backend user</source>
+      </trans-unit>
+      <trans-unit id="start_module">
+        <source>Start up in the following module</source>
+      </trans-unit>
+      <trans-unit id="email_me_at_login">
+        <source>Notify me by email when somebody logs in from my account</source>
+      </trans-unit>
+      <trans-unit id="help_text">
+        <source>Show help text when applicable</source>
+      </trans-unit>
+      <trans-unit id="max_title_len">
+        <source>Max. title length</source>
+      </trans-unit>
+      <trans-unit id="edit_doc_module_upload">
+        <source>File upload directly in Doc-module</source>
+      </trans-unit>
+      <trans-unit id="contextual_record_edit">
+        <source>Use quick editing for records in the page module</source>
+      </trans-unit>
+      <trans-unit id="show_hidden_files_and_folders">
+        <source>Show hidden files and folders in the filelist</source>
+      </trans-unit>
+      <trans-unit id="display_recently_used">
+        <source>Enable dynamic "recently used" category in wizards</source>
+      </trans-unit>
+      <trans-unit id="edit_functions_tab">
+        <source>Edit and advanced functions</source>
+      </trans-unit>
+      <trans-unit id="set_to_standard">
+        <source>Reset all values to default</source>
+      </trans-unit>
+      <trans-unit id="reset_tab">
+        <source>Reset configuration</source>
+      </trans-unit>
+      <trans-unit id="reset_configuration">
+        <source>Reset configuration and clear temporary data</source>
+      </trans-unit>
+      <trans-unit id="reset_configuration_button">
+        <source>Reset profile settings to default state</source>
+      </trans-unit>
+      <trans-unit id="set_to_standard_question">
+        <source>Are you sure you want to reset all values to default?</source>
+      </trans-unit>
+      <trans-unit id="functions">
+        <source>Advanced functions</source>
+      </trans-unit>
+      <trans-unit id="copy_levels">
+        <source>Recursive copy: Enter the number of page sublevels to include, when a page is copied</source>
+      </trans-unit>
+      <trans-unit id="levels">
+        <source>levels</source>
+      </trans-unit>
+      <trans-unit id="be_user_real_name">
+        <source>Your name</source>
+      </trans-unit>
+      <trans-unit id="be_user_avatar">
+        <source>Avatar</source>
+      </trans-unit>
+      <trans-unit id="be_user_email">
+        <source>Your email address</source>
+      </trans-unit>
+      <trans-unit id="save">
+        <source>Save configuration</source>
+      </trans-unit>
+      <trans-unit id="new_password">
+        <source>New password</source>
+      </trans-unit>
+      <trans-unit id="new_password_again">
+        <source>New password (repetition)</source>
+      </trans-unit>
+      <trans-unit id="new_password_ok">
+        <source>Password was updated.</source>
+      </trans-unit>
+      <trans-unit id="password_policy_failed">
+        <source>The password was not updated, since it does not meet the password policy requirements.</source>
+      </trans-unit>
+      <trans-unit id="account_security">
+        <source>Account security</source>
+      </trans-unit>
+      <trans-unit id="mfa_providers">
+        <source>Multi-factor authentication</source>
+      </trans-unit>
+      <trans-unit id="mfa_providers.not_available">
+        <source>Multi-factor authentication is currently not available.</source>
+      </trans-unit>
+      <trans-unit id="mfa_providers.description">
+        <source>Use multi-factor authentication to secure your account by providing another factor next to your password.</source>
+      </trans-unit>
+      <trans-unit id="mfa_providers.locked_mfa_providers">
+        <source>Some providers are currently locked</source>
+      </trans-unit>
+      <trans-unit id="mfa_providers.enabled">
+        <source>Enabled</source>
+      </trans-unit>
+      <trans-unit id="mfa_providers.setup_link_title">
+        <source>Setup multi-factor authentication</source>
+      </trans-unit>
+      <trans-unit id="mfa_providers.manage_link_title">
+        <source>Manage multi-factor authentication</source>
+      </trans-unit>
+      <trans-unit id="setup_was_updated">
+        <source>Profile settings were updated.</source>
+      </trans-unit>
+      <trans-unit id="new_password_failed">
+        <source>Password was not updated because the entered passwords do not match.</source>
+      </trans-unit>
+      <trans-unit id="old_password_failed">
+        <source>Password was not updated because the current password entered is incorrect.</source>
+      </trans-unit>
+      <trans-unit id="settings_are_reset">
+        <source>The profile settings have been reset to default values and temporary data has been cleared.</source>
+      </trans-unit>
+      <trans-unit id="start_module.first_in_menu">
+        <source>- First module in menu -</source>
+      </trans-unit>
+      <trans-unit id="avatar.clear">
+        <source>Remove selected avatar image</source>
+      </trans-unit>
+      <trans-unit id="avatar.open_file_browser">
+        <source>Open file browser to select avatar image</source>
+      </trans-unit>
+      <trans-unit id="backend_title_format">
+        <source>Format of window title in backend</source>
+      </trans-unit>
+      <trans-unit id="backend_title_format.sitename_first">
+        <source>[sitename] · [title]</source>
+      </trans-unit>
+      <trans-unit id="backend_title_format.title_first">
+        <source>[title] · [sitename]</source>
+      </trans-unit>
+      <trans-unit id="warning.chinese_simplified">
+        <source>Chinese Simplified (legacy) - Warning: Choose Chinese Simplified below, as this is wrong due to older versions of TYPO3 and might be removed soon.</source>
+      </trans-unit>
+      <trans-unit id="datetime_first_day_of_week">
+        <source>First day of week in calendar popups</source>
+      </trans-unit>
+      <trans-unit id="datetime_first_day_of_week.inherit">
+        <source>Use default based on personal backend language setting</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

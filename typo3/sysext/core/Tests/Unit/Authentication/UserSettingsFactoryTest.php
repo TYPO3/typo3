@@ -27,6 +27,7 @@ final class UserSettingsFactoryTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // @deprecated since TYPO3 v14, remove in TYPO3 v15
         $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'columns' => [
                 'colorScheme' => ['type' => 'select'],

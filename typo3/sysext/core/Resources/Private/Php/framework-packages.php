@@ -31,7 +31,6 @@ return [
     'typo3/cms-rte-ckeditor',
     'typo3/cms-scheduler',
     'typo3/cms-seo',
-    'typo3/cms-setup',
     'typo3/cms-styleguide',
     'typo3/cms-sys-note',
     'typo3/cms-tstemplate',

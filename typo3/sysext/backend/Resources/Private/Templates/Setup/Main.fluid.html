@@ -1,0 +1,34 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <h1>
+        <f:translate domain="backend.user_profile" key="user_settings" />
+    </h1>
+
+    <form
+        action="{f:be.uri(route: 'user_setup')}"
+        method="post"
+        id="SetupModuleController"
+        name="editform"
+        enctype="multipart/form-data"
+        spellcheck="false"
+    >
+        <f:format.raw>{formEngineHtml}</f:format.raw>
+
+        <div>
+            <input type="hidden" name="formToken" value="{formToken}" />
+            <input type="hidden" value="1" name="data[save]" />
+            <input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />
+        </div>
+    </form>
+
+    <f:format.raw>{formEngineFooter}</f:format.raw>
+</f:section>
+
+</html>

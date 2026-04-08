@@ -6,6 +6,7 @@ use TYPO3\CMS\Backend\Controller\PageTsConfig\PageTsConfigActiveController;
 use TYPO3\CMS\Backend\Controller\PageTsConfig\PageTsConfigIncludesController;
 use TYPO3\CMS\Backend\Controller\PageTsConfig\PageTsConfigRecordsOverviewController;
 use TYPO3\CMS\Backend\Controller\RecordListController;
+use TYPO3\CMS\Backend\Controller\SetupModuleController;
 use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
 use TYPO3\CMS\Backend\Controller\SiteSettingsController;
 use TYPO3\CMS\Backend\Security\ContentSecurityPolicy\CspModuleController;
@@ -200,6 +201,18 @@ return [
         'routes' => [
             '_default' => [
                 'target' => CspModuleController::class . '::mainAction',
+            ],
+        ],
+    ],
+    'user_setup' => [
+        'parent' => 'user',
+        'access' => 'user',
+        'path' => '/module/user/setup',
+        'iconIdentifier' => 'module-setup',
+        'labels' => 'backend.modules.user_settings',
+        'routes' => [
+            '_default' => [
+                'target' => SetupModuleController::class . '::mainAction',
             ],
         ],
     ],

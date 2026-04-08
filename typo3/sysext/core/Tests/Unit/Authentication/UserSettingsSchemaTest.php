@@ -33,6 +33,7 @@ final class UserSettingsSchemaTest extends UnitTestCase
     #[Test]
     public function getColumnsReturnsColumnsFromLegacyGlobal(): void
     {
+        // @deprecated since TYPO3 v14, remove in TYPO3 v15
         $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'columns' => [
                 'colorScheme' => ['type' => 'select', 'label' => 'Color'],
@@ -194,7 +195,7 @@ final class UserSettingsSchemaTest extends UnitTestCase
             'columns' => [
                 'password' => [
                     'inheritFromParent' => true,
-                    'label' => 'setup.messages:newPassword',
+                    'label' => 'backend.user_profile:new_password',
                 ],
             ],
         ];
@@ -203,7 +204,7 @@ final class UserSettingsSchemaTest extends UnitTestCase
         $config = $schema->getColumn('password');
 
         self::assertSame('password', $config['type']);
-        self::assertSame('setup.messages:newPassword', $config['label']);
+        self::assertSame('backend.user_profile:new_password', $config['label']);
         self::assertSame('be_users', $config['table']);
     }
 

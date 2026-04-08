@@ -150,7 +150,6 @@ export default {
             '@typo3/linkvalidator/': './typo3/sysext/linkvalidator/Resources/Public/JavaScript/',
             '@typo3/redirects/': './typo3/sysext/redirects/Resources/Public/JavaScript/',
             '@typo3/recycler/': './typo3/sysext/recycler/Resources/Public/JavaScript/',
-            '@typo3/setup/': './typo3/sysext/setup/Resources/Public/JavaScript/',
 
             '@typo3/rte-ckeditor/': './typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/',
             '@typo3/ckeditor5/translations/': './typo3/sysext/rte_ckeditor/Resources/Public/Contrib/translations/',

@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Form;
 
+use TYPO3\CMS\Backend\Form\Element\AvatarElement;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Setup\Form\Element\AvatarElement;
 
 /**
  * Create an element object depending on renderType.

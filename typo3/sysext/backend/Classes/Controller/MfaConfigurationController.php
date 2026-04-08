@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -376,7 +375,7 @@ class MfaConfigurationController extends AbstractMfaController
             $request
         );
 
-        if ($returnUrl === '' && ExtensionManagementUtility::isLoaded('setup')) {
+        if ($returnUrl === '') {
             $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('user_setup');
         }
 

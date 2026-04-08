@@ -47,6 +47,7 @@ class UserSettingsSchema
         }
 
         // Then merge legacy global (for third-party backward compat)
+        // @deprecated since TYPO3 v14, remove in TYPO3 v15
         $legacyColumns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'] ?? [];
         foreach ($legacyColumns as $fieldName => $legacyConfig) {
             if (!isset($columns[$fieldName])) {
@@ -69,6 +70,7 @@ class UserSettingsSchema
         }
 
         // Fall back to legacy global
+        // @deprecated since TYPO3 v14, remove in TYPO3 v15
         return $GLOBALS['TYPO3_USER_SETTINGS']['columns'][$fieldName] ?? null;
     }
 
@@ -78,6 +80,7 @@ class UserSettingsSchema
     public function getShowitem(): string
     {
         $tcaShowitem = trim($GLOBALS['TCA']['be_users']['columns']['user_settings']['showitem'] ?? '');
+        // @deprecated since TYPO3 v14, remove in TYPO3 v15
         $legacyShowitem = trim($GLOBALS['TYPO3_USER_SETTINGS']['showitem'] ?? '');
 
         if ($tcaShowitem !== '' && $legacyShowitem !== '') {
