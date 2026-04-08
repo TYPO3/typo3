@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Form\Element;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\Element\MfaInfoElement;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -37,6 +38,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
         $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->enablecolumns = ['deleted' => true];
         $GLOBALS['BE_USER']->setBeUserByUid(1);
+        $GLOBALS['BE_USER']->initializeUserSessionManager();
 
         // Default LANG mock just returns incoming value as label if calling ->sL()
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -211,7 +213,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
 
     private function getFormElementResult(array $data): array
     {
-        $node = new MfaInfoElement($this->get(IconFactory::class), $this->get(MfaProviderRegistry::class));
+        $node = new MfaInfoElement($this->get(IconFactory::class), $this->get(MfaProviderRegistry::class), $this->get(UriBuilder::class));
         $node->setData($data);
         return $node->render();
     }
