@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\Core\Component;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Event\ModifyComponentDefinitionEvent;
 use TYPO3\CMS\Fluid\Event\ProvideStaticVariablesToComponentEvent;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
@@ -90,7 +91,7 @@ final readonly class DeclarativeComponentCollection implements ViewHelperResolve
             if (!preg_match($templateNamePattern, $templatePath, $matches)) {
                 continue;
             }
-            $fragments = $matches['path'] ? explode('/', $matches['path']) : [];
+            $fragments = $matches['path'] ? GeneralUtility::trimExplode('/', $matches['path'], true) : [];
             $fragments[] = $matches['name'];
             $availableComponents[] = implode('.', array_map(lcfirst(...), $fragments));
         }

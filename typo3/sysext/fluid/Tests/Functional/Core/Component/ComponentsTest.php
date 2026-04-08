@@ -144,6 +144,8 @@ final class ComponentsTest extends FunctionalTestCase
                 'TYPO3Tests\\ComponentsTest\\ComponentsAdditionalArguments',
                 [
                     'alternativeRenderer',
+                    'category.sub',
+                    'category.sub.subSub',
                     'extendedRenderer',
                     'modifiedComponent',
                     'staticVariables',
@@ -155,6 +157,8 @@ final class ComponentsTest extends FunctionalTestCase
                 'TYPO3Tests\\ComponentsTest\\Components',
                 [
                     'alternativeRenderer',
+                    'category.sub',
+                    'category.sub.subSub',
                     'extendedRenderer',
                     'modifiedComponent',
                     'onlyInOverwrite',
@@ -167,6 +171,8 @@ final class ComponentsTest extends FunctionalTestCase
                 'TYPO3Tests\\ComponentsTest\\AlternativeStructure',
                 [
                     'alternativeStructureComponent',
+                    'category.sub',
+                    'category.sub.subSub',
                 ],
             ],
             'class-based component collection' => [
