@@ -22,13 +22,17 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Information;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
@@ -45,13 +49,17 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 #[AsController]
 final readonly class PreviewController
 {
+    use PageRendererBackendSetupTrait;
+
     public function __construct(
         private WorkspaceService $workspaceService,
         private PageRenderer $pageRenderer,
         private UriBuilder $uriBuilder,
         private SiteFinder $siteFinder,
         private Context $context,
-        private ModuleTemplateFactory $moduleTemplateFactory
+        private BackendViewFactory $backendViewFactory,
+        private ExtensionConfiguration $extensionConfiguration,
+        private LanguageServiceFactory $languageServiceFactory,
     ) {}
 
     /**
@@ -66,10 +74,15 @@ final readonly class PreviewController
         $backendUser = $this->getBackendUser();
         $activeWorkspace = $backendUser->workspace;
 
-        // Initialize module template here, so custom css / js is loaded afterwards (making overrides possible)
-        $view = $this->moduleTemplateFactory->create($request);
-        $view->getDocHeaderComponent()->disable();
+        $this->setUpBasicPageRendererForBackend(
+            $this->pageRenderer,
+            $this->extensionConfiguration,
+            $request,
+            $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser())
+        );
+        $view = $this->backendViewFactory->create($request, ['typo3/cms-workspaces']);
 
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/dropdown.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/workspaces/preview.js');
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
@@ -153,7 +166,8 @@ final readonly class PreviewController
             'splitPreviewModes' => $splitPreviewModes,
             'firstPreviewMode' => current($splitPreviewModes),
         ]);
-        return $view->renderResponse('Preview/Index');
+        $this->pageRenderer->setBodyContent('<body>' . $view->render('Preview/Index'));
+        return new HtmlResponse($this->pageRenderer->render($request));
     }
 
     private function getBackendUser(): BackendUserAuthentication

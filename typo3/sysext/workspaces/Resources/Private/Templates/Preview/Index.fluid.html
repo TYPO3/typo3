@@ -3,10 +3,7 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:layout name="Module" />
-
-<f:section name="Content">
-
+<div class="typo3-workspace-preview-module">
     <div class="typo3-workspace-topbar t3js-workspace-topbar">
         <div class="typo3-workspace-topbar-container" role="navigation">
             <div class="typo3-workspace-topbar-site">
@@ -29,17 +26,15 @@
                 <div class="typo3-workspace-topbar-action typo3-workspace-topbar-action-mode t3js-preview-mode">
                     <f:if condition="{liveUrl}">
                         <f:then>
-                            <div class="btn-group">
+                            <div class="dropdown">
                                 <button
                                     type="button"
                                     class="btn btn-sm btn-default dropdown-toggle"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
+                                    popovertarget="workspace-preview-mode-menu"
                                 >
                                     <span class="t3js-active-preview-mode" data-active-preview-mode="{firstPreviewMode}"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.mode{firstPreviewMode -> f:format.case(mode: 'capital')}" /></span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-right">
+                                <ul id="workspace-preview-mode-menu" class="dropdown-menu" popover>
                                     <f:for each="{splitPreviewModes}" as="mode">
                                         <li>
                                             <a href="#" class="dropdown-item" data-preview-mode="{mode}">
@@ -65,7 +60,6 @@
         </f:if>
         <iframe class="typo3-workspace-view-workspace t3js-workspace-view-workspace" src="{wsUrl}" id="workspace-view" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.workspacePreview', arguments: {0: activeWorkspace})}"></iframe>
     </div>
-
-</f:section>
+</div>
 
 </html>

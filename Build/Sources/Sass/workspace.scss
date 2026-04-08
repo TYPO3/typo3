@@ -3,10 +3,7 @@
 // =================
 //
 
-//
-// General Styling
-//
-[data-module-name="workspace_previewcontrols"] {
+.typo3-workspace-preview-module {
     --typo3-workspace-topbar-color: var(--typo3-text-color-base);
     --typo3-workspace-topbar-bg: var(--typo3-surface-container-high);
     --typo3-workspace-topbar-line-height: 1.625rem;
@@ -15,22 +12,24 @@
     --typo3-workspace-topbar-padding-x: 1rem;
     --typo3-workspace-topbar-min-height: 3.125rem;
     --typo3-workspace-topbar-gap: 1.5rem;
-    padding: 0;
-
-    .module-body {
-        display: grid;
-        padding: 0;
-        margin: 0;
-        grid-template-rows: auto 1fr;
-    }
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
 }
 
 .typo3-workspace-topbar {
+    position: relative;
     color: var(--typo3-workspace-topbar-color);
     background-color: var(--typo3-workspace-topbar-bg);
     min-height: var(--typo3-workspace-topbar-min-height);
     padding-left: var(--typo3-workspace-topbar-padding-x);
     padding-right: var(--typo3-workspace-topbar-padding-x);
+
+    typo3-backend-progress-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
     &-container {
         display: flex;
