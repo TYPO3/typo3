@@ -103,18 +103,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Html/SimpleParser.php
 
 		-
-			rawMessage: 'Offset mixed on array{} on left side of ?? does not exist.'
-			identifier: nullCoalesce.offset
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Localization/LanguagePackService.php
-
-		-
-			rawMessage: 'Strict comparison using === between '''' and ''excludeFromUpdates'' will always evaluate to false.'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Localization/LanguagePackService.php
-
-		-
 			rawMessage: Cannot assign offset 'address' to string.
 			identifier: offsetAssign.dimType
 			count: 1

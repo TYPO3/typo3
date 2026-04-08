@@ -242,7 +242,7 @@ class ListController extends AbstractController
     {
         $isOfflineMode = (bool)($this->settings['offlineMode'] ?? false);
         foreach ($availableAndInstalledExtensions as &$extension) {
-            $extension['updateIsBlocked'] = $isComposerMode || $isOfflineMode || ($extension['state'] ?? '') === 'excludeFromUpdates';
+            $extension['updateIsBlocked'] = $isComposerMode || $isOfflineMode || ($extension['excludeFromUpdates'] ?? false);
             $extension['sortUpdate'] = 2;
             if ($extension['updateAvailable'] ?? false) {
                 $extension['sortUpdate'] = (int)$extension['updateIsBlocked'];

@@ -122,40 +122,45 @@ class ListUtility implements SingletonInterface
             $this->availableExtensions = [];
             $this->eventDispatcher->dispatch(new PackagesMayHaveChangedEvent());
             foreach ($this->packageManager->getAvailablePackages() as $package) {
-                if (!$package->getPackageMetaData()->isExtensionType()) {
+                $metaData = $package->getPackageMetaData();
+                if (!$metaData->isExtensionType()) {
                     continue;
                 }
                 $installationType = $this->getInstallTypeForPackage($package);
-                if ($filter === '' || $filter === $installationType) {
-                    $version = $package->getPackageMetaData()->getVersion();
-                    $icon = $package->getResources()->getPackageIcon();
-                    $extensionData = [
-                        'packagePath' => $package->getPackagePath(),
-                        'type' => $installationType,
-                        'key' => $package->getPackageKey(),
-                        'version' => $version,
-                        'state' => str_starts_with($version, 'dev-') ? 'alpha' : 'stable',
-                        'icon' => $icon ? (string)$this->resourcePublisher->generateUri($this->resourceFactory->createPublicResource($icon), null) : '',
-                        'title' => $package->getPackageMetaData()->getTitle(),
-                    ];
-                    $constraints = $package->getPackageMetaData()->getConstraints();
-                    if (count($constraints) > 0) {
-                        $extensionData['constraints'] = [];
-                        foreach ($constraints as $type => $typeConstraints) {
-                            foreach ($typeConstraints as $constraint) {
-                                $packageName = $constraint->getValue();
-                                if ($packageName === 'typo3/cms-core') {
-                                    $extKey = 'typo3';
-                                } else {
-                                    $extKey = $this->packageManager->getPackageKeyFromComposerName($constraint->getValue());
-                                }
-                                /** @var MetaData\PackageConstraint $constraint */
-                                $extensionData['constraints'][$type][$extKey] = $type === 'suggests' ? '' : $constraint->getVersionRange();
+                if ($filter !== '' && $filter !== $installationType) {
+                    continue;
+                }
+                $icon = $package->getResources()->getPackageIcon();
+                $extensionData = [
+                    'packagePath' => $package->getPackagePath(),
+                    'type' => $installationType,
+                    'key' => $package->getPackageKey(),
+                    'version' => $metaData->getVersion(),
+                    'stability' => $metaData->getStability(),
+                    'build' => $metaData->getBuild(),
+                    // For backwards compatibility with the UI, merge everything into a single state value
+                    'computedState' => $metaData->isExcludedFromUpdates() ? 'excludeFromUpdates' : ($metaData->getBuild() ?? $metaData->getStability()->value),
+                    'excludeFromUpdates' => $metaData->isExcludedFromUpdates(),
+                    'icon' => $icon ? (string)$this->resourcePublisher->generateUri($this->resourceFactory->createPublicResource($icon), null) : '',
+                    'title' => $metaData->getTitle(),
+                ];
+                $constraints = $metaData->getConstraints();
+                if (count($constraints) > 0) {
+                    $extensionData['constraints'] = [];
+                    foreach ($constraints as $type => $typeConstraints) {
+                        foreach ($typeConstraints as $constraint) {
+                            $packageName = $constraint->getValue();
+                            if ($packageName === 'typo3/cms-core') {
+                                $extKey = 'typo3';
+                            } else {
+                                $extKey = $this->packageManager->getPackageKeyFromComposerName($constraint->getValue());
                             }
+                            /** @var MetaData\PackageConstraint $constraint */
+                            $extensionData['constraints'][$type][$extKey] = $type === 'suggests' ? '' : $constraint->getVersionRange();
                         }
                     }
-                    $this->availableExtensions[$package->getPackageKey()] = $extensionData;
                 }
+                $this->availableExtensions[$package->getPackageKey()] = $extensionData;
             }
         }
 

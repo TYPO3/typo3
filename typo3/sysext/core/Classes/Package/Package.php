@@ -31,6 +31,8 @@ use TYPO3\CMS\Core\Package\Resource\ResourceCollectionInterface;
  */
 class Package implements PackageInterface
 {
+    private const NO_VERSION_SET = '1.0.0+no-version-set';
+
     /**
      * If this package is part of factory default, it will be activated
      * during first installation.
@@ -142,24 +144,30 @@ class Package implements PackageInterface
     protected function createPackageMetaData(PackageManager $packageManager, bool $isBuildingPackageArtifact = false): void
     {
         $this->packageMetaData = new MetaData($this->getPackageKey());
-        $description = (string)$this->getValueFromComposerManifest('description');
-        $descriptionParts = explode(' - ', $description, 2);
-        if (count($descriptionParts) === 2) {
-            $title = $descriptionParts[0];
-            $description = $descriptionParts[1];
-        } else {
-            $title = $description;
-        }
         $manifest = $this->getValueFromComposerManifest();
+        $description = $manifest->description ?? null;
+        $descriptionParts = explode(' - ', $description ?? '', 2);
+        $title = $manifest->title ?? $description;
+        if (count($descriptionParts) === 2) {
+            [$title, $description] = $descriptionParts;
+        }
         $this->packageMetaData->setTitle($title);
-        $this->packageMetaData->setDescription($description);
-        $this->packageMetaData->setPackageType($manifest->type ?? '');
+        $this->packageMetaData->setDescription($title !== $description ? $description : null);
+        $this->packageMetaData->setPackageType($manifest->type ?? null);
         $isFrameworkPackage = $this->packageMetaData->isFrameworkType();
-        $version = $manifest->extra->{'typo3/cms'}->{'version'} ?? $manifest->version ?? '1.0.0+no-version-set';
+        $version = $manifest->extra->{'typo3/cms'}->{'version'} ?? $manifest->version ?? self::NO_VERSION_SET;
         if ($isFrameworkPackage) {
-            $version = str_replace('-dev', '', (new Typo3Version())->getVersion());
+            $version = (new Typo3Version())->getVersion();
+        }
+        if (is_string($manifest->state ?? null)
+            && $version !== self::NO_VERSION_SET
+        ) {
+            $stability = Stability::tryFrom($manifest->state);
+            $version .= ($stability === null ? '+' : '-') . $manifest->state;
         }
         $this->packageMetaData->setVersion($version);
+        $this->packageMetaData->setExcludeFromUpdates($manifest->extra->{'typo3/cms'}->{'exclude-from-updates'} ?? false);
+
         $requirements = $manifest->require ?? null;
         if ($requirements !== null) {
             foreach ($requirements as $packageName => $versionConstraints) {
@@ -214,7 +222,9 @@ class Package implements PackageInterface
         if ($isBuildingPackageArtifact) {
             return $isKnownComposerDependency;
         }
-        return $isKnownComposerDependency
+        // The "php" package name is kept, so that the extension manager in classic mode can check PHP version constraints
+        // It will be ignored in extension dependency ordering in PackageManager though
+        return ($packageName !== 'php' && $isKnownComposerDependency)
             // provided Composer packages as specified by third party extensions (loaded on demand in classic mode)
             || isset($this->providesPackages[$packageName])
             || ($this->packageMetaData->isFrameworkType() && !$packageManager->isFrameworkPackage($packageName))

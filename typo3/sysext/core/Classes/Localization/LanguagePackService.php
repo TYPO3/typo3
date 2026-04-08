@@ -137,24 +137,15 @@ class LanguagePackService
                 continue;
             }
             $key = $package->getPackageKey();
-            $title = $package->getValueFromComposerManifest('description') ?? '';
-            if (is_file($path . 'ext_emconf.php')) {
-                // @todo Phasing out `ext_emconf.php` is a ongoing process and title, state and excludeFromUpdates
-                //       handling needs a replacement here for composer mode. Investigate.
-                $_EXTKEY = $key;
-                $EM_CONF = [];
-                include $path . 'ext_emconf.php';
-                /** @var array<string, array<string, mixed>> $EM_CONF */
-                $title = $EM_CONF[$key]['title'] ?? $title;
-                $state = $EM_CONF[$key]['state'] ?? '';
-                if ($state === 'excludeFromUpdates') {
-                    continue;
-                }
+
+            $metaData = $package->getPackageMetaData();
+            if ($metaData->isExcludedFromUpdates()) {
+                continue;
             }
             $extension = [
                 'key' => $key,
-                'title' => $title,
-                'type' => $package->getPackageMetaData()->getPackageType(),
+                'title' => $metaData->getTitle(),
+                'type' => $metaData->getPackageType(),
             ];
             $packageIcon = $package->getResources()->getPackageIcon();
             if ($packageIcon !== null) {

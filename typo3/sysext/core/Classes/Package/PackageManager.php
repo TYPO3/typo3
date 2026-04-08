@@ -984,11 +984,18 @@ class PackageManager implements SingletonInterface
     {
         $this->setComposerManifestValueIfEmpty($composerManifest, 'name', $packageKey);
         $this->setComposerManifestValueIfEmpty($composerManifest, 'type', 'typo3-cms-extension');
-        $this->setComposerManifestValueIfEmpty($composerManifest, 'description', $extensionManagerConfiguration['title'] ?? '');
+        $this->setComposerManifestValueIfEmpty($composerManifest, 'description', $extensionManagerConfiguration['description'] ?? '');
         $this->setComposerManifestValueIfEmpty($composerManifest, 'authors', [['name' => $extensionManagerConfiguration['author'] ?? '', 'email' => $extensionManagerConfiguration['author_email'] ?? '']]);
-        $composerManifest->version = $extensionManagerConfiguration['version'] ?? '';
+        $composerManifest->version = $extensionManagerConfiguration['version'] ?? null;
         // "Invent" a new title attribute here for internal use in non Composer mode
         $composerManifest->title = $extensionManagerConfiguration['title'] ?? null;
+        // "Invent" a new state attribute here for internal use in non Composer mode
+        $state = $extensionManagerConfiguration['state'] ?? null;
+        $composerManifest->state = $state;
+        if ($state === 'excludeFromUpdates') {
+            $composerManifest->state = null;
+            $composerManifest->extra->{'typo3/cms'}->{'exclude-from-updates'} = true;
+        }
         $composerManifest->require = new \stdClass();
         $composerManifest->conflict = new \stdClass();
         $composerManifest->suggest = new \stdClass();
@@ -998,8 +1005,7 @@ class PackageManager implements SingletonInterface
                     if ($requiredPackageKey === 'typo3') {
                         // Add implicit dependency to 'core'
                         $composerManifest->require->core = $requiredPackageVersion;
-                    } elseif ($requiredPackageKey !== 'php') {
-                        // Skip php dependency
+                    } else {
                         $composerManifest->require->{$requiredPackageKey} = $requiredPackageVersion;
                     }
                 } else {
@@ -1080,6 +1086,12 @@ class PackageManager implements SingletonInterface
         foreach ($dependentPackageConstraints as $constraint) {
             if ($constraint instanceof PackageConstraint) {
                 $dependentPackageName = $constraint->getValue();
+                // This check is done here for classic mode, to ignore "php" package for
+                // dependency ordering of extensions. In Composer mode, packages won't have
+                // this dependency tracked anymore at this point.
+                if ($dependentPackageName === 'php') {
+                    continue;
+                }
                 $dependentPackageKey = $this->getPackageKeyFromComposerName($dependentPackageName);
                 if (in_array($dependentPackageKey, $dependentPackageKeys, true) === false && in_array($dependentPackageKey, $trace, true) === false) {
                     $dependentPackageKeys[] = $dependentPackageKey;

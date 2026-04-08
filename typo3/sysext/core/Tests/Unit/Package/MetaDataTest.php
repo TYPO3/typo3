@@ -60,4 +60,56 @@ final class MetaDataTest extends UnitTestCase
         self::assertSame($isExtension, $metaData->isExtensionType());
         self::assertSame($isFramework, $metaData->isFrameworkType());
     }
+
+    public static function versionAndStabilityIsParsedCorrectlyDataProvider(): \Generator
+    {
+        yield 'no version set' => [
+            'givenVersion' => '1.0.0+no-version-set',
+            'finalPrettyVersion' => '1.0',
+            'stability' => 'stable',
+            'build' => 'no-version-set',
+        ];
+        yield 'custom build with stability' => [
+            'givenVersion' => '5.2.32-rc2+build1234',
+            'finalPrettyVersion' => '5.2.32-RC2',
+            'stability' => 'RC',
+            'build' => 'build1234',
+        ];
+        yield 'numbered version' => [
+            'givenVersion' => '1.2.3',
+            'finalPrettyVersion' => '1.2.3',
+            'stability' => 'stable',
+        ];
+        yield 'numbered version major release' => [
+            'givenVersion' => '3.0.0',
+            'finalPrettyVersion' => '3.0',
+            'stability' => 'stable',
+        ];
+        yield 'dev version' => [
+            'givenVersion' => '1.2.3-dev',
+            'finalPrettyVersion' => '1.2.3-dev',
+            'stability' => 'dev',
+        ];
+        yield 'dev branch' => [
+            'givenVersion' => 'dev-main',
+            'finalPrettyVersion' => 'dev-main',
+            'stability' => 'dev',
+        ];
+        yield 'alpha version' => [
+            'givenVersion' => '1.2.3-alpha1',
+            'finalPrettyVersion' => '1.2.3-alpha1',
+            'stability' => 'alpha',
+        ];
+    }
+
+    #[DataProvider('versionAndStabilityIsParsedCorrectlyDataProvider')]
+    #[Test]
+    public function versionAndStabilityIsParsedCorrectly(string $givenVersion, string $finalPrettyVersion, string $stability, ?string $build = null): void
+    {
+        $metaData = new MetaData('foo');
+        $metaData->setVersion($givenVersion);
+        self::assertSame($stability, $metaData->getStability()->value);
+        self::assertSame($finalPrettyVersion, $metaData->getVersion());
+        self::assertSame($build, $metaData->getBuild());
+    }
 }

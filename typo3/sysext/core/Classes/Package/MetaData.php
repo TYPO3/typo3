@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Package;
 
+use Composer\Semver\VersionParser;
 use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
 
 /**
@@ -45,10 +46,15 @@ class MetaData
     protected $packageType;
 
     /**
-     * The version number
-     * @var string
+     * The normalized pretty version number
      */
-    protected $version;
+    protected string $version;
+
+    protected Stability $stability;
+
+    protected ?string $build = null;
+
+    protected bool $excludeFromUpdates = false;
 
     /**
      * Package title
@@ -109,7 +115,7 @@ class MetaData
     /**
      * Get package type
      *
-     * @return string
+     * @return string|null
      */
     public function getPackageType()
     {
@@ -134,12 +140,109 @@ class MetaData
         return $this->version;
     }
 
+    public function getStability(): Stability
+    {
+        return $this->stability;
+    }
+
     /**
      * @param string $version The package version to set
      */
     public function setVersion($version)
     {
-        $this->version = $version;
+        $this->stability = Stability::from(VersionParser::parseStability($version));
+        [$version, $build] = $this->splitBuildMetadata($version);
+        $this->build = $build;
+        $normalizedVersion = (new VersionParser())->normalize($version);
+        $this->version = $this->normalizedToPrettyVersion($normalizedVersion);
+    }
+
+    /**
+     * Converts a Composer-normalized version string into a human-friendly TYPO3 version string.
+     *
+     * Composer normalization typically produces versions in one of these forms:
+     *
+     * - Numeric versions with four segments:
+     *   `1.2.3.0`, `3.0.0.0`, `5.2.32.0-RC2`
+     * - Special dev branch form:
+     *   `9999999-dev`
+     * - Explicit dev branch names:
+     *   `dev-main`
+     *
+     * This method transforms those normalized values into a prettier representation:
+     *
+     * - drops the fourth numeric segment
+     * - removes trailing `.0` parts, while keeping at least `major.minor`
+     * - preserves any stability suffix such as `-dev`, `-alpha1`, `-beta2`, `-RC3`
+     * - maps Composer's special `9999999-dev` value to plain `dev`
+     * - leaves non-matching or branch-like versions unchanged
+     *
+     * Examples:
+     *
+     * - `1.2.3.0` -> `1.2.3`
+     * - `3.0.0.0` -> `3.0`
+     * - `1.2.0.0` -> `1.2`
+     * - `5.2.32.0-RC2` -> `5.2.32-RC2`
+     * - `1.2.3.0-beta2` -> `1.2.3-beta2`
+     * - `1.2.3.0-dev` -> `1.2.3-dev`
+     * - `9999999-dev` -> `dev`
+     * - `dev-main` -> `dev-main`
+     */
+    private function normalizedToPrettyVersion(string $normalized): string
+    {
+        // Common Composer special-case for branches.
+        if ($normalized === '9999999-dev') {
+            return 'dev';
+        }
+
+        // Leave obvious non-numeric/dev branch versions untouched.
+        if (str_starts_with($normalized, 'dev-')) {
+            return $normalized;
+        }
+
+        // Match actual numbers but return if we don't get a match
+        if (!preg_match('/^(\d+)\.(\d+)\.(\d+)\.(\d+)(-.+)?$/', $normalized, $matches)) {
+            return $normalized;
+        }
+
+        $parts = [$matches[1], $matches[2], $matches[3]];
+        $suffix = $matches[5] ?? '';
+
+        // Drop trailing ".0" parts, but keep at least major.minor.
+        while (count($parts) > 2 && end($parts) === '0') {
+            array_pop($parts);
+        }
+
+        return implode('.', $parts) . $suffix;
+    }
+
+    /**
+     * Splits semver build metadata off the version string.
+     *
+     * Returns:
+     *   [0] => version without "+..."
+     *   [1] => metadata after "+" or null if none exists
+     *
+     * Only the first "+" is treated as the separator.
+     *
+     * @return array{0: string, 1: string|null}
+     */
+    private function splitBuildMetadata(string $version): array
+    {
+        $pos = strpos($version, '+');
+
+        if ($pos === false) {
+            return [$version, null];
+        }
+
+        $baseVersion = substr($version, 0, $pos);
+        $buildMetadata = substr($version, $pos + 1);
+
+        if ($baseVersion === '') {
+            throw new \InvalidArgumentException('Version base must not be empty.', 1775558333);
+        }
+
+        return [$baseVersion, $buildMetadata];
     }
 
     public function getTitle(): ?string
@@ -200,5 +303,20 @@ class MetaData
     public function addConstraint(PackageConstraint $constraint)
     {
         $this->constraints[$constraint->getConstraintType()][] = $constraint;
+    }
+
+    public function isExcludedFromUpdates(): bool
+    {
+        return $this->excludeFromUpdates;
+    }
+
+    public function setExcludeFromUpdates(bool $excludeFromUpdates): void
+    {
+        $this->excludeFromUpdates = $excludeFromUpdates;
+    }
+
+    public function getBuild(): ?string
+    {
+        return $this->build;
     }
 }

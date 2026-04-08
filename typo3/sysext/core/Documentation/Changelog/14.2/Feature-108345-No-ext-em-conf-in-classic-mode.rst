@@ -20,15 +20,17 @@ This is now resolved by allowing an extension's `composer.json`
 to contain information that previously had to be defined in
 `ext_emconf.php`:
 
-1. Extension title
-2. Extension version
-3. Dependencies on other TYPO3 extensions
+1. Extension title and description
+3. Extension version
+4. Extension state / update exclusion
+5. Dependencies on other TYPO3 extensions
+6. PHP version constraints
 
-Extension title
----------------
+Extension title and description
+-------------------------------
 
-See :ref:`feature-108653-1767199420` for how the extension title can also be set
-in `composer.json`.
+See :ref:`feature-108653-1767199420` for how the extension title and description can be set
+individually in `composer.json`.
 
 Extension version
 -----------------
@@ -38,7 +40,7 @@ in the regular `"version"` field in `composer.json`.
 
 For third-party extensions to be compatible with TYPO3 classic mode,
 this version must now be set to the exact version previously defined in `ext_emconf.php`
-and must match the version in the Git tag (for example, when publishing to Packagist).
+and should match the version in the Git tag, for example when publishing to Packagist.
 
 Fixture extensions used in tests can set any version number, for example `1.0.0`,
 but a version number must still be provided to avoid deprecation messages.
@@ -47,6 +49,96 @@ During testing, the version number is not evaluated.
 TYPO3 Core extensions may omit the version number
 in `composer.json`, because their version can and will be derived from
 php`\TYPO3\CMS\Core\Information\Typo3Version`.
+
+Extension state and update exclusion
+------------------------------------
+
+The former `state` property from `ext_emconf.php` was used for multiple purposes.
+In `composer.json`, these purposes are now represented by dedicated metadata instead
+of a single field.
+
+Supported extension stability values are expressed as version suffixes, for example:
+
+..  code-block:: json
+
+    {
+        "name": "vendor/example",
+        "type": "typo3-cms-extension",
+        "description": "Example extension",
+        "extra": {
+            "typo3/cms": {
+                "extension-key": "example_extension",
+                "version": "1.2.3-alpha4",
+                "Package": {
+                    "providesPackages": {}
+                }
+            }
+        }
+    }
+
+Supported Composer stability values are:
+
+* `dev`
+* `alpha`
+* `beta`
+* `RC`
+* `stable`
+
+For example:
+
+* `1.2.3-dev`
+* `1.2.3-alpha1`
+* `1.2.3-beta2`
+* `1.2.3-RC3`
+* `1.2.3`
+
+Values from the former `state` field that are not supported by Composer stability
+can be expressed as build metadata by appending `+...` to the version string.
+
+Example:
+
+..  code-block:: json
+
+    {
+        "name": "vendor/example",
+        "type": "typo3-cms-extension",
+        "description": "Example extension",
+        "extra": {
+            "typo3/cms": {
+                "extension-key": "example_extension",
+                "version": "1.4.2+obsolete",
+                "Package": {
+                    "providesPackages": {}
+                }
+            }
+        }
+    }
+
+In this example, TYPO3 will treat the version as `1.0.0`, keep `obsolete`
+as build metadata, and expose it in the Extension Manager.
+
+The former `state = excludeFromUpdates` value from `ext_emconf.php`
+is now represented by a dedicated boolean flag in `composer.json`:
+
+..  code-block:: json
+
+    {
+        "name": "vendor/example",
+        "type": "typo3-cms-extension",
+        "description": "Example extension",
+        "extra": {
+            "typo3/cms": {
+                "extension-key": "example_extension",
+                "version": "1.2.3",
+                "exclude-from-updates": true,
+                "Package": {
+                    "providesPackages": {}
+                }
+            }
+        }
+    }
+
+This replaces overloading the former `state` field for update handling.
 
 Dependencies on other TYPO3 extensions
 --------------------------------------
@@ -90,7 +182,7 @@ Before:
     {
         "name": "vendor/example",
         "type": "typo3-cms-extension",
-        "description": "example",
+        "description": "Example extension",
         "license": "GPL-2.0-or-later",
         "require": {
             "typo3/cms-core": "^14.2",
@@ -111,7 +203,7 @@ After:
     {
         "name": "vendor/example",
         "type": "typo3-cms-extension",
-        "description": "example",
+        "description": "Example extension",
         "license": "GPL-2.0-or-later",
         "require": {
             "typo3/cms-core": "^14.2",
@@ -121,7 +213,7 @@ After:
         "extra": {
             "typo3/cms": {
                 "extension-key": "example_extension",
-                "version": "1.0.0",
+                "version": "1.2.3",
                 "Package": {
                     "providesPackages": {
                         "symfony/dotenv": ""
@@ -149,7 +241,7 @@ deprecation messages in TYPO3 v14.
     {
         "name": "vendor/example",
         "type": "typo3-cms-extension",
-        "description": "example",
+        "description": "Example extension",
         "license": "GPL-2.0-or-later",
         "require": {
             "typo3/cms-core": "^14.2",
@@ -158,7 +250,7 @@ deprecation messages in TYPO3 v14.
         "extra": {
             "typo3/cms": {
                 "extension-key": "example_extension",
-                "version": "1.0.0",
+                "version": "1.2.3",
                 "Package": {
                     "providesPackages": {}
                 }
@@ -166,33 +258,38 @@ deprecation messages in TYPO3 v14.
         }
     }
 
-If the `version` field is set anyway, the version is populated from there
-and `extra.typo3/cms.version` can be omitted:
+PHP version constraints
+-----------------------
+
+PHP version constraints from `ext_emconf.php` can also be represented in
+the `require` section of `composer.json`.
+
+Example:
 
 ..  code-block:: json
 
     {
         "name": "vendor/example",
-        "version": "1.0.0",
         "type": "typo3-cms-extension",
-        "description": "example",
-        "license": "GPL-2.0-or-later",
+        "description": "Example extension",
         "require": {
             "typo3/cms-core": "^14.2",
-            "vendor/other-example": "*",
-            "symfony/dotenv": "^8.0"
+            "php": "^8.2"
         },
         "extra": {
             "typo3/cms": {
                 "extension-key": "example_extension",
+                "version": "1.5.6",
                 "Package": {
-                    "providesPackages": {
-                        "symfony/dotenv": ""
-                    }
+                    "providesPackages": {}
                 }
             }
         }
     }
+
+The PHP dependency is kept as package metadata so TYPO3 classic mode
+can still evaluate PHP version requirements. However, it is ignored for
+extension dependency ordering.
 
 Be aware that keeping `ext_emconf.php`, while no longer directly required
 by TYPO3, may still be necessary for some tools,
@@ -200,8 +297,9 @@ such as Tailor or TYPO3 TER. Therefore, for the time being, it is recommended
 to keep the file and ensure that its information stays in sync
 with `composer.json` as outlined above.
 
-However, TYPO3 will **not** evaluate `ext_emconf.php` anymore if the `version` field
-and `providesPackages` are correctly defined in `composer.json`.
+However, TYPO3 will **not** evaluate `ext_emconf.php` anymore if the required
+metadata is correctly defined in `composer.json` and package metadata can be
+derived from it.
 
 Impact
 ======
@@ -209,6 +307,6 @@ Impact
 Extensions can now omit `ext_emconf.php` in TYPO3 classic mode.
 A deprecation message is shown during cache warm-up when `ext_emconf.php`
 is present and `composer.json` is not yet future-proof
-because it does not contain the `version` and `providesPackages` definitions.
+because it does not contain the required metadata definitions.
 
 .. index:: ext:core
