@@ -50,7 +50,6 @@
         --typo3-panel-#{$state}-header-bg: var(--typo3-surface-container-#{$state});
         --typo3-panel-#{$state}-border-color: color-mix(in srgb, var(--typo3-panel-#{$state}-header-bg), var(--typo3-panel-#{$state}-header-color) var(--typo3-border-mix));
     }
-    container-type: inline-size;
     display: flex;
     flex-direction: column;
     min-width: 0;
@@ -64,29 +63,51 @@
     margin-block-end: var(--typo3-spacing);
     position: relative;
 
+    //
+    // Embedded elements
+    // Elements placed directly inside panels without a panel-body wrapper
+    //
     > .table-fit,
     .panel-collapse > .table-fit,
     .panel-collapse > form > .table-fit {
-        box-shadow: none;
+        margin: 0;
+        border: none;
         border-radius: 0;
-        border-left: 0;
-        border-right: 0;
-        border-bottom: 0;
-        margin-bottom: 0;
+        box-shadow: none;
+    }
+
+    > .alert,
+    .panel-collapse > .alert {
+        --typo3-alert-margin-bottom: 0;
+        --typo3-alert-border-width: 0;
+        --typo3-alert-border-radius: 0;
+    }
+
+    > .form-section,
+    .panel-collapse > .form-section {
+        --typo3-form-section-padding-y: var(--typo3-panel-padding-y);
+        --typo3-form-section-padding-x: var(--typo3-panel-padding-x);
+    }
+
+    > .tab-wrapper,
+    .panel-collapse > .tab-wrapper {
+        padding: var(--typo3-panel-padding-y) var(--typo3-panel-padding-x);
     }
 
     > .table-fit:first-child,
-    .panel-collapse > form > .table-fit:first-child,
-    &:first-child .panel-collapse > .table-fit:first-child {
+    > .alert:first-child {
         border-top: 0;
         border-start-start-radius: var(--typo3-panel-border-radius-inner-bottom);
         border-start-end-radius: var(--typo3-panel-border-radius-inner-bottom);
     }
 
     > .table-fit:last-child,
+    > .alert:last-child,
     :not(.panel-group) > & > .panel-collapse > .table-fit:last-child,
+    :not(.panel-group) > & > .panel-collapse > .alert:last-child,
     .panel-collapse > form > .table-fit:last-child,
-    &:last-child .panel-collapse > .table-fit:last-child {
+    &:last-child .panel-collapse > .table-fit:last-child,
+    &:last-child .panel-collapse > .alert:last-child {
         border-end-start-radius: var(--typo3-panel-border-radius-inner-bottom);
         border-end-end-radius: var(--typo3-panel-border-radius-inner-bottom);
     }
@@ -200,6 +221,7 @@
 // Heading
 //
 .panel-heading {
+    container-type: inline-size;
     font-size: var(--typo3-font-size);
     font-weight: normal;
     position: relative;
@@ -210,7 +232,7 @@
     outline-offset: 0;
     margin: 0;
 
-    &:not(:last-child, .collapsed, :has(.collapsed), :has(+ .collapse:not(.show)), :has(.panel-button[aria-expanded="false"])) {
+    &:not(:last-child, .collapsed, :has(.collapsed), :has(+ .collapse:not(.show)), :has(+ .collapsing), :has(.panel-button[aria-expanded="false"])) {
         --typo3-panel-border-radius-inner-bottom: 0;
     }
 
@@ -542,39 +564,4 @@
 .panel-heading {
     transition: all .2s ease-in-out;
     transition-property: box-shadow, border, border-radius, transform;
-}
-
-//
-// LEGACY
-// This section is responsible for a lot of small corrections
-// that need to be resolved and removed in future patches
-//
-.panel,
-.panel-collapse {
-    > .alert {
-        margin: 0;
-        border: none;
-        --typo3-alert-border-radius: 0;
-    }
-
-    > .form-section {
-        --typo3-form-section-padding-y: var(--typo3-panel-padding-y);
-        --typo3-form-section-padding-x: var(--typo3-panel-padding-x);
-    }
-
-    > .form-section,
-    > .tab-content > .form-section,
-    > .tab-content > .tab-pane > .form-section,
-    > [role="tabpanel"] > .tab-content > .form-section,
-    > [role="tabpanel"] > .tab-content > .tab-pane > .form-section {
-        border-start-end-radius: 0;
-        border-start-start-radius: 0;
-        border-inline-start: 0;
-        border-inline-end: 0;
-        border-bottom: 0;
-    }
-
-    > [role="tabpanel"] {
-        padding: var(--typo3-panel-padding-y) var(--typo3-panel-padding-x);
-    }
 }

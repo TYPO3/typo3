@@ -3,7 +3,7 @@
 //
 .form-grid {
     --typo3-form-grid-columns: 1;
-    --typo3-form-grid-min-col-width: 220px;
+    --typo3-form-grid-min-col-width: 250px;
     --typo3-form-grid-spacing: var(--typo3-spacing);
     --typo3-form-grid-spacing-y: var(--typo3-form-grid-spacing);
     --typo3-form-grid-total-gap: calc((var(--typo3-form-grid-columns) - 1) * var(--typo3-form-grid-spacing));

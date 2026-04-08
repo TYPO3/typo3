@@ -48,7 +48,7 @@
                                 </button>
                             </div>
                         </h3>
-                        <div class="panel-collapse collapse" id="panel-{element}-###UNIQUEID###" aria-expanded="true">
+                        <div class="panel-collapse collapse" id="panel-{element}-###UNIQUEID###" role="tabpanel" aria-expanded="true">
                             <div class="panel-body">
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas condimentum
@@ -91,7 +91,7 @@
                         </button>
                     </div>
                 </h3>
-                <div class="panel-collapse collapse" id="collapsible-panel-header-button-expanded-###UNIQUEID###">
+                <div class="panel-collapse collapse" id="collapsible-panel-header-button-expanded-###UNIQUEID###" role="tabpanel">
                     <div class="panel-body">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas condimentum
@@ -859,7 +859,7 @@
                             </button>
                         </div>
                     </h3>
-                    <div class="panel-collapse collapse" id="collapsible-panel-{variant}-###UNIQUEID###" aria-expanded="true">
+                    <div class="panel-collapse collapse" id="collapsible-panel-{variant}-###UNIQUEID###" role="tabpanel" aria-expanded="true">
                         <div class="panel-body">
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae eros congue, viverra ante vel, tempus lacus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
                         </div>
@@ -1064,6 +1064,214 @@
             </div>
         </sg:colorScheme>
 
+        <h2><f:translate key="component.panels.alerts.headline" domain="styleguide.messages" /></h2>
+        <sg:colorScheme>
+            <!-- Alert as direct child of panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Panel with alert</h2>
+                </div>
+                <div class="alert alert-danger">
+                    <div class="alert-inner">
+                        <div class="alert-content">
+                            <div class="alert-message">This is a danger alert inside a panel.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p>Panel body content below the alert.</p>
+                </div>
+            </div>
+            <!-- Alert as direct child of panel-collapse -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <div class="panel-heading-row">
+                        <button class="panel-button" type="button" data-bs-toggle="collapse" data-bs-target="#panel-alert-collapse-###UNIQUEID###" aria-expanded="true">
+                            <div class="panel-title">Collapsible panel with alert</div>
+                            <span class="caret"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-collapse collapse show" id="panel-alert-collapse-###UNIQUEID###" role="tabpanel">
+                    <div class="alert alert-warning">
+                        <div class="alert-inner">
+                            <div class="alert-content">
+                                <div class="alert-message">This is a warning alert inside a collapsible panel.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <p>Panel body content below the alert.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Alert inside panel-body -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Panel with alert in body</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="alert alert-warning">
+                        <div class="alert-inner">
+                            <div class="alert-content">
+                                <div class="alert-message">This is a warning alert inside a panel body.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Panel body content below the alert.</p>
+                </div>
+            </div>
+            <!-- Multiple alerts stacked in a panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Panel with multiple alerts</h2>
+                </div>
+                <div class="alert alert-success">
+                    <div class="alert-inner">
+                        <div class="alert-content">
+                            <div class="alert-message">Success alert.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger">
+                    <div class="alert-inner">
+                        <div class="alert-content">
+                            <div class="alert-message">Danger alert.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p>Panel body content below the alerts.</p>
+                </div>
+            </div>
+        </sg:colorScheme>
+
+        <h2><f:translate key="component.panels.formSections.headline" domain="styleguide.messages" /></h2>
+        <sg:colorScheme>
+            <!-- Form section as direct child of panel -->
+            <div class="panel panel-default">
+                <div class="form-section">
+                    <h3 class="form-section-headline">Section</h3>
+                    <div class="form-group">
+                        <label class="form-label">Field Label</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control" placeholder="Example field" disabled="disabled">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3 class="form-section-headline">Another Section</h3>
+                    <div class="form-group">
+                        <label class="form-label">Field Label</label>
+                        <div class="form-control-wrap">
+                            <input type="text" class="form-control" placeholder="Example field" disabled="disabled">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Form section inside panel-collapse -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <div class="panel-heading-row">
+                        <button class="panel-button" type="button" data-bs-toggle="collapse" data-bs-target="#panel-formsection-###UNIQUEID###" aria-expanded="true">
+                            <span class="caret"></span>
+                            <div class="panel-title">Collapsible panel with form sections</div>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-collapse collapse show" id="panel-formsection-###UNIQUEID###" role="tabpanel">
+                    <fieldset class="form-section">
+                        <h3 class="form-section-headline">Section</h3>
+                        <div class="form-group">
+                            <label class="form-label">Field Label</label>
+                            <div class="form-control-wrap">
+                                <input type="text" class="form-control" placeholder="Example field" disabled="disabled">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-section">
+                        <h3 class="form-section-headline">Another Section</h3>
+                        <div class="form-group">
+                            <label class="form-label">Field Label</label>
+                            <div class="form-control-wrap">
+                                <input type="text" class="form-control" placeholder="Example field" disabled="disabled">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </sg:colorScheme>
+
+        <h2><f:translate key="component.panels.tabs.headline" domain="styleguide.messages" /></h2>
+        <sg:colorScheme>
+            <!-- Tabs inside a collapsible panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <div class="panel-heading-row">
+                        <button class="panel-button" type="button" data-bs-toggle="collapse" data-bs-target="#panel-tabs-###UNIQUEID###" aria-expanded="true">
+                            <div class="panel-title">Collapsible panel with tabs</div>
+                            <span class="caret"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-collapse collapse show" id="panel-tabs-###UNIQUEID###" role="tabpanel">
+                    <div class="tab-wrapper">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="nav-item">
+                                <button type="button" class="nav-link active" data-typo3-tab="#panel-tabs-tab1-###UNIQUEID###" aria-controls="panel-tabs-tab1-###UNIQUEID###" role="tab">General</button>
+                            </li>
+                            <li role="presentation" class="nav-item">
+                                <button type="button" class="nav-link" data-typo3-tab="#panel-tabs-tab2-###UNIQUEID###" aria-controls="panel-tabs-tab2-###UNIQUEID###" role="tab">Details</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="panel-tabs-tab1-###UNIQUEID###">
+                                <fieldset class="form-section">
+                                    <h3 class="form-section-headline">Section</h3>
+                                    <p>Tab 1 content with form section.</p>
+                                </fieldset>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="panel-tabs-tab2-###UNIQUEID###">
+                                <fieldset class="form-section">
+                                    <h3 class="form-section-headline">Section</h3>
+                                    <p>Tab 2 content with form section.</p>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs as direct child of a non-collapsible panel -->
+            <div class="panel panel-default">
+                <h3 class="panel-heading">Panel with tabs</h3>
+                <div class="tab-wrapper">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="nav-item">
+                            <button type="button" class="nav-link active" data-typo3-tab="#panel-tabs-direct-tab1-###UNIQUEID###" aria-controls="panel-tabs-direct-tab1-###UNIQUEID###" role="tab">General</button>
+                        </li>
+                        <li role="presentation" class="nav-item">
+                            <button type="button" class="nav-link" data-typo3-tab="#panel-tabs-direct-tab2-###UNIQUEID###" aria-controls="panel-tabs-direct-tab2-###UNIQUEID###" role="tab">Details</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="panel-tabs-direct-tab1-###UNIQUEID###">
+                            <fieldset class="form-section">
+                                <h3 class="form-section-headline">Section</h3>
+                                <p>Tab 1 content with form section.</p>
+                            </fieldset>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="panel-tabs-direct-tab2-###UNIQUEID###">
+                            <fieldset class="form-section">
+                                <h3 class="form-section-headline">Section</h3>
+                                <p>Tab 2 content with form section.</p>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </sg:colorScheme>
+
         <h2><f:translate key="component.panels.nesting.headline" domain="styleguide.messages" /></h2>
         <sg:colorScheme>
             <div class="panel-group" id="panel-group-###UNIQUEID###">
@@ -1083,7 +1291,7 @@
                                 </button>
                             </div>
                         </h3>
-                        <div class="panel-collapse collapse" id="panel-nesting-{element}-###UNIQUEID###" aria-expanded="true">
+                        <div class="panel-collapse collapse" id="panel-nesting-{element}-###UNIQUEID###" role="tabpanel" aria-expanded="true">
                             <div class="panel-body">
                                 <div class="panel panel-default">
                                     <h3 class="panel-heading" role="tab">
@@ -1100,7 +1308,7 @@
                                             </button>
                                         </div>
                                     </h3>
-                                    <div class="panel-collapse collapse" id="panel-nesting-child-{element}-###UNIQUEID###" aria-expanded="true">
+                                    <div class="panel-collapse collapse" id="panel-nesting-child-{element}-###UNIQUEID###" role="tabpanel" aria-expanded="true">
                                         <div class="panel-body">
                                             <p>
                                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas condimentum
@@ -1131,7 +1339,7 @@
                                                     </button>
                                                 </div>
                                             </h3>
-                                            <div class="panel-collapse collapse" id="panel-nesting-group-{element}-###UNIQUEID###" aria-expanded="true">
+                                            <div class="panel-collapse collapse" id="panel-nesting-group-{element}-###UNIQUEID###" role="tabpanel" aria-expanded="true">
                                                 <div class="panel-body">
                                                     <p>
                                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas condimentum

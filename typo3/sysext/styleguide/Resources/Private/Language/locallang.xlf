@@ -934,6 +934,15 @@
       <trans-unit id="component.panels.table.headline">
         <source>Table</source>
       </trans-unit>
+      <trans-unit id="component.panels.alerts.headline">
+        <source>Alerts</source>
+      </trans-unit>
+      <trans-unit id="component.panels.formSections.headline">
+        <source>Form Sections</source>
+      </trans-unit>
+      <trans-unit id="component.panels.tabs.headline">
+        <source>Tabs</source>
+      </trans-unit>
       <!-- Component: Progress indicator -->
       <trans-unit id="component.progressIndicator.headline">
         <source>Progress indicators</source>

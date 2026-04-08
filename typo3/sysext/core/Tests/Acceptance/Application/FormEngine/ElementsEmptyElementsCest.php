@@ -48,7 +48,7 @@ final class ElementsEmptyElementsCest extends AbstractElementsBasicCest
         $I->waitForElement('.typo3-TCEforms', 3);
 
         // Make sure the test operates on the "radio" tab
-        $I->executeJS('[...document.querySelectorAll("form [role=tabpanel] [role=tab]")].filter(node => node.innerText === "radio").forEach(node => node.scrollIntoViewIfNeeded())');
+        $I->executeJS('[...document.querySelectorAll("form .tab-wrapper [role=tab]")].filter(node => node.innerText === "radio").forEach(node => node.scrollIntoViewIfNeeded())');
         $I->click('radio');
     }
 
