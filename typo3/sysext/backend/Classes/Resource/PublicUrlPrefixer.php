@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Resource;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 #[Autoconfigure(public: true)]
@@ -35,7 +34,8 @@ class PublicUrlPrefixer
 
     public function prefixWithSitePath(GeneratePublicUrlForResourceEvent $event): void
     {
-        if (self::$isProcessingUrl) {
+        $normalizedParams = ($GLOBALS['TYPO3_REQUEST'] ?? null)?->getAttribute('normalizedParams');
+        if (self::$isProcessingUrl || !$normalizedParams) {
             return;
         }
         $resource = $event->getResource();
@@ -51,7 +51,10 @@ class PublicUrlPrefixer
             if (!$originalUrl || PathUtility::hasProtocolAndScheme($originalUrl)) {
                 return;
             }
-            $event->setPublicUrl(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $originalUrl);
+            // @todo: The "dynamic" event registration in both FE and BE RequestHandler's plus this
+            //        ugly late Request dependency resolving within FAL should be refactored by
+            //        incorporating Request dependency into FAL URI generation in a more direct way.
+            $event->setPublicUrl($normalizedParams->getSitePath() . $originalUrl);
         } finally {
             self::$isProcessingUrl = false;
         }

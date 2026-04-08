@@ -1295,6 +1295,9 @@ class ResourceStorage implements ResourceStorageInterface
         $publicUrl = null;
         if ($this->isOnline()) {
             // Pre-process the public URL by an accordant event
+            // @todo: Both FE and BE have resolve an indirect dependency to Request by registering
+            //        an event listener here dynamically in RequestHandler. This needs a refactoring
+            //        and we may want to extract the entire URL generation to an own service anyway.
             $event = new GeneratePublicUrlForResourceEvent($resourceObject, $this, $this->driver);
             $publicUrl = $this->eventDispatcher->dispatch($event)->getPublicUrl();
             if (
