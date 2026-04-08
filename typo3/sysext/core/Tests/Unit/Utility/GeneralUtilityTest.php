@@ -21,11 +21,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -1270,8 +1272,11 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function isOnCurrentHostReturnsTrueWithCurrentHost(): void
     {
-        $testUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        self::assertTrue(GeneralUtility::isOnCurrentHost($testUrl));
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getRequestHost')->willReturn('http://example.org');
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
+        self::assertTrue(GeneralUtility::isOnCurrentHost('http://example.org/some/path', $request));
     }
 
     /**
@@ -1287,7 +1292,7 @@ final class GeneralUtilityTest extends UnitTestCase
             'localhost IP' => ['127.0.0.1'],
             'relative path' => ['./relpath/file.txt'],
             'absolute path' => ['/abspath/file.txt?arg=value'],
-            'different host' => [GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '.example.org'],
+            'different host' => ['https://example.org.evil.example.org/'],
         ];
     }
 
@@ -1295,7 +1300,21 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function isOnCurrentHostWithNotCurrentHostReturnsFalse(string $hostCandidate): void
     {
-        self::assertFalse(GeneralUtility::isOnCurrentHost($hostCandidate));
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getRequestHost')->willReturn('http://example.org');
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
+        self::assertFalse(GeneralUtility::isOnCurrentHost($hostCandidate, $request));
+    }
+
+    #[Test]
+    public function isOnCurrentHostThrowsWithMissingNormalizedParams(): void
+    {
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->with('normalizedParams')->willReturn(null);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1775679512);
+        GeneralUtility::isOnCurrentHost('http://example.org/some/path', $request);
     }
 
     ////////////////////////////////////////

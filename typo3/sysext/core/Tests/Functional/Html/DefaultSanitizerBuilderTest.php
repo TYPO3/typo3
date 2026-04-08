@@ -23,6 +23,8 @@ use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Html\DefaultSanitizerBuilder;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Html\SanitizerInitiator;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\Log\DummyWriter;
 use TYPO3\CMS\Core\Tests\Functional\Html\Fixtures\ExtendedSanitizerBuilder;
@@ -174,6 +176,8 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
     #[Test]
     public function isSanitized(string $payload, string $expectation): void
     {
+        $request = new ServerRequest('http://localhost/', 'GET', 'php://input', [], ['HTTP_HOST' => 'localhost']);
+        $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $factory = new SanitizerBuilderFactory();
         $builder = $factory->build('default');
         $sanitizer = $builder->build();

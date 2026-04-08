@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Typolink;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -308,7 +309,7 @@ readonly class LinkFactory
     protected function addSecurityRelValues(LinkResultInterface $linkResult, ContentObjectRenderer $contentObjectRenderer): LinkResultInterface
     {
         $target = (string)($linkResult->getTarget() ?: $linkResult->getAttribute('data-window-target'));
-        if (in_array($target, ['', null, '_self', '_parent', '_top'], true) || $this->isInternalUrl($linkResult->getUrl())) {
+        if (in_array($target, ['', null, '_self', '_parent', '_top'], true) || $this->isInternalUrl($linkResult->getUrl(), $contentObjectRenderer->getRequest())) {
             return $linkResult;
         }
 
@@ -339,9 +340,9 @@ readonly class LinkFactory
      * whether the given host is any. If so, the url is considered internal.
      *
      * Note: It would be good to move this to EXT:core/Classes/Site which accepts also a PSR-7 request and
-     * also accepts a PSR-7 Uri to move away from GeneralUtility::isOnCurrentHost
+     * also accepts a PSR-7 Uri.
      */
-    protected function isInternalUrl(string $url): bool
+    protected function isInternalUrl(string $url, ServerRequestInterface $request): bool
     {
         $parsedUrl = parse_url($url);
         $foundDomains = 0;
@@ -357,7 +358,7 @@ readonly class LinkFactory
                     ++$foundDomains;
                     break;
                 }
-                if ($site->getBase()->getHost() === '' && GeneralUtility::isOnCurrentHost($url)) {
+                if ($site->getBase()->getHost() === '' && GeneralUtility::isOnCurrentHost($url, $request)) {
                     ++$foundDomains;
                     break;
                 }

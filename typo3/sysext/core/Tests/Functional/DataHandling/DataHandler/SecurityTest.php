@@ -22,6 +22,8 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
@@ -256,6 +258,8 @@ final class SecurityTest extends FunctionalTestCase
     public function markupIsSanitizedForContentBodytextWithHtmlSanitizerEnabled(string $input, array $expectations): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = true;
+        $request = new ServerRequest('http://localhost/', 'GET', 'php://input', [], ['HTTP_HOST' => 'localhost']);
+        $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $newIds = $this->actionService->createNewRecord('tt_content', 1, [
             'CType' => 'text',
             'bodytext' => $input,

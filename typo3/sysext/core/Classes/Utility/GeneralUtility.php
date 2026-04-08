@@ -24,6 +24,7 @@ use Egulias\EmailValidator\Validation\RFCValidation;
 use Egulias\EmailValidator\Warning\CFWSNearAt;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
@@ -408,11 +409,27 @@ class GeneralUtility
      * Scheme, hostname and (optional) port of the given URL are compared.
      *
      * @param string $url URL to compare with the TYPO3 request host
+     * @param ServerRequestInterface|null $request PSR-7 request including normalizedParams attribute. Will be mandatory with TYPO3 v15.0.
      * @return bool Whether the URL matches the TYPO3 request host
      */
-    public static function isOnCurrentHost(string $url): bool
+    public static function isOnCurrentHost(string $url, ?ServerRequestInterface $request = null): bool
     {
-        return stripos($url . '/', self::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0;
+        if ($request === null) {
+            // @todo v15: Remove this if-block and the null fallback. Change the signature to:
+            //            public static function isOnCurrentHost(string $url, ServerRequestInterface $request): bool
+            trigger_error(
+                'Calling GeneralUtility::isOnCurrentHost() without $request argument is deprecated since TYPO3 v14.3 and will be removed in TYPO3 v15.0. Pass the PSR-7 request as second argument.',
+                E_USER_DEPRECATED
+            );
+            $requestHost = self::getIndpEnv('TYPO3_REQUEST_HOST');
+        } else {
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            if ($normalizedParams === null) {
+                throw new \RuntimeException('GeneralUtility::isOnCurrentHost() requires the request to have a normalizedParams attribute.', 1775679512);
+            }
+            $requestHost = $normalizedParams->getRequestHost();
+        }
+        return stripos($url . '/', $requestHost . '/') === 0;
     }
 
     /**
@@ -2552,7 +2569,8 @@ class GeneralUtility
             $parsedUrl = parse_url($decodedUrl);
             // Pass if URL is on the current host:
             if (self::isValidUrl($decodedUrl)) {
-                if (self::isOnCurrentHost($decodedUrl) && str_starts_with($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL'))) {
+                if (stripos($decodedUrl . '/', self::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0 && str_starts_with($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL'))) {
+                    // @todo: stripos() above mimicks GU::isOnCurrentHost(). Need to be resolved before GU::getIndpEnv() deprecation.
                     $sanitizedUrl = $url;
                 }
             } elseif (PathUtility::isAbsolutePath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {

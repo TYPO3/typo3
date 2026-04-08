@@ -9,6 +9,13 @@ return [
             'Breaking-100963-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-109523-GeneralUtilityIsOnCurrentHostWithoutRequest.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,

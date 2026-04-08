@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Html;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,18 +43,25 @@ class DefaultSanitizerBuilder extends CommonBuilder implements SingletonInterfac
     {
         parent::__construct();
         // + URL must be on local host, or is absolute URI path
-        $isOnCurrentHost = new Behavior\ClosureAttrValue(
+        $isOnCurrentHostAttr = new Behavior\ClosureAttrValue(
+            // @todo: This closure has a late dependency to $GLOBALS['TYPO3_REQUEST'] that should eventually
+            //        be made explicit, probably by handing over ServerRequestInterface to build().
             static function (string $value): bool {
-                return GeneralUtility::isValidUrl($value) && GeneralUtility::isOnCurrentHost($value)
-                    || PathUtility::isAbsolutePath($value) && GeneralUtility::isAllowedAbsPath($value); // @todo incorrect abs path!
+                /** @var ServerRequestInterface|null $request */
+                $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+                if ($request === null) {
+                    throw new \RuntimeException('DefaultSanitizerBuilder requires an active PSR-7 request with normalizedParams attribute.', 1775675289);
+                }
+                return GeneralUtility::isValidUrl($value) && GeneralUtility::isOnCurrentHost($value, $request)
+                    || PathUtility::isAbsolutePath($value) && GeneralUtility::isAllowedAbsPath($value);
             }
         );
         // + starting with `t3://`
         $isTypo3Uri = new Behavior\RegExpAttrValue('#^t3://#');
 
         // extends common attributes for TYPO3-specific URIs
-        $this->srcAttr->addValues($isOnCurrentHost);
-        $this->hrefAttr->addValues($isOnCurrentHost, $isTypo3Uri);
+        $this->srcAttr->addValues($isOnCurrentHostAttr);
+        $this->hrefAttr->addValues($isOnCurrentHostAttr, $isTypo3Uri);
 
         // @todo `style` used in Introduction Package, inline CSS should be removed
         $this->globalAttrs[] = new Behavior\Attr('style');
