@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
+use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -41,6 +42,7 @@ final readonly class UserInformationService
         private ModuleProvider $moduleProvider,
         private TcaSchemaFactory $tcaSchemaFactory,
         private PageDoktypeRegistry $pageDoktypeRegistry,
+        private SchemaLabelResolver $schemaLabelResolver,
     ) {}
 
     /**
@@ -249,7 +251,7 @@ final readonly class UserInformationService
                 continue;
             }
             [$table, $recordType, $recordTypeValue] = $split;
-            $label = BackendUtility::getLabelFromItemlist(...$split);
+            $label = $this->schemaLabelResolver->getLabelForFieldValue(...$split);
             $data['pageContentTypes'][] = [
                 // If label is empty => the record type value does not exist so we use "empty-empty" as icon instead of falling back to the default record type icon
                 'icon' => $label ? $this->iconFactory->getIconForRecord($table, [$recordType => $recordTypeValue], IconSize::SMALL)->getIdentifier() : 'install-check-extables',

@@ -1099,6 +1099,7 @@ final class BackendUtilityTest extends FunctionalTestCase
     }
 
     #[DataProvider('getLabelFromItemlistReturnsCorrectFieldsDataProvider')]
+    #[IgnoreDeprecations]
     #[Test]
     public function getLabelFromItemlistReturnsCorrectFields(
         string $table,
@@ -1278,6 +1279,7 @@ final class BackendUtilityTest extends FunctionalTestCase
     }
 
     #[DataProvider('getLabelsFromItemsListDataProvider')]
+    #[IgnoreDeprecations]
     #[Test]
     public function getLabelsFromItemsListReturnsCorrectValue(
         string $table,

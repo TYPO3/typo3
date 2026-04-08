@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -443,7 +444,9 @@ class GridColumnItem extends AbstractGridObject
         $table = $this->table;
         $typeColumn = $this->getTypeColumn();
         $recordType = $this->getRecordType();
-        return BackendUtility::getLabelFromItemListMerged($this->record->getPid(), $table, $typeColumn, $recordType, $this->getRow());
+        $columnTsConfig = BackendUtility::getPagesTSconfig($this->record->getPid())['TCEFORM.'][$table . '.'][$typeColumn . '.'] ?? [];
+        return GeneralUtility::makeInstance(SchemaLabelResolver::class)
+            ->getLabelForFieldValue($table, $typeColumn, $recordType, $this->getRow(), is_array($columnTsConfig) ? $columnTsConfig : []);
     }
 
     protected function getDisabledFieldName(): ?string

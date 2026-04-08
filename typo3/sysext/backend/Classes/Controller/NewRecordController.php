@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
@@ -101,6 +102,7 @@ class NewRecordController
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly SystemResourceFactory $resourceFactory,
         protected readonly SystemResourcePublisherInterface $resourcePublisher,
+        private readonly SchemaLabelResolver $schemaLabelResolver,
     ) {}
 
     /**
@@ -630,8 +632,13 @@ class NewRecordController
                     ],
                 ]),
                 'icon' => $this->iconFactory->getIconForRecord($schema->getName(), [$recordTypeField => $recordTypeName], IconSize::SMALL),
-                'label' => $lang->sL(BackendUtility::getLabelFromItemListMerged($this->id, $schema->getName(), $recordTypeField, $recordTypeName))
-                    ?: $lang->sL($subSchema->getTitle())
+                'label' => $lang->sL($this->schemaLabelResolver->getLabelForFieldValue(
+                    $schema->getName(),
+                    $recordTypeField,
+                    $recordTypeName,
+                    [],
+                    BackendUtility::getPagesTSconfig($this->id)['TCEFORM.'][$schema->getName() . '.'][$recordTypeField . '.'] ?? [],
+                )) ?: $lang->sL($subSchema->getTitle())
                     ?: $recordTypeName,
             ];
         }

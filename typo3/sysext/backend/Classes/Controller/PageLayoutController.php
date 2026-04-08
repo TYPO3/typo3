@@ -54,6 +54,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -88,6 +89,7 @@ class PageLayoutController
         protected readonly ConnectionPool $connectionPool,
         protected readonly LanguageSelectorBuilder $languageSelectorBuilder,
         protected readonly PageLinkMessageProvider $pageLinkMessageProvider,
+        private readonly SchemaLabelResolver $schemaLabelResolver,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -341,7 +343,7 @@ class PageLayoutController
                     $path = BackendUtility::getRecordPath($targetPage['uid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW), 1000);
                     $linkedPath = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($path) . '</a>';
                     $message .= sprintf(htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsInternalLinkMessage')), $linkedPath);
-                    $message .= ' (' . htmlspecialchars($languageService->sL(BackendUtility::getLabelFromItemlist('pages', 'shortcut_mode', (string)$shortcutMode, $this->pageContext->pageRecord))) . ')';
+                    $message .= ' (' . htmlspecialchars($languageService->sL($this->schemaLabelResolver->getLabelForFieldValue('pages', 'shortcut_mode', (string)$shortcutMode, $this->pageContext->pageRecord))) . ')';
                     $state = ContextualFeedbackSeverity::INFO;
                 }
             } else {

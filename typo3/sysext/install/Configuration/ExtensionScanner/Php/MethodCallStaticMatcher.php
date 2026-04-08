@@ -1805,4 +1805,25 @@ return [
             'Deprecation-109551-GeneralUtilityGetIndpEnv.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-109519-BackendUtilityItemListLabelMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemListMerged' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-109519-BackendUtilityItemListLabelMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getLabelsFromItemsList' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-109519-BackendUtilityItemListLabelMethods.rst',
+        ],
+    ],
 ];

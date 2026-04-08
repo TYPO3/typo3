@@ -33,8 +33,6 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
-use TYPO3\CMS\Core\DataHandling\ItemsProcessorContext;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -50,7 +48,7 @@ use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\JsonFieldType;
 use TYPO3\CMS\Core\Schema\Field\NoneFieldType;
 use TYPO3\CMS\Core\Schema\Field\PassthroughFieldType;
-use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
+use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -1083,7 +1081,7 @@ class BackendUtility
             }
             if (($row['shortcut_mode'] ?? 0) != PageRepository::SHORTCUT_MODE_NONE) {
                 $label .= ', ' . $lang->sL($schema->hasField('shortcut_mode') ? $schema->getField('shortcut_mode')->getLabel() : '') . ' '
-                    . $lang->sL(self::getLabelFromItemlist('pages', 'shortcut_mode', $row['shortcut_mode'], $row));
+                    . $lang->sL(GeneralUtility::makeInstance(SchemaLabelResolver::class)->getLabelForFieldValue('pages', 'shortcut_mode', $row['shortcut_mode'], $row));
             }
             $parts[] = $lang->sL($schema->hasField('shortcut') ? $schema->getField('shortcut')->getLabel() : '') . ' ' . $label;
         } elseif ($row['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
@@ -1120,7 +1118,7 @@ class BackendUtility
             $fe_groups = [];
             foreach (GeneralUtility::intExplode(',', (string)$row['fe_group']) as $fe_group) {
                 if ($fe_group < 0) {
-                    $fe_groups[] = $lang->sL(self::getLabelFromItemlist('pages', 'fe_group', (string)$fe_group, $row));
+                    $fe_groups[] = $lang->sL(GeneralUtility::makeInstance(SchemaLabelResolver::class)->getLabelForFieldValue('pages', 'fe_group', (string)$fe_group, $row));
                 } else {
                     $lRec = self::getRecordWSOL('fe_groups', $fe_group, 'title');
                     if (is_array($lRec)) {
@@ -1241,49 +1239,13 @@ class BackendUtility
      * @param string $key items-array value to match
      * @param array $columnConfig @internal Needs to be migrated properly - will not stay! Is required for "volatile" columns config, {@see FlexFormValueFormatter}
      * @return string Label for item entry
-     * @todo MERGE WITH getLabelsFromItemsList() !!
+     * @deprecated will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelForFieldValue() instead.
      */
     public static function getLabelFromItemlist($table, $col, $key, array $row = [], array $columnConfig = [])
     {
-        if ($columnConfig === []) {
-            if (($schema = self::getTcaSchema($table))?->hasField($col)) {
-                $columnConfig = $schema->getField($col)->getConfiguration();
-            } else {
-                return '';
-            }
-        }
-
-        if (isset($columnConfig['items']) && !is_array($columnConfig['items'])) {
-            return '';
-        }
-
-        $items = $columnConfig['items'] ?? [];
-
-        if (
-            ($columnConfig['itemsProcFunc'] ?? '') !== '' ||
-            ($columnConfig['itemsProcessors'] ?? []) !== []
-        ) {
-            $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
-            $itemsCollection = SelectItemCollection::createFromArray($items, $columnConfig['type']);
-            $context = new ItemsProcessorContext(
-                table: $table,
-                field: $col,
-                row: $row,
-                fieldConfiguration: $columnConfig,
-                processorParameters: [],
-                realPid: $row['pid'] ?? 0,
-                site: $processingService->resolveSite($row['pid'] ?? 0)
-            );
-            $items = $processingService->processItems($itemsCollection, $context)->toArray();
-        }
-
-        foreach ($items as $itemConfiguration) {
-            if ((string)$itemConfiguration['value'] === (string)$key) {
-                return $itemConfiguration['label'];
-            }
-        }
-
-        return '';
+        trigger_error('BackendUtility::getLabelFromItemlist() will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelForFieldValue() instead.', E_USER_DEPRECATED);
+        return GeneralUtility::makeInstance(SchemaLabelResolver::class)
+            ->getLabelForFieldValue($table, $col, $key, $row, $columnConfig);
     }
 
     /**
@@ -1293,33 +1255,15 @@ class BackendUtility
      * @param string $column Field Name
      * @param string $key item value
      * @return string Label for item entry
-     * @todo MERGE into getLabelsFromItemsList() !!
+     * @deprecated will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelForFieldValue() instead.
      */
     public static function getLabelFromItemListMerged(int $pageId, $table, $column, $key, array $row = [])
     {
+        trigger_error('BackendUtility::getLabelFromItemListMerged() will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelForFieldValue() instead.', E_USER_DEPRECATED);
         $pageTsConfig = static::getPagesTSconfig($pageId);
-        $label = '';
-        if (is_array($pageTsConfig['TCEFORM.'] ?? null)
-            && is_array($pageTsConfig['TCEFORM.'][$table . '.'] ?? null)
-            && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.'] ?? null)
-        ) {
-            if (is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'] ?? null)
-                && isset($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'][$key])
-            ) {
-                $label = $pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['addItems.'][$key];
-            } elseif (is_array($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'] ?? null)
-                && isset($pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'][$key])
-            ) {
-                $label = $pageTsConfig['TCEFORM.'][$table . '.'][$column . '.']['altLabels.'][$key];
-            }
-        }
-        if (empty($label)) {
-            $tcaValue = self::getLabelFromItemlist($table, $column, $key, $row);
-            if (!empty($tcaValue)) {
-                $label = $tcaValue;
-            }
-        }
-        return $label;
+        $columnTsConfig = $pageTsConfig['TCEFORM.'][$table . '.'][$column . '.'] ?? [];
+        return GeneralUtility::makeInstance(SchemaLabelResolver::class)
+            ->getLabelForFieldValue($table, $column, $key, $row, is_array($columnTsConfig) ? $columnTsConfig : []);
     }
 
     /**
@@ -1331,72 +1275,15 @@ class BackendUtility
      * @param array $columnTsConfig page TSconfig for $column (TCEMAIN.<table>.<column>)
      * @param array $columnConfig @internal Needs to be migrated properly - will not stay! Is required for "volatile" columns config, {@see FlexFormValueFormatter}
      * @return string Comma-separated list of localized labels
-     * @todo getLabelFromItemsList() should use this method !!
+     * @deprecated will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelsForFieldValues() instead.
      */
     public static function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = [], array $row = [], array $columnConfig = []): string
     {
-        if ($columnConfig === []) {
-            if (($schema = self::getTcaSchema($table))?->hasField($column)) {
-                $columnConfig = $schema->getField($column)->getConfiguration();
-            } else {
-                return '';
-            }
-        }
-
-        if ($keyList === '' || (isset($columnConfig['items']) && !is_array($columnConfig['items']))) {
-            return '';
-        }
-
-        $items = $columnConfig['items'] ?? [];
-
-        if (
-            ($columnConfig['itemsProcFunc'] ?? '') !== '' ||
-            ($columnConfig['itemsProcessors'] ?? []) !== []
-        ) {
-            $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
-            $itemsCollection = SelectItemCollection::createFromArray($items, $columnConfig['type']);
-            $context = new ItemsProcessorContext(
-                table: $table,
-                field: $column,
-                row: $row,
-                fieldConfiguration: $columnConfig,
-                processorParameters: [],
-                realPid: $row['pid'] ?? 0,
-                site: $processingService->resolveSite($row['pid'] ?? 0)
-            );
-            $items = $processingService->processItems($itemsCollection, $context)->toArray();
-        }
-
-        // We must also respect empty values, so we can also overwrite options with empty values
-        $keys = GeneralUtility::trimExplode(',', $keyList);
-        $labels = [];
-        // Loop on all selected values
-        foreach ($keys as $key) {
-            $label = null;
-            if ($columnTsConfig) {
-                // Check if label has been defined or redefined via pageTsConfig
-                if ($key === '' && isset($columnTsConfig['altLabels'])) {
-                    $label = $columnTsConfig['altLabels'];
-                } elseif (isset($columnTsConfig['addItems.'][$key])) {
-                    $label = $columnTsConfig['addItems.'][$key];
-                } elseif (isset($columnTsConfig['altLabels.'][$key])) {
-                    $label = $columnTsConfig['altLabels.'][$key];
-                }
-            }
-            if ($label === null) {
-                // Otherwise lookup the label in TCA items list
-                foreach ($items as $itemConfiguration) {
-                    if ($key === (string)$itemConfiguration['value']) {
-                        $label = $itemConfiguration['label'];
-                        break;
-                    }
-                }
-            }
-            if ($label !== null) {
-                $labels[] = static::getLanguageService()->sL($label);
-            }
-        }
-        return implode(', ', $labels);
+        trigger_error('BackendUtility::getLabelsFromItemsList() will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelsForFieldValues() instead.', E_USER_DEPRECATED);
+        $labels = GeneralUtility::makeInstance(SchemaLabelResolver::class)
+            ->getLabelsForFieldValues($table, $column, $keyList, $row, $columnTsConfig, $columnConfig);
+        $languageService = static::getLanguageService();
+        return implode(', ', array_map($languageService->sL(...), $labels));
     }
 
     /**
@@ -1635,7 +1522,7 @@ class BackendUtility
         $lang = static::getLanguageService();
         switch ((string)($theColConf['type'] ?? '')) {
             case 'radio':
-                $l = $lang->sL(self::getLabelFromItemlist($table, $col, $value, $fullRow, $theColConf));
+                $l = $lang->sL(GeneralUtility::makeInstance(SchemaLabelResolver::class)->getLabelForFieldValue($table, $col, $value, $fullRow, $theColConf));
                 if ($l === '' && !empty($value)) {
                     // Use plain database value when label is empty
                     $l = $value;
@@ -1667,7 +1554,9 @@ class BackendUtility
                             $columnTsConfig = $pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'];
                         }
                     }
-                    $l = self::getLabelsFromItemsList($table, $col, (string)$value, $columnTsConfig, $fullRow, $theColConf);
+                    $labels = GeneralUtility::makeInstance(SchemaLabelResolver::class)
+                        ->getLabelsForFieldValues($table, $col, (string)$value, $fullRow, $columnTsConfig, $theColConf);
+                    $l = implode(', ', array_map($lang->sL(...), $labels));
                     if (!empty($theColConf['foreign_table']) && !$l && self::getTcaSchema($theColConf['foreign_table']) !== null) {
                         if ($noRecordLookup) {
                             $l = $value;

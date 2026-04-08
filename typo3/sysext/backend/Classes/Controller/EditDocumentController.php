@@ -76,6 +76,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -198,6 +199,7 @@ class EditDocumentController
         private readonly FormResultHandler $formResultHandler,
         protected TcaSchemaFactory $tcaSchemaFactory,
         protected readonly LocalizationRepository $localizationRepository,
+        private readonly SchemaLabelResolver $schemaLabelResolver,
     ) {}
 
     /**
@@ -2068,7 +2070,7 @@ class EditDocumentController
             $rawTypeValue = $record[$fieldName] ?? '';
             $typeValue = is_array($rawTypeValue) ? (string)($rawTypeValue[0] ?? '') : (string)$rawTypeValue;
             if ($typeValue !== '') {
-                $label = $languageService->sL(BackendUtility::getLabelFromItemlist($table, $fieldName, $typeValue, $record));
+                $label = $languageService->sL($this->schemaLabelResolver->getLabelForFieldValue($table, $fieldName, $typeValue, $record));
                 if ($label === '' && $schema->hasSubSchema($typeValue)) {
                     $label = $schema->getSubSchema($typeValue)->getTitle($languageService->sL(...));
                 }

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Pagination\QueryBuilderPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Schema\Exception\InvalidSchemaTypeException;
 use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
+use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,6 +40,7 @@ final readonly class ContentStatisticsService
     public function __construct(
         private TcaSchemaFactory $tcaSchemaFactory,
         private ConnectionPool $connectionPool,
+        private SchemaLabelResolver $schemaLabelResolver,
     ) {}
 
     public function collectStatistic(): array
@@ -111,7 +113,7 @@ final readonly class ContentStatisticsService
 
         return [
             'ctype' => $cType,
-            'label' => BackendUtility::getLabelFromItemlist('tt_content', 'CType', $cType),
+            'label' => $this->schemaLabelResolver->getLabelForFieldValue('tt_content', 'CType', $cType),
             'count' => $this->getCountInformation($cType)[$cType] ?? [],
             'rows' => $rows,
             'paginator' => $paginator,
