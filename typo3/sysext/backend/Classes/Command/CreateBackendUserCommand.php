@@ -335,7 +335,7 @@ EOT
 
         $languageFromCli = $this->getFallbackValueEnvOrOption($input, 'language', 'TYPO3_BE_USER_LANGUAGE');
         if ($languageFromCli === false && $input->isInteractive()) {
-            $questionLanguage = new Question('Enter the language for the user interface [eg: de/fr/it/...]: ', '');
+            $questionLanguage = new Question('Enter the user\'s backend interface language [en (default), de, fr, it, etc.]: ', 'en');
             $questionLanguage->setValidator($languageValidator);
             $questionLanguage->setAutocompleterValues(array_keys($languagesList));
 
