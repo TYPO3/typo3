@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -57,22 +58,22 @@ final class MediaViewHelperTest extends FunctionalTestCase
             'show youtube video with title' => [
                 '<f:media file="{file}" title="Youtube Video Example" additionalConfig="{allowFullScreen: \'true\'}" />',
                 '1:/user_upload/example.youtube',
-                '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen title="Youtube Video Example" allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Fwww.example.com" allowfullscreen title="Youtube Video Example" allow="fullscreen"></iframe>',
             ],
             'show youtube video with empty title' => [
                 '<f:media file="{file}" title="" additionalConfig="{allowFullScreen: \'true\'}" />',
                 '1:/user_upload/example.youtube',
-                '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Fwww.example.com" allowfullscreen allow="fullscreen"></iframe>',
             ],
             'show youtube video with title is null' => [
                 '<f:media file="{file}" title="null" additionalConfig="{allowFullScreen: \'true\'}" />',
                 '1:/user_upload/example.youtube',
-                '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen allow="fullscreen"></iframe>',
+                '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Fwww.example.com" allowfullscreen allow="fullscreen"></iframe>',
             ],
             'show youtube video with alternative src attribute' => [
                 '<f:media file="{file}" additionalConfig="{srcAttribute: \'data-src\'}" />',
                 '1:/user_upload/example.youtube',
-                '<iframe data-src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen allow="fullscreen"></iframe>',
+                '<iframe data-src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Fwww.example.com" allowfullscreen allow="fullscreen"></iframe>',
             ],
             'evaluate file type "image"' => [
                 '<f:switch expression="{file.type}">
@@ -139,7 +140,10 @@ final class MediaViewHelperTest extends FunctionalTestCase
         $frontendTypoScript->setConfigArray([]);
         $request = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('frontend.typoscript', $frontendTypoScript);
+            ->withAttribute('frontend.typoscript', $frontendTypoScript)
+            ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+                'HTTP_HOST' => 'www.example.com',
+            ]));
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $file = $this->get(ResourceFactory::class)->getFileObjectFromCombinedIdentifier($file);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

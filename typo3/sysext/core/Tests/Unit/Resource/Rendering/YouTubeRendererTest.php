@@ -20,11 +20,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class YouTubeRendererTest extends UnitTestCase
@@ -34,8 +35,11 @@ final class YouTubeRendererTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $_SERVER['HTTP_HOST'] = 'test.server.org';
-        GeneralUtility::flushInternalRuntimeCaches();
+        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams->method('getRequestHost')->willReturn('http://test.server.org');
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         $youTubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
         $youTubeHelper->method('getOnlineMediaId')->willReturn('7331');

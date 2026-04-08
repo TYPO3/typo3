@@ -153,7 +153,10 @@ class YouTubeRenderer implements FileRendererInterface
             $urlParams[] = 'rel=' . (int)(bool)$options['relatedVideos'];
         }
         if (!isset($options['enablejsapi']) || !empty($options['enablejsapi'])) {
-            $urlParams[] = 'enablejsapi=1&origin=' . rawurlencode(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
+            // @todo: This renderer has a dependency to Request / TypoScript. Model this explicitly.
+            $urlParams[] = 'enablejsapi=1&origin=' . rawurlencode(
+                ($GLOBALS['TYPO3_REQUEST'] ?? null)?->getAttribute('normalizedParams')?->getRequestHost() ?? ''
+            );
         }
 
         $youTubeUrl = sprintf(

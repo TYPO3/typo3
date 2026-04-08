@@ -23,7 +23,6 @@ use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to create ServerRequest objects
@@ -65,7 +64,13 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
 
         $method = $serverParameters['REQUEST_METHOD'] ?? 'GET';
         try {
-            $uri = new Uri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+            // Note an early middleware creates NormalizedParams again to attach it as request attribute.
+            // Doing this twice per request is considered ok for now since NormalizedParams is constructed
+            // quite quickly with just a few string operations in it. We also may not want ot attach NormalizedParams
+            // as request attribute here already to not 'pollute' ServerRequest early. Another option is to
+            // hand over NormalizedParams to this method and have callers handle the decision if the attribute
+            // is attached as request attribute on their own.
+            $uri = new Uri(NormalizedParams::createFromServerParams($serverParameters)->getRequestUrl());
         } catch (\InvalidArgumentException $e) {
             if (Environment::isCli()) {
                 throw new InvalidRequestUrlOnCliException(

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Utility;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
@@ -47,9 +48,9 @@ class PathUtility
     /**
      * Creates an absolute URL out of really any input path, removes '../' parts for the targetPath
      *
-     * TODO: And this exactly is a big issue as it mixes file system paths with (relative) URLs
-     * TODO: Additionally it depends on the current request and can not do its job on CLI
-     * TODO: deprecate entirely and replace with stricter API
+     * @todo: And this exactly is a big issue as it mixes file system paths with (relative) URLs.
+     *        Additionally, it depends on the current request and can not do its job on CLI.
+     *        Deprecate entirely and replace with stricter API.
      *
      * Until we have a replacement for this API, the safest way to call this method is by providing absolute filesystem paths
      * and use \TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath whenever possible.
@@ -92,7 +93,8 @@ class PathUtility
         }
 
         if ($prefixWithSitePath) {
-            $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+            // @todo: Another reason this method must fall.
+            $targetPath = NormalizedParams::createFromServerParams($_SERVER)->getSitePath() . $targetPath;
         }
 
         return $targetPath;
