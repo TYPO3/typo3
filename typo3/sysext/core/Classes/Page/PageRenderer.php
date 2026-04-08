@@ -231,29 +231,12 @@ class PageRenderer implements SingletonInterface
         return $state;
     }
 
+    /**
+     * BE only, FE uses a different approach to register JS
+     */
     public function getJavaScriptRenderer(): JavaScriptRenderer
     {
         return $this->javaScriptRenderer;
-    }
-
-    /**
-     * Reset all vars to initial values
-     */
-    protected function reset(ServerRequestInterface $request): void
-    {
-        $this->locale = new Locale();
-        $this->setDocType(DocType::html5, $request);
-        $this->templateFile = 'PKG:typo3/cms-core:Resources/Private/Templates/PageRenderer.html';
-        $this->bodyContent = '';
-        $this->jsFiles = [];
-        $this->jsInline = [];
-        $this->jsLibs = [];
-        $this->cssFiles = [];
-        $this->cssInline = [];
-        $this->inlineComments = [];
-        $this->headerData = [];
-        $this->footerData = [];
-        $this->javaScriptRenderer = JavaScriptRenderer::create('EXT:core/Resources/Public/JavaScript/java-script-item-handler.js');
     }
 
     /**
@@ -265,7 +248,8 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Sets xml prolog and docType
+     * Sets xml prolog and docType.
+     * FE only, BE is hard coded html5.
      *
      * @param string $xmlPrologAndDocType Complete tags for xml prolog and docType
      */
@@ -296,53 +280,8 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Internal method to set a basic <html> tag when in HTML5 with the proper language/locale and "dir" attributes.
-     */
-    protected function setDefaultHtmlTag(ServerRequestInterface $request): void
-    {
-        if ($this->docType === DocType::html5) {
-            $attributes = [
-                'lang' => $this->locale->getName(),
-            ];
-            if ($this->locale->isRightToLeftLanguageDirection()) {
-                $attributes['dir'] = 'rtl';
-            }
-            // @todo: build an API to add HTML attributes cleanly
-            if ($this->getApplicationType($request) === 'BE') {
-                $backendUser = $this->context->getAspect('backend.user');
-                if ($backendUser->isLoggedIn()) {
-                    $attributes = array_merge($attributes, $this->getThemeAndColorSchemeHtmlTagAttributes($this->getBackendUser()));
-                }
-            }
-            $this->setHtmlTag('<html ' . GeneralUtility::implodeAttributes($attributes, true) . '>');
-        }
-    }
-
-    private function getThemeAndColorSchemeHtmlTagAttributes(BackendUserAuthentication $backendUser): array
-    {
-        $attributes = [];
-        $userTS = $backendUser->getTSConfig();
-        $themeDisabled = $userTS['setup.']['fields.']['theme.']['disabled'] ?? '0';
-        $theme = $backendUser->uc['theme'] ?? $userTS['setup.']['fields.']['theme'] ?? 'fresh';
-        if ($themeDisabled === '1') {
-            $theme = $userTS['setup.']['fields.']['theme'] ?? 'fresh';
-        }
-        if ($theme !== 'modern') {
-            $attributes['data-theme'] = $theme;
-        }
-        $colorSchemeDisabled = $userTS['setup.']['fields.']['colorScheme.']['disabled'] ?? '0';
-        $colorScheme = $backendUser->uc['colorScheme'] ?? $userTS['setup.']['fields.']['colorScheme'] ?? 'auto';
-        if ($colorSchemeDisabled === '1') {
-            $colorScheme = $userTS['setup.']['fields.']['colorScheme'] ?? 'light';
-        }
-        if ($colorScheme !== 'auto') {
-            $attributes['data-color-scheme'] = $colorScheme;
-        }
-        return $attributes;
-    }
-
-    /**
      * Sets html tag
+     * FE only, BE is hard coded html5.
      */
     public function setHtmlTag(string $htmlTag): void
     {
@@ -351,6 +290,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Sets HTML head tag
+     * FE only.
      */
     public function setHeadTag(string $headTag): void
     {
@@ -375,6 +315,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Sets template file
+     * FE only.
      */
     public function setTemplateFile(string $file): void
     {
@@ -383,19 +324,23 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Sets Content for Body
+     * BE only, FE uses addBodyContent
      */
     public function setBodyContent(string $content): void
     {
         $this->bodyContent = $content;
     }
 
+    /**
+     * BE only?
+     */
     public function setApplyNonceHint(bool $applyNonceHint): void
     {
         $this->applyNonceHint = $applyNonceHint;
     }
 
     /**
-     * Enables MoveJsFromHeaderToFooter
+     * FE only
      */
     public function enableMoveJsFromHeaderToFooter(): void
     {
@@ -403,29 +348,11 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Disables MoveJsFromHeaderToFooter
+     * FE only, unused.
      */
     public function disableMoveJsFromHeaderToFooter(): void
     {
         $this->moveJsFromHeaderToFooter = false;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getTitle(): string
-    {
-        trigger_error('PageRenderer->getTitle() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->title;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getLanguage(): string
-    {
-        trigger_error('PageRenderer->getLanguage() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return (string)$this->locale;
     }
 
     public function setNonce(?ConsumableNonce $nonce): void
@@ -433,6 +360,9 @@ class PageRenderer implements SingletonInterface
         $this->nonce = $nonce;
     }
 
+    /**
+     * FE only, BE is hard coded HTML5
+     */
     public function setDocType(DocType $docType, ?ServerRequestInterface $request = null): void
     {
         if ($request === null) {
@@ -450,96 +380,6 @@ class PageRenderer implements SingletonInterface
         $this->docType = $docType;
         $this->xmlPrologAndDocType = $docType->getDoctypeDeclaration();
         $this->setDefaultHtmlTag($request);
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getDocType(): DocType
-    {
-        trigger_error('PageRenderer->getDocType() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->docType;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getHtmlTag(): string
-    {
-        trigger_error('PageRenderer->getHtmlTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->htmlTag;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getHeadTag(): string
-    {
-        trigger_error('PageRenderer->getHeadTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->headTag;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getFavIcon(): string
-    {
-        trigger_error('PageRenderer->getFavIcon() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->favIcon;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getIconMimeType(): string
-    {
-        trigger_error('PageRenderer->getIconMimeType() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->iconMimeType;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getTemplateFile(): string
-    {
-        trigger_error('PageRenderer->getTemplateFile() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->templateFile;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getMoveJsFromHeaderToFooter(): bool
-    {
-        trigger_error('PageRenderer->getMoveJsFromHeaderToFooter() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->moveJsFromHeaderToFooter;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getBodyContent(): string
-    {
-        trigger_error('PageRenderer->getBodyContent() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->bodyContent;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getInlineLanguageLabels(): array
-    {
-        trigger_error('PageRenderer->getInlineLanguageLabels() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->inlineLanguageLabels;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getInlineLanguageLabelFiles(): array
-    {
-        trigger_error('PageRenderer->getInlineLanguageLabelFiles() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->inlineLanguageLabelFiles;
     }
 
     /**
@@ -567,41 +407,8 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getMetaTag(string $type, string $name): array
-    {
-        trigger_error('PageRenderer->getMetaTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        // Lowercase all the things
-        $type = strtolower($type);
-        $name = strtolower($name);
-        $manager = $this->metaTagRegistry->getManagerForProperty($name);
-        $propertyContent = $manager->getProperty($name, $type);
-        if (!empty($propertyContent[0])) {
-            return [
-                'type' => $type,
-                'name' => $name,
-                'content' => $propertyContent[0]['content'],
-            ];
-        }
-        return [];
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function removeMetaTag(string $type, string $name): void
-    {
-        trigger_error('PageRenderer->removeMetaTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        // Lowercase all the things
-        $type = strtolower($type);
-        $name = strtolower($name);
-        $manager = $this->metaTagRegistry->getManagerForProperty($name);
-        $manager->removeProperty($name, $type);
-    }
-
-    /**
-     * Adds inline HTML comment
+     * Adds inline HTML comment.
+     * FE only.
      */
     public function addInlineComment(string $comment): void
     {
@@ -825,6 +632,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Adds JS inline code
+     * FE only.
      *
      * @param string $name
      * @param string $block
@@ -844,6 +652,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Adds JS inline code to footer
+     * FE only.
      *
      * @param string $name
      * @param string $block
@@ -981,6 +790,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Adds Javascript Inline Label. This will occur in TYPO3.lang - object
      * The label can be used in scripts with TYPO3.lang.<key>
+     * BE only.
      *
      * @param string $key
      * @param string $value
@@ -994,6 +804,7 @@ class PageRenderer implements SingletonInterface
      * Adds Javascript Inline Label Array. This will occur in TYPO3.lang - object
      * The label can be used in scripts with TYPO3.lang.<key>
      * Array will be merged with existing array.
+     * BE only.
      */
     public function addInlineLanguageLabelArray(array $array): void
     {
@@ -1016,31 +827,6 @@ class PageRenderer implements SingletonInterface
                 'selectionPrefix' => $selectionPrefix,
                 'stripFromSelectionName' => $stripFromSelectionName,
             ];
-        }
-    }
-
-    /**
-     * Loads all labels from a language domain and prefixes them with the domain name.
-     *
-     * The domain name follows the format "extension.domain" (e.g. 'core.common', 'core.modules.media').
-     * The language file is resolved automatically by the LanguageService,
-     * e.g. 'EXT:core/Resources/Private/Language/locallang_common.xlf', 'EXT:core/Resources/Private/Language/Modules/media.xlf'.
-     *
-     * Labels are accessible in JavaScript as TYPO3.lang['domain:key'], e.g. TYPO3.lang['core.common:notAvailableAbbreviation'].
-     *
-     * @param string $domain The domain name in format "extension.domain" (e.g. 'core.common', 'core.modules.media')
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function addInlineLanguageDomain(string $domain): void
-    {
-        trigger_error(
-            'PageRenderer->addInlineLanguageDomain is deprecated and will be removed with TYPO3 v15. Use "~label/{language.dom}" imports instead',
-            E_USER_DEPRECATED
-        );
-        $languageService = $this->languageServiceFactory->create($this->locale);
-        $allLabels = $languageService->getLabelsFromResource($domain);
-        foreach ($allLabels as $label => $value) {
-            $this->inlineLanguageLabels[$domain . ':' . $label] = $value;
         }
     }
 
@@ -1104,7 +890,8 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Render the page
+     * Render the page.
+     * BE only.
      *
      * @return string Content of rendered page
      */
@@ -1155,6 +942,49 @@ class PageRenderer implements SingletonInterface
         return trim($this->templateService->substituteMarkerArray($template, $markerArray, '###|###'));
     }
 
+    /**
+     * Render the page for frontend output.
+     * FE only.
+     *
+     * @internal Not part of the public API. Only for use in TYPO3 frontend rendering.
+     */
+    public function renderFrontendPage(ServerRequestInterface $request): string
+    {
+        $this->prepareRendering();
+        [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs] = $this->renderJavaScriptAndCss($request);
+        $metaTags = implode(LF, $this->renderMetaTagsFromAPI($this->docType));
+        $markerArray = [
+            'XMLPROLOG_DOCTYPE' => $this->xmlPrologAndDocType,
+            'HTMLTAG' => $this->htmlTag,
+            'HEADTAG' => $this->headTag,
+            'INLINECOMMENT' => $this->inlineComments ? LF . LF . '<!-- ' . LF . implode(LF, $this->inlineComments) . '-->' . LF . LF : '',
+            'SHORTCUT' => $this->favIcon ? sprintf($this->shortcutTag, htmlspecialchars($this->favIcon), $this->iconMimeType) : '',
+            'CSS_LIBS' => $cssLibs,
+            'CSS_INCLUDE' => $cssFiles,
+            'CSS_INLINE' => $cssInline,
+            'JS_INLINE' => $jsInline,
+            'JS_INCLUDE' => $jsFiles,
+            'JS_LIBS' => $jsLibs,
+            'TITLE' => $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '',
+            'META' => $metaTags,
+            'HEADERDATA' => $this->headerData ? implode(LF, $this->headerData) : '',
+            'FOOTERDATA' => $this->footerData ? implode(LF, $this->footerData) : '',
+            'JS_LIBS_FOOTER' => $jsFooterLibs,
+            'JS_INCLUDE_FOOTER' => $jsFooterFiles,
+            'JS_INLINE_FOOTER' => $jsFooterInline,
+            'BODY' => $this->bodyContent,
+            // @internal
+            'TRAILING_SLASH_FOR_SELF_CLOSING_TAG' => $this->endingSlash ? ' ' . $this->endingSlash : '',
+        ];
+        $markerArray = array_map(trim(...), $markerArray);
+        $template = $this->getTemplate();
+        $this->reset($request);
+        return trim($this->templateService->substituteMarkerArray($template, $markerArray, '###|###'));
+    }
+
+    /**
+     * BE only.
+     */
     public function renderResponse(
         ServerRequestInterface|int $requestOrCode = 200,
         int|string $codeOrReasonPhrase = '',
@@ -1199,29 +1029,13 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Renders metaTags based on tags added via the API
-     */
-    protected function renderMetaTagsFromAPI(DocType $docType): array
-    {
-        $metaTags = [];
-        $metaTagManagers = $this->metaTagRegistry->getAllManagers();
-        foreach ($metaTagManagers as $managerObject) {
-            // @todo: Reflect $docType argument in MetaTagManagerInterface
-            $properties = $managerObject->renderAllProperties($docType); // @phpstan-ignore arguments.count
-            if (!empty($properties)) {
-                $metaTags[] = $properties;
-            }
-        }
-        return $metaTags;
-    }
-
-    /**
      * Frontend related rendering of the main page HTML scaffold with placeholders
      * for dynamic sections finished by uncached element ("INT") processing later.
      * The result of this method is cached as content in page cache.
+     * FE only.
      *
      * @param string $substituteHash The hash that is used for the placeholder markers
-     * @internal FE only. Never use in extensions.
+     * @internal Never use in extensions.
      */
     public function renderPageWithUncachedObjects(string $substituteHash): string
     {
@@ -1262,9 +1076,10 @@ class PageRenderer implements SingletonInterface
     /**
      * Renders the JavaScript and CSS files that have been added during processing
      * of uncached content objects (USER_INT, COA_INT)
+     * FE only.
      *
      * @param string $substituteHash The hash that is used for the variables
-     * @internal
+     * @internal Never use in extensions.
      */
     public function renderJavaScriptAndCssForProcessingOfUncachedContentObjects(ServerRequestInterface $request, string $cachedPageContent, string $substituteHash): string
     {
@@ -1295,6 +1110,89 @@ class PageRenderer implements SingletonInterface
         }
         $this->reset($request);
         return $cachedPageContent;
+    }
+
+    /**
+     * Reset all vars to initial values
+     */
+    protected function reset(ServerRequestInterface $request): void
+    {
+        $this->locale = new Locale();
+        $this->setDocType(DocType::html5, $request);
+        $this->templateFile = 'PKG:typo3/cms-core:Resources/Private/Templates/PageRenderer.html';
+        $this->bodyContent = '';
+        $this->jsFiles = [];
+        $this->jsInline = [];
+        $this->jsLibs = [];
+        $this->cssFiles = [];
+        $this->cssInline = [];
+        $this->inlineComments = [];
+        $this->headerData = [];
+        $this->footerData = [];
+        $this->javaScriptRenderer = JavaScriptRenderer::create('EXT:core/Resources/Public/JavaScript/java-script-item-handler.js');
+    }
+
+    /**
+     * Internal method to set a basic <html> tag when in HTML5 with the proper language/locale and "dir" attributes.
+     */
+    protected function setDefaultHtmlTag(ServerRequestInterface $request): void
+    {
+        if ($this->docType === DocType::html5) {
+            $attributes = [
+                'lang' => $this->locale->getName(),
+            ];
+            if ($this->locale->isRightToLeftLanguageDirection()) {
+                $attributes['dir'] = 'rtl';
+            }
+            // @todo: build an API to add HTML attributes cleanly
+            if ($this->getApplicationType($request) === 'BE') {
+                $backendUser = $this->context->getAspect('backend.user');
+                if ($backendUser->isLoggedIn()) {
+                    $attributes = array_merge($attributes, $this->getThemeAndColorSchemeHtmlTagAttributes($this->getBackendUser()));
+                }
+            }
+            $this->setHtmlTag('<html ' . GeneralUtility::implodeAttributes($attributes, true) . '>');
+        }
+    }
+
+    private function getThemeAndColorSchemeHtmlTagAttributes(BackendUserAuthentication $backendUser): array
+    {
+        $attributes = [];
+        $userTS = $backendUser->getTSConfig();
+        $themeDisabled = $userTS['setup.']['fields.']['theme.']['disabled'] ?? '0';
+        $theme = $backendUser->uc['theme'] ?? $userTS['setup.']['fields.']['theme'] ?? 'fresh';
+        if ($themeDisabled === '1') {
+            $theme = $userTS['setup.']['fields.']['theme'] ?? 'fresh';
+        }
+        if ($theme !== 'modern') {
+            $attributes['data-theme'] = $theme;
+        }
+        $colorSchemeDisabled = $userTS['setup.']['fields.']['colorScheme.']['disabled'] ?? '0';
+        $colorScheme = $backendUser->uc['colorScheme'] ?? $userTS['setup.']['fields.']['colorScheme'] ?? 'auto';
+        if ($colorSchemeDisabled === '1') {
+            $colorScheme = $userTS['setup.']['fields.']['colorScheme'] ?? 'light';
+        }
+        if ($colorScheme !== 'auto') {
+            $attributes['data-color-scheme'] = $colorScheme;
+        }
+        return $attributes;
+    }
+
+    /**
+     * Renders metaTags based on tags added via the API
+     */
+    protected function renderMetaTagsFromAPI(DocType $docType): array
+    {
+        $metaTags = [];
+        $metaTagManagers = $this->metaTagRegistry->getAllManagers();
+        foreach ($metaTagManagers as $managerObject) {
+            // @todo: Reflect $docType argument in MetaTagManagerInterface
+            $properties = $managerObject->renderAllProperties($docType); // @phpstan-ignore arguments.count
+            if (!empty($properties)) {
+                $metaTags[] = $properties;
+            }
+        }
+        return $metaTags;
     }
 
     /**
@@ -2081,5 +1979,172 @@ class PageRenderer implements SingletonInterface
             throw new \RuntimeException('No backend user found.', 1765402790);
         }
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getLanguage(): string
+    {
+        trigger_error('PageRenderer->getLanguage() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return (string)$this->locale;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getTitle(): string
+    {
+        trigger_error('PageRenderer->getTitle() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->title;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getDocType(): DocType
+    {
+        trigger_error('PageRenderer->getDocType() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->docType;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getHtmlTag(): string
+    {
+        trigger_error('PageRenderer->getHtmlTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->htmlTag;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getHeadTag(): string
+    {
+        trigger_error('PageRenderer->getHeadTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->headTag;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getFavIcon(): string
+    {
+        trigger_error('PageRenderer->getFavIcon() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->favIcon;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getIconMimeType(): string
+    {
+        trigger_error('PageRenderer->getIconMimeType() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->iconMimeType;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getTemplateFile(): string
+    {
+        trigger_error('PageRenderer->getTemplateFile() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->templateFile;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getMoveJsFromHeaderToFooter(): bool
+    {
+        trigger_error('PageRenderer->getMoveJsFromHeaderToFooter() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->moveJsFromHeaderToFooter;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getBodyContent(): string
+    {
+        trigger_error('PageRenderer->getBodyContent() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->bodyContent;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getInlineLanguageLabels(): array
+    {
+        trigger_error('PageRenderer->getInlineLanguageLabels() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->inlineLanguageLabels;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getInlineLanguageLabelFiles(): array
+    {
+        trigger_error('PageRenderer->getInlineLanguageLabelFiles() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        return $this->inlineLanguageLabelFiles;
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function getMetaTag(string $type, string $name): array
+    {
+        trigger_error('PageRenderer->getMetaTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        // Lowercase all the things
+        $type = strtolower($type);
+        $name = strtolower($name);
+        $manager = $this->metaTagRegistry->getManagerForProperty($name);
+        $propertyContent = $manager->getProperty($name, $type);
+        if (!empty($propertyContent[0])) {
+            return [
+                'type' => $type,
+                'name' => $name,
+                'content' => $propertyContent[0]['content'],
+            ];
+        }
+        return [];
+    }
+
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function removeMetaTag(string $type, string $name): void
+    {
+        trigger_error('PageRenderer->removeMetaTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
+        // Lowercase all the things
+        $type = strtolower($type);
+        $name = strtolower($name);
+        $manager = $this->metaTagRegistry->getManagerForProperty($name);
+        $manager->removeProperty($name, $type);
+    }
+
+    /**
+     * Loads all labels from a language domain and prefixes them with the domain name.
+     *
+     * The domain name follows the format "extension.domain" (e.g. 'core.common', 'core.modules.media').
+     * The language file is resolved automatically by the LanguageService,
+     * e.g. 'EXT:core/Resources/Private/Language/locallang_common.xlf', 'EXT:core/Resources/Private/Language/Modules/media.xlf'.
+     *
+     * Labels are accessible in JavaScript as TYPO3.lang['domain:key'], e.g. TYPO3.lang['core.common:notAvailableAbbreviation'].
+     *
+     * @param string $domain The domain name in format "extension.domain" (e.g. 'core.common', 'core.modules.media')
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    public function addInlineLanguageDomain(string $domain): void
+    {
+        trigger_error(
+            'PageRenderer->addInlineLanguageDomain is deprecated and will be removed with TYPO3 v15. Use "~label/{language.dom}" imports instead',
+            E_USER_DEPRECATED
+        );
+        $languageService = $this->languageServiceFactory->create($this->locale);
+        $allLabels = $languageService->getLabelsFromResource($domain);
+        foreach ($allLabels as $label => $value) {
+            $this->inlineLanguageLabels[$domain . ':' . $label] = $value;
+        }
     }
 }

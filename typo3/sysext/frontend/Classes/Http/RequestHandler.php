@@ -270,7 +270,7 @@ readonly class RequestHandler implements RequestHandlerInterface
             return $this->pageRenderer->renderPageWithUncachedObjects($pageParts->getPageRendererSubstitutionHash());
         }
         // Render complete page
-        return $this->pageRenderer->render($request);
+        return $this->pageRenderer->renderFrontendPage($request);
     }
 
     /**
