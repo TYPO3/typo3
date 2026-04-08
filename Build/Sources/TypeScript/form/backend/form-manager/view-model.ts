@@ -39,19 +39,21 @@ enum Identifiers {
 }
 
 function newFormSetup(formManagerApp: FormManager): void {
-  const newFormModalTrigger: HTMLElement = document.querySelector<HTMLElement>(Identifiers.newFormModalTrigger);
-  newFormModalTrigger.addEventListener('click', async (): Promise<void> => {
-    await topLevelModuleImport('@typo3/form/backend/form-wizard/form-wizard.js');
-    const content = html`<typo3-backend-form-wizard .formManager="${formManagerApp}"
-    ></typo3-backend-form-wizard>`;
+  document.querySelectorAll<HTMLElement>(Identifiers.newFormModalTrigger).forEach((element: HTMLElement): void => {
+    element.addEventListener('click', async (e: Event): Promise<void> => {
+      e.preventDefault();
+      await topLevelModuleImport('@typo3/form/backend/form-wizard/form-wizard.js');
+      const content = html`<typo3-backend-form-wizard .formManager="${formManagerApp}"
+      ></typo3-backend-form-wizard>`;
 
-    Modal.advanced({
-      title: formManagerLabels.get('formManager.newFormWizard.step1.title'),
-      content: content,
-      severity: SeverityEnum.notice,
-      size: Modal.sizes.medium,
-      staticBackdrop: true,
-      buttons: []
+      Modal.advanced({
+        title: formManagerLabels.get('formManager.newFormWizard.step1.title'),
+        content: content,
+        severity: SeverityEnum.notice,
+        size: Modal.sizes.medium,
+        staticBackdrop: true,
+        buttons: []
+      });
     });
   });
 }
