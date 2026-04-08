@@ -88,7 +88,8 @@ class FormManagerController extends ActionController
         $formSettings = $this->getFormSettings();
         $hasForms = $this->formPersistenceManager->hasForms([]);
         $searchCriteria = new SearchCriteria(searchTerm: trim($searchTerm), orderField: $orderField, orderDirection: $orderDirection);
-        $forms = $hasForms ? $this->getAvailableFormDefinitions($formSettings, $searchCriteria) : [];
+        $returnUrl = $this->request->getAttribute('normalizedParams')->getRequestUri();
+        $forms = $hasForms ? $this->getAvailableFormDefinitions($formSettings, $searchCriteria, $returnUrl) : [];
         $arrayPaginator = new ArrayPaginator($forms, $page, self::PAGINATION_MAX);
         $pagination = new SimplePagination($arrayPaginator);
         $moduleTemplate = $this->initializeModuleTemplate($this->request, $page, $searchTerm);
@@ -376,7 +377,7 @@ class FormManagerController extends ActionController
      * List all formDefinitions which can be loaded through form persistence
      * manager. Enrich this data by a reference counter.
      */
-    protected function getAvailableFormDefinitions(array $formSettings, SearchCriteria $searchCriteria): array
+    protected function getAvailableFormDefinitions(array $formSettings, SearchCriteria $searchCriteria, string $returnUrl = ''): array
     {
         $availableFormDefinitions = [];
 
@@ -385,7 +386,10 @@ class FormManagerController extends ActionController
             if ($formMetadata->persistenceIdentifier && !$formMetadata->invalid && !$formMetadata->readOnly) {
                 $editUrl = (string)$this->coreUriBuilder->buildUriFromRoute(
                     'form_editor',
-                    ['formPersistenceIdentifier' => $formMetadata->persistenceIdentifier]
+                    array_filter([
+                        'formPersistenceIdentifier' => $formMetadata->persistenceIdentifier,
+                        'returnUrl' => $returnUrl,
+                    ])
                 );
                 $formMetadata = $formMetadata->withEditUrl($editUrl);
             }
