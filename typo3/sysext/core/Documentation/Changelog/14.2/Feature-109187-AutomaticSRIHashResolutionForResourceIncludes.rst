@@ -79,23 +79,48 @@ When using the PHP API directly, pass :php:`ResourceHashCollection::AUTO` as
 the :php:`$integrity` argument:
 
 ..  code-block:: php
+    :emphasize-lines: 21, 33, 40
 
+    use TYPO3\CMS\Core\Page\AssetCollector;
+    use TYPO3\CMS\Core\Page\PageRenderer;
     use TYPO3\CMS\Core\Page\ResourceHashCollection;
+
+    // Ignore all parameters but the last one ($integrity). They are defaults,
+    // but must be specified because TYPO3 Core API does not provide stable
+    // argument names, so using named arguments for regular methods is not supported.
 
     $pageRenderer->addCssFile(
         'EXT:my_extension/Resources/Public/Css/style.css',
-        integrity: ResourceHashCollection::AUTO,
+        'stylesheet',
+        'all',
+        '',
+        null,
+        false,
+        '',
+        null,
+        '|',
+        false,
+        [],
+        ResourceHashCollection::AUTO, // parameter $integrity
     );
 
     $pageRenderer->addJsFile(
         'EXT:my_extension/Resources/Public/JavaScript/app.js',
-        integrity: ResourceHashCollection::AUTO,
+        '',
+        null,
+        false,
+        '',
+        null,
+        '|',
+        false,
+        ResourceHashCollection::AUTO, // parameter $integrity
     );
 
     $assetCollector->addStyleSheet(
         'my-styles',
         'EXT:my_extension/Resources/Public/Css/style.css',
-        ['integrity' => ResourceHashCollection::AUTO],
+        [],
+        ['integrity' => ResourceHashCollection::AUTO], // parameter $options
     );
 
 .. index:: Frontend, PHP-API, TypoScript, ext:frontend, ext:core
