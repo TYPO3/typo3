@@ -22,10 +22,10 @@ use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
 /**
  * A factory to create webhook messages from events.
  */
-class WebhookMessageFactory
+readonly class WebhookMessageFactory
 {
     public function __construct(
-        protected readonly WebhookTypesRegistry $typesRegistry
+        protected WebhookTypesRegistry $typesRegistry
     ) {}
 
     public function createMessageFromEvent(object $eventObject): ?object

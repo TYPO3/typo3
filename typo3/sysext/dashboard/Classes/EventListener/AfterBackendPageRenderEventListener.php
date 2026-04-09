@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 /**
  * Adds custom CSS needed for EXT:dashboard in the "outer" backend scaffold
  */
-final class AfterBackendPageRenderEventListener
+final readonly class AfterBackendPageRenderEventListener
 {
-    public function __construct(private readonly PageRenderer $pageRenderer) {}
+    public function __construct(private PageRenderer $pageRenderer) {}
 
     #[AsEventListener(event: AfterBackendPageRenderEvent::class)]
     public function __invoke(): void

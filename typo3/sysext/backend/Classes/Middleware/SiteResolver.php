@@ -33,10 +33,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * Very useful for all "Web" related modules to resolve all available languages for a site.
  */
-class SiteResolver implements MiddlewareInterface
+readonly class SiteResolver implements MiddlewareInterface
 {
     public function __construct(
-        private readonly SiteMatcher $siteMatcher
+        private SiteMatcher $siteMatcher
     ) {}
 
     /**

@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * The identifier is used to keep track of the original handling class/aspect.
  * Higher priorities take precedence when being visualized in the backend module.
  */
-final class MutationSuggestion implements \JsonSerializable
+final readonly class MutationSuggestion implements \JsonSerializable
 {
     /**
      * @param string $identifier a unique identifier (e.g. `Vendor\Extension\MyHandler@knownJavaScript`)
@@ -33,10 +33,10 @@ final class MutationSuggestion implements \JsonSerializable
      * @param ?string $label to be shown in backend module
      */
     public function __construct(
-        public readonly MutationCollection $collection,
-        public readonly string $identifier,
-        public readonly ?int $priority = null,
-        public readonly ?string $label = null,
+        public MutationCollection $collection,
+        public string $identifier,
+        public ?int $priority = null,
+        public ?string $label = null,
     ) {
         if ($this->priority !== null && ($this->priority < 0 || $this->priority > 10)) {
             throw new \LogicException('Priority must be in range [0; 10]', 1679601774);

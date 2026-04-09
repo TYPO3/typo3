@@ -25,11 +25,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This is the central point to retrieve modules from the ModuleRegistry, while
  * performing the necessary access checks, which ModuleRegistry does not deal with.
  */
-class ModuleProvider
+readonly class ModuleProvider
 {
     public function __construct(
-        protected readonly ModuleRegistry $moduleRegistry,
-        protected readonly ModuleAccessGateRegistry $gateRegistry,
+        protected ModuleRegistry $moduleRegistry,
+        protected ModuleAccessGateRegistry $gateRegistry,
     ) {}
 
     /**

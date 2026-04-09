@@ -24,13 +24,13 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 /**
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class BookmarkRepository
+readonly class BookmarkRepository
 {
     protected const TABLE_NAME = 'sys_be_shortcuts';
     protected const GROUP_TABLE_NAME = 'sys_be_shortcuts_group';
 
     public function __construct(
-        protected readonly ConnectionPool $connectionPool,
+        protected ConnectionPool $connectionPool,
     ) {}
 
     public function findById(int $id): ?array

@@ -28,9 +28,9 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
  *
  * @todo: Once processedTca is refactored from its array shape remove keeping the full TCA and TCA schemata as state.
  */
-class InitializeProcessedTca implements FormDataProviderInterface
+readonly class InitializeProcessedTca implements FormDataProviderInterface
 {
-    public function __construct(private readonly TcaSchemaFactory $tcaSchemaFactory) {}
+    public function __construct(private TcaSchemaFactory $tcaSchemaFactory) {}
 
     /**
      * Add full TCA as copy from vanilla TCA if not already set form the outside

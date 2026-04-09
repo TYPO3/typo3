@@ -39,16 +39,16 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class CspModuleController
+readonly class CspModuleController
 {
     public function __construct(
-        protected readonly Features $features,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly ScopeRepository $scopeRepository,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly IconFactory $iconFactory,
-        protected readonly ComponentFactory $componentFactory,
+        protected Features $features,
+        protected UriBuilder $uriBuilder,
+        protected PageRenderer $pageRenderer,
+        protected ScopeRepository $scopeRepository,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected IconFactory $iconFactory,
+        protected ComponentFactory $componentFactory,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface

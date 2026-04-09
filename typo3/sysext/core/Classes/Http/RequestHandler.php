@@ -25,11 +25,11 @@ use TYPO3\CMS\Backend\Http\Application as BackendApplication;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Frontend\Http\Application as FrontendApplication;
 
-final class RequestHandler implements RequestHandlerInterface
+final readonly class RequestHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly BackendEntryPointResolver $backendEntryPointResolver,
+        private ContainerInterface $container,
+        private BackendEntryPointResolver $backendEntryPointResolver,
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface

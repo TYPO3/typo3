@@ -26,13 +26,13 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetResult;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 
-class PagesWithInternalNote implements WidgetRendererInterface
+readonly class PagesWithInternalNote implements WidgetRendererInterface
 {
     public function __construct(
-        private readonly WidgetConfigurationInterface $configuration,
-        private readonly SysNoteRepository $sysNoteRepository,
-        private readonly BackendViewFactory $backendViewFactory,
-        private readonly array $options = []
+        private WidgetConfigurationInterface $configuration,
+        private SysNoteRepository $sysNoteRepository,
+        private BackendViewFactory $backendViewFactory,
+        private array $options = []
     ) {}
 
     /**

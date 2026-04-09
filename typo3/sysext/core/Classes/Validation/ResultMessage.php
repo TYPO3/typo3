@@ -22,10 +22,10 @@ use TYPO3\CMS\Core\Localization\LabelBag;
 /**
  * @internal
  */
-final class ResultMessage
+final readonly class ResultMessage
 {
     public function __construct(
-        public readonly string $message,
-        public readonly ?LabelBag $labelBag = null,
+        public string $message,
+        public ?LabelBag $labelBag = null,
     ) {}
 }

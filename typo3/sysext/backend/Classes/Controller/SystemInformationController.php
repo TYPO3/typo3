@@ -29,10 +29,10 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class SystemInformationController
+readonly class SystemInformationController
 {
     public function __construct(
-        private readonly SystemInformationToolbarItem $systemInformationToolbarItem,
+        private SystemInformationToolbarItem $systemInformationToolbarItem,
     ) {}
 
     /**

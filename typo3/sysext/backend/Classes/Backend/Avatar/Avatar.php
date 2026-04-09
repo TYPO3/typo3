@@ -34,17 +34,17 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * See render() and getImgTag() as main entry points
  */
 #[Autoconfigure(public: true)]
-class Avatar
+readonly class Avatar
 {
     /**
      * @param list<AvatarProviderInterface> $avatarProviders
      */
     public function __construct(
         #[Autowire(service: 'cache.runtime')]
-        protected readonly FrontendInterface $cache,
-        protected readonly DependencyOrderingService $dependencyOrderingService,
-        protected readonly IconFactory $iconFactory,
-        protected readonly array $avatarProviders = [],
+        protected FrontendInterface $cache,
+        protected DependencyOrderingService $dependencyOrderingService,
+        protected IconFactory $iconFactory,
+        protected array $avatarProviders = [],
     ) {
         $this->validateAvatarProviders();
     }

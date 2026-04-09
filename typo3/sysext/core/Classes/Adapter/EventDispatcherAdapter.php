@@ -22,9 +22,9 @@ use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 
 #[AsAlias(SymfonyEventDispatcherInterface::class, public: true)]
-final class EventDispatcherAdapter implements SymfonyEventDispatcherInterface
+final readonly class EventDispatcherAdapter implements SymfonyEventDispatcherInterface
 {
-    public function __construct(private readonly EventDispatcherInterface $eventDispatcher) {}
+    public function __construct(private EventDispatcherInterface $eventDispatcher) {}
 
     public function dispatch(object $event, ?string $eventName = null): object
     {

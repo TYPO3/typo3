@@ -36,12 +36,12 @@ use TYPO3\CMS\Webhooks\Message\PageModificationMessage;
  * @internal not part of TYPO3 Core API
  */
 #[Autoconfigure(public: true)]
-class PageModificationListener
+readonly class PageModificationListener
 {
     public function __construct(
-        protected readonly MessageBusInterface $bus,
-        protected readonly LoggerInterface $logger,
-        protected readonly SiteFinder $siteFinder,
+        protected MessageBusInterface $bus,
+        protected LoggerInterface $logger,
+        protected SiteFinder $siteFinder,
     ) {}
 
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, DataHandler $dataHandler)

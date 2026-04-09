@@ -28,16 +28,16 @@ use Psr\Http\Message\StreamInterface;
  *
  * @internal
  */
-class SelfEmittableLazyOpenStream implements SelfEmittableStreamInterface
+readonly class SelfEmittableLazyOpenStream implements SelfEmittableStreamInterface
 {
     use StreamDecoratorTrait;
 
-    protected readonly LazyOpenStream $stream;
+    protected LazyOpenStream $stream;
 
     /**
      * Constructor setting up the PHP resource
      */
-    public function __construct(protected readonly string $filename)
+    public function __construct(protected string $filename)
     {
         $this->stream = new LazyOpenStream($filename, 'r');
     }

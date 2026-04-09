@@ -27,11 +27,11 @@ use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
  * @internal not part of TYPO3's Core API
  */
 #[Autoconfigure(public: true)]
-class WebhookTypesItemsProcFunc
+readonly class WebhookTypesItemsProcFunc
 {
     public function __construct(
-        private readonly WebhookTypesRegistry $webhookTypesRegistry,
-        private readonly LanguageServiceFactory $languageServiceFactory
+        private WebhookTypesRegistry $webhookTypesRegistry,
+        private LanguageServiceFactory $languageServiceFactory
     ) {}
 
     public function getWebhookTypes(&$fieldDefinition): void

@@ -30,11 +30,11 @@ use Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface;
  *
  * @internal
  */
-class TransportLocator implements SendersLocatorInterface
+readonly class TransportLocator implements SendersLocatorInterface
 {
     public function __construct(
         #[AutowireLocator('messenger.sender', indexAttribute: 'identifier')]
-        private readonly ContainerInterface $sendersLocator,
+        private ContainerInterface $sendersLocator,
     ) {}
 
     public function getSenders(Envelope $envelope): iterable

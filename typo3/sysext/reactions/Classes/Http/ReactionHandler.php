@@ -36,12 +36,12 @@ use TYPO3\CMS\Reactions\ReactionRegistry;
  *
  * @internal This is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
-class ReactionHandler
+readonly class ReactionHandler
 {
     public function __construct(
-        private readonly ReactionRegistry $reactionRegistry,
-        private readonly LoggerInterface $logger,
-        private readonly LanguageServiceFactory $languageServiceFactory
+        private ReactionRegistry $reactionRegistry,
+        private LoggerInterface $logger,
+        private LanguageServiceFactory $languageServiceFactory
     ) {}
 
     public function handleReaction(ServerRequestInterface $request, ?ReactionInstruction $reactionInstruction, ReactionUserAuthentication $user): ResponseInterface

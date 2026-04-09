@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Attribute;
 
 #[\Attribute(\Attribute::TARGET_METHOD)]
-class RateLimit
+readonly class RateLimit
 {
     public function __construct(
-        public readonly int $limit = 5,
-        public readonly string $interval = '15 minutes',
-        public readonly string $policy = 'sliding_window',
-        public readonly string $message = ''
+        public int $limit = 5,
+        public string $interval = '15 minutes',
+        public string $policy = 'sliding_window',
+        public string $message = ''
     ) {
         if ($this->limit < 1) {
             throw new \RuntimeException('Invalid "limit" property for rate limit. Ensure, that the value is greater than 0.', 1771074438);

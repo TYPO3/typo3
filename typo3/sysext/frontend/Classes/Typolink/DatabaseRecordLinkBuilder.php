@@ -37,14 +37,14 @@ use TYPO3\CMS\Frontend\Event\BeforeDatabaseRecordLinkResolvedEvent;
 /**
  * Builds a TypoLink to a database record
  */
-class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
+readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
 {
     public function __construct(
-        private readonly TcaSchemaFactory $schemaFactory,
+        private TcaSchemaFactory $schemaFactory,
         #[Autowire(service: 'cache.runtime')]
-        private readonly FrontendInterface $runtimeCache,
-        private readonly TypoLinkCodecService $typoLinkCodecService,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private FrontendInterface $runtimeCache,
+        private TypoLinkCodecService $typoLinkCodecService,
+        private EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function buildLink(

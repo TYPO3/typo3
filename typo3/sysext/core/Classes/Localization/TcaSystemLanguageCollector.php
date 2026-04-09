@@ -28,10 +28,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal
  */
 #[Autoconfigure(public: true)]
-final class TcaSystemLanguageCollector
+final readonly class TcaSystemLanguageCollector
 {
     public function __construct(
-        private readonly Locales $locales
+        private Locales $locales
     ) {}
 
     /**

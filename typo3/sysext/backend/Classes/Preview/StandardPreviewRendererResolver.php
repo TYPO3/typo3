@@ -33,10 +33,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * variant first.
  */
 #[Autoconfigure(public: true)]
-class StandardPreviewRendererResolver
+readonly class StandardPreviewRendererResolver
 {
     public function __construct(
-        protected readonly TcaSchemaFactory $tcaSchemaFactory
+        protected TcaSchemaFactory $tcaSchemaFactory
     ) {}
 
     /**

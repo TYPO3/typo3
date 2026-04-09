@@ -40,11 +40,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class SuggestWizardController
+readonly class SuggestWizardController
 {
     public function __construct(
-        private readonly FlexFormTools $flexFormTools,
-        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private FlexFormTools $flexFormTools,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**

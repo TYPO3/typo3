@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
  * Class for conversion between charsets
  */
 #[Autoconfigure(public: true)]
-class CharsetConverter
+readonly class CharsetConverter
 {
     /**
      * Fallback character for chars with no equivalent.
@@ -31,7 +31,7 @@ class CharsetConverter
     protected const FALLBACK_CHAR = '?';
 
     public function __construct(
-        private readonly CharsetProvider $charsetProvider
+        private CharsetProvider $charsetProvider
     ) {}
 
     /**

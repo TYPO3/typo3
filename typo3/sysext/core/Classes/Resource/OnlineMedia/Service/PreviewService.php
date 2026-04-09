@@ -24,11 +24,11 @@ use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 /**
  * Service for handling the preview of online media assets
  */
-class PreviewService
+readonly class PreviewService
 {
     public function __construct(
-        protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
-        protected readonly ProcessedFileRepository $processedFileRepository
+        protected OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
+        protected ProcessedFileRepository $processedFileRepository
     ) {}
 
     public function updatePreviewImage(File $file): string

@@ -28,12 +28,12 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('backendUserLanguageMigration')]
-final class BackendUserLanguageMigration implements UpgradeWizardInterface
+final readonly class BackendUserLanguageMigration implements UpgradeWizardInterface
 {
     private const TABLE_NAME = 'be_users';
 
     public function __construct(
-        private readonly ConnectionPool $connectionPool
+        private ConnectionPool $connectionPool
     ) {}
 
     public function getTitle(): string

@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand;
 
-final class DemandProperty
+final readonly class DemandProperty
 {
     public function __construct(
-        private readonly DemandPropertyName $name,
-        private readonly mixed $value,
+        private DemandPropertyName $name,
+        private mixed $value,
     ) {}
 
     public function getName(): DemandPropertyName

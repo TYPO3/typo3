@@ -26,9 +26,9 @@ use TYPO3\CMS\Core\Http\JsonResponse;
  * Used from backend `/typo3` context to check webserver response in general (independent of install tool).
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
-class ServerResponseCheckController
+readonly class ServerResponseCheckController
 {
-    public function __construct(private readonly HashService $hashService) {}
+    public function __construct(private HashService $hashService) {}
 
     public function checkHostAction(ServerRequestInterface $request): ResponseInterface
     {

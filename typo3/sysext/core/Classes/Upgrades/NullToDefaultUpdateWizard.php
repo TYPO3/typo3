@@ -33,11 +33,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is only meant to be used within `EXT:core` and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('nullToDefaultUpdateWizard')]
-class NullToDefaultUpdateWizard implements UpgradeWizardInterface, RepeatableInterface
+readonly class NullToDefaultUpdateWizard implements UpgradeWizardInterface, RepeatableInterface
 {
     public function __construct(
-        private readonly SchemaMigrator $schemaMigrator,
-        private readonly ConnectionPool $connectionPool
+        private SchemaMigrator $schemaMigrator,
+        private ConnectionPool $connectionPool
     ) {}
 
     /**

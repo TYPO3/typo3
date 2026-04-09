@@ -30,10 +30,10 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class BookmarkController
+readonly class BookmarkController
 {
     public function __construct(
-        protected readonly BookmarkService $bookmarkService,
+        protected BookmarkService $bookmarkService,
     ) {}
 
     public function listAction(ServerRequestInterface $request): ResponseInterface

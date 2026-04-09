@@ -18,12 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Attribute;
 
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Authorize
+readonly class Authorize
 {
     public function __construct(
-        public readonly string|array|null $callback = null,
-        public readonly bool $requireLogin = false,
-        public readonly array $requireGroups = [],
+        public string|array|null $callback = null,
+        public bool $requireLogin = false,
+        public array $requireGroups = [],
     ) {
         if ($callback === null && !$requireLogin && $requireGroups === []) {
             throw new \InvalidArgumentException(

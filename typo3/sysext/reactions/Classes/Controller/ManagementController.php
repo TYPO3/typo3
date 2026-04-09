@@ -40,15 +40,15 @@ use TYPO3\CMS\Reactions\Repository\ReactionRepository;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-class ManagementController
+readonly class ManagementController
 {
     public function __construct(
-        private readonly UriBuilder $uriBuilder,
-        private readonly IconFactory $iconFactory,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly ReactionRegistry $reactionRegistry,
-        private readonly ReactionRepository $reactionRepository,
-        private readonly ComponentFactory $componentFactory,
+        private UriBuilder $uriBuilder,
+        private IconFactory $iconFactory,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private ReactionRegistry $reactionRegistry,
+        private ReactionRepository $reactionRepository,
+        private ComponentFactory $componentFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface

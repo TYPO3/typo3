@@ -33,10 +33,10 @@ use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
  *
  * @internal
  */
-class ForcedHttpsBackendRedirector implements MiddlewareInterface
+readonly class ForcedHttpsBackendRedirector implements MiddlewareInterface
 {
     public function __construct(
-        protected readonly BackendEntryPointResolver $backendEntryPointResolver
+        protected BackendEntryPointResolver $backendEntryPointResolver
     ) {}
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

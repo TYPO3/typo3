@@ -22,18 +22,18 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 /**
  * @internal
  */
-class DashboardPreset implements \JsonSerializable
+readonly class DashboardPreset implements \JsonSerializable
 {
     /**
      * @param list<array{identifier: string, settings?: array<string, mixed>}> $defaultWidgets
      */
     public function __construct(
-        protected readonly string $identifier,
-        protected readonly string $title,
-        protected readonly string $description,
-        protected readonly string $iconIdentifier = 'content-dashboard',
-        protected readonly array $defaultWidgets = [],
-        protected readonly bool $showInWizard = true
+        protected string $identifier,
+        protected string $title,
+        protected string $description,
+        protected string $iconIdentifier = 'content-dashboard',
+        protected array $defaultWidgets = [],
+        protected bool $showInWizard = true
     ) {}
 
     public function getIdentifier(): string

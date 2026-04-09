@@ -25,11 +25,11 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 /**
  * @internal
  */
-class ResolutionRepository
+readonly class ResolutionRepository
 {
     protected const TABLE_NAME = 'sys_csp_resolution';
 
-    public function __construct(protected readonly ConnectionPool $pool) {}
+    public function __construct(protected ConnectionPool $pool) {}
 
     /**
      * @return list<Resolution>

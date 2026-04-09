@@ -34,15 +34,15 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * @internal
  */
-final class ResourceHashCollection
+final readonly class ResourceHashCollection
 {
     public const AUTO = 'auto';
 
     public function __construct(
-        private readonly LoggerInterface $logger,
-        private readonly SystemResourceFactory $systemResourceFactory,
+        private LoggerInterface $logger,
+        private SystemResourceFactory $systemResourceFactory,
         #[Autowire(service: 'cache.assets')]
-        private readonly ?FrontendInterface $assetsCache = null,
+        private ?FrontendInterface $assetsCache = null,
     ) {}
 
     public function fetchResourceHash(string|UriInterface|StaticResourceInterface $value, HashType $type = HashType::sha256): ?HashValue

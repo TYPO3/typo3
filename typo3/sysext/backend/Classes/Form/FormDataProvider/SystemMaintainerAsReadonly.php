@@ -30,10 +30,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * record to "readOnly" in case a non system maintainer is editing
  * a system maintainer record.
  */
-class SystemMaintainerAsReadonly implements FormDataProviderInterface
+readonly class SystemMaintainerAsReadonly implements FormDataProviderInterface
 {
     public function __construct(
-        private readonly FlashMessageService $flashMessageService,
+        private FlashMessageService $flashMessageService,
     ) {}
 
     public function addData(array $result): array

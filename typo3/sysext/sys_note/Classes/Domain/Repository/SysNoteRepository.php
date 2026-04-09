@@ -28,12 +28,12 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  *
  * @internal
  */
-class SysNoteRepository
+readonly class SysNoteRepository
 {
     public const SYS_NOTE_POSITION_BOTTOM = 0;
     public const SYS_NOTE_POSITION_TOP = 1;
 
-    public function __construct(protected readonly ConnectionPool $connectionPool) {}
+    public function __construct(protected ConnectionPool $connectionPool) {}
 
     /**
      * Find notes by given pid and author

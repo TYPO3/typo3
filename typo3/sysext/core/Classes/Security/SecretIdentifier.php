@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class SecretIdentifier implements \JsonSerializable
+readonly class SecretIdentifier implements \JsonSerializable
 {
     public static function fromJson(string $json): self
     {
@@ -43,7 +43,7 @@ class SecretIdentifier implements \JsonSerializable
         return GeneralUtility::makeInstance(self::class, $type, $name);
     }
 
-    public function __construct(public readonly string $type, public readonly string $name) {}
+    public function __construct(public string $type, public string $name) {}
 
     /**
      * @return array{type: string, name: string}

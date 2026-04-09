@@ -34,14 +34,14 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class FileUpdateOnlineMediaController
+readonly class FileUpdateOnlineMediaController
 {
     public function __construct(
-        protected readonly ResourceFactory $resourceFactory,
-        protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
-        protected readonly PreviewService $previewService,
-        protected readonly ResponseFactoryInterface $responseFactory,
-        protected readonly StreamFactoryInterface $streamFactory
+        protected ResourceFactory $resourceFactory,
+        protected OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
+        protected PreviewService $previewService,
+        protected ResponseFactoryInterface $responseFactory,
+        protected StreamFactoryInterface $streamFactory
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface

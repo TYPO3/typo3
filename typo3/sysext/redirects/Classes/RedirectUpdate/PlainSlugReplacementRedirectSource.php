@@ -21,12 +21,12 @@ namespace TYPO3\CMS\Redirects\RedirectUpdate;
  * @internal This is a concrete implementation and solely used for EXT:redirects and not part of TYPO3's Core API. It
  *           may vanish any time.
  */
-final class PlainSlugReplacementRedirectSource implements RedirectSourceInterface
+final readonly class PlainSlugReplacementRedirectSource implements RedirectSourceInterface
 {
     public function __construct(
-        private readonly string $host,
-        private readonly string $path,
-        private readonly array $targetLinkParameters,
+        private string $host,
+        private string $path,
+        private array $targetLinkParameters,
     ) {}
 
     public function getHost(): string

@@ -39,16 +39,16 @@ use TYPO3\CMS\Dashboard\Exception\InvalidRssFeedException;
  *
  * @see ButtonProviderInterface
  */
-class RssWidget implements WidgetRendererInterface
+readonly class RssWidget implements WidgetRendererInterface
 {
     public function __construct(
-        private readonly WidgetConfigurationInterface $configuration,
+        private WidgetConfigurationInterface $configuration,
         #[Autowire(service: 'cache.dashboard.rss')]
-        private readonly FrontendInterface $cache,
-        private readonly BackendViewFactory $backendViewFactory,
-        private readonly ?ButtonProviderInterface $buttonProvider = null,
+        private FrontendInterface $cache,
+        private BackendViewFactory $backendViewFactory,
+        private ?ButtonProviderInterface $buttonProvider = null,
         /** @var array{limit?: int, lifeTime?: int, feedUrl?: string} */
-        private readonly array $options = [],
+        private array $options = [],
     ) {}
 
     /**

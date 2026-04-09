@@ -41,14 +41,14 @@ use TYPO3\CMS\Form\Service\FormTransferService;
  * @internal
  */
 #[UpgradeWizard('formFileFormsToDatabaseMigration')]
-final class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardInterface, ConfirmableInterface
+final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardInterface, ConfirmableInterface
 {
     private const SOURCE_STORAGE_TYPE = 'filemount';
 
     public function __construct(
-        private readonly FormDefinitionRepository $formDefinitionRepository,
-        private readonly FormTransferService $formTransferService,
-        private readonly LoggerInterface $logger,
+        private FormDefinitionRepository $formDefinitionRepository,
+        private FormTransferService $formTransferService,
+        private LoggerInterface $logger,
     ) {}
 
     public function getTitle(): string

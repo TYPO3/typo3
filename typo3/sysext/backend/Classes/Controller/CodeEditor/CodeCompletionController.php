@@ -38,13 +38,13 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class CodeCompletionController
+readonly class CodeCompletionController
 {
     public function __construct(
-        private readonly SysTemplateRepository $sysTemplateRepository,
-        private readonly SysTemplateTreeBuilder $treeBuilder,
-        private readonly LossyTokenizer $lossyTokenizer,
-        private readonly IncludeTreeTraverser $treeTraverser,
+        private SysTemplateRepository $sysTemplateRepository,
+        private SysTemplateTreeBuilder $treeBuilder,
+        private LossyTokenizer $lossyTokenizer,
+        private IncludeTreeTraverser $treeTraverser,
     ) {}
 
     /**

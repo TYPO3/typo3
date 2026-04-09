@@ -50,18 +50,18 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  *                          to find limit number of pages. Increase this value
  *                          if number of pages in list is not achieved.
  */
-class LatestChangedPagesWidget implements WidgetRendererInterface
+readonly class LatestChangedPagesWidget implements WidgetRendererInterface
 {
     /**
      * @var array{limit: int, historyLimit: int}
      */
-    private readonly array $options;
+    private array $options;
 
     public function __construct(
-        private readonly BackendViewFactory $backendViewFactory,
-        private readonly ConnectionPool $connectionPool,
-        private readonly WidgetConfigurationInterface $configuration,
-        private readonly SiteFinder $siteFinder,
+        private BackendViewFactory $backendViewFactory,
+        private ConnectionPool $connectionPool,
+        private WidgetConfigurationInterface $configuration,
+        private SiteFinder $siteFinder,
         array $options = [],
     ) {
         $this->options = array_merge([

@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Filelist\Dto;
 /**
  * @internal
  */
-class UserPermissions
+readonly class UserPermissions
 {
     public function __construct(
-        public readonly bool $editMetaData = false
+        public bool $editMetaData = false
     ) {}
 }

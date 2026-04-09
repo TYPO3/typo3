@@ -23,13 +23,13 @@ use Symfony\Component\Messenger\MessageBusInterface;
 /**
  * @internal not part of TYPO3 Core API
  */
-final class BusFactory
+final readonly class BusFactory
 {
     /**
      * @param array<string, \IteratorAggregate> $middlewares
      */
     public function __construct(
-        private readonly array $middlewares
+        private array $middlewares
     ) {}
 
     public function createBus(string $bus = 'default'): MessageBusInterface

@@ -38,14 +38,14 @@ use TYPO3\CMS\Reactions\Repository\ReactionRepository;
  *
  * @internal This is a specific Request controller implementation and is not considered part of the Public TYPO3 API.
  */
-class ReactionResolver implements MiddlewareInterface
+readonly class ReactionResolver implements MiddlewareInterface
 {
     public function __construct(
-        private readonly LoggerInterface $logger,
-        private readonly ReactionHandler $reactionHandler,
-        private readonly ReactionRepository $reactionRepository,
-        private readonly ResponseFactoryInterface $responseFactory,
-        private readonly StreamFactoryInterface $streamFactory,
+        private LoggerInterface $logger,
+        private ReactionHandler $reactionHandler,
+        private ReactionRepository $reactionRepository,
+        private ResponseFactoryInterface $responseFactory,
+        private StreamFactoryInterface $streamFactory,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

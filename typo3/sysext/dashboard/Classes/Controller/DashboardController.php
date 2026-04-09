@@ -30,12 +30,12 @@ use TYPO3\CMS\Dashboard\DashboardInitializationService;
  * @internal
  */
 #[AsController]
-class DashboardController
+readonly class DashboardController
 {
     public function __construct(
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly DashboardInitializationService $dashboardInitializationService,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected PageRenderer $pageRenderer,
+        protected DashboardInitializationService $dashboardInitializationService,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface

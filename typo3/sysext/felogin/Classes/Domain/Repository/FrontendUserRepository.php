@@ -24,12 +24,12 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class FrontendUserRepository
+readonly class FrontendUserRepository
 {
-    protected readonly Connection $connection;
+    protected Connection $connection;
 
     public function __construct(
-        protected readonly Context $context,
+        protected Context $context,
         ConnectionPool $connectionPool,
     ) {
         $this->connection = $connectionPool->getConnectionForTable('fe_users');

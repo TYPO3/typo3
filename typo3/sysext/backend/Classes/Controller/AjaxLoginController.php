@@ -33,11 +33,11 @@ use TYPO3\CMS\Core\Session\UserSessionManager;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class AjaxLoginController
+readonly class AjaxLoginController
 {
     public function __construct(
-        protected readonly FormProtectionFactory $formProtectionFactory,
-        protected readonly BackendLocker $lockService,
+        protected FormProtectionFactory $formProtectionFactory,
+        protected BackendLocker $lockService,
     ) {}
 
     /**

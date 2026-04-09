@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\RedirectUpdate;
 
-final class PageTypeSource implements RedirectSourceInterface
+final readonly class PageTypeSource implements RedirectSourceInterface
 {
     public function __construct(
-        private readonly string $host,
-        private readonly string $path,
-        private readonly int $pageType,
-        private readonly array $targetLinkParameters,
+        private string $host,
+        private string $path,
+        private int $pageType,
+        private array $targetLinkParameters,
     ) {}
 
     public function getHost(): string

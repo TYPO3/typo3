@@ -27,9 +27,9 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class DummyController
+readonly class DummyController
 {
-    public function __construct(protected readonly ModuleTemplateFactory $moduleTemplateFactory) {}
+    public function __construct(protected ModuleTemplateFactory $moduleTemplateFactory) {}
 
     /**
      * Return simple dummy content

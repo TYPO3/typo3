@@ -35,11 +35,11 @@ use TYPO3\CMS\Recycler\Service\RecyclerService;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class RecyclerAjaxController
+readonly class RecyclerAjaxController
 {
     public function __construct(
-        protected readonly BackendViewFactory $backendViewFactory,
-        protected readonly RecyclerService $recyclerService,
+        protected BackendViewFactory $backendViewFactory,
+        protected RecyclerService $recyclerService,
     ) {}
 
     public function getTablesAction(ServerRequestInterface $request): ResponseInterface

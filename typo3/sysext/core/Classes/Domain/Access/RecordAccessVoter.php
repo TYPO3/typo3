@@ -29,11 +29,11 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
  * Not related to "write permissions" etc.
  */
 #[Autoconfigure(public: true)]
-class RecordAccessVoter
+readonly class RecordAccessVoter
 {
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**

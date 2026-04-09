@@ -40,15 +40,15 @@ use TYPO3\CMS\Opendocs\Domain\Repository\OpenDocumentRepository;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-class OpenDocumentController
+readonly class OpenDocumentController
 {
     public function __construct(
-        protected readonly OpenDocumentRepository $openDocumentRepository,
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly BreadcrumbFactory $breadcrumbFactory,
-        protected readonly Breadcrumb $breadcrumb,
-        protected readonly ResourceFactory $resourceFactory,
+        protected OpenDocumentRepository $openDocumentRepository,
+        protected IconFactory $iconFactory,
+        protected UriBuilder $uriBuilder,
+        protected BreadcrumbFactory $breadcrumbFactory,
+        protected Breadcrumb $breadcrumb,
+        protected ResourceFactory $resourceFactory,
     ) {}
 
     /**

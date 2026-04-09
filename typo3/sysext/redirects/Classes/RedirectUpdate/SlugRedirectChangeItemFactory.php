@@ -27,11 +27,11 @@ use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
  * @internal This factory class is a specific implementation for creating SlugRedirectChangeItems
  *           and is not part of the public TYPO3 API.
  */
-final class SlugRedirectChangeItemFactory
+final readonly class SlugRedirectChangeItemFactory
 {
     public function __construct(
-        private readonly SiteFinder $siteFinder,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private SiteFinder $siteFinder,
+        private EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function create(int $pageId, ?array $original = null, ?array $changed = null): ?SlugRedirectChangeItem

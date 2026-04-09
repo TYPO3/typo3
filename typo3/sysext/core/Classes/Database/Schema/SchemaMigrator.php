@@ -40,15 +40,15 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
  * @internal not part of public core API.
  */
 #[Autoconfigure(public: true)]
-class SchemaMigrator
+readonly class SchemaMigrator
 {
     public function __construct(
-        private readonly ConnectionPool $connectionPool,
-        private readonly Parser $parser,
-        private readonly DefaultTcaSchema $defaultTcaSchema,
-        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private ConnectionPool $connectionPool,
+        private Parser $parser,
+        private DefaultTcaSchema $defaultTcaSchema,
+        private TcaSchemaFactory $tcaSchemaFactory,
         #[Autowire(service: 'cache.runtime')]
-        private readonly FrontendInterface $runtime,
+        private FrontendInterface $runtime,
     ) {}
 
     /**

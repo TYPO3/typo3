@@ -30,10 +30,10 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  *
  * @internal
  */
-class SqlLogging implements MiddlewareInterface
+readonly class SqlLogging implements MiddlewareInterface
 {
     public function __construct(
-        private readonly ConnectionPool $connectionPool
+        private ConnectionPool $connectionPool
     ) {}
 
     /**

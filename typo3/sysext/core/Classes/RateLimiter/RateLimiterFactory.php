@@ -27,11 +27,11 @@ use TYPO3\CMS\Core\RateLimiter\Storage\CachingFrameworkStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[Autoconfigure(public: true, shared: false)]
-class RateLimiterFactory implements RateLimiterFactoryInterface
+readonly class RateLimiterFactory implements RateLimiterFactoryInterface
 {
     public function __construct(
-        protected readonly CachingFrameworkStorage $storage,
-        protected readonly array $config = [],
+        protected CachingFrameworkStorage $storage,
+        protected array $config = [],
     ) {}
 
     public function create(?string $key = null): LimiterInterface

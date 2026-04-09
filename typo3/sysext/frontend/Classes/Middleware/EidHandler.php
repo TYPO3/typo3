@@ -31,10 +31,10 @@ use TYPO3\CMS\Core\Http\Response;
  *
  * @internal
  */
-class EidHandler implements MiddlewareInterface
+readonly class EidHandler implements MiddlewareInterface
 {
     public function __construct(
-        protected readonly DispatcherInterface $dispatcher
+        protected DispatcherInterface $dispatcher
     ) {}
 
     /**

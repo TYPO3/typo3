@@ -28,11 +28,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Filters result by a given search term, respecting search fields defined in search demand or in TCA.
  */
-class SearchTermRestriction implements QueryRestrictionInterface
+readonly class SearchTermRestriction implements QueryRestrictionInterface
 {
     public function __construct(
-        private readonly FileSearchDemand $searchDemand,
-        private readonly QueryBuilder $queryBuilder,
+        private FileSearchDemand $searchDemand,
+        private QueryBuilder $queryBuilder,
     ) {}
 
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression

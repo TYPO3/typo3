@@ -17,18 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query;
 
-final class With implements \Stringable
+final readonly class With implements \Stringable
 {
     /**
      * @param string[] $fields
      * @param string[] $dependencies
      */
     public function __construct(
-        private readonly string $name,
-        private readonly array $fields,
-        private readonly array $dependencies,
-        private readonly string|ConcreteQueryBuilder|QueryBuilder $expression,
-        private readonly bool $recursive,
+        private string $name,
+        private array $fields,
+        private array $dependencies,
+        private string|ConcreteQueryBuilder|QueryBuilder $expression,
+        private bool $recursive,
     ) {}
 
     public function getName(): string

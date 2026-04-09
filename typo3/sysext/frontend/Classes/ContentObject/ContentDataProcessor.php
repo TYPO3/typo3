@@ -25,11 +25,11 @@ use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
  * A class that contains methods that can be used to use the dataProcessing functionality
  */
 #[Autoconfigure(public: true)]
-class ContentDataProcessor
+readonly class ContentDataProcessor
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly DataProcessorRegistry $dataProcessorRegistry,
+        private ContainerInterface $container,
+        private DataProcessorRegistry $dataProcessorRegistry,
     ) {}
 
     /**

@@ -33,13 +33,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal Only to be used within TYPO3. Might change in the future.
  */
 #[Autoconfigure(public: true)]
-class PasswordGeneratorController
+readonly class PasswordGeneratorController
 {
     public function __construct(
-        private readonly Random $random,
-        private readonly ResponseFactoryInterface $responseFactory,
-        private readonly StreamFactoryInterface $streamFactory,
-        private readonly LoggerInterface $logger,
+        private Random $random,
+        private ResponseFactoryInterface $responseFactory,
+        private StreamFactoryInterface $streamFactory,
+        private LoggerInterface $logger,
     ) {}
 
     public function generate(ServerRequestInterface $request): ResponseInterface

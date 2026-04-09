@@ -33,12 +33,12 @@ use TYPO3\CMS\Install\Service\SessionService;
  * Middleware to walk through the web installation process of TYPO3
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class Installer implements MiddlewareInterface
+readonly class Installer implements MiddlewareInterface
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly FormProtectionFactory $formProtectionFactory,
-        private readonly SessionService $sessionService
+        private ContainerInterface $container,
+        private FormProtectionFactory $formProtectionFactory,
+        private SessionService $sessionService
     ) {}
 
     /**

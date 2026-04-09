@@ -20,11 +20,11 @@ namespace TYPO3\CMS\Core\Utility\String;
 /**
  * @internal
  */
-class StringFragmentPattern
+readonly class StringFragmentPattern
 {
     public function __construct(
-        public readonly string $type,
-        public readonly string $pattern
+        public string $type,
+        public string $pattern
     ) {}
 
     /**

@@ -62,24 +62,24 @@ use TYPO3\CMS\Core\View\ViewInterface;
  * This is the backend outer main frame with topbar and module menu.
  */
 #[AsController]
-class BackendController
+readonly class BackendController
 {
     use PageRendererBackendSetupTrait;
 
     public function __construct(
-        protected readonly Typo3Version $typo3Version,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly ModuleProvider $moduleProvider,
-        protected readonly ToolbarItemsRegistry $toolbarItemsRegistry,
-        protected readonly SidebarFactory $sidebarFactory,
-        protected readonly ExtensionConfiguration $extensionConfiguration,
-        protected readonly BackendViewFactory $viewFactory,
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly FlashMessageService $flashMessageService,
-        protected readonly BackendEntryPointResolver $backendEntryPointResolver,
-        protected readonly BookmarkService $bookmarkService,
-        protected readonly DateConfigurationFactory $dateConfigurationFactory,
+        protected Typo3Version $typo3Version,
+        protected UriBuilder $uriBuilder,
+        protected PageRenderer $pageRenderer,
+        protected ModuleProvider $moduleProvider,
+        protected ToolbarItemsRegistry $toolbarItemsRegistry,
+        protected SidebarFactory $sidebarFactory,
+        protected ExtensionConfiguration $extensionConfiguration,
+        protected BackendViewFactory $viewFactory,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected FlashMessageService $flashMessageService,
+        protected BackendEntryPointResolver $backendEntryPointResolver,
+        protected BookmarkService $bookmarkService,
+        protected DateConfigurationFactory $dateConfigurationFactory,
     ) {}
 
     /**

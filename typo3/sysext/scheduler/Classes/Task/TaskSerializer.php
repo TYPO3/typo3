@@ -31,11 +31,11 @@ use TYPO3\CMS\Scheduler\Service\TaskService;
  * @internal This is an internal API, avoid using it in custom implementations.
  */
 #[Autoconfigure(public: true)]
-class TaskSerializer
+readonly class TaskSerializer
 {
     public function __construct(
-        protected readonly ContainerInterface $container,
-        protected readonly TaskService $taskService,
+        protected ContainerInterface $container,
+        protected TaskService $taskService,
     ) {}
 
     /**

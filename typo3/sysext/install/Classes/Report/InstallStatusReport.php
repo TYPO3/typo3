@@ -31,12 +31,12 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  * Provides an installation status report.
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-final class InstallStatusReport implements StatusProviderInterface
+final readonly class InstallStatusReport implements StatusProviderInterface
 {
     private const WRAP_FLAT = 1;
     private const WRAP_NESTED = 2;
 
-    public function __construct(private readonly UpgradeWizardsService $upgradeWizardsService) {}
+    public function __construct(private UpgradeWizardsService $upgradeWizardsService) {}
 
     /**
      * Compiles a collection of system status checks as a status report.

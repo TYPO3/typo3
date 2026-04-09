@@ -27,12 +27,12 @@ use TYPO3\CMS\Core\Resource\MimeTypeCompatibilityTypeGuesser;
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('sysFileMimeTypeMigration')]
-class SysFileMimeTypeMigration implements UpgradeWizardInterface, RepeatableInterface
+readonly class SysFileMimeTypeMigration implements UpgradeWizardInterface, RepeatableInterface
 {
     private const TABLE_NAME = 'sys_file';
 
     public function __construct(
-        private readonly ConnectionPool $connectionPool
+        private ConnectionPool $connectionPool
     ) {}
 
     /**

@@ -39,14 +39,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal
  */
-class RichTextConfigurationService
+readonly class RichTextConfigurationService
 {
     public function __construct(
-        private readonly Richtext $richtext,
-        private readonly RteHtmlParser $rteHtmlParser,
-        private readonly SystemResourcePublisherInterface $resourcePublisher,
-        private readonly SystemResourceFactory $systemResourceFactory,
-        private readonly UriBuilder $uriBuilder,
+        private Richtext $richtext,
+        private RteHtmlParser $rteHtmlParser,
+        private SystemResourcePublisherInterface $resourcePublisher,
+        private SystemResourceFactory $systemResourceFactory,
+        private UriBuilder $uriBuilder,
     ) {}
 
     /**

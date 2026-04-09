@@ -28,10 +28,10 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * bridge between symfony/routing component and PSR-7 requests
  */
 #[Autoconfigure(public: true)]
-class RequestContextFactory
+readonly class RequestContextFactory
 {
     public function __construct(
-        protected readonly BackendEntryPointResolver $backendEntryPointResolver
+        protected BackendEntryPointResolver $backendEntryPointResolver
     ) {}
 
     public function fromBackendRequest(ServerRequestInterface $request): RequestContext

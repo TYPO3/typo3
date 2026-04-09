@@ -37,11 +37,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class ManualLocalizationHandler implements LocalizationHandlerInterface
+readonly class ManualLocalizationHandler implements LocalizationHandlerInterface
 {
     public function __construct(
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly LocalizationRepository $localizationRepository,
+        protected UriBuilder $uriBuilder,
+        protected LocalizationRepository $localizationRepository,
     ) {}
 
     public function getIdentifier(): string

@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
-class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
+readonly class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
 {
-    public function __construct(private readonly LanguageServiceFactory $languageServiceFactory) {}
+    public function __construct(private LanguageServiceFactory $languageServiceFactory) {}
 
     public function getChartData(): array
     {

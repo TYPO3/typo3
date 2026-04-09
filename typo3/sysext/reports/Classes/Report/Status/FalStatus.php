@@ -34,11 +34,11 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
 /**
  * Performs several checks about the FAL status
  */
-class FalStatus implements StatusProviderInterface
+readonly class FalStatus implements StatusProviderInterface
 {
     use ResultRenderingTrait;
 
-    public function __construct(private readonly ResourceConsistencyService $resourceConsistencyService) {}
+    public function __construct(private ResourceConsistencyService $resourceConsistencyService) {}
 
     /**
      * Determines the status of the FAL index.

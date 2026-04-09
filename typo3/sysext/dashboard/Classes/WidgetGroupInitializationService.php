@@ -22,11 +22,11 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 /**
  * @internal
  */
-class WidgetGroupInitializationService
+readonly class WidgetGroupInitializationService
 {
     public function __construct(
-        private readonly WidgetGroupRegistry $widgetGroupRegistry,
-        private readonly WidgetRegistry $widgetRegistry,
+        private WidgetGroupRegistry $widgetGroupRegistry,
+        private WidgetRegistry $widgetRegistry,
     ) {}
 
     /**

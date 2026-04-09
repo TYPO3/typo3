@@ -39,13 +39,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class OnlineMediaController
+readonly class OnlineMediaController
 {
     public function __construct(
-        protected readonly ResourceFactory $resourceFactory,
-        protected readonly DefaultUploadFolderResolver $uploadFolderResolver,
-        protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
-        protected readonly FlashMessageService $flashMessageService
+        protected ResourceFactory $resourceFactory,
+        protected DefaultUploadFolderResolver $uploadFolderResolver,
+        protected OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
+        protected FlashMessageService $flashMessageService
     ) {}
 
     /**

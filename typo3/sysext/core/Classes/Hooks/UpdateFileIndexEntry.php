@@ -32,10 +32,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a hook implementation and is not part of the TYPO3 Core API.
  */
 #[Autoconfigure(public: true)]
-class UpdateFileIndexEntry
+readonly class UpdateFileIndexEntry
 {
     public function __construct(
-        private readonly ResourceFactory $resourceFactory,
+        private ResourceFactory $resourceFactory,
     ) {}
 
     public function processDatamap_afterDatabaseOperations(string $status, string $table, $id, array $fieldValues, DataHandler $dataHandler): void

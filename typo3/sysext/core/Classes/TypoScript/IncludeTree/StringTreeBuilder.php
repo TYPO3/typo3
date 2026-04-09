@@ -34,10 +34,10 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
  * @internal
  */
 #[Autoconfigure(public: true)]
-final class StringTreeBuilder
+final readonly class StringTreeBuilder
 {
     public function __construct(
-        private readonly TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
+        private TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
     ) {}
 
     /**

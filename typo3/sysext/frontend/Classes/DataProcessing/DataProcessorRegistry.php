@@ -24,9 +24,9 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  * Registry for data processors, tagged with "data.processor"
  * @internal
  */
-class DataProcessorRegistry
+readonly class DataProcessorRegistry
 {
-    public function __construct(private readonly ServiceLocator $dataProcessorLocator) {}
+    public function __construct(private ServiceLocator $dataProcessorLocator) {}
 
     public function getDataProcessor(string $identifer): ?DataProcessorInterface
     {

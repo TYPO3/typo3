@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Localization\Dto;
 
-class DomainSearchResult
+readonly class DomainSearchResult
 {
     /**
      * @param LabelSearchResult[] $labels
      */
     public function __construct(
-        public readonly string $domain,
-        public readonly string $resource,
-        public readonly array $labels,
+        public string $domain,
+        public string $resource,
+        public array $labels,
     ) {}
 }

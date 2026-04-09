@@ -40,15 +40,15 @@ use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-class ManagementController
+readonly class ManagementController
 {
     public function __construct(
-        private readonly UriBuilder $uriBuilder,
-        private readonly IconFactory $iconFactory,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly WebhookTypesRegistry $webhookTypesRegistry,
-        private readonly WebhookRepository $webhookRepository,
-        private readonly ComponentFactory $componentFactory,
+        private UriBuilder $uriBuilder,
+        private IconFactory $iconFactory,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private WebhookTypesRegistry $webhookTypesRegistry,
+        private WebhookRepository $webhookRepository,
+        private ComponentFactory $componentFactory,
     ) {}
 
     public function overviewAction(ServerRequestInterface $request): ResponseInterface

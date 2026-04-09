@@ -23,10 +23,10 @@ use TYPO3\CMS\Core\Package\PackageManager;
  * Service for loading the TCA
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class LoadTcaService
+readonly class LoadTcaService
 {
     public function __construct(
-        private readonly LateBootService $lateBootService
+        private LateBootService $lateBootService
     ) {}
 
     /**

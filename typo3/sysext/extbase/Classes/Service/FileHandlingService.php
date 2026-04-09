@@ -50,20 +50,20 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 /**
  * @internal Only to be used within Extbase, not part of TYPO3 Core API.
  */
-class FileHandlingService implements SingletonInterface
+readonly class FileHandlingService implements SingletonInterface
 {
     use ResourceInstructionTrait;
 
     public const DELETE_IDENTIFIER = '@delete';
 
     public function __construct(
-        protected readonly ReflectionService $reflectionService,
-        protected readonly ResourceFactory $resourceFactory,
-        protected readonly StorageRepository $storageRepository,
-        protected readonly DataMapFactory $dataMapFactory,
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly HashService $hashService,
-        protected readonly ExtensionService $extensionService,
+        protected ReflectionService $reflectionService,
+        protected ResourceFactory $resourceFactory,
+        protected StorageRepository $storageRepository,
+        protected DataMapFactory $dataMapFactory,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected HashService $hashService,
+        protected ExtensionService $extensionService,
     ) {}
 
     /**

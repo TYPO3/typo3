@@ -23,11 +23,11 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 /**
  * Restriction to filter records that only reside on a specific list of page IDs
  */
-final class PageIdListRestriction implements QueryRestrictionInterface
+final readonly class PageIdListRestriction implements QueryRestrictionInterface
 {
     public function __construct(
-        private readonly array $tableNames,
-        private readonly array $pageIds
+        private array $tableNames,
+        private array $pageIds
     ) {}
 
     /**

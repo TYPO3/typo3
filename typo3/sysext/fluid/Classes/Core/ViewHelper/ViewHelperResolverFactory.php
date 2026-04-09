@@ -35,13 +35,13 @@ use TYPO3\CMS\Fluid\Event\ModifyNamespacesEvent;
  *
  * @internal May change / vanish any time
  */
-final class ViewHelperResolverFactory implements ViewHelperResolverFactoryInterface
+final readonly class ViewHelperResolverFactory implements ViewHelperResolverFactoryInterface
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ?ViewHelperResolverDelegateRegistry $viewHelperResolverDelegateRegistry,
-        private readonly iterable $namespaces,
+        private ContainerInterface $container,
+        private EventDispatcherInterface $eventDispatcher,
+        private ?ViewHelperResolverDelegateRegistry $viewHelperResolverDelegateRegistry,
+        private iterable $namespaces,
     ) {}
 
     public function create(): ViewHelperResolver

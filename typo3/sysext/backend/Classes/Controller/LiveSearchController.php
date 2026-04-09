@@ -35,12 +35,12 @@ use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class LiveSearchController
+readonly class LiveSearchController
 {
     public function __construct(
-        protected readonly BackendViewFactory $backendViewFactory,
-        protected readonly SearchRepository $searchService,
-        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected BackendViewFactory $backendViewFactory,
+        protected SearchRepository $searchService,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {}
 
     /**

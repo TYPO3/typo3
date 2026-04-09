@@ -31,9 +31,9 @@ use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
  *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class SilentTemplateFileUpgradeService
+readonly class SilentTemplateFileUpgradeService
 {
-    public function __construct(protected readonly WebServerConfigurationFileService $webServerConfigurationFileService) {}
+    public function __construct(protected WebServerConfigurationFileService $webServerConfigurationFileService) {}
 
     /**
      * Executed content changes. Single upgrade methods must throw a

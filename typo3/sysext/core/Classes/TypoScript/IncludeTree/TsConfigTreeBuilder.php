@@ -44,14 +44,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @internal
  */
 #[Autoconfigure(public: true)]
-final class TsConfigTreeBuilder
+final readonly class TsConfigTreeBuilder
 {
     public function __construct(
-        private readonly TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
-        private readonly PackageManager $packageManager,
-        private readonly EventDispatcher $eventDispatcher,
-        private readonly SiteFinder $siteFinder,
-        private readonly SetRegistry $setRegistry,
+        private TreeFromLineStreamBuilder $treeFromTokenStreamBuilder,
+        private PackageManager $packageManager,
+        private EventDispatcher $eventDispatcher,
+        private SiteFinder $siteFinder,
+        private SetRegistry $setRegistry,
     ) {}
 
     public function getUserTsConfigTree(

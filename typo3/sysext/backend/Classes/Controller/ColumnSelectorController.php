@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-class ColumnSelectorController
+readonly class ColumnSelectorController
 {
     private const PSEUDO_FIELDS = ['_REF_', '_PATH_'];
     private const EXCLUDE_FILE_FIELDS = [
@@ -52,9 +52,9 @@ class ColumnSelectorController
     ];
 
     public function __construct(
-        protected readonly ResponseFactoryInterface $responseFactory,
-        protected readonly BackendViewFactory $backendViewFactory,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected ResponseFactoryInterface $responseFactory,
+        protected BackendViewFactory $backendViewFactory,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**

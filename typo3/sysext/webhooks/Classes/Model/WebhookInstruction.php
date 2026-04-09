@@ -24,20 +24,20 @@ namespace TYPO3\CMS\Webhooks\Model;
  * What type of message should be sent (WebhookType), where should it be sent
  * to and what additional headers etc. should be sent.
  */
-class WebhookInstruction
+readonly class WebhookInstruction
 {
     public function __construct(
-        private readonly string $url,
-        private readonly string $secret,
-        private readonly string $method = 'POST',
-        private readonly bool $verifySSL = true,
-        private readonly array $additionalHeaders = [],
-        private readonly ?string $name = null,
-        private readonly ?string $description = null,
-        private readonly ?WebhookType $webhookType = null,
-        private readonly ?string $identifier = null,
-        private readonly ?int $uid = null,
-        private readonly array $row = []
+        private string $url,
+        private string $secret,
+        private string $method = 'POST',
+        private bool $verifySSL = true,
+        private array $additionalHeaders = [],
+        private ?string $name = null,
+        private ?string $description = null,
+        private ?WebhookType $webhookType = null,
+        private ?string $identifier = null,
+        private ?int $uid = null,
+        private array $row = []
     ) {}
 
     public function getUid(): int

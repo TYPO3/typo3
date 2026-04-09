@@ -35,11 +35,11 @@ use TYPO3\CMS\Install\Service\SessionService;
  * Authenticates a user (currently comparing it through the install tool password, but could be extended)
  * @internal only to be used within EXT:install
  */
-class AuthenticationService
+readonly class AuthenticationService
 {
     public function __construct(
-        protected readonly MailerInterface $mailer,
-        protected readonly TemplatedEmailFactory $emailFactory,
+        protected MailerInterface $mailer,
+        protected TemplatedEmailFactory $emailFactory,
     ) {}
 
     /**

@@ -31,12 +31,12 @@ use TYPO3\CMS\Webhooks\Message\WebhookMessageFactory;
  * @internal not part of TYPO3 Core API
  */
 #[Autoconfigure(public: true)]
-class MessageListener
+readonly class MessageListener
 {
     public function __construct(
-        protected readonly MessageBusInterface $bus,
-        protected readonly WebhookMessageFactory $messageFactory,
-        protected readonly LoggerInterface $logger,
+        protected MessageBusInterface $bus,
+        protected WebhookMessageFactory $messageFactory,
+        protected LoggerInterface $logger,
     ) {}
 
     public function __invoke(mixed $object): void

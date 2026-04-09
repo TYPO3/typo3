@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 /**
  * @internal
  */
-class ScopeRepository
+readonly class ScopeRepository
 {
-    public function __construct(protected readonly SiteFinder $siteFinder) {}
+    public function __construct(protected SiteFinder $siteFinder) {}
 
     /**
      * @return list<Scope>

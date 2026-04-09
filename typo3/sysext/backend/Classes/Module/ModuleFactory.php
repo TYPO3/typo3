@@ -25,11 +25,11 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
  * @internal only to be used within TYPO3 Core
  */
 #[Autoconfigure(public: true)]
-class ModuleFactory
+readonly class ModuleFactory
 {
     public function __construct(
-        protected readonly IconRegistry $iconRegistry,
-        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected IconRegistry $iconRegistry,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function createModule(string $identifier, array $configuration): ModuleInterface

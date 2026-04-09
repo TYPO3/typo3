@@ -23,12 +23,12 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
  *
  * @internal
  */
-final class CreateDefinition
+final readonly class CreateDefinition
 {
     /**
      * @param AbstractCreateDefinitionItem[] $items
      */
     public function __construct(
-        public readonly array $items
+        public array $items
     ) {}
 }

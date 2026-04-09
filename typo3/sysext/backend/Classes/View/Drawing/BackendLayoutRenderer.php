@@ -45,11 +45,11 @@ use TYPO3\CMS\Core\View\ViewInterface;
  *
  * @internal
  */
-class BackendLayoutRenderer
+readonly class BackendLayoutRenderer
 {
     public function __construct(
-        protected readonly BackendViewFactory $backendViewFactory,
-        protected readonly RecordFactory $recordFactory,
+        protected BackendViewFactory $backendViewFactory,
+        protected RecordFactory $recordFactory,
     ) {}
 
     public function getGridForPageLayoutContext(PageLayoutContext $context): Grid

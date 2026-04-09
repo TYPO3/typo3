@@ -45,15 +45,15 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class CspAjaxController
+readonly class CspAjaxController
 {
     public function __construct(
-        protected readonly ModelService $modelService,
-        protected readonly PolicyProvider $policyProvider,
-        protected readonly ReportRepository $reportRepository,
-        protected readonly ResolutionRepository $resolutionRepository,
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly HashService $hashService,
+        protected ModelService $modelService,
+        protected PolicyProvider $policyProvider,
+        protected ReportRepository $reportRepository,
+        protected ResolutionRepository $resolutionRepository,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected HashService $hashService,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface

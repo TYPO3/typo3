@@ -65,22 +65,22 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  * @phpstan-import-type Params from DriverManager
  */
-final class InstallerController
+final readonly class InstallerController
 {
     use ControllerTrait;
 
     public function __construct(
-        private readonly LateBootService $lateBootService,
-        private readonly ConfigurationManager $configurationManager,
-        private readonly FailsafePackageManager $packageManager,
-        private readonly VerifyHostHeader $verifyHostHeader,
-        private readonly FormProtectionFactory $formProtectionFactory,
-        private readonly SetupService $setupService,
-        private readonly SetupDatabaseService $setupDatabaseService,
-        private readonly ImportMapFactory $importMapFactory,
-        private readonly HashService $hashService,
-        private readonly IconRegistry $iconRegistry,
-        private readonly DirectiveHashCollection $directiveHashCollection,
+        private LateBootService $lateBootService,
+        private ConfigurationManager $configurationManager,
+        private FailsafePackageManager $packageManager,
+        private VerifyHostHeader $verifyHostHeader,
+        private FormProtectionFactory $formProtectionFactory,
+        private SetupService $setupService,
+        private SetupDatabaseService $setupDatabaseService,
+        private ImportMapFactory $importMapFactory,
+        private HashService $hashService,
+        private IconRegistry $iconRegistry,
+        private DirectiveHashCollection $directiveHashCollection,
     ) {}
 
     /**

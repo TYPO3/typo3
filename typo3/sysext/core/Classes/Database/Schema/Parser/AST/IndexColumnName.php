@@ -24,11 +24,11 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
  *
  * @internal
  */
-final class IndexColumnName
+final readonly class IndexColumnName
 {
     public function __construct(
-        public readonly Identifier $columnName,
-        public readonly int $length,
-        public readonly ?string $direction = null
+        public Identifier $columnName,
+        public int $length,
+        public ?string $direction = null
     ) {}
 }

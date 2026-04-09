@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 /**
  * @internal
  */
-class WidgetGroup
+readonly class WidgetGroup
 {
-    public function __construct(protected readonly string $identifier, protected readonly string $title) {}
+    public function __construct(protected string $identifier, protected string $title) {}
 
     public function getIdentifier(): string
     {

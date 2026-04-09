@@ -20,14 +20,14 @@ namespace TYPO3\CMS\Webhooks\Model;
 /**
  * @internal not part of TYPO3's Core API
  */
-class WebhookType
+readonly class WebhookType
 {
     public function __construct(
-        protected readonly string $identifier,
-        protected readonly string $description,
-        protected readonly string $serviceName,
-        protected readonly string $factoryMethodName,
-        protected readonly ?string $connectedEvent = null
+        protected string $identifier,
+        protected string $description,
+        protected string $serviceName,
+        protected string $factoryMethodName,
+        protected ?string $connectedEvent = null
     ) {}
 
     public function getIdentifier(): string

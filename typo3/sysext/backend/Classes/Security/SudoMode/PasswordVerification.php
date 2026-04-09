@@ -32,10 +32,10 @@ use TYPO3\CMS\Install\Controller\BackendModuleController;
  *
  * @internal
  */
-class PasswordVerification
+readonly class PasswordVerification
 {
     public function __construct(
-        protected readonly PasswordHashFactory $passwordHashFactory
+        protected PasswordHashFactory $passwordHashFactory
     ) {}
 
     /**

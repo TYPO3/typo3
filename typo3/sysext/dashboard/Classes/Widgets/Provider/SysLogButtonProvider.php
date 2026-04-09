@@ -26,12 +26,12 @@ use TYPO3\CMS\Dashboard\Widgets\ElementAttributesInterface;
  * Check whether belog is enabled and add link to module.
  * No link is returned if not enabled.
  */
-class SysLogButtonProvider implements ButtonProviderInterface, ElementAttributesInterface
+readonly class SysLogButtonProvider implements ButtonProviderInterface, ElementAttributesInterface
 {
     public function __construct(
-        private readonly string $title,
-        private readonly string $target = '',
-        private readonly string $channel = '',
+        private string $title,
+        private string $target = '',
+        private string $channel = '',
     ) {}
 
     public function getTitle(): string

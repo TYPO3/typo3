@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @internal Only to be used within TYPO3. Might change in the future.
  */
-class ShortUrlService
+readonly class ShortUrlService
 {
     private const TABLE = 'sys_redirect';
     private const CHARACTER_SET = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -33,8 +33,8 @@ class ShortUrlService
     private const MAX_RETRIES = 10;
 
     public function __construct(
-        private readonly ConnectionPool $connectionPool,
-        private readonly Random $random,
+        private ConnectionPool $connectionPool,
+        private Random $random,
     ) {}
 
     public function generateUniqueShortUrlPath(string $sourceHost): ?string

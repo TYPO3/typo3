@@ -36,15 +36,15 @@ use TYPO3\CMS\Core\Package\PackageManager;
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class AboutController
+readonly class AboutController
 {
     public function __construct(
-        protected readonly Typo3Version $version,
-        protected readonly Typo3Information $typo3Information,
-        protected readonly ModuleProvider $moduleProvider,
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly PackageManager $packageManager,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected Typo3Version $version,
+        protected Typo3Information $typo3Information,
+        protected ModuleProvider $moduleProvider,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected PackageManager $packageManager,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {}
 
     /**

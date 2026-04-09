@@ -28,13 +28,13 @@ use TYPO3\CMS\Core\Localization\OfficialLanguages;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[Autoconfigure(public: true)]
-final class UserSettingsItemsProcFunc
+final readonly class UserSettingsItemsProcFunc
 {
     public function __construct(
-        private readonly ModuleProvider $moduleProvider,
-        private readonly Locales $locales,
-        private readonly OfficialLanguages $officialLanguages,
-        private readonly LanguageServiceFactory $languageServiceFactory
+        private ModuleProvider $moduleProvider,
+        private Locales $locales,
+        private OfficialLanguages $officialLanguages,
+        private LanguageServiceFactory $languageServiceFactory
     ) {}
 
     public function addLanguageItems(array &$params): void

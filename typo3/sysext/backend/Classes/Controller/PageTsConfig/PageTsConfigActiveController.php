@@ -50,13 +50,13 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-final class PageTsConfigActiveController
+final readonly class PageTsConfigActiveController
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly UriBuilder $uriBuilder,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly TsConfigTreeBuilder $tsConfigTreeBuilder,
+        private ContainerInterface $container,
+        private UriBuilder $uriBuilder,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private TsConfigTreeBuilder $tsConfigTreeBuilder,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface

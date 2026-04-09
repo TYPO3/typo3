@@ -28,16 +28,16 @@ use TYPO3\CMS\Core\Messaging\WebhookMessageInterface;
     identifier: 'typo3/content/page-modification',
     description: 'LLL:EXT:webhooks/Resources/Private/Language/locallang_db.xlf:sys_webhook.webhook_type.typo3-content-page-modification'
 )]
-final class PageModificationMessage implements WebhookMessageInterface
+final readonly class PageModificationMessage implements WebhookMessageInterface
 {
     public function __construct(
-        private readonly string $action,
-        private readonly int $uid,
-        private readonly array $record,
-        private readonly string $url,
-        private readonly string $siteIdentifier,
-        private readonly ?BackendUserAuthentication $author = null,
-        private readonly ?array $modifiedFields = null
+        private string $action,
+        private int $uid,
+        private array $record,
+        private string $url,
+        private string $siteIdentifier,
+        private ?BackendUserAuthentication $author = null,
+        private ?array $modifiedFields = null
     ) {}
 
     public function jsonSerialize(): array

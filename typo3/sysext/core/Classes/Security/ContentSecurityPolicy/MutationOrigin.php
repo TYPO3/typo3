@@ -21,10 +21,10 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy;
  * Representation of a mutation origin, to keep track of resolutions
  * to the Content-Security-Policy and how to revert again later.
  */
-class MutationOrigin
+readonly class MutationOrigin
 {
     public function __construct(
-        public readonly MutationOriginType $type,
-        public readonly string $value
+        public MutationOriginType $type,
+        public string $value
     ) {}
 }

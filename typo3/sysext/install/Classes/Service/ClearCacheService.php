@@ -23,11 +23,11 @@ use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
  * Basic service to clear caches within the install tool.
  * @internal This is NOT an API class, it is for internal use in the install tool only.
  */
-class ClearCacheService
+readonly class ClearCacheService
 {
     public function __construct(
-        private readonly LateBootService $lateBootService,
-        private readonly FrontendInterface $dependencyInjectionCache
+        private LateBootService $lateBootService,
+        private FrontendInterface $dependencyInjectionCache
     ) {}
 
     /**

@@ -24,13 +24,13 @@ use TYPO3\CMS\Reactions\Reaction\ReactionInterface;
  *
  * @internal
  */
-class ReactionRegistry
+readonly class ReactionRegistry
 {
     /**
      * @param \IteratorAggregate<ReactionInterface> $registeredReactions
      */
     public function __construct(
-        private readonly \IteratorAggregate $registeredReactions
+        private \IteratorAggregate $registeredReactions
     ) {}
 
     /**

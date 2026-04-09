@@ -24,13 +24,13 @@ use TYPO3\CMS\Core\Package\PackageManager;
 /**
  * @internal
  */
-class CacheWarmer
+readonly class CacheWarmer
 {
     public function __construct(
-        protected readonly PackageManager $packageManager,
-        protected readonly LabelFileResolver $labelFileResolver,
-        protected readonly LocalizationFactory $localizationFactory,
-        protected readonly Locales $locales,
+        protected PackageManager $packageManager,
+        protected LabelFileResolver $labelFileResolver,
+        protected LocalizationFactory $localizationFactory,
+        protected Locales $locales,
     ) {}
 
     #[AsEventListener]

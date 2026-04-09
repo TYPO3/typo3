@@ -45,12 +45,12 @@ use TYPO3\CMS\Core\Routing\RequestContextFactory;
  *
  * @internal
  */
-class BackendRouteInitialization implements MiddlewareInterface
+readonly class BackendRouteInitialization implements MiddlewareInterface
 {
     public function __construct(
-        protected readonly Router $router,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly RequestContextFactory $requestContextFactory,
+        protected Router $router,
+        protected UriBuilder $uriBuilder,
+        protected RequestContextFactory $requestContextFactory,
     ) {}
 
     /**

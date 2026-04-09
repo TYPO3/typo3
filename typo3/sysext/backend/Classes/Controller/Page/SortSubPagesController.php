@@ -39,12 +39,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class SortSubPagesController
+readonly class SortSubPagesController
 {
     public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly ComponentFactory $componentFactory,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected IconFactory $iconFactory,
+        protected ComponentFactory $componentFactory,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {}
 
     /**

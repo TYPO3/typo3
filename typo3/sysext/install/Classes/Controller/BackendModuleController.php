@@ -35,11 +35,11 @@ use TYPO3\CMS\Install\Service\SessionService;
  *
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
-class BackendModuleController
+readonly class BackendModuleController
 {
     public function __construct(
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly SessionService $sessionService
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected SessionService $sessionService
     ) {}
 
     /**

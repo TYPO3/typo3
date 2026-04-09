@@ -38,10 +38,10 @@ use TYPO3\CMS\Frontend\Middleware\ContentSecurityPolicyHeaders;
  * rendering a standard TYPO3 error page with appropriate status code and message.
  */
 #[Autoconfigure(public: true)]
-class ErrorController
+readonly class ErrorController
 {
     public function __construct(
-        private readonly ContentSecurityPolicyHeaders $contentSecurityPolicyHeaders,
+        private ContentSecurityPolicyHeaders $contentSecurityPolicyHeaders,
     ) {}
 
     /**

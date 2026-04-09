@@ -29,9 +29,9 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
 /**
  * @internal
  */
-final class DashboardWidgetPass implements CompilerPassInterface
+final readonly class DashboardWidgetPass implements CompilerPassInterface
 {
-    public function __construct(private readonly string $tagName) {}
+    public function __construct(private string $tagName) {}
 
     public function process(ContainerBuilder $container): void
     {

@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 #[Autoconfigure(public: true)]
-class BookmarkService
+readonly class BookmarkService
 {
     use Traits\RouteParserTrait;
 
@@ -41,13 +41,13 @@ class BookmarkService
     public const GROUP_SUPERGLOBAL = -100;
 
     public function __construct(
-        protected readonly BookmarkRepository $bookmarkRepository,
-        protected readonly BookmarkVoter $bookmarkVoter,
-        protected readonly BookmarkGroupVoter $bookmarkGroupVoter,
-        protected readonly IconFactory $iconFactory,
-        protected readonly ModuleProvider $moduleProvider,
-        protected readonly Router $router,
-        protected readonly UriBuilder $uriBuilder,
+        protected BookmarkRepository $bookmarkRepository,
+        protected BookmarkVoter $bookmarkVoter,
+        protected BookmarkGroupVoter $bookmarkGroupVoter,
+        protected IconFactory $iconFactory,
+        protected ModuleProvider $moduleProvider,
+        protected Router $router,
+        protected UriBuilder $uriBuilder,
     ) {}
 
     protected function getRouter(): Router

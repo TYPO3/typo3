@@ -29,14 +29,14 @@ use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
  *
  * @internal
  */
-class FalDumpFileContentsDecoratorStream implements StreamInterface, SelfEmittableStreamInterface
+readonly class FalDumpFileContentsDecoratorStream implements StreamInterface, SelfEmittableStreamInterface
 {
     use StreamDecoratorTrait;
 
     public function __construct(
-        protected readonly string $identifier,
-        protected readonly DriverInterface $driver,
-        protected readonly int $size
+        protected string $identifier,
+        protected DriverInterface $driver,
+        protected int $size
     ) {}
 
     /**

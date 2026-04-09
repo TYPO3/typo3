@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
  *
  * @internal
  */
-class CleanupFormUploadsService
+readonly class CleanupFormUploadsService
 {
     /**
      * Regex matching the folder naming convention used by
@@ -48,8 +48,8 @@ class CleanupFormUploadsService
     private const FORM_UPLOAD_FOLDER_PATTERN = '/^form_[a-f0-9]{40}$/';
 
     public function __construct(
-        private readonly ResourceFactory $resourceFactory,
-        private readonly LoggerInterface $logger,
+        private ResourceFactory $resourceFactory,
+        private LoggerInterface $logger,
     ) {}
 
     /**

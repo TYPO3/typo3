@@ -31,11 +31,11 @@ use TYPO3\CMS\Reports\Status as ReportStatus;
  *
  * @internal This class is a specific EXT:reports implementation and is not part of the Public TYPO3 API.
  */
-class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
+readonly class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
 {
     public function __construct(
-        protected readonly ComposerDeficitDetector $composerDeficitDetector,
-        protected readonly UriBuilder $uriBuilder
+        protected ComposerDeficitDetector $composerDeficitDetector,
+        protected UriBuilder $uriBuilder
     ) {}
 
     public function getStatus(?ServerRequestInterface $request = null): array

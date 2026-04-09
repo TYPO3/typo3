@@ -48,13 +48,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal
  */
-class BackendModuleValidator implements MiddlewareInterface
+readonly class BackendModuleValidator implements MiddlewareInterface
 {
     public function __construct(
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleProvider $moduleProvider,
-        protected readonly FlashMessageService $flashMessageService,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected UriBuilder $uriBuilder,
+        protected ModuleProvider $moduleProvider,
+        protected FlashMessageService $flashMessageService,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**

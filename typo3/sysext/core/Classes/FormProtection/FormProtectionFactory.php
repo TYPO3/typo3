@@ -39,13 +39,13 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  * Since TYPO3 v12, this class can and should be used as a factory to be injected into other
  * controllers or middlewares, to handle FormProtections for HTTP Requests.
  */
-class FormProtectionFactory
+readonly class FormProtectionFactory
 {
     public function __construct(
-        protected readonly FlashMessageService $flashMessageService,
-        protected readonly LanguageServiceFactory $languageServiceFactory,
-        protected readonly Registry $registry,
-        protected readonly FrontendInterface $runtimeCache
+        protected FlashMessageService $flashMessageService,
+        protected LanguageServiceFactory $languageServiceFactory,
+        protected Registry $registry,
+        protected FrontendInterface $runtimeCache
     ) {}
 
     /**

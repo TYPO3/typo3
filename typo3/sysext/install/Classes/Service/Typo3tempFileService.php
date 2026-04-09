@@ -28,11 +28,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * processed file statistics / cleanup.
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class Typo3tempFileService
+readonly class Typo3tempFileService
 {
     public function __construct(
-        private readonly ProcessedFileRepository $processedFileRepository,
-        private readonly StorageRepository $storageRepository
+        private ProcessedFileRepository $processedFileRepository,
+        private StorageRepository $storageRepository
     ) {}
 
     /**

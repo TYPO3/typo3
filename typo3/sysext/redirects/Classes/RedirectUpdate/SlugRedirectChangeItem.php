@@ -26,16 +26,16 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  *
  * @internal This class is a specific data container for slug service handling and is not part of the public TYPO3 API.
  */
-final class SlugRedirectChangeItem
+final readonly class SlugRedirectChangeItem
 {
     public function __construct(
-        private readonly int $defaultLanguagePageId,
-        private readonly int $pageId,
-        private readonly Site $site,
-        private readonly SiteLanguage $siteLanguage,
-        private readonly array $original,
-        private readonly RedirectSourceCollection $sourcesCollection,
-        private readonly ?array $changed = null,
+        private int $defaultLanguagePageId,
+        private int $pageId,
+        private Site $site,
+        private SiteLanguage $siteLanguage,
+        private array $original,
+        private RedirectSourceCollection $sourcesCollection,
+        private ?array $changed = null,
     ) {}
 
     public function getDefaultLanguagePageId(): int

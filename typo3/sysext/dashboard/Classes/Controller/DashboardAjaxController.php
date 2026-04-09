@@ -40,16 +40,16 @@ use TYPO3\CMS\Dashboard\WidgetRegistry;
  * @internal
  */
 #[AsController]
-class DashboardAjaxController
+readonly class DashboardAjaxController
 {
     public function __construct(
-        protected readonly DashboardRepository $dashboardRepository,
-        protected readonly DashboardPresetRegistry $dashboardPresetRegistry,
-        protected readonly WidgetRegistry $widgetRegistry,
-        protected readonly WidgetGroupInitializationService $widgetGroupInitializationService,
-        protected readonly WidgetSettingsFactory $widgetSettingsFactory,
-        protected readonly SettingsTypeRegistry $settingsTypeRegistry,
-        protected readonly UriBuilder $uriBuilder,
+        protected DashboardRepository $dashboardRepository,
+        protected DashboardPresetRegistry $dashboardPresetRegistry,
+        protected WidgetRegistry $widgetRegistry,
+        protected WidgetGroupInitializationService $widgetGroupInitializationService,
+        protected WidgetSettingsFactory $widgetSettingsFactory,
+        protected SettingsTypeRegistry $settingsTypeRegistry,
+        protected UriBuilder $uriBuilder,
     ) {}
 
     public function getDashboards(ServerRequestInterface $request): ResponseInterface

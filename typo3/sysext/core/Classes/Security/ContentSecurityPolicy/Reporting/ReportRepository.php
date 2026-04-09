@@ -27,12 +27,12 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 /**
  * @internal
  */
-class ReportRepository
+readonly class ReportRepository
 {
     protected const TABLE_NAME = 'sys_http_report';
     protected const TYPE = 'csp-report';
 
-    public function __construct(protected readonly ConnectionPool $pool) {}
+    public function __construct(protected ConnectionPool $pool) {}
 
     /**
      * @return list<Report>

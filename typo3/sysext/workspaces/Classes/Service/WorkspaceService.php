@@ -45,7 +45,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * @todo: This is public:true only because testing-framework uses GU::makeInstance() on it. Get rid of this.
  */
 #[Autoconfigure(public: true)]
-class WorkspaceService
+readonly class WorkspaceService
 {
     public const LIVE_WORKSPACE_ID = 0;
 
@@ -60,10 +60,10 @@ class WorkspaceService
 
     public function __construct(
         #[Autowire(service: 'cache.runtime')]
-        private readonly FrontendInterface $runtimeCache,
-        private readonly TcaSchemaFactory $tcaSchemaFactory,
-        private readonly ConnectionPool $connectionPool,
-        private readonly ResourceFactory $resourceFactory,
+        private FrontendInterface $runtimeCache,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private ConnectionPool $connectionPool,
+        private ResourceFactory $resourceFactory,
     ) {}
 
     /**

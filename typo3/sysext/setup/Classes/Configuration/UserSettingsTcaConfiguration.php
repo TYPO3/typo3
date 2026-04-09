@@ -27,10 +27,10 @@ use TYPO3\CMS\Core\Authentication\UserSettingsSchema;
  *
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class UserSettingsTcaConfiguration
+readonly class UserSettingsTcaConfiguration
 {
     public function __construct(
-        private readonly UserSettingsSchema $userSettingsSchema,
+        private UserSettingsSchema $userSettingsSchema,
     ) {}
 
     /**

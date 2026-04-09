@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Http;
 
-final class CookieScope
+final readonly class CookieScope
 {
     public function __construct(
-        public readonly string $domain,
-        public readonly bool $hostOnly,
-        public readonly string $path,
+        public string $domain,
+        public bool $hostOnly,
+        public string $path,
     ) {}
 }

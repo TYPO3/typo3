@@ -29,13 +29,13 @@ use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
  *
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class RedirectModeHandler
+readonly class RedirectModeHandler
 {
     public function __construct(
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly RedirectUrlValidator $redirectUrlValidator,
-        private readonly FrontendUserRepository $frontendUserRepository,
-        private readonly FrontendUserGroupRepository $frontendUserGroupRepository
+        protected UriBuilder $uriBuilder,
+        protected RedirectUrlValidator $redirectUrlValidator,
+        private FrontendUserRepository $frontendUserRepository,
+        private FrontendUserGroupRepository $frontendUserGroupRepository
     ) {}
 
     /**

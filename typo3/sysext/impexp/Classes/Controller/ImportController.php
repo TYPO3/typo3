@@ -46,18 +46,18 @@ use TYPO3\CMS\Impexp\Import;
  * @internal This class is not considered part of the public TYPO3 API.
  */
 #[AsController]
-class ImportController
+readonly class ImportController
 {
     protected const NO_UPLOAD = 0;
     protected const UPLOAD_DONE = 1;
     protected const UPLOAD_FAILED = 2;
 
     public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly ExtendedFileUtility $fileProcessor,
-        protected readonly ResourceFactory $resourceFactory,
-        protected readonly ComponentFactory $componentFactory,
+        protected IconFactory $iconFactory,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected ExtendedFileUtility $fileProcessor,
+        protected ResourceFactory $resourceFactory,
+        protected ComponentFactory $componentFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface

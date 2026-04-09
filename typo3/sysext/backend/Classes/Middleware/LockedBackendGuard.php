@@ -37,10 +37,10 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  *
  * @internal
  */
-class LockedBackendGuard implements MiddlewareInterface
+readonly class LockedBackendGuard implements MiddlewareInterface
 {
     public function __construct(
-        protected readonly BackendLocker $lockService
+        protected BackendLocker $lockService
     ) {}
 
     /**

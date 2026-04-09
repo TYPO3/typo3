@@ -27,12 +27,12 @@ use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 /**
  * Disables deferred processing and actually processes a preprocessed processed file
  */
-class ImageProcessingService
+readonly class ImageProcessingService
 {
     public function __construct(
-        private readonly ProcessedFileRepository $processedFileRepository,
-        private readonly Context $context,
-        private readonly ResourceMutex $locker,
+        private ProcessedFileRepository $processedFileRepository,
+        private Context $context,
+        private ResourceMutex $locker,
     ) {}
 
     public function process(int $processedFileId): ProcessedFile

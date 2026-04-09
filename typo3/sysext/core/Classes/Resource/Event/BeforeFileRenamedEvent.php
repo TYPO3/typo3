@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  * This event is fired before a file is about to be renamed. Custom listeners can further rename the file
  * according to specific guidelines based on the project.
  */
-final class BeforeFileRenamedEvent
+final readonly class BeforeFileRenamedEvent
 {
-    public function __construct(private readonly FileInterface $file, private readonly ?string $targetFileName) {}
+    public function __construct(private FileInterface $file, private ?string $targetFileName) {}
 
     public function getFile(): FileInterface
     {

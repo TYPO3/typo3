@@ -26,11 +26,11 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
  *
  * @internal
  */
-class UpgradeWizardRegistry
+readonly class UpgradeWizardRegistry
 {
     public function __construct(
         #[AutowireLocator(services: 'install.upgradewizard', indexAttribute: 'identifier')]
-        private readonly ServiceLocator $upgradeWizards
+        private ServiceLocator $upgradeWizards
     ) {}
 
     /**

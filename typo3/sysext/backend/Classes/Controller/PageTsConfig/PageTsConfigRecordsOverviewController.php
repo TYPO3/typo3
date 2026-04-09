@@ -42,12 +42,12 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-final class PageTsConfigRecordsOverviewController
+final readonly class PageTsConfigRecordsOverviewController
 {
     public function __construct(
-        private readonly IconFactory $iconFactory,
-        private readonly UriBuilder $uriBuilder,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private IconFactory $iconFactory,
+        private UriBuilder $uriBuilder,
+        private ModuleTemplateFactory $moduleTemplateFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface

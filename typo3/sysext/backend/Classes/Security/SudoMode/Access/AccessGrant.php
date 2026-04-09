@@ -23,11 +23,11 @@ namespace TYPO3\CMS\Backend\Security\SudoMode\Access;
  *
  * @internal
  */
-class AccessGrant implements \JsonSerializable
+readonly class AccessGrant implements \JsonSerializable
 {
     public function __construct(
-        public readonly AccessSubjectInterface $subject,
-        public readonly int $expiration,
+        public AccessSubjectInterface $subject,
+        public int $expiration,
     ) {}
 
     public function jsonSerialize(): array

@@ -29,9 +29,9 @@ use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
  * is used (not in real-time but from the database), for pages this is handled via a check to the database
  * record.
  */
-final class CheckBrokenRteLinkEventListener
+final readonly class CheckBrokenRteLinkEventListener
 {
-    public function __construct(private readonly BrokenLinkRepository $brokenLinkRepository) {}
+    public function __construct(private BrokenLinkRepository $brokenLinkRepository) {}
 
     #[AsEventListener('rte-check-link-external')]
     public function checkExternalLink(BrokenLinkAnalysisEvent $event): void

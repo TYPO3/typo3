@@ -37,13 +37,13 @@ use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
 /**
  * Resolves static routes - can return configured content directly or load content from file / urls
  */
-class StaticRouteResolver implements MiddlewareInterface
+readonly class StaticRouteResolver implements MiddlewareInterface
 {
     public function __construct(
-        protected readonly RequestFactory $requestFactory,
-        protected readonly LinkService $linkService,
-        protected readonly SystemResourceFactory $systemResourceFactory,
-        protected readonly SystemResourcePublisherInterface $resourcePublisher,
+        protected RequestFactory $requestFactory,
+        protected LinkService $linkService,
+        protected SystemResourceFactory $systemResourceFactory,
+        protected SystemResourcePublisherInterface $resourcePublisher,
     ) {}
 
     /**

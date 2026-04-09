@@ -33,12 +33,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Backend controller for selectTree ajax operations
  */
 #[AsController]
-class FormSelectTreeAjaxController
+readonly class FormSelectTreeAjaxController
 {
     public function __construct(
-        private readonly FormDataCompiler $formDataCompiler,
-        private readonly FlexFormTools $flexFormTools,
-        private readonly TcaSchemaFactory $schemaFactory,
+        private FormDataCompiler $formDataCompiler,
+        private FlexFormTools $flexFormTools,
+        private TcaSchemaFactory $schemaFactory,
     ) {}
 
     /**

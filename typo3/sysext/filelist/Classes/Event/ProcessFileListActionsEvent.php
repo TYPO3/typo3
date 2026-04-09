@@ -27,13 +27,13 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
 /**
  * Event fired to modify icons rendered for the file listings
  */
-final class ProcessFileListActionsEvent
+final readonly class ProcessFileListActionsEvent
 {
     public function __construct(
-        private readonly ComponentGroup $primary,
-        private readonly ComponentGroup $secondary,
-        private readonly ResourceInterface $fileOrFolder,
-        private readonly RequestInterface $request,
+        private ComponentGroup $primary,
+        private ComponentGroup $secondary,
+        private ResourceInterface $fileOrFolder,
+        private RequestInterface $request,
     ) {}
 
     public function getResource(): ResourceInterface

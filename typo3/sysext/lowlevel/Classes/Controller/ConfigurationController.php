@@ -34,13 +34,13 @@ use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 #[AsController]
-final class ConfigurationController
+final readonly class ConfigurationController
 {
     public function __construct(
-        private readonly ProviderRegistry $configurationProviderRegistry,
-        private readonly UriBuilder $uriBuilder,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly ComponentFactory $componentFactory,
+        private ProviderRegistry $configurationProviderRegistry,
+        private UriBuilder $uriBuilder,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private ComponentFactory $componentFactory,
     ) {}
 
     public function indexAction(ServerRequestInterface $request): ResponseInterface

@@ -33,12 +33,12 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
  *
  * @internal This class is not part of TYPO3's public API.
  */
-final class NullContextBreadcrumbProvider implements BreadcrumbProviderInterface
+final readonly class NullContextBreadcrumbProvider implements BreadcrumbProviderInterface
 {
     public function __construct(
-        private readonly ModuleResolver $moduleResolver,
-        private readonly StorageRepository $storageRepository,
-        private readonly UriBuilder $uriBuilder,
+        private ModuleResolver $moduleResolver,
+        private StorageRepository $storageRepository,
+        private UriBuilder $uriBuilder,
     ) {}
 
     public function supports(?BreadcrumbContext $context): bool

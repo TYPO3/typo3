@@ -24,12 +24,12 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
  *
  * @internal Internal for now until API stabilized. Use backendUser->getTSConfig().
  */
-final class UserTsConfig
+final readonly class UserTsConfig
 {
-    private readonly array $userTsConfigArray;
+    private array $userTsConfigArray;
 
     public function __construct(
-        private readonly RootNode $userTsConfigTree
+        private RootNode $userTsConfigTree
     ) {
         $this->userTsConfigArray = $userTsConfigTree->toArray();
     }

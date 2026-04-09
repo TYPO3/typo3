@@ -35,10 +35,10 @@ use TYPO3\HtmlSanitizer\Sanitizer;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class FormDefinitionConversionService
+readonly class FormDefinitionConversionService
 {
     public function __construct(
-        private readonly RichTextConfigurationService $richTextConfigurationService,
+        private RichTextConfigurationService $richTextConfigurationService,
     ) {}
 
     /**

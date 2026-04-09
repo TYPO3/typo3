@@ -29,13 +29,13 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 /**
  * @internal
  */
-final class PagesWithoutDescriptionDataProvider
+final readonly class PagesWithoutDescriptionDataProvider
 {
     public function __construct(
-        private readonly SiteFinder $siteFinder,
-        private readonly ConnectionPool $connectionPool,
-        private readonly array $excludedDoktypes,
-        private readonly int $limit
+        private SiteFinder $siteFinder,
+        private ConnectionPool $connectionPool,
+        private array $excludedDoktypes,
+        private int $limit
     ) {}
 
     public function getPages(): array

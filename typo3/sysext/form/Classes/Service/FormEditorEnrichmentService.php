@@ -31,10 +31,10 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class FormEditorEnrichmentService implements SingletonInterface
+readonly class FormEditorEnrichmentService implements SingletonInterface
 {
     public function __construct(
-        private readonly RichTextConfigurationService $richTextConfigurationService,
+        private RichTextConfigurationService $richTextConfigurationService,
     ) {}
 
     /**

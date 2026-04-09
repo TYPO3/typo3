@@ -39,9 +39,9 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  * used when simulating / previewing pages or content through query params when
  * previewing access or time restricted content via for example backend preview links
  */
-class PreviewSimulator implements MiddlewareInterface
+readonly class PreviewSimulator implements MiddlewareInterface
 {
-    public function __construct(protected readonly Context $context) {}
+    public function __construct(protected Context $context) {}
 
     /**
      * Evaluates preview settings if a backend user is logged in

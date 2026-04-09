@@ -22,12 +22,12 @@ use TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface;
 /**
  * Provides a button for the footer of a widget
  */
-class ButtonProvider implements ButtonProviderInterface
+readonly class ButtonProvider implements ButtonProviderInterface
 {
     public function __construct(
-        private readonly string $title,
-        private readonly string $link,
-        private readonly string $target = ''
+        private string $title,
+        private string $link,
+        private string $target = ''
     ) {}
 
     public function getTitle(): string

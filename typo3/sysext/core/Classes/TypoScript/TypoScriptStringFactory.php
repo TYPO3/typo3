@@ -33,11 +33,11 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
  * This is used by some consumers in the core that parse a TypoScript a-like
  * syntax that is not Frontend TypoScript and TsConfig directly.
  */
-final class TypoScriptStringFactory
+final readonly class TypoScriptStringFactory
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly TokenizerInterface $tokenizer,
+        private ContainerInterface $container,
+        private TokenizerInterface $tokenizer,
     ) {}
 
     /**

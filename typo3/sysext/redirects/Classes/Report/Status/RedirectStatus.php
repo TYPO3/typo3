@@ -35,13 +35,13 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  * Performs checks regarding redirects
  */
 #[Autoconfigure(public: true)]
-class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProviderInterface
+readonly class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProviderInterface
 {
     public function __construct(
-        protected readonly BackendViewFactory $backendViewFactory,
-        protected readonly RedirectRepository $redirectRepository,
-        protected readonly Registry $registry,
-        protected readonly CheckIntegrityConfiguration $checkIntegrityConfiguration,
+        protected BackendViewFactory $backendViewFactory,
+        protected RedirectRepository $redirectRepository,
+        protected Registry $registry,
+        protected CheckIntegrityConfiguration $checkIntegrityConfiguration,
     ) {}
 
     /**
