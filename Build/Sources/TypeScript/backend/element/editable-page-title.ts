@@ -84,13 +84,19 @@ export class EditablePageTitle extends LitElement {
     .wrapper {
       position: relative;
       margin: -1px 0;
-    }
-
-    div.wrapper {
       padding-inline-end: 1.5em;
     }
 
-    form.wrapper {
+    .wrapper:has(> form) .page-title {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .wrapper > form {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       padding-inline-end: 2.5em;
     }
 
@@ -190,18 +196,15 @@ export class EditablePageTitle extends LitElement {
       return html`<div class="wrapper"><h1>${this.pageTitle}</h1></div>`;
     }
 
-    let content;
-    if (!this._isEditing) {
-      content = html`
-        <div class="wrapper">
+    return html`
+      <div class="wrapper">
+        <div class="page-title">
           <h1 @dblclick="${(): void => { this.startEditing(); }}">${this.pageTitle}</h1>
           ${this.composeEditButton()}
-        </div>`;
-    } else {
-      content = this.composeEditForm();
-    }
-
-    return content;
+        </div>
+        ${this._isEditing ? this.composeEditForm() : nothing}
+      </div>
+    `;
   }
 
   private isEditable(): boolean {
@@ -268,7 +271,7 @@ export class EditablePageTitle extends LitElement {
 
   private composeEditForm(): TemplateResult {
     return html`
-      <form class="wrapper" @submit="${ this.updatePageTitle }">
+      <form @submit="${ this.updatePageTitle }">
         <label class="screen-reader" for="input">${this.labels.input}</label>
         <input
           autocomplete="off"
