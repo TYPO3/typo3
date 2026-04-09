@@ -304,11 +304,7 @@ configuration file :file:`system/settings.php` or
 
 .. code-block:: php
 
-    'SYS' => [
-        'features' => [
-            'redirects.hitCount' => true
-        ],
-    ],
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['redirects.hitCount'] = true;
 
 This feature toggle is disabled by default, because it comes with a small performance
 impact that requires additional SQL :sql:`UPDATE` queries.
