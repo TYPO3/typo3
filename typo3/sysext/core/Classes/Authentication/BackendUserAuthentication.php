@@ -1007,6 +1007,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['filemounts'] = $this->user['file_mountpoints'] ?? '';
             // Fileoperation permissions
             $this->groupData['file_permissions'] = $this->user['file_permissions'] ?? '';
+            // Category mounts
+            $this->groupData['category_perms'] = $this->user['category_perms'] ?? '';
 
             // Get the groups and accumulate their permission settings
             $mountOptions = new BackendGroupMountOption((int)($this->user['options'] ?? 0));
@@ -1028,6 +1030,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     'allowed_languages' => '',
                     'custom_options' => '',
                     'file_permissions' => '',
+                    'category_perms' => '',
                     'workspace_perms' => 0, // Bitflag.
                 ];
                 // Add the group uid to internal arrays.
@@ -1053,6 +1056,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $this->groupData['allowed_languages'] .= ',' . $groupInfo['allowed_languages'];
                 $this->groupData['custom_options'] .= ',' . $groupInfo['custom_options'];
                 $this->groupData['file_permissions'] .= ',' . $groupInfo['file_permissions'];
+                $this->groupData['category_perms'] .= ',' . $groupInfo['category_perms'];
                 // Setting workspace permissions:
                 $this->groupData['workspace_perms'] |= $groupInfo['workspace_perms'];
                 if (!$this->firstMainGroup) {
@@ -1087,6 +1091,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['available_widgets'] = StringUtility::uniqueList($this->groupData['available_widgets'] ?? '');
             $this->groupData['mfa_providers'] = StringUtility::uniqueList($this->groupData['mfa_providers'] ?? '');
             $this->groupData['file_permissions'] = StringUtility::uniqueList($this->groupData['file_permissions'] ?? '');
+            $this->groupData['category_perms'] = StringUtility::uniqueList($this->groupData['category_perms'] ?? '');
 
             // Check if the user access to all web mounts set
             if (!empty(trim($this->groupData['webmounts']))) {
