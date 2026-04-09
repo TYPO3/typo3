@@ -24,6 +24,20 @@ return [
             ],
         ],
     ],
+    \TYPO3Tests\BlogExample\Domain\Model\TtContentWithCType::class => [
+        'tableName' => 'tt_content',
+        'properties' => [
+            'uid' => [
+                'fieldName' => 'uid',
+            ],
+            'pid' => [
+                'fieldName' => 'pid',
+            ],
+            'header' => [
+                'fieldName' => 'header',
+            ],
+        ],
+    ],
     \TYPO3Tests\BlogExample\Domain\Model\FrontendUserGroup::class => [
         'tableName' => 'fe_groups',
     ],
