@@ -50,7 +50,8 @@ readonly class BackendUtilityHook
     #[AsEventListener('typo3-workspaces/link-modifier')]
     public function createPageUriForWorkspaceVersion(BeforePagePreviewUriGeneratedEvent $event): void
     {
-        if ($this->getBackendUser()->workspace === 0) {
+        $workspace = $event->getContext()->getPropertyFromAspect('workspace', 'id');
+        if ($workspace === 0) {
             return;
         }
         $uri = $this->previewUriBuilder->buildUriForWorkspaceSplitPreview($event->getPageId());
