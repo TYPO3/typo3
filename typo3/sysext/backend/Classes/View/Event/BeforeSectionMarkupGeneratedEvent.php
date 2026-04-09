@@ -20,5 +20,8 @@ namespace TYPO3\CMS\Backend\View\Event;
 /**
  * This event can be triggered to display content in any colPos
  * before the first content element.
+ *
+ * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+ *             Has no replacement.
  */
 final class BeforeSectionMarkupGeneratedEvent extends AbstractSectionMarkupGeneratedEvent {}

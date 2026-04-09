@@ -220,6 +220,11 @@ class GridColumn extends AbstractGridObject
         return $this->getLanguageService()->sL($this->columnName) . ' (' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:notAssigned') . ')';
     }
 
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15 together
+     *             with `BeforeSectionMarkupGeneratedEvent`. Has no
+     *             replacement.
+     */
     public function getBeforeSectionMarkup(): string
     {
         $event = new BeforeSectionMarkupGeneratedEvent($this->definition, $this->context, $this->getRecords());
@@ -227,6 +232,11 @@ class GridColumn extends AbstractGridObject
         return $event->getContent();
     }
 
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15 together
+     *             with `AfterSectionMarkupGeneratedEvent`. Has no
+     *             replacement.
+     */
     public function getAfterSectionMarkup(): string
     {
         $event = new AfterSectionMarkupGeneratedEvent($this->definition, $this->context, $this->getRecords());

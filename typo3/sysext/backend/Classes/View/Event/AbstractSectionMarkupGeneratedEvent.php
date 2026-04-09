@@ -21,6 +21,11 @@ use Psr\EventDispatcher\StoppableEventInterface;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 
+/**
+ * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+ *             The before/after section markup events are no longer used
+ *             by the page module and have no replacement.
+ */
 abstract class AbstractSectionMarkupGeneratedEvent implements StoppableEventInterface
 {
     private array $columnConfig;
@@ -58,6 +63,11 @@ abstract class AbstractSectionMarkupGeneratedEvent implements StoppableEventInte
 
     public function setContent(string $content = ''): void
     {
+        trigger_error(
+            'Calling ' . static::class . '::setContent() is deprecated since TYPO3 v14 and will be'
+            . ' removed in TYPO3 v15. The before/after section markup events have no replacement.',
+            E_USER_DEPRECATED
+        );
         $this->content = $content;
     }
 

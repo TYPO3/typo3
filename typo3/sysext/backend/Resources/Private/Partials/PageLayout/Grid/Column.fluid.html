@@ -21,10 +21,15 @@
     {f:if(condition: '!{column.active} && !{column.unused}', then: 't3-grid-cell-restricted')}
     {f:if(condition: '!{column.active} && {hideRestrictedColumns} && !{column.unused}', then: 't3-grid-cell-hidden')}
 </f:variable>
-<td valign="top" colspan="{column.colSpan}" rowspan="{column.rowSpan}"
-    data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
+<td
+    valign="top"
+    colspan="{column.colSpan}"
+    rowspan="{column.rowSpan}"
+    data-colpos="{colpos}"
+    data-language-uid="{column.context.siteLanguage.languageId}"
     class="{columnClasses -> f:spaceless()}"
-    role="group" aria-labelledby="{columnIdentifier}">
+    role="group" aria-labelledby="{columnIdentifier}"
+>
     <f:alias map="{columnHeaderLevel: 2}">
         <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
     </f:alias>
@@ -34,6 +39,13 @@
                 <f:render partial="PageLayout/Record" arguments="{_all}" />
             </f:for>
         </div>
+    </f:if>
+    <f:if condition="{column.unassigned}">
+        <f:be.infobox
+            title="{f:translate(domain: 'backend.layout', key: 'emptyColPos')}"
+            message="{f:translate(domain: 'backend.layout', key: 'emptyColPos.message')}"
+            state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}"
+        />
     </f:if>
     <f:format.raw>{column.afterSectionMarkup}</f:format.raw>
 </td>

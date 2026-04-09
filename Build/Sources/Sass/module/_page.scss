@@ -73,6 +73,10 @@
 .t3-page-column {
     min-width: 150px;
     max-width: 300px;
+
+    > .callout {
+        margin: var(--pagemodule-grid-inner-spacing);
+    }
 }
 
 .t3-page-column-header {
