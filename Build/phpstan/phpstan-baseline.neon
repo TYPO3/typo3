@@ -3469,6 +3469,12 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Unit/Domain/FormElements/AbstractSectionTest.php
 
 		-
+			message: '#^Variable \$pid in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.variable
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/Cache/CacheLifetimeCalculator.php
+
+		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
