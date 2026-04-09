@@ -128,7 +128,7 @@ class EnvironmentController extends AbstractController
         }
         $container = $this->lateBootService->getContainer();
         $uriBuilder = $container->get(UriBuilder::class);
-        $serverResponseMessages = (new ServerResponseCheck($uriBuilder, false))->getStatus();
+        $serverResponseMessages = (new ServerResponseCheck($uriBuilder, false))->getStatus($request);
         foreach ($serverResponseMessages as $message) {
             $messageQueue->enqueue($message);
         }

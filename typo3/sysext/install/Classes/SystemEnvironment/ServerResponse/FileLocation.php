@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\SystemEnvironment\ServerResponse;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -28,16 +28,11 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class FileLocation
 {
-    protected string $path;
     protected string $filePath;
-    protected string $baseUrl;
 
     public function __construct(string $path)
     {
-        $this->path = $path;
         $this->filePath = Environment::getPublicPath() . $path;
-        $this->baseUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST')
-            . PathUtility::getAbsoluteWebPath($this->filePath);
     }
 
     public function getFilePath(): string
@@ -45,8 +40,9 @@ class FileLocation
         return $this->filePath;
     }
 
-    public function getBaseUrl(): string
+    public function getBaseUrl(ServerRequestInterface $request): string
     {
-        return $this->baseUrl;
+        return $request->getAttribute('normalizedParams')->getRequestHost()
+            . PathUtility::getAbsoluteWebPath($this->filePath);
     }
 }

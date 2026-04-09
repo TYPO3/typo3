@@ -22,6 +22,7 @@ use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Promise\Utils;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -76,9 +77,9 @@ class ServerResponseCheck implements CheckInterface
         $this->fileDeclarations = $this->initializeFileDeclarations($fileName);
     }
 
-    public function asStatus(): Status
+    public function asStatus(ServerRequestInterface $request): Status
     {
-        $messageQueue = $this->getStatus();
+        $messageQueue = $this->getStatus($request);
         $messages = [];
         foreach ($messageQueue->getAllMessages() as $flashMessage) {
             $messages[] = $flashMessage->getMessage();
@@ -105,8 +106,11 @@ class ServerResponseCheck implements CheckInterface
         );
     }
 
-    public function getStatus(): FlashMessageQueue
+    public function getStatus(?ServerRequestInterface $request = null): FlashMessageQueue
     {
+        if ($request === null) {
+            throw new \RuntimeException('ServerResponseCheck requires a request', 1775761298);
+        }
         $messageQueue = new FlashMessageQueue('install-server-response-check');
         if (PHP_SAPI === 'cli-server') {
             $messageQueue->addMessage(
@@ -121,7 +125,7 @@ class ServerResponseCheck implements CheckInterface
         try {
             $this->buildFileDeclarations();
             $this->processHostCheck($messageQueue);
-            $this->processFileDeclarations($messageQueue);
+            $this->processFileDeclarations($messageQueue, $request);
             $this->finishMessageQueue($messageQueue);
         } finally {
             $this->purgeFileDeclarations();
@@ -256,12 +260,12 @@ class ServerResponseCheck implements CheckInterface
         }
     }
 
-    protected function processFileDeclarations(FlashMessageQueue $messageQueue): void
+    protected function processFileDeclarations(FlashMessageQueue $messageQueue, ServerRequestInterface $request): void
     {
         $promises = [];
         $client = new Client(['timeout' => 10]);
         foreach ($this->fileDeclarations as $fileDeclaration) {
-            $promises[] = $client->requestAsync('GET', $fileDeclaration->getUrl());
+            $promises[] = $client->requestAsync('GET', $fileDeclaration->getUrl($request));
         }
         foreach (Utils::settle($promises)->wait() as $index => $response) {
             $fileDeclaration = $this->fileDeclarations[$index];
@@ -284,7 +288,7 @@ class ServerResponseCheck implements CheckInterface
             }
             $messageQueue->addMessage(
                 new FlashMessage(
-                    $this->createMismatchMessage($fileDeclaration, $response['value']),
+                    $this->createMismatchMessage($fileDeclaration, $response['value'], $request),
                     'Unexpected server response',
                     $fileDeclaration->shallFail() ? ContextualFeedbackSeverity::ERROR : ContextualFeedbackSeverity::WARNING
                 )
@@ -307,7 +311,7 @@ class ServerResponseCheck implements CheckInterface
         );
     }
 
-    protected function createMismatchMessage(FileDeclaration $fileDeclaration, ResponseInterface $response): string
+    protected function createMismatchMessage(FileDeclaration $fileDeclaration, ResponseInterface $response, ServerRequestInterface $request): string
     {
         $messageParts = array_map(
             function (StatusMessage $mismatch): string {
@@ -318,7 +322,7 @@ class ServerResponseCheck implements CheckInterface
             },
             $fileDeclaration->getMismatches($response)
         );
-        return $this->wrapList($messageParts, $fileDeclaration->getUrl(), self::WRAP_FLAT);
+        return $this->wrapList($messageParts, $fileDeclaration->getUrl($request), self::WRAP_FLAT);
     }
 
     protected function wrapList(array $items, string $label, int $style): string

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\SystemEnvironment\ServerResponse;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Declares contents on server response expectations on a static file.
@@ -215,9 +216,9 @@ class FileDeclaration
         return $this->fileName;
     }
 
-    public function getUrl(): string
+    public function getUrl(ServerRequestInterface $request): string
     {
-        return $this->fileLocation->getBaseUrl() . $this->fileName;
+        return $this->fileLocation->getBaseUrl($request) . $this->fileName;
     }
 
     public function shallFail(): bool

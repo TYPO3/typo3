@@ -42,7 +42,7 @@ final class SecurityStatusReport implements RequestAwareStatusProviderInterface
         }
         return [
             'installToolProtection' => $this->getInstallToolProtectionStatus($request),
-            'serverResponseStatus' => GeneralUtility::makeInstance(ServerResponseCheck::class)->asStatus(),
+            'serverResponseStatus' => GeneralUtility::makeInstance(ServerResponseCheck::class)->asStatus($request),
         ];
     }
 
