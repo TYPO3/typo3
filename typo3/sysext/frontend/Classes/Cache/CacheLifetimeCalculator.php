@@ -200,7 +200,7 @@ class CacheLifetimeCalculator
     {
         $result = PHP_INT_MAX;
         [$tableName, $pid] = GeneralUtility::trimExplode(':', $tableDef);
-        if (empty($tableName) || empty($pid)) {
+        if (empty($tableName) || !isset($pid)) {
             throw new \InvalidArgumentException('Unexpected value for parameter $tableDef. Expected <tablename>:<pid>, got \'' . htmlspecialchars($tableDef) . '\'.', 1307190365);
         }
 
