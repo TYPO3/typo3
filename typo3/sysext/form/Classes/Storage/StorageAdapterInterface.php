@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Storage;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Form\Domain\DTO\FormData;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
@@ -109,7 +110,7 @@ interface StorageAdapterInterface
      *
      * @throws \TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException
      */
-    public function read(FormIdentifier $identifier): FormData;
+    public function read(FormIdentifier $identifier, ?ServerRequestInterface $request = null): FormData;
 
     /**
      * Write form definition to storage

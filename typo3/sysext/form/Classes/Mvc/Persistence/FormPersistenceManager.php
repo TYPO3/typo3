@@ -67,7 +67,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
         if ($this->runtimeCache->has($cacheKey)) {
             $formDefinition = $this->runtimeCache->get($cacheKey);
         } else {
-            $formDefinition = $this->loadFromStorage($persistenceIdentifier);
+            $formDefinition = $this->loadFromStorage($persistenceIdentifier, $request);
             $this->runtimeCache->set($cacheKey, $formDefinition);
         }
 
@@ -291,13 +291,13 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Load form definition from storage
      */
-    private function loadFromStorage(string $persistenceIdentifier): array
+    private function loadFromStorage(string $persistenceIdentifier, ?ServerRequestInterface $request = null): array
     {
         try {
             $identifier = new FormIdentifier($persistenceIdentifier);
             $adapter = $this->storageAdapterFactory->getAdapterForIdentifier($persistenceIdentifier);
 
-            return $adapter->read($identifier)->toArray();
+            return $adapter->read($identifier, $request)->toArray();
         } catch (\Exception $e) {
             return [
                 'type' => 'Form',

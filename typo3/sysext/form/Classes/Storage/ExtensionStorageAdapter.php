@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Storage;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -78,7 +79,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
         return 'content-extension';
     }
 
-    public function read(FormIdentifier $identifier): FormData
+    public function read(FormIdentifier $identifier, ?ServerRequestInterface $request = null): FormData
     {
         $this->ensureValidPersistenceIdentifier($identifier->identifier);
         $file = $identifier->identifier;

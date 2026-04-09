@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Storage;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
@@ -101,7 +102,7 @@ class FileMountStorageAdapter extends AbstractFileStorageAdapter implements Stor
         return 'mimetypes-x-sys_filemounts';
     }
 
-    public function read(FormIdentifier $identifier): FormData
+    public function read(FormIdentifier $identifier, ?ServerRequestInterface $request = null): FormData
     {
         $this->triggerDeprecation();
         $file = $this->retrieveFileByPersistenceIdentifier($identifier->identifier);

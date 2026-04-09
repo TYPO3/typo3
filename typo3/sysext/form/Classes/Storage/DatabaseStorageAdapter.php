@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Storage;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -80,7 +82,7 @@ final readonly class DatabaseStorageAdapter implements StorageAdapterInterface
     /**
      * @throws PersistenceManagerException
      */
-    public function read(FormIdentifier $identifier): FormData
+    public function read(FormIdentifier $identifier, ?ServerRequestInterface $request = null): FormData
     {
         $uid = $this->extractUidFromIdentifier($identifier);
 
@@ -92,7 +94,13 @@ final readonly class DatabaseStorageAdapter implements StorageAdapterInterface
             );
         }
 
-        $this->permissionChecker->assertReadAccessForRecord($uid, $record);
+        $applicationType = $request !== null ? ApplicationType::fromRequest($request) : null;
+        // Skip permission checks in frontend context: Forms must be readable without a
+        // backend user session, so no backend permission checks are applied for frontend
+        // requests. In all other contexts (e.g. backend), permission checks are enforced.
+        if (!$applicationType?->isFrontend()) {
+            $this->permissionChecker->assertReadAccessForRecord($uid, $record);
+        }
 
         try {
             $formDefinitionArray = json_decode($record['configuration'] ?? '', true, flags: JSON_THROW_ON_ERROR);
