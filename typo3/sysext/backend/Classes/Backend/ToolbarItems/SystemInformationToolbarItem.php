@@ -287,9 +287,14 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
             return;
         }
 
-        $revision = trim(CommandUtility::exec('git rev-parse --short HEAD'));
-        $branch = trim(CommandUtility::exec('git rev-parse --abbrev-ref HEAD'));
-        if (!empty($revision) && !empty($branch)) {
+        $revision = CommandUtility::exec('git rev-parse --short HEAD');
+        $branch = CommandUtility::exec('git rev-parse --abbrev-ref HEAD');
+        if ($revision === false || $branch === false) {
+            return;
+        }
+        $revision = trim($revision);
+        $branch = trim($branch);
+        if ($revision !== '' && $branch !== '') {
             $this->systemInformation[] = [
                 'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.gitrevision',
                 'value' => sprintf('%s [%s]', $revision, $branch),
