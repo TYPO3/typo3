@@ -70,7 +70,7 @@ trait PageRendererFactoryTrait
             new MetaTagManagerRegistry(),
             new AssetRenderer(new AssetCollector(), new NoopEventDispatcher(), $resourcePublisher, $resourceFactory, $this->createMock(ResourceHashCollection::class), new DirectiveHashCollection($this->createMock(ResourceHashCollection::class))),
             new AssetCollector(),
-            new RelativeCssPathFixer(),
+            new RelativeCssPathFixer($resourceFactory, $resourcePublisher),
             new LanguageServiceFactory(
                 new Locales(),
                 new LocalizationFactory(new Translator('en'), $cacheManager->getCache('l10n'), new NullFrontend('runtime'), $labelMapperMock, new LabelFileResolver($packageManager)),

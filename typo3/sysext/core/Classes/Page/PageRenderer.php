@@ -1461,9 +1461,9 @@ class PageRenderer implements SingletonInterface
     private function createCssTag(array $properties, string $file, ServerRequestInterface $request): string
     {
         $includeInline = $properties['inline'] ?? false;
-        $absolutePathToFile = $includeInline ? GeneralUtility::getFileAbsFileName($file) : '';
-        if ($absolutePathToFile !== '' && @is_file($absolutePathToFile)) {
-            $tag = $this->createInlineCssTagFromFile($absolutePathToFile, $properties);
+        $resource = $includeInline ? $this->systemResourceFactory->createResource($file) : null;
+        if ($resource instanceof SystemResourceInterface) {
+            $tag = $this->createInlineCssTagFromFile($resource, $properties, $request);
         } else {
             // collect CSP hash - use integrity attribute if given, else hash file content
             $integrity = $properties['integrity'] ?? '';
@@ -1901,15 +1901,16 @@ class PageRenderer implements SingletonInterface
     /**
      * Creates a CSS inline tag
      *
-     * @param string $file the filename to process
+     * @param SystemResourceInterface $resource the resource to process
      */
-    protected function createInlineCssTagFromFile(string $file, array $properties): string
+    protected function createInlineCssTagFromFile(SystemResourceInterface $resource, array $properties, ServerRequestInterface $request): string
     {
-        $cssInline = file_get_contents($file);
-        if ($cssInline === false) {
+        try {
+            $cssInline = $resource->getContents();
+        } catch (SystemResourceDoesNotExistException) {
             return '';
         }
-        $cssInlineFix = $this->relativeCssPathFixer->fixRelativeUrlPaths($cssInline, '/' . PathUtility::dirname($file) . '/');
+        $cssInlineFix = $this->relativeCssPathFixer->fixRelativeUrlPaths($cssInline, PathUtility::dirname($resource->getResourceIdentifier()) . '/', $request);
         // collect CSP hash - covers the content as it appears inside the <style> tag
         $this->directiveHashCollection->addInlineHash(Directive::StyleSrcElem, LF . $cssInlineFix . LF);
         $tagAttributes = [];

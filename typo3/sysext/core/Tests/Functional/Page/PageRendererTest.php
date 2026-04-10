@@ -71,7 +71,7 @@ final class PageRendererTest extends FunctionalTestCase
             $this->get(MetaTagManagerRegistry::class),
             $this->get(AssetRenderer::class),
             $this->get(AssetCollector::class),
-            new RelativeCssPathFixer(),
+            new RelativeCssPathFixer($this->get(SystemResourceFactory::class), $this->get(SystemResourcePublisherInterface::class)),
             $this->get(LanguageServiceFactory::class),
             $this->get(ResponseFactoryInterface::class),
             $this->get(StreamFactoryInterface::class),

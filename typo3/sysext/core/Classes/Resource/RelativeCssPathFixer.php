@@ -17,6 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
+use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+
 /**
  * This fixes import paths in CSS files if their location changes,
  * e.g. when inlining or compressing css
@@ -25,6 +29,11 @@ namespace TYPO3\CMS\Core\Resource;
  */
 class RelativeCssPathFixer
 {
+    public function __construct(
+        private readonly SystemResourceFactory $resourceFactory,
+        private readonly SystemResourcePublisherInterface $resourcePublisher,
+    ) {}
+
     /**
      * Fixes the relative paths inside of url() references in CSS files
      *
@@ -32,17 +41,17 @@ class RelativeCssPathFixer
      * @param string $newDir directory referenced from current location
      * @return string Processed data
      */
-    public function fixRelativeUrlPaths(string $contents, string $newDir): string
+    public function fixRelativeUrlPaths(string $contents, string $newDir, ServerRequestInterface $request): string
     {
         // Replace "url()" paths
         if (stripos($contents, 'url') !== false) {
             $regex = '/url(\\(\\s*["\']?(?!\\/)([^"\']+)["\']?\\s*\\))/iU';
-            $contents = $this->findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, '(\'|\')');
+            $contents = $this->findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, '(\'|\')', $request);
         }
         // Replace "@import" paths
         if (stripos($contents, '@import') !== false) {
             $regex = '/@import\\s*(["\']?(?!\\/)([^"\']+)["\']?)/i';
-            $contents = $this->findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, '"|"');
+            $contents = $this->findAndReplaceUrlPathsByRegex($contents, $regex, $newDir, '"|"', $request);
         }
         return $contents;
     }
@@ -56,7 +65,7 @@ class RelativeCssPathFixer
      * @param string $wrap Wrap around replaced values
      * @return string Processed data
      */
-    protected function findAndReplaceUrlPathsByRegex(string $contents, string $regex, string $newDir, string $wrap = '|'): string
+    protected function findAndReplaceUrlPathsByRegex(string $contents, string $regex, string $newDir, string $wrap, ServerRequestInterface $request): string
     {
         $matches = [];
         $replacements = [];
@@ -68,7 +77,8 @@ class RelativeCssPathFixer
             // we must not rewrite paths starting with "#", containing ":" or "url(", e.g. data URIs (see RFC 2397)
             if (!str_starts_with($match, '#') && !str_contains($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
                 $newPath = $this->resolveBackPath($newDir . $match);
-                $replacements[$matches[1][$matchCount]] = $wrapParts[0] . $newPath . $wrapParts[1];
+                $newUri = $this->resourcePublisher->generateUri($this->resourceFactory->createPublicResource($newPath), $request);
+                $replacements[$matches[1][$matchCount]] = $wrapParts[0] . $newUri . $wrapParts[1];
             }
         }
         // replace URL paths in content
