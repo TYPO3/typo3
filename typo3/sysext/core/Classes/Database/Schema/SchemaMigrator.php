@@ -28,6 +28,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\EmptyRestrictionContainer;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -70,8 +71,26 @@ readonly class SchemaMigrator
         $updateSuggestions = [];
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
             $connection = $this->connectionPool->getConnectionByName($connectionName);
-            $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
-            $updateSuggestions[$connectionName] = $connectionMigrator->getUpdateSuggestions($remove);
+            // Backup current set default restriction container
+            $preservedDefaultRestrictionContainer = $connection->defaultRestrictionContainer;
+            // @todo    Can be possible removed after: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89956
+            //          or a similar change.
+            try {
+                // Enforce empty restriction container to avoid dependency injection issues,
+                // mainly because we do not need any restrictions anyway during the database
+                // comparison.
+                $connection->defaultRestrictionContainer = EmptyRestrictionContainer::class;
+
+                // Handling code, must be kept in case the try block is removed after having working
+                // dependency injection within `Install Tool Context` and therefore during database
+                // comparision.
+                $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
+                $updateSuggestions[$connectionName] = $connectionMigrator->getUpdateSuggestions($remove);
+
+            } finally {
+                // Restore the previous set default restriction container implementation.
+                $connection->defaultRestrictionContainer = $preservedDefaultRestrictionContainer;
+            }
         }
         return $updateSuggestions;
     }

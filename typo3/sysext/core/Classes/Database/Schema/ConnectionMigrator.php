@@ -1415,6 +1415,7 @@ class ConnectionMigrator
         }
 
         $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
         $result = $queryBuilder
             ->select(
                 'tables.TABLE_NAME AS table',
