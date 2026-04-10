@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install;
 
 use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
@@ -114,7 +115,6 @@ class ServiceProvider extends AbstractServiceProvider
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
             PasswordGenerator::class => self::getPasswordGenerator(...),
-            DirectiveHashCollection::class => self::getDirectiveHashCollection(...),
             Random::class => self::getRandom(...),
         ];
     }
@@ -126,6 +126,7 @@ class ServiceProvider extends AbstractServiceProvider
             'backend.modules' => [ static::class, 'configureBackendModules' ],
             'icons' => [ static::class, 'configureIcons' ],
             CommandRegistry::class => self::configureCommands(...),
+            DirectiveHashCollection::class => self::provideFallbackDirectiveHashCollection(...),
         ];
     }
 
@@ -422,12 +423,15 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, PasswordGenerator::class, [$container->get(Random::class)]);
     }
 
-    public static function getDirectiveHashCollection(ContainerInterface $container): DirectiveHashCollection
-    {
-        return self::new($container, DirectiveHashCollection::class, [
+    public static function provideFallbackDirectiveHashCollection(
+        ContainerInterface $container,
+        ?DirectiveHashCollection $directiveHashCollection = null,
+    ): DirectiveHashCollection {
+        return $directiveHashCollection ?? self::new($container, DirectiveHashCollection::class, [
             new ResourceHashCollection(
                 $container->get(LogManager::class)->getLogger(ResourceHashCollection::class),
                 $container->get(SystemResourceFactory::class),
+                $container->get(CacheManager::class)->getCache('assets'),
             ),
         ]);
     }
