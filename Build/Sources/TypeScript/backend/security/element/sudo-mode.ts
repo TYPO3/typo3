@@ -17,6 +17,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Viewport from '@typo3/backend/viewport';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topWindow, topDocument } from '@typo3/core/utility/top-window';
 import Modal, { Sizes } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import type { ReactiveElement } from '@lit/reactive-element';
@@ -55,15 +56,14 @@ abstract class SudoModeProperties extends LitElement {
 }
 
 export const initiateSudoModeModal = async (properties: Omit<SudoModeProperties, keyof LitElement>): Promise<void> => {
-  const isInIframe = window.location !== window.parent.location;
-  if (isInIframe) {
+  if (topWindow !== window) {
     // Create a top-level instance
     topLevelModuleImport('@typo3/backend/security/element/sudo-mode.js');
   }
-  const el = top.document.createElement('typo3-backend-security-sudo-mode');
+  const el = topDocument.createElement('typo3-backend-security-sudo-mode');
   Object.assign(el, properties);
   el.windowRef = window;
-  top.document.body.append(el);
+  topDocument.body.append(el);
   return new Promise<void>((resolve, reject) => {
     el.addEventListener('typo3:sudo-mode:verified', () => resolve());
     el.addEventListener('typo3:sudo-mode:finished', () => reject());
@@ -84,9 +84,8 @@ export class SudoMode extends SudoModeProperties {
   }
 
   protected override async firstUpdated() {
-    const isInIframe = window.location !== window.parent.location;
     // Launched from /sudo-mode/module route
-    if (isInIframe) {
+    if (topWindow !== window) {
       try {
         await initiateSudoModeModal(this.getPropertyValues());
       } catch {
@@ -106,7 +105,7 @@ export class SudoMode extends SudoModeProperties {
           text: this.labels.cancel,
           btnClass: 'btn-default',
           trigger: () => {
-            top.location.href = this.cancelUri;
+            topWindow.location.href = this.cancelUri;
           },
         } : {
           text: this.labels.verify,

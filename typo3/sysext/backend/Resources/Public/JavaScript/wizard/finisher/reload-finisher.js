@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{html as n}from"lit";class o{setConfig(e){this.config=e}async render(){return n`<typo3-backend-alert severity=0 heading=${this.config.labels.successTitle} message=${this.config.labels.successDescription} show-icon></typo3-backend-alert>`}async execute(){window.top&&window.top!==window.self&&window.top.TYPO3?.Backend?.ContentContainer?window.top.TYPO3.Backend.ContentContainer.refresh():window.location.reload()}}export{o as default};
+import{html as o}from"lit";import{topWindow as e}from"@typo3/core/utility/top-window.js";class t{setConfig(n){this.config=n}async render(){return o`<typo3-backend-alert severity=0 heading=${this.config.labels.successTitle} message=${this.config.labels.successDescription} show-icon></typo3-backend-alert>`}async execute(){e!==window&&e.TYPO3?.Backend?.ContentContainer?e.TYPO3.Backend.ContentContainer.refresh():window.location.reload()}}export{t as default};

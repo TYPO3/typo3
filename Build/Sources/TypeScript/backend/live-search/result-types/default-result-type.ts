@@ -5,6 +5,7 @@ import Notification from '@typo3/backend/notification';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { ResultItemActionInterface, ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
 import windowManager from '@typo3/backend/window-manager';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 export function registerType(type: string) {
   LiveSearchConfigurator.addInvokeHandler(type, 'switch_backend_user', (resultItem: ResultItemInterface): void => {
@@ -13,7 +14,7 @@ export function registerType(type: string) {
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       if (data.success === true && data.url) {
-        top.window.location.href = data.url;
+        topWindow.location.href = data.url;
       } else {
         Notification.error('Switching to user went wrong.');
       }

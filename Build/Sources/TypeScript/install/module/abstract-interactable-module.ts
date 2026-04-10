@@ -12,6 +12,7 @@
  */
 
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topWindow } from '@typo3/core/utility/top-window';
 import type { ModalElement } from '@typo3/backend/modal';
 import type { WritablePart } from '@typo3/core/utility/types';
 import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
@@ -70,8 +71,7 @@ export abstract class AbstractInteractableModule {
   }
 
   protected async loadModuleFrameAgnostic(module: string): Promise<any> {
-    const isInIframe = window.location !== window.parent.location;
-    if (isInIframe) {
+    if (topWindow !== window) {
       await topLevelModuleImport(module);
     } else {
       await import(module);

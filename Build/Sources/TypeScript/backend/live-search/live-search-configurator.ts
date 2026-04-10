@@ -13,6 +13,7 @@
 
 import type { ResultItemActionInterface, ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
 import type { TemplateResult } from 'lit';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 type RendererCallback = (resultItem: ResultItemInterface) => TemplateResult;
 type InvokeCallback = (resultItem: ResultItemInterface, action: ResultItemActionInterface) => void;
@@ -43,11 +44,11 @@ class LiveSearchConfigurator {
 }
 
 let configuratorObject: LiveSearchConfigurator;
-if (!top.TYPO3.LiveSearchConfigurator) {
+if (!topWindow.TYPO3.LiveSearchConfigurator) {
   configuratorObject = new LiveSearchConfigurator();
-  top.TYPO3.LiveSearchConfigurator = configuratorObject;
+  topWindow.TYPO3.LiveSearchConfigurator = configuratorObject;
 } else {
-  configuratorObject = top.TYPO3.LiveSearchConfigurator;
+  configuratorObject = topWindow.TYPO3.LiveSearchConfigurator;
 }
 
 export default configuratorObject;

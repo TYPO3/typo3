@@ -20,6 +20,7 @@ import Workspaces from './workspaces';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 import '@typo3/workspaces/renderable/send-to-stage-form';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { topDocument } from '@typo3/core/utility/top-window';
 import labels from '~labels/workspaces.messages';
 
 enum Identifiers {
@@ -82,12 +83,12 @@ class Preview extends Workspaces {
     new RegularEvent('click', this.renderPublishWindow.bind(this)).delegateTo(document, Identifiers.publishAction);
     new RegularEvent('click', this.renderSendPageToStageWindow.bind(this)).delegateTo(document, Identifiers.sendToStageAction);
     new RegularEvent('click', () => {
-      window.top.document.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient:not([disabled])').forEach((element) => {
+      topDocument.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient:not([disabled])').forEach((element) => {
         element.checked = true;
       });
     }).delegateTo(document, '.t3js-workspace-recipients-selectall');
     new RegularEvent('click', () => {
-      window.top.document.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient:not([disabled])').forEach((element) => {
+      topDocument.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient:not([disabled])').forEach((element) => {
         element.checked = false;
       });
     }).delegateTo(document, '.t3js-workspace-recipients-deselectall');

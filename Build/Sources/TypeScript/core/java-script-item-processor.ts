@@ -17,6 +17,8 @@
  * @internal Use in TYPO3 core only, API can change at any time!
  */
 
+import { topDocument } from '@typo3/core/utility/top-window';
+
 const FLAG_USE_IMPORTMAP = 2;
 const FLAG_USE_TOP_WINDOW = 16;
 const deniedProperties = ['__proto__', 'prototype', 'constructor'];
@@ -59,7 +61,7 @@ export function loadModule(payload: JavaScriptItemPayload): Promise<any> {
           }
         }
       );
-      top.document.dispatchEvent(event);
+      topDocument.dispatchEvent(event);
       return event.detail.importPromise || Promise.reject(new Error('Top-level import failed'));
     }
   }

@@ -17,6 +17,7 @@ import ClientRequest from '../event/client-request';
 import InteractionRequest from '../event/interaction-request';
 import Loader from './loader';
 import TriggerRequest from '../event/trigger-request';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 class ContentContainer extends AbstractContainer {
   public get(): Window {
@@ -34,7 +35,7 @@ class ContentContainer extends AbstractContainer {
       urlToLoad = urlToLoad.toString();
     }
     const router = this.resolveRouterElement();
-    if (router === null && self !== top) {
+    if (router === null && topWindow !== window) {
       // abort, if router can not be found and this module is not used in a top frame (popup)
       return Promise.reject(new Error('Content container used in unsupported frame context'));
     }

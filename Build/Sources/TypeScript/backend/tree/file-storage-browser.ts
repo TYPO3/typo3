@@ -21,6 +21,7 @@ import '@typo3/backend/element/icon-element';
 import { FileStorageTree } from './file-storage-tree';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 /**
  * Extension of the Tree, allowing to show additional actions on the right hand of the tree to directly link
@@ -87,10 +88,11 @@ export class FileStorageBrowser extends LitElement {
     if (this.hasAttribute('tree-actions') && this.getAttribute('tree-actions').length) {
       this.actions = JSON.parse(this.getAttribute('tree-actions'));
     }
+    const ajaxUrls = topWindow.TYPO3.settings.ajaxUrls;
     const treeSetup = {
-      dataUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_data,
-      rootlineUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_rootline,
-      filterUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_filter,
+      dataUrl: ajaxUrls.filestorage_tree_data,
+      rootlineUrl: ajaxUrls.filestorage_tree_rootline,
+      filterUrl: ajaxUrls.filestorage_tree_filter,
       showIcons: true,
       actions: this.actions
     };

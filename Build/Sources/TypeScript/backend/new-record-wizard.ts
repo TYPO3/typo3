@@ -23,6 +23,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 import { RecordUsageStore } from '@typo3/backend/record-usage/record-usage-store';
 import ClientStorage from '@typo3/backend/storage/client';
+import { topWindow } from '@typo3/core/utility/top-window';
 import PersistentStorage from '@typo3/backend/storage/persistent';
 import miscLabels from '~labels/core.misc';
 
@@ -722,7 +723,7 @@ export class NewRecordWizard extends LitElement {
     }
 
     if (item.requestType === 'location') {
-      Viewport.ContentContainer.setUrl(item.url.replace(/_CURRENT_MODULE_/g, top.TYPO3.ModuleMenu.App.getCurrentModule()));
+      Viewport.ContentContainer.setUrl(item.url.replace(/_CURRENT_MODULE_/g, topWindow.TYPO3.ModuleMenu.App.getCurrentModule()));
       Modal.dismiss();
       return;
     }

@@ -18,6 +18,7 @@ import Notification from '@typo3/backend/notification';
 import Severity from '@typo3/backend/severity';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { topWindow } from '@typo3/core/utility/top-window';
 import labels from '~labels/extensionmanager.messages';
 import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 
@@ -148,7 +149,7 @@ function submitSkipDependency(extensionKey: string, url: string, onSuccess?: () 
         if (onSuccess) {
           onSuccess();
         } else {
-          top.location.reload();
+          topWindow.location.reload();
         }
         return;
       }

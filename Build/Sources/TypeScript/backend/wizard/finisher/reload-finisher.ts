@@ -14,6 +14,7 @@
 import { html, type TemplateResult } from 'lit';
 import type { FinisherInterface } from '@typo3/backend/wizard/finisher/finisher-interface';
 import type { FinisherConfig } from '@typo3/backend/wizard/finisher/finisher-config';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 /**
  * Reload finisher - reloads the current page/content frame after wizard finish
@@ -37,8 +38,8 @@ export default class ReloadFinisher implements FinisherInterface {
   }
 
   async execute(): Promise<void> {
-    if (window.top && window.top !== window.self && window.top.TYPO3?.Backend?.ContentContainer) {
-      window.top.TYPO3.Backend.ContentContainer.refresh();
+    if (topWindow !== window && topWindow.TYPO3?.Backend?.ContentContainer) {
+      topWindow.TYPO3.Backend.ContentContainer.refresh();
     } else {
       window.location.reload();
     }

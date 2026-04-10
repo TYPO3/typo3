@@ -21,6 +21,7 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 enum CopyMode {
   cut = 'cut',
@@ -60,11 +61,12 @@ interface DispatchArgs {
  * Module: @typo3/backend/clipboard-panel
  *
  * @example
- * <typo3-backend-clipboard-panel return-url="/typo3/module" table="_FILE"></typo3-backend-clipboard-panel>
+ * <typo3-backend-clipboard-panel return-url="/typo3/module" module-url="/typo3/clipboard/process" table="_FILE"></typo3-backend-clipboard-panel>
  */
 @customElement('typo3-backend-clipboard-panel')
 export class ClipboardPanel extends LitElement {
   @property({ type: String, attribute: 'return-url' }) returnUrl: string = '';
+  @property({ type: String, attribute: 'module-url' }) moduleUrl: string = '';
   @property({ type: String }) table: string = '';
 
   private static renderLoader(): TemplateResult {
@@ -89,8 +91,12 @@ export class ClipboardPanel extends LitElement {
     `;
   }
 
+  private getModuleUrl(): string {
+    return this.moduleUrl || topWindow.TYPO3.settings.Clipboard.moduleUrl;
+  }
+
   private renderPanel(): Promise<TemplateResult> {
-    return (new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl))
+    return (new AjaxRequest(this.getModuleUrl()))
       .withQueryArguments({ action: 'getClipboardData' })
       .post({ table: this.table })
       .then(async (response: AjaxResponse): Promise<TemplateResult> => {
@@ -202,7 +208,7 @@ export class ClipboardPanel extends LitElement {
   private updateClipboard(event: PointerEvent, payload: object): void {
     event.preventDefault();
     const target: HTMLElement = event.currentTarget as HTMLElement;
-    (new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl))
+    (new AjaxRequest(this.getModuleUrl()))
       .post(payload)
       .then(async (response: AjaxResponse): Promise<void> => {
         const resolvedBody = await response.resolve();

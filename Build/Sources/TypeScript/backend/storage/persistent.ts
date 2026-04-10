@@ -13,6 +13,7 @@
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 export type UC = { [key: string]: string | number | boolean | null | UC };
 
@@ -22,7 +23,7 @@ export type UC = { [key: string]: string | number | boolean | null | UC };
  * @exports @typo3/backend/storage/persistent
  */
 class Persistent {
-  private data: UC|null = null;
+  private data: UC|null = topWindow.TYPO3?.settings?.Persistent?.uc ?? null;
 
   /**
    * Persistent storage, stores everything on the server via AJAX, does a greedy load on read
@@ -111,7 +112,7 @@ class Persistent {
   }
 
   /**
-   * Loads the data from outside, only used for the initial call from BackendController
+   * Replaces the data with what a caller received from elsewhere
    *
    * @param {UC} data
    */
@@ -201,4 +202,15 @@ class Persistent {
   }
 }
 
-export default new Persistent();
+let persistentObject: Persistent = topWindow.TYPO3?.Persistent;
+
+if (!persistentObject) {
+  persistentObject = new Persistent();
+
+  // attach to global frame
+  if (typeof TYPO3 !== 'undefined') {
+    TYPO3.Persistent = persistentObject;
+  }
+}
+
+export default persistentObject;

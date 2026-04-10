@@ -214,7 +214,7 @@ class RecordListController
         }
         $clipboardHtml = '';
         if ($this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
-            $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars((string)$dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
+            $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars((string)$dbList->listURL()) . '" module-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('clipboard_process')) . '"></typo3-backend-clipboard-panel>';
         }
 
         $view->setTitle($languageService->translate('title', 'backend.modules.list'), $title);

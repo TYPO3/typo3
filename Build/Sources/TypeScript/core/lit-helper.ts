@@ -14,6 +14,7 @@
 import { type CSSResultArray, html, type HTMLTemplateResult, render, nothing, type TemplateResult } from 'lit';
 import type { ClassInfo } from 'lit/directives/class-map.js';
 import { until } from 'lit/directives/until.js';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 interface LitNonceWindow extends Window {
   litNonce?: string;
@@ -44,8 +45,10 @@ export const lll = (key: string, ...args: any[]): string => {
   let languagePool = null;
   if (window.TYPO3 && window.TYPO3.lang && typeof window.TYPO3.lang[key] === 'string') {
     languagePool = window.TYPO3.lang;
-  } else if (top.TYPO3 && top.TYPO3.lang && typeof top.TYPO3.lang[key] === 'string') {
-    languagePool = top.TYPO3.lang;
+  } else {
+    if (topWindow.TYPO3 && topWindow.TYPO3.lang && typeof topWindow.TYPO3.lang[key] === 'string') {
+      languagePool = topWindow.TYPO3.lang;
+    }
   }
   if (languagePool === null) {
     return '';

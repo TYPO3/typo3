@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import { topDocument } from '@typo3/core/utility/top-window';
+
 interface CurrentState {
   identifier: string;
   treeIdentifier: string|null;
@@ -105,7 +107,7 @@ export class ModuleStateStorage {
     const oldState = ModuleStateStorage.current(module);
     sessionStorage.setItem(ModuleStateStorage.prefix + module, JSON.stringify(state));
 
-    top.document.dispatchEvent(new CustomEvent<ModuleStateUpdateEvent>('typo3:module-state-storage:' + mode + ':' + module, {
+    topDocument.dispatchEvent(new CustomEvent<ModuleStateUpdateEvent>('typo3:module-state-storage:' + mode + ':' + module, {
       detail: {
         state,
         oldState,

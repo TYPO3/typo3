@@ -17,6 +17,7 @@ import '@typo3/backend/element/icon-element';
 import AjaxDataHandler from '../ajax-data-handler';
 import commonLabels from '~labels/core.common';
 import layoutLabels from '~labels/backend.layout';
+import { topDocument } from '@typo3/core/utility/top-window';
 
 @customElement('typo3-backend-editable-page-title')
 export class EditablePageTitle extends LitElement {
@@ -251,7 +252,7 @@ export class EditablePageTitle extends LitElement {
 
     AjaxDataHandler.process(parameters).then((): void => {
       this.pageTitle = newPageTitle;
-      top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+      topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
     }).finally((): void => {
       this.endEditing();
       this._isSubmitting = false;

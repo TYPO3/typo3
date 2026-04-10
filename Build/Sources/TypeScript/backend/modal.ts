@@ -19,6 +19,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap, type StyleInfo } from 'lit/directives/style-map.js';
 import { classesArrayToClassInfo } from '@typo3/core/lit-helper';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { topWindow } from '@typo3/core/utility/top-window';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { AbstractAction } from './action-button/abstract-action';
 import type { ModalResponseEvent } from '@typo3/backend/modal-interface';
@@ -1010,23 +1011,16 @@ const remountAlertContainer = (modal: ModalElement | undefined) => {
 };
 
 let modalObject: Modal = null;
-try {
-  if (parent && parent.window.TYPO3 && parent.window.TYPO3.Modal) {
-    // fetch from parent
+const topModal = topWindow.TYPO3?.Modal;
+if (topModal) {
+  try {
     // we need to trigger the event capturing again, in order to make sure this works inside iframes
-    parent.window.TYPO3.Modal.initializeMarkupTrigger(document);
-    modalObject = parent.window.TYPO3.Modal;
-  } else if (top && top.TYPO3.Modal) {
-    // fetch object from outer frame
-    // we need to trigger the event capturing again, in order to make sure this works inside iframes
-    top.TYPO3.Modal.initializeMarkupTrigger(document);
-    modalObject = top.TYPO3.Modal;
+    topModal.initializeMarkupTrigger(document);
+    modalObject = topModal;
+  } catch {
+    // initializeMarkupTrigger runs in another window. A failure there must not
+    // take this module down, so this window falls back to its own Modal.
   }
-} catch {
-  // This only happens if the opener, parent or top is some other url (eg a local file)
-  // which loaded the current window. Then the browser's cross domain policy jumps in
-  // and raises an exception.
-  // For this case we are safe and we can create our global object below.
 }
 
 if (!modalObject) {

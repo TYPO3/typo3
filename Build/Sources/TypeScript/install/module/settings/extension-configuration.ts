@@ -20,6 +20,7 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topWindow } from '@typo3/core/utility/top-window';
 import type MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { Collapse } from 'bootstrap';
@@ -109,8 +110,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
   }
 
   private initializeColorPicker(): void {
-    const isInIframe = window.location !== window.parent.location;
-    if (isInIframe) {
+    if (topWindow !== window) {
       topLevelModuleImport('@typo3/backend/color-picker.js');
     } else {
       import('@typo3/backend/color-picker');
@@ -161,8 +161,7 @@ class ExtensionConfiguration extends AbstractInteractableModule {
    * configuration properties
    */
   private initializeWrap(): void {
-    const isInIframe = window.location !== window.parent.location;
-    if (isInIframe) {
+    if (topWindow !== window) {
       topLevelModuleImport('@typo3/install/renderable/wrap-group.js');
       topLevelModuleImport('@typo3/install/renderable/offset-group.js');
     }

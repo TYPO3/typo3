@@ -13,6 +13,7 @@
 
 import { SeverityEnum } from './enum/severity';
 import Modal from './modal';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 /**
  * Module: @typo3/backend/info-window
@@ -29,7 +30,7 @@ class InfoWindow {
     Modal.advanced({
       type: Modal.types.iframe,
       size: Modal.sizes.large,
-      content: top.TYPO3.settings.ShowItem.moduleUrl
+      content: topWindow.TYPO3.settings.ShowItem.moduleUrl
         + '&table=' + encodeURIComponent(table)
         + '&uid=' + (typeof uid === 'number' ? uid : encodeURIComponent(uid)),
       severity: SeverityEnum.notice,
@@ -37,8 +38,8 @@ class InfoWindow {
   }
 }
 
-if (!top.TYPO3.InfoWindow) {
-  top.TYPO3.InfoWindow = InfoWindow;
+if (!topWindow.TYPO3.InfoWindow) {
+  topWindow.TYPO3.InfoWindow = InfoWindow;
 }
 
 // expose as global object

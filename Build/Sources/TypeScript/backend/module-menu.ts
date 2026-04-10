@@ -25,6 +25,7 @@ import { selector } from '@typo3/core/literals';
 import DocumentService from '@typo3/core/document-service';
 import { Collapse } from 'bootstrap';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 enum ModuleMenuSelector {
   menu = '[data-modulemenu]',
@@ -465,14 +466,14 @@ interface ModuleMenuNamespace {
   App: ModuleMenu;
 }
 
-let moduleMenuApp: ModuleMenuNamespace = top?.TYPO3?.ModuleMenu;
+let moduleMenuApp: ModuleMenuNamespace = topWindow.TYPO3?.ModuleMenu;
 
 if (!moduleMenuApp) {
   moduleMenuApp = {
     App: new ModuleMenu(),
   };
-  if (top.TYPO3 !== undefined) {
-    top.TYPO3.ModuleMenu = moduleMenuApp;
+  if (topWindow.TYPO3 !== undefined) {
+    topWindow.TYPO3.ModuleMenu = moduleMenuApp;
   }
 }
 

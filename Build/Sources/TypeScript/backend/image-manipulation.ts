@@ -23,6 +23,7 @@ import { default as Modal, type ModalElement } from './modal';
 import '@typo3/backend/element/spinner-element';
 import { renderNodes } from '@typo3/core/lit-helper';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topDocument } from '@typo3/core/utility/top-window';
 import { Offset } from '@typo3/backend/offset';
 import type { DraggableResizableEvent, PointerEventNames, DraggableResizableElement } from '@typo3/backend/element/draggable-resizable-element';
 import type { EventInterface } from '@typo3/core/event/event-interface';
@@ -608,7 +609,7 @@ class ImageManipulation {
   private initFocusArea(container: HTMLElement): DraggableResizableElement {
     topLevelModuleImport('@typo3/backend/element/draggable-resizable-element.js');
 
-    const focusAreaEl = top.document.createElement('typo3-backend-draggable-resizable');
+    const focusAreaEl = topDocument.createElement('typo3-backend-draggable-resizable');
     // assign area declaration (as persisted in the database)
     focusAreaEl.setAttribute('offset', JSON.stringify(this.convertAreaToOffset(this.currentCropVariant.focusArea, container)));
     // use the same events as cropper.js does

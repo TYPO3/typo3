@@ -26,6 +26,7 @@ import { isContentTypeAllowedInColumn } from '@typo3/backend/layout-module/colum
 import type ResponseInterface from '../ajax-data-handler/response-interface';
 import type { DragDropThumbnail, DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 import DragDropUtility from '@typo3/backend/utility/drag-drop-utility';
+import { topDocument } from '@typo3/core/utility/top-window';
 
 interface Parameters {
   cmd?: { [key: string]: { [key: string]: any } };
@@ -108,7 +109,7 @@ class DragDrop {
 
     new RegularEvent('drop', this.onDrop.bind(this), { capture: true, passive: true }).delegateTo(document, Identifiers.dropZone);
 
-    new RegularEvent('typo3:page-layout-drag-drop:elementChanged', this.onBroadcastElementChanged.bind(this)).bindTo(top.document);
+    new RegularEvent('typo3:page-layout-drag-drop:elementChanged', this.onBroadcastElementChanged.bind(this)).bindTo(topDocument);
   }
 
   protected onDragEnter(event: DragEvent): void {

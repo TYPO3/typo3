@@ -17,6 +17,7 @@ import Modal, { Types, Sizes, Positions, type ModalElement } from '@typo3/backen
 import Notification from '@typo3/backend/notification';
 import Persistent from '@typo3/backend/storage/persistent';
 import labels from '~labels/backend.alt_doc';
+import { topWindow, topDocument } from '@typo3/core/utility/top-window';
 
 /**
  * Module: @typo3/backend/element/contextual-record-edit-trigger
@@ -49,8 +50,8 @@ export class ContextualRecordEditTriggerElement extends PseudoButtonLitElement {
 
   protected override async buttonActivated(): Promise<void> {
     if (Persistent.isset('contextualRecordEdit') && Persistent.get('contextualRecordEdit') == 0) {
-      if (top?.TYPO3?.Backend?.ContentContainer) {
-        top.TYPO3.Backend.ContentContainer.setUrl(this.editUrl);
+      if (topWindow.TYPO3?.Backend?.ContentContainer) {
+        topWindow.TYPO3.Backend.ContentContainer.setUrl(this.editUrl);
       }
       return;
     }
@@ -67,7 +68,7 @@ export class ContextualRecordEditTriggerElement extends PseudoButtonLitElement {
   }
 
   private setupMessageHandling(modal: ModalElement): void {
-    const messageTarget = top;
+    const messageTarget = topWindow;
     let savedRecordTitle = '';
     let hasSaved = false;
     let closeConfirmed = false;
@@ -105,9 +106,9 @@ export class ContextualRecordEditTriggerElement extends PseudoButtonLitElement {
     modal.addEventListener('typo3-modal-hidden', () => {
       messageTarget.removeEventListener('message', messageHandler);
       if (hasSaved) {
-        top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
-        if (top.TYPO3?.Backend?.ContentContainer) {
-          top.TYPO3.Backend.ContentContainer.refresh();
+        topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+        if (topWindow.TYPO3?.Backend?.ContentContainer) {
+          topWindow.TYPO3.Backend.ContentContainer.refresh();
         }
         Notification.success(
           labels.get('notification.record_updated.title'),

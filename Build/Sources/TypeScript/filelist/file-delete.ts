@@ -16,6 +16,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';
 import Modal from '@typo3/backend/modal';
 import labels from '~labels/backend.alt_doc';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 /**
  * Module: @typo3/filelist/file-delete
@@ -29,7 +30,7 @@ class FileDelete {
         let redirectUrl = eventTarget.dataset.redirectUrl;
         redirectUrl = (redirectUrl)
           ? encodeURIComponent(redirectUrl)
-          : encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
+          : encodeURIComponent(topWindow.list_frame.document.location.pathname + topWindow.list_frame.document.location.search);
 
         const identifier = eventTarget.dataset.filelistDeleteIdentifier;
         const deleteType = eventTarget.dataset.filelistDeleteType;
@@ -56,11 +57,11 @@ class FileDelete {
               modal.hideModal();
             } else if (name === 'yes') {
               modal.hideModal();
-              top.list_frame.location.href = target;
+              topWindow.list_frame.location.href = target;
             }
           });
         } else {
-          top.list_frame.location.href = target;
+          topWindow.list_frame.location.href = target;
         }
       }).delegateTo(document, '[data-filelist-delete="true"]');
     });

@@ -17,6 +17,7 @@ import {
   type ActionEventDetails,
   MultiRecordSelectionAction
 } from '@typo3/backend/multi-record-selection-action';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 interface EditActionConfiguration extends ActionConfiguration {
   tableName: string;
@@ -47,9 +48,9 @@ class MultiRecordSelectionEditAction {
       return;
     }
 
-    window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
+    window.location.href = topWindow.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[' + tableName + '][' + entityIdentifiers.join(',') + ']=edit'
-      + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
+      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
       + '&returnUrl=' + encodeURIComponent(configuration.returnUrl || '');
   }
 }

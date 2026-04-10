@@ -19,6 +19,7 @@ import SortableTable from '@typo3/backend/sortable-table';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { topWindow } from '@typo3/core/utility/top-window';
 import labels from '~labels/extensionmanager.messages';
 import coreCommonLabels from '~labels/core.common';
 
@@ -160,7 +161,7 @@ class Repository {
             successMessage,
             15,
           );
-          top.location.reload();
+          topWindow.location.reload();
         }
       } catch {
         // Catching errors on resolving the response. One case is that an extensions might lead to

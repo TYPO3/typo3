@@ -16,6 +16,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import NotificationService from '@typo3/backend/notification';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import type { AbstractAction } from '@typo3/backend/action-button/abstract-action';
+import { topDocument } from '@typo3/core/utility/top-window';
 import labels from '~labels/redirects.slug_service';
 
 type Correlation = {
@@ -98,7 +99,7 @@ class EventHandler {
       if (json.status === 'ok') {
         NotificationService.success(json.title, json.message);
         window.location.reload();
-        top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+        topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
       }
       if (json.status === 'error') {
         NotificationService.error(json.title, json.message);

@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import { topDocument } from '@typo3/core/utility/top-window';
+
 /**
  * Module: @typo3/backend/event/event-dispatcher
  */
@@ -19,8 +21,8 @@ export class EventDispatcher {
     const event = new CustomEvent(name, { detail: detail });
     if (!useTop) {
       document.dispatchEvent(event);
-    } else if (typeof top !== 'undefined') {
-      top.document.dispatchEvent(event);
+    } else {
+      topDocument.dispatchEvent(event);
     }
   }
 }

@@ -27,6 +27,7 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { Categories, type DataCategoriesInterface, type NewRecordWizardItemSelectedEventInterface } from '@typo3/backend/new-record-wizard';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topDocument } from '@typo3/core/utility/top-window';
 import { selector } from '@typo3/core/literals';
 import DomHelper from '@typo3/backend/utility/dom-helper';
 import Notification from '@typo3/backend/notification';
@@ -647,7 +648,7 @@ export class Dashboard extends LitElement {
   private async addWidget(): Promise<void> {
     topLevelModuleImport('@typo3/backend/new-record-wizard.js');
 
-    const wizard = top.document.createElement('typo3-backend-new-record-wizard');
+    const wizard = topDocument.createElement('typo3-backend-new-record-wizard');
     wizard.storeName = 'dashboard-widgets';
     wizard.searchPlaceholder = labels.get('widget.addToDashboard.searchLabel');
     wizard.searchNothingFoundLabel = labels.get('widget.addToDashboard.searchNotFound');

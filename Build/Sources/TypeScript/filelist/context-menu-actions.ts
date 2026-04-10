@@ -18,6 +18,7 @@ import Modal from '@typo3/backend/modal';
 import Md5 from '@typo3/backend/hashing/md5';
 import { fileListOpenElementBrowser } from '@typo3/filelist/file-list';
 import { FileListActionEvent, type FileListActionDetail, FileListActionUtility } from './file-list-actions';
+import { topWindow } from '@typo3/core/utility/top-window';
 import coreCoreLabels from '~labels/core.core';
 import coreCommonLabels from '~labels/core.common';
 
@@ -29,7 +30,7 @@ import coreCommonLabels from '~labels/core.common';
  */
 class ContextMenuActions {
   public static getReturnUrl(): string {
-    return encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
+    return encodeURIComponent(topWindow.list_frame.document.location.pathname + topWindow.list_frame.document.location.search);
   }
 
   public static triggerFileDownload(downloadUrl: string, fileName: string, revokeObjectURL: boolean = false): void {
@@ -80,7 +81,7 @@ class ContextMenuActions {
 
   public static editFile(table: string, uid: string, dataset: DOMStringMap): void {
     const actionUrl: string = dataset.actionUrl;
-    top.TYPO3.Backend.ContentContainer.setUrl(
+    topWindow.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
@@ -90,25 +91,25 @@ class ContextMenuActions {
     if (!resource.metaUid) {
       return;
     }
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FormEngine.moduleUrl
+    topWindow.TYPO3.Backend.ContentContainer.setUrl(
+      topWindow.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[sys_file_metadata][' + resource.metaUid + ']=edit'
-      + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
+      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
       + '&returnUrl=' + ContextMenuActions.getReturnUrl()
     );
   }
 
   public static openInfoPopUp(table: string, uid: string): void {
     if (table === 'sys_file_storage') {
-      top.TYPO3.InfoWindow.showItem(table, uid);
+      topWindow.TYPO3.InfoWindow.showItem(table, uid);
     } else {
       // Files and folders
-      top.TYPO3.InfoWindow.showItem('_FILE', uid);
+      topWindow.TYPO3.InfoWindow.showItem('_FILE', uid);
     }
   }
 
   public static createFolder(table: string, uid: string, dataset: DOMStringMap): void {
-    top.TYPO3.Backend.ContentContainer.get().document.dispatchEvent(new CustomEvent(fileListOpenElementBrowser, {
+    topWindow.TYPO3.Backend.ContentContainer.get().document.dispatchEvent(new CustomEvent(fileListOpenElementBrowser, {
       detail: {
         actionUrl: dataset.actionUrl,
         identifier: dataset.identifier,
@@ -118,7 +119,7 @@ class ContextMenuActions {
   }
 
   public static createFile(table: string, uid: string, dataset: DOMStringMap): void {
-    top.TYPO3.Backend.ContentContainer.get().document.dispatchEvent(new CustomEvent(fileListOpenElementBrowser, {
+    topWindow.TYPO3.Backend.ContentContainer.get().document.dispatchEvent(new CustomEvent(fileListOpenElementBrowser, {
       detail: {
         actionUrl: dataset.actionUrl,
         identifier: dataset.identifier,
@@ -161,8 +162,8 @@ class ContextMenuActions {
     if (uid.split(':').length !== 2) {
       return;
     }
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FormEngine.moduleUrl
+    topWindow.TYPO3.Backend.ContentContainer.setUrl(
+      topWindow.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[sys_filemounts][0]=new'
       + '&defVals[sys_filemounts][identifier]=' + encodeURIComponent(uid)
       + '&returnUrl=' + ContextMenuActions.getReturnUrl()
@@ -171,8 +172,8 @@ class ContextMenuActions {
 
   public static deleteFile(table: string, uid: string, dataset: DOMStringMap): void {
     const performDelete = () => {
-      top.TYPO3.Backend.ContentContainer.setUrl(
-        top.TYPO3.settings.FileCommit.moduleUrl
+      topWindow.TYPO3.Backend.ContentContainer.setUrl(
+        topWindow.TYPO3.settings.FileCommit.moduleUrl
         + '&data[delete][0][data]=' + encodeURIComponent(uid)
         + '&data[delete][0][redirect]=' + ContextMenuActions.getReturnUrl(),
       );
@@ -222,7 +223,7 @@ class ContextMenuActions {
       }
     };
     (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
-      top.TYPO3.Backend.ContentContainer.refresh();
+      topWindow.TYPO3.Backend.ContentContainer.refresh();
     });
   }
 
@@ -238,7 +239,7 @@ class ContextMenuActions {
       }
     };
     (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
-      top.TYPO3.Backend.ContentContainer.refresh();
+      topWindow.TYPO3.Backend.ContentContainer.refresh();
     });
   }
 
@@ -253,7 +254,7 @@ class ContextMenuActions {
       }
     };
     (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
-      top.TYPO3.Backend.ContentContainer.refresh();
+      topWindow.TYPO3.Backend.ContentContainer.refresh();
     });
   }
 
@@ -268,14 +269,14 @@ class ContextMenuActions {
       }
     };
     (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
-      top.TYPO3.Backend.ContentContainer.refresh();
+      topWindow.TYPO3.Backend.ContentContainer.refresh();
     });
   }
 
   public static pasteFileInto(table: string, uid: string, dataset: DOMStringMap): void {
     const performPaste = (): void => {
-      top.TYPO3.Backend.ContentContainer.setUrl(
-        top.TYPO3.settings.FileCommit.moduleUrl
+      topWindow.TYPO3.Backend.ContentContainer.setUrl(
+        topWindow.TYPO3.settings.FileCommit.moduleUrl
         + '&CB[paste]=FILE|' + encodeURIComponent(uid)
         + '&CB[pad]=normal&redirect=' + ContextMenuActions.getReturnUrl(),
       );

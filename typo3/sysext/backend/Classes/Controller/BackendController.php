@@ -125,10 +125,9 @@ readonly class BackendController
         $javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/backend/user-settings-manager.js')
         );
-        // load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
+        // The UC is assigned before any module runs, so the persistent storage never has to fetch it
         $javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/backend/storage/persistent.js')
-                ->invoke('load', $backendUser->uc)
         );
         // Initialize bookmark store with server data if bookmarks are enabled
         if ($this->bookmarkService->isEnabled()) {
@@ -142,6 +141,11 @@ readonly class BackendController
                 'configuration' => [
                     'username' => htmlspecialchars($backendUser->user['username']),
                     'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
+                ],
+                'settings' => [
+                    'Persistent' => [
+                        'uc' => $backendUser->uc,
+                    ],
                 ],
             ],
         ]);

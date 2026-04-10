@@ -22,6 +22,7 @@ import Notification from '@typo3/backend/notification';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { topDocument } from '@typo3/core/utility/top-window';
 import coreCommonLabels from '~labels/core.common';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import labels from '~labels/recycler.messages';
@@ -68,7 +69,7 @@ class Recycler {
    * Reloads the page tree
    */
   public static refreshPageTree(): void {
-    top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+    topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
   }
 
   private getProgress(): ProgressBarElement {

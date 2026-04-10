@@ -23,6 +23,7 @@ import '@typo3/backend/element/icon-element';
 import Persistent from '@typo3/backend/storage/persistent';
 import coreLabels from '~labels/core.core';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { topWindow } from '@typo3/core/utility/top-window';
 import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
 import type { TreeNodeInterface } from './tree-node';
 
@@ -139,7 +140,7 @@ export class PageBrowser extends LitElement {
       return Promise.resolve(this.configuration);
     }
 
-    const configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_browser_configuration;
+    const configurationUrl = topWindow.TYPO3.settings.ajaxUrls.page_tree_browser_configuration;
     const alternativeEntryPoints = this.hasAttribute('alternative-entry-points') ? JSON.parse(this.getAttribute('alternative-entry-points')) : [];
     let request = new AjaxRequest(configurationUrl);
     if (alternativeEntryPoints.length) {

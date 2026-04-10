@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-function o(t){const e=new CustomEvent("typo3:import-javascript-module",{detail:{specifier:t,importPromise:null}});return top.document.dispatchEvent(e),e.detail.importPromise?e.detail.importPromise:Promise.reject(new Error("Top level did not respond with a promise."))}export{o as topLevelModuleImport};
+import{topDocument as o}from"@typo3/core/utility/top-window.js";function r(t){const e=new CustomEvent("typo3:import-javascript-module",{detail:{specifier:t,importPromise:null}});return o.dispatchEvent(e),e.detail.importPromise?e.detail.importPromise:Promise.reject(new Error("Top level did not respond with a promise."))}export{r as topLevelModuleImport};

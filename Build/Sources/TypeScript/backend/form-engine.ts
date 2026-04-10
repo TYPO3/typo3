@@ -39,6 +39,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import backendAltDocLabels from '~labels/backend.alt_doc';
 import coreCoreLabels from '~labels/core.core';
 import type { ElementBrowserMessage, ElementBrowserElementAddedMessage } from '@typo3/backend/element-browser';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 export interface OnFieldChangeItem {
   name: string;
@@ -531,12 +532,12 @@ export default (function() {
    * Initialize events for all form engine relevant tasks.
    */
   FormEngine.initializeEvents = function() {
-    if (top.TYPO3 && typeof top.TYPO3.Backend !== 'undefined') {
+    if (topWindow.TYPO3 && typeof topWindow.TYPO3.Backend !== 'undefined') {
       // @todo: The consumer scope attachment is actually not needed
       // in page wizard and context panel (which currently uses it own handling).
       // This needs to be streamlined.
-      top.TYPO3.Backend.consumerScope.attach(FormEngine);
-      window.addEventListener('pagehide', () => top.TYPO3.Backend.consumerScope.detach(FormEngine), { once: true });
+      topWindow.TYPO3.Backend.consumerScope.attach(FormEngine);
+      window.addEventListener('pagehide', () => topWindow.TYPO3.Backend.consumerScope.detach(FormEngine), { once: true });
     }
 
     FormEngine.formElement.addEventListener('submit', function(e: SubmitEvent) {

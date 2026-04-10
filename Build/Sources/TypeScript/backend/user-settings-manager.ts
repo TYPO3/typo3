@@ -16,6 +16,7 @@ import BroadcastService from '@typo3/backend/broadcast-service';
 import Persistent from '@typo3/backend/storage/persistent';
 import Modal, { type ModalElement } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
+import { topWindow } from '@typo3/core/utility/top-window';
 import labels from '~labels/backend.messages';
 
 enum Identifier {
@@ -176,7 +177,7 @@ class UserSettingsManager {
           text: labels.get('userSettings.requestBackendLanguageRefresh.buttonReload'),
           active: true,
           btnClass: 'btn-primary',
-          trigger: () => top.window.location.reload(),
+          trigger: () => topWindow.location.reload(),
           name: 'ok',
         },
       ],

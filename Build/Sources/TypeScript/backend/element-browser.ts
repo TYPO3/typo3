@@ -14,6 +14,7 @@
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import DocumentService from '@typo3/core/document-service';
 import Modal from '@typo3/backend/modal';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 interface RTESettings {
   parameters: string;
@@ -79,7 +80,7 @@ class ElementBrowser {
     const isInModalFrame = typeof window.frames !== 'undefined'
       && typeof window.frames.frameElement !== 'undefined'
       && window.frames.frameElement.classList.contains('t3js-modal-iframe');
-    const otherModalFrames = Array.from(top.frames || []).filter((item) => {
+    const otherModalFrames = Array.from(topWindow.frames || []).filter((item) => {
       try {
         return typeof item.frameElement !== 'undefined'
           && item.frameElement.classList.contains('t3js-modal-iframe')
@@ -185,9 +186,9 @@ class ElementBrowser {
 
   private findEditFormWindow(): Window | null {
     try {
-      for (let i = 0; i < top.frames.length; i++) {
+      for (let i = 0; i < topWindow.frames.length; i++) {
         try {
-          const frame = top.frames[i];
+          const frame = topWindow.frames[i];
           if (frame !== window && this.windowHasEditForm(frame)) {
             return frame;
           }

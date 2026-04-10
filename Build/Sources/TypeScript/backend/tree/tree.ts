@@ -36,6 +36,7 @@ import miscLabels from '~labels/core.misc';
 import layoutLabels from '~labels/backend.layout';
 import { openPageWizardModal } from '@typo3/backend/page-wizard/helper/wizard-helper';
 import type { Position } from '@typo3/backend/tree/page-position-select';
+import { topDocument } from '@typo3/core/utility/top-window';
 
 export interface TreeNodeStatus {
   expanded: boolean
@@ -1073,7 +1074,7 @@ export class Tree extends LitElement {
   }
 
   protected refreshDragToolTip() {
-    top.document.dispatchEvent(
+    topDocument.dispatchEvent(
       new CustomEvent<DragTooltipMetadata>('typo3:drag-tooltip:metadata-update', {
         detail: {
           statusIconIdentifier: this.getNodeDragStatusIcon(),

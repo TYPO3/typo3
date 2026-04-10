@@ -14,6 +14,7 @@
 import { html, type TemplateResult } from 'lit';
 import type { FinisherInterface } from '@typo3/backend/wizard/finisher/finisher-interface';
 import type { FinisherConfig } from '@typo3/backend/wizard/finisher/finisher-config';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 /**
  * Redirect finisher - navigates to a specific URL after localization
@@ -44,11 +45,11 @@ export default class RedirectFinisher implements FinisherInterface {
       return;
     }
 
-    if (window.opener && !window.opener.closed && window.self === window.top) {
+    if (window.opener && !window.opener.closed && topWindow === window) {
       window.opener.location.href = url;
       window.close();
-    } else if (window.top && window.top.TYPO3?.Backend?.ContentContainer) {
-      window.top.TYPO3.Backend.ContentContainer.setUrl(url);
+    } else if (topWindow.TYPO3?.Backend?.ContentContainer) {
+      topWindow.TYPO3.Backend.ContentContainer.setUrl(url);
     } else {
       window.location.href = url;
     }
