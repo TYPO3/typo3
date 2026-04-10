@@ -778,7 +778,8 @@ class PackageManager implements SingletonInterface
         $suggestedPackageConstraints = $this->packages[$packageKey]->getPackageMetaData()->getConstraintsByType(MetaData::CONSTRAINT_TYPE_SUGGESTS);
         foreach ($suggestedPackageConstraints as $constraint) {
             if ($constraint instanceof PackageConstraint) {
-                $suggestedPackageKey = $constraint->getValue();
+                $suggestedPackageName = $constraint->getValue();
+                $suggestedPackageKey = $this->getPackageKeyFromComposerName($suggestedPackageName);
                 if (isset($this->packages[$suggestedPackageKey])) {
                     $suggestedPackageKeys[] = $suggestedPackageKey;
                 }
