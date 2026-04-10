@@ -22,6 +22,7 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { sudoModeInterceptor } from '@typo3/backend/security/sudo-mode-interceptor';
+import { topWindow, topDocument } from '@typo3/core/utility/top-window';
 
 interface IconIdentifier {
   collapse: string;
@@ -95,7 +96,8 @@ class Recordlist {
 
   private static getReturnUrl(returnUrl: string): string {
     if (returnUrl === '') {
-      returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
+      const location = topWindow.list_frame.document.location;
+      returnUrl = location.pathname + location.search;
     }
     return encodeURIComponent(returnUrl);
   }
@@ -195,9 +197,9 @@ class Recordlist {
       return;
     }
 
-    let editUrl: string = top.TYPO3.settings.FormEngine.moduleUrl
+    let editUrl: string = topWindow.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[' + tableName + '][' + entityIdentifiers.join(',') + ']=edit'
-      + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
+      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
       + '&returnUrl=' + Recordlist.getReturnUrl(returnUrl);
 
     if (columnsOnly.length > 0) {
@@ -258,7 +260,7 @@ class Recordlist {
       rowElement.classList.add('record-pulse');
 
       if (table === 'pages') {
-        top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+        topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
       }
     }).catch(async(response: AjaxResponse): Promise<void> => {
       target.querySelector('.t3js-icon').replaceWith(originalIconElement);

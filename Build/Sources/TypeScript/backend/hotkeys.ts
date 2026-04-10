@@ -15,6 +15,7 @@ import HotkeyStorage, { type ScopedHotkeyMap, type Options, type HotkeySetup } f
 import RegularEvent from '@typo3/core/event/regular-event';
 import { HotkeyStruct } from '@typo3/backend/hotkeys/hotkey-struct';
 import { HotkeyDispatchedEvent, HotkeyRequestedEvent } from '@typo3/backend/hotkeys/events';
+import { topDocument } from '@typo3/core/utility/top-window';
 
 export enum ModifierKeys {
   META = 'meta',
@@ -101,7 +102,7 @@ class Hotkeys {
     new RegularEvent('keydown', (e: KeyboardEvent): void => {
       const hotkeyStruct = HotkeyStruct.fromEvent(e);
       if (hotkeyStruct.hasAnyModifier()) {
-        top.document.dispatchEvent(new HotkeyRequestedEvent(e));
+        topDocument.dispatchEvent(new HotkeyRequestedEvent(e));
       }
     }).bindTo(document);
 

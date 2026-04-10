@@ -14,6 +14,7 @@
 import { IntlMessageFormat, type PrimitiveType, type FormatXMLElementFn, type Formatters } from 'intl-messageformat';
 import type { DateConfiguration } from '@typo3/backend/type/date-configuration';
 import { DateTime } from 'luxon';
+import { openerTopWindow, topWindow } from '@typo3/core/utility/top-window';
 
 type ChunkCallback = (chunks: unknown[]) => unknown;
 type NamedParameters = Record<string, PrimitiveType | ChunkCallback>;
@@ -170,7 +171,7 @@ function memoize<F extends Factory>(context: string, factory: F): F {
 
 function getConfiguredDateFormats(): DateConfiguration | null {
   try {
-    const root = (typeof opener?.top?.TYPO3 !== 'undefined' ? opener.top : top);
+    const root = openerTopWindow() ?? topWindow;
     return root.TYPO3.settings.DateConfiguration;
   } catch {
     return null;

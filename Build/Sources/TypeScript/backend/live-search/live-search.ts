@@ -26,6 +26,7 @@ import BrowserSession from '@typo3/backend/storage/browser-session';
 import { componentName as resultContainerComponentName, type ResultContainer } from '@typo3/backend/live-search/element/result/result-container';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import type { ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
+import { topWindow } from '@typo3/core/utility/top-window';
 import type { Pagination, ResultPagination } from '@typo3/backend/live-search/element/result/result-pagination';
 import coreLabels from '~labels/core.core';
 
@@ -266,11 +267,11 @@ class LiveSearch {
 }
 
 let liveSearchObject: LiveSearch;
-if (!top.TYPO3.LiveSearch) {
+if (!topWindow.TYPO3.LiveSearch) {
   liveSearchObject = new LiveSearch();
-  top.TYPO3.LiveSearch = liveSearchObject;
+  topWindow.TYPO3.LiveSearch = liveSearchObject;
 } else {
-  liveSearchObject = top.TYPO3.LiveSearch;
+  liveSearchObject = topWindow.TYPO3.LiveSearch;
 }
 
 export default liveSearchObject;

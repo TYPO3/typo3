@@ -15,6 +15,7 @@ import FormEngine from '@typo3/backend/form-engine';
 import Modal from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 import DocumentService from '@typo3/core/document-service';
+import { topWindow } from '@typo3/core/utility/top-window';
 import '@typo3/backend/element/icon-element';
 import labels from '~labels/backend.alt_doc';
 
@@ -78,7 +79,7 @@ class ContextualRecordEdit {
         document.querySelectorAll('.has-change').forEach((el) => el.classList.remove('has-change'));
         // Navigate the content frame directly (same-origin access) — using
         // postMessage for this failed silently in Firefox.
-        top?.TYPO3?.Backend?.ContentContainer?.setUrl(this.fullscreenButton.href);
+        topWindow.TYPO3?.Backend?.ContentContainer?.setUrl(this.fullscreenButton.href);
         // Tell the parent to close the modal
         window.parent.postMessage(
           { actionName: 'typo3:editform:navigate' },

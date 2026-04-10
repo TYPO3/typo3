@@ -18,6 +18,7 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
 import PastedPasswordChecker from '@typo3/backend/login/pasted-password-checker';
 import DocumentService from '@typo3/core/document-service';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 interface PreflightResponse {
   capabilities: PreflightResponseCapabilities;
@@ -61,9 +62,9 @@ class BackendLogin {
     this.initializeEvents();
 
     // prevent opening the login form in the backend frameset
-    if (top.location.href !== location.href) {
+    if (topWindow.location.href !== location.href) {
       this.ready = false;
-      top.location.href = location.href;
+      topWindow.location.href = location.href;
     }
     if (this.ready) {
       document.body.setAttribute('data-typo3-login-ready', 'true');

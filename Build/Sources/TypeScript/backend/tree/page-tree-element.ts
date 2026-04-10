@@ -28,6 +28,7 @@ import { UrlFactory } from '@typo3/core/factory/url-factory';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { topWindow } from '@typo3/core/utility/top-window';
 import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 import type { DataTransferStringItem } from '@typo3/backend/tree/tree';
 import '@typo3/backend/viewport/content-navigation-toggle';
@@ -303,7 +304,7 @@ export class EditablePageTree extends PageTree {
   }
 
   private requestTreeUpdate(params: any): Promise<any> {
-    return (new AjaxRequest(top.TYPO3.settings.ajaxUrls.record_process))
+    return (new AjaxRequest(topWindow.TYPO3.settings.ajaxUrls.record_process))
       .post(params, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
       })
@@ -362,7 +363,7 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
       return Promise.resolve(this.configuration);
     }
 
-    const configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_configuration;
+    const configurationUrl = topWindow.TYPO3.settings.ajaxUrls.page_tree_configuration;
     return (new AjaxRequest(configurationUrl)).get()
       .then(async (response: AjaxResponse): Promise<Configuration> => {
         const configuration = await response.resolve('json');
@@ -455,11 +456,11 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
     }
 
     // Load the currently selected module with the updated URL
-    const moduleMenu = top.TYPO3.ModuleMenu.App;
+    const moduleMenu = topWindow.TYPO3.ModuleMenu.App;
     const contentUrl = UrlFactory.createUrl(ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link, {
       id: node.identifier
     });
-    top.TYPO3.Backend.ContentContainer.setUrl(contentUrl);
+    topWindow.TYPO3.Backend.ContentContainer.setUrl(contentUrl);
   };
 
   private readonly showContextMenu = (evt: CustomEvent): void => {

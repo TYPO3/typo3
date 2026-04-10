@@ -17,6 +17,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
 import Notification from '@typo3/backend/notification';
+import { topWindow } from '@typo3/core/utility/top-window';
 import labels from '~labels/scheduler.messages';
 
 /**
@@ -119,7 +120,7 @@ class SchedulerAddGroups {
     const groupName = input ? input.value.trim() : '';
 
     // Build FormEngine URL for creating a new task group record
-    const formEngineUrl = new URL(top.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
+    const formEngineUrl = new URL(topWindow.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
     formEngineUrl.searchParams.set('edit[tx_scheduler_task_group][0]', 'new');
 
     // If a group name was entered, forward it as defVals

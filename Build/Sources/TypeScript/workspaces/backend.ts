@@ -25,6 +25,7 @@ import Utility from '@typo3/backend/utility';
 import windowManager from '@typo3/backend/window-manager';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topWindow, topDocument } from '@typo3/core/utility/top-window';
 import { selector } from '@typo3/core/literals';
 import IconHelper from '@typo3/workspaces/utility/icon-helper';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
@@ -114,7 +115,7 @@ class Backend extends Workspaces {
    * Reloads the page tree
    */
   private static refreshPageTree(): void {
-    top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+    topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
   }
 
   /**
@@ -206,7 +207,7 @@ class Backend extends Workspaces {
       const row = target.closest('tr') as HTMLTableRowElement;
       const newUrl = TYPO3.settings.FormEngine.moduleUrl
         + '&returnUrl=' + encodeURIComponent(document.location.href)
-        + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
+        + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
         + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + row.dataset.table + '][' + row.dataset.uid + ']=edit';
 
       window.location.href = newUrl;
@@ -233,25 +234,26 @@ class Backend extends Workspaces {
       target.replaceChildren(document.createRange().createContextualFragment(IconHelper.getIcon(iconIdentifier)));
     }).delegateTo(document, Identifiers.expandAction);
 
+
     new RegularEvent('click', () => {
-      const workspaceRecipients = window.top.document.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient');
+      const workspaceRecipients = topDocument.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient');
 
       workspaceRecipients.forEach((recipient) => {
         if (!recipient.disabled) {
           recipient.checked = true;
         }
       });
-    }).delegateTo(window.top.document, Identifiers.workspaceRecipientsSelectAll);
+    }).delegateTo(topDocument, Identifiers.workspaceRecipientsSelectAll);
 
     new RegularEvent('click', () => {
-      const workspaceRecipients = window.top.document.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient');
+      const workspaceRecipients = topDocument.querySelectorAll<HTMLInputElement>('.t3js-workspace-recipient');
 
       workspaceRecipients.forEach((recipient) => {
         if (!recipient.disabled) {
           recipient.checked = false;
         }
       });
-    }).delegateTo(window.top.document, Identifiers.workspaceRecipientsDeselectAll);
+    }).delegateTo(topDocument, Identifiers.workspaceRecipientsDeselectAll);
 
     new RegularEvent('submit', (event: Event) => {
       event.preventDefault();

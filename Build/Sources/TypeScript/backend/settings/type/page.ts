@@ -18,6 +18,7 @@ import { BaseElement } from './base';
 import { default as Modal } from '@typo3/backend/modal';
 import labels from '~labels/backend.settingseditor';
 import '@typo3/backend/element/icon-element';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 export const componentName = 'typo3-backend-settings-type-page';
 
@@ -56,7 +57,7 @@ export class PageTypeElement extends BaseElement<number> {
   }
 
   private canUseElementBrowser(): boolean {
-    return top.TYPO3.settings?.Wizards?.elementBrowserUrl !== undefined;
+    return topWindow.TYPO3.settings?.Wizards?.elementBrowserUrl !== undefined;
   }
 
   private openElementBrowser() {
@@ -69,7 +70,7 @@ export class PageTypeElement extends BaseElement<number> {
 
     const modal = Modal.advanced({
       type: Modal.types.iframe,
-      content: top.TYPO3.settings.Wizards.elementBrowserUrl + '&' + queryParams.toString(),
+      content: topWindow.TYPO3.settings.Wizards.elementBrowserUrl + '&' + queryParams.toString(),
       size: Modal.sizes.large,
     });
     window.addEventListener('message', this.elementBrowserListener);

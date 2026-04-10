@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import { topDocument } from '@typo3/core/utility/top-window';
+
 /**
  * @internal
  */
@@ -22,7 +24,7 @@ export function topLevelModuleImport(specifier: string): Promise<any> {
     }
   });
 
-  top.document.dispatchEvent(event);
+  topDocument.dispatchEvent(event);
 
   if (event.detail.importPromise) {
     return event.detail.importPromise;

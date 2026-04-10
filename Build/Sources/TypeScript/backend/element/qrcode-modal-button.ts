@@ -16,6 +16,7 @@ import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import Modal from '@typo3/backend/modal';
 import { html } from 'lit';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topWindow } from '@typo3/core/utility/top-window';
 import listLabels from '~labels/core.mod_web_list';
 
 /**
@@ -36,8 +37,7 @@ export class QrCodeModalButton extends PseudoButtonLitElement {
   }
 
   protected async loadModuleFrameAgnostic(module: string): Promise<any> {
-    const isInIframe = window.location !== window.parent.location;
-    if (isInIframe) {
+    if (topWindow !== window) {
       await topLevelModuleImport(module);
     } else {
       await import(module);

@@ -21,6 +21,7 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 import Viewport from '@typo3/backend/viewport';
 import labels from '~labels/core.core';
+import { topDocument } from '@typo3/core/utility/top-window';
 
 interface Message {
   title: string;
@@ -91,7 +92,7 @@ class FileListRenameHandler {
                   Viewport.ContentContainer.refresh();
                 }
 
-                top.document.dispatchEvent(new CustomEvent('typo3:filestoragetree:refresh'));
+                topDocument.dispatchEvent(new CustomEvent('typo3:filestoragetree:refresh'));
                 modal.hideModal();
 
               });

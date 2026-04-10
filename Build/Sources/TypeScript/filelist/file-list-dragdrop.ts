@@ -17,6 +17,7 @@ import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selec
 import { FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { DragTooltipMetadata, DragDropThumbnail } from '@typo3/backend/drag-tooltip';
+import { topWindow, topDocument } from '@typo3/core/utility/top-window';
 
 export interface FileListDragDropDetail {
   action: string;
@@ -86,7 +87,7 @@ class FileListDragDrop {
         resources: JSON.parse(event.dataTransfer.getData(DataTransferTypes.falResources) ?? '{}'),
         target: FileListActionUtility.getResourceForElement(target),
       };
-      top.document.dispatchEvent(new CustomEvent(FileListDragDropEvent.transfer, { detail: detail }));
+      topDocument.dispatchEvent(new CustomEvent(FileListDragDropEvent.transfer, { detail: detail }));
     }, { capture: true, passive: true }).delegateTo(document, selector);
 
     new RegularEvent('dragend', (/*event: DragEvent*/): void => {
@@ -102,7 +103,7 @@ class FileListDragDrop {
     return selectedItems
       .filter((item): boolean => item.hasPreview)
       .map((item) => {
-        const thumbnailUrl = new URL(top.TYPO3.settings.Resource.thumbnailUrl, window.origin);
+        const thumbnailUrl = new URL(topWindow.TYPO3.settings.Resource.thumbnailUrl, window.origin);
         thumbnailUrl.searchParams.set('identifier', item.uid.toString(10));
 
         return {

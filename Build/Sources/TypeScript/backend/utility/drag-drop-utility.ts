@@ -12,6 +12,7 @@
  */
 
 import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
+import { topDocument } from '@typo3/core/utility/top-window';
 
 /**
  * Module: @typo3/backend/utility/drag-drop-utility
@@ -36,7 +37,7 @@ export default class DragDropUtility {
   public static updateEventAndTooltipToReflectCopyMoveIntention(event: DragEvent): void {
     const isCopy = DragDropUtility.isCopyModifierFromEvent(event);
     event.dataTransfer.dropEffect = isCopy ? 'copy' : 'move';
-    top.document.dispatchEvent(
+    topDocument.dispatchEvent(
       new CustomEvent<DragTooltipMetadata>('typo3:drag-tooltip:metadata-update', {
         detail: {
           statusIconIdentifier: isCopy ? 'actions-duplicate' : 'actions-move'

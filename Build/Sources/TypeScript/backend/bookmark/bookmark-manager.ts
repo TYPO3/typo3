@@ -21,6 +21,7 @@ import Modal from '../modal';
 import Notification from '../notification';
 import { SeverityEnum } from '../enum/severity';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
+import { topDocument } from '@typo3/core/utility/top-window';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';
 import labels from '~labels/core.bookmarks';
@@ -1208,7 +1209,7 @@ export class BookmarkManagerButtonElement extends PseudoButtonLitElement {
 
   protected override buttonActivated(): void {
     // Create element in top frame to avoid adoptedStyleSheets cross-document issues
-    const targetDocument = top?.document ?? document;
+    const targetDocument = topDocument;
     const managerElement = targetDocument.createElement('typo3-backend-bookmark-manager-content') as BookmarkManagerContentElement;
     if (this.editId !== undefined) {
       managerElement.editId = this.editId;

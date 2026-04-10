@@ -16,6 +16,7 @@ import ConsumerScope from './event/consumer-scope';
 import Loader from './viewport/loader';
 import NavigationContainer from './viewport/navigation-container';
 import Topbar from './viewport/topbar';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 class Viewport {
   // The attributes are uppercase for compatibility reasons
@@ -34,13 +35,13 @@ class Viewport {
 
 let viewportObject: Viewport;
 
-if (!top.TYPO3 || !top.TYPO3.Backend) {
+if (!topWindow.TYPO3 || !topWindow.TYPO3.Backend) {
   viewportObject = new Viewport();
-  if (typeof top.TYPO3 !== 'undefined') {
-    top.TYPO3.Backend = viewportObject;
+  if (typeof topWindow.TYPO3 !== 'undefined') {
+    topWindow.TYPO3.Backend = viewportObject;
   }
 } else {
-  viewportObject = top.TYPO3.Backend;
+  viewportObject = topWindow.TYPO3.Backend;
 }
 
 export default viewportObject;

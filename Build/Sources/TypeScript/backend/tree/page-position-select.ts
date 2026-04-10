@@ -23,6 +23,7 @@ import { type TreeNodeInterface, TreeNodePositionEnum } from './tree-node';
 import { cache } from 'lit/directives/cache.js';
 import labels from '~labels/core.core';
 import type { BreadcrumbNodeInterface } from '@typo3/backend/element/breadcrumb';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 interface Configuration {
   [keys: string]: any;
@@ -101,7 +102,7 @@ export class PagePositionSelect extends LitElement {
   }
 
   protected loadConfiguration(): void {
-    const configurationUrl = top.TYPO3.settings.ajaxUrls.page_tree_browser_configuration;
+    const configurationUrl = topWindow.TYPO3.settings.ajaxUrls.page_tree_browser_configuration;
     const alternativeEntryPoints = this.hasAttribute('alternative-entry-points') ? JSON.parse(this.getAttribute('alternative-entry-points')) : [];
     let request = new AjaxRequest(configurationUrl);
     if (alternativeEntryPoints.length) {

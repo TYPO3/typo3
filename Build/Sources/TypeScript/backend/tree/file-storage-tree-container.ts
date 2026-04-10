@@ -28,6 +28,7 @@ import { Resource, type ResourceInterface } from '@typo3/backend/resource/resour
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
 import type { DataTransferStringItem } from '@typo3/backend/tree/tree';
+import { topWindow, topDocument } from '@typo3/core/utility/top-window';
 import { UrlFactory } from '@typo3/core/factory/url-factory';
 import coreLabels from '~labels/core.core';
 import layoutLabels from '~labels/backend.layout';
@@ -260,7 +261,7 @@ export class EditableFileStorageTree extends FileStorageTree {
       resources: fileOperationCollection.getResources(),
       target: fileOperationCollection.target,
     };
-    top.document.dispatchEvent(new CustomEvent(FileListDragDropEvent.transfer, { detail: detail }));
+    topDocument.dispatchEvent(new CustomEvent(FileListDragDropEvent.transfer, { detail: detail }));
   }
 }
 
@@ -292,10 +293,11 @@ export class FileStorageTreeNavigationComponent extends TreeModuleState(LitEleme
   }
 
   protected override render(): TemplateResult {
+    const ajaxUrls = topWindow.TYPO3.settings.ajaxUrls;
     const treeSetup = {
-      dataUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_data,
-      rootlineUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_rootline,
-      filterUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_filter,
+      dataUrl: ajaxUrls.filestorage_tree_data,
+      rootlineUrl: ajaxUrls.filestorage_tree_rootline,
+      filterUrl: ajaxUrls.filestorage_tree_filter,
       showIcons: true,
       searchPlaceholder: coreLabels.get('tree.searchFolderTree')
     };
@@ -352,11 +354,11 @@ export class FileStorageTreeNavigationComponent extends TreeModuleState(LitEleme
     }
 
     // Load the currently selected module with the updated URL
-    const moduleMenu = top.TYPO3.ModuleMenu.App;
+    const moduleMenu = topWindow.TYPO3.ModuleMenu.App;
     const contentUrl = UrlFactory.createUrl(ModuleUtility.getFromName(moduleMenu.getCurrentModule()).link, {
       id: decodeURIComponent(node.identifier)
     });
-    top.TYPO3.Backend.ContentContainer.setUrl(contentUrl);
+    topWindow.TYPO3.Backend.ContentContainer.setUrl(contentUrl);
   };
 
   private readonly showContextMenu = (evt: CustomEvent): void => {

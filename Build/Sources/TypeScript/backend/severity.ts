@@ -12,6 +12,7 @@
  */
 
 import { SeverityEnum } from './enum/severity';
+import { openerTopWindow, topWindow } from '@typo3/core/utility/top-window';
 
 /**
  * Module: @typo3/backend/severity
@@ -55,28 +56,7 @@ export default class Severity {
   }
 }
 
-let severityObject: Severity;
-try {
-  // fetch from opening window
-  if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Severity) {
-    severityObject = window.opener.TYPO3.Severity;
-  }
-
-  // fetch from parent
-  if (parent && parent.window.TYPO3 && parent.window.TYPO3.Severity) {
-    severityObject = parent.window.TYPO3.Severity;
-  }
-
-  // fetch object from outer frame
-  if (top && top.TYPO3 && top.TYPO3.Severity) {
-    severityObject = top.TYPO3.Severity;
-  }
-} catch {
-  // This only happens if the opener, parent or top is some other url (eg a local file)
-  // which loaded the current window. Then the browser's cross domain policy jumps in
-  // and raises an exception.
-  // For this case we are safe and we can create our global object below.
-}
+let severityObject: Severity = topWindow.TYPO3?.Severity ?? openerTopWindow()?.TYPO3?.Severity;
 
 if (!severityObject) {
   severityObject = Severity;

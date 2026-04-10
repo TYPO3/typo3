@@ -16,6 +16,7 @@ declare namespace TYPO3 {
     export let App: typeof import('@typo3/backend/module-menu').default.App;
   }
   export let Notification: typeof import('@typo3/backend/notification').default;
+  export let Persistent: typeof import('@typo3/backend/storage/persistent').default;
   export let Modal: typeof import('@typo3/backend/modal').default;
   export let LiveSearch: typeof import('@typo3/backend/live-search/live-search').default;
   export let LiveSearchConfigurator: typeof import('@typo3/backend/live-search/live-search-configurator').default;
@@ -53,6 +54,9 @@ declare namespace TYPO3 {
       export const dateEditor: {
         readonly absolutePattern: string;
       };
+    }
+    export namespace Persistent {
+      export const uc: import('@typo3/backend/storage/persistent').UC | undefined;
     }
     export namespace FormEngine {
       export const moduleUrl: string;

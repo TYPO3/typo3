@@ -16,6 +16,7 @@ import { customElement, property } from 'lit/decorators.js';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 enum Modes {
   switch = 'switch',
@@ -56,7 +57,7 @@ export class SwitchUser extends PseudoButtonLitElement {
     }).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       if (data.success === true && data.url) {
-        top.window.location.href = data.url;
+        topWindow.location.href = data.url;
       } else {
         Notification.error('Switching to user went wrong.');
       }
@@ -67,7 +68,7 @@ export class SwitchUser extends PseudoButtonLitElement {
     (new AjaxRequest(TYPO3.settings.ajaxUrls.switch_user_exit)).post({}).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       if (data.success === true && data.url) {
-        top.window.location.href = data.url;
+        topWindow.location.href = data.url;
       } else {
         Notification.error('Exiting current user went wrong.');
       }

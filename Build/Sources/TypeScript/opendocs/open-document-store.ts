@@ -16,6 +16,7 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { BroadcastMessage, type BroadcastEvent } from '@typo3/backend/broadcast-message';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import type { BreadcrumbNodeInterface } from '@typo3/backend/element/breadcrumb';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 export const OpenDocumentStoreChangedEvent = 'typo3:open-document-store:changed';
 
@@ -178,12 +179,12 @@ class OpenDocumentStore {
  */
 function getOrCreateInstance(): OpenDocumentStore {
   try {
-    if (top?.TYPO3?.OpenDocumentStore) {
-      return top.TYPO3.OpenDocumentStore;
+    if (topWindow.TYPO3?.OpenDocumentStore) {
+      return topWindow.TYPO3.OpenDocumentStore;
     }
     const instance = new OpenDocumentStore();
-    if (top?.TYPO3) {
-      top.TYPO3.OpenDocumentStore = instance;
+    if (topWindow.TYPO3) {
+      topWindow.TYPO3.OpenDocumentStore = instance;
     }
     return instance;
   } catch {

@@ -28,6 +28,7 @@ import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 import '@typo3/backend/element/progress-bar-element';
 import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topWindow } from '@typo3/core/utility/top-window';
 import { FormatUtility } from '@typo3/backend/utility/format-utility';
 import coreLabels from '~labels/core.core';
 import commonLabels from '~labels/core.common';
@@ -508,7 +509,7 @@ export default class DragUploader {
                 {
                   label: coreLabels.get('file_upload.reload.filelist.actions.reload'),
                   action: new ImmediateAction((): void => {
-                    top.list_frame.document.location.href = this.reloadUrl;
+                    topWindow.list_frame.document.location.href = this.reloadUrl;
                   })
                 }
               ]

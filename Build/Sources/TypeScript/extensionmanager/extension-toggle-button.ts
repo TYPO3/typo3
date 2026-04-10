@@ -19,6 +19,7 @@ import Severity from '@typo3/backend/severity';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { topWindow } from '@typo3/core/utility/top-window';
 import { showDependencyModal, type ToggleResponse } from './dependency-check';
 import '@typo3/backend/element/icon-element';
 import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
@@ -99,7 +100,7 @@ export class ExtensionToggleButton extends LitElement {
 
     const onToggleSuccess = (): void => {
       BrowserSession.set(ExtensionToggleButton.focusSessionKey, this.extensionKey);
-      top.location.reload();
+      topWindow.location.reload();
     };
 
     new AjaxRequest(this.checkUrl).post({}).then(

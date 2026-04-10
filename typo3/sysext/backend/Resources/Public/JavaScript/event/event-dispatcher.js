@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-class c{static dispatchCustomEvent(e,n=null,s=!1){const t=new CustomEvent(e,{detail:n});s?typeof top<"u"&&top.document.dispatchEvent(t):document.dispatchEvent(t)}}export{c as EventDispatcher};
+import{topDocument as c}from"@typo3/core/utility/top-window.js";class o{static dispatchCustomEvent(e,s=null,n=!1){const t=new CustomEvent(e,{detail:s});n?c.dispatchEvent(t):document.dispatchEvent(t)}}export{o as EventDispatcher};

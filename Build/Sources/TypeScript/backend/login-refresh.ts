@@ -19,6 +19,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '@typo3/backend/notification';
 import '@typo3/backend/element/progress-bar-element';
 import coreLabels from '~labels/core.core';
+import { openerTopWindow, topWindow } from '@typo3/core/utility/top-window';
 
 enum MarkupIdentifiers {
   loginrefresh = 't3js-modal-loginrefresh',
@@ -222,7 +223,7 @@ class LoginRefresh {
           active: false,
           btnClass: 'btn-default',
           name: 'logout',
-          trigger: () => top.location.href = this.logoutUrl
+          trigger: () => topWindow.location.href = this.logoutUrl
         },
         {
           text: coreLabels.get('mess.refresh_login_refresh_button'),
@@ -277,7 +278,7 @@ class LoginRefresh {
           active: false,
           btnClass: 'btn-default',
           name: 'logout',
-          trigger: () => top.location.href = this.logoutUrl
+          trigger: () => topWindow.location.href = this.logoutUrl
         },
         {
           text: coreLabels.get('mess.refresh_login_button'),
@@ -477,28 +478,7 @@ export class SelfFillingProgressBarElement extends LitElement {
   };
 }
 
-let loginRefreshObject;
-try {
-  // fetch from opening window
-  if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.LoginRefresh) {
-    loginRefreshObject = window.opener.TYPO3.LoginRefresh;
-  }
-
-  // fetch from parent
-  if (parent && parent.window.TYPO3 && parent.window.TYPO3.LoginRefresh) {
-    loginRefreshObject = parent.window.TYPO3.LoginRefresh;
-  }
-
-  // fetch object from outer frame
-  if (top && top.TYPO3 && top.TYPO3.LoginRefresh) {
-    loginRefreshObject = top.TYPO3.LoginRefresh;
-  }
-} catch {
-  // This only happens if the opener, parent or top is some other url (eg a local file)
-  // which loaded the current window. Then the browser's cross domain policy jumps in
-  // and raises an exception.
-  // For this case we are safe and we can create our global object below.
-}
+let loginRefreshObject: LoginRefresh = topWindow.TYPO3?.LoginRefresh ?? openerTopWindow()?.TYPO3?.LoginRefresh;
 
 if (!loginRefreshObject) {
   loginRefreshObject = new LoginRefresh();

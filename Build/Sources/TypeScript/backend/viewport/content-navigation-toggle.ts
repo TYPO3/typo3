@@ -16,6 +16,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { PseudoButtonLitElement } from '@typo3/backend/element/pseudo-button';
 import { NavigationToggleEvent, NavigationStateChangeEvent, ContentNavigationSlotEnum, type ContentNavigation } from './content-navigation';
 import '@typo3/backend/element/icon-element';
+import { topDocument } from '@typo3/core/utility/top-window';
 
 export enum ContentNavigationToggleActionEnum {
   collapse = 'collapse',
@@ -153,14 +154,6 @@ export class ContentNavigationToggle extends PseudoButtonLitElement {
     return ContentNavigationSlotEnum.content;
   }
 
-  private getTargetDocument(): Document {
-    try {
-      return window.top?.document ?? document;
-    } catch {
-      return document;
-    }
-  }
-
   private setupStateSync(): void {
     if (!this.context) {
       return;
@@ -181,7 +174,7 @@ export class ContentNavigationToggle extends PseudoButtonLitElement {
       attributeFilter: ['navigation-collapsed', 'navigation-hidden']
     });
 
-    this.getTargetDocument().addEventListener(NavigationStateChangeEvent.eventName, this.boundStateChangeHandler);
+    topDocument.addEventListener(NavigationStateChangeEvent.eventName, this.boundStateChangeHandler);
   }
 
   private cleanupStateSync(): void {
@@ -190,7 +183,7 @@ export class ContentNavigationToggle extends PseudoButtonLitElement {
       this.mutationObserver = null;
     }
 
-    this.getTargetDocument().removeEventListener(NavigationStateChangeEvent.eventName, this.boundStateChangeHandler);
+    topDocument.removeEventListener(NavigationStateChangeEvent.eventName, this.boundStateChangeHandler);
   }
 
   private releaseTopLevelListeners(): void {

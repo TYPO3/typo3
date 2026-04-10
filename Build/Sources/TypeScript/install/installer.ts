@@ -14,6 +14,7 @@
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { topWindow } from '@typo3/core/utility/top-window';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import PasswordStrength from './module/password-strength';
 import { InfoBox } from './renderable/info-box';
@@ -450,7 +451,7 @@ class Installer {
       .post(postData)
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
-        top.location.href = data.redirect;
+        topWindow.location.href = data.redirect;
       });
   }
 }

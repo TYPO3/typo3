@@ -20,6 +20,7 @@ import Notification from '../notification';
 import { SeverityEnum } from '../enum/severity';
 import { BroadcastMessage, type BroadcastEvent } from '@typo3/backend/broadcast-message';
 import BroadcastService from '@typo3/backend/broadcast-service';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 export const BookmarkStoreChangedEvent = 'typo3:bookmark-store:changed';
 
@@ -683,19 +684,14 @@ class BookmarkStore {
  * Returns singleton instance from top frame, creating it if needed.
  */
 function getOrCreateInstance(): BookmarkStore {
-  try {
-    if (top?.TYPO3?.BookmarkStore) {
-      return top.TYPO3.BookmarkStore;
-    }
-    const instance = new BookmarkStore();
-    if (top?.TYPO3) {
-      top.TYPO3.BookmarkStore = instance;
-    }
-    return instance;
-  } catch {
-    // Cross-origin access denied, create local instance
-    return new BookmarkStore();
+  if (topWindow.TYPO3?.BookmarkStore) {
+    return topWindow.TYPO3.BookmarkStore;
   }
+  const instance = new BookmarkStore();
+  if (topWindow.TYPO3) {
+    topWindow.TYPO3.BookmarkStore = instance;
+  }
+  return instance;
 }
 
 export default getOrCreateInstance();

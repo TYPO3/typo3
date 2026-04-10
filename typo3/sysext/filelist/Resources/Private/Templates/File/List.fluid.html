@@ -161,7 +161,7 @@
     <f:if condition="{listHtml}">
         <f:if condition="{showClipboardPanel}">
             <hr class="spacer">
-            <typo3-backend-clipboard-panel return-url="{listUrl}" table="_FILE"></typo3-backend-clipboard-panel>
+            <typo3-backend-clipboard-panel return-url="{listUrl}" module-url="{f:be.uri(route: 'clipboard_process')}" table="_FILE"></typo3-backend-clipboard-panel>
         </f:if>
     </f:if>
 </f:section>

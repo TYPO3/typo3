@@ -24,6 +24,7 @@ import Viewport from '@typo3/backend/viewport';
 import { FormatUtility } from '@typo3/backend/utility/format-utility';
 import { ThumbnailSize } from '@typo3/backend/element/thumbnail-element';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topWindow } from '@typo3/core/utility/top-window';
 import labels from '~labels/filelist.messages';
 import coreCommonLabels from '~labels/core.common';
 import coreCoreLabels from '~labels/core.core';
@@ -100,7 +101,7 @@ class FileListReplaceHandler {
   }
 
   private composeEditForm(resource: ResourceInterface): TemplateResult {
-    const thumbnailUrl = new URL(top.TYPO3.settings.Resource.thumbnailUrl, window.origin);
+    const thumbnailUrl = new URL(topWindow.TYPO3.settings.Resource.thumbnailUrl, window.origin);
     thumbnailUrl.searchParams.set('identifier', resource.uid.toString(10));
 
     return html`

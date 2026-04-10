@@ -16,6 +16,7 @@ import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import ModuleMenu from '@typo3/backend/module-menu';
 import { UrlFactory } from '@typo3/core/factory/url-factory';
+import { topWindow } from '@typo3/core/utility/top-window';
 import '@typo3/workspaces/element/workspace-top-indicator-element';
 import labels from '~labels/workspaces.messages';
 
@@ -237,12 +238,12 @@ class WorkspaceStateService {
  * Returns singleton instance from top frame, creating it if needed.
  */
 function getOrCreateInstance(): WorkspaceStateService {
-  if (top?.TYPO3?.WorkspaceState) {
-    return top.TYPO3.WorkspaceState;
+  if (topWindow.TYPO3?.WorkspaceState) {
+    return topWindow.TYPO3.WorkspaceState;
   }
   const instance = new WorkspaceStateService();
-  if (top?.TYPO3) {
-    top.TYPO3.WorkspaceState = instance;
+  if (topWindow.TYPO3) {
+    topWindow.TYPO3.WorkspaceState = instance;
   }
 
   return instance;

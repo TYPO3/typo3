@@ -30,6 +30,7 @@ import commonLabels from '~labels/core.common';
 import type { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 import type { ResourceInterface } from '@typo3/backend/resource/resource';
 import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 type QueryParameters = Record<string, string>;
 
@@ -82,7 +83,7 @@ export default class Filelist {
       modal.addEventListener('typo3-modal-hidden', (): void => {
         // @todo: this needs to be done when a folder was created. Apparently, backend user signals are not parsed in
         //        the modal's context. The best solution is probably to reload the "document space" via AJAX.
-        top.list_frame.document.location.reload();
+        topWindow.list_frame.document.location.reload();
       });
     }).bindTo(document);
 
@@ -92,14 +93,14 @@ export default class Filelist {
       const resource = detail.resources[0];
       const resourceElement: HTMLElement = detail.trigger.closest('[data-default-language-access]') as HTMLElement;
       if (resource.type === 'file' && resourceElement !== null) {
-        const formEngineUrl = new URL(top.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
+        const formEngineUrl = new URL(topWindow.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
         if (resource.metaUid > 0) {
           formEngineUrl.searchParams.set('edit[sys_file_metadata][' + resource.metaUid + ']', 'edit');
         } else {
           formEngineUrl.searchParams.set('edit[sys_file_metadata][0]', 'new');
           formEngineUrl.searchParams.set('defVals[sys_file_metadata][file]', resource.uid.toString(10));
         }
-        formEngineUrl.searchParams.set('module', top.TYPO3.ModuleMenu.App.getCurrentModule());
+        formEngineUrl.searchParams.set('module', topWindow.TYPO3.ModuleMenu.App.getCurrentModule());
         formEngineUrl.searchParams.set('returnUrl', Filelist.getReturnUrl(''));
         window.location.href = formEngineUrl.toString();
       }
@@ -219,11 +220,11 @@ export default class Filelist {
 
   private static getReturnUrl(returnUrl: string): string {
     if (returnUrl === '') {
-      const form = top.list_frame.document.forms.namedItem('fileListForm');
+      const form = topWindow.list_frame.document.forms.namedItem('fileListForm');
       if (form !== null) {
         returnUrl = form.action;
       } else {
-        returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
+        returnUrl = topWindow.list_frame.document.location.pathname + topWindow.list_frame.document.location.search;
       }
     }
     return returnUrl;
@@ -272,7 +273,7 @@ export default class Filelist {
     });
 
     if (list.length) {
-      const url = new URL(top.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
+      const url = new URL(topWindow.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
       url.searchParams.set('edit[' + configuration.table + '][' + list.join(',') + ']', 'edit');
       url.searchParams.set('returnUrl', Filelist.getReturnUrl(configuration.returnUrl || ''));
       const columnsOnly = configuration.columnsOnly || [];

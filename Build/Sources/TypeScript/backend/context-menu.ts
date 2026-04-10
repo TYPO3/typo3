@@ -18,6 +18,7 @@ import '@typo3/backend/element/spinner-element';
 import { customElement, queryAll, state } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { delay } from '@typo3/core/lit-helper';
+import { topDocument } from '@typo3/core/utility/top-window';
 import { styleMap } from 'lit/directives/style-map.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { Task, initialState } from '@lit/task';
@@ -99,7 +100,7 @@ class ContextMenu {
       bubbles: true,
       composed: true
     });
-    top.document.dispatchEvent(contextMenuEvent);
+    topDocument.dispatchEvent(contextMenuEvent);
   }
 
   private handleTriggerEvent(event: PointerEvent): void {

@@ -21,6 +21,7 @@ import type { PostValidationEvent } from '@typo3/backend/form-engine-validation'
 import type { DateConfiguration } from '@typo3/backend/type/date-configuration';
 import '@typo3/backend/input/clearable';
 import coreLabels from '~labels/core.core';
+import { openerTopWindow, topWindow } from '@typo3/core/utility/top-window';
 
 const ISO8601_LOCALTIME = 'ISO8601_LOCALTIME';
 
@@ -33,7 +34,7 @@ interface FlatpickrInputElement extends HTMLInputElement {
  * contains all logic for the date time picker used in FormEngine, EXT:belog and EXT:scheduler
  */
 class DateTimePicker {
-  private readonly format: DateConfiguration = (typeof opener?.top?.TYPO3 !== 'undefined' ? opener.top : top).TYPO3.settings.DateConfiguration;
+  private readonly format: DateConfiguration = (openerTopWindow() ?? topWindow).TYPO3.settings.DateConfiguration;
 
   /**
    * initialize date fields to add a datepicker to each field

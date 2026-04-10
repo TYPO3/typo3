@@ -12,6 +12,7 @@
  */
 
 import Utility from '@typo3/backend/utility';
+import { topWindow } from '@typo3/core/utility/top-window';
 
 /**
  * Module: @typo3/backend/window-manager
@@ -71,13 +72,13 @@ class WindowManager {
 
 const windowManager = new WindowManager();
 
-if (!top.TYPO3.WindowManager) {
-  if (top.document === window.document) {
+if (!topWindow.TYPO3.WindowManager) {
+  if (topWindow.document === window.document) {
     // our instance is available in top/global scope
-    top.TYPO3.WindowManager = windowManager;
+    topWindow.TYPO3.WindowManager = windowManager;
   } else {
     // ensure there is an instance in top/global scope
-    top.TYPO3.WindowManager = new WindowManager();
+    topWindow.TYPO3.WindowManager = new WindowManager();
   }
 }
 

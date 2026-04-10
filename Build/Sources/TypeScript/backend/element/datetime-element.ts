@@ -15,6 +15,7 @@ import { html, LitElement, nothing, type TemplateResult, type PropertyValues } f
 import { customElement, property, state } from 'lit/decorators.js';
 import { DateTime, type DurationUnit, type DurationUnits } from 'luxon';
 import type { DateConfiguration } from '@typo3/backend/type/date-configuration';
+import { openerTopWindow, topWindow } from '@typo3/core/utility/top-window';
 
 /**
  * Display mode for the time element
@@ -267,7 +268,7 @@ export class DateTimeElement extends LitElement {
 
   private getConfiguredDateFormats(): DateConfiguration | null {
     try {
-      const root = (typeof opener?.top?.TYPO3 !== 'undefined' ? opener.top : top);
+      const root = openerTopWindow() ?? topWindow;
       return root.TYPO3.settings.DateConfiguration;
     } catch {
       return null;

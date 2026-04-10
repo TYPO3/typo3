@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import { topWindow } from '@typo3/core/utility/top-window';
+
 /**
  * Module: @typo3/impexp/context-menu-actions
  *
@@ -22,7 +24,7 @@ class ContextMenuActions {
   public exportT3d(table: string, uid: number, dataset: DOMStringMap): void {
     const actionUrl: string = dataset.actionUrl;
     if (table === 'pages') {
-      top.TYPO3.Backend.ContentContainer.setUrl(
+      topWindow.TYPO3.Backend.ContentContainer.setUrl(
         actionUrl +
         '&id=' + uid +
         '&tx_impexp[pagetree][id]=' + uid +
@@ -30,7 +32,7 @@ class ContextMenuActions {
         '&tx_impexp[pagetree][tables][]=_ALL',
       );
     } else {
-      top.TYPO3.Backend.ContentContainer.setUrl(
+      topWindow.TYPO3.Backend.ContentContainer.setUrl(
         actionUrl +
         '&tx_impexp[record][]=' + table + ':' + uid +
         '&tx_impexp[external_ref][tables][]=_ALL',
@@ -40,7 +42,7 @@ class ContextMenuActions {
 
   public importT3d(table: string, uid: number, dataset: DOMStringMap): void {
     const actionUrl: string = dataset.actionUrl;
-    top.TYPO3.Backend.ContentContainer.setUrl(
+    topWindow.TYPO3.Backend.ContentContainer.setUrl(
       actionUrl + '&id=' + uid + '&table=' + table,
     );
   }

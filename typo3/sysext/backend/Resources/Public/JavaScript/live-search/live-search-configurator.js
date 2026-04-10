@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-class o{constructor(){this.renderers={},this.invokeHandlers={}}getRenderers(){return this.renderers}addRenderer(r,t,n){this.renderers[r]={module:t,callback:n}}getInvokeHandlers(){return this.invokeHandlers}addInvokeHandler(r,t,n){this.invokeHandlers[r+"_"+t]=n}}let e;top.TYPO3.LiveSearchConfigurator?e=top.TYPO3.LiveSearchConfigurator:(e=new o,top.TYPO3.LiveSearchConfigurator=e);var a=e;export{a as default};
+import{topWindow as o}from"@typo3/core/utility/top-window.js";class a{constructor(){this.renderers={},this.invokeHandlers={}}getRenderers(){return this.renderers}addRenderer(r,n,t){this.renderers[r]={module:n,callback:t}}getInvokeHandlers(){return this.invokeHandlers}addInvokeHandler(r,n,t){this.invokeHandlers[r+"_"+n]=t}}let e;o.TYPO3.LiveSearchConfigurator?e=o.TYPO3.LiveSearchConfigurator:(e=new a,o.TYPO3.LiveSearchConfigurator=e);var i=e;export{i as default};

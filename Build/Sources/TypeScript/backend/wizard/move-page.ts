@@ -18,6 +18,7 @@ import Modal from '@typo3/backend/modal';
 import ModuleMenu from '@typo3/backend/module-menu';
 import Notification from '@typo3/backend/notification';
 import ImmediateAction from '@typo3/backend/action-button/immediate-action';
+import { topDocument } from '@typo3/core/utility/top-window';
 import labels from '~labels/backend.wizards.move_page';
 
 export class MovePage {
@@ -68,7 +69,7 @@ export class MovePage {
           ]
         );
 
-        top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+        topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
         ModuleMenu.App.showModule('records', 'id=' + url.searchParams.get('expandPage'));
       });
     }).delegateTo(container, '[data-action="paste"]');

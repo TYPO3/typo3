@@ -23,6 +23,7 @@ import Viewport from './viewport';
 import '@typo3/backend/new-record-wizard';
 import Utility from '@typo3/backend/utility';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+import { topWindow, topDocument } from '@typo3/core/utility/top-window';
 import { html } from 'lit';
 import coreCommonLabels from '~labels/core.common';
 import cacheLabels from '~labels/core.cache';
@@ -38,7 +39,8 @@ class ContextMenuActions {
    * @returns {string}
    */
   public static getReturnUrl(): string {
-    return encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
+    const location = topWindow.list_frame.document.location;
+    return encodeURIComponent(location.pathname + location.search);
   }
 
   public static editRecord(table: string, uid: number, dataset: DOMStringMap): void {
@@ -51,10 +53,10 @@ class ContextMenuActions {
     }
 
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.FormEngine.moduleUrl
+      topWindow.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[' + table + '][' + uid + ']=edit'
       + overrideVals
-      + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
+      + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
       + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
@@ -112,7 +114,7 @@ class ContextMenuActions {
           pageId: uid
         },
       });
-      top.document.dispatchEvent(event);
+      topDocument.dispatchEvent(event);
     }
   }
 
@@ -152,13 +154,13 @@ class ContextMenuActions {
     }
 
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][' + (table !== 'pages' ? '-' : '') + uid + ']=new&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      topWindow.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][' + (table !== 'pages' ? '-' : '') + uid + ']=new&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
   public static openHistoryPopUp(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.RecordHistory.moduleUrl + '&element=' + table + ':' + uid + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      topWindow.TYPO3.settings.RecordHistory.moduleUrl + '&element=' + table + ':' + uid + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -198,7 +200,7 @@ class ContextMenuActions {
   public static disableRecord(table: string, uid: number, dataset: DOMStringMap): void {
     const disableFieldName = dataset.disableField || 'hidden';
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.RecordCommit.moduleUrl
+      topWindow.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     );
@@ -207,7 +209,7 @@ class ContextMenuActions {
   public static enableRecord(table: string, uid: number, dataset: DOMStringMap): void {
     const disableFieldName = dataset.disableField || 'hidden';
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.RecordCommit.moduleUrl
+      topWindow.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     );
@@ -215,7 +217,7 @@ class ContextMenuActions {
 
   public static showInMenus(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.RecordCommit.moduleUrl
+      topWindow.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][nav_hide]=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     );
@@ -223,7 +225,7 @@ class ContextMenuActions {
 
   public static hideInMenus(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.RecordCommit.moduleUrl
+      topWindow.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][nav_hide]=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     );
@@ -350,7 +352,7 @@ class ContextMenuActions {
         + '&redirect=' + ContextMenuActions.getReturnUrl();
 
       Viewport.ContentContainer.setUrl(
-        top.TYPO3.settings.RecordCommit.moduleUrl + url,
+        topWindow.TYPO3.settings.RecordCommit.moduleUrl + url,
       );
     };
     if (!dataset.title) {
@@ -384,7 +386,7 @@ class ContextMenuActions {
   }
 
   private static refreshPageTree(): void {
-    top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+    topDocument.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
   }
 }
 

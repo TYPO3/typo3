@@ -18,6 +18,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import type { AbstractAction } from './action-button/abstract-action';
 import { SeverityEnum } from './enum/severity';
 import Severity from './severity';
+import { topWindow } from '@typo3/core/utility/top-window';
 import coreLabels from '~labels/core.core';
 import '@typo3/backend/element/icon-element';
 
@@ -420,24 +421,7 @@ declare global {
   }
 }
 
-let notificationObject: typeof Notification;
-
-try {
-  // fetch from parent
-  if (parent && parent.window.TYPO3 && parent.window.TYPO3.Notification) {
-    notificationObject = parent.window.TYPO3.Notification;
-  }
-
-  // fetch object from outer frame
-  if (top && top.TYPO3.Notification) {
-    notificationObject = top.TYPO3.Notification;
-  }
-} catch {
-  // This only happens if the opener, parent or top is some other url (eg a local file)
-  // which loaded the current window. Then the browser's cross domain policy jumps in
-  // and raises an exception.
-  // For this case we are safe and we can create our global object below.
-}
+let notificationObject: typeof Notification = topWindow.TYPO3?.Notification;
 
 if (!notificationObject) {
   notificationObject = Notification;

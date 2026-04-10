@@ -14,6 +14,7 @@
 import 'bootstrap';
 import { AbstractInteractableModule, type ModuleLoadedResponse } from '../abstract-interactable-module';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { topDocument } from '@typo3/core/utility/top-window';
 import { FlashMessage } from '../../renderable/flash-message';
 import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/language-packs';
@@ -95,7 +96,7 @@ class LanguagePacks extends AbstractInteractableModule {
             const contentContainer: HTMLElement = modalContent.parentElement.querySelector(Identifiers.contentContainer);
             contentContainer.innerHTML = '';
 
-            const documentRef = window.location !== window.parent.location ? parent.document : document;
+            const documentRef = topDocument;
 
             const languageMatrix = documentRef.createElement('typo3-install-language-matrix');
             languageMatrix.data = state;

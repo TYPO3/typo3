@@ -12,6 +12,7 @@
  */
 
 import Severity from './severity';
+import { topDocument } from '@typo3/core/utility/top-window';
 import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
 
@@ -25,8 +26,7 @@ export class FlashMessage extends LitElement {
   @property({ type: String }) content: string;
 
   public static create(severity: number, subject: string, content: string = ''): FlashMessage {
-    const isInIframe = window.location !== window.parent.location;
-    const doc = isInIframe ? window.parent.document : document;
+    const doc = topDocument;
     const message = doc.createElement('typo3-install-flashmessage');
     message.severity = severity;
     message.subject = subject;

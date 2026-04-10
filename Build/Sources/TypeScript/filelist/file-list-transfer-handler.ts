@@ -21,6 +21,7 @@ import labels from '~labels/filelist.transfer_handler';
 import { type FileListDragDropDetail, FileListDragDropEvent } from '@typo3/filelist/file-list-dragdrop';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { ResourceInterface } from '@typo3/backend/resource/resource';
+import { topWindow, topDocument } from '@typo3/core/utility/top-window';
 
 interface Message {
   title: string;
@@ -91,7 +92,7 @@ class FileListTransferHandler {
           }
         ]
       );
-    }).bindTo(top.document);
+    }).bindTo(topDocument);
   }
 
   private transfer(type: FileListTransferType, resources: ResourceInterface[], target: ResourceInterface): void {
@@ -105,19 +106,19 @@ class FileListTransferHandler {
     });
     const params = { data: { [type]: payload } };
 
-    (new AjaxRequest(top.TYPO3.settings.ajaxUrls.file_process))
+    (new AjaxRequest(topWindow.TYPO3.settings.ajaxUrls.file_process))
       .post(params)
       .then(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         this.handleMessages(data.messages ?? []);
         Viewport.ContentContainer.refresh();
-        top.document.dispatchEvent(new CustomEvent('typo3:filestoragetree:refresh'));
+        topWindow.document.dispatchEvent(new CustomEvent('typo3:filestoragetree:refresh'));
       })
       .catch(async (response: AjaxResponse): Promise<void> => {
         const data = await response.resolve();
         this.handleMessages(data.messages ?? []);
         Viewport.ContentContainer.refresh();
-        top.document.dispatchEvent(new CustomEvent('typo3:filestoragetree:refresh'));
+        topWindow.document.dispatchEvent(new CustomEvent('typo3:filestoragetree:refresh'));
       });
   }
 
