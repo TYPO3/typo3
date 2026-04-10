@@ -105,7 +105,7 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
                             // If the record is not translated (overlays enabled), even though it should have been done
                             // We avoid linking to it
                             if (!isset($overlay['_LOCALIZED_UID'])) {
-                                $record = 0;
+                                $record = null;
                             }
                         }
                     }
