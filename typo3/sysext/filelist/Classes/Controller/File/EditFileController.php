@@ -138,7 +138,8 @@ class EditFileController
             ?? $queryParams['returnUrl']
             ?? (string)$this->uriBuilder->buildUriFromRoute('media_management', [
                 'id' => $parentFolder->getCombinedIdentifier(),
-            ])
+            ]),
+            $request
         );
 
         if (!$file->isTextFile()) {

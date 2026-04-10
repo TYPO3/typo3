@@ -1069,7 +1069,8 @@ readonly class SiteConfigurationController
     protected function resolveReturnUrl(ServerRequestInterface $request): string
     {
         return GeneralUtility::sanitizeLocalUrl(
-            (string)($request->getParsedBody()['returnUrl'] ?? $request->getQueryParams()['returnUrl'] ?? '')
+            (string)($request->getParsedBody()['returnUrl'] ?? $request->getQueryParams()['returnUrl'] ?? ''),
+            $request
         ) ?: (string)$this->uriBuilder->buildUriFromRoute('site_configuration');
     }
 

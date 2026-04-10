@@ -372,7 +372,8 @@ class MfaConfigurationController extends AbstractMfaController
     protected function getReturnUrl(ServerRequestInterface $request): string
     {
         $returnUrl = GeneralUtility::sanitizeLocalUrl(
-            $request->getQueryParams()['returnUrl'] ?? $request->getParsedBody()['returnUrl'] ?? ''
+            $request->getQueryParams()['returnUrl'] ?? $request->getParsedBody()['returnUrl'] ?? '',
+            $request
         );
 
         if ($returnUrl === '' && ExtensionManagementUtility::isLoaded('setup')) {

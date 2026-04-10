@@ -89,7 +89,8 @@ readonly class SiteSettingsController
         }
 
         $returnUrl = GeneralUtility::sanitizeLocalUrl(
-            (string)($request->getQueryParams()['returnUrl'] ?? '')
+            (string)($request->getQueryParams()['returnUrl'] ?? ''),
+            $request
         ) ?: null;
         $overviewUrl = (string)$this->uriBuilder->buildUriFromRoute('site_configuration');
 
@@ -191,7 +192,8 @@ readonly class SiteSettingsController
         }
 
         $returnUrl = GeneralUtility::sanitizeLocalUrl(
-            (string)($parsedBody['returnUrl'] ?? '')
+            (string)($parsedBody['returnUrl'] ?? ''),
+            $request
         ) ?: null;
         $overviewUrl = $this->uriBuilder->buildUriFromRoute('site_configuration');
         $CMD = $parsedBody['CMD'] ?? '';

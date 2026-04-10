@@ -110,7 +110,7 @@ class RecordListController
         $pointer = max(0, (int)($parsedBody['pointer'] ?? $queryParams['pointer'] ?? 0));
         $this->table = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
         $this->searchTerm = trim((string)($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? ''));
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''), $request);
         $cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
 
         // RecordList always requires default language (0) for proper record display

@@ -195,11 +195,11 @@ class FileController
         $redirectUrl = (string)($parsedBody['redirect'] ?? $queryParams['redirect'] ?? '');
         if ($this->file === [] || $redirectUrl !== '') {
             // This in clipboard mode or when a new folder is created
-            $this->redirect = GeneralUtility::sanitizeLocalUrl($redirectUrl);
+            $this->redirect = GeneralUtility::sanitizeLocalUrl($redirectUrl, $request);
         } else {
             $mode = key($this->file);
             $elementKey = key($this->file[$mode]);
-            $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][$elementKey]['redirect'] ?? '');
+            $this->redirect = GeneralUtility::sanitizeLocalUrl($this->file[$mode][$elementKey]['redirect'] ?? '', $request);
         }
         $this->CB = (array)($parsedBody['CB'] ?? $queryParams['CB'] ?? []);
 

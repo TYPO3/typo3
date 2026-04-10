@@ -131,7 +131,7 @@ readonly class OnlineMediaController
             }
         }
 
-        $redirect = GeneralUtility::sanitizeLocalUrl($redirect);
+        $redirect = GeneralUtility::sanitizeLocalUrl($redirect, $request);
         if ($redirect) {
             return new RedirectResponse($redirect, 303);
         }

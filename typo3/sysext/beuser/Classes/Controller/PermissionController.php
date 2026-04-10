@@ -92,7 +92,7 @@ class PermissionController
             $this->id = 0;
         }
 
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''), $request);
         $this->pageInfo = BackendUtility::readPageAccess($this->id, ' 1=1') ?: [
             'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'uid' => 0,

@@ -171,7 +171,7 @@ class SimpleDataHandlerController
         $this->mirror = (array)($parsedBody['mirror'] ?? $queryParams['mirror'] ?? []);
         $this->cacheCmd = (string)($parsedBody['cacheCmd'] ?? $queryParams['cacheCmd'] ?? '');
         $this->CB = (array)($parsedBody['CB'] ?? $queryParams['CB'] ?? []);
-        $this->redirect = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['redirect'] ?? $queryParams['redirect'] ?? ''));
+        $this->redirect = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['redirect'] ?? $queryParams['redirect'] ?? ''), $request);
         // Creating DataHandler object
         $this->tce = GeneralUtility::makeInstance(DataHandler::class);
         // Reverse order.

@@ -204,7 +204,7 @@ class NewRecordController
         $queryParams = $request->getQueryParams();
         // The page id to operate from
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '', $request);
         // Setting up the context sensitive menu:
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/new-content-element-wizard-button.js');

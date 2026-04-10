@@ -17,10 +17,11 @@ return [
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl' => [
-        'numberOfMandatoryArguments' => 1,
-        'maximumNumberOfArguments' => 1,
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Breaking-101311-MakeParameterForGeneralUtilitySanitizeLocalUrlRequired.rst',
+            'Deprecation-109544-GeneralUtilitySanitizeLocalUrlWithoutRequest.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin' => [

@@ -109,7 +109,7 @@ class RedirectUrlValidator implements LoggerAwareInterface
      */
     protected function isRelativeUrl(RequestInterface $request, string $url): bool
     {
-        $url = GeneralUtility::sanitizeLocalUrl($url);
+        $url = GeneralUtility::sanitizeLocalUrl($url, $request);
         if (!empty($url)) {
             $parsedUrl = @parse_url($url);
             if ($parsedUrl !== false && !isset($parsedUrl['scheme']) && !isset($parsedUrl['host'])) {

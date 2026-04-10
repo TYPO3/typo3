@@ -175,7 +175,7 @@ class AddController
                 }
             }
             // Return to the parent FormEngine record editing session:
-            return new RedirectResponse(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
+            return new RedirectResponse(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'], $request));
         }
 
         // Redirecting to FormEngine with instructions to create a new record

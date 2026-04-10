@@ -49,7 +49,7 @@ class NewSchedulerTaskController
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($request->getParsedBody()['returnUrl'] ?? $request->getQueryParams()['returnUrl'] ?? ''));
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($request->getParsedBody()['returnUrl'] ?? $request->getQueryParams()['returnUrl'] ?? ''), $request);
         $this->defaultValues = $request->getParsedBody()['defaultValues'] ?? $request->getQueryParams()['defaultValues'] ?? [];
 
         $wizardItems = $this->eventDispatcher->dispatch(

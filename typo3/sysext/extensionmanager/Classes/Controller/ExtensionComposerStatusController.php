@@ -52,7 +52,8 @@ class ExtensionComposerStatusController extends AbstractController
         // Since we need to forward it in all actions, we define it as class variable here.
         if ($this->request->hasArgument('returnUrl')) {
             $this->returnUrl = GeneralUtility::sanitizeLocalUrl(
-                (string)$this->request->getArgument('returnUrl')
+                (string)$this->request->getArgument('returnUrl'),
+                $this->request
             );
         }
     }

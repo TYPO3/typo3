@@ -60,7 +60,7 @@ class ListController
 
         if ((string)$id !== '') {
             // If pid is blank
-            $redirectUrl = GeneralUtility::sanitizeLocalUrl($parameters['returnUrl']);
+            $redirectUrl = GeneralUtility::sanitizeLocalUrl($parameters['returnUrl'], $request);
         } else {
             // Otherwise, show the list
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -70,7 +70,7 @@ class ListController
             $urlParameters['id'] = $pid;
             $urlParameters['table'] = $parameters['params']['table'];
             $urlParameters['returnUrl'] = !empty($parameters['returnUrl'])
-                ? GeneralUtility::sanitizeLocalUrl($parameters['returnUrl'])
+                ? GeneralUtility::sanitizeLocalUrl($parameters['returnUrl'], $request)
                 : $requestUri;
             $redirectUrl = (string)$uriBuilder->buildUriFromRoute('records', $urlParameters);
         }

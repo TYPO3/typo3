@@ -126,7 +126,7 @@ readonly class ContextualRecordEditController
         $table = $editConf['table'];
         $uid = $this->resolveOverlayUid($table, $editConf['uid']);
 
-        $returnUrl = GeneralUtility::sanitizeLocalUrl($queryParams['returnUrl'] ?? '');
+        $returnUrl = GeneralUtility::sanitizeLocalUrl($queryParams['returnUrl'] ?? '', $request);
         $overrideVals = is_array($queryParams['overrideVals'] ?? false) ? $queryParams['overrideVals'] : [];
         $columnsOnly = $this->prepareColumnsOnlyConfiguration($queryParams['columnsOnly'] ?? null, $table);
         $module = $this->moduleProvider->getModule((string)($queryParams['module'] ?? ''), $this->getBackendUser());

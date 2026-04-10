@@ -1496,27 +1496,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
     #[Test]
-    public function sanitizeLocalUrlDeniesPlainInvalidUrlsInBackendContext(string $url): void
-    {
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getPublicPath() . '/typo3/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['SCRIPT_NAME'] = 'typo3/index.php';
-        self::assertEquals('', GeneralUtility::sanitizeLocalUrl($url));
-    }
-
-    #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
-    #[Test]
-    public function sanitizeLocalUrlDeniesPlainInvalidUrlsInFrontendContext(string $url, bool $skipExplicitEncodeTest = false): void
+    public function sanitizeLocalUrlDeniesPlainInvalidUrls(string $url, bool $skipExplicitEncodeTest = false): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -1529,9 +1509,11 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['SCRIPT_NAME'] = '/index.php';
-        self::assertEquals('', GeneralUtility::sanitizeLocalUrl($url));
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+            'HTTP_HOST' => 'localhost',
+            'SCRIPT_NAME' => '/index.php',
+        ]));
+        self::assertEquals('', GeneralUtility::sanitizeLocalUrl($url, $request));
     }
 
     #[DataProvider('sanitizeLocalUrlInvalidDataProvider')]
@@ -1541,7 +1523,8 @@ final class GeneralUtilityTest extends UnitTestCase
         if ($skipExplicitEncodeTest) {
             self::markTestSkipped('Explicit rawurlencoding skipped because the contents are considered allowed payload if encoded');
         }
-        self::assertEquals('', GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([]));
+        self::assertEquals('', GeneralUtility::sanitizeLocalUrl(rawurlencode($url), $request));
     }
 
     ////////////////////////////////////////

@@ -59,7 +59,7 @@ final readonly class ReplaceAddNewButtonToFormEngine
         $this->pageRenderer->loadJavaScriptModule('@typo3/scheduler/new-scheduler-task-wizard-button.js');
 
         $addTaskUrl = (string)$this->uriBuilder->buildUriFromRoute('ajax_new_scheduler_task_wizard', [
-            'returnUrl' => GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? '') ?: $request->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? '', $request) ?: $request->getAttribute('normalizedParams')->getRequestUri(),
         ]);
 
         $languageService = $this->getLanguageService();

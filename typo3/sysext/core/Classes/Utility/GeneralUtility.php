@@ -2551,8 +2551,15 @@ class GeneralUtility
      * @param string $url potential URL to check
      * @return string $url or empty string
      */
-    public static function sanitizeLocalUrl(string $url): string
+    public static function sanitizeLocalUrl(string $url, ?ServerRequestInterface $request = null): string
     {
+        if ($request === null) {
+            // @deprecated v15: Make $request argument mandatory, remove getIndpEnv() fallback below.
+            trigger_error(
+                'Calling GeneralUtility::sanitizeLocalUrl() without a request argument is deprecated since TYPO3 v14 and will be mandatory in TYPO3 v15.',
+                E_USER_DEPRECATED
+            );
+        }
         $sanitizedUrl = '';
         if (!empty($url)) {
             if (strpbrk($url, "\n\r\x00") !== false) {
@@ -2567,17 +2574,21 @@ class GeneralUtility
             }
 
             $parsedUrl = parse_url($decodedUrl);
+            $normalizedParams = $request?->getAttribute('normalizedParams');
+            $requestHost = $normalizedParams?->getRequestHost() ?? self::getIndpEnv('TYPO3_REQUEST_HOST');
+            $siteUrl = $normalizedParams?->getSiteUrl() ?? self::getIndpEnv('TYPO3_SITE_URL');
+            $sitePath = $normalizedParams?->getSitePath() ?? self::getIndpEnv('TYPO3_SITE_PATH');
+            $scriptName = $normalizedParams?->getScriptName() ?? self::getIndpEnv('SCRIPT_NAME');
             // Pass if URL is on the current host:
             if (self::isValidUrl($decodedUrl)) {
-                if (stripos($decodedUrl . '/', self::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0 && str_starts_with($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL'))) {
-                    // @todo: stripos() above mimicks GU::isOnCurrentHost(). Need to be resolved before GU::getIndpEnv() deprecation.
+                if (stripos($decodedUrl . '/', $requestHost . '/') === 0 && str_starts_with($decodedUrl, $siteUrl)) {
                     $sanitizedUrl = $url;
                 }
             } elseif (PathUtility::isAbsolutePath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {
                 $sanitizedUrl = $url;
-            } elseif ($decodedUrl[0] === '/' && !str_starts_with($decodedUrl, '//') && str_starts_with(self::resolveBackPath($decodedUrl), self::getIndpEnv('TYPO3_SITE_PATH'))) {
+            } elseif ($decodedUrl[0] === '/' && !str_starts_with($decodedUrl, '//') && str_starts_with(self::resolveBackPath($decodedUrl), $sitePath)) {
                 $sanitizedUrl = $url;
-            } elseif (empty($parsedUrl['scheme']) && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && !str_contains($decodedUrl, '\\\\') && str_starts_with(self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl), self::getIndpEnv('TYPO3_SITE_PATH'))) {
+            } elseif (empty($parsedUrl['scheme']) && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && !str_contains($decodedUrl, '\\\\') && str_starts_with(self::resolveBackPath(self::dirname($scriptName) . '/' . $decodedUrl), $sitePath)) {
                 $sanitizedUrl = $url;
             }
         }
