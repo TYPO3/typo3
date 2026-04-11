@@ -64,7 +64,7 @@ class DataProviderCollection implements SingletonInterface
                 sprintf(
                     'Data provider must implement interface %s, %s given.',
                     DataProviderInterface::class,
-                    \get_debug_type($dataProvider),
+                    get_debug_type($dataProvider),
                 ),
                 1381269811,
             );

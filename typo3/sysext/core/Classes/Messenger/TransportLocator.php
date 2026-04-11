@@ -56,7 +56,7 @@ readonly class TransportLocator implements SendersLocatorInterface
                 $transportForMessage = [$transportForMessage];
             }
             foreach ($transportForMessage as $senderAlias) {
-                if (!\in_array($senderAlias, $seen, true)) {
+                if (!in_array($senderAlias, $seen, true)) {
                     $seen[] = $senderAlias;
 
                     yield from $this->getSenderFromConfiguration($senderAlias);

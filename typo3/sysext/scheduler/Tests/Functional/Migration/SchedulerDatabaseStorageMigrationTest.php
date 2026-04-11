@@ -112,9 +112,9 @@ final class SchedulerDatabaseStorageMigrationTest extends FunctionalTestCase
         if (!in_array($field, $jsonDecodeFields, true) || !is_string($data) || $data === '') {
             return $data;
         }
-        $data = \json_decode(json: $data, flags: JSON_THROW_ON_ERROR | JSON_OBJECT_AS_ARRAY);
+        $data = json_decode(json: $data, flags: JSON_THROW_ON_ERROR | JSON_OBJECT_AS_ARRAY);
         $this->naturalSortMultiDimensionalArray($data);
-        return \json_encode($data, JSON_THROW_ON_ERROR);
+        return json_encode($data, JSON_THROW_ON_ERROR);
     }
 
     /**

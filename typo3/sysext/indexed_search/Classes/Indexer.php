@@ -867,7 +867,7 @@ class Indexer
             }
             // Shorten the string. If the database has the wrong character set,
             // the string is probably truncated again.
-            $bodyDescription = \mb_strcut($bodyDescription, 0, $maxL, 'utf-8');
+            $bodyDescription = mb_strcut($bodyDescription, 0, $maxL, 'utf-8');
         }
         return $bodyDescription;
     }

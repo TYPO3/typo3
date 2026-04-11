@@ -43,7 +43,7 @@ final readonly class ConstraintDecoratingValidator implements ValidatorInterface
         $result = new Result();
 
         foreach ($constraintViolationList as $constraintViolation) {
-            $arguments = \array_values($constraintViolation->getParameters());
+            $arguments = array_values($constraintViolation->getParameters());
             $code = $this->convertConstraintViolationCode($constraintViolation->getCode());
             $messageTemplate = $this->convertConstraintViolationMessageTemplate($constraintViolation);
 

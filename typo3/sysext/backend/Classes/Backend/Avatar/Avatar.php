@@ -120,7 +120,7 @@ readonly class Avatar
                     sprintf(
                         'Avatar provider must implement interface "%s", "%s" given.',
                         AvatarProviderInterface::class,
-                        \get_debug_type($provider),
+                        get_debug_type($provider),
                     ),
                     1439317802,
                 );

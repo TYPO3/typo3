@@ -60,7 +60,7 @@ class RouteSorter
 
     public function sortRoutesForGeneration(): self
     {
-        \uasort($this->routes, [$this, 'compareForGeneration']);
+        uasort($this->routes, [$this, 'compareForGeneration']);
         return $this;
     }
 
@@ -121,16 +121,16 @@ class RouteSorter
     {
         $selfVariables = $this->getAllRouteVariables($self);
         $otherVariables = $this->getAllRouteVariables($other);
-        $missingSelfVariables = \array_diff_key(
+        $missingSelfVariables = array_diff_key(
             $selfVariables,
             $this->getRouteParameters($self)
         );
-        $missingOtherVariables = \array_diff_key(
+        $missingOtherVariables = array_diff_key(
             $otherVariables,
             $this->getRouteParameters($other)
         );
         if ($missingSelfVariables === [] && $missingOtherVariables === []) {
-            $difference = \count($selfVariables) - \count($otherVariables);
+            $difference = count($selfVariables) - count($otherVariables);
             return $difference * $action;
         }
         if ($missingSelfVariables === [] && $missingOtherVariables !== []) {
@@ -144,11 +144,11 @@ class RouteSorter
 
     protected function compareMandatoryVariablesPresence(Route $self, Route $other, int $action = self::EARLIER): ?int
     {
-        $missingSelfVariables = \array_diff_key(
+        $missingSelfVariables = array_diff_key(
             $this->getMandatoryRouteVariables($self),
             $this->getRouteParameters($self)
         );
-        $missingOtherVariables = \array_diff_key(
+        $missingOtherVariables = array_diff_key(
             $this->getMandatoryRouteVariables($other),
             $this->getRouteParameters($other)
         );
@@ -163,15 +163,15 @@ class RouteSorter
 
     protected function compareMissingDefaultsAmount(Route $self, Route $other, int $action = self::LATER): ?int
     {
-        $missingSelfDefaults = \array_diff_key(
+        $missingSelfDefaults = array_diff_key(
             $this->getActualRouteDefaults($self),
             $this->getRouteParameters($self)
         );
-        $missingOtherDefaults = \array_diff_key(
+        $missingOtherDefaults = array_diff_key(
             $this->getActualRouteDefaults($other),
             $this->getRouteParameters($other)
         );
-        $difference = \count($missingSelfDefaults) - \count($missingOtherDefaults);
+        $difference = count($missingSelfDefaults) - count($missingOtherDefaults);
         // return `null` in case of equality (`0`)
         return $difference === 0 ? null : $difference * $action;
     }
@@ -180,7 +180,7 @@ class RouteSorter
     {
         $selfDefaults = $this->getActualRouteDefaults($self);
         $otherDefaults = $this->getActualRouteDefaults($other);
-        $difference = \count($selfDefaults) - \count($otherDefaults);
+        $difference = count($selfDefaults) - count($otherDefaults);
         // return `null` in case of equality (`0`)
         return $difference === 0 ? null : $difference * $action;
     }
@@ -211,7 +211,7 @@ class RouteSorter
      */
     protected function getMandatoryRouteVariables(Route $route): array
     {
-        return \array_diff_key(
+        return array_diff_key(
             $this->getAllRouteVariables($route),
             $route->getDefaults()
         );

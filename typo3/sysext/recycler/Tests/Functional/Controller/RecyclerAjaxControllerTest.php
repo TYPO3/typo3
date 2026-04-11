@@ -65,7 +65,7 @@ final class RecyclerAjaxControllerTest extends FunctionalTestCase
 
         self::assertInstanceOf(JsonResponse::class, $actual);
         self::assertJsonStringEqualsJsonString(
-            \json_encode($expected, JSON_THROW_ON_ERROR),
+            json_encode($expected, JSON_THROW_ON_ERROR),
             (string)$actual->getBody(),
         );
     }
@@ -96,7 +96,7 @@ final class RecyclerAjaxControllerTest extends FunctionalTestCase
 
         self::assertInstanceOf(JsonResponse::class, $actual);
         self::assertJsonStringEqualsJsonString(
-            \json_encode($expected, JSON_THROW_ON_ERROR),
+            json_encode($expected, JSON_THROW_ON_ERROR),
             (string)$actual->getBody(),
         );
     }
@@ -162,7 +162,7 @@ final class RecyclerAjaxControllerTest extends FunctionalTestCase
         self::assertInstanceOf(JsonResponse::class, $actual);
         if ($expectedResponse !== null) {
             self::assertJsonStringEqualsJsonString(
-                \json_encode($expectedResponse, JSON_THROW_ON_ERROR),
+                json_encode($expectedResponse, JSON_THROW_ON_ERROR),
                 (string)$actual->getBody(),
             );
         }

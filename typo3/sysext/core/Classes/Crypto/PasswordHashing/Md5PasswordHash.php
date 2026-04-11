@@ -46,7 +46,7 @@ class Md5PasswordHash implements PasswordHashInterface
     {
         $isCorrect = false;
         if ($this->isValidSalt($saltedHashPW)) {
-            $isCorrect = \password_verify($plainPW, $saltedHashPW);
+            $isCorrect = password_verify($plainPW, $saltedHashPW);
         }
         return $isCorrect;
     }

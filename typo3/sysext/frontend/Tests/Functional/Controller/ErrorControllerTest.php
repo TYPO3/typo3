@@ -103,7 +103,7 @@ final class ErrorControllerTest extends FunctionalTestCase
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = $this->get(ErrorController::class);
         $response = $subject->pageNotFoundAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
-        $responseContent = \json_decode($response->getBody()->getContents(), true);
+        $responseContent = json_decode($response->getBody()->getContents(), true);
         self::assertSame(404, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);
@@ -128,7 +128,7 @@ final class ErrorControllerTest extends FunctionalTestCase
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = $this->get(ErrorController::class);
         $response = $subject->unavailableAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
-        $responseContent = \json_decode($response->getBody()->getContents(), true);
+        $responseContent = json_decode($response->getBody()->getContents(), true);
         self::assertSame(503, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);
@@ -153,7 +153,7 @@ final class ErrorControllerTest extends FunctionalTestCase
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = $this->get(ErrorController::class);
         $response = $subject->internalErrorAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
-        $responseContent = \json_decode($response->getBody()->getContents(), true);
+        $responseContent = json_decode($response->getBody()->getContents(), true);
         self::assertSame(500, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);
@@ -178,7 +178,7 @@ final class ErrorControllerTest extends FunctionalTestCase
         $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $subject = $this->get(ErrorController::class);
         $response = $subject->accessDeniedAction($request->withAddedHeader('Accept', 'application/json'), 'Error handler is not configured.');
-        $responseContent = \json_decode($response->getBody()->getContents(), true);
+        $responseContent = json_decode($response->getBody()->getContents(), true);
         self::assertSame(403, $response->getStatusCode());
         self::assertSame('application/json; charset=utf-8', $response->getHeaderLine('Content-Type'));
         self::assertEquals(['reason' => 'Error handler is not configured.'], $responseContent);

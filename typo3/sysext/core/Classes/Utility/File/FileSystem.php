@@ -48,13 +48,13 @@ class FileSystem
             $from = rtrim($from, '/') . '/dummy_file';
         }
 
-        if (\dirname($from) === \dirname($to)) {
+        if (dirname($from) === dirname($to)) {
             return './' . basename($to);
         }
 
         $commonPath = $to;
         while (!str_starts_with($from . '/', $commonPath . '/') && $commonPath !== '/' && preg_match('{^[A-Z]:/?$}i', $commonPath) === 0) {
-            $commonPath = str_replace('\\', '/', \dirname($commonPath));
+            $commonPath = str_replace('\\', '/', dirname($commonPath));
         }
 
         // no commonality at all
@@ -63,10 +63,10 @@ class FileSystem
         }
 
         $commonPath = rtrim($commonPath, '/') . '/';
-        $sourcePathDepth = substr_count((string)substr($from, \strlen($commonPath)), '/');
+        $sourcePathDepth = substr_count((string)substr($from, strlen($commonPath)), '/');
         $commonPathCode = str_repeat('../', $sourcePathDepth);
 
-        $result = $commonPathCode . substr($to, \strlen($commonPath));
+        $result = $commonPathCode . substr($to, strlen($commonPath));
         if ($result === '') {
             return './';
         }
@@ -88,7 +88,7 @@ class FileSystem
         $cwd = $this->getCwd();
 
         $relativePath = $this->findShortestPath($link, $target);
-        chdir(\dirname($link));
+        chdir(dirname($link));
         $result = @symlink($relativePath, $link);
 
         chdir($cwd);

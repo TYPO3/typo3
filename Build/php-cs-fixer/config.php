@@ -52,6 +52,7 @@ return (new \PhpCsFixer\Config())
             ->exclude([
                 'node_modules',
                 'composer',
+                'ExtensionScanner/Php/Matcher/Fixtures',
             ])
     )
     ->setRiskyAllowed(true)
@@ -80,6 +81,11 @@ return (new \PhpCsFixer\Config())
         'modernize_strpos' => true,
         'modernize_types_casting' => true,
         'native_function_casing' => true,
+        'native_function_invocation' => [
+            'include' => [],
+            'scope' => 'all',
+            'strict' => true,
+        ],
         'no_alias_functions' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_phpdoc' => true,

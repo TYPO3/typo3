@@ -36,6 +36,6 @@ enum ContentSlideMode
 
     public function getValue(): string
     {
-        return \lcfirst($this->name);
+        return lcfirst($this->name);
     }
 }

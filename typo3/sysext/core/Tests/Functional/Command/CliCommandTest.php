@@ -101,6 +101,6 @@ final class CliCommandTest extends AbstractCommandTestCase
     {
         $result = $this->executeConsoleCommand($command, ...$args);
 
-        self::assertEquals($expectedExitCode, $result['status'], \json_encode($result, JSON_PRETTY_PRINT));
+        self::assertEquals($expectedExitCode, $result['status'], json_encode($result, JSON_PRETTY_PRINT));
     }
 }

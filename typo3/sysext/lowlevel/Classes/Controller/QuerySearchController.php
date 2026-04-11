@@ -2164,7 +2164,7 @@ class QuerySearchController
     protected function getSubscript($arr): array
     {
         $retArr = [];
-        while (\is_array($arr)) {
+        while (is_array($arr)) {
             reset($arr);
             $key = key($arr);
             $retArr[] = $key;
