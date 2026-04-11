@@ -27,8 +27,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
  *
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
- *
- * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 interface DomainObjectInterface extends ObjectMonitoringInterface
 {
@@ -39,27 +37,37 @@ interface DomainObjectInterface extends ObjectMonitoringInterface
     public function getPid(): ?int;
 
     /**
-     * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
+     * Returns TRUE if the object is new (the uid was not set, yet).
+     *
+     * @internal
      */
     public function _isNew(): bool;
 
     /**
      * @param non-empty-string $propertyName
+     *
+     * @internal
      */
     public function _hasProperty(string $propertyName): bool;
 
     /**
      * @param non-empty-string $propertyName
+     *
+     * @internal
      */
     public function _setProperty(string $propertyName, mixed $value);
 
     /**
      * @param non-empty-string $propertyName
+     *
+     * @internal
      */
     public function _getProperty(string $propertyName): mixed;
 
     /**
      * @return array<non-empty-string, mixed>
+     *
+     * @internal
      */
     public function _getProperties(): array;
 
@@ -69,6 +77,8 @@ interface DomainObjectInterface extends ObjectMonitoringInterface
      *
      * @param non-empty-string $propertyName
      * @return mixed The clean property value or NULL
+     *
+     * @internal
      */
     public function _getCleanProperty(string $propertyName): mixed;
 }
