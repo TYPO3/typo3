@@ -31,4 +31,11 @@ return [
             'Deprecation-105076-PluginContentElementAndPluginSubTypes.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-109548-GeneralUtilityLocationHeaderUrlWithoutRequest.rst',
+        ],
+    ],
 ];

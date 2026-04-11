@@ -52,7 +52,7 @@ class ImageProcessController implements LoggerAwareInterface
             $processedFile = $this->imageProcessingService->process($processedFileId);
 
             return new RedirectResponse(
-                GeneralUtility::locationHeaderUrl($processedFile->getPublicUrl() ?? '')
+                GeneralUtility::locationHeaderUrl($processedFile->getPublicUrl() ?? '', $request)
             );
         } catch (\Throwable $e) {
             // Fatal error occurred, which will be responded as 404

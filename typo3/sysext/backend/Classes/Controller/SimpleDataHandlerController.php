@@ -113,7 +113,7 @@ class SimpleDataHandlerController
         // Write errors to flash message queue
         $this->tce->printLogErrorMessages();
         if ($this->redirect) {
-            return new RedirectResponse(GeneralUtility::locationHeaderUrl($this->redirect), 303);
+            return new RedirectResponse(GeneralUtility::locationHeaderUrl($this->redirect, $request), 303);
         }
         return new HtmlResponse('');
     }

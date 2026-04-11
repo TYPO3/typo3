@@ -92,7 +92,7 @@ final readonly class ResourceController
             ->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, ['width' => $width, 'height' => $height]);
 
         return new RedirectResponse(
-            GeneralUtility::locationHeaderUrl($thumbnail->getPublicUrl() ?? '')
+            GeneralUtility::locationHeaderUrl($thumbnail->getPublicUrl() ?? '', $request)
         );
     }
 

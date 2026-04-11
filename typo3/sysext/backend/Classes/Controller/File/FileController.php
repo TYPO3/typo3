@@ -113,7 +113,7 @@ class FileController
         }
         if ($this->redirect) {
             return new RedirectResponse(
-                GeneralUtility::locationHeaderUrl($this->redirect),
+                GeneralUtility::locationHeaderUrl($this->redirect, $request),
                 303
             );
         }

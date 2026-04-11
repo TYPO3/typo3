@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Resource\File;
@@ -127,8 +128,10 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
 
         $parameters['token'] = $this->hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile');
 
-        return GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'))
-            . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
+        return GeneralUtility::locationHeaderUrl(
+            PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'),
+            $this->renderingContext->getAttribute(ServerRequestInterface::class)
+        ) . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
     }
 
     private function getAlternativeFilename(FileInterface $file): string

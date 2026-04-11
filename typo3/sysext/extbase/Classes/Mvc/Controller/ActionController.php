@@ -794,7 +794,7 @@ abstract class ActionController implements ControllerInterface
      */
     protected function addBaseUriIfNecessary(string $uri): string
     {
-        return GeneralUtility::locationHeaderUrl($uri);
+        return GeneralUtility::locationHeaderUrl($uri, $this->request);
     }
 
     /**

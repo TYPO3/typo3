@@ -19,7 +19,10 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -110,8 +113,13 @@ final class FileViewHelperTest extends FunctionalTestCase
         // Set storage to non-public
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
+        $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
+        $request = (new ServerRequest())
+            ->withAttribute('normalizedParams', $normalizedParams)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         $view = new TemplateView($context);
         $view->assign('file', $this->getFile(1));
@@ -163,8 +171,13 @@ final class FileViewHelperTest extends FunctionalTestCase
         // Set storage to non-public
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
+        $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
+        $request = (new ServerRequest())
+            ->withAttribute('normalizedParams', $normalizedParams)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         $view = new TemplateView($context);
         $view->assign('file', $this->getFileReference(2));
@@ -216,8 +229,13 @@ final class FileViewHelperTest extends FunctionalTestCase
         // Set storage to non-public
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
+        $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => '/index.php']);
+        $request = (new ServerRequest())
+            ->withAttribute('normalizedParams', $normalizedParams)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         $view = new TemplateView($context);
         $view->assign('file', $this->getProcessedFile(3));

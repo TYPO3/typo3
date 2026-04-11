@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -27,27 +28,18 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Service for processing images
  */
-class ImageService implements SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class ImageService
 {
-    /**
-     * @var ResourceFactory
-     */
-    protected $resourceFactory;
-
-    /**
-     * ImageService constructor.
-     */
-    public function __construct(ResourceFactory $resourceFactory)
-    {
-        $this->resourceFactory = $resourceFactory;
-    }
+    public function __construct(
+        protected ResourceFactory $resourceFactory,
+    ) {}
 
     /**
      * Create a processed file
@@ -83,8 +75,9 @@ class ImageService implements SingletonInterface
         if (!$absolute || $imageUrl === null) {
             return (string)$imageUrl;
         }
-
-        return GeneralUtility::locationHeaderUrl($imageUrl);
+        // @todo: Change method signature in >=v15 to receive $request, probably as first or second argument.
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        return GeneralUtility::locationHeaderUrl($imageUrl, $request);
     }
 
     /**

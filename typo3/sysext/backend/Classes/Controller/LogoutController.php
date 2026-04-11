@@ -60,7 +60,7 @@ readonly class LogoutController
         if (empty($redirectUrl)) {
             $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('login', [], UriBuilder::ABSOLUTE_URL);
         }
-        return new RedirectResponse(GeneralUtility::locationHeaderUrl($redirectUrl), 303);
+        return new RedirectResponse(GeneralUtility::locationHeaderUrl($redirectUrl, $request), 303);
     }
 
     /**

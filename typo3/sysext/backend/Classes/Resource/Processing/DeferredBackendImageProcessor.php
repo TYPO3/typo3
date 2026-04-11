@@ -70,7 +70,8 @@ class DeferredBackendImageProcessor implements ProcessorInterface
                     'id' => $processedFile->getUid(),
                 ]
             );
-        $processedFile->updateProcessingUrl(GeneralUtility::locationHeaderUrl($processingUrl));
+        // We know $GLOBALS['TYPO3_REQUEST'] exists and is BE because of canProcessTask()
+        $processedFile->updateProcessingUrl(GeneralUtility::locationHeaderUrl($processingUrl, $GLOBALS['TYPO3_REQUEST']));
         $processedFile->updateProperties(
             [
                 'width' => $imageDimension->getWidth(),

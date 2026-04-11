@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Package\Package;
@@ -3623,27 +3622,13 @@ final class GeneralUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @throws Exception
-     */
     #[DataProvider('locationHeaderUrlDataProvider')]
     #[Test]
     public function locationHeaderUrl(string $path, string $host, string $expected): void
     {
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getCurrentScript(),
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $_SERVER['HTTP_HOST'] = $host;
-        $_SERVER['SCRIPT_NAME'] = '/index.php';
-        $result = GeneralUtility::locationHeaderUrl($path);
+        $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => $host, 'SCRIPT_NAME' => '/index.php']);
+        $request = (new ServerRequest())->withAttribute('normalizedParams', $normalizedParams);
+        $result = GeneralUtility::locationHeaderUrl($path, $request);
         self::assertSame($expected, $result);
     }
 

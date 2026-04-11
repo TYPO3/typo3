@@ -1314,7 +1314,8 @@ class ResourceStorage implements ResourceStorageInterface
                     $publicUrl = $this->driver->getPublicUrl($resourceObject->getIdentifier());
                 }
 
-                if ($publicUrl === null && $resourceObject instanceof FileInterface) {
+                $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+                if ($publicUrl === null && $resourceObject instanceof FileInterface && $request instanceof ServerRequestInterface) {
                     $queryParameterArray = ['eID' => 'dumpFile', 't' => ''];
                     if ($resourceObject instanceof File) {
                         $queryParameterArray['f'] = $resourceObject->getUid();
@@ -1326,7 +1327,7 @@ class ResourceStorage implements ResourceStorageInterface
 
                     $hashService = GeneralUtility::makeInstance(HashService::class);
                     $queryParameterArray['token'] = $hashService->hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile', HashAlgo::SHA3_256);
-                    $publicUrl = GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'));
+                    $publicUrl = GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'), $request);
                     $publicUrl .= '?' . http_build_query($queryParameterArray, '', '&', PHP_QUERY_RFC3986);
                 }
             }

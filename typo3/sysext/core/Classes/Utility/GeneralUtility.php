@@ -1966,21 +1966,28 @@ class GeneralUtility
      * @param string $path URL / path to prepend full URL addressing to.
      * @return ($path is non-empty-string ? non-empty-string : string)
      */
-    public static function locationHeaderUrl(string $path): string
+    public static function locationHeaderUrl(string $path, ?ServerRequestInterface $request = null): string
     {
+        if ($request === null) {
+            // @deprecated v15: Make $request argument mandatory, remove getIndpEnv() fallback below.
+            trigger_error(
+                'Calling GeneralUtility::locationHeaderUrl() without a request argument is deprecated since TYPO3 v14 and will throw a RuntimeException in TYPO3 v15.',
+                E_USER_DEPRECATED
+            );
+        }
         if (str_starts_with($path, '//')) {
             return $path;
         }
-
+        $normalizedParams = $request?->getAttribute('normalizedParams');
         // relative to HOST
         if (str_starts_with($path, '/')) {
-            return self::getIndpEnv('TYPO3_REQUEST_HOST') . $path;
+            return ($normalizedParams?->getRequestHost() ?? self::getIndpEnv('TYPO3_REQUEST_HOST')) . $path;
         }
 
         $urlComponents = parse_url($path);
         if (!($urlComponents['scheme'] ?? false)) {
             // No scheme either
-            return self::getIndpEnv('TYPO3_REQUEST_DIR') . $path;
+            return ($normalizedParams?->getRequestDir() ?? self::getIndpEnv('TYPO3_REQUEST_DIR')) . $path;
         }
 
         return $path;

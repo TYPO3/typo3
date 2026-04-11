@@ -42,7 +42,7 @@ class RedirectFinisher extends AbstractFinisher
      * Executes this finisher
      * @see AbstractFinisher::execute()
      */
-    protected function executeInternal()
+    protected function executeInternal(): void
     {
         $pageUid = $this->parseOption('pageUid');
         $pageUid = (int)str_replace('pages_', '', (string)$pageUid);
@@ -105,6 +105,6 @@ class RedirectFinisher extends AbstractFinisher
      */
     protected function addBaseUriIfNecessary(string $uri): string
     {
-        return GeneralUtility::locationHeaderUrl($uri);
+        return GeneralUtility::locationHeaderUrl($uri, $this->finisherContext->getRequest());
     }
 }
