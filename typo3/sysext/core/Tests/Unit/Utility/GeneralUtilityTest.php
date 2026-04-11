@@ -1079,12 +1079,14 @@ final class GeneralUtilityTest extends UnitTestCase
     // Tests concerning getIndpEnv
     //////////////////////////////////
     #[Test]
+    #[IgnoreDeprecations]
     public function getIndpEnvTypo3SitePathReturnNonEmptyString(): void
     {
         self::assertTrue(strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')) >= 1);
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function getIndpEnvTypo3SitePathReturnsStringEndingWithSlash(): void
     {
         $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
@@ -1107,6 +1109,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('hostnameAndPortDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function getIndpEnvTypo3HostOnlyParsesHostnamesAndIpAddresses($httpHost, $expectedIp): void
     {
         $_SERVER['HTTP_HOST'] = $httpHost;
@@ -1115,6 +1118,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('hostnameAndPortDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function getIndpEnvTypo3PortParsesHostnamesAndIpAddresses($httpHost, $dummy, $expectedPort): void
     {
         $_SERVER['HTTP_HOST'] = $httpHost;

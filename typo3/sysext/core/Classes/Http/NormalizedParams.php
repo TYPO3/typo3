@@ -31,8 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * ```
  * $normalizedParams = $request->getAttribute('normalizedParams')
  * ```
- *
- * This class substitutes the old GeneralUtility::getIndpEnv() method.
  */
 class NormalizedParams
 {

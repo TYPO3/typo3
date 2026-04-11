@@ -35,38 +35,11 @@ use TYPO3\CMS\Extbase\Mvc\Exception;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
-use TYPO3\TestingFramework\Core\Functional\Framework\FrameworkState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Controller\BlogController;
 
 final class RequestBuilderTest extends FunctionalTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        // Some tests need GeneralUtility::getIndpEnv('SCRIPT_NAME') to return correct value instead of
-        // 'vendor/phpunit/phpunit/phpunit. To manipulate/set it
-        // before creating request from globals, the global must be set. Thus the framework state has to be
-        // saved/reset and later restored. Similar requirement is needed when emitting frontend requests with
-        // the testing-framework. This is done globally for the testcase, so reset can be cleanly done even if
-        // a test has failed.
-        // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
-        FrameworkState::push();
-        FrameworkState::reset();
-        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $GLOBALS['TYPO3_REQUEST'] = $request;
-    }
-
-    protected function tearDown(): void
-    {
-        // Restore previously saved framework state.
-        // This is to clean-up manipulated framework state for testing
-        // purposes even on failures, thus done globally for the testcase.
-        // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
-        FrameworkState::pop();
-        parent::tearDown();
-    }
-
     #[Test]
     public function buildBuildsARequestInterfaceObject(): void
     {
@@ -91,6 +64,7 @@ final class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('html', $request->getFormat());
@@ -121,6 +95,7 @@ final class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('json', $request->getFormat());
@@ -151,6 +126,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withQueryParams(['format' => 'json']);
         $mainRequest = $mainRequest->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('json', $request->getFormat());
@@ -164,6 +140,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $this->expectExceptionMessage('"extensionName" is not properly configured. Request can\'t be dispatched!');
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -179,6 +156,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration(['extensionName' => 'blog_example']);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -220,6 +198,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
         $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         $uploadedFiles = $request->getUploadedFiles();
@@ -283,6 +262,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = ServerRequestFactory::fromGlobals()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
         $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         $uploadedFiles = $request->getUploadedFiles();
@@ -341,6 +321,7 @@ final class RequestBuilderTest extends FunctionalTestCase
             ->withParsedBody(['tx_blogexample_blog' => ['item' => ['name' => 'a name']]]);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
         $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         $argument = $request->getArgument('tx_blogexample_blog');
@@ -407,6 +388,7 @@ final class RequestBuilderTest extends FunctionalTestCase
             ->withParsedBody(['tx_blogexample_blog' => $parsedBody]);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
         $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         $argument = $request->getArgument('tx_blogexample_blog');
@@ -456,6 +438,7 @@ final class RequestBuilderTest extends FunctionalTestCase
             ->withParsedBody(['tx_blogexample_blog' => ['item' => ['meta' => ['title' => 'a title'], 'name' => 'a name']]]);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
         $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         $argument = $request->getArgument('tx_blogexample_blog');
@@ -512,6 +495,7 @@ final class RequestBuilderTest extends FunctionalTestCase
             ->withParsedBody(['tx_blogexample_blog' => ['item' => ['data' => 'should be replaced', 'name' => 'a name']]]);
         $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
         $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         $argument = $request->getArgument('tx_blogexample_blog');
@@ -553,6 +537,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['controller' => 'NonExistentController']);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -587,6 +572,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withQueryParams(['controller' => 'NonExistentController']);
         $mainRequest = $mainRequest->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -609,6 +595,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -639,6 +626,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['controller' => 'NonExistentController']);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('Blog', $request->getControllerName());
@@ -670,6 +658,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['controller' => 'User']);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('User', $request->getControllerName());
@@ -704,6 +693,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['action' => 'NonExistentAction']);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -738,6 +728,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['action' => 'NonExistentAction']);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -768,6 +759,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('list', $request->getControllerActionName());
@@ -798,6 +790,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['action' => 'show']);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('show', $request->getControllerActionName());
@@ -831,6 +824,7 @@ final class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -863,6 +857,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('show', $request->getControllerActionName());
@@ -933,6 +928,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('show', $request->getControllerActionName());
@@ -943,11 +939,14 @@ final class RequestBuilderTest extends FunctionalTestCase
     {
         $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => 'not_an_array']);
 
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest
             ->withParsedBody(['tx_blog_example_blog' => ['action' => 'show']])
             ->withAttribute('routing', $pageArguments)
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript);
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -968,6 +967,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('list', $request->getControllerActionName());
@@ -1008,6 +1008,7 @@ final class RequestBuilderTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
         $request = $this->get(RequestBuilder::class)->build($mainRequest);
 
         self::assertSame('show', $request->getControllerActionName());

@@ -1798,4 +1798,11 @@ return [
             'Deprecation-108810-BackendUtilityLocalizationMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-109551-GeneralUtilityGetIndpEnv.rst',
+        ],
+    ],
 ];
