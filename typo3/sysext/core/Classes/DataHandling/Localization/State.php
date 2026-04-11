@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Value object for l10n_state field value.
+ *
+ * @internal
  */
 class State
 {
@@ -30,14 +32,15 @@ class State
     public const STATE_PARENT = 'parent';
     public const STATE_SOURCE = 'source';
 
-    protected string $tableName;
-    protected array $states;
-    protected array $originalStates;
-    protected array $validStates = [
+    protected const VALID_STATES = [
         self::STATE_CUSTOM,
         self::STATE_SOURCE,
         self::STATE_PARENT,
     ];
+
+    protected string $tableName;
+    protected array $states;
+    protected array $originalStates;
 
     public static function create(string $tableName): ?State
     {
@@ -224,7 +227,7 @@ class State
         foreach (static::getFieldNames($this->tableName) as $fieldName) {
             $isValid = in_array(
                 $states[$fieldName] ?? null,
-                $this->validStates,
+                static::VALID_STATES,
                 true
             );
             if ($isValid) {

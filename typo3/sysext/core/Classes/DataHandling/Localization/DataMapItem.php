@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,6 +23,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Entity for data-map item.
+ *
+ * @internal
  */
 class DataMapItem
 {
@@ -32,80 +36,31 @@ class DataMapItem
     public const SCOPE_SOURCE = State::STATE_SOURCE;
     public const SCOPE_EXCLUDE = 'exclude';
 
-    /**
-     * @var string
-     */
-    protected $tableName;
-
-    /**
-     * @var string|int
-     */
-    protected $id;
-
-    /**
-     * @var array
-     */
-    protected $suggestedValues;
-
-    /**
-     * @var array
-     */
-    protected $persistedValues;
-
-    /**
-     * @var array
-     */
-    protected $configurationFieldNames;
-
-    /**
-     * @var bool
-     */
-    protected $new;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @var State|null
-     */
-    protected $state;
-
-    /**
-     * @var string|int
-     */
-    protected $language;
-
-    /**
-     * @var string|int
-     */
-    protected $parent;
-
-    /**
-     * @var string|int
-     */
-    protected $source;
-
-    /**
-     * @var DataMapItem[][]
-     */
-    protected $dependencies = [];
+    protected string $tableName;
+    protected string|int $id;
+    protected array $suggestedValues;
+    protected array $persistedValues;
+    protected array $configurationFieldNames;
+    protected bool $new;
+    protected ?string $type = null;
+    protected ?State $state = null;
+    protected string|int $language = 0;
+    protected string|int $parent = '';
+    protected string|int|null $source = null;
+    /** @var DataMapItem[][] */
+    protected array $dependencies = [];
 
     /**
      * Builds a data-map item. In addition to the constructor, the values
      * for language, parent and source record pointers are assigned as well.
-     *
-     * @param string|int $id
-     * @return DataMapItem
      */
     public static function build(
         string $tableName,
-        $id,
+        string|int $id,
         array $suggestedValues,
         array $persistedValues,
         array $configurationFieldNames
-    ) {
+    ): static {
         $item = GeneralUtility::makeInstance(
             static::class,
             $tableName,
@@ -124,12 +79,9 @@ class DataMapItem
         return $item;
     }
 
-    /**
-     * @param string|int $id
-     */
     public function __construct(
         string $tableName,
-        $id,
+        string|int $id,
         array $suggestedValues,
         array $persistedValues,
         array $configurationFieldNames
@@ -154,10 +106,8 @@ class DataMapItem
 
     /**
      * Gets the id of this data-map item.
-     *
-     * @return int|string
      */
-    public function getId()
+    public function getId(): string|int
     {
         return $this->id;
     }
@@ -196,10 +146,7 @@ class DataMapItem
         return $this->configurationFieldNames['parent'];
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSourceFieldName()
+    public function getSourceFieldName(): ?string
     {
         return $this->configurationFieldNames['source'] ?? null;
     }
@@ -253,59 +200,37 @@ class DataMapItem
         return $this->state;
     }
 
-    /**
-     * @return string|int
-     */
-    public function getLanguage()
+    public function getLanguage(): string|int
     {
         return $this->language;
     }
 
-    /**
-     * @param string|int $language
-     */
-    public function setLanguage($language)
+    public function setLanguage(string|int $language): void
     {
         $this->language = $language;
     }
 
-    /**
-     * @return string|int
-     */
-    public function getParent()
+    public function getParent(): string|int
     {
         return $this->parent;
     }
 
-    /**
-     * @param string|int $parent
-     */
-    public function setParent($parent)
+    public function setParent(string|int $parent): void
     {
         $this->parent = $this->extractId($parent);
     }
 
-    /**
-     * @return string|int
-     */
-    public function getSource()
+    public function getSource(): string|int|null
     {
         return $this->source;
     }
 
-    /**
-     * @param string|int $source
-     */
-    public function setSource($source)
+    public function setSource(string|int $source): void
     {
         $this->source = $this->extractId($source);
     }
 
-    /**
-     * @param string $scope
-     * @return int|string
-     */
-    public function getIdForScope(string $scope)
+    public function getIdForScope(string $scope): string|int
     {
         if (
             $scope === static::SCOPE_PARENT
@@ -314,7 +239,10 @@ class DataMapItem
             return $this->getParent();
         }
         if ($scope === static::SCOPE_SOURCE) {
-            return $this->getSource();
+            // $source is guaranteed to be non-null when SCOPE_SOURCE is applicable:
+            // getApplicableScopes() only includes it when getSourceFieldName() !== null,
+            // which means setSource() was called during build().
+            return $this->source;
         }
         throw new \RuntimeException('Invalid scope', 1486325248);
     }
@@ -330,7 +258,7 @@ class DataMapItem
     /**
      * @param DataMapItem[][] $dependencies
      */
-    public function setDependencies(array $dependencies)
+    public function setDependencies(array $dependencies): void
     {
         $this->dependencies = $dependencies;
     }

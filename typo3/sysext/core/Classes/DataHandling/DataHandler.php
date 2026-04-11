@@ -435,6 +435,7 @@ class DataHandler
         private readonly LogEntryRepository $logEntryRepository,
         private readonly LocalizationRepository $localizationRepository,
         private readonly SiteFinder $siteFinder,
+        private readonly DataMapProcessor $dataMapProcessor,
     ) {}
 
     /**
@@ -678,7 +679,7 @@ class DataHandler
             $hookObjectsArr[] = $hookObject;
         }
 
-        $this->datamap = DataMapProcessor::instance($this->datamap, $this->BE_USER, $this->referenceIndexUpdater)->process();
+        $this->datamap = $this->dataMapProcessor->process($this->datamap, $this->BE_USER, $this->referenceIndexUpdater);
         $registerDBList = [];
         $orderOfTables = [];
         if (isset($this->datamap['pages'])) {
