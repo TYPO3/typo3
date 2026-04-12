@@ -268,7 +268,9 @@ class FileList
         // must only be allowed when the extension is active.
         $allowedAdditionalFields = [];
         foreach ($additionalFields as $field) {
-            if (!$this->tcaSchemaFactory->get('sys_file')->hasField($field)) {
+            if (!$this->tcaSchemaFactory->get('sys_file')->hasField($field)
+                && (!$this->tcaSchemaFactory->has('sys_file_metadata') || !$this->tcaSchemaFactory->get('sys_file_metadata')->hasField($field))
+            ) {
                 continue;
             }
             $allowedAdditionalFields[] = $field;
