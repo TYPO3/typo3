@@ -1,0 +1,16 @@
+be_users,,,,,,,,,,,,,,,,,
+,uid,pid,tstamp,username,password,admin,disable,starttime,endtime,options,crdate,workspace_perms,deleted,TSconfig,lastlogin,workspace_id,usergroup
+# Admin user (password: "password")
+,1,0,1366642540,admin,"$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,0,0,0,0,1366642540,1,0,,1371033743,0,
+# Non-admin user without form_definition table access (group 1)
+,2,0,1366642540,editor_no_table_access,"$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,0,,0,0,1
+# Non-admin user with form_definition table select access only (group 2)
+,3,0,1366642540,editor_read_only,"$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",0,0,0,0,0,1366642540,1,0,,0,0,2
+be_groups,,,,,,,,
+,uid,pid,title,tables_select,tables_modify,non_exclude_fields,workspace_perms
+# Group: no form_definition table access at all
+,1,0,"No Table Access","pages","","",1
+# Group: read-only access to form_definition
+,2,0,"Read Only Form Access","pages,form_definition","","",1
+# Group: read+write access to form_definition
+,3,0,"Full Form Access","pages,form_definition","pages,form_definition","",1
