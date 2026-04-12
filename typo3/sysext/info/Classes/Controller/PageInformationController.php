@@ -69,8 +69,8 @@ readonly class PageInformationController
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
         $module = $request->getAttribute('module');
-        $currentSite = $request->getAttribute('site');
         $moduleData = $request->getAttribute('moduleData');
+        $currentSite = $request->getAttribute('site');
         $pageId = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
 
         $pageinfo = BackendUtility::readPageAccess($pageId, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
