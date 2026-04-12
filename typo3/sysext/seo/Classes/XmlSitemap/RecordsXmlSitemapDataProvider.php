@@ -145,7 +145,9 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         if (!empty($this->config['url']['fieldToParameterMap']) &&
             is_array($this->config['url']['fieldToParameterMap'])) {
             foreach ($this->config['url']['fieldToParameterMap'] as $field => $urlPart) {
-                $additionalParams[$urlPart] = $data[$field];
+                $paramValue = $data[$field];
+                parse_str($urlPart . '=' . urlencode((string)$paramValue), $nested);
+                $additionalParams = array_replace_recursive($additionalParams, $nested);
             }
         }
         return $additionalParams;
@@ -155,13 +157,8 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
     {
         if (!empty($this->config['url']['additionalGetParameters']) &&
             is_array($this->config['url']['additionalGetParameters'])) {
-            foreach ($this->config['url']['additionalGetParameters'] as $extension => $extensionConfig) {
-                foreach ($extensionConfig as $key => $value) {
-                    $additionalParams[$extension . '[' . $key . ']'] = $value;
-                }
-            }
+            $additionalParams = array_replace_recursive($additionalParams, $this->config['url']['additionalGetParameters']);
         }
-
         return $additionalParams;
     }
 
