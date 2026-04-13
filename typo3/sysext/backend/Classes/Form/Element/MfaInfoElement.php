@@ -129,7 +129,7 @@ class MfaInfoElement extends AbstractFormElement
             } else {
                 $mfaSetupInfo[] = '<div class="form-group"><div class="form-control-wrap t3js-file-controls">';
                 $mfaSetupInfo[] = '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-default">';
-                $mfaSetupInfo[] =  htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:mfaProviders.' . ($activeProviders !== [] ? 'manage_link_title' : 'setup_link_title')));
+                $mfaSetupInfo[] =  htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:mfa_providers.' . ($activeProviders !== [] ? 'manage_link_title' : 'setup_link_title')));
                 $mfaSetupInfo[] = '</a>';
                 $mfaSetupInfo[] = '</div></div>';
             }
