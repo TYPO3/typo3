@@ -1339,7 +1339,7 @@ class DataHandler
             'country' => $this->checkValueForCountry((string)$value, $tcaFieldConf),
             'datetime' => $this->checkValueForDatetime($value, $tcaFieldConf),
             'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $checkField),
-            'flex' => $field ? $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field) : [],
+            'flex' => $this->checkValueForFlex($res, $value, $tcaFieldConf, (string)$table, $id, (string)$curValue, (string)$status, (int)$realPid, (string)$recFID, (int)$tscPID, (string)$field),
             'inline' => $this->checkValueForInline($res, (string)$value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [],
             'file' => $this->checkValueForFile($res, (string)$value, $tcaFieldConf, $table, $id, $field, $additionalData),
             'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field),
@@ -2352,20 +2352,21 @@ class DataHandler
      * Evaluates 'flex' type values.
      *
      * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
-     * @param string|array $value The value to set.
+     * @param mixed $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
-     * @param string $table Table name
-     * @param int $id UID of record
-     * @param mixed $curValue Current value of the field
+     * @param string|int $id UID of record
+     * @param string $curValue Current value of the field
      * @param string $status 'update' or 'new' flag
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
      * @param string $recFID Field identifier [table:uid:field] for flexforms
-     * @param int $tscPID TSconfig PID
-     * @param string $field Field name
-     * @return array Modified $res array
      */
-    protected function checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field)
+    protected function checkValueForFlex(array $res, mixed $value, array $tcaFieldConf, string $table, string|int $id, string $curValue, string $status, int $realPid, string $recFID, int $tscPID, string $field): array
     {
+        // Called from within a FlexForm traversal (e.g. checkFlexFormData): a flex field
+        // cannot nest another flex field, so skip processing entirely.
+        if ($field === '') {
+            return [];
+        }
         if (!is_array($value)) {
             $res['value'] = $value;
             return $res;
@@ -2398,13 +2399,13 @@ class DataHandler
         }
 
         // Get current value array:
-        $currentValueArray = (string)$curValue !== '' ? GeneralUtility::xml2array($curValue) : [];
+        $currentValueArray = $curValue !== '' ? GeneralUtility::xml2array($curValue) : [];
         if (!is_array($currentValueArray)) {
             $currentValueArray = [];
         }
         // Remove all old meta for languages...
         // Evaluation of input values:
-        $value['data'] = $this->checkValue_flex_procInData($value['data'] ?? [], $currentValueArray['data'] ?? [], $dataStructureArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
+        $value['data'] = $this->checkFlexFormData($value['data'] ?? [], $currentValueArray['data'] ?? [], $dataStructureArray, $table, $id, $status, $realPid, $recFID, $tscPID);
         // Create XML from input value:
         $xmlValue = $this->flexFormTools->flexArray2Xml($value);
 
@@ -2986,157 +2987,107 @@ class DataHandler
     }
 
     /**
-     * Starts the processing the input data for flexforms. This will traverse all sheets / languages and for each it will traverse the sub-structure.
-     * See checkValue_flex_procInData_travDS() for more details.
-     * WARNING: Currently, it traverses based on the actual _data_ array and NOT the _structure_. This means that values for non-valid fields, lKey/vKey/sKeys will be accepted! For traversal of data with a call back function you should rather use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
-     *
-     * @param array|null $dataPart The 'data' part of the INPUT flexform data
-     * @param array $dataPart_current The 'data' part of the CURRENT flexform data
-     * @param array $dataStructure Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
-     * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions
-     * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRECATED, use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools instead for traversal!
-     * @return ?array The modified 'data' part.
-     * @see checkValue_flex_procInData_travDS()
+     * Validate and coerce all leaf field values in a FlexForm data array against their
+     * Data Structure definitions by calling checkValue_SW() on each vDEF value.
+     * Structure-driven: only DS-declared sheets and elements are processed.
      */
-    protected function checkValue_flex_procInData($dataPart, $dataPart_current, $dataStructure, $pParams, $callBackFunc = '', array $workspaceOptions = [])
+    private function checkFlexFormData(array $data, array $currentData, array $dataStructure, string $table, string|int $id, string $status, int $realPid, string $recFID, int $tscPID): array
     {
-        if (is_array($dataPart)) {
-            foreach ($dataPart as $sKey => $sheetDef) {
-                if (isset($dataStructure['sheets'][$sKey]) && is_array($dataStructure['sheets'][$sKey]) && is_array($sheetDef)) {
-                    foreach ($sheetDef as $lKey => $lData) {
-                        $this->checkValue_flex_procInData_travDS(
-                            $dataPart[$sKey][$lKey],
-                            $dataPart_current[$sKey][$lKey] ?? null,
-                            $dataStructure['sheets'][$sKey]['ROOT']['el'] ?? null,
-                            $pParams,
-                            $callBackFunc,
-                            $sKey . '/' . $lKey . '/',
-                            $workspaceOptions
-                        );
+        foreach ($dataStructure['sheets'] as $sheetKey => $sheetData) {
+            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementTca) {
+                if (($sheetElementTca['type'] ?? '') === 'array') {
+                    // Section element.
+                    if (!is_array($sheetElementTca['el'] ?? false) || !is_array($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
+                        continue;
                     }
-                }
-            }
-        }
-        return $dataPart;
-    }
-
-    /**
-     * Processing of the sheet/language data array
-     * When it finds a field with a value the processing is done by ->checkValue_SW() by default but if a call back function name is given that method in this class will be called for the processing instead.
-     *
-     * @param array $dataValues New values (those being processed): Multidimensional Data array for sheet/language, passed by reference!
-     * @param array $dataValues_current Current values: Multidimensional Data array. May be empty array() if not needed (for callBackFunctions)
-     * @param array|null $DSelements Data structure which fits the data array
-     * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions / call back function
-     * @param string $callBackFunc Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
-     * @param string $structurePath
-     * @see checkValue_flex_procInData()
-     */
-    protected function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $DSelements, $pParams, $callBackFunc, $structurePath, array $workspaceOptions = []): void
-    {
-        if (!is_array($DSelements)) {
-            return;
-        }
-
-        // For each DS element:
-        foreach ($DSelements as $key => $dsConf) {
-            // Array/Section:
-            if (isset($DSelements[$key]['type']) && $DSelements[$key]['type'] === 'array') {
-                if (!is_array($dataValues[$key]['el'] ?? null)) {
-                    continue;
-                }
-
-                if ($DSelements[$key]['section']) {
-                    foreach ($dataValues[$key]['el'] as $ik => $el) {
-                        if (!is_array($el)) {
+                    foreach ($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
+                        if (!is_array($valueSectionContainers ?? false)) {
                             continue;
                         }
-
-                        if (!is_array($dataValues_current[$key]['el'] ?? false)) {
-                            $dataValues_current[$key]['el'] = [];
+                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
+                            if (!is_array($sheetElementTca['el'][$valueContainerType]['el'] ?? false)) {
+                                continue;
+                            }
+                            foreach ($sheetElementTca['el'][$valueContainerType]['el'] as $containerElement => $containerElementTca) {
+                                $fieldConfig = $containerElementTca['config'] ?? null;
+                                if (!is_array($fieldConfig)) {
+                                    continue;
+                                }
+                                if (($fieldConfig['type'] ?? '') === 'passthrough') {
+                                    $currentVDef = $currentData[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] ?? null;
+                                    if (!empty($currentVDef)) {
+                                        // If there is existing value, keep it.
+                                        $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] = $currentVDef;
+                                    } elseif (!empty($fieldConfig['default']) && !MathUtility::canBeInterpretedAsInteger($id)) {
+                                        // If is new record and a default is specified for field, use it.
+                                        $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] = $fieldConfig['default'];
+                                    }
+                                }
+                                if (!is_array($valueContainerElements['el'][$containerElement] ?? false)) {
+                                    continue;
+                                }
+                                $flexFormPath = $sheetKey . '/lDEF/' . $sheetElementKey . '/el/' . $valueSectionContainerKey . '/' . $valueContainerType . '/el/' . $containerElement . '/vDEF';
+                                $res = $this->checkValue_SW(
+                                    [],
+                                    $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] ?? null,
+                                    $fieldConfig,
+                                    $table,
+                                    $id,
+                                    $currentData[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] ?? null,
+                                    $status,
+                                    $realPid,
+                                    $recFID,
+                                    '',
+                                    $tscPID,
+                                    ['flexFormId' => $recFID, 'flexFormPath' => $flexFormPath]
+                                );
+                                if (isset($res['value'])) {
+                                    $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] = $res['value'];
+                                }
+                            }
                         }
-                        $theKey = key($el);
-                        if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el'] ?? false)) {
-                            continue;
-                        }
-
-                        $this->checkValue_flex_procInData_travDS(
-                            $dataValues[$key]['el'][$ik][$theKey]['el'],
-                            $dataValues_current[$key]['el'][$ik][$theKey]['el'] ?? [],
-                            $DSelements[$key]['el'][$theKey]['el'] ?? [],
-                            $pParams,
-                            $callBackFunc,
-                            $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/',
-                            $workspaceOptions
-                        );
                     }
                 } else {
-                    if (!isset($dataValues[$key]['el'])) {
-                        $dataValues[$key]['el'] = [];
+                    // Simple field element.
+                    $fieldConfig = $sheetElementTca['config'] ?? null;
+                    if (!is_array($fieldConfig)) {
+                        continue;
                     }
-                    $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/', $workspaceOptions);
-                }
-            } else {
-                $fieldConfiguration = $dsConf['config'] ?? null;
-                // init with value from config for passthrough fields
-                if (!empty($fieldConfiguration['type']) && $fieldConfiguration['type'] === 'passthrough') {
-                    if (!empty($dataValues_current[$key]['vDEF'])) {
-                        // If there is existing value, keep it
-                        $dataValues[$key]['vDEF'] = $dataValues_current[$key]['vDEF'];
-                    } elseif (
-                        !empty($fieldConfiguration['default'])
-                        && isset($pParams[1])
-                        && !MathUtility::canBeInterpretedAsInteger($pParams[1])
-                    ) {
-                        // If is new record and a default is specified for field, use it.
-                        $dataValues[$key]['vDEF'] = $fieldConfiguration['default'];
+                    if (($fieldConfig['type'] ?? '') === 'passthrough') {
+                        $currentVDef = $currentData[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] ?? null;
+                        if (!empty($currentVDef)) {
+                            // If there is existing value, keep it.
+                            $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] = $currentVDef;
+                        } elseif (!empty($fieldConfig['default']) && !MathUtility::canBeInterpretedAsInteger($id)) {
+                            // If is new record and a default is specified for field, use it.
+                            $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] = $fieldConfig['default'];
+                        }
                     }
-                }
-                if (!is_array($fieldConfiguration) || !isset($dataValues[$key]) || !is_array($dataValues[$key])) {
-                    continue;
-                }
-
-                foreach ($dataValues[$key] as $vKey => $data) {
-                    if ($callBackFunc) {
-                        $res = $this->{$callBackFunc}(
-                            $pParams,
-                            $fieldConfiguration,
-                            $dataValues[$key][$vKey] ?? null,
-                            $dataValues_current[$key][$vKey] ?? null,
-                            $structurePath . $key . '/' . $vKey . '/',
-                            $workspaceOptions
-                        );
-                    } else {
-                        // Default
-                        [$CVtable, $CVid, $CVcurValue, $CVstatus, $CVrealPid, $CVrecFID, $CVtscPID] = $pParams;
-
-                        $additionalData = [
-                            'flexFormId' => $CVrecFID,
-                            'flexFormPath' => trim(rtrim($structurePath, '/') . '/' . $key . '/' . $vKey, '/'),
-                        ];
-
-                        $res = $this->checkValue_SW(
-                            [],
-                            $dataValues[$key][$vKey] ?? null,
-                            $fieldConfiguration,
-                            $CVtable,
-                            $CVid,
-                            $dataValues_current[$key][$vKey] ?? null,
-                            $CVstatus,
-                            $CVrealPid,
-                            $CVrecFID,
-                            '',
-                            $CVtscPID,
-                            $additionalData
-                        );
+                    if (!isset($data[$sheetKey]['lDEF'][$sheetElementKey]) || !is_array($data[$sheetKey]['lDEF'][$sheetElementKey])) {
+                        continue;
                     }
-                    // Adding the value:
+                    $flexFormPath = $sheetKey . '/lDEF/' . $sheetElementKey . '/vDEF';
+                    $res = $this->checkValue_SW(
+                        [],
+                        $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] ?? null,
+                        $fieldConfig,
+                        $table,
+                        $id,
+                        $currentData[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] ?? null,
+                        $status,
+                        $realPid,
+                        $recFID,
+                        '',
+                        $tscPID,
+                        ['flexFormId' => $recFID, 'flexFormPath' => $flexFormPath]
+                    );
                     if (isset($res['value'])) {
-                        $dataValues[$key][$vKey] = $res['value'];
+                        $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] = $res['value'];
                     }
                 }
             }
         }
+        return $data;
     }
 
     /**
@@ -3920,7 +3871,7 @@ class DataHandler
             $currentValue = is_string($value) ? GeneralUtility::xml2array($value) : null;
             // Traversing the XML structure, processing relations in FlexForm such as inline records:
             if (is_array($currentValue)) {
-                $currentValue['data'] = $this->checkValue_flex_procInData($currentValue['data'] ?? [], [], $dataStructureArray, [$table, $uid, $field, $realDestPid, $language], 'copyRecord_flexFormCallBack', $workspaceOptions);
+                $currentValue['data'] = $this->copyFlexFormData($currentValue['data'] ?? [], $dataStructureArray, $table, $uid, $field, $realDestPid, $language, $workspaceOptions);
                 // Setting value as an array! -> which means the input will be processed according to the 'flex' type when the new copy is created.
                 $value = $currentValue;
             }
@@ -4099,29 +4050,53 @@ class DataHandler
     }
 
     /**
-     * Callback function for traversing the FlexForm structure in relation to creating copied files of file relations inside of flex form structures.
-     *
-     * @param array $pParams Array of parameters in num-indexes: table, uid, field
-     * @param array $dsConf TCA field configuration (from Data Structure XML)
-     * @param string $dataValue The value of the flexForm field
-     * @param string $_1 Not used.
-     * @param string $_2 Not used.
-     * @param array $workspaceOptions
-     * @return array Result array with key "value" containing the value of the processing.
-     * @see copyRecord()
-     * @see checkValue_flex_procInData_travDS()
+     * Process FlexForm relation and inline fields during a record copy, registering them
+     * for post-copy UID remapping via remapListedDBRecords().
      */
-    protected function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $_1, $_2, $workspaceOptions): array
+    private function copyFlexFormData(array $data, array $dataStructure, string $table, int $uid, string $field, int $realDestPid, int $language, array $workspaceOptions): array
     {
-        // Extract parameters:
-        [$table, $uid, $field, $realDestPid, $language] = $pParams;
-        // If references are set for this field, set flag so they can be corrected later (in ->remapListedDBRecords())
-        if (($this->isReferenceField($dsConf) || $this->getRelationFieldType($dsConf) !== false) && (string)$dataValue !== '') {
-            $dataValue = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $dataValue, [], $dsConf, $realDestPid, $language, $workspaceOptions);
-            $this->registerDBList[$table][$uid][$field] = 'FlexForm_reference';
+        foreach ($dataStructure['sheets'] as $sheetKey => $sheetData) {
+            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementTca) {
+                if (($sheetElementTca['type'] ?? '') === 'array') {
+                    // Section element.
+                    if (!is_array($sheetElementTca['el'] ?? false) || !is_array($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
+                        continue;
+                    }
+                    foreach ($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
+                        if (!is_array($valueSectionContainers ?? false)) {
+                            continue;
+                        }
+                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
+                            if (!is_array($sheetElementTca['el'][$valueContainerType]['el'] ?? false)) {
+                                continue;
+                            }
+                            foreach ($sheetElementTca['el'][$valueContainerType]['el'] as $containerElement => $containerElementTca) {
+                                if (!isset($data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'])) {
+                                    continue;
+                                }
+                                $fieldConfig = $containerElementTca['config'] ?? [];
+                                $fieldValue = $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'];
+                                if (($this->isReferenceField($fieldConfig) || $this->getRelationFieldType($fieldConfig) !== false) && (string)$fieldValue !== '') {
+                                    $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF']
+                                        = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $fieldValue, [], $fieldConfig, $realDestPid, $language, $workspaceOptions);
+                                    $this->registerDBList[$table][$uid][$field] = 'FlexForm_reference';
+                                }
+                            }
+                        }
+                    }
+                } elseif (isset($data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
+                    // Simple field element.
+                    $fieldConfig = $sheetElementTca['config'] ?? [];
+                    $fieldValue = $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'];
+                    if (($this->isReferenceField($fieldConfig) || $this->getRelationFieldType($fieldConfig) !== false) && (string)$fieldValue !== '') {
+                        $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF']
+                            = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $fieldValue, [], $fieldConfig, $realDestPid, $language, $workspaceOptions);
+                        $this->registerDBList[$table][$uid][$field] = 'FlexForm_reference';
+                    }
+                }
+            }
         }
-        // Return
-        return ['value' => $dataValue];
+        return $data;
     }
 
     /**
@@ -6837,7 +6812,7 @@ class DataHandler
                                         $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                                         $currentValueArray = GeneralUtility::xml2array($origRecordRow[$fieldName]);
                                         // Do recursive processing of the XML data:
-                                        $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $theUidToUpdate, $fieldName], 'remapListedDBRecords_flexFormCallBack');
+                                        $currentValueArray['data'] = $this->remapFlexFormDBRelations($currentValueArray['data'], $dataStructureArray, $table, $theUidToUpdate);
                                         // The return value should be compiled back into XML, ready to insert directly in the field (as we call updateDB() directly later):
                                         if (is_array($currentValueArray['data'])) {
                                             $newData[$fieldName] = $this->flexFormTools->flexArray2Xml($currentValueArray);
@@ -6872,28 +6847,55 @@ class DataHandler
     }
 
     /**
-     * Callback function for traversing the FlexForm structure in relation to creating copied files of file relations inside of flex form structures.
-     *
-     * @param array $pParams Set of parameters in numeric array: table, uid, field
-     * @param array $dsConf TCA config for field (from Data Structure of course)
-     * @param string $dataValue Field value (from FlexForm XML)
-     * @return array Array where the "value" key carries the value.
-     * @see checkValue_flex_procInData_travDS()
-     * @see remapListedDBRecords()
+     * Remap old copied UIDs to new UIDs for DB reference fields inside a FlexForm data array.
      */
-    protected function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue): array
+    private function remapFlexFormDBRelations(array $data, array $dataStructure, string $table, mixed $uid): array
     {
-        // Extract parameters:
-        [$table, $uid, $field] = $pParams;
-        // If references are set for this field, set flag so they can be corrected later:
-        if ($this->isReferenceField($dsConf) && (string)$dataValue !== '') {
-            $vArray = $this->remapListedDBRecords_procDBRefs($dsConf, $dataValue, $uid, $table);
-            if (is_array($vArray)) {
-                $dataValue = implode(',', $vArray);
+        foreach ($dataStructure['sheets'] as $sheetKey => $sheetData) {
+            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementTca) {
+                if (($sheetElementTca['type'] ?? '') === 'array') {
+                    // Section element.
+                    if (!is_array($sheetElementTca['el'] ?? false) || !is_array($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
+                        continue;
+                    }
+                    foreach ($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
+                        if (!is_array($valueSectionContainers ?? false)) {
+                            continue;
+                        }
+                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
+                            if (!is_array($sheetElementTca['el'][$valueContainerType]['el'] ?? false)) {
+                                continue;
+                            }
+                            foreach ($sheetElementTca['el'][$valueContainerType]['el'] as $containerElement => $containerElementTca) {
+                                if (!isset($data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'])) {
+                                    continue;
+                                }
+                                $fieldConfig = $containerElementTca['config'] ?? [];
+                                $fieldValue = $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'];
+                                if ($this->isReferenceField($fieldConfig) && (string)$fieldValue !== '') {
+                                    $vArray = $this->remapListedDBRecords_procDBRefs($fieldConfig, $fieldValue, $uid, $table);
+                                    if (is_array($vArray)) {
+                                        $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF']
+                                            = implode(',', $vArray);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } elseif (isset($data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
+                    // Simple field element.
+                    $fieldConfig = $sheetElementTca['config'] ?? [];
+                    $fieldValue = $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'];
+                    if ($this->isReferenceField($fieldConfig) && (string)$fieldValue !== '') {
+                        $vArray = $this->remapListedDBRecords_procDBRefs($fieldConfig, $fieldValue, $uid, $table);
+                        if (is_array($vArray)) {
+                            $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'] = implode(',', $vArray);
+                        }
+                    }
+                }
             }
         }
-        // Return
-        return ['value' => $dataValue];
+        return $data;
     }
 
     /**

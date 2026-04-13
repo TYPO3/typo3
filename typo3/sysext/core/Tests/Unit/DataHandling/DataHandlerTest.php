@@ -939,53 +939,22 @@ final class DataHandlerTest extends UnitTestCase
         self::assertTrue($this->subject->_call('checkModifyAccessList', 'tt_content'));
     }
 
-    public static function checkValue_flex_procInData_travDSDataProvider(): iterable
+    public static function checkFlexFormDataDataProvider(): iterable
     {
         yield 'Flat structure' => [
-            'dataValues' => [
-                'field1' => [
-                    'vDEF' => 'wrong input',
-                ],
-            ],
-            'DSelements' => [
-                'field1' => [
-                    'label' => 'A field',
-                    'config' => [
-                        'type' => 'number',
-                        'required' => true,
-                    ],
-                ],
-            ],
-            'expected' => [
-                'field1' => [
-                    'vDEF' => 0,
-                ],
-            ],
-        ];
-
-        yield 'Array structure' => [
-            'dataValues' => [
-                'section' => [
-                    'el' => [
-                        '1' => [
-                            'container1' => [
-                                'el' => [
-                                    'field1' => [
-                                        'vDEF' => 'wrong input',
-                                    ],
-                                ],
-                            ],
+            'data' => [
+                'sDEF' => [
+                    'lDEF' => [
+                        'field1' => [
+                            'vDEF' => 'wrong input',
                         ],
                     ],
                 ],
             ],
-            'DSelements' => [
-                'section' => [
-                    'type' => 'array',
-                    'section' => true,
-                    'el' => [
-                        'container1' => [
-                            'type' => 'array',
+            'dataStructure' => [
+                'sheets' => [
+                    'sDEF' => [
+                        'ROOT' => [
                             'el' => [
                                 'field1' => [
                                     'label' => 'A field',
@@ -1000,13 +969,76 @@ final class DataHandlerTest extends UnitTestCase
                 ],
             ],
             'expected' => [
-                'section' => [
-                    'el' => [
-                        '1' => [
-                            'container1' => [
-                                'el' => [
-                                    'field1' => [
-                                        'vDEF' => 0,
+                'sDEF' => [
+                    'lDEF' => [
+                        'field1' => [
+                            'vDEF' => 0,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'Array structure' => [
+            'data' => [
+                'sDEF' => [
+                    'lDEF' => [
+                        'section' => [
+                            'el' => [
+                                '1' => [
+                                    'container1' => [
+                                        'el' => [
+                                            'field1' => [
+                                                'vDEF' => 'wrong input',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'dataStructure' => [
+                'sheets' => [
+                    'sDEF' => [
+                        'ROOT' => [
+                            'el' => [
+                                'section' => [
+                                    'type' => 'array',
+                                    'section' => true,
+                                    'el' => [
+                                        'container1' => [
+                                            'type' => 'array',
+                                            'el' => [
+                                                'field1' => [
+                                                    'label' => 'A field',
+                                                    'config' => [
+                                                        'type' => 'number',
+                                                        'required' => true,
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'sDEF' => [
+                    'lDEF' => [
+                        'section' => [
+                            'el' => [
+                                '1' => [
+                                    'container1' => [
+                                        'el' => [
+                                            'field1' => [
+                                                'vDEF' => 0,
+                                            ],
+                                        ],
                                     ],
                                 ],
                             ],
@@ -1020,24 +1052,14 @@ final class DataHandlerTest extends UnitTestCase
     /**
      * This test ensures, that the eval method checkValue_SW is called on flexform structures.
      */
-    #[DataProvider('checkValue_flex_procInData_travDSDataProvider')]
+    #[DataProvider('checkFlexFormDataDataProvider')]
     #[Test]
-    public function checkValue_flex_procInData_travDS(array $dataValues, array $DSelements, array $expected): void
+    public function checkFlexFormData(array $data, array $dataStructure, array $expected): void
     {
-        $pParams = [
-            'tt_content',
-            777,
-            '<?xml ... ?>',
-            'update',
-            1,
-            'tt_content:777:pi_flexform',
-            0,
-        ];
-
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $args = [&$dataValues, [], $DSelements, $pParams, '', ''];
-        (new \ReflectionMethod($this->subject, 'checkValue_flex_procInData_travDS'))->invokeArgs($this->subject, $args);
-        self::assertSame($expected, $dataValues);
+        $result = (new \ReflectionMethod($this->subject, 'checkFlexFormData'))
+            ->invoke($this->subject, $data, [], $dataStructure, 'tt_content', 777, 'update', 1, 'tt_content:777:pi_flexform', 0);
+        self::assertSame($expected, $result);
     }
 
     #[Test]
