@@ -137,7 +137,7 @@ final readonly class LogEntryRepository
         ?ServerRequestInterface $request = null
     ): int {
         $userId = $principalContext->id;
-        $workspaceId = $processingContext->workspaceId ?? 0;
+        $workspaceId = $processingContext->workspaceId;
         if ($principalContext->impersonatedBy !== null) {
             $data['originalUser'] = $principalContext->impersonatedBy->id;
         }
