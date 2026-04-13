@@ -37,7 +37,7 @@
         <source>File upload directly in Doc-module</source>
       </trans-unit>
       <trans-unit id="contextual_record_edit">
-        <source>Use quick editing for records in the page module</source>
+        <source>Use quick editing for records in the layout module</source>
       </trans-unit>
       <trans-unit id="show_hidden_files_and_folders">
         <source>Show hidden files and folders in the filelist</source>
