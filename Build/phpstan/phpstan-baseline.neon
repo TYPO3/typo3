@@ -847,6 +847,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
 
 		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
+
+		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Database\\Schema\\SchemaDiff and TYPO3\\CMS\\Core\\Database\\Schema\\SchemaDiff will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
@@ -3191,12 +3197,6 @@ parameters:
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/filelist/Classes/FileList.php
-
-		-
-			message: '#^Method TYPO3Fluid\\Fluid\\View\\ViewInterface\:\:render\(\) invoked with 1 parameter, 0 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/View/FluidViewAdapter.php
 
 		-
 			message: '#^Parameter \#1 \$namespace of method TYPO3\\CMS\\Core\\Page\\PageRenderer\:\:addInlineSettingArray\(\) expects string, null given\.$#'
