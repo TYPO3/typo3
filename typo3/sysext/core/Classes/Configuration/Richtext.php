@@ -18,22 +18,29 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Configuration;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\AfterRichtextConfigurationPreparedEvent;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Prepare richtext configuration. Used in DataHandler and FormEngine
  *
  * @internal Internal class for the time being - may change / vanish any time
- * @todo When I grow up, I want to become a data provider
  */
-class Richtext
+readonly class Richtext
 {
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+        #[Autowire(service: 'cache.runtime')]
+        private FrontendInterface $runtimeCache,
+        private YamlFileLoader $yamlFileLoader,
+        private TypoScriptService $typoScriptService,
+    ) {}
+
     /**
      * This is an intermediate class / method to retrieve RTE
      * configuration until all core places use data providers to do that.
@@ -79,8 +86,7 @@ class Richtext
             $configuration['proc.']['overruleMode'] = 'default';
         }
 
-        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
-        $event = $eventDispatcher->dispatch(new AfterRichtextConfigurationPreparedEvent($configuration));
+        $event = $this->eventDispatcher->dispatch(new AfterRichtextConfigurationPreparedEvent($configuration));
 
         return $event->getConfiguration();
     }
@@ -95,18 +101,16 @@ class Richtext
     {
         $configuration = [];
         if (!empty($presetName) && isset($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$presetName])) {
-            $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
             $identifier = 'richtext_' . $presetName;
-            $configuration = $runtimeCache->get($identifier);
+            $configuration = $this->runtimeCache->get($identifier);
 
             if ($configuration === false) {
-                $fileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
-                $configuration = $fileLoader->load($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$presetName]);
+                $configuration = $this->yamlFileLoader->load($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$presetName]);
                 // For future versions, you should however rely on the "processing" key and not the "proc" key.
                 if (is_array($configuration['processing'] ?? null)) {
                     $configuration['proc.'] = $this->convertPlainArrayToTypoScriptArray($configuration['processing']);
                 }
-                $runtimeCache->set($identifier, $configuration);
+                $this->runtimeCache->set($identifier, $configuration);
             }
         }
         return $configuration;
@@ -161,8 +165,7 @@ class Richtext
             if (!str_ends_with($key, '.')) {
                 continue;
             }
-            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-            $typoScriptArray[substr($key, 0, -1)] = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptArray[$key]);
+            $typoScriptArray[substr($key, 0, -1)] = $this->typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptArray[$key]);
         }
 
         return $typoScriptArray;

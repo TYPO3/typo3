@@ -419,6 +419,7 @@ class DataHandler
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly PageDoktypeRegistry $pageDoktypeRegistry,
         private readonly FlexFormTools $flexFormTools,
+        private readonly Richtext $richtext,
         private readonly PasswordHashFactory $passwordHashFactory,
         private readonly Random $randomGenerator,
         private readonly TypoLinkCodecService $typoLinkCodecService,
@@ -1456,8 +1457,7 @@ class DataHandler
         }
         if ($richtextEnabled) {
             $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
-            $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
-            $richtextConfiguration = $richtextConfigurationProvider->getConfiguration($table, $field, $realPid, $recordType, $tcaFieldConf);
+            $richtextConfiguration = $this->richtext->getConfiguration($table, $field, $realPid, $recordType, $tcaFieldConf);
             $rteParser = GeneralUtility::makeInstance(RteHtmlParser::class);
             $valueArray['value'] = $rteParser->transformTextForPersistence((string)$value, $richtextConfiguration['proc.'] ?? []);
         }

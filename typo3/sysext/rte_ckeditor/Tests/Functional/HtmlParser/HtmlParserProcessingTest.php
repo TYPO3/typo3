@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class HtmlParserProcessingTest extends FunctionalTestCase
@@ -52,7 +51,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
     #[Test]
     public function HtmlParserProcessingReceivesRemovedTagsConfiguration(): void
     {
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('any', 'any', 0, 'any', []);
 
@@ -71,7 +70,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
         ];
         // NOTICE: This is just plain TSconfig. No YAML preset exist. For TSconfig,
         // the "preset" name has no relevance.
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('pages', 'TSconfig', 1, 'any', $extraConfig);
 
@@ -88,7 +87,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
         ];
         // NOTICE: This is just plain TSconfig. No YAML preset exist. For TSconfig,
         // the "preset" name has no relevance.
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('pages', 'TSconfig', 1, 'any', $extraConfig);
 
@@ -105,7 +104,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
         ];
         // NOTICE: This is just plain TSconfig. No YAML preset exist. For TSconfig,
         // the "preset" name has no relevance.
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('pages', 'TSconfig', 1, 'any', $extraConfig);
         $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
@@ -133,7 +132,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
         ];
         // NOTICE: This is just plain TSconfig. No YAML preset exist. For TSconfig,
         // the "preset" name has no relevance.
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('pages', 'TSconfig', 1, 'any', $extraConfig);
         $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
@@ -154,7 +153,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
     #[Test]
     public function HtmlParserProcessingAppliesRemovedTagsConfiguration(): void
     {
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('any', 'any', 0, 'any', []);
         $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
@@ -293,7 +292,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
     {
         $preset = 'RteConfigStringFixture';
         $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$preset] = 'EXT:rte_ckeditor/Tests/Functional/Fixtures/' . $preset . '.yaml';
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('any', 'any', 0, 'any', ['richtextConfiguration' => $preset]);
         $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
@@ -311,7 +310,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
     {
         $preset = 'RteConfigArrayFixture';
         $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$preset] = 'EXT:rte_ckeditor/Tests/Functional/Fixtures/' . $preset . '.yaml';
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('any', 'any', 0, 'any', ['richtextConfiguration' => $preset]);
         $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
@@ -376,7 +375,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
     {
         $preset = 'RteConfigStringFixture';
         $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$preset] = 'EXT:rte_ckeditor/Tests/Functional/Fixtures/' . $preset . '.yaml';
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('any', 'any', 0, 'any', ['richtextConfiguration' => $preset]);
         $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
@@ -394,7 +393,7 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
     {
         $preset = 'RteConfigArrayFixture';
         $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$preset] = 'EXT:rte_ckeditor/Tests/Functional/Fixtures/' . $preset . '.yaml';
-        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationProvider = $this->get(Richtext::class);
         $richTextConfigurationConfiguration = $richTextConfigurationProvider
             ->getConfiguration('any', 'any', 0, 'any', ['richtextConfiguration' => $preset]);
         $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];

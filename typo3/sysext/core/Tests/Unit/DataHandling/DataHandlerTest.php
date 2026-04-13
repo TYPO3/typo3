@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
@@ -96,6 +97,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
             $this->createMock(FlexFormTools::class),
+            $this->createMock(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
@@ -270,6 +272,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
             $this->createMock(FlexFormTools::class),
+            $this->createMock(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
@@ -1095,6 +1098,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
             $this->createMock(FlexFormTools::class),
+            $this->createMock(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
@@ -1130,6 +1134,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
             $this->createMock(FlexFormTools::class),
+            $this->createMock(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
@@ -1562,6 +1567,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
             $this->createMock(FlexFormTools::class),
+            $this->createMock(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
