@@ -74,9 +74,6 @@ easier and enhanced usage.
       templateName = Text
       dataProcessing {
         10 = record-transformation
-        10 {
-          as = data
-        }
       }
     }
 
@@ -93,7 +90,7 @@ We are dealing with an object here. You can, however, access your record
 properties as you are used to with :html:`{record.title}` or
 :html:`{record.uid}`. In addition, you gain special, context-aware properties
 like the language :html:`{record.languageId}` or workspace
-:html:`{data.versionInfo.workspaceId}`.
+:html:`{record.versionInfo.workspaceId}`.
 
 Overview of all possibilities:
 
@@ -125,29 +122,29 @@ Overview of all possibilities:
     {record.fullType}
 
     <!-- System related properties -->
-    {data.systemProperties.isDeleted}
-    {data.systemProperties.isDisabled}
-    {data.systemProperties.isLockedForEditing}
-    {data.systemProperties.createdAt}
-    {data.systemProperties.lastUpdatedAt}
-    {data.systemProperties.publishAt}
-    {data.systemProperties.publishUntil}
-    {data.systemProperties.userGroupRestriction}
-    {data.systemProperties.sorting}
-    {data.systemProperties.description}
+    {record.systemProperties.deleted}
+    {record.systemProperties.disabled}
+    {record.systemProperties.lockedForEditing}
+    {record.systemProperties.createdAt}
+    {record.systemProperties.lastUpdatedAt}
+    {record.systemProperties.publishAt}
+    {record.systemProperties.publishUntil}
+    {record.systemProperties.userGroupRestriction}
+    {record.systemProperties.sorting}
+    {record.systemProperties.description}
 
     <!-- Computed properties depending on the request context -->
-    {data.computedProperties.versionedUid}
-    {data.computedProperties.localizedUid}
-    {data.computedProperties.requestedOverlayLanguageId}
-    {data.computedProperties.translationSource} <!-- Only for pages, contains the Page model -->
+    {record.computedProperties.versionedUid}
+    {record.computedProperties.localizedUid}
+    {record.computedProperties.requestedOverlayLanguageId}
+    {record.computedProperties.translationSource} <!-- Only for pages, contains the Page model -->
 
     <!-- Workspace related properties -->
-    {data.versionInfo.workspaceId}
-    {data.versionInfo.liveId}
-    {data.versionInfo.state.name}
-    {data.versionInfo.state.value}
-    {data.versionInfo.stageId}
+    {record.versionInfo.workspaceId}
+    {record.versionInfo.liveId}
+    {record.versionInfo.state.name}
+    {record.versionInfo.state.value}
+    {record.versionInfo.stageId}
 
 .. note::
 
