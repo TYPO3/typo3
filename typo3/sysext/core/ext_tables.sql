@@ -43,6 +43,7 @@ CREATE TABLE pages (
 	mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
 
 	KEY determineSiteRoot (is_siteroot),
+	KEY contentFromPid (content_from_pid),
 	KEY slug (slug(127))
 );
 
