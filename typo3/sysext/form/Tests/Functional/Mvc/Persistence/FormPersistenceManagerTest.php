@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Persistence;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -78,7 +77,6 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[IgnoreDeprecations] // Test explicitly covers deprecated FileMountStorageAdapter
     public function loadFormFromFilemountStorageReturnsFormDefinition(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
@@ -110,7 +108,6 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[IgnoreDeprecations] // Test explicitly covers deprecated FileMountStorageAdapter
     public function loadNonExistentFormFromFilemountStorageReturnsInvalidFormDefinition(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');

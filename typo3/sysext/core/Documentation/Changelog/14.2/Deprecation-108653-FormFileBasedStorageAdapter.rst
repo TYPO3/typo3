@@ -42,16 +42,12 @@ Migrate file-based forms to database storage`.
 Impact
 ======
 
-Using file-based form storage will trigger a PHP :php:`E_USER_DEPRECATED`
-error. This includes:
+The file-based form storage continues to work without any functional changes
+during the deprecation period. However, it will be removed in TYPO3 v15.0.
 
-*   Creating new forms with the "File Mount" storage type in the form wizard
-*   Loading or saving existing forms from file mounts
-*   Configuring :yaml:`allowedFileMounts` with non-empty values in the form
-    YAML setup
-
-The forms themselves continue to work without any functional changes
-during the deprecation period.
+An upgrade wizard is available to check whether file-based forms exist
+and to migrate them to database storage. Run the wizard regularly to verify
+your migration status.
 
 
 Affected installations
@@ -143,4 +139,4 @@ to transfer forms between storages:
     # Preview without changes
     bin/typo3 form:definition:transfer --source=filemount --target=database --dry-run
 
-..  index:: YAML, FullyScanned, ext:form
+..  index:: YAML, NotScanned, ext:form

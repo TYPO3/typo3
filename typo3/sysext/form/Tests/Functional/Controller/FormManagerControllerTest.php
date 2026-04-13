@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route as SymfonyRoute;
@@ -435,7 +434,6 @@ final class FormManagerControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[IgnoreDeprecations] // Default FormSetup.yaml configures allowedFileMounts which triggers deprecation on bootstrap
     public function beforeFormIsCreatedEventIsTriggered(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -544,7 +542,6 @@ final class FormManagerControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[IgnoreDeprecations] // Default FormSetup.yaml configures allowedFileMounts which triggers deprecation on bootstrap
     public function beforeFormIsDuplicatedEventIsTriggered(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/form_definition.csv');
@@ -596,7 +593,6 @@ final class FormManagerControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[IgnoreDeprecations] // Test explicitly uses deprecated filemount storage for YAML file creation with env substitution
     public function formIsCreatedFromTemplateWithEnvSubstitution(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');

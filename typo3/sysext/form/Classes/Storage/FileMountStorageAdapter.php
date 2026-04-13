@@ -48,26 +48,12 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
  */
 class FileMountStorageAdapter extends AbstractFileStorageAdapter implements StorageAdapterInterface
 {
-    private static bool $deprecationTriggered = false;
-
     public function __construct(
         protected readonly YamlSource $yamlSource,
         protected readonly ResourceFactory $resourceFactory,
         protected readonly PersistenceConfigurationService $storageConfiguration,
         protected readonly FilePersistenceSlot $filePersistenceSlot,
     ) {}
-
-    private function triggerDeprecation(): void
-    {
-        if (!self::$deprecationTriggered) {
-            self::$deprecationTriggered = true;
-            trigger_error(
-                'File-based form storage (FileMountStorageAdapter) is deprecated since TYPO3 v14.2 and will be removed in v15.0.'
-                . ' Use the upgrade wizard "Migrate file-based forms to database storage" to migrate. See Deprecation-108653.',
-                E_USER_DEPRECATED
-            );
-        }
-    }
 
     public function getTypeIdentifier(): string
     {
@@ -104,7 +90,6 @@ class FileMountStorageAdapter extends AbstractFileStorageAdapter implements Stor
 
     public function read(FormIdentifier $identifier, ?ServerRequestInterface $request = null): FormData
     {
-        $this->triggerDeprecation();
         $file = $this->retrieveFileByPersistenceIdentifier($identifier->identifier);
         $formDefinition = $this->yamlSource->load([$file]);
         $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($formDefinition, $identifier->identifier);
@@ -113,7 +98,6 @@ class FileMountStorageAdapter extends AbstractFileStorageAdapter implements Stor
 
     public function write(FormIdentifier $identifier, FormData $data, ?StorageContext $context = null): FormIdentifier
     {
-        $this->triggerDeprecation();
         if (!$this->hasValidFileExtension($identifier->identifier)) {
             throw new PersistenceManagerException(sprintf('The file "%s" could not be saved.', $identifier->identifier), 1477679820);
         }
@@ -454,11 +438,7 @@ class FileMountStorageAdapter extends AbstractFileStorageAdapter implements Stor
 
     public function isAccessible(): bool
     {
-        $accessible = !empty($this->getAccessibleFormStorageFolders());
-        if ($accessible) {
-            $this->triggerDeprecation();
-        }
-        return $accessible;
+        return !empty($this->getAccessibleFormStorageFolders());
     }
 
     /**

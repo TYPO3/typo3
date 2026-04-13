@@ -60,6 +60,9 @@ label: 'TYPO3 Form — Base Configuration'
 priority: 10
 
 persistenceManager:
+  # @deprecated since v14.2, will be removed in v15.0.
+  # Use database storage or extension storage instead.
+  # See Deprecation-108653-FormFileBasedStorageAdapter.rst
   allowedFileMounts:
     10: '1:/form_definitions/'
   allowSaveToExtensionPaths: false

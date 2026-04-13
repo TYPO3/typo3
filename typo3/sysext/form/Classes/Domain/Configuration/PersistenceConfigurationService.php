@@ -82,15 +82,7 @@ final readonly class PersistenceConfigurationService
     {
         $persistenceSettings = $this->getPersistenceManagerSettings();
         $allowedFileMounts = $persistenceSettings['allowedFileMounts'] ?? [];
-        $result = is_array($allowedFileMounts) ? $allowedFileMounts : [];
-        if ($result !== []) {
-            trigger_error(
-                'The form persistence configuration option "allowedFileMounts" is deprecated since TYPO3 v14.2'
-                . ' and will be removed in v15.0. Migrate to database storage using the upgrade wizard. See Deprecation-108653.',
-                E_USER_DEPRECATED
-            );
-        }
-        return $result;
+        return is_array($allowedFileMounts) ? $allowedFileMounts : [];
     }
 
     /**

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -280,7 +279,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
     }
 
     #[Test]
-    #[IgnoreDeprecations] // FormPersistenceIdentifier soft reference parser triggers deprecated FileMountStorageAdapter and allowedFileMounts config
     public function importPagesAndRelatedTtContentKeepsRelationBetweenImportedFlexFormSoftReferenceAndRelatedRecord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
@@ -304,7 +302,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
     }
 
     #[Test]
-    #[IgnoreDeprecations] // FormPersistenceIdentifier soft reference parser triggers deprecated FileMountStorageAdapter and allowedFileMounts config
     public function importPagesAndRelatedTtContentCanKeepOriginalFlexFormSoftReference(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
@@ -329,7 +326,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
     }
 
     #[Test]
-    #[IgnoreDeprecations] // FormPersistenceIdentifier soft reference parser triggers deprecated FileMountStorageAdapter and allowedFileMounts config
     public function importPagesAndRelatedTtContentCanEditFlexFormSoftReference(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
