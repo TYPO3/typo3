@@ -44,6 +44,7 @@ CREATE TABLE pages (
 
 	KEY determineSiteRoot (is_siteroot),
 	KEY language_identifier (l10n_parent,sys_language_uid),
+	KEY contentFromPid (content_from_pid),
 	KEY slug (slug(127))
 );
 
