@@ -169,14 +169,6 @@ class DataHandler
     public array $suggestedInsertUids = [];
 
     /**
-     * Object. Call back object for FlexForm traversal. Useful when external classes wants to use the
-     * iteration functions inside DataHandler for traversing a FlexForm structure.
-     *
-     * @internal should only be used from within TYPO3 Core
-     */
-    public ?object $callBackObj = null;
-
-    /**
      * A string which can be used as correlationId for RecordHistory entries.
      * The string can later be used to rollback multiple changes at once.
      */
@@ -3005,9 +2997,8 @@ class DataHandler
      * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRECATED, use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools instead for traversal!
      * @return ?array The modified 'data' part.
      * @see checkValue_flex_procInData_travDS()
-     * @internal should only be used from within DataHandler
      */
-    public function checkValue_flex_procInData($dataPart, $dataPart_current, $dataStructure, $pParams, $callBackFunc = '', array $workspaceOptions = [])
+    protected function checkValue_flex_procInData($dataPart, $dataPart_current, $dataStructure, $pParams, $callBackFunc = '', array $workspaceOptions = [])
     {
         if (is_array($dataPart)) {
             foreach ($dataPart as $sKey => $sheetDef) {
@@ -3040,9 +3031,8 @@ class DataHandler
      * @param string $callBackFunc Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
      * @param string $structurePath
      * @see checkValue_flex_procInData()
-     * @internal should only be used from within DataHandler
      */
-    public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $DSelements, $pParams, $callBackFunc, $structurePath, array $workspaceOptions = []): void
+    protected function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $DSelements, $pParams, $callBackFunc, $structurePath, array $workspaceOptions = []): void
     {
         if (!is_array($DSelements)) {
             return;
@@ -3108,25 +3098,14 @@ class DataHandler
 
                 foreach ($dataValues[$key] as $vKey => $data) {
                     if ($callBackFunc) {
-                        if (is_object($this->callBackObj)) {
-                            $res = $this->callBackObj->{$callBackFunc}(
-                                $pParams,
-                                $fieldConfiguration,
-                                $dataValues[$key][$vKey] ?? null,
-                                $dataValues_current[$key][$vKey] ?? null,
-                                $structurePath . $key . '/' . $vKey . '/',
-                                $workspaceOptions
-                            );
-                        } else {
-                            $res = $this->{$callBackFunc}(
-                                $pParams,
-                                $fieldConfiguration,
-                                $dataValues[$key][$vKey] ?? null,
-                                $dataValues_current[$key][$vKey] ?? null,
-                                $structurePath . $key . '/' . $vKey . '/',
-                                $workspaceOptions
-                            );
-                        }
+                        $res = $this->{$callBackFunc}(
+                            $pParams,
+                            $fieldConfiguration,
+                            $dataValues[$key][$vKey] ?? null,
+                            $dataValues_current[$key][$vKey] ?? null,
+                            $structurePath . $key . '/' . $vKey . '/',
+                            $workspaceOptions
+                        );
                     } else {
                         // Default
                         [$CVtable, $CVid, $CVcurValue, $CVstatus, $CVrealPid, $CVrecFID, $CVtscPID] = $pParams;
@@ -4131,9 +4110,8 @@ class DataHandler
      * @return array Result array with key "value" containing the value of the processing.
      * @see copyRecord()
      * @see checkValue_flex_procInData_travDS()
-     * @internal should only be used from within DataHandler
      */
-    public function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $_1, $_2, $workspaceOptions): array
+    protected function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $_1, $_2, $workspaceOptions): array
     {
         // Extract parameters:
         [$table, $uid, $field, $realDestPid, $language] = $pParams;
@@ -6902,9 +6880,8 @@ class DataHandler
      * @return array Array where the "value" key carries the value.
      * @see checkValue_flex_procInData_travDS()
      * @see remapListedDBRecords()
-     * @internal should only be used from within DataHandler
      */
-    public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue): array
+    protected function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue): array
     {
         // Extract parameters:
         [$table, $uid, $field] = $pParams;

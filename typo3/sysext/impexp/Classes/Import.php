@@ -1393,14 +1393,10 @@ class Import extends ImportExport
                                         ])
                                     );
                                     if (is_array($flexFormData['data'] ?? null)) {
-                                        $flexFormIterator = GeneralUtility::makeInstance(DataHandler::class);
-                                        $flexFormIterator->callBackObj = $this;
-                                        $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
+                                        $flexFormData['data'] = $this->remapFlexFormRelationsInData(
                                             $flexFormData['data'],
-                                            [],
                                             $dataStructure,
-                                            [$relation],
-                                            'remapRelationsOfFlexFormCallBack'
+                                            $relation
                                         );
                                     }
                                     if (is_array($flexFormData['data'] ?? null)) {
@@ -1431,30 +1427,52 @@ class Import extends ImportExport
         }
     }
 
-    /**
-     * Callback function to remap relations in FlexForm data
-     *
-     * @param array $pParams Set of parameters passed through by calling method setFlexFormRelations()
-     * @param array $dsConf TCA config for field (from Data Structure of course)
-     * @param string $dataValue Field value (from FlexForm XML)
-     * @param string $dataValue_ext1 Not used
-     * @param string $path Path of where the data structure of the element is found
-     * @return array Array where the "value" key carries the mapped relation string.
-     *
-     * @see setFlexFormRelations()
-     */
-    public function remapRelationsOfFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, string $path): array
+    private function remapFlexFormRelationsInData(array $data, array $dataStructure, array $relation): array
     {
-        [$relation] = $pParams;
-        // In case the $path is used as index without a trailing slash we will remove that
-        if (!is_array($relation['flexFormRels']['db'][$path] ?? null) && is_array($relation['flexFormRels']['db'][rtrim($path, '/')] ?? false)) {
-            $path = rtrim($path, '/');
+        foreach ($dataStructure['sheets'] as $sheetKey => $sheetData) {
+            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementTca) {
+                if (($sheetElementTca['type'] ?? '') === 'array') {
+                    // Section element.
+                    if (!is_array($sheetElementTca['el'] ?? false) || !is_array($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
+                        continue;
+                    }
+                    foreach ($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
+                        if (!is_array($valueSectionContainers ?? false)) {
+                            continue;
+                        }
+                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
+                            if (!is_array($sheetElementTca['el'][$valueContainerType]['el'] ?? false)) {
+                                continue;
+                            }
+                            foreach ($sheetElementTca['el'][$valueContainerType]['el'] as $containerElement => $containerElementTca) {
+                                if (!isset($data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'])) {
+                                    continue;
+                                }
+                                $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/el/' . $valueSectionContainerKey . '/' . $valueContainerType . '/el/' . $containerElement . '/vDEF/';
+                                $fieldRelations = $relation['flexFormRels']['db'][$structurePath]
+                                    ?? $relation['flexFormRels']['db'][rtrim($structurePath, '/')]
+                                    ?? null;
+                                if (is_array($fieldRelations)) {
+                                    $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF']
+                                        = implode(',', $this->remapRelationsOfField($fieldRelations, $containerElementTca['config'] ?? []));
+                                }
+                            }
+                        }
+                    }
+                } elseif (isset($data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
+                    // Simple field element.
+                    $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/vDEF/';
+                    $fieldRelations = $relation['flexFormRels']['db'][$structurePath]
+                        ?? $relation['flexFormRels']['db'][rtrim($structurePath, '/')]
+                        ?? null;
+                    if (is_array($fieldRelations)) {
+                        $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF']
+                            = implode(',', $this->remapRelationsOfField($fieldRelations, $sheetElementTca['config'] ?? []));
+                    }
+                }
+            }
         }
-        if (is_array($relation['flexFormRels']['db'][$path] ?? null)) {
-            $actualRelations = $this->remapRelationsOfField($relation['flexFormRels']['db'][$path], $dsConf);
-            $dataValue = implode(',', $actualRelations);
-        }
-        return ['value' => $dataValue];
+        return $data;
     }
 
     /**************************
@@ -1507,14 +1525,13 @@ class Import extends ImportExport
                                         ])
                                     );
                                     if (is_array($flexFormData['data'] ?? null)) {
-                                        $flexFormIterator = GeneralUtility::makeInstance(DataHandler::class);
-                                        $flexFormIterator->callBackObj = $this;
-                                        $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
+                                        $flexFormData['data'] = $this->processFlexFormSoftRefsInData(
                                             $flexFormData['data'],
-                                            [],
                                             $dataStructure,
-                                            [$table, $uid, $field, $softrefsByField],
-                                            'processSoftReferencesFlexFormCallBack'
+                                            $table,
+                                            $uid,
+                                            $field,
+                                            $softrefsByField
                                         );
                                     }
                                     if (is_array($flexFormData['data'] ?? null)) {
@@ -1549,37 +1566,54 @@ class Import extends ImportExport
         ]);
     }
 
-    /**
-     * Callback function to traverse the FlexForm structure and remap its soft reference relations.
-     *
-     * @param array $pParams Set of parameters in numeric array: table, uid, field, soft references
-     * @param array $dsConf TCA config for field (from Data Structure of course)
-     * @param string $dataValue Field value (from FlexForm XML)
-     * @param string $dataValue_ext1 Not used
-     * @param string $path Path of where the data structure where the element is found
-     * @return array Array where the "value" key carries the value.
-     * @see setFlexFormRelations()
-     */
-    public function processSoftReferencesFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, string $path): array
+    private function processFlexFormSoftRefsInData(array $data, array $dataStructure, string $table, string|int $origUid, string $field, array $softrefs): array
     {
-        [$table, $origUid, $field, $softrefs] = $pParams;
-        if (is_array($softrefs)) {
-            // Filter for soft references of this path ...
-            $softrefsByPath = [];
-            foreach ($softrefs as $tokenID => $softref) {
-                if ($softref['structurePath'] === $path) {
-                    $softrefsByPath[$tokenID] = $softref;
-                }
-            }
-            // ... and perform the processing.
-            if (!empty($softrefsByPath)) {
-                $tokenizedContent = $this->dat['records'][$table . ':' . $origUid]['rels'][$field]['flexFormRels']['softrefs'][$path]['tokenizedContent'];
-                if (strlen($tokenizedContent)) {
-                    $dataValue = $this->processSoftReferencesSubstTokens($tokenizedContent, $softrefsByPath, $table, (string)$origUid);
+        foreach ($dataStructure['sheets'] as $sheetKey => $sheetData) {
+            foreach (($sheetData['ROOT']['el'] ?? []) as $sheetElementKey => $sheetElementTca) {
+                if (($sheetElementTca['type'] ?? '') === 'array') {
+                    // Section element.
+                    if (!is_array($sheetElementTca['el'] ?? false) || !is_array($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] ?? false)) {
+                        continue;
+                    }
+                    foreach ($data[$sheetKey]['lDEF'][$sheetElementKey]['el'] as $valueSectionContainerKey => $valueSectionContainers) {
+                        if (!is_array($valueSectionContainers ?? false)) {
+                            continue;
+                        }
+                        foreach ($valueSectionContainers as $valueContainerType => $valueContainerElements) {
+                            if (!is_array($sheetElementTca['el'][$valueContainerType]['el'] ?? false)) {
+                                continue;
+                            }
+                            foreach (array_keys($sheetElementTca['el'][$valueContainerType]['el']) as $containerElement) {
+                                if (!isset($data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'])) {
+                                    continue;
+                                }
+                                $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/el/' . $valueSectionContainerKey . '/' . $valueContainerType . '/el/' . $containerElement . '/vDEF/';
+                                $softrefsByPath = array_filter($softrefs, static fn(array $softref): bool => $softref['structurePath'] === $structurePath);
+                                if (!empty($softrefsByPath)) {
+                                    $tokenizedContent = $this->dat['records'][$table . ':' . $origUid]['rels'][$field]['flexFormRels']['softrefs'][$structurePath]['tokenizedContent'] ?? '';
+                                    if ($tokenizedContent !== '') {
+                                        $data[$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF']
+                                            = $this->processSoftReferencesSubstTokens($tokenizedContent, $softrefsByPath, $table, (string)$origUid);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } elseif (isset($data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF'])) {
+                    // Simple field element.
+                    $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/vDEF/';
+                    $softrefsByPath = array_filter($softrefs, static fn(array $softref): bool => $softref['structurePath'] === $structurePath);
+                    if (!empty($softrefsByPath)) {
+                        $tokenizedContent = $this->dat['records'][$table . ':' . $origUid]['rels'][$field]['flexFormRels']['softrefs'][$structurePath]['tokenizedContent'] ?? '';
+                        if ($tokenizedContent !== '') {
+                            $data[$sheetKey]['lDEF'][$sheetElementKey]['vDEF']
+                                = $this->processSoftReferencesSubstTokens($tokenizedContent, $softrefsByPath, $table, (string)$origUid);
+                        }
+                    }
                 }
             }
         }
-        return ['value' => $dataValue];
+        return $data;
     }
 
     /**

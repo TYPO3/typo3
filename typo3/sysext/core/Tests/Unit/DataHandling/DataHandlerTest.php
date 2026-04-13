@@ -1032,7 +1032,8 @@ final class DataHandlerTest extends UnitTestCase
         ];
 
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $this->subject->checkValue_flex_procInData_travDS($dataValues, [], $DSelements, $pParams, '', '');
+        $args = [&$dataValues, [], $DSelements, $pParams, '', ''];
+        (new \ReflectionMethod($this->subject, 'checkValue_flex_procInData_travDS'))->invokeArgs($this->subject, $args);
         self::assertSame($expected, $dataValues);
     }
 
