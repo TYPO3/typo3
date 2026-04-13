@@ -171,6 +171,12 @@
       <trans-unit id="labels.t3ver_oid">
         <source>Live record ID</source>
       </trans-unit>
+      <trans-unit id="labels.t3ver_stage">
+        <source>Workspace stage</source>
+      </trans-unit>
+      <trans-unit id="labels.l10n_diffsource">
+        <source>Translation differences</source>
+      </trans-unit>
       <trans-unit id="labels.setFields">
         <source>Set fields</source>
       </trans-unit>

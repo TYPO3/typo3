@@ -1721,16 +1721,18 @@ class FileList
 
         $concreteTableName = $this->getConcreteTableName($field);
         $schema = $this->tcaSchemaFactory->has($concreteTableName) ? $this->tcaSchemaFactory->get($concreteTableName) : null;
-        $label = $schema?->hasField($field) ? $schema->getField($field)->getLabel() : null;
+        $label = ($schema?->hasField($field) ? $schema->getField($field)->getLabel() : '') ?: null;
 
         // In case global TSconfig exists we have to check if the label is overridden there
         $tsConfig = BackendUtility::getPagesTSconfig(0);
         $label = $lang->translateLabel(
             $tsConfig['TCEFORM.'][$concreteTableName . '.'][$field . '.']['label.'] ?? [],
-            $tsConfig['TCEFORM.'][$concreteTableName . '.'][$field . '.']['label'] ?? $label
+            $tsConfig['TCEFORM.'][$concreteTableName . '.'][$field . '.']['label']
+                ?? $label
+                ?? 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $field
         );
 
-        return $label;
+        return $label ?: $field;
     }
 
     /**
