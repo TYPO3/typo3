@@ -23,6 +23,7 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
@@ -1420,33 +1421,35 @@ class ConnectionMigrator
             return $tableOptions;
         }
 
-        $queryBuilder = $this->connection->createQueryBuilder();
+        // Low level, concrete Doctrine QueryBuilder is used here intentionally to avoid dependency injection
+        // conflicts with TYPO3 QueryRestrictions. These are not required here.
+        $queryBuilder = new DoctrineQueryBuilder($this->connection);
         $result = $queryBuilder
             ->select(
-                'tables.TABLE_NAME AS table',
-                'tables.ENGINE AS engine',
-                'tables.ROW_FORMAT AS row_format',
-                'tables.TABLE_COLLATION AS collate',
-                'tables.TABLE_COMMENT AS comment',
-                'CCSA.character_set_name AS charset'
+                $this->connection->quoteIdentifier('tables.TABLE_NAME') . ' AS ' . $this->connection->quoteIdentifier('table'),
+                $this->connection->quoteIdentifier('tables.ENGINE') . ' AS ' . $this->connection->quoteIdentifier('engine'),
+                $this->connection->quoteIdentifier('tables.ROW_FORMAT') . ' AS ' . $this->connection->quoteIdentifier('row_format'),
+                $this->connection->quoteIdentifier('tables.TABLE_COLLATION') . ' AS ' . $this->connection->quoteIdentifier('collate'),
+                $this->connection->quoteIdentifier('tables.TABLE_COMMENT') . ' AS ' . $this->connection->quoteIdentifier('comment'),
+                $this->connection->quoteIdentifier('CCSA.character_set_name') . ' AS ' . $this->connection->quoteIdentifier('charset')
             )
-            ->from('information_schema.TABLES', 'tables')
+            ->from($this->connection->quoteIdentifier('information_schema.TABLES'), $this->connection->quoteIdentifier('tables'))
             ->join(
-                'tables',
-                'information_schema.COLLATION_CHARACTER_SET_APPLICABILITY',
-                'CCSA',
+                $this->connection->quoteIdentifier('tables'),
+                $this->connection->quoteIdentifier('information_schema.COLLATION_CHARACTER_SET_APPLICABILITY'),
+                $this->connection->quoteIdentifier('CCSA'),
                 $queryBuilder->expr()->eq(
-                    'CCSA.collation_name',
-                    $queryBuilder->quoteIdentifier('tables.table_collation')
+                    $this->connection->quoteIdentifier('CCSA.collation_name'),
+                    $this->connection->quoteIdentifier('tables.table_collation')
                 )
             )
             ->where(
                 $queryBuilder->expr()->eq(
-                    'TABLE_TYPE',
+                    $this->connection->quoteIdentifier('TABLE_TYPE'),
                     $queryBuilder->createNamedParameter('BASE TABLE')
                 ),
                 $queryBuilder->expr()->eq(
-                    'TABLE_SCHEMA',
+                    $this->connection->quoteIdentifier('TABLE_SCHEMA'),
                     $queryBuilder->createNamedParameter($this->connection->getDatabase())
                 )
             )
