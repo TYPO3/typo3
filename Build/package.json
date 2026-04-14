@@ -192,6 +192,7 @@
     },
     "mocha": {
       "serialize-javascript": "^7.0.3"
-    }
+    },
+    "lodash": "^4.18.0"
   }
 }
