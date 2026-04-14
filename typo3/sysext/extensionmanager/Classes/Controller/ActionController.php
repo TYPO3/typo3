@@ -23,7 +23,9 @@ use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
-use TYPO3\CMS\Core\Package\PackageActivationService;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Package\PackageSetup;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,7 +50,9 @@ class ActionController extends AbstractController
     public function __construct(
         protected readonly InstallUtility $installUtility,
         protected readonly ExtensionManagementService $managementService,
-        protected readonly PackageActivationService $packageActivationService,
+        protected readonly Registry $registry,
+        protected readonly PackageManager $packageManager,
+        protected readonly PackageSetup $packageSetup,
     ) {}
 
     /**
@@ -205,7 +209,12 @@ class ActionController extends AbstractController
     {
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
-        $this->packageActivationService->reloadExtensionData([$extensionKey], $this);
+        $packages = [];
+        $package = $this->packageManager->getPackage($extensionKey);
+        $registryKey = $extensionKey . ':ext_tables_static+adt.sql';
+        $this->registry->remove('extensionDataImport', $registryKey);
+        $packages[$extensionKey] = $package;
+        $this->packageSetup->setup($packages, $this);
 
         return new Response();
     }

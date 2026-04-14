@@ -27,8 +27,8 @@ use TYPO3\CMS\Core\Package\Initialization\CheckForImportRequirements;
 use TYPO3\CMS\Core\Package\Initialization\ImportExtensionDataOnPackageInitialization;
 use TYPO3\CMS\Core\Package\Initialization\ImportStaticSqlDataOnPackageInitialization;
 use TYPO3\CMS\Core\Package\Package;
-use TYPO3\CMS\Core\Package\PackageActivationService;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Package\PackageSetup;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PackageInitializationEventTest extends FunctionalTestCase
@@ -146,9 +146,9 @@ final class PackageInitializationEventTest extends FunctionalTestCase
         $listenerProdiver = $container->get(ListenerProvider::class);
         $listenerProdiver->addListener(PackageInitializationEvent::class, 'package-initialization-listener');
 
-        /** @var PackageActivationService $packageActivationService */
-        $packageActivationService = $container->get(PackageActivationService::class);
-        $packageActivationService->reloadExtensionData(['test_package_initialization']);
+        $packageManager = $container->get(PackageManager::class);
+        $setupExtensionsService = $container->get(PackageSetup::class);
+        $setupExtensionsService->setup(['test_package_initialization' => $packageManager->getPackage('test_package_initialization')]);
 
         self::assertInstanceOf(PackageInitializationEvent::class, $packageInitializationEvent);
         self::assertSame($listenerResult, $packageInitializationEvent->getStorageEntry('package-initialization-listener')->getResult());

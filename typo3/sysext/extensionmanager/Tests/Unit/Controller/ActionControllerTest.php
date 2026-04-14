@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Package\PackageActivationService;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Package\PackageSetup;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Controller\ActionController;
@@ -69,7 +71,9 @@ final class ActionControllerTest extends UnitTestCase
             [
                 $installUtility,
                 $this->createMock(ExtensionManagementService::class),
-                $this->createMock(PackageActivationService::class),
+                $this->createMock(Registry::class),
+                $this->createMock(PackageManager::class),
+                $this->createMock(PackageSetup::class),
             ]
         );
 

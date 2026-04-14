@@ -26,11 +26,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
-use TYPO3\CMS\Core\Package\Initialization\CheckForImportRequirements;
-use TYPO3\CMS\Core\Package\PackageActivationService;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Package\PackageSetup;
 
 /**
  * Command for setting up all extensions via CLI.
@@ -42,7 +40,7 @@ class SetupExtensionsCommand extends Command
     public function __construct(
         private readonly PackageManager $packageManager,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly PackageActivationService $packageActivationService,
+        private readonly PackageSetup $packageSetup,
     ) {
         parent::__construct();
     }
@@ -83,32 +81,25 @@ EOD
 
         $io = new SymfonyStyle($input, $output);
         $extensionKeys = $input->getOption('extension');
-        $extensionsToSetUp = $this->packageManager->getActivePackages();
+        $packagesToSetUp = $this->packageManager->getActivePackages();
         if (!empty($extensionKeys)) {
-            $extensionsToSetUp = array_filter(
-                $extensionsToSetUp,
+            $packagesToSetUp = array_filter(
+                $packagesToSetUp,
                 static function ($extKey) use ($extensionKeys) {
                     return in_array($extKey, $extensionKeys, true);
                 },
                 ARRAY_FILTER_USE_KEY
             );
         }
-        if (empty($extensionsToSetUp)) {
+        if (empty($packagesToSetUp)) {
             $io->error('Given extension(s) "' . implode(', ', $extensionKeys) . '" not found in the system.');
             return Command::FAILURE;
         }
-        $this->packageActivationService->updateDatabase();
-        foreach ($extensionsToSetUp as $extensionKey => $package) {
-            $event = $this->eventDispatcher->dispatch(
-                new PackageInitializationEvent(extensionKey: $extensionKey, package: $package, emitter: $this)
-            );
-            if ($event->hasStorageEntry(CheckForImportRequirements::class)) {
-                $io->warning(
-                    $event->getStorageEntry(CheckForImportRequirements::class)->getResult()['exception']?->getMessage() ?? ''
-                );
-            }
+        $messages = $this->packageSetup->setup($packagesToSetUp);
+        foreach ($messages as $message) {
+            $io->warning($message->getMessage());
         }
-        $io->success('Extension(s) "' . implode(', ', array_keys($extensionsToSetUp)) . '" successfully set up.');
+        $io->success('Extension(s) "' . implode(', ', array_keys($packagesToSetUp)) . '" successfully set up.');
 
         return Command::SUCCESS;
     }
