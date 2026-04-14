@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Page;
 
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Collection of content areas
@@ -31,16 +32,27 @@ final readonly class ContentAreaCollection implements ContainerInterface, \Itera
     public function __construct(
         /** @var ContentAreaClosure[]|ContentArea[] $contentAreas */
         private array $contentAreas,
+        private ?ServerRequestInterface $request = null,
     ) {}
 
-    public function get(string $id)
+    public function withRequest(ServerRequestInterface $request): self
+    {
+        return new self($this->contentAreas, $request);
+    }
+
+    public function get(string $id): ContentArea
     {
         if (!$this->has($id)) {
             throw new ContentAreaNotFoundException('No content area found for identifier: ' . $id, 1726479567);
         }
-
         $area = $this->contentAreas[$id];
-        return $area instanceof ContentAreaClosure ? $area->instantiate() : $area;
+        if ($area instanceof ContentAreaClosure) {
+            if ($this->request === null) {
+                throw new \LogicException('Cannot instantiate ContentAreaClosure without a request. Call withRequest() first.', 1776158770);
+            }
+            return $area->instantiate($this->request);
+        }
+        return $area;
     }
 
     public function has(string $id): bool
@@ -51,11 +63,11 @@ final readonly class ContentAreaCollection implements ContainerInterface, \Itera
     /**
      * @internal Only for AfterContentHasBeenFetchedEvent
      */
-    public function getGroupedRecords(): array
+    public function getGroupedRecords(ServerRequestInterface $request): array
     {
         $areas = [];
         foreach ($this->contentAreas as $area) {
-            $area = $area instanceof ContentAreaClosure ? $area->instantiate() : $area;
+            $area = $area instanceof ContentAreaClosure ? $area->instantiate($request) : $area;
             $areas[$area->getIdentifier()] = [
                 'name' => $area->getName(),
                 'colPos' => $area->getColPos(),

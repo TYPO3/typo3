@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Content;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Page\ContentArea;
@@ -71,7 +72,9 @@ final readonly class ContentAreaResolver
                 $identifier = md5($layout->getIdentifier() . $colPos);
             }
             $contentAreas[$identifier] = new ContentAreaClosure(
-                function () use ($identifier, $name, $colPos, $slideMode, $allowedContentTypes, $disallowedContentTypes, $structure): ContentArea {
+                function (ServerRequestInterface $request) use ($identifier, $name, $colPos, $slideMode, $allowedContentTypes, $disallowedContentTypes, $structure): ContentArea {
+                    $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+                    $cObj->setRequest($request);
                     $records = $this->recordCollector->collect(
                         'tt_content',
                         [
@@ -79,7 +82,7 @@ final readonly class ContentAreaResolver
                             'orderBy' => 'sorting',
                         ],
                         $slideMode,
-                        GeneralUtility::makeInstance(ContentObjectRenderer::class)
+                        $cObj
                     );
                     return new ContentArea(
                         identifier: $identifier,

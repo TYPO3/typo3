@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Page;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Used to initialize a content area once it is accessed
  *
@@ -28,8 +30,8 @@ final readonly class ContentAreaClosure
         private \Closure $instantiator
     ) {}
 
-    public function instantiate(): ContentArea
+    public function instantiate(ServerRequestInterface $request): ContentArea
     {
-        return ($this->instantiator)();
+        return ($this->instantiator)($request);
     }
 }

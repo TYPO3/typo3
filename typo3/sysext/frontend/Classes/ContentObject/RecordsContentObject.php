@@ -80,6 +80,7 @@ class RecordsContentObject extends AbstractContentObject
             }
             if (!empty($this->itemArray)) {
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+                // @deprecated since TYPO3 v14, clean up in v15 together with COR
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
                 $pageRepository = $this->getPageRepository();
@@ -105,6 +106,7 @@ class RecordsContentObject extends AbstractContentObject
                         $renderObjName = ($conf['conf.'][$val['table']] ?? false) ? $conf['conf.'][$val['table']] : '<' . $val['table'];
                         $renderObjKey = ($conf['conf.'][$val['table']] ?? false) ? 'conf.' . $val['table'] : '';
                         $renderObjConf = ($conf['conf.'][$val['table'] . '.'] ?? false) ? $conf['conf.'][$val['table'] . '.'] : [];
+                        // @deprecated since TYPO3 v14, clean up in v15 together with COR
                         $this->cObj->currentRecordNumber++;
                         $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
                         $this->cObj->lastChanged($row['tstamp'] ?? 0);

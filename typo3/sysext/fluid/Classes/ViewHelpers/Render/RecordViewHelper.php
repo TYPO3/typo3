@@ -94,7 +94,12 @@ final class RecordViewHelper extends AbstractViewHelper
         $table = $record->getMainType();
         $data = $record->getRawRecord()?->toArray(true) ?? $record->toArray();
 
-        $contentObjectRenderer = $this->getContentObjectRenderer($request);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer->setRequest($request);
+        $parent = $request->getAttribute('currentContentObject');
+        if ($parent instanceof ContentObjectRenderer) {
+            $contentObjectRenderer->setParent($parent->data, $parent->currentRecord);
+        }
         $contentObjectRenderer->start($data, $table);
 
         $setup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
@@ -116,17 +121,6 @@ final class RecordViewHelper extends AbstractViewHelper
             $timeTracker->pull($content);
         }
         return $content;
-    }
-
-    private function getContentObjectRenderer(ServerRequestInterface $request): ContentObjectRenderer
-    {
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $parent = $request->getAttribute('currentContentObject');
-        if ($parent instanceof ContentObjectRenderer) {
-            $contentObjectRenderer->setParent($parent->data, $parent->currentRecord);
-        }
-        $contentObjectRenderer->setRequest($request);
-        return $contentObjectRenderer;
     }
 
     private function getRequest(): ServerRequestInterface

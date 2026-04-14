@@ -6946,6 +6946,13 @@ return [
             'Deprecation-109329-PageRendererGetMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->readFlexformIntoConf' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-109575-ContentObjectRendererPropertiesAndMethods.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

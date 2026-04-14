@@ -68,7 +68,7 @@ readonly class PageContentFetchingProcessor implements DataProcessorInterface
         $targetVariableName = $cObj->stdWrapValue('as', $processorConfiguration, 'content');
         $contentAreas = $pageInformation->getPageLayout()?->getContentAreas();
         $groupedContent = $this->eventDispatcher->dispatch(
-            new AfterContentHasBeenFetchedEvent($contentAreas->getGroupedRecords(), $request)
+            new AfterContentHasBeenFetchedEvent($contentAreas->getGroupedRecords($request), $request)
         )->groupedContent;
         $processedData[$targetVariableName] = $contentAreas->withUpdatedRecords($groupedContent);
         return $processedData;

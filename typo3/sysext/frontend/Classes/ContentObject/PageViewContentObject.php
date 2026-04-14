@@ -169,7 +169,7 @@ final class PageViewContentObject extends AbstractContentObject
             );
         }
 
-        $variables[$conf['contentAs'] ?? 'content'] = $pageInformation->getPageLayout()?->getContentAreas();
+        $variables[$conf['contentAs'] ?? 'content'] = $pageInformation->getPageLayout()?->getContentAreas()->withRequest($this->request);
         return $variables;
     }
 }

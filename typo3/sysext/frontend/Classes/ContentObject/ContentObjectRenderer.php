@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -121,6 +121,8 @@ use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 #[Autoconfigure(shared: false)]
 class ContentObjectRenderer
 {
+    use PublicPropertyDeprecationTrait;
+
     use DefaultJavaScriptAssetTrait;
 
     /**
@@ -290,94 +292,94 @@ class ContentObjectRenderer
     ];
 
     /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     */
+    protected array $deprecatedPublicProperties = [
+        'lastTypoLinkResult' => '$lastTypoLinkResult is deprecated since TYPO3 v14 and will be removed in TYPO3 v15. Use the return value of createLink() instead.',
+        'checkPid_badDoktypeList' => '$checkPid_badDoktypeList is deprecated since TYPO3 v14 and will be removed in TYPO3 v15.',
+    ];
+
+    /**
      * Loaded with the current data-record.
      *
      * If the instance of this class is used to render records from the database those records are found in this array.
      * The function stdWrap has TypoScript properties that fetch field-data from this array.
-     *
-     * @var array
-     * @see start()
      */
-    public $data = [];
+    public array $data = [];
 
-    /**
-     * @var string
-     */
-    protected $table = '';
+    protected string $table = '';
 
     /**
      * Used by the parseFunc function and is loaded with tag-parameters when parsing tags.
-     *
-     * @var array
      */
-    public $parameters = [];
+    public array $parameters = [];
 
-    /**
-     * @var string
-     */
-    public $currentValKey = 'currentValue_kidjls9dksoje';
+    public string $currentValKey = 'currentValue_kidjls9dksoje';
 
     /**
      * This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation.
-     *
-     * @var string
      */
-    public $currentRecord = '';
+    public string $currentRecord = '';
 
     /**
-     * Incremented in RecordsContentObject and ContentContentObject before each record rendering.
-     *
-     * @var int
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     * @internal
      */
-    public $currentRecordNumber = 0;
+    public int $currentRecordNumber = 0;
 
     /**
-     * Incremented in RecordsContentObject and ContentContentObject before each record rendering.
-     *
-     * @var int
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     * @internal
      */
-    public $parentRecordNumber = 0;
+    public int $parentRecordNumber = 0;
 
     /**
-     * If the ContentObjectRender was started from ContentContentObject, RecordsContentObject or SearchResultContentObject this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
-     *
-     * @var array
+     * @internal
      */
-    public $parentRecord = [];
+    protected array $parentRecord = [];
 
     /**
-     * @var string|int|null
-     * @internal this property might change and is not part of TYPO3 Core API anymore since TYPO3 v13.0. Use at your own risk
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
+     * @internal
      */
-    public $checkPid_badDoktypeList;
-
-    public ?LinkResultInterface $lastTypoLinkResult = null;
+    protected string|int|null $checkPid_badDoktypeList = null;
 
     /**
-     * @var File|FileReference|Folder|FolderInterface|FileInterface|string|null Current file objects (during iterations over files)
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15. Use the return value of createLink() instead.
+     * @internal
      */
-    protected $currentFile;
+    protected ?LinkResultInterface $lastTypoLinkResult = null;
 
     /**
-     * Set to TRUE by doConvertToUserIntObject() if USER object wants to become USER_INT
-     * @var bool
+     * Current file object during iterations over files.
      */
-    public $doConvertToUserIntObject = false;
+    protected File|FileReference|Folder|FileInterface|FolderInterface|null $currentFile = null;
 
     /**
-     * Indicates current object type. Can hold one of OBJECTTYPE_ constants or FALSE.
+     * Set to true by doConvertToUserIntObject() if USER object wants to become USER_INT.
+     */
+    public bool $doConvertToUserIntObject = false;
+
+    /**
+     * Indicates current object type. Can hold one of OBJECTTYPE_ constants or false.
      * The value is set and reset inside USER() function. Any time outside of
-     * USER() it is FALSE.
-     * @var int|bool
+     * USER() it is false.
      */
-    protected $userObjectType = false;
-
-    protected array $stopRendering = [];
-    protected int $stdWrapRecursionLevel = 0;
+    protected int|false $userObjectType = false;
 
     /**
-     * Request pointer, if injected. Use getRequest() instead of reading this property directly.
+     * Per-nesting-level stop flags for stdWrap processing. Keyed by $stdWrapNestingLevel.
+     * Set to true to abort remaining stdWrap properties at that level (e.g. when "if", "required"
+     * or "ifEmpty" conditions are not met). Isolates stop conditions so an inner stdWrap call
+     * cannot accidentally abort an outer one.
      */
+    protected array $stopRendering = [];
+
+    /**
+     * Current stdWrap nesting depth, used as the key into $stopRendering.
+     */
+    protected int $stdWrapNestingLevel = 0;
+
     private ?ServerRequestInterface $request = null;
 
     public function __construct(
@@ -387,7 +389,8 @@ class ContentObjectRenderer
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ConnectionPool $connectionPool,
         private readonly ResourceFactory $resourceFactory,
-        private readonly Features $features,
+        #[Autowire(expression: 'service("features").isFeatureEnabled("frontend.cache.autoTagging")')]
+        private readonly bool $autoTagging,
         private readonly CacheLifetimeCalculator $cacheLifetimeCalculator,
         #[Autowire(service: 'cache.hash')]
         private readonly FrontendInterface $cacheHash,
@@ -427,7 +430,6 @@ class ContentObjectRenderer
     public function getState(): array
     {
         // Request is of course NOT returned!
-        // @todo: A lot of data should not cached at all, for example lastTypoLinkResult.
         $state = [
             'data' => $this->data,
             'table' => $this->table,
@@ -444,7 +446,7 @@ class ContentObjectRenderer
             'doConvertToUserIntObject' => $this->doConvertToUserIntObject,
             'userObjectType' => $this->userObjectType,
             'stopRendering' => $this->stopRendering,
-            'stdWrapRecursionLevel' => $this->stdWrapRecursionLevel,
+            'stdWrapNestingLevel' => $this->stdWrapNestingLevel,
             'currentFile' => null,
         ];
         if ($this->currentFile instanceof FileReference) {
@@ -477,7 +479,7 @@ class ContentObjectRenderer
         $this->doConvertToUserIntObject = $state['doConvertToUserIntObject'];
         $this->userObjectType = $state['userObjectType'];
         $this->stopRendering = $state['stopRendering'];
-        $this->stdWrapRecursionLevel = $state['stdWrapRecursionLevel'];
+        $this->stdWrapNestingLevel = $state['stdWrapNestingLevel'];
         $this->currentFile = null;
         if (is_string($state['currentFile'])) {
             [$objectType, $identifier] = explode(':', $state['currentFile'], 2);
@@ -499,22 +501,16 @@ class ContentObjectRenderer
      * then become the "current" record loaded into memory and accessed by the .fields
      * property found in eg. stdWrap.
      *
-     * @param array|int|string $data The record data that is rendered.
      * @param string $table The table that the data record is from.
      */
-    public function start($data, $table = ''): void
+    public function start(array $data, string $table = ''): void
     {
         $this->data = $data;
         $this->table = $table;
-        $this->currentRecord = $table !== ''
-            ? $table . ':' . ($this->data['uid'] ?? '')
-            : '';
+        $this->currentRecord = $table !== '' ? $table . ':' . ($this->data['uid'] ?? '') : '';
         $this->parameters = [];
-
         $this->eventDispatcher->dispatch(new AfterContentObjectRendererInitializedEvent($this));
-
-        $autoTagging = $this->features->isFeatureEnabled('frontend.cache.autoTagging');
-        if (is_array($this->data) && $this->currentRecord !== '' && $autoTagging && $this->table !== 'pages') {
+        if ($this->currentRecord !== '' && $this->autoTagging && $this->table !== 'pages') {
             // Page lifetime for the requested page is calculated in RequestHandler, taking
             // cache_period and TypoScript into account.
             // When start() is called here, it can be the requested page record, which is handled
@@ -529,7 +525,7 @@ class ContentObjectRenderer
             if ((int)($this->data['_LOCALIZED_UID'] ?? 0) > 0) {
                 $cacheTags[] = sprintf('%s_%s', $this->table, (int)$this->data['_LOCALIZED_UID']);
             }
-            $this->request?->getAttribute('frontend.cache.collector')?->addCacheTags(
+            $this->getRequest()->getAttribute('frontend.cache.collector')?->addCacheTags(
                 ...array_map(
                     static fn(string $cacheTag) => new CacheTag($cacheTag, $lifetime),
                     $cacheTags,
@@ -549,15 +545,11 @@ class ContentObjectRenderer
     }
 
     /**
-     * Sets the internal variable parentRecord with information about current record.
-     * If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two
-     * keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
-     *
      * @param array $data The record array
-     * @param string $currentRecord This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation.
+     * @param string $currentRecord Format: "table:uid"
      * @internal
      */
-    public function setParent($data, $currentRecord): void
+    public function setParent($data, string $currentRecord): void
     {
         $this->parentRecord = [
             'data' => $data,
@@ -567,9 +559,10 @@ class ContentObjectRenderer
 
     /**
      * Returns the "current" value.
-     * The "current" value is just an internal variable that can be used by functions to pass a single value on to another function later in the TypoScript processing.
-     * It's like "load accumulator" in the good old C64 days... basically a "register" you can use as you like.
-     * The TSref will tell if functions are setting this value before calling some other object so that you know if it holds any special information.
+     * The "current" value is just an internal variable that can be used by functions to pass a single value on to another
+     * function later in the TypoScript processing. It's like "load accumulator" in the good old C64 days... basically a "register"
+     * you can use as you like. The TSref will tell if functions are setting this value before calling some other object so that
+     * you know if it holds any special information.
      *
      * @return mixed The "current" value
      */
@@ -597,7 +590,7 @@ class ContentObjectRenderer
      * @return string Rendered output from the cObjects in the array.
      * @see cObjGetSingle()
      */
-    public function cObjGet($setup, $addKey = '')
+    public function cObjGet($setup, $addKey = ''): string
     {
         if (!is_array($setup)) {
             return '';
@@ -807,19 +800,17 @@ class ContentObjectRenderer
      * current object execution. In all other cases it will return FALSE to indicate
      * a call out of context.
      *
-     * @return mixed One of OBJECTTYPE_ class constants or FALSE
+     * @return int|false One of OBJECTTYPE_ class constants or false
      */
-    public function getUserObjectType()
+    public function getUserObjectType(): int|false
     {
         return $this->userObjectType;
     }
 
     /**
      * Sets the user object type
-     *
-     * @param mixed $userObjectType
      */
-    public function setUserObjectType($userObjectType): void
+    public function setUserObjectType(int|false $userObjectType): void
     {
         $this->userObjectType = $userObjectType;
     }
@@ -842,10 +833,14 @@ class ContentObjectRenderer
      * @param string|array $flexData Flexform data
      * @param array $conf Array to write the data into, by reference
      * @param bool $recursive Is set if called recursive. Don't call function with this parameter, it's used inside the function only
-     * @todo: unused. remove.
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
      */
     public function readFlexformIntoConf($flexData, &$conf, $recursive = false)
     {
+        trigger_error(
+            'ContentObjectRenderer::readFlexformIntoConf() is deprecated since TYPO3 v14 and will be removed in TYPO3 v15 without replacement.',
+            E_USER_DEPRECATED
+        );
         if ($recursive === false && is_string($flexData)) {
             $flexData = GeneralUtility::xml2array($flexData, 'T3');
         }
@@ -1088,20 +1083,16 @@ class ContentObjectRenderer
 
     /**
      * Sets the current file object during iterations over files.
-     *
-     * @param File|FileReference|Folder|FileInterface|FolderInterface|string|null $fileObject The file object.
      */
-    public function setCurrentFile($fileObject): void
+    public function setCurrentFile(File|FileReference|Folder|FileInterface|FolderInterface|null $fileObject): void
     {
         $this->currentFile = $fileObject;
     }
 
     /**
      * Gets the current file object during iterations over files.
-     *
-     * @return File|FileReference|Folder|FileInterface|FolderInterface|string|null The current file object.
      */
-    public function getCurrentFile()
+    public function getCurrentFile(): File|FileReference|Folder|FileInterface|FolderInterface|null
     {
         return $this->currentFile;
     }
@@ -1145,12 +1136,12 @@ class ContentObjectRenderer
         $isExecuted = [];
         // Additional switch to make sure 'required', 'if' and 'fieldRequired'
         // will still stop rendering immediately in case they return FALSE
-        $this->stdWrapRecursionLevel++;
-        $this->stopRendering[$this->stdWrapRecursionLevel] = false;
+        $this->stdWrapNestingLevel++;
+        $this->stopRendering[$this->stdWrapNestingLevel] = false;
         // execute each function in the predefined order
         foreach ($sortedConf as $stdWrapName) {
             // eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
-            if (!isset($isExecuted[$stdWrapName]) && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
+            if (!isset($isExecuted[$stdWrapName]) && !$this->stopRendering[$this->stdWrapNestingLevel]) {
                 $functionName = rtrim($stdWrapName, '.');
                 $functionProperties = $functionName . '.';
                 $functionType = self::STD_WRAP_ORDER[$functionName] ?? '';
@@ -1191,7 +1182,7 @@ class ContentObjectRenderer
                     } else {
                         // Call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
                         $functionName = 'stdWrap_' . $functionName;
-                        // @phpstan-ignore-next-line phpstan complains about some methods not having a second argument, which is notrequired/useful - doing reflection here would be too intense.
+                        // @phpstan-ignore-next-line phpstan complains about some methods not having a second argument, which is not required/useful - doing reflection here would be too intense.
                         $content = $this->{$functionName}($content, $singleConf);
                     }
                 } elseif ($functionType === 'boolean' && !($conf[$functionName] ?? null)) {
@@ -1200,8 +1191,8 @@ class ContentObjectRenderer
                 }
             }
         }
-        unset($this->stopRendering[$this->stdWrapRecursionLevel]);
-        $this->stdWrapRecursionLevel--;
+        unset($this->stopRendering[$this->stdWrapNestingLevel]);
+        $this->stdWrapNestingLevel--;
 
         return $content;
     }
@@ -1538,7 +1529,7 @@ class ContentObjectRenderer
     {
         if ((string)$content === '') {
             $content = '';
-            $this->stopRendering[$this->stdWrapRecursionLevel] = true;
+            $this->stopRendering[$this->stdWrapNestingLevel] = true;
         }
         return $content;
     }
@@ -1556,7 +1547,7 @@ class ContentObjectRenderer
         if (empty($conf['if.']) || $this->checkIf($conf['if.'])) {
             return $content;
         }
-        $this->stopRendering[$this->stdWrapRecursionLevel] = true;
+        $this->stopRendering[$this->stdWrapNestingLevel] = true;
         return '';
     }
 
@@ -1573,7 +1564,7 @@ class ContentObjectRenderer
         $fieldName = (string)($conf['fieldRequired'] ?? '');
         if ($fieldName !== '' && !trim($this->data[$fieldName] ?? '')) {
             $content = '';
-            $this->stopRendering[$this->stdWrapRecursionLevel] = true;
+            $this->stopRendering[$this->stdWrapNestingLevel] = true;
         }
         return $content;
     }
@@ -1634,7 +1625,7 @@ class ContentObjectRenderer
      * @param array $conf stdWrap properties for split.
      * @return string|int The processed input value
      */
-    public function stdWrap_split($content = '', $conf = [])
+    public function stdWrap_split($content = '', $conf = []): string|int
     {
         return $this->splitObj($content, $conf['split.']);
     }
@@ -1800,7 +1791,7 @@ class ContentObjectRenderer
      * @param string $content Input value undergoing processing in this function.
      * @return string The processed input value
      */
-    public function stdWrap_expandList($content = '')
+    public function stdWrap_expandList($content = ''): string
     {
         return GeneralUtility::expandList($content);
     }
@@ -1889,7 +1880,7 @@ class ContentObjectRenderer
      * @param array $conf stdWrap properties for age.
      * @return string The processed input value
      */
-    public function stdWrap_age($content = '', $conf = [])
+    public function stdWrap_age($content = '', $conf = []): string
     {
         return $this->calcAge((int)($GLOBALS['EXEC_TIME'] ?? 0) - (int)$content, $conf['age'] ?? null);
     }
@@ -1942,9 +1933,8 @@ class ContentObjectRenderer
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for cropHTML.
-     * @return string The processed input value
      */
-    public function stdWrap_cropHTML($content = '', $conf = [])
+    public function stdWrap_cropHTML($content = '', $conf = []): string
     {
         return $this->cropHTML($content, $conf['cropHTML'] ?? '');
     }
@@ -2580,7 +2570,8 @@ class ContentObjectRenderer
      * Wrapping input value in a regular "wrap" but parses the wrapping value first for "insertData" codes.
      *
      * @param string $content Input string being wrapped
-     * @param string $wrap The wrap string, eg. "<strong></strong>" or more likely here '<a href="index.php?id={TSFE:id}"> | </a>' which will wrap the input string in a <a> tag linking to the current page.
+     * @param string $wrap The wrap string, eg. "<strong></strong>" or more likely here '<a href="index.php?id={TSFE:id}"> | </a>'
+     *                     which will wrap the input string in a <a> tag linking to the current page.
      * @return string Output string wrapped in the wrapping value.
      * @see insertData()
      * @see stdWrap()
@@ -2657,10 +2648,15 @@ class ContentObjectRenderer
     }
 
     /**
-     * Implements the stdWrap property "crop" which is a modified "substr" function allowing to limit a string length to a certain number of chars (from either start or end of string) and having a pre/postfix applied if the string really was cropped.
+     * Implements the stdWrap property "crop" which is a modified "substr" function allowing to limit
+     * a string length to a certain number of chars (from either start or end of string) and having a
+     * pre/postfix applied if the string really was cropped.
      *
      * @param string $content The string to perform the operation on
-     * @param string $options The parameters splitted by "|": First parameter is the max number of chars of the string. Negative value means cropping from end of string. Second parameter is the pre/postfix string to apply if cropping occurs. Third parameter is a boolean value. If set then crop will be applied at nearest space.
+     * @param string $options The parameters splitted by "|": First parameter is the max number of chars of the string.
+     *                        Negative value means cropping from end of string. Second parameter is the pre/postfix
+     *                        string to apply if cropping occurs. Third parameter is a boolean value. If set then crop
+     *                        will be applied at nearest space.
      * @return string The processed input value.
      * @see stdWrap()
      * @internal
@@ -2682,7 +2678,10 @@ class ContentObjectRenderer
      * Compared to stdWrap.crop it respects HTML tags and entities.
      *
      * @param string $content The string to perform the operation on
-     * @param string $options The parameters splitted by "|": First parameter is the max number of chars of the string. Negative value means cropping from end of string. Second parameter is the pre/postfix string to apply if cropping occurs. Third parameter is a boolean value. If set then crop will be applied at nearest space.
+     * @param string $options The parameters splitted by "|": First parameter is the max number of chars of the string.
+     *                        Negative value means cropping from end of string. Second parameter is the pre/postfix
+     *                        string to apply if cropping occurs. Third parameter is a boolean value. If set then crop
+     *                        will be applied at nearest space.
      * @see stdWrap()
      * @return string The processed input value.
      * @internal
@@ -2697,7 +2696,8 @@ class ContentObjectRenderer
     }
 
     /**
-     * Performs basic mathematical evaluation of the input string. Does NOT take parenthesis and operator precedence into account! (for that, see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction())
+     * Performs basic mathematical evaluation of the input string. Does NOT take parenthesis and operator precedence
+     * into account! (for that, see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction())
      *
      * @param string $val The string to evaluate. Example: "3+4*10/5" will generate "35". Only integer numbers can be used.
      * @return int The result (might be a float if you did a division of the numbers).
@@ -2734,8 +2734,10 @@ class ContentObjectRenderer
     }
 
     /**
-     * Implements the "split" property of stdWrap; Splits a string based on a token (given in TypoScript properties), sets the "current" value to each part and then renders a content object pointer to by a number.
-     * In classic TypoScript (like 'content (default)'/'styles.content (default)') this is used to render tables, splitting rows and cells by tokens and putting them together again wrapped in <td> tags etc.
+     * Implements the "split" property of stdWrap; Splits a string based on a token (given in TypoScript properties),
+     * sets the "current" value to each part and then renders a content object pointer to by a number.
+     * In classic TypoScript (like 'content (default)'/'styles.content (default)') this is used to render tables,
+     * splitting rows and cells by tokens and putting them together again wrapped in <td> tags etc.
      * Implements the "optionSplit" processing of the TypoScript options for each splitted value to parse.
      *
      * @param string $value The string value to explode by $conf[token] and process each part
@@ -2833,7 +2835,8 @@ class ContentObjectRenderer
      *
      * @param string $theValue The value to process.
      * @param non-empty-array<string, mixed>|null $conf TypoScript configuration for parseFunc
-     * @param non-empty-string|null $ref Reference to get configuration from. Eg. "< lib.parseFunc" which means that the configuration of the object path "lib.parseFunc" will be retrieved and MERGED with what is in $conf!
+     * @param non-empty-string|null $ref Reference to get configuration from. Eg. "< lib.parseFunc" which means that the configuration
+     *                                   of the object path "lib.parseFunc" will be retrieved and MERGED with what is in $conf!
      * @return string The processed value
      */
     public function parseFunc($theValue, ?array $conf, ?string $ref = null)
@@ -3415,7 +3418,8 @@ class ContentObjectRenderer
      *  processedFile => processed file object
      *  fileCacheHash => checksum of processed file
      *
-     * @param string|File|FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file or a file reference object or the string GIFBUILDER. See description above.
+     * @param string|File|FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file
+     *                                        or a file reference object or the string GIFBUILDER. See description above.
      * @param array $fileArray TypoScript properties for the imgResource type
      * @see cImage()
      */
@@ -3818,8 +3822,13 @@ class ContentObjectRenderer
                         $retVal = $languageService->sL('LLL:' . $key);
                         break;
                     case 'cobj':
+                        // @deprecated: Remove case in TYPO3 v15.
                         switch ($key) {
                             case 'parentRecordNumber':
+                                trigger_error(
+                                    'getData() type "cobj:parentRecordNumber" is deprecated since TYPO3 v14 and will be removed in TYPO3 v15.',
+                                    E_USER_DEPRECATED
+                                );
                                 $retVal = $this->parentRecordNumber;
                                 break;
                         }
@@ -3955,7 +3964,9 @@ class ContentObjectRenderer
      * or
      * page.10.data = file:17:title
      *
-     * @param string $key A colon-separated key, e.g. 17:name or current:sha1, with the first part being a sys_file uid or the keyword "current" and the second part being the key of information to get from file (e.g. "title", "size", "description", etc.)
+     * @param string $key A colon-separated key, e.g. 17:name or current:sha1, with the first part being a sys_file uid
+     *                    or the keyword "current" and the second part being the key of information to get from
+     *                    file (e.g. "title", "size", "description", etc.)
      * @return string|int|null The value as retrieved from the file object.
      */
     protected function getFileDataKey($key)
@@ -4092,8 +4103,9 @@ class ContentObjectRenderer
     }
 
     /**
-     * Processing of key values pointing to entries in $arr; Here negative values are converted to positive keys pointer to an entry in the array but from behind (based on the negative value).
-     * Example: entrylevel = -1 means that entryLevel ends up pointing at the outermost-level, -2 means the level before the outermost...
+     * Processing of key values pointing to entries in $arr; Here negative values are converted to positive keys pointer
+     * to an entry in the array but from behind (based on the negative value).
+     * Example: entrylevel = -1 means that entryLevel ends up pointing at the outermost-level, -2 means the level before the outermost
      *
      * @param int $key The integer to transform
      * @param array $arr array in which the key should be found.
@@ -4256,10 +4268,11 @@ class ContentObjectRenderer
     }
 
     /**
-     * Calling a user function/class-method
-     * Notice: For classes the instantiated object will have the internal variable, $cObj, set to be a *reference* to $this (the parent/calling object).
+     * Call a user function/class-method
      *
-     * @param string|RawValue $funcName The functionname, eg "user_myfunction" or "user_myclass->main". Notice that there are rules for the names of functions/classes you can instantiate. If a function cannot be called for some reason it will be seen in the TypoScript log in the AdminPanel.
+     * @param string|RawValue $funcName The functionname, eg "user_myfunction" or "user_myclass->main". Notice that there
+     *                                  are rules for the names of functions/classes you can instantiate. If a function cannot
+     *                                  be called for some reason it will be seen in the TypoScript log in the AdminPanel.
      * @param array $conf The TypoScript configuration to pass the function
      * @param mixed $content The content payload to pass the function
      * @return mixed The return content from the function call. Should probably be a string.
@@ -4523,9 +4536,8 @@ class ContentObjectRenderer
      *
      * @param string $table The table name
      * @param array $conf The TypoScript configuration properties
-     * @return Result
      */
-    public function exec_getQuery($table, $conf)
+    public function exec_getQuery($table, $conf): Result
     {
         $connection = $this->connectionPool->getConnectionForTable($table);
         $statement = $this->getQuery($connection, $table, $conf);
@@ -4557,7 +4569,7 @@ class ContentObjectRenderer
                 $records[] = $row;
             }
         }
-        if ($this->features->isFeatureEnabled('frontend.cache.autoTagging')) {
+        if ($this->autoTagging) {
             $cacheTags = array_map(fn(array $record) => new CacheTag(
                 name: sprintf('%s_%s', $tableName, ($record['uid'] ?? 0)),
                 lifetime: $this->cacheLifetimeCalculator->calculateLifetimeForRow($tableName, $record)
@@ -4889,10 +4901,8 @@ class ContentObjectRenderer
      *
      * If the language aspect has NO overlays enabled, it behaves as in "free mode" (= only fetch the records
      * for the current language.
-     *
-     * @return string|CompositeExpression|null
      */
-    protected function getLanguageRestriction(ExpressionBuilder $expressionBuilder, string $table, array $conf)
+    protected function getLanguageRestriction(ExpressionBuilder $expressionBuilder, string $table, array $conf): string|CompositeExpression|null
     {
         $languageField = '';
         $localizationParentField = '';
@@ -5017,9 +5027,13 @@ class ContentObjectRenderer
         }
         $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
         if ($this->checkPid_badDoktypeList) {
+            // @deprecated: Remove branch in TYPO3 v15.
+            trigger_error(
+                'ContentObjectRenderer::$checkPid_badDoktypeList is deprecated since TYPO3 v14 and will be removed in TYPO3 v15.',
+                E_USER_DEPRECATED
+            );
             $restrictionContainer->add(GeneralUtility::makeInstance(
                 DocumentTypeExclusionRestriction::class,
-                // @todo this functionality should be streamlined with a default FrontendRestriction or a "LinkRestrictionContainer"
                 GeneralUtility::intExplode(',', (string)$this->checkPid_badDoktypeList, true)
             ));
         }
@@ -5106,10 +5120,9 @@ class ContentObjectRenderer
     /**
      * Fetch content from cache
      *
-     * @param array $configuration Array
-     * @return string|bool FALSE on cache miss
+     * @return string|false FALSE on cache miss
      */
-    protected function getFromCache(array $configuration)
+    protected function getFromCache(array $configuration): string|false
     {
         if (!$this->getRequest()->getAttribute('frontend.cache.instruction')->isCachingAllowed()) {
             return false;
@@ -5255,7 +5268,7 @@ class ContentObjectRenderer
      *        $this->request->withAttribute('currentContentObject', $cObj) in code that needs
      *        it, but this new request is NOT passed back into the ContentObjectRenderer instance.
      *
-     * @internal This method might be deprecated with TYPO3 v13.
+     * @internal
      */
     public function getRequest(): ServerRequestInterface
     {
@@ -5263,12 +5276,17 @@ class ContentObjectRenderer
             return $this->request;
         }
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
-            // @todo: We may want to deprecate this fallback and force consumers
-            //        to setRequest() after object instantiation / unserialization instead.
+            // @deprecated: Remove fallback in TYPO3 v15. Third-party code must call setRequest() after
+            //              instantiation or unserialization before invoking any method that calls getRequest().
+            trigger_error(
+                'Fallback to $GLOBALS[\'TYPO3_REQUEST\'] in ContentObjectRenderer::getRequest() is deprecated'
+                . ' since TYPO3 v14 and will be removed in TYPO3 v15. Call setRequest() after object instantiation.',
+                E_USER_DEPRECATED
+            );
             return $GLOBALS['TYPO3_REQUEST'];
         }
         throw new ContentRenderingException(
-            'PSR-7 request is missing in ContentObjectRenderer. Inject with start(), setRequest() or provide via $GLOBALS[\'TYPO3_REQUEST\'].',
+            'PSR-7 request is missing in ContentObjectRenderer. Call setRequest() after object instantiation.',
             1607172972
         );
     }

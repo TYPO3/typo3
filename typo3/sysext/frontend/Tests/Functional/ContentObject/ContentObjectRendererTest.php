@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -3698,10 +3699,12 @@ content="benni">',
     #[Test]
     public function setUserObjectType_getUserObjectType(): void
     {
-        $value = StringUtility::getUniqueId();
         $subject = $this->get(ContentObjectRenderer::class);
-        $subject->setUserObjectType($value);
-        self::assertEquals($value, $subject->getUserObjectType());
+        self::assertFalse($subject->getUserObjectType());
+        $subject->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER);
+        self::assertSame(ContentObjectRenderer::OBJECTTYPE_USER, $subject->getUserObjectType());
+        $subject->setUserObjectType(false);
+        self::assertFalse($subject->getUserObjectType());
     }
 
     public static function getGlobalDataProvider(): array
@@ -5385,6 +5388,7 @@ content="benni">',
         $eventListener->addListener(AfterContentObjectRendererInitializedEvent::class, 'after-content-object-renderer-initialized-listener');
 
         $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest(new ServerRequest());
         $subject->start(['foo' => 'bar'], 'aTable');
 
         self::assertInstanceOf(AfterContentObjectRendererInitializedEvent::class, $afterContentObjectRendererInitializedEvent);
@@ -5422,6 +5426,7 @@ content="benni">',
         $eventListener->addListener(AfterGetDataResolvedEvent::class, 'after-get-data-resolved-listener');
 
         $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest(new ServerRequest());
         $subject->start(['foo' => 'bar'], 'aTable');
         $subject->getData('field:title', ['title' => 'title']);
 
@@ -5452,6 +5457,7 @@ content="benni">',
         $eventListener->addListener(AfterImageResourceResolvedEvent::class, 'after-image-resource-resolved-listener');
 
         $subject = $this->get(ContentObjectRenderer::class);
+        $subject->setRequest(new ServerRequest());
         $subject->start(['foo' => 'bar'], 'aTable');
         $subject->getImgResource('GIFBUILDER', ['foo' => 'bar']);
 
@@ -5974,6 +5980,7 @@ content="benni">',
     }
 
     #[Test]
+    #[IgnoreDeprecations]
     public function getDataWithTypeParentRecordNumber(): void
     {
         $recordNumber = random_int(0, mt_getrandmax());

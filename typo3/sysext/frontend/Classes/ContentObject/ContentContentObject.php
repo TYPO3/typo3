@@ -91,10 +91,11 @@ class ContentContentObject extends AbstractContentObject
 
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
+                // @deprecated since TYPO3 v14, clean up in v15 together with COR
                 $this->cObj->currentRecordNumber = 0;
 
                 foreach ($records as $row) {
-                    $registerField = $conf['table'] . ':' . ($row['uid'] ?? 0);
+                    // @deprecated since TYPO3 v14, clean up in v15 together with COR
                     $this->cObj->currentRecordNumber++;
                     $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
                     $this->cObj->lastChanged($row['tstamp'] ?? 0);

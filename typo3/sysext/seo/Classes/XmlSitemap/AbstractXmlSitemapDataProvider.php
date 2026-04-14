@@ -39,6 +39,7 @@ abstract class AbstractXmlSitemapDataProvider implements XmlSitemapDataProviderI
         $this->config = $config;
         $this->request = $request;
         $this->cObj = $cObj ?? GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $this->cObj->setRequest($request);
     }
 
     public function getKey(): string

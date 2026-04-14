@@ -76,8 +76,12 @@ final class CObjectViewHelper extends AbstractViewHelper
             throw new \RuntimeException('Required request not found in RenderingContext', 1724243608);
         }
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
-        $contentObjectRenderer = self::getContentObjectRenderer($request);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
+        $parent = $request->getAttribute('currentContentObject');
+        if ($parent instanceof ContentObjectRenderer) {
+            $contentObjectRenderer->setParent($parent->data, $parent->currentRecord);
+        }
         $currentValue = null;
         if (is_object($data)) {
             $data = $data instanceof RecordInterface ? ($data->getRawRecord()?->toArray(true) ?? $data->toArray()) : ObjectAccess::getGettableProperties($data);
@@ -134,16 +138,6 @@ final class CObjectViewHelper extends AbstractViewHelper
     {
         // @todo: this should be replaced by DI once Fluid can handle DI properly
         return GeneralUtility::getContainer()->get(ConfigurationManagerInterface::class);
-    }
-
-    private static function getContentObjectRenderer(ServerRequestInterface $request): ContentObjectRenderer
-    {
-        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $parent = $request->getAttribute('currentContentObject');
-        if ($parent instanceof ContentObjectRenderer) {
-            $contentObjectRenderer->setParent($parent->data, $parent->currentRecord);
-        }
-        return $contentObjectRenderer;
     }
 
     /**
