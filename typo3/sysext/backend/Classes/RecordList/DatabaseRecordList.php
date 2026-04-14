@@ -773,36 +773,33 @@ class DatabaseRecordList
             $accRows = [];
             // Accumulate Record objects here
             while ($rowData = $queryResult->fetchAssociative()) {
-                if (!$this->isRowListingConditionFulfilled($this->recordFactory->createResolvedRecordFromDatabaseRow(
+                // Apply workspace overlay before creating the record object so resolved records,
+                // including their icon-relevant properties, reflect the active workspace state.
+                BackendUtility::workspaceOL($table, $rowData, $backendUser->workspace, true);
+                if (!is_array($rowData)) {
+                    continue;
+                }
+                // Create Record object from database row
+                $record = $this->recordFactory->createResolvedRecordFromDatabaseRow(
                     $table,
                     $rowData,
                     null,
                     $this->recordIdentityMap
-                ))) {
+                );
+                if (!$this->isRowListingConditionFulfilled($record)) {
                     continue;
                 }
-                // In offline workspace, look for alternative record
-                BackendUtility::workspaceOL($table, $rowData, $backendUser->workspace, true);
-                if (is_array($rowData)) {
-                    // Create Record object from database row
-                    $record = $this->recordFactory->createResolvedRecordFromDatabaseRow(
-                        $table,
-                        $rowData,
-                        null,
-                        $this->recordIdentityMap
-                    );
 
-                    $accRows[] = $record;
-                    $currentIdList[] = $record->getUid();
-                    if ($allowManualSorting) {
-                        if ($prevUid) {
-                            $this->currentTable['prev'][$record->getUid()] = $prevPrevUid;
-                            $this->currentTable['next'][$prevUid] = -$record->getUid();
-                            $this->currentTable['prevUid'][$record->getUid()] = $prevUid;
-                        }
-                        $prevPrevUid = isset($this->currentTable['prev'][$record->getUid()]) ? -$prevUid : $record->getPid();
-                        $prevUid = $record->getUid();
+                $accRows[] = $record;
+                $currentIdList[] = $record->getUid();
+                if ($allowManualSorting) {
+                    if ($prevUid) {
+                        $this->currentTable['prev'][$record->getUid()] = $prevPrevUid;
+                        $this->currentTable['next'][$prevUid] = -$record->getUid();
+                        $this->currentTable['prevUid'][$record->getUid()] = $prevUid;
                     }
+                    $prevPrevUid = isset($this->currentTable['prev'][$record->getUid()]) ? -$prevUid : $record->getPid();
+                    $prevUid = $record->getUid();
                 }
             }
             // Render items:
@@ -854,31 +851,24 @@ class DatabaseRecordList
                             if (isset($resultSetUids[$lRow['uid']])) {
                                 continue;
                             }
-
-                            if (!$this->isRowListingConditionFulfilled(
-                                $this->recordFactory->createResolvedRecordFromDatabaseRow(
-                                    $table,
-                                    $lRow,
-                                    null,
-                                    $this->recordIdentityMap
-                                )
-                            )) {
-                                continue;
-                            }
                             // In offline workspace, look for alternative record:
                             BackendUtility::workspaceOL($table, $lRow, $backendUser->workspace, true);
-                            if (is_array($lRow) && $backendUser->checkLanguageAccess($lRow[$languageFieldName])) {
-                                // Create Record object for translation
-                                $translationRecord = $this->recordFactory->createResolvedRecordFromDatabaseRow(
-                                    $table,
-                                    $lRow,
-                                    null,
-                                    $this->recordIdentityMap
-                                );
-
-                                $currentIdList[] = $translationRecord->getUid();
-                                $rowOutput .= $this->renderListRow($table, $translationRecord, 1, [], false);
+                            if (!is_array($lRow) || !$backendUser->checkLanguageAccess($lRow[$languageFieldName])) {
+                                continue;
                             }
+                            // Create Record object for translation
+                            $translationRecord = $this->recordFactory->createResolvedRecordFromDatabaseRow(
+                                $table,
+                                $lRow,
+                                null,
+                                $this->recordIdentityMap
+                            );
+                            if (!$this->isRowListingConditionFulfilled($translationRecord)) {
+                                continue;
+                            }
+
+                            $currentIdList[] = $translationRecord->getUid();
+                            $rowOutput .= $this->renderListRow($table, $translationRecord, 1, [], false);
                         }
                     }
                 }
