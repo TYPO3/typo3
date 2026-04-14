@@ -47,7 +47,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class SiteConfiguration
+readonly class SiteConfiguration
 {
     /**
      * Config yaml file name.

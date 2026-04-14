@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsAlias;
  * @internal Note that this is not public API, use PSR-17 interfaces instead.
  */
 #[AsAlias(ResponseFactoryInterface::class, public: true)]
-class ResponseFactory implements ResponseFactoryInterface
+readonly class ResponseFactory implements ResponseFactoryInterface
 {
     /**
      * Create a new response.

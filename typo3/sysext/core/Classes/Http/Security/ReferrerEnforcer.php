@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * @internal
  */
-class ReferrerEnforcer
+readonly class ReferrerEnforcer
 {
     private const TYPE_REFERRER_EMPTY = 1;
     private const TYPE_REFERRER_SAME_SITE = 2;

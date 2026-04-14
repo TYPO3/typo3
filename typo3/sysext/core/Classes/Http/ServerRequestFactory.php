@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Core\Environment;
  * @internal Note that this is not public API yet.
  */
 #[AsAlias(ServerRequestFactoryInterface::class, public: true)]
-class ServerRequestFactory implements ServerRequestFactoryInterface
+readonly class ServerRequestFactory implements ServerRequestFactoryInterface
 {
     /**
      * Create a new server request.

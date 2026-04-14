@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class QueryHelper
+readonly class QueryHelper
 {
     /**
      * Takes an input, possibly prefixed with ORDER BY, and explodes it into

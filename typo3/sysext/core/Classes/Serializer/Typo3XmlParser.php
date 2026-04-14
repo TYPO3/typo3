@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal still experimental
  */
-class Typo3XmlParser
+readonly class Typo3XmlParser
 {
     /**
      * This method serves as a wrapper for decode() and is used to replace

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 /**
  * @internal
  */
-class ResponsePropagation implements MiddlewareInterface
+readonly class ResponsePropagation implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal Class and API may change any time.
  */
-class TcaMigration
+readonly class TcaMigration
 {
     /**
      * Run some general TCA validations, then migrate old TCA to new TCA.

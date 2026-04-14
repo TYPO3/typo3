@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsAlias;
  * @internal Note that this is not public API, use PSR-17 interfaces instead.
  */
 #[AsAlias(UploadedFileFactoryInterface::class, public: true)]
-class UploadedFileFactory implements UploadedFileFactoryInterface
+readonly class UploadedFileFactory implements UploadedFileFactoryInterface
 {
     /**
      * Create a new uploaded file.

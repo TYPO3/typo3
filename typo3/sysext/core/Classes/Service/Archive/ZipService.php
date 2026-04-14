@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class ZipService
+readonly class ZipService
 {
     /**
      * Extracts the zip archive to a given directory. This method makes sure a file cannot be placed outside the directory.

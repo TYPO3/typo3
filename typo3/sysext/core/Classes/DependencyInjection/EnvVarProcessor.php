@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Core\Environment;
  * @internal
  */
 #[AutoconfigureTag('container.env_var_processor')]
-class EnvVarProcessor implements EnvVarProcessorInterface
+readonly class EnvVarProcessor implements EnvVarProcessorInterface
 {
     /**
      * @param string $prefix The namespace of the variable

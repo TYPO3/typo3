@@ -24,7 +24,7 @@ use GuzzleHttp\HandlerStack;
 /**
  * @internal
  */
-class GuzzleClientFactory
+readonly class GuzzleClientFactory
 {
     /**
      * Creates the client to do requests

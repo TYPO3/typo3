@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  *
  * @internal
  */
-class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
+readonly class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
 {
     /**
      * @return ExpressionFunction[] An array of Function instances

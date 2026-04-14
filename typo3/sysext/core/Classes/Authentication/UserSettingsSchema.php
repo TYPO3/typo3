@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Core\Authentication;
  *
  * @internal This class is not part of the TYPO3 Core API yet.
  */
-class UserSettingsSchema
+readonly class UserSettingsSchema
 {
     /**
      * Get all column configurations in legacy format.

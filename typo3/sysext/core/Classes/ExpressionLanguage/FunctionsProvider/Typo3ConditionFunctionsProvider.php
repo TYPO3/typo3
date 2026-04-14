@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  *
  * @internal
  */
-class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInterface
+readonly class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInterface
 {
     /**
      * @return ExpressionFunction[] An array of Function instances

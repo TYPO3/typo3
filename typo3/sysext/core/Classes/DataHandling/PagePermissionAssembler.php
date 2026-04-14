@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal Implements a DataHandler detail. Should only be used by the TYPO3 Core.
  */
-class PagePermissionAssembler
+readonly class PagePermissionAssembler
 {
     /**
      * Set default permissions of a new page, considering defaults and pageTsConfig overrides.

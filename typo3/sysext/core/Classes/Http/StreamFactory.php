@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsAlias;
  * @internal Note that this is not public API, use PSR-17 interfaces instead.
  */
 #[AsAlias(StreamFactoryInterface::class, public: true)]
-class StreamFactory implements StreamFactoryInterface
+readonly class StreamFactory implements StreamFactoryInterface
 {
     /**
      * Create a new stream from a string.

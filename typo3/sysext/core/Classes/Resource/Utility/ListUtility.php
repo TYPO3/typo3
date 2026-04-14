@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
 /**
  * Utility function for working with resource-lists
  */
-class ListUtility
+readonly class ListUtility
 {
     /**
      * Resolve special folders (by their role) into localised string

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent;
 /*
  * @internal
  */
-class ClassLoadingInformationUpdater
+readonly class ClassLoadingInformationUpdater
 {
     #[AsEventListener(identifier: 'non-composer-class-loader', event: AfterPackageDeactivationEvent::class)]
     #[AsEventListener(identifier: 'non-composer-class-loader', event: AfterPackageActivationEvent::class)]

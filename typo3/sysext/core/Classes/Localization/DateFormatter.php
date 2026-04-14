@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Wrapper for dealing with ICU-based (php-intl) date formatting
  * see https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
  */
-class DateFormatter
+readonly class DateFormatter
 {
     /**
      * Formats any given input ($date) into a localized, formatted result

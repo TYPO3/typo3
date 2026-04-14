@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
  *
  * @internal
  */
-class NormalizedParamsAttribute implements MiddlewareInterface
+readonly class NormalizedParamsAttribute implements MiddlewareInterface
 {
     /**
      * Adds an instance of TYPO3\CMS\Core\Http\NormalizedParams as

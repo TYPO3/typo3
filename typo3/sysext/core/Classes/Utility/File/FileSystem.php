@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal Only to be used in TYPO3\CMS\Core\SystemResource namespace
  */
-class FileSystem
+readonly class FileSystem
 {
     /**
      * Returns the shortest path from $from to $to

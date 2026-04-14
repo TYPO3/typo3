@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  *
  * @internal This class is a hook implementation and is not part of the TYPO3 Core API.
  */
-class TcaDisplayConditions
+readonly class TcaDisplayConditions
 {
     /**
      * Check if an extension is loaded.

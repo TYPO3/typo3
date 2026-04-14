@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 /**
  * Class with helper functions for file paths.
  */
-class PathUtility
+readonly class PathUtility
 {
     /**
      * Gets the relative path from the current used script to a given directory.

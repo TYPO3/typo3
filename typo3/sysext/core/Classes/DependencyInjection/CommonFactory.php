@@ -22,7 +22,7 @@ use Masterminds\HTML5;
 /**
  * @internal
  */
-class CommonFactory
+readonly class CommonFactory
 {
     public static function createHtml5Parser(): HTML5
     {

@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Service class executing database tasks for upgrade wizards
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class DatabaseUpgradeWizardsService
+readonly class DatabaseUpgradeWizardsService
 {
     /**
      * Get a list of tables, single columns and indexes to add.

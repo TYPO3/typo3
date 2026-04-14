@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 /**
  * Class with helper functions for array handling
  */
-class ArrayUtility
+readonly class ArrayUtility
 {
     /**
      * Validates the given $arrayToTest by checking if an element is not in $allowedArrayKeys.

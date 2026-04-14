@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
  *
  * @internal
  */
-class ImportExportFilter
+readonly class ImportExportFilter
 {
     /**
      * Filter method that checks if a directory or a file in such directory belongs to the temp directory of EXT:impexp

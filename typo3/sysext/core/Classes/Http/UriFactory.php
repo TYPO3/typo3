@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsAlias;
  * @internal Note that this is not public API, use PSR-17 interfaces instead.
  */
 #[AsAlias(UriFactoryInterface::class, public: true)]
-class UriFactory implements UriFactoryInterface
+readonly class UriFactory implements UriFactoryInterface
 {
     /**
      * Create a new URI.

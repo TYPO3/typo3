@@ -31,7 +31,7 @@ use TYPO3\HtmlSanitizer\Visitor\CommonVisitor;
  *
  * @internal
  */
-class I18nSanitizerBuilder implements BuilderInterface
+readonly class I18nSanitizerBuilder implements BuilderInterface
 {
     public function build(): Sanitizer
     {

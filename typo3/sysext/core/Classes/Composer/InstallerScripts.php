@@ -26,7 +26,7 @@ use TYPO3\CMS\Composer\Plugin\Core\ScriptDispatcher;
  * Hook into Composer build to generate TYPO3 cli tool entry script
  * @internal only used for TYPO3 internally for setting up the installation.
  */
-class InstallerScripts implements InstallerScriptsRegistration
+readonly class InstallerScripts implements InstallerScriptsRegistration
 {
     public static function register(Event $event, ScriptDispatcher $scriptDispatcher)
     {

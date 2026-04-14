@@ -45,7 +45,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * core internal API that is usually only used by extension manager and install tool.
  */
 #[AsAlias('extension-configuration', public: true)]
-class ExtensionConfiguration
+readonly class ExtensionConfiguration
 {
     /**
      * Get a single configuration value, a sub array or the whole configuration.

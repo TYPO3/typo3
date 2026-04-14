@@ -117,7 +117,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal still experimental
  */
-class Typo3XmlSerializer
+readonly class Typo3XmlSerializer
 {
     /**
      * This method serves as a wrapper for encode() and is used to replace

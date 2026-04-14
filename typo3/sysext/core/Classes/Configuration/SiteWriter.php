@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class SiteWriter
+readonly class SiteWriter
 {
     /**
      * Config yaml file name.

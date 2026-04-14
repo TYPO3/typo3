@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is only meant to be used within `EXT:core` and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('pagesRecyclerDoktypeMigration')]
-class PagesRecyclerDoktypeMigration implements UpgradeWizardInterface
+readonly class PagesRecyclerDoktypeMigration implements UpgradeWizardInterface
 {
     protected const TABLE_NAME = 'pages';
 

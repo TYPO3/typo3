@@ -59,7 +59,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * down. Do not fiddle with the load order in own scripts except you know
  * exactly what you are doing!
  */
-class Bootstrap
+readonly class Bootstrap
 {
     /**
      * Bootstrap TYPO3 and return a Container that may be used
