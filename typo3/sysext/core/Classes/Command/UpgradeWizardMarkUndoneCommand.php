@@ -22,7 +22,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Service\UpgradeWizardsService;
@@ -51,7 +50,6 @@ class UpgradeWizardMarkUndoneCommand extends Command
         $this->upgradeWizardsService = $this->bootService
             ->loadExtLocalconfDatabaseAndExtTables(false, false)
             ->get(UpgradeWizardsService::class);
-        Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         Bootstrap::initializeBackendAuthentication();
     }
 

@@ -7,7 +7,7 @@ test.describe.serial('Record download with preset configured via user TSconfig',
     await setUserTsConfig(
       page,
       backend,
-      1,
+      2,
       'page.mod.web_list.downloadPresets.pages.10.label = Test-Preset\n'
         + 'page.mod.web_list.downloadPresets.pages.10.columns = uid,title,slug\n'
         + 'page.mod.web_list.downloadPresets.pages.10.identifier = download-preset',
@@ -30,7 +30,7 @@ test.describe.serial('Record download with preset configured via user TSconfig',
       await backend.modal.click({ name: 'download' });
       await expect(dialog).not.toBeVisible({ timeout: 30000 });
     } finally {
-      await setUserTsConfig(page, backend, 1, '');
+      await setUserTsConfig(page, backend, 2, '');
     }
   });
 

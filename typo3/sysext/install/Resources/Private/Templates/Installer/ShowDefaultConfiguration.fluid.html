@@ -15,58 +15,82 @@
 
         <form method="post" spellcheck="false">
 
-            <f:if condition="{distributions}">
-                <div class="panel panel-default">
-                    <h3 class="panel-heading">Available distributions</h3>
-                    <div class="panel-body">
-                        <p>
-                            Import a pre-configured distribution with demo content, pages, and site configuration.
-                        </p>
-                        <f:for each="{distributions}" as="distribution" iteration="iterator">
+            <f:if condition="{distributions.active}">
+                <f:then>
+                    <div class="panel panel-default">
+                        <h3 class="panel-heading">Active distributions</h3>
+                        <div class="panel-body">
+                            <p>
+                                These pre-configured distribution will have their demo content, pages, and site configuration being imported.
+                            </p>
+                            <ul>
+                                <f:for each="{distributions.active}" as="distribution">
+                                    <li>
+                                        <strong>{distribution.title}</strong>
+                                        <f:if condition="{distribution.description}">
+                                            <br /><small>{distribution.description}</small>
+                                        </f:if>
+                                    </li>
+                                </f:for>
+                            </ul>
+                        </div>
+                    </div>
+                </f:then>
+                <f:else>
+                    <f:if condition="{distributions.inactive}">
+                        <div class="panel panel-default">
+                            <h3 class="panel-heading">Available distributions</h3>
+                            <div class="panel-body">
+                                <p>
+                                    Import a pre-configured distribution with demo content, pages, and site configuration.
+                                </p>
+                                <f:for each="{distributions.inactive}" as="distribution" iteration="iterator">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="create-site-{distribution.packageKey}" name="install[values][sitesetup]" value="createsite:{distribution.packageKey}"{f:if(condition: iterator.isFirst, then: ' checked="checked"')} />
+                                        <label class="form-check-label" for="create-site-{distribution.packageKey}">
+                                            <strong>{distribution.title}</strong>
+                                            <f:if condition="{distribution.description}">
+                                                <br /><small>{distribution.description}</small>
+                                            </f:if>
+                                        </label>
+                                    </div>
+                                </f:for>
+                            </div>
+                        </div>
+                    </f:if>
+
+                    <div class="panel panel-default">
+                        <h3 class="panel-heading">Other options</h3>
+                        <div class="panel-body">
+                            <f:if condition="!{composerMode}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
+                                    <label class="form-check-label" for="load-distributions">
+                                        <strong>Browse all distributions</strong>
+                                        <br /><small>View a list of available distributions after login</small>
+                                    </label>
+                                </div>
+                            </f:if>
+                            <f:if condition="{offerToCreateBasicSite}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="create-site" name="install[values][sitesetup]" value="createsite"{f:if(condition: '{distributions.inactive -> f:count()} === 0', then: ' checked="checked"')} />
+                                    <label class="form-check-label" for="create-site">
+                                        <strong>Create a basic starter website</strong>
+                                        <br /><small>Set up a root page, site configuration and basic content rendering</small>
+                                    </label>
+                                </div>
+                            </f:if>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" id="create-site-{distribution.packageKey}" name="install[values][sitesetup]" value="createsite:{distribution.packageKey}"{f:if(condition: iterator.isFirst, then: ' checked="checked"')} />
-                                <label class="form-check-label" for="create-site-{distribution.packageKey}">
-                                    <strong>{distribution.title}</strong>
-                                    <f:if condition="{distribution.description}">
-                                        <br /><small>{distribution.description}</small>
-                                    </f:if>
+                                <input class="form-check-input" type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" />
+                                <label class="form-check-label" for="do-nothing">
+                                    <strong>Skip setup</strong>
+                                    <br /><small>Do nothing, take me straight to the backend</small>
                                 </label>
                             </div>
-                        </f:for>
+                        </div>
                     </div>
-                </div>
+                </f:else>
             </f:if>
-
-            <div class="panel panel-default">
-                <h3 class="panel-heading">Other options</h3>
-                <div class="panel-body">
-                    <f:if condition="!{composerMode}">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="load-distributions" name="install[values][sitesetup]" value="loaddistribution" />
-                            <label class="form-check-label" for="load-distributions">
-                                <strong>Browse all distributions</strong>
-                                <br /><small>View a list of available distributions after login</small>
-                            </label>
-                        </div>
-                    </f:if>
-                    <f:if condition="{offerToCreateBasicSite}">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="create-site" name="install[values][sitesetup]" value="createsite"{f:if(condition: '{distributions -> f:count()} == 0', then: ' checked="checked"')} />
-                            <label class="form-check-label" for="create-site">
-                                <strong>Create a basic starter website</strong>
-                                <br /><small>Set up a root page, site configuration and basic content rendering</small>
-                            </label>
-                        </div>
-                    </f:if>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="do-nothing" name="install[values][sitesetup]" value="donothing" />
-                        <label class="form-check-label" for="do-nothing">
-                            <strong>Skip setup</strong>
-                            <br /><small>Do nothing, take me straight to the backend</small>
-                        </label>
-                    </div>
-                </div>
-            </div>
 
             <div class="panel panel-default">
                 <h3 class="panel-heading">Pre-configured backend user groups</h3>

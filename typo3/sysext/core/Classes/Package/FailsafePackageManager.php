@@ -94,6 +94,7 @@ class FailsafePackageManager extends PackageManager
                 }
             }
             $this->forceSortAndSavePackageStates();
+            $this->inFailsafeMode = false;
         }
     }
 }

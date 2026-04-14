@@ -44,6 +44,7 @@ if (($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'] ?? ''
 }
 EOF
 
+composer remove typo3/theme-camino --no-update
 # `composer require` will implicitly perform an initial `composer install` since there is no composer.lock
 composer require \
     --no-progress \
