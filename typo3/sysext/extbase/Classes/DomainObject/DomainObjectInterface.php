@@ -20,9 +20,10 @@ namespace TYPO3\CMS\Extbase\DomainObject;
 use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
 
 /**
- * A Domain Object Interface. All domain objects which should be persisted need to implement the below interface.
- * Usually you will need to subclass \TYPO3\CMS\Extbase\DomainObject\AbstractEntity and \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
- * instead.
+ * A Domain Object Interface. All domain objects which should be persisted need to implement this interface.
+ *
+ * Usually you will need to subclass `AbstractEntity` or `AbstractValueObject` instead of implementing this interface
+ * directly, though.
  *
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject

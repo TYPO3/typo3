@@ -24,7 +24,9 @@ use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
 /**
  * A generic Domain Object.
  *
- * All Model domain objects need to inherit from either AbstractEntity or AbstractValueObject, as this provides important framework information.
+ * All Model domain objects need to inherit from either `AbstractEntity` or `AbstractValueObject` (instead of from this
+ * class), as this provides important framework information.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 abstract class AbstractDomainObject implements DomainObjectInterface
