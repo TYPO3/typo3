@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Authentication\CommandLineUserCreation;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -522,6 +523,10 @@ final readonly class InstallerController
             ]);
         }
 
+        $container = $this->lateBootService->getContainer();
+        $backup = $this->lateBootService->makeCurrent($container);
+        $container->get(CommandLineUserCreation::class)->ensureCliUserExists();
+        $this->lateBootService->makeCurrent(null, $backup);
         $this->setupService->createUser($username, $password, $email);
         $this->setupService->setInstallToolPassword($password);
 
@@ -559,23 +564,29 @@ final readonly class InstallerController
      */
     public function executeDefaultConfigurationAction(ServerRequestInterface $request): ResponseInterface
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
-        // Use the container here instead of makeInstance() to use the factory of the container for building the UriBuilder
-        $uriBuilder = $container->get(UriBuilder::class);
-        $nextStepUrl = $uriBuilder->buildUriFromRoute('login');
         // Let the admin user redirect to the distributions page on first login
         $siteSetup = $request->getParsedBody()['install']['values']['sitesetup'] ?? '';
-
         $selectedDistribution = '';
         if (str_starts_with($siteSetup, 'createsite:')) {
             $selectedDistribution = substr($siteSetup, strlen('createsite:'));
-            $siteSetup = 'createsite';
+            $siteSetup = 'activateDistribution';
         }
-
-        if ($siteSetup === 'createsite' && $selectedDistribution !== '' && $this->packageManager->isPackageActive('impexp')) {
+        // It is crucial to activate the package *before* loading the container
+        if ($siteSetup === 'activateDistribution') {
             // Distribution handles all site creation (pages, content, site configuration)
-            $this->setupService->importDistributionData($container, $selectedDistribution);
-        } elseif ($siteSetup === 'createsite') {
+            $this->setupService->activateDistributionPackage($selectedDistribution);
+        }
+        // The new container is kept in GeneralUtility because the following code, especially
+        // the current state of the data import during extension setup still relies on GeneralUtility::makeInstance
+        // to fetch objects from the container
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        // Use the container here instead of makeInstance() to use the factory of the container
+        // for building the UriBuilder, although it is functionally the same, as we now expose the
+        // container in GeneralUtility with $this->lateBootService->loadExtLocalconfDatabaseAndExtTables()
+        $uriBuilder = $container->get(UriBuilder::class);
+        $nextStepUrl = $uriBuilder->buildUriFromRoute('login');
+
+        if ($siteSetup === 'createsite') {
             $siteUrl = $request->getAttribute('normalizedParams')->getSiteUrl();
             $this->setupService->createSite('main', $siteUrl);
         } elseif ($siteSetup === 'loaddistribution'
@@ -601,6 +612,10 @@ final readonly class InstallerController
 
         // Mark upgrade wizards as done
         $this->setupDatabaseService->markWizardsDone($container);
+
+        // Set up all installed extensions
+        // (includes e.g. publishing of assets, importing distribution data)
+        $this->setupService->setupExtensions($container);
 
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $formProtection->clean();

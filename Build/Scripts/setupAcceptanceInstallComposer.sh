@@ -14,6 +14,7 @@ sed 's/..\/..\/typo3\/sysext/typo3-sysext/' Build/composer/composer.dist.json > 
 cd "${PROJECT_PATH}"
 rm -rf composer.lock config/ public/ var/ vendor/
 
+composer remove typo3/theme-camino --no-update
 composer update \
     --no-progress \
     --no-interaction \

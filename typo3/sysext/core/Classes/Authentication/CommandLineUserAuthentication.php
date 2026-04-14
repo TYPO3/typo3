@@ -17,10 +17,6 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -30,11 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CommandLineUserAuthentication extends BackendUserAuthentication
 {
     /**
-     * The username of the CLI user (there is only one)
-     * @var string
-     */
-    protected $username = '_cli_';
-
     /**
      * Constructor, only allowed in CLI mode
      *
@@ -91,15 +82,14 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     public function authenticate()
     {
         // check if a _CLI_ user exists, if not, create one
-        $this->setBeUserByName($this->username);
+        $this->setBeUserByName(CommandLineUserCreation::CLI_USERNAME);
         if (empty($this->user['uid'])) {
+            $userCreation = GeneralUtility::makeInstance(CommandLineUserCreation::class);
             // create a new BE user in the database
-            if (!$this->checkIfCliUserExists()) {
-                $this->createCliUser();
-            } else {
+            if (!$userCreation->ensureCliUserExists()) {
                 throw new \RuntimeException('No backend user named "_cli_" could be authenticated, maybe this user is "hidden"?', 1484050401);
             }
-            $this->setBeUserByName($this->username);
+            $this->setBeUserByName(CommandLineUserCreation::CLI_USERNAME);
         }
         if (empty($this->user['uid'])) {
             throw new \RuntimeException('No backend user named "_cli_" could be created.', 1476107195);
@@ -128,57 +118,5 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     public function isUserAllowedToLogin()
     {
         return in_array((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'], [0, 2], true);
-    }
-
-    /**
-     * Check if a user with username "_cli_" exists. Deleted users are left out
-     * but hidden and start / endtime restricted users are considered.
-     *
-     * @return bool true if the user exists
-     */
-    protected function checkIfCliUserExists()
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $count = $queryBuilder
-            ->count('*')
-            ->from('be_users')
-            ->where($queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter('_cli_')))
-            ->executeQuery()
-            ->fetchOne();
-        return (bool)$count;
-    }
-
-    /**
-     * Create a record in the DB table be_users called "_cli_" with no other information
-     */
-    protected function createCliUser()
-    {
-        $userFields = [
-            'username' => $this->username,
-            'password' => $this->generateHashedPassword(),
-            'admin'    => 1,
-            'tstamp'   => $GLOBALS['EXEC_TIME'] ?? time(),
-            'crdate'   => $GLOBALS['EXEC_TIME'] ?? time(),
-        ];
-
-        $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('be_users');
-        $databaseConnection->insert('be_users', $userFields);
-    }
-
-    /**
-     * This function returns a salted hashed key.
-     *
-     * @return string a random password
-     */
-    protected function generateHashedPassword()
-    {
-        $cryptoService = GeneralUtility::makeInstance(Random::class);
-        $password = $cryptoService->generateRandomBytes(20);
-        $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('BE');
-        return $hashInstance->getHashedPassword($password);
     }
 }

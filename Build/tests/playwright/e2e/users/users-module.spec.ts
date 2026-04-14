@@ -257,7 +257,7 @@ test.describe('Backend Users module', () => {
       // await contentFrame.locator('#typo3-backend-user-list-compare [data-identifier="actions-minus"]').first().click();
 
       // locator('#typo3-backend-user-list-compare').getByRole('row').locator('button[name="uid"]')
-      await contentFrame.locator('#typo3-backend-user-list-compare').getByTitle('Remove from compare list').first().click();
+      await contentFrame.locator('#typo3-backend-user-list-compare').getByTitle('Remove from compare list').nth(1).click();
       await expect(page.frameLocator('iframe[name="list_frame"]').getByRole('row', { name: 'Open context menu Klaus Admin online (admin)', exact: true }).getByRole('link')).not.toBeVisible();
 
       await contentFrame.locator('#typo3-backend-user-list-compare').getByTitle('Remove from compare list').first().click();

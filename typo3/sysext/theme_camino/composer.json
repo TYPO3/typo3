@@ -42,9 +42,6 @@
 			"dev-main": "14.3.x-dev"
 		},
 		"typo3/cms": {
-			"Package": {
-				"partOfFactoryDefault": true
-			},
 			"extension-key": "theme_camino"
 		}
 	}

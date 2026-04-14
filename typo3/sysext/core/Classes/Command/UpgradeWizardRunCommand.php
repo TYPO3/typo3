@@ -24,7 +24,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Command\Exception\WizardDoesNotNeedToMakeChangesException;
 use TYPO3\CMS\Core\Command\Exception\WizardMarkedAsDoneException;
 use TYPO3\CMS\Core\Command\Exception\WizardNotFoundException;
@@ -81,7 +80,6 @@ class UpgradeWizardRunCommand extends Command
         $this->upgradeWizardsService = $this->bootService
             ->loadExtLocalconfDatabaseAndExtTables(false, false)
             ->get(UpgradeWizardsService::class);
-        Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         Bootstrap::initializeBackendAuthentication();
         $this->databaseUpgradeWizardsService->isDatabaseCharsetUtf8()
             ?: $this->databaseUpgradeWizardsService->setDatabaseCharsetUtf8();

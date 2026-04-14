@@ -27,7 +27,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use TYPO3\CMS\Core\Authentication\CommandLineUserCreation;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -244,6 +246,10 @@ EOT
             return $exitCode;
         }
 
+        $container = $this->lateBootService->getContainer();
+        $backup = $this->lateBootService->makeCurrent($container);
+        $container->get(CommandLineUserCreation::class)->ensureCliUserExists();
+        $this->lateBootService->makeCurrent(null, $backup);
         $username = $this->getAdminUserName($questionHelper, $input, $output);
         $password = $this->getAdminUserPassword($questionHelper, $input, $output);
         if ($password !== null) {
@@ -258,19 +264,39 @@ EOT
         $siteName = $this->getProjectName($questionHelper, $input, $output);
         $this->setupService->setSiteName($siteName);
 
-        $selectedDistribution = $this->getDistribution($questionHelper, $input, $output);
-        if ($selectedDistribution !== null) {
-            // Distribution handles all site creation (pages, content, site configuration)
-            $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
-            $this->setupService->importDistributionData($container, $selectedDistribution);
-        } else {
-            $siteUrl = $this->getSiteSetup($questionHelper, $input, $output);
-            if ($siteUrl) {
-                $this->setupService->createSite('main', $siteUrl);
-            }
-            $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $distributions = $this->setupService->getAvailableDistributions();
+        $distributionFromCli = $this->getFallbackValueEnvOrOption($input, 'distribution', 'TYPO3_SETUP_DISTRIBUTION');
+        $createSiteFromCli = $this->getFallbackValueEnvOrOption($input, 'create-site', 'TYPO3_SETUP_CREATE_SITE');
+        if ($distributionFromCli !== false && $createSiteFromCli !== false) {
+            throw new \RuntimeException(
+                'The --distribution and --create-site commandline options may not be used at the same time',
+                1775034289
+            );
         }
+        if ($distributions['active'] === []) {
+            $selectedDistribution = $this->getDistributionForActivation($distributions['inactive'], $questionHelper, $input, $output);
+            if ($selectedDistribution !== null) {
+                // Distribution handles all site creation (pages, content, site configuration)
+                $this->setupService->activateDistributionPackage($selectedDistribution);
+            } else {
+                $siteUrl = $this->getSiteSetup($questionHelper, $input, $output);
+                if ($siteUrl) {
+                    $this->setupService->createSite('main', $siteUrl);
+                }
+            }
+        } elseif ($distributionFromCli !== false || $createSiteFromCli !== false) {
+            $this->writeWarning(
+                $output,
+                'The --distribution and --create-site commandline options have no effect, when distributions are already active'
+            );
+        }
+        // The new container is kept in GeneralUtility because the following code, especially
+        // the current state of the data import during extension setup still relies on GeneralUtility::makeInstance
+        // to fetch objects from the container
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
         $this->setupDatabaseService->markWizardsDone($container);
+        Bootstrap::initializeBackendAuthentication();
+        $this->setupService->setupExtensions($container);
         $this->writeSuccess($output, 'Congratulations - TYPO3 Setup is done.');
 
         return Command::SUCCESS;
@@ -510,7 +536,7 @@ EOT
 
     protected function getServerType(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): WebserverType
     {
-        $serverTypeValidator = function (?string $serverType): WebserverType {
+        $serverTypeValidator = static function (?string $serverType): WebserverType {
             if (!array_key_exists($serverType, WebserverType::getDescriptions())) {
                 throw new \RuntimeException(
                     'Webserver must be any of ' . implode(', ', array_keys(WebserverType::getDescriptions())),
@@ -663,7 +689,7 @@ EOT
         return $urlValidator($createSiteFromCli);
     }
 
-    protected function getDistribution(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): ?string
+    protected function getDistributionForActivation(array $inactiveDistributions, QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): ?string
     {
         $distributionFromCli = $this->getFallbackValueEnvOrOption($input, 'distribution', 'TYPO3_SETUP_DISTRIBUTION');
 
@@ -677,29 +703,19 @@ EOT
             return null;
         }
 
-        $distributions = $this->setupService->getAvailableDistributions();
         if ($distributionFromCli !== false) {
-            if (!isset($distributions[$distributionFromCli])) {
+            if (!isset($inactiveDistributions[$distributionFromCli])) {
                 throw new \RuntimeException(
                     sprintf('Distribution "%s" is not available.', $distributionFromCli),
                     1775034288
                 );
             }
-
-            $createSiteFromCli = $this->getFallbackValueEnvOrOption($input, 'create-site', 'TYPO3_SETUP_CREATE_SITE');
-            if ($createSiteFromCli !== false) {
-                throw new \RuntimeException(
-                    'The --distribution and --create-site commandline options may not be used at the same time',
-                    1775034289
-                );
-            }
-
             return $distributionFromCli;
         }
 
         if ($input->isInteractive()) {
             $choices = ['none' => 'Do not import a distribution'];
-            foreach ($distributions as $packageKey => $info) {
+            foreach ($inactiveDistributions as $packageKey => $info) {
                 $choices[$packageKey] = $info['title'];
             }
             $question = new ChoiceQuestion('Select a distribution to import [default: none]', $choices, 'none');
@@ -713,6 +729,11 @@ EOT
     protected function writeSuccess(OutputInterface $output, string $message): void
     {
         $output->writeln('<fg=green>✓</> ' . $message);
+    }
+
+    protected function writeWarning(OutputInterface $output, string $message): void
+    {
+        $output->writeln('<fg=yellow>!</> [Warning]: ' . $message);
     }
 
     protected function writeError(OutputInterface $output, string $message): void

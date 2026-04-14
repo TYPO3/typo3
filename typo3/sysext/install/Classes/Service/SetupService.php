@@ -21,9 +21,9 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
+use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
@@ -35,10 +35,10 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
+use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageSetup;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Impexp\Exception\ImportFailedException;
-use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Install\Command\BackendUserGroupType;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
@@ -49,7 +49,19 @@ use TYPO3\CMS\Install\WebserverType;
 /**
  * Service class helping to manage parts of the setup process (set configuration,
  * create backend user, create a basic site, create default backend groups, etc.)
+ *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
+ *
+ * @phpstan-type Distribution array{
+ *      packageKey: string,
+ *      title: string,
+ *      description: string,
+ *      isFramework: bool
+ *  }
+ * @phpstan-type SplitDistributions array{
+ *      inactive: array<string, Distribution>,
+ *      active: array<string, Distribution>
+ *  }
  */
 readonly class SetupService
 {
@@ -90,14 +102,20 @@ readonly class SetupService
 
     /**
      * Returns all available packages that ship initialisation data (data.xml or data.t3d)
-     * which can be imported during installation.
+     * which can (or will) be imported during installation.
      *
-     * @return array<string, array{packageKey: string, title: string, description: string}> Keyed by package key
+     * @return SplitDistributions
      */
     public function getAvailableDistributions(): array
     {
-        $distributions = [];
-        foreach ($this->packageManager->getAvailablePackages() as $packageKey => $package) {
+        $distributions = [
+            'inactive' => [],
+            'active' => [],
+        ];
+        $packages = $this->packageManager->getAvailablePackages();
+        // Prefer framework packages
+        uasort($packages, static fn(PackageInterface $packageA, PackageInterface $packageB) => $packageA->getPackageMetaData()->isFrameworkType() !== $packageB->getPackageMetaData()->isFrameworkType() ? $packageB->getPackageMetaData()->isFrameworkType() <=> $packageA->getPackageMetaData()->isFrameworkType() : $packageA->getPackageKey() <=> $packageB->getPackageKey());
+        foreach ($packages as $packageKey => $package) {
             $packagePath = $package->getPackagePath();
             if (!file_exists($packagePath . 'Initialisation/data.xml')
                 && !file_exists($packagePath . 'Initialisation/data.t3d')
@@ -105,10 +123,12 @@ readonly class SetupService
                 continue;
             }
             $metaData = $package->getPackageMetaData();
-            $distributions[$packageKey] = [
+            $activeKey = $this->packageManager->isPackageActive($packageKey) ? 'active' : 'inactive';
+            $distributions[$activeKey][$packageKey] = [
                 'packageKey' => $packageKey,
-                'title' => $metaData->getTitle() ?: $packageKey,
-                'description' => $metaData->getDescription() ?: '',
+                'title' => $metaData->getTitle() ?? $packageKey,
+                'description' => $metaData->getDescription() ?? '',
+                'isFramework' => $metaData->isFrameworkType(),
             ];
         }
         return $distributions;
@@ -205,8 +225,6 @@ readonly class SetupService
         $randomKey = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
         $this->configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $randomKey);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $randomKey;
-        $extensionConfiguration = new ExtensionConfiguration();
-        $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
 
         // Get best matching configuration presets
         $featureManager = new FeatureManager();
@@ -268,53 +286,32 @@ readonly class SetupService
     }
 
     /**
-     * Import a distribution's initialisation data (pages, content elements, files)
-     * using the impexp import mechanism. Requires a fully booted container because
-     * the import relies on TCA, DataHandler and other runtime services.
-     *
-     * @param ContainerInterface $container The fully booted (non-failsafe) DI container
-     * @param string $packageKey The extension key of the distribution to import
+     * Activate the selected distribution package in case it isn't already
+     * and make sure import export package is installed as well
      */
-    public function importDistributionData(ContainerInterface $container, string $packageKey): void
+    public function activateDistributionPackage(string $packageKey): void
     {
-        $package = $this->packageManager->getAvailablePackages()[$packageKey] ?? null;
-        if ($package === null) {
+        if ($this->packageManager->isPackageActive($packageKey)
+            || !$this->packageManager->isPackageActive('impexp')
+        ) {
             return;
         }
+        // We don't end up here in Composer mode,
+        // because a Composer installed packages are always active
+        $this->packageManager->activatePackage($packageKey);
+        // Make sure DI cache is flushed to get the TCA Schema including the new extension
+        GeneralUtility::makeInstance(ClearCacheService::class)->clearAll();
+        // Make sure class loading information is present in case
+        // a third party distribution with classes is activated
+        $this->dumpClassLoadingInformationForAllPackages();
+    }
 
-        $importFile = $package->getPackagePath() . 'Initialisation/data.xml';
-        if (!file_exists($importFile)) {
-            $importFile = $package->getPackagePath() . 'Initialisation/data.t3d';
-            if (!file_exists($importFile)) {
-                return;
-            }
+    private function dumpClassLoadingInformationForAllPackages(): void
+    {
+        if (Environment::isComposerMode()) {
+            return;
         }
-
-        // Bootstrap a backend user context required by the import engine.
-        // Use the first admin user created during installation.
-        $previousBackendUser = $GLOBALS['BE_USER'] ?? null;
-        $previousLanguageService = $GLOBALS['LANG'] ?? null;
-
-        try {
-            $backendUser = new BackendUserAuthentication();
-            $backendUser->user = $this->getFirstAdminUser();
-            $backendUser->workspace = 0;
-            $GLOBALS['BE_USER'] = $backendUser;
-
-            $GLOBALS['LANG'] = $container->get(LanguageServiceFactory::class)->create('en');
-
-            $import = $container->get(Import::class);
-            $import->setPid(0);
-            $import->loadFile($importFile);
-            $import->importData();
-        } catch (ImportFailedException) {
-            // importData() performs all writes first, then throws if there were
-            // non-critical errors. The data is already imported at this point,
-            // so we can safely continue with the installation.
-        } finally {
-            $GLOBALS['BE_USER'] = $previousBackendUser;
-            $GLOBALS['LANG'] = $previousLanguageService;
-        }
+        ClassLoadingInformation::dumpClassLoadingInformation();
     }
 
     /**
@@ -393,6 +390,48 @@ TYPOSCRIPT;
             }
         }
         return $messages;
+    }
+
+    public function setupExtensions(ContainerInterface $container): void
+    {
+        // Import of distribution data needs DataHandler and thus an initialized backend user
+        // Maybe this would be cleaner if the setup process could execute commands in a sub process,
+        // but this has other drawbacks and is for another day
+        $this->executeWithBackendUser(
+            function (ContainerInterface $container) {
+                $extensionsToSetUp = $this->packageManager->getActivePackages(true);
+                $container->get(PackageSetup::class)->setup($extensionsToSetUp);
+            },
+            $container,
+        );
+    }
+
+    /**
+     * Bootstrap a backend user context required e.g. for extension activation
+     * when an import is preformed, which uses DataHandler, that requires
+     * a user to exist
+     */
+    private function executeWithBackendUser(\Closure $executor, ContainerInterface $container): mixed
+    {
+        $previousBackendUser = $GLOBALS['BE_USER'] ?? null;
+        $previousLanguageService = $GLOBALS['LANG'] ?? null;
+
+        $GLOBALS['BE_USER'] = $previousBackendUser ?? $this->createBackendUser();
+        $GLOBALS['LANG'] = $previousLanguageService ?? $container->get(LanguageServiceFactory::class)->create('en');
+        try {
+            return $executor($container);
+        } finally {
+            $GLOBALS['BE_USER'] = $previousBackendUser;
+            $GLOBALS['LANG'] = $previousLanguageService;
+        }
+    }
+
+    private function createBackendUser(): BackendUserAuthentication
+    {
+        $backendUser = new BackendUserAuthentication();
+        $backendUser->user = $this->getFirstAdminUser();
+        $backendUser->workspace = 0;
+        return $backendUser;
     }
 
     private function applyPermissionPreset(array $permissionPreset, string $table, int $recordId): void
