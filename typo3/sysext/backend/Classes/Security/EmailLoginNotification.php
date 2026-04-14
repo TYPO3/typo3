@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Security;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
@@ -42,10 +41,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this is not part of TYPO3 API as this is an internal hook
  */
-final class EmailLoginNotification implements LoggerAwareInterface
+final class EmailLoginNotification
 {
-    use LoggerAwareTrait;
-
     private int $warningMode = 0;
     private string $warningEmailRecipient = '';
 
@@ -57,6 +54,7 @@ final class EmailLoginNotification implements LoggerAwareInterface
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly TemplatedEmailFactory $emailFactory,
+        private readonly LoggerInterface $logger,
     ) {
         $this->warningMode = (int)($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] ?? 0);
         $this->warningEmailRecipient = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'] ?? '';

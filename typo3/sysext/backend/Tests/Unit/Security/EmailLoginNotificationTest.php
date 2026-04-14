@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Security;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
@@ -51,7 +52,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, $this->createMock(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -75,7 +76,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->never())->method('send');
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, $this->createMock(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -99,7 +100,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->never())->method('send');
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, $this->createMock(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -124,7 +125,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, $this->createMock(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -149,7 +150,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, $this->createMock(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -174,7 +175,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->once())->method('send')->with($mailMessage);
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, $this->createMock(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 
@@ -197,7 +198,7 @@ final class EmailLoginNotificationTest extends UnitTestCase
         $mailerMock = $this->createMock(MailerInterface::class);
         $mailerMock->expects($this->never())->method('send');
 
-        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock);
+        $subject = new EmailLoginNotification($mailerMock, $emailFactoryMock, $this->createMock(LoggerInterface::class));
         $subject->emailAtLogin(new AfterUserLoggedInEvent($backendUser));
     }
 

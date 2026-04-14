@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Package\Initialization;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
@@ -29,12 +28,11 @@ use TYPO3\CMS\Impexp\Initialization\ImportSiteConfigurationsOnPackageInitializat
 /**
  * Listener to check import requirements in case an extension contains data to be imported
  */
-final class CheckForImportRequirements implements LoggerAwareInterface
+final readonly class CheckForImportRequirements
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        private readonly ListenerProvider $listenerProvider
+        private ListenerProvider $listenerProvider,
+        private LoggerInterface $logger,
     ) {}
 
     #[AsEventListener]

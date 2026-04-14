@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\TypoScript\IncludeTree\Visitor;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -44,16 +43,15 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
 
 // This visitor creates state and should not be re-used
 #[Autoconfigure(public: true, shared: false)]
-final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInterface, LoggerAwareInterface
+final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInterface
 {
-    use LoggerAwareTrait;
-
     private Resolver $resolver;
     private array $conditionList = [];
 
     public function __construct(
         private readonly Context $context,
         private readonly PageLayoutResolver $pageLayoutResolver,
+        private readonly LoggerInterface $logger,
     ) {}
 
     /**

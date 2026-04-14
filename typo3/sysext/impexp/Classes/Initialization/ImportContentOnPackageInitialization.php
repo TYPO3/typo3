@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Initialization;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Package\Initialization\CheckForImportRequirements;
@@ -28,13 +27,12 @@ use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
 /**
  * Listener to import a T3D or XML file after package activation
  */
-final class ImportContentOnPackageInitialization implements LoggerAwareInterface
+final readonly class ImportContentOnPackageInitialization
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        private readonly Registry $registry,
-        private readonly ImportExportUtility $importExportUtility,
+        private Registry $registry,
+        private ImportExportUtility $importExportUtility,
+        private LoggerInterface $logger,
     ) {}
 
     #[AsEventListener(after: CheckForImportRequirements::class)]

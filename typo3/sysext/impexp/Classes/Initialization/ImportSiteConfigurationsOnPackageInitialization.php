@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Initialization;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
@@ -33,14 +32,13 @@ use TYPO3\CMS\Impexp\Import;
 /**
  * Listener to import site configurations after package initialization
  */
-final class ImportSiteConfigurationsOnPackageInitialization implements LoggerAwareInterface
+final readonly class ImportSiteConfigurationsOnPackageInitialization
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        private readonly Registry $registry,
-        private readonly SiteConfiguration $siteConfiguration,
-        private readonly SiteWriter $siteWriter,
+        private Registry $registry,
+        private SiteConfiguration $siteConfiguration,
+        private SiteWriter $siteWriter,
+        private LoggerInterface $logger,
     ) {}
 
     #[AsEventListener(after: ImportContentOnPackageInitialization::class)]

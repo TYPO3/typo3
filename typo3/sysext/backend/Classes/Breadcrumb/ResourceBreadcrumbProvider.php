@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Breadcrumb;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Backend\Module\ModuleResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -39,14 +38,13 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
  *
  * @internal This class is not part of TYPO3's public API.
  */
-final class ResourceBreadcrumbProvider implements BreadcrumbProviderInterface, LoggerAwareInterface
+final readonly class ResourceBreadcrumbProvider implements BreadcrumbProviderInterface
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        private readonly IconFactory $iconFactory,
-        private readonly ModuleResolver $moduleResolver,
-        private readonly UriBuilder $uriBuilder,
+        private IconFactory $iconFactory,
+        private ModuleResolver $moduleResolver,
+        private UriBuilder $uriBuilder,
+        private LoggerInterface $logger,
     ) {}
 
     public function supports(?BreadcrumbContext $context): bool
@@ -100,7 +98,7 @@ final class ResourceBreadcrumbProvider implements BreadcrumbProviderInterface, L
                     url: (string)$this->uriBuilder->buildUriFromRoute($this->getTargetModule(), ['id' => $combinedIdentifier]),
                 );
             } catch (\Exception $e) {
-                $this->logger?->warning(
+                $this->logger->warning(
                     'Failed to create breadcrumb node for resource',
                     ['identifier' => $item->getIdentifier(), 'exception' => $e->getMessage()]
                 );
@@ -139,7 +137,7 @@ final class ResourceBreadcrumbProvider implements BreadcrumbProviderInterface, L
             try {
                 $folder = $resource->getParentFolder();
             } catch (\Exception $e) {
-                $this->logger?->warning(
+                $this->logger->warning(
                     'Failed to get parent folder for file',
                     ['identifier' => $resource->getIdentifier(), 'exception' => $e->getMessage()]
                 );
@@ -165,7 +163,7 @@ final class ResourceBreadcrumbProvider implements BreadcrumbProviderInterface, L
                     $parent = $currentFolder->getParentFolder();
                 } catch (InsufficientFolderAccessPermissionsException $e) {
                     // User doesn't have access to parent folder, stop here
-                    $this->logger?->info(
+                    $this->logger->info(
                         'Stopped breadcrumb traversal due to insufficient folder access',
                         ['folder' => $currentFolder->getCombinedIdentifier()]
                     );

@@ -21,8 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessClaim;
@@ -49,25 +48,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal
  */
 #[AsController]
-final class SudoModeController implements LoggerAwareInterface
+final readonly class SudoModeController
 {
-    use LoggerAwareTrait;
-
     private const ROUTE_PATH_MODULE = '/sudo-mode/module';
     private const ROUTE_PATH_APPLY = '/sudo-mode/apply';
     private const ROUTE_PATH_ERROR = '/sudo-mode/error';
     private const ROUTE_PATH_VERIFY = '/ajax/sudo-mode/verify';
 
     public function __construct(
-        private readonly PageRenderer $pageRenderer,
-        private readonly UriBuilder $uriBuilder,
-        private readonly AccessFactory $factory,
-        private readonly AccessStorage $storage,
-        private readonly PasswordVerification $passwordVerification,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly BackendEntryPointResolver $backendEntryPointResolver,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly HashService $hashService,
+        private PageRenderer $pageRenderer,
+        private UriBuilder $uriBuilder,
+        private AccessFactory $factory,
+        private AccessStorage $storage,
+        private PasswordVerification $passwordVerification,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private BackendEntryPointResolver $backendEntryPointResolver,
+        private EventDispatcherInterface $eventDispatcher,
+        private HashService $hashService,
+        private LoggerInterface $logger,
     ) {}
 
     public function buildModuleActionUriForClaim(AccessClaim $claim): UriInterface

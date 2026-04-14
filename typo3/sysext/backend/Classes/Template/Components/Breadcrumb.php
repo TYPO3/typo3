@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Template\Components;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbProviderInterface;
@@ -35,15 +34,14 @@ use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
  * @internal This class is a specific Backend implementation and is not part of the TYPO3's Core API.
  */
 #[Autoconfigure(public: true)]
-final class Breadcrumb implements LoggerAwareInterface
+final readonly class Breadcrumb
 {
-    use LoggerAwareTrait;
-
     /**
      * @param iterable<BreadcrumbProviderInterface> $providers
      */
     public function __construct(
-        private readonly iterable $providers,
+        private iterable $providers,
+        private LoggerInterface $logger,
     ) {}
 
     /**
@@ -78,7 +76,7 @@ final class Breadcrumb implements LoggerAwareInterface
         $provider = $this->findProvider($context);
 
         if ($provider === null) {
-            $this->logger?->warning(
+            $this->logger->warning(
                 'No breadcrumb provider found for context',
                 ['context_type' => get_debug_type($context)]
             );
@@ -88,7 +86,7 @@ final class Breadcrumb implements LoggerAwareInterface
         try {
             return $provider->generate($context, $request);
         } catch (\Exception $e) {
-            $this->logger?->error(
+            $this->logger->error(
                 'Failed to generate breadcrumb from provider',
                 [
                     'provider' => get_class($provider),

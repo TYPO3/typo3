@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Breadcrumb;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleResolver;
@@ -37,14 +36,13 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  *
  * @internal This class is not part of TYPO3's public API.
  */
-final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, LoggerAwareInterface
+final readonly class RecordBreadcrumbProvider implements BreadcrumbProviderInterface
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        private readonly IconFactory $iconFactory,
-        private readonly ModuleResolver $moduleResolver,
-        private readonly UriBuilder $uriBuilder,
+        private IconFactory $iconFactory,
+        private ModuleResolver $moduleResolver,
+        private UriBuilder $uriBuilder,
+        private LoggerInterface $logger,
     ) {}
 
     public function supports(?BreadcrumbContext $context): bool
@@ -138,14 +136,14 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
                         url: (string)$this->uriBuilder->buildUriFromRoute($targetModule, ['id' => $item['uid']]),
                     );
                 } catch (\Exception $e) {
-                    $this->logger?->warning(
+                    $this->logger->warning(
                         'Failed to create breadcrumb node for page',
                         ['uid' => $item['uid'], 'exception' => $e->getMessage()]
                     );
                 }
             }
         } catch (\Exception $e) {
-            $this->logger?->warning(
+            $this->logger->warning(
                 'Failed to build rootline for record',
                 ['table' => $record->getMainType(), 'uid' => $record->getUid(), 'exception' => $e->getMessage()]
             );
@@ -177,7 +175,7 @@ final class RecordBreadcrumbProvider implements BreadcrumbProviderInterface, Log
                 url: $record->getMainType() === 'pages' ? (string)$this->uriBuilder->buildUriFromRoute($targetModule, ['id' => (string)$record->getUid()]) : null,
             );
         } catch (\Exception $e) {
-            $this->logger?->error(
+            $this->logger->error(
                 'Failed to create breadcrumb node for record',
                 ['table' => $record->getMainType(), 'uid' => $record->getUid(), 'exception' => $e->getMessage()]
             );
