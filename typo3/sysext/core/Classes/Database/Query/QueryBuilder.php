@@ -154,7 +154,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      */
     public function resetRestrictions(): void
     {
-        $this->setRestrictions(GeneralUtility::makeInstance(DefaultRestrictionContainer::class));
+        $this->setRestrictions(GeneralUtility::makeInstance($this->connection->defaultRestrictionContainer));
     }
 
     /**
