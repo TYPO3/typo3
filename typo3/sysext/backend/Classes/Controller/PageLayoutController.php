@@ -517,7 +517,7 @@ class PageLayoutController
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
         // Close button (show only if returnUrl is set)
-        $returnUrl = $request->getQueryParams()['returnUrl'] ?? '';
+        $returnUrl = GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? '');
         if ($returnUrl && ($closeButton = $this->makeCloseButton($buttonBar, $returnUrl))) {
             // use button group -1 so that close button is to the left of other buttons
             $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, -1);
