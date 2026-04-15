@@ -154,7 +154,9 @@ class ElementHistoryController
             }
         }
 
-        $this->addLanguageSwitcher($request, $backendUser, $element);
+        if ($element !== null) {
+            $this->addLanguageSwitcher($request, $backendUser, $element);
+        }
 
         $this->view->assign('editLock', $editLock);
         $this->view->assign('moduleSettings', $moduleSettings);
