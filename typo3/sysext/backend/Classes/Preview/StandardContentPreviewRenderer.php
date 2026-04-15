@@ -89,6 +89,10 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $this->initialize();
         $record = $item->getRecord()->getRawRecord() ?? $item->getRecord();
         $request = $item->getContext()->getCurrentRequest();
+        if (!$this->tcaSchemaFactory->has($record->getFullType())) {
+            return '';
+        }
+
         $schema = $this->tcaSchemaFactory->get($item->getTable());
         $outHeader = '';
 
