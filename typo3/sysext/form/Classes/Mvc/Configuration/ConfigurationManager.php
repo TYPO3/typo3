@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\FormDefinitionMigrationService;
@@ -89,6 +90,9 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
             $yamlSettings = $this->migrationService->migrate($yamlSettings);
             $this->cache->set($cacheKey, $yamlSettings);
         }
+
+        $this->applySiteSettingsOverrides($yamlSettings, $request);
+
         if (is_array($typoScriptSettings['yamlSettingsOverrides'] ?? null) && !empty($typoScriptSettings['yamlSettingsOverrides'])) {
             $yamlSettingsOverrides = $typoScriptSettings['yamlSettingsOverrides'];
             if ($isFrontend) {
@@ -100,5 +104,57 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
             ArrayUtility::mergeRecursiveWithOverrule($yamlSettings, $yamlSettingsOverrides);
         }
         return $yamlSettings;
+    }
+
+    /**
+     * Read form template/translation site set settings from the current site
+     * and merge them into the YAML configuration.
+     * Non-empty values are added at key 20 so they overlay the base paths (key 10)
+     * while still allowing higher-priority overrides from form sets or yamlSettingsOverrides.
+     */
+    private function applySiteSettingsOverrides(array &$yamlSettings, ?ServerRequestInterface $request): void
+    {
+        $site = $request?->getAttribute('site');
+        if (!$site instanceof Site) {
+            return;
+        }
+
+        $siteSettings = $site->getSettings();
+        $renderingOptionsOverrides = [];
+
+        $templateRootPath = (string)$siteSettings->get('form.templates.templateRootPath', '');
+        if ($templateRootPath !== '') {
+            $renderingOptionsOverrides['templateRootPaths'][20] = $templateRootPath;
+        }
+
+        $partialRootPath = (string)$siteSettings->get('form.templates.partialRootPath', '');
+        if ($partialRootPath !== '') {
+            $renderingOptionsOverrides['partialRootPaths'][20] = $partialRootPath;
+        }
+
+        $layoutRootPath = (string)$siteSettings->get('form.templates.layoutRootPath', '');
+        if ($layoutRootPath !== '') {
+            $renderingOptionsOverrides['layoutRootPaths'][20] = $layoutRootPath;
+        }
+
+        $translationFile = (string)$siteSettings->get('form.translation.translationFile', '');
+        if ($translationFile !== '') {
+            $renderingOptionsOverrides['translation']['translationFiles'][20] = $translationFile;
+        }
+
+        if ($renderingOptionsOverrides !== []) {
+            $overrides = [
+                'prototypes' => [
+                    'standard' => [
+                        'formElementsDefinition' => [
+                            'Form' => [
+                                'renderingOptions' => $renderingOptionsOverrides,
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+            ArrayUtility::mergeRecursiveWithOverrule($yamlSettings, $overrides);
+        }
     }
 }

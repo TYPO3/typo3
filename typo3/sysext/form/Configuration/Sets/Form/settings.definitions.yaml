@@ -1,0 +1,24 @@
+categories:
+  form: ~
+  form.templates:
+    parent: form
+  form.translation:
+    parent: form
+
+settings:
+  form.templates.templateRootPath:
+    default: ''
+    type: string
+    category: form.templates
+  form.templates.partialRootPath:
+    default: ''
+    type: string
+    category: form.templates
+  form.templates.layoutRootPath:
+    default: ''
+    type: string
+    category: form.templates
+  form.translation.translationFile:
+    default: ''
+    type: string
+    category: form.translation

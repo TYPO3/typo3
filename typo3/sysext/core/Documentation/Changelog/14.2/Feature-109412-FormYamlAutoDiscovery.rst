@@ -33,7 +33,7 @@ Directory layout
           MyFormSet/
             config.yaml
 
-The sub-directory name (``MyFormSet``) is arbitrary. An extension may ship
+The sub-directory name (`MyFormSet`) is arbitrary. An extension may ship
 multiple sets in separate sub-directories.
 
 
@@ -41,7 +41,7 @@ The :file:`config.yaml`
 -----------------------
 
 Contains both the set metadata and the actual form configuration in a single
-file. The metadata keys (``name``, ``label``, ``priority``) are reserved; all
+file. The metadata keys (`name`, `label`, `priority`) are reserved; all
 other keys are treated as form configuration (prototype definitions, form
 elements, validators, finishers, rendering options etc.).
 
@@ -69,9 +69,9 @@ elements, validators, finishers, rendering options etc.).
 Priority and merge order
 ------------------------
 
-Sets are sorted by ascending ``priority`` (lower = loaded first = acts as base,
+Sets are sorted by ascending `priority` (lower = loaded first = acts as base,
 higher = override). Each set's configuration is merged on top of the previous
-one using ``array_replace_recursive``, identical to how the former TypoScript
+one using `array_replace_recursive`, identical to how the former TypoScript
 mechanism worked.
 
 
@@ -102,7 +102,7 @@ for details.
 After the migration:
 
 1.  Create the directory :file:`EXT:my_extension/Configuration/Form/MySet/`.
-2.  Create :file:`config.yaml` with ``name``, optionally ``priority``, and the
+2.  Create :file:`config.yaml` with `name`, optionally `priority`, and the
     form configuration directly in the same file.
 3.  Remove the TypoScript registrations from :file:`setup.typoscript`.
 
@@ -127,7 +127,7 @@ Because all sets from all active extensions are loaded automatically, a
 mechanism exists to opt out of specific sets without modifying the
 extension that provides them.
 
-To disable a set, add its declared ``name`` (from :file:`config.yaml`) to
+To disable a set, add its declared `name` (from :file:`config.yaml`) to
 :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['form']['disabledSets']`
 in :file:`ext_localconf.php` or :file:`config/system/settings.php`:
 
@@ -139,11 +139,11 @@ in :file:`ext_localconf.php` or :file:`config/system/settings.php`:
         = 'some-vendor/conflicting-set';
 
 ..  note::
-    Disabling the core set ``typo3/form-base`` will break form rendering
+    Disabling the core set `typo3/form-base` will break form rendering
     entirely. Only disable it if you provide a full replacement set with
     equivalent configuration.
 
-The matching is done against the ``name`` field in :file:`config.yaml`,
+The matching is done against the `name` field in :file:`config.yaml`,
 **not** against the directory name, so renaming the set directory does not
 break an existing disable list.
 
@@ -152,9 +152,50 @@ EXT:form base set
 -----------------
 
 The TYPO3 Form Framework ships its own base set at
-:file:`EXT:form/Configuration/Form/Base/` (``typo3/form-base``, priority 10).
+:file:`EXT:form/Configuration/Form/Base/` (`typo3/form-base`, priority 10).
 All validators, form elements, finishers and shared rendering configuration
 are defined directly in :file:`EXT:form/Configuration/Form/Base/config.yaml`.
+
+
+Site set settings for template paths
+------------------------------------
+
+The site set `typo3/form` provides four settings to override Fluid template
+paths and translation files.
+
+..  confval:: form.templates.templateRootPath
+    :type: string
+    :Default: (empty)
+
+    Override the default Fluid template path for form element rendering.
+
+..  confval:: form.templates.partialRootPath
+    :type: string
+    :Default: (empty)
+
+    Override the default Fluid partial path for form element rendering.
+
+..  confval:: form.templates.layoutRootPath
+    :type: string
+    :Default: (empty)
+
+    Override the default Fluid layout path for form element rendering.
+
+..  confval:: form.translation.translationFile
+    :type: string
+    :Default: (empty)
+
+    Add an additional XLF translation file for form element labels.
+
+Override the template paths in the site configuration:
+
+..  code-block:: yaml
+    :caption: config/sites/my-site/settings.yaml
+
+    form.templates.templateRootPath: EXT:my_sitepackage/Resources/Private/Templates/Form/Frontend/
+    form.templates.partialRootPath: EXT:my_sitepackage/Resources/Private/Partials/Form/Frontend/
+    form.templates.layoutRootPath: EXT:my_sitepackage/Resources/Private/Layouts/Form/Frontend/
+    form.translation.translationFile: EXT:my_sitepackage/Resources/Private/Language/Form/locallang.xlf
 
 Impact
 ======
@@ -162,5 +203,10 @@ Impact
 Extensions that place a :file:`config.yaml` in
 :file:`Configuration/Form/<SetName>/` will have their configuration
 automatically loaded without any additional registration.
+
+Integrators who include the `typo3/form` site set can additionally override
+form template paths, partial paths, layout paths and translation files through
+site settings — without touching YAML prototype configuration or TypoScript
+:typoscript:`yamlSettingsOverrides`.
 
 .. index:: YAML, Frontend, Backend, ext:form

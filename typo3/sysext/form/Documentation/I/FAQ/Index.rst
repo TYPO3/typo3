@@ -13,11 +13,36 @@ FAQ
 How do I override EXT:Form frontend templates?
 ==============================================
 
-There are two ways to override the frontend templates.
+There are three ways to override the frontend templates.
 
 
-Add fluid search paths via a form set (recommended)
-----------------------------------------------------
+Override template paths via site set settings (recommended)
+-----------------------------------------------------------
+
+The simplest approach: configure the template paths in the site settings of
+your site package. The settings are applied to the Extbase plugin view and
+the form element rendering.
+
+..  code-block:: yaml
+    :caption: config/sites/my-site/settings.yaml
+
+    form.templates.templateRootPath: EXT:my_site_package/Resources/Private/Templates/Form/Frontend/
+    form.templates.partialRootPath: EXT:my_site_package/Resources/Private/Partials/Form/Frontend/
+    form.templates.layoutRootPath: EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/
+    form.translation.translationFile: EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf
+
+Alternatively, edit the settings in the :guilabel:`Site Settings` backend
+module under :guilabel:`Form Framework > Templates`.
+
+..  note::
+
+   Site set settings are resolved in the **frontend** only. The backend form
+   editor preview uses the YAML prototype defaults. If you need the backend
+   preview to use custom templates, use a form set (see below).
+
+
+Add fluid search paths via a form set
+-------------------------------------
 
 Create a form set in your site package. The YAML files are picked up
 automatically for **both** frontend and backend — no PHP or TypoScript
