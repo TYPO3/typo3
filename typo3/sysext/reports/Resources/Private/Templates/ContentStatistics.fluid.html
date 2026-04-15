@@ -90,7 +90,7 @@
                     <tr>
                         <th>{f:translate(key:'core.core:labels.th.name')}</th>
                         <th>{f:translate(key:'reports.messages:contentStatistics.field.type')}</th>
-                        <th>{f:translate(key:'reports.messages:contentStatistics.field.excluded')}</th>
+                        <th>{f:translate(key:'reports.messages:contentStatistics.field.not_excluded')}</th>
                         <th>{f:translate(key:'reports.messages:contentStatistics.field.required')}</th>
                     </tr>
                     </thead>
@@ -99,7 +99,7 @@
                         <tr>
                             <td>{f:translate(key:field.label, default:field.label)} <code>[{field.name}]</code></td>
                             <td>{field.type}</td>
-                            <td>{f:if(condition:field.configuration.exclude, then:'{core:icon(identifier:\'actions-check-circle\')}')}</td>
+                            <td>{f:if(condition:'!{field.configuration.exclude}', then:'{core:icon(identifier:\'actions-check-circle\')}')}</td>
                             <td>{f:if(condition:field.configuration.required, then:'{core:icon(identifier:\'actions-check-circle\')}')}</td>
                         </tr>
                     </f:for>

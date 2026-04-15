@@ -78,6 +78,9 @@
       <trans-unit id="contentStatistics.field.excluded">
         <source>Excluded</source>
       </trans-unit>
+      <trans-unit id="contentStatistics.field.not_excluded">
+        <source>Always visible</source>
+      </trans-unit>
       <trans-unit id="contentStatistics.field.required">
         <source>Required</source>
       </trans-unit>
