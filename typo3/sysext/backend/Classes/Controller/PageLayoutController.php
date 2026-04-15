@@ -419,7 +419,7 @@ class PageLayoutController
         $languageService = $this->getLanguageService();
 
         // Close button (show only if returnUrl is set)
-        $returnUrl = $request->getQueryParams()['returnUrl'] ?? '';
+        $returnUrl = GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? '', $request);
         if ($returnUrl) {
             // use button group -1 so that close button is to the left of other buttons
             $view->addButtonToButtonBar($this->componentFactory->createCloseButton($returnUrl), ButtonBar::BUTTON_POSITION_LEFT, -1);
