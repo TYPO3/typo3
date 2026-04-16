@@ -1557,7 +1557,7 @@ class EditDocumentController
     protected function isRecordCurrentBackendUser(): bool
     {
         $backendUser = $this->getBackendUser();
-        return $this->firstEl?->table === 'be_users' && (int)($this->firstEl->uid ?? 0) === $backendUser->getUserId();
+        return $this->firstEl?->table === 'be_users' && (int)($this->firstEl->uid) === $backendUser->getUserId();
     }
 
     /**
