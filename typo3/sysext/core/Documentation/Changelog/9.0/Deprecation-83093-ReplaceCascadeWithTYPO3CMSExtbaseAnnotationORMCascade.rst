@@ -32,6 +32,6 @@ Migration
 
 Use :php:`@TYPO3\CMS\Extbase\Annotation\ORM\Cascade` instead.
 
-A tyical example has been :php:`@cascade remove` which is now :php:`@TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")`
+A typical example was :php:`@cascade remove` which is now :php:`@TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")`
 
 .. index:: PHP-API, ext:extbase, FullyScanned

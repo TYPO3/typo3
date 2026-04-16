@@ -28,7 +28,7 @@ The event provides the following properties:
     a handler has been xclass'd without changing the identifier.
 *   :php:`public readonly LocalizationInstructions $instructions`: The localization
     instruction passed to the handler's `isAvailable()` method to define the context.
-*   :php:`public bool $isAvailable`: The returned availibility state by the handler,
+*   :php:`public bool $isAvailable`: The returned availability state by the handler,
     which can be altered by a PSR-14 Event listener.
 
 Example

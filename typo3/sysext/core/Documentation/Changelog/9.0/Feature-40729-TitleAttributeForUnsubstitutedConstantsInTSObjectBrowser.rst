@@ -23,7 +23,7 @@ This way one doesn't necessarily have to toggle between the two "green modes".
 Impact
 ======
 
-Less toggling between the two "contants in green" modes while using the TS object browser.
+Less toggling between the two "constants in green" modes while using the TS object browser.
 And as a side effect this patch improves the search feature of the object browser when searching
 for a constant value or name, i.e. 'maxWInText' while being on "substituted" mode.
 

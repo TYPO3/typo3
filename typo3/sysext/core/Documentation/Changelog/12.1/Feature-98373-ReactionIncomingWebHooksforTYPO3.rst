@@ -57,7 +57,7 @@ Example payload for placeholders
 
 By default, only a few tables can be selected for external creation in the
 create record reaction. In case you want to allow your own tables to be
-available in the reactions' table selection, add the table in a coresponding TCA
+available in the reactions' table selection, add the table in a corresponding TCA
 override file with:
 
 .. code-block:: php

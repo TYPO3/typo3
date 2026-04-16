@@ -31,7 +31,7 @@ the maximum index length is 3*255 + 1 = 766 bytes which fits into 767, but with 
 is 4*255 + 1 = 1021 bytes, which exceeds the maximum length and leads to SQL errors when setting
 such an index.
 This scenario gets more complex with combined indices and may need manual investigation when
-upgrading an existing instance from from `utf8` to `utf8mb4`. One solution is to restrict the
+upgrading an existing instance from `utf8` to `utf8mb4`. One solution is to restrict the
 index length in ext_tables.sql of the affected extension: :php:`KEY myKey (myField(191))`, which
 in this case leads to 4*191 + 1 = 764 bytes as maximum used length.
 

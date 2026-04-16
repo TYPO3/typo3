@@ -166,7 +166,7 @@ The calculation depends on the option 'gridSize', the amount of the form element
 form element configurations.
 
 
-**<formElementIdentifier>.properties.gridColumnClassAutoConfiguration (otional)**
+**<formElementIdentifier>.properties.gridColumnClassAutoConfiguration (optional)**
 
 Each form elements within a 'GridRow' element can define the number of grid columns
 to use on a 'per viewport' base.

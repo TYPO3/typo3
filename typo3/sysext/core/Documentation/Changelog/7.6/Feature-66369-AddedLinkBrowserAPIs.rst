@@ -73,7 +73,7 @@ A minimal implementation of such a module looks like this:
 		};
 
 		myModule.initialize = function() {
-			// todo add necessary event handlers, which will propably call myModule.createMyLink
+			// todo add necessary event handlers, which will probably call myModule.createMyLink
 		};
 
 		$(myModule.initialize);

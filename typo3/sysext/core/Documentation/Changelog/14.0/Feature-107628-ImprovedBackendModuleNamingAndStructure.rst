@@ -191,7 +191,7 @@ record structure, distinguishing it from the more content-focused
 :guilabel:`Layout` module.
 
 **Migration:** The module identifier has been renamed from `web_list` to
-`records`. An alias is in place. However, use the new identifier when referecing.
+`records`. An alias is in place. However, use the new identifier when referencing.
 
 ..  code-block:: diff
 

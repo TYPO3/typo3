@@ -12,7 +12,7 @@ Description
 ===========
 
 The class :php:`\TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus` has
-been marked as deprecated in favour of the new nativ
+been marked as deprecated in favour of the new native
 :doc:`enum <../13.0/Feature-101174-InformationStatus>`
 :php:`\TYPO3\CMS\Backend\Toolbar\InformationStatus`.
 

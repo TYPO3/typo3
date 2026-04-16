@@ -26,7 +26,7 @@ stays :code:`rel="noreferrer"` but by setting the TypoScript property to
 :code:`noopener`, all external links are generated with :code:`rel="noopener"`
 instead.
 
-The feature respects existing individual settins per link. All :code:`rel="noopener"`
+The feature respects existing individual settings per link. All :code:`rel="noopener"`
 and :code:`rel="noreferrer"` from other sources are kept.
 
 Impact

@@ -76,7 +76,7 @@ and use the :php:`\TYPO3\CMS\Backend\Routing\UriBuilder` directly:
         ]
     );
 
-In case the second paramter `$redirectUrl` was omitted,
+In case the second parameter `$redirectUrl` was omitted,
 :php:`getLinkToDataHandlerAction` automatically used the current request URI
 as the return URL. In case you relied on this, make sure the `redirect`
 parameter is set to :php:`$request->getAttribute('normalizedParams')->getRequestUri()`.

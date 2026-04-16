@@ -28,7 +28,7 @@ Srcset attributes are used by various HTML tags:
 ..  note::
 
     The file name notation like `image@500.jpg` is just a regular file name
-    to indicate its pixel dimensions. The `@` notation has no ineherent conversion
+    to indicate its pixel dimensions. The `@` notation has no inherent conversion
     magic, unlike the operators `500w` and `1x`.
 
 To generate `srcset` attributes based on various inputs more easily, a new data

@@ -37,7 +37,7 @@ conflict to their :file:`composer.json`.
 Affected installations
 ======================
 
-Instances using the the :sql:`ENUM` type directly or by any third party
+Instances using the :sql:`ENUM` type directly or by any third party
 extension using TYPO3 13.0 to 13.3 in Composer mode will break, when
 the :composer:`doctrine/dbal` Composer packages is updated to version 4.2.0
 or newer.

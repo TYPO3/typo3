@@ -32,7 +32,7 @@ These `renderType` settings are available:
 
         - `selectSingle` - Normal select field for selecting a single value.
         - `selectSingleBox` - Normal select field for selecting multiple values.
-        - `selectCheckBox` - List of checkboxes for selecting muliple values.
+        - `selectCheckBox` - List of checkboxes for selecting multiple values.
         - `selectMultipleSideBySide` - Two select fields, items can be selected from the right
           field, selected items are displayed in the left select.
         - `selectTree` - A tree for selecting hierarchical data.

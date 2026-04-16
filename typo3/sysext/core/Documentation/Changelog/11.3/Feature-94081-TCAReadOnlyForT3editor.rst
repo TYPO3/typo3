@@ -11,7 +11,7 @@ See :issue:`94081`
 Description
 ===========
 
-The TCA :php:`'type' => 'text'` (texarea) based FormEngine
+The TCA :php:`'type' => 'text'` (textarea) based FormEngine
 render type :php:`'renderType' => 't3editor'` now supports the
 :php:`'readOnly' => true` option. If set, syntax highlighting
 is applied as usual, but the corresponding text can not be edited.

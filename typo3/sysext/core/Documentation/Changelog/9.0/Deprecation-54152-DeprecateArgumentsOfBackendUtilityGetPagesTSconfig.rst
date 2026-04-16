@@ -36,7 +36,7 @@ Migration
 =========
 
 Calling :php:`BackendUtility::getPagesTSconfig` with just the :php:`id` argument still behaves the way it does.
-It's the most common use case and there's no migraton needed.
+It's the most common use case and no migration is needed.
 
 If you called :php:`BackendUtility::getPagesTSconfig` with :php:`$returnPartArray` being :php:`true` in the past,
 you should now call `BackendUtility::getRawPagesTSconfig`. You will get the non parsed TSconfig, just like before.

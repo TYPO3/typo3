@@ -11,7 +11,7 @@ See :issue:`85978`
 Description
 ===========
 
-The init method of :php:`GraphicalFunctions/Gifbuilder` was used as a constructor to set up various internal properties, and is now transfered into a real constructor, making the extra call to :php:`init()` obsolete.
+The init method of :php:`GraphicalFunctions/Gifbuilder` was used as a constructor to set up various internal properties, and is now transferred into a real constructor, making the extra call to :php:`init()` obsolete.
 
 
 Impact
@@ -29,6 +29,6 @@ Any TYPO3 installation with extensions directly calling this method.
 Migration
 =========
 
-No migration is needed, the constructor of :php:`GraphicalFunctions/Gifbuilder` takes care of the initalization of all settings.
+No migration is needed, the constructor of :php:`GraphicalFunctions/Gifbuilder` takes care of the initialization of all settings.
 
 .. index:: PHP-API, NotScanned, ext:core

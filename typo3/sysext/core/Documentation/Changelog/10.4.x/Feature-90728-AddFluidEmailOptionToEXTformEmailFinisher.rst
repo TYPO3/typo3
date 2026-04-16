@@ -23,7 +23,7 @@ template. This option is capable of rendering form element variables using the
 known bracket syntax and can be overwritten in the FlexForm configuration of the
 form plugin.
 
-To customize the templates beeing used following options can be set:
+To customize the templates being used, the following options can be set:
 
 * `templateName`: The template name (for both HTML and plaintext) without the extension
 * `templateRootPaths`: The paths to the templates
@@ -54,7 +54,7 @@ A finisher configuration could look like this:
          useFluidEmail: true
 
 Please note that the old template name syntax `{@format}.html` does not work for
-FluidEmail as each format needs a different template with the corresponing file
+FluidEmail as each format needs a different template with the corresponding file
 extension. In the example above the following files must exist in the specified
 template path:
 

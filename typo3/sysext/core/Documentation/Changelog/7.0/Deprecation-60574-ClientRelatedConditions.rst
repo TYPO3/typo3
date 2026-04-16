@@ -17,7 +17,7 @@ of reasons:
 
 * Per condition or permutation of conditions that matches, the frontend
   creates a different cache entry. This can lead to a very high number
-  of cache entrys per page
+  of cache entries per page
 * Conditions based on browser or clients on server side are bad practice.
 * The device information in the core is outdated (for example it is possible to match "AMIGA")
 * Setups like reverse proxies give additional headaches with these types of conditions

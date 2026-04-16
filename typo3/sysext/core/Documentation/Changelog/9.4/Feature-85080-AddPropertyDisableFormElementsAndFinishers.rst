@@ -11,7 +11,7 @@ See :issue:`85080`
 Description
 ===========
 
-A a new rendering option for form elements and finishers has been introduced named :yaml:`enabled`
+A new rendering option for form elements and finishers has been introduced named :yaml:`enabled`
 which takes a boolean value (:yaml:`true` or :yaml:`false`).
 
 Setting :yaml:`enabled: true` for a form element renders it in the frontend and enables processing

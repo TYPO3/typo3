@@ -48,7 +48,7 @@ but the offset is no longer cropped off.
 
 That means there is no need to force the server timezone on :php:`\DateTime`
 objects before persisting an extbase model, since all dates will be
-normalized to localtime (for native datetime fields) or UTC (for interger based
+normalized to localtime (for native datetime fields) or UTC (for integer based
 datetime fields) within the persistence layer.
 
 Before:

@@ -13,7 +13,7 @@ Description
 
 To avoid custom jQuery template building a new slim client-side templating
 engine lit-html_ together with lit-element_ is introduced. The modules
-are avilable via the umbrella javascript module `lit`.
+are available via the umbrella javascript module `lit`.
 
 This templating engine supports conditions, iterations, events, virtual DOM,
 data-binding and mutation/change detections in templates.

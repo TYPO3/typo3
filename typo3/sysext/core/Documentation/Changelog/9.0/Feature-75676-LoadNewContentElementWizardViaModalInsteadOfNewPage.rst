@@ -21,7 +21,7 @@ trigger position.
 
 When triggered from within the list module's "new record" action, it will open
 as a two step wizard, that offers a selection of possible content elements first
-and then shows a position map as the secons step. After selecting the position
+and then shows a position map as the second step. After selecting the position
 the new content element will be inserted there.
 
 The original hooks of the new content element wizards have been kept as is.
