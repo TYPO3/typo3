@@ -21,10 +21,10 @@ to contain information that previously had to be defined in
 `ext_emconf.php`:
 
 1. Extension title and description
-3. Extension version
-4. Extension state / update exclusion
-5. Dependencies on other TYPO3 extensions
-6. PHP version constraints
+2. Extension version
+3. Extension state / update exclusion
+4. Dependencies on other TYPO3 extensions
+5. PHP version constraints
 
 Extension title and description
 -------------------------------
@@ -156,47 +156,29 @@ that should be installed from Packagist.
 TYPO3, however, needs to know which other extensions an extension depends on
 in order to resolve the extension loading order correctly.
 
-Therefore, TYPO3 must know which package names refer to extensions
-and which do not. In Composer mode, this can be resolved automatically.
+Therefore, TYPO3 must know which package names refer to TYPO3 extensions
+and which refer to regular Composer packages. In Composer mode, this can
+be resolved automatically.
 
-In classic mode, extensions must specify which package names
-in the `require` section of `composer.json` are regular Composer packages.
-All other package names in the `require` section are assumed
-to be TYPO3 extensions.
+In classic mode, TYPO3 now recognizes several categories automatically:
 
-Because of this, extension authors who want their extensions
-to be compatible with TYPO3 classic mode **and** whose extensions
-have dependencies on Composer packages **must**
-also specify which Composer packages they provide when loaded
-in classic mode.
+* TYPO3 framework packages shipped by the core
+* Composer packages already installed and shipped with TYPO3
+* Composer packages provided by other loaded extensions via
+  `providesPackages`
 
-This is done by specifying which Composer packages the extension
-provides in classic mode.
+Because of this, extension authors do not need to repeat such package names
+in `providesPackages`.
 
-Here is an example:
+Extensions still need to declare Composer packages that they themselves provide
+when loaded in classic mode. For those entries, `providesPackages` can also
+define a relative path to a Composer vendor directory. If that directory contains
+a Composer-generated `autoload.php`, TYPO3 includes it early during bootstrap.
 
-Before:
+This makes it possible to both declare provided Composer packages and bootstrap
+their autoloader in a standardized way.
 
-..  code-block:: json
-
-    {
-        "name": "vendor/example",
-        "type": "typo3-cms-extension",
-        "description": "Example extension",
-        "license": "GPL-2.0-or-later",
-        "require": {
-            "typo3/cms-core": "^14.2",
-            "vendor/other-example": "*",
-            "symfony/dotenv": "^8.0"
-        },
-        "extra": {
-            "typo3/cms": {
-                "extension-key": "example_extension"
-            }
-        }
-    }
-
-After:
+Here is an example for an extension that ships a local Composer vendor directory:
 
 ..  code-block:: json
 
@@ -216,25 +198,30 @@ After:
                 "version": "1.2.3",
                 "Package": {
                     "providesPackages": {
-                        "symfony/dotenv": ""
+                        "symfony/dotenv": "Resources/Private/Php/ComposerVendor"
                     }
                 }
             }
         }
     }
 
-In this example, the Composer package names `typo3/cms-core` and `vendor/other-example`
+In this example, the package `symfony/dotenv` is provided by the extension itself
+in TYPO3 classic mode, and TYPO3 will include
+`Resources/Private/Php/ComposerVendor/autoload.php` early if it is a
+Composer-generated autoload file.
+
+The Composer package names `typo3/cms-core` and `vendor/other-example`
 are assumed to refer to TYPO3 extensions, and TYPO3 guarantees that `vendor/example`
 is loaded after `vendor/other-example`. Otherwise, an error is thrown if
 the extension `vendor/other-example` does not exist in the system.
 
-As before, extensions still need to find an appropriate way to
-ship Composer packages and determine when to require the autoloader for them.
+Packages that are already shipped by TYPO3 or already provided by another loaded
+extension do not need to be listed in `providesPackages`.
 
-Even if an extension does not depend on any Composer packages, it is still
-**required** to specify `providesPackages` in `composer.json`
-to ensure future compatibility with TYPO3 classic mode and to avoid
-deprecation messages in TYPO3 v14.
+Even if an extension does not provide any Composer packages itself,
+it is still **required** to define `providesPackages` in `composer.json`
+as an empty object to declare future compatibility with TYPO3 classic mode
+and to avoid deprecation messages in TYPO3 v14.
 
 ..  code-block:: json
 

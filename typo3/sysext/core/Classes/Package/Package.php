@@ -323,6 +323,14 @@ class Package implements PackageInterface
     }
 
     /**
+     * @internal Only for use in ClassLoadingInformationGenerator
+     */
+    public function getProvidesPackages(): array
+    {
+        return $this->providesPackages;
+    }
+
+    /**
      * Returns the full path to this package's main directory
      *
      * @return string Path to this package's main directory

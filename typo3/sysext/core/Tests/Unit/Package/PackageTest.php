@@ -205,7 +205,7 @@ final class PackageTest extends UnitTestCase
             ]
         );
         $metaData = $package->getPackageMetaData();
-        self::assertSame('1.0', $metaData->getVersion(), 'Version does not match');
+        self::assertSame('1.0.0', $metaData->getVersion(), 'Version does not match');
         self::assertSame(Stability::stable, $metaData->getStability(), 'Stability does not match');
         self::assertSame('no-version-set', $metaData->getBuild(), 'Build does not match');
     }

@@ -40,7 +40,7 @@ At minimum, this includes the extension version and the
                 "version": "1.0.0",
                 "Package": {
                     "providesPackages": {
-                        "symfony/dotenv": ""
+                        "symfony/dotenv": "Resources/Private/Php/ComposerVendor"
                     }
                 }
             }
@@ -72,8 +72,8 @@ At minimum, this includes the extension version and the
 For compatibility with TYPO3 classic mode, third-party extensions
 must set the exact extension version in `extra.typo3/cms.version`
 or in the top level `version` field of `composer.json`.
-This version must match the version previously
-defined in `ext_emconf.php` and the released Git tag.
+This version must match the version previously defined in `ext_emconf.php`
+and the released Git tag.
 
 Fixture extensions used in tests can set any version number, for example `1.0.0`,
 but a version number must still be provided to avoid deprecation messages.
@@ -196,11 +196,19 @@ the `require` section of `composer.json`:
 The PHP dependency remains relevant for metadata and compatibility checks
 in TYPO3 classic mode, but it is not used for extension dependency ordering.
 
-If an extension depends on regular Composer packages, these packages
-must be declared in
+If an extension provides regular Composer packages itself in TYPO3 classic mode,
+these packages must be declared in
 `extra.typo3/cms.Package.providesPackages`.
 
-If an extension does not depend on any regular Composer packages,
+Packages that are already shipped by TYPO3 or already provided by another loaded
+extension do not need to be repeated there.
+
+Entries in `providesPackages` may also associate a provided package with a
+relative path to a Composer vendor directory inside the extension. If that
+directory contains a Composer-generated `autoload.php`, TYPO3 includes it
+early during bootstrap.
+
+If an extension does not provide any regular Composer packages itself,
 `providesPackages` must still be present and set to an empty object
 to avoid deprecation messages and to declare future compatibility
 with TYPO3 classic mode.
@@ -229,6 +237,7 @@ TYPO3 classic installations are affected if they use extensions that:
 * still ship `ext_emconf.php`
 * do not define the `"version"` field or `extra.typo3/cms.version`
 * or do not define `extra.typo3/cms.Package.providesPackages`
+  at all, even as an empty object
 
 Migration
 =========
@@ -239,7 +248,13 @@ to `composer.json`.
 This includes in particular:
 
 * the extension version via `"version"` or `extra.typo3/cms.version`
-* `providesPackages` via `extra.typo3/cms.Package.providesPackages`
+* `providesPackages` via `extra.typo3/cms.Package.providesPackages`,
+  using it for packages provided by the extension itself; packages already
+  shipped by TYPO3 or already provided by another extension do not need
+  to be repeated
+* optional autoload paths for self-provided Composer packages via
+  `extra.typo3/cms.Package.providesPackages`, pointing to a Composer
+  vendor directory whose `autoload.php` can be included early
 * supported stability via version suffixes such as `-dev`, `-alpha1`,
   `-beta2`, or `-RC3`
 * custom former state labels via build metadata such as `+obsolete`

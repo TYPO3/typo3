@@ -65,7 +65,7 @@ final class MetaDataTest extends UnitTestCase
     {
         yield 'no version set' => [
             'givenVersion' => '1.0.0+no-version-set',
-            'finalPrettyVersion' => '1.0',
+            'finalPrettyVersion' => '1.0.0',
             'stability' => 'stable',
             'build' => 'no-version-set',
         ];
@@ -82,7 +82,7 @@ final class MetaDataTest extends UnitTestCase
         ];
         yield 'numbered version major release' => [
             'givenVersion' => '3.0.0',
-            'finalPrettyVersion' => '3.0',
+            'finalPrettyVersion' => '3.0.0',
             'stability' => 'stable',
         ];
         yield 'dev version' => [

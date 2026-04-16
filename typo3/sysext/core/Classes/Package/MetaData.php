@@ -208,11 +208,6 @@ class MetaData
         $parts = [$matches[1], $matches[2], $matches[3]];
         $suffix = $matches[5] ?? '';
 
-        // Drop trailing ".0" parts, but keep at least major.minor.
-        while (count($parts) > 2 && end($parts) === '0') {
-            array_pop($parts);
-        }
-
         return implode('.', $parts) . $suffix;
     }
 

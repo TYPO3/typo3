@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Package;
 
+use Composer\InstalledVersions;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
@@ -118,6 +119,7 @@ class PackageManager implements SingletonInterface
     protected ?string $packagePathMatchRegex;
 
     private array $frameworkPackageNames = [];
+    private array $installedPackageNames = [];
 
     public function __construct(DependencyOrderingService $dependencyOrderingService, ?string $packageStatesPathAndFilename = null, ?string $packagesBasePath = null)
     {
@@ -131,9 +133,13 @@ class PackageManager implements SingletonInterface
      * to find out all framework package names, so that we
      * can safely assume this is not a composer dependency
      */
-    private function populateFrameworkPackageNames(): void
+    private function populateFrameworkAndComposerPackageNames(): void
     {
         $this->frameworkPackageNames = require __DIR__ . '/../../Resources/Private/Php/framework-packages.php';
+        $this->installedPackageNames = array_filter(
+            InstalledVersions::getInstalledPackages(),
+            fn(string $packageName) => !in_array($packageName, $this->frameworkPackageNames, true) && $packageName !== 'typo3/cms',
+        );
     }
 
     /**
@@ -398,6 +404,7 @@ class PackageManager implements SingletonInterface
     protected function scanPackagePathsForExtensions()
     {
         $collectedExtensionPaths = [];
+        $this->populateFrameworkAndComposerPackageNames();
         foreach ($this->getPackageBasePaths() as $packageBasePath) {
             // Only add the extension if we have a composer.json and the extension is not yet registered.
             // This is crucial in order to allow overriding of system extension by local extensions
@@ -413,19 +420,21 @@ class PackageManager implements SingletonInterface
             /** @var SplFileInfo $fileInfo */
             foreach ($finder as $fileInfo) {
                 try {
-                    $composerContents = json_decode($fileInfo->getContents(), false, 512, JSON_THROW_ON_ERROR);
+                    $composerManifest = json_decode($fileInfo->getContents(), false, 512, JSON_THROW_ON_ERROR);
                 } catch (\JsonException) {
                     continue;
                 }
-                $packageType = $composerContents->type ?? '';
+                $packageType = $composerManifest->type ?? '';
                 // Only allow typo3-cms package types
                 if (!str_starts_with($packageType, 'typo3-cms-')) {
                     continue;
                 }
+                $packageProvides = array_keys((array)($composerManifest->extra->{'typo3/cms'}->Package->providesPackages ?? []));
+                $this->installedPackageNames = array_merge($this->installedPackageNames, $packageProvides);
                 $path = PathUtility::dirname($fileInfo->getPathname());
                 // Fix Windows backslashes
                 $currentPath = GeneralUtility::fixWindowsFilePath($path) . '/';
-                $packageKey = $this->getPackageKeyFromManifest($composerContents, $currentPath);
+                $packageKey = $this->getPackageKeyFromManifest($composerManifest, $currentPath);
                 if (!isset($collectedExtensionPaths[$packageKey])) {
                     $collectedExtensionPaths[$packageKey] = $currentPath;
                 }
@@ -1231,7 +1240,9 @@ class PackageManager implements SingletonInterface
             // Composer version
             || $packageName === 'composer-runtime-api'
             // PHP extension
-            || str_starts_with($packageName, 'ext-');
+            || str_starts_with($packageName, 'ext-')
+            // Installed packages (mostly shipped packages)
+            || in_array($packageName, $this->installedPackageNames, true);
     }
 
     /**
@@ -1240,7 +1251,7 @@ class PackageManager implements SingletonInterface
     public function isFrameworkPackage(string $packageName): bool
     {
         if ($this->frameworkPackageNames === []) {
-            $this->populateFrameworkPackageNames();
+            $this->populateFrameworkAndComposerPackageNames();
         }
         return in_array($packageName, $this->frameworkPackageNames, true);
     }

@@ -54,6 +54,11 @@ class ClassLoadingInformation
     public const AUTOLOAD_PSR4_FILENAME = 'autoload_psr4.php';
 
     /**
+     * Name of file that contains all package provides, fetched from the composer.json files of extensions
+     */
+    private const AUTOLOAD_INCLUDE_FILENAME = 'autoload_files.php';
+
+    /**
      * Name of file that contains all class alias mappings
      */
     public const AUTOLOAD_CLASSALIASMAP_FILENAME = 'autoload_classaliasmap.php';
@@ -96,6 +101,7 @@ class ClassLoadingInformation
         $classInfoFiles = $generator->buildAutoloadInformationFiles(self::isTestingContext(), Environment::getPublicPath() . '/', $activeExtensionPackages);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile'], true);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File'], true);
+        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_INCLUDE_FILENAME, $classInfoFiles['includesFile'], true);
 
         $classAliasMapFile = $generator->buildClassAliasMapFile($activeExtensionPackages);
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile, true);
@@ -134,6 +140,16 @@ class ClassLoadingInformation
                 }
             }
         }
+
+        $dynamicIncludesFile = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_INCLUDE_FILENAME;
+        if (file_exists($dynamicIncludesFile)) {
+            $includes = require $dynamicIncludesFile;
+            if (is_array($includes)) {
+                foreach ($includes as $fileIdentifier => $file) {
+                    self::requireFile($fileIdentifier, $file);
+                }
+            }
+        }
     }
 
     /**
@@ -150,9 +166,32 @@ class ClassLoadingInformation
         foreach ($classInformation['psr-4'] as $prefix => $paths) {
             $composerClassLoader->setPsr4($prefix, $paths);
         }
+        foreach ($classInformation['files'] as $fileIdentifier => $file) {
+            self::requireFile($fileIdentifier, $file);
+        }
         $classAliasMap = $generator->buildClassAliasMapForPackage($package);
         if (!empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
             ClassAliasMap::addAliasMap($classAliasMap);
+        }
+    }
+
+    private static function requireFile(string $fileIdentifier, string $file): void
+    {
+        $requireFile = \Closure::bind(static function ($fileIdentifier, $file) {
+            if (empty($GLOBALS['__composer_autoload_files'][$fileIdentifier])) {
+                $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
+
+                require $file;
+            }
+        }, null, null);
+        try {
+            if (!file_exists($file)) {
+                return;
+            }
+            $requireFile($fileIdentifier, $file);
+        } catch (\Throwable) {
+            // Make sure to not break everything in case the does something weird
+            // and especially allow to dump new class loading information to eventually recover
         }
     }
 
