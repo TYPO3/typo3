@@ -83,7 +83,7 @@
 <f:section name="Text">
     <f:if condition="{text}">
         <div class="camino_preview_text">
-            <f:variable name="rawText" value="{text -> f:format.stripTags(allowedTags: '<br><sup><sub>')}"/>
+            <f:variable name="rawText" value="{text -> f:format.stripTags(allowedTags: '<br><sup><sub>') -> f:sanitize.html()}"/>
             <f:if condition="{crop}">
                 <f:then>
                     {rawText -> f:format.crop(maxCharacters: crop) -> f:format.raw()}
