@@ -21,28 +21,26 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
-use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
  * Dispatches the DispatchAfterPackageActivationEvent on package initialization.
  */
 final readonly class DispatchAfterPackageActivationEventOnPackageInitialization
 {
+    public function __construct(private EventDispatcherInterface $eventDispatcher) {}
+
     #[AsEventListener]
     public function __invoke(PackageInitializationEvent $event): void
     {
-        // Only dispatch event in case package activation has been triggered via InstallUtility
-        if (($container = $event->getContainer()) === null
-            || !(($emitter = $event->getEmitter()) instanceof InstallUtility)
-        ) {
+        // Only dispatch event in case package activation has been triggered
+        if (!$event->isPackageActivated()) {
             return;
         }
-
-        $container->get(EventDispatcherInterface::class)->dispatch(
+        $this->eventDispatcher->dispatch(
             new AfterPackageActivationEvent(
                 $event->getExtensionKey(),
                 'typo3-cms-extension',
-                $emitter
+                $event->getEmitter()
             )
         );
     }

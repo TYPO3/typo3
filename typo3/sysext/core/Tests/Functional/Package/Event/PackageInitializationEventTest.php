@@ -48,13 +48,11 @@ final class PackageInitializationEventTest extends FunctionalTestCase
         $event = new PackageInitializationEvent(
             extensionKey: $extensionKey,
             package: $package,
-            container: $container,
             emitter: $emitter
         );
 
         self::assertSame($extensionKey, $event->getExtensionKey());
         self::assertSame($package, $event->getPackage());
-        self::assertSame($container, $event->getContainer());
         self::assertSame($emitter, $event->getEmitter());
         self::assertFalse($event->hasStorageEntry(__CLASS__));
 
@@ -75,13 +73,11 @@ final class PackageInitializationEventTest extends FunctionalTestCase
         $event = new PackageInitializationEvent(
             extensionKey: $extensionKey,
             package: $package,
-            container: $container,
             emitter: $emitter
         );
 
         self::assertSame($extensionKey, $event->getExtensionKey());
         self::assertSame($package, $event->getPackage());
-        self::assertSame($container, $event->getContainer());
         self::assertSame($emitter, $event->getEmitter());
 
         self::assertFalse($event->hasStorageEntry(__CLASS__));
@@ -103,8 +99,8 @@ final class PackageInitializationEventTest extends FunctionalTestCase
         /** @var PackageInitializationEvent $event */
         $event = $this->getContainer()->get(EventDispatcherInterface::class)->dispatch(
             new PackageInitializationEvent(
-                'test_package_initialization',
-                $this->getContainer()->get(PackageManager::class)->getPackage('test_package_initialization'),
+                extensionKey: 'test_package_initialization',
+                package: $this->getContainer()->get(PackageManager::class)->getPackage('test_package_initialization'),
             )
         );
 

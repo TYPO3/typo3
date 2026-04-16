@@ -65,7 +65,7 @@ class PackageActivationService
 
         // Set up packages
         $packageSetup = $container->get(PackageSetup::class);
-        $packageSetup->setup($packages, $emitter);
+        $packageSetup->setup($packages, true, $emitter, $container);
 
         // Reset to the original container instance and original TCA
         $GLOBALS['TCA'] = $backupTca;

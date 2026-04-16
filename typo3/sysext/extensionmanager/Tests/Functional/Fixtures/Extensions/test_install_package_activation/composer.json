@@ -1,0 +1,23 @@
+{
+	"name": "typo3tests/test-install-autoload",
+	"type": "typo3-cms-extension",
+	"description": "Fixture extension to verify AfterPackageActivationEvent is dispatched on install.",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "14.3.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_install_package_activation",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestInstallPackageActivation\\": "Classes/"
+		}
+	}
+}

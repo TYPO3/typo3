@@ -214,7 +214,7 @@ class ActionController extends AbstractController
         $registryKey = $extensionKey . ':ext_tables_static+adt.sql';
         $this->registry->remove('extensionDataImport', $registryKey);
         $packages[$extensionKey] = $package;
-        $this->packageSetup->setup($packages, $this);
+        $this->packageSetup->setup($packages);
 
         return new Response();
     }

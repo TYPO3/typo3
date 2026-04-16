@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Package;
 
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -43,14 +44,14 @@ readonly class PackageSetup
     /**
      * @return FlashMessage[]
      */
-    public function setup(array $packagesToSetUp, ?object $emitter = null): array
+    public function setup(array $packagesToSetUp, bool $packageActivated = false, ?object $emitter = null, ?ContainerInterface $container = null): array
     {
         $messages = [];
         $this->updateDatabaseSchemaForAllPackages();
         foreach ($packagesToSetUp as $packageKey => $package) {
             $this->extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($packageKey);
             $event = $this->eventDispatcher->dispatch(
-                new PackageInitializationEvent(extensionKey: $packageKey, package: $package, emitter: $emitter)
+                new PackageInitializationEvent(extensionKey: $packageKey, package: $package, packageActivated: $packageActivated, container: $container, emitter: $emitter)
             );
             if ($event->hasStorageEntry(CheckForImportRequirements::class)) {
                 $messages[] = new FlashMessage(

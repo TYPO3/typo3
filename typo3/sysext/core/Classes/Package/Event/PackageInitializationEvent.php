@@ -34,6 +34,7 @@ final class PackageInitializationEvent
     public function __construct(
         private readonly string $extensionKey,
         private readonly PackageInterface $package,
+        private readonly bool $packageActivated = false,
         private readonly ?ContainerInterface $container = null,
         private readonly ?object $emitter = null,
         private array $storage = [],
@@ -49,11 +50,22 @@ final class PackageInitializationEvent
         return $this->package;
     }
 
+    public function isPackageActivated(): bool
+    {
+        return $this->packageActivated;
+    }
+
+    /**
+     * @todo deprecate properly with TYPO3 v15
+     */
     public function getContainer(): ?ContainerInterface
     {
         return $this->container;
     }
 
+    /**
+     * @todo deprecate properly with TYPO3 v15
+     */
     public function getEmitter(): ?object
     {
         return $this->emitter;
