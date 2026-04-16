@@ -23,7 +23,7 @@ fields:
    ]
 
 TYPO3 itself shouldn't limit the inputs of an editor by using a number which
-was assumend to be large, 10 years ago.
+was assumed to be large, 10 years ago.
 
 If you rely on these options, please provide it in your site package by defining
 it in :file:`Configuration/TCA/Overrides/tt_content.php`:

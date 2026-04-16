@@ -62,7 +62,7 @@ This means the relevant parts are:
 
     // Process file with cropping configuration if not missing
     $fileReference->getOriginalFile()->process(
-        ProcessedFile::CONTEXT_IMAGEPREVIEW,// ProcessedFile::CONTEXT_IMAGECROPSCALEMASK if cropArea is defiend
+        ProcessedFile::CONTEXT_IMAGEPREVIEW,// ProcessedFile::CONTEXT_IMAGECROPSCALEMASK if cropArea is defined
         [
             'width' => '...',
             'height' => '...',

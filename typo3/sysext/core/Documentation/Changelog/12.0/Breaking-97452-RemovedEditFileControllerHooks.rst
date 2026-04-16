@@ -14,7 +14,7 @@ Description
 The hooks :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook']`
 and :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook']`
 have been removed, since adjusting the generated content can be achieved using template overrides
-and modifing the form data, used to generate the edit file form, can be done
+and modifying the form data, used to generate the edit file form, can be done
 using the PSR-14 :php:`TYPO3\CMS\Filelist\Event\ModifyEditFileFormDataEvent`.
 
 Impact

@@ -25,7 +25,7 @@ The following static API methods are exposed within the Environment class:
 * `Environment::getApplicationContext()` - returns the ApplicationContext object that encapsulates `TYPO3_CONTEXT`
 * `Environment::isComposerMode()` - defines whether TYPO3 was installed via composer
 * `Environment::getProjectPath()` - returns the absolute path to the root-level folder without the trailing slash
-* `Environment::getPublicPath()` - returns the absolute path to the publically accessible folder (previously known as PATH_site) without the trailing slash
+* `Environment::getPublicPath()` - returns the absolute path to the publicly accessible folder (previously known as PATH_site) without the trailing slash
 * `Environment::getVarPath()` - returns the absolute path to the folder where non-public semi-persistent files can be stored. For regular projects, this is known as PATH_site/typo3temp/var
 * `Environment::getConfigPath()` - returns the absolute path to the folder where (writeable) configuration is stored. For regular projects, this is known as PATH_site/typo3conf
 * `Environment::getCurrentScript()` - the absolute path and filename to the currently executed PHP script

@@ -23,7 +23,7 @@ It is now possible to register or overwrite the iconIdentifier for a file extens
 .. code-block:: php
 
 	$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-	$iconRegistry->registerFileExtension('log', 'icon-identiifer-for-log-files');
+	$iconRegistry->registerFileExtension('log', 'icon-identifier-for-log-files');
 
 
 .. index:: PHP-API, Backend

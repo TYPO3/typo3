@@ -38,7 +38,7 @@ Affected Installations
 ======================
 
 Installations using the constants instead of static strings or
-call the method explictily – which is unlikely.
+call the method explicitly – which is unlikely.
 
 
 Migration

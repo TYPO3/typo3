@@ -11,7 +11,7 @@ See :issue:`81735`
 Description
 ===========
 
-The AuthenticationService has been moved into system extensios `core`. Class aliases are in place and
+The AuthenticationService has been moved into system extensions `core`. Class aliases are in place and
 will be removed with TYPO3 v10.
 
 

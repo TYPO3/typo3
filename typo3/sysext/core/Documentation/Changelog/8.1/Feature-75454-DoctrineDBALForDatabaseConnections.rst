@@ -37,7 +37,7 @@ equality comparisons (`WHERE "aField" = 'aValue'`) are supported. For complex st
 required to use the :php:`QueryBuilder`.
 
 It is possible to swap tables out of the default database and use a specific setup (e.g.
-for logging or caching). This snippet of a LocalConfiguration could for exampe be used
+for logging or caching). This snippet of a LocalConfiguration could for example be used
 to swap the sys_log table out to another database or even another database server:
 
 .. code-block:: php

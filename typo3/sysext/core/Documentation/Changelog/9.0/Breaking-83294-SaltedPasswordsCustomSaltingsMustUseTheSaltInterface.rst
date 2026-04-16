@@ -35,7 +35,7 @@ TYPO3 installations using custom salts for `EXT:saltedpasswords`.
 Migration
 =========
 
-Switch to the new implemention details mentioned above, and change your custom salt to fit
+Switch to the new implementation details mentioned above, and change your custom salt to fit
 to the :php:`SaltInterface` API.
 
 .. index:: PHP-API, NotScanned, ext:saltedpasswords

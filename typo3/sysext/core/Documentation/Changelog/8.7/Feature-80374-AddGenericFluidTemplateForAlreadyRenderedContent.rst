@@ -15,7 +15,7 @@ To provide better support for content elements where the content itself is not
 processed by fluid we introduce a new generic template, to make it easy to
 benefit from the universal layouts of fluid styled content.
 
-The generic template only wrapps already generated html that have been assigned
+The generic template only wraps already generated html that have been assigned
 to the variable `content`. This eliminates the need for extensions to provide
 custom templates to wrap their external rendered content to achieve the same
 behaviour as other fluid styled content elements.

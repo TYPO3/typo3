@@ -25,7 +25,7 @@ be used anymore.
 Impact
 ======
 
-Calling any of the methods or :php:`isLoaded()` with a second argument set explictly will trigger
+Calling any of the methods or :php:`isLoaded()` with a second argument set explicitly will trigger
 a deprecation message.
 
 

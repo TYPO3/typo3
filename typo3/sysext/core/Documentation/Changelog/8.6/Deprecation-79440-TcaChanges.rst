@@ -465,7 +465,7 @@ type=input
 ^^^^^^^^^^
 
 * The wizard :code:`slider` has been directly embedded in this element. The new config option :code:`slider`
-  can be used to configure the slider. The slider appears if the option :code:`slider` exists and is an arary.
+  can be used to configure the slider. The slider appears if the option :code:`slider` exists and is an array.
 * The wizard :code:`select` has been directly embedded in this element. The new config option :code:`valuePicker`
   has been introduced to configure items of the drop down.
 * The four date related :code:`eval` options :code:`date`, :code:`datetime`, :code:`time` and :code:`timesec` have

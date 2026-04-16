@@ -60,7 +60,7 @@ The User TSconfig :typoscript:`options.hideModules.[moduleGroup]` has been
 removed. All modules are registered with a unique identifier. Therefore, the
 TSconfig :typoscript:`options.hideModules` should be used for all modules
 directly. This still allows to hide a whole group, e.g. `web`, next to
-regular moludes, such as `web_layout`.
+regular modules, such as `web_layout`.
 
 Impact
 ======

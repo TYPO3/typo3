@@ -42,6 +42,6 @@ now evaluated to determine if the request was made, if the header is sent.
 
 If it is **NOT** sent, TYPO3 will assume to detect a secure connection between
 SSL information as before via various other HTTP Headers or server configuration
-settintgs.
+settings.
 
 ..  index:: LocalConfiguration, ext:core
