@@ -157,7 +157,7 @@ class PreviewUriBuilder
         }
         $target = clone $this;
         $target->rootLine = $rootLine;
-        return $this;
+        return $target;
     }
 
     /**
