@@ -49,7 +49,6 @@
 		"christian-riesen/base32": "^1.6",
 		"composer/semver": "^3.4",
 		"doctrine/dbal": "~4.4.3",
-		"doctrine/event-manager": "^2.0.1",
 		"doctrine/lexer": "^3.0.1",
 		"egulias/email-validator": "^4.0",
 		"enshrined/svg-sanitize": "~0.22",
