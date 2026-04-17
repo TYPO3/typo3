@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Authentication;
 
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -2016,11 +2018,24 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->user_table,
             [
                 'uc' => serialize($this->uc),
-                'user_settings' => json_encode($profileSettings, JSON_THROW_ON_ERROR),
+                // The array must be passed directly to prevent double JSON encoding.
+                // See: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
+                'user_settings' => $profileSettings,
             ],
             [$this->userid_column => $userId],
-            ['uc' => Connection::PARAM_LOB]
+            [
+                'uc' => Connection::PARAM_LOB,
+                // @todo This behavior cannot be modified yet; the array value must be passed directly
+                //       until https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293 is merged,
+                //       otherwise the value will be JSON-encoded twice.
+                'user_settings' => Type::getType(Types::JSON),
+            ],
         );
+        // Set modified user settings `json_encoded()` to the instance user record to display the correct
+        // value on the same request without rereading whole user record and group information here. That
+        // ensures that the next call to `getUserSettings()` creates a new instance from this record with
+        // the new user settings using `UserSettingsFactory`.
+        $this->user['user_settings'] = json_encode($profileSettings);
 
         $this->resetUserSettingsCache();
     }

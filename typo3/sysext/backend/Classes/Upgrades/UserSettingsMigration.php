@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Upgrades;
 
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Authentication\UserSettingsFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Upgrades\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Migrates user profile settings from the serialized "uc" field
@@ -33,9 +33,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is only meant to be used within EXT:backend and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('setup_userSettingsMigration')]
-final class UserSettingsMigration implements UpgradeWizardInterface
+final readonly class UserSettingsMigration implements UpgradeWizardInterface
 {
-    private const TABLE = 'be_users';
+    public function __construct(
+        private ConnectionPool $connectionPool,
+        private UserSettingsFactory $userSettingsFactory,
+    ) {}
 
     public function getTitle(): string
     {
@@ -60,39 +63,43 @@ final class UserSettingsMigration implements UpgradeWizardInterface
 
     public function executeUpdate(): bool
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable(self::TABLE);
-        $factory = GeneralUtility::makeInstance(UserSettingsFactory::class);
+        $connection = $this->connectionPool->getConnectionForTable('be_users');
         $hasFailures = false;
-
         foreach ($this->getRecordsToMigrate() as $record) {
             try {
                 $uc = @unserialize($record['uc'], ['allowed_classes' => false]);
                 if (!is_array($uc)) {
                     continue;
                 }
-
-                $userSettings = $factory->createFromUc($uc);
-
+                $userSettings = $this->userSettingsFactory->createFromUc($uc);
                 $connection->update(
-                    self::TABLE,
-                    ['user_settings' => json_encode($userSettings->toArray(), JSON_THROW_ON_ERROR)],
-                    ['uid' => (int)$record['uid']]
+                    'be_users',
+                    [
+                        // The array must be passed directly to prevent double JSON encoding.
+                        // See: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
+                        'user_settings' => $userSettings->toArray(),
+                    ],
+                    ['uid' => (int)$record['uid']],
+                    [
+                        // @todo This behavior cannot be modified yet; the array value must be passed directly
+                        //       until https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293 is merged,
+                        //       otherwise the value will be JSON-encoded twice.
+                        'user_settings' => Type::getType(Types::JSON),
+                    ],
                 );
             } catch (\Throwable) {
                 $hasFailures = true;
             }
         }
-
         return !$hasFailures;
     }
 
     private function hasRecordsToMigrate(): bool
     {
-        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_users');
         return (bool)$queryBuilder
             ->count('uid')
-            ->from(self::TABLE)
+            ->from('be_users')
             ->where(
                 $queryBuilder->expr()->isNotNull('uc'),
                 $queryBuilder->expr()->neq('uc', $queryBuilder->createNamedParameter('')),
@@ -104,10 +111,10 @@ final class UserSettingsMigration implements UpgradeWizardInterface
 
     private function getRecordsToMigrate(): array
     {
-        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_users');
         return $queryBuilder
             ->select('uid', 'uc')
-            ->from(self::TABLE)
+            ->from('be_users')
             ->where(
                 $queryBuilder->expr()->isNotNull('uc'),
                 $queryBuilder->expr()->neq('uc', $queryBuilder->createNamedParameter('')),
@@ -115,11 +122,5 @@ final class UserSettingsMigration implements UpgradeWizardInterface
             )
             ->executeQuery()
             ->fetchAllAssociative();
-    }
-
-    private function getQueryBuilder(): QueryBuilder
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(self::TABLE);
     }
 }

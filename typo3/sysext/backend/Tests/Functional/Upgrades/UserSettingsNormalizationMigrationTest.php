@@ -20,15 +20,15 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Upgrades;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Backend\Upgrades\UserSettingsMigration;
+use TYPO3\CMS\Backend\Upgrades\UserSettingsNormalizationMigration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class UserSettingsMigrationTest extends FunctionalTestCase
+final class UserSettingsNormalizationMigrationTest extends FunctionalTestCase
 {
     #[Test]
-    public function updateNecessaryReturnsTrueWhenUsersHaveUcButNoUserSettings(): void
+    public function updateNecessaryReturnsTrueWhenDoubleJsonEncodedUserSettingsExists(): void
     {
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
 
@@ -38,7 +38,11 @@ final class UserSettingsMigrationTest extends FunctionalTestCase
             [
                 'username' => 'testuser',
                 'uc' => serialize(['colorScheme' => 'dark', 'titleLen' => 50]),
-                'user_settings' => null,
+                // The array would normally be passed directly to prevent double JSON encoding;
+                // however, in this case the desired test context requires it to be intentionally
+                // JSON-encoded here.
+                // See: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
+                'user_settings' => json_encode(['colorScheme' => 'dark', 'titleLen' => 50]),
             ],
             [
                 'uc' => Connection::PARAM_LOB,
@@ -49,16 +53,16 @@ final class UserSettingsMigrationTest extends FunctionalTestCase
             ],
         );
 
-        $subject = $this->get(UserSettingsMigration::class);
+        $subject = $this->get(UserSettingsNormalizationMigration::class);
         self::assertTrue($subject->updateNecessary());
     }
 
     #[Test]
-    public function updateNecessaryReturnsFalseWhenNoUserNeedsMigration(): void
+    public function updateNecessaryReturnsWhenWhenDoubleJsonEncodedUserSettingsExists(): void
     {
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
 
-        // Create a user that already has user_settings populated
+        // Create a user with uc but without user_settings
         $connection->insert(
             'be_users',
             [
@@ -77,30 +81,24 @@ final class UserSettingsMigrationTest extends FunctionalTestCase
             ],
         );
 
-        $subject = $this->get(UserSettingsMigration::class);
+        $subject = $this->get(UserSettingsNormalizationMigration::class);
         self::assertFalse($subject->updateNecessary());
     }
 
     #[Test]
-    public function executeUpdateMigratesProfileSettingsToJson(): void
+    public function executeUpdateMigratesDoubleJsonEncodedUserSettingsToSingleEncodedSettings(): void
     {
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
 
-        // Create user with profile settings in uc
-        $ucData = [
-            'colorScheme' => 'dark',
-            'titleLen' => 80,
-            'emailMeAtLogin' => 1,
-            'moduleData' => ['web_list' => ['expandedTree' => [1, 2, 3]]],
-            'moduleSessionID' => ['web_list' => 'abc123'],
-        ];
-
+        // Create a user with uc but without user_settings
         $connection->insert(
             'be_users',
             [
                 'username' => 'testuser',
-                'uc' => serialize($ucData),
-                'user_settings' => null,
+                'uc' => serialize(['colorScheme' => 'dark', 'titleLen' => 50]),
+                // The array must be passed directly to prevent double JSON encoding.
+                // See: https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
+                'user_settings' => json_encode(['colorScheme' => 'dark', 'titleLen' => 50]),
             ],
             [
                 'uc' => Connection::PARAM_LOB,
@@ -108,70 +106,30 @@ final class UserSettingsMigrationTest extends FunctionalTestCase
                 //       until https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293 is merged,
                 //       otherwise the value will be JSON-encoded twice.
                 'user_settings' => Type::getType(Types::JSON),
-            ]
+            ],
         );
-
         $userId = (int)$connection->lastInsertId();
 
-        $subject = $this->get(UserSettingsMigration::class);
-        self::assertTrue($subject->updateNecessary());
-
-        $result = $subject->executeUpdate();
-        self::assertTrue($result);
-
-        // Check that user_settings now contains the profile settings (not moduleData)
+        // Check user settings is double json_encoded
         $row = $connection->select(['user_settings'], 'be_users', ['uid' => $userId])->fetchAssociative();
         self::assertNotEmpty($row['user_settings'], 'user_settings should not be empty');
-
-        // Parse user_settings JSON
         $rawValue = $row['user_settings'];
-        $userSettings = json_decode($rawValue, true);
+        self::assertTrue(str_starts_with($rawValue, '"{'));
+        self::assertTrue(str_ends_with($rawValue, '}"'));
+        self::assertIsString(json_decode(json: $rawValue, flags: JSON_THROW_ON_ERROR | JSON_OBJECT_AS_ARRAY));
 
-        self::assertIsArray($userSettings, 'user_settings should be a valid JSON array');
-
-        self::assertArrayHasKey('colorScheme', $userSettings);
-        self::assertSame('dark', $userSettings['colorScheme']);
-        self::assertArrayHasKey('titleLen', $userSettings);
-        self::assertSame(80, $userSettings['titleLen']);
-        self::assertArrayHasKey('emailMeAtLogin', $userSettings);
-        self::assertSame(1, $userSettings['emailMeAtLogin']);
-
-        // moduleData and moduleSessionID should NOT be in user_settings
-        self::assertArrayNotHasKey('moduleData', $userSettings);
-        self::assertArrayNotHasKey('moduleSessionID', $userSettings);
-
-        // After migration, updateNecessary should return false
-        self::assertFalse($subject->updateNecessary());
-    }
-
-    #[Test]
-    public function executeUpdateHandlesEmptyUcGracefully(): void
-    {
-        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('be_users');
-
-        // Create user with empty uc
-        $connection->insert(
-            'be_users',
-            [
-                'username' => 'testuser',
-                'uc' => serialize([]),
-                'user_settings' => null,
-            ],
-            [
-                'uc' => Connection::PARAM_LOB,
-                // @todo This behavior cannot be modified yet; the array value must be passed directly
-                //       until https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293 is merged,
-                //       otherwise the value will be JSON-encoded twice.
-                'user_settings' => Type::getType(Types::JSON),
-            ],
-        );
-
-        $subject = $this->get(UserSettingsMigration::class);
-
-        // Empty uc should still be considered for migration
+        $subject = $this->get(UserSettingsNormalizationMigration::class);
         self::assertTrue($subject->updateNecessary());
+        self::assertTrue($subject->executeUpdate());
 
-        $result = $subject->executeUpdate();
-        self::assertTrue($result);
+        // Check user settings is now single json_encoded
+        $row = $connection->select(['user_settings'], 'be_users', ['uid' => $userId])->fetchAssociative();
+        self::assertNotEmpty($row['user_settings'], 'user_settings should not be empty');
+        $rawValue = $row['user_settings'];
+        self::assertFalse(str_starts_with($rawValue, '"{'));
+        self::assertFalse(str_ends_with($rawValue, '}"'));
+        self::assertIsArray(json_decode(json: $rawValue, flags: JSON_THROW_ON_ERROR | JSON_OBJECT_AS_ARRAY));
+
+        self::assertFalse($subject->updateNecessary());
     }
 }
