@@ -33,6 +33,10 @@ final readonly class AddSchedulableCommandsAsNativeTaskTypes
     {
         $tca = $event->getTca();
         foreach ($this->commandRegistry->getSchedulableCommandsConfiguration() as $commandIdentifier => $commandConfiguration) {
+            if (($commandConfiguration['aliasFor'] ?? '') !== '') {
+                // If an alias is set, we need to filter out the alias to prevent duplicate scheduler items.
+                continue;
+            }
             $tca['tx_scheduler_task']['columns']['tasktype']['config']['items'][] = [
                 'label' => $commandConfiguration['name'],
                 'description' => $commandConfiguration['description'],
