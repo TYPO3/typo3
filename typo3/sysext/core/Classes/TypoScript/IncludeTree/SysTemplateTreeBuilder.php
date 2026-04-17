@@ -204,6 +204,9 @@ final class SysTemplateTreeBuilder
             $includeSetInclude->setName('site:' . $site->getIdentifier() . ':sets');
             $includeSetInclude->setPath('site:' . $site->getIdentifier() . '/');
             foreach ($sets as $set) {
+                if ($set->typoscript === null) {
+                    continue;
+                }
                 $this->handleSetInclude($includeSetInclude, rtrim($set->typoscript, '/') . '/', 'set:' . $set->name);
             }
             $includeNode->addChild($includeSetInclude);
