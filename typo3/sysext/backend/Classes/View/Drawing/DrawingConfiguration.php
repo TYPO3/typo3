@@ -79,20 +79,25 @@ class DrawingConfiguration
 
     public static function create(BackendLayout $backendLayout, array $pageTsConfig, PageViewMode $pageViewMode): self
     {
+        $modConfig = $pageTsConfig['mod'] ?? $pageTsConfig['mod.'] ?? [];
+        $webLayoutConfig = $modConfig['web_layout'] ?? $modConfig['web_layout.'] ?? [];
+        $sharedConfig = $modConfig['SHARED'] ?? $modConfig['SHARED.'] ?? [];
+        $localizationConfig = $webLayoutConfig['localization'] ?? $webLayoutConfig['localization.'] ?? [];
+
         $obj = new self();
         $obj->pageViewMode = $pageViewMode;
-        $obj->allowInconsistentLanguageHandling = (bool)($pageTsConfig['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
-        $obj->shouldHideRestrictedColumns = (bool)($pageTsConfig['mod.']['web_layout.']['hideRestrictedCols'] ?? false);
+        $obj->allowInconsistentLanguageHandling = (bool)($webLayoutConfig['allowInconsistentLanguageHandling'] ?? false);
+        $obj->shouldHideRestrictedColumns = (bool)($webLayoutConfig['hideRestrictedCols'] ?? false);
         $availableColumnPositionsFromBackendLayout = array_unique($backendLayout->getColumnPositionNumbers());
-        $allowedColumnPositionsByTsConfig = array_unique(GeneralUtility::intExplode(',', (string)($pageTsConfig['mod.']['SHARED.']['colPos_list'] ?? ''), true));
+        $allowedColumnPositionsByTsConfig = array_unique(GeneralUtility::intExplode(',', (string)($sharedConfig['colPos_list'] ?? ''), true));
         // If there is no tsConfig colPos_list, no restriction. Else create intersection of available and allowed.
         if (!empty($allowedColumnPositionsByTsConfig)) {
             $obj->activeColumns = array_intersect($availableColumnPositionsFromBackendLayout, $allowedColumnPositionsByTsConfig);
         } else {
             $obj->activeColumns = $availableColumnPositionsFromBackendLayout;
         }
-        $obj->allowTranslateModeForTranslations = (bool)($pageTsConfig['mod.']['web_layout.']['localization.']['enableTranslate'] ?? true);
-        $obj->allowCopyModeForTranslations = (bool)($pageTsConfig['mod.']['web_layout.']['localization.']['enableCopy'] ?? true);
+        $obj->allowTranslateModeForTranslations = (bool)($localizationConfig['enableTranslate'] ?? true);
+        $obj->allowCopyModeForTranslations = (bool)($localizationConfig['enableCopy'] ?? true);
 
         return $obj;
     }
