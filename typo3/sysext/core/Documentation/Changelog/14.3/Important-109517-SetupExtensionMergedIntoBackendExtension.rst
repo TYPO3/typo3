@@ -2,9 +2,9 @@
 
 ..  _important-109517-1744105200:
 
-================================================================
+==================================================================
 Important: #109517 - Setup extension merged into backend extension
-================================================================
+==================================================================
 
 See :issue:`109517`
 
@@ -12,7 +12,7 @@ Description
 ===========
 
 The system extension `setup` (`typo3/cms-setup`) existed for historical reasons
-as a separate package. It provided the "User Settings" backend module where users
+as a separate package. It provided the "User Settings" backend module, where users
 could change their password, name, email, language, avatar and other personal
 preferences.
 
@@ -63,12 +63,12 @@ and is added as a specific PSR-4 autoload entry to the Core's :file:`composer.js
 map, so that the legacy event can be dispatched properly. No deprecation
 message is emitted when dispatching this legacy event.
 
-Alongside, a new event :php:`TYPO3\CMS\Backend\Event\AddUserSettingsJavaScriptModulesEvent`
+In addition, a new event :php:`TYPO3\CMS\Backend\Event\AddUserSettingsJavaScriptModulesEvent`
 has been added with a distinguishing name. Both events are dispatched in TYPO3 v14,
 with the legacy event being deprecated and removed in TYPO3 v15
 (see :ref:`deprecation-109517-1744105201`).
 
-Extensions providing compatibility to two versions at once should proceed like this:
+Extensions providing compatibility to two versions should proceed as below:
 
 .. _important-109517-1744105200-AddJavaScriptModulesEvent-v13:
 

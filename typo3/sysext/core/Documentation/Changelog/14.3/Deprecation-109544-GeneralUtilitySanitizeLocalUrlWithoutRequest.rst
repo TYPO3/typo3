@@ -12,9 +12,9 @@ Description
 ===========
 
 Calling :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl()` without
-passing the current PSR-7 request as second argument is deprecated. The method
+passing the current PSR-7 request as the second argument is deprecated. The method
 previously resolved host and site information via
-:php:`GeneralUtility::getIndpEnv()`, which falls back to server superglobals.
+:php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()`, which falls back to server superglobals.
 Passing the request explicitly allows the method to read this information from
 :php:`\TYPO3\CMS\Core\Http\NormalizedParams` instead.
 
@@ -22,15 +22,16 @@ Passing the request explicitly allows the method to read this information from
 Impact
 ======
 
-Calling :php:`GeneralUtility::sanitizeLocalUrl()` with only one argument triggers
-a PHP :php:`E_USER_DEPRECATED` error.
+Calling :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl()`
+with only one argument triggers a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected installations
 ======================
 
-All installations that call :php:`GeneralUtility::sanitizeLocalUrl()` without
-passing a :php:`\Psr\Http\Message\ServerRequestInterface` as second argument.
+All installations that call
+:php:`\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl()` without
+passing a :php:`\Psr\Http\Message\ServerRequestInterface` as the second argument.
 
 The extension scanner will detect affected usages as a strong match.
 
@@ -38,14 +39,13 @@ The extension scanner will detect affected usages as a strong match.
 Migration
 =========
 
-Pass the current PSR-7 request as second argument:
+Pass the current PSR-7 request as the second argument:
 
-..  code-block:: php
+..  code-block:: diff
 
-    // Before
-    $url = GeneralUtility::sanitizeLocalUrl($url);
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-    // After
-    $url = GeneralUtility::sanitizeLocalUrl($url, $request);
+    - $url = GeneralUtility::sanitizeLocalUrl($url);
+    + $url = GeneralUtility::sanitizeLocalUrl($url, $request);
 
 .. index:: PHP-API, FullyScanned, ext:core

@@ -11,8 +11,8 @@ See :issue:`109529`
 Description
 ===========
 
-The PSR-14 events that allow listeners to inject HTML before or after the
-content elements rendered inside a backend layout column have been
+The PSR-14 events that allow listeners to inject HTML before or after
+content elements have been rendered inside a backend layout column have been
 deprecated and will be removed in TYPO3 v15.0:
 
 *   :php:`\TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent`
@@ -20,7 +20,7 @@ deprecated and will be removed in TYPO3 v15.0:
 *   :php:`\TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent`
 
 The accompanying methods :php:`GridColumn::getBeforeSectionMarkup()` and
-:php:`GridColumn::getAfterSectionMarkup()` have likewise been deprecated.
+:php:`GridColumn::getAfterSectionMarkup()` have also been deprecated.
 
 These events were introduced in TYPO3 v10.3 alongside the legacy
 :php:`PageLayoutView` class to enrich backend layout columns with custom
@@ -35,16 +35,17 @@ prerequisite for that work.
 
 The only listener that still consumed the event in the core,
 :php:`PageLayoutViewDrawEmptyColposContent`, has been removed. Its job —
-showing a placeholder block for backend layout cells that have no
-:php:`colPos` configured — is now performed directly in the Fluid template
+showing a placeholder block for backend layout cells that do not have a
+configured :php:`colPos` — is now performed in the Fluid template
 :file:`PageLayout/Grid/Column.fluid.html` via an :php:`{column.unassigned}`
 condition. No extension action is required for this case.
 
 Impact
 ======
 
-Calling :php:`AbstractSectionMarkupGeneratedEvent::setContent()` from a
-listener will trigger a deprecation-level log entry. The classes and the
+Calling
+:php:`\TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent::setContent()`
+from a listener will trigger a deprecation-level log entry. The classes and the
 two :php:`GridColumn` getters will be removed in TYPO3 v15.0.
 
 Existing listeners will keep functioning in TYPO3 v14: the dispatch sites
@@ -55,11 +56,11 @@ render the resulting :php:`{column.beforeSectionMarkup}` and
 Affected installations
 ======================
 
-Instances or extensions that register a PSR-14 listener on
-:php:`BeforeSectionMarkupGeneratedEvent` or
-:php:`AfterSectionMarkupGeneratedEvent`, or that call
+Instances and extensions that register a PSR-14 listener on
+:php-short:`\TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent` or
+:php-short:`\TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent`, or that call
 :php:`GridColumn::getBeforeSectionMarkup()` /
-:php:`GridColumn::getAfterSectionMarkup()` directly, are affected.
+:php:`GridColumn::getAfterSectionMarkup()`.
 
 Migration
 =========

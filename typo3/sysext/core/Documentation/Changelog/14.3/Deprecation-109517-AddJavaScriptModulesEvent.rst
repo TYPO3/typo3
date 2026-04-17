@@ -24,7 +24,7 @@ by:
 
 *  :php:`TYPO3\CMS\Backend\Event\AddUserSettingsJavaScriptModulesEvent`
 
-For better dual version compatibility, no deprecation es emitted
+For better dual version compatibility, no deprecation is emitted
 when using the legacy event location.
 
 Migration to the new event can be done by just replacing its
@@ -43,14 +43,14 @@ must be utilized instead.
 Affected installations
 ======================
 
-Instances or extensions that register a PSR-14 listener on
-:php:`AddJavaScriptModulesEvent` are affected.
+Instances and extensions that register a PSR-14 listener on
+:php-short:`TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent`.
 
 Migration
 =========
 
-See :ref:`important-109517-1744105200-AddJavaScriptModulesEvent`,
-the new event name and class namespace can be used with no further
+See :ref:`important-109517-1744105200-AddJavaScriptModulesEvent`.
+The new event name and class namespace can be used with no further
 functional changes.
 
 ..  index:: Backend, PHP-API, NotScanned, ext:backend

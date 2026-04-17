@@ -20,19 +20,19 @@ by extensions.
 Impact
 ======
 
-Using :php:`\TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck` will trigger
+Using :php-short:`\TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck` will trigger
 a PHP :php:`E_USER_DEPRECATED` error. The class will be removed in TYPO3 v15.0.
 
 Affected installations
 ======================
 
 TYPO3 installations with extensions that use
-:php:`\TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck` directly.
+:php-short:`\TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck` directly.
 
 Migration
 =========
 
-Extensions that rely on this class should implement the needed functionality
+Extensions that rely on this class should implement the necessary functionality
 themselves.
 
 .. index:: PHP-API, FullyScanned, ext:lowlevel

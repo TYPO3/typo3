@@ -12,7 +12,7 @@ Description
 ===========
 
 Extensions that still ship an :file:`ext_tables.php` file will now trigger
-a PHP :php:`E_USER_DEPRECATED` error each time the file is loaded during
+a PHP :php:`E_USER_DEPRECATED` error when the file is loaded during
 a non-cached request or cache warm-up.
 
 The :file:`ext_tables.php` file was historically used to register backend
@@ -32,29 +32,29 @@ Impact
 A PHP :php:`E_USER_DEPRECATED` error is triggered for every third-party
 extension that still provides an :file:`ext_tables.php` file whenever
 :file:`ext_tables.php` files are loaded without caching, for example during
-cache warm-up or in development context.
+cache warm-up or in a development context.
 
 Support for :file:`ext_tables.php` will be removed in TYPO3 v15.0.
 
 Affected installations
 ======================
 
-All installations using third-party extensions that still ship an
-:file:`ext_tables.php` file are affected.
+All installations with third-party extensions that still ship an
+:file:`ext_tables.php` file.
 
 Migration
 =========
 
-Move all registrations from :file:`ext_tables.php` to the appropriate
+Move all registration from :file:`ext_tables.php` to the appropriate
 configuration files.
 
 User settings
 -------------
 
 User settings previously registered via
-:php:`ExtensionManagementUtility::addFieldsToUserSettings()` in
-:file:`ext_tables.php` should now be added via
-:php:`ExtensionManagementUtility::addUserSetting()` in
+:php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings()` in
+:file:`ext_tables.php` should now be registered via
+:php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserSetting()` in
 :file:`Configuration/TCA/Overrides/be_users.php`.
 
 Before:
@@ -62,21 +62,26 @@ Before:
 ..  code-block:: php
     :caption: ext_tables.php
 
+    use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
     $GLOBALS['TYPO3_USER_SETTINGS']['columns']['myCustomSetting'] = [
         'type' => 'check',
         'label' => 'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:myCustomSetting',
     ];
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings(
+    ExtensionManagementUtility::addFieldsToUserSettings(
         'myCustomSetting',
         'after:emailMeAtLogin'
     );
+
 
 After:
 
 ..  code-block:: php
     :caption: Configuration/TCA/Overrides/be_users.php
 
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserSetting(
+    use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+    ExtensionManagementUtility::addUserSetting(
         'myCustomSetting',
         [
             'label' => 'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:myCustomSetting',

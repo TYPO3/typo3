@@ -39,8 +39,8 @@ TYPO3 installations with extensions that call
 Migration
 =========
 
-Replace calls to :php:`BackendUtility::getLabelFromItemlist()`
-with :php:`SchemaLabelResolver->getLabelForFieldValue()`.
+Replace calls to :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist()`
+with :php:`\TYPO3\CMS\Core\Schema\SchemaLabelResolver->getLabelForFieldValue()`.
 
 Before:
 
@@ -62,8 +62,8 @@ After:
         $table, $column, $value, $row
     );
 
-Replace calls to :php:`BackendUtility::getLabelFromItemListMerged()`
-with :php:`SchemaLabelResolver->getLabelForFieldValue()`.
+Replace calls to :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemListMerged()`
+with :php:`\TYPO3\CMS\Core\Schema\SchemaLabelResolver->getLabelForFieldValue()`.
 
 Before:
 
@@ -89,8 +89,8 @@ After:
     );
 
 Replace calls to :php:`BackendUtility::getLabelsFromItemsList()`
-with :php:`SchemaLabelResolver->getLabelsForFieldValues()`. Note
-that the new method returns an array of raw labels instead of a
+with :php:`\TYPO3\CMS\Core\Schema\SchemaLabelResolver->getLabelsForFieldValues()`.
+Note that the new method returns an array of raw labels instead of a
 comma-separated translated string — callers must handle translation
 and joining themselves.
 

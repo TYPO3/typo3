@@ -12,9 +12,11 @@ Description
 ===========
 
 Calling :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost()` without
-providing a PSR-7 :php:`ServerRequestInterface` as second argument is deprecated.
+providing a PSR-7 :php:`\Psr\Http\Message\ServerRequestInterface` as the
+second argument is deprecated.
 
-The method previously resolved the current host via :php:`GeneralUtility::getIndpEnv()`,
+The method previously resolved the current host via
+:php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()`,
 which hides an implicit dependency on server globals. The method signature has been
 extended to accept an explicit PSR-7 request object, which should be passed instead.
 
@@ -22,20 +24,21 @@ Impact
 ======
 
 A PHP :php:`E_USER_DEPRECATED` error is triggered when
-:php:`GeneralUtility::isOnCurrentHost()` is called without a
-:php:`ServerRequestInterface` argument.
+:php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost()` is called without a
+:php-short:`\Psr\Http\Message\ServerRequestInterface` argument.
 
 Affected installations
 ======================
 
-All installations using third-party extensions that call
-:php:`GeneralUtility::isOnCurrentHost()` with only one argument are affected.
+All installations with third-party extensions that call
+:php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost()` with
+only one argument.
 
 Migration
 =========
 
-Pass the current PSR-7 request as second argument to
-:php:`GeneralUtility::isOnCurrentHost()`.
+Pass the current PSR-7 request as the second argument to
+:php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost()`.
 
 Before:
 
@@ -56,6 +59,6 @@ After:
 
 The PSR-7 request is available in various places, for example as an argument
 in controller actions, via :php:`$GLOBALS['TYPO3_REQUEST']` in legacy contexts,
-or via :php:`ServerRequestInterface` method parameters.
+and via :php-short:`\Psr\Http\Message\ServerRequestInterface` method parameters.
 
 ..  index:: PHP-API, FullyScanned, ext:core

@@ -12,8 +12,9 @@ Description
 ===========
 
 AJAX endpoints registered as custom cache actions via
-:php:`ModifyClearCacheActionsEvent` should return a JSON response containing
-:php:`success`, :php:`title`, and :php:`message` fields.
+:php:`\TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent` should
+return a JSON response containing :php:`success`, :php:`title`, and
+:php:`message` fields.
 
 The clear-cache toolbar now treats a missing or non-:php:`false` :php:`success`
 value as a successful operation and falls back to generic notification labels
