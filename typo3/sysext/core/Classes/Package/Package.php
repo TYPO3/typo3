@@ -154,13 +154,13 @@ class Package implements PackageInterface
         $this->packageMetaData->setTitle($title);
         $this->packageMetaData->setDescription($title !== $description ? $description : null);
         $this->packageMetaData->setPackageType($manifest->type ?? null);
-        $isFrameworkPackage = $this->packageMetaData->isFrameworkType();
+        $isFrameworkPackage = $packageManager->isFrameworkPackage($this->getValueFromComposerManifest('name') ?? $this->packageKey);
         $version = $manifest->extra->{'typo3/cms'}->{'version'} ?? $manifest->version ?? self::NO_VERSION_SET;
         if ($isFrameworkPackage) {
             $version = (new Typo3Version())->getVersion();
-        }
-        if (is_string($manifest->state ?? null)
+        } elseif (is_string($manifest->state ?? null)
             && $version !== self::NO_VERSION_SET
+            // Third party extensions might have a state in version already
             && !str_contains($version, '-')
         ) {
             $stability = Stability::tryFrom($manifest->state);
