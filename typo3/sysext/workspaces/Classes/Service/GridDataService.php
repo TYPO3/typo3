@@ -284,15 +284,14 @@ readonly class GridDataService
                     'icon_Workspace' => $iconWorkspace->getIdentifier(),
                     'icon_Workspace_Overlay' => $iconWorkspace->getOverlayIcon()?->getIdentifier() ?? '',
                     'comments' => $commentsForRecord,
-                    // escape/sanitize the others
-                    'path_Live' => htmlspecialchars(BackendUtility::getRecordPath($liveRecord['pid'], '', 999)),
-                    'label_Stage' => htmlspecialchars($currentStage->title),
+                    'path_Live' => BackendUtility::getRecordPath($liveRecord['pid'], '', 999),
+                    'label_Stage' => $currentStage->title,
                     'label_PrevStage' => $previousStageSendToTitle ? ['title' => $previousStageSendToTitle] : false,
                     'label_NextStage' => $nextStageSendToTitle ? ['title' => $nextStageSendToTitle] : false,
                     'stage_position' => $this->stagesService->getPositionOfCurrentStage($stages, $currentStage->uid),
                     'stage_count' => count($stages) - 1, // Do not count 'pseudo' execute stage
                     'parent' => [
-                        'table' => htmlspecialchars($table),
+                        'table' => $table,
                         'uid' => (int)$parameter->uid,
                     ],
                     'history' => [
@@ -384,11 +383,11 @@ readonly class GridDataService
                 $versionArray['table'] = $table;
                 $versionArray['id'] = $table . ':' . $record['uid'];
                 $versionArray['uid'] = $record['uid'];
-                $versionArray['label_Workspace'] = htmlspecialchars($workspaceRecordLabel);
-                $versionArray['label_Stage'] = htmlspecialchars($currentStageTitle);
+                $versionArray['label_Workspace'] = $workspaceRecordLabel;
+                $versionArray['label_Stage'] = $currentStageTitle;
                 $versionArray['value_nextStage'] = $nextStage->uid ?? 0;
                 $versionArray['value_prevStage'] = $previousStage->uid ?? 0;
-                $versionArray['path_Workspace'] = htmlspecialchars(BackendUtility::getRecordPath((int)$record['wspid'], '', 0));
+                $versionArray['path_Workspace'] = BackendUtility::getRecordPath((int)$record['wspid'], '', 0);
                 $versionArray['lastChangedFormatted'] = '';
                 if (array_key_exists('tstamp', $versionRecord)) {
                     // @todo: Avoid hard coded access to 'tstamp' and use table TCA 'ctrl' 'tstamp' value instead, if set.
@@ -396,8 +395,8 @@ readonly class GridDataService
                 }
                 $history = $this->historyService->getHistory($table, (int)$record['uid']);
                 $versionArray['lastEditorId'] = isset($history[0]['user_uid']) ? (int)$history[0]['user_uid'] : 0;
-                $versionArray['lastEditorName'] = htmlspecialchars((string)($history[0]['user'] ?? ''));
-                $versionArray['lastEditorRealName'] = htmlspecialchars((string)($history[0]['user_realName'] ?? ''));
+                $versionArray['lastEditorName'] = (string)($history[0]['user'] ?? '');
+                $versionArray['lastEditorRealName'] = (string)($history[0]['user_realName'] ?? '');
                 $versionArray['lastEditorAvatar'] = (string)($history[0]['user_avatar'] ?? '');
                 $versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];
                 $versionArray['t3ver_oid'] = $calculatedT3verOid;
@@ -409,7 +408,7 @@ readonly class GridDataService
                 $versionArray['language'] = [
                     'icon' => $this->iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon') ?? 'empty-empty', IconSize::SMALL)->getIdentifier(),
                     'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
-                    'title_crop' => htmlspecialchars(BackendUtility::cropToTitleLength($this->getSystemLanguageValue($languageValue, $pageId, 'title') ?? '')),
+                    'title_crop' => BackendUtility::cropToTitleLength($this->getSystemLanguageValue($languageValue, $pageId, 'title') ?? ''),
                 ];
                 if ($isAllowedToPublish && $swapStage === StagesService::STAGE_PUBLISH_ID && (int)$versionRecord['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID) {
                     $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify && $this->stagesService->getStage($stages, StagesService::STAGE_PUBLISH_ID)->isAllowed;
