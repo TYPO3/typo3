@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Mutation;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationMode;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyRegistry;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
@@ -86,7 +87,7 @@ final readonly class XmlSitemapRenderer
         $sitemapName = is_string($sitemapName) && $sitemapName !== '' ? $sitemapName : null;
         $xslResource = $this->getXslResource($configConfiguration, $sitemapType, $sitemapName);
         if ($xslResource !== null) {
-            $this->applyDynamicContentSecurityPolicy($xslResource);
+            $this->applyContentSecurityPolicy($xslResource);
             $view->assign('xslFile', (string)$this->resourcePublisher->generateUri($xslResource, $request));
         }
         if ($sitemapName !== null) {
@@ -172,26 +173,29 @@ final readonly class XmlSitemapRenderer
     }
 
     /**
-     * Applies `Content-Security-Policy` mutations for `unsafe-hashes` for XSLT styles.
-     * This is done dynamically, since XSLT styles might change some day...
+     * Applies `Content-Security-Policy` mutations for the XSLT stylesheet:
+     *
+     * - Browsers evaluate XSLT against the `script-src` family. `'strict-dynamic'` invalidates
+     *   URL-based sources there, which is the only way the XSL file can be referenced. It is
+     *   therefore reduced and `'self'` is granted instead. For cacheable requests
+     *   `AvoidContentSecurityPolicyNonceEventListener` drops `'strict-dynamic'` already, but
+     *   sitemaps are rendered uncached as well, e.g. when a backend user is logged in.
+     * - Hashes of the XSLT styles are added to `style-src-elem`. This is done dynamically,
+     *   since XSLT styles might change some day...
      *
      * The expected hash for the default XSLT styles is `sha256-d0ax6zoVJBeBpy4l3O2FJ6Y1L4SalCWw2x62uoJH15k=`.
      */
-    private function applyDynamicContentSecurityPolicy(SystemResourceInterface $xslResource): void
+    private function applyContentSecurityPolicy(SystemResourceInterface $xslResource): void
     {
-        try {
-            $dom = new \DOMDocument();
-            $dom->loadXML($xslResource->getContents());
-        } catch (SystemResourceDoesNotExistException) {
-            return;
-        }
-        $hashes = [];
-        foreach ($dom->getElementsByTagName('style') as $node) {
-            if ($node->getAttribute('type') !== 'text/css') {
-                continue;
-            }
-            $hashes[] = HashValue::hash($node->textContent);
-        }
+        $this->policyRegistry->appendMutationCollection(
+            new MutationCollection(
+                new Mutation(MutationMode::Reduce, Directive::ScriptSrc, SourceKeyword::strictDynamic),
+                new Mutation(MutationMode::Reduce, Directive::ScriptSrcElem, SourceKeyword::strictDynamic),
+                new Mutation(MutationMode::Extend, Directive::ScriptSrc, SourceKeyword::self),
+                new Mutation(MutationMode::Extend, Directive::ScriptSrcElem, SourceKeyword::self)
+            )
+        );
+        $hashes = $this->resolveStyleHashes($xslResource);
         if ($hashes === []) {
             return;
         }
@@ -204,5 +208,26 @@ final readonly class XmlSitemapRenderer
                 )
             )
         );
+    }
+
+    /**
+     * @return list<HashValue>
+     */
+    private function resolveStyleHashes(SystemResourceInterface $xslResource): array
+    {
+        try {
+            $dom = new \DOMDocument();
+            $dom->loadXML($xslResource->getContents());
+        } catch (SystemResourceDoesNotExistException) {
+            return [];
+        }
+        $hashes = [];
+        foreach ($dom->getElementsByTagName('style') as $node) {
+            if ($node->getAttribute('type') !== 'text/css') {
+                continue;
+            }
+            $hashes[] = HashValue::hash($node->textContent);
+        }
+        return $hashes;
     }
 }
