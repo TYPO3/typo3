@@ -134,7 +134,7 @@ final class UserSettingsSchemaTest extends UnitTestCase
         ];
 
         $schema = new UserSettingsSchema();
-        self::assertSame('--div--;Tab1,field1,field2', $schema->getShowitem());
+        self::assertSame('--div--;Tab1,field1,field2', $schema->getTcaShowitem());
     }
 
     #[Test]
@@ -148,7 +148,7 @@ final class UserSettingsSchemaTest extends UnitTestCase
         ];
 
         $schema = new UserSettingsSchema();
-        self::assertSame('--div--;Tab1,field1,thirdPartyField', $schema->getShowitem());
+        self::assertSame('--div--;Tab1,field1,thirdPartyField', $schema->getTcaShowitem());
     }
 
     #[Test]

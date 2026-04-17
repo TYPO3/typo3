@@ -75,9 +75,34 @@ readonly class UserSettingsSchema
     }
 
     /**
+     * Returns a "fake TCA" for the be_users_settings pseudo-table.
+     */
+    public function getTca(): array
+    {
+        $columns = $GLOBALS['TCA']['be_users']['columns']['user_settings']['columns'] ?? [];
+        foreach ($columns as $fieldName => $columnConfig) {
+            $columns[$fieldName] = $this->resolveInheritFromParent($fieldName, $columnConfig);
+        }
+
+        return [
+            'be_users_settings' => [
+                'ctrl' => [
+                    'title' => 'backend.user_profile:user_settings',
+                ],
+                'columns' => $columns,
+                'types' => [
+                    '0' => [
+                        'showitem' => $this->getTcaShowitem(),
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * Get the showitem string (merged from TCA and legacy global).
      */
-    public function getShowitem(): string
+    public function getTcaShowitem(): string
     {
         $tcaShowitem = trim($GLOBALS['TCA']['be_users']['columns']['user_settings']['showitem'] ?? '');
         // @deprecated since TYPO3 v14, remove in TYPO3 v15
@@ -92,7 +117,7 @@ readonly class UserSettingsSchema
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function getJsonFieldSettingKeys(): array
     {

@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Configuration\UserSettingsTcaConfiguration;
 use TYPO3\CMS\Backend\Event\AddUserSettingsJavaScriptModulesEvent;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\UserSettingsDataGroup;
@@ -115,7 +114,6 @@ class SetupModuleController
         protected readonly NodeFactory $nodeFactory,
         protected readonly FormResultFactory $formResultFactory,
         protected readonly FormResultHandler $formResultHandler,
-        protected readonly UserSettingsTcaConfiguration $userSettingsTcaConfiguration,
         protected readonly UserSettingsSchema $userSettingsSchema,
         protected readonly TcaSchemaBuilder $tcaSchemaBuilder,
     ) {
@@ -172,11 +170,9 @@ class SetupModuleController
         }
 
         // Use FormEngine to render the user settings form
-        $formData = $this->compileFormData($request, $this->userSettingsTcaConfiguration->getTca());
+        $formData = $this->compileFormData($request, $this->userSettingsSchema->getTca());
         $formData['renderType'] = 'fullRecordContainer';
         $formResultArray = $this->nodeFactory->create($formData)->render();
-        // Needed to be set for 'onChange="reload"' and reload on type change to work
-        $formResultArray['doSaveFieldName'] = 'doSave';
         $formResult = $this->formResultFactory->create($formResultArray);
         $this->formResultHandler->addAssets($formResult);
 
@@ -328,7 +324,7 @@ class SetupModuleController
                 // If every value should be default
                 $backendUser->resetUC();
                 $this->settingsAreResetToDefault = true;
-            } elseif ($d['save'] ?? $postData['data']['save'] ?? $postData['doSave'] ?? false) {
+            } elseif ($d['save'] ?? $postData['data']['save'] ?? false) {
                 foreach ($columns as $field => $config) {
                     if (!in_array($field, $fieldList, true)) {
                         continue;
@@ -470,11 +466,15 @@ class SetupModuleController
      * Returns array with fields defined in TCA user settings showitem.
      * Remove fields which are disabled by user TSconfig
      *
-     * @return string[] Array with field names visible in form
+     * @return list<string> Array with field names visible in form
      */
     protected function getFieldsFromShowItem(): array
     {
-        $allowedFields = GeneralUtility::trimExplode(',', $this->userSettingsSchema->getShowitem(), true);
+        // just keep field names, filter out control sequences
+        $tcaFieldNames = array_keys($this->userSettingsSchema->getColumns());
+        $allowedFields = GeneralUtility::trimExplode(',', $this->userSettingsSchema->getTcaShowitem(), true);
+        $allowedFields = array_map($this->extractShowitemFieldName(...), $allowedFields);
+        $allowedFields = array_filter($allowedFields, static fn(string $field): bool => in_array($field, $tcaFieldNames, true));
         $backendUser = $this->getBackendUser();
         if ($backendUser->getOriginalUserIdWhenInSwitchUserMode() && $backendUser->isSystemMaintainer(true)) {
             // DataHandler denies changing the password of system maintainer users in switch user mode.
@@ -499,6 +499,15 @@ class SetupModuleController
             }
         }
         return $allowedFields;
+    }
+
+    /**
+     * Extracts `field_name` from a showitem field `field_name;field_label`.
+     */
+    protected function extractShowitemFieldName(string $fieldName): string
+    {
+        $offset = strpos($fieldName, ';');
+        return $offset !== false ? substr($fieldName, 0, $offset) : $fieldName;
     }
 
     /**
@@ -620,7 +629,7 @@ class SetupModuleController
                 'data-content' => $languageService->translate('set_to_standard_question', 'backend.user_profile'),
                 'data-event' => 'confirm',
                 'data-event-name' => 'setup:confirmation:response',
-                'data-event-payload' => 'reset_configuration',
+                'data-event-payload' => 'resetConfiguration',
             ]);
         $view->addButtonToButtonBar($resetButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
