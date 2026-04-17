@@ -285,7 +285,9 @@ final class SiteMatcherTest extends UnitTestCase
     {
         $siteConfigurationMock = $this->createMock(SiteConfiguration::class);
         $sitesArray = array_combine(
-            array_map(static function (Site $site) { return $site->getIdentifier(); }, $sites),
+            array_map(static function (Site $site) {
+                return $site->getIdentifier();
+            }, $sites),
             $sites
         );
         $siteConfigurationMock->method('getAllExistingSites')->willReturn($sitesArray);

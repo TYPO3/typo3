@@ -128,7 +128,7 @@
 		"codeception/module-filesystem": "^3.0.1",
 		"codeception/module-webdriver": "^4.0.3",
 		"composer/composer": "^2.9.7",
-		"friendsofphp/php-cs-fixer": "^3.88.2",
+		"friendsofphp/php-cs-fixer": "^3.95",
 		"php-webdriver/webdriver": "^1.15.2",
 		"phpstan/phpstan": "^2.1.48",
 		"phpstan/phpstan-phpunit": "^2.0.8",
