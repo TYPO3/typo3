@@ -37,10 +37,10 @@
         <source>Allow to directly upload files when editing or creating records</source>
       </trans-unit>
       <trans-unit id="contextual_record_edit">
-        <source>Use quick editing for records in the layout module</source>
+        <source>Use quick editing for records in the Layout module</source>
       </trans-unit>
       <trans-unit id="show_hidden_files_and_folders">
-        <source>Show hidden files and folders in the filelist</source>
+        <source>Show hidden files and folders in the Media module</source>
       </trans-unit>
       <trans-unit id="display_recently_used">
         <source>Enable dynamic "recently used" category in wizards</source>
