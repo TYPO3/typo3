@@ -191,4 +191,35 @@ final class RotatingFileWriterTest extends UnitTestCase
 
         self::assertFileDoesNotExist($logFileName . '.20230607093215');
     }
+
+    #[Test]
+    public function zeroMaxFilesKeepsAllFiles(): void
+    {
+        $logFileName = $this->getDefaultFileName();
+
+        $expectedLogFiles = [
+            $logFileName,
+            $logFileName . '.20230609093215',
+            $logFileName . '.20230608093215',
+            $logFileName . '.20230607093215',
+            $logFileName . '.20230606093215',
+        ];
+
+        foreach ($expectedLogFiles as $expectedLogFile) {
+            file_put_contents($expectedLogFile, 'fooo');
+        }
+
+        $writer = new RotatingFileWriter([
+            'interval' => Interval::DAILY,
+            'logFile' => $logFileName,
+            'maxFiles' => 0,
+        ]);
+
+        $simpleRecord = new LogRecord(StringUtility::getUniqueId('test.core.log.rotatingFileWriter.simpleRecord.'), LogLevel::INFO, 'test record');
+        $writer->writeLog($simpleRecord);
+
+        foreach ($expectedLogFiles as $expectedLogFile) {
+            self::assertFileExists($expectedLogFile);
+        }
+    }
 }

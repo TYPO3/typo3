@@ -112,9 +112,11 @@ class RotatingFileWriter extends FileWriter
         rsort($rotatedLogFiles, SORT_NATURAL);
 
         // Remove any excess files
-        $excessFiles = array_slice($rotatedLogFiles, $this->maxFiles);
-        foreach ($excessFiles as $excessFile) {
-            unlink($excessFile);
+        if ($this->maxFiles > 0) {
+            $excessFiles = array_slice($rotatedLogFiles, $this->maxFiles);
+            foreach ($excessFiles as $excessFile) {
+                unlink($excessFile);
+            }
         }
 
         $this->updateRuntimeRotationState(new \DateTimeImmutable());
