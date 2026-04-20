@@ -17,12 +17,26 @@ namespace TYPO3\CMS\Core\Type\File;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Imaging\Exception\InvalidSvgException;
 use TYPO3\CMS\Core\Imaging\Exception\UnsupportedFileException;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentFactory;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * An SPL FileInfo class providing information related to an image.
+ *
+ * @todo: This is a broken construct. ImageInfo (via FileInfo) extends
+ *        \SplFileInfo, a pure data object whose only state is the file path
+ *        passed to its constructor. FileInfo and ImageInfo then bolt service
+ *        aspects (mime detection, image size extraction, SVG/graphics
+ *        processing pulled in via makeInstance) onto that data object, which
+ *        is why those collaborators cannot be injected and have to be fetched
+ *        via GeneralUtility::makeInstance(). This should be refactored by
+ *        splitting the service aspect away from the data object: a slim
+ *        path/metadata value object, plus a separate injectable service that
+ *        resolves image information for a given file.
  */
 class ImageInfo extends FileInfo implements LoggerAwareInterface
 {
@@ -133,29 +147,12 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
      */
     protected function extractSvgImageSizes()
     {
-        $fileContent = file_get_contents($this->getPathname());
-        if ($fileContent === false) {
+        try {
+            $document = GeneralUtility::makeInstance(SvgDocumentFactory::class)->fromFile($this->getPathname());
+            $dimensions = GeneralUtility::makeInstance(SvgDocumentService::class)->getDimensions($document);
+        } catch (InvalidSvgException) {
             return false;
         }
-        $xml = simplexml_load_string($fileContent, \SimpleXMLElement::class, LIBXML_NOERROR | LIBXML_NOWARNING);
-        // If something went wrong with simpleXml don't try to read information
-        if ($xml === false) {
-            return false;
-        }
-
-        $xmlAttributes = $xml->attributes();
-
-        // First check if width+height are set
-        if (!empty($xmlAttributes['width']) && !empty($xmlAttributes['height'])) {
-            return [(int)$xmlAttributes['width'], (int)$xmlAttributes['height']];
-        }
-        if (!empty($xmlAttributes['viewBox'])) {
-            // Fallback to viewBox
-            $viewBox = explode(' ', $xmlAttributes['viewBox']);
-            return [(int)$viewBox[2], (int)$viewBox[3]];
-        }
-
-        // To not fail image processing, we just assume an SVG image dimension here
-        return [64, 64];
+        return [$dimensions->getWidth(), $dimensions->getHeight()];
     }
 }

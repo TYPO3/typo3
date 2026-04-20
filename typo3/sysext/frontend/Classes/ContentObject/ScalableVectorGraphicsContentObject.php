@@ -15,6 +15,9 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use TYPO3\CMS\Core\Imaging\Exception\InvalidSvgException;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentFactory;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentService;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
@@ -30,6 +33,8 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     public function __construct(
         protected readonly SystemResourceFactory $resourceFactory,
         protected readonly SystemResourcePublisherInterface $resourcePublisher,
+        protected readonly SvgDocumentFactory $svgDocumentFactory,
+        protected readonly SvgDocumentService $svgDocumentService,
     ) {}
 
     /**
@@ -61,18 +66,18 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
             }
         }
         if ($svgContent !== '') {
-            $svgContent = preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent) ?? '';
-            $svgElement = simplexml_load_string($svgContent);
-
-            $domXml = dom_import_simplexml($svgElement);
-            if (!$isDefaultWidth) {
-                $domXml->setAttribute('width', $width);
+            try {
+                $document = $this->svgDocumentFactory->fromStringAndSanitize($svgContent);
+                if (!$isDefaultWidth) {
+                    $document->documentElement->setAttribute('width', (string)$width);
+                }
+                if (!$isDefaultHeight) {
+                    $document->documentElement->setAttribute('height', (string)$height);
+                }
+                $content = $this->svgDocumentService->toInlineMarkup($document);
+            } catch (InvalidSvgException) {
+                $content = '';
             }
-            if (!$isDefaultHeight) {
-                $domXml->setAttribute('height', $height);
-            }
-            // remove xml version tag
-            $content = $domXml->ownerDocument->saveXML($domXml->ownerDocument->documentElement);
         } else {
             $value = $this->cObj->stdWrapValue('value', $conf);
             if (!empty($value)) {

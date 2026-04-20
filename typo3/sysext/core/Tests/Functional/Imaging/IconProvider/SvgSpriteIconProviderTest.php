@@ -42,7 +42,7 @@ final class SvgSpriteIconProviderTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->file = new DummyFileCreationService($this->get(StorageRepository::class));
-        $this->subject = new SvgSpriteIconProvider();
+        $this->subject = $this->get(SvgSpriteIconProvider::class);
         $this->icon = new Icon();
         $this->icon->setIdentifier('foo');
         $this->icon->setSize(IconSize::SMALL);
@@ -214,7 +214,7 @@ final class SvgSpriteIconProviderTest extends FunctionalTestCase
             'sprite' => 'typo3temp/assets/foo.svg#bar',
             'source' => 'typo3temp/assets/foo-bar.svg',
         ]);
-        self::assertEquals('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgSpriteIconProvider::MARKUP_IDENTIFIER_INLINE));
+        self::assertEquals('<svg viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgSpriteIconProvider::MARKUP_IDENTIFIER_INLINE));
     }
 
     #[Test]
@@ -227,6 +227,6 @@ final class SvgSpriteIconProviderTest extends FunctionalTestCase
             'sprite' => 'PKG:typo3/app:typo3temp/assets/foo.svg#bar',
             'source' => 'PKG:typo3/app:typo3temp/assets/foo-bar.svg',
         ]);
-        self::assertEquals('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgSpriteIconProvider::MARKUP_IDENTIFIER_INLINE));
+        self::assertEquals('<svg viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgSpriteIconProvider::MARKUP_IDENTIFIER_INLINE));
     }
 }

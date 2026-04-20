@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Attribute\AsModuleAccessGate;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Imaging\IconProviderInterface;
 use TYPO3\CMS\Core\SystemResource\Publishing\FileSystem\FileSystemPublisherInterface;
 
 return static function (ContainerConfigurator $container, ContainerBuilder $containerBuilder) {
@@ -26,6 +27,9 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     // Services, to be read from container-aware dispatchers (on demand), therefore marked 'public'
     $containerBuilder->registerForAutoconfiguration(MiddlewareInterface::class)->addTag('typo3.middleware');
     $containerBuilder->registerForAutoconfiguration(RequestHandlerInterface::class)->addTag('typo3.request_handler');
+
+    // Icon providers are resolved via the container by IconFactory (on demand), therefore marked 'public'
+    $containerBuilder->registerForAutoconfiguration(IconProviderInterface::class)->addTag('icon.provider');
 
     $containerBuilder->registerAttributeForAutoconfiguration(
         AsEventListener::class,
@@ -144,6 +148,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->addCompilerPass(new DependencyInjection\ListenerProviderPass('event.listener'));
     $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('typo3.middleware'));
     $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('typo3.request_handler'));
+    $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('icon.provider'));
     $containerBuilder->addCompilerPass(new DependencyInjection\ConsoleCommandPass('console.command'));
     $containerBuilder->addCompilerPass(new DependencyInjection\MessageHandlerPass('messenger.message_handler'));
     $containerBuilder->addCompilerPass(new DependencyInjection\MessengerMiddlewarePass('messenger.middleware'));

@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Processing;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Imaging\Exception\InvalidSvgException;
 use TYPO3\CMS\Core\Imaging\Exception\ZeroImageDimensionException;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageProcessingInstructions;
-use TYPO3\CMS\Core\Imaging\SvgManipulation;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentFactory;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,9 +34,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * and creates a new locally created processed file which is then pushed
  * into FAL again.
  */
-class SvgImageProcessor implements ProcessorInterface
+#[Autoconfigure(public: true)]
+readonly class SvgImageProcessor implements ProcessorInterface
 {
-    private int $defaultSvgDimension = 64;
+    private const DEFAULT_SVG_DIMENSION = 64;
+
+    public function __construct(
+        private SvgDocumentFactory $svgDocumentFactory,
+        private SvgDocumentService $svgDocumentService,
+    ) {}
 
     public function canProcessTask(TaskInterface $task): bool
     {
@@ -54,13 +63,13 @@ class SvgImageProcessor implements ProcessorInterface
             $imageDimension = new ImageDimension($processingInstructions->width, $processingInstructions->height);
         } catch (ZeroImageDimensionException) {
             $processingInstructions = new ImageProcessingInstructions(
-                width: $this->defaultSvgDimension,
-                height: $this->defaultSvgDimension,
+                width: self::DEFAULT_SVG_DIMENSION,
+                height: self::DEFAULT_SVG_DIMENSION,
             );
             // To not fail image processing, we just assume an SVG image dimension here
             $imageDimension = new ImageDimension(
-                width: $this->defaultSvgDimension,
-                height: $this->defaultSvgDimension
+                width: self::DEFAULT_SVG_DIMENSION,
+                height: self::DEFAULT_SVG_DIMENSION
             );
         }
 
@@ -88,26 +97,23 @@ class SvgImageProcessor implements ProcessorInterface
     }
 
     /**
-     * Create standalone wrapper files for SVGs.
-     * Cropped responsive images delivered via an <img> tag or
-     * as a URI for a background image, need to be self-contained.
-     * Therefore we wrap a <svg> container around the original SVG
-     * content.
-     * A viewBox() crop is then applied to that container.
-     * The processed file will contain all the viewBox cropping information
-     * and thus transports intrinsic sizes for all variants of CSS
-     * processing (max/min width/height).
+     * Wrap the source SVG in a crop container and write it to a temporary
+     * processed file. The wrapper carries the viewBox crop and target
+     * dimensions so the result is self-contained when embedded via <img>.
      */
     protected function applyCropping(TaskInterface $task, Area $cropArea, ImageDimension $imageDimension): void
     {
-        $processedSvg = GeneralUtility::makeInstance(SvgManipulation::class)->cropScaleSvgString(
-            $task->getSourceFile()->getContents(),
-            $cropArea,
-            $imageDimension
-        );
-        // Save the output as a new processed file.
+        try {
+            $document = $this->svgDocumentFactory->fromFile($task->getSourceFile());
+            $processedSvg = $this->svgDocumentService->cropScale($document, $cropArea, $imageDimension);
+        } catch (InvalidSvgException) {
+            // Source SVG could not be parsed - fall back to the unprocessed original.
+            $task->setExecuted(true);
+            $task->getTargetFile()->setUsesOriginalFile();
+            return;
+        }
         $temporaryFilename = $this->getFilenameForSvgCropScaleMask($task);
-        GeneralUtility::writeFile($temporaryFilename, $processedSvg->saveXML(), true);
+        GeneralUtility::writeFile($temporaryFilename, $this->svgDocumentService->toXml($processedSvg), true);
 
         $task->setExecuted(true);
         $imageInformation = GeneralUtility::makeInstance(ImageInfo::class, $temporaryFilename);
@@ -122,7 +128,6 @@ class SvgImageProcessor implements ProcessorInterface
             'checksum' => $task->getConfigurationChecksum(),
         ]);
         $task->getTargetFile()->updateWithLocalFile($temporaryFilename);
-        // The temporary file is removed again
         GeneralUtility::unlink_tempfile($temporaryFilename);
     }
 

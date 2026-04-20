@@ -21,9 +21,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Imaging\Exception\InvalidSvgException;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentFactory;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
-use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\Type\SystemResourceInterface;
@@ -49,11 +51,12 @@ final class LoginLogoViewHelper extends AbstractViewHelper
 
     public function __construct(
         private readonly AuthenticationStyleInformation $authenticationStyleInformation,
-        private readonly SvgSanitizer $svgSanitizer,
         private readonly PackageDependentCacheIdentifier $packageDependentCacheIdentifier,
         #[Autowire(service: 'cache.assets')]
         private readonly FrontendInterface $cache,
         private readonly SystemResourcePublisherInterface $resourcePublisher,
+        private readonly SvgDocumentFactory $svgDocumentFactory,
+        private readonly SvgDocumentService $svgDocumentService,
     ) {}
 
     public function render(): string
@@ -113,37 +116,17 @@ final class LoginLogoViewHelper extends AbstractViewHelper
             return null;
         }
 
-        // SVG is sanitized, because login screen needs increased security precautions
-        $svgContent = $this->svgSanitizer->sanitizeContent($svgContent);
-        if (!$svgContent) {
+        // SVG is sanitized, because login screen needs increased security precautions.
+        // Links are stripped so the rendered logo cannot contain clickable areas.
+        try {
+            $document = $this->svgDocumentFactory->fromStringAndSanitize($svgContent, true);
+        } catch (InvalidSvgException) {
             return null;
         }
 
-        $domXml = new \DOMDocument();
-        if (!$domXml->loadXML($svgContent)) {
-            return null;
-        }
-
-        // @todo: move link-removal into a configurable svg-sanitizer option
-        $xpath = new \DOMXPath($domXml);
-        $links = $xpath->query('//*[local-name()="a"]');
-        foreach ($links as $link) {
-            if ($link instanceof \DOMElement) {
-                $link->remove();
-            }
-        }
-
-        // Remove SVG xmlns which is not needed in HTML5, as HTML5 imports SVG into it's namespace
-        $svgElement = $domXml->documentElement;
-        $svgElement->removeAttributeNS('http://www.w3.org/2000/svg', '');
-        if ($svgElement->hasAttribute('version')) {
-            $svgElement->removeAttribute('version');
-        }
-        if (!$svgElement->hasAttribute('viewBox') && $svgElement->hasAttribute('width') && $svgElement->hasAttribute('height')) {
-            $svgElement->setAttribute('viewBox', sprintf('0 0 %d %d', (int)$svgElement->getAttribute('width'), (int)$svgElement->getAttribute('height')));
-        }
-        $svgElement->setAttribute('aria-hidden', 'true');
-        return $domXml->saveXML($svgElement);
+        // Logo is decorative; the login page has its own heading.
+        $document->documentElement->setAttribute('aria-hidden', 'true');
+        return $this->svgDocumentService->toInlineMarkup($document);
     }
 
     private function getLanguageService(): LanguageService
