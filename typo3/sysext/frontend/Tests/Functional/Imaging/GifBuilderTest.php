@@ -434,6 +434,62 @@ final class GifBuilderTest extends FunctionalTestCase
         self::assertGreaterThan(20, $imageResource->getHeight());
     }
 
+    /**
+     * rotate takes any angle and turns it into the same rotation within one
+     * turn: -90 is 270 and 450 is 90. Right angles take libgd's exact path,
+     * so the sizes are pinned; 360 is the case that shows a full turn leaves
+     * the image as it is.
+     *
+     * @return array<string, array{0: non-empty-string, 1: int, 2: int}>
+     */
+    public static function rotateNormalizesTheAngleToOneTurnDataProvider(): array
+    {
+        return [
+            'an angle within one turn' => ['rotate = 90', 20, 30],
+            'a full turn' => ['rotate = 360', 30, 20],
+            'a negative angle' => ['rotate = -90', 20, 30],
+            'an angle above one turn' => ['rotate = 450', 20, 30],
+        ];
+    }
+
+    #[DataProvider('rotateNormalizesTheAngleToOneTurnDataProvider')]
+    #[Test]
+    public function rotateNormalizesTheAngleToOneTurn(string $effect, int $expectedWidth, int $expectedHeight): void
+    {
+        $conf = [
+            'XY' => '30,20',
+            'backColor' => '#3050c0',
+            'format' => 'png',
+            '10' => 'EFFECT',
+            '10.' => ['value' => $effect],
+        ];
+
+        $imageResource = $this->buildImage($conf);
+
+        self::assertSame($expectedWidth, $imageResource->getWidth());
+        self::assertSame($expectedHeight, $imageResource->getHeight());
+    }
+
+    #[Test]
+    public function rotateTurnsClockwise(): void
+    {
+        $image = $this->renderPng([
+            'XY' => '30,20',
+            'backColor' => '#0000ff',
+            'format' => 'png',
+            '10' => 'BOX',
+            '10.' => ['color' => '#ff0000', 'dimensions' => '0,0,15,20'],
+            '20' => 'EFFECT',
+            '20.' => ['value' => 'rotate = 90'],
+        ]);
+
+        self::assertSame(20, imagesx($image));
+        self::assertSame(30, imagesy($image));
+        // clockwise moves the left half to the top
+        self::assertSame([255, 0, 0], self::rgb($image, 10, 5));
+        self::assertSame([0, 0, 255], self::rgb($image, 10, 25));
+    }
+
     #[Test]
     public function shearIsClampedSoAnExtremeAngleStillProducesAFiniteImage(): void
     {

@@ -19,6 +19,23 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\FileProcessingAspect;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Imaging\Effect\Blur;
+use TYPO3\CMS\Core\Imaging\Effect\Charcoal;
+use TYPO3\CMS\Core\Imaging\Effect\Colors;
+use TYPO3\CMS\Core\Imaging\Effect\Edge;
+use TYPO3\CMS\Core\Imaging\Effect\EffectParser;
+use TYPO3\CMS\Core\Imaging\Effect\Emboss;
+use TYPO3\CMS\Core\Imaging\Effect\Flip;
+use TYPO3\CMS\Core\Imaging\Effect\Flop;
+use TYPO3\CMS\Core\Imaging\Effect\Gamma;
+use TYPO3\CMS\Core\Imaging\Effect\Gray;
+use TYPO3\CMS\Core\Imaging\Effect\Invert;
+use TYPO3\CMS\Core\Imaging\Effect\Rotate;
+use TYPO3\CMS\Core\Imaging\Effect\Sharpen;
+use TYPO3\CMS\Core\Imaging\Effect\Shear;
+use TYPO3\CMS\Core\Imaging\Effect\Solarize;
+use TYPO3\CMS\Core\Imaging\Effect\Swirl;
+use TYPO3\CMS\Core\Imaging\Effect\Wave;
 use TYPO3\CMS\Core\Imaging\GraphicsCanvas;
 use TYPO3\CMS\Core\Imaging\ImageProcessingInstructions;
 use TYPO3\CMS\Core\Imaging\ImageResource;
@@ -921,76 +938,43 @@ class GifBuilder
      */
     protected function makeEffect(\GdImage &$im, array $conf): void
     {
-        $setup = $conf['value'] ?? '';
-        if (!trim($setup)) {
+        $setup = trim((string)($conf['value'] ?? ''));
+        if ($setup === '') {
             return;
         }
         $canvas = GraphicsCanvas::load($im);
-        $effects = explode('|', $setup);
-        foreach ($effects as $val) {
-            $pairs = explode('=', $val, 2);
-            $value = trim($pairs[1] ?? '');
-            $effect = strtolower(trim($pairs[0]));
-            switch ($effect) {
-                case 'blur':
-                    $canvas->blur(max(1, (int)round(((int)$value + 1) / 4)));
-                    break;
-                case 'charcoal':
-                    $canvas->charcoal(MathUtility::forceIntegerInRange((int)$value, 1, 5));
-                    break;
-                case 'colors':
-                    $canvas->colors(MathUtility::forceIntegerInRange((int)$value, 2, 255));
-                    break;
-                case 'edge':
-                    $canvas->edge();
-                    break;
-                case 'emboss':
-                    $canvas->emboss();
-                    break;
-                case 'sharpen':
-                    $canvas->sharpen((int)$value);
-                    break;
-                case 'gray':
-                    $canvas->grayscale();
-                    break;
-                case 'invert':
-                    $canvas->invert();
-                    break;
-                case 'gamma':
-                    $canvas->gamma(1.0, max(0.1, min(10.0, (float)$value)));
-                    break;
-                case 'solarize':
-                    $canvas->solarize(MathUtility::forceIntegerInRange((int)$value, 0, 99));
-                    break;
-                case 'swirl':
-                    $canvas->swirl(MathUtility::forceIntegerInRange((int)$value, -720, 720));
-                    break;
-                case 'flip':
-                    $canvas->flip();
-                    break;
-                case 'flop':
-                    $canvas->flop();
-                    break;
-                case 'rotate':
-                    $canvas->rotate(-(float)$value);
-                    break;
-                case 'shear':
-                    $canvas->shear((int)$value);
-                    break;
-                case 'wave':
-                    $params = GeneralUtility::intExplode(',', $value);
-                    $canvas->wave(
-                        MathUtility::forceIntegerInRange($params[0] ?? 0, 0, 99),
-                        MathUtility::forceIntegerInRange($params[1] ?? 30, 1, 99),
-                    );
-                    break;
-            }
+        foreach (new EffectParser()->parse($setup) as $effect) {
+            self::applyEffect($canvas, $effect);
         }
         $im = $canvas->resource();
         // rotate, shear and wave change the canvas size, so the current dimensions
         // have to be published for a following WORKAREA reset or CROP object.
         $this->w = $canvas->width();
         $this->h = $canvas->height();
+    }
+
+    private static function applyEffect(GraphicsCanvas $canvas, object $effect): void
+    {
+        match (true) {
+            $effect instanceof Blur => $canvas->blur(max(1, (int)round(($effect->strength + 1) / 4))),
+            $effect instanceof Charcoal => $canvas->charcoal($effect->radius),
+            $effect instanceof Colors => $canvas->colors($effect->count),
+            $effect instanceof Edge => $canvas->edge(),
+            $effect instanceof Emboss => $canvas->emboss(),
+            $effect instanceof Flip => $canvas->flip(),
+            $effect instanceof Flop => $canvas->flop(),
+            $effect instanceof Gamma => $canvas->gamma(1.0, $effect->value),
+            $effect instanceof Gray => $canvas->grayscale(),
+            $effect instanceof Invert => $canvas->invert(),
+            // imagerotate() turns counter-clockwise, the effect clockwise
+            $effect instanceof Rotate => $canvas->rotate(-$effect->degrees),
+            $effect instanceof Shear => $canvas->shear($effect->degrees),
+            $effect instanceof Sharpen => $canvas->sharpen($effect->strength),
+            $effect instanceof Solarize => $canvas->solarize($effect->threshold),
+            $effect instanceof Swirl => $canvas->swirl($effect->degrees),
+            $effect instanceof Wave => $canvas->wave($effect->amplitude, $effect->wavelength),
+            default => throw new \LogicException('Unhandled image effect: ' . $effect::class, 1745134230),
+        };
     }
 
     /**
