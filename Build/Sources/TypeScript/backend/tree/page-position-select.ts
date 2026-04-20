@@ -108,31 +108,17 @@ export class PagePositionSelect extends LitElement {
   }
 
   protected renderTree(): TemplateResult {
-    const initialized = () => {
+    const initialized = async () => {
       // set up toolbar now with updated properties
       const toolbar = this.querySelector('typo3-backend-tree-toolbar') as TreeToolbar;
       toolbar.tree = this.tree;
-      this.tree.ensureActiveNodeLoaded(this.activePageId).then(
-        () => {
-          const currentNode = this.tree.nodes.find(n => n.identifier === String(this.activePageId));
-          if (currentNode) {
-            this.toggleDynamicInsertNodes(currentNode).then(
-              () => {
-                const activeNode = this.tree.nodes.find(n => this.isActivePagePositionNode(n));
-                if (activeNode) {
-                  activeNode.checked = true;
-                  this.updateBreadcrumb(this.tree.nodes);
-                  this.tree.requestUpdate();
-                  this.tree.updateComplete.then(() => {
-                    this.tree.scrollNodeIntoViewIfNeeded(activeNode);
-                    this.tree.focusNode(activeNode);
-                  });
-                }
-              }
-            );
-          }
-        }
-      );
+      await this.tree.ensureActiveNodeLoaded(this.activePageId);
+      const activeNode = await this.applyActiveInsertPosition();
+      if (activeNode) {
+        await this.tree.updateComplete;
+        this.tree.scrollNodeIntoViewIfNeeded(activeNode);
+        this.tree.focusNode(activeNode);
+      }
     };
 
     return html`
@@ -145,38 +131,63 @@ export class PagePositionSelect extends LitElement {
           .setup=${this.configuration}
           @tree:initialized=${initialized}
           @typo3:tree:node-selected="${this.handleNodeSelected}"
+          @typo3:tree:filter-applied=${() => this.applyActiveInsertPosition()}
+          @typo3:tree:filter-reset=${() => this.applyActiveInsertPosition()}
         >
         </typo3-backend-component-page-position-select-tree>
       `;
   }
 
-  private handleNodeSelected(event: CustomEvent): void {
+  private async handleNodeSelected(event: CustomEvent): Promise<void> {
     const selectedNode: TreeNodeInterface = event.detail.node;
     const [pageUid, insertPosition] = selectedNode.identifier.split('-');
     this.insertPosition = (insertPosition ?? 'inside') as Position;
     this.activePageId = Number(pageUid);
 
-    const callback = () => {
-      this.tree.nodes.forEach((node: TreeNodeInterface) => {
-        node.checked = this.isActivePagePositionNode(node);
-        if (node.checked) {
-          this.tree.focusNode(node);
-        }
-      });
+    const activeNode = /^\d+$/.test(selectedNode.identifier)
+      ? await this.applyActiveInsertPosition()
+      : this.syncActiveInsertPositionState();
 
-      this.updateBreadcrumb(this.tree.nodes);
-      this.dispatchEvent(new InsertPositionChangeEvent(
-        this.activePageId,
-        this.insertPosition
-      ));
-    };
-
-    if (/^\d+$/.test(selectedNode.identifier)) {
-      this.toggleDynamicInsertNodes(selectedNode).then(callback);
-    } else {
-      callback();
-      this.tree.requestUpdate();
+    if (activeNode) {
+      this.tree.focusNode(activeNode);
     }
+
+    this.dispatchEvent(new InsertPositionChangeEvent(
+      this.activePageId,
+      this.insertPosition
+    ));
+  }
+
+  private async applyActiveInsertPosition(): Promise<TreeNodeInterface|null> {
+    if (this.activePageId === null || this.activePageId === undefined) {
+      return null;
+    }
+    let currentNode = this.tree.nodes.find(n => n.identifier === String(this.activePageId));
+    if (!currentNode) {
+      // Load its rootline and expand the path
+      await this.tree.ensureActiveNodeLoaded(this.activePageId);
+      currentNode = this.tree.nodes.find(n => n.identifier === String(this.activePageId));
+      if (!currentNode) {
+        return null;
+      }
+    }
+
+    await this.tree.expandNodeParents(currentNode);
+    await this.toggleDynamicInsertNodes(currentNode);
+    return this.syncActiveInsertPositionState();
+  }
+
+  private syncActiveInsertPositionState(): TreeNodeInterface|null {
+    let activeNode: TreeNodeInterface|null = null;
+    this.tree.nodes.forEach((node: TreeNodeInterface) => {
+      node.checked = this.isActivePagePositionNode(node);
+      if (node.checked) {
+        activeNode = node;
+      }
+    });
+    this.updateBreadcrumb(this.tree.nodes);
+    this.tree.requestUpdate();
+    return activeNode;
   }
 
   private async toggleDynamicInsertNodes(currentNode: TreeNodeInterface): Promise<void> {

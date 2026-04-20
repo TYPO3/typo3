@@ -87,6 +87,24 @@ export class TreeNodeMap<T extends TreeNodeInterface = TreeNodeInterface> {
   }
 }
 
+export class TreeFilterAppliedEvent extends CustomEvent<{searchTerm: string, resultCount: number}> {
+  static readonly eventName = 'typo3:tree:filter-applied';
+  constructor(searchTerm: string, resultCount: number) {
+    super(TreeFilterAppliedEvent.eventName, {
+      detail: { searchTerm, resultCount },
+      bubbles: true,
+      composed: true,
+    });
+  }
+}
+
+export class TreeFilterResetEvent extends Event {
+  static readonly eventName = 'typo3:tree:filter-reset';
+  constructor() {
+    super(TreeFilterResetEvent.eventName, { bubbles: true, composed: true });
+  }
+}
+
 export class Tree extends LitElement {
   @property({ type: Object }) setup?: {[keys: string]: any} = null;
   @state() settings: TreeSettings = {
@@ -474,22 +492,25 @@ export class Tree extends LitElement {
         }).then(() => {
           this.loading = false;
           this.currentFilterRequest = null;
+          this.dispatchEvent(new TreeFilterAppliedEvent(this.searchTerm, this.searchResults));
         });
     } else {
       // restore original state without filters
-      this.resetFilter();
-      this.loading = false;
+      this.resetFilter().then(() => {
+        this.loading = false;
+        this.dispatchEvent(new TreeFilterResetEvent());
+      });
     }
   }
 
-  public resetFilter(): void
+  public async resetFilter(): Promise<void>
   {
     this.searchTerm = '';
     this.searchResults = 0;
     if (this.unfilteredNodes.length > 0) {
       const currentlySelected = this.getSelectedNodes()[0];
       if (typeof currentlySelected === 'undefined') {
-        this.loadData();
+        await this.loadData();
         return;
       }
       this.nodeMap = new TreeNodeMap(this.enhanceNodes(JSON.parse(this.unfilteredNodes)));
@@ -499,10 +520,10 @@ export class Tree extends LitElement {
       if (currentlySelectedNode) {
         this.selectNode(currentlySelectedNode, false);
       } else {
-        this.loadData();
+        await this.loadData();
       }
     } else {
-      this.loadData();
+      await this.loadData();
     }
   }
 
