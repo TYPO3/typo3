@@ -15,6 +15,7 @@ import flatpickr from 'flatpickr';
 import Persistent from '@typo3/backend/storage/persistent';
 import ShortcutButtonsPlugin from 'shortcut-buttons-flatpickr';
 import { DateTime } from 'luxon';
+import DomHelper from '@typo3/backend/utility/dom-helper';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 import type { PostValidationEvent } from '@typo3/backend/form-engine-validation';
 import type { DateConfiguration } from '@typo3/backend/type/date-configuration';
@@ -39,7 +40,7 @@ class DateTimePicker {
    * note: this function can be called multiple times (e.g. after AJAX requests) because it only
    * applies to fields which haven't been used yet.
    */
-  public initialize(element: HTMLInputElement): void {
+  public initialize(element: HTMLInputElement, appendTo: HTMLElement | null = null): void {
     if (!(element instanceof HTMLInputElement) || typeof element.dataset.datepickerInitialized !== 'undefined') {
       return;
     }
@@ -55,17 +56,19 @@ class DateTimePicker {
 
     element.dataset.datepickerInitialized = '1';
     import('flatpickr/dist/l10n').then((): void => {
-      this.initializeField(element, userLocale as flatpickr.Options.LocaleKey);
+      this.initializeField(element, userLocale as flatpickr.Options.LocaleKey, appendTo);
     });
   }
 
   /**
    * Initialize a single field
    */
-  private initializeField(inputElement: HTMLInputElement, locale: flatpickr.Options.LocaleKey): void {
-    const scrollEvent = this.getScrollEvent();
+  private initializeField(inputElement: HTMLInputElement, locale: flatpickr.Options.LocaleKey, appendTo: HTMLElement | null = null): void {
     const options = this.getDateOptions(inputElement);
     options.locale = locale;
+    if (appendTo) {
+      options.appendTo = appendTo;
+    }
 
     // Custom "first day of week" user preference
     const dow = Persistent.get('dateTimeFirstDayOfWeek');
@@ -80,14 +83,35 @@ class DateTimePicker {
       flatpickr.l10ns.default.firstDayOfWeek = dowNumber;
     }
 
-    options.onOpen = [
-      (): void => {
-        scrollEvent.bindTo(document.querySelector('.t3js-module-body'));
-      }
-    ];
-    options.onClose = (): void => {
-      scrollEvent.release();
-    };
+    const usePopover = appendTo instanceof HTMLElement && appendTo.localName === 'typo3-formengine-element-datetime';
+
+    if (usePopover) {
+      // Disable flatpickr's own positioning; native popover + CSS anchor positioning handle it.
+      options.position = (): void => { /* handled by popover */ };
+      options.onOpen = [
+        (_dates: Date[], _currentDateString: string, self: flatpickr.Instance): void => {
+          if (!self.calendarContainer.hasAttribute('popover')) {
+            self.calendarContainer.setAttribute('popover', 'manual');
+          }
+          self.calendarContainer.showPopover();
+        }
+      ];
+      options.onClose = (_dates: Date[], _currentDateString: string, self: flatpickr.Instance): void => {
+        if (self.calendarContainer.matches(':popover-open')) {
+          self.calendarContainer.hidePopover();
+        }
+      };
+    } else {
+      const scrollEvent = this.getScrollEvent();
+      options.onOpen = [
+        (): void => {
+          scrollEvent.bindTo(DomHelper.scrollEventTarget(inputElement));
+        }
+      ];
+      options.onClose = (): void => {
+        scrollEvent.release();
+      };
+    }
 
     // initialize the date time picker on this element
     const dateTimePicker = flatpickr(inputElement, options);
@@ -116,9 +140,7 @@ class DateTimePicker {
 
   /**
    * Due to some whack CSS the scrollPosition of the document stays 0 which renders a stuck date time picker.
-   * Because of this the position is recalculated on scrolling `.t3js-module-body`.
-   *
-   * @return {ThrottleEvent}
+   * Because of this the position is recalculated on scrolling the nearest scrollable ancestor.
    */
   private getScrollEvent(): ThrottleEvent {
     return new ThrottleEvent('scroll', (): void => {
