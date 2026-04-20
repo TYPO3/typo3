@@ -129,7 +129,7 @@ class PageLayoutController
         $this->createViewModeSelection($view);
         $this->addButtonsToButtonBar($view, $request);
         $this->initializeClipboard($request);
-        $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($request, $view));
+        $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($request, $view, $this->pageContext));
 
         $mainLayoutHtml = $this->backendLayoutRenderer->drawContent($request, $pageLayoutContext);
         $primaryLanguageId = $this->pageContext->getPrimaryLanguageId();

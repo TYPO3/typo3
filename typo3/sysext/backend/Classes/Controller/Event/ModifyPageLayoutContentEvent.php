@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Controller\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Context\PageContext;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 
 /**
@@ -30,7 +31,8 @@ final class ModifyPageLayoutContentEvent
 
     public function __construct(
         private readonly ServerRequestInterface $request,
-        private readonly ModuleTemplate $moduleTemplate
+        private readonly ModuleTemplate $moduleTemplate,
+        private readonly PageContext $pageContext,
     ) {}
 
     public function getRequest(): ServerRequestInterface
@@ -41,6 +43,11 @@ final class ModifyPageLayoutContentEvent
     public function getModuleTemplate(): ModuleTemplate
     {
         return $this->moduleTemplate;
+    }
+
+    public function getPageContext(): PageContext
+    {
+        return $this->pageContext;
     }
 
     /**
