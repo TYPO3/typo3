@@ -213,7 +213,8 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
 
         // Html stuff for filter and select filter on top of right side of multi select boxes
-        $filterTextfield[] = '<input type="search" autocomplete="off" class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
+        $filterTextfieldId = StringUtility::getUniqueId('tceforms-multiselect-filter-');
+        $filterTextfield[] = '<input type="search" id="' . $filterTextfieldId . '" autocomplete="off" class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
 
         $filterDropDownOptions = [];
         if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
@@ -344,7 +345,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                   '</div>';
         $html[] =               '</div>';
         $html[] =               '<div class="form-multigroup-item">';
-        $html[] =                   '<label>';
+        $html[] =                   '<label for="' . $filterTextfieldId . '">';
         $html[] =                       htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.items'));
         $html[] =                   '</label>';
         $html[] =                   '<div class="form-wizards-wrap">';
