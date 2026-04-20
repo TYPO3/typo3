@@ -136,7 +136,7 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
         }
 
         $uri = $this->uriBuilder->buildUriFromRoute(
-            'web_FormFormbuilder.FormEditor_index',
+            'form_editor',
             ['formPersistenceIdentifier' => $formPersistenceIdentifier]
         );
         return (string)$uri;
