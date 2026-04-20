@@ -41,7 +41,7 @@ final class SvgIconProviderTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->file = new DummyFileCreationService($this->get(StorageRepository::class));
-        $this->subject = new SvgIconProvider();
+        $this->subject = $this->get(SvgIconProvider::class);
         $this->icon = new Icon();
         $this->icon->setIdentifier('foo');
         $this->icon->setSize(IconSize::SMALL);
@@ -81,7 +81,7 @@ final class SvgIconProviderTest extends FunctionalTestCase
         $svgTestFileContent = '<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"></path><script><![CDATA[ function alertMe() {} ]]></script></svg>';
         $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/foo.svg', $svgTestFileContent);
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'typo3temp/assets/foo.svg']);
-        self::assertEquals('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE));
+        self::assertEquals('<svg viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE));
     }
 
     #[Test]
@@ -90,6 +90,6 @@ final class SvgIconProviderTest extends FunctionalTestCase
         $svgTestFileContent = '<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"></path><script><![CDATA[ function alertMe() {} ]]></script></svg>';
         $this->file->ensureFilesExistInPublicFolder('/typo3temp/assets/foo.svg', $svgTestFileContent);
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'PKG:typo3/app:typo3temp/assets/foo.svg']);
-        self::assertEquals('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE));
+        self::assertEquals('<svg viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE));
     }
 }

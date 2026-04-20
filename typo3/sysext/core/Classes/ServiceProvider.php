@@ -96,6 +96,10 @@ class ServiceProvider extends AbstractServiceProvider
             Http\RequestFactory::class => self::getRequestFactory(...),
             Imaging\IconFactory::class => self::getIconFactory(...),
             Imaging\IconRegistry::class => self::getIconRegistry(...),
+            Imaging\IconProvider\SvgIconProvider::class => self::getSvgIconProvider(...),
+            Imaging\IconProvider\SvgSpriteIconProvider::class => self::getSvgSpriteIconProvider(...),
+            Imaging\Svg\SvgDocumentFactory::class => self::getSvgDocumentFactory(...),
+            Imaging\Svg\SvgDocumentService::class => self::getSvgDocumentService(...),
             Localization\LabelFileResolver::class => self::getLabelFileResolver(...),
             Localization\TranslationDomainResolver::class => self::getTranslationDomainResolver(...),
             Localization\TranslationDomainMapper::class => self::getTranslationDomainMapper(...),
@@ -119,6 +123,7 @@ class ServiceProvider extends AbstractServiceProvider
             Resource\ProcessedFileRepository::class => self::getProcessedFileRepository(...),
             Resource\ResourceFactory::class => self::getResourceFactory(...),
             Resource\Security\FileNameValidator::class => self::getFileNameValidator(...),
+            Resource\Security\SvgSanitizer::class => self::getSvgSanitizer(...),
             Resource\StorageRepository::class => self::getStorageRepository(...),
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
             Service\OpcodeCacheService::class => self::getOpcodeCacheService(...),
@@ -397,6 +402,39 @@ class ServiceProvider extends AbstractServiceProvider
             $container,
             $container->get('cache.runtime'),
         ]);
+    }
+
+    public static function getSvgIconProvider(ContainerInterface $container): Imaging\IconProvider\SvgIconProvider
+    {
+        $provider = self::new($container, Imaging\IconProvider\SvgIconProvider::class);
+        $provider->injectSvgDocumentFactory($container->get(Imaging\Svg\SvgDocumentFactory::class));
+        $provider->injectSvgDocumentService($container->get(Imaging\Svg\SvgDocumentService::class));
+        return $provider;
+    }
+
+    public static function getSvgSpriteIconProvider(ContainerInterface $container): Imaging\IconProvider\SvgSpriteIconProvider
+    {
+        $provider = self::new($container, Imaging\IconProvider\SvgSpriteIconProvider::class);
+        $provider->injectSvgDocumentFactory($container->get(Imaging\Svg\SvgDocumentFactory::class));
+        $provider->injectSvgDocumentService($container->get(Imaging\Svg\SvgDocumentService::class));
+        return $provider;
+    }
+
+    public static function getSvgDocumentFactory(ContainerInterface $container): Imaging\Svg\SvgDocumentFactory
+    {
+        return self::new($container, Imaging\Svg\SvgDocumentFactory::class, [
+            $container->get(Resource\Security\SvgSanitizer::class),
+        ]);
+    }
+
+    public static function getSvgDocumentService(ContainerInterface $container): Imaging\Svg\SvgDocumentService
+    {
+        return self::new($container, Imaging\Svg\SvgDocumentService::class);
+    }
+
+    public static function getSvgSanitizer(ContainerInterface $container): Resource\Security\SvgSanitizer
+    {
+        return self::new($container, Resource\Security\SvgSanitizer::class);
     }
 
     public static function configureIconRegistry(ContainerInterface $container, IconRegistry $iconRegistry): IconRegistry

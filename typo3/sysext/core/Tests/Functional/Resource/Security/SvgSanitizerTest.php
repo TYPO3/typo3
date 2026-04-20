@@ -59,4 +59,43 @@ final class SvgSanitizerTest extends FunctionalTestCase
         $sanitizedFileContent = str_replace('utf-8', 'UTF-8', $sanitizedFileContent);
         self::assertEquals($sanitizedFileContent, $sanitizer->sanitizeContent(file_get_contents($filePath)));
     }
+
+    #[Test]
+    public function minifyProducesCompactOutputWithoutIndentation(): void
+    {
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+            . '<g><rect width="10" height="10"/></g></svg>';
+
+        $pretty = (new SvgSanitizer())->sanitizeContent($svg);
+        $minified = (new SvgSanitizer())->sanitizeContent($svg, true);
+
+        self::assertStringContainsString("\n", $pretty);
+        self::assertStringNotContainsString("\n", $minified);
+    }
+
+    #[Test]
+    public function removeLinksStripsAnchorElements(): void
+    {
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+            . '<a href="https://example.com"><rect width="10" height="10"/></a></svg>';
+
+        $withLinks = (new SvgSanitizer())->sanitizeContent($svg, true);
+        $withoutLinks = (new SvgSanitizer())->sanitizeContent($svg, true, true);
+
+        self::assertStringContainsString('<a', $withLinks);
+        self::assertStringContainsString('href="https://example.com"', $withLinks);
+        self::assertStringNotContainsString('<a', $withoutLinks);
+        self::assertStringNotContainsString('href="https://example.com"', $withoutLinks);
+    }
+
+    #[Test]
+    public function removeLinksDefaultPreservesAnchorElements(): void
+    {
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+            . '<a href="https://example.com"><rect width="10" height="10"/></a></svg>';
+
+        $result = (new SvgSanitizer())->sanitizeContent($svg);
+
+        self::assertStringContainsString('<a', $result);
+    }
 }

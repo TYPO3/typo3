@@ -22,7 +22,9 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentFactory;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -103,6 +105,7 @@ final class ImageInfoTest extends UnitTestCase
         $graphicalFunctionsMock = $this->createMock(GraphicalFunctions::class);
         $graphicalFunctionsMock->method('imageMagickIdentify')->with($testFile)->willReturn(null);
         GeneralUtility::addInstance(GraphicalFunctions::class, $graphicalFunctionsMock);
+        GeneralUtility::addInstance(SvgDocumentFactory::class, new SvgDocumentFactory(new SvgSanitizer()));
 
         $imageInfo = new ImageInfo($testFile);
         $imageInfo->setLogger(new NullLogger());
@@ -116,7 +119,6 @@ final class ImageInfoTest extends UnitTestCase
     public static function canDetectImageSizesDataProvider(): array
     {
         return [
-            'svg' => ['test.svg', 80, 80],
             'jpg' => ['test.jpg', 600, 388],
             'png' => ['test.png', 600, 388],
         ];

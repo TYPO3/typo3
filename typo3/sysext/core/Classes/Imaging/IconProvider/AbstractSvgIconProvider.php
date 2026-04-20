@@ -17,8 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Imaging\IconProvider;
 
+use TYPO3\CMS\Core\Imaging\Exception\InvalidSvgException;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentFactory;
+use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentService;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceDoesNotExistException;
 use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
@@ -35,8 +38,22 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
 {
     public const MARKUP_IDENTIFIER_INLINE = 'inline';
 
+    protected SvgDocumentFactory $svgDocumentFactory;
+    protected SvgDocumentService $svgDocumentService;
+
     abstract protected function generateMarkup(Icon $icon, array $options): string;
     abstract protected function generateInlineMarkup(array $options): string;
+
+    // inject* setters keep the constructor of inheriting providers clean.
+    public function injectSvgDocumentFactory(SvgDocumentFactory $svgDocumentFactory): void
+    {
+        $this->svgDocumentFactory = $svgDocumentFactory;
+    }
+
+    public function injectSvgDocumentService(SvgDocumentService $svgDocumentService): void
+    {
+        $this->svgDocumentService = $svgDocumentService;
+    }
 
     public function prepareIconMarkup(Icon $icon, array $options = []): void
     {
@@ -58,15 +75,13 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
         if ($svgContent === null) {
             return '';
         }
-        $svgContent = (string)preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent);
-        $svgElement = simplexml_load_string($svgContent);
-        if ($svgElement === false) {
+        try {
+            return $this->svgDocumentService->toInlineMarkup(
+                $this->svgDocumentFactory->fromStringAndSanitize($svgContent)
+            );
+        } catch (InvalidSvgException) {
             return '';
         }
-
-        // remove xml version tag
-        $domXml = dom_import_simplexml($svgElement);
-        return $domXml->ownerDocument->saveXML($domXml->ownerDocument->documentElement);
     }
 
     protected function getInlineSvgContents(string $source): ?string

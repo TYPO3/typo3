@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Security;
 
+use enshrined\svgSanitize\data\AllowedTags;
+use enshrined\svgSanitize\data\TagInterface;
 use enshrined\svgSanitize\data\XPath;
 use enshrined\svgSanitize\ElementReference\Resolver;
 use enshrined\svgSanitize\Sanitizer;
@@ -38,10 +40,19 @@ readonly class SvgSanitizer
         }
     }
 
-    public function sanitizeContent(string $svg): string
+    public function sanitizeContent(string $svg, bool $minify = false, bool $removeLinks = false): string
     {
         $sanitizer = new Sanitizer();
         $sanitizer->removeRemoteReferences(true);
+        $sanitizer->minify($minify);
+        if ($removeLinks) {
+            $sanitizer->setAllowedTags(new class implements TagInterface {
+                public static function getTags(): array
+                {
+                    return array_values(array_diff(AllowedTags::getTags(), ['a']));
+                }
+            });
+        }
         return $sanitizer->sanitize($svg) ?: '';
     }
 
