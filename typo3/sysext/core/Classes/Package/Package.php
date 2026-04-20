@@ -161,6 +161,7 @@ class Package implements PackageInterface
         }
         if (is_string($manifest->state ?? null)
             && $version !== self::NO_VERSION_SET
+            && !str_contains($version, '-')
         ) {
             $stability = Stability::tryFrom($manifest->state);
             $version .= ($stability === null ? '+' : '-') . $manifest->state;
