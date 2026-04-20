@@ -11,57 +11,65 @@ See :issue:`104974`
 Description
 ===========
 
-With :ref:`feature-103504-1712041725` the new :typoscript:`PAGEVIEW` cObject
-has been introduced for the Frontend Rendering. It's a powerful alternative
-to the :typoscript:`FLUIDTEMPLATE` cObjct and allows to render a full page
-with less configuration.
+:ref:`feature-103504-1712041725` introduced the :typoscript:`PAGEVIEW` cObject
+for frontend rendering. It is a powerful alternative to
+the :typoscript:`FLUIDTEMPLATE` cObject, allowing a full page to be rendered with
+less configuration.
 
-The :typoscript:`PAGEVIEW` has now been further extended and does also
-provide all content elements, related to the page, grouped by their
-corresponding columns as defined in the page layout. The elements
-are provided as fully resolved :php:`Record` objects (see
-:ref:`feature-103783-1715113274` and :ref:`feature-103581-1723209131`).
+:typoscript:`PAGEVIEW` has now been extended and provides all
+content elements related to a page, grouped by their columns
+as defined in the page layout. The elements are provided as fully resolved
+:php:`Record` objects (see :ref:`feature-103783-1715113274` and
+:ref:`feature-103581-1723209131`).
 
-The elements are attached to the new :php:`ContentArea` object, which beside
-the elements itself also contains all the column related information and
-configuration. This is quite useful for the frontend rendering, because it
-might be important for an element to know in which context it should be
-rendered. With this information, an element can e.g. decide to not render
-the :html:`Header` partial if it is included in the sidebar content area.
+The content elements are attached to the new
+:php:`\TYPO3\CMS\Core\Page\ContentArea` object, which also contains all
+column-related information and configuration.
+This is useful for frontend rendering because an
+element may need to know its rendering context. Knowing
+this information, an element can, for example, decide not to render the
+:html:`Header` partial if it is in a sidebar content area.
 
-The :php:`ContentArea` objects are added to the view using either the variable
-name defined via :typoscript:`contentAs` or falls back to :html:`content`. The
-content elements can then be accessed via the :html:`records` property.
+:php-short:`\TYPO3\CMS\Core\Page\ContentArea` objects are added to the
+view either by variable name defined in :typoscript:`contentAs` or,
+if not defined, `content`. Content elements can then be accessed via the
+:html:`records` property.
 
-The :php:`ContentArea`'s' contain all the backend layout related configuration,
-such as the :ref:`content restrictions <feature-108623-1768315053>`, which
-allows further validation, e.g. if the given content types are actually valid.
+:php-short:`\TYPO3\CMS\Core\Page\ContentArea` objects contain
+backend layout-related configuration, such as
+:ref:`content restrictions <feature-108623-1768315053>`. These allow
+further validation such as whether a content type is
+valid.
 
-:html:`{content.main.records}` can therefore be used to get all content elements
-from the :html:`main` content area. :html:`main` is the identifier, as
-defined in the page layout and :html:`content` is the default variable name.
+Therefore :html:`{content.main.records}` can be used to get content
+elements from the `main` content area. `main` is the identifier as defined in
+the page layout, and `content` is the default variable name.
 
 .. important::
 
-    The :php:`ContentArea` objects are attached in the :php:`ContentAreaCollection`
-    which implements the PSR-11 :php:`ContainerInterface` to allow access to
-    the areas via :php:`get()`. To optimize performance, the :php:`ContentArea`
-    objects itself are instantiated only when accessed (lazy loading).
+    :php-short:`\TYPO3\CMS\Core\Page\ContentArea` objects are attached in
+    the :php-short:`\TYPO3\CMS\Core\Page\ContentAreaCollection`, which
+    implements the PSR-11 :php:`\Psr\Container\ContainerInterface` to allow
+    access to the content areas using :php:`get()`. To optimize performance
+    :php-short:`\TYPO3\CMS\Core\Page\ContentArea` objects are
+    instantiated only when accessed (lazy loading).
 
-By accessing the :php:`ContentArea` with :html:`{content.main}` the following
-information is available (as defined in the page layout):
+Accessing a :php-short:`\TYPO3\CMS\Core\Page\ContentArea` using
+:html:`{content.main}` makes the following information available, as defined in
+the page layout:
 
-* :html:`identifier` - The column identifier
-* :html:`colPos` - The defined `colPos`
-* :html:`name` - The (speaking) `name`, which might be a locallang key
-* :html:`allowedContentTypes` - The defined `allowedContentTypes`
-* :html:`disallowedContentTypes` - The defined `disallowedContentTypes`
-* :html:`slideMode` - The defined :php:`ContentSlideMode`, defaults to :php:`ContentSlideMode::None`
-* :html:`configuration` - The whole content area related configuration
-* :html:`records` - The content elements as :php:`Record` objects
+*   :html:`identifier` - The column identifier
+*   :html:`colPos` - The defined `colPos`
+*   :html:`name` - The descriptive `name`, which might be a locallang key
+*   :html:`allowedContentTypes` - The defined `allowedContentTypes`
+*   :html:`disallowedContentTypes` - The defined `disallowedContentTypes`
+*   :html:`slideMode` - The defined :php:`ContentSlideMode`, which defaults to
+    :php:`ContentSlideMode::None`
+*   :html:`configuration` - The complete content area-related configuration
+*   :html:`records` - The content elements as :php:`Record` objects
 
-The following example is enough to render content elements of a page with a
-single column:
+The following example renders the content elements of a page which has only
+a single column:
 
 .. code-block:: typoscript
 
@@ -97,52 +105,54 @@ single column:
 .. code-block:: html
 
     <f:for each="{content.main.records}" as="record">
-        <f:render partial="ContentElement" arguments="{record: record, area: content.main}">
+        <f:render partial="ContentElement"
+                  arguments="{record: record, area: content.main}" />
     </f:for>
 
-With the introduction of the :ref:`f:render.contentArea <feature-108726-1769071158>`
-and :ref:`f:render.record <feature-108726-1769503907>` ViewHelpers, manually
-iterating over content elements is no longer necessary. All elements of a
-content area can be rendered with a single ViewHelper call:
+The introduction of the new
+:ref:`f:render.contentArea <feature-108726-1769071158>` and
+:ref:`f:render.record <feature-108726-1769503907>` ViewHelpers means that manually
+iterating over content elements is no longer necessary. All the content elements
+in a content area can be rendered with a single ViewHelper call:
 
 ..  code-block:: html
 
     <!-- Tag syntax -->
-    <f:render.contentArea contentArea="{content.main}"/>
+    <f:render.contentArea contentArea="{content.main}" />
 
     <!-- Inline syntax -->
     {content.main -> f:render.contentArea()}
 
-To render a single record, the :html:`f:render.record` ViewHelper can be used:
+To render a single record, use the :html:`f:render.record` ViewHelper:
 
 ..  code-block:: html
 
     <!-- Tag syntax -->
-    <f:render.record record="{content.main.records.0}"/>
+    <f:render.record record="{content.main.records.0}" />
 
     <!-- Inline syntax -->
     {content.main.records.0 -> f:render.record()}
 
 .. note::
 
-    Introducing :php:`ContentArea` also improves the
-    :php:`AfterContentHasBeenFetchedEvent` - used to manipulate the resolved
-    content elements of each area - by having additional context at hand.
+    :php-short:`\TYPO3\CMS\Core\Page\ContentArea` helps the
+    :php-short:`\TYPO3\CMS\Frontend\Event\AfterContentHasBeenFetchedEvent`
+    to manipulate content elements in an area by
+    providing context.
 
 Impact
 ======
 
-It's now possible to access all content elements of a page, grouped by their
-corresponding column, while having the column related information and
-configuration at hand. Next to less configuration effort, different renderings
-for the same element, depending on the context, are easily possible.
+It is now possible to access all the content elements on a page, grouped by their
+column, as well as having all the column-related information and
+configuration available. In addition to reduced configuration effort,
+different rendering is possible for an element depending on context.
 
 Example
 =======
 
-A content element template using the :html:`Default` layout and rendering
-the :html:`Header` partial only in case it has not been added to the
-`sidebar` column.
+A content element template using a `Default` layout that renders the
+`Header` partial only if the content element is not in the `sidebar` column.
 
 ..  code-block:: html
 
@@ -150,7 +160,7 @@ the :html:`Header` partial only in case it has not been added to the
 
     <f:section name="Main">
         <f:if condition="{area.identifier} != 'sidebar'">
-            <f:render partial="Header" arguments="{_all} />
+            <f:render partial="Header" arguments="{_all}" />
         </f:if>
 
         <p>{record.text}</p>

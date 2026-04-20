@@ -11,14 +11,14 @@ See :issue:`105441`
 Description
 ===========
 
-When configuring a TCA `select` field with `renderType => 'selectSingle'`
-and adding an item with `'value' => null`, the generated database column is
+When a TCA `select` field is configured as `renderType => 'selectSingle'`
+and an item is added with `'value' => null`, the database column that is generated is
 now nullable regardless of whether the other item values are integers or strings.
 
-Previously, the following configuration with integer item values would incorrectly
-generate a :sql:`VARCHAR(255)` column:
+Previously, the following configuration with integer item values incorrectly
+generated a :sql:`VARCHAR(255)` column:
 
-.. code-block:: php
+..  code-block:: php
 
     'config' => [
         'type' => 'select',
@@ -32,10 +32,10 @@ generate a :sql:`VARCHAR(255)` column:
 
 This now correctly generates :sql:`INT UNSIGNED DEFAULT NULL`.
 
-Similarly, a configuration with string item values now also generates a
+Similarly, configuration with string item values now also generates a
 nullable column:
 
-.. code-block:: php
+..  code-block:: php
 
     'config' => [
         'type' => 'select',

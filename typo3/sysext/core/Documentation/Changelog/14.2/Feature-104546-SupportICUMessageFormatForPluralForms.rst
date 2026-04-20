@@ -11,20 +11,19 @@ See :issue:`104546`
 Description
 ===========
 
-TYPO3 now supports ICU MessageFormat for translations, enabling proper handling
+TYPO3 now supports ICU MessageFormat for translations. This enables the proper handling
 of plural forms, gender-based selections, and other locale-aware formatting
-directly in language labels.
+in language labels.
 
 ICU MessageFormat is an internationalization standard that allows messages to
-contain placeholders that can vary based on parameters like quantity, gender,
-or other conditions. This is particularly useful for proper pluralization in
-languages with complex plural rules.
+contain placeholders that can vary based on parameters such as quantity,
+gender, or other conditions. This is particularly useful for proper
+pluralization in languages with complex plural rules.
 
-The format is automatically detected when using named arguments (associative
-arrays) in translation calls. If the message contains ICU patterns like
-``{count, plural, ...}`` or ``{name}``, and named arguments are provided,
-the ICU MessageFormatter will be used automatically.
-
+The format is detected automatically when named arguments, that is,
+associative arrays, are used in translation calls. If the message contains ICU
+patterns like `{count, plural, ...}` or `{name}`, and named arguments are
+provided, the ICU MessageFormatter is used automatically.
 
 Language file format
 --------------------
@@ -67,11 +66,11 @@ files:
         </file>
     </xliff>
 
-
 PHP usage
 ---------
 
-Use named arguments (associative array) to trigger ICU MessageFormat processing:
+Use named arguments in an associative array to trigger ICU
+MessageFormat processing:
 
 ..  code-block:: php
     :caption: Using ICU MessageFormat with LanguageService
@@ -81,7 +80,7 @@ Use named arguments (associative array) to trigger ICU MessageFormat processing:
     $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
         ->createFromUserPreferences($backendUser);
 
-    // ICU plural forms - use named arguments
+    // ICU plural forms: use named arguments
     $label = $languageService->translate(
         'file_count',
         'my_extension.messages',
@@ -110,7 +109,7 @@ Use named arguments (associative array) to trigger ICU MessageFormat processing:
 
     use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-    // With named arguments for ICU format
+    // Use named arguments for ICU format
     $label = LocalizationUtility::translate(
         'file_count',
         'MyExtension',
@@ -118,11 +117,10 @@ Use named arguments (associative array) to trigger ICU MessageFormat processing:
     );
     // Result: "1 file"
 
-
 Fluid usage
 -----------
 
-In Fluid templates, use named arguments in the ``arguments`` attribute:
+In Fluid templates use named arguments in the `arguments` attribute:
 
 ..  code-block:: html
     :caption: EXT:my_extension/Resources/Private/Templates/Example.html
@@ -139,13 +137,12 @@ In Fluid templates, use named arguments in the ``arguments`` attribute:
     <!-- sprintf-style with positional arguments still works -->
     <f:translate key="downloaded_times" arguments="{0: downloadCount}" />
 
-
 ICU MessageFormat syntax reference
 ----------------------------------
 
 **Plural forms:**
 
-.. code-block:: text
+..  code-block:: text
 
     {variable, plural,
         =0 {zero case}
@@ -155,7 +152,7 @@ ICU MessageFormat syntax reference
 
 **Select (gender/choice):**
 
-.. code-block:: text
+..  code-block:: text
 
     {variable, select,
         male {He}
@@ -165,28 +162,27 @@ ICU MessageFormat syntax reference
 
 **Number formatting:**
 
-.. code-block:: text
+..  code-block:: text
 
     {count, number}           - Basic number
     {price, number, currency} - Currency format
 
-The ``#`` symbol in plural patterns is replaced with the actual number.
-
+The `#` symbol in plural patterns is replaced by the actual number.
 
 Impact
 ======
 
 This feature provides a standards-based approach to pluralization that:
 
-*   Uses the well-tested ICU library (via PHP's intl extension)
-*   Automatically handles locale-specific plural rules
-*   Supports complex pluralization for languages like Russian or Arabic
-*   Is backward compatible - existing sprintf-style translations continue to work
+*   uses the well-tested ICU library, via PHP's intl extension
+*   handles locale-specific plural rules
+*   supports complex pluralization for languages such as Russian and Arabic
+*   is backward compatible; existing sprintf-style translations will continue to
+    work
 
-The system automatically detects which format to use based on the arguments:
+The system detects which format to use based on arguments:
 
 *   **Named arguments** (associative array): Uses ICU MessageFormat
 *   **Positional arguments** (indexed array): Uses sprintf
-
 
 ..  index:: PHP-API, Fluid, ext:core, ext:extbase, ext:fluid

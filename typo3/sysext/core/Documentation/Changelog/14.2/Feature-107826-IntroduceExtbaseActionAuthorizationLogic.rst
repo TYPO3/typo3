@@ -11,30 +11,35 @@ See :issue:`107826`
 Description
 ===========
 
-A new authorization mechanism has been introduced for Extbase controller actions
-using PHP attributes. Extension authors can now implement declarative access
-control logic directly on action methods using the :php:`#[Authorize]` attribute.
+A new authorization mechanism has been introduced for Extbase controller
+actions using PHP attributes. Extension authors can now implement
+declarative access control logic on action methods using the
+:php:`#[Authorize]` attribute.
 
-The :php:`#[Authorize]` attribute supports multiple authorization strategies:
+The :php:`#[Authorize]` attribute supports multiple authorization
+strategies:
 
-**Built-in checks**
-- Require frontend user login via :php:`requireLogin`
-- Require specific frontend user groups via :php:`requireGroups`
+**Built-in checks:**
 
-**Custom authorization logic**
-- Dedicated authorization class (recommended for complex logic)
-- Public controller method (for simple checks)
+*   Require frontend user login via :php:`requireLogin`
+*   Require specific frontend user groups via :php:`requireGroups`
 
-Multiple :php:`#[Authorize]` attributes can be stacked on a single action.
-All authorization checks must pass for access to be granted. If any check fails,
-a :php:`PropagateResponseException` is thrown with an HTTP 403 response, which
-immediately stops the Extbase dispatching process.
+**Custom authorization logic:**
+
+*   Dedicated authorization class (recommended for complex logic)
+*   Public controller method (for simple checks)
+
+Multiple :php:`#[Authorize]` attributes can be stacked on a single
+action. All authorization checks must pass for access to be granted. If
+a check fails, a
+:php-short:`\TYPO3\CMS\Core\Http\PropagateResponseException` is thrown with an
+HTTP 403 response, which stops the Extbase dispatch process.
 
 Examples
 ========
 
 Require frontend user login
-----------------------------
+---------------------------
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Controller/MyController.php
@@ -55,12 +60,12 @@ Require frontend user login
     }
 
 Require specific user groups
------------------------------
+----------------------------
 
-The :php:`requireGroups` parameter accepts an array of frontend user group
-identifiers. Groups can be specified either by their UID (recommended) or by
-their title. If multiple groups are specified, the user must be a member of
-**at least one** of the groups (OR logic).
+The `requireGroups` parameter accepts an array of frontend user group
+identifiers. Groups can be specified either by their UID (recommended) or
+by their title. If multiple groups are specified, the user must be a
+member of at least one group (OR logic).
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Controller/MyController.php
@@ -96,17 +101,18 @@ their title. If multiple groups are specified, the user must be a member of
         }
     }
 
-.. note::
+..  note::
 
-   It is **strongly recommended to use group UIDs** instead of group titles.
-   Group titles can be changed by editors, which would break the authorization
-   logic. Group UIDs are stable and should be preferred.
+    It is **strongly recommended to use group UIDs** instead of group titles.
+    Group titles can be changed by editors, which would break the authorization
+    logic. Group UIDs are stable and should be preferred.
 
 Custom authorization class
 --------------------------
 
 For complex authorization logic, create a dedicated authorization class.
-This class supports dependency injection and can be reused across controllers.
+This class supports dependency injection and can be reused across
+controllers.
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Authorization/MyObjectAuthorization.php
@@ -119,13 +125,14 @@ This class supports dependency injection and can be reused across controllers.
     class MyObjectAuthorization
     {
         public function __construct(
-            private readonly Context $context
+            protected readonly Context $context,
         ) {}
 
         public function checkOwnership(MyObject $myObject): bool
         {
             $userAspect = $this->context->getAspect('frontend.user');
-            return $myObject->getOwner()->getUid() === $userAspect->get('id');
+            return $myObject->getOwner()->getUid()
+                === $userAspect->get('id');
         }
     }
 
@@ -158,9 +165,9 @@ This class supports dependency injection and can be reused across controllers.
     }
 
 Public controller method
--------------------------
+------------------------
 
-For simple checks, a public controller method can be used as callback.
+For simple checks, a public controller method can be used as a callback.
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Controller/MyController.php
@@ -176,7 +183,7 @@ For simple checks, a public controller method can be used as callback.
     class MyController extends ActionController
     {
         public function __construct(
-            private readonly Context $context
+            protected readonly Context $context,
         ) {}
 
         #[Authorize(callback: 'checkOwnership')]
@@ -196,7 +203,8 @@ For simple checks, a public controller method can be used as callback.
 Combining multiple authorization checks
 ----------------------------------------
 
-Multiple :php:`#[Authorize]` attributes can be stacked. All checks must pass.
+Multiple :php:`#[Authorize]` attributes can be stacked. All checks must
+pass.
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Controller/MyController.php
@@ -221,7 +229,7 @@ Multiple :php:`#[Authorize]` attributes can be stacked. All checks must pass.
         }
     }
 
-Authorization checks can also be combined within a single attribute:
+Authorization checks can be combined within a single attribute:
 
 ..  code-block:: php
 
@@ -234,13 +242,15 @@ Authorization checks can also be combined within a single attribute:
 Customizing the authorization denied response
 ----------------------------------------------
 
-By default, the authorization check will throw a
-:php:`\TYPO3\CMS\Core\Http\PropagateResponseException` with a HTTP 403 response.
-This response can be handled by the TYPO3 page error handler configured in
-site settings.
+By default, the authorization check throws a
+:php-short:`TYPO3\CMS\Core\Http\PropagateResponseException` with an HTTP
+403 response. This response can be handled by the TYPO3 page error
+handler configured in site settings.
 
-The PSR-14 event :php:`BeforeActionAuthorizationDeniedEvent` can be used to
-provide a custom PSR-7 response, which will be returned by Extbase.
+The PSR-14 event
+:php-short:`TYPO3\CMS\Extbase\Event\Mvc\BeforeActionAuthorizationDeniedEvent`
+can be used to provide a custom PSR-7 response, which is then returned by
+Extbase.
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/EventListener/CustomAuthorizationResponseListener.php
@@ -256,16 +266,20 @@ provide a custom PSR-7 response, which will be returned by Extbase.
     {
         public function __construct(
             private readonly ResponseFactoryInterface $responseFactory,
-            private readonly StreamFactoryInterface $streamFactory
+            private readonly StreamFactoryInterface $streamFactory,
         ) {}
 
-        public function __invoke(BeforeActionAuthorizationDeniedEvent $event): void
-        {
+        public function __invoke(
+            BeforeActionAuthorizationDeniedEvent $event,
+        ): void {
             // Customize response based on failure reason
             $message = match ($event->getFailureReason()) {
-                AuthorizationFailureReason::NOT_LOGGED_IN => 'Please log in to access this page',
-                AuthorizationFailureReason::MISSING_GROUP => 'You do not have permission to access this page',
-                AuthorizationFailureReason::CALLBACK_DENIED => 'Access to this resource is denied',
+                AuthorizationFailureReason::NOT_LOGGED_IN =>
+                    'Please log in to access this page',
+                AuthorizationFailureReason::MISSING_GROUP =>
+                    'You do not have permission to access this page',
+                AuthorizationFailureReason::CALLBACK_DENIED =>
+                    'Access to this resource is denied',
             };
 
             $response = $this->responseFactory->createResponse()
@@ -277,29 +291,34 @@ provide a custom PSR-7 response, which will be returned by Extbase.
         }
     }
 
-Security Considerations
+Security considerations
 =======================
 
-.. warning::
+..  warning::
 
-   When using the :php:`BeforeActionAuthorizationDeniedEvent` event:
+    When using the
+    :php-short:`TYPO3\CMS\Extbase\Event\Mvc\BeforeActionAuthorizationDeniedEvent`
+    event:
 
-   - **Do not perform state changes** or modify domain objects in the event listener.
-     The authorization check happens before the action is executed, and any state
-     changes could lead to inconsistent data.
+    *   Do not perform state changes or modify domain objects in the
+        event listener. The authorization check happens before the action
+        is executed, and changes could lead to inconsistent data.
 
-   - **Do not use Extbase persistence** (e.g., repository operations, persist calls)
-     in the event listener, as this may result in unintended side effects.
+    *   Do not use Extbase persistence (for example, repository
+        operations or persist calls) in the event listener, as this may
+        result in unintended side effects.
 
-   - **Custom PSR-7 responses should only be used for uncached Extbase actions**.
-     For cached actions, the custom response may be cached and served to all users,
-     regardless of their authorization status. Always ensure proper cache configuration
-     when customizing authorization responses.
+    *   Custom PSR-7 responses should only be used for uncached Extbase
+        actions. For cached actions, the custom response may be cached
+        and served to all users regardless of their authorization
+        status. Ensure proper cache configuration when customizing
+        authorization responses.
 
 Impact
 ======
 
-Extension authors can now implement secure, declarative authorization checks
-for Extbase controller actions using the :php:`#[Authorize]` attribute.
+Extension authors can now implement secure, declarative authorization
+checks for Extbase controller actions using the
+:php:`#[Authorize]` attribute.
 
 ..  index:: PHP-API, ext:extbase

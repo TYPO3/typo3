@@ -12,14 +12,14 @@ Description
 ===========
 
 A new PSR-14 event :php:`\TYPO3\CMS\Backend\Controller\Event\BeforeBackendPageRenderEvent`
-has been introduced. It is dispatched in :php:`\TYPO3\CMS\Backend\Controller\BackendController`
-before the main backend page is rendered and provides access to:
+has been introduced. It is dispatched in :php-short:`\TYPO3\CMS\Backend\Controller\BackendController`
+before the main backend page is rendered. It provides access to:
 
-*   :php:`$view` (:php:`\TYPO3\CMS\Core\View\ViewInterface`) – assign additional template
+*   :php:`$view` (:php-short:`\TYPO3\CMS\Core\View\ViewInterface`) – assign template
     variables to the backend top frame view
-*   :php:`$javaScriptRenderer` (:php:`\TYPO3\CMS\Core\Page\JavaScriptRenderer`) – add
+*   :php:`$javaScriptRenderer` (:php-short:`\TYPO3\CMS\Core\Page\JavaScriptRenderer`) – add
     custom JavaScript modules to the backend top frame
-*   :php:`$pageRenderer` (:php:`\TYPO3\CMS\Core\Page\PageRenderer`) – add further assets
+*   :php:`$pageRenderer` (:php-short:`\TYPO3\CMS\Core\Page\PageRenderer`) – add assets
     such as CSS files (marked :php:`@internal`)
 
 Example

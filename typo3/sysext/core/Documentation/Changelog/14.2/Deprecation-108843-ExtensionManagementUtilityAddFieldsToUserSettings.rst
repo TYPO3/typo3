@@ -12,13 +12,15 @@ See :issue:`108832`
 Description
 ===========
 
-The method :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings()`
+The method
+:php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings()`
 has been deprecated in favor of the new :php:`addUserSetting()` method.
 
 The legacy method required two separate steps to add a field to user settings:
-first adding the field configuration to the columns array, then calling
-:php:`addFieldsToUserSettings()` to add it to the showitem list. The new method
-combines both steps into a single call and uses TCA as the storage location.
+first, adding the field configuration to the columns array and second, calling
+:php:`addFieldsToUserSettings()` to add it to the showitem list. The new
+method combines both steps into a single call and uses TCA as the storage
+location.
 
 Impact
 ======
@@ -31,16 +33,18 @@ The extension scanner reports usages as a **strong** match.
 Affected installations
 ======================
 
-Instances or extensions that use :php:`ExtensionManagementUtility::addFieldsToUserSettings()`
-or directly modify :php:`$GLOBALS['TYPO3_USER_SETTINGS']` to add custom fields to the
-backend user profile settings are affected.
+Instances or extensions that use
+:php:`ExtensionManagementUtility::addFieldsToUserSettings()` or directly
+modify :php:`$GLOBALS['TYPO3_USER_SETTINGS']` to add custom fields to the
+backend user profile settings.
 
 Migration
 =========
 
 Replace the two-step approach with the new :php:`addUserSetting()` method.
-Note that the new method uses TCA-style configuration and should be called from
-:file:`Configuration/TCA/Overrides/be_users.php` instead of :file:`ext_tables.php`.
+Note that the new method uses TCA-style configuration and should be called
+from :file:`Configuration/TCA/Overrides/be_users.php` instead of
+:file:`ext_tables.php`.
 
 Before
 ~~~~~~
@@ -80,9 +84,9 @@ Field type mapping
 
 When migrating, use the following type mappings:
 
-==============  ==============================================
+==============  ==========================================================
 Legacy type     TCA config
-==============  ==============================================
+==============  ==========================================================
 text            :php:`['type' => 'input']`
 email           :php:`['type' => 'email']`
 number          :php:`['type' => 'number']`
@@ -90,6 +94,6 @@ password        :php:`['type' => 'password']`
 check           :php:`['type' => 'check', 'renderType' => 'checkboxToggle']`
 select          :php:`['type' => 'select', 'renderType' => 'selectSingle']`
 language        :php:`['type' => 'language']`
-==============  ==============================================
+==============  ==========================================================
 
 ..  index:: PHP-API, FullyScanned, ext:core

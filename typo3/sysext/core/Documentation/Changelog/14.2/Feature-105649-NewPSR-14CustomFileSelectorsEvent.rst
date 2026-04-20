@@ -12,22 +12,24 @@ Description
 ===========
 
 A new PSR-14 event :php:`\TYPO3\CMS\Backend\Form\Event\CustomFileSelectorsEvent`
-has been added. It is dispatched in :php:`\TYPO3\CMS\Backend\Form\Container\FilesControlContainer`
-during rendering of the selectors of relations to `sys_file_references`.
+has been added. It is dispatched in
+:php-short:`\TYPO3\CMS\Backend\Form\Container\FilesControlContainer`
+during the rendering of selectors for relations to `sys_file_references`.
 
-To modify the selectors to add files, the following methods are available:
+To modify the selectors used to add files, the following methods are
+available:
 
--   :php:`getSelectors()`: Get all selectors
--   :php:`setSelectors()`: Set all selectors
--   :php:`getJavascriptModules()`: Get all JavaScript modules
--   :php:`setJavascriptModules()`: Set all JavaScript modules
--   :php:`getTableName()`: Get table name of the current record
--   :php:`getFieldName()`: Get field name of the element
--   :php:`getDatabaseRow()`: Get raw database row
--   :php:`getFieldConfig()`: Get TCA configuration of the current field
--   :php:`getFileExtensionFilter()`: Get the allowed & disallowed file extensions
--   :php:`getFormFieldIdentifier()`: Get DOM object-id used in the form
-
+*   :php:`getSelectors()`: Get all selectors
+*   :php:`setSelectors()`: Set all selectors
+*   :php:`getJavascriptModules()`: Get all JavaScript modules
+*   :php:`setJavascriptModules()`: Set all JavaScript modules
+*   :php:`getTableName()`: Get the table name of the current record
+*   :php:`getFieldName()`: Get the field name of the element
+*   :php:`getDatabaseRow()`: Get the raw database row
+*   :php:`getFieldConfig()`: Get the TCA configuration of the current field
+*   :php:`getFileExtensionFilter()`: Get the allowed and disallowed file
+    extensions
+*   :php:`getFormFieldIdentifier()`: Get the DOM object ID used in the form
 
 Example
 -------
@@ -48,7 +50,6 @@ The corresponding event listener class:
     #[AsEventListener(identifier: 'my-extension/custom-file-selector')]
     final class CustomFileSelectorEventListener
     {
-
         public function __construct(
             private CustomDamFileSelector $damFileSelector,
         ) {}
@@ -69,12 +70,11 @@ The corresponding event listener class:
         }
     }
 
-
 Impact
 ======
 
-It's now possible to modify the file selectors using the new PSR-14 event
-:php:`CustomFileSelectorsEvent`. This is especially useful for integrating
-a DAM system.
+It is now possible to modify file selectors using the new PSR-14 event
+:php-short:`\TYPO3\CMS\Backend\Form\Event\CustomFileSelectorsEvent`. This is
+especially useful for integrating a DAM system.
 
 ..  index:: Backend, PHP-API, ext:backend

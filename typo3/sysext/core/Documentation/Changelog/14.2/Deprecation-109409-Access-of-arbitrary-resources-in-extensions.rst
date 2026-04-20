@@ -11,26 +11,27 @@ See :issue:`109409`
 Description
 ===========
 
-Accessing extension resources outside the configured resource definitions
-is deprecated.
+Accessing extension resources outside the configured resource
+definitions is deprecated.
 
 By default, extension resources are limited to the following paths:
 
-- `Configuration`
-- `Resources/Private`
-- `Resources/Public`
+*   :folder:`Configuration`
+*   :folder:`Resources/Private`
+*   :folder:`Resources/Public`
 
 If a resource identifier references another extension path, that path
-must be configured explicitly in `Configuration/Resources.php`.
+must be configured explicitly in :file:`Configuration/Resources.php`.
 
-See :ref:`feature-109409-1774770383` for how to configure resources
-for extensions.
+See :ref:`feature-109409-1774770383` for information on how to
+configure resources for extensions.
 
 Impact
 ======
 
 TYPO3 installations using resource identifiers that reference extension
-folders outside `Configuration`, `Resources/Private`, or `Resources/Public`
+folders outside :folder:`Configuration`,
+:folder:`Resources/Private`, or :folder:`Resources/Public`
 will receive a deprecation message when such a resource is resolved.
 
 Every accessed resource must be configured beforehand as described in
@@ -40,13 +41,14 @@ Affected installations
 ======================
 
 TYPO3 installations using resource identifiers that reference extension
-folders outside `Configuration`, `Resources/Private`, or `Resources/Public`.
+folders outside :folder:`Configuration`,
+:folder:`Resources/Private`, or :folder:`Resources/Public`.
 
 Migration
 =========
 
 Either configure the referenced paths explicitly in
-`Configuration/Resources.php`, as described in
+:file:`Configuration/Resources.php`, as described in
 :ref:`feature-109409-1774770383`, or move the resources to a path that
 is already configured.
 

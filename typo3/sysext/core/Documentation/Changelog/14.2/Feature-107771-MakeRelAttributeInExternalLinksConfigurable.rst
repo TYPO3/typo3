@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _feature-107771-1760360529:
+..  _feature-107771-1760360529:
 
 ====================================================================
 Feature: #107771 - Make rel attribute in external links configurable
@@ -12,29 +12,34 @@ Description
 ===========
 
 For security reasons, external links that open in a new window should be
-generated with :code:`rel="noopener"` to prevent the opened page to have access
-to the originating document via JavaScript's :code:`Window.opener` object.
+generated with :code:`rel="noopener"` to prevent the opened page from
+accessing the originating document via JavaScript's
+:code:`Window.opener` object.
 
-TYPO3's default behavior is to add :code:`rel="noreferrer"` to all such links,
-which automatically implies :code:`rel="noopener"` and even is more strict and
-not even sends the HTTP "Referer" header to the opened page. This behavior could
-be too strict and unwanted for some website owners.
+TYPO3's default behavior is to add :code:`rel="noreferrer"` to all such
+links. This automatically implies :code:`rel="noopener"` but is even more
+restrictive, as it also prevents the HTTP `Referer` header from being sent to
+the opened page. This may be too strict and therefore undesirable for some
+website owners.
 
-This feature introduces a new TypoScript option :code:`config.linkSecurityRelValue`
-to define the :code:`rel` attribute for external links. The default behavior
-stays :code:`rel="noreferrer"` but by setting the TypoScript property to
-:code:`noopener`, all external links are generated with :code:`rel="noopener"`
-instead.
+This feature introduces a new TypoScript option
+:code:`config.linkSecurityRelValue` to define the :code:`rel`
+attribute for external links. The default behavior remains
+:code:`rel="noreferrer"`, but by setting the TypoScript property to
+:code:`noopener`, all external links are generated with
+:code:`rel="noopener"` instead.
 
-The feature respects existing individual settings per link. All :code:`rel="noopener"`
-and :code:`rel="noreferrer"` from other sources are kept.
+The feature respects existing the individual settings of a  link. Any existing
+:code:`rel="noopener"` and :code:`rel="noreferrer"` values from other
+sources are preserved.
 
 Impact
 ======
 
-A new TypoScript configuration option :code:`config.linkSecurityRelValue`
-is available and can be set to "noreferrer" (default) to "noopener".
+A new TypoScript configuration option
+:code:`config.linkSecurityRelValue` is available and can be set to
+`noreferrer` (default) or `noopener`.
 
 This setting affects all external links with :code:`target="_blank"`.
 
-.. index:: Frontend
+..  index:: Frontend

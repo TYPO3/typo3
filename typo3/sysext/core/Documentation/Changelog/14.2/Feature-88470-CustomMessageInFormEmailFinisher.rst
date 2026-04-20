@@ -11,22 +11,23 @@ See :issue:`88470`
 Description
 ===========
 
-The email finishers (EmailToSender and EmailToReceiver) of the TYPO3 form
+The email finishers `EmailToSender` and `EmailToReceiver` in the TYPO3 form
 framework now support an optional custom message field. This allows editors
-to add a personalized text to the email sent by the form, either before or
+to add personalized text to the email sent by the form, either before or
 after the submitted form values.
 
 The message field supports rich text editing using the `form-content` RTE
-preset, which provides formatting options like bold, italic, links, and lists.
+preset, which provides formatting options such as bold, italic, links, and
+lists.
 
-A special placeholder `{formValues}` can be used within the message to control
+A special placeholder `{formValues}` can be used inside the message to control
 where the submitted form data table is rendered. If the placeholder is omitted,
 only the custom message is shown and the form values table is hidden.
 
 The message field is available in:
 
-- The form editor backend module
-- The form finisher override settings
+*   The form editor backend module
+*   The form finisher override settings
 
 Impact
 ======
@@ -37,4 +38,3 @@ flexibility in crafting email notifications without the need for custom Fluid
 templates.
 
 ..  index:: Frontend, Backend, ext:form
-

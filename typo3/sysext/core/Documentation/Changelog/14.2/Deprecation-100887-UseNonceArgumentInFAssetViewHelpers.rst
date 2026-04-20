@@ -11,14 +11,14 @@ See :issue:`100887`
 Description
 ===========
 
-The :html:`useNonce` argument on the :html:`f:asset.script` and
+The :html:`useNonce` argument in the :html:`f:asset.script` and
 :html:`f:asset.css` ViewHelpers has been renamed to :html:`csp` to better
 reflect its purpose (controlling Content-Security-Policy hash/nonce
 collection rather than nonce usage specifically).
 
 Similarly, the :php:`'useNonce'` asset option key accepted by
-:php:`\TYPO3\CMS\Core\Page\AssetCollector::addJavaScript()` and
-:php:`\TYPO3\CMS\Core\Page\AssetCollector::addStyleSheet()` has been
+:php:`addJavaScript()` and :php:`addStyleSheet()` in class
+:php:`\TYPO3\CMS\Core\Page\AssetCollector` has been
 replaced by :php:`'csp'`.
 
 
@@ -26,8 +26,9 @@ Impact
 ======
 
 Passing :html:`useNonce` as a ViewHelper argument or as an
-:php:`AssetCollector` option key will trigger a deprecation-level log
-entry in TYPO3 v14. These usages are scheduled for removal in TYPO3 v15.
+:php-short:`\TYPO3\CMS\Core\Page\AssetCollector` option key will trigger
+a deprecation-level log entry in TYPO3 v14. This usage is scheduled for
+removal in TYPO3 v15.
 
 
 Affected installations
@@ -66,9 +67,9 @@ Replace the :php:`'useNonce'` option key with :php:`'csp'` in PHP:
     // After
     $assetCollector->addJavaScript('my-script', $src, [], ['csp' => true]);
 
-The :php:`PageRenderer` methods :php:`addJsInlineCode()`,
+The :php-short:`\TYPO3\CMS\Core\Page\PageRenderer` methods :php:`addJsInlineCode()`,
 :php:`addJsFooterInlineCode()`, and :php:`addCssInlineBlock()` retain their
-:php:`$useNonce` parameter names for backward compatibility; no migration is
+:php:`$useNonce` parameter names for backward compatibility. No migration is
 required for callers of these methods.
 
 

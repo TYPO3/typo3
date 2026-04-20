@@ -11,10 +11,10 @@ See :issue:`108846`
 Description
 ===========
 
-The new console command `fluid:namespaces` has been introduced which lists
-all available global ViewHelper namespaces in the current project. This can
-be used to verify the current configuration. With the `--json` option, it is
-also possible to access that information in a machine-readable way.
+The new console command `typo3 fluid:namespaces` has been introduced. It
+lists all the available global ViewHelper namespaces in the current project and
+can be used to verify the current configuration. The `--json` option
+can be used to access the information in a machine-readable way.
 
 Usage:
 
@@ -37,15 +37,13 @@ Example output:
     |        | TYPO3\CMS\Fluid\ViewHelpers  |
     +--------+------------------------------+
 
-
-The same information is also available in the Configuration module in the
-TYPO3 backend.
-
+The same information is available in the
+:guilabel:`System > Configuration` module in the TYPO3 backend.
 
 Impact
 ======
 
-The new console command allows developers and integrators to inspect registered
+The new console command allows developers and integrators to inspect
 global ViewHelper namespaces in the current project.
 
 ..  index:: CLI, Fluid, ext:fluid

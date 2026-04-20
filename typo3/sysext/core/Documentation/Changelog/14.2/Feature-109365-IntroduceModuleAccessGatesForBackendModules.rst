@@ -11,29 +11,33 @@ See :issue:`109365`
 Description
 ===========
 
-The previously hardcoded module access checks (:php:`user`, :php:`admin`,
-:php:`systemMaintainer`) in the backend module registration have been replaced
+The previously hard-coded module access checks (`user`, `admin`,
+`systemMaintainer`) in the backend module registration have been replaced
 with an extensible gate system. Each access type is now handled by a dedicated
-gate class implementing :php:`ModuleAccessGateInterface`.
+gate class which implements
+:php-short:`TYPO3\CMS\Backend\Module\ModuleAccessGateInterface`.
 
-TYPO3 ships three built-in gates that preserve the existing behavior:
+TYPO3 ships three built-in gates that preserve existing behavior:
 
-- :php:`UserGate` — grants access to admin users and users/groups with explicit
-  module permissions (:sql:`be_users.userMods` / :sql:`be_groups.groupMods`)
-- :php:`AdminGate` — grants access only to admin users
-- :php:`SystemMaintainerGate` — grants access only to system maintainers
+*   :php-short:`\TYPO3\CMS\Backend\Module\AccessGate\UserGate` - grants access
+    to admin users and users/groups with explicit module permissions
+    (:sql:`be_users.userMods` / :sql:`be_groups.groupMods`)
+*   :php-short:`\TYPO3\CMS\Backend\Module\AccessGate\AdminGate` - grants access
+    only to admin users
+*   :php-short:`\TYPO3\CMS\Backend\Module\AccessGate\SystemMaintainerGate` -
+    grants access only to system maintainers
 
 Extension authors can register custom gates using the
 :php:`#[AsModuleAccessGate]` PHP attribute. A gate receives the module and the
 current backend user and returns one of three results:
 
-- :php:`ModuleAccessResult::Granted` — access is explicitly allowed
-- :php:`ModuleAccessResult::Denied` — access is explicitly denied
-- :php:`ModuleAccessResult::Abstain` — the gate cannot decide (not responsible
-  for this access type)
+*   :php:`ModuleAccessResult::Granted` - access is explicitly allowed
+*   :php:`ModuleAccessResult::Denied` - access is explicitly denied
+*   :php:`ModuleAccessResult::Abstain` - the gate cannot decide (not responsible
+    for this access type)
 
 Example: Custom module access gate
------------------------------------
+----------------------------------
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Module/AccessGate/EditorGate.php
@@ -51,12 +55,12 @@ Example: Custom module access gate
     {
         public function decide(
             ModuleInterface $module,
-            BackendUserAuthentication $user
+            BackendUserAuthentication $user,
         ): ModuleAccessResult {
             if ($module->getAccess() !== 'editor') {
                 return ModuleAccessResult::Abstain;
             }
-            // Custom logic: check for a specific user group
+            // Custom logic: Check for a specific user group.
             return $user->check('groupList', '3')
                 ? ModuleAccessResult::Granted
                 : ModuleAccessResult::Denied;
@@ -79,7 +83,7 @@ The custom gate can then be referenced in the module registration:
 Ordering gates
 --------------
 
-Gates support :php:`before` and :php:`after` parameters to control their
+Gates support `before` and `after` parameters to set their
 evaluation order when multiple gates are registered:
 
 ..  code-block:: php
@@ -94,9 +98,9 @@ Impact
 ======
 
 Extension authors can now define custom module access strategies beyond the
-built-in :php:`user`, :php:`admin`, and :php:`systemMaintainer` levels by
-implementing :php:`ModuleAccessGateInterface` and registering it with the
-:php:`#[AsModuleAccessGate]` attribute.
+built-in `user`, `admin`, and `systemMaintainer` levels by implementing
+:php-short:`TYPO3\CMS\Backend\Module\ModuleAccessGateInterface` and
+registering it with the :php:`#[AsModuleAccessGate]` attribute.
 
 Existing module registrations using the built-in access values continue to
 work without changes.

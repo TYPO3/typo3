@@ -15,13 +15,13 @@ Using :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']`
 to configure additional public paths for the `typo3/app` package
 has been deprecated.
 
-Configure resources in `config/system/resources.php` instead.
+Configure resources in :file:`config/system/resources.php` instead.
 See :ref:`feature-109409-1774770383` for details.
 
 Impact
 ======
 
-TYPO3 installations using
+TYPO3 installations that use
 :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']`
 will receive a deprecation message whenever resources for the
 `typo3/app` package are resolved.
@@ -29,16 +29,16 @@ will receive a deprecation message whenever resources for the
 Affected installations
 ======================
 
-TYPO3 installations using
+TYPO3 installations that use
 :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']`.
 
 Migration
 =========
 
-Configure resources in `config/system/resources.php` instead of using
-:php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']`.
+Configure resources in :file:`config/system/resources.php` instead of
+using :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']`.
 
-See :ref:`feature-109409-1774770383` for how to configure resources
-for the `typo3/app` package.
+See :ref:`feature-109409-1774770383` for information on how to
+configure resources for the `typo3/app` package.
 
 ..  index:: PHP-API, NotScanned, ext:core

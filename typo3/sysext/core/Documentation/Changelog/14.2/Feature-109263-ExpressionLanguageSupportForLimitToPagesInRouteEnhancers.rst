@@ -15,34 +15,36 @@ The :yaml:`limitToPages` option for route enhancers in the site configuration
 now supports Symfony Expression Language expressions in addition to plain
 page IDs.
 
-Previously, :yaml:`limitToPages` only accepted an array of integer page IDs,
+Previously, :yaml:`limitToPages` accepted only an array of integer page IDs,
 which required maintaining a static list that had to be updated whenever pages
-were added or moved. With this change, string entries in the :yaml:`limitToPages`
-array are evaluated as Expression Language expressions, giving integrators
-flexible, condition-based control over which pages an enhancer applies to.
+were added or moved. This change means string entries in the
+:yaml:`limitToPages` array are evaluated as Expression Language expressions,
+giving integrators flexible, condition-based control over which pages a route
+enhancer applies to.
 
-All entries in the array are OR-combined. Integer values are matched against the
-page ID (existing behavior), while string values are evaluated as expressions.
-To combine multiple conditions with AND logic, use the :yaml:`&&` operator within
-a single expression string.
+All entries in the array are combined via logical OR. Integer values are
+matched against the page ID (existing behavior), and string values are
+evaluated as expressions. To combine multiple conditions with logical AND, use
+the :yaml:`&&` operator inside a single expression string.
 
-The following variables are available in expressions:
+Use the following variables inside expressions:
 
-*   :yaml:`page` - The full page record as an associative array (e.g.
+*   :yaml:`page` - The full page record as an associative array (for example,
     :yaml:`page["doktype"]`, :yaml:`page["backend_layout"]`,
-    :yaml:`page["module"]`).
-*   :yaml:`site` - The current :php:`Site` object.
-*   :yaml:`siteLanguage` - The current :php:`SiteLanguage` object.
+    :yaml:`page["module"]`)
+*   :yaml:`site` - The current :php:`Site` object
+*   :yaml:`siteLanguage` - The current :php:`SiteLanguage` object
 
-Additionally, all default Expression Language functions such as :yaml:`like()`,
-:yaml:`env()`, and :yaml:`feature()` are available. Extensions can register
-additional functions and variables for the :yaml:`routing` Expression Language
-context via :file:`Configuration/ExpressionLanguage.php`.
+All the default Expression Language functions such as
+:yaml:`like()`, :yaml:`env()`, and :yaml:`feature()` are also available.
+Extensions can register additional functions and variables for the
+:yaml:`routing` Expression Language context via
+:file:`Configuration/ExpressionLanguage.php`.
 
 Examples
 --------
 
-Match pages by their page type (doktype):
+Match pages by their page type (`doktype`):
 
 ..  code-block:: yaml
     :caption: config/sites/<identifier>/config.yaml
@@ -93,7 +95,7 @@ Combine integer page IDs with expression conditions (OR logic):
           - routePath: '/product/{product_title}'
             _controller: 'Product::show'
 
-Use AND logic within a single expression:
+Use AND logic inside a single expression:
 
 ..  code-block:: yaml
     :caption: config/sites/<identifier>/config.yaml
@@ -117,4 +119,4 @@ Integrators can now use dynamic, expression-based conditions in
 fully backward compatible - existing configurations with integer-only arrays
 continue to work without any changes.
 
-.. index:: YAML, PHP-API, ext:core
+..  index:: YAML, PHP-API, ext:core

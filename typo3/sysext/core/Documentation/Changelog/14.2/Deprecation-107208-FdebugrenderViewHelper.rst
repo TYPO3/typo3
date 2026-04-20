@@ -11,21 +11,20 @@ See :issue:`107208`
 Description
 ===========
 
-The `<f:debug.render>` ViewHelper, which has been used internally to render the
-Fluid debug output for the admin panel, has been deprecated.
+The `<f:debug.render>` ViewHelper has been deprecated. It was used internally to
+render Fluid debug output for the admin panel.
 
 
 Impact
 ======
 
-Calling the ViewHelper from a template will trigger a deprecation warning. The
-ViewHelper will be removed with TYPO3 v15.
-
+Calling the ViewHelper from a template triggers a deprecation warning. The
+ViewHelper will be removed in TYPO3 v15.
 
 Affected installations
 ======================
 
-Projects or extensions that use `<f:debug.render>` in a template.
+Projects and extensions that use `<f:debug.render>` in a template.
 
 
 Migration

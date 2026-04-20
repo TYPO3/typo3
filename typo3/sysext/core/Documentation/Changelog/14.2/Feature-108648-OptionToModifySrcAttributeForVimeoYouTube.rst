@@ -12,11 +12,11 @@ Description
 ===========
 
 The new configuration option `srcAttribute` for the `YouTubeRenderer`
-and `VimeoRenderer` can be used to adjust the previously hard-coded `src`
-attribute in the generated iframe HTML code. This can be helpful if
-iframes shouldn't be loaded immediately because of privacy concerns,
-in which case an alternative such as `data-src` can be used in the
-initial HTML markup.
+and `VimeoRenderer` can be used to modify the previously hard-coded `src`
+attribute in the resulting iframe HTML code. This can be useful if
+the iframe should not be immediately loaded because of privacy concerns. An
+alternative such as `data-src` can be used in the initial
+HTML markup.
 
 Example:
 
@@ -26,7 +26,6 @@ Example:
         file="{youtubeVideo}"
         additionalConfig="{srcAttribute: 'data-src'}"
     />
-
 
 Impact
 ======

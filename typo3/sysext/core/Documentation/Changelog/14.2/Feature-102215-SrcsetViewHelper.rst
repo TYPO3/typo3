@@ -12,56 +12,61 @@ Description
 ===========
 
 The `srcset` HTML attribute can be used to provide different image sizes to
-the browser. The browser is free to choose which image size will be used,
-which is why the images must all be scaled variants of the same original
-image. Each image in the srcset-list also has a so-called descriptor, either
-specifying the absolute width of the image (e. g. `400w`) or a scale factor
-relative to the original image size to be used on high density screens
-(e. g. `2x`).
+the browser. The browser is free to choose which image size to use, which is
+why the images must all be scaled versions of the same original image. Each
+image in the `srcset` list also has a descriptor which either specifies
+the absolute width of the image, for example `400w`, or is a scale factor
+relative to the original image size for use on high-density screens, for
+example `2x`.
 
-Srcset attributes are used by various HTML tags:
+`srcset` attributes are used by various HTML tags:
 
-* :html:`<img srcset="image@500.jpg 500w, image@1000.jpg 1000w" />`
-* :html:`<source srcset="image@1x.jpg 1x, image@2x.jpg 2x" />` inside  :html:`<picture>`
-* :html:`<link rel="preload" as="image" imagesrcset="image@500.jpg 500w, image@1000.jpg 1000w" />`
+*   :html:`<img srcset="image@500.jpg 500w, image@1000.jpg 1000w" />`
+*   :html:`<source srcset="image@1x.jpg 1x, image@2x.jpg 2x" />` inside
+    :html:`<picture>`
+*   :html:`<link rel="preload" as="image" imagesrcset="image@500.jpg 500w, image@1000.jpg 1000w" />`
 
 ..  note::
 
-    The file name notation like `image@500.jpg` is just a regular file name
-    to indicate its pixel dimensions. The `@` notation has no inherent conversion
-    magic, unlike the operators `500w` and `1x`.
+    File name notation like `image@500.jpg` is just a regular file name
+    used to indicate its pixel dimensions. The `@` notation has no inherent
+    conversion magic, unlike the descriptors `500w` and `1x`.
 
-To generate `srcset` attributes based on various inputs more easily, a new data
-structure is added to calculate the appropriate image sizes based on a list of
-supplied descriptors. Based on these calculations, image files can be generated
-using the existing image manipulation API.
+To generate `srcset` attributes easily based on input, a new
+data structure has been added to calculate the appropriate image sizes from a
+list of descriptors. Based on these calculations, image files can be
+generated using the image manipulation API.
 
 ..  code-block:: php
     :caption: EXT:my_ext/Classes/Service/SomeImageService.php
 
     use TYPO3\CMS\Core\Html\Srcset\SrcsetAttribute;
 
-    // from width descriptors
+    // From width descriptors
     $srcset = SrcsetAttribute::createFromDescriptors(['400w', '600w', '800w']);
 
-    // or from pixel density descriptors (reference width needs to be supplied)
-    $srcset = SrcsetAttribute::createFromDescriptors(['1.5x', '2x', '3x'], 800);
+    // Or from pixel density descriptors (a reference width must be supplied)
+    $srcset = SrcsetAttribute::createFromDescriptors(
+        ['1.5x', '2x', '3x'],
+        800
+    );
 
     // Add image URIs
     foreach ($srcset->getCandidates() as $candidate) {
         // Generate scaled image here using $candidate->getCalculatedWidth()
 
-        // Set URI of generated image
+        // Set URI of the generated image
         $candidate->setUri($generatedImageUri);
     }
 
     // Render srcset attribute
     $srcsetString = $srcset->generateSrcset();
 
-To be able to generate `srcset` attributes in Fluid templates, a new ViewHelper
-has been introduced.
+To generate `srcset` attributes in Fluid templates, a new ViewHelper has also
+been introduced.
 
 ..  code-block:: html
+
     <picture>
         <source
             srcset="{f:image.srcset(image: imageObject, srcset: '400w, 600w, 800w', cropVariant: 'wide')}"
@@ -75,7 +80,7 @@ Impact
 ======
 
 The new ViewHelper `f:image.srcset` simplifies previous manual implementations
-using :fluid:`f:uri.image` for each image size manually. This now offers
-to easily supply images at different dimensions, based on one image.
+that used :fluid:`f:uri.image` for each image size. This now makes it easier
+to provide images in different dimensions based on a single image.
 
 .. index:: Fluid, PHP-API, ext:core, ext:fluid

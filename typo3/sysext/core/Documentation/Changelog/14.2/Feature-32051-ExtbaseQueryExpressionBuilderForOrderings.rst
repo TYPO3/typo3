@@ -1,9 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _feature-32051-1737628800:
+..  _feature-32051-1737628800:
 
 ================================================================
-Feature: #32051 - Extbase Query expression builder for orderings
+Feature: #32051 - Extbase query expression builder for orderings
 ================================================================
 
 See :issue:`32051`
@@ -11,24 +11,26 @@ See :issue:`32051`
 Description
 ===========
 
-Extbase queries now support SQL function expressions in ORDER BY clauses
-through a new fluent API. This enables sorting results by computed values
-using functions like CONCAT, TRIM, and COALESCE.
+Extbase queries now support SQL expressions in :sql:`ORDER BY`
+clauses through a new fluent API. This enables results to be sorted using
+functions such as :sql:`CONCAT`, :sql:`TRIM`, and :sql:`COALESCE`.
 
-New methods have been added to :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface`:
+The following methods have been added to the
+:php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface`:
 
-*  :php:`orderBy()` - Sets a single ordering, replacing any existing orderings
-*  :php:`addOrderBy()` - Adds an ordering to existing orderings
-*  :php:`concat()` - Creates a CONCAT expression
-*  :php:`trim()` - Creates a TRIM expression
-*  :php:`coalesce()` - Creates a COALESCE expression
+*   :php:`orderBy()` - Sets a single ordering and replaces any existing
+    orderings
+*   :php:`addOrderBy()` - Adds an ordering to the existing orderings
+*   :php:`concat()` - Creates a :sql:`CONCAT` expression
+*   :php:`trim()` - Creates a :sql:`TRIM` expression
+*   :php:`coalesce()` - Creates a :sql:`COALESCE` expression
 
 Examples
 --------
 
 Order by concatenated fields:
 
-.. code-block:: php
+..  code-block:: php
 
     $query = $this->myRepository->createQuery();
     $query->orderBy(
@@ -36,18 +38,18 @@ Order by concatenated fields:
         QueryInterface::ORDER_ASCENDING
     );
 
-Order by trimmed field:
+Order by a trimmed field:
 
-.. code-block:: php
+..  code-block:: php
 
     $query->orderBy(
         $query->trim('title'),
         QueryInterface::ORDER_DESCENDING
     );
 
-Order by first non-null value (fallback pattern):
+Order by the first non-null value (a fallback pattern):
 
-.. code-block:: php
+..  code-block:: php
 
     $query->orderBy(
         $query->coalesce('nickname', 'firstName'),
@@ -56,7 +58,7 @@ Order by first non-null value (fallback pattern):
 
 Chain multiple orderings:
 
-.. code-block:: php
+..  code-block:: php
 
     $query
         ->orderBy($query->concat('firstName', 'lastName'))
@@ -64,7 +66,7 @@ Chain multiple orderings:
 
 Nest expressions:
 
-.. code-block:: php
+..  code-block:: php
 
     $query->orderBy(
         $query->concat(
@@ -73,12 +75,12 @@ Nest expressions:
         )
     );
 
-Backwards Compatibility
+Backwards compatibility
 -----------------------
 
-The existing :php:`setOrderings()` method with array syntax continues to work:
+The existing :php:`setOrderings()` method with its array syntax will continue to work:
 
-.. code-block:: php
+..  code-block:: php
 
     $query->setOrderings([
         'title' => QueryInterface::ORDER_ASCENDING,
@@ -93,4 +95,4 @@ resorting to raw SQL statements. This enables more flexible sorting logic
 while maintaining the abstraction and security benefits of the Extbase
 persistence layer.
 
-.. index:: PHP-API, ext:extbase
+..  index:: PHP-API, ext:extbase

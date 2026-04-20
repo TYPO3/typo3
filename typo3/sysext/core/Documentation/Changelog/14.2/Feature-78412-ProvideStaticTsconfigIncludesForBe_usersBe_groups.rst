@@ -3,7 +3,7 @@
 .. _feature-78412-1719144405:
 
 ===========================================================================
-Feature: #78412 - Provide static tsconfig includes for be_users & be_groups
+Feature: #78412 - Provide static TSconfig includes for be_users & be_groups
 ===========================================================================
 
 See :issue:`78412`
@@ -11,32 +11,32 @@ See :issue:`78412`
 Description
 ===========
 
-The tables `be_users` and `be_groups` are extended by an additional field which
-allows to select static Tsconfig defined by extensions. Following the syntax for
-the field `tsconfig_includes` in the table `pages` there are the following
-methods available:
+The tables `be_users` and `be_groups` are each extended by an additional field
+that allows static TSconfig to be selected that is defined by extensions. These fields follow the
+syntax of the `tsconfig_includes` field in the `pages` table. The following
+methods are available:
 
-For Backend users:
+For backend users:
 
-.. code-block:: php
+..  code-block:: php
+    :caption: EXT:my_extension/Configuration/TCA/Overrides/be_users.php
 
-    <?php
+    use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-    // in Extension/Configuration/TCA/Overrides/be_users.php
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerUserTSConfigFile(
+    ExtensionManagementUtility::registerUserTSConfigFile(
         'extensionKey',
         'Configuration/Tsconfig/Static/example1.tsconfig',
         'Example 1'
     );
 
-For Backend usergroups:
+For backend user groups:
 
-.. code-block:: php
+..  code-block:: php
+    :caption:  EXT:my_extension/Configuration/TCA/Overrides/be_groups.php
 
-    <?php
+    use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-    // in Extension/Configuration/TCA/Overrides/be_groups.php
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerUserGroupTSConfigFile(
+    ExtensionManagementUtility::registerUserGroupTSConfigFile(
         'extensionKey',
         'Configuration/Tsconfig/Static/example2.tsconfig',
         'Example 2'
@@ -45,33 +45,36 @@ For Backend usergroups:
 Impact
 ======
 
-The new fields can be used to define User Tsconfig code for specific users and
-usergroups which can be provided by extensions.
+The new fields can be used to define user TSconfig for specific users and
+user groups provided by extensions.
 
-By using this approach instead of writing TSconfig directly to the TSconfig database field of
-`be_users` or `be_groups` reduces the amount of configuration saved in the database. This has
-many advantages in following scenarios:
+Using this approach, instead of writing TSconfig directly to the database field
+of `be_users` or `be_groups`, reduces the amount of configuration stored in
+the database. This has several advantages:
 
-- Running a TYPO3 instance with automated deployment and GIT version control makes it easily
-  possible to create/modify such an includable TSconfig snippet via a file change. It also helps
-  keeping configuration streamlined for multiple environments like staging or production. Once
-  the file is included you have the same user/group configuration without manually changing that
-  in the database for each affected user or group.
+*   Running a TYPO3 instance with automated deployment and Git version control
+    makes it easy to create or modify such an includable TSconfig snippet via a
+    file change. It also helps keep configuration streamlined for multiple
+    environments such as staging or production. Once the file is included, you
+    can have the same user or group configuration without having to manually change
+    the database for each affected user or group.
 
-- Extension authors can ship predefined User TSconfig files which can be included by the TYPO3
-  backend user. That also applies to local (site) packages or your agency's base package.
+*   Extension authors can ship predefined user TSconfig files that can be
+    included by TYPO3 backend users. This also applies to local (site) packages
+    or your agency's base package.
 
-- Possible breaking changes in major upgrades can be automatically upgraded with tools like
-  TYPO3 Fractor (enhancement for TYPO3 Rector). If a breaking change occurs within User TSconfig,
-  such a tool can automatically upgrade the configuration ensuring that you don't forget to
-  search for them in the depths of the database. This kind of approach could reduce the amount
-  of recurring manual work. Particularly affected by this are large TYPO3 instances with a big
-  amount of `be_users` or `be_groups` records.
+*   Possible breaking changes in major upgrades can be handled automatically
+    with tools like TYPO3 Fractor (an enhancement for TYPO3 Rector). If a
+    breaking change occurs within user TSconfig, such a tool can automatically
+    upgrade the configuration, ensuring that you do not miss occurrences
+    in the database. This approach can reduce recurring manual work,
+    especially in large TYPO3 instances with many `be_users` or
+    `be_groups` records.
 
-- Searching within existing User TSconfig which is stored in the database otherwise is possible
-  in your IDE now. All your TSconfig is present in your codebase. This can also improve your
-  daily productivity and greatly simplifies major upgrades. You can also go further and disable/
-  hide the `TSconfig` database field in projects to prevent saving User TSconfig in the database
-  for users/groups at all.
+*   Searching through user TSconfig stored in the database is now
+    possible in your IDE, as all TSconfig resides in your codebase. This can
+    improve productivity and simplify major upgrades. You can also go
+    further and disable or hide the `TSconfig` database field in projects to
+    prevent saving user TSconfig to the database for users or user groups.
 
 .. index:: Backend, TSConfig, ext:core

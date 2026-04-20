@@ -11,19 +11,19 @@ See :issue:`102430`
 Description
 ===========
 
-This feature is guarded with toggle "frontend.cache.autoTagging" and
-experimental for now: The core flushes cache tags for all kind of records
-automatically when they are created, changed or deleted. For files and
-folders this is not the case. This feature adds cache tag handling for file
-or folder operations when they are created, changed or deleted. Also the
-file metadata changes are handled correctly now. This leads to a better
-editor experience when the cache tags are used correctly.
+This feature is guarded by the `frontend.cache.autoTagging` feature toggle and
+is currently experimental. The core flushes cache tags automatically for all
+kinds of records when they are created, changed, or deleted. This is not the
+case for files and folders. This feature adds cache tag handling for file and
+folder operations when they are created, changed, or deleted. File metadata
+changes are now handled correctly as well. This will lead to a better editor
+experience if cache tags are used correctly.
 
 Impact
 ======
 
-Integrators and extension developers can now add :php:`sys_file_${uid}` and
-:php:`sys_file_metadata_${uid}` as cache tags and they are flushed correctly
-from the TYPO3 core when an editor interacts with them in the filelist module.
+Integrators and extension developers can now add `sys_file_${uid}` and
+`sys_file_metadata_${uid}` as cache tags, and they are flushed correctly by
+the TYPO3 core when an editor interacts with them in the :guilabel:`Media` module.
 
 .. index:: FAL, PHP-API, ext:core

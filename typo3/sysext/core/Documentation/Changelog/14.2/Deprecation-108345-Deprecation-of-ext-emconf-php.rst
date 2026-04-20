@@ -71,9 +71,9 @@ At minimum, this includes the extension version and the
 
 For compatibility with TYPO3 classic mode, third-party extensions
 must set the exact extension version in `extra.typo3/cms.version`
-or in the top level `version` field of `composer.json`.
-This version must match the version previously defined in `ext_emconf.php`
-and the released Git tag.
+or in the top level `version` field of :file:`composer.json`.
+This version must match the version previously
+defined in :file:`ext_emconf.php` and the released Git tag.
 
 Fixture extensions used in tests can set any version number, for example `1.0.0`,
 but a version number must still be provided to avoid deprecation messages.
@@ -81,14 +81,14 @@ but a version number must still be provided to avoid deprecation messages.
 During testing, the version number is not evaluated.
 
 TYPO3 Core extensions may omit the version number
-in `composer.json`, because their version can and will be derived from
-php`\TYPO3\CMS\Core\Information\Typo3Version`.
+in :file:`composer.json` because their version number is derived from
+:php-short:`\TYPO3\CMS\Core\Information\Typo3Version`.
 
 State migration
 ---------------
 
 The former `state` field from `ext_emconf.php` is deprecated as a source of
-extension metadata and should be represented in `composer.json` using
+extension metadata and should be set in `composer.json` using
 dedicated metadata instead.
 
 Supported stability values should be expressed via the version string:
@@ -113,13 +113,13 @@ Supported stability values should be expressed via the version string:
 
 Supported Composer stability values are:
 
-* `dev`
-* `alpha`
-* `beta`
-* `RC`
-* `stable`
+*   `dev`
+*   `alpha`
+*   `beta`
+*   `RC`
+*   `stable`
 
-Custom former state values that are not supported as Composer stability
+State values that are not in the list of supported Composer stability values
 can be expressed as build metadata:
 
 ..  code-block:: json
@@ -140,8 +140,8 @@ can be expressed as build metadata:
         }
     }
 
-In this example, `obsolete` is preserved as build metadata and may still be shown
-in TYPO3's Extension Manager.
+In this example, `obsolete` is preserved as build metadata and can still be displayed
+in the TYPO3 Extension Manager.
 
 The former `state = excludeFromUpdates` value should now be expressed via
 a dedicated boolean flag:
@@ -168,8 +168,8 @@ a dedicated boolean flag:
 PHP constraints
 ---------------
 
-If an extension declares a PHP version dependency, it should be expressed in
-the `require` section of `composer.json`:
+If an extension declares a PHP version dependency, it should be in
+the `require` section of :file:`composer.json`:
 
 ..  code-block:: json
     :caption: composer.json defining a PHP version constraint
@@ -213,8 +213,8 @@ If an extension does not provide any regular Composer packages itself,
 to avoid deprecation messages and to declare future compatibility
 with TYPO3 classic mode.
 
-If strict `composer.json` validation is required and the extension is published
-to Packagist as well, where setting the top level `version` field is not recommended,
+If strict :file:`composer.json` validation is required and the extension is published
+to Packagist where setting the top level `version` field is not recommended,
 it is recommended to set the version via `extra.typo3/cms.version`.
 
 If the `version` field is set anyway, it is recommended to omit `extra.typo3/cms.version`
@@ -226,26 +226,26 @@ Impact
 There is no impact on Composer-based TYPO3 installations.
 
 TYPO3 classic installations will trigger a deprecation message
-for extensions that still ship `ext_emconf.php` but do not yet define
-the required metadata in `composer.json`.
+for extensions that ship a :file:`ext_emconf.php` and have not defined
+the required metadata in :file:`composer.json`.
 
 Affected installations
 ======================
 
 TYPO3 classic installations are affected if they use extensions that:
 
-* still ship `ext_emconf.php`
-* do not define the `"version"` field or `extra.typo3/cms.version`
-* or do not define `extra.typo3/cms.Package.providesPackages`
-  at all, even as an empty object
+*   still ship :file:`ext_emconf.php`
+*   do not define a `"version"` field or `extra.typo3/cms.version`
+*   or do not define `extra.typo3/cms.Package.providesPackages`
+    at all, even as an empty object
 
 Migration
 =========
 
-Extension authors should move extension metadata from `ext_emconf.php`
-to `composer.json`.
+Extension authors should move extension metadata from :file:`ext_emconf.php`
+to :file:`composer.json`.
 
-This includes in particular:
+This includes:
 
 * the extension version via `"version"` or `extra.typo3/cms.version`
 * `providesPackages` via `extra.typo3/cms.Package.providesPackages`,
@@ -259,11 +259,11 @@ This includes in particular:
   `-beta2`, or `-RC3`
 * custom former state labels via build metadata such as `+obsolete`
 * update exclusion via `extra.typo3/cms.exclude-from-updates`
-* PHP constraints via the `require.php` entry
+* PHP constraints via the :file:`require.php` entry
 
-For the time being, `ext_emconf.php` may still need to be kept for
+For the time being, :file:`ext_emconf.php` may still need to be kept for
 third-party tooling such as TYPO3 TER or Tailor. However, once the
-required metadata is correctly defined in `composer.json`,
-TYPO3 will no longer evaluate `ext_emconf.php`.
+required metadata is correctly defined in :file:`composer.json`,
+TYPO3 will no longer evaluate :file:`ext_emconf.php`.
 
 .. index:: ext:core, NotScanned

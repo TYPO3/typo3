@@ -11,13 +11,16 @@ See :issue:`108557`
 Description
 ===========
 
-It is possible to limit allowed tables for Page Types ("doktype"). However, up
-until now the default behavior when switching types was to ignore possible
-violations to these rules. The behavior could be changed on a per doktype
-level like this:
+It is possible to limit which tables are allowed for page types (`doktype`). However, up
+until now the default behavior when switching types was to ignore
+violations of these rules. The behavior could be changed for a particular `doktype`
+like this:
 
-.. code-block:: php
+..  code-block:: php
     :caption: EXT:my_extension/ext_tables.php
+
+    use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
 
     $dokTypeRegistry = GeneralUtility::makeInstance(PageDoktypeRegistry::class);
     $dokTypeRegistry->add(
@@ -27,21 +30,20 @@ level like this:
         ],
     );
 
-This would make the Page Type `116` strict, when switching the Page Type
-(aka doktype).
+This made page type `116` strict when switching the page type.
 
 This option is now obsolete, as this functionality is always enabled.
-Switching Page Types is no longer possible if it violates the configured
-allowed tables, making the system more consistent.
+Switching page types is no longer possible if it violates the configured
+allowed tables, which makes the system more consistent.
 
 Some remarks: This option was rarely used and often misunderstood. The option
 to configure allowed tables was called `allowedTables`. It was not clear what
-`onlyAllowedTables` should even mean without looking into the documentation.
+`onlyAllowedTables` meant without looking in the documentation.
 
-On a rational point of view it does not make sense to configure restrictions
-for Page Types, when they are ignored per default for the action of switching
-types. Allowing to violate the rules makes them useless in the first place. So
-either remove those restrictions altogether or make them always work like it
-is done now.
+From a practical point of view, it does not make sense to configure
+restrictions for page types when they are ignored by default for the action of
+switching types. Allowing the rules to be violated makes them ineffective in
+the first place. So either remove those restrictions altogether or make them
+always apply, which is what happens now.
 
 ..  index:: TCA, ext:core

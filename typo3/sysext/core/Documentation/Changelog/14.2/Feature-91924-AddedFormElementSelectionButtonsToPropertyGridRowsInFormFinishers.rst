@@ -12,7 +12,7 @@ Description
 ===========
 
 A form element selection button has been added to the property grid editors
-of the finishers EmailToSender and EmailToRecipient.
+of the `EmailToSender` and `EmailToRecipient` finishers.
 
 Impact
 ======

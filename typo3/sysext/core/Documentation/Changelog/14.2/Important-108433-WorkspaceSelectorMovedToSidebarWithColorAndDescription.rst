@@ -42,7 +42,7 @@ workspace name.
 Workspace Live indicator option
 -------------------------------
 
-A user setting :guilabel:`Enable workspace Live indicator` is available in
+The user setting :guilabel:`Enable workspace Live indicator` is available in
 :guilabel:`User Settings > Personalization`. When enabled (the default), the
 top bar indicator is shown while working in the Live workspace. Users who find
 the indicator distracting can disable it. The setting takes effect immediately
@@ -54,7 +54,7 @@ Impact
 
 Editors will see the workspace selector in the sidebar instead of the top
 toolbar. The workspace indicator bar at the top of the backend now reflects
-the configured color of the active workspace.
+the color that is configured for the active workspace.
 
 Administrators are encouraged to assign meaningful colors and descriptions to
 their workspaces to improve the editing experience for their teams.

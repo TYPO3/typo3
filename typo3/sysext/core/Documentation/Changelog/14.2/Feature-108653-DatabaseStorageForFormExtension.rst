@@ -2,33 +2,33 @@
 
 ..  _feature-108653-1767199420:
 
-======================================================
+=====================================================
 Feature: #108653 - Database storage for form extension
-======================================================
+=====================================================
 
 See :issue:`108653`
 
 Description
 ===========
 
-The :composer:`typo3/cms-form` extension has been extended with a new database
+The :composer:`typo3/cms-form` extension has been extended to include a new database
 storage adapter (:php-short:`\TYPO3\CMS\Form\Storage\DatabaseStorageAdapter`),
 allowing form definitions to be stored in the database table :sql:`form_definition`
-instead of exclusively relying on file system storage.
+instead of relying on file system storage only.
 
-Form definitions can now be stored in three different ways:
+Form definitions can now be stored in three ways:
 
-- **Database storage** (new, recommended) – stored as records in the
-  :sql:`form_definition` table
-- **File mounts (FAL)** – stored as :file:`.form.yaml` files in FAL storage
-  (deprecated, see :ref:`deprecation-108653-1741600000`)
-- **Extension paths** – shipped with extensions (read-only or configurable)
+*   **Database storage** (new, recommended) – stored as records in the
+    :sql:`form_definition` table
+*   **File mounts (FAL)** – stored as :file:`.form.yaml` files in FAL storage
+    (deprecated, see :ref:`deprecation-108653-1741600000`)
+*   **Extension paths** – shipped with extensions (read-only or configurable)
 
 Storage adapter architecture
 ----------------------------
 
 The storage layer uses the Chain of Responsibility pattern. Each storage
-adapter implements
+adapter implements the
 :php-short:`\TYPO3\CMS\Form\Storage\StorageAdapterInterface` and declares
 which persistence identifiers it can handle via its :php:`supports()` method.
 The :php-short:`\TYPO3\CMS\Form\Storage\StorageAdapterFactory` iterates
@@ -37,10 +37,10 @@ matching adapter.
 
 Three adapters are shipped:
 
-- :php-short:`\TYPO3\CMS\Form\Storage\DatabaseStorageAdapter` (priority 100)
-- :php-short:`\TYPO3\CMS\Form\Storage\ExtensionStorageAdapter` (priority 75)
-- :php-short:`\TYPO3\CMS\Form\Storage\FileMountStorageAdapter` (priority 50,
-  deprecated)
+*   :php-short:`\TYPO3\CMS\Form\Storage\DatabaseStorageAdapter` (priority 100)
+*   :php-short:`\TYPO3\CMS\Form\Storage\ExtensionStorageAdapter` (priority 75)
+*   :php-short:`\TYPO3\CMS\Form\Storage\FileMountStorageAdapter` (priority 50,
+    deprecated)
 
 Database table :sql:`form_definition`
 -------------------------------------
@@ -48,9 +48,9 @@ Database table :sql:`form_definition`
 A new TCA-managed table :sql:`form_definition` stores the form definitions
 with the following fields:
 
-- :sql:`label` – the human-readable form name
-- :sql:`identifier` – the unique form identifier (e.g., `contact-form`)
-- :sql:`configuration` – the full form definition as JSON
+*   :sql:`label` – the human-readable form name
+*   :sql:`identifier` – the unique form identifier (e.g., `contact-form`)
+*   :sql:`configuration` – the full form definition as JSON
 
 Records are read-only in the standard TCA editing interface. All write and
 delete operations go through
@@ -70,18 +70,18 @@ for database-stored forms, linking to the TYPO3 record history module.
 Record list integration
 -----------------------
 
-Two event listeners customize the record list for :sql:`form_definition`
+Two event listeners customize the record list of :sql:`form_definition`
 records:
 
-- The standard **edit** action is replaced with a link to the Form Editor
-  module.
-- The standard **delete** action is removed; deletion is only possible
-  through the Form Manager.
-- Clicking the **record title** opens the Form Editor instead of the TCA
-  editing form.
+*   The standard **edit** action is replaced with a link to the Form Editor
+    module.
+*   The standard **delete** action is removed. Deletion is only possible
+    through the Form Manager.
+*   Clicking the **record title** opens the Form Editor instead of the TCA
+    editing form.
 
-Direct creation of :sql:`form_definition` records via the "New Record" wizard
-is denied through Page TSconfig:
+Creation of :sql:`form_definition` records via the "New Record" wizard
+is denied via page TSconfig:
 
 ..  code-block:: typoscript
 
@@ -90,9 +90,9 @@ is denied through Page TSconfig:
 CLI command: transfer between storages
 --------------------------------------
 
-A new CLI command :bash:`form:definition:transfer` allows transferring form
-definitions between any two storage backends. This is particularly useful for
-migrating file-based forms to database storage from the command line.
+A new CLI command :bash:`form:definition:transfer` allows form
+definitions to be transferred between any two storage backends. This is particularly useful for
+migrating file-based forms to database storage via the command line.
 
 ..  code-block:: bash
 
@@ -113,13 +113,13 @@ migrating file-based forms to database storage from the command line.
 
 Available options:
 
-- :bash:`--source` – Source storage type (`database`, `extension`,
-  `filemount`)
-- :bash:`--target` – Target storage type
-- :bash:`--target-location` – Target storage location
-- :bash:`--form-identifier` – Transfer only a specific form
-- :bash:`--move` – Delete the source form after successful transfer
-- :bash:`--dry-run` – Preview without making changes
+*   :bash:`--source` – source storage type (`database`, `extension`,
+    `filemount`)
+*   :bash:`--target` – target storage type
+*   :bash:`--target-location` – target storage location
+*   :bash:`--form-identifier` – transfer only a specific form
+*   :bash:`--move` – delete the source form after successful transfer
+*   :bash:`--dry-run` – preview without making changes
 
 Configuration
 =============
@@ -132,11 +132,11 @@ table.
    **Permission model differences between file-based and database storage**
 
    The file-based storage allows granular access control through TYPO3 file
-   mounts: different backend user groups can be restricted to different
-   storage folders, effectively isolating which forms each group can see and
+   mounts. Different backend user groups can be restricted to different
+   storage folders effectively isolating which forms each group can see and
    edit.
 
-   The database storage currently relies on TCA table permissions
+   Database storage currently relies on TCA table permissions
    (:sql:`tables_select` / :sql:`tables_modify` for :sql:`form_definition`).
    This means that all backend users who have table access can see
    **all** database-stored form definitions — there is no
@@ -154,13 +154,13 @@ Impact
 ======
 
 Editors can store new form definitions in the database by selecting the "Database"
-storage type in the Form Manager's creation wizard.
+storage type in the Form Manager creation wizard.
 
-The file-based storage (file mounts) remains functional during the deprecation
-period but triggers :php:`E_USER_DEPRECATED` errors. See
+File-based storage (file mounts) will remain functional during the deprecation
+period but will trigger :php:`E_USER_DEPRECATED` errors. See
 :ref:`deprecation-108653-1741600000` for migration instructions. Existing
 file-based forms are not affected by this change.
 
-The extension-based storage continues to work unchanged.
+Extension-based storage will continue to work without change.
 
 ..  index:: Backend, Database, TCA, ext:form

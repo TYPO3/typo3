@@ -13,19 +13,19 @@ Description
 
 A new PSR-14 event
 :php:`\TYPO3\CMS\IndexedSearch\Event\AfterSearchResultSetsAreGeneratedEvent`
-has been introduced to modify complete search result sets in
-:php:`\TYPO3\CMS\IndexedSearch\Controller\SearchController`.
+has been introduced to modify search result sets in
+:php-short:`\TYPO3\CMS\IndexedSearch\Controller\SearchController`.
 
-The event is dispatched in :php:`searchAction()` after all result sets have
+The event is dispatched in :php:`searchAction()` after all the result sets have
 been built. Event listeners can manipulate complete result sets, including
 pagination, rows, section data, and category metadata.
 
-The event provides the following methods:
+The event has the following methods:
 
-*   :php:`getResultSets()`: Returns all result sets of the current search.
+*   :php:`getResultSets()`: Returns all the result sets from the current search.
 *   :php:`setResultSets(array $resultSets)`: Replaces the result sets.
 *   :php:`getSearchData()`: Returns the search configuration array.
-*   :php:`getSearchWords()`: Returns the array of search words.
+*   :php:`getSearchWords()`: Returns an array of search words.
 *   :php:`getView()`: Returns the view instance.
 *   :php:`getRequest()`: Returns the current server request.
 
@@ -33,7 +33,7 @@ Example
 =======
 
 The following example replaces every result set pagination with
-:php:`SlidingWindowPagination`:
+:php-short:`\TYPO3\CMS\Core\Pagination\SlidingWindowPagination`:
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/EventListener/ModifySearchPaginationListener.php
@@ -52,15 +52,20 @@ The following example replaces every result set pagination with
     #[AsEventListener(identifier: 'my-extension/modify-search-result-sets')]
     final readonly class ModifySearchPaginationListener
     {
-        public function __invoke(AfterSearchResultSetsAreGeneratedEvent $event): void
-        {
+        public function __invoke(
+            AfterSearchResultSetsAreGeneratedEvent $event
+        ): void {
             $resultSets = $event->getResultSets();
+
             foreach ($resultSets as $key => $resultSet) {
-                if (($resultSet['pagination'] ?? null) instanceof SimplePagination) {
-                    $resultSets[$key]['pagination'] = new SlidingWindowPagination(
-                        $resultSet['pagination']->getPaginator(),
-                        5
-                    );
+                if (($resultSet['pagination'] ?? null)
+                    instanceof SimplePagination
+                ) {
+                    $resultSets[$key]['pagination']
+                        = new SlidingWindowPagination(
+                            $resultSet['pagination']->getPaginator(),
+                            5
+                        );
                 }
             }
 
@@ -71,8 +76,8 @@ The following example replaces every result set pagination with
 Impact
 ======
 
-This event allows modifying complete search result sets in a single listener
-call. It enables custom pagination strategies as well as advanced search
+This event allows search result sets to be modified in a single listener
+call. It enables custom pagination strategies, as well as advanced search
 result transformations.
 
 ..  index:: Frontend, PHP-API, ext:indexed_search

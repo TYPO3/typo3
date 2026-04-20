@@ -11,25 +11,28 @@ See :issue:`109429`
 Description
 ===========
 
-With :issue:`108049`, the translation workflow in the backend has been modernized
+:issue:`108049` modernizes the translation workflow in the backend
 in the `Content > Layout` and `Content > Record` module views. Technically, this
 workflow wizard is backed by localization handlers and finishers.
 
-The PSR-14 event :php-short:`\TYPO3\CMS\Backend\Localization\Event\ModifyLocalizationHandlerIsAvailableEvent`
-is introduced now and fired in :php-short:`\TYPO3\CMS\Backend\Localization\LocalizationHandlerRegistry`
-to allow overruling the available state of any registered localization handler based
-on the :php-short:`\TYPO3\CMS\Backend\Localization\LocalizationInstructions\LocalizationInstructions`.
+The PSR-14 event
+:php-short:`\TYPO3\CMS\Backend\Localization\Event\ModifyLocalizationHandlerIsAvailableEvent`
+is now introduced and dispatched in
+:php-short:`\TYPO3\CMS\Backend\Localization\LocalizationHandlerRegistry`
+to allow the availability state of a localization
+handler to be overridden based on :php-short:`\TYPO3\CMS\Backend\Localization\LocalizationInstructions\LocalizationInstructions`.
 
-The event provides the following properties:
+The event has the following properties:
 
 *   :php:`public readonly string $identifier`: String identifier returned by
-    :php:`LocalizationHandlerInterface::getIdentifier()` from the handler.
-*   :php:`public readonly string $className`: The concrete className in case
-    a handler has been xclass'd without changing the identifier.
-*   :php:`public readonly LocalizationInstructions $instructions`: The localization
-    instruction passed to the handler's `isAvailable()` method to define the context.
-*   :php:`public bool $isAvailable`: The returned availability state by the handler,
-    which can be altered by a PSR-14 Event listener.
+    :php:`LocalizationHandlerInterface::getIdentifier()` from the handler
+*   :php:`public readonly string $className`: The concrete class name in case
+    a handler has been XCLASSed without changing the identifier
+*   :php:`public readonly LocalizationInstructions $instructions`: The
+    localization instructions passed to the handler's `isAvailable()` method
+    to define the context
+*   :php:`public bool $isAvailable`: The availability state returned by the
+    handler, which can be altered by a PSR-14 event listener
 
 Example
 -------
@@ -43,10 +46,10 @@ Example
 
     namespace MyVendor\MyExtension\EventListener;
 
-    use TYPO3\CMS\Core\Attribute\AsEventListener;
     use TYPO3\CMS\Backend\Localization\Event\ModifyLocalizationHandlerIsAvailableEvent;
-    use TYPO3\CMS\Backend\Localization\LocalizationInstructions;
+    use TYPO3\CMS\Backend\Localization\Handler\ManualLocalizationHandler;
     use TYPO3\CMS\Backend\Localization\LocalizationMode;
+    use TYPO3\CMS\Core\Attribute\AsEventListener;
 
     final class DisableManualLocalizationHandlerForCustomTableEventListener
     {
@@ -55,16 +58,17 @@ Example
             ModifyLocalizationHandlerIsAvailableEvent $event,
         ): void {
             if ($event->identifier !== 'manual') {
-                // Return early if not ManualLocalizationHandler
+                // Return early if not ManualLocalizationHandler.
                 return;
             }
             if ($event->className !== ManualLocalizationHandler::class) {
-                // Return early in case manual identifier is provided but
-                // customized (xlassed) class given. Just for the sake of
-                // an example for that property.
+                // Return early if the manual identifier is provided but
+                // a customized (XCLASSed) class is given. This is just an
+                // example for that property.
+                return;
             }
             if ($event->instructions->mode !== LocalizationMode::TRANSLATE) {
-                // Return early in case not handling translation
+                // Return early if not handling translation
                 // (localization) mode.
                 return;
             }
@@ -80,8 +84,8 @@ Example
 Impact
 ======
 
-Custom extensions (public or project-specific) are now able to intercept,
-which handlers are available for offering localization steps in the translation
-wizard, based on the provided localization context.
+Custom extensions (public and project-specific) are now able to intercept
+and determine which handlers are available for localization steps in the translation
+wizard, based on localization context.
 
 ..  index:: Backend, PHP-API, ext:backend

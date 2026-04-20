@@ -11,56 +11,59 @@ See :issue:`109286`
 Description
 ===========
 
-Some methods of class :php:`TYPO3\CMS\Core\Page\PageRenderer` require an instance of
-:php:`ServerRequestInterface` being hand over since TYPO3 v14.2:
+Since TYPO3 v14.2 some methods of class :php:`TYPO3\CMS\Core\Page\PageRenderer`
+require an instance of :php-short:`\Psr\Http\Message\ServerRequestInterface` to
+be passed explicitly :
 
 setLanguage()
 -------------
 
-* Old: :php:`PageRenderer->setLanguage(Locale $locale, ?ServerRequestInterface $request = null)`
-* TYPO3 v14.2: :php:`PageRenderer->setLanguage(Locale $locale, ?ServerRequestInterface $request = null)`
-* TYPO3 v15: :php:`PageRenderer->setLanguage(Locale $locale, ServerRequestInterface $request)`
+*   Old: :php:`PageRenderer->setLanguage(Locale $locale, ?ServerRequestInterface $request = null)`
+*   TYPO3 v14.2: :php:`PageRenderer->setLanguage(Locale $locale, ?ServerRequestInterface $request = null)`
+*   TYPO3 v15: :php:`PageRenderer->setLanguage(Locale $locale, ServerRequestInterface $request)`
 
 setDocType()
 ------------
 
-* Old: :php:`PageRenderer->setDocType(DocType $docType)`
-* TYPO3 v14.2: :php:`PageRenderer->setDocType(DocType $docType, ?ServerRequestInterface $request = null)`
-* TYPO3 v15: :php:`PageRenderer->setDocType(DocType $docType, ServerRequestInterface $request)`
+*   Old: :php:`PageRenderer->setDocType(DocType $docType)`
+*   TYPO3 v14.2: :php:`PageRenderer->setDocType(DocType $docType, ?ServerRequestInterface $request = null)`
+*   TYPO3 v15: :php:`PageRenderer->setDocType(DocType $docType, ServerRequestInterface $request)`
 
 render()
 --------
 
-* Old: :php:`PageRenderer->render()`
-* TYPO3 v14.2: :php:`PageRenderer->render(?ServerRequestInterface $request = null)`
-* TYPO3 v15: :php:`PageRenderer->render(ServerRequestInterface $request)`
+*   Old: :php:`PageRenderer->render()`
+*   TYPO3 v14.2: :php:`PageRenderer->render(?ServerRequestInterface $request = null)`
+*   TYPO3 v15: :php:`PageRenderer->render(ServerRequestInterface $request)`
 
 renderResponse()
 ----------------
 
-* Old: :php:`PageRenderer->renderResponse(int $code = 200, string $reasonPhrase = '')`
-* TYPO3 v14.2: :php:`PageRenderer->render(ServerRequestInterface|int $requestOrCode = 200, int|string $codeOrReasonPhrase = '', string $reasonPhrase = '')`
-* TYPO3 v15: :php:`PageRenderer->render(ServerRequestInterface $request, int $code = 200, string $reasonPhrase = '')`
+*   Old: :php:`PageRenderer->renderResponse(int $code = 200, string $reasonPhrase = '')`
+*   TYPO3 v14.2: :php:`PageRenderer->render(ServerRequestInterface|int $requestOrCode = 200, int|string $codeOrReasonPhrase = '', string $reasonPhrase = '')`
+*   TYPO3 v15: :php:`PageRenderer->render(ServerRequestInterface $request, int $code = 200, string $reasonPhrase = '')`
 
 
 Impact
 ======
 
-Request dependencies within :php:`PageRenderer` are no longer implicit by accessing :php:`$GLOBALS['TYPO3_REQUEST']`
-but need to be hand over explicitly. Not handing over Request to above methods will trigger a deprecation level log
-message with TYPO3 v14 and will trigger a fatal PHP error with TYPO3 v15.
-
+Request dependencies within
+:php-short:`TYPO3\CMS\Core\Page\PageRenderer` are no longer implicit via
+:php:`$GLOBALS['TYPO3_REQUEST']` and must now be passed explicitly. Not
+passing a request to the methods listed above will trigger a deprecation-level
+log entry in TYPO3 v14 and will result in a fatal PHP error in TYPO3 v15.
 
 Affected installations
 ======================
 
-The PageRenderer is a low level core class. Many extensions use higher level API and are not affected by the
-change directly.
-
+:php-short:`TYPO3\CMS\Core\Page\PageRenderer` is a low-level Core class. Many
+extensions use higher-level APIs and are therefore not directly affected by
+this change.
 
 Migration
 =========
 
-Adapt the method calls to hand over the Request object.
+Adapt method calls to pass the
+:php-short:`\Psr\Http\Message\ServerRequestInterface` object explicitly.
 
 ..  index:: Backend, Frontend, PHP-API, NotScanned, ext:core

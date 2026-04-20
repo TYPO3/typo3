@@ -11,11 +11,12 @@ See :issue:`108799`
 Description
 ===========
 
-TYPO3 historically has helper methods for localizations in various places.
-This patch centralizes localization-related functionality by marking
+TYPO3 has historically provided helper methods for localization in various
+places in the TYPO3 code. This patch centralizes localization-related functionality by marking
 :php:`\TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository`
 as public (non-internal) and adding new methods as modern, DI-friendly
-alternatives to the static BackendUtility methods.
+alternatives to the static
+:php-short:`\TYPO3\CMS\Backend\Utility\BackendUtility` methods.
 
 getRecordTranslation()
 ----------------------
@@ -31,7 +32,6 @@ Fetches a single translated version of a record for a specific language.
         int $workspaceId = 0,
         bool $includeDeletedRecords = false,
     ): ?RawRecord
-
 
 getRecordTranslations()
 -----------------------
@@ -50,13 +50,13 @@ translations by using :php:`count()` on the result, replacing the need for
         bool $includeDeletedRecords = false,
     ): array
 
-Returns an array of translated RawRecord objects indexed by language ID.
-
+Returns an array of translated :php-short:`\TYPO3\CMS\Core\Domain\RawRecord`
+objects indexed by language ID.
 
 getPageTranslations()
 ---------------------
 
-Fetches all page translations for a given page.
+Fetches all page translations for a page.
 
 ..  code-block:: php
 
@@ -67,20 +67,19 @@ Fetches all page translations for a given page.
         bool $includeDeletedRecords = false,
     ): array
 
-Returns an array of page translation records as RawRecord objects
-indexed by language ID.
-
+Returns an array of page translation records as
+:php-short:`\TYPO3\CMS\Core\Domain\RawRecord` objects indexed by language ID.
 
 Impact
 ======
 
-Extension developers working with record translations in the TYPO3 Backend now
-have access to modern, injectable repository methods that follow current
-TYPO3 coding practices.
+Extension developers working with record translations in the TYPO3 backend now
+have access to modern, injectable repository methods that follow current TYPO3
+coding practices.
 
 The legacy static methods :php:`BackendUtility::getRecordLocalization()`,
 :php:`BackendUtility::getExistingPageTranslations()`, and
 :php:`BackendUtility::translationCount()` remain available for backward
-compatibility until migrated completely.
+compatibility until they are migrated completely.
 
 ..  index:: Backend, PHP-API, ext:backend

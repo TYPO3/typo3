@@ -12,9 +12,8 @@ Description
 ===========
 
 JavaScript modules can now import language labels as code.
-The labels are exposed as a object that offers a `get()` method
-and allows to substitute placeholders according to the ICU message format.
-
+The labels are exposed as an object with a `get()` method
+and allows placeholder substitution conforming to the ICU message format.
 
 ..  code-block:: javascript
 
@@ -25,43 +24,42 @@ and allows to substitute placeholders according to the ICU message format.
     // Use label
     html`<p>{labels.get('groupType.global')}</p>`
 
-    // Retrieve label and use ICU Message Format placeholders
+    // Retrieve label and use ICU MessageFormat placeholders
     // Example label: <source>File "{filename}" deleted</source>
     html`<p>{labels.get('file.deleted', { filename: 'my-file.txt' })}</p>`
 
-    // Render a label containing pseudo xml-tags
+    // Render a label containing pseudo XML tags
     // Example label: "File <bold>{filename}</bold> deleted"
     html`<p>{labels.get('file.deleted', {
-        filename: 'my-file.txt'
-        // Callback function that renders the contents of `<bold>`
+        filename: 'my-file.txt',
+        // Callback function that renders the contents of <bold>
         bold: chunks => html`<strong>${chunks}</strong>`,
     })}</p>`
 
-This avoids the need for controllers to inject arbitrary labels into
-global `TYPO3.lang` configuration, which impeded writing generic
-web components. (Often hindered simple adopting by a plain import)
+This means controllers do not need to inject arbitrary labels into the
+global `TYPO3.lang` configuration, which impeded writing generic web
+components.
 
-Virtual JavaScript modules (schema `~label/{language.domain}`)
-are created that resolve the labels for the specified language domain,
-that is provided after the prefix `~label/`. Technically this mapping is
-implemented using an importmap path prefix, which instructs to the
-JavaScript engine to append the specified suffix to the mapped prefix.
+Virtual JavaScript modules (schema `~labels/{language.domain}`)
+are created that resolve the labels for the specified language domain
+provided after the `~labels/` prefix. This mapping is
+implemented technically by using an import map path prefix which instructs the
+JavaScript engine to append a specified suffix to the mapped prefix.
 
-The labels are allowed to be cached client side with a far future
-cache timeout, similar to static resources. We therefore generate
-version and locale-specific URLs, to ensure labels can be cached by
-the user agent, without requiring explicit cache invalidation.
-
+The labels can be cached client-side with a far-future cache lifetime,
+similar to static resources. TYPO3 therefore generates version-specific
+and locale-specific URLs to ensure labels can be cached by the user
+agent without requiring explicit cache invalidation.
 
 Impact
 ======
 
-Extension developers can now use labels in JavaScript components, without
-requiring to preload labels globally or per module, reducing the risk for
-missing labels and simplifying developer workflows.
+Extension developers can now use labels in JavaScript components without
+requiring labels to be preloaded globally or per module, reducing the
+risk of missing labels and also simplifying developer workflows.
 
-Several hacks like pushing labels to the top frame,
-loading labels globally or adding labels to component attributes
-have been used previously and will be replaced by this infrastructure.
+Workarounds such as pushing labels to the top frame,
+loading labels globally, and adding labels to component attributes
+have previously been used and are replaced by this infrastructure.
 
 ..  index:: Backend, JavaScript, ext:backend

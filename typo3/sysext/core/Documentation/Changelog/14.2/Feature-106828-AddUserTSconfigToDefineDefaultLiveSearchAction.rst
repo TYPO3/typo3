@@ -3,7 +3,7 @@
 ..  _feature-106828-1751343863:
 
 =========================================================================
-Feature: #106828 - Add User TSconfig to define default Live Search action
+Feature: #106828 - Add user TSconfig to define default live search action
 =========================================================================
 
 See :issue:`106828`
@@ -11,57 +11,59 @@ See :issue:`106828`
 Description
 ===========
 
-A new User TSconfig :typoscript:`options.liveSearch.actions` has been introduced
-to allow an integrator to define default behaviors of a search result.
+A new user TSconfig option :typoscript:`options.liveSearch.actions` has
+been introduced to allow integrators to define the default behavior of a
+search.
 
-**Available actions:**
+Available actions:
 
-+-------------+------------------------------------------------------------------------------------+
-| Action      | Description                                                                        |
-+=============+====================================================================================+
-| `edit`      | This opens the editing form for the record (Default for all tables except `pages`) |
-+-------------+------------------------------------------------------------------------------------+
-| `layout`    | This opens the page in the page module (Default for table `pages`)                 |
-+-------------+------------------------------------------------------------------------------------+
-| `list`      | This opens the storage page of the record in the "Records" module                  |
-+-------------+------------------------------------------------------------------------------------+
-| `preview`   | This opens the record in the frontend                                              |
-+-------------+------------------------------------------------------------------------------------+
+*   `edit`: Opens the edit form of the record. This is the default for
+    all tables except `pages`.
+*   `layout`: Opens the page in the Page module. This is the default for
+    the `pages` table.
+*   `list`: Opens the storage page of the record in the Record List
+    module.
+*   `preview`: Opens the record in the frontend.
 
-.. important::
+..  important::
 
-    Action `layout` can only be used for table :sql:`pages` and :sql:`tt_content`
+    The `layout` action can only be used for the :sql:`pages` and
+    :sql:`tt_content` tables.
 
 Examples
---------
+========
 
-**Set default for all tables**
+Set the default for all tables:
 
-:typoscript:`options.liveSearch.actions.default = edit`
+..  code-block:: typoscript
 
-**Set default for table tt_content**
+    options.liveSearch.actions.default = edit
 
-:typoscript:`options.liveSearch.actions.tt_content.default = layout`
+Set the default for the `tt_content` table:
 
-**Set default for custom table**
+..  code-block:: typoscript
 
-:typoscript:`options.liveSearch.actions.my_table.default = preview`
+    options.liveSearch.actions.tt_content.default = layout
 
+Set the default for a custom table:
 
-.. note::
+..  code-block:: typoscript
+
+    options.liveSearch.actions.my_table.default = preview
+
+..  note::
 
     To use `preview` for a custom record, a valid preview configuration
-    (`TCEMAIN.preview`) must exist for the table.
-
+    must exist for the table in `TCEMAIN.preview`.
 
 Impact
 ======
 
-Live Search default actions can now be configured via User TSconfig. Integrators
-can define global or per-table behavior for search results, improving backend
-workflows.
+The default actions of live search results can now be configured with
+user TSconfig. Integrators can define global and table-specific behavior
+for search results, improving backend workflows.
 
-The default behavior for pages has been changed to `layout`
-to improve the user workflow.
+The default behavior for `pages` has been changed to `layout` to improve
+the user workflow.
 
 ..  index:: Backend, TSConfig, ext:backend

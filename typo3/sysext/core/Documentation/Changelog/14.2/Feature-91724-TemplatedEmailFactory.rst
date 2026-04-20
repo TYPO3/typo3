@@ -12,66 +12,70 @@ Description
 ===========
 
 A new :php-short:`\TYPO3\CMS\Core\Mail\TemplatedEmailFactory` class has been
-introduced that provides centralized creation of :php-short:`\TYPO3\CMS\Core\Mail\FluidEmail` instances.
+introduced to provide a centralized creation of
+:php-short:`\TYPO3\CMS\Core\Mail\FluidEmail` instances.
 
 The factory provides three methods for different use cases:
 
 :php:`create()`
-    For backend/CLI contexts (login notifications, scheduler tasks, install
-    tool) where only global configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL'][...]`
-    is used.
+    For backend and CLI contexts, such as login notifications, Scheduler
+    tasks, and the Install Tool, where only the global configuration
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL'][...]` is used.
 
 :php:`createFromRequest()`
-    For frontend contexts (form submissions, felogin) where site-specific
-    email templates should be applied. Merges site settings :yaml:`typo3/email`
-    with global configuration :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL'][...]`.
+    For frontend contexts, such as form submissions and `EXT:felogin`, where
+    site-specific email templates should be applied. It merges site settings
+    from :yaml:`typo3/email` with the global configuration
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL'][...]`.
 
 :php:`createWithOverrides()`
-    For extensions that need to provide custom template paths merged on top
-    of the base configuration, taking an optional request context into
-    evaluation. Two cases of template resolution are then possible
-    (ordered by priority):
+    For extensions that need to provide custom template paths merged on top of
+    the base configuration, optionally taking a request context into account.
+    Two cases of template resolution are possible, ordered by priority:
 
-    *   Request without site attribute: 1. Provided override arguments -> 2. global config
-    *   Request **with** site attribute: 1. Provided override arguments -> 2. Site settings -> 3. global config
+    *   Request without site attribute: 1. Provided override arguments ->
+        2. global configuration
+    *   Request with site attribute: 1. Provided override arguments ->
+        2. site settings -> 3. global configuration
 
-    Note you can also utilize the numerical priority of template paths so that site settings
-    with a higher priority number could "win" the order battle of a lower-number in the
-    override argument paths.
+    Note that you can also use the numerical priority of template paths so
+    that site settings with a higher priority number can override paths in the
+    provided arguments with a lower priority number.
 
 Site settings
 =============
 
-A new site set :yaml:`typo3/email` is available in EXT:core that defines the
-following settings. These are applied automatically when a request with a site
-attribute is passed to :php:`createFromRequest()` or :php:`createWithOverrides()`.
-This means extensions running in a frontend context (such as EXT:form email
-finishers) benefit from site-specific email configuration:
+A new site set, :yaml:`typo3/email`, is available in EXT:core and defines the
+settings below. These are applied automatically when a request with a site
+attribute is passed to :php:`createFromRequest()` or
+:php:`createWithOverrides()`. This means extensions running in a frontend
+context, such as EXT:form email finishers, benefit from site-specific email
+configuration:
 
 :yaml:`email.format`
-    The email format to use (html, plain, both). If empty, the global
+    The email format to use (`html`, `plain`, `both`). If empty, the global
     configuration is used.
 
 :yaml:`email.templateRootPaths`
-    Array of paths to email templates. These are merged with the global mail
-    template paths.
+    An array of paths to email templates. These are merged with the global
+    mail template paths.
 
 :yaml:`email.layoutRootPaths`
-    Array of paths to email layouts. These are merged with the global mail
+    An array of paths to email layouts. These are merged with the global mail
     layout paths.
 
 :yaml:`email.partialRootPaths`
-    Array of paths to email partials. These are merged with the global mail
+    An array of paths to email partials. These are merged with the global mail
     partial paths.
 
 ..  hint::
 
-    Please note that entering these paths via the Site settings GUI will
-    add entries as sequential array (numbered 0, 1, 2, ...). In this case,
-    all paths will just be appended to the array, giving all entries here
-    the highest priority.
-    When editing `settings.yaml` manually, specific numerical array keys
-    can be assigned, if needed.
+    Please note that entering these paths via the site settings GUI adds
+    entries as a sequential array, numbered 0, 1, 2, and so on. In this case,
+    all paths are appended to the array, giving all entries the highest
+    priority.
+    When editing `settings.yaml` manually, specific numerical array keys can
+    be assigned.
 
 Usage
 =====
@@ -101,8 +105,8 @@ site configuration:
     :caption: EXT:my_extension/Classes/Service/MyFrontendEmailService.php
 
     use Psr\Http\Message\ServerRequestInterface;
-    use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
     use TYPO3\CMS\Core\Mail\MailerInterface;
+    use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 
     final class MyFrontendEmailService
     {
@@ -126,8 +130,8 @@ site configuration:
         }
     }
 
-Backend/CLI usage
------------------
+Backend and CLI usage
+---------------------
 
 For backend contexts where no site-specific templates are needed, use
 :php:`create()`:
@@ -136,8 +140,8 @@ For backend contexts where no site-specific templates are needed, use
     :caption: EXT:my_extension/Classes/Service/MyBackendEmailService.php
 
     use Psr\Http\Message\ServerRequestInterface;
-    use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
     use TYPO3\CMS\Core\Mail\MailerInterface;
+    use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 
     final class MyBackendEmailService
     {
@@ -146,8 +150,9 @@ For backend contexts where no site-specific templates are needed, use
             private readonly MailerInterface $mailer,
         ) {}
 
-        public function sendNotification(?ServerRequestInterface $request = null): void
-        {
+        public function sendNotification(
+            ?ServerRequestInterface $request = null,
+        ): void {
             // Uses only global $GLOBALS['TYPO3_CONF_VARS']['MAIL'] configuration
             $email = $this->templatedEmailFactory->create($request);
             $email
@@ -163,14 +168,14 @@ For backend contexts where no site-specific templates are needed, use
 Custom template path overrides
 ------------------------------
 
-For extensions that need their own email templates merged with global
+For extensions that need their own email templates merged with the global
 configuration, use :php:`createWithOverrides()`:
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Task/MySchedulerTask.php
 
-    use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
     use TYPO3\CMS\Core\Mail\MailerInterface;
+    use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
     use TYPO3\CMS\Core\Utility\GeneralUtility;
     use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -178,19 +183,26 @@ configuration, use :php:`createWithOverrides()`:
     {
         public function sendReport(): void
         {
-            // This example showcases how to use this when
-            // constructor-based Dependency Injection is blocked, like in the case of
-            // AbstractTask (EXT:scheduler). Always use DI, where possible.
+            // This example shows how to use this when constructor-based
+            // dependency injection is not possible, as in AbstractTask
+            // (EXT:scheduler). Always use dependency injection where possible.
             $mailer = GeneralUtility::makeInstance(MailerInterface::class);
-            $templatedEmailFactory = GeneralUtility::makeInstance(TemplatedEmailFactory::class);
+            $templatedEmailFactory = GeneralUtility::makeInstance(
+                TemplatedEmailFactory::class
+            );
 
-            // Merge extension-specific paths with global configuration.
-            // Note, if you do NOT pass a `$request` argument here, no site context will be evaluated.
-            // You may want to check for `$GLOBALS['TYPO3_REQUEST']` in case you want this fallback,
-            // or a custom created request object.
+            // Merge extension-specific paths with the global configuration.
+            // Note that if you do not pass a `$request` argument here, no site
+            // context is evaluated. You may want to check
+            // `$GLOBALS['TYPO3_REQUEST']` if you need this fallback, or use a
+            // custom request object.
             $email = $templatedEmailFactory->createWithOverrides(
-                templateRootPaths: [20 => 'EXT:my_extension/Resources/Private/Templates/Email/'],
-                layoutRootPaths: [20 => 'EXT:my_extension/Resources/Private/Layouts/'],
+                templateRootPaths: [
+                    20 => 'EXT:my_extension/Resources/Private/Templates/Email/',
+                ],
+                layoutRootPaths: [
+                    20 => 'EXT:my_extension/Resources/Private/Layouts/',
+                ],
             );
             $email
                 ->setTemplate('Report')
@@ -204,10 +216,11 @@ configuration, use :php:`createWithOverrides()`:
 
 ..  hint::
 
-    Remember, you can use the :php-short:`\TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent`
-    to do adjustments to a `FluidEmail` object, before it is sent. There you can also still assign
-    fluid variables or adjust parts of the email (like setting `From` or the mail's subject
-    prefix, depending on your site):
+    You can use the
+    :php-short:`\TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent`
+    to change a `FluidEmail` object before it is sent. You can
+    assign Fluid variables or modify parts of the email, such as setting
+    `From` or the email subject prefix, depending on your site:
 
     ..  code-block:: php
         :caption: EXT:my_extension/Classes/Listener/MyMailerListener.php
@@ -215,8 +228,8 @@ configuration, use :php:`createWithOverrides()`:
         <?php
         declare(strict_types=1);
 
-        use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
         use TYPO3\CMS\Core\Attribute\AsEventListener;
+        use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 
         final class MyMailerListener
         {
@@ -233,38 +246,38 @@ configuration, use :php:`createWithOverrides()`:
 Core migrations
 ===============
 
-All core extensions that send emails have been migrated to use the
+All core extensions that send emails have been migrated to use
 :php:`TemplatedEmailFactory`. This includes:
 
-* **EXT:form** - Email finishers now use :php:`createWithOverrides()` with the
-  request from the form runtime, so site-specific email settings are applied
-  automatically.
-* **EXT:felogin** - Password recovery emails now use
-  :php:`createWithOverrides()`, making them site-aware. The method
-  :php:`RecoveryConfiguration::getMailTemplatePaths()` has been removed as
-  template path resolution is now handled by the factory.
-* **EXT:backend** - Login notifications, failed login/MFA attempt
-  notifications, and password reset emails use :php:`create()`.
-* **EXT:install** - Test email sending uses :php:`create()`.
-* **EXT:workspaces** - Stage change notifications use
-  :php:`createWithOverrides()`.
-* **EXT:linkvalidator** - Broken link report emails use
-  :php:`createWithOverrides()`.
-* **EXT:reports** - System status emails use :php:`create()`.
-
+*   **EXT:form** Email finishers now use :php:`createWithOverrides()` with the
+    request from the form runtime, so site-specific email settings are applied
+    automatically.
+*   **EXT:felogin** Password recovery emails now use
+    :php:`createWithOverrides()`, making them site-aware. The method
+    :php:`RecoveryConfiguration::getMailTemplatePaths()` has been removed, as
+    template path resolution is now handled by the factory.
+*   **EXT:backend** Login notifications, failed login and MFA attempt
+    notifications, and password reset emails use :php:`create()`.
+*   **EXT:install** Test email sending uses :php:`create()`.
+*   **EXT:workspaces** Stage change notifications use
+    :php:`createWithOverrides()`.
+*   **EXT:linkvalidator** Broken link report emails use
+    :php:`createWithOverrides()`.
+*   **EXT:reports** System status emails use :php:`create()`.
 
 Impact
 ======
 
 Extensions that send emails are encouraged to use the
 :php:`TemplatedEmailFactory` to create :php:`FluidEmail` instances instead of
-directly instantiating them. When a request with a site attribute is passed,
-template paths and format from the :yaml:`typo3/email` site set are applied
-automatically. The merge priority is (highest priority wins):
+instantiating them directly. When a request with a site attribute is passed,
+template paths and format from the :yaml:`typo3/email` site set are applied.
+The merge priority, with the highest priority winning, is:
 
-1.  Global :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']` paths (base)
-2.  Site settings from :yaml:`typo3/email`, when a site-based request is available,
-    and site settings are applied.
-3.  Caller-provided override paths, when using :php:`createWithOverrides()`.
+#.  Global :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']` paths as the base
+#.  Site settings from :yaml:`typo3/email`, when a site-based request is
+    available and site settings are applied
+#.  Caller-provided override paths when using
+    :php:`createWithOverrides()`
 
 ..  index:: PHP-API, YAML, ext:core

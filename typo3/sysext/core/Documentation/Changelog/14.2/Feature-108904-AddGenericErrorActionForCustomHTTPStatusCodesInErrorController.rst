@@ -12,16 +12,20 @@ Description
 ===========
 
 The :php:`TYPO3\CMS\Frontend\Controller\ErrorController` has been enhanced with
-a new method :php:`customErrorAction()`, which allows flexible error handling
-for custom HTTP status codes.
+a new method :php:`customErrorAction()` which allows custom error handling
+for HTTP status codes.
 
-The new method can be used with TYPO3 site page error handling, allowing site
-administrators to configure dedicated error handling (e.g., rendering a Fluid
-template) for a given status code.
+The new method can be used with TYPO3 site error handling, allowing site
+administrators to configure dedicated error handling (for example, rendering a
+Fluid template) for a given status code.
 
-Example for usage in an Extbase action:
+Example of usage in an Extbase action:
 
 ..  code-block:: php
+
+    use TYPO3\CMS\Core\Http\PropagateResponseException;
+    use TYPO3\CMS\Core\Utility\GeneralUtility;
+    use TYPO3\CMS\Frontend\Controller\ErrorController;
 
     $response = GeneralUtility::makeInstance(ErrorController::class)->customErrorAction(
         $this->request,
@@ -31,12 +35,11 @@ Example for usage in an Extbase action:
     );
     throw new PropagateResponseException($response, 1771065101);
 
-
 Impact
 ======
 
 It is now possible to trigger custom error pages with specific HTTP status
 codes and messages from within TYPO3 or extensions, while still respecting
-the site's configured error handling.
+the error handling in the main site configuration.
 
 ..  index:: Frontend, ext:core

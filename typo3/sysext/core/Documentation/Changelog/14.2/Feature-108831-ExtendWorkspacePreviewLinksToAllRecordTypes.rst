@@ -11,11 +11,11 @@ See :issue:`108831`
 Description
 ===========
 
-The workspaces module previously only generated shareable preview links
-(with ADMCMD_prev token) for pages. This change extends the functionality
+The :guilabel:`Workspaces` module previously generated shareable preview links
+(with `ADMCMD_prev` token) for pages only. This change extends the functionality
 to support any record type.
 
-The preview page for non-page records is determined via existing TSconfig
+The preview page for non-page records is determined via existing user TSconfig
 options:
 
 *   :typoscript:`options.workspaces.previewPageId.<table>`
@@ -43,9 +43,9 @@ Example configuration for a custom record type:
 Impact
 ======
 
-The QR code / shareable link button in the workspaces module now works for
-all record types that have a preview configuration. This allows editors to
-share workspace previews of custom records with colleagues or clients without
+The QR code and shareable link button in the :guilabel:`Workspaces` module now
+work for all record types that have a preview configuration. This allows editors
+to share workspace previews of custom records with colleagues or clients without
 requiring them to have a backend login.
 
 ..  index:: Backend, TSConfig, ext:workspaces

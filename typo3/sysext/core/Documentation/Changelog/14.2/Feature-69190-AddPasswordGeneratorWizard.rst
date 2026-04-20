@@ -12,7 +12,7 @@ Description
 ===========
 
 Password generation in the backend is now driven by password policies. Each
-password policy can define a `generator` section with a class implementing
+password policy can define a `generator` section through a class implementing
 :php:`TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGeneratorInterface`.
 
 The `passwordGenerator` field control references a policy by name via the
@@ -20,34 +20,38 @@ The `passwordGenerator` field control references a policy by name via the
 a password using the configured generator.
 
 The field control can be added to any password field via TCA configuration,
-making it available for extension developers as well.
+making it available to extension developers as well.
 
 Password policies
 -----------------
 
-The policy to use is determined by context:
+Which policy to use is determined by context:
 
-*   **Backend users**: :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy']`
-*   **Frontend users**: :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['passwordPolicy']`
+*   **Backend users**:
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy']`
+*   **Frontend users**:
+    :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['passwordPolicy']`
 
 All password policies are registered under
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']`.
 
-TYPO3 ships with three pre-configured policies:
+TYPO3 ships with three preconfigured policies:
 
 *   `default` — Used for backend and frontend users
-*   `installTool` — Used for install tool passwords
+*   `installTool` — Used for Install Tool passwords
 *   `secretToken` — Used for secret token fields (e.g. webhooks, reactions)
 
-Each policy contains both a `generator` and `validators` section. The
+Each policy contains both a `generator` and a `validators` section. The
 generator is responsible for creating passwords, while validators enforce
-password requirements. They are configured independently within the same policy.
+password requirements. They are configured independently within the same
+policy.
 
 Example
 =======
 
-The TYPO3 core ships a `PasswordGenerator` implementation which is
-configured like this:
+TYPO3 ships with a
+:php-short:`\TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator`
+implementation that is configured like this:
 
 ..  code-block:: php
 
@@ -64,13 +68,15 @@ configured like this:
         ],
     ];
 
-The `PasswordGenerator` supports the following options:
+The
+:php-short:`\TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator`
+supports the following options:
 
-- `length`: Length of the generated password
-- `upperCaseCharacters`: Whether to include upper case characters
-- `lowerCaseCharacters`: Whether to include lower case characters
-- `digitCharacters`: Whether to include digits
-- `specialCharacters`: Whether to include special characters
+*   `length`: Length of the generated password
+*   `upperCaseCharacters`: Whether to include uppercase characters
+*   `lowerCaseCharacters`: Whether to include lowercase characters
+*   `digitCharacters`: Whether to include digits
+*   `specialCharacters`: Whether to include special characters
 
 Adjusting an existing policy:
 
@@ -94,11 +100,11 @@ Registering a custom password policy with a custom generator:
             'className' => \Vendor\MyPackage\PasswordPolicy\Generator\MyPasswordGenerator::class,
             'options' => [
                 'length' => 12,
-                'myCustomOption' => 'my custom Value',
+                'myCustomOption' => 'my custom value',
             ],
         ],
         'validators' => [
-            // your custom validators
+            // Your custom validators
         ],
     ];
 

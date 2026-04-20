@@ -11,17 +11,18 @@ See :issue:`108568`
 Description
 ===========
 
-The method :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::recordEditAccessInternals()`
-and the property :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::$errorMsg`
+The method :php:`BackendUserAuthentication::recordEditAccessInternals()`
+and the property :php:`BackendUserAuthentication::$errorMsg` of class
+:php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication`
 have been deprecated.
 
-These methods and properties represented an anti-pattern where the method returned
+They represented an anti-pattern in which the method returned
 a boolean value but communicated error details through a class property, making
 the API difficult to use and test.
 
-A new method :php:`checkRecordEditAccess()` has been introduced that returns an
-:php:`\TYPO3\CMS\Core\Authentication\AccessCheckResult` value object containing
-both the access decision and any error message.
+A new method :php:`checkRecordEditAccess()` has been introduced. It returns
+an :php:`\TYPO3\CMS\Core\Authentication\AccessCheckResult` value object
+containing both the access decision and any error messages.
 
 Impact
 ======
@@ -35,17 +36,21 @@ The extension scanner reports usages as a **strong** match.
 Affected installations
 ======================
 
-Instances or extensions that directly call :php:`recordEditAccessInternals()`
-or access the :php:`$errorMsg` property are affected.
+Instances or extensions that directly call
+:php:`recordEditAccessInternals()` or access the
+:php:`$errorMsg` property.
 
 Migration
 =========
 
-Replace calls to :php:`recordEditAccessInternals()` with :php:`checkRecordEditAccess()`.
-The new method returns an :php:`AccessCheckResult` object with two public properties:
+Replace calls to :php:`recordEditAccessInternals()` with
+:php:`checkRecordEditAccess()`. The new method returns a
+:php:`TYPO3\CMS\Core\Authentication\AccessCheckResult` object with two public
+properties:
 
-*   :php:`isAllowed` - boolean indicating if access is granted
-*   :php:`errorMessage` - string containing the error message (empty if access is allowed)
+* :php:`isAllowed` - Boolean indicating whether access is granted
+* :php:`errorMessage` - String containing the error message. It is empty if
+  access is granted
 
 Before
 ------

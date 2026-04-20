@@ -3,7 +3,7 @@
 ..  _feature-108842-1770128495:
 
 ============================================================
-Feature: #108842 - Add Badge for Slide Mode in Layout Module
+Feature: #108842 - Add badge for slide mode in Layout module
 ============================================================
 
 See :issue:`108842`
@@ -11,16 +11,18 @@ See :issue:`108842`
 Description
 ===========
 
-This feature introduces a visual badge in the Layout Module to indicate when
-the Slide Mode is active. The badge serves as a clear indicator for editors,
-enhancing the user experience by providing immediate feedback on the current
-mode of operation.
+This feature introduces a visual badge in the :guilabel:`Content > Layout` module to
+indicate when slide mode is active. The badge is a clear indicator for
+editors, enhancing the user experience by providing immediate feedback on the
+current mode of operation.
 
-For each slide mode there is a corresponding badge, with corresponding description.
+Each slide mode has a corresponding badge and description text:
 
-For slideMode None, no badge is shown.
-For slideMode Slide, a badge with the text "Slide" is shown, only if there are currently no content elements in the current page.
-For slideMode Collect, a badge with the text "Collect" is shown.
-For slideMode CollectReverse, a badge with the text "CollectReverse" is shown.
+*   For :php:`slideMode = none`, no badge is shown.
+*   For :php:`slideMode = slide`, a badge with the text "Slide" is shown, but only
+    if there are no content elements on the current page.
+*   For :php:`slideMode = collect`, a badge with the text "Collect" is shown.
+*   For :php:`slideMode = collectReverse`, a badge with the text "CollectReverse"
+    is shown.
 
 ..  index:: Backend, ext:backend, ext:workspaces

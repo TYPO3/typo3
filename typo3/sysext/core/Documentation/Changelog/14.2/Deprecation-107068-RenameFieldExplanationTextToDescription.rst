@@ -16,7 +16,7 @@ in favor of :yaml:`description`. The new name better reflects its purpose
 and is easier to understand.
 
 This affects form element type definitions in
-:yaml:`prototypes.*.formElementsDefinition.*.formEditor` configurations,
+:yaml:`prototypes.*.formElementsDefinition.*.formEditor` configuration,
 including editors, validators, and finishers in any extension.
 
 Impact
@@ -24,7 +24,7 @@ Impact
 
 Using :yaml:`fieldExplanationText` will trigger a PHP deprecation warning.
 The migration service will automatically convert :yaml:`fieldExplanationText`
-to :yaml:`description` when form configurations are loaded, ensuring
+to :yaml:`description` when form configuration is loaded, ensuring
 backward compatibility.
 
 Support for :yaml:`fieldExplanationText` will be removed in TYPO3 v15.0.
@@ -32,7 +32,7 @@ Support for :yaml:`fieldExplanationText` will be removed in TYPO3 v15.0.
 Affected installations
 ======================
 
-Any installation using extensions that provide custom form element type
+Any installations with extensions that provide custom form element type
 definitions with the configuration option :yaml:`fieldExplanationText`
 in their form prototype YAML files (e.g., :file:`Configuration/Form/*.yaml`
 or :file:`Configuration/Yaml/FormSetup.yaml`).
@@ -46,22 +46,15 @@ in your form element type definition YAML files (typically located in
 
 Example migration:
 
-.. code-block:: yaml
+.. code-block:: diff
 
-   # Before (deprecated)
-   formEditor:
-     editors:
-       200:
-         identifier: placeholder
-         label: Placeholder
-         fieldExplanationText: Enter the placeholder text
-
-   # After
-   formEditor:
-     editors:
-       200:
-         identifier: placeholder
-         label: Placeholder
-         description: Enter the placeholder text
+     # After
+     formEditor:
+       editors:
+         200:
+           identifier: placeholder
+           label: Placeholder
+     -     fieldExplanationText: Enter the placeholder text
+     +     description: Enter the placeholder text
 
 .. index:: Backend, ext:form, NotScanned

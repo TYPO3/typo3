@@ -12,21 +12,23 @@ See :issue:`108832`
 Description
 ===========
 
-The backend user profile settings configuration, previously stored in
-:php:`$GLOBALS['TYPO3_USER_SETTINGS']`, is now available in TCA at
+The backend user profile settings configuration that was previously stored in
+:php:`$GLOBALS['TYPO3_USER_SETTINGS']` is now available in TCA at
 :php:`$GLOBALS['TCA']['be_users']['columns']['user_settings']`.
 
-This allows the user settings to benefit from TCA-based tooling and provides
-a consistent API that extensions already use for other configurations.
+This allows user settings to benefit from TCA-based tooling and provides
+a consistent API that extensions already use for other configuration.
 
-A new method :php:`ExtensionManagementUtility::addUserSetting()` has been
-introduced to simplify adding custom fields to the user profile settings.
+A new method
+:php:`ExtensionManagementUtility::addUserSetting()` has been introduced to
+simplify adding custom fields to user profile settings.
 
 Impact
 ======
 
-Extensions can add custom fields to the backend user profile settings using
-the new :php:`addUserSetting()` method in :file:`Configuration/TCA/Overrides/be_users.php`:
+Extensions can add custom fields to backend user profile settings using
+the new :php:`addUserSetting()` method in
+:file:`Configuration/TCA/Overrides/be_users.php`:
 
 ..  code-block:: php
 
@@ -49,7 +51,7 @@ Alternatively, extensions can directly modify the TCA:
 
     // Configuration/TCA/Overrides/be_users.php
     $GLOBALS['TCA']['be_users']['columns']['user_settings']['columns']['myCustomSetting'] = [
-        'label' => 'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:myCustomSetting',
+        'label' => 'LLL:my_extension.messages:myCustomSetting',
         'config' => [
             'type' => 'check',
             'renderType' => 'checkboxToggle',
@@ -74,10 +76,12 @@ The :php:`user_settings` TCA column has the following structure:
         Standard TCA config array (type, renderType, items, etc.)
 
     :php:`table` (optional)
-        Set to :php:`'be_users'` if the field is stored in a be_users table column
+        Set to :php:`'be_users'` if the field is stored in a
+        :sql:`be_users` table column
 
 :php:`showitem`
-    Comma-separated list of fields to display, supports :php:`--div--;` for tabs
+    Comma-separated list of fields to display; supports
+    :php:`--div--;` for tabs
 
 Available field types
 ---------------------
@@ -86,16 +90,19 @@ Available field types
 *   :php:`number` - Number input field
 *   :php:`email` - Email input field
 *   :php:`password` - Password input field
-*   :php:`check` with :php:`renderType => 'checkboxToggle'` - Checkbox/toggle
-*   :php:`select` with :php:`renderType => 'selectSingle'` - Select dropdown
+*   :php:`check` with :php:`renderType => 'checkboxToggle'` -
+    Checkbox or toggle
+*   :php:`select` with :php:`renderType => 'selectSingle'` -
+    Select field
 *   :php:`language` - Language selector
 
 Backward compatibility
 ----------------------
 
-For backward compatibility, the legacy :php:`$GLOBALS['TYPO3_USER_SETTINGS']` array
-is still supported. Third-party additions are automatically migrated to TCA after
-all :file:`ext_tables.php` files have been loaded. However, this approach is
-deprecated and extensions should migrate to the new TCA-based API.
+For backward compatibility, the legacy
+:php:`$GLOBALS['TYPO3_USER_SETTINGS']` array is still supported. Third-party
+additions are automatically migrated to TCA after all
+:file:`ext_tables.php` files have been loaded. However, this approach is
+deprecated, and extensions should migrate to the new TCA-based API.
 
 ..  index:: Backend, TCA, PHP-API, ext:setup

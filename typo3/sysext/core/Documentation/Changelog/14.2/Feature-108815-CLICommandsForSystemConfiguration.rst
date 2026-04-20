@@ -20,8 +20,9 @@ configuration:show
 ------------------
 
 Shows a configuration value. By default, if the active value differs from the
-local value (e.g., due to overrides in :file:`config/system/additional.php`),
-both values are displayed with the difference highlighted.
+local value (for example, due to overrides in
+:file:`config/system/additional.php`), both values are displayed with the
+difference highlighted.
 
 ..  code-block:: bash
 
@@ -54,17 +55,17 @@ Sets a configuration value in :file:`config/system/settings.php`.
     # Set an array value
     vendor/bin/typo3 configuration:set EXTENSIONS/my_extension '{"key": "value"}' --json
 
-The :bash:`--json` option parses the value as JSON, which allows setting
-booleans, integers, and arrays with proper types.
+The :bash:`--json` option parses the value as JSON, which allows
+booleans, integers, and arrays to be set with proper types.
 
 configuration:remove
 --------------------
 
-Removes configuration value(s) from :file:`config/system/settings.php`.
+Removes configuration value or values from :file:`config/system/settings.php`.
 
 ..  code-block:: bash
 
-    # Remove a single path (will ask for confirmation)
+    # Remove a single path (asks for confirmation)
     vendor/bin/typo3 configuration:remove EXTENSIONS/my_extension/setting
 
     # Remove without confirmation
@@ -79,12 +80,12 @@ Impact
 These commands provide a convenient way to manage TYPO3 system configuration
 from the command line, which is especially useful for:
 
-*   Automated deployments and provisioning scripts
+*   automated deployment and provisioning scripts
 *   CI/CD pipelines that need to adjust configuration
-*   Quick configuration changes without accessing the Install Tool
-*   Scripting and automation tasks
+*   quick configuration changes without needing to access the Install Tool
+*   scripting and automation tasks
 
-The commands respect TYPO3's configuration path restrictions and only allow
+The commands respect TYPO3 configuration path restrictions and only allow
 writing to paths that are defined in the default configuration or explicitly
 allowed (such as :php:`EXTENSIONS`, :php:`EXTCONF`, :php:`DB`).
 

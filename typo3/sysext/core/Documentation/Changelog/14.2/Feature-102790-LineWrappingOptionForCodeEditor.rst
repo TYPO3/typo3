@@ -11,8 +11,8 @@ See :issue:`102790`
 Description
 ===========
 
-A new TCA appearance option :php:`lineWrapping` has been added for the
-:php:`codeEditor` render type. When enabled, long lines are wrapped within
+A new TCA appearance option `lineWrapping` has been added for the
+`codeEditor` render type. When enabled, long lines are wrapped inside
 the editor instead of requiring horizontal scrolling.
 
 Example:
@@ -32,6 +32,6 @@ Impact
 ======
 
 Code editor fields can now be configured to wrap long lines by setting
-:php:`lineWrapping` in the :php:`appearance` array.
+`lineWrapping` in the `appearance` array.
 
 ..  index:: Backend, TCA, ext:backend

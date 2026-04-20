@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _feature-109163-1772708896:
+..  _feature-109163-1772708896:
 
 ===============================================================
 Feature: #109163 - Implement public system resources publishing
@@ -11,65 +11,73 @@ See :issue:`109163`
 Description
 ===========
 
-When implementing the new system resources API (:ref:`feature-107537-1759136314`),
-resource publishing was skipped and is now implemented.
+When implementing the new system resources API
+(:ref:`feature-107537-1759136314`), resource publishing was skipped and has now
+been implemented.
 
-The most visible feature with this implementation is the now available
-`asset:publish` command. This command can be executed to publish public extension
-resources from their `Resources/Public` folder to the document root directory
-(`public` by default in Composer mode).
+The most visible feature of this implementation is the new
+`asset:publish` command. This command can publish public
+extension resources from their `Resources/Public` folder to the document root
+directory (`public` by default in Composer mode).
 
-To maintain backwards compatibility for Composer mode installations, this command will
-automatically be executed during `composer install`. This means after Composer has done
-it's job installing packages, extension assets have already been published.
+To maintain backward compatibility for Composer mode installations, this
+command is automatically executed during `composer install`. This means
+that after Composer has done its job installing packages, extension assets
+are already published.
 
-Public extension resources are however also published when extensions are set up
-using `extension:setup` or when activating an extension in extension manager.
-Because of this and because it might not be wanted or applicable
-to publish assets on Composer build time, it is now possible to skip publishing
-during `composer install` by setting the environment variable `TYPO3_SKIP_ASSET_PUBLISH`
-e.g. like so: `TYPO3_SKIP_ASSET_PUBLISH=1 composer install`.
-Not publishing assets on `composer install` will likely
-become default in future TYPO3 versions.
+Public extension resources are also published when extensions are set up
+with the `extension:setup` command or when an extension is activated in the Extension
+Manager. Because of this, and because it might not be desirable or applicable
+to publish assets at Composer build time, it is now possible to skip publishing
+during `composer install` by setting an environment variable
+`TYPO3_SKIP_ASSET_PUBLISH`, for example:
+`TYPO3_SKIP_ASSET_PUBLISH=1 composer install`.
+Not publishing assets at `composer install` is likely to become default behavior
+in future TYPO3 versions.
 
-TYPO3 only ships file system based publishing. From now on however, there is an
-additional strategy made available besides symlink publishing (*nix systems) and
-junction publishing (Windows systems). TYPO3 can now copy all files and folders
-from their private locations to the document root. This is handy for many use cases
-like container building, deployments with read only file systems,
-restrictive hosting environments and others.
+TYPO3 ships file system-based publishing only. From now on, however, there is
+an additional strategy available besides symlink publishing (*nix systems) and
+junction publishing (Windows systems). TYPO3 can now copy all files and
+folders from their private locations to the document root. This is useful for
+many use cases such as container builds, deployments with read-only file
+systems, restrictive hosting environments, and others.
 
-By default the linking strategy is kept, especially for backwards compatibility reasons.
-It is however possible to influence the behaviour by setting the following configuration option:
+By default, the linking strategy is being kept, particularly for backward
+compatibility reasons. It is, however, possible to influence the behavior by
+setting the following configuration option:
 
-Default behaviour: always link:
+Default behavior: always link:
 
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['SystemResources']['filesystemPublishingType'] = 'link';`
 
-Always copy/ mirror files:
+Always copy / mirror files:
 
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['SystemResources']['filesystemPublishingType'] = 'mirror';`
 
-Copy/ mirror files in `Production` context and link folders in `Development` context:
+Copy / mirror files in a `Production` context and link folders in a `Development`
+context:
 
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['SystemResources']['filesystemPublishingType'] = 'auto';`
 
 Beyond file system publishing
 -----------------------------
 
-While TYPO3 core only delivers file system based publishing, third party extensions can now
-implement other ways to publish public system resources.
+Although TYPO3 Core only delivers file system-based publishing, third-party
+extensions can now implement other ways of publishing public system resources.
 
-By implementing :php:`\TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface`
-and registering the implementing class as alias of this interface, TYPO3 will use this not only
-to publish system resources, but also to generate URIs to those, that reflect their new location,
-e.g. on a CDN.
+By implementing
+:php:`\TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface`
+and registering the implementing class as an alias of the interface, TYPO3
+will use this not only to publish system resources, but also to generate URIs
+that reflect their new location, for example on a CDN.
 
-This will then work in TYPO3 classic mode as well, because publishing is now part of extension
-activation.
+This also works in TYPO3 classic mode, because publishing is now part of
+extension activation.
 
-..  code-block:: yaml
-    :caption: EXT:my_extension/Classes/Service/ExampleResourcePublisher.php (Simple example how to directly generate URIs for a CDN)
+Simple example of how to generate URIs for a CDN:
+
+..  code-block:: php
+    :caption: EXT:my_extension/Classes/Service/ExampleResourcePublisher.php
 
     <?php
 
@@ -95,21 +103,26 @@ activation.
     {
         private const CDN_URL = 'https://my.awsome.cdn/files/';
 
-        public function __construct(private DefaultSystemResourcePublisher $defaultSystemResourcePublisher)
-        {}
+        public function __construct(
+            private DefaultSystemResourcePublisher
+                $defaultSystemResourcePublisher,
+        ) {}
 
-        public function publishResources(PackageInterface $package): FlashMessageQueue
-        {
-            // There could be some additional logic here to publish files to a CDN
-            // For this example we assume the CDN loads the assets from the source
-            // automatically, so we publish as usual
-            return $this->defaultSystemResourcePublisher->publishResources($package);
+        public function publishResources(
+            PackageInterface $package,
+        ): FlashMessageQueue {
+            // Additional logic to publish files to a CDN could be added
+            // here. For this example, the CDN loads the assets from the
+            // source automatically, so resources are published as usual.
+            return $this->defaultSystemResourcePublisher->publishResources(
+                $package,
+            );
         }
 
         public function generateUri(
             PublicResourceInterface $publicResource,
             ?ServerRequestInterface $request,
-            ?UriGenerationOptions $options = null
+            ?UriGenerationOptions $options = null,
         ): UriInterface {
             $defaultUri = $this->defaultSystemResourcePublisher->generateUri(
                 $publicResource,
@@ -130,15 +143,15 @@ activation.
 Impact
 ======
 
-There is no apparent impact for any TYPO3 installation, as changes made are mostly internal
-and public API and behaviour is kept as before. Also for deployments there is nothing to
-be changed, as asset publishing is still performed on `composer install`, but also
-on `extension:setup` command, which both are obviously already part of any deployment workflow.
+There is no apparent impact for any TYPO3 installation, as the changes are mostly internal
+and the public API and behavior are the same as before. For deployments, nothing needs to
+be changed, as asset publishing is still performed at `composer install`, and also
+by the `extension:setup` command, both of which are already part of any deployment workflow.
 
-Users however now have more control when and how exactly publishing is performed, by setting
-environment variable `TYPO3_SKIP_ASSET_PUBLISH=1` for `composer install` or by configuring
-`mirror` strategy for publishing by setting
+Users, however, now have more control over when and how publishing is performed, by setting
+the environment variable `TYPO3_SKIP_ASSET_PUBLISH=1` for `composer install` or by configuring
+the `mirror` strategy for publishing by setting
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['SystemResources']['filesystemPublishingType'] = 'mirror';`
-in `config/system/additional.php`
+in `config/system/additional.php`.
 
-.. index:: ext:core
+..  index:: ext:core

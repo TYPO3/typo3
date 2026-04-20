@@ -12,23 +12,24 @@ Description
 ===========
 
 A new :php:`\TYPO3\CMS\Core\Localization\TranslatorInterface` has been
-introduced that provides a clean abstraction for translating labels in TYPO3.
+introduced to provide a clean abstraction for translating labels in TYPO3.
 
 The interface defines two methods:
 
-*   :php:`translate()` — translates a label by its identifier and domain,
+*   :php:`translate()` translates a label using its identifier and domain,
     supporting argument interpolation, a default fallback value, and per-call
     locale overrides.
-*   :php:`label()` — resolves full TYPO3 label reference strings (e.g.
-    `LLL:EXT:core/Resources/Private/Language/locallang.xlf:my.key`) and
+*   :php:`label()` resolves full TYPO3 label reference strings, for example
+    `LLL:EXT:core/Resources/Private/Language/locallang.xlf:my.key`, and
     delegates to :php:`translate()`. This method serves as the interface-based
-    equivalent of :php:`LanguageService::sL()`, with the key differences that
-    it returns :php:`null` when a label cannot be resolved (instead of an empty
-    string) and supports argument interpolation, default values, and locale
+    equivalent of :php:`LanguageService::sL()`. The key differences are that
+    it returns :php:`null` when a label cannot be resolved instead of an empty
+    string, and supports argument interpolation, default values, and locale
     overrides.
 
-The existing :php:`LanguageService` now implements this interface, making it
-possible to type-hint against the interface instead of the concrete class.
+:php-short:`\TYPO3\CMS\Core\Localization\LanguageService` now implements this
+interface, making it possible to type-hint against the interface instead of the
+concrete class.
 
 Example usage:
 
@@ -83,30 +84,30 @@ Example usage:
             $label = $this->translator->label(
                 'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:button.save',
             );
-
         }
     }
 
 The :php:`label()` method accepts the following reference formats:
 
-* `my_extension.messages:my.key`
-* `EXT:my_extension/Resources/Private/Language/locallang.xlf:my.key`
-* `LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:my.key`
+*   `my_extension.messages:my.key`
+*   `EXT:my_extension/Resources/Private/Language/locallang.xlf:my.key`
+*   `LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:my.key`
 
-The `LLL:` prefix is optional and stripped before resolution.
+The `LLL:` prefix is optional and removed before resolution.
 
 Impact
 ======
 
 Extension developers can now type-hint against
-:php:`TranslatorInterface` instead of the concrete
-:php:`LanguageService` class. This improves testability and decouples
-code from the specific implementation.
+:php-short:`\TYPO3\CMS\Core\Localization\TranslatorInterface` instead of the
+concrete :php-short:`\TYPO3\CMS\Core\Localization\LanguageService` class. This
+improves testability and decouples code from implementation.
 
-The :php:`translate()` method of :php:`LanguageService` has been extended
+The :php:`translate()` method of
+:php-short:`\TYPO3\CMS\Core\Localization\LanguageService` has been extended
 with two additional optional parameters:
 
-* :php:`$default` — a fallback value returned when the label is not found
-* :php:`$locale` — allows overriding the locale on a per-call basis
+*   :php:`$default` a fallback value returned when the label is not found
+*   :php:`$locale` allows overriding the locale on a per-call basis
 
 ..  index:: PHP-API, ext:core

@@ -14,15 +14,18 @@ Description
 Instead of using the :html:`<f:cObject>` ViewHelper to render database records,
 the new :html:`<f:render.record>` ViewHelper can be used.
 
-It allows rendering records while enabling other extensions to modify the output via PSR-14 EventListeners.
+It allows records to be rendered while enabling other extensions to modify the
+output via PSR-14 event listeners.
 
-This is especially useful for adding debugging wrappers or additional HTML structure
-around content elements.
+This is especially useful for adding debugging wrappers or additional HTML
+structure around content elements.
 
-By default, the ViewHelper renders the record as-is, but EventListeners
-can listen to the :php:`\TYPO3\CMS\Fluid\Event\ModifyRenderedRecordEvent` and modify the output.
+By default, the ViewHelper renders the record as is, but event listeners
+can listen to the
+:php-short:`\TYPO3\CMS\Fluid\Event\ModifyRenderedRecordEvent` and modify the
+output.
 
-Usage with the `record-transformation` data processor:
+Usage with the :typoscript:`record-transformation` data processor:
 
 ..  code-block:: typoscript
 
@@ -30,20 +33,19 @@ Usage with the `record-transformation` data processor:
         10 = record-transformation
     }
 
-
 ..  code-block:: html
     :caption: MyContentElement.fluid.html
 
-    <f:render.record record="{record}"/>
+    <f:render.record record="{record}" />
     or
     {record -> f:render.record()}
 
-You can not only render tt_content records but any database record by defining the rendering in Typoscript.
+You can render not only :sql:`tt_content` records, but any database record by
+defining the rendering in TypoScript.
 
 ..  code-block:: typoscript
 
-
-    # Example Typoscript configuration for rendering custom records
+    # Example TypoScript configuration for rendering custom records
     sys_category = FLUIDTEMPLATE
     sys_category {
       file = EXT:my_extension/Resources/Private/Templates/Category.html
@@ -52,7 +54,7 @@ You can not only render tt_content records but any database record by defining t
       dataProcessing.1421884800 = record-transformation
     }
 
-    # Example Typoscript configuration for special record types
+    # Example TypoScript configuration for special record types
     tx_myextension_domain_model_product = COA
     tx_myextension_domain_model_product.default = FLUIDTEMPLATE
     tx_myextension_domain_model_product.default {
@@ -74,7 +76,6 @@ Impact
 ======
 
 Theme creators are encouraged to use the :html:`<f:render.record>` ViewHelper
-to allow other extensions to modify the output via EventListeners.
-
+to allow other extensions to modify the output via event listeners.
 
 ..  index:: Frontend, ext:fluid

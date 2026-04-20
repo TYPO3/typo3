@@ -11,11 +11,13 @@ See :issue:`108776`
 Description
 ===========
 
-The CLI command `backend:user:create` now supports the option `--language` (or `-l`) to set the desired language for the user interface.
+The CLI command :bash:`typo3 backend:user:create` now supports the
+:bash:`--language` option, or :bash:`-l`, that sets the desired user interface
+language.
 
 ..  code-block:: bash
 
-    ./bin/typo3 backend:user:create --language=de
+    vendor/bin/typo3 backend:user:create --language=de
 
 User creation using environment variables:
 
@@ -27,7 +29,6 @@ User creation using environment variables:
     TYPO3_BE_USER_LANGUAGE=de \
     TYPO3_BE_USER_ADMIN=0 \
     TYPO3_BE_USER_MAINTAINER=0 \
-    ./bin/typo3 backend:user:create --no-interaction
-
+    vendor/bin/typo3 backend:user:create --no-interaction
 
 ..  index:: CLI, ext:backend

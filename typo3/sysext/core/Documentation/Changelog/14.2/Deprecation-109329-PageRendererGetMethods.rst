@@ -1,4 +1,3 @@
-<?php
 ..  include:: /Includes.rst.txt
 
 ..  _deprecation-109329-1774349266:
@@ -34,46 +33,56 @@ The following methods have been deprecated:
 Impact
 ======
 
-Invoking any of the methods listed above will generate a deprecation-level log entry in TYPO3 v14.
-These methods are scheduled for removal in TYPO3 v15.
+Invoking any of the methods listed above will generate a
+deprecation-level log entry in TYPO3 v14. These methods are scheduled
+for removal in TYPO3 v15.
 
-The :php:`PageRenderer` singleton represents a central yet problematic construct, particularly in TYPO3
-frontend rendering, from an architectural perspective. With the deprecation of these methods,
-the class loses its ability to serve as a data source: data can still be added, but no longer retrieved.
-This change paves the way for refactoring the construct in TYPO3 v15, including the introduction
-of a compatibility layer to maintain backward compatibility.
+From an architectural perspective, the
+:php-short:`TYPO3\CMS\Core\Page\PageRenderer` singleton represents
+a central yet problematic construct, particularly in TYPO3 frontend
+rendering. With the deprecation of
+these methods, the :php-short:`TYPO3\CMS\Core\Page\PageRenderer` class loses its
+ability to serve as a data source - data can still be added but no longer retrieved.
 
+This change paves the way for refactoring the construct in TYPO3 v15,
+including the introduction of a compatibility layer to maintain
+backward compatibility.
 
 Affected installations
 ======================
 
-Instances with extensions invoking one of the above methods are affected. The extension
-scanner is configured to find consumers except the generic method names :php:`getTitle()`,
-:php:`getLanguage()` and :php:`getPageRenderer`.
-
+Instances with extensions invoking one of the methods listed above are
+affected. The extension scanner is configured to find consumers, apart from the
+generic method names :php:`getTitle()`, :php:`getLanguage()`, and :php:`getPageRenderer()`.
 
 Migration
 =========
 
-In practice, there is often little reason to rely on the methods mentioned above. Most data passed to
-PageRenderer is handled through mechanisms that can be intercepted and configured, for example title and
-meta tag handling. As a result, the deprecated get() methods do not have a direct replacement.
+In practice, there is often little reason to rely on the methods
+mentioned above. Most data passed to PageRenderer is handled through
+mechanisms that can be intercepted and configured, for example title
+and meta tag handling. As a result, the deprecated get() methods do
+not have a direct replacement.
 
-A commonly used case is PageRenderer->getDocType(), which determines whether self-closing tags should include
-a trailing slash (/). This is only relevant in the frontend, as the backend always uses HTML5. The DocType
-itself is derived from TypoScript configuration, which is a Request attribute.
+A commonly used case is :php:`PageRenderer->getDocType()`, which
+determines whether self-closing tags should include a trailing slash
+(`/`). This is relevant only in the frontend, as the backend
+always uses HTML5. The DocType itself is derived from TypoScript
+configuration, which is available as a request attribute.
 
-Example before:
+Before:
 
-.. code-block:: php
+..  code-block:: php
 
-    $needsEndingSlash = GeneralUtility::makeInstance(PageRenderer::class)->getDocType()->isXmlCompliant()
+    $needsEndingSlash = GeneralUtility::makeInstance(PageRenderer::class)
+        ->getDocType()
+        ->isXmlCompliant();
 
-Example after:
+After:
 
-.. code-block:: php
+..  code-block:: php
 
-    $needsEndingSlash = DocType::createFromRequest($request)->isXmlCompliant()
-
+    $needsEndingSlash = DocType::createFromRequest($request)
+        ->isXmlCompliant();
 
 ..  index:: PHP-API, PartiallyScanned, ext:core

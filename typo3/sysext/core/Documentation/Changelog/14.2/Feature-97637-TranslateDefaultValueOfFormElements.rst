@@ -11,26 +11,27 @@ See :issue:`97637`
 Description
 ===========
 
-The TYPO3 Form Framework now supports translating the :yaml:`defaultValue`
-property of form elements via XLF translation files.
+The TYPO3 form framework now supports translating the
+:yaml:`defaultValue` property of form elements via XLF translation files.
 
-Previously, only properties like :yaml:`label`, :yaml:`placeholder` and
+Previously only properties such as :yaml:`label`, :yaml:`placeholder`, and
 rendering options could be translated through the form framework's translation
 mechanism. The :yaml:`defaultValue` property was always rendered as-is from the
 form definition, regardless of the current frontend language.
 
-With this change, the :yaml:`defaultValue` is translated before rendering using
-the same XLF key conventions already established for other form element
-properties. The translation is resolved in the following order (first match wins):
+Now, :yaml:`defaultValue` is translated before rendering using the
+same XLF key conventions already established for other form element
+properties. The translation is resolved in the following order, with the first
+match winning:
 
-1. ``<form-definition-identifier>.element.<element-identifier>.properties.defaultValue``
-2. ``element.<element-identifier>.properties.defaultValue``
-3. ``element.<element-type>.properties.defaultValue``
+#.  `<form-definition-identifier>.element.<element-identifier>.properties.defaultValue`
+#.  `element.<element-identifier>.properties.defaultValue`
+#.  `element.<element-type>.properties.defaultValue`
 
 Example
 =======
 
-Given a form element defined as:
+Given a form element defined as follows:
 
 ..  code-block:: yaml
     :caption: fileadmin/form_definitions/contact.form.yaml
@@ -74,22 +75,24 @@ Or, to apply the translation to all :yaml:`Text` elements across all forms:
     :caption: EXT:my_extension/Resources/Private/Language/Form/de.locallang.xlf
 
     <trans-unit id="element.Text.properties.defaultValue">
-      <source>Hamburger</source>
-      <target>Kartoffel</target>
+        <source>Hamburger</source>
+        <target>Kartoffel</target>
     </trans-unit>
 
 Impact
 ======
 
-Form integrators can now provide language-specific default values for form elements.
-The translation is applied automatically before rendering using the existing
-translation file configuration in :yaml:`renderingOptions.translation.translationFiles`.
+Form integrators can now provide language-specific default values for form
+elements. The translation is applied automatically before rendering using the
+existing translation file configuration in
+:yaml:`renderingOptions.translation.translationFiles`.
 
 Array-based :yaml:`defaultValue` properties are intentionally excluded from
-translation. These occur on multi-value elements like :yaml:`MultiCheckbox` or
-:yaml:`MultiSelect`, where the values are option keys that must match the
-configured :yaml:`properties.options` exactly. Translating them would break the
-value-to-option mapping. The option labels themselves can be translated via the
-existing :yaml:`properties.options.[*]` translation mechanism.
+translation. These occur in multi-value elements such as
+:yaml:`MultiCheckbox` or :yaml:`MultiSelect`, where the values are option keys
+that must match the configured :yaml:`properties.options` exactly.
+Translating them would break the value-to-option mapping. The option labels
+themselves can be translated via the existing
+:yaml:`properties.options.[*]` translation mechanism.
 
 ..  index:: Frontend, ext:form

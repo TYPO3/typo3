@@ -11,24 +11,25 @@ See :issue:`109192`
 Description
 ===========
 
-The :php:`OuterWrapContainer` FormEngine container has been deprecated in favor
-of the new :php:`FormWrapContainer`. The old container rendered record headers,
-type icons and record identity information inside FormEngine, which forced
-controllers to hide unwanted elements via CSS hacks.
+The :php:`\TYPO3\CMS\Backend\Form\Container\OuterWrapContainer` FormEngine
+container has been deprecated in favor
+of the new :php:`\TYPO3\CMS\Backend\Form\Container\FormWrapContainer`.
+The old container rendered record
+headers, type icons, and record identity information inside FormEngine, which
+forced controllers to hide redundant elements via CSS hacks.
 
-The new :php:`FormWrapContainer` only handles the form wrapping (description,
-read-only notice, field information, field wizards and child HTML). Rendering
-record headers and identity information is now the responsibility of the
-controllers themselves.
-
+The new :php-short:`\TYPO3\CMS\Backend\Form\Container\FormWrapContainer`
+only handles form wrapping (description,
+read-only notice, field information, field wizards, and child HTML).
+Rendering record headers and identity information is now the responsibility of
+the controllers themselves.
 
 Impact
 ======
 
-Using the :php:`outerWrapContainer` render type will trigger a PHP
-:php:`E_USER_DEPRECATED` level error. The container still works as before
+Using the `outerWrapContainer` render type will trigger a PHP
+:php:`E_USER_DEPRECATED` level error. The container will still work as before
 during the deprecation period.
-
 
 Affected installations
 ======================
@@ -36,11 +37,11 @@ Affected installations
 Installations with custom controllers or FormEngine integrations that set
 :php:`$formData['renderType'] = 'outerWrapContainer'`.
 
-
 Migration
 =========
 
-Replace the render type :php:`outerWrapContainer` with :php:`formWrapContainer`.
+Replace the render type `outerWrapContainer` with
+`formWrapContainer`.
 
 Before:
 
@@ -56,9 +57,11 @@ After:
     $formData['renderType'] = 'formWrapContainer';
     $formResult = $this->nodeFactory->create($formData)->render();
 
-Note that :php:`FormWrapContainer` no longer renders the record heading
-(:html:`<h1>`) or the record identity footer (icon, table title, uid). If your
-controller relied on these being rendered by :php:`OuterWrapContainer`, you need
-to render them in your controller code.
+Note that :php-short:`\TYPO3\CMS\Backend\Form\Container\FormWrapContainer`
+no longer renders the record heading
+(:html:`<h1>`) or the record identity footer (icon, table title, uid). If
+your controller relied on these being rendered by
+:php-short:`\TYPO3\CMS\Backend\Form\Container\OuterWrapContainer`, you need to
+render them in your controller code.
 
 ..  index:: Backend, PHP-API, NotScanned, ext:backend

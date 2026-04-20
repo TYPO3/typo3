@@ -11,26 +11,27 @@ See :issue:`109027`
 Description
 ===========
 
-The `language:update` CLI command and the related
+The `language:update` CLI command and related
 :php:`\TYPO3\CMS\Install\Service\LanguagePackService` have been moved from
 `EXT:install` to `EXT:core`, allowing installations to update language packs
-without requiring `EXT:install` to be installed.
+without `EXT:install` having to be installed.
 
-Since TYPO3 v13, it is possible to run TYPO3 without `EXT:install` in composer
-based installations. However, the `language:update` command still required
-`EXT:install`, which made this advantage impractical for deployments that need
-to update language packs.
+Since TYPO3 v13 it has been possible to run TYPO3 without `EXT:install` in
+Composer-based installations. However, the `language:update` command still
+required `EXT:install`, which was impractical for deployments that needed to
+update language packs.
 
-The following classes have been moved and their old class names deprecated:
+The following classes have been moved, and their old class names deprecated:
 
-*  :php:`\TYPO3\CMS\Install\Command\LanguagePackCommand` is now
-   :php:`\TYPO3\CMS\Core\Command\UpdateLanguagePackCommand`
-*  :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent`
-   is now :php:`\TYPO3\CMS\Core\Localization\Event\ModifyLanguagePackRemoteBaseUrlEvent`
-*  :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent` is now
-   :php:`\TYPO3\CMS\Core\Localization\Event\ModifyLanguagePacksEvent`
+* :php:`\TYPO3\CMS\Install\Command\LanguagePackCommand` is now
+  :php:`\TYPO3\CMS\Core\Command\UpdateLanguagePackCommand`
+* :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent`
+  is now :php:`\TYPO3\CMS\Core\Localization\Event\ModifyLanguagePackRemoteBaseUrlEvent`
+* :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent` is now
+  :php:`\TYPO3\CMS\Core\Localization\Event\ModifyLanguagePacksEvent`
 
-The old class names are registered as aliases via :php:`ClassAliasMap` and
+The old class names are registered as aliases via
+:php-short:`TYPO3\ClassAliasLoader\ClassAliasMap` and
 continue to work in TYPO3 v14. Event listeners registered for the deprecated
 event class names are still called when the new event is dispatched, with a
 deprecation notice triggered at runtime.
@@ -39,7 +40,7 @@ Impact
 ======
 
 Using the old class names will trigger a deprecation notice. The extension
-scanner will report usages of the deprecated class names.
+scanner will report usage of the deprecated class names.
 
 The old class names will be removed in TYPO3 v15.
 
