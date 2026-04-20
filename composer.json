@@ -74,7 +74,7 @@
 		"firebase/php-jwt": "^6.10.2 || ^7.0.5",
 		"guzzlehttp/guzzle": "^7.9.2",
 		"guzzlehttp/promises": "^2.0.3",
-		"guzzlehttp/psr7": "^2.7.0",
+		"guzzlehttp/psr7": "^2.9.0",
 		"lolli42/finediff": "^1.1.2",
 		"masterminds/html5": "^2.10.0",
 		"nikic/php-parser": "^5.4.0",

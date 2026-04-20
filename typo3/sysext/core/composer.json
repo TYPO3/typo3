@@ -54,7 +54,7 @@
 		"enshrined/svg-sanitize": "~0.22",
 		"firebase/php-jwt": "^6.10.2 || ^7.0.5",
 		"guzzlehttp/guzzle": "^7.9.2",
-		"guzzlehttp/psr7": "^2.7.0",
+		"guzzlehttp/psr7": "^2.9.0",
 		"lolli42/finediff": "^1.1.2",
 		"masterminds/html5": "^2.10.0",
 		"psr/container": "^2.0",
