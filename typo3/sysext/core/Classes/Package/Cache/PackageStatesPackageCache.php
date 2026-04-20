@@ -67,22 +67,25 @@ class PackageStatesPackageCache implements PackageCacheInterface
         }
         $this->coreCache->remove($this->cacheIdentifier);
         $this->cacheIdentifier = null;
+        clearstatcache();
     }
 
     /**
-     * "Hash" the package states file when cacheIdentifier is null
-     * This is done to cache the state and to represent invalidated state.
+     * Combines mtime and filesize to detect PackageStates.php changes.
+     * mtime alone has 1-second resolution: a write within the same second
+     * produces an identical identifier, causing PackageActivationService
+     * to load a stale DI container missing the just-activated extension.
      *
      * @throws PackageManagerCacheUnavailableException
      */
     public function getIdentifier(): string
     {
         if (!isset($this->cacheIdentifier)) {
-            $mTime = @filemtime($this->packageStatesFile);
-            if ($mTime === false) {
+            $stat = @stat($this->packageStatesFile);
+            if ($stat === false) {
                 throw new PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1629817141);
             }
-            $this->cacheIdentifier = md5((string)(new Typo3Version()) . $this->packageStatesFile . $mTime);
+            $this->cacheIdentifier = md5((string)(new Typo3Version()) . $this->packageStatesFile . $stat['mtime'] . $stat['size']);
         }
 
         return $this->cacheIdentifier;
