@@ -51,7 +51,13 @@ readonly class PackageSetup
         foreach ($packagesToSetUp as $packageKey => $package) {
             $this->extensionConfiguration->synchronizeExtConfTemplateWithLocalConfiguration($packageKey);
             $event = $this->eventDispatcher->dispatch(
-                new PackageInitializationEvent(extensionKey: $packageKey, package: $package, packageActivated: $packageActivated, container: $container, emitter: $emitter)
+                new PackageInitializationEvent(
+                    extensionKey: $packageKey,
+                    package: $package,
+                    packageActivated: $packageActivated,
+                    container: $container,
+                    emitter: $emitter,
+                ),
             );
             if ($event->hasStorageEntry(CheckForImportRequirements::class)) {
                 $messages[] = new FlashMessage(
