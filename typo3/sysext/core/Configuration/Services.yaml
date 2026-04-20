@@ -7,6 +7,10 @@ services:
   TYPO3\CMS\Core\:
     resource: '../Classes/*'
 
+  # @deprecated since TYPO3 v14, remove in TYPO3 v15
+  TYPO3\CMS\Install\:
+    resource: '../DeprecatedClasses/ext-install/*'
+
   TYPO3\CMS\Core\Http\Application:
 
   core.middlewares:
