@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 readonly class UserSettingsDatabaseEditRow implements FormDataProviderInterface
 {
+    public function __construct(private UserSettingsSchema $userSettingsSchema) {}
+
     public function addData(array $result): array
     {
         if ($result['command'] !== 'edit' || $result['tableName'] !== 'be_users_settings') {
@@ -43,26 +45,31 @@ readonly class UserSettingsDatabaseEditRow implements FormDataProviderInterface
         $backendUser = $this->getBackendUser();
         $userSettings = $backendUser->getUserSettings()->toArray();
 
-        // Set most rows from the current user
-        $userSettingsSchema = GeneralUtility::makeInstance(UserSettingsSchema::class);
+        $userSettingsColumns = $this->userSettingsSchema->getColumns();
+        $jsonFieldSettingKeys = $this->userSettingsSchema->getJsonFieldSettingKeys();
         // Also provide direct access to be_users fields that are shown in the form
         // These are needed for fields with inheritFromParent=true
-        foreach ($userSettingsSchema->getColumns() as $column => $config) {
+        foreach ($userSettingsColumns as $column => $config) {
+            $partitionedColumnName = $this->userSettingsSchema->getTcaFieldName($column);
             if (isset($backendUser->user[$column])) {
-                $result['databaseRow'][$column] = $backendUser->user[$column];
+                $result['databaseRow'][$partitionedColumnName] = $backendUser->user[$column];
             } elseif (isset($userSettings[$column])) {
-                $result['databaseRow'][$column] = $userSettings[$column];
+                $result['databaseRow'][$partitionedColumnName] = $userSettings[$column];
             }
         }
         // Set the uid from the current user
         $result['databaseRow']['uid'] = (int)$backendUser->user['uid'];
         $result['databaseRow']['pid'] = 0;
-        $result['databaseRow']['password'] = $backendUser->user['password'] ?? '';
-        $result['databaseRow']['password2'] = $backendUser->user['password'] ?? '';
-        $result['databaseRow']['avatar'] = $this->getAvatarFileUid((int)$backendUser->user['uid']);
+        // Fill in random to passwords to avoid FormEngine issuing the required field error
+        $randomPassword = bin2hex(random_bytes(20));
+        $passwordFieldName = $this->userSettingsSchema->getTcaFieldName('password');
+        $result['databaseRow'][$passwordFieldName] = $randomPassword;
+        $passwordConfirmationFieldName = $this->userSettingsSchema->getTcaFieldName('password2');
+        $result['databaseRow'][$passwordConfirmationFieldName] = $randomPassword;
+        // Forward the avatar FAL id
+        $avatarFieldName = $this->userSettingsSchema->getTcaFieldName('avatar');
+        $result['databaseRow'][$avatarFieldName] = $this->getAvatarFileUid((int)$backendUser->user['uid']);
 
-        // Load user settings from uc array
-        $result['databaseRow']['user_settings'] = $backendUser->getUserSettings()->toArray();
         return $result;
     }
 

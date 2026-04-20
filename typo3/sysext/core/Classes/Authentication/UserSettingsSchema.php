@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Authentication;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Provides unified access to backend user settings configuration.
  *
@@ -81,7 +83,8 @@ readonly class UserSettingsSchema
     {
         $columns = $GLOBALS['TCA']['be_users']['columns']['user_settings']['columns'] ?? [];
         foreach ($columns as $fieldName => $columnConfig) {
-            $columns[$fieldName] = $this->resolveInheritFromParent($fieldName, $columnConfig);
+            $partitionedFieldName = $this->getTcaFieldName($fieldName);
+            $columns[$partitionedFieldName] = $this->resolveInheritFromParent($fieldName, $columnConfig);
         }
 
         return [
@@ -100,9 +103,53 @@ readonly class UserSettingsSchema
     }
 
     /**
-     * Get the showitem string (merged from TCA and legacy global).
+     * Returns a partitioned field name for use in TCA.
+     * - e.g. `be_users__password`, reflecting `be_users` values
+     * - e.g. `user_settings__titleLen`, reflecting JSON values
+     */
+    public function getTcaFieldName(string $fieldName): string
+    {
+        $configuration = $this->getColumn($fieldName);
+        $partition = ($configuration['table'] ?? null) === 'be_users' ? 'be_users' : 'user_settings';
+        return $partition . '__' . $fieldName;
+    }
+
+    private function resolveTcaFieldName(string $fieldName, bool $strict = true): string
+    {
+        $configuration = $this->getColumn($fieldName);
+        if ($configuration !== null) {
+            $partition = ($configuration['table'] ?? null) === 'be_users' ? 'be_users' : 'user_settings';
+            return $partition . '__' . $fieldName;
+        }
+        if (!$strict) {
+            return $fieldName;
+        }
+        throw new \LogicException(
+            sprintf(
+                'Column "%s" not found in UserSettingsSchema',
+                $fieldName
+            ),
+            1776439141
+        );
+    }
+
+    /**
+     * Get the partitioned showitem string to be used as virtual TCA.
      */
     public function getTcaShowitem(): string
+    {
+        $items = GeneralUtility::trimExplode(',', $this->getRawShowitem(), true);
+        $items = array_map(
+            fn(string $fieldName): string => $this->resolveTcaFieldName($fieldName, false),
+            $items
+        );
+        return implode(',', $items);
+    }
+
+    /**
+     * Get the raw showitem string (merged from TCA and legacy global).
+     */
+    public function getRawShowitem(): string
     {
         $tcaShowitem = trim($GLOBALS['TCA']['be_users']['columns']['user_settings']['showitem'] ?? '');
         // @deprecated since TYPO3 v14, remove in TYPO3 v15

@@ -72,6 +72,8 @@ use TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent;
 #[AsController]
 class SetupModuleController
 {
+    protected const DISALLOWED_FIELD_NAMES = ['password', 'password2', 'email', 'realName', 'admin', 'avatar'];
+
     protected const PASSWORD_NOT_UPDATED = 0;
     protected const PASSWORD_UPDATED = 1;
     protected const PASSWORD_NOT_THE_SAME = 2;
@@ -272,46 +274,52 @@ class SetupModuleController
         }
 
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
-        // First check if something is submitted in the data-array from POST vars
-        $d = $postData['data']['be_users_settings'][(int)$this->getBackendUser()->user['uid']] ?? null;
+        // Separate submitted data into corresponding partitions
+        $backendUserId = (int)$this->getBackendUser()->user['uid'];
+        $beUsersSubmission = $this->extractPartitionData($postData['data']['be_users_settings'][$backendUserId] ?? [], 'be_users');
+        $userSettingsSubmission = $this->extractPartitionData($postData['data']['be_users_settings'][$backendUserId] ?? [], 'user_settings');
         $columns = $this->userSettingsSchema->getColumns();
         $backendUser = $this->getBackendUser();
         $beUserId = (int)$backendUser->user['uid'];
         $storeRec = [];
         $doSaveData = false;
         $fieldList = $this->getFieldsFromShowItem();
-        if (is_array($d) && $formProtection->validateToken((string)($postData['formToken'] ?? ''), 'BE user setup', 'edit')) {
+
+        if ($beUsersSubmission !== []
+            && $userSettingsSubmission !== []
+            && $formProtection->validateToken((string)($postData['formToken'] ?? ''), 'BE user setup', 'edit')
+        ) {
             // UC hashed before applying changes
             $save_before = md5(serialize($backendUser->uc));
             // PUT SETTINGS into the ->uc array:
             // Reload left frame when switching BE language
-            if (isset($d['lang']) && $d['lang'] !== $backendUser->user['lang']) {
+            if (isset($beUsersSubmission['lang']) && $beUsersSubmission['lang'] !== $backendUser->user['lang']) {
                 $this->languageUpdate = true;
             }
             // Reload pagetree if the title length is changed
-            if (isset($d['titleLen']) && $d['titleLen'] !== $backendUser->uc['titleLen']) {
+            if (isset($userSettingsSubmission['titleLen']) && $userSettingsSubmission['titleLen'] !== $backendUser->uc['titleLen']) {
                 $this->pagetreeNeedsRefresh = true;
             }
-            if (isset($d['colorScheme']) && $d['colorScheme'] !== ($backendUser->uc['colorScheme'] ?? null)) {
+            if (isset($userSettingsSubmission['colorScheme']) && $userSettingsSubmission['colorScheme'] !== ($backendUser->uc['colorScheme'] ?? null)) {
                 $this->colorSchemeChanged = true;
             }
-            if (isset($d['theme']) && $d['theme'] !== ($backendUser->uc['theme'] ?? null)) {
+            if (isset($userSettingsSubmission['theme']) && $userSettingsSubmission['theme'] !== ($backendUser->uc['theme'] ?? null)) {
                 $this->themeChanged = true;
             }
-            if (isset($d['backendTitleFormat']) && $d['backendTitleFormat'] !== ($backendUser->uc['backendTitleFormat'] ?? null)) {
+            if (isset($userSettingsSubmission['backendTitleFormat']) && $userSettingsSubmission['backendTitleFormat'] !== ($backendUser->uc['backendTitleFormat'] ?? null)) {
                 $this->backendTitleFormatChanged = true;
             }
-            if (isset($d['dateTimeFirstDayOfWeek']) && $d['dateTimeFirstDayOfWeek'] !== ($backendUser->uc['dateTimeFirstDayOfWeek'] ?? null)) {
+            if (isset($userSettingsSubmission['dateTimeFirstDayOfWeek']) && $userSettingsSubmission['dateTimeFirstDayOfWeek'] !== ($backendUser->uc['dateTimeFirstDayOfWeek'] ?? null)) {
                 $this->dateTimeFirstDayOfWeekChanged = true;
                 $this->persistentUpdate[] = [
                     'fieldName' => 'dateTimeFirstDayOfWeek',
-                    'value' => $d['dateTimeFirstDayOfWeek'],
+                    'value' => $userSettingsSubmission['dateTimeFirstDayOfWeek'],
                 ];
             }
             // Options which should trigger direct JS persistent update, because
             // their new state needs to be available in JS components right away.
             foreach ($this->userSettingsSchema->getPersistentUpdateFieldNames() as $fieldName) {
-                $fieldValue = ((int)($d[$fieldName] ?? 0)) ? 'on' : 0;
+                $fieldValue = ((int)($userSettingsSubmission[$fieldName] ?? 0)) ? 1 : 0;
                 if ($fieldValue !== ($backendUser->uc[$fieldName] ?? null)) {
                     $this->persistentUpdate[] = [
                         'fieldName' => $fieldName,
@@ -320,38 +328,45 @@ class SetupModuleController
                 }
             }
 
-            if ($d['setValuesToDefault'] ?? $postData['data']['setValuesToDefault'] ?? false) {
+            if ($postData['data']['setValuesToDefault'] ?? false) {
                 // If every value should be default
                 $backendUser->resetUC();
                 $this->settingsAreResetToDefault = true;
-            } elseif ($d['save'] ?? $postData['data']['save'] ?? false) {
+            } elseif ($postData['data']['save'] ?? false) {
                 foreach ($columns as $field => $config) {
                     if (!in_array($field, $fieldList, true)) {
                         continue;
                     }
+                    // Skip any disallowed field name, not matter if it's in be_users or user_settings partition
+                    if (in_array($field, self::DISALLOWED_FIELD_NAMES, true)) {
+                        continue;
+                    }
                     $isBeUsersField = ($config['table'] ?? '') === 'be_users';
                     $fieldType = $config['type'] ?? 'text';
-                    if ($isBeUsersField && !in_array($field, ['password', 'password2', 'email', 'realName', 'admin', 'avatar'], true)) {
-                        $submittedValue = $d[$field] ?? null;
+                    if ($isBeUsersField) {
+                        $submittedValue = $beUsersSubmission[$field] ?? null;
                         if (!isset($config['access']) || ($this->checkAccess($config) && ($backendUser->user[$field] !== $submittedValue))) {
                             if ($fieldType === 'check') {
-                                $fieldValue = (int)($d[$field] ?? 0);
+                                $fieldValue = (int)($submittedValue ?? 0);
                             } else {
                                 $fieldValue = $submittedValue;
                             }
                             $storeRec['be_users'][$beUserId][$field] = $fieldValue;
                             $backendUser->user[$field] = $fieldValue;
                         }
-                    }
-                    if ($fieldType === 'check') {
-                        $backendUser->uc[$field] = (int)($d[$field] ?? 0);
                     } else {
-                        $backendUser->uc[$field] = htmlspecialchars($d[$field] ?? '');
+                        if ($fieldType === 'check') {
+                            $backendUser->uc[$field] = (int)($userSettingsSubmission[$field] ?? 0);
+                        } else {
+                            $backendUser->uc[$field] = htmlspecialchars($userSettingsSubmission[$field] ?? '');
+                        }
                     }
                 }
                 // Personal data for the users be_user-record (email, name, password...)
                 // If email and name is changed, set it in the users record:
-                $be_user_data = $d;
+                $be_user_data = $beUsersSubmission;
+                // Temporarily hold `password2` for the hook to be able to adjust the password
+                $be_user_data['password2'] = $userSettingsSubmission['password2'] ?? '';
                 // Possibility to modify the transmitted values. Useful to do transformations, like RSA password decryption
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'] ?? [] as $function) {
                     $params = ['be_user_data' => &$be_user_data];
@@ -359,6 +374,7 @@ class SetupModuleController
                 }
                 $this->passwordIsSubmitted = (string)($be_user_data['password'] ?? '') !== '';
                 $passwordIsConfirmed = $this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2'];
+                unset($be_user_data['password2']);
 
                 // Validate password against password policy
                 $contextData = new ContextData(
@@ -407,6 +423,10 @@ class SetupModuleController
                 $this->setAvatarFileUid($beUserId, $be_user_data['avatar'] ?? null, $storeRec);
 
                 $doSaveData = true;
+            }
+            // Explicitly unset disallowed field names
+            foreach (self::DISALLOWED_FIELD_NAMES as $disallowedFieldName) {
+                unset($backendUser->uc[$disallowedFieldName]);
             }
             // Inserts the overriding values.
             $backendUser->overrideUC();
@@ -472,7 +492,7 @@ class SetupModuleController
     {
         // just keep field names, filter out control sequences
         $tcaFieldNames = array_keys($this->userSettingsSchema->getColumns());
-        $allowedFields = GeneralUtility::trimExplode(',', $this->userSettingsSchema->getTcaShowitem(), true);
+        $allowedFields = GeneralUtility::trimExplode(',', $this->userSettingsSchema->getRawShowitem(), true);
         $allowedFields = array_map($this->extractShowitemFieldName(...), $allowedFields);
         $allowedFields = array_filter($allowedFields, static fn(string $field): bool => in_array($field, $tcaFieldNames, true));
         $backendUser = $this->getBackendUser();
@@ -659,6 +679,25 @@ class SetupModuleController
                     break;
             }
         }
+    }
+
+    /**
+     * @param array<string, scalar> $data
+     * @return array<string, scalar>
+     */
+    protected function extractPartitionData(array $data, string $partition): array
+    {
+        $partitionData = [];
+        $prefix = $partition . '__';
+        $length = strlen($prefix);
+        foreach ($data as $key => $value) {
+            if (!str_starts_with($key, $prefix)) {
+                continue;
+            }
+            $normalizedKey = substr($key, $length);
+            $partitionData[$normalizedKey] = $value;
+        }
+        return $partitionData;
     }
 
     protected function getBackendUser(): BackendUserAuthentication
