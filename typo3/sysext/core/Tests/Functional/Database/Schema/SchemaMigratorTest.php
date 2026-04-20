@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\EnumType;
@@ -80,12 +81,18 @@ final class SchemaMigratorTest extends AbstractSchemaBasedTestCase
     #[Test]
     public function mergingTableDefinitionReturnsLatestColumnDefinition(bool $emptyDefaultTableOptions): void
     {
-        $column1 = new Column('testfield', Type::getType('string'), ['length' => 100]);
-        $column2 = new Column('testfield', Type::getType('string'), ['length' => 200]);
-        $column3 = new Column('testfield', Type::getType('string'), ['length' => 220]);
-        $table1 = new Table('a_test_table', [$column1]);
-        $table2 = new Table('a_test_table', [$column2]);
-        $table3 = new Table('a_test_table', [$column3]);
+        $columnA1 = new Column('testfield', Type::getType('string'), ['length' => 100]);
+        $columnA2 = new Column('testfield', Type::getType('string'), ['length' => 200]);
+        $columnA3 = new Column('testfield', Type::getType('string'), ['length' => 220]);
+        $columnB1 = new Column('second', Type::getType('string'), ['length' => 100]);
+        $columnB2 = new Column('second', Type::getType('string'), ['length' => 200]);
+        $columnB3 = new Column('second', Type::getType('string'), ['length' => 220]);
+        $indexA1 = new Index('idx_test', ['testfield']);
+        $indexA2 = new Index('idx_test', ['testfield', 'second']);
+        $indexA3 = new Index('idx_test', ['testfield']);
+        $table1 = new Table('a_test_table', [$columnA1, $columnB1], [$indexA1]);
+        $table2 = new Table('a_test_table', [$columnA2, $columnB2], [$indexA2]);
+        $table3 = new Table('a_test_table', [$columnA3, $columnB3], [$indexA3]);
         $subject = $this->createSchemaMigrator();
         $mergeTableDefinitionsMethod = new \ReflectionMethod(
             SchemaMigrator::class,
@@ -99,7 +106,11 @@ final class SchemaMigratorTest extends AbstractSchemaBasedTestCase
         $firstTable = $mergedTables['a_test_table'];
         self::assertInstanceOf(Table::class, $firstTable);
         self::assertTrue($firstTable->hasColumn('testfield'));
-        self::assertSame($column3, $firstTable->getColumn('testfield'));
+        self::assertSame($columnA3, $firstTable->getColumn('testfield'));
+        self::assertTrue($firstTable->hasColumn('second'));
+        self::assertSame($columnB3, $firstTable->getColumn('second'));
+        self::assertTrue($firstTable->hasIndex('idx_test'));
+        self::assertSame($indexA3, $firstTable->getIndex('idx_test'));
     }
 
     #[TestWith(['emptyDefaultTableOptions' => false])]
