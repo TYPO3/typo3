@@ -116,4 +116,14 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     {
         return in_array((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'], [0, 2], true);
     }
+
+    public function writeUC(): void
+    {
+        if (!isset($this->user['user_settings'])) {
+            $this->logger->warning('writeUC: skipped for CLI user, because the "user_settings" field is missing');
+            return;
+        }
+
+        parent::writeUC();
+    }
 }
