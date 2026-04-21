@@ -764,6 +764,15 @@ class MaintenanceController extends AbstractController
 
         $languagePackService = $container->get(LanguagePackService::class);
 
+        // Gate untrusted user input against the set of extensions and languages exposed for download.
+        $extensions = $languagePackService->getExtensionLanguagePackDetails();
+        if (!isset($extensions[$key]['packs'][$iso])) {
+            return new JsonResponse([
+                'success' => true,
+                'packResult' => 'skipped',
+            ]);
+        }
+
         return new JsonResponse([
             'success' => true,
             'packResult' => $languagePackService->languagePackDownload($key, $iso),

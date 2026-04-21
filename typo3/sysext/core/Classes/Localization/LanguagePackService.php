@@ -128,8 +128,7 @@ class LanguagePackService
             $finder = new Finder();
             try {
                 $files = $finder->files()->ignoreUnreadableDirs()->in($path . 'Resources/Private/Language/')->name('*.xlf');
-                if ($files->count() === 0) {
-                    // This extension has no .xlf files
+                if (!$files->hasResults()) {
                     continue;
                 }
             } catch (\InvalidArgumentException $e) {
@@ -189,12 +188,6 @@ class LanguagePackService
         $package = $packageManager->getActivePackages()[$key] ?? null;
         if (!$package) {
             throw new \RuntimeException('Extension ' . (string)$key . ' not loaded', 1520117245);
-        }
-
-        // Kinda hacky, but we need this as the install tool requests every language for every extension
-        $extensions = $this->getExtensionLanguagePackDetails();
-        if (!isset($extensions[$key]['packs'][$iso])) {
-            return 'skipped';
         }
 
         $languagePackBaseUrl = self::LANGUAGE_PACK_URL;
