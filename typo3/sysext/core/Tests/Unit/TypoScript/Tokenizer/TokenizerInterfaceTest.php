@@ -392,6 +392,123 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             )
                     ),
             ],
+            'identifier umlaut key, assignment, value' => [
+                'über = bar',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 4))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 0, 5))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                    ->append(new Token(TokenType::T_VALUE, 'bar', 0, 7))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über', 0, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'bar', 0, 7))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'bar'))
+                            )
+                    ),
+            ],
+            'identifier path with umlaut segment, assignment, value' => [
+                'foo.über = bar',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_DOT, '.', 0, 3))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 8))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 0, 9))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 10))
+                                    ->append(new Token(TokenType::T_VALUE, 'bar', 0, 11))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über', 0, 4))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'bar', 0, 11))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'bar'))
+                            )
+                    ),
+            ],
+            'identifier path with umlaut segment followed by another segment, assignment, value' => [
+                'foo.über.bar = baz',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_DOT, '.', 0, 3))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über', 0, 4))
+                                    ->append(new Token(TokenType::T_DOT, '.', 0, 8))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar', 0, 9))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 12))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT, '=', 0, 13))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 14))
+                                    ->append(new Token(TokenType::T_VALUE, 'baz', 0, 15))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über', 0, 4))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar', 0, 9))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'baz', 0, 15))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über'))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'bar'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'baz'))
+                            )
+                    ),
+            ],
             'identifier, assignment, whitespace, value' => [
                 'foo = bar',
                 (new LineStream())
@@ -1212,6 +1329,41 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             ->setValueTokenStream(
                                 (new TokenStream())
                                     ->append(new Token(TokenType::T_VALUE, ' bar '))
+                            )
+                    ),
+            ],
+            'identifier, assignment multi line, umlaut value on same line' => [
+                'foo (über)',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT_MULTILINE_START, '(', 0, 4))
+                                    ->append(new Token(TokenType::T_VALUE, 'über', 0, 5))
+                                    ->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT_MULTILINE_STOP, ')', 0, 9))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'über', 0, 5))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierAssignmentLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setValueTokenStream(
+                                (new TokenStream())
+                                    ->append(new Token(TokenType::T_VALUE, 'über'))
                             )
                     ),
             ],
@@ -2503,6 +2655,43 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             )
                     ),
             ],
+            'identifier, copy, umlaut identifier, hash comment' => [
+                'foo < über # a comment',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierCopyLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_COPY, '<', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 5))
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über', 0, 6))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 10))
+                                    ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment', 0, 11))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setValueTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über', 0, 6))
+                            )
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierCopyLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setValueTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'über'))
+                            )
+                    ),
+            ],
             'identifier, copy, relative identifier, hash comment' => [
                 'foo < .bar # a comment',
                 (new LineStream())
@@ -3716,6 +3905,42 @@ final class TokenizerInterfaceTest extends UnitTestCase
                             ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, '1')))
                     ),
             ],
+            'identifier, function, umlaut function value, hash comment' => [
+                'foo := addToList(über) # a comment',
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setTokenStream(
+                                (new TokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 3))
+                                    ->append(new Token(TokenType::T_OPERATOR_FUNCTION, ':=', 0, 4))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 6))
+                                    ->append(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_START, '(', 0, 16))
+                                    ->append(new Token(TokenType::T_VALUE, 'über', 0, 17))
+                                    ->append(new Token(TokenType::T_FUNCTION_VALUE_STOP, ')', 0, 21))
+                                    ->append(new Token(TokenType::T_BLANK, ' ', 0, 22))
+                                    ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# a comment', 0, 23))
+                            )
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 0, 0))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList', 0, 7))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, 'über', 0, 17)))
+                    ),
+                (new LineStream())
+                    ->append(
+                        (new IdentifierFunctionLine())
+                            ->setIdentifierTokenStream(
+                                (new IdentifierTokenStream())
+                                    ->append(new IdentifierToken(TokenType::T_IDENTIFIER, 'foo'))
+                            )
+                            ->setFunctionNameToken(new Token(TokenType::T_FUNCTION_NAME, 'addToList'))
+                            ->setFunctionValueTokenStream((new TokenStream())->append(new Token(TokenType::T_VALUE, 'über')))
+                    ),
+            ],
             'identifier, function, function name with value, broken forced comment' => [
                 'foo := addToList(1) a comment',
                 (new LineStream())
@@ -4219,6 +4444,19 @@ final class TokenizerInterfaceTest extends UnitTestCase
                                 ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 0))
                                 ->append(new Token(TokenType::T_VALUE, ' foo bar ', 0, 2))
                                 ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 0, 11)),
+                        )
+                    ),
+                new LineStream(),
+            ],
+            'multiline comment with umlaut' => [
+                '/* über */',
+                (new LineStream())
+                    ->append(
+                        (new CommentLine())->setTokenStream(
+                            (new TokenStream())
+                                ->append(new Token(TokenType::T_COMMENT_MULTILINE_START, '/*', 0, 0))
+                                ->append(new Token(TokenType::T_VALUE, ' über ', 0, 2))
+                                ->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', 0, 8)),
                         )
                     ),
                 new LineStream(),

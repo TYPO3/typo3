@@ -214,7 +214,7 @@ final class LosslessTokenizer implements TokenizerInterface
                 if (strlen($this->currentLineString) > 2) {
                     $this->tokenStream->append(new Token(TokenType::T_VALUE, substr($this->currentLineString, 0, -2), $this->currentLineNumber, $this->currentColumnInLine));
                 }
-                $this->tokenStream->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', $this->currentLineNumber, $this->currentColumnInLine + strlen($this->currentLineString) - 2));
+                $this->tokenStream->append(new Token(TokenType::T_COMMENT_MULTILINE_STOP, '*/', $this->currentLineNumber, $this->currentColumnInLine + mb_strlen($this->currentLineString) - 2));
                 ($this->currentLinebreakCallback)();
                 return;
             }
@@ -481,7 +481,7 @@ final class LosslessTokenizer implements TokenizerInterface
             $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
             return;
         }
-        $this->currentLineString = substr($this->currentLineString, $currentPosition);
+        $this->currentLineString = mb_substr($this->currentLineString, $currentPosition);
         $this->currentColumnInLine = $this->currentColumnInLine + $currentPosition;
         $currentColumnInLineBefore = $this->currentColumnInLine;
         $this->parseTabsAndWhitespaces();
@@ -582,7 +582,7 @@ final class LosslessTokenizer implements TokenizerInterface
                 $this->currentLineString = substr($this->currentLineString, 0, -1);
                 if (strlen($this->currentLineString) > 1) {
                     [$this->valueStream, $this->tokenStream] = $this->parseValueForConstants($this->valueStream, $this->tokenStream, $this->currentLineString, $this->currentLineNumber, $this->currentColumnInLine);
-                    $this->tokenStream->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT_MULTILINE_STOP, ')', $this->currentLineNumber, $this->currentColumnInLine + strlen($this->currentLineString)));
+                    $this->tokenStream->append(new Token(TokenType::T_OPERATOR_ASSIGNMENT_MULTILINE_STOP, ')', $this->currentLineNumber, $this->currentColumnInLine + mb_strlen($this->currentLineString)));
                     // Tricky to swap the streams here, but that's the most effective solution I could come up with for the line endings here.
                     ($this->currentLinebreakCallback)();
                     $tempStream = $this->tokenStream;
@@ -720,7 +720,7 @@ final class LosslessTokenizer implements TokenizerInterface
         if (!$currentPosition) {
             return;
         }
-        $this->currentLineString = substr($this->currentLineString, $currentPosition);
+        $this->currentLineString = mb_substr($this->currentLineString, $currentPosition);
         $this->currentColumnInLine = $this->currentColumnInLine + $currentPosition;
         $this->parseTabsAndWhitespaces();
         $this->makeComment();
@@ -862,7 +862,7 @@ final class LosslessTokenizer implements TokenizerInterface
             $functionBodyCharCount++;
         }
         $this->currentColumnInLine = $this->currentColumnInLine + $functionNameCharCount + $functionBodyCharCount;
-        $this->currentLineString = substr($this->currentLineString, $functionNameCharCount + $functionBodyCharCount);
+        $this->currentLineString = mb_substr($this->currentLineString, $functionNameCharCount + $functionBodyCharCount);
         $this->parseTabsAndWhitespaces();
         $this->makeComment();
         $this->lineStream->append(
