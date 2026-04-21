@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Wizard;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Wizard\DTO\Configuration;
 use TYPO3\CMS\Backend\Wizard\DTO\Finisher;
 use TYPO3\CMS\Backend\Wizard\DTO\Step;
@@ -50,8 +51,13 @@ class PageWizardProvider implements WizardProviderInterface
         }
 
         $doktype = $serverRequest->getQueryParams()['data']['doktype'];
-        $pageUid = (int)$serverRequest->getQueryParams()['data']['position']['pageUid'];
-        $steps = $this->stepFactory->getStepsForDokType($doktype, $pageUid, $serverRequest);
+        $position = $serverRequest->getQueryParams()['data']['position'] ?? [];
+        $pageUid = (int)($position['pageUid'] ?? 0);
+        $insertPosition = $position['insertPosition'] ?? 'inside';
+        $parentPageUid = $insertPosition === 'inside'
+            ? $pageUid
+            : (int)(BackendUtility::getRecord('pages', $pageUid, 'pid')['pid'] ?? 0);
+        $steps = $this->stepFactory->getStepsForDokType($doktype, $parentPageUid, $serverRequest);
         return Configuration::create($steps);
     }
 
@@ -64,7 +70,10 @@ class PageWizardProvider implements WizardProviderInterface
             $newPageIdPlaceholder = key($pageData);
             $dataMap['pages'] = $pageData;
             // set doktype and pid manually as they are no native formengine fields
-            $dataMap['pages'][$newPageIdPlaceholder]['pid'] = (int)($params['position']['pageUid'] ?? throw new \InvalidArgumentException('Page position is not set', 1774433001));
+            $pageUid = (int)($params['position']['pageUid'] ?? throw new \InvalidArgumentException('Page position is not set', 1774433001));
+            $insertPosition = $params['position']['insertPosition'] ?? 'inside';
+            // DataHandler convention: a negative pid inserts the record after the record whose uid equals abs(pid).
+            $dataMap['pages'][$newPageIdPlaceholder]['pid'] = $insertPosition === 'after' ? -$pageUid : $pageUid;
             $dataMap['pages'][$newPageIdPlaceholder]['doktype'] = (string)($params['doktype'] ?? throw new \InvalidArgumentException('Doktype is not set', 1774433002));
         } catch (\InvalidArgumentException $e) {
             return SubmissionResult::createErrorResult([$e->getMessage()]);
