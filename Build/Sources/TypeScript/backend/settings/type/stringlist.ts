@@ -66,6 +66,13 @@ export class StringlistTypeElement extends BaseElement<string[]> {
 
   protected override render(): TemplateResult {
     const value = this.value || [];
+    if (value.length === 0) {
+      return html`
+        <button id=${this.formid} class="btn btn-default" type="button" ?disabled=${this.readonly} @click=${() => this.addValue(0)}>
+          <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
+        </button>
+      `;
+    }
     return html`
       <div class="form-control-wrap">
         <div class="table-fit">
