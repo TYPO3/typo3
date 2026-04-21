@@ -53,18 +53,39 @@ final class PackageStatesPackageCacheTest extends UnitTestCase
     }
 
     #[Test]
-    public function getIdentifierDiffersWhenFileSizeChangesWithIdenticalMtime(): void
+    public function getIdentifierDiffersAfterInvalidateWhenPackageStatesFileWasModified(): void
     {
         file_put_contents($this->packageStatesFile, '<?php return ["packages" => ["core" => 1]];');
-        $pinnedMtime = filemtime($this->packageStatesFile);
+        // This fakes the last file modification to have happened in the past.
+        touch($this->packageStatesFile, time() - 3600);
+
         $subject = new PackageStatesPackageCache($this->packageStatesFile, $this->createMock(PhpFrontend::class));
-
         $beforeIdentifier = $subject->getIdentifier();
-
         $subject->invalidate();
         file_put_contents($this->packageStatesFile, '<?php return ["packages" => ["core" => 1, "container" => 1]];');
 
-        self::assertSame($pinnedMtime, filemtime($this->packageStatesFile));
+        self::assertNotSame($beforeIdentifier, $subject->getIdentifier());
+    }
+
+    #[Test]
+    public function getIdentifierDiffersWhenPackageStatesFileModifiedWithinOneSecondResolution(): void
+    {
+        file_put_contents($this->packageStatesFile, '<?php return ["packages" => ["core" => 1]];');
+        $subject = new PackageStatesPackageCache($this->packageStatesFile, $this->createMock(PhpFrontend::class));
+        // This test assumes, that it will never take more than one second
+        // to get from this execution point in this test...
+        $beforeIdentifier = $subject->getIdentifier();
+
+        $subject->invalidate();
+
+        file_put_contents($this->packageStatesFile, '<?php return ["packages" => ["core" => 1, "container" => 1]];');
+
+        // ...to this point. Therefore this will never get a new identifier, if the
+        // identifier is based on mtime alone. In practice this case never
+        // really happens in extension manager extension activation, because bulk activations
+        // happen with only one PackageStates.php activation, but it is still
+        // a good thing, that we have file size as second meta value to be included
+        // in the cache identifier to also cover this theoretical case
         self::assertNotSame($beforeIdentifier, $subject->getIdentifier());
     }
 }
