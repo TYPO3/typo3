@@ -40,7 +40,7 @@
 		"symfony/property-access": "^7.4.8",
 		"symfony/property-info": "^7.4.8",
 		"symfony/validator": "^7.4.8",
-		"typo3/cms-core": "14.3.*@dev"
+		"typo3/cms-core": "14.3.0"
 	},
 	"suggest": {
 		"typo3/cms-scheduler": "Additional scheduler tasks"

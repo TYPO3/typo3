@@ -33,7 +33,7 @@
 	},
 	"require": {
 		"ext-libxml": "*",
-		"typo3/cms-core": "14.3.*@dev"
+		"typo3/cms-core": "14.3.0"
 	},
 	"conflict": {
 		"typo3/cms": "*"
