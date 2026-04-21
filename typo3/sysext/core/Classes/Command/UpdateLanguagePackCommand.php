@@ -130,7 +130,7 @@ class UpdateLanguagePackCommand extends Command
         }
         $progressBar = new ProgressBar($progressBarOutput, $packageCount);
         foreach ($downloads as $extension => $extensionLanguages) {
-            foreach ($isos as $iso) {
+            foreach ($extensionLanguages as $iso) {
                 if ($noProgress) {
                     $output->writeln(sprintf('<info>Fetching pack for language "%s" for extension "%s"</info>', $iso, $extension), $output::VERBOSITY_VERY_VERBOSE);
                 }
