@@ -3468,6 +3468,10 @@ class DataHandler
 
         $data = [];
         $row = $this->removeNonCopyableFields($table, $row, 'copyRecord');
+        if ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
+            // The sorting of the copy is calculated from its destination, never taken from the source record
+            unset($row[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()]);
+        }
 
         // Traverse ALL fields of the selected record:
         foreach ($row as $field => $value) {

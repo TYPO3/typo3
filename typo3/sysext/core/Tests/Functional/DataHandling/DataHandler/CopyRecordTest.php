@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\BeforeRemoveNonCopyableFieldsEvent;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -110,5 +111,52 @@ final class CopyRecordTest extends FunctionalTestCase
 
         self::assertInstanceOf(BeforeRemoveNonCopyableFieldsEvent::class, $beforeRemoveNonCopyableFieldsEvent);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/CopyRecord/PageRecordIsCopiedWithoutDescriptionFieldResult.csv');
+    }
+
+    public static function copiedPageIsSortedByDestinationWithSortByColumnInTcaDataProvider(): array
+    {
+        return [
+            'after another page' => [
+                -2,
+                ['Dummy 1-2', 'Dummy 1-4 (copy 1)', 'Dummy 1-3', 'Dummy 1-4'],
+            ],
+            'after the last page' => [
+                -4,
+                ['Dummy 1-2', 'Dummy 1-3', 'Dummy 1-4', 'Dummy 1-4 (copy 1)'],
+            ],
+            'after itself' => [
+                -3,
+                ['Dummy 1-2', 'Dummy 1-3', 'Dummy 1-3 (copy 1)', 'Dummy 1-4'],
+                3,
+            ],
+            'into a page' => [
+                1,
+                ['Dummy 1-4 (copy 1)', 'Dummy 1-2', 'Dummy 1-3', 'Dummy 1-4'],
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('copiedPageIsSortedByDestinationWithSortByColumnInTcaDataProvider')]
+    public function copiedPageIsSortedByDestinationWithSortByColumnInTca(int $destination, array $expectedTitles, int $sourceUid = 4): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/CopyRecord/PageSiblings.csv');
+        $sortBy = $GLOBALS['TCA']['pages']['ctrl']['sortby'];
+        $GLOBALS['TCA']['pages']['columns'][$sortBy]['config']['type'] = 'passthrough';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start([], ['pages' => [$sourceUid => ['copy' => $destination]]]);
+        $dataHandler->process_cmdmap();
+
+        self::assertSame([], $dataHandler->errorLog);
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        $titles = $queryBuilder->select('title')->from('pages')
+            ->where($queryBuilder->expr()->eq('pid', 1))
+            ->orderBy($sortBy)
+            ->executeQuery()
+            ->fetchFirstColumn();
+        self::assertSame($expectedTitles, $titles);
     }
 }
