@@ -101,6 +101,26 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         ];
 
         $expectedAst = new RootNode();
+        $barNode = new ChildNode('bar');
+        $barNode->setValue('baz');
+        $uberNode = new ChildNode('über');
+        $uberNode->addChild($barNode);
+        $objectNode = new ChildNode('foo');
+        $objectNode->addChild($uberNode);
+        $expectedAst->addChild($objectNode);
+        yield 'nested object assignment with umlaut segment followed by another segment' => [
+            'foo.über.bar = baz',
+            $expectedAst,
+            [
+                'foo.' => [
+                    'über.' => [
+                        'bar' => 'baz',
+                    ],
+                ],
+            ],
+        ];
+
+        $expectedAst = new RootNode();
         $nestedObjectNode = new ChildNode('bar');
         $nestedObjectNode->setValue('baz');
         $objectNode = new ChildNode('foo');

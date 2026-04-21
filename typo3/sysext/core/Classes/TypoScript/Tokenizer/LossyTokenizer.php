@@ -274,7 +274,7 @@ final class LossyTokenizer implements TokenizerInterface
         if (!$currentPosition) {
             return;
         }
-        $this->currentLineString = trim(substr($this->currentLineString, $currentPosition));
+        $this->currentLineString = trim(mb_substr($this->currentLineString, $currentPosition));
         $nextChar = substr($this->currentLineString, 0, 1);
         $nextTwoChars = $nextChar . substr($this->currentLineString, 1, 1);
         if ($nextTwoChars === '=<') {
