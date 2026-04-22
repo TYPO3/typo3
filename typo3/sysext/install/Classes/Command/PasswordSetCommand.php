@@ -117,7 +117,15 @@ final class PasswordSetCommand extends Command
             $length = $passwordGeneratorOptions['length'];
             $password = $passwordGenerator->generate($passwordGeneratorOptions);
             $output->writeln(sprintf('Password length: %d characters', $length));
-            $output->writeln(sprintf('Generated password: <info>%s</info>', $password));
+            // A generated password may contain '<', '>' or '\', which Symfony's
+            // OutputFormatter would silently mangle on display. Emit the password via
+            // OUTPUT_RAW so it bypasses the formatter entirely, and apply the 'info'
+            // style manually when decoration is on to keep the green highlight.
+            $coloredPassword = $output->isDecorated()
+                ? $output->getFormatter()->getStyle('info')->apply($password)
+                : $password;
+            $output->write('Generated password: ');
+            $output->writeln($coloredPassword, OutputInterface::OUTPUT_RAW);
         }
 
         // Validation error messages require a valid LANG object to operate on (or a backend user context, which we don't need here)
