@@ -32,16 +32,16 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "14.3.*@dev",
-		"typo3/cms-fluid": "14.3.*@dev",
-		"typo3/cms-frontend": "14.3.*@dev"
+		"typo3/cms-core": "15.0.*@dev",
+		"typo3/cms-fluid": "15.0.*@dev",
+		"typo3/cms-frontend": "15.0.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-main": "14.3.x-dev"
+			"dev-main": "15.0.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {

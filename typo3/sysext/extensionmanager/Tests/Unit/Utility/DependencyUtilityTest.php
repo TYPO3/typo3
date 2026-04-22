@@ -32,7 +32,7 @@ final class DependencyUtilityTest extends UnitTestCase
     #[Test]
     public function checkTypo3DependencyErrorsIfVersionNumberIsTooLow(): void
     {
-        $dependency = Dependency::createFromEmConf('typo3', '15.0.0-0');
+        $dependency = Dependency::createFromEmConf('typo3', '99.0.0-0');
         $dependencies = new \SplObjectStorage();
         $dependencies->offsetSet($dependency);
 

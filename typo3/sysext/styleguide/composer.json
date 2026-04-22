@@ -32,12 +32,12 @@
 		"security": "https://typo3.org/security/"
 	},
 	"require": {
-		"typo3/cms-core": "14.3.*@dev",
-		"typo3/cms-felogin": "14.3.*@dev",
-		"typo3/cms-fluid-styled-content": "14.3.*@dev",
-		"typo3/cms-form": "14.3.*@dev",
-		"typo3/cms-indexed-search": "14.3.*@dev",
-		"typo3/cms-seo": "14.3.*@dev"
+		"typo3/cms-core": "15.0.*@dev",
+		"typo3/cms-felogin": "15.0.*@dev",
+		"typo3/cms-fluid-styled-content": "15.0.*@dev",
+		"typo3/cms-form": "15.0.*@dev",
+		"typo3/cms-indexed-search": "15.0.*@dev",
+		"typo3/cms-seo": "15.0.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -55,7 +55,7 @@
 			"extension-key": "styleguide"
 		},
 		"branch-alias": {
-			"dev-main": "14.3.x-dev"
+			"dev-main": "15.0.x-dev"
 		}
 	}
 }
