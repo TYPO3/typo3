@@ -85,45 +85,45 @@ In rare cases, patches worth a changelog file need to be backported to stable
 LTS and / or old stable LTS versions. Those should be put into a different
 directory, depending on lowest target LTS versions. We'll explain this by example:
 
-Suppose Core is currently developing v14, a first 14.0 has been released, so
-the Git branch `main` will become version 14.1.0 with the
+Suppose Core is currently developing v15, a first 15.0 has been released, so
+the Git branch `main` will become version 15.1.0 with the
 next sprint release. So new Changelog entries so far were saved in folder
-:file:`typo3/sysext/core/Documentation/Changelog/14.0`.
-The stable LTS version is currently 13.4.y, so the Git branch `13.4` will
-become version 13.4.y+1 with the next stable LTS patch level release.
-The old stable LTS version is currently 12.4.y, so the Git branch `12.4`
-will become version 12.4.y+1 with next old stable LTS
+:file:`typo3/sysext/core/Documentation/Changelog/15.0`.
+The stable LTS version is currently 14.3.y, so the Git branch `14.3` will
+become version 14.3.y+1 with the next stable LTS patch level release.
+The old stable LTS version is currently 13.4.y, so the Git branch `13.4`
+will become version 13.4.y+1 with next old stable LTS
 patch level release.
 
 Example scenarios:
 
 *   **A patch is only added to main:** Put the :file:`.rst` file into the
-    :file:`typo3/sysext/core/Documentation/Changelog/14.1`
+    :file:`typo3/sysext/core/Documentation/Changelog/15.1`
     directory in the `main` branch. The Core and documentation team may
-    re-review files in this directory shortly before the 14.1 release.
+    re-review files in this directory shortly before the 15.1 release.
 
 *   **A patch is not only added to main, but also backported to v13:**
     Put the :file:`.rst` file into the
-    :file:`typo3/sysext/core/Documentation/Changelog/13.4.x` directory in
+    :file:`typo3/sysext/core/Documentation/Changelog/14.3.x` directory in
     the `main` branch.
-    The backport to `13.4` branch includes the changelog file into
-    :file:`13.4.x` directory, too.
-    Users upgrading to latest patch level release of 13.4 will then see the
-    new file in the :file:`13.4.x` directory (and on the `published changelog
+    The backport to `14.3` branch includes the changelog file into
+    :file:`14.3.x` directory, too.
+    Users upgrading to latest patch level release of 14.3 will then see the
+    new file in the :file:`14.3.x` directory (and on the `published changelog
     website <https://docs.typo3.org/c/typo3/cms-core/main/en-us/Index.html>`_).
 
 *   **A patch is not only added to main, but backported to v13 and v12:**
     Put the :file:`.rst` file into
-    :file:`typo3/sysext/core/Documentation/Changelog/13.4.x` and a duplicate into
-    :file:`typo3/sysext/core/Documentation/Changelog/12.4.x` directories in the
+    :file:`typo3/sysext/core/Documentation/Changelog/14.3.x` and a duplicate into
+    :file:`typo3/sysext/core/Documentation/Changelog/13.4.x` directories in the
     `main` branch.
-    The backport to the `13.4` branch will have the two identical files in both
+    The backport to the `14.3` branch will have the two identical files in both
     directories, too.
-    The `12.4 branch backport contains only the
-    :file:`typo3/sysext/core/Documentation/Changelog/13.4.x`, because the `13.4.x`
+    The `13.4 branch backport contains only the
+    :file:`typo3/sysext/core/Documentation/Changelog/14.3.x`, because the `14.3.x`
     directory does not exist in that branch.
 
-    Users upgrading to latest 12.4 patch level or the latest 13.4 patch level
+    Users upgrading to latest 13.4 patch level or the latest 14.3 patch level
     will then see the new file in their matching version directories respectively.
 
     Bear in mind that backports to older LTS releases only are made for "very
@@ -142,7 +142,7 @@ Old changelog files are still rendered in
 connected to the extension scanner at
 :guilabel:`Admin Tools > Upgrade > View Upgrade Documentation`. In our example
 above, the `main` branch contains all changelog files for any prior TYPO3 LTS
-release (13.4.x, 12.4.x).
+release (14.3.x, 13.4.x).
 
 Only changelog files in actively maintained LTS and sprint
 releases will be revised/maintained, and always kept with the same content
@@ -295,14 +295,11 @@ Local rendering
 ===============
 
 The documentation can be locally rendered with the Docker container of the
-documentation team (hint: use a bash alias for this locally):
+documentation team:
 
 ..  code-block:: bash
 
-    # Execute this from the root of the TYPO3 GIT repository
-    docker run --rm --pull always -v ./:/project/ \
-      ghcr.io/typo3-documentation/render-guides:latest \
-      --config=typo3/sysext/core/Documentation typo3/sysext/core/Documentation
+    ./Build/Scripts/runTests.sh -s checkRstRenderingSingle core
 
 As of now, you can only render the full changelog documentation, not a single changelog
 file on its own. The rendered HTML docs will be placed in directory :file:`./Documentation-GENERATED-temp/`
@@ -311,3 +308,32 @@ for manual verification.
 Details can be found on:
 `Rendering the Documentation folder locally with Docker <https://docs.typo3.org/permalink/h2document:render-documentation-with-docker>`_
 
+.. _changelog_howto_livehotchilipeppers:
+
+Writing new ReST files with live hot-reload rendering
+=====================================================
+
+You can utilize the live rendering feature to write ReST changelog
+files parallely to editing them. Example:
+
+..  code-block:: bash
+    :caption: Interactively create or edit a changelog file
+
+    ./Build/Scripts/runTests.sh -s watchRst core interactive
+
+..  code-block:: bash
+    :caption: Directly create a new changelog file, or edit an existing one
+
+    ./Build/Scripts/runTests.sh -s watchRst core Changelog/15.0/Breaking-123456-something.rst
+
+..  code-block:: bash
+    :caption: Also works for editing complete extension documentation like EXT:form
+
+    ./Build/Scripts/runTests.sh -s watchRst form
+
+All these commands will launch a small HTTP server listening on
+`http://localhost:1337/` to display the rendered documentation.
+A different port can be specified as the third argument.
+
+You can then use your text editor, save changes, and a hot reloading
+will directly reload your browser with the changes rendered.

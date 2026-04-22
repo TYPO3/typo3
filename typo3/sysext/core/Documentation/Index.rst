@@ -45,6 +45,7 @@ documented here.
    :maxdepth: 1
    :titlesonly:
 
+   Changelog-15
    Changelog-14
    Changelog-13
    Changelog-12
