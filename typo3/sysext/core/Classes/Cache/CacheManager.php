@@ -283,6 +283,10 @@ class CacheManager implements SingletonInterface
         } else {
             $backendOptions = $this->defaultCacheConfiguration['options'];
         }
+        // Normalize legacy non-bool 'compression' values for strictly typed backend setters.
+        if (isset($backendOptions['compression']) && !is_bool($backendOptions['compression'])) {
+            $backendOptions['compression'] = (bool)$backendOptions['compression'];
+        }
 
         if ($this->disableCaching && $backend !== TransientMemoryBackend::class) {
             $backend = NullBackend::class;
