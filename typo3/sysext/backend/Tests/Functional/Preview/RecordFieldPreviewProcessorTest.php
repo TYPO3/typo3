@@ -197,6 +197,21 @@ final class RecordFieldPreviewProcessorTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function prepareTextReturnsNullWhenFieldExistsInRecordButNotInSchema(): void
+    {
+        // Record carries data for a field that is not defined in the schema
+        // for this type - e.g. after a CType switch or a TCA column removal.
+        $record = $this->createRecord([
+            'uid' => 1,
+            'pid' => 1,
+            'CType' => 'text',
+            'orphaned_field' => 'leftover text content',
+        ]);
+        $result = $this->subject->prepareText($record, 'orphaned_field');
+        self::assertNull($result);
+    }
+
+    #[Test]
     public function linkToEditFormEscapesUrlAndTitleAttribute(): void
     {
         $record = $this->loadRecordFromDatabase(1);

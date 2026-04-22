@@ -100,8 +100,9 @@ final class RecordFieldPreviewProcessor
     {
         if ($record->has($fieldName)) {
             $input = $record->get($fieldName);
-            if (is_string($input) && $input !== '') {
-                $isSimpleText = $this->schemaFactory->get($record->getFullType())->getField($fieldName)->isType(TableColumnType::INPUT);
+            $schemaForType = $this->schemaFactory->get($record->getFullType());
+            if (is_string($input) && $input !== '' && $schemaForType->hasField($fieldName)) {
+                $isSimpleText = $schemaForType->getField($fieldName)->isType(TableColumnType::INPUT);
                 if (!$isSimpleText) {
                     $input = strip_tags($input);
                 }
