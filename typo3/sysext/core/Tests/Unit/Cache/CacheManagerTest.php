@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Cache;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendCompressionOptionFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendConfigurationOptionFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendDefaultFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\BackendFixture;
@@ -284,6 +286,42 @@ final class CacheManagerTest extends UnitTestCase
         // BackendConfigurationOptionFixture throws exception if initializeObject() is called, so expect this
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1464555007);
+        $manager->getCache($cacheIdentifier);
+    }
+
+    public static function createCacheNormalizesNonBoolCompressionOptionDataProvider(): array
+    {
+        return [
+            'integer 1 is cast to true' => [1, 1776908562],
+            'integer 0 is cast to false' => [0, 1776908563],
+            'string "1" is cast to true' => ['1', 1776908562],
+            'string "0" is cast to false' => ['0', 1776908563],
+            'bool true is passed through' => [true, 1776908562],
+            'bool false is passed through' => [false, 1776908563],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('createCacheNormalizesNonBoolCompressionOptionDataProvider')]
+    public function createCacheNormalizesNonBoolCompressionOption(mixed $input, int $expectedCode): void
+    {
+        $manager = new CacheManager();
+        $cacheIdentifier = 'aCache';
+        $configuration = [
+            $cacheIdentifier => [
+                'backend' => BackendCompressionOptionFixture::class,
+                'frontend' => FrontendFixture::class,
+                'options' => [
+                    'compression' => $input,
+                ],
+            ],
+        ];
+        $manager->setCacheConfigurations($configuration);
+        // BackendCompressionOptionFixture::setCompression() throws with a code that
+        // identifies the bool value it received — if the normalization is missing, a
+        // TypeError would be raised instead for non-bool input.
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode($expectedCode);
         $manager->getCache($cacheIdentifier);
     }
 
