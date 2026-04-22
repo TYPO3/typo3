@@ -309,7 +309,7 @@ readonly class TaskService
         $task->setExecution($execution);
         $task->setDisabled($incomingData['disable'] ?? false);
         $task->setDescription($incomingData['description'] ?? '');
-        if (str_starts_with((string)$incomingData['task_group'], 'tx_scheduler_task_group_')) {
+        if (str_starts_with((string)($incomingData['task_group'] ?? ''), 'tx_scheduler_task_group_')) {
             $incomingData['task_group'] = (int)substr($incomingData['task_group'], 24);
         }
         $task->setTaskGroup((int)($incomingData['task_group'] ?? 0));
