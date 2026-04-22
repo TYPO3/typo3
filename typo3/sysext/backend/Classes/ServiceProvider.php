@@ -104,9 +104,11 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return static function (CacheWarmupEvent $event) use ($container) {
             if ($event->hasGroup('system')) {
+                $moduleFactory = $container->get(ModuleFactory::class);
                 $cache = $container->get('cache.core');
                 $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix('BackendModules')->toString();
                 $modulesFromPackages = $container->get('backend.modules')->getArrayCopy();
+                $modulesFromPackages = $moduleFactory->adaptAliasMappingFromModuleConfiguration($modulesFromPackages);
                 $cache->set($cacheIdentifier, 'return ' . var_export($modulesFromPackages, true) . ';');
             }
         };
