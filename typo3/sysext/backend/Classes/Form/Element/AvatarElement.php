@@ -37,6 +37,7 @@ class AvatarElement extends AbstractFormElement
     {
         $resultArray = $this->initializeResultArray();
         $fieldName = $this->data['fieldName'];
+        $irreObjectId = '-0-be_users-avatar-' . $fieldName;
         $parameterArray = $this->data['parameterArray'];
 
         $defaultAvatarProvider = GeneralUtility::makeInstance(DefaultAvatarProvider::class);
@@ -61,7 +62,7 @@ class AvatarElement extends AbstractFormElement
         $html .= '<button type="button" id="add_button_' . htmlspecialchars($fieldName)
             . '" class="btn btn-default"'
             . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:avatar.open_file_browser')) . '"'
-            . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'allowedTypes' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? '', 'irreObjectId' => '-0-be_users-avatar-avatar'])) . '"'
+            . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'allowedTypes' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? '', 'irreObjectId' => $irreObjectId])) . '"'
             . '>' . $this->iconFactory->getIcon('actions-insert-record', IconSize::SMALL)->render()
             . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/user_profile.xlf:avatar.open_file_browser'))
             . '</button>';
