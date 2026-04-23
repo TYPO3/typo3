@@ -5,3 +5,8 @@ loadedFromTestExtensionConfigurationPageTsConfig = loadedFromTestExtensionConfig
 @import './TsConfig/Relative/include-target-23.typoscript'
 # Not loaded: Path traversal not allowed.
 @import './TsConfig/Relative/../Relative/include-target-24.tsconfig'
+
+# Matches only when no rootline could be determined (e.g. DataHandler CLI on orphaned records).
+[tree.level == -1]
+conditionOnEmptyRootlineMatches = matched
+[END]
