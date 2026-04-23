@@ -107,17 +107,20 @@ final class Inline1nCest
     {
         $I->click('button span[data-identifier="actions-move-down"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["]');
         $I->click('button[name="_savedok"]');
-        $I->wait(3);
+        $I->waitForElementNotVisible('.icon-spinner-circle');
+        $I->waitForElement('button[name="_savedok"]');
         $I->click('a[title="Close"]');
-        $I->wait(3);
+        $I->waitForElement('#recordlist-tx_styleguide_inline_1n', 10);
 
         $I->click('button[data-table="pages_translated"] .icon-actions-view-list-collapse');
-        $I->wait(1);
+        $I->waitForElement('#recordlist-tx_styleguide_inline_1n_inline_1_child', 5);
         $I->click('button[data-table="tx_styleguide_inline_1n"] .icon-actions-view-list-collapse');
-        $I->wait(1);
+        $I->waitForElement('#recordlist-tx_styleguide_inline_1n_inline_1_child table tbody', 5);
 
-        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_inline_1_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > a');
-        $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_inline_1_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > a');
+        $firstRowSelector = '#recordlist-tx_styleguide_inline_1n_inline_1_child table tbody tr:first-child';
+        $secondRowSelector = '#recordlist-tx_styleguide_inline_1n_inline_1_child table tbody tr:nth-child(2)';
+        $I->see('Fo Bar', $firstRowSelector);
+        $I->see('lipsum', $secondRowSelector);
 
         $I->click('button[data-table="tx_styleguide_inline_1n"] .icon-actions-view-list-expand');
         $I->wait(1);
