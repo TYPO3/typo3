@@ -7,6 +7,11 @@
 	"require": {
 		"typo3/cms-core": "15.0.*@dev"
 	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TemplateExtension\\": "Classes"
+		}
+	},
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "template_extension",

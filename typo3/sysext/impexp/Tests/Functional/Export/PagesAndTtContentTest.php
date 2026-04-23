@@ -18,14 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -38,40 +31,6 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
     protected array $testExtensionsToLoad = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
-
-    private array $recordTypesIncludeFields =
-        [
-            'pages' => [
-                'title',
-                'deleted',
-                'doktype',
-                'hidden',
-                'perms_everybody',
-            ],
-            'tt_content' => [
-                'CType',
-                'header',
-                'header_link',
-                'deleted',
-                'hidden',
-                't3ver_oid',
-            ],
-            'sys_file' => [
-                'storage',
-                'type',
-                'metadata',
-                'identifier',
-                'identifier_hash',
-                'folder_hash',
-                'mime_type',
-                'name',
-                'sha1',
-                'size',
-                'creation_date',
-                'modification_date',
-            ],
-        ]
-    ;
 
     protected function setUp(): void
     {
@@ -86,26 +45,16 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
     #[Test]
     public function exportPagesAndRelatedTtContent(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
-        $subject->injectResourceFactory($this->get(ResourceFactory::class));
+        $subject = $this->get(Export::class);
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
         $subject->setRelOnlyTables(['sys_file']);
-        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $subject->process();
 
         $out = $subject->render();
 
-        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
-        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent.xml',
             $out
         );
@@ -114,38 +63,18 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
     #[Test]
     public function exportPagesAndRelatedTtContentWithMetaData(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
-        $subject->injectResourceFactory($this->get(ResourceFactory::class));
-        $subject->method('setMetaData')->willReturnCallback(static function () use ($subject): void {
-            $subject->_set('dat', array_merge_recursive($subject->_get('dat'), [
-                'header' => [
-                    'meta' => [
-                        'title' => 'Test Export',
-                        'description' => 'Export of pages and tt_content',
-                        'TYPO3_version' => '13.4.0',
-                        'created' => 'Tue 1. January 2030',
-                    ],
-                ],
-            ]));
-        });
+        $subject = $this->get(Export::class);
+        $subject->setTitle('Test Export');
+        $subject->setDescription('Export of pages and tt_content');
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
         $subject->setRelOnlyTables(['sys_file']);
-        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $subject->process();
 
         $out = $subject->render();
 
-        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
-        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-meta.xml',
             $out
         );
@@ -154,22 +83,8 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
     #[Test]
     public function exportHeaderChildOrderIsCorrect(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
-        $subject->injectResourceFactory($this->get(ResourceFactory::class));
-        $subject->method('setMetaData')->willReturnCallback(static function () use ($subject): void {
-            $subject->_set('dat', array_merge_recursive($subject->_get('dat'), [
-                'header' => [
-                    'meta' => ['title' => 'Order Test'],
-                ],
-            ]));
-        });
+        $subject = $this->get(Export::class);
+        $subject->setTitle('Order Test');
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
@@ -177,7 +92,6 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
         $subject->setExcludeMap(['pages:2' => 1]);
         $subject->setSoftrefCfg(['token123' => ['mode' => 'exclude']]);
         $subject->setExtensionDependencies(['news']);
-        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $subject->process();
 
         $out = $subject->render();
@@ -210,28 +124,18 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
     #[Test]
     public function exportPagesAndRelatedTtContentWithComplexConfiguration(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
-        $subject->injectResourceFactory($this->get(ResourceFactory::class));
+        $subject = $this->get(Export::class);
         $subject->setPid(1);
         $subject->setExcludeMap(['pages:2' => 1]);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
         $subject->setRelOnlyTables(['sys_file']);
-        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $subject->setExcludeDisabledRecords(true);
         $subject->process();
 
         $out = $subject->render();
 
-        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
-        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-complex.xml',
             $out
         );
@@ -248,20 +152,11 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
             ],
         ]);
 
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
-        $subject->injectResourceFactory($this->get(ResourceFactory::class));
+        $subject = $this->get(Export::class);
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
         $subject->setRelOnlyTables(['sys_file']);
-        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $subject->setIncludeSiteConfigurations(true);
         $subject->process();
 
@@ -284,21 +179,15 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
             ],
         ]);
 
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $subject = $this->get(Export::class);
         $subject->setPid(1);
         $subject->setLevels(0);
         $subject->setTables(['pages']);
         $subject->setIncludeSiteConfigurations(true);
         $subject->process();
 
-        $exportData = $subject->_get('dat');
-        self::assertArrayNotHasKey('site_configurations', $exportData['header']);
+        $out = $subject->render();
+
+        self::assertStringNotContainsString('<site_configurations', $out);
     }
 }

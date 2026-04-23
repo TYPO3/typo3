@@ -18,12 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -36,32 +30,22 @@ final class IrreRecordsTest extends AbstractImportExportTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributeinline',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributesimple',
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
     #[Test]
     public function exportIrreRecords(): void
     {
-        $recordTypesIncludeFields = include __DIR__ . '/../Fixtures/IrreRecordsIncludeFields.php';
-
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/irre_records.csv');
 
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $subject = $this->get(Export::class);
         $subject->setPid(1);
         $subject->setTables(['_ALL']);
-        $subject->setRecordTypesIncludeFields($recordTypesIncludeFields);
         $subject->process();
 
         $out = $subject->render();
 
-        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
-        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/irre-records.xml',
             $out
         );

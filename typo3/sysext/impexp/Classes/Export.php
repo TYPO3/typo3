@@ -22,6 +22,8 @@ use Doctrine\DBAL\Result;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -29,7 +31,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\Locale;
@@ -44,6 +45,7 @@ use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 
 /**
@@ -80,17 +82,17 @@ class Export extends ImportExport
     protected string $treeHTML = '';
 
     /**
-     * The key is the record type (e.g. 'be_users'),
-     * the value is an array of fields to be included in the export.
-     *
-     * Used in tests only.
-     */
-    protected array $recordTypesIncludeFields = [];
-
-    /**
      * Default array of fields to be included in the export
      */
     protected array $defaultRecordIncludeFields = ['uid', 'pid'];
+
+    /**
+     * Per-table cache for {@see filterRecordFields()}.
+     *
+     * @var array<string, array{alwaysKeep: list<string>, timestamps: list<string>, columnDefaults: array<string, mixed>}>
+     */
+    private array $filterRecordFieldsSetupCache = [];
+
     protected bool $saveFilesOutsideExportFile = false;
     protected bool $includeSiteConfigurations = false;
     protected string $exportFileName = '';
@@ -108,6 +110,7 @@ class Export extends ImportExport
         protected readonly Typo3Version $typo3Version,
         protected readonly ReferenceIndex $referenceIndex,
         protected readonly SiteConfiguration $siteConfiguration,
+        protected readonly Context $context,
     ) {}
 
     /**
@@ -317,6 +320,8 @@ class Export extends ImportExport
         } else {
             $locale = new Locale();
         }
+        /** @var DateTimeAspect $dateAspect */
+        $dateAspect = $this->context->getAspect('date');
         $meta = array_filter([
             'title' => $this->title,
             'description' => $this->description,
@@ -325,7 +330,7 @@ class Export extends ImportExport
             'packager_name' => $this->getBackendUser()->user['realName'],
             'packager_email' => $this->getBackendUser()->user['email'],
             'TYPO3_version' => (string)$this->typo3Version,
-            'created' => (new DateFormatter())->format($GLOBALS['EXEC_TIME'], 'EEE d. MMMM y', $locale),
+            'created' => (new DateFormatter())->format($dateAspect->getDateTime(), 'EEE d. MMMM y', $locale),
         ], static fn(string $value): bool => $value !== '');
         if ($meta !== []) {
             $this->dat['header']['meta'] = $meta;
@@ -356,36 +361,6 @@ class Export extends ImportExport
                 $this->removeExcludedPagesFromPageTree($pageTree[$pid]['subrow']);
             }
         }
-    }
-
-    /**
-     * Sets the fields of record types to be included in the export.
-     * Used in tests only.
-     *
-     * @param array $recordTypesIncludeFields The key is the record type,
-     *                                          the value is an array of fields to be included in the export.
-     * @throws Exception if an array value is not type of array
-     */
-    public function setRecordTypesIncludeFields(array $recordTypesIncludeFields): void
-    {
-        foreach ($recordTypesIncludeFields as $table => $fields) {
-            if (!is_array($fields)) {
-                throw new Exception('The include fields for record type ' . htmlspecialchars($table) . ' are not defined by an array.', 1391440658);
-            }
-            $this->setRecordTypeIncludeFields($table, $fields);
-        }
-    }
-
-    /**
-     * Sets the fields of a record type to be included in the export.
-     * Used in tests only.
-     *
-     * @param string $table The record type
-     * @param array $fields The fields to be included
-     */
-    protected function setRecordTypeIncludeFields(string $table, array $fields): void
-    {
-        $this->recordTypesIncludeFields[$table] = $fields;
     }
 
     /**
@@ -602,68 +577,136 @@ class Export extends ImportExport
     }
 
     /**
-     * Filters record fields to only include relevant columns.
+     * Reduces the exported row to the values a re-import actually needs.
      *
-     * When recordTypesIncludeFields is set for the table, only the explicitly
-     * listed fields are kept. Otherwise, schema-based filtering is applied,
-     * keeping only fields defined in the TCA (sub)schema.
-     *
-     * Both paths always include uid and pid via defaultRecordIncludeFields,
-     * ensuring they are part of the exported data for correct import.
-     *
-     * @param string $table The record type to be filtered
-     * @param array $row The data to be filtered
-     * @return array The filtered record row
+     * Strips DataHandler-managed timestamps and columns whose value equals
+     * the effective default. Always preserves uid, pid, the disabled field
+     * and the record-type field.
      */
     protected function filterRecordFields(string $table, array $row): array
     {
-        if (isset($this->recordTypesIncludeFields[$table])) {
-            $includeFields = array_unique(array_merge(
-                $this->recordTypesIncludeFields[$table],
-                $this->defaultRecordIncludeFields
-            ));
-            $newRow = [];
-            foreach ($row as $key => $value) {
-                if (in_array($key, $includeFields, true)) {
-                    $newRow[$key] = $value;
-                }
-            }
-            return $newRow;
-        }
-        // Schema-based filtering: We only allow fields that are defined for THIS schema (or subschema)
         if (!$this->tcaSchemaFactory->has($table)) {
             return $row;
         }
+        $setup = $this->getFilterRecordFieldsSetup($table);
         $schema = $this->tcaSchemaFactory->get($table);
-        $validFields = $schema->getFields()->getNames();
-        if ($schema->supportsSubSchema()) {
-            $typeInformation = $schema->getSubSchemaTypeInformation();
-            // Skip if type is determined by a foreign table (more complex case, not handled here)
-            if (!$typeInformation->isPointerToForeignFieldInForeignSchema()) {
-                $typeFieldName = $typeInformation->getFieldName();
-                $recordType = (string)($row[$typeFieldName] ?? '');
-                if ($schema->hasSubSchema($recordType)) {
-                    $validFields = $schema->getSubSchema($recordType)->getFields()->getNames();
-                }
-            }
-        }
-        if ($schema->isLanguageAware()) {
-            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-            $validFields[] = $languageCapability->getLanguageField()->getName();
-            $validFields[] = $languageCapability->getTranslationOriginPointerField()->getName();
-            if ($languageCapability->hasTranslationSourceField()) {
-                $validFields[] = $languageCapability->getTranslationSourceField()?->getName();
-            }
-        }
-        $validFields = array_unique(array_merge($validFields, $this->defaultRecordIncludeFields));
+        $alwaysKeep = $setup['alwaysKeep'];
+        $timestamps = $setup['timestamps'];
+        $columnDefaults = $setup['columnDefaults'];
         $newRow = [];
         foreach ($row as $fieldName => $value) {
-            if (!in_array($fieldName, $validFields, true)) {
+            if (in_array($fieldName, $timestamps, true)) {
+                continue;
+            }
+            if (!in_array($fieldName, $alwaysKeep, true)
+                && $this->valueMatchesEffectiveDefault($schema, $columnDefaults, $fieldName, $value)
+            ) {
                 continue;
             }
             $newRow[$fieldName] = $value;
         }
         return $newRow;
+    }
+
+    /**
+     * @return array{alwaysKeep: list<string>, timestamps: list<string>, columnDefaults: array<string, mixed>}
+     */
+    private function getFilterRecordFieldsSetup(string $table): array
+    {
+        if (array_key_exists($table, $this->filterRecordFieldsSetupCache)) {
+            return $this->filterRecordFieldsSetupCache[$table];
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        $alwaysKeep = $this->defaultRecordIncludeFields;
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            $disabledCapability = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField);
+            $alwaysKeep[] = $disabledCapability->getFieldName();
+        }
+        if ($schema->supportsSubSchema()) {
+            $alwaysKeep[] = $schema->getSubSchemaTypeInformation()->getFieldName();
+        }
+        if ($schema->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $alwaysKeep[] = $languageCapability->getLanguageField()->getName();
+            $alwaysKeep[] = $languageCapability->getTranslationOriginPointerField()->getName();
+            $sourceField = $languageCapability->getTranslationSourceField()?->getName();
+            if ($sourceField !== null) {
+                $alwaysKeep[] = $sourceField;
+            }
+            $diffSourceField = $languageCapability->getDiffSourceField()?->getName();
+            if ($diffSourceField !== null) {
+                $alwaysKeep[] = $diffSourceField;
+            }
+        }
+        $timestamps = [];
+        foreach ([TcaSchemaCapability::CreatedAt, TcaSchemaCapability::UpdatedAt] as $capability) {
+            if (!$schema->hasCapability($capability)) {
+                continue;
+            }
+            $timestamps[] = $schema->getCapability($capability)->getFieldName();
+        }
+        return $this->filterRecordFieldsSetupCache[$table] = [
+            'alwaysKeep' => $alwaysKeep,
+            'timestamps' => $timestamps,
+            'columnDefaults' => $this->getColumnDefaults($table),
+        ];
+    }
+
+    /**
+     * TCA is authoritative: only columns without a TCA default fall back to
+     * the Doctrine-reported database default.
+     */
+    private function valueMatchesEffectiveDefault(
+        TcaSchema $schema,
+        array $columnDefaults,
+        string $fieldName,
+        mixed $value,
+    ): bool {
+        if ($schema->hasField($fieldName)) {
+            $field = $schema->getField($fieldName);
+            if ($field->hasDefaultValue()) {
+                return $this->valueMatchesDefault($value, $field->getDefaultValue());
+            }
+        }
+        if (array_key_exists($fieldName, $columnDefaults)) {
+            return $this->valueMatchesDefault($value, $columnDefaults[$fieldName]);
+        }
+        return false;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getColumnDefaults(string $table): array
+    {
+        $defaults = [];
+        $schemaInformation = $this->connectionPool->getConnectionForTable($table)->getSchemaInformation();
+        $columnInfos = $schemaInformation->listTableColumnInfos($table);
+        foreach ($columnInfos as $columnInfo) {
+            $defaults[$columnInfo->name] = $columnInfo->default;
+        }
+        return $defaults;
+    }
+
+    /**
+     * Drivers hand defaults back as strings or ints,
+     * so "" never matches an int 0 default, and vice versa.
+     */
+    private function valueMatchesDefault(mixed $value, mixed $default): bool
+    {
+        if ($value === null || $default === null) {
+            return $value === $default;
+        }
+
+        if (is_int($value) && MathUtility::canBeInterpretedAsInteger($default)) {
+            return $value === (int)$default;
+        }
+
+        if (MathUtility::canBeInterpretedAsInteger($value) && is_int($default)) {
+            return (int)$value === $default;
+        }
+
+        return $value === $default;
     }
 
     /**
@@ -1064,7 +1107,9 @@ class Export extends ImportExport
             new Typo3XmlParserOptions([Typo3XmlParserOptions::ROOT_NODE_NAME => 'T3RecordDocument']),
             $options
         );
-        return $XML;
+
+        // POSIX text-file convention: files end with a newline.
+        return rtrim($XML, "\r\n") . LF;
     }
 
     /**

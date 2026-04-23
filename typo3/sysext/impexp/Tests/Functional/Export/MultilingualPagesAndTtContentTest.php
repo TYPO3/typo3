@@ -18,12 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -37,30 +31,6 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
-    private array $recordTypesIncludeFields = [
-        'pages' => [
-            'title',
-            'deleted',
-            'doktype',
-            'hidden',
-            'perms_everybody',
-            'l10n_parent',
-            'l10n_source',
-            'sys_language_uid',
-            'sorting',
-        ],
-        'tt_content' => [
-            'CType',
-            'header',
-            'deleted',
-            'l18n_parent', // note l18n vs. l10n
-            'l10n_source',
-            'sys_language_uid',
-            'sorting',
-        ],
-
-    ];
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -72,24 +42,15 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
     #[Test]
     public function exportMultilingualPagesAndRelatedTtContent(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $subject = $this->get(Export::class);
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
-        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $subject->process();
 
         $out = $subject->render();
 
-        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
-        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-multilingual.xml',
             $out
         );
@@ -98,14 +59,7 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
     #[Test]
     public function exportSingleLanguagePageAndRelatedTtContent(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $subject = $this->get(Export::class);
         // Restrict to pid=8 which is a the UID of german page, that belongs to a page
         // with 2 more records (default and french). Exporting that page needs to contain
         // data from the language parent, which is what's tested here.
@@ -117,14 +71,12 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
         $subject->setPid(8);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
-        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $subject->setRelOnlyTables(['_ALL']);
         $subject->process();
 
         $out = $subject->render();
 
-        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
-        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-multilingual-single.xml',
             $out
         );
@@ -133,14 +85,7 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
     #[Test]
     public function exportOnlySingleLanguagePageAndRelatedTtContent(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $subject = $this->get(Export::class);
         // Restrict to pid=8 which is a the UID of german page, that belongs to a page
         // with 2 more records (default and french). This tests that the export does not
         // contain the language parent and thus not other language records on the same page.
@@ -151,13 +96,11 @@ final class MultilingualPagesAndTtContentTest extends AbstractImportExportTestCa
         $subject->setPid(8);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
-        $subject->setRecordTypesIncludeFields($this->recordTypesIncludeFields);
         $subject->process();
 
         $out = $subject->render();
 
-        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
-        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-multilingual-onlysingle.xml',
             $out
         );

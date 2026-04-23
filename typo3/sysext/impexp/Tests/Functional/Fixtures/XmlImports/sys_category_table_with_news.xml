@@ -79,22 +79,13 @@
             <fieldlist index="data" type="array">
                 <field index="uid" type="integer">3</field>
                 <field index="pid" type="integer">0</field>
-                <field index="tstamp" type="integer">1603272232</field>
-                <field index="crdate" type="integer">1603272217</field>
-                <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="starttime" type="integer">0</field>
                 <field index="endtime" type="integer">0</field>
-                <field index="sorting" type="integer">64</field>
                 <field index="description"></field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
-                <field index="l10n_state" type="NULL"></field>
                 <field index="l10n_diffsource">{&quot;title&quot;:&quot;&quot;,&quot;parent&quot;:&quot;&quot;,&quot;items&quot;:&quot;&quot;,&quot;sys_language_uid&quot;:&quot;&quot;,&quot;hidden&quot;:&quot;&quot;,&quot;starttime&quot;:&quot;&quot;,&quot;endtime&quot;:&quot;&quot;,&quot;description&quot;:&quot;&quot;}</field>
-                <field index="t3ver_oid" type="integer">0</field>
-                <field index="t3ver_wsid" type="integer">0</field>
-                <field index="t3ver_state" type="integer">0</field>
-                <field index="t3ver_stage" type="integer">0</field>
                 <field index="title">Movies</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">0</field>
@@ -105,22 +96,13 @@
             <fieldlist index="data" type="array">
                 <field index="uid" type="integer">4</field>
                 <field index="pid" type="integer">0</field>
-                <field index="tstamp" type="integer">1603272241</field>
-                <field index="crdate" type="integer">1603272241</field>
-                <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="starttime" type="integer">0</field>
                 <field index="endtime" type="integer">0</field>
-                <field index="sorting" type="integer">96</field>
                 <field index="description"></field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
-                <field index="l10n_state" type="NULL"></field>
                 <field index="l10n_diffsource"></field>
-                <field index="t3ver_oid" type="integer">0</field>
-                <field index="t3ver_wsid" type="integer">0</field>
-                <field index="t3ver_state" type="integer">0</field>
-                <field index="t3ver_stage" type="integer">0</field>
                 <field index="title">Books</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">0</field>
@@ -131,22 +113,13 @@
             <fieldlist index="data" type="array">
                 <field index="uid" type="integer">5</field>
                 <field index="pid" type="integer">0</field>
-                <field index="tstamp" type="integer">1603272274</field>
-                <field index="crdate" type="integer">1603272274</field>
-                <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="starttime" type="integer">0</field>
                 <field index="endtime" type="integer">0</field>
-                <field index="sorting" type="integer">112</field>
                 <field index="description"></field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
-                <field index="l10n_state" type="NULL"></field>
                 <field index="l10n_diffsource"></field>
-                <field index="t3ver_oid" type="integer">0</field>
-                <field index="t3ver_wsid" type="integer">0</field>
-                <field index="t3ver_state" type="integer">0</field>
-                <field index="t3ver_stage" type="integer">0</field>
                 <field index="title">Audiobooks</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">0</field>
@@ -157,22 +130,13 @@
             <fieldlist index="data" type="array">
                 <field index="uid" type="integer">2</field>
                 <field index="pid" type="integer">0</field>
-                <field index="tstamp" type="integer">1602145286</field>
-                <field index="crdate" type="integer">1602145286</field>
-                <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="starttime" type="integer">0</field>
                 <field index="endtime" type="integer">0</field>
-                <field index="sorting" type="integer">128</field>
                 <field index="description"></field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
-                <field index="l10n_state" type="NULL"></field>
                 <field index="l10n_diffsource">a:1:{s:5:&quot;items&quot;;N;}</field>
-                <field index="t3ver_oid" type="integer">0</field>
-                <field index="t3ver_wsid" type="integer">0</field>
-                <field index="t3ver_state" type="integer">0</field>
-                <field index="t3ver_stage" type="integer">0</field>
                 <field index="title">News</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">0</field>
@@ -183,22 +147,13 @@
             <fieldlist index="data" type="array">
                 <field index="uid" type="integer">1</field>
                 <field index="pid" type="integer">0</field>
-                <field index="tstamp" type="integer">1602145286</field>
-                <field index="crdate" type="integer">1602145286</field>
-                <field index="deleted" type="integer">0</field>
                 <field index="hidden" type="integer">0</field>
                 <field index="starttime" type="integer">0</field>
                 <field index="endtime" type="integer">0</field>
-                <field index="sorting" type="integer">256</field>
                 <field index="description"></field>
                 <field index="sys_language_uid" type="integer">0</field>
                 <field index="l10n_parent" type="integer">0</field>
-                <field index="l10n_state" type="NULL"></field>
                 <field index="l10n_diffsource">{&quot;items&quot;:&quot;&quot;}</field>
-                <field index="t3ver_oid" type="integer">0</field>
-                <field index="t3ver_wsid" type="integer">0</field>
-                <field index="t3ver_state" type="integer">0</field>
-                <field index="t3ver_stage" type="integer">0</field>
                 <field index="title">Examples</field>
                 <field index="parent" type="integer">0</field>
                 <field index="items" type="integer">3</field>

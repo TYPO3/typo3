@@ -101,8 +101,6 @@
                 <field index="name">Empty.html</field>
                 <field index="sha1">4a53ba5b5a156b82e3efd443f9a402f8c6e6dd08</field>
                 <field index="size" type="integer">92</field>
-                <field index="creation_date" type="integer">1400176659</field>
-                <field index="modification_date" type="integer">1400176659</field>
             </fieldlist>
             <related index="rels" type="array"></related>
         </tablerow>
@@ -120,8 +118,6 @@
                 <field index="name">typo3_image2.jpg</field>
                 <field index="sha1">da9acdf1e105784a57bbffec9520969578287797</field>
                 <field index="size" type="integer">7958</field>
-                <field index="creation_date" type="integer">1389878273</field>
-                <field index="modification_date" type="integer">1389878273</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">
@@ -149,8 +145,6 @@
                 <field index="name">typo3_image3.jpg</field>
                 <field index="sha1">e873c1e2ffd0f191e183a1057de3eef4d62e782d</field>
                 <field index="size" type="integer">5565</field>
-                <field index="creation_date" type="integer">1393346082</field>
-                <field index="modification_date" type="integer">1392907534</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">
@@ -178,8 +172,6 @@
                 <field index="name">typo3_image5.jpg</field>
                 <field index="sha1">c3511df85d21bc578faf71c6a19eeb3ff44af370</field>
                 <field index="size" type="integer">7425</field>
-                <field index="creation_date" type="integer">1393432184</field>
-                <field index="modification_date" type="integer">1393432183</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">
