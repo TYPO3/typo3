@@ -123,4 +123,21 @@ final class ZipServiceTest extends FunctionalTestCase
         $this->expectExceptionCode(1565709714);
         (new ZipService())->verify(__DIR__ . '/Fixtures/malicious.zip');
     }
+
+    #[Test]
+    public function verifyDetectsBackslashTraversalSequences(): void
+    {
+        $this->expectException(ExtractException::class);
+        $this->expectExceptionCode(1565709714);
+
+        // Build a zip whose entry name uses a backslash traversal sequence.
+        // ZipArchive stores the literal name; on Windows extractTo() treats \ as a separator.
+        $zipFile = $this->instancePath . '/backslash_traversal.zip';
+        $zip = new \ZipArchive();
+        $zip->open($zipFile, \ZipArchive::CREATE);
+        $zip->addFromString('foo\\..\\bar.php', '<?php echo "pwned";');
+        $zip->close();
+
+        (new ZipService())->verify($zipFile);
+    }
 }
