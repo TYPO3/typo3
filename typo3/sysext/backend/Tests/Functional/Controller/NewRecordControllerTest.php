@@ -136,6 +136,29 @@ final class NewRecordControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function controllerRendersSelectionWhenSingleAllowedTableHasSubSchemas(): void
+    {
+        // Limit creation to sys_file_collection, which supports sub-types. The single-item
+        // fast-redirect path must not dereference a missing 'url' key on items that carry
+        // a 'types' sub-array, but fall through to render the selection wizard.
+        $connection = $this->getConnectionPool()->getConnectionForTable('pages');
+        $connection->update(
+            'pages',
+            ['TSconfig' => 'mod.web_list.allowedNewTables = sys_file_collection'],
+            ['uid' => 1]
+        );
+
+        $request = $this->createRequest('/record/new', ['id' => 1]);
+        $controller = $this->get(NewRecordController::class);
+
+        $response = $controller->mainAction($request);
+        $content = (string)$response->getBody();
+
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertStringContainsString('Selection of single files', $content);
+    }
+
+    #[Test]
     public function controllerRespectsTSConfigDeniedTables(): void
     {
         // Set up page TSconfig to deny specific tables

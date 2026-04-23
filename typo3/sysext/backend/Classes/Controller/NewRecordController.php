@@ -130,7 +130,11 @@ class NewRecordController
             $items = current($recordControls)['items'] ?? [];
             if (count($items) === 1) {
                 $item = current($items);
-                return new RedirectResponse($item['url'], 301);
+                // Items for tables with sub-types carry a 'types' sub-array instead of a 'url'
+                // and must fall through to render the selection wizard.
+                if (isset($item['url'])) {
+                    return new RedirectResponse($item['url'], 301);
+                }
             }
         }
 
