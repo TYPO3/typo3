@@ -87,6 +87,150 @@
             </div>
         </sg:example>
 
+        <h2><f:translate key="component.button.section.buttonGroup.headline" domain="styleguide.messages" /></h2>
+
+        <h3><f:translate key="component.button.section.buttonGroup.basic.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetButtonGroup">
+            <div class="btn-group" role="group">
+                <button class="btn btn-default">Left</button>
+                <button class="btn btn-default">Middle</button>
+                <button class="btn btn-default">Right</button>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetButtonGroup}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default">Left</button>
+                        <button class="btn btn-default">Middle</button>
+                        <button class="btn btn-default">Right</button>
+                    </div>
+                </div>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.button.section.buttonGroup.toolbar.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetButtonToolbar">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group" role="group">
+                    <button class="btn btn-default">1</button>
+                    <button class="btn btn-default">2</button>
+                    <button class="btn btn-default">3</button>
+                    <button class="btn btn-default">4</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-default">5</button>
+                    <button class="btn btn-default">6</button>
+                    <button class="btn btn-default">7</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-default">8</button>
+                </div>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetButtonToolbar}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <div class="btn-toolbar" role="toolbar">
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-default">1</button>
+                            <button class="btn btn-default">2</button>
+                            <button class="btn btn-default">3</button>
+                            <button class="btn btn-default">4</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-default">5</button>
+                            <button class="btn btn-default">6</button>
+                            <button class="btn btn-default">7</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-default">8</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.button.section.buttonGroup.sizes.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetButtonGroupSizes">
+            <div class="btn-group" role="group">...</div>
+            <div class="btn-group btn-group-sm" role="group">...</div>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetButtonGroupSizes}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default">Left</button>
+                        <button class="btn btn-default">Middle</button>
+                        <button class="btn btn-default">Right</button>
+                    </div>
+                </div>
+                <div class="example-item">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button class="btn btn-default">Left</button>
+                        <button class="btn btn-default">Middle</button>
+                        <button class="btn btn-default">Right</button>
+                    </div>
+                </div>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.button.section.buttonGroup.dropdown.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetButtonGroupDropdown">
+            <div class="btn-group" role="group">
+                <button class="btn btn-default">Action</button>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" popovertarget="button-group-dropdown-menu">
+                        <core:icon identifier="actions-menu-alternative" size="small" />
+                    </button>
+                    <ul id="button-group-dropdown-menu" class="dropdown-menu" popover>
+                        <li><button type="button" class="dropdown-item">Rename</button></li>
+                        <li><button type="button" class="dropdown-item">Download</button></li>
+                        <li><button type="button" class="dropdown-item">Info</button></li>
+                    </ul>
+                </div>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetButtonGroupDropdown}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default">Action</button>
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" popovertarget="button-group-dropdown-menu">
+                                <core:icon identifier="actions-menu-alternative" size="small" />
+                            </button>
+                            <ul id="button-group-dropdown-menu" class="dropdown-menu" popover>
+                                <li><button type="button" class="dropdown-item">Rename</button></li>
+                                <li><button type="button" class="dropdown-item">Download</button></li>
+                                <li><button type="button" class="dropdown-item">Info</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.button.section.buttonGroup.vertical.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="codeSnippetButtonGroupVertical">
+            <div class="btn-group-vertical" role="group">
+                <button class="btn btn-default">Top</button>
+                <button class="btn btn-default">Middle</button>
+                <button class="btn btn-default">Bottom</button>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetButtonGroupVertical}" decodeEntities="true">
+            <div class="example-container">
+                <div class="example-item">
+                    <div class="btn-group-vertical" role="group">
+                        <button class="btn btn-default">Top</button>
+                        <button class="btn btn-default">Middle</button>
+                        <button class="btn btn-default">Bottom</button>
+                    </div>
+                </div>
+            </div>
+        </sg:example>
+
         <h2><f:translate key="section.frontend.headline" domain="styleguide.messages" /></h2>
 
         <h3><f:translate key="component.button.section.types.headline" domain="styleguide.messages" /></h3>

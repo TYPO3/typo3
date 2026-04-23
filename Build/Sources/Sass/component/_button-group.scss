@@ -1,13 +1,111 @@
 //
 // Button Group
-// ============
 //
-// Bugfixes for Bootstrap to support RTL
+.btn-group,
+.btn-group-vertical {
+    display: inline-flex;
+    align-items: center;
+
+    // A nested .dropdown acts as a transparent wrapper around a single .btn
+    // so the inner button collapses borders with siblings as if it were a
+    // direct child of the group.
+    > .dropdown {
+        display: inline-flex;
+    }
+
+    > .btn,
+    > .dropdown > .btn {
+        position: relative;
+        flex: 1 1 auto;
+    }
+
+    > .btn-check:checked + .btn,
+    > .btn-check:focus + .btn,
+    > .btn:hover,
+    > .btn:focus,
+    > .btn:active,
+    > .btn.active,
+    > .dropdown > .btn:hover,
+    > .dropdown > .btn:focus,
+    > .dropdown > .btn:active,
+    > .dropdown > .btn.active {
+        z-index: 1;
+    }
+}
+
+//
+// Normal
 //
 .btn-group {
     > :not(.btn-check:first-child) + .btn,
-    > .btn-group:not(:first-child) {
-        margin-left: unset;
-        margin-inline-start: calc(#{$btn-border-width} * -1);
+    > :is(.btn-group, .dropdown):not(:first-child) {
+        margin-inline-start: calc(var(--typo3-input-border-width) * -1);
     }
+
+    > .btn:not(:last-child):not(.dropdown-toggle),
+    > .btn.dropdown-toggle-split:first-child,
+    > :is(.btn-group, .dropdown):not(:last-child) > .btn {
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+    }
+
+    // The left radius should be 0 if the button is:
+    // - the "third or more" child
+    // - the second child and the previous element isn't `.btn-check` (making it the first child visually)
+    // - part of a btn-group or dropdown which isn't the first child
+    > .btn:nth-child(n + 3),
+    > :not(.btn-check) + .btn,
+    > :is(.btn-group, .dropdown):not(:first-child) > .btn {
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+    }
+}
+
+//
+// Vertical
+//
+.btn-group-vertical {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    > .btn,
+    > :is(.btn-group, .dropdown) {
+        width: 100%;
+    }
+
+    > :is(.btn, .btn-group, .dropdown):not(:first-child) {
+        margin-block-start: calc(var(--typo3-input-border-width) * -1);
+    }
+
+    > .btn:not(:last-child):not(.dropdown-toggle),
+    > :is(.btn-group, .dropdown):not(:last-child) > .btn {
+        border-end-start-radius: 0;
+        border-end-end-radius: 0;
+    }
+
+    > :is(.btn, .dropdown) ~ .btn,
+    > :is(.btn-group, .dropdown):not(:first-child) > .btn {
+        border-start-start-radius: 0;
+        border-start-end-radius: 0;
+    }
+}
+
+//
+// Toolbar
+//
+.btn-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: calc(var(--typo3-spacing) / 2);
+}
+
+//
+// Size
+//
+.btn-group-sm > .btn {
+    --typo3-btn-padding-y: var(--typo3-input-sm-padding-y);
+    --typo3-btn-padding-x: var(--typo3-input-sm-padding-x);
+    --typo3-btn-font-size: var(--typo3-input-sm-font-size);
 }
