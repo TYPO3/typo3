@@ -70,9 +70,9 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
     public function createViewHelperInstanceFromClassName($viewHelperClassName): ViewHelperInterface
     {
         if ($this->container instanceof FailsafeContainer) {
-            // The install tool creates VH instances using makeInstance to not rely on symfony DI here,
-            // otherwise we'd have to have all install-tool used ones in ServiceProvider.php. However,
-            // none of the install tool used VH's use injection.
+            // Install tool: makeInstance() resolves via the FailsafeContainer when the VH is
+            // registered there, else via `new`. VHs with required constructor arguments used by
+            // install-tool templates must be wired in install/Classes/ServiceProvider.php.
             /** @var ViewHelperInterface $viewHelperInstance */
             $viewHelperInstance = GeneralUtility::makeInstance($viewHelperClassName);
             return $viewHelperInstance;

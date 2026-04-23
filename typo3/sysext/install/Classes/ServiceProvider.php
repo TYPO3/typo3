@@ -57,6 +57,7 @@ use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
+use TYPO3\CMS\Core\ViewHelpers\NormalizedUrlViewHelper;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\LoadTcaService;
@@ -114,6 +115,7 @@ class ServiceProvider extends AbstractServiceProvider
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
+            NormalizedUrlViewHelper::class => self::getNormalizedUrlViewHelper(...),
             PasswordGenerator::class => self::getPasswordGenerator(...),
             Random::class => self::getRandom(...),
         ];
@@ -416,6 +418,14 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
+    }
+
+    public static function getNormalizedUrlViewHelper(ContainerInterface $container): NormalizedUrlViewHelper
+    {
+        return self::new($container, NormalizedUrlViewHelper::class, [
+            $container->get(SystemResourceFactory::class),
+            $container->get(SystemResourcePublisherInterface::class),
+        ]);
     }
 
     public static function getPasswordGenerator(ContainerInterface $container): PasswordGenerator
