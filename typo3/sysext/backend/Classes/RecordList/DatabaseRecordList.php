@@ -2062,13 +2062,12 @@ class DatabaseRecordList
         if ($cellOutput !== '') {
             $icon = $this->iconFactory->getIcon('actions-menu-alternative', IconSize::SMALL);
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
-            // @todo Maybe this grouping can also be moved into the ComponentFactory
             $output .= ' <div class="btn-group dropdown">' .
                         '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $table . '_' . $record->getUid() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
-                '<ul id="actions_' . $table . '_' . $record->getUid() . '" class="dropdown-menu">' . $cellOutput . '</ul>' .
-                '</div>';
+                        '<ul id="actions_' . $table . '_' . $record->getUid() . '" class="dropdown-menu">' . $cellOutput . '</ul>' .
+                        '</div>';
         } else {
-            $output .= ' <div class="btn-group">' . $emptyAction . '</div>';
+            $output .= ' <div>' . $emptyAction . '</div>';
         }
 
         return $output;
@@ -3343,7 +3342,7 @@ class DatabaseRecordList
             </li>';
 
         return '
-            <div class="btn-group dropdown">
+            <div class="dropdown">
                 <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openSelectionOptions')) . '">
                     ' . $this->iconFactory->getIcon('actions-selection', IconSize::SMALL) . '
                 </button>

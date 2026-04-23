@@ -1013,7 +1013,7 @@ class FileList
 
         if ($cellOutput !== '') {
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
-            $output .= '<div class="btn-group dropdown">'
+            $output .= '<div class="dropdown">'
                 . '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $resourceView->resource->getHashedIdentifier() . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">'
                 . $this->iconFactory->getIcon('actions-menu-alternative', IconSize::SMALL)->render()
                 . '</a>'
@@ -1319,7 +1319,6 @@ class FileList
         $dropdownButton = $this->componentFactory->createDropDownButton();
         $dropdownButton->setLabel($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:translations'));
         $dropdownButton->setIcon($this->iconFactory->getIcon('actions-translate', IconSize::SMALL));
-        $dropdownButton->setSize(ButtonSize::MEDIUM);
         foreach ($dropdownItems as $dropdownItem) {
             $dropdownButton->addItem($dropdownItem);
         }
@@ -1488,7 +1487,7 @@ class FileList
             </li>';
 
         return '
-            <div class="btn-group dropdown">
+            <div class="dropdown">
                 <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openSelectionOptions')) . '">
                     ' . $this->iconFactory->getIcon('actions-selection', IconSize::SMALL) . '
                 </button>

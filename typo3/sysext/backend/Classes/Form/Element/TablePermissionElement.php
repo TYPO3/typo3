@@ -245,7 +245,7 @@ final class TablePermissionElement extends AbstractFormElement
         }
 
         return '
-            <div class="btn-group dropdown">
+            <div class="dropdown">
                 <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" ' . ($readOnly ? ' disabled="disabled"' : '') . '>
                     <core:icon identifier="actions-selection" size="small" />
                     ' . $this->iconFactory->getIcon('actions-selection', IconSize::SMALL)->render() . '

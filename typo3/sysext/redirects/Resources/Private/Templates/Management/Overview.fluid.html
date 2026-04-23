@@ -77,7 +77,7 @@
             <thead>
                 <tr>
                     <th class="col-checkbox" colspan="2">
-                        <div class="btn-group dropdown">
+                        <div class="dropdown">
                             <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.openSelectionOptions')}" popovertarget="redirects-selection">
                                 <core:icon identifier="actions-selection" size="small" />
                             </button>
@@ -274,7 +274,7 @@
                                     </f:else>
                                 </f:if>
                             </div>
-                            <div class="btn-group dropdown" role="group">
+                            <div class="btn-group" role="group">
                                 <f:if condition="{redirect.is_regexp} || ({redirect.source_host} === '*')">
                                     <f:else>
                                         <f:variable name="showPreviewButton" value="1" />
@@ -352,6 +352,7 @@
 <f:section name="listHeaderSorting">
     <div class="dropdown">
         <button class="dropdown-toggle dropdown-toggle-link" type="button" popovertarget="redirects-selection-sorting-{field}">
+
             <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:{label}"/>
             <f:if condition="{demand.orderField} === {field}">
                 <f:then>

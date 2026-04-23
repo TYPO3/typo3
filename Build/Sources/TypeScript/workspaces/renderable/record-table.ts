@@ -89,7 +89,7 @@ export class RecordTableElement extends LitElement {
           <thead>
           <tr>
             <th>
-              <div class="btn-group dropdown">
+              <div class="dropdown">
                 <button type="button" class="dropdown-toggle dropdown-toggle-link t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false" aria-label="${coreLabels.get('labels.openSelectionOptions')}">
                   <typo3-backend-icon identifier="actions-selection" size="small"></typo3-backend-icon>
                 </button>

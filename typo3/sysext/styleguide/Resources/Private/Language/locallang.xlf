@@ -454,6 +454,24 @@
       <trans-unit id="component.button.section.size.small.headline">
         <source>Small size</source>
       </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.headline">
+        <source>Button groups</source>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.basic.headline">
+        <source>Basic button group</source>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.toolbar.headline">
+        <source>Button toolbar</source>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.sizes.headline">
+        <source>Button group sizing</source>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.dropdown.headline">
+        <source>Button group with dropdown</source>
+      </trans-unit>
+      <trans-unit id="component.button.section.buttonGroup.vertical.headline">
+        <source>Vertical button group</source>
+      </trans-unit>
       <!-- Component: Card -->
       <trans-unit id="component.card.headline">
         <source>Cards</source>
