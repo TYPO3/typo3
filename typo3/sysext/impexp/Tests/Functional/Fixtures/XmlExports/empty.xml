@@ -3,6 +3,11 @@
     <header type="array">
         <XMLversion>1.0</XMLversion>
         <charset>utf-8</charset>
+        <meta type="array">
+            <packager_username>admin</packager_username>
+            <TYPO3_version>99.99.99</TYPO3_version>
+            <created>Tue 1. January 2030</created>
+        </meta>
     </header>
     <records type="array"></records>
 </T3RecordDocument>

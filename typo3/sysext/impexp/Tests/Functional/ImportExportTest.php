@@ -16,12 +16,6 @@
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
 
@@ -34,37 +28,27 @@ final class ImportExportTest extends AbstractImportExportTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributeinline',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributesimple',
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
     #[Test]
     public function importExportPingPongSucceeds(): void
     {
-        $recordTypesIncludeFields = include __DIR__ . '/Fixtures/IrreRecordsIncludeFields.php';
-
         $import = $this->get(Import::class);
         $import->setPid(0);
         $import->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/irre-records.xml');
         $import->setForceAllUids(true);
         $import->importData();
 
-        $exportMock = $this->getAccessibleMock(Export::class, ['setMetaData'], [
-            $this->get(ConnectionPool::class),
-            $this->get(Locales::class),
-            $this->get(Typo3Version::class),
-            $this->get(ReferenceIndex::class),
-            $this->get(SiteConfiguration::class),
-        ]);
-        $exportMock->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
-        $exportMock->setPid(1);
-        $exportMock->setLevels(Export::LEVELS_INFINITE);
-        $exportMock->setTables(['_ALL']);
-        $exportMock->setRelOnlyTables(['_ALL']);
-        $exportMock->setRecordTypesIncludeFields($recordTypesIncludeFields);
-        $exportMock->process();
-        $actual = $exportMock->render();
+        $export = $this->get(Export::class);
+        $export->setPid(1);
+        $export->setLevels(Export::LEVELS_INFINITE);
+        $export->setTables(['_ALL']);
+        $export->setRelOnlyTables(['_ALL']);
+        $export->process();
+        $actual = $export->render();
 
-        // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
-        $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/Fixtures/XmlImports/irre-records.xml',
             $actual
         );

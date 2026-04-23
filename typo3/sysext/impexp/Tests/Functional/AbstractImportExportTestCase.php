@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
-use PHPUnit\Util\Xml\Loader as XmlLoader;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -47,6 +49,14 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $backendUser->workspace = 0;
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        // Pin the export timestamp so rendered meta blocks stay byte-stable
+        // across test runs. 1893456000 is 2030-01-01 00:00:00 UTC — a Tuesday,
+        // which matches the "Tue 1. January 2030" string baked into fixtures.
+        $this->get(Context::class)->setAspect(
+            'date',
+            new DateTimeAspect(DateTimeFactory::createFromTimestamp(1893456000))
+        );
 
         $normalizedParams = $this->createMock(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
@@ -88,14 +98,4 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
         return $caseSensitive;
     }
 
-    /**
-     * Asserts that two XML documents are equal.
-     */
-    public function assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(string $expectedFile, string $actualXml): void
-    {
-        $actual = (new XmlLoader())->load($actualXml);
-        $expectedFileContent = file_get_contents($expectedFile);
-        $expected = (new XmlLoader())->load($expectedFileContent);
-        self::assertEquals($expected, $actual);
-    }
 }

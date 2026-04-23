@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Tests\TemplateExtension\:
+    resource: '../Classes/*'
+
+  TYPO3\CMS\Core\Information\Typo3Version:
+    class: TYPO3Tests\TemplateExtension\FixedTypo3Version

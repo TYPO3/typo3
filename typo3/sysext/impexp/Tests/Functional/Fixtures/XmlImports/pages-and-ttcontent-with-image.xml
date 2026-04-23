@@ -174,8 +174,6 @@
             <fieldlist index="data" type="array">
                 <field index="uid">1</field>
                 <field index="pid">0</field>
-                <field index="deleted">0</field>
-                <field index="perms_everybody">15</field>
                 <field index="hidden">0</field>
                 <field index="title">Root</field>
                 <field index="doktype">1</field>
@@ -186,8 +184,6 @@
             <fieldlist index="data" type="array">
                 <field index="uid">2</field>
                 <field index="pid">1</field>
-                <field index="deleted">0</field>
-                <field index="perms_everybody">15</field>
                 <field index="hidden">0</field>
                 <field index="title">Dummy 1-2</field>
                 <field index="doktype">1</field>
@@ -198,12 +194,10 @@
             <fieldlist index="data" type="array">
                 <field index="uid">1</field>
                 <field index="pid">1</field>
-                <field index="t3ver_oid">0</field>
                 <field index="hidden">0</field>
                 <field index="CType">textpic</field>
                 <field index="header">Test content</field>
                 <field index="image">1</field>
-                <field index="deleted">0</field>
                 <field index="header_link">file:1</field>
             </fieldlist>
             <related index="rels" type="array">
@@ -276,8 +270,6 @@
                 <field index="name">typo3_image2.jpg</field>
                 <field index="sha1">da9acdf1e105784a57bbffec9520969578287797</field>
                 <field index="size">7958</field>
-                <field index="creation_date">1389878273</field>
-                <field index="modification_date">1389878273</field>
             </fieldlist>
             <related index="rels" type="array">
                 <field index="storage" type="array">

@@ -361,8 +361,8 @@ class Import extends ImportExport
         foreach ($this->dat['header']['records']['sys_file_storage'] ?? [] as $sysFileStorageUid => $_) {
             $storageRecord = &$this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
             if ($storageRecord['driver'] === 'Local'
-                && $storageRecord['is_writable']
-                && $storageRecord['is_online']
+                && ($storageRecord['is_writable'] ?? 1)
+                && ($storageRecord['is_online'] ?? 1)
             ) {
                 $storageMapUid = -1;
                 foreach ($this->storages as $storage) {
@@ -526,8 +526,8 @@ class Import extends ImportExport
         foreach ($this->dat['header']['records']['sys_file_storage'] as $sysFileStorageUid => $_) {
             $storageRecord = &$this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
             if ($storageRecord['driver'] === 'Local'
-                && $storageRecord['is_writable']
-                && $storageRecord['is_online']
+                && ($storageRecord['is_writable'] ?? 1)
+                && ($storageRecord['is_online'] ?? 1)
             ) {
                 foreach ($this->storages as $storage) {
                     if ($this->isEquivalentStorage($storage, $storageRecord)) {
@@ -585,8 +585,8 @@ class Import extends ImportExport
     protected function isEquivalentStorage(ResourceStorage $storageObject, array &$storageRecord): bool
     {
         if ($storageObject->getDriverType() === $storageRecord['driver']
-            && $storageObject->isWritable() === (bool)$storageRecord['is_writable']
-            && $storageObject->isOnline() === (bool)$storageRecord['is_online']
+            && $storageObject->isWritable() === (bool)($storageRecord['is_writable'] ?? 1)
+            && $storageObject->isOnline() === (bool)($storageRecord['is_online'] ?? 1)
         ) {
             $storageRecordConfiguration = $this->flexFormTools->convertFlexFormContentToArray($storageRecord['configuration'] ?? '');
             $storageObjectConfiguration = $storageObject->getConfiguration();
