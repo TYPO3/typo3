@@ -61,6 +61,14 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function pageTsConfigConditionOnTreeDoesNotCrashWithEmptyRootline(): void
+    {
+        $subject = $this->get(PageTsConfigFactory::class);
+        $pageTsConfig = $subject->create([], new NullSite());
+        self::assertSame('matched', $pageTsConfig->getPageTsConfigArray()['conditionOnEmptyRootlineMatches'] ?? null);
+    }
+
+    #[Test]
     public function pageTsConfigLoadsFromSiteSetPagesTsconfig(): void
     {
         $rootLine = [
