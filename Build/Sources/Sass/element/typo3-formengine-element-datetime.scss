@@ -7,13 +7,28 @@ typo3-formengine-element-datetime {
     anchor-name: --typo3-formengine-element-datetime;
     anchor-scope: --typo3-formengine-element-datetime;
 
-    .flatpickr-calendar[popover] {
+    .flatpickr-calendar:not([popover]:popover-open) {
+        display: none;
+    }
+
+    .flatpickr-calendar[popover]:popover-open {
+        display: block;
         position: fixed;
+        width: auto !important;
+        min-width: var(--flatpickr-width);
         inset: auto;
         margin: var(--typo3-dropdown-anchor-offset) 0;
         position-anchor: --typo3-formengine-element-datetime;
         position-area: block-end span-inline-end;
         position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
         overflow: unset;
+
+        .flatpickr-weeks {
+            flex-direction: column;
+        }
+
+        .flatpickr-days {
+            width: auto !important;
+        }
     }
 }
