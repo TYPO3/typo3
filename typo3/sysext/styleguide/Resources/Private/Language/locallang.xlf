@@ -1537,6 +1537,9 @@
       <trans-unit id="styles.typography.section.textColor.headline">
         <source>Text color</source>
       </trans-unit>
+      <trans-unit id="elements.color.valid">
+        <source>Valid (LLL)</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -132,11 +132,9 @@ class ColorElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
         $colorDefinitions = array_map(
-            static fn(array $colorDefinition): array => [
+            fn(array $colorDefinition): array => [
                 'color' => $colorDefinition['value'],
-                'label' => ($colorDefinition['label'] ?? null) !== null ?
-                    sprintf('%s (%s)', $colorDefinition['label'], $colorDefinition['value']) :
-                    $colorDefinition['value'],
+                'label' => $this->resolveColorLabel($colorDefinition['value'], $colorDefinition['label'] ?? null),
             ],
             array_filter(
                 $tsConfig['colorPalettes.']['colors.'] ?? [],
@@ -163,7 +161,7 @@ class ColorElement extends AbstractFormElement
             foreach ($config['valuePicker']['items'] as $item) {
                 $colorDefinitions[] = [
                     'color' => $item['value'],
-                    'label' => $item['label'],
+                    'label' => $this->resolveColorLabel($item['value'], $item['label'] ?? null),
                 ];
             }
         }
@@ -270,4 +268,17 @@ class ColorElement extends AbstractFormElement
 
         return $resultArray;
     }
+
+    protected function resolveColorLabel(string $color, ?string $label): string
+    {
+        if ($label === null || $label === '') {
+            return $color;
+        }
+        $translatedLabel = $this->getLanguageService()->sL($label);
+        if ($translatedLabel === '') {
+            return $color;
+        }
+        return sprintf('%s (%s)', $translatedLabel, $color);
+    }
+
 }
