@@ -19,7 +19,12 @@ colorPalettes {
     }
     styleguideValid {
       value = #5abc55
-      label = Valid
+      label = styleguide.messages:elements.color.valid
+    }
+    styleguideInvalid {
+      value = #5abc65
+      # Might be interpreted as a language label domain, but tests fallback
+      label = styleguide:somethingelse_for_fallback
     }
     styleguideError {
       value = #dd123d
@@ -28,8 +33,8 @@ colorPalettes {
   }
 
   palettes {
-    styleguidePalette = styleguideTypo3, styleguideBlue, styleguideDarkgrey, styleguideValid, styleguideError
-    limitedStyleguidePalette = styleguideTypo3, styleguideValid, styleguideError
+    styleguidePalette = styleguideTypo3, styleguideBlue, styleguideDarkgrey, styleguideValid, styleguideInvalid, styleguideError
+    limitedStyleguidePalette = styleguideTypo3, styleguideValid, styleguideInvalid, styleguideError
   }
 }
 
