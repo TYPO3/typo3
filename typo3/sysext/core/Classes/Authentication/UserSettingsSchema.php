@@ -87,6 +87,14 @@ readonly class UserSettingsSchema
             $columns[$partitionedFieldName] = $this->resolveInheritFromParent($fieldName, $columnConfig);
         }
 
+        // Fall back to legacy global, note that the 'after:...' notation seems to not take effect anymore.
+        // @deprecated since TYPO3 v14, remove in TYPO3 v15
+        $legacyColumns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'] ?? [];
+        foreach ($legacyColumns as $fieldName => $columnConfig) {
+            $partitionedFieldName = $this->getTcaFieldName($fieldName);
+            $columns[$partitionedFieldName] = $this->resolveInheritFromParent($fieldName, $columnConfig);
+        }
+
         return [
             'be_users_settings' => [
                 'ctrl' => [
