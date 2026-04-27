@@ -210,8 +210,6 @@ class FileReferenceContainer extends AbstractContainer
             . '-' . self::FILE_REFERENCE_TABLE
             . '-' . ($databaseRow['uid'] ?? 0));
 
-        $altText = BackendUtility::getRecordIconAltText($databaseRow, self::FILE_REFERENCE_TABLE, false);
-
         // Renders the header image (thumbnail, icon, or missing file indicator)
         $headerImage = '';
         $headerBadge = '';
@@ -254,7 +252,6 @@ class FileReferenceContainer extends AbstractContainer
                                         . 'width="' . $processedImage->getProperty('width') . '" '
                                         . 'height="' . $processedImage->getProperty('height') . '" '
                                         . 'alt="" '
-                                        . 'title="' . htmlspecialchars($altText) . '" '
                                         . 'loading="lazy">
                                 </div>';
                         }
@@ -269,7 +266,6 @@ class FileReferenceContainer extends AbstractContainer
                 <div class="panel-icon" id="' . $objectId . '_iconcontainer">
                     ' . $this->iconFactory
                         ->getIconForRecord(self::FILE_REFERENCE_TABLE, $databaseRow, IconSize::SMALL)
-                        ->setTitle($altText)
                         ->render() . '
                 </div>';
         }

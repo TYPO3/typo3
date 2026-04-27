@@ -55,6 +55,19 @@ final class FileReferenceContainerTest extends FunctionalTestCase
         self::assertStringNotContainsString('data-bs-target="#', $html);
     }
 
+    #[Test]
+    public function fallbackIconHasNoTitleTooltip(): void
+    {
+        $domObjectId = 'data-1-tt_content-13-pi_flexform---data---sDEF---lDEF---settings.image---vDEF';
+        $html = $this->renderFileReference($domObjectId);
+        $iconContainerId = $domObjectId . '-sys_file_reference-42_iconcontainer';
+
+        self::assertMatchesRegularExpression(
+            '#id="' . preg_quote($iconContainerId, '#') . '">\s*<span class="t3js-icon #',
+            $html,
+        );
+    }
+
     private function renderFileReference(string $domObjectId): string
     {
         $inlineStructure = $this->get(InlineStackProcessor::class)->getStructureFromString(
