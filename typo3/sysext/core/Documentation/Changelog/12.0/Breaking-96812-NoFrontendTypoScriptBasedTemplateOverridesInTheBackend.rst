@@ -243,8 +243,8 @@ immediately after widget instantiation. The new code thus looks like this:
             // It is needed to instruct BackendViewFactory to look up templates in this package
             // next to the default location 'typo3/cms-dashboard', too.
             $view = $this->backendViewFactory->create($this->request, ['typo3/cms-dashboard', 'myVendor/myPackage']);
-            $this->view->assignMultiple([...]);
-            return $this->view->render('Widget/ChartWidget');
+            $view->assignMultiple([...]);
+            return $view->render('Widget/ChartWidget');
         }
     }
 
