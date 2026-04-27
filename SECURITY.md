@@ -3,19 +3,18 @@
 ## Supported Versions
 
 The following matrix shows the TYPO3 versions currently maintained by the TYPO3
-community. Sprint releases (versions before 13.4.0 and 12.4.0, in their
+community. Sprint releases (versions before 14.3.0 and 13.4.0, in their
 corresponding branches) have reached their end of support and don't receive any
 further bug fixes or security patches.
 
 | Version  | Supported          |
 |----------|--------------------|
+| 14.3.x   | :white_check_mark: |
+| 14.2.x   | :x:                |
+| 14.1.x   | :x:                |
+| 14.0.x   | :x:                |
 | 13.4.x   | :white_check_mark: |
-| 13.3.x   | :x:                |
-| 13.2.x   | :x:                |
-| 13.1.x   | :x:                |
-| 13.0.x   | :x:                |
-| 12.4.x   | :white_check_mark: |
-| < 12.4.0 | :x:                |
+| < 13.4.0 | :x:                |
 
 ## Reporting a Vulnerability
 
