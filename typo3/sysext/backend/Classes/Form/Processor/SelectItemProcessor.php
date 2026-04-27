@@ -106,6 +106,7 @@ final class SelectItemProcessor
         // And use the group ordering given by the itemGroups
         $finalItems = [];
         foreach ($itemGroups as $groupId => $groupLabel) {
+            $groupId = (string)$groupId;
             $itemsInGroup = $groupedItems[$groupId] ?? [];
             if (empty($itemsInGroup)) {
                 continue;
