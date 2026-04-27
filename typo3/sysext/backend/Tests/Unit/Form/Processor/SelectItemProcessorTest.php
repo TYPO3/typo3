@@ -159,6 +159,53 @@ final class SelectItemProcessorTest extends UnitTestCase
             ],
         ];
 
+        yield 'numeric group' => [
+            'items' => [
+                [
+                    'label' => 'foo',
+                    'value' => 'three',
+                    'group' => '2026',
+                ],
+                [
+                    'label' => 'foo',
+                    'value' => 'one',
+                    'group' => 'group1',
+                ],
+            ],
+            'groups' => [
+                'group1' => 'Group 1',
+            ],
+            'sortOrders' => [],
+            'expected' => [
+                [
+                    'label' => 'Group 1',
+                    'value' => '--div--',
+                    'group' => 'group1',
+                ],
+                [
+                    'label' => 'foo',
+                    'value' => 'one',
+                    'icon' => null,
+                    'iconOverlay' => null,
+                    'group' => 'group1',
+                    'description' => null,
+                ],
+                [
+                    'label' => '2026',
+                    'value' => '--div--',
+                    'group' => '2026',
+                ],
+                [
+                    'label' => 'foo',
+                    'value' => 'three',
+                    'icon' => null,
+                    'iconOverlay' => null,
+                    'group' => '2026',
+                    'description' => null,
+                ],
+            ],
+        ];
+
         yield 'groups assigned, but not defined' => [
             'items' => [
                 [
