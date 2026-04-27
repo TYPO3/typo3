@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -319,6 +320,7 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
         }
 
         $pageCacheIdentifierParameters = [
+            'projectPath' => Environment::getProjectPath(),
             'id' => $pageId,
             'type' => $pageArguments->getPageType(),
             'groupIds' => implode(',', $this->context->getAspect('frontend.user')->getGroupIds()),
