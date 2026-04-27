@@ -12,6 +12,15 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Reactions\Model\ReactionInstruction;
 use TYPO3\CMS\Reactions\Reaction\ReactionInterface;
 
+/**
+ * This class must not be marked as readonly to remain compatible with PHP 8.2.
+ * The TYPO3 Reactions extension registers all ReactionInterface implementations
+ * with setLazy(true) via registerForAutoconfiguration in its Services.php.
+ * PHP 8.2 does not support generating lazy proxies by inheriting from readonly
+ * classes, causing a fatal error during container compilation.
+ *
+ * @noinspection PhpClassCanBeReadonlyInspection
+ */
 class ExampleReactionType implements ReactionInterface
 {
     private const REGISTRY_KEY = 'changed_ids';
