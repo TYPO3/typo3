@@ -1913,6 +1913,18 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             );
             $this->overrideUC();
             $updated = true;
+        } else {
+            // Backfill missing UC keys from UserSettingsSchema defaults.
+            $schema = GeneralUtility::makeInstance(UserSettingsSchema::class);
+            foreach ($schema->getJsonFieldSettingKeys() as $settingKey) {
+                if (!array_key_exists($settingKey, $this->uc)) {
+                    $defaultValue = $schema->getDefault($settingKey);
+                    if ($defaultValue !== null) {
+                        $this->uc[$settingKey] = $defaultValue;
+                        $updated = true;
+                    }
+                }
+            }
         }
         // If TSconfig is updated, update the defaultUC.
         if ($this->userTSUpdated) {
