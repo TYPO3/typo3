@@ -40,7 +40,11 @@ class SynchronizeColPosAndCTypeWithDefaultLanguage implements UpgradeWizardInter
 
     public function getDescription(): string
     {
-        return 'Inherit "colPos" and "CType" for "tt_content" translations from their parent elements for consistent translation behavior.';
+        return 'Since TYPO3 v13.3, translated content elements are no longer allowed to have a different "CType" or "colPos" than their default-language parent (see #60357). '
+            . 'This wizard overwrites "colPos" and "CType" on every translated tt_content record that currently differs from its parent. '
+            . 'WARNING: If your project intentionally uses different content element types per language (e.g. a translated record has CType "textmedia" while the parent has "text"), '
+            . 'those translations will be silently changed to match the parent. '
+            . 'Review and back up affected records before running this wizard.';
     }
 
     public function getPrerequisites(): array
