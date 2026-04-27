@@ -105,7 +105,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         $configuration['queryParameters'] = (array)($configuration['queryParameters'] ?? []);
         $treatAsExternalLink = false;
         $url = null;
-        $linkResultType = '';
+        $linkResultType = LinkService::TYPE_PAGE;
 
         if (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
             // If no id is given try to fetch it from PageInformation attribute, else fetch it from site.
