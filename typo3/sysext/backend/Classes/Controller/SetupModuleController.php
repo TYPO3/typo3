@@ -297,7 +297,7 @@ class SetupModuleController
                 $this->languageUpdate = true;
             }
             // Reload pagetree if the title length is changed
-            if (isset($userSettingsSubmission['titleLen']) && $userSettingsSubmission['titleLen'] !== $backendUser->uc['titleLen']) {
+            if (isset($userSettingsSubmission['titleLen']) && $userSettingsSubmission['titleLen'] !== ($backendUser->uc['titleLen'] ?? null)) {
                 $this->pagetreeNeedsRefresh = true;
             }
             if (isset($userSettingsSubmission['colorScheme']) && $userSettingsSubmission['colorScheme'] !== ($backendUser->uc['colorScheme'] ?? null)) {
