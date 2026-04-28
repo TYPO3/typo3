@@ -57,6 +57,35 @@
             <p>Paragraph with embedded <a href="#">link (without a class)</a>.</p>
         </sg:example>
 
+        <h2><f:translate key="styles.typography.section.kbd.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="styles.typography.section.kbd.text" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <p>Press <kbd>Esc</kbd> to close the modal.</p>
+            <p>
+                Save with <kbd><kbd>Ctrl</kbd>+<kbd>S</kbd></kbd>
+                or <kbd><kbd>Cmd</kbd>+<kbd>S</kbd></kbd>.
+            </p>
+            <p>
+                Use the arrow keys
+                <kbd>&larr;</kbd> <kbd>&uarr;</kbd> <kbd>&darr;</kbd> <kbd>&rarr;</kbd>
+                to navigate.
+            </p>
+        </sg:example>
+
+        <p>
+            <f:sanitize.html><f:translate key="styles.typography.section.kbd.sizing.text" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <sg:example codePreview="true" codeLanguage="html">
+            <h1>H1 with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd></h1>
+            <h2>H2 with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd></h2>
+            <h3>H3 with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd></h3>
+            <h4>H4 with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd></h4>
+            <p>Default paragraph with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd>.</p>
+            <p><small>Small text with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd>.</small></p>
+        </sg:example>
+
         <h2><f:translate key="styles.typography.section.textColor.headline" domain="styleguide.messages" /></h2>
         <sg:example codePreview="true" codeLanguage="html">
             <span class="text-base">base</span><br>
@@ -135,6 +164,25 @@
             <p>
                 Paragraph with embedded <a href="#">link (without a class)</a>.
             </p>
+        </sg:colorScheme>
+
+        <h4><f:translate key="styles.typography.section.kbd.headline" domain="styleguide.messages" /></h4>
+        <sg:colorScheme>
+            <p>Press <kbd>Esc</kbd> to close the modal.</p>
+            <p>
+                Save with <kbd><kbd>Ctrl</kbd>+<kbd>S</kbd></kbd>
+                or <kbd><kbd>Cmd</kbd>+<kbd>S</kbd></kbd>.
+            </p>
+            <p>
+                Use the arrow keys
+                <kbd>&larr;</kbd> <kbd>&uarr;</kbd> <kbd>&darr;</kbd> <kbd>&rarr;</kbd>
+                to navigate.
+            </p>
+            <h1>H1 with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd></h1>
+            <h2>H2 with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd></h2>
+            <h3>H3 with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd></h3>
+            <h4>H4 with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd></h4>
+            <p><small>Small text with <kbd>Esc</kbd> and <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd>.</small></p>
         </sg:colorScheme>
 
         <h4><f:translate key="styles.typography.section.textColor.headline" domain="styleguide.messages" /></h4>

@@ -1,0 +1,49 @@
+//
+// Keyboard
+//
+// Markup examples:
+//   <kbd>Esc</kbd>
+//   <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd>
+//
+kbd {
+    --typo3-kbd-font-family: var(--typo3-font-family-monospace);
+    --typo3-kbd-color: var(--typo3-text-color-base);
+    --typo3-kbd-bg: var(--typo3-surface-bright);
+    --typo3-kbd-border-color: color-mix(in srgb, var(--typo3-kbd-bg), var(--typo3-kbd-color) var(--typo3-border-mix));
+    --typo3-kbd-border-width: var(--typo3-component-border-width);
+    --typo3-kbd-border-radius: .5em;
+    --typo3-kbd-padding-x: .5em;
+    --typo3-kbd-font-size: .875em;
+    --typo3-kbd-font-weight: bold;
+    --typo3-kbd-shadow: 0 1px 0 var(--typo3-kbd-border-color), var(--typo3-shadow-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .15em;
+    min-width: 1.5em;
+    height: calc(var(--typo3-line-height) * 1em);
+    padding: 0 var(--typo3-kbd-padding-x) !important;
+    font-family: var(--typo3-kbd-font-family);
+    font-size: var(--typo3-kbd-font-size);
+    font-weight: var(--typo3-kbd-font-weight);
+    color: var(--typo3-kbd-color);
+    background-color: var(--typo3-kbd-bg);
+    outline: var(--typo3-kbd-border-width) solid var(--typo3-kbd-border-color);
+    outline-offset: -1px;
+    border-radius: var(--typo3-kbd-border-radius);
+    box-shadow: var(--typo3-kbd-shadow);
+    vertical-align: text-top;
+
+    kbd {
+        display: inline-grid;
+        font-size: 1em;
+    }
+
+    &:has(kbd) {
+        color: unset !important;
+        background-color: unset !important;
+        outline: unset !important;
+        padding: unset !important;
+        box-shadow: unset !important;
+    }
+}
