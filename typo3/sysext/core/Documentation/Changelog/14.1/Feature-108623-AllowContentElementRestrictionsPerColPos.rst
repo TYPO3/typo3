@@ -50,7 +50,7 @@ Example for a backend layout with two rows and two columns configured using Page
               2 {
                 columns {
                   1 {
-                    identifier footer
+                    identifier = footer
                     name = Footer
                     colpos = 2
                     colspan = 2
