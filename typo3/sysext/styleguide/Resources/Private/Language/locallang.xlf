@@ -1510,6 +1510,15 @@
       <trans-unit id="styles.typography.section.headings.text">
         <source><![CDATA[Headline "H1" is the main headline within each backend module. Only added once to every backend page.<br>Headline "H2" is the headline for every section in backend modules. Place above each section and use several times.<br>Headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.<br>Headline "H4" might be used to split off meta / footer information.]]></source>
       </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.headline">
+        <source>Keyboard input</source>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.text">
+        <source><![CDATA[Use the <code>kbd</code> element to mark up keyboard input or shortcuts. Nest <code>kbd</code> elements to compose key combinations.]]></source>
+      </trans-unit>
+      <trans-unit id="styles.typography.section.kbd.sizing.text">
+        <source><![CDATA[Keys scale with the surrounding font size — sized in <code>em</code>, so they fit naturally inside headings, body text and small text without per-context overrides.]]></source>
+      </trans-unit>
       <trans-unit id="styles.typography.section.links.headline">
         <source>Links</source>
       </trans-unit>

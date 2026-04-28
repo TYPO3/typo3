@@ -57,7 +57,7 @@ pre code{color:inherit;font-size:inherit;word-break:normal}
 code{color:var(--bs-code-color);font-size:.875em;word-wrap:break-word}
 a>code{color:inherit}
 kbd{background-color:var(--bs-body-color);border-radius:.125rem;color:var(--bs-body-bg);font-size:.875em;padding:.1875rem .375rem}
-kbd kbd{font-size:1em;padding:0}
+kbd kbd{padding:0}
 figure{margin:0 0 1rem}
 img,svg{vertical-align:middle}
 table{border-collapse:collapse;caption-side:bottom}
@@ -2217,6 +2217,9 @@ code,pre{-webkit-hyphens:none;hyphens:none}
 code[class*=language-],pre[class*=language-]{background:none;color:inherit;font-size:1em;text-align:start;white-space:pre;word-break:normal;word-spacing:normal;word-wrap:normal;-webkit-hyphens:none;hyphens:none;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4}
 pre[class*=language-]{border-radius:4px;margin-bottom:var(--typo3-spacing);overflow:auto;padding:1em}
 :not(pre)>code[class*=language-],pre[class*=language-]{background-color:rgba(0,0,0,.05)}
+kbd{--typo3-kbd-font-family:var(--typo3-font-family-monospace);--typo3-kbd-color:var(--typo3-text-color-base);--typo3-kbd-bg:var(--typo3-surface-bright);--typo3-kbd-border-color:color-mix(in srgb,var(--typo3-kbd-bg),var(--typo3-kbd-color) var(--typo3-border-mix));--typo3-kbd-border-width:var(--typo3-component-border-width);--typo3-kbd-border-radius:.5em;--typo3-kbd-padding-x:.5em;--typo3-kbd-font-size:.875em;--typo3-kbd-font-weight:bold;--typo3-kbd-shadow:0 1px 0 var(--typo3-kbd-border-color),var(--typo3-shadow-2);align-items:center;background-color:var(--typo3-kbd-bg);border-radius:var(--typo3-kbd-border-radius);box-shadow:var(--typo3-kbd-shadow);color:var(--typo3-kbd-color);display:inline-flex;font-family:var(--typo3-kbd-font-family);font-size:var(--typo3-kbd-font-size);font-weight:var(--typo3-kbd-font-weight);gap:.15em;height:calc(var(--typo3-line-height)*1em);justify-content:center;min-width:1.5em;outline:var(--typo3-kbd-border-width) solid var(--typo3-kbd-border-color);outline-offset:-1px;padding:0 var(--typo3-kbd-padding-x)!important;vertical-align:text-top}
+kbd kbd{display:inline-grid;font-size:1em}
+kbd:has(kbd){background-color:unset!important;box-shadow:unset!important;color:unset!important;outline:unset!important;padding:unset!important}
 :root{--avatar-size-small:16px;--avatar-size-medium:32px;--avatar-size-large:48px;--avatar-size-mega:64px}
 .avatar{display:block;height:var(--avatar-size,1em);line-height:var(--avatar-size,1em);position:relative;width:var(--avatar-size,1em)}
 .avatar-image{overflow:hidden}
