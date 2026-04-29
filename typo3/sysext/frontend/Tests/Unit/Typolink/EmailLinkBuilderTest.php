@@ -52,7 +52,7 @@ final class EmailLinkBuilderTest extends UnitTestCase
         $request = new ServerRequest('http://example.com');
         $request = $request->withAttribute(
             'frontend.typoscript',
-            (new class () {
+            (new class {
                 public function getConfigArray(): array
                 {
                     return [
@@ -77,7 +77,7 @@ final class EmailLinkBuilderTest extends UnitTestCase
         $request = new ServerRequest('http://example.com');
         $request = $request->withAttribute(
             'frontend.typoscript',
-            (new class () {
+            (new class {
                 public function getConfigArray(): array
                 {
                     return [

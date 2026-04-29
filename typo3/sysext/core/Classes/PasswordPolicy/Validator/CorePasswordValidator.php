@@ -48,8 +48,8 @@ class CorePasswordValidator extends AbstractPasswordValidator
             $isValid = false;
         }
 
-        if ($this->isCheckEnabled('upperCaseCharacterRequired') &&
-            !$this->evaluatePasswordRequirement($password, 'upperCaseCharacterRequired')
+        if ($this->isCheckEnabled('upperCaseCharacterRequired')
+            && !$this->evaluatePasswordRequirement($password, 'upperCaseCharacterRequired')
         ) {
             $this->addErrorMessage(
                 'upperCaseCharacterRequired',
@@ -58,8 +58,8 @@ class CorePasswordValidator extends AbstractPasswordValidator
             $isValid = false;
         }
 
-        if ($this->isCheckEnabled('lowerCaseCharacterRequired') &&
-            !$this->evaluatePasswordRequirement($password, 'lowerCaseCharacterRequired')
+        if ($this->isCheckEnabled('lowerCaseCharacterRequired')
+            && !$this->evaluatePasswordRequirement($password, 'lowerCaseCharacterRequired')
         ) {
             $this->addErrorMessage(
                 'lowerCaseCharacterRequired',
@@ -68,8 +68,8 @@ class CorePasswordValidator extends AbstractPasswordValidator
             $isValid = false;
         }
 
-        if ($this->isCheckEnabled('digitCharacterRequired') &&
-            !$this->evaluatePasswordRequirement($password, 'digitCharacterRequired')
+        if ($this->isCheckEnabled('digitCharacterRequired')
+            && !$this->evaluatePasswordRequirement($password, 'digitCharacterRequired')
         ) {
             $this->addErrorMessage(
                 'digitCharacterRequired',
@@ -78,8 +78,8 @@ class CorePasswordValidator extends AbstractPasswordValidator
             $isValid = false;
         }
 
-        if ($this->isCheckEnabled('specialCharacterRequired') &&
-            !$this->evaluatePasswordRequirement($password, 'specialCharacterRequired')
+        if ($this->isCheckEnabled('specialCharacterRequired')
+            && !$this->evaluatePasswordRequirement($password, 'specialCharacterRequired')
         ) {
             $this->addErrorMessage(
                 'specialCharacterRequired',

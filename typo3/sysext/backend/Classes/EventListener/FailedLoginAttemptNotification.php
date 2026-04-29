@@ -73,7 +73,7 @@ final class FailedLoginAttemptNotification
      */
     #[AsEventListener(identifier: 'typo3/cms-backend/failed-login-attempt-notification', event: LoginAttemptFailedEvent::class)]
     #[AsEventListener(identifier: 'typo3/cms-backend/failed-mfa-verification-notification', event: MfaVerificationFailedEvent::class)]
-    public function __invoke(LoginAttemptFailedEvent | MfaVerificationFailedEvent $event): void
+    public function __invoke(LoginAttemptFailedEvent|MfaVerificationFailedEvent $event): void
     {
         if (!$event->isBackendAttempt()) {
             // This notification only works for backend users

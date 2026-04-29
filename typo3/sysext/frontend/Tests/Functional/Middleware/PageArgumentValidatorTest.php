@@ -35,7 +35,7 @@ final class PageArgumentValidatorTest extends FunctionalTestCase
     {
         parent::setUp();
         // A request handler which only runs through
-        $this->responseOutputHandler = new class () implements RequestHandlerInterface {
+        $this->responseOutputHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new Response();

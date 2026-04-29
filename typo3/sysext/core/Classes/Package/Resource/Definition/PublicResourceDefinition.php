@@ -27,7 +27,7 @@ readonly class PublicResourceDefinition implements ResourceDefinitionInterface
 
     public function __construct(
         protected string $relativePath,
-        null|string|DynamicPublicPrefixInterface $publicPrefix = null,
+        string|DynamicPublicPrefixInterface|null $publicPrefix = null,
         ?string $identifier = null,
     ) {
         $this->identifier = $identifier ?? $relativePath;

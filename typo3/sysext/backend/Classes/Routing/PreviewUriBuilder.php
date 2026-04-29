@@ -294,7 +294,7 @@ class PreviewUriBuilder
                             RouterInterface::ABSOLUTE_URL
                         )
                     );
-                } catch (\InvalidArgumentException | InvalidRouteArgumentsException $e) {
+                } catch (\InvalidArgumentException|InvalidRouteArgumentsException $e) {
                     throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $event->getPageId(), $e->getMessage()), 1651499354, $e);
                 }
             }

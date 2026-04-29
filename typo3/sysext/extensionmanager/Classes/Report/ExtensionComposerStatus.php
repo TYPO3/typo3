@@ -55,8 +55,8 @@ readonly class ExtensionComposerStatus implements RequestAwareStatusProviderInte
         ];
 
         if ($request !== null) {
-            $queryParameters['returnUrl'] =
-                $request->getAttribute('normalizedParams')->getRequestUri();
+            $queryParameters['returnUrl']
+                = $request->getAttribute('normalizedParams')->getRequestUri();
         }
 
         $dispatchAction = 'TYPO3.ModuleMenu.showModule';

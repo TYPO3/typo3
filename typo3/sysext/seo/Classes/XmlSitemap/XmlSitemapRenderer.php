@@ -151,7 +151,7 @@ final readonly class XmlSitemapRenderer
      * @throws CanNotResolvePublicResourceException
      * @throws CanNotResolveSystemResourceException
      */
-    private function getXslResource(array $configConfiguration, string $sitemapType, ?string $sitemapName = null): PublicResourceInterface & SystemResourceInterface
+    private function getXslResource(array $configConfiguration, string $sitemapType, ?string $sitemapName = null): PublicResourceInterface&SystemResourceInterface
     {
         $resourceIdentifier = $configConfiguration[$sitemapType]['sitemaps'][$sitemapName ?? '']['config']['xslFile']
             ?? $configConfiguration[$sitemapType]['sitemaps']['xslFile']

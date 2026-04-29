@@ -389,8 +389,8 @@ class Typo3DbQueryParser
                 }
                 if (!$hasValue) {
                     throw new BadConstraintException(
-                        'The IN operator needs a non-empty value list to compare against. ' .
-                        'The given value list is empty.',
+                        'The IN operator needs a non-empty value list to compare against. '
+                        . 'The given value list is empty.',
                         1484828466
                     );
                 }

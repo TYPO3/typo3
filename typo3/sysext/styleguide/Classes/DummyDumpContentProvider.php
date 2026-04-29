@@ -36,7 +36,7 @@ final class DummyDumpContentProvider
         $simpleObject->longtext = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
         $simpleObject->{'<script>alert(1)</script>'} = 'xss in property name';
 
-        $anonymousObject = new class () {
+        $anonymousObject = new class {
             public function __construct(
                 public readonly ?string $foo = 'bar',
                 protected readonly string $bar = 'baz',
@@ -110,7 +110,7 @@ final class DummyDumpContentProvider
             'htmlString' => '<html><script>alert(1)</script></html>',
             'extbase' => [
                 'entity' => new Category(),
-                'value object' => new class () extends AbstractValueObject {
+                'value object' => new class extends AbstractValueObject {
                     public string $name = '';
                     public ?object $object = null;
                     public ?int $uid = null;

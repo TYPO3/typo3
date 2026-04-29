@@ -80,7 +80,7 @@ readonly class PreviewUriBuilder
             }
             $uri = $site->getRouter()->generateUri($uid, ['ADMCMD_prev' => $previewKeyword, '_language' => $language], '');
             return (string)$uri;
-        } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
+        } catch (SiteNotFoundException|InvalidRouteArgumentsException $e) {
             throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $uid, $e->getMessage()), 1559794916, $e);
         }
     }
@@ -186,7 +186,7 @@ readonly class PreviewUriBuilder
             );
             $uri = $site->getRouter()->generateUri($previewPageId, $routeParameters, '');
             return (string)$uri;
-        } catch (SiteNotFoundException | InvalidRouteArgumentsException) {
+        } catch (SiteNotFoundException|InvalidRouteArgumentsException) {
             return '';
         }
     }

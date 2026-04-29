@@ -118,7 +118,7 @@ final readonly class SystemResourceIdentifierFactory
     {
         try {
             $packageKey = $this->packageManager->extractPackageKeyFromPackagePath($extensionPath);
-        } catch (UnknownPackageException | UnknownPackagePathException $e) {
+        } catch (UnknownPackageException|UnknownPackagePathException $e) {
             throw new InvalidSystemResourceIdentifierException(sprintf('Can not create system resource identifier from "%s".', $extensionPath), 1758884297, $e);
         }
         return sprintf(

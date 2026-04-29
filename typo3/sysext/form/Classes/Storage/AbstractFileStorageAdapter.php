@@ -157,10 +157,10 @@ abstract class AbstractFileStorageAdapter
     {
         if ($criteria->searchTerm) {
             $searchIn = strtolower(
-                $formMetadata->name . ' ' .
-                $formMetadata->identifier . ' ' .
-                $formMetadata->prototypeName . ' ' .
-                ($formMetadata->persistenceIdentifier ?? '')
+                $formMetadata->name . ' '
+                . $formMetadata->identifier . ' '
+                . $formMetadata->prototypeName . ' '
+                . ($formMetadata->persistenceIdentifier ?? '')
             );
 
             if (!str_contains($searchIn, strtolower($criteria->searchTerm))) {

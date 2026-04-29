@@ -55,9 +55,9 @@ class SetRegistry
     {
         return array_values(array_filter(
             $this->getOrderedSets(),
-            fn(SetDefinition $set): bool =>
-                in_array($set->name, $setNames, true) ||
-                $this->hasDependency($setNames, $set->name)
+            fn(SetDefinition $set): bool
+                => in_array($set->name, $setNames, true)
+                || $this->hasDependency($setNames, $set->name)
         ));
     }
 

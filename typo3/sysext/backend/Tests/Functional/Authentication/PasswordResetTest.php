@@ -147,7 +147,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $emailAddress = 'duplicate@example.com';
-        $logger = new class () implements LoggerInterface {
+        $logger = new class implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
             public function log($level, string|\Stringable $message, array $context = []): void
@@ -191,7 +191,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $emailAddress = 'editor-with-email@example.com';
         $username = 'editor-with-email';
-        $logger = new class () implements LoggerInterface {
+        $logger = new class implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
             public function log($level, string|\Stringable $message, array $context = []): void
@@ -270,7 +270,7 @@ final class PasswordResetTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
         $emailAddress = 'editor-with-email@example.com';
-        $logger = new class () implements LoggerInterface {
+        $logger = new class implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
             public function log($level, string|\Stringable $message, array $context = []): void

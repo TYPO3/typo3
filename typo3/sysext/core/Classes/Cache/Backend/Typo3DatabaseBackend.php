@@ -352,13 +352,13 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
     public function getTableDefinitions(): string
     {
         $cacheTableSql = (string)file_get_contents(
-            ExtensionManagementUtility::extPath('core') .
-            'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendCache.sql'
+            ExtensionManagementUtility::extPath('core')
+            . 'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendCache.sql'
         );
         $requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql) . LF . LF;
         $tagsTableSql = (string)file_get_contents(
-            ExtensionManagementUtility::extPath('core') .
-            'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendTags.sql'
+            ExtensionManagementUtility::extPath('core')
+            . 'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendTags.sql'
         );
         return $requiredTableStructures . (str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF);
     }

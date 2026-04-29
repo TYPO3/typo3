@@ -36,7 +36,7 @@ final class TaskValidatorTest extends UnitTestCase
     public function isValidReturnsFalseWithClassNotProperlyImplementingGetExecution(): void
     {
         $subject = new TaskValidator();
-        $input = new class () extends AbstractTask {
+        $input = new class extends AbstractTask {
             public function __construct() {}
             public function execute()
             {
@@ -50,7 +50,7 @@ final class TaskValidatorTest extends UnitTestCase
     public function isValidReturnsTrueWithClassProperlyImplementingAbstractTask(): void
     {
         $subject = new TaskValidator();
-        $input = new class () extends AbstractTask {
+        $input = new class extends AbstractTask {
             public function __construct() {}
             public function execute()
             {

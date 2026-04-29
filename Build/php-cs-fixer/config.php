@@ -32,14 +32,11 @@ if (PHP_SAPI !== 'cli') {
 }
 
 // Return a Code Sniffing configuration using
-// all sniffers needed for PER
+// all sniffers needed for PER Coding Style 3.0
 // and additionally:
-//  - Remove leading slashes in use clauses.
 //  - PHP single-line arrays should not have trailing comma.
 //  - Single-line whitespace before closing semicolon are prohibited.
 //  - Remove unused use statements in the PHP source code
-//  - Ensure Concatenation to have at least one whitespace around
-//  - Remove trailing whitespace at the end of blank lines.
 return (new \PhpCsFixer\Config())
     ->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setFinder(
@@ -58,20 +55,11 @@ return (new \PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@DoctrineAnnotation' => true,
-        // @todo: Switch to @PER-CS2x0 once php-cs-fixer's todo list is done: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/7247
-        '@PER-CS1x0' => true,
-        'array_indentation' => true,
-        'array_syntax' => ['syntax' => 'short'],
+        '@PER-CS3x0' => true,
+        // Override PER-CS3x0 default (single) to keep no space after cast operators
         'cast_spaces' => ['space' => 'none'],
-        // @todo: Can be dropped once we enable @PER-CS2x0
-        'concat_space' => ['spacing' => 'one'],
-        'declare_equal_normalize' => ['space' => 'none'],
         'declare_parentheses' => true,
         'dir_constant' => true,
-        // @todo: Can be dropped once we enable @PER-CS2x0
-        'function_declaration' => [
-            'closure_fn_spacing' => 'none',
-        ],
         'function_to_constant' => [
             'functions' => [
                 'get_called_class',
@@ -89,8 +77,6 @@ return (new \PhpCsFixer\Config())
             'import_functions' => false,
         ],
         'list_syntax' => ['syntax' => 'short'],
-        // @todo: Can be dropped once we enable @PER-CS2x0
-        'method_argument_space' => true,
         'modernize_strpos' => true,
         'modernize_types_casting' => true,
         'native_function_casing' => true,
@@ -114,6 +100,7 @@ return (new \PhpCsFixer\Config())
         'no_unused_imports' => true,
         'no_useless_else' => true,
         'no_useless_nullsafe_operator' => true,
+        // Override PER-CS3x0 default (union) to keep ?Type shorthand syntax
         'nullable_type_declaration' => [
             'syntax' => 'question_mark',
         ],
@@ -149,12 +136,8 @@ return (new \PhpCsFixer\Config())
         'phpdoc_types' => true,
         'phpdoc_types_order' => ['null_adjustment' => 'always_last', 'sort_algorithm' => 'none'],
         'protected_to_private' => true,
-        'return_type_declaration' => ['space_before' => 'none'],
         'single_quote' => true,
-        'single_space_around_construct' => true,
         'single_line_comment_style' => ['comment_types' => ['hash']],
-        // @todo: Can be dropped once we enable @PER-CS2x0
-        'single_line_empty_body' => true,
         'trailing_comma_in_multiline' => ['elements' => ['arrays']],
         'whitespace_after_comma_in_array' => ['ensure_single_space' => true],
         'yoda_style' => ['equal' => false, 'identical' => false, 'less_and_greater' => false],

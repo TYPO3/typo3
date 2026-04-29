@@ -70,8 +70,8 @@ final class ImportMapFactory
                                             'bust' => $this->bust,
                                         ],
                                     ];
-                                    $event->resolution = '/' . ltrim($this->sitePath, '/') . '?__typo3_install&' .
-                                        http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
+                                    $event->resolution = '/' . ltrim($this->sitePath, '/') . '?__typo3_install&'
+                                        . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
                                 }
                             },
                         ];

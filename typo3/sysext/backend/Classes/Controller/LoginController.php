@@ -221,8 +221,8 @@ readonly class LoginController
                 );
             }
 
-            $redirectToURL = $tsConfigRedirectToURL ?:
-                (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
+            $redirectToURL = $tsConfigRedirectToURL
+                ?: (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
             throw new PropagateResponseException(new RedirectResponse($redirectToURL, 303), 1724705833);
         }
     }

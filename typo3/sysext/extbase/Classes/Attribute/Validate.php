@@ -45,8 +45,8 @@ class Validate
         // @todo Remove with TYPO3 v15.0
         if (is_array($validator)) {
             trigger_error(
-                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. ' .
-                'Use explicit constructor parameters instead.',
+                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. '
+                . 'Use explicit constructor parameters instead.',
                 E_USER_DEPRECATED,
             );
 
@@ -63,8 +63,8 @@ class Validate
 
         if ($this->param !== null) {
             trigger_error(
-                'Passing a parameter name to a #[Validate] attribute is deprecated and will be removed in TYPO3 v15.0. ' .
-                'Place the attribute on the method parameter instead.',
+                'Passing a parameter name to a #[Validate] attribute is deprecated and will be removed in TYPO3 v15.0. '
+                . 'Place the attribute on the method parameter instead.',
                 E_USER_DEPRECATED,
             );
         }

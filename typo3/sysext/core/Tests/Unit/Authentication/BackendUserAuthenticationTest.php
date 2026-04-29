@@ -464,15 +464,15 @@ final class BackendUserAuthenticationTest extends UnitTestCase
             'for user' => [
                 'perms' => 2,
                 'groups' => [],
-                'expected' => ' (((`pages`.`perms_everybody` & 2 = 2) OR' .
-                ' (((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 2 = 2)))))',
+                'expected' => ' (((`pages`.`perms_everybody` & 2 = 2) OR'
+                . ' (((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 2 = 2)))))',
             ],
             'for user with groups' => [
                 'perms' => 8,
                 'groups' => [1, 2],
-                'expected' => ' (((`pages`.`perms_everybody` & 8 = 8) OR' .
-                ' (((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 8 = 8)))' .
-                ' OR (((`pages`.`perms_groupid` IN (1, 2)) AND (`pages`.`perms_group` & 8 = 8)))))',
+                'expected' => ' (((`pages`.`perms_everybody` & 8 = 8) OR'
+                . ' (((`pages`.`perms_userid` = 123) AND (`pages`.`perms_user` & 8 = 8)))'
+                . ' OR (((`pages`.`perms_groupid` IN (1, 2)) AND (`pages`.`perms_group` & 8 = 8)))))',
             ],
         ];
     }
@@ -549,8 +549,8 @@ final class BackendUserAuthenticationTest extends UnitTestCase
             ->method('isAdmin')
             ->willReturn(false);
 
-        $subject->groupData['explicit_allowdeny'] =
-            'dummytable:dummyfield:explicitly_allowed_value,'
+        $subject->groupData['explicit_allowdeny']
+            = 'dummytable:dummyfield:explicitly_allowed_value,'
             . 'dummytable:dummyfield:explicitly_denied_value';
 
         $result = $subject->checkAuthMode('dummytable', 'dummyfield', $theValue);

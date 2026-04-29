@@ -56,7 +56,7 @@ readonly class FileStorageTreeProvider
 
         try {
             $hasSubfolders = $storage->isBrowsable() && (is_array($children) ? $children !== [] : !empty($folder->getSubfolders()));
-        } catch (\InvalidArgumentException | InsufficientFolderReadPermissionsException) {
+        } catch (\InvalidArgumentException|InsufficientFolderReadPermissionsException) {
             $hasSubfolders = false;
         }
 

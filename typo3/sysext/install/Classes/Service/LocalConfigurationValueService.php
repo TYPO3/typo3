@@ -110,10 +110,10 @@ class LocalConfigurationValueService
                 $itemData['description'] = $descriptionInfo['description'] ?? '';
                 $itemData['readonly'] = $descriptionInfo['readonly'] ?? false;
                 $itemData['allowedValues'] = $descriptionInfo['allowedValues'] ?? [];
-                $itemData['differentValueInCurrentConfiguration'] = (!isset($descriptionInfo['compareValuesWithCurrentConfiguration']) ||
-                    $descriptionInfo['compareValuesWithCurrentConfiguration']) &&
-                    isset($sectionsFromCurrentConfiguration[$key]) &&
-                    $value !== $sectionsFromCurrentConfiguration[$key];
+                $itemData['differentValueInCurrentConfiguration'] = (!isset($descriptionInfo['compareValuesWithCurrentConfiguration'])
+                    || $descriptionInfo['compareValuesWithCurrentConfiguration'])
+                    && isset($sectionsFromCurrentConfiguration[$key])
+                    && $value !== $sectionsFromCurrentConfiguration[$key];
                 switch ($descriptionType) {
                     case 'multiline':
                         $itemData['type'] = 'textarea';

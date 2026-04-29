@@ -117,7 +117,7 @@ class FileUpload extends AbstractFormElement
         try {
             $resourceFactory->getFolderObjectFromCombinedIdentifier($saveToFileMountIdentifier);
             return true;
-        } catch (\InvalidArgumentException | InsufficientFolderAccessPermissionsException | FolderDoesNotExistException $e) {
+        } catch (\InvalidArgumentException|InsufficientFolderAccessPermissionsException|FolderDoesNotExistException $e) {
             return false;
         }
     }

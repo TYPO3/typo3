@@ -232,10 +232,10 @@ readonly class ImageProcessingInstructions
             }
         }
 
-        if ((int)$cropArea->getOffsetLeft() === 0 &&
-            (int)$cropArea->getOffsetTop() === 0 &&
-            (int)$cropArea->getWidth() === $incomingWidth &&
-            (int)$cropArea->getHeight() === $incomingHeight) {
+        if ((int)$cropArea->getOffsetLeft() === 0
+            && (int)$cropArea->getOffsetTop() === 0
+            && (int)$cropArea->getWidth() === $incomingWidth
+            && (int)$cropArea->getHeight() === $incomingHeight) {
             $cropArea = null;
         }
 

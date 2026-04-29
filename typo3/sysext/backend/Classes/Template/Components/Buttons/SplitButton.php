@@ -105,9 +105,9 @@ class SplitButton extends AbstractButton
     {
         if (!$item->isValid()) {
             throw new \InvalidArgumentException(
-                'Only valid items may be assigned to a split Button. "' .
-                $item->getType() .
-                '" did not pass validation',
+                'Only valid items may be assigned to a split Button. "'
+                . $item->getType()
+                . '" did not pass validation',
                 1441706330
             );
         }
@@ -237,17 +237,17 @@ class SplitButton extends AbstractButton
                 foreach ($optionAttributes as $key => $value) {
                     $optionAttributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
                 }
-                $html =
-                    '<a' . $optionAttributesString . '>' .
-                        '<span class="dropdown-item-columns">' .
-                            '<span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">' .
-                                ($option->getIcon()?->render('inline') ?? '') .
-                            '</span>' .
-                            '<span class="dropdown-item-column dropdown-item-column-title">' .
-                                htmlspecialchars($option->getTitle()) .
-                            '</span>' .
-                        '</span>' .
-                    '</a>';
+                $html
+                    = '<a' . $optionAttributesString . '>'
+                        . '<span class="dropdown-item-columns">'
+                            . '<span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">'
+                                . ($option->getIcon()?->render('inline') ?? '')
+                            . '</span>'
+                            . '<span class="dropdown-item-column dropdown-item-column-title">'
+                                . htmlspecialchars($option->getTitle())
+                            . '</span>'
+                        . '</span>'
+                    . '</a>';
             } else {
                 // for any other kind of button we simply use what comes along (e.g. LinkButton)
                 $html = $option->render();

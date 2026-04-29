@@ -44,9 +44,9 @@ return [
         ],
     ],
     'types' => [
-        '0' => ['showitem' =>
-            '--div--;General, title,' .
-            '--div--;Visibility, sys_language_uid, l10n_parent, hidden, starttime, endtime',
+        '0' => ['showitem'
+            => '--div--;General, title,'
+            . '--div--;Visibility, sys_language_uid, l10n_parent, hidden, starttime, endtime',
         ],
     ],
 ];

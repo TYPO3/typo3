@@ -139,8 +139,8 @@ final class SelectCountryElement extends AbstractFormElement
             $options .= ($optionGroup ? '<optgroup label="' . htmlspecialchars($selectItemGroup['header']['title'], ENT_COMPAT, 'UTF-8', false) . '">' : '');
 
             foreach ($selectItemGroup['items'] as $item) {
-                $options .= '<option value="' . htmlspecialchars($item['value']) . '" data-icon="' .
-                    htmlspecialchars($item['icon']) . '"'
+                $options .= '<option value="' . htmlspecialchars($item['value']) . '" data-icon="'
+                    . htmlspecialchars($item['icon']) . '"'
                     . ($item['selected'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($item['title'], ENT_COMPAT, 'UTF-8', false) . '</option>';
             }
             $hasIcons = !empty($item['icon']);

@@ -88,8 +88,8 @@ final class UploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
         $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
         $formObjectName = $this->getFormObjectName();
         $fileReferenceIdentifier = $this->hashService->hmac($property . $fileReference->getUid(), self::class);
-        $nameAttribute = $pluginNamespace . '[' . FileHandlingService::DELETE_IDENTIFIER . ']' .
-            '[' . $formObjectName . ']' . '[' . $fileReferenceIdentifier . ']';
+        $nameAttribute = $pluginNamespace . '[' . FileHandlingService::DELETE_IDENTIFIER . ']'
+            . '[' . $formObjectName . ']' . '[' . $fileReferenceIdentifier . ']';
         $valueAttribute = $this->hashService->appendHmac(
             json_encode($deleteData, JSON_THROW_ON_ERROR),
             FileHandlingService::DELETE_IDENTIFIER

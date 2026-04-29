@@ -54,7 +54,7 @@ final class AbstractRenderableTest extends FunctionalTestCase
         );
         $prototypeConfiguration = $configurationService->getPrototypeConfiguration('standard');
 
-        $subject = new class () extends AbstractRenderable {};
+        $subject = new class extends AbstractRenderable {};
         $subject->setIdentifier('Foo');
         $subject->setParentRenderable(new FormDefinition('foo', $prototypeConfiguration));
 
@@ -72,7 +72,7 @@ final class AbstractRenderableTest extends FunctionalTestCase
     #[Test]
     public function beforeRenderableIsRemovedEventIsTriggered(): void
     {
-        $subject = new class () extends AbstractRenderable {};
+        $subject = new class extends AbstractRenderable {};
         $subject->setLabel('test');
         $container = $this->get('service_container');
         $state = [

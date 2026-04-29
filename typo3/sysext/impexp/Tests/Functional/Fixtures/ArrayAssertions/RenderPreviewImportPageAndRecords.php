@@ -20,10 +20,10 @@ $fileMtimeActions = filemtime(__DIR__ . '/../../../../../core/Resources/Public/I
 return [
     'update' => false,
     'showDiff' => false,
-    'insidePageTree' =>
-    [
-        0 =>
-        [
+    'insidePageTree'
+    => [
+        0
+        => [
             'ref' => 'pages:1',
             'type' => 'record',
             'msg' => '',
@@ -38,8 +38,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        1 =>
-        [
+        1
+        => [
             'ref' => 'tt_content:1',
             'type' => 'record',
             'msg' => '',
@@ -54,8 +54,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        2 =>
-        [
+        2
+        => [
             'ref' => 'SOFTREF',
             'type' => 'softref',
             'msg' => '',
@@ -66,13 +66,13 @@ return [
 	
 </span>',
             'title' => '<em>header_link, "typolink"</em>: <span title="file:2">file:2</span><br><span class="indent indent-inline-block" style="--indent-level: 2"></span> <strong>Record</strong> sys_file:2',
-            '_softRefInfo' =>
-            [
+            '_softRefInfo'
+            => [
                 'field' => 'header_link',
                 'spKey' => 'typolink',
                 'matchString' => 'file:2',
-                'subst' =>
-                [
+                'subst'
+                => [
                     'type' => 'db',
                     'recordRef' => 'sys_file:2',
                     'tokenID' => '2487ce518ed56d22f20f259928ff43f1',
@@ -82,8 +82,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        3 =>
-        [
+        3
+        => [
             'ref' => 'sys_file:2',
             'type' => 'rel',
             'msg' => '',
@@ -97,8 +97,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        4 =>
-        [
+        4
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => 'LOST RELATION (Path: /)',
@@ -112,8 +112,8 @@ return [
             'controls' => '',
             'message' => '<span class="text-danger">LOST RELATION (Path: /)</span>',
         ],
-        5 =>
-        [
+        5
+        => [
             'ref' => 'tt_content:2',
             'type' => 'record',
             'msg' => '',
@@ -128,8 +128,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        6 =>
-        [
+        6
+        => [
             'ref' => 'SOFTREF',
             'type' => 'softref',
             'msg' => '',
@@ -140,13 +140,13 @@ return [
 	
 </span>',
             'title' => '<em>header_link, "typolink"</em>: <span title="file:4">file:4</span><br><span class="indent indent-inline-block" style="--indent-level: 2"></span> <strong>Record</strong> sys_file:4',
-            '_softRefInfo' =>
-            [
+            '_softRefInfo'
+            => [
                 'field' => 'header_link',
                 'spKey' => 'typolink',
                 'matchString' => 'file:4',
-                'subst' =>
-                [
+                'subst'
+                => [
                     'type' => 'db',
                     'recordRef' => 'sys_file:4',
                     'tokenID' => '81b8b33df54ef433f1cbc7c3e513e6c4',
@@ -156,8 +156,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        7 =>
-        [
+        7
+        => [
             'ref' => 'sys_file:4',
             'type' => 'rel',
             'msg' => '',
@@ -171,8 +171,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        8 =>
-        [
+        8
+        => [
             'ref' => 'pages:2',
             'type' => 'record',
             'msg' => '',
@@ -188,10 +188,10 @@ return [
             'message' => '',
         ],
     ],
-    'outsidePageTree' =>
-    [
-        0 =>
-        [
+    'outsidePageTree'
+    => [
+        0
+        => [
             'ref' => 'sys_file:2',
             'type' => 'record',
             'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
@@ -206,8 +206,8 @@ return [
             'controls' => '',
             'message' => '<span class="text-danger">TABLE &quot;sys_file&quot; will be inserted on ROOT LEVEL! </span>',
         ],
-        1 =>
-        [
+        1
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => 'LOST RELATION (Path: /)',
@@ -221,8 +221,8 @@ return [
             'controls' => '',
             'message' => '<span class="text-danger">LOST RELATION (Path: /)</span>',
         ],
-        2 =>
-        [
+        2
+        => [
             'ref' => 'sys_file:4',
             'type' => 'record',
             'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',

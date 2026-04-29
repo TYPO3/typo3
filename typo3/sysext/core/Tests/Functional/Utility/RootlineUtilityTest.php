@@ -1561,8 +1561,8 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 'pid' => 1000,
                 'is_siteroot' => 0,
                 '_MOUNT_OL' => true,
-                '_MOUNT_PAGE' =>
-                    [
+                '_MOUNT_PAGE'
+                    => [
                         'uid' => 9010,
                         'pid' => 9000,
                         'title' => 'RP2 Parent 9000 Sub 10',

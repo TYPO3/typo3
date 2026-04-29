@@ -672,8 +672,8 @@ class ConfigurationService
                     1528633967
                 );
             }
-            if ($validationDto->hasPropertyCollectionName() &&
-                $validationDto->hasPropertyCollectionElementIdentifier()) {
+            if ($validationDto->hasPropertyCollectionName()
+                && $validationDto->hasPropertyCollectionElementIdentifier()) {
                 $propertyCollectionName = $validationDto->getPropertyCollectionName();
                 $propertyCollectionElementIdentifier = $validationDto->getPropertyCollectionElementIdentifier();
                 if ($propertyCollectionName !== 'finishers' && $propertyCollectionName !== 'validators') {

@@ -26,6 +26,6 @@ final readonly class PolicyPreparedEvent
     public function __construct(
         public PolicyBag $policyBag,
         public ServerRequestInterface $request,
-        public null|string|ResponseInterface $response,
+        public string|ResponseInterface|null $response,
     ) {}
 }

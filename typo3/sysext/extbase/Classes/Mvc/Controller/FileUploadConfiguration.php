@@ -199,10 +199,10 @@ class FileUploadConfiguration
 
     private function isCombinedStoragePathIdentifier(string $identifier): bool
     {
-        return str_contains($identifier, ':') &&
-            !str_starts_with($identifier, ':') &&
-            !str_ends_with($identifier, ':') &&
-            MathUtility::canBeInterpretedAsInteger(substr($identifier, 0, strpos($identifier, ':')));
+        return str_contains($identifier, ':')
+            && !str_starts_with($identifier, ':')
+            && !str_ends_with($identifier, ':')
+            && MathUtility::canBeInterpretedAsInteger(substr($identifier, 0, strpos($identifier, ':')));
     }
 
     /**
@@ -223,40 +223,40 @@ class FileUploadConfiguration
         }
 
         // Migrate allowedMimeTypes to mimeType configuration, if mimeType configuration is not defined
-        if (($validationConfiguration['allowedMimeTypes'] ?? false) &&
-            is_array($validationConfiguration['allowedMimeTypes']) &&
-            !isset($validationConfiguration['mimeType'])
+        if (($validationConfiguration['allowedMimeTypes'] ?? false)
+            && is_array($validationConfiguration['allowedMimeTypes'])
+            && !isset($validationConfiguration['mimeType'])
         ) {
             $validationConfiguration['mimeType'] = ['allowedMimeTypes' => $validationConfiguration['allowedMimeTypes']];
             unset($validationConfiguration['allowedMimeTypes']);
         }
 
-        if (($validationConfiguration['mimeType'] ?? false) &&
-            is_array($validationConfiguration['mimeType'])
+        if (($validationConfiguration['mimeType'] ?? false)
+            && is_array($validationConfiguration['mimeType'])
         ) {
             $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class);
             $mimeTypeValidator->setOptions($validationConfiguration['mimeType']);
             $this->addValidator($mimeTypeValidator);
         }
 
-        if (($validationConfiguration['fileExtension'] ?? false) &&
-            is_array($validationConfiguration['fileExtension'])
+        if (($validationConfiguration['fileExtension'] ?? false)
+            && is_array($validationConfiguration['fileExtension'])
         ) {
             $fileExtensionValidator = GeneralUtility::makeInstance(FileExtensionValidator::class);
             $fileExtensionValidator->setOptions($validationConfiguration['fileExtension']);
             $this->addValidator($fileExtensionValidator);
         }
 
-        if (($validationConfiguration['fileSize'] ?? false) &&
-            is_array($validationConfiguration['fileSize'])
+        if (($validationConfiguration['fileSize'] ?? false)
+            && is_array($validationConfiguration['fileSize'])
         ) {
             $fileSizeValidator = GeneralUtility::makeInstance(FileSizeValidator::class);
             $fileSizeValidator->setOptions($validationConfiguration['fileSize']);
             $this->addValidator($fileSizeValidator);
         }
 
-        if (($validationConfiguration['imageDimensions'] ?? false) &&
-            is_array($validationConfiguration['imageDimensions'])
+        if (($validationConfiguration['imageDimensions'] ?? false)
+            && is_array($validationConfiguration['imageDimensions'])
         ) {
             $imageDimensionsValidator = GeneralUtility::makeInstance(ImageDimensionsValidator::class);
             $imageDimensionsValidator->setOptions($validationConfiguration['imageDimensions']);

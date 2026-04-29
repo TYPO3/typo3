@@ -36,7 +36,7 @@ final class CacheLifetimeCalculatorTest extends FunctionalTestCase
     #[Test]
     public function calculateLifetimeForRowUsesModifiedEventLifetime(): void
     {
-        $eventDispatcher = new class () implements EventDispatcherInterface {
+        $eventDispatcher = new class implements EventDispatcherInterface {
             public function dispatch(object $event): object
             {
                 if ($event instanceof ModifyCacheLifetimeForRowEvent) {

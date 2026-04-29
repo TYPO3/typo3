@@ -929,7 +929,7 @@ class EditDocumentController
                     $message = $e->getMessage();
                     $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
                     $formResults->add(new FormResult($this->getInfobox($message, $title)));
-                } catch (DatabaseRecordException | DatabaseRecordWorkspaceDeletePlaceholderException $e) {
+                } catch (DatabaseRecordException|DatabaseRecordWorkspaceDeletePlaceholderException $e) {
                     $formResults->add(new FormResult($this->getInfobox($e->getMessage())));
                 }
             }
@@ -942,17 +942,17 @@ class EditDocumentController
      */
     protected function getInfobox(string $message, ?string $title = null): string
     {
-        return '<div class="callout callout-danger">' .
-                '<div class="callout-icon">' .
-                    '<span class="icon-emphasized">' .
-                        $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render() .
-                    '</span>' .
-                '</div>' .
-                '<div class="callout-content">' .
-                    ($title ? '<div class="callout-title">' . htmlspecialchars($title) . '</div>' : '') .
-                    '<div class="callout-body">' . htmlspecialchars($message) . '</div>' .
-                '</div>' .
-            '</div>';
+        return '<div class="callout callout-danger">'
+                . '<div class="callout-icon">'
+                    . '<span class="icon-emphasized">'
+                        . $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render()
+                    . '</span>'
+                . '</div>'
+                . '<div class="callout-content">'
+                    . ($title ? '<div class="callout-title">' . htmlspecialchars($title) . '</div>' : '')
+                    . '<div class="callout-body">' . htmlspecialchars($message) . '</div>'
+                . '</div>'
+            . '</div>';
     }
 
     /**

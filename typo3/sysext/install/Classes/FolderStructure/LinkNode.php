@@ -94,14 +94,14 @@ class LinkNode extends AbstractNode implements NodeInterface
         if (!$this->isLink()) {
             $type = @filetype($this->getAbsolutePath());
             if ($type) {
-                $messageBody =
-                    'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a link,' .
-                    ' but is of type ' . $type . '. This cannot be fixed automatically. Please investigate.'
+                $messageBody
+                    = 'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a link,'
+                    . ' but is of type ' . $type . '. This cannot be fixed automatically. Please investigate.'
                 ;
             } else {
-                $messageBody =
-                    'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,' .
-                    ' but is of unknown type, probably because an upper level directory does not exist. Please investigate.'
+                $messageBody
+                    = 'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,'
+                    . ' but is of unknown type, probably because an upper level directory does not exist. Please investigate.'
                 ;
             }
             return [

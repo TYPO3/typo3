@@ -139,8 +139,8 @@ class ValidatorTask extends AbstractTask
         $successfullyExecuted = true;
         $linkAnalyzerResult = $this->getLinkAnalyzerResult();
 
-        if ($this->email !== '' &&
-            $linkAnalyzerResult->getTotalBrokenLinksCount() > 0
+        if ($this->email !== ''
+            && $linkAnalyzerResult->getTotalBrokenLinksCount() > 0
             && (!$this->emailOnBrokenLinkOnly || $linkAnalyzerResult->isDifferentToLastResult())
         ) {
             $successfullyExecuted = $this->reportEmail($linkAnalyzerResult);
@@ -292,8 +292,8 @@ class ValidatorTask extends AbstractTask
             throw new \Exception($lang->sL($this->languageFile . ':tasks.error.emptyToEmail'), 1599724418);
         }
 
-        if ($fluidEmail->getReplyTo() === [] &&
-            GeneralUtility::validEmail($this->modTSconfig['mail.']['replytoemail'] ?? '')
+        if ($fluidEmail->getReplyTo() === []
+            && GeneralUtility::validEmail($this->modTSconfig['mail.']['replytoemail'] ?? '')
         ) {
             $fluidEmail->replyTo(
                 new Address($this->modTSconfig['mail.']['replytoemail'], $this->modTSconfig['mail.']['replytoname'] ?? '')

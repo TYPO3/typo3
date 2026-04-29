@@ -42,7 +42,7 @@ final class StringTypeTest extends UnitTestCase
             'zero as string' => ['0', '0'],
             'null as string' => ['null', 'null'],
             'stringable' => [
-                new class () implements \Stringable {
+                new class implements \Stringable {
                     public function __toString(): string
                     {
                         return 'string-from-stringable';

@@ -107,8 +107,8 @@ readonly class LocalizationFactory
      */
     public function isLanguageFileDeprecated(string $fileReference): bool
     {
-        return in_array($fileReference, self::DEPRECATED_FILES) ||
-            isset(self::MOVED_FILES[$fileReference]);
+        return in_array($fileReference, self::DEPRECATED_FILES)
+            || isset(self::MOVED_FILES[$fileReference]);
     }
 
     /**

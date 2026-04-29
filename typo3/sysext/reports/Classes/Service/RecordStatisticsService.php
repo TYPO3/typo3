@@ -130,16 +130,16 @@ final readonly class RecordStatisticsService
             $lostRecordList = [];
             foreach ($lostRecords[$table] ?? [] as $data) {
                 if (!in_array((int)$data['pid'], $lostPageIds, true)) {
-                    $lostRecordList[] =
-                        '<div class="record">' .
-                        $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render() .
-                        'uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
-                        '</div>';
+                    $lostRecordList[]
+                        = '<div class="record">'
+                        . $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render()
+                        . 'uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20))
+                        . '</div>';
                 } else {
-                    $lostRecordList[] =
-                        '<div class="record-noicon">' .
-                        'uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
-                        '</div>';
+                    $lostRecordList[]
+                        = '<div class="record-noicon">'
+                        . 'uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20))
+                        . '</div>';
                 }
             }
             $tableStatistic[$table] = [

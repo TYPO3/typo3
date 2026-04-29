@@ -113,7 +113,7 @@ final class ProductionExceptionHandlerTest extends FunctionalTestCase
     public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl): void
     {
         $subject = new ProductionExceptionHandler();
-        $logger = new class () implements LoggerInterface {
+        $logger = new class implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
             public function log($level, string|\Stringable $message, array $context = []): void

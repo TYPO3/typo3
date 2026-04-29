@@ -92,8 +92,8 @@ readonly class SiteMatcher implements SingletonInterface
         // Allow insecure pageId based site resolution if explicitly enabled and only if both, ?id= and ?L= are defined
         // (pageId based site resolution without L parameter has always been prohibited, so we do not support that)
         if (
-            $this->features->isFeatureEnabled('security.frontend.allowInsecureSiteResolutionByQueryParameters') &&
-            $pageId !== null && $languageId !== null
+            $this->features->isFeatureEnabled('security.frontend.allowInsecureSiteResolutionByQueryParameters')
+            && $pageId !== null && $languageId !== null
         ) {
             return $this->matchSiteByQueryParams($pageId, $languageId, $routeResult, $uri);
         }
@@ -246,7 +246,7 @@ readonly class SiteMatcher implements SingletonInterface
                 $match['language'],
                 $match['tail']
             );
-        } catch (NoConfigurationException | ResourceNotFoundException) {
+        } catch (NoConfigurationException|ResourceNotFoundException) {
             return new SiteRouteResult($uri, new NullSite(), null, '');
         }
     }

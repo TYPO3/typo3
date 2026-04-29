@@ -247,8 +247,8 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         if (!$limit->isAccepted()) {
             $this->logger->debug('Login request has been rate limited for IP address {ipAddress}', ['ipAddress' => $request->getAttribute('normalizedParams')->getRemoteAddress()]);
             $dateformat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-            $lockedUntil = $limit->getRetryAfter()->getTimestamp() > 0 ?
-                ' until ' . date($dateformat, $limit->getRetryAfter()->getTimestamp()) : '';
+            $lockedUntil = $limit->getRetryAfter()->getTimestamp() > 0
+                ? ' until ' . date($dateformat, $limit->getRetryAfter()->getTimestamp()) : '';
             throw new RequestRateLimitedException(
                 HttpUtility::HTTP_STATUS_403,
                 'The login is locked' . $lockedUntil . ' due to too many failed login attempts from your IP address.',

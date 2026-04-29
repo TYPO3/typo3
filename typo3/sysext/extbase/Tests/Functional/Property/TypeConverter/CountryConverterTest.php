@@ -33,7 +33,7 @@ final class CountryConverterTest extends FunctionalTestCase
     {
         $propertyMapper = $this->get(PropertyMapper::class);
 
-        $model = new class () extends AbstractEntity {
+        $model = new class extends AbstractEntity {
             protected ?Country $country = null;
 
             public function setCountry(Country $country): void

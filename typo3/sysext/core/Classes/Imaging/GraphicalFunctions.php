@@ -721,8 +721,8 @@ class GraphicalFunctions
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'] ?? [];
         // Use legacy processor_stripColorProfileCommand setting if defined, otherwise
         // use the preferred configuration option processor_stripColorProfileParameters
-        $stripColorProfileCommand = $gfxConf['processor_stripColorProfileCommand'] ??
-            implode(' ', array_map(CommandUtility::escapeShellArgument(...), $gfxConf['processor_stripColorProfileParameters'] ?? []));
+        $stripColorProfileCommand = $gfxConf['processor_stripColorProfileCommand']
+            ?? implode(' ', array_map(CommandUtility::escapeShellArgument(...), $gfxConf['processor_stripColorProfileParameters'] ?? []));
         if ($options['stripProfile'] && $stripColorProfileCommand !== '') {
             return $stripColorProfileCommand . ' ' . $parameters;
         }

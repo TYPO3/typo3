@@ -430,8 +430,8 @@ class DocHeaderComponent
         } elseif ($hasManualShortcutButton) {
             // Trigger deprecation if shortcut button was manually added
             trigger_error(
-                'Manually adding ShortcutButton to the button bar is deprecated and will be removed in TYPO3 v15. ' .
-                'Use DocHeaderComponent::setShortcutContext() instead to provide the shortcut configuration.',
+                'Manually adding ShortcutButton to the button bar is deprecated and will be removed in TYPO3 v15. '
+                . 'Use DocHeaderComponent::setShortcutContext() instead to provide the shortcut configuration.',
                 E_USER_DEPRECATED
             );
         }

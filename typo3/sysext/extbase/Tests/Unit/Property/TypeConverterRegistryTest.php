@@ -43,7 +43,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
     #[Test]
     public function addThrowsDuplicateTypeConverterException(): void
     {
-        $extendedBooleanConverter = new class () extends BooleanConverter {};
+        $extendedBooleanConverter = new class extends BooleanConverter {};
         $extendedBooleanConverterClassName = get_class($extendedBooleanConverter);
 
         $this->expectException(DuplicateTypeConverterException::class);
@@ -69,7 +69,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
     #[Test]
     public function findConverterFindsConverterForSimpleTargetTypesWithHighestPriority(): void
     {
-        $extendedBooleanConverter = new class () extends BooleanConverter {};
+        $extendedBooleanConverter = new class extends BooleanConverter {};
         $extendedBooleanConverterClassName = get_class($extendedBooleanConverter);
         $this->subject->add($extendedBooleanConverter, 20, ['boolean', 'integer'], 'boolean');
 
@@ -121,7 +121,7 @@ final class TypeConverterRegistryTest extends UnitTestCase
     {
         $this->subject->add(new FileReferenceConverter(), 10, ['integer'], FileReference::class);
 
-        $extendedFileReference = new class () extends FileReference {};
+        $extendedFileReference = new class extends FileReference {};
         $extendedFileReferenceClassName = get_class($extendedFileReference);
 
         $converter = $this->subject->findTypeConverter('integer', $extendedFileReferenceClassName);
@@ -143,14 +143,14 @@ final class TypeConverterRegistryTest extends UnitTestCase
             '/^There exist at least two converters which handle the conversion to an interface with priority "10"/'
         );
 
-        $countableConverter = new class () extends AbstractTypeConverter {
+        $countableConverter = new class extends AbstractTypeConverter {
             public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
             {
                 return null;
             }
         };
 
-        $arrayAccessConverter = new class () extends AbstractTypeConverter {
+        $arrayAccessConverter = new class extends AbstractTypeConverter {
             public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
             {
                 return null;

@@ -1152,8 +1152,8 @@ class ContentObjectRenderer
                     if (array_intersect_key(self::STD_WRAP_ORDER, $conf[$functionProperties])) {
                         // Check if there's already content available before processing
                         // any ifEmpty or ifBlank stdWrap properties
-                        if (($functionName === 'ifBlank' && $content !== '') ||
-                            ($functionName === 'ifEmpty' && !empty(trim((string)$content)))) {
+                        if (($functionName === 'ifBlank' && $content !== '')
+                            || ($functionName === 'ifEmpty' && !empty(trim((string)$content)))) {
                             continue;
                         }
 
@@ -5226,8 +5226,8 @@ class ContentObjectRenderer
                 $tempContent = substr($tempContent, 0, $lastOpeningTagStartPosition) . substr($tempContent, $closingTagEndPosition);
             }
         } while (
-            ($nextMatchingEndTagPosition !== false && $nextSameTypeTagPosition !== false) &&
-            $nextSameTypeTagPosition < $nextMatchingEndTagPosition
+            ($nextMatchingEndTagPosition !== false && $nextSameTypeTagPosition !== false)
+            && $nextSameTypeTagPosition < $nextMatchingEndTagPosition
         );
 
         // if no closing tag is found we use length of the whole content

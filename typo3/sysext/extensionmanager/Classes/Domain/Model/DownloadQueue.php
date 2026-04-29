@@ -78,8 +78,8 @@ class DownloadQueue implements SingletonInterface
         if (!in_array($stack, ['download', 'update'])) {
             throw new ExtensionManagerException('Stack has to be either "download" or "update"', 1342432104);
         }
-        if (array_key_exists($stack, $this->extensionStorage) &&
-            array_key_exists($extension->extensionKey, $this->extensionStorage[$stack])
+        if (array_key_exists($stack, $this->extensionStorage)
+            && array_key_exists($extension->extensionKey, $this->extensionStorage[$stack])
         ) {
             unset($this->extensionStorage[$stack][$extension->extensionKey]);
         }

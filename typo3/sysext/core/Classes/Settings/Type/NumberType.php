@@ -38,8 +38,8 @@ readonly class NumberType implements SettingsTypeInterface, SettingsTypeOptionAw
         if (is_int($value) || is_float($value)) {
             $numericValue = (float)$value;
         } elseif (is_string($value) && (
-            MathUtility::canBeInterpretedAsInteger($value) ||
-            MathUtility::canBeInterpretedAsFloat($value)
+            MathUtility::canBeInterpretedAsInteger($value)
+            || MathUtility::canBeInterpretedAsFloat($value)
         )) {
             $numericValue = (float)$value;
         } else {
@@ -47,13 +47,13 @@ readonly class NumberType implements SettingsTypeInterface, SettingsTypeOptionAw
         }
 
         // Check optional constraints
-        if (array_key_exists('min', $definition->options) &&
-            $numericValue < $definition->options['min']
+        if (array_key_exists('min', $definition->options)
+            && $numericValue < $definition->options['min']
         ) {
             return false;
         }
-        if (array_key_exists('max', $definition->options) &&
-            $numericValue > $definition->options['max']
+        if (array_key_exists('max', $definition->options)
+            && $numericValue > $definition->options['max']
         ) {
             return false;
         }

@@ -83,11 +83,11 @@ final class CollectionValidatorTest extends FunctionalTestCase
     #[Test]
     public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping(): void
     {
-        $A = new class () {
+        $A = new class {
             public $b = [];
             public $integer = 5;
         };
-        $B = new class () {
+        $B = new class {
             public $a;
             public $c;
             public $integer = 'Not an integer';

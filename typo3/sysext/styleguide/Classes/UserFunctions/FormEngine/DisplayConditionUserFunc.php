@@ -31,7 +31,7 @@ final class DisplayConditionUserFunc
      */
     public function lessThen($parameter): bool
     {
-        return (int)$parameter['record'][$parameter['conditionParameters'][0]] <
-            (int)$parameter['record'][$parameter['conditionParameters'][1]];
+        return (int)$parameter['record'][$parameter['conditionParameters'][0]]
+            < (int)$parameter['record'][$parameter['conditionParameters'][1]];
     }
 }

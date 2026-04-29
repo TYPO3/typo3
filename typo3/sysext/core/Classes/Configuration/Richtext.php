@@ -200,8 +200,8 @@ readonly class Richtext
             ArrayUtility::mergeRecursiveWithOverrule($rtePageTsConfiguration, $defaultPageTsConfigOverrides);
         }
 
-        $rtePageTsConfiguration['fieldSpecificPreset'] = $fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.']['preset'] ??
-            $fieldSpecificPageTsConfigOverrides['preset'] ?? null;
+        $rtePageTsConfiguration['fieldSpecificPreset'] = $fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.']['preset']
+            ?? $fieldSpecificPageTsConfigOverrides['preset'] ?? null;
 
         // Then overload with RTE.config.tt_content.bodytext
         if (is_array($fieldSpecificPageTsConfigOverrides)) {

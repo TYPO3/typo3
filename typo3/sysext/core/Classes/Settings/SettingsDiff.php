@@ -89,8 +89,8 @@ final readonly class SettingsDiff
                 $settings = self::removeByPathWithAncestors($settings, $key, '.');
             }
 
-            if (!array_key_exists($key, $settings) ||
-                $value !== $settings[$key]
+            if (!array_key_exists($key, $settings)
+                || $value !== $settings[$key]
             ) {
                 $settings[$key] = $value;
                 $changes[] = $key;

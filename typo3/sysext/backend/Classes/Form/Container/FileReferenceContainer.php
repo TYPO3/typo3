@@ -248,12 +248,12 @@ class FileReferenceContainer extends AbstractContainer
                             $imageUrl = $processedImage->getPublicUrl() ?? '';
                             $headerImage = '
                                 <div class="panel-thumbnail" id="' . $objectId . '_thumbnailcontainer">
-                                    <img src="' . htmlspecialchars($imageUrl) . '" ' .
-                                        'width="' . $processedImage->getProperty('width') . '" ' .
-                                        'height="' . $processedImage->getProperty('height') . '" ' .
-                                        'alt="" ' .
-                                        'title="' . htmlspecialchars($altText) . '" ' .
-                                        'loading="lazy">
+                                    <img src="' . htmlspecialchars($imageUrl) . '" '
+                                        . 'width="' . $processedImage->getProperty('width') . '" '
+                                        . 'height="' . $processedImage->getProperty('height') . '" '
+                                        . 'alt="" '
+                                        . 'title="' . htmlspecialchars($altText) . '" '
+                                        . 'loading="lazy">
                                 </div>';
                         }
                     }

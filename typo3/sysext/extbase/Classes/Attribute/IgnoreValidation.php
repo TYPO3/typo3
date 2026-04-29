@@ -36,8 +36,8 @@ class IgnoreValidation
         // @deprecated Remove with TYPO3 v15.0
         if (is_array($argumentName)) {
             trigger_error(
-                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. ' .
-                'Use explicit constructor parameters instead.',
+                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. '
+                . 'Use explicit constructor parameters instead.',
                 E_USER_DEPRECATED,
             );
 
@@ -50,8 +50,8 @@ class IgnoreValidation
 
         if ($this->argumentName !== null) {
             trigger_error(
-                'Passing an argument name to an #[IgnoreValidation] attribute is deprecated and will be removed in ' .
-                'TYPO3 v15.0. Place the attribute on the method parameter instead.',
+                'Passing an argument name to an #[IgnoreValidation] attribute is deprecated and will be removed in '
+                . 'TYPO3 v15.0. Place the attribute on the method parameter instead.',
                 E_USER_DEPRECATED,
             );
         }

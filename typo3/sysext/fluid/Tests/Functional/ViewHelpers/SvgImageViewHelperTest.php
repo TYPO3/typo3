@@ -503,8 +503,8 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
         $expectedRecords = 1;
 
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($dumpTable);
-        $rows =
-            $queryBuilder
+        $rows
+            = $queryBuilder
                 ->select('*')
                 ->from($dumpTable)
                 ->executeQuery()

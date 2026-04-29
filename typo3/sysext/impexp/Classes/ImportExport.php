@@ -707,12 +707,12 @@ abstract class ImportExport
     protected function renderRecordExcludeCheckbox(string $recordRef): string
     {
         return
-            '<div class="form-check mb-0">' .
-            '<input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][' . $recordRef . ']" id="checkExclude' . $recordRef . '" value="1" />' .
-            '<label class="form-check-label" for="checkExclude' . $recordRef . '">' .
-            htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_exclude')) .
-            '</label>' .
-            '</div>';
+            '<div class="form-check mb-0">'
+            . '<input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][' . $recordRef . ']" id="checkExclude' . $recordRef . '" value="1" />'
+            . '<label class="form-check-label" for="checkExclude' . $recordRef . '">'
+            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_exclude'))
+            . '</label>'
+            . '</div>';
     }
 
     /**

@@ -53,7 +53,7 @@ final class SiteResolverTest extends UnitTestCase
         $this->originalLocale = setlocale(LC_COLLATE, '0');
 
         // A request handler which expects a site to be found.
-        $this->siteFoundRequestHandler = new class () implements RequestHandlerInterface {
+        $this->siteFoundRequestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 $site = $request->getAttribute('site', false);

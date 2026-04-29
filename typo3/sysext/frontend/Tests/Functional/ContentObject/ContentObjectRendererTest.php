@@ -2593,8 +2593,8 @@ content="benni">',
                 "\t" . 'left' . "\t" . 'middle' . "\t" . 'right' . "\t",
                 'middle',
                 [
-                    'noTrimWrap' =>
-                        '|' . "\t" . 'left' . "\t" . '|' . "\t" . 'right' . "\t" . '|',
+                    'noTrimWrap'
+                        => '|' . "\t" . 'left' . "\t" . '|' . "\t" . 'right' . "\t" . '|',
                 ],
             ],
             'Split char is 0' => [
@@ -3792,10 +3792,10 @@ content="benni">',
     {
         return [
             'Referenced after reference and empty' => [
-                'typoScriptString' =>
-                    "lib.bar =< lib.foo\n" .
-                    "lib.bar.value = bar\n" .
-                    "lib.foo = TEXT\n",
+                'typoScriptString'
+                    => "lib.bar =< lib.foo\n"
+                    . "lib.bar.value = bar\n"
+                    . "lib.foo = TEXT\n",
                 'propertyValue' => '< lib.bar',
                 'override' => [],
                 'expected' => [
@@ -3806,11 +3806,11 @@ content="benni">',
                 ],
             ],
             'Referenced after reference and not empty, value makes sense' => [
-                'typoScriptString' =>
-                    "lib.bar =< lib.foo\n" .
-                    "lib.bar.value = bar\n" .
-                    "lib.foo = TEXT\n" .
-                    'lib.foo.value = foo',
+                'typoScriptString'
+                    => "lib.bar =< lib.foo\n"
+                    . "lib.bar.value = bar\n"
+                    . "lib.foo = TEXT\n"
+                    . 'lib.foo.value = foo',
                 'propertyValue' => '< lib.bar',
                 'override' => [],
                 'expected' => [
@@ -3821,11 +3821,11 @@ content="benni">',
                 ],
             ],
             'Referenced after reference and not empty, value makes no sense' => [
-                'typoScriptString' =>
-                    "lib.bar =< lib.foo\n" .
-                    "lib.bar.value = bar\n" .
-                    "lib.foo = TEXT\n" .
-                    'lib.foo.makes = no_sense',
+                'typoScriptString'
+                    => "lib.bar =< lib.foo\n"
+                    . "lib.bar.value = bar\n"
+                    . "lib.foo = TEXT\n"
+                    . 'lib.foo.makes = no_sense',
                 'propertyValue' => '< lib.bar',
                 'override' => [],
                 'expected' => [
@@ -3837,10 +3837,10 @@ content="benni">',
                 ],
             ],
             'Referenced before reference and empty' => [
-                'typoScriptString' =>
-                    "lib.foo = TEXT\n" .
-                    "lib.bar =< lib.foo\n" .
-                    "lib.bar.value = bar\n",
+                'typoScriptString'
+                    => "lib.foo = TEXT\n"
+                    . "lib.bar =< lib.foo\n"
+                    . "lib.bar.value = bar\n",
                 'propertyValue' => '< lib.bar',
                 'override' => [],
                 'expected' => [
@@ -3851,11 +3851,11 @@ content="benni">',
                 ],
             ],
             'Referenced before reference and not empty, value makes sense' => [
-                'typoScriptString' =>
-                    "lib.foo = TEXT\n" .
-                    "lib.foo.value = foo\n" .
-                    "lib.bar =< lib.foo\n" .
-                    "lib.bar.value = bar\n",
+                'typoScriptString'
+                    => "lib.foo = TEXT\n"
+                    . "lib.foo.value = foo\n"
+                    . "lib.bar =< lib.foo\n"
+                    . "lib.bar.value = bar\n",
                 'propertyValue' => '< lib.bar',
                 'override' => [],
                 'expected' => [
@@ -3866,11 +3866,11 @@ content="benni">',
                 ],
             ],
             'Referenced before reference and not empty, value makes no sense' => [
-                'typoScriptString' =>
-                    "lib.foo = TEXT\n" .
-                    "lib.foo.makes = no_sense\n" .
-                    "lib.bar =< lib.foo\n" .
-                    "lib.bar.value = bar\n",
+                'typoScriptString'
+                    => "lib.foo = TEXT\n"
+                    . "lib.foo.makes = no_sense\n"
+                    . "lib.bar =< lib.foo\n"
+                    . "lib.bar.value = bar\n",
                 'propertyValue' => '< lib.bar',
                 'override' => [],
                 'expected' => [
@@ -3882,12 +3882,12 @@ content="benni">',
                 ],
             ],
             'Referenced before nested reference' => [
-                'typoScriptString' =>
-                    "lib.bar =< lib.foo\n" .
-                    "lib.bar.value = bar\n" .
-                    "lib.foo =< lib.foobar\n" .
-                    "lib.foobar = TEXT\n" .
-                    'lib.foobar.value = foobar',
+                'typoScriptString'
+                    => "lib.bar =< lib.foo\n"
+                    . "lib.bar.value = bar\n"
+                    . "lib.foo =< lib.foobar\n"
+                    . "lib.foobar = TEXT\n"
+                    . 'lib.foobar.value = foobar',
                 'propertyValue' => '< lib.bar',
                 'override' => [],
                 'expected' => [
@@ -3916,9 +3916,9 @@ content="benni">',
                 ],
             ],
             'Referenced multi-segment target' => [
-                'typoScriptString' =>
-                    "lib.foo.bar = TEXT\n" .
-                    "lib.foo.bar.value = hi\n",
+                'typoScriptString'
+                    => "lib.foo.bar = TEXT\n"
+                    . "lib.foo.bar.value = hi\n",
                 'propertyValue' => '< lib.foo.bar',
                 'override' => [],
                 'expected' => [
@@ -3938,10 +3938,10 @@ content="benni">',
                 ],
             ],
             'Override retains nested reference' => [
-                'typoScriptString' =>
-                    "lib.bar = TEXT\n" .
-                    "lib.bar.value = fromLibBar\n" .
-                    "lib.other = COA\n",
+                'typoScriptString'
+                    => "lib.bar = TEXT\n"
+                    . "lib.bar.value = fromLibBar\n"
+                    . "lib.other = COA\n",
                 'propertyValue' => '< lib.bar',
                 'override' => [
                     'sub' => '< lib.other',

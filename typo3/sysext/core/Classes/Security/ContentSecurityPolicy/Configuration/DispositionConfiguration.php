@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration;
  */
 readonly class DispositionConfiguration
 {
-    public null|bool|string $reportingUrl;
+    public bool|string|null $reportingUrl;
 
     public function __construct(
         public bool $inheritDefault,
@@ -37,7 +37,7 @@ readonly class DispositionConfiguration
         $this->reportingUrl = self::normalizeReportingUrl($reportingUrl);
     }
 
-    public static function normalizeReportingUrl(mixed $reportingUrl): null|bool|string
+    public static function normalizeReportingUrl(mixed $reportingUrl): bool|string|null
     {
         if ($reportingUrl === null || is_bool($reportingUrl)) {
             return $reportingUrl;

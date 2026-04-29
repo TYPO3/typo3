@@ -2045,8 +2045,8 @@ class DataHandler
     {
         $items = $tcaFieldConf['items'] ?? null;
         if (
-            ($tcaFieldConf['itemsProcFunc'] ?? '') !== '' ||
-            ($tcaFieldConf['itemsProcessors'] ?? []) !== []
+            ($tcaFieldConf['itemsProcFunc'] ?? '') !== ''
+            || ($tcaFieldConf['itemsProcessors'] ?? []) !== []
         ) {
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
             $itemsCollection = SelectItemCollection::createFromArray($tcaFieldConf['items'], $tcaFieldConf['type']);
@@ -2142,9 +2142,9 @@ class DataHandler
 
         // if no value was found and an itemsProcFunc is defined, check that for the value
         if (
-            empty($res['value']) &&
-            (($tcaFieldConf['itemsProcFunc'] ?? '') !== '' ||
-            ($tcaFieldConf['itemsProcessors'] ?? []) !== [])
+            empty($res['value'])
+            && (($tcaFieldConf['itemsProcFunc'] ?? '') !== ''
+            || ($tcaFieldConf['itemsProcessors'] ?? []) !== [])
         ) {
             $processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
             $itemsCollection = SelectItemCollection::createFromArray($tcaFieldConf['items'], $tcaFieldConf['type']);
@@ -8272,7 +8272,7 @@ class DataHandler
             // Try to fetch the site language from the pages' associated site
             $site = $this->siteFinder->getSiteByPageId($pageId);
             return $site->getLanguageById($languageId);
-        } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+        } catch (SiteNotFoundException|\InvalidArgumentException $e) {
             // In case no site language could be found, we might deal with the root node,
             // we therefore try to fetch the site language from all available sites.
             // NOTE: This has side effects, in case the SAME ID is used for different languages in different sites!

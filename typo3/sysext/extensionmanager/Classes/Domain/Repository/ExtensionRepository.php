@@ -184,13 +184,13 @@ readonly class ExtensionRepository
                 $queryBuilder->createNamedParameter($searchPlaceholderForLike)
             ),
         ];
-        $caseStatement = 'CASE ' .
-            'WHEN ' . $searchConstraints['extension_key'] . ' THEN 16 ' .
-            'WHEN ' . $searchConstraints['extension_key_like'] . ' THEN 8 ' .
-            'WHEN ' . $searchConstraints['title'] . ' THEN 4 ' .
-            'WHEN ' . $searchConstraints['description'] . ' THEN 2 ' .
-            'WHEN ' . $searchConstraints['author_name'] . ' THEN 1 ' .
-            'END AS ' . $queryBuilder->quoteIdentifier('position');
+        $caseStatement = 'CASE '
+            . 'WHEN ' . $searchConstraints['extension_key'] . ' THEN 16 '
+            . 'WHEN ' . $searchConstraints['extension_key_like'] . ' THEN 8 '
+            . 'WHEN ' . $searchConstraints['title'] . ' THEN 4 '
+            . 'WHEN ' . $searchConstraints['description'] . ' THEN 2 '
+            . 'WHEN ' . $searchConstraints['author_name'] . ' THEN 1 '
+            . 'END AS ' . $queryBuilder->quoteIdentifier('position');
         $result = $queryBuilder
             ->select('*')
             ->addSelectLiteral($caseStatement)

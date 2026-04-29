@@ -462,8 +462,8 @@ class Backend implements BackendInterface
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
         if ($parentColumnMap->typeOfRelation !== Relation::HAS_MANY) {
             throw new IllegalRelationTypeException(
-                'Parent column relation type is ' . Relation::class . '::' . $parentColumnMap->typeOfRelation->name .
-                ' but should be ' . Relation::class . '::' . Relation::HAS_MANY->name,
+                'Parent column relation type is ' . Relation::class . '::' . $parentColumnMap->typeOfRelation->name
+                . ' but should be ' . Relation::class . '::' . Relation::HAS_MANY->name,
                 1345368105
             );
         }
@@ -894,8 +894,8 @@ class Backend implements BackendInterface
             return GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap);
         }
 
-        if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling') &&
-            $columnMap?->type === TableColumnType::DATETIME
+        if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling')
+            && $columnMap?->type === TableColumnType::DATETIME
         ) {
             return QueryHelper::transformDateTimeToDatabaseValue(
                 null,

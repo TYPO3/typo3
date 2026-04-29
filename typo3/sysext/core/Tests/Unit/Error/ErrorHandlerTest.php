@@ -53,7 +53,7 @@ final class ErrorHandlerTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->trackingLogger = new class () implements LoggerInterface {
+        $this->trackingLogger = new class implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
             public function log($level, string|\Stringable $message, array $context = []): void
@@ -85,7 +85,7 @@ final class ErrorHandlerTest extends UnitTestCase
         ?string $errorsLogLevel,
         ?string $exceptionMessage
     ): void {
-        $logManager = new class () extends LogManager implements LogManagerInterface {
+        $logManager = new class extends LogManager implements LogManagerInterface {
             protected array $loggers = [];
             public function getLogger(string $name = ''): LoggerInterface
             {

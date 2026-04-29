@@ -90,7 +90,7 @@ final class PageRouterTest extends AbstractTestCase
     #[Test]
     public function generateUriDispatchesAfterPageUriGeneratedEvent(): void
     {
-        $eventCapture = new class () {
+        $eventCapture = new class {
             public ?AfterPageUriGeneratedEvent $event = null;
             public ?string $dispatchedUri = null;
         };

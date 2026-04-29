@@ -72,8 +72,8 @@ final class YamlSourceTest extends UnitTestCase
             [new FilePersistenceSlot(new HashService()), new YamlFileLoader($this->createMock(LoggerInterface::class))],
         );
         $input = GeneralUtility::getFileAbsFileName('EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Header.yaml');
-        $expected =
-'# Header 1
+        $expected
+= '# Header 1
 # Header 2
 ';
         self::assertSame($expected, $mockYamlSource->_call('getHeaderFromFile', $input));

@@ -768,8 +768,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                     ],
                     6 => [
                         'title' => 'Link to a query parameter',
-                        'link' =>
-                        '/authors?showOption=1&cHash=98e2ce943b4e491e9b4b8a8fdf77cf226e57e433eaf19303db124fd4cfedd36b',
+                        'link'
+                        => '/authors?showOption=1&cHash=98e2ce943b4e491e9b4b8a8fdf77cf226e57e433eaf19303db124fd4cfedd36b',
                         'target' => '',
                     ],
                     // target is empty because no fluid_styled_content typoscript with config.extTarget is active

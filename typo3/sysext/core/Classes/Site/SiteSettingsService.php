@@ -97,8 +97,8 @@ readonly class SiteSettingsService
         $defaultSettings = $minify ? $this->siteSettingsFactory->createSettings($site->getSets(), null) : null;
 
         // Settings from config/sites/*/settings.yaml only (our persistence target)
-        $localSettings = $this->siteSettingsFactory->loadLocalSettings($site->getIdentifier()) ??
-            $site->getRawConfiguration()['settings'] ?? [];
+        $localSettings = $this->siteSettingsFactory->loadLocalSettings($site->getIdentifier())
+            ?? $site->getRawConfiguration()['settings'] ?? [];
 
         return SettingsDiff::create(
             $localSettings,

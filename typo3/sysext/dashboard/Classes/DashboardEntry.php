@@ -122,8 +122,8 @@ final readonly class DashboardEntry
             eventdata: $this->getEventData(),
             refreshable: $result->refreshable,
             configurable: (
-                $this->renderer instanceof WidgetRendererInterface &&
-                array_filter($this->renderer->getSettingsDefinitions(), fn($definition) => !$definition->readonly) !== []
+                $this->renderer instanceof WidgetRendererInterface
+                && array_filter($this->renderer->getSettingsDefinitions(), fn($definition) => !$definition->readonly) !== []
             )
         );
     }

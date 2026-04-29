@@ -230,8 +230,8 @@ abstract class AbstractContentPagePositionMap
             }
 
             // Create the table content
-            $tableContent =
-                '<colgroup>' . str_repeat('<col span="1" style="width: calc(100% / ' . $colCount . ')">', $colCount) . '</colgroup>'
+            $tableContent
+                = '<colgroup>' . str_repeat('<col span="1" style="width: calc(100% / ' . $colCount . ')">', $colCount) . '</colgroup>'
                 . '<tbody>' . implode(LF, $tableRows) . '</tbody>';
         } else {
             // Build position map based on TCA colPos configuration

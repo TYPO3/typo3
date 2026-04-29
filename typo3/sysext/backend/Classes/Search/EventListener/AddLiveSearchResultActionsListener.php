@@ -55,8 +55,8 @@ final readonly class AddLiveSearchResultActionsListener
     private function addSwitchUserAction(ResultItem $resultItem): void
     {
         $row = $resultItem->getInternalData()['row'];
-        $backendUserIsActive =
-            (int)$row['disable'] === 0
+        $backendUserIsActive
+            = (int)$row['disable'] === 0
             && ($row['starttime'] === 0 && $row['endtime'] === 0 || $row['starttime'] <= time() && ($row['starttime'] === 0 && $row['endtime'] > time()));
         $currentUser = $this->getBackendUser();
 

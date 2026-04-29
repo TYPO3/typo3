@@ -86,8 +86,8 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
         if (isset($this->configuration['database'])) {
             if (!is_int($this->configuration['database'])) {
                 throw new \InvalidArgumentException(
-                    'The specified database number is of type "' . gettype($this->configuration['database']) .
-                    '" but an integer is expected.',
+                    'The specified database number is of type "' . gettype($this->configuration['database'])
+                    . '" but an integer is expected.',
                     1481270871
                 );
             }

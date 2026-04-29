@@ -419,7 +419,7 @@ final class FailsafeContainerTest extends UnitTestCase
             ],
             [
                 // Invokable
-                new class () {
+                new class {
                     public function __invoke(): Service
                     {
                         return new Service();
@@ -429,7 +429,7 @@ final class FailsafeContainerTest extends UnitTestCase
             [
                 // Non-static factory
                 [
-                    new class () {
+                    new class {
                         public function factory(): Service
                         {
                             return new Service();

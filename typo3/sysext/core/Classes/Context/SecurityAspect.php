@@ -62,7 +62,7 @@ class SecurityAspect implements AspectInterface
         );
     }
 
-    public function get(string $name): null|bool|Nonce|RequestToken
+    public function get(string $name): bool|Nonce|RequestToken|null
     {
         return match ($name) {
             'receivedRequestToken' => $this->receivedRequestToken,

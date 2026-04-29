@@ -52,17 +52,17 @@ readonly class ModuleLoader
                     1519490105
                 );
             }
-            if (empty($configuration['module']) ||
-                !is_string($configuration['module']) ||
-                !class_exists($configuration['module']) ||
-                !is_subclass_of($configuration['module'], ModuleInterface::class)
+            if (empty($configuration['module'])
+                || !is_string($configuration['module'])
+                || !class_exists($configuration['module'])
+                || !is_subclass_of($configuration['module'], ModuleInterface::class)
             ) {
                 throw new \RuntimeException(
-                    'The module "' .
-                    $identifier .
-                    '" defines an invalid module class. Ensure the class exists and implements the "' .
-                    ModuleInterface::class .
-                    '".',
+                    'The module "'
+                    . $identifier
+                    . '" defines an invalid module class. Ensure the class exists and implements the "'
+                    . ModuleInterface::class
+                    . '".',
                     1519490112
                 );
             }

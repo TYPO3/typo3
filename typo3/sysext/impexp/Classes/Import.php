@@ -299,8 +299,8 @@ class Import extends ImportExport
 
         if ($isDataCompressed) {
             if (!function_exists('gzuncompress')) {
-                $this->addError('Content read error: This file requires decompression, ' .
-                    'but this server does not offer gzcompress()/gzuncompress() functions.');
+                $this->addError('Content read error: This file requires decompression, '
+                    . 'but this server does not offer gzcompress()/gzuncompress() functions.');
                 return null;
             }
             $dataString = (string)gzuncompress($dataString);
@@ -387,8 +387,8 @@ class Import extends ImportExport
                         $configuration = $storageObject->getConfiguration();
                         $this->addError(
                             sprintf(
-                                'The file storage "%s" does not exist. ' .
-                                'Please create the directory prior to starting the import!',
+                                'The file storage "%s" does not exist. '
+                                . 'Please create the directory prior to starting the import!',
                                 $storageObject->getName() . $configuration['basePath']
                             )
                         );
@@ -723,8 +723,8 @@ class Import extends ImportExport
 
                 if ($file->getSha1() !== $fileRecord['sha1']) {
                     $this->addError(sprintf(
-                        'Error: The hash of the written file is not identical to the import data! ' .
-                        'File could be corrupted! File: "%s" with storage uid "%s"',
+                        'Error: The hash of the written file is not identical to the import data! '
+                        . 'File could be corrupted! File: "%s" with storage uid "%s"',
                         $fileRecord['identifier'],
                         $fileRecord['storage']
                     ));
@@ -906,8 +906,8 @@ class Import extends ImportExport
      */
     protected function doRespectPid(string $table, int $uid): bool
     {
-        return ($this->importMode[$table . ':' . $uid] ?? '') !== self::IMPORT_MODE_IGNORE_PID &&
-            (!$this->globalIgnorePid || ($this->importMode[$table . ':' . $uid] ?? '') === self::IMPORT_MODE_RESPECT_PID);
+        return ($this->importMode[$table . ':' . $uid] ?? '') !== self::IMPORT_MODE_IGNORE_PID
+            && (!$this->globalIgnorePid || ($this->importMode[$table . ':' . $uid] ?? '') === self::IMPORT_MODE_RESPECT_PID);
     }
 
     /**
@@ -1219,9 +1219,9 @@ class Import extends ImportExport
                         && $this->importMapId[$table][$uid] == $ID)
                     ) {
                         $this->addError(
-                            'Possible error: ' . $table . ':' . $uid . ' had no new id assigned to it. ' .
-                            'This indicates that the record was not added to database during import. ' .
-                            'Please check changelog!'
+                            'Possible error: ' . $table . ':' . $uid . ' had no new id assigned to it. '
+                            . 'This indicates that the record was not added to database during import. '
+                            . 'Please check changelog!'
                         );
                     }
                 }

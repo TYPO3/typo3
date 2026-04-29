@@ -40,8 +40,8 @@ class Cascade
         // @todo Remove with TYPO3 v15.0
         if (is_array($value)) {
             trigger_error(
-                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. ' .
-                'Use explicit constructor parameters instead.',
+                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. '
+                . 'Use explicit constructor parameters instead.',
                 E_USER_DEPRECATED,
             );
 

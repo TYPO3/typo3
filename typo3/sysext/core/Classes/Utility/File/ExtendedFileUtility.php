@@ -1157,7 +1157,7 @@ class ExtendedFileUtility extends BasicFileUtility
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
     }
 
-    protected function uploadedFileHasClientName(null|array|UploadedFileInterface $file): bool
+    protected function uploadedFileHasClientName(array|UploadedFileInterface|null $file): bool
     {
         if ($file instanceof UploadedFileInterface) {
             return !empty($file->getClientFilename());

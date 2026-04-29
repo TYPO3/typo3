@@ -61,8 +61,8 @@ final class RequestBuilderDefaultValues
         if ($controllerConfigurations === []) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'The default controller for extension "%s" and plugin "%s" can not be determined. ' .
-                    'Please check for TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.',
+                    'The default controller for extension "%s" and plugin "%s" can not be determined. '
+                    . 'Please check for TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin() in your ext_localconf.php.',
                     $extensionName,
                     $pluginName
                 ),

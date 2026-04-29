@@ -29,8 +29,8 @@ final class IgnoreValidationTest extends UnitTestCase
     public function constructorAcceptsConfigurationOptionsAsArray(): void
     {
         $this->expectUserDeprecationMessage(
-            'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. ' .
-            'Use explicit constructor parameters instead.',
+            'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. '
+            . 'Use explicit constructor parameters instead.',
         );
 
         $actual = new IgnoreValidation([
@@ -45,8 +45,8 @@ final class IgnoreValidationTest extends UnitTestCase
     public function constructorTriggersDeprecationErrorWhenArgumentNameIsPassed(): void
     {
         $this->expectUserDeprecationMessage(
-            'Passing an argument name to an #[IgnoreValidation] attribute is deprecated and will be removed in ' .
-            'TYPO3 v15.0. Place the attribute on the method parameter instead.',
+            'Passing an argument name to an #[IgnoreValidation] attribute is deprecated and will be removed in '
+            . 'TYPO3 v15.0. Place the attribute on the method parameter instead.',
         );
 
         new IgnoreValidation(argumentName: 'foo');

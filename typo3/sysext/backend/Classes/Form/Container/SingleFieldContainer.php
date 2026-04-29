@@ -118,8 +118,8 @@ class SingleFieldContainer extends AbstractContainer
             $parameterArray['itemFormElName']
         );
 
-        $requestFormEngineUpdate =
-            (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
+        $requestFormEngineUpdate
+            = (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
             || (isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload');
         if ($requestFormEngineUpdate) {
             $askForUpdate = $backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE);

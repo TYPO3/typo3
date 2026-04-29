@@ -110,15 +110,15 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $typoScriptConfig = [
             'config.' => [
                 'recordLinks.' => [
-                    'tx_news.' =>
-                        [
+                    'tx_news.'
+                        => [
                             'forceLink' => '0',
-                            'typolink.' =>
-                                [
+                            'typolink.'
+                                => [
                                     'parameter' => $parameterFromTypoScript,
                                     'additionalParams' => '&tx_news_pi1[news]={field:uid}',
-                                    'additionalParams.' =>
-                                        [
+                                    'additionalParams.'
+                                        => [
                                             'insertData' => '1',
                                         ],
                                 ],
@@ -127,16 +127,16 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
             ],
         ];
         $pageTsConfig = [
-            'TCEMAIN.' =>
-                [
-                    'linkHandler.' =>
-                        [
-                            'tx_news.' =>
-                                [
+            'TCEMAIN.'
+                => [
+                    'linkHandler.'
+                        => [
+                            'tx_news.'
+                                => [
                                     'handler' => RecordLinkHandler::class,
                                     'label' => 'News',
-                                    'configuration.' =>
-                                        [
+                                    'configuration.'
+                                        => [
                                             'table' => 'tx_news_domain_model_news',
                                         ],
                                     'scanAfter' => 'page',

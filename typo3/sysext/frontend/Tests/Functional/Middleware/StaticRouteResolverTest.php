@@ -38,7 +38,7 @@ final class StaticRouteResolverTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->requestHandler = new class () implements RequestHandlerInterface {
+        $this->requestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new NullResponse();

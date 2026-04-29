@@ -1190,8 +1190,8 @@ class SearchController extends ActionController
      */
     protected function getNumberOfResults(int $numberOfResults): int
     {
-        return in_array($numberOfResults, $this->availableResultsNumbers, true) ?
-            $numberOfResults : $this->defaultResultNumber;
+        return in_array($numberOfResults, $this->availableResultsNumbers, true)
+            ? $numberOfResults : $this->defaultResultNumber;
     }
 
     /**

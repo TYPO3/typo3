@@ -231,8 +231,8 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                             return '<ol>' . implode(LF, $list) . '</ol>';
                         case 2:
                             $list = array_map(
-                                static fn(string $item): string =>
-                                (static function () use ($item) {
+                                static fn(string $item): string
+                                => (static function () use ($item) {
                                     $split = GeneralUtility::trimExplode('|', $item, true, 2);
 
                                     return '<dt>' . htmlspecialchars($split[0]) . '</dt>'
