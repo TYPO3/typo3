@@ -2,8 +2,9 @@
     <div class="t3-page-ce-header-left">
         {item.icons -> f:format.raw()}
         <f:if condition="{item.siteLanguage.flagIdentifier}">
-            <span class="t3-page-ce-header-icon-flag t3js-flag" title="{item.siteLanguage.title}">
-                <core:icon identifier="{item.siteLanguage.flagIdentifier}" />
+            <span class="t3-page-ce-header-icon-flag t3js-flag">
+                <span class="visually-hidden">{item.siteLanguage.title}</span>
+                <core:icon identifier="{item.siteLanguage.flagIdentifier}" title="{item.siteLanguage.title}" />
             </span>
         </f:if>
     </div>
