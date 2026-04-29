@@ -193,7 +193,7 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         if (is_string($callable)) {
             return $callable;
         }
-        if (is_array($callable) && isset($callable[0]) && is_string($callable[0])) {
+        if (is_array($callable) && is_string($callable[0])) {
             return $callable;
         }
 

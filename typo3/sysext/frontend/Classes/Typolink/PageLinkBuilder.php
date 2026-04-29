@@ -51,6 +51,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Event\ModifyPageLinkConfigurationEvent;
+use TYPO3\CMS\Frontend\Page\PageInformation;
 
 /**
  * Builds a TypoLink to a certain page
@@ -600,13 +601,21 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     protected function getClosestMountPointValueForPage(int $pageId): string
     {
         $request = $this->contentObjectRenderer->getRequest();
-        $mountPoint = $request->getAttribute('frontend.page.information')?->getMountPoint() ?? '';
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) || !$mountPoint) {
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        if (!$pageInformation instanceof PageInformation) {
+            return '';
+        }
+        $mountPoint = $pageInformation->getMountPoint();
+        if (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) || $mountPoint === '') {
             return '';
         }
         // Same page as current.
-        if (($request->getAttribute('frontend.page.information')?->getId() ?? 0) === $pageId) {
+        if ($pageInformation->getId() === $pageId) {
             return $mountPoint;
+        }
+        $localRootLine = $pageInformation->getLocalRootLine();
+        if ($localRootLine === []) {
+            return '';
         }
 
         // Find the closest mount point
@@ -614,9 +623,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         try {
             $tCR_rootline = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
         } catch (RootLineException) {
-            $tCR_rootline = [];
+            return '';
         }
-        $localRootLine = $request->getAttribute('frontend.page.information')?->getLocalRootLine() ?? [];
+
         $inverseLocalRootLine = array_reverse($localRootLine);
         $rl_mpArray = [];
         $startMPaccu = false;

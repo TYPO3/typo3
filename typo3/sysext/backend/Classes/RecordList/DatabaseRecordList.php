@@ -722,7 +722,7 @@ class DatabaseRecordList
         $currentIdList = [];
         // Render table rows only if in multi table view or if in single table view
         $rowOutput = '';
-        if (!$onlyShowRecordsInSingleTableMode || $this->table) {
+        if (!$onlyShowRecordsInSingleTableMode || $this->table !== '') {
             // Fixing an order table for sortby tables
             $this->currentTable = [];
             $allowManualSorting = ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) && !$this->sortField;

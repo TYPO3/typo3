@@ -445,6 +445,12 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/ElementBrowser/ElementBrowserRegistryTest.php
 
 		-
+			message: '#^Strict comparison using \=\=\= between int\<2, 3\> and 1 will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: ../../typo3/sysext/beuser/Classes/Domain/Repository/BackendUserRepository.php
+
+		-
 			message: '#^Property TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication\:\:\$writeAttemptLog \(bool\) on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.property
 			count: 1
@@ -1747,7 +1753,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
 
 		-
-			message: '#^Parameter \#1 \$array \(non\-empty\-list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
+			message: '#^Parameter \#1 \$array \(non\-empty\-list\<non\-falsy\-string\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
