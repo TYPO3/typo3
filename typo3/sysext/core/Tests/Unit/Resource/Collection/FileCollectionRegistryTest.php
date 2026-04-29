@@ -137,7 +137,9 @@ final class FileCollectionRegistryTest extends UnitTestCase
     public function addNewTypeToTCA(): void
     {
         // Create a TCA fixture for sys_file_collection
-        $GLOBALS['TCA']['sys_file_collection'] = [
+        // define phpstan array shape, to avoid complaint about missing "my_type"
+        /** @var array{columns:array, types:array{typeB:array, my_type:array}} $sysFileCollection */
+        $sysFileCollection = [
             'types' => [
                 'typeB' => ['showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldD'],
             ],
@@ -151,6 +153,8 @@ final class FileCollectionRegistryTest extends UnitTestCase
                 ],
             ],
         ];
+
+        $GLOBALS['TCA']['sys_file_collection'] = $sysFileCollection;
 
         $type = 'my_type';
         $label = 'The Label';

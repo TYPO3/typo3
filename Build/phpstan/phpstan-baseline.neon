@@ -301,12 +301,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RepositoryTest.php
 
 		-
-			rawMessage: 'Parameter #1 $array (list) of array_values is already a list, call has no effect.'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/Command/SchemaCommand.php
-
-		-
 			rawMessage: 'Call to function is_object() with object will always evaluate to true.'
 			identifier: function.alreadyNarrowedType
 			count: 2
