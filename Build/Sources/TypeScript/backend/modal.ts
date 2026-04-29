@@ -46,6 +46,30 @@ export enum Sizes {
   expand = 'expand',
 }
 
+export enum Size {
+  small = 'small',
+  default = 'default',
+  medium = 'medium',
+  large = 'large',
+  full = 'full',
+}
+
+export type SizeConfig = { width?: Size; height?: Size };
+
+const isValidSize = (value: unknown): value is Sizes | SizeConfig => {
+  if (typeof value === 'string') {
+    return value in Sizes;
+  }
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  const config = value as SizeConfig;
+  return Object.keys(value).length > 0
+    && Object.keys(value).every(key => key === 'width' || key === 'height')
+    && (config.width === undefined || config.width in Size)
+    && (config.height === undefined || config.height in Size);
+};
+
 export enum Positions {
   center = 'center',
   top = 'top',
@@ -89,7 +113,7 @@ export interface Configuration {
   severity: SeverityEnum;
   buttons: Array<Button>;
   style: Styles;
-  size: Sizes;
+  size: Sizes | SizeConfig;
   position: Positions;
   additionalCssClasses: Array<string>;
   callback: ModalCallbackFunction | null;
@@ -110,7 +134,6 @@ export class ModalElement extends LitElement {
   @property({ type: String, reflect: true }) type: Types = Types.default;
   @property({ type: String, reflect: true }) severity: SeverityEnum = SeverityEnum.notice;
   @property({ type: String, reflect: true }) variant: Styles = Styles.default;
-  @property({ type: String, reflect: true }) size: Sizes = Sizes.default;
   @property({ type: String, reflect: true }) position: Positions = Positions.center;
   @property({ type: Boolean }) staticBackdrop: boolean = false;
   @property({ type: Boolean }) hideCloseButton: boolean = false;
@@ -128,11 +151,49 @@ export class ModalElement extends LitElement {
   public userData: { [key: string]: any } = {};
 
   private readonly uniqueId: number;
+  #size: Sizes | SizeConfig = Sizes.default;
 
   constructor() {
     super();
 
     this.uniqueId = ++uniqueIdCounter;
+  }
+
+  @property({
+    reflect: true,
+    converter: {
+      toAttribute: (value: Sizes | SizeConfig): string =>
+        typeof value === 'string' ? value : JSON.stringify(value),
+      fromAttribute: (value: string | null): unknown => {
+        if (value === null) {
+          return Sizes.default;
+        }
+        if (isValidSize(value)) {
+          return value;
+        }
+        try {
+          return JSON.parse(value);
+        } catch {
+          return value;
+        }
+      },
+    },
+  })
+  get size(): Sizes | SizeConfig {
+    return this.#size;
+  }
+  set size(value: unknown) {
+    const valid = isValidSize(value);
+    this.#size = valid ? value : Sizes.default;
+    if (!valid && this.isConnected) {
+      // Input was invalid and got sanitized: force the attribute to match,
+      // because Lit suppresses attribute reflection on the attribute → property
+      // path, which would otherwise leave the invalid string in the DOM.
+      const expected = typeof this.#size === 'string' ? this.#size : JSON.stringify(this.#size);
+      if (this.getAttribute('size') !== expected) {
+        this.setAttribute('size', expected);
+      }
+    }
   }
 
   public setContent(content: TemplateResult | JQuery | Element | DocumentFragment): void {
@@ -201,7 +262,7 @@ export class ModalElement extends LitElement {
       `modal-type-${this.type}`,
       `modal-style-${this.variant}`,
       `modal-severity-${Severity.getCssClass(this.severity)}`,
-      `modal-size-${this.size}`,
+      ...this.getSizeClasses(),
       `modal-position-${this.position}`,
       ...this.additionalCssClasses,
     ]);
@@ -234,6 +295,20 @@ export class ModalElement extends LitElement {
         `}
       </dialog>
     `;
+  }
+
+  private getSizeClasses(): string[] {
+    if (typeof this.size === 'string') {
+      return [`modal-size-${this.size}`];
+    }
+    const classes: string[] = [];
+    if (this.size.width !== undefined) {
+      classes.push(`modal-width-${this.size.width}`);
+    }
+    if (this.size.height !== undefined) {
+      classes.push(`modal-height-${this.size.height}`);
+    }
+    return classes;
   }
 
   private handleDialogClose(): void {
@@ -599,7 +674,7 @@ class Modal {
       ? configuration.severity
       : this.defaultConfiguration.severity;
     configuration.buttons = <Array<Button>>configuration.buttons || this.defaultConfiguration.buttons;
-    configuration.size = typeof configuration.size === 'string' && configuration.size in Sizes
+    configuration.size = isValidSize(configuration.size)
       ? configuration.size
       : this.defaultConfiguration.size;
     configuration.style = typeof configuration.style === 'string' && configuration.style in Styles

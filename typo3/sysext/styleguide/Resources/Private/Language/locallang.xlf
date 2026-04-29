@@ -783,6 +783,18 @@
       <trans-unit id="component.modal.section.size.description">
         <source>Control the width of the modal. The default size grows based on content, while other sizes have fixed widths.</source>
       </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.headline">
+        <source>Size configuration</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.description">
+        <source>Compose width and height independently using size tokens, override only one axis, or define breakpoint-specific overrides for responsive behaviour.</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.compose">
+        <source>Compose width and height</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.sizeConfig.axis">
+        <source>Single-axis override</source>
+      </trans-unit>
       <trans-unit id="component.modal.section.position.headline">
         <source>Position</source>
       </trans-unit>
