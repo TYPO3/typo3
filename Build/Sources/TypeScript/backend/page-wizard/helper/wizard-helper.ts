@@ -13,7 +13,7 @@
 
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import { html } from 'lit';
-import Modal from '@typo3/backend/modal';
+import Modal, { Size } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import backendLayoutLabels from '~labels/backend.layout';
 import type { PageWizardConfiguration } from '@typo3/backend/page-wizard/page-wizard-configuration';
@@ -25,7 +25,10 @@ export const openPageWizardModal = async(configuration?: PageWizardConfiguration
     title: backendLayoutLabels.get('newPage'),
     content:  html`<typo3-backend-page-wizard .configuration="${configuration}"></typo3-backend-page-wizard>`,
     severity: SeverityEnum.notice,
-    size: Modal.sizes.medium,
+    size: {
+      width: Size.medium,
+      height: Size.large
+    },
     staticBackdrop: true,
     buttons: []
   });

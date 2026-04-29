@@ -177,6 +177,39 @@
             </div>
         </sg:example>
 
+        <h2><f:translate key="component.modal.section.sizeConfig.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.modal.section.sizeConfig.description" domain="styleguide.messages" /></p>
+        <div class="example-container">
+            <div class="example-item">
+                <button type="button" class="btn btn-default" id="modal-demo-sizeconfig-compose">
+                    <f:translate key="component.modal.section.sizeConfig.compose" domain="styleguide.messages" />
+                </button>
+            </div>
+            <div class="example-item">
+                <button type="button" class="btn btn-default" id="modal-demo-sizeconfig-axis">
+                    <f:translate key="component.modal.section.sizeConfig.axis" domain="styleguide.messages" />
+                </button>
+            </div>
+        </div>
+        <f:asset.script identifier="modalSizeConfigDemo" useNonce="true">
+            import('@typo3/backend/modal.js').then(({ default: Modal }) => {
+                document.getElementById('modal-demo-sizeconfig-compose').addEventListener('click', () => {
+                    Modal.advanced({
+                        title: 'Composed size: medium width, large height',
+                        content: 'size: { width: "medium", height: "large" }',
+                        size: { width: 'medium', height: 'large' },
+                    });
+                });
+                document.getElementById('modal-demo-sizeconfig-axis').addEventListener('click', () => {
+                    Modal.advanced({
+                        title: 'Single-axis override: width only',
+                        content: 'size: { width: "medium" } — height grows with content.',
+                        size: { width: 'medium' },
+                    });
+                });
+            });
+        </f:asset.script>
+
         <h2><f:translate key="component.modal.section.position.headline" domain="styleguide.messages" /></h2>
         <p><f:translate key="component.modal.section.position.description" domain="styleguide.messages" /></p>
         <f:variable name="codeSnippetPosition">

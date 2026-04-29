@@ -2,8 +2,8 @@
 // Modal
 //
 .modal {
-    --typo3-modal-width: 600px;
-    --typo3-modal-height: fit-content;
+    --typo3-modal-width: var(--typo3-modal-width-default);
+    --typo3-modal-height: var(--typo3-modal-height-default);
     --typo3-modal-border-radius: var(--typo3-component-border-radius);
     --typo3-modal-shadow: var(--typo3-component-box-shadow-dialog);
     --typo3-modal-padding: 1rem;
@@ -232,34 +232,67 @@
 /**
  * Size
  */
+$modal-widths: (
+    small: 440px,
+    default: 600px,
+    medium: 800px,
+    large: 1000px,
+    full: 100%,
+);
+$modal-heights: (
+    small: 440px,
+    default: fit-content,
+    medium: 520px,
+    large: 800px,
+    full: 100%,
+);
+
+:root {
+    @each $name, $value in $modal-widths {
+        --typo3-modal-width-#{$name}: #{$value};
+    }
+
+    @each $name, $value in $modal-heights {
+        --typo3-modal-height-#{$name}: #{$value};
+    }
+}
+
+@each $name, $value in $modal-widths {
+    .modal-width-#{$name} { --typo3-modal-width: var(--typo3-modal-width-#{$name}); }
+}
+
+@each $name, $value in $modal-heights {
+    .modal-height-#{$name} { --typo3-modal-height: var(--typo3-modal-height-#{$name}); }
+}
+
 .modal-size-small {
-    --typo3-modal-width: 440px;
+    --typo3-modal-width: var(--typo3-modal-width-small);
 
     &.modal-type-iframe {
         // Define height since iframe is positioned absolute and can not
         // provide an intrinstic height to the <dialog>
-        --typo3-modal-height: 440px;
+        --typo3-modal-height: var(--typo3-modal-height-small);
     }
 }
 
 .modal-size-medium {
-    --typo3-modal-width: 800px;
-    --typo3-modal-height: 520px;
+    --typo3-modal-width: var(--typo3-modal-width-medium);
+    --typo3-modal-height: var(--typo3-modal-height-medium);
 }
 
 .modal-size-large {
-    --typo3-modal-width: 1000px;
-    --typo3-modal-height: 800px;
+    --typo3-modal-width: var(--typo3-modal-width-large);
+    --typo3-modal-height: var(--typo3-modal-height-large);
 }
 
 .modal-size-full {
-    --typo3-modal-width: 100%;
-    --typo3-modal-height: 100%;
+    --typo3-modal-width: var(--typo3-modal-width-full);
+    --typo3-modal-height: var(--typo3-modal-height-full);
 }
 
 .modal-size-expand {
-    --typo3-modal-width: 800px;
-    --typo3-modal-height: 100%;
+    --typo3-modal-width: var(--typo3-modal-width-medium);
+    --typo3-modal-height: var(--typo3-modal-height-full);
 
     @media (max-width: 767px) {
         --typo3-modal-height: calc(100% - 100px);

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Modal from '@typo3/backend/modal';
+import Modal, { Sizes } from '@typo3/backend/modal';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/live-search/element/hint';
 import '@typo3/backend/live-search/element/result/result-pagination';
@@ -105,7 +105,7 @@ class LiveSearch {
       content: url.toString(),
       title: coreLabels.get('labels.search'),
       severity: SeverityEnum.notice,
-      size: Modal.sizes.medium,
+      size: Sizes.large,
       ajaxCallback: (): void => {
         const liveSearchContainer = modal.querySelector('typo3-backend-live-search');
         const searchForm = liveSearchContainer.querySelector('form');
