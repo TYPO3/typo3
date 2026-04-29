@@ -58,7 +58,15 @@ class AssetPublishCommand extends Command
     {
         $failsafeContainer = $this->bootService->getFailsafeContainer();
         $failsafeResourcePublisher = $failsafeContainer->has(AssetPublishing::class) ? $failsafeContainer->get(SystemResourcePublisherInterface::class) : null;
-        $container = $this->bootService->loadExtLocalconfDatabaseAndExtTables(false, false);
+        try {
+            $container = $this->bootService->loadExtLocalconfDatabaseAndExtTables(false, false);
+        } catch (\Throwable $e) {
+            if ($output->isVerbose()) {
+                throw $e;
+            }
+            $output->writeln('<error>Can not initialize dependency injection container. Increase verbosity to get the full error message.</error>');
+            return self::FAILURE;
+        }
         $resourcePublisher = $container->get(SystemResourcePublisherInterface::class);
 
         $output->getFormatter()->setStyle('bold', new OutputFormatterStyle(null, null, ['bold']));

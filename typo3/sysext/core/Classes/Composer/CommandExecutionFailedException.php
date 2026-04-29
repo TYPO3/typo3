@@ -25,6 +25,7 @@ class CommandExecutionFailedException extends \Exception
         int $code = 1765277390,
     ) {
         $message = sprintf('Failed to run command %s', implode(' ', $this->typo3Command));
+        $message .= chr(10) . $this->errorOutput;
         parent::__construct($message, $code);
     }
 }

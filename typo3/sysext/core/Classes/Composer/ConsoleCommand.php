@@ -38,7 +38,12 @@ final readonly class ConsoleCommand implements InstallerScript
         if ($this->message) {
             $io->writeError(sprintf('<info>%s</info>', $this->message));
         }
-        $this->executeProcess($event);
+        try {
+            $this->executeProcess($event);
+        } catch (CommandExecutionFailedException $e) {
+            $io->writeError(sprintf('<error>%s</error>', $e->getMessage()));
+            return false;
+        }
         return true;
     }
 
@@ -49,14 +54,19 @@ final readonly class ConsoleCommand implements InstallerScript
         array_unshift($typo3Command, ...$this->getPhpExecCommand());
 
         $process = new ProcessExecutor($io);
-        $exitCode = $process->execute($typo3Command);
+        $exitCode = $process->execute($typo3Command, $commandOutput);
         if ($exitCode !== 0) {
+            $errorOutput = trim($commandOutput);
+            if ($process->getErrorOutput() !== '') {
+                $errorOutput .= chr(10) . $process->getErrorOutput();
+            }
             throw new CommandExecutionFailedException(
                 $this->command,
-                $process->getErrorOutput(),
+                $errorOutput,
                 1765283208,
             );
         }
+        $io->writeError($commandOutput, false);
     }
 
     private function getTypo3Command(Event $event): array

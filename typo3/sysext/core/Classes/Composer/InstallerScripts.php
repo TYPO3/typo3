@@ -49,9 +49,13 @@ readonly class InstallerScripts implements InstallerScriptsRegistration
                 new PackageArtifactBuilder()
             );
             if (!getenv('TYPO3_SKIP_ASSET_PUBLISH')) {
+                $command = ['asset:publish'];
+                if ($event->getIO()->isVerbose()) {
+                    $command[] = '-v';
+                }
                 $scriptDispatcher->addInstallerScript(
                     new ConsoleCommand(
-                        ['asset:publish']
+                        $command
                     )
                 );
             }
