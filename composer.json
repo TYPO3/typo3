@@ -129,7 +129,7 @@
 		"composer/composer": "^2.9.7",
 		"friendsofphp/php-cs-fixer": "^3.95",
 		"php-webdriver/webdriver": "^1.16.0",
-		"phpstan/phpstan": "^2.1.50",
+		"phpstan/phpstan": "^2.1.54",
 		"phpstan/phpstan-phpunit": "^2.0.16",
 		"phpunit/phpunit": "^11.5.55",
 		"sebastian/recursion-context": "^6.0.3",
