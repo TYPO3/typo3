@@ -143,8 +143,8 @@ readonly class PageArgumentValidator implements MiddlewareInterface
             return false;
         }
         // Caching is disabled now (but no 404)
-        $cacheInstruction->disableCache('EXT:frontend: Incoming cHash "' . $cHash . '" and calculated cHash "' . $calculatedCacheHash . '" did not match.' .
-            ' The field list used was "' . implode(',', array_keys($relevantParameters)) . '". Caching is disabled.');
+        $cacheInstruction->disableCache('EXT:frontend: Incoming cHash "' . $cHash . '" and calculated cHash "' . $calculatedCacheHash . '" did not match.'
+            . ' The field list used was "' . implode(',', array_keys($relevantParameters)) . '". Caching is disabled.');
         return true;
     }
 

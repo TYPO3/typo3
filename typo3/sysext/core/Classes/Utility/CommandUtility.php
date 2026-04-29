@@ -153,8 +153,8 @@ class CommandUtility
         if ($parameters && $command !== 'identify') {
             // Use legacy processor_stripColorProfileCommand setting if defined, otherwise
             // use the preferred configuration option processor_stripColorProfileParameters
-            $stripColorProfileCommand = $gfxConf['processor_stripColorProfileCommand'] ??
-                implode(' ', array_map(CommandUtility::escapeShellArgument(...), $gfxConf['processor_stripColorProfileParameters'] ?? []));
+            $stripColorProfileCommand = $gfxConf['processor_stripColorProfileCommand']
+                ?? implode(' ', array_map(CommandUtility::escapeShellArgument(...), $gfxConf['processor_stripColorProfileParameters'] ?? []));
             // Determine whether the strip profile action has be disabled by TypoScript:
             if ($gfxConf['processor_stripColorProfileByDefault']
                 && $stripColorProfileCommand !== ''

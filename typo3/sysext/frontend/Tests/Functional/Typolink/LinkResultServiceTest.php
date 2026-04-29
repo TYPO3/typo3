@@ -55,7 +55,7 @@ final class LinkResultServiceTest extends FunctionalTestCase
     public function getStateThrowsExceptionForNonStateInterface(): void
     {
         $subject = $this->get(LinkResultService::class);
-        $linkResult = new class () implements LinkResultInterface {
+        $linkResult = new class implements LinkResultInterface {
             public function getUrl(): string
             {
                 return '';

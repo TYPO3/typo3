@@ -275,9 +275,9 @@ class File extends AbstractFile implements PublicResourceInterface, SystemResour
     public function calculateChecksum(): string
     {
         return md5(
-            $this->getCombinedIdentifier() . '|' .
-            $this->getMimeType() . '|' .
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
+            $this->getCombinedIdentifier() . '|'
+            . $this->getMimeType() . '|'
+            . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
         );
     }
 

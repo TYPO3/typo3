@@ -22,10 +22,10 @@ $fileMtimeOverlay = filemtime(__DIR__ . '/../../../../../core/Resources/Public/I
 return [
     'update' => false,
     'showDiff' => false,
-    'insidePageTree' =>
-    [
-        0 =>
-        [
+    'insidePageTree'
+    => [
+        0
+        => [
             'ref' => 'pages:0',
             'type' => 'record',
             'msg' => '',
@@ -40,8 +40,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][pages:0]" id="checkExcludepages:0" value="1" /><label class="form-check-label" for="checkExcludepages:0">Exclude</label></div>',
             'message' => '',
         ],
-        1 =>
-        [
+        1
+        => [
             'ref' => 'be_users:1',
             'type' => 'record',
             'msg' => '',
@@ -56,8 +56,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][be_users:1]" id="checkExcludebe_users:1" value="1" /><label class="form-check-label" for="checkExcludebe_users:1">Exclude</label></div>',
             'message' => '',
         ],
-        2 =>
-        [
+        2
+        => [
             'ref' => 'sys_file:4',
             'type' => 'record',
             'msg' => '',
@@ -72,8 +72,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][sys_file:4]" id="checkExcludesys_file:4" value="1" /><label class="form-check-label" for="checkExcludesys_file:4">Exclude</label></div>',
             'message' => '',
         ],
-        3 =>
-        [
+        3
+        => [
             'ref' => 'sys_file:1',
             'type' => 'record',
             'msg' => '',
@@ -88,8 +88,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][sys_file:1]" id="checkExcludesys_file:1" value="1" /><label class="form-check-label" for="checkExcludesys_file:1">Exclude</label></div>',
             'message' => '',
         ],
-        4 =>
-        [
+        4
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -103,8 +103,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        5 =>
-        [
+        5
+        => [
             'ref' => 'sys_file:2',
             'type' => 'record',
             'msg' => '',
@@ -119,8 +119,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][sys_file:2]" id="checkExcludesys_file:2" value="1" /><label class="form-check-label" for="checkExcludesys_file:2">Exclude</label></div>',
             'message' => '',
         ],
-        6 =>
-        [
+        6
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -134,8 +134,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        7 =>
-        [
+        7
+        => [
             'ref' => 'sys_file:3',
             'type' => 'record',
             'msg' => '',
@@ -150,8 +150,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][sys_file:3]" id="checkExcludesys_file:3" value="1" /><label class="form-check-label" for="checkExcludesys_file:3">Exclude</label></div>',
             'message' => '',
         ],
-        8 =>
-        [
+        8
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -165,8 +165,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        9 =>
-        [
+        9
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'record',
             'msg' => '',
@@ -181,8 +181,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][sys_file_storage:1]" id="checkExcludesys_file_storage:1" value="1" /><label class="form-check-label" for="checkExcludesys_file_storage:1">Exclude</label></div>',
             'message' => '',
         ],
-        10 =>
-        [
+        10
+        => [
             'ref' => 'pages:1',
             'type' => 'record',
             'msg' => '',
@@ -197,8 +197,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][pages:1]" id="checkExcludepages:1" value="1" /><label class="form-check-label" for="checkExcludepages:1">Exclude</label></div>',
             'message' => '',
         ],
-        11 =>
-        [
+        11
+        => [
             'ref' => 'tt_content:1',
             'type' => 'record',
             'msg' => '',
@@ -213,8 +213,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][tt_content:1]" id="checkExcludett_content:1" value="1" /><label class="form-check-label" for="checkExcludett_content:1">Exclude</label></div>',
             'message' => '',
         ],
-        12 =>
-        [
+        12
+        => [
             'ref' => 'SOFTREF',
             'type' => 'softref',
             'msg' => '',
@@ -225,13 +225,13 @@ return [
 	
 </span>',
             'title' => '<em>header_link, "typolink"</em>: <span title="file:2">file:2</span><br><span class="indent indent-inline-block" style="--indent-level: 3"></span> <strong>Record</strong> sys_file:2',
-            '_softRefInfo' =>
-            [
+            '_softRefInfo'
+            => [
                 'field' => 'header_link',
                 'spKey' => 'typolink',
                 'matchString' => 'file:2',
-                'subst' =>
-                [
+                'subst'
+                => [
                     'type' => 'db',
                     'recordRef' => 'sys_file:2',
                     'tokenID' => '2487ce518ed56d22f20f259928ff43f1',
@@ -241,8 +241,8 @@ return [
             'controls' => '<select class="form-select form-select-sm" name="tx_impexp[softrefCfg][2487ce518ed56d22f20f259928ff43f1][mode]" style="width: 100px"><option value="" selected="selected"></option><option value="editable">Editable</option><option value="exclude">Exclude</option></select>',
             'message' => '',
         ],
-        13 =>
-        [
+        13
+        => [
             'ref' => 'sys_file:2',
             'type' => 'rel',
             'msg' => '',
@@ -256,8 +256,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        14 =>
-        [
+        14
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -271,8 +271,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        15 =>
-        [
+        15
+        => [
             'ref' => 'tt_content:2',
             'type' => 'record',
             'msg' => '',
@@ -287,8 +287,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][tt_content:2]" id="checkExcludett_content:2" value="1" /><label class="form-check-label" for="checkExcludett_content:2">Exclude</label></div>',
             'message' => '',
         ],
-        16 =>
-        [
+        16
+        => [
             'ref' => 'SOFTREF',
             'type' => 'softref',
             'msg' => '',
@@ -299,13 +299,13 @@ return [
 	
 </span>',
             'title' => '<em>header_link, "typolink"</em>: <span title="file:4">file:4</span>',
-            '_softRefInfo' =>
-            [
+            '_softRefInfo'
+            => [
                 'field' => 'header_link',
                 'spKey' => 'typolink',
                 'matchString' => 'file:4',
-                'subst' =>
-                [
+                'subst'
+                => [
                     'type' => 'external',
                     'tokenID' => '81b8b33df54ef433f1cbc7c3e513e6c4',
                     'tokenValue' => '4',
@@ -314,8 +314,8 @@ return [
             'controls' => '<select class="form-select form-select-sm" name="tx_impexp[softrefCfg][81b8b33df54ef433f1cbc7c3e513e6c4][mode]" style="width: 100px"><option value="" selected="selected"></option><option value="editable">Editable</option><option value="exclude">Exclude</option></select>',
             'message' => '',
         ],
-        17 =>
-        [
+        17
+        => [
             'ref' => 'tt_content:3',
             'type' => 'record',
             'msg' => '',
@@ -330,8 +330,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][tt_content:3]" id="checkExcludett_content:3" value="1" /><label class="form-check-label" for="checkExcludett_content:3">Exclude</label></div>',
             'message' => '',
         ],
-        18 =>
-        [
+        18
+        => [
             'ref' => 'SOFTREF',
             'type' => 'softref',
             'msg' => '',
@@ -342,13 +342,13 @@ return [
 	
 </span>',
             'title' => '<em>header_link, "typolink"</em>: <span title="file:3">file:3</span><br><span class="indent indent-inline-block" style="--indent-level: 3"></span> <strong>Record</strong> sys_file:3',
-            '_softRefInfo' =>
-            [
+            '_softRefInfo'
+            => [
                 'field' => 'header_link',
                 'spKey' => 'typolink',
                 'matchString' => 'file:3',
-                'subst' =>
-                [
+                'subst'
+                => [
                     'type' => 'db',
                     'recordRef' => 'sys_file:3',
                     'tokenID' => '0b1253ebf70ef5be862f29305e404edc',
@@ -358,8 +358,8 @@ return [
             'controls' => '<select class="form-select form-select-sm" name="tx_impexp[softrefCfg][0b1253ebf70ef5be862f29305e404edc][mode]" style="width: 100px"><option value="" selected="selected"></option><option value="editable">Editable</option><option value="exclude">Exclude</option></select>',
             'message' => '',
         ],
-        19 =>
-        [
+        19
+        => [
             'ref' => 'sys_file:3',
             'type' => 'rel',
             'msg' => '',
@@ -373,8 +373,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        20 =>
-        [
+        20
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -388,8 +388,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        21 =>
-        [
+        21
+        => [
             'ref' => 'pages:2',
             'type' => 'record',
             'msg' => '',
@@ -404,8 +404,8 @@ return [
             'controls' => '<div class="form-check mb-0"><input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][pages:2]" id="checkExcludepages:2" value="1" /><label class="form-check-label" for="checkExcludepages:2">Exclude</label></div>',
             'message' => '',
         ],
-        22 =>
-        [
+        22
+        => [
             'ref' => 'pages:3',
             'type' => 'record',
             'msg' => '',
@@ -421,7 +421,7 @@ return [
             'message' => '',
         ],
     ],
-    'outsidePageTree' =>
-    [
+    'outsidePageTree'
+    => [
     ],
 ];

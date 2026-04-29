@@ -80,7 +80,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
             ],
         ]));
 
-        $restriction = new class () extends HiddenRestriction {};
+        $restriction = new class extends HiddenRestriction {};
 
         $subject = new InstantiatableAbstractRestrictionContainer();
         $subject->add($restriction);

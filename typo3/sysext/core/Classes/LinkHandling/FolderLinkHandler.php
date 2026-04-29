@@ -43,8 +43,8 @@ class FolderLinkHandler implements LinkHandlingInterface
             return '';
         }
         // the magic with prepending slash if it is missing will not work on windows
-        return $this->baseUrn . '?storage=' . $parameters['folder']->getStorage()->getUid() .
-        '&identifier=' . urlencode('/' . ltrim($parameters['folder']->getIdentifier(), '/'));
+        return $this->baseUrn . '?storage=' . $parameters['folder']->getStorage()->getUid()
+        . '&identifier=' . urlencode('/' . ltrim($parameters['folder']->getIdentifier(), '/'));
     }
 
     /**

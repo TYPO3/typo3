@@ -96,8 +96,8 @@ class GlobalVariableProvider extends AbstractProvider
             // Prepare blinding for all database connection types
             foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
                 if ($connectionName !== 'Default') {
-                    $blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName] =
-                        $blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
+                    $blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName]
+                        = $blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
                 }
             }
             ArrayUtility::mergeRecursiveWithOverrule(

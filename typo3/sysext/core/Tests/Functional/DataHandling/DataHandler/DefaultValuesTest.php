@@ -129,9 +129,9 @@ final class DefaultValuesTest extends FunctionalTestCase
         // TCAdefaults from ext:test_defaulttsconfig/Configuration/page.tsconfig kick in here,
         // but are overridden by specific page record TSconfig here.
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.pages.keywords = I am specific, not generic' . chr(10) .
-                'TCAdefaults.tt_content.header = local space',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.pages.keywords = I am specific, not generic' . chr(10)
+                . 'TCAdefaults.tt_content.header = local space',
         ]);
 
         // Add subpage and verify TSconfig from above page kicks in.
@@ -220,11 +220,11 @@ final class DefaultValuesTest extends FunctionalTestCase
         );
 
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout = 1' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 4' . chr(10) .
-                'TCAdefaults.tt_content.frame_class = default' . chr(10) .
-                'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-after',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout = 1' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 4' . chr(10)
+                . 'TCAdefaults.tt_content.frame_class = default' . chr(10)
+                . 'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-after',
         ]);
 
         // Create textmedia content element on page with TSconfig
@@ -252,13 +252,13 @@ final class DefaultValuesTest extends FunctionalTestCase
 
         // Set up complex page TSconfig with multiple type-specific defaults
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout = 1' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 3' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.image = 2' . chr(10) .
-                'TCAdefaults.tt_content.frame_class = default' . chr(10) .
-                'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-before' . chr(10) .
-                'TCAdefaults.tt_content.space_before_class = none',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout = 1' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 3' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.image = 2' . chr(10)
+                . 'TCAdefaults.tt_content.frame_class = default' . chr(10)
+                . 'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-before' . chr(10)
+                . 'TCAdefaults.tt_content.space_before_class = none',
         ]);
 
         // Create textmedia element
@@ -311,10 +311,10 @@ final class DefaultValuesTest extends FunctionalTestCase
 
         // Set up page TSconfig with inheritance test (parent + child configuration)
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout = 0' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 1' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 5',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout = 0' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 1' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 5',
         ]);
 
         // Create textmedia element - later configuration should override earlier
@@ -341,8 +341,8 @@ final class DefaultValuesTest extends FunctionalTestCase
 
         // Only type-specific defaults, no field-level defaults - use page TSconfig
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 7',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 7',
         ]);
 
         // Create textmedia element

@@ -150,14 +150,14 @@ class FileNode extends AbstractNode implements NodeInterface
         } elseif (!$this->isFile()) {
             $fileType = @filetype($this->getAbsolutePath());
             if ($fileType) {
-                $messageBody =
-                    'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,' .
-                    ' but is of type ' . $fileType . '. This cannot be fixed automatically. Please investigate.'
+                $messageBody
+                    = 'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,'
+                    . ' but is of type ' . $fileType . '. This cannot be fixed automatically. Please investigate.'
                 ;
             } else {
-                $messageBody =
-                    'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,' .
-                    ' but is of unknown type, probably because an upper level directory does not exist. Please investigate.'
+                $messageBody
+                    = 'The target ' . $this->getRelativePathBelowSiteRoot() . ' should be a file,'
+                    . ' but is of unknown type, probably because an upper level directory does not exist. Please investigate.'
                 ;
             }
             $result[] = new FlashMessage(

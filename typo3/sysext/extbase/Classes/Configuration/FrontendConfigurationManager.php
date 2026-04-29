@@ -106,8 +106,8 @@ final readonly class FrontendConfigurationManager
         $frontendTypoScript = $request->getAttribute('frontend.typoscript');
         if (!($frontendTypoScript instanceof FrontendTypoScript)) {
             throw new \RuntimeException(
-                'Setup array has not been initialized. This happens in cached Frontend scope where full TypoScript' .
-                ' is not needed by the system.',
+                'Setup array has not been initialized. This happens in cached Frontend scope where full TypoScript'
+                . ' is not needed by the system.',
                 1700841298
             );
         }

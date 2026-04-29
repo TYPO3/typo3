@@ -64,9 +64,9 @@ readonly class IconFactory
         $icon = $this->createIcon($identifier, $size, $overlayIdentifier, $iconConfiguration);
 
         /** @var IconProviderInterface $iconProvider */
-        $iconProvider = $this->container->has($iconConfiguration['provider']) ?
-            $this->container->get($iconConfiguration['provider']) :
-            GeneralUtility::makeInstance($iconConfiguration['provider']);
+        $iconProvider = $this->container->has($iconConfiguration['provider'])
+            ? $this->container->get($iconConfiguration['provider'])
+            : GeneralUtility::makeInstance($iconConfiguration['provider']);
         $iconProvider->prepareIconMarkup($icon, $iconConfiguration['options']);
 
         $this->runtimeCache->set($cacheIdentifier, $icon);
@@ -393,9 +393,9 @@ readonly class IconFactory
                 }
 
                 // if locked add overlay
-                if ($resource instanceof InaccessibleFolder ||
-                    !$resource->getStorage()->isBrowsable() ||
-                    !$resource->getStorage()->checkFolderActionPermission('add', $resource)
+                if ($resource instanceof InaccessibleFolder
+                    || !$resource->getStorage()->isBrowsable()
+                    || !$resource->getStorage()->checkFolderActionPermission('add', $resource)
                 ) {
                     $overlayIdentifier = 'overlay-locked';
                 }

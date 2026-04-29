@@ -45,8 +45,8 @@ readonly class UrlType implements SettingsTypeInterface, SettingsTypeOptionAware
         }
 
         // Check optional constraints
-        if (array_key_exists('pattern', $definition->options) &&
-            preg_match('/' . str_replace('/', '\/', $definition->options['pattern']) . '/', $value) !== 1
+        if (array_key_exists('pattern', $definition->options)
+            && preg_match('/' . str_replace('/', '\/', $definition->options['pattern']) . '/', $value) !== 1
         ) {
             return false;
         }
@@ -77,8 +77,8 @@ readonly class UrlType implements SettingsTypeInterface, SettingsTypeOptionAware
 
     public function validateOptions(SettingDefinition $definition): bool
     {
-        if (array_key_exists('pattern', $definition->options) &&
-            @preg_match('/' . str_replace('/', '\/', $definition->options['pattern']) . '/', '') === false
+        if (array_key_exists('pattern', $definition->options)
+            && @preg_match('/' . str_replace('/', '\/', $definition->options['pattern']) . '/', '') === false
         ) {
             return false;
         }

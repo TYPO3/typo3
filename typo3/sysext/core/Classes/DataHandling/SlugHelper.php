@@ -549,8 +549,8 @@ class SlugHelper
                     if (!is_array($record)) {
                         return null;
                     }
-                    if (VersionState::tryFrom($record['t3ver_state'] ?? 0) ===
-                        VersionState::DELETE_PLACEHOLDER) {
+                    if (VersionState::tryFrom($record['t3ver_state'] ?? 0)
+                        === VersionState::DELETE_PLACEHOLDER) {
                         return null;
                     }
                     return $record;

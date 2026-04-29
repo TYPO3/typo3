@@ -496,8 +496,8 @@ class PermissionController
                     }
                     $lKey = self::RECURSIVE_LEVELS - $a + 1;
                     $pagesCount = count($theIdListArr);
-                    $options[implode(',', $theIdListArr)] = $labelRecursive . ' ' . $lKey . ' ' . ($lKey === 1 ? $labelLevel : $labelLevels) .
-                        ' (' . $pagesCount . ' ' . ($pagesCount === 1 ? $labelPageAffected : $labelPagesAffected) . ')';
+                    $options[implode(',', $theIdListArr)] = $labelRecursive . ' ' . $lKey . ' ' . ($lKey === 1 ? $labelLevel : $labelLevels)
+                        . ' (' . $pagesCount . ' ' . ($pagesCount === 1 ? $labelPageAffected : $labelPagesAffected) . ')';
                 }
             }
         }

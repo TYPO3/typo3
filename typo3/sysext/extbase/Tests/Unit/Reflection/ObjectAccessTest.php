@@ -373,7 +373,7 @@ final class ObjectAccessTest extends UnitTestCase
     #[Test]
     public function isPropertyGettableWorksOnObjectsMixingRegularPropertiesAndArrayAccess(): void
     {
-        $object = new class () extends \ArrayObject {
+        $object = new class extends \ArrayObject {
             private $regularProperty = 'foo';
 
             public function getRegularProperty(): string

@@ -162,7 +162,7 @@ final class BeforePersistingReportEventTest extends FunctionalTestCase
             }
         };
 
-        $kernel = new class () implements RequestHandlerInterface {
+        $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return (new Response())

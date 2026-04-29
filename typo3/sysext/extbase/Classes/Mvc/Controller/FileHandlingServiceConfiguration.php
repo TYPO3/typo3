@@ -179,8 +179,8 @@ class FileHandlingServiceConfiguration
         }
 
         // Validate, that minimum files requirement is valid after file deletion(s)
-        if ($fileDeletionCount > 0 &&
-            ($currentPropertyValue instanceof FileReference || $currentPropertyValue instanceof ObjectStorage)
+        if ($fileDeletionCount > 0
+            && ($currentPropertyValue instanceof FileReference || $currentPropertyValue instanceof ObjectStorage)
         ) {
             $newAmount = $currentAmount - $fileDeletionCount + count($uploadedFiles);
             if ($newAmount < $configuration->getMinFiles()) {
@@ -198,9 +198,9 @@ class FileHandlingServiceConfiguration
 
         // If the given $currentPropertyValue (which is the target property for file upload) is either a FileReference
         // or a non empty ObjectStorage and no uploaded files are available, the rest of the validation can be skipped.
-        if ($uploadedFiles === [] &&
-            ($currentPropertyValue instanceof FileReference ||
-                ($currentPropertyValue instanceof ObjectStorage && $currentPropertyValue->count() > 0))
+        if ($uploadedFiles === []
+            && ($currentPropertyValue instanceof FileReference
+                || ($currentPropertyValue instanceof ObjectStorage && $currentPropertyValue->count() > 0))
         ) {
             return $validationResults;
         }

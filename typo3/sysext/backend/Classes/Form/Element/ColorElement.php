@@ -142,8 +142,8 @@ class ColorElement extends AbstractFormElement
             ),
         );
 
-        $configuredPalette =
-            $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['colorPalette']
+        $configuredPalette
+            = $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['colorPalette']
             ?? $tsConfig['TCEFORM.'][$table . '.']['colorPalette']
             ?? $tsConfig['TCEFORM.']['colorPalette']
             ?? null;

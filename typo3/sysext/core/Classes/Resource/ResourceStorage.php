@@ -767,8 +767,8 @@ class ResourceStorage implements ResourceStorageInterface
     protected function checkValidFileExtension(FileInterface $file): bool
     {
         $fileNameValidator = GeneralUtility::makeInstance(FileNameValidator::class);
-        return $fileNameValidator->isValid($file->getName()) &&
-            $fileNameValidator->isValid(basename($file->getIdentifier()));
+        return $fileNameValidator->isValid($file->getName())
+            && $fileNameValidator->isValid(basename($file->getIdentifier()));
     }
 
     /**

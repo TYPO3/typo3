@@ -59,7 +59,7 @@ final readonly class PolicyProvider
     public function prepare(
         PolicyBag $policyBag,
         ServerRequestInterface $request,
-        null|string|ResponseInterface $response,
+        string|ResponseInterface|null $response,
     ): void {
         foreach ($policyBag->dispositionMap as $disposition => $configuration) {
             if ($policyBag->hasPolicy($disposition)) {

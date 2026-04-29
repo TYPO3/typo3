@@ -195,7 +195,7 @@ final class PageContextInitializationTest extends FunctionalTestCase
 
         $middleware = $this->get(PageContextInitialization::class);
 
-        $handler = new class () implements RequestHandlerInterface {
+        $handler = new class implements RequestHandlerInterface {
             public ?PageContext $pageContext = null;
 
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -223,7 +223,7 @@ final class PageContextInitializationTest extends FunctionalTestCase
 
         $middleware = $this->get(PageContextInitialization::class);
 
-        $handler = new class () implements RequestHandlerInterface {
+        $handler = new class implements RequestHandlerInterface {
             public ?PageContext $pageContext = null;
 
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -256,7 +256,7 @@ final class PageContextInitializationTest extends FunctionalTestCase
     {
         $middleware = $this->get(PageContextInitialization::class);
 
-        $handler = new class () implements RequestHandlerInterface {
+        $handler = new class implements RequestHandlerInterface {
             public ?PageContext $pageContext = null;
 
             public function handle(ServerRequestInterface $request): ResponseInterface

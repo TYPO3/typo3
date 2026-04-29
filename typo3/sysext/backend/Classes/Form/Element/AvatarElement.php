@@ -45,18 +45,18 @@ class AvatarElement extends AbstractFormElement
 
         $html = '';
         if ($avatarImage) {
-            $icon = '<span class="avatar avatar-size-medium mb-2"><span class="avatar-image">' .
-                '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
-                ' width="' . (int)$avatarImage->getWidth() . '"' .
-                ' height="' . (int)$avatarImage->getHeight() . '"' .
-                ' alt="" />' .
-                '</span></span>';
+            $icon = '<span class="avatar avatar-size-medium mb-2"><span class="avatar-image">'
+                . '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl()) . '"'
+                . ' width="' . (int)$avatarImage->getWidth() . '"'
+                . ' height="' . (int)$avatarImage->getHeight() . '"'
+                . ' alt="" />'
+                . '</span></span>';
             $html .= '<span id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
         }
 
-        $html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" ' .
-            'name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"' .
-            ' value="' . (int)($this->data['databaseRow']['avatar'] ?? 0) . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
+        $html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" '
+            . 'name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
+            . ' value="' . (int)($this->data['databaseRow']['avatar'] ?? 0) . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
 
         $html .= '<div class="form-group"><div class="form-group"><div class="form-control-wrap">';
         $html .= '<button type="button" id="add_button_' . htmlspecialchars($fieldName)

@@ -364,7 +364,7 @@ readonly class ContextualRecordEditController
                 $e->getMessage(),
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission'),
             )];
-        } catch (DatabaseRecordException | DatabaseRecordWorkspaceDeletePlaceholderException $e) {
+        } catch (DatabaseRecordException|DatabaseRecordWorkspaceDeletePlaceholderException $e) {
             return ['errorHtml' => $this->getInfobox($e->getMessage())];
         }
     }

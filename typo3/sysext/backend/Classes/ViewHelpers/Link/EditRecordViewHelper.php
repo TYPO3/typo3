@@ -94,8 +94,8 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
         if ($this->arguments['uid'] < 1) {
             throw new InvalidArgumentValueException('Uid must be a positive integer, ' . $this->arguments['uid'] . ' given.', 1526127158);
         }
-        $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class) ?
-            $this->renderingContext->getAttribute(ServerRequestInterface::class) : null;
+        $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class)
+            ? $this->renderingContext->getAttribute(ServerRequestInterface::class) : null;
 
         if (empty($this->arguments['returnUrl']) && $request !== null) {
             // @todo: We may want to deprecate fetching returnUrl from request

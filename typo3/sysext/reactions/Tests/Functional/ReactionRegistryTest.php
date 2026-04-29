@@ -53,7 +53,7 @@ final class ReactionRegistryTest extends FunctionalTestCase
 
     private function buildReactionMock(): \IteratorAggregate
     {
-        $class = new class () implements \IteratorAggregate {
+        $class = new class implements \IteratorAggregate {
             public function getIterator(): \Traversable
             {
                 return new \ArrayIterator([CreateRecordReaction::getType() => GeneralUtility::makeInstance(CreateRecordReaction::class)]);

@@ -46,8 +46,8 @@ class MaintenanceWindow
     {
         return $supportedUntil !== null
             && (
-                $supportedUntil >=
-                new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
+                $supportedUntil
+                >= new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
             );
     }
 }

@@ -205,9 +205,9 @@ class CoreVersionService
     protected function throwFetchException(string $url): void
     {
         throw new RemoteFetchException(
-            'Fetching ' .
-            $url .
-            ' failed. Maybe this instance can not connect to the remote system properly.',
+            'Fetching '
+            . $url
+            . ' failed. Maybe this instance can not connect to the remote system properly.',
             1380897593
         );
     }

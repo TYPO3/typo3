@@ -48,68 +48,68 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     public static function translateDataProvider(): array
     {
         return [
-            'get translated key' =>
-            ['key1', 'label_test', 'da', 'Dansk label for key1'],
+            'get translated key'
+            => ['key1', 'label_test', 'da', 'Dansk label for key1'],
 
-            'fallback to English when translation is missing for key' =>
-            ['key2', 'label_test', 'da', 'English label for key2'],
+            'fallback to English when translation is missing for key'
+            => ['key2', 'label_test', 'da', 'English label for key2'],
 
-            'get translated key (russian, sort order relevant)' =>
-            ['key1', 'label_test', 'ru', 'Russian label for key1'],
+            'get translated key (russian, sort order relevant)'
+            => ['key1', 'label_test', 'ru', 'Russian label for key1'],
 
-            'fallback to English when translation is missing for ru key' =>
-            ['key2', 'label_test', 'ru', 'English label for key2'],
+            'fallback to English when translation is missing for ru key'
+            => ['key2', 'label_test', 'ru', 'English label for key2'],
 
-            'fallback to English for non existing language' =>
-            ['key2', 'label_test', 'xx', 'English label for key2'],
+            'fallback to English for non existing language'
+            => ['key2', 'label_test', 'xx', 'English label for key2'],
 
-            'Traditional LLL string as key' =>
-            ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
+            'Traditional LLL string as key'
+            => ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
 
-            'LLL with translation domain for default file' =>
-            ['LLL:label_test.messages:key1', null, 'da', 'Dansk label for key1'],
+            'LLL with translation domain for default file'
+            => ['LLL:label_test.messages:key1', null, 'da', 'Dansk label for key1'],
 
-            'LLL with translation domain' =>
-            ['LLL:label_test.actions:key1', null, 'da', 'Dansk label for key1 from actions'],
+            'LLL with translation domain'
+            => ['LLL:label_test.actions:key1', null, 'da', 'Dansk label for key1 from actions'],
 
-            'translation domain as label for default file' =>
-            ['label_test.messages:key1', null, 'da', 'Dansk label for key1'],
+            'translation domain as label for default file'
+            => ['label_test.messages:key1', null, 'da', 'Dansk label for key1'],
 
-            'translation domain as label' =>
-            ['label_test.actions:key1', null, 'da', 'Dansk label for key1 from actions'],
+            'translation domain as label'
+            => ['label_test.actions:key1', null, 'da', 'Dansk label for key1 from actions'],
 
-            'translation domain as extension name' =>
-            ['key1', 'label_test.messages', 'da', 'Dansk label for key1'],
+            'translation domain as extension name'
+            => ['key1', 'label_test.messages', 'da', 'Dansk label for key1'],
 
-            'replace placeholder with argument' =>
-            ['keyWithPlaceholder', 'label_test', 'default', 'English label with number 100', [100]],
+            'replace placeholder with argument'
+            => ['keyWithPlaceholder', 'label_test', 'default', 'English label with number 100', [100]],
 
-            'placeholder and empty arguments in default' =>
-            ['keyWithPlaceholderAndNoArguments', 'label_test', 'default', '%d/%m/%Y', []],
+            'placeholder and empty arguments in default'
+            => ['keyWithPlaceholderAndNoArguments', 'label_test', 'default', '%d/%m/%Y', []],
 
-            'placeholder and empty arguments in translation' =>
-            ['keyWithPlaceholderAndNoArguments', 'label_test', 'da', '%d-%m-%Y', []],
+            'placeholder and empty arguments in translation'
+            => ['keyWithPlaceholderAndNoArguments', 'label_test', 'da', '%d-%m-%Y', []],
 
-            'placeholder and too many arguments in default' =>
-            ['keyWithPlaceholder', 'label_test', 'default', 'English label with number 4', [4, 8, 15, 16, 23, 42]],
+            'placeholder and too many arguments in default'
+            => ['keyWithPlaceholder', 'label_test', 'default', 'English label with number 4', [4, 8, 15, 16, 23, 42]],
 
-            'placeholder and missing arguments in default' =>
-            ['keyWithPlaceholder', 'label_test', 'default', 'English label with number %d'],
+            'placeholder and missing arguments in default'
+            => ['keyWithPlaceholder', 'label_test', 'default', 'English label with number %d'],
 
-            'placeholders and typed, placed arguments in default' =>
-            ['keyWithPlaceholders', 'label_test', 'default', 'English label with number 42 and string abc', ['abc', 42]],
+            'placeholders and typed, placed arguments in default'
+            => ['keyWithPlaceholders', 'label_test', 'default', 'English label with number 42 and string abc', ['abc', 42]],
 
-            'placeholders and mistyped, placed arguments in default' =>
-            ['keyWithPlaceholders', 'label_test', 'default', 'English label with number 0 and string 42', [42, 'abc']],
+            'placeholders and mistyped, placed arguments in default'
+            => ['keyWithPlaceholders', 'label_test', 'default', 'English label with number 0 and string 42', [42, 'abc']],
 
-            'key with invalid format specified, without arguments' =>
-            ['keyWithValueError', 'label_test', 'default', '%? something'],
+            'key with invalid format specified, without arguments'
+            => ['keyWithValueError', 'label_test', 'default', '%? something'],
 
-            'placeholders and typed, too few arguments in default' =>
-            ['keyWithPlaceholders', 'label_test', 'default', 'Error: could not translate key "keyWithPlaceholders" with value "English label with number %2$d and string %1$s" and 1 argument(s)!', ['abc']],
+            'placeholders and typed, too few arguments in default'
+            => ['keyWithPlaceholders', 'label_test', 'default', 'Error: could not translate key "keyWithPlaceholders" with value "English label with number %2$d and string %1$s" and 1 argument(s)!', ['abc']],
 
-            'key with invalid format specified, with arguments' =>
-            ['keyWithValueError', 'label_test', 'default', 'Error: could not translate key "keyWithValueError" with value "%? something" and 4 argument(s)!', [47, 11, 8, 15]],
+            'key with invalid format specified, with arguments'
+            => ['keyWithValueError', 'label_test', 'default', 'Error: could not translate key "keyWithValueError" with value "%? something" and 4 argument(s)!', [47, 11, 8, 15]],
         ];
     }
 
@@ -153,35 +153,35 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     public static function translateDataOverriddenByTypoScriptProvider(): array
     {
         return [
-            'TS override simple key (key1)' =>
-            ['key1', 'label_test', 'da', 'key1 value from TS core'],
+            'TS override simple key (key1)'
+            => ['key1', 'label_test', 'da', 'key1 value from TS core'],
 
-            'TS override traditional LLL string does not work' =>
-            ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
+            'TS override traditional LLL string does not work'
+            => ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
 
-            'TS override with language domain in key' =>
-            ['label_test.messages:key1', null, 'da', 'key1 value from TS core'],
+            'TS override with language domain in key'
+            => ['label_test.messages:key1', null, 'da', 'key1 value from TS core'],
 
-            'TS override language domain in key does not affect other domains' =>
-            ['label_test.actions:key1', null, 'da', 'Dansk label for key1 from actions'],
+            'TS override language domain in key does not affect other domains'
+            => ['label_test.actions:key1', null, 'da', 'Dansk label for key1 from actions'],
 
-            'TS override with language as extensionKey' =>
-            ['key1', 'label_test.messages', 'da', 'key1 value from TS core'],
+            'TS override with language as extensionKey'
+            => ['key1', 'label_test.messages', 'da', 'key1 value from TS core'],
 
-            'TS override does not affect other domains' =>
-            ['key1', 'label_test.actions', 'da', 'Dansk label for key1 from actions'],
+            'TS override does not affect other domains'
+            => ['key1', 'label_test.actions', 'da', 'Dansk label for key1 from actions'],
 
-            'XLF label no override (key2)' =>
-            ['key2', 'label_test', 'da', 'English label for key2'],
+            'XLF label no override (key2)'
+            => ['key2', 'label_test', 'da', 'English label for key2'],
 
-            'TS override key3 (top-level)' =>
-            ['key3', 'label_test', 'da', 'English label for key3 from TypoScript'],
+            'TS override key3 (top-level)'
+            => ['key3', 'label_test', 'da', 'English label for key3 from TypoScript'],
 
-            'TS nested subkey (key3.subkey1)' =>
-            ['key3.subkey1', 'label_test', 'da', 'key3.subkey1 value from TypoScript'],
+            'TS nested subkey (key3.subkey1)'
+            => ['key3.subkey1', 'label_test', 'da', 'key3.subkey1 value from TypoScript'],
 
-            'TS nested subsubkey (key3.subkey2.subsubkey)' =>
-            ['key3.subkey2.subsubkey', 'label_test', 'da', 'key3.subkey2.subsubkey value from TypoScript'],
+            'TS nested subsubkey (key3.subkey2.subsubkey)'
+            => ['key3.subkey2.subsubkey', 'label_test', 'da', 'key3.subkey2.subsubkey value from TypoScript'],
         ];
     }
 
@@ -227,20 +227,20 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     public static function translateDataClearLabelWithTypoScriptProvider(): array
     {
         return [
-            'Key with extension name' =>
-            ['key1', 'label_test', 'da', ''],
+            'Key with extension name'
+            => ['key1', 'label_test', 'da', ''],
 
-            'traditional LLL string does not get replaced' =>
-            ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
+            'traditional LLL string does not get replaced'
+            => ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
 
-            'language domain key' =>
-            ['label_test.messages:key1', null, 'da', ''],
+            'language domain key'
+            => ['label_test.messages:key1', null, 'da', ''],
 
-            'language domain as extension key' =>
-            ['key1', 'label_test.messages', 'da', ''],
+            'language domain as extension key'
+            => ['key1', 'label_test.messages', 'da', ''],
 
-            'Missing key with extension name' =>
-            ['missingkey', 'label_test', 'da', null],
+            'Missing key with extension name'
+            => ['missingkey', 'label_test', 'da', null],
         ];
     }
 

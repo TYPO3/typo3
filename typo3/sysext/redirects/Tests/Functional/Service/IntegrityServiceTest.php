@@ -268,7 +268,7 @@ final class IntegrityServiceTest extends FunctionalTestCase
     public function checkRedirectTargetIntegrityDispatchesEventForEachRedirect(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
-        $eventDispatcher = new class () implements EventDispatcherInterface {
+        $eventDispatcher = new class implements EventDispatcherInterface {
             /** @var list<RedirectIntegrityCheckEvent> */
             public array $dispatchedEvents = [];
             public function dispatch(object $event): object

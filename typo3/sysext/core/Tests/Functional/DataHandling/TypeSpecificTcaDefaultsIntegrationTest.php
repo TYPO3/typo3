@@ -64,11 +64,11 @@ final class TypeSpecificTcaDefaultsIntegrationTest extends FunctionalTestCase
 
         // Set up page TSconfig with type-specific defaults
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout = 1' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 3' . chr(10) .
-                'TCAdefaults.tt_content.frame_class = default' . chr(10) .
-                'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-before',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout = 1' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 3' . chr(10)
+                . 'TCAdefaults.tt_content.frame_class = default' . chr(10)
+                . 'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-before',
         ]);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -103,9 +103,9 @@ final class TypeSpecificTcaDefaultsIntegrationTest extends FunctionalTestCase
 
         // Set up configuration with type-specific default for textmedia only
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout = 1' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 3',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout = 1' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 3',
         ]);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -138,11 +138,11 @@ final class TypeSpecificTcaDefaultsIntegrationTest extends FunctionalTestCase
 
         // Set up page TSconfig with complex defaults
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout = 2' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 4' . chr(10) .
-                'TCAdefaults.tt_content.frame_class = user-default' . chr(10) .
-                'TCAdefaults.tt_content.frame_class.types.textmedia = user-type-default',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout = 2' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 4' . chr(10)
+                . 'TCAdefaults.tt_content.frame_class = user-default' . chr(10)
+                . 'TCAdefaults.tt_content.frame_class.types.textmedia = user-type-default',
         ]);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -176,10 +176,10 @@ final class TypeSpecificTcaDefaultsIntegrationTest extends FunctionalTestCase
 
         // Set up page TSconfig with multiple type-specific defaults
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 3' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.image = 2' . chr(10) .
-                'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-before',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 3' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.image = 2' . chr(10)
+                . 'TCAdefaults.tt_content.frame_class.types.textmedia = ruler-before',
         ]);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -238,9 +238,9 @@ final class TypeSpecificTcaDefaultsIntegrationTest extends FunctionalTestCase
 
         // Set up page TSconfig with type-specific defaults
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout = 1' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 3',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout = 1' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 3',
         ]);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -273,9 +273,9 @@ final class TypeSpecificTcaDefaultsIntegrationTest extends FunctionalTestCase
 
         // Set up page TSconfig with type-specific defaults
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout = 1' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.textmedia = 3',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout = 1' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.textmedia = 3',
         ]);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -309,9 +309,9 @@ final class TypeSpecificTcaDefaultsIntegrationTest extends FunctionalTestCase
 
         // Set up page TSconfig with type-specific defaults for pages table (which has no type field)
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.pages.title = Default Title' . chr(10) .
-                'TCAdefaults.pages.title.types.sometype = Type Specific Title',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.pages.title = Default Title' . chr(10)
+                . 'TCAdefaults.pages.title.types.sometype = Type Specific Title',
         ]);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -344,9 +344,9 @@ final class TypeSpecificTcaDefaultsIntegrationTest extends FunctionalTestCase
 
         // Set up page TSconfig with empty type-specific configuration
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.tt_content.header_layout = 1' . chr(10) .
-                'TCAdefaults.tt_content.header_layout.types.',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.tt_content.header_layout = 1' . chr(10)
+                . 'TCAdefaults.tt_content.header_layout.types.',
         ]);
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);

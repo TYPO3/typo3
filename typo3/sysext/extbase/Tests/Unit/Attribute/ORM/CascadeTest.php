@@ -29,8 +29,8 @@ final class CascadeTest extends UnitTestCase
     public function constructorAcceptsConfigurationOptionsAsArray(): void
     {
         $this->expectUserDeprecationMessage(
-            'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. ' .
-            'Use explicit constructor parameters instead.',
+            'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. '
+            . 'Use explicit constructor parameters instead.',
         );
 
         $actual = new Cascade([

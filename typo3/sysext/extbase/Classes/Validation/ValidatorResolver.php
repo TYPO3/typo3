@@ -191,8 +191,8 @@ class ValidatorResolver implements SingletonInterface
                 }
                 if ($newValidator === null) {
                     throw new NoSuchValidatorException(
-                        'Invalid #[Validate] attribute in ' . $targetClassName . '::' . $property->getName() . ': ' .
-                        'Could not resolve class name for validator "' . $validatorDefinition['className'] . '".',
+                        'Invalid #[Validate] attribute in ' . $targetClassName . '::' . $property->getName() . ': '
+                        . 'Could not resolve class name for validator "' . $validatorDefinition['className'] . '".',
                         1241098027
                     );
                 }

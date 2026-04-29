@@ -77,8 +77,8 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
         if (isset($this->arguments['uid']) && $this->arguments['uid'] >= 0) {
             throw new InvalidArgumentValueException('Uid must be negative integer, ' . $this->arguments['uid'] . ' given', 1526136362);
         }
-        $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class) ?
-            $this->renderingContext->getAttribute(ServerRequestInterface::class) : null;
+        $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class)
+            ? $this->renderingContext->getAttribute(ServerRequestInterface::class) : null;
         if (empty($this->arguments['returnUrl']) && $request !== null) {
             $this->arguments['returnUrl'] = $request->getAttribute('normalizedParams')->getRequestUri();
         }

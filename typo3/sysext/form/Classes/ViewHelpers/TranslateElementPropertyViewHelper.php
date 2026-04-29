@@ -47,7 +47,7 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
     /**
      * Return array element by key.
      */
-    public function render(): array|null|string
+    public function render(): array|string|null
     {
         self::assertArgumentTypes($this->arguments);
         $element = $this->arguments['element'];

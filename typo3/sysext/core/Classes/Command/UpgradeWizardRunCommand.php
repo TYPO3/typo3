@@ -117,9 +117,9 @@ class UpgradeWizardRunCommand extends Command
                 'wizardName',
                 InputArgument::OPTIONAL
             )->setHelp(
-                'This command allows running upgrade wizards on CLI. To run a single wizard add the ' .
-                'identifier of the wizard as argument. The identifier of the wizard is the name it is ' .
-                'registered with in ext_localconf.'
+                'This command allows running upgrade wizards on CLI. To run a single wizard add the '
+                . 'identifier of the wizard as argument. The identifier of the wizard is the name it is '
+                . 'registered with in ext_localconf.'
             );
     }
 
@@ -221,9 +221,9 @@ class UpgradeWizardRunCommand extends Command
                 $result = $prerequisite->ensure();
                 if ($result === false) {
                     $this->output->error(
-                        '<error>Error running ' .
-                        $prerequisite->getTitle() .
-                        '. Please ensure this prerequisite manually and try again.</error>'
+                        '<error>Error running '
+                        . $prerequisite->getTitle()
+                        . '. Please ensure this prerequisite manually and try again.</error>'
                     );
                     break;
                 }

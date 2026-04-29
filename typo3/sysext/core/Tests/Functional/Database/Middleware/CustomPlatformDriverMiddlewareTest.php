@@ -26,7 +26,7 @@ final class CustomPlatformDriverMiddlewareTest extends FunctionalTestCase
     #[Test]
     public function driverMiddlewareIsRegistered(): void
     {
-        $testConnectionPool = new class () extends ConnectionPool {
+        $testConnectionPool = new class extends ConnectionPool {
             public function callGetOrderedConnectionDriverMiddlewareConfiguration(string $connectionName): array
             {
                 return $this->getOrderedConnectionDriverMiddlewareConfiguration(

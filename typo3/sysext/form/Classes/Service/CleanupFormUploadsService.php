@@ -126,7 +126,7 @@ readonly class CleanupFormUploadsService
 
         try {
             $parentFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($folderIdentifier);
-        } catch (FolderDoesNotExistException | InsufficientFolderAccessPermissionsException | \InvalidArgumentException $e) {
+        } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException|\InvalidArgumentException $e) {
             $this->logger->warning(
                 'Could not access upload folder "{folder}": {message}',
                 ['folder' => $folderIdentifier, 'message' => $e->getMessage()]

@@ -92,8 +92,8 @@ final readonly class ContentStatisticsService
             $groupedWizardItems[$usageIdentifier][$groupIdentifier]['elements'][$recordType]['count'] = $countInformation[$recordType] ?? [];
             try {
                 $subschema = $schema->getSubSchema($recordType);
-                $groupedWizardItems[$usageIdentifier][$groupIdentifier]['elements'][$recordType]['fields'] =
-                    $subschema->getFields(fn($field) => !in_array($field->getName(), $defaultFields, true));
+                $groupedWizardItems[$usageIdentifier][$groupIdentifier]['elements'][$recordType]['fields']
+                    = $subschema->getFields(fn($field) => !in_array($field->getName(), $defaultFields, true));
             } catch (UndefinedSchemaException) {
             }
         }

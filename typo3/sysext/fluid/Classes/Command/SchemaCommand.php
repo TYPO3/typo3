@@ -58,8 +58,8 @@ final class SchemaCommand extends Command
         $viewHelperMetadataFactory = new ViewHelperMetadataFactory();
         foreach ($this->viewHelperResolverDelegateRegistry->getAll() as $delegate) {
             if (
-                $delegate instanceof ComponentListProviderInterface &&
-                $delegate instanceof ComponentDefinitionProviderInterface
+                $delegate instanceof ComponentListProviderInterface
+                && $delegate instanceof ComponentDefinitionProviderInterface
             ) {
                 foreach ($delegate->getAvailableComponents() as $componentName) {
                     $allViewHelpers[] = $viewHelperMetadataFactory->createFromComponentDefinition(

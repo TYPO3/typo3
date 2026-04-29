@@ -48,7 +48,7 @@ readonly class SvgSanitizer
     public function sanitizeNode(
         \DOMNode $node,
     ): \DOMNode {
-        $svgSanitizer = new class () extends Sanitizer {
+        $svgSanitizer = new class extends Sanitizer {
             public function sanitizeDocument(\DOMDocument $document): void
             {
                 $this->xmlDocument = $document;

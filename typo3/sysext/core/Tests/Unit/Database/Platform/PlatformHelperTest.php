@@ -44,7 +44,7 @@ final class PlatformHelperTest extends UnitTestCase
     {
         // **supported platforms**
         // MySQL based
-        yield 'Supported ' . DoctrineAbstractMySQLPlatform::class => [new class () extends DoctrineAbstractMySQLPlatform {}];
+        yield 'Supported ' . DoctrineAbstractMySQLPlatform::class => [new class extends DoctrineAbstractMySQLPlatform {}];
         // MySQL specific
         yield 'Supported ' . DoctrineMySQLPlatform::class => [new DoctrineMySQLPlatform()];
         yield 'Supported ' . DoctrineMySQL80Platform::class => [new DoctrineMySQL80Platform()];

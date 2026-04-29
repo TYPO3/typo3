@@ -389,10 +389,10 @@ class Post extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->title . chr(10) .
-            ' written on ' . $this->date->format('Y-m-d') . chr(10) .
-            ' by ' . $this->author->getFullName() . chr(10) .
-            wordwrap($this->content, 70, chr(10)) . chr(10) .
-            implode(', ', $this->tags->toArray());
+        return $this->title . chr(10)
+            . ' written on ' . $this->date->format('Y-m-d') . chr(10)
+            . ' by ' . $this->author->getFullName() . chr(10)
+            . wordwrap($this->content, 70, chr(10)) . chr(10)
+            . implode(', ', $this->tags->toArray());
     }
 }

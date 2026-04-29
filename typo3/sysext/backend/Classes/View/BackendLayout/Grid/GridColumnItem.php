@@ -117,8 +117,8 @@ class GridColumnItem extends AbstractGridObject
         if ($this->isDisabled()) {
             $wrapperClassNames[] = 't3-page-ce-hidden t3js-hidden-record';
         }
-        if ($this->isInconsistentLanguage() ||
-            !$this->backendLayoutView->isCTypeAllowedInColPosByPage(
+        if ($this->isInconsistentLanguage()
+            || !$this->backendLayoutView->isCTypeAllowedInColPosByPage(
                 $this->getRecordType(),
                 $this->getColumn()->getColumnNumber() ?? 0,
                 $this->getRecord()->getPid()

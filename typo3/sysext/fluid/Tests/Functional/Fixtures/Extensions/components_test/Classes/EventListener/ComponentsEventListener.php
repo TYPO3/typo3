@@ -31,8 +31,8 @@ final readonly class ComponentsEventListener
     {
         // Add required argument to component
         if (
-            $event->getNamespace() === 'TYPO3Tests\\ComponentsTest\\Components' &&
-            $event->getComponentDefinition()->getName() === 'modifiedComponent'
+            $event->getNamespace() === 'TYPO3Tests\\ComponentsTest\\Components'
+            && $event->getComponentDefinition()->getName() === 'modifiedComponent'
         ) {
             $originalDefinition = $event->getComponentDefinition();
             $event->setComponentDefinition(new ComponentDefinition(
@@ -52,8 +52,8 @@ final readonly class ComponentsEventListener
     {
         // Provide static variable to component template
         if (
-            $event->getComponentCollection()->getNamespace() === 'TYPO3Tests\\ComponentsTest\\Components' &&
-            $event->getViewHelperName() === 'staticVariables'
+            $event->getComponentCollection()->getNamespace() === 'TYPO3Tests\\ComponentsTest\\Components'
+            && $event->getViewHelperName() === 'staticVariables'
         ) {
             $event->setStaticVariables([
                 ...$event->getStaticVariables(),
@@ -67,8 +67,8 @@ final readonly class ComponentsEventListener
     {
         // Replace component rendering completely
         if (
-            $event->getComponentCollection()->getNamespace() === 'TYPO3Tests\\ComponentsTest\\Components' &&
-            $event->getViewHelperName() === 'alternativeRenderer'
+            $event->getComponentCollection()->getNamespace() === 'TYPO3Tests\\ComponentsTest\\Components'
+            && $event->getViewHelperName() === 'alternativeRenderer'
         ) {
             $event->setRenderedComponent(json_encode([
                 'arguments' => $event->getArguments(),
@@ -79,8 +79,8 @@ final readonly class ComponentsEventListener
 
         // Provide additional data for default rendering
         if (
-            $event->getComponentCollection()->getNamespace() === 'TYPO3Tests\\ComponentsTest\\Components' &&
-            $event->getViewHelperName() === 'extendedRenderer'
+            $event->getComponentCollection()->getNamespace() === 'TYPO3Tests\\ComponentsTest\\Components'
+            && $event->getViewHelperName() === 'extendedRenderer'
         ) {
             $event->setArguments([
                 ...$event->getArguments(),

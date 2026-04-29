@@ -127,9 +127,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode->addChild($nestedObjectNode);
         $expectedAst->addChild($objectNode);
         yield 'simple curly brackets with assignments' => [
-            "foo {\n" .
-            "  bar = baz\n" .
-            '}',
+            "foo {\n"
+            . "  bar = baz\n"
+            . '}',
             $expectedAst,
             [
                 'foo.' => [
@@ -148,10 +148,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $nestedObjectNode->setValue('bazValue');
         $objectNode->addChild($nestedObjectNode);
         yield 'simple curly brackets with two assignments' => [
-            "foo {\n" .
-            "  bar = barValue\n" .
-            "  baz = bazValue\n" .
-            '}',
+            "foo {\n"
+            . "  bar = barValue\n"
+            . "  baz = bazValue\n"
+            . '}',
             $expectedAst,
             [
                 'foo.' => [
@@ -178,17 +178,17 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->addChild($foobarNode);
         $expectedAst->addChild($fooNode);
         yield 'nested curly brackets assignments' => [
-            "foo = foo1\n" .
-            "foo {\n" .
-            "  bar = bar1\n" .
-            "  bar {\n" .
-            "    baz = baz1\n" .
-            "  }\n" .
-            "  foobar = foobar1\n" .
-            "  foobar {\n" .
-            "    foobaz = foobaz1\n" .
-            "  }\n" .
-            '}',
+            "foo = foo1\n"
+            . "foo {\n"
+            . "  bar = bar1\n"
+            . "  bar {\n"
+            . "    baz = baz1\n"
+            . "  }\n"
+            . "  foobar = foobar1\n"
+            . "  foobar {\n"
+            . "    foobaz = foobaz1\n"
+            . "  }\n"
+            . '}',
             $expectedAst,
             [
                 'foo' => 'foo1',
@@ -215,11 +215,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($fooNode);
         $expectedAst->addChild($bazNode);
         yield 'nested curly brackets in excess does not crash' => [
-            "foo {\n" .
-            "  bar = bar1\n" .
-            "}\n" .
-            "}\n" .
-            'baz = baz1',
+            "foo {\n"
+            . "  bar = bar1\n"
+            . "}\n"
+            . "}\n"
+            . 'baz = baz1',
             $expectedAst,
             [
                 'foo.' => [
@@ -255,10 +255,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'multiline assignment multi-line string' => [
-            "foo (\n" .
-            "  line1Value\n" .
-            "  line2Value\n" .
-            ')',
+            "foo (\n"
+            . "  line1Value\n"
+            . "  line2Value\n"
+            . ')',
             $expectedAst,
             [
                 'foo' => "  line1Value\n  line2Value",
@@ -270,10 +270,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $keepNode->setValue('keep1');
         $expectedAst->addChild($keepNode);
         yield 'top level unset removes node' => [
-            "foo = foo\n" .
-            "foo.bar = bar1\n" .
-            "keep = keep1\n" .
-            "foo >\n",
+            "foo = foo\n"
+            . "foo.bar = bar1\n"
+            . "keep = keep1\n"
+            . "foo >\n",
             $expectedAst,
             [
                 'keep' => 'keep1',
@@ -285,8 +285,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->setValue('foo1');
         $expectedAst->addChild($fooNode);
         yield 'top level unset does not choke on not existing node' => [
-            "foo = foo1\n" .
-            "bar >\n",
+            "foo = foo1\n"
+            . "bar >\n",
             $expectedAst,
             [
                 'foo' => 'foo1',
@@ -303,11 +303,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $keepNode->setValue('keep1');
         $expectedAst->addChild($keepNode);
         yield 'nested unset removes nodes' => [
-            "foo\n" .
-            "foo.bar = bar1\n" .
-            "bar = bar2\n" .
-            "keep = keep1\n" .
-            'foo.bar >',
+            "foo\n"
+            . "foo.bar = bar1\n"
+            . "bar = bar2\n"
+            . "keep = keep1\n"
+            . 'foo.bar >',
             $expectedAst,
             [
                 'bar' => 'bar2',
@@ -322,10 +322,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $keepNode->setValue('keep1');
         $fooNode->addChild($keepNode);
         yield 'nested unset removes correct nodes with same name 1' => [
-            "foo\n" .
-            "foo.foo = foo1\n" .
-            "foo.keep = keep1\n" .
-            'foo.foo >',
+            "foo\n"
+            . "foo.foo = foo1\n"
+            . "foo.keep = keep1\n"
+            . 'foo.foo >',
             $expectedAst,
             [
                 'foo.' => [
@@ -343,10 +343,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $keepNode->setValue('keep1');
         $fooNode->addChild($keepNode);
         yield 'nested unset removes correct nodes with same name 2' => [
-            "foo\n" .
-            "foo.foo.foo = foo2\n" .
-            "foo.keep = keep1\n" .
-            'foo.foo.foo >',
+            "foo\n"
+            . "foo.foo.foo = foo2\n"
+            . "foo.keep = keep1\n"
+            . 'foo.foo.foo >',
             $expectedAst,
             [
                 'foo.' => [
@@ -390,29 +390,29 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $coa2020ValueNode->setValue('2');
         $coa2020Node->addChild($coa2020ValueNode);
         yield 'nested unset removes correct nodes with same name 3' => [
-            "page = PAGE\n" .
-            "page {\n" .
-            "  10 = COA\n" .
-            "  10 {\n" .
-            "    10 = TEXT\n" .
-            "    10.value = A\n" .
-            "    20 = TEXT\n" .
-            "    20.value = B\n" .
-            "    30 = TEXT\n" .
-            "    30.value = C\n" .
-            "  }\n" .
-            "  20 = COA\n" .
-            "  20 {\n" .
-            "    10 = TEXT\n" .
-            "    10.value = 1\n" .
-            "    20 = TEXT\n" .
-            "    20.value = 2\n" .
-            "    30 = TEXT\n" .
-            "    30.value = 3\n" .
-            "  }\n" .
-            "}\n" .
-            "page.10.30 >\n" .
-            "page.20.30 >\n",
+            "page = PAGE\n"
+            . "page {\n"
+            . "  10 = COA\n"
+            . "  10 {\n"
+            . "    10 = TEXT\n"
+            . "    10.value = A\n"
+            . "    20 = TEXT\n"
+            . "    20.value = B\n"
+            . "    30 = TEXT\n"
+            . "    30.value = C\n"
+            . "  }\n"
+            . "  20 = COA\n"
+            . "  20 {\n"
+            . "    10 = TEXT\n"
+            . "    10.value = 1\n"
+            . "    20 = TEXT\n"
+            . "    20.value = 2\n"
+            . "    30 = TEXT\n"
+            . "    30.value = 3\n"
+            . "  }\n"
+            . "}\n"
+            . "page.10.30 >\n"
+            . "page.20.30 >\n",
             $expectedAst,
             [
                 'page' => 'PAGE',
@@ -450,9 +450,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->addChild($barNode);
         $expectedAst->addChild($fooNode);
         yield 'nested unset does not choke on not existing node' => [
-            "foo\n" .
-            "foo.bar = bar1\n" .
-            'foo.baz >',
+            "foo\n"
+            . "foo.bar = bar1\n"
+            . 'foo.baz >',
             $expectedAst,
             [
                 'foo.' => [
@@ -468,12 +468,12 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $keepNode->setValue('keep1');
         $fooNode->addChild($keepNode);
         yield 'nested unset removes nodes using curly brackets' => [
-            "foo {\n" .
-            "  bar = bar1\n" .
-            "  bar.baz = baz1\n" .
-            "  keep = keep1\n" .
-            "}\n" .
-            'foo.bar >',
+            "foo {\n"
+            . "  bar = bar1\n"
+            . "  bar.baz = baz1\n"
+            . "  keep = keep1\n"
+            . "}\n"
+            . 'foo.bar >',
             $expectedAst,
             [
                 'foo.' => [
@@ -489,12 +489,12 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $keepNode->setValue('keep1');
         $fooNode->addChild($keepNode);
         yield 'nested unset removes nodes using curly brackets and unset in bracket' => [
-            "foo {\n" .
-            "  bar = bar1\n" .
-            "  bar.baz = baz1\n" .
-            "  keep = keep1\n" .
-            "  bar >\n" .
-            "}\n",
+            "foo {\n"
+            . "  bar = bar1\n"
+            . "  bar.baz = baz1\n"
+            . "  keep = keep1\n"
+            . "  bar >\n"
+            . "}\n",
             $expectedAst,
             [
                 'foo.' => [
@@ -511,8 +511,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($fooNode);
         $expectedAst->addChild($barNode);
         yield 'copy operator copies node' => [
-            "foo = foo1\n" .
-            'bar < foo',
+            "foo = foo1\n"
+            . 'bar < foo',
             $expectedAst,
             [
                 'foo' => 'foo1',
@@ -525,8 +525,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->setValue('foo1');
         $expectedAst->addChild($fooNode);
         yield 'copy operator when source does not exist does not add node' => [
-            "foo = foo1\n" .
-            'bar < baz',
+            "foo = foo1\n"
+            . 'bar < baz',
             $expectedAst,
             [
                 'foo' => 'foo1',
@@ -547,9 +547,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($fooNode);
         $expectedAst->addChild($bazNode);
         yield 'copy operator copies tree' => [
-            "foo = foo1\n" .
-            "foo.bar = bar1\n" .
-            'baz < foo',
+            "foo = foo1\n"
+            . "foo.bar = bar1\n"
+            . 'baz < foo',
             $expectedAst,
             [
                 'foo' => 'foo1',
@@ -576,11 +576,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->setValue('fooValue');
         $fooNode->addChild(clone $barNode);
         yield 'copy operator keeps target value if source has none on top level' => [
-            "lib.myLib {\n" .
-            "    bar = barValue\n" .
-            "}\n" .
-            "foo = fooValue\n" .
-            'foo < lib.myLib',
+            "lib.myLib {\n"
+            . "    bar = barValue\n"
+            . "}\n"
+            . "foo = fooValue\n"
+            . 'foo < lib.myLib',
             $expectedAst,
             [
                 'lib.' => [
@@ -610,11 +610,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $bazNode->setValue('bazValue');
         $bazNode->addChild(clone $barNode);
         yield 'copy operator keeps target value if source has none on second level' => [
-            "lib.myLib {\n" .
-            "    bar = barValue\n" .
-            "}\n" .
-            "foo.baz = bazValue\n" .
-            'foo.baz < lib.myLib',
+            "lib.myLib {\n"
+            . "    bar = barValue\n"
+            . "}\n"
+            . "foo.baz = bazValue\n"
+            . 'foo.baz < lib.myLib',
             $expectedAst,
             [
                 'lib.' => [
@@ -642,9 +642,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($level1FirstNode);
         $expectedAst->addChild($level1SecondNode);
         yield 'copy operator copies sub tree' => [
-            "level1First = level1FirstValue\n" .
-            "level1First.level2First = level2FirstValue\n" .
-            'level1Second < level1First.level2First',
+            "level1First = level1FirstValue\n"
+            . "level1First.level2First = level2FirstValue\n"
+            . 'level1Second < level1First.level2First',
             $expectedAst,
             [
                 'level1First' => 'level1FirstValue',
@@ -669,10 +669,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($level1FirstNode);
         $expectedAst->addChild($level1SecondNode);
         yield 'copy operator copies sub tree in nested path' => [
-            "level1First = level1FirstValue\n" .
-            "level1First.level2First = level2FirstValue\n" .
-            "level1Second = level1SecondValue\n" .
-            'level1Second.level2Second < level1First.level2First',
+            "level1First = level1FirstValue\n"
+            . "level1First.level2First = level2FirstValue\n"
+            . "level1Second = level1SecondValue\n"
+            . 'level1Second.level2Second < level1First.level2First',
             $expectedAst,
             [
                 'level1First' => 'level1FirstValue',
@@ -697,9 +697,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($level1FirstNode);
         yield 'copy operator with nested sub copy' => [
-            "level1First = level1FirstValue\n" .
-            "level1First.level2First = level2FirstValue\n" .
-            'level1First.level2First.level3First < level1First.level2First',
+            "level1First = level1FirstValue\n"
+            . "level1First.level2First = level2FirstValue\n"
+            . 'level1First.level2First.level3First < level1First.level2First',
             $expectedAst,
             [
                 'level1First' => 'level1FirstValue',
@@ -724,10 +724,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $level3FirstNode->setValue('sourceValue');
         $level2FirstNode->addChild($level3FirstNode);
         yield 'copy operator with nested sub copy and blocks with sub identifier' => [
-            "source = sourceValue\n" .
-            "level1First {\n" .
-            "  level2First.level3First < source\n" .
-            "}\n",
+            "source = sourceValue\n"
+            . "level1First {\n"
+            . "  level2First.level3First < source\n"
+            . "}\n",
             $expectedAst,
             [
                 'source' => 'sourceValue',
@@ -758,14 +758,14 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($level1FirstNode);
         $expectedAst->addChild($level1SecondNode);
         yield 'copy operator with nested sub copy and blocks' => [
-            "level1First = level1FirstValue\n" .
-            "level1First {\n" .
-            "  level2First = level2FirstValue\n" .
-            "  level2First.level3First < level1First.level2First\n" .
-            "}\n" .
-            "level1Second {\n" .
-            "  level2Second < level1First.level2First\n" .
-            "}\n",
+            "level1First = level1FirstValue\n"
+            . "level1First {\n"
+            . "  level2First = level2FirstValue\n"
+            . "  level2First.level3First < level1First.level2First\n"
+            . "}\n"
+            . "level1Second {\n"
+            . "  level2Second < level1First.level2First\n"
+            . "}\n",
             $expectedAst,
             [
                 'level1First' => 'level1FirstValue',
@@ -794,10 +794,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'copy operator with relative assignment' => [
-            "foo {\n" .
-            "  bar = bar1\n" .
-            "  baz < .bar\n" .
-            '}',
+            "foo {\n"
+            . "  bar = bar1\n"
+            . "  baz < .bar\n"
+            . '}',
             $expectedAst,
             [
                 'foo.' => [
@@ -819,10 +819,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'copy operator with relative nested assignment' => [
-            "foo {\n" .
-            "  bar.baz = baz1\n" .
-            "  foobar < .bar.baz\n" .
-            '}',
+            "foo {\n"
+            . "  bar.baz = baz1\n"
+            . "  foobar < .bar.baz\n"
+            . '}',
             $expectedAst,
             [
                 'foo.' => [
@@ -841,8 +841,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'copy operator with broken relative assignment to top level' => [
-            "foo.bar = aValue\n" .
-            'foo.baz < .bar',
+            "foo.bar = aValue\n"
+            . 'foo.baz < .bar',
             $expectedAst,
             [
                 'foo.' => [
@@ -863,8 +863,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'copy operator with relative assignment to top level ' => [
-            "foo.bar = aValue\n" .
-            'foo.baz < .foo',
+            "foo.bar = aValue\n"
+            . 'foo.baz < .foo',
             $expectedAst,
             [
                 'foo.' => [
@@ -890,10 +890,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'copy operator with relative assignment to sub level ' => [
-            "foo {\n" .
-            "  bar.foobar = aValue\n" .
-            "  bar.baz < .bar\n" .
-            '}',
+            "foo {\n"
+            . "  bar.foobar = aValue\n"
+            . "  bar.baz < .bar\n"
+            . '}',
             $expectedAst,
             [
                 'foo.' => [
@@ -912,8 +912,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier empty' => [
-            "foo = foo1\n" .
-            'foo :=',
+            "foo = foo1\n"
+            . 'foo :=',
             $expectedAst,
             [
                 'foo' => 'foo1',
@@ -925,8 +925,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier prependString empty' => [
-            "foo = foo\n" .
-            'foo := prependString()',
+            "foo = foo\n"
+            . 'foo := prependString()',
             $expectedAst,
             [
                 'foo' => 'foo',
@@ -938,8 +938,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier prependString with value' => [
-            "foo = abc\n" .
-            'foo := prependString(!)',
+            "foo = abc\n"
+            . 'foo := prependString(!)',
             $expectedAst,
             [
                 'foo' => '!abc',
@@ -951,8 +951,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier appendString empty' => [
-            "foo = abc\n" .
-            'foo := appendString()',
+            "foo = abc\n"
+            . 'foo := appendString()',
             $expectedAst,
             [
                 'foo' => 'abc',
@@ -964,8 +964,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier appendString with value' => [
-            "foo = abc\n" .
-            'foo := appendString(!)',
+            "foo = abc\n"
+            . 'foo := appendString(!)',
             $expectedAst,
             [
                 'foo' => 'abc!',
@@ -977,8 +977,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier appendString with longer value and space' => [
-            "foo = abc\n" .
-            'foo := appendString( Some Random String with more stuff)',
+            "foo = abc\n"
+            . 'foo := appendString( Some Random String with more stuff)',
             $expectedAst,
             [
                 'foo' => 'abc Some Random String with more stuff',
@@ -990,8 +990,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier appendString with longer value and parentheses' => [
-            "foo = abc\n" .
-            'foo := appendString( uidList in (1,2,3) or pid in (4,5,6))',
+            "foo = abc\n"
+            . 'foo := appendString( uidList in (1,2,3) or pid in (4,5,6))',
             $expectedAst,
             [
                 'foo' => 'abc uidList in (1,2,3) or pid in (4,5,6)',
@@ -1003,8 +1003,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier appendString with longer value and invalid missing closing parentheses' => [
-            "foo = abc\n" .
-            'foo := appendString( uidList in (1,(2,3( or pid in (4,5,6))',
+            "foo = abc\n"
+            . 'foo := appendString( uidList in (1,(2,3( or pid in (4,5,6))',
             $expectedAst,
             [
                 'foo' => 'abc',
@@ -1016,8 +1016,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier appendString with longer value and invalid missing opening parentheses' => [
-            "foo = abc\n" .
-            'foo := appendString( uidList in (1,(2))))),3( or pid in (4,5,6))',
+            "foo = abc\n"
+            . 'foo := appendString( uidList in (1,(2))))),3( or pid in (4,5,6))',
             $expectedAst,
             [
                 'foo' => 'abc uidList in (1,(2))',
@@ -1029,8 +1029,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier appendString with linebreak before+after' => [
-            "foo = abc\n" .
-            "foo := appendString(\n!\n)",
+            "foo = abc\n"
+            . "foo := appendString(\n!\n)",
             $expectedAst,
             [
                 'foo' => 'abc',
@@ -1042,8 +1042,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier appendString with linebreak before' => [
-            "foo = abc\n" .
-            "foo := appendString(\n!)",
+            "foo = abc\n"
+            . "foo := appendString(\n!)",
             $expectedAst,
             [
                 'foo' => 'abc',
@@ -1055,8 +1055,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier appendString with linebreak after' => [
-            "foo = abc\n" .
-            "foo := appendString(!\n)",
+            "foo = abc\n"
+            . "foo := appendString(!\n)",
             $expectedAst,
             [
                 'foo' => 'abc',
@@ -1068,8 +1068,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier removeString removes simple string' => [
-            "foo = abcdef\n" .
-            'foo := removeString(bc)',
+            "foo = abcdef\n"
+            . 'foo := removeString(bc)',
             $expectedAst,
             [
                 'foo' => 'adef',
@@ -1081,8 +1081,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier removeString removes nothing if no match' => [
-            "foo = abcdef\n" .
-            'foo := removeString(foo)',
+            "foo = abcdef\n"
+            . 'foo := removeString(foo)',
             $expectedAst,
             [
                 'foo' => 'abcdef',
@@ -1094,8 +1094,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier removeString removes multiple matches' => [
-            "foo = FooBarFoo\n" .
-            'foo := removeString(Foo)',
+            "foo = FooBarFoo\n"
+            . 'foo := removeString(Foo)',
             $expectedAst,
             [
                 'foo' => 'Bar',
@@ -1107,8 +1107,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier replaceString replaces simple match' => [
-            "foo = abcdef\n" .
-            'foo := replaceString(bc|123)',
+            "foo = abcdef\n"
+            . 'foo := replaceString(bc|123)',
             $expectedAst,
             [
                 'foo' => 'a123def',
@@ -1120,8 +1120,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier replaceString replaces simple match with nothing' => [
-            "foo = abcdef\n" .
-            'foo := replaceString(bc)',
+            "foo = abcdef\n"
+            . 'foo := replaceString(bc)',
             $expectedAst,
             [
                 'foo' => 'adef',
@@ -1133,8 +1133,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier replaceString replaces multiple matches' => [
-            "foo = FooBarFoo\n" .
-            'foo := replaceString(Foo|Bar)',
+            "foo = FooBarFoo\n"
+            . 'foo := replaceString(Foo|Bar)',
             $expectedAst,
             [
                 'foo' => 'BarBarBar',
@@ -1146,8 +1146,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier addToList adds at end of existing list' => [
-            "foo = 123,456\n" .
-            'foo := addToList(789)',
+            "foo = 123,456\n"
+            . 'foo := addToList(789)',
             $expectedAst,
             [
                 'foo' => '123,456,789',
@@ -1159,8 +1159,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier addToList adds at end of existing list including white-spaces' => [
-            "foo = 123,456\n" .
-            'foo := addToList( 789 , 32 , 12 )',
+            "foo = 123,456\n"
+            . 'foo := addToList( 789 , 32 , 12 )',
             $expectedAst,
             [
                 'foo' => '123,456, 789 , 32 , 12 ',
@@ -1173,8 +1173,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier addToList adds nothing' => [
-            "foo = 123,456\n" .
-            'foo := addToList()',
+            "foo = 123,456\n"
+            . 'foo := addToList()',
             $expectedAst,
             [
                 'foo' => '123,456,',
@@ -1198,8 +1198,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier removeFromList removes value from list' => [
-            "foo = 123,456,789,abc\n" .
-            'foo := removeFromList(456)',
+            "foo = 123,456,789,abc\n"
+            . 'foo := removeFromList(456)',
             $expectedAst,
             [
                 'foo' => '123,789,abc',
@@ -1211,8 +1211,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier removeFromList removes value at beginning of list' => [
-            "foo = 123,456,abc\n" .
-            'foo := removeFromList(123)',
+            "foo = 123,456,abc\n"
+            . 'foo := removeFromList(123)',
             $expectedAst,
             [
                 'foo' => '456,abc',
@@ -1224,8 +1224,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier removeFromList removes value at end of list' => [
-            "foo = 123,456,abc\n" .
-            'foo := removeFromList(abc)',
+            "foo = 123,456,abc\n"
+            . 'foo := removeFromList(abc)',
             $expectedAst,
             [
                 'foo' => '123,456',
@@ -1237,8 +1237,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier removeFromList removes multiple values from list' => [
-            "foo = foo,123,bar,123\n" .
-            'foo := removeFromList(123)',
+            "foo = foo,123,bar,123\n"
+            . 'foo := removeFromList(123)',
             $expectedAst,
             [
                 'foo' => 'foo,bar',
@@ -1262,8 +1262,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier removeFromList removes empty values' => [
-            "foo = foo,,bar\n" .
-            'foo := removeFromList()',
+            "foo = foo,,bar\n"
+            . 'foo := removeFromList()',
             $expectedAst,
             [
                 'foo' => 'foo,bar',
@@ -1275,8 +1275,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier uniqueList removes duplicates' => [
-            "foo = 123,456,abc,456,456\n" .
-            'foo := uniqueList()',
+            "foo = 123,456,abc,456,456\n"
+            . 'foo := uniqueList()',
             $expectedAst,
             [
                 'foo' => '123,456,abc',
@@ -1288,8 +1288,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier uniqueList removes duplicate empty list values' => [
-            "foo = 123,,456,,abc\n" .
-            'foo := uniqueList()',
+            "foo = 123,,456,,abc\n"
+            . 'foo := uniqueList()',
             $expectedAst,
             [
                 'foo' => '123,,456,abc',
@@ -1313,8 +1313,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier reverseList returns list reversed' => [
-            "foo = 123,456,abc,456\n" .
-            'foo := reverseList()',
+            "foo = 123,456,abc,456\n"
+            . 'foo := reverseList()',
             $expectedAst,
             [
                 'foo' => '456,abc,456,123',
@@ -1326,8 +1326,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier reverseList keeps empty values' => [
-            "foo = ,123,,456,abc,,456\n" .
-            'foo := reverseList()',
+            "foo = ,123,,456,abc,,456\n"
+            . 'foo := reverseList()',
             $expectedAst,
             [
                 'foo' => '456,,abc,456,,123,',
@@ -1339,8 +1339,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier reverseList does not change single element' => [
-            "foo = 123\n" .
-            'foo := reverseList()',
+            "foo = 123\n"
+            . 'foo := reverseList()',
             $expectedAst,
             [
                 'foo' => '123',
@@ -1364,8 +1364,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier sortList sorts a list' => [
-            "foo = 10,100,0,20,abc\n" .
-            'foo := sortList()',
+            "foo = 10,100,0,20,abc\n"
+            . 'foo := sortList()',
             $expectedAst,
             [
                 'foo' => '0,10,20,100,abc',
@@ -1377,8 +1377,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier sortList sorts a list numeric' => [
-            "foo = 10,0,100,-20\n" .
-            'foo := sortList(numeric)',
+            "foo = 10,0,100,-20\n"
+            . 'foo := sortList(numeric)',
             $expectedAst,
             [
                 'foo' => '-20,0,10,100',
@@ -1390,8 +1390,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier sortList sorts a list descending' => [
-            "foo = 10,100,0,20,abc,-20\n" .
-            'foo := sortList(descending)',
+            "foo = 10,100,0,20,abc,-20\n"
+            . 'foo := sortList(descending)',
             $expectedAst,
             [
                 'foo' => 'abc,100,20,10,0,-20',
@@ -1403,8 +1403,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier sortList sorts a list numeric descending' => [
-            "foo = 10,100,0,20,-20\n" .
-            'foo := sortList(descending,numeric)',
+            "foo = 10,100,0,20,-20\n"
+            . 'foo := sortList(descending,numeric)',
             $expectedAst,
             [
                 'foo' => '100,20,10,0,-20',
@@ -1416,8 +1416,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst = new RootNode();
         $expectedAst->addChild($fooNode);
         yield 'value modifier sortList ignores invalid modifier arguments' => [
-            "foo = 10,100,20\n" .
-            'foo := sortList(foo,descending,bar)',
+            "foo = 10,100,20\n"
+            . 'foo := sortList(foo,descending,bar)',
             $expectedAst,
             [
                 'foo' => '100,20,10',
@@ -1523,8 +1523,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode->setPreviousValue('bar');
         $expectedCommentAwareAst->addChild($objectNode);
         yield 'override simple value assignment' => [
-            "foo = bar\n" .
-            'foo = bar2',
+            "foo = bar\n"
+            . 'foo = bar2',
             $expectedAst,
             $expectedCommentAwareAst,
         ];
@@ -1543,8 +1543,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $objectNode->addChild($nestedObjectNode);
         $expectedCommentAwareAst->addChild($objectNode);
         yield 'override nested value assignment' => [
-            "foo.bar = baz\n" .
-            'foo.bar = baz2',
+            "foo.bar = baz\n"
+            . 'foo.bar = baz2',
             $expectedAst,
             $expectedCommentAwareAst,
         ];
@@ -1585,20 +1585,20 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->addChild($foobarNode);
         $expectedCommentAwareAst->addChild($fooNode);
         yield 'nested curly brackets assignments with re-assignments' => [
-            "foo = foo1\n" .
-            "foo {\n" .
-            "  bar = bar1\n" .
-            "  bar {\n" .
-            "    baz = baz1\n" .
-            "  }\n" .
-            "  bar.baz = baz2\n" .
-            "  foobar = foobar1\n" .
-            "  foobar {\n" .
-            "    foobaz = foobaz1\n" .
-            "  }\n" .
-            "  foobar.foobaz = foobaz2\n" .
-            "}\n" .
-            'foo = foo2',
+            "foo = foo1\n"
+            . "foo {\n"
+            . "  bar = bar1\n"
+            . "  bar {\n"
+            . "    baz = baz1\n"
+            . "  }\n"
+            . "  bar.baz = baz2\n"
+            . "  foobar = foobar1\n"
+            . "  foobar {\n"
+            . "    foobaz = foobaz1\n"
+            . "  }\n"
+            . "  foobar.foobaz = foobaz2\n"
+            . "}\n"
+            . 'foo = foo2',
             $expectedAst,
             $expectedCommentAwareAst,
         ];
@@ -1631,10 +1631,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedCommentAwareAst->addChild($fooNode);
         $expectedCommentAwareAst->addChild($bazNode);
         yield 'copy operator copies tree and dereferences child when changing source tree' => [
-            "foo = foo1\n" .
-            "foo.bar = bar1\n" .
-            "baz < foo\n" .
-            'foo.bar = barChanged',
+            "foo = foo1\n"
+            . "foo.bar = bar1\n"
+            . "baz < foo\n"
+            . 'foo.bar = barChanged',
             $expectedAst,
             $expectedCommentAwareAst,
         ];
@@ -1667,10 +1667,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedCommentAwareAst->addChild($fooNode);
         $expectedCommentAwareAst->addChild($bazNode);
         yield 'copy operator copies tree and dereferences child when changing target tree' => [
-            "foo = foo1\n" .
-            "foo.bar = bar1\n" .
-            "baz < foo\n" .
-            'baz.bar = barChanged',
+            "foo = foo1\n"
+            . "foo.bar = bar1\n"
+            . "baz < foo\n"
+            . 'baz.bar = barChanged',
             $expectedAst,
             $expectedCommentAwareAst,
         ];
@@ -1719,8 +1719,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $expectedAst->addChild($fooNode);
         $expectedAst->addChild($barNode);
         yield 'reference operator creates reference node' => [
-            "foo = foo1\n" .
-            'bar =< foo',
+            "foo = foo1\n"
+            . 'bar =< foo',
             $expectedAst,
             [
                 'foo' => 'foo1',
@@ -1739,8 +1739,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($barNode);
         yield 'reference operator when source does not exist still adds node' => [
-            "foo = foo1\n" .
-            "bar =< baz\n",
+            "foo = foo1\n"
+            . "bar =< baz\n",
             $expectedAst,
             [
                 'foo' => 'foo1',
@@ -1759,8 +1759,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'foo', 1, 11)))
         );
         yield 'reference operator creates reference node without sub nodes for sub node' => [
-            "foo = foo1\n" .
-            "foo.bar =< foo\n",
+            "foo = foo1\n"
+            . "foo.bar =< foo\n",
             $expectedAst,
             [
                 'foo' => 'foo1',
@@ -1785,10 +1785,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'source', 2, 29)))
         );
         yield 'reference operator with nested sub reference is absolute' => [
-            "source = sourceValue\n" .
-            "level1First {\n" .
-            "  level2First.level3First =< source\n" .
-            "}\n",
+            "source = sourceValue\n"
+            . "level1First {\n"
+            . "  level2First.level3First =< source\n"
+            . "}\n",
             $expectedAst,
             [
                 'source' => 'sourceValue',
@@ -1822,13 +1822,13 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append((new IdentifierToken(TokenType::T_IDENTIFIER, 'source', 3, 29)))
         );
         yield 'reference operator with nested sub reference sets override value and sub tree' => [
-            "source = sourceValue\n" .
-            "source.bar = sourceBarValue\n" .
-            "level1First {\n" .
-            "  level2First.level3First =< source\n" .
-            "}\n" .
-            "level1First.level2First.level3First = newSource1Value\n" .
-            "level1First.level2First.level3Second = newSource2Value\n",
+            "source = sourceValue\n"
+            . "source.bar = sourceBarValue\n"
+            . "level1First {\n"
+            . "  level2First.level3First =< source\n"
+            . "}\n"
+            . "level1First.level2First.level3First = newSource1Value\n"
+            . "level1First.level2First.level3Second = newSource2Value\n",
             $expectedAst,
             [
                 'source' => 'sourceValue',
@@ -1861,11 +1861,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooNode->addChild($fooChildNode);
         $fooChildNode->setValue('childfoo');
         yield 'reference operator turns existing node into reference node and keeps children' => [
-            "foo = foo\n" .
-            "foo.childfoo = childfoo\n" .
-            "source = source\n" .
-            "source.childsource = childsource\n" .
-            "foo =< source\n",
+            "foo = foo\n"
+            . "foo.childfoo = childfoo\n"
+            . "source = source\n"
+            . "source.childsource = childsource\n"
+            . "foo =< source\n",
             $expectedAst,
             [
                 'source' => 'source',
@@ -1899,11 +1899,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $fooChildNode->addChild($fooChildChildNode);
         $fooChildChildNode->setValue('childchildfoo');
         yield 'reference operator turns nested existing node into reference node and keeps children' => [
-            "foo.childfoo =< childfoo\n" .
-            "foo.childfoo.childchildfoo = childchildfoo\n" .
-            "source = source\n" .
-            "source.childsource = childsource\n" .
-            "foo.childfoo =< source.childsource\n",
+            "foo.childfoo =< childfoo\n"
+            . "foo.childfoo.childchildfoo = childchildfoo\n"
+            . "source = source\n"
+            . "source.childsource = childsource\n"
+            . "foo.childfoo =< source.childsource\n",
             $expectedAst,
             [
                 'source' => 'source',
@@ -1941,11 +1941,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $targetNode->addChild($targetChildNode);
         $expectedAst->addChild($targetNode);
         yield 'copy operator keeps existing reference node' => [
-            "referenceSource = referenceSourceValue\n" .
-            "referenceSource.referenceSourceChild = referenceSourceChildValue\n" .
-            "copySource.copySourceChild = copySourceChildValue\n" .
-            "target =< referenceSource\n" .
-            "target < copySource\n",
+            "referenceSource = referenceSourceValue\n"
+            . "referenceSource.referenceSourceChild = referenceSourceChildValue\n"
+            . "copySource.copySourceChild = copySourceChildValue\n"
+            . "target =< referenceSource\n"
+            . "target < copySource\n",
             $expectedAst,
             [
                 'referenceSource' => 'referenceSourceValue',
@@ -1986,11 +1986,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         $libNode->addChild($targetNode);
         $expectedAst->addChild($libNode);
         yield 'copy operator keeps existing reference node in nested target' => [
-            "referenceSource = referenceSourceValue\n" .
-            "referenceSource.referenceSourceChild = referenceSourceChildValue\n" .
-            "copySource.copySourceChild = copySourceChildValue\n" .
-            "lib.target =< referenceSource\n" .
-            "lib.target < copySource\n",
+            "referenceSource = referenceSourceValue\n"
+            . "referenceSource.referenceSourceChild = referenceSourceChildValue\n"
+            . "copySource.copySourceChild = copySourceChildValue\n"
+            . "lib.target =< referenceSource\n"
+            . "lib.target < copySource\n",
             $expectedAst,
             [
                 'referenceSource' => 'referenceSourceValue',
@@ -2286,10 +2286,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'assignment multiline with multiple existing constants' => [
-            "foo (\n" .
-            "  {\$bar1}baz\n" .
-            "  {\$bar2}\n" .
-            ')',
+            "foo (\n"
+            . "  {\$bar1}baz\n"
+            . "  {\$bar2}\n"
+            . ')',
             [
                 'bar1' => 'bar1Value',
                 'bar2' => 'bar2Value',
@@ -2309,8 +2309,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'function with non existing constant is kept as string literal' => [
-            "foo = 3,23\n" .
-            'foo := addToList({$bar})',
+            "foo = 3,23\n"
+            . 'foo := addToList({$bar})',
             [],
             $expectedAst,
             [
@@ -2327,8 +2327,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'function with existing constant' => [
-            "foo = 3,23\n" .
-            'foo := addToList({$my.constant})',
+            "foo = 3,23\n"
+            . 'foo := addToList({$my.constant})',
             ['my.constant' => '42'],
             $expectedAst,
             [
@@ -2345,8 +2345,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'function with existing escaped constant' => [
-            "foo = 3,23\n" .
-            "foo := addToList({\$my.escaped\.constant})",
+            "foo = 3,23\n"
+            . "foo := addToList({\$my.escaped\.constant})",
             ['my.escaped\.constant' => '42'],
             $expectedAst,
             [
@@ -2363,8 +2363,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'function with fallback constant' => [
-            "foo = 3,23\n" .
-            'foo := addToList({$my.constant ?? $fallback.constant})',
+            "foo = 3,23\n"
+            . 'foo := addToList({$my.constant ?? $fallback.constant})',
             ['fallback.constant' => '42'],
             $expectedAst,
             [
@@ -2421,9 +2421,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'multiple functions with existing constant' => [
-            "foo = 3,23\n" .
-            "foo := addToList({\$my.constant})\n" .
-            'foo := removeFromList(3)',
+            "foo = 3,23\n"
+            . "foo := addToList({\$my.constant})\n"
+            . 'foo := removeFromList(3)',
             ['my.constant' => '42'],
             $expectedAst,
             [
@@ -2444,9 +2444,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'multiple functions with multiple constants' => [
-            "foo = 3,23\n" .
-            "foo := addToList({\$my.constant})\n" .
-            'foo := removeFromList({$other.constant})',
+            "foo = 3,23\n"
+            . "foo := addToList({\$my.constant})\n"
+            . 'foo := removeFromList({$other.constant})',
             [
                 'my.constant' => '42',
                 'other.constant' => '3',
@@ -2569,13 +2569,13 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     public static function functionSortListThrowsSortingNonNumericListNumericDataProvider(): \Generator
     {
         yield 'non-numeric list numeric' => [
-            "foo = 10,0,100,-20,abc\n" .
-            'foo := sortList(numeric)',
+            "foo = 10,0,100,-20,abc\n"
+            . 'foo := sortList(numeric)',
         ];
 
         yield 'non-numeric list numeric descending' => [
-            "foo = 10,0,100,-20,abc\n" .
-            'foo := sortList(descending,numeric)',
+            "foo = 10,0,100,-20,abc\n"
+            . 'foo := sortList(descending,numeric)',
         ];
     }
 
@@ -2610,8 +2610,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         yield 'environment variable not set' => [
             null, // env var name
             null, // env var value
-            "foo = bar\n" .
-            'foo := getEnv(FOO)',
+            "foo = bar\n"
+            . 'foo := getEnv(FOO)',
             $expectedAst,
         ];
 
@@ -2622,8 +2622,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         yield 'empty environment variable' => [
             'FOO',
             '',
-            "foo = bar\n" .
-            'foo := getEnv(FOO)',
+            "foo = bar\n"
+            . 'foo := getEnv(FOO)',
             $expectedAst,
         ];
 
@@ -2645,8 +2645,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         yield 'environment variable and current value set' => [
             'FOO',
             'baz',
-            "foo = bar\n" .
-            'foo := getEnv(FOO)',
+            "foo = bar\n"
+            . 'foo := getEnv(FOO)',
             $expectedAst,
         ];
 
@@ -2707,9 +2707,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     public static function flattenDataProvider(): \Generator
     {
-        $typoscript =
-            "first = firstValue\n" .
-            "second = secondValue\n";
+        $typoscript
+            = "first = firstValue\n"
+            . "second = secondValue\n";
         $expected = [
             'first' => 'firstValue',
             'second' => 'secondValue',
@@ -2719,8 +2719,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             $expected,
         ];
 
-        $typoscript =
-            "first = \n";
+        $typoscript
+            = "first = \n";
         $expected = [
             'first' => '',
         ];
@@ -2729,8 +2729,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             $expected,
         ];
 
-        $typoscript =
-            "first = 0\n";
+        $typoscript
+            = "first = 0\n";
         $expected = [
             'first' => '0',
         ];
@@ -2739,9 +2739,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             $expected,
         ];
 
-        $typoscript =
-            "first.firstSub = firstSubValue\n" .
-            "second.secondSub = secondSubValue\n";
+        $typoscript
+            = "first.firstSub = firstSubValue\n"
+            . "second.secondSub = secondSubValue\n";
         $expected = [
             'first.firstSub' => 'firstSubValue',
             'second.secondSub' => 'secondSubValue',
@@ -2751,11 +2751,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             $expected,
         ];
 
-        $typoscript =
-            "first = firstValue\n" .
-            "first.firstSub = firstSubValue\n" .
-            "second = secondValue\n" .
-            "second.secondSub = secondSubValue\n";
+        $typoscript
+            = "first = firstValue\n"
+            . "first.firstSub = firstSubValue\n"
+            . "second = secondValue\n"
+            . "second.secondSub = secondSubValue\n";
         $expected = [
             'first' => 'firstValue',
             'first.firstSub' => 'firstSubValue',
@@ -2767,11 +2767,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             $expected,
         ];
 
-        $typoscript =
-            "first.firstSub.firstSubSub = firstSubSubValue\n" .
-            "second = secondValue\n" .
-            "second.secondSub = secondSubValue\n" .
-            "second.secondSub.secondSubSub = secondSubSubValue\n";
+        $typoscript
+            = "first.firstSub.firstSubSub = firstSubSubValue\n"
+            . "second = secondValue\n"
+            . "second.secondSub = secondSubValue\n"
+            . "second.secondSub.secondSubSub = secondSubSubValue\n";
         $expected = [
             'first.firstSub.firstSubSub' => 'firstSubSubValue',
             'second' => 'secondValue',
@@ -2783,8 +2783,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
             $expected,
         ];
 
-        $typoscript =
-            'first.firstSub\.firstSubSub = firstSubSubValue';
+        $typoscript
+            = 'first.firstSub\.firstSubSub = firstSubSubValue';
         $expected = [
             'first.firstSub\.firstSubSub' => 'firstSubSubValue',
         ];
@@ -2844,8 +2844,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_COMMENT_ONELINE_HASH, '# another root node comment', 1, 0))
         );
         yield 'two root node comments' => [
-            "# a root node comment\n" .
-            '# another root node comment',
+            "# a root node comment\n"
+            . '# another root node comment',
             $expectedAst,
         ];
 
@@ -2861,8 +2861,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 27))
         );
         yield 'two root node comments with linebreak' => [
-            "# a root node comment\n" .
-            "# another root node comment\n",
+            "# a root node comment\n"
+            . "# another root node comment\n",
             $expectedAst,
         ];
 
@@ -2878,10 +2878,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 27))
         );
         yield 'two root node comments with multiple linebreaks' => [
-            "# a root node comment\n" .
-            "\n" .
-            "# another root node comment\n" .
-            "\n",
+            "# a root node comment\n"
+            . "\n"
+            . "# another root node comment\n"
+            . "\n",
             $expectedAst,
         ];
 
@@ -2895,8 +2895,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'single object assignment with previous line comment' => [
-            "# a comment\n" .
-            'foo = bar',
+            "# a comment\n"
+            . 'foo = bar',
             $expectedAst,
         ];
 
@@ -2910,8 +2910,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'single object assignment with previous line doubleslash comment' => [
-            "// a comment\n" .
-            'foo = bar',
+            "// a comment\n"
+            . 'foo = bar',
             $expectedAst,
         ];
 
@@ -2927,8 +2927,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'single object assignment with previous line multiline single comment' => [
-            "/* a comment */\n" .
-            'foo = bar',
+            "/* a comment */\n"
+            . 'foo = bar',
             $expectedAst,
         ];
 
@@ -2946,9 +2946,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'single object assignment with previous line multiline multi comment' => [
-            "/* a comment line 1\n" .
-            "   a comment line 2 */\n" .
-            'foo = bar',
+            "/* a comment line 1\n"
+            . "   a comment line 2 */\n"
+            . 'foo = bar',
             $expectedAst,
         ];
 
@@ -2971,10 +2971,10 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'single object assignment with two comments' => [
-            "# a comment\n" .
-            "/* another comment line 1\n" .
-            "   another comment line 2 */\n" .
-            'foo = bar',
+            "# a comment\n"
+            . "/* another comment line 1\n"
+            . "   another comment line 2 */\n"
+            . 'foo = bar',
             $expectedAst,
         ];
 
@@ -2997,11 +2997,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
         );
         $expectedAst->addChild($objectNode);
         yield 'comment for root node and comment for sub node' => [
-            "# a root node comment\n" .
-            "\n" .
-            "/* another comment line 1\n" .
-            "   another comment line 2 */\n" .
-            'foo = bar',
+            "# a root node comment\n"
+            . "\n"
+            . "/* another comment line 1\n"
+            . "   another comment line 2 */\n"
+            . 'foo = bar',
             $expectedAst,
         ];
 
@@ -3017,8 +3017,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 20))
         );
         yield 'comment is added to sub node' => [
-            "# a sub node comment\n" .
-            'foo.bar = baz',
+            "# a sub node comment\n"
+            . 'foo.bar = baz',
             $expectedAst,
         ];
 
@@ -3039,9 +3039,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 26))
         );
         yield 'multiple comments are added to sub node' => [
-            "# a sub node comment\n" .
-            "# another sub node comment\n" .
-            'foo.bar = baz',
+            "# a sub node comment\n"
+            . "# another sub node comment\n"
+            . 'foo.bar = baz',
             $expectedAst,
         ];
 
@@ -3073,15 +3073,15 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 5, 26))
         );
         yield 'root comment, sub node comments, sub sub node comments in brackets, root comment' => [
-            "# a root node comment\n" .
-            "\n" .
-            "# a sub node comment\n" .
-            "foo = fooValue\n" .
-            "foo {\n" .
-            "  # a sub sub node comment\n" .
-            "  bar = barValue\n" .
-            "}\n" .
-            '# another root node comment',
+            "# a root node comment\n"
+            . "\n"
+            . "# a sub node comment\n"
+            . "foo = fooValue\n"
+            . "foo {\n"
+            . "  # a sub sub node comment\n"
+            . "  bar = barValue\n"
+            . "}\n"
+            . '# another root node comment',
             $expectedAst,
         ];
 
@@ -3104,12 +3104,12 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 3, 34))
         );
         yield 'comment line on opening bracket' => [
-            "foo = fooValue\n" .
-            "# a comment attached to foo node\n" .
-            "foo {\n" .
-            "  # a comment attached to bar node\n" .
-            "  bar = barValue\n" .
-            "}\n",
+            "foo = fooValue\n"
+            . "# a comment attached to foo node\n"
+            . "foo {\n"
+            . "  # a comment attached to bar node\n"
+            . "  bar = barValue\n"
+            . "}\n",
             $expectedAst,
         ];
 
@@ -3127,11 +3127,11 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 2, 34))
         );
         yield 'comment on copy line' => [
-            "foo = fooValue\n" .
-            "foo {\n" .
-            "  # a comment attached to bar node\n" .
-            "  bar < foo\n" .
-            "}\n",
+            "foo = fooValue\n"
+            . "foo {\n"
+            . "  # a comment attached to bar node\n"
+            . "  bar < foo\n"
+            . "}\n",
             $expectedAst,
         ];
 
@@ -3145,9 +3145,9 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 1, 32))
         );
         yield 'comment on value modifier line' => [
-            "foo = fooValue\n" .
-            "# a comment attached to foo node\n" .
-            'foo := prependString()',
+            "foo = fooValue\n"
+            . "# a comment attached to foo node\n"
+            . 'foo := prependString()',
             $expectedAst,
         ];
 
@@ -3164,8 +3164,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
                 ->append(new Token(TokenType::T_NEWLINE, "\n", 0, 32))
         );
         yield 'comment on reference line' => [
-            "# a comment attached to foo node\n" .
-            'foo =< bar',
+            "# a comment attached to foo node\n"
+            . 'foo =< bar',
             $expectedAst,
         ];
     }
@@ -3186,8 +3186,8 @@ final class AstBuilderInterfaceTest extends UnitTestCase
     #[Test]
     public function buildWithCommentsSetsPreviousValue(): void
     {
-        $source = "foo = fooValue1\n" .
-            'foo = fooValue2';
+        $source = "foo = fooValue1\n"
+            . 'foo = fooValue2';
         $expectedAst = new RootNode();
         $fooNode = new ChildNode('foo');
         $expectedAst->addChild($fooNode);

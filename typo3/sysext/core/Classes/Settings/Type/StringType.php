@@ -41,13 +41,13 @@ readonly class StringType implements SettingsTypeInterface, SettingsTypeOptionAw
         $stringValue = (string)$value;
 
         // Check optional constraints
-        if (array_key_exists('min', $definition->options) &&
-            mb_strlen($stringValue) < (int)$definition->options['min']
+        if (array_key_exists('min', $definition->options)
+            && mb_strlen($stringValue) < (int)$definition->options['min']
         ) {
             return false;
         }
-        if (array_key_exists('max', $definition->options) &&
-            mb_strlen($stringValue) > (int)$definition->options['max']
+        if (array_key_exists('max', $definition->options)
+            && mb_strlen($stringValue) > (int)$definition->options['max']
         ) {
             return false;
         }

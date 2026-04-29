@@ -51,8 +51,8 @@ readonly class StaticRouteResolver implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (($site = $request->getAttribute('site')) instanceof Site &&
-            ($configuration = $site->getConfiguration()['routes'] ?? null)
+        if (($site = $request->getAttribute('site')) instanceof Site
+            && ($configuration = $site->getConfiguration()['routes'] ?? null)
         ) {
             $path = ltrim($request->getUri()->getPath(), '/');
             $routeConfig = $this->getApplicableStaticRoute($configuration, $site, $path);

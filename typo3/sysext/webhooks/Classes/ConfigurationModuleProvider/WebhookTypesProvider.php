@@ -55,8 +55,8 @@ class WebhookTypesProvider extends AbstractProvider
      */
     private function determineTransportForWebhook(WebhookType $webhookType): array
     {
-        $transportName =
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing'][$webhookType->getServiceName()]
+        $transportName
+            = $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing'][$webhookType->getServiceName()]
             ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing'][WebhookMessageInterface::class]
             ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing']['*']
             ?? 'undefined';

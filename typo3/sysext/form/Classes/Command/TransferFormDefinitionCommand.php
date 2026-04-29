@@ -61,22 +61,22 @@ class TransferFormDefinitionCommand extends Command
     {
         $this
             ->setHelp(
-                'Transfers form definitions from one storage backend to another.' . LF . LF .
-                'Available storage types depend on the installed adapters. Core provides:' . LF .
-                '  - database:   Database storage (default target)' . LF .
-                '  - extension:  Extension paths (EXT:...)' . LF .
-                '  - filemount:  File mount storage (deprecated since v14.2)' . LF . LF .
-                'Target location (--target-location / -l) per storage type:' . LF .
-                '  - database:   Always "0" (fixed; forms are stored at the root level).' . LF .
-                '  - extension:  An EXT: path configured in "persistenceManager.allowedExtensionPaths",' . LF .
-                '                with "persistenceManager.allowSaveToExtensionPaths: true" set.' . LF .
-                '                e.g. --target-location="EXT:my_extension/Resources/Private/Forms/"' . LF .
-                '  - filemount:  A FAL folder path configured in "persistenceManager.allowedFileMounts",' . LF .
-                '                e.g. --target-location="1:/forms/"' . LF . LF .
-                'Use --dry-run to preview which forms would be transferred.' . LF .
-                'Use --move to delete the source form after successful transfer.' . LF . LF .
-                'After a successful transfer, content element references in "tt_content" are automatically' . LF .
-                'updated to point to the new storage location. No other tables are updated.'
+                'Transfers form definitions from one storage backend to another.' . LF . LF
+                . 'Available storage types depend on the installed adapters. Core provides:' . LF
+                . '  - database:   Database storage (default target)' . LF
+                . '  - extension:  Extension paths (EXT:...)' . LF
+                . '  - filemount:  File mount storage (deprecated since v14.2)' . LF . LF
+                . 'Target location (--target-location / -l) per storage type:' . LF
+                . '  - database:   Always "0" (fixed; forms are stored at the root level).' . LF
+                . '  - extension:  An EXT: path configured in "persistenceManager.allowedExtensionPaths",' . LF
+                . '                with "persistenceManager.allowSaveToExtensionPaths: true" set.' . LF
+                . '                e.g. --target-location="EXT:my_extension/Resources/Private/Forms/"' . LF
+                . '  - filemount:  A FAL folder path configured in "persistenceManager.allowedFileMounts",' . LF
+                . '                e.g. --target-location="1:/forms/"' . LF . LF
+                . 'Use --dry-run to preview which forms would be transferred.' . LF
+                . 'Use --move to delete the source form after successful transfer.' . LF . LF
+                . 'After a successful transfer, content element references in "tt_content" are automatically' . LF
+                . 'updated to point to the new storage location. No other tables are updated.'
             )
             ->addOption(
                 'source',

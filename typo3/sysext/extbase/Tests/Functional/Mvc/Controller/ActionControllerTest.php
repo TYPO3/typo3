@@ -595,7 +595,7 @@ final class ActionControllerTest extends FunctionalTestCase
             (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
-        $eventDispatcher = new class () implements EventDispatcherInterface {
+        $eventDispatcher = new class implements EventDispatcherInterface {
             public function dispatch(object $event): object
             {
                 if ($event instanceof BeforeActionRateLimitResponseEvent) {

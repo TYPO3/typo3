@@ -84,10 +84,10 @@ class CheckboxElement extends AbstractFormElement
             // $itemKey is important here, because items could have been removed via TSConfig
             foreach ($items as $itemKey => $itemDefinition) {
                 $label = $itemDefinition['label'];
-                $elementHtml .=
-                    '<div class="form-group">'
-                    . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
-                    '</div>';
+                $elementHtml
+                    .= '<div class="form-group">'
+                    . $this->renderSingleCheckboxElement($label, $itemKey, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled)
+                    . '</div>';
             }
             $elementHtml .= '</div>';
         } else {

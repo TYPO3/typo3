@@ -64,7 +64,7 @@ final class AvoidContentSecurityPolicyNonceEventListener
             && !$pageParts->hasNotCachedContentElements();
     }
 
-    private function isEmptyResponse(null|string|ResponseInterface $response): bool
+    private function isEmptyResponse(string|ResponseInterface|null $response): bool
     {
         // skip, since it cannot be determined
         if ($response === null) {

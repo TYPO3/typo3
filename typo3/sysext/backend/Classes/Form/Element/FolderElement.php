@@ -97,8 +97,8 @@ class FolderElement extends AbstractFormElement
         foreach ($selectedItems as $selectedItem) {
             $folder = $selectedItem['folder'];
             $listOfSelectedValues[] = $folder;
-            $selectorOptionsHtml[] =
-                '<option value="' . htmlspecialchars($folder) . '" title="' . htmlspecialchars($folder) . '">'
+            $selectorOptionsHtml[]
+                = '<option value="' . htmlspecialchars($folder) . '" title="' . htmlspecialchars($folder) . '">'
                     . htmlspecialchars($folder)
                 . '</option>';
         }
@@ -253,8 +253,8 @@ class FolderElement extends AbstractFormElement
         $html[] =   '<input ' . GeneralUtility::implodeAttributes($hiddenElementAttrs, true) . '>';
         $html[] = '</div>';
 
-        $resultArray['html'] =
-            '<typo3-formengine-element-folder class="formengine-field-item" recordFieldId="' . htmlspecialchars($fieldId) . '">
+        $resultArray['html']
+            = '<typo3-formengine-element-folder class="formengine-field-item" recordFieldId="' . htmlspecialchars($fieldId) . '">
                 ' . implode(LF, $html) . '
             </typo3-formengine-element-folder>';
 

@@ -178,9 +178,9 @@ class SettingsController extends AbstractController
         $systemMaintainerList = array_map('intval', $systemMaintainerList);
         $currentTime = time();
         foreach ($users as &$user) {
-            $user['disable'] = $user['disable'] ||
-                ((int)$user['starttime'] !== 0 && $user['starttime'] > $currentTime) ||
-                ((int)$user['endtime'] !== 0 && $user['endtime'] < $currentTime);
+            $user['disable'] = $user['disable']
+                || ((int)$user['starttime'] !== 0 && $user['starttime'] > $currentTime)
+                || ((int)$user['endtime'] !== 0 && $user['endtime'] < $currentTime);
             $user['isSystemMaintainer'] = in_array((int)$user['uid'], $systemMaintainerList, true);
         }
         $view = $this->initializeView($request);

@@ -53,9 +53,9 @@ class VersionNumberUtility
         $t3version = static::getCurrentTypo3Version();
         $t3version = preg_replace('/-?(dev|alpha|beta|RC).*$/', '', $t3version);
         $parts = GeneralUtility::intExplode('.', $t3version . '..');
-        $t3version = MathUtility::forceIntegerInRange($parts[0], 0, 999) . '.' .
-            MathUtility::forceIntegerInRange($parts[1], 0, 999) . '.' .
-            MathUtility::forceIntegerInRange($parts[2], 0, 999);
+        $t3version = MathUtility::forceIntegerInRange($parts[0], 0, 999) . '.'
+            . MathUtility::forceIntegerInRange($parts[1], 0, 999) . '.'
+            . MathUtility::forceIntegerInRange($parts[2], 0, 999);
         return $t3version;
     }
 

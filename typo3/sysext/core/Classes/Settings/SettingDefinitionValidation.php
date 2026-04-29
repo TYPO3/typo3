@@ -50,7 +50,7 @@ final readonly class SettingDefinitionValidation
 
     private function validateSettingsTypeOptions(
         SettingDefinition $definition,
-        SettingsTypeInterface & SettingsTypeOptionAwareInterface $type
+        SettingsTypeInterface&SettingsTypeOptionAwareInterface $type
     ): void {
         $supportedOptions = $type->getSupportedOptions();
 

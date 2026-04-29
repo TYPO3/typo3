@@ -1239,7 +1239,7 @@ class DataMapProcessor
             $site = $this->siteFinder->getSiteByPageId($pageId);
             $siteLanguage = $site->getLanguageById($language);
             $languageTitle = $siteLanguage->getTitle();
-        } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+        } catch (SiteNotFoundException|\InvalidArgumentException $e) {
             $languageTitle = '';
         }
 

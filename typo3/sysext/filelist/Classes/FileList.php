@@ -731,11 +731,11 @@ class FileList
             $thumbnailUrl .= '?' . $processedFile->getModificationTime();
         }
 
-        return '<br><img src="' . htmlspecialchars($thumbnailUrl) . '" ' .
-            'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" ' .
-            'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" ' .
-            'loading="lazy" ' .
-            'alt="" />';
+        return '<br><img src="' . htmlspecialchars($thumbnailUrl) . '" '
+            . 'width="' . htmlspecialchars($processedFile->getProperty('width')) . '" '
+            . 'height="' . htmlspecialchars($processedFile->getProperty('height')) . '" '
+            . 'loading="lazy" '
+            . 'alt="" />';
     }
 
     /**

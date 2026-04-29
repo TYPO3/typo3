@@ -233,9 +233,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                 new LineStream(),
             ],
             'one identifier, multiline comment' => [
-                "foo /* a comment\n" .
-                "finish = comment */\n" .
-                'someIdentifier = someValue',
+                "foo /* a comment\n"
+                . "finish = comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new InvalidLine())
@@ -1698,8 +1698,8 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, assignment multi line, value, missing closing close at end of stream' => [
-                "foo (\n" .
-                "    bar\n",
+                "foo (\n"
+                . "    bar\n",
                 (new LineStream())
                     ->append(
                         (new InvalidLine())
@@ -1716,9 +1716,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                 new LineStream(),
             ],
             'identifier, assignment multi line, multiline value has offending opening round bracket' => [
-                "foo (\n" .
-                "    bar(\n" .
-                ')',
+                "foo (\n"
+                . "    bar(\n"
+                . ')',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -1755,9 +1755,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, assignment multi line, indented close still closes' => [
-                "foo (\n" .
-                "    bar\n" .
-                '    )',
+                "foo (\n"
+                . "    bar\n"
+                . '    )',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -1795,11 +1795,11 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, assignment multi line, multiline value has opening round bracket with pseudo function assign' => [
-                "foo (\n" .
-                "    bar := baz()\n" .
-                "    stillWithinAssignment\n" .
-                ")\n" .
-                'bar',
+                "foo (\n"
+                . "    bar := baz()\n"
+                . "    stillWithinAssignment\n"
+                . ")\n"
+                . 'bar',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -2001,8 +2001,8 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, reference, identifiers, next line' => [
-                "foo =< bar1.bar2\n" .
-                'someIdentifier',
+                "foo =< bar1.bar2\n"
+                . 'someIdentifier',
                 (new LineStream())
                     ->append(
                         (new IdentifierReferenceLine())
@@ -2255,9 +2255,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, reference, identifiers, multiline comment' => [
-                "foo =< bar1.bar2 /* a comment\n" .
-                "finish = comment */\n" .
-                'someIdentifier = someValue',
+                "foo =< bar1.bar2 /* a comment\n"
+                . "finish = comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new IdentifierReferenceLine())
@@ -2766,9 +2766,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, copy, identifier, multiline comment' => [
-                "foo < bar /* a comment\n" .
-                "endOf = comment*/\n" .
-                'someIdentifier = someValue',
+                "foo < bar /* a comment\n"
+                . "endOf = comment*/\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new IdentifierCopyLine())
@@ -2947,9 +2947,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                 new LineStream(),
             ],
             'identifier, copy, multiline comment' => [
-                "foo < /* a comment\n" .
-                "endOf = comment */\n" .
-                'someIdentifier = someValue',
+                "foo < /* a comment\n"
+                . "endOf = comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new InvalidLine())
@@ -3201,9 +3201,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, unset, multiline comment' => [
-                "foo > /* a comment\n" .
-                "endOf = comment */\n" .
-                'someIdentifier = someValue',
+                "foo > /* a comment\n"
+                . "endOf = comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new IdentifierUnsetLine())
@@ -3281,8 +3281,8 @@ final class TokenizerInterfaceTest extends UnitTestCase
             'identifier, function, newline, identifier' => [
                 // broken TS scenario: if there is no function name after := but a line break,
                 // next line should end function related recognition and set next token as identifier.
-                "foo:=\n" .
-                'bar',
+                "foo:=\n"
+                . 'bar',
                 (new LineStream())
                     ->append(
                         (new InvalidLine())
@@ -4047,10 +4047,10 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, function, function name with value, multiline comment, identifier' => [
-                "foo := addToList(1) /* a comment\n" .
-                "continued = comment\n" .
-                "finish comment */\n" .
-                'someIdentifier = someValue',
+                "foo := addToList(1) /* a comment\n"
+                . "continued = comment\n"
+                . "finish comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new IdentifierFunctionLine())
@@ -4404,8 +4404,8 @@ final class TokenizerInterfaceTest extends UnitTestCase
                 new LineStream(),
             ],
             'multiline comment newline' => [
-                "/*\n" .
-                '*/',
+                "/*\n"
+                . '*/',
                 (new LineStream())
                     ->append(
                         (new CommentLine())->setTokenStream(
@@ -4576,15 +4576,15 @@ final class TokenizerInterfaceTest extends UnitTestCase
                 new LineStream(),
             ],
             'multiline comment, commenting valid code' => [
-                "page = PAGE\n" .
-                "/*\n" .
-                "[foo == \"foo\"]\n" .
-                "  page.10.value = foo\n" .
-                "[else]\n" .
-                "  page.10.value = bar\n" .
-                "[end]\n" .
-                "*/\n" .
-                "page.10 = TEXT\n",
+                "page = PAGE\n"
+                . "/*\n"
+                . "[foo == \"foo\"]\n"
+                . "  page.10.value = foo\n"
+                . "[else]\n"
+                . "  page.10.value = bar\n"
+                . "[end]\n"
+                . "*/\n"
+                . "page.10 = TEXT\n",
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -4676,8 +4676,8 @@ final class TokenizerInterfaceTest extends UnitTestCase
             ],
 
             'two lines with new line' => [
-                "foo = bar\n" .
-                'foo2 = bar2',
+                "foo = bar\n"
+                . 'foo2 = bar2',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -4743,8 +4743,8 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'two lines with carriage return, new line' => [
-                "foo = bar\r\n" .
-                'foo2 = bar2',
+                "foo = bar\r\n"
+                . 'foo2 = bar2',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -4969,8 +4969,8 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, whitespace, curly open, newline, curly close' => [
-                "foo {\n" .
-                '}',
+                "foo {\n"
+                . '}',
                 (new LineStream())
                     ->append(
                         (new IdentifierBlockOpenLine())
@@ -5006,9 +5006,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, whitespace, curly open, newline, comment, newline, curly close' => [
-                "foo {\n" .
-                "  # comment = foo\n" .
-                '}',
+                "foo {\n"
+                . "  # comment = foo\n"
+                . '}',
                 (new LineStream())
                     ->append(
                         (new IdentifierBlockOpenLine())
@@ -5099,15 +5099,15 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, whitespaces, curly open, assignment rows, curly close' => [
-                "foo {\n" .
-                "  foo1 = bar1\n" .
-                "  foo2 = bar2\n" .
-                "  foo3 = bar3\n" .
-                "  foo3 {\n" .
-                "    foo4 = bar4 {\n" .
-                "  }\n" .
-                "  foo5.foo6 = bar6\n" .
-                '}',
+                "foo {\n"
+                . "  foo1 = bar1\n"
+                . "  foo2 = bar2\n"
+                . "  foo3 = bar3\n"
+                . "  foo3 {\n"
+                . "    foo4 = bar4 {\n"
+                . "  }\n"
+                . "  foo5.foo6 = bar6\n"
+                . '}',
                 (new LineStream())
                     ->append(
                         (new IdentifierBlockOpenLine())
@@ -5341,15 +5341,15 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, tabs, curly open, assignment rows, curly close' => [
-                "foo\t{\n" .
-                "\tfoo1\t=\tbar1\n" .
-                "\tfoo2\t=\tbar2\n" .
-                "\tfoo3\t=\tbar3\n" .
-                "\tfoo3\t{\n" .
-                "\t\tfoo4\t=\tbar4 {\n" .
-                "\t}\n" .
-                "\tfoo5.foo6\t=\tbar6\n" .
-                '}',
+                "foo\t{\n"
+                . "\tfoo1\t=\tbar1\n"
+                . "\tfoo2\t=\tbar2\n"
+                . "\tfoo3\t=\tbar3\n"
+                . "\tfoo3\t{\n"
+                . "\t\tfoo4\t=\tbar4 {\n"
+                . "\t}\n"
+                . "\tfoo5.foo6\t=\tbar6\n"
+                . '}',
                 (new LineStream())
                     ->append(
                         (new IdentifierBlockOpenLine())
@@ -5829,9 +5829,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'tab, condition start, body, condition stop, multiline comment' => [
-                "\t[foo = bar] /* a comment\n" .
-                "endOf = comment */\n" .
-                'someIdentifier = someValue',
+                "\t[foo = bar] /* a comment\n"
+                . "endOf = comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new ConditionLine())
@@ -5977,9 +5977,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'condition else, multiline comment' => [
-                "[ELSE] /* a comment\n" .
-                "endOf = comment */\n" .
-                'someIdentifier = someValue',
+                "[ELSE] /* a comment\n"
+                . "endOf = comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new ConditionElseLine())->setTokenStream(
@@ -6183,9 +6183,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'condition end, multiline comment' => [
-                "[END] /* a comment\n" .
-                "endOf = comment */\n" .
-                'someIdentifier = someValue',
+                "[END] /* a comment\n"
+                . "endOf = comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new ConditionStopLine())->setTokenStream(
@@ -6335,8 +6335,8 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'condition global, newline, import' => [
-                "[GLOBAL]\n" .
-                "@import 'EXT:felogin/Configuration/TypoScript/constants.typoscript'\n",
+                "[GLOBAL]\n"
+                . "@import 'EXT:felogin/Configuration/TypoScript/constants.typoscript'\n",
                 (new LineStream())
                     ->append(
                         (new ConditionStopLine())
@@ -6429,9 +6429,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'condition global, multiline comment' => [
-                "[GLOBAL] /* a comment\n" .
-                "endOf = comment */\n" .
-                'someIdentifier = someValue',
+                "[GLOBAL] /* a comment\n"
+                . "endOf = comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new ConditionStopLine())->setTokenStream(
@@ -7394,12 +7394,12 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, multi line assignment, mixed value and constant' => [
-                "foo (\n" .
-                "    {\$bar.bar}\n" .
-                "    someValue\n" .
-                "    {\$baz\.baz}\n" .
-                ")\n" .
-                'someIdentifier',
+                "foo (\n"
+                . "    {\$bar.bar}\n"
+                . "    someValue\n"
+                . "    {\$baz\.baz}\n"
+                . ")\n"
+                . 'someIdentifier',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -7462,10 +7462,10 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, multi line assignment, hash comment, identifier' => [
-                "foo (\n" .
-                "    {\$bar}\n" .
-                ") # a comment\n" .
-                'someIdentifier',
+                "foo (\n"
+                . "    {\$bar}\n"
+                . ") # a comment\n"
+                . 'someIdentifier',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -7515,10 +7515,10 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, multi line assignment, forced comment, identifier' => [
-                "foo (\n" .
-                "    {\$bar}\n" .
-                ") a comment\n" .
-                'someIdentifier',
+                "foo (\n"
+                . "    {\$bar}\n"
+                . ") a comment\n"
+                . 'someIdentifier',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -7568,10 +7568,10 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, multi line assignment, doublehash comment, identifier' => [
-                "foo (\n" .
-                "    {\$bar}\n" .
-                ") // a comment\n" .
-                'someIdentifier',
+                "foo (\n"
+                . "    {\$bar}\n"
+                . ") // a comment\n"
+                . 'someIdentifier',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -7621,11 +7621,11 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'identifier, multi line assignment, multiline comment, identifier' => [
-                "foo (\n" .
-                "    {\$bar}\n" .
-                ") /* a comment\n" .
-                "comment = end */\n" .
-                'someIdentifier = someValue',
+                "foo (\n"
+                . "    {\$bar}\n"
+                . ") /* a comment\n"
+                . "comment = end */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new IdentifierAssignmentLine())
@@ -8030,9 +8030,9 @@ final class TokenizerInterfaceTest extends UnitTestCase
                     ),
             ],
             'import keyword, whitespace, start tick, value, stop doubletick, multiline comment' => [
-                "@import 'EXT:foo/...\" /* a comment\n" .
-                "endOf = comment */\n" .
-                'someIdentifier = someValue',
+                "@import 'EXT:foo/...\" /* a comment\n"
+                . "endOf = comment */\n"
+                . 'someIdentifier = someValue',
                 (new LineStream())
                     ->append(
                         (new ImportLine())

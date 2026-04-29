@@ -39,10 +39,10 @@ final readonly class AllowedHostsMiddleware
      */
     public function __invoke(callable $nextHandler): callable
     {
-        return fn(RequestInterface $request, array $options): PromiseInterface =>
-            $this->matches($request->getUri()->getHost()) ?
-                $nextHandler($request, $options) :
-                new RejectedPromise(sprintf(
+        return fn(RequestInterface $request, array $options): PromiseInterface
+            => $this->matches($request->getUri()->getHost())
+                ? $nextHandler($request, $options)
+                : new RejectedPromise(sprintf(
                     'Requested host \'%s\' is not allowed in $GLOBALS[\'TYPO3_CONF_VARS\'][\'HTTP\'][\'allowed_hosts\'][\'%s\']',
                     $request->getUri()->getHost(),
                     $this->context

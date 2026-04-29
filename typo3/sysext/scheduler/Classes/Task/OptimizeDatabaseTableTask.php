@@ -61,8 +61,8 @@ class OptimizeDatabaseTableTask extends AbstractTask
                     $connection->executeQuery('OPTIMIZE TABLE ' . $connection->quoteIdentifier($tableName))->fetchAllAssociative();
                 } catch (DBALException $e) {
                     throw new \RuntimeException(
-                        TableGarbageCollectionTask::class . ' failed for: ' . $tableName . ': ' .
-                        $e->getMessage(),
+                        TableGarbageCollectionTask::class . ' failed for: ' . $tableName . ': '
+                        . $e->getMessage(),
                         1441390263
                     );
                 }

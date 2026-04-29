@@ -110,7 +110,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                 }
             }
             return $response;
-        } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
+        } catch (InvalidRouteArgumentsException|SiteNotFoundException $e) {
             return new HtmlResponse('Invalid error handler configuration: ' . $this->errorHandlerConfiguration['errorContentSource']);
         }
     }

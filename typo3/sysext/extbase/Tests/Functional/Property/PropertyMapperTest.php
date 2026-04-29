@@ -108,7 +108,7 @@ final class PropertyMapperTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('There exist at least two converters which handle the conversion to an interface with priority "10"');
 
-        $counter = new class () implements ExtendedCountableInterface {
+        $counter = new class implements ExtendedCountableInterface {
             public function count(): int
             {
                 return 1;
@@ -135,7 +135,7 @@ final class PropertyMapperTest extends FunctionalTestCase
     #[Test]
     public function findTypeConverterReturnsTheConverterFromThePropertyMappingConfiguration(): void
     {
-        $class = new class () extends IntegerConverter {
+        $class = new class extends IntegerConverter {
             public function convertFrom($source, string $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null): int
             {
                 return 1575648246;

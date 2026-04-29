@@ -92,7 +92,7 @@ class Comment extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->author . ' (' . $this->email . ') said on ' . $this->date->format('Y-m-d') . ':' . chr(10) .
-            $this->content . chr(10);
+        return $this->author . ' (' . $this->email . ') said on ' . $this->date->format('Y-m-d') . ':' . chr(10)
+            . $this->content . chr(10);
     }
 }

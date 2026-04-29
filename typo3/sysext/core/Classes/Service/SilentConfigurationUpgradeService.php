@@ -1131,8 +1131,8 @@ class SilentConfigurationUpgradeService
             $currentProcessor = $confManager->getLocalConfigurationValueByPath('GFX/processor');
             $currentColorspace = $confManager->getLocalConfigurationValueByPath('GFX/processor_colorspace');
 
-            if ($currentProcessor === 'ImageMagick' && $currentColorspace === 'sRGB' ||
-                $currentProcessor === 'GraphicsMagick' && $currentColorspace === 'RGB') {
+            if ($currentProcessor === 'ImageMagick' && $currentColorspace === 'sRGB'
+                || $currentProcessor === 'GraphicsMagick' && $currentColorspace === 'RGB') {
                 $confManager->removeLocalConfigurationKeysByPath(['GFX/processor_colorspace']);
                 $this->throwConfigurationChangedException();
             }

@@ -51,13 +51,13 @@ final class MailerTest extends UnitTestCase
             ->onlyMethods([])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->logManager = new class () implements LogManagerInterface {
+        $this->logManager = new class implements LogManagerInterface {
             public function getLogger(string $name = ''): LoggerInterface
             {
                 return new NullLogger();
             }
         };
-        $this->eventDispatcher = new class () implements EventDispatcherInterface {
+        $this->eventDispatcher = new class implements EventDispatcherInterface {
             public function dispatch(object $event, ?string $eventName = null): object
             {
                 return $event;

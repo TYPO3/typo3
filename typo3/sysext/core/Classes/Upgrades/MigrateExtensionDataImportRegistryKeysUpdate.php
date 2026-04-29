@@ -43,9 +43,9 @@ readonly class MigrateExtensionDataImportRegistryKeysUpdate implements CoreUpgra
 
     public function getDescription(): string
     {
-        return 'Updates sys_registry entries for extension data imports from path-based keys to extension key-based keys. ' .
-               'This makes the registry entries independent of file path changes and follows the new format introduced ' .
-               'in the extension data import system.';
+        return 'Updates sys_registry entries for extension data imports from path-based keys to extension key-based keys. '
+               . 'This makes the registry entries independent of file path changes and follows the new format introduced '
+               . 'in the extension data import system.';
     }
 
     public function executeUpdate(): bool

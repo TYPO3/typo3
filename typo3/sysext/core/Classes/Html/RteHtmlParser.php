@@ -808,8 +808,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             }
 
             // Always rewrite the block to allow the nested calling even if a page is found
-            $blocks[$position] =
-                '<a ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>'
+            $blocks[$position]
+                = '<a ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>'
                 . $this->markBrokenLinks($this->removeFirstAndLastTag($blocks[$position]))
                 . '</a>';
         }
@@ -843,8 +843,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     unset($attributes['style']);
                 }
             }
-            $blocks[$position] =
-                '<a ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>'
+            $blocks[$position]
+                = '<a ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>'
                 . $this->removeBrokenLinkMarkers($this->removeFirstAndLastTag($blocks[$position]))
                 . '</a>';
         }

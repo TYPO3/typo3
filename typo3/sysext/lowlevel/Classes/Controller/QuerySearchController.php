@@ -1107,12 +1107,12 @@ class QuerySearchController
                 }
 
                 foreach ($this->tableArray[$from_table] as $val) {
-                    $this->MOD_SETTINGS['labels_noprefix'] =
-                        ($this->MOD_SETTINGS['labels_noprefix'] ?? '') == 1
+                    $this->MOD_SETTINGS['labels_noprefix']
+                        = ($this->MOD_SETTINGS['labels_noprefix'] ?? '') == 1
                             ? 'on'
                             : $this->MOD_SETTINGS['labels_noprefix'] ?? '';
-                    $prefixString =
-                        $this->MOD_SETTINGS['labels_noprefix'] === 'on'
+                    $prefixString
+                        = $this->MOD_SETTINGS['labels_noprefix'] === 'on'
                             ? ''
                             : ' [' . $tablePrefix . $val['uid'] . '] ';
                     if (GeneralUtility::inList($fieldValue, $tablePrefix . $val['uid'])
@@ -2517,8 +2517,8 @@ class QuerySearchController
             // Making sure, index 0 is not set!
             unset($storeArray[0]);
             $writeArray['storeArray'] = serialize($storeArray);
-            $writeArray['storeQueryConfigs'] =
-                serialize($this->cleanStoreQueryConfigs($storeQueryConfigs, $storeArray));
+            $writeArray['storeQueryConfigs']
+                = serialize($this->cleanStoreQueryConfigs($storeQueryConfigs, $storeArray));
             $this->MOD_SETTINGS = BackendUtility::getModuleData(
                 $this->MOD_MENU,
                 $writeArray,
@@ -2665,9 +2665,9 @@ class QuerySearchController
         ], true);
 
         return
-            '<input ' . $attributes .
-            ($currentValue ? ' checked="checked"' : '') .
-            ($tagParams ? ' ' . $tagParams : '') .
-            ' />';
+            '<input ' . $attributes
+            . ($currentValue ? ' checked="checked"' : '')
+            . ($tagParams ? ' ' . $tagParams : '')
+            . ' />';
     }
 }

@@ -60,8 +60,8 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
             'index_externals' => false,
             'mtime' => time(),
             'crdate' => time(),
-            'content' =>
-                '<html>
+            'content'
+                => '<html>
                 <head>
                     <title>Lorem Ipsum</title>
                 </head>

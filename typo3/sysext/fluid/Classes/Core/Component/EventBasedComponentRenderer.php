@@ -41,10 +41,10 @@ final readonly class EventBasedComponentRenderer implements ComponentRendererInt
 
     public function renderComponent(string $viewHelperName, array $arguments, array $slots, RenderingContextInterface $parentRenderingContext): string
     {
-        $request =
-            $parentRenderingContext->hasAttribute(ServerRequestInterface::class) ?
-            $parentRenderingContext->getAttribute(ServerRequestInterface::class) :
-            null;
+        $request
+            = $parentRenderingContext->hasAttribute(ServerRequestInterface::class)
+            ? $parentRenderingContext->getAttribute(ServerRequestInterface::class)
+            : null;
         $event = $this->eventDispatcher->dispatch(
             new RenderComponentEvent($this->componentCollection, $viewHelperName, $arguments, $slots, $parentRenderingContext, $request)
         );

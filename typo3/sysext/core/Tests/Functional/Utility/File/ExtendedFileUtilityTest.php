@@ -261,7 +261,7 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
     {
         return array_map(
             static fn(array $actionResult): array => array_map(
-                static fn(null|array|File $fileResult): null|array|string => is_array($fileResult)
+                static fn(array|File|null $fileResult): array|string|null => is_array($fileResult)
                     ? array_map(static fn(File $file): string => $file->getCombinedIdentifier(), $fileResult)
                     : $fileResult?->getCombinedIdentifier(),
                 $actionResult

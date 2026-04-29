@@ -788,9 +788,9 @@ class CKEditor5Migrator
                     $config['name'] = [ 'pattern' => '^[a-z]+$' ];
                 } else {
                     $name = (string)$name;
-                    $config['name'] = str_contains($name, '*') || str_contains($name, ' ') ?
-                        [ 'pattern' => str_replace(['*', ' '], ['.+', '|'], $name) ] :
-                        $name;
+                    $config['name'] = str_contains($name, '*') || str_contains($name, ' ')
+                        ? [ 'pattern' => str_replace(['*', ' '], ['.+', '|'], $name) ]
+                        : $name;
                 }
 
                 if (is_bool($options)) {

@@ -393,8 +393,8 @@ class SetupModuleController
                 $contextData = $event->getContextData();
 
                 $passwordValid = true;
-                if ($passwordIsConfirmed &&
-                    !$this->passwordPolicyValidator->isValidPassword($be_user_data['password'], $contextData)
+                if ($passwordIsConfirmed
+                    && !$this->passwordPolicyValidator->isValidPassword($be_user_data['password'], $contextData)
                 ) {
                     $passwordValid = false;
                     $this->passwordIsUpdated = self::PASSWORD_POLICY_FAILED;

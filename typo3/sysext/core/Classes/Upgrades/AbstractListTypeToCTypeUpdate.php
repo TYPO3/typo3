@@ -73,13 +73,13 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
     public function updateNecessary(): bool
     {
         return (
-            $this->getListTypeToCTypeMapping() !== [] &&
-            $this->columnsExistInContentTable() &&
-            $this->hasContentElementsToUpdate()
+            $this->getListTypeToCTypeMapping() !== []
+            && $this->columnsExistInContentTable()
+            && $this->hasContentElementsToUpdate()
         )
             || (
-                $this->getListTypeToCTypeMapping() !== [] &&
-                $this->columnsExistInBackendUserGroupsTable()
+                $this->getListTypeToCTypeMapping() !== []
+                && $this->columnsExistInBackendUserGroupsTable()
                 && $this->hasNoLegacyBackendGroupsExplicitAllowDenyConfiguration()
                 && $this->hasBackendUserGroupsToUpdate()
             );
@@ -87,14 +87,14 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
 
     public function executeUpdate(): bool
     {
-        if ($this->getListTypeToCTypeMapping() !== [] &&
-            $this->columnsExistInContentTable() &&
-            $this->hasContentElementsToUpdate()
+        if ($this->getListTypeToCTypeMapping() !== []
+            && $this->columnsExistInContentTable()
+            && $this->hasContentElementsToUpdate()
         ) {
             $this->updateContentElements();
         }
-        if ($this->getListTypeToCTypeMapping() !== [] &&
-            $this->columnsExistInBackendUserGroupsTable()
+        if ($this->getListTypeToCTypeMapping() !== []
+            && $this->columnsExistInBackendUserGroupsTable()
             && $this->hasNoLegacyBackendGroupsExplicitAllowDenyConfiguration()
             && $this->hasBackendUserGroupsToUpdate()
         ) {

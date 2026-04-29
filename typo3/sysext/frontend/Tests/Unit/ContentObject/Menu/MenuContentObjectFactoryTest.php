@@ -57,7 +57,7 @@ final class MenuContentObjectFactoryTest extends UnitTestCase
     {
         $subject = new MenuContentObjectFactory();
         $selfClassName = 'tx_menutest_' . uniqid();
-        $selfClass = new class () extends AbstractMenuContentObject {};
+        $selfClass = new class extends AbstractMenuContentObject {};
         class_alias($selfClass::class, $selfClassName);
         $subject->registerMenuType('TMENU', $selfClassName);
         self::assertInstanceOf($selfClassName, $subject->getMenuObjectByType('TMENU'));
@@ -68,7 +68,7 @@ final class MenuContentObjectFactoryTest extends UnitTestCase
     {
         $subject = new MenuContentObjectFactory();
         $selfClassName = 'tx_menutest_' . uniqid();
-        $selfClass = new class () extends AbstractMenuContentObject {};
+        $selfClass = new class extends AbstractMenuContentObject {};
         class_alias($selfClass::class, $selfClassName);
         $uniqueMenuType = StringUtility::getUniqueId('foo_');
         $subject->registerMenuType($uniqueMenuType, $selfClassName);

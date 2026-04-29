@@ -135,8 +135,8 @@ class PagePositionMap
                 ->setTitle(BackendUtility::getRecordIconAltText($dat['row'], 'pages', false))
                 ->render();
 
-            $lines[] = '<span class="text-nowrap">' . $icon . ' ' .
-                $this->boldTitle(
+            $lines[] = '<span class="text-nowrap">' . $icon . ' '
+                . $this->boldTitle(
                     htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], (int)$this->getBackendUser()->uc['titleLen'])),
                     $dat,
                     $id

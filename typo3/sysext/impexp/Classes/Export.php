@@ -941,8 +941,8 @@ class Export extends ImportExport
         if ($fileSha1 !== $file->getProperty('sha1')) {
             $this->dat['records']['sys_file:' . $fileUid]['data']['sha1'] = $fileSha1;
             $this->addError(
-                'The SHA-1 file hash of ' . $file->getCombinedIdentifier() . ' is not up-to-date in the index! ' .
-                'The file was added based on the current file hash.'
+                'The SHA-1 file hash of ' . $file->getCombinedIdentifier() . ' is not up-to-date in the index! '
+                . 'The file was added based on the current file hash.'
             );
         }
         // Build unique id based on the storage and the file identifier

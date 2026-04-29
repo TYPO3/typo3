@@ -61,15 +61,15 @@ class CleanupFormUploadsCommand extends Command
     {
         $this
             ->setHelp(
-                'Removes old form upload folders (form_<hash>) that were created by file uploads ' .
-                'in ext:form.' . LF . LF .
-                'Since uploaded files are not moved when a form is submitted, the command cannot ' . LF .
-                'distinguish between folders from completed and abandoned submissions. It uses ' . LF .
-                'the folder modification time and a configurable retention period to decide ' . LF .
-                'which folders to remove.' . LF . LF .
-                'You must specify at least one upload folder to scan. Each form element can configure ' . LF .
-                'a different saveToFileMount; pass all relevant folders as arguments.' . LF . LF .
-                'Use --verbose for detailed output about each folder found.'
+                'Removes old form upload folders (form_<hash>) that were created by file uploads '
+                . 'in ext:form.' . LF . LF
+                . 'Since uploaded files are not moved when a form is submitted, the command cannot ' . LF
+                . 'distinguish between folders from completed and abandoned submissions. It uses ' . LF
+                . 'the folder modification time and a configurable retention period to decide ' . LF
+                . 'which folders to remove.' . LF . LF
+                . 'You must specify at least one upload folder to scan. Each form element can configure ' . LF
+                . 'a different saveToFileMount; pass all relevant folders as arguments.' . LF . LF
+                . 'Use --verbose for detailed output about each folder found.'
             )
             ->addArgument(
                 'upload-folder',

@@ -63,8 +63,8 @@ class ConnectionDriverMiddlewaresProvider extends AbstractProvider
                     : [];
             }
             if ($connectionName !== 'Default') {
-                $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections'][$connectionName] =
-                    $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections']['Default'];
+                $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections'][$connectionName]
+                    = $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections']['Default'];
             }
         }
         ArrayUtility::mergeRecursiveWithOverrule(

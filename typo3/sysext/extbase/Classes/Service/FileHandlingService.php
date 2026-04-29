@@ -79,8 +79,8 @@ readonly class FileHandlingService implements SingletonInterface
         }
         /** @var Argument $argument */
         foreach ($arguments as $argument) {
-            if (!$argument->getValidator() ||
-                !class_exists($argument->getDataType())
+            if (!$argument->getValidator()
+                || !class_exists($argument->getDataType())
             ) {
                 // Either argument has no validator (IgnoreValidation) or the datatype of the argument is not a class.
                 continue;
@@ -114,13 +114,13 @@ readonly class FileHandlingService implements SingletonInterface
         }
 
         $propertyTargetClassName = $primaryType->getClassName() ?? $primaryType->getBuiltinType();
-        if ($propertyTargetClassName !== FileReference::class &&
-            !TypeHandlingUtility::isSimpleType($propertyTargetClassName)
+        if ($propertyTargetClassName !== FileReference::class
+            && !TypeHandlingUtility::isSimpleType($propertyTargetClassName)
         ) {
             $primaryCollectionValueType = $property->getPrimaryCollectionValueType();
-            if ($propertyTargetClassName === ObjectStorage::class &&
-                $primaryCollectionValueType &&
-                $primaryType->isCollection()
+            if ($propertyTargetClassName === ObjectStorage::class
+                && $primaryCollectionValueType
+                && $primaryType->isCollection()
             ) {
                 $propertyTargetClassName = $primaryCollectionValueType->getClassName() ?? $primaryCollectionValueType->getBuiltinType();
             }
@@ -217,9 +217,9 @@ readonly class FileHandlingService implements SingletonInterface
         array $uploadedFiles,
         FileUploadConfiguration $configuration
     ): void {
-        if ($uploadedFiles === [] ||
-            !ObjectAccess::isPropertyGettable($argumentValue, $propertyName) ||
-            !ObjectAccess::isPropertySettable($argumentValue, $propertyName)
+        if ($uploadedFiles === []
+            || !ObjectAccess::isPropertyGettable($argumentValue, $propertyName)
+            || !ObjectAccess::isPropertySettable($argumentValue, $propertyName)
         ) {
             return;
         }

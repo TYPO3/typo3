@@ -29,7 +29,7 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function objectRegisteredWithRegisterReconstitutedEntityCanBeRetrievedWithGetReconstitutedEntities(): void
     {
-        $someObject = new class () extends AbstractDomainObject {};
+        $someObject = new class extends AbstractDomainObject {};
         $session = new Session();
         $session->registerReconstitutedEntity($someObject);
 
@@ -40,7 +40,7 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function unregisterReconstitutedEntityRemovesObjectFromSession(): void
     {
-        $someObject = new class () extends AbstractDomainObject {};
+        $someObject = new class extends AbstractDomainObject {};
         $session = new Session();
         $session->registerObject($someObject, 'fakeUuid');
         $session->registerReconstitutedEntity($someObject);
@@ -53,8 +53,8 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function hasObjectReturnsTrueForRegisteredObject(): void
     {
-        $object1 = new class () extends AbstractDomainObject {};
-        $object2 = new class () extends AbstractDomainObject {};
+        $object1 = new class extends AbstractDomainObject {};
+        $object2 = new class extends AbstractDomainObject {};
         $session = new Session();
         $session->registerObject($object1, '12345');
 
@@ -65,7 +65,7 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function hasIdentifierReturnsTrueForRegisteredObject(): void
     {
-        $object = new class () extends AbstractDomainObject {};
+        $object = new class extends AbstractDomainObject {};
         $session = new Session();
         $session->registerObject($object, '12345');
 
@@ -76,7 +76,7 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function getIdentifierByObjectReturnsRegisteredUUIDForObject(): void
     {
-        $object = new class () extends AbstractDomainObject {};
+        $object = new class extends AbstractDomainObject {};
         $session = new Session();
         $session->registerObject($object, '12345');
 
@@ -86,7 +86,7 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function getObjectByIdentifierReturnsRegisteredObjectForUUID(): void
     {
-        $object = new class () extends AbstractDomainObject {};
+        $object = new class extends AbstractDomainObject {};
         $session = new Session();
         $session->registerObject($object, '12345');
 
@@ -96,8 +96,8 @@ final class SessionTest extends UnitTestCase
     #[Test]
     public function unregisterObjectRemovesRegisteredObject(): void
     {
-        $object1 = new class () extends AbstractDomainObject {};
-        $object2 = new class () extends AbstractDomainObject {};
+        $object1 = new class extends AbstractDomainObject {};
+        $object2 = new class extends AbstractDomainObject {};
         $session = new Session();
         $session->registerObject($object1, '12345');
         $session->registerObject($object2, '67890');

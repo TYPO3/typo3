@@ -1437,8 +1437,8 @@ class BackendUtility
      */
     public static function getNoRecordTitle($prep = false)
     {
-        $noTitle = '[' .
-            htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title'))
+        $noTitle = '['
+            . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title'))
             . ']';
         if ($prep) {
             $noTitle = '<em>' . $noTitle . '</em>';

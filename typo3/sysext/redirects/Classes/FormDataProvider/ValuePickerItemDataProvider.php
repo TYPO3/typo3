@@ -54,8 +54,8 @@ final readonly class ValuePickerItemDataProvider implements FormDataProviderInte
 
             $domains = $this->sourceHostProvider->getHosts();
             foreach ($domains as $domain) {
-                $result['processedTca']['columns']['source_host']['config']['valuePicker']['items'][] =
-                    [
+                $result['processedTca']['columns']['source_host']['config']['valuePicker']['items'][]
+                    = [
                         'label' => $domain,
                         'value' => $domain,
                     ];

@@ -237,8 +237,8 @@ readonly class TranslationStatusController
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
             ]);
             $info = '<button ' . ($previewUriBuilder->serializeDispatcherAttributes() ?? 'disabled="true"')
-                . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
-                $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render() . '</button>';
+                . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">'
+                . $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render() . '</button>';
             if ($backendUser->check('tables_modify', 'pages')) {
                 $info .= '<a href="' . htmlspecialchars($editUrl)
                     . '" class="btn btn-default" title="' . $lang->sL(
@@ -288,10 +288,10 @@ readonly class TranslationStatusController
                         $icon = '<span title="' . BackendUtility::getRecordIconAltText($row) . '">'
                             . $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL)->setTitle(BackendUtility::getRecordIconAltText($row, 'pages', false))->render()
                             . '</span>';
-                        $tCells[] = '<td class="col-responsive col-border-left ' . $status . '">' .
-                            BackendUtility::wrapClickMenuOnIcon($icon, 'pages', (int)$row['uid']) .
-                            $pageModuleLink .
-                            '</td>';
+                        $tCells[] = '<td class="col-responsive col-border-left ' . $status . '">'
+                            . BackendUtility::wrapClickMenuOnIcon($icon, 'pages', (int)$row['uid'])
+                            . $pageModuleLink
+                            . '</td>';
                         // Edit whole record:
                         // Create links:
                         $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
@@ -307,8 +307,8 @@ readonly class TranslationStatusController
                         $info = '<button ' . ($previewUriBuilder
                                 ->withLanguage($languageId)
                                 ->serializeDispatcherAttributes() ?? 'disabled="true"')
-                            . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewTranslatedPage') . '">' .
-                            $this->iconFactory->getIcon('actions-view', IconSize::SMALL)->render() . '</button>';
+                            . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewTranslatedPage') . '">'
+                            . $this->iconFactory->getIcon('actions-view', IconSize::SMALL)->render() . '</button>';
                         $info .= '<a href="' . htmlspecialchars($editUrl)
                             . '" class="btn btn-default" title="' . $lang->sL(
                                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editTranslatedPageProperties'
@@ -407,19 +407,19 @@ readonly class TranslationStatusController
             }
         }
 
-        $output =
-            '<div class="table-fit">' .
-                '<table class="table table-striped table-hover" id="langTable">' .
-                    '<thead>' .
-                        '<tr>' .
-                            implode('', $headerCells) .
-                        '</tr>' .
-                    '</thead>' .
-                    '<tbody>' .
-                        $output .
-                    '</tbody>' .
-                '</table>' .
-            '</div>';
+        $output
+            = '<div class="table-fit">'
+                . '<table class="table table-striped table-hover" id="langTable">'
+                    . '<thead>'
+                        . '<tr>'
+                            . implode('', $headerCells)
+                        . '</tr>'
+                    . '</thead>'
+                    . '<tbody>'
+                        . $output
+                    . '</tbody>'
+                . '</table>'
+            . '</div>';
         return $output;
     }
 

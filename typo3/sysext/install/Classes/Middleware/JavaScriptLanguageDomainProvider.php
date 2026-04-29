@@ -40,9 +40,9 @@ final readonly class JavaScriptLanguageDomainProvider implements MiddlewareInter
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $data = $request->getQueryParams()['install'] ?? [];
-        if (!is_array($data) ||
-            ($data['action'] ?? null) !== 'labels' ||
-            !is_string(($data['domain'] ?? null))
+        if (!is_array($data)
+            || ($data['action'] ?? null) !== 'labels'
+            || !is_string(($data['domain'] ?? null))
         ) {
             return $handler->handle($request);
         }
@@ -52,9 +52,9 @@ final readonly class JavaScriptLanguageDomainProvider implements MiddlewareInter
         // Only labels from core/backend/install are allowed to
         // disallow enumeration of available extensions
         $isValidDomain = (
-            str_starts_with($domain, 'core.') ||
-            str_starts_with($domain, 'backend.') ||
-            str_starts_with($domain, 'install.')
+            str_starts_with($domain, 'core.')
+            || str_starts_with($domain, 'backend.')
+            || str_starts_with($domain, 'install.')
         );
         if (!$isValidDomain) {
             return (new ResponseFactory())->createResponse(403);

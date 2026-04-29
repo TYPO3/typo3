@@ -242,8 +242,8 @@ readonly class RichTextConfigurationService
     private function configureLanguage(array &$configuration): void
     {
         // Set the UI language of the editor
-        if (empty($configuration['language']) ||
-            (is_array($configuration['language']) && empty($configuration['language']['ui']))
+        if (empty($configuration['language'])
+            || (is_array($configuration['language']) && empty($configuration['language']['ui']))
         ) {
             $userLang = (string)($this->getBackendUser()->user['lang'] ?? 'en');
             $configuration['language']['ui'] = $userLang === 'default' ? 'en' : $userLang;

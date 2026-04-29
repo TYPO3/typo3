@@ -308,12 +308,12 @@ readonly class PageInformationController
                         $f2 = substr($field, 6);
                         if ($this->tcaSchemaFactory->has($f2)) {
                             $schema = $this->tcaSchemaFactory->get($f2);
-                            $headerCells[$field] = '&nbsp;' .
-                                '<span title="' .
-                                htmlspecialchars($schema->getTitle($languageService->sL(...)) ?: $f2) .
-                                '">' .
-                                $this->iconFactory->getIconForRecord($f2, [], IconSize::SMALL)->render() .
-                                '</span>';
+                            $headerCells[$field] = '&nbsp;'
+                                . '<span title="'
+                                . htmlspecialchars($schema->getTitle($languageService->sL(...)) ?: $f2)
+                                . '">'
+                                . $this->iconFactory->getIconForRecord($f2, [], IconSize::SMALL)->render()
+                                . '</span>';
                         }
                     } else {
                         if ($pagesSchema->hasField($field)) {
@@ -555,17 +555,17 @@ readonly class PageInformationController
                         $previewDataAttributes = PreviewUriBuilder::create($row)
                             ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
                             ->serializeDispatcherAttributes();
-                        $viewButton =
-                            '<button ' . ($previewDataAttributes ?? 'disabled="true"') . ' class="btn btn-default" title="' .
-                            htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
-                            $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render() .
-                            '</button>';
+                        $viewButton
+                            = '<button ' . ($previewDataAttributes ?? 'disabled="true"') . ' class="btn btn-default" title="'
+                            . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">'
+                            . $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render()
+                            . '</button>';
                         if ($backendUser->check('tables_modify', 'pages')) {
-                            $editButton =
-                                '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' .
-                                htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties')) . '">' .
-                                $this->iconFactory->getIcon('actions-page-open', IconSize::SMALL)->render() .
-                                '</a>';
+                            $editButton
+                                = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="'
+                                . htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties')) . '">'
+                                . $this->iconFactory->getIcon('actions-page-open', IconSize::SMALL)->render()
+                                . '</a>';
                         }
                     }
                     // Since the uid is overwritten with the edit button markup, we need to store

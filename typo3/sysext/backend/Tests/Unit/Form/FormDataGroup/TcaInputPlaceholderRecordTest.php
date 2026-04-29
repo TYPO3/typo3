@@ -47,7 +47,7 @@ final class TcaInputPlaceholderRecordTest extends UnitTestCase
         ];
         GeneralUtility::addInstance(
             \stdClass::class,
-            new class () extends \stdClass implements FormDataProviderInterface {
+            new class extends \stdClass implements FormDataProviderInterface {
                 public function addData(array $result)
                 {
                     return ['foo'];
