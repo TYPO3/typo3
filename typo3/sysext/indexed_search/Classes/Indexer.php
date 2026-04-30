@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
@@ -1444,14 +1445,18 @@ class Indexer
             foreach ($wordListArray as $key => $val) {
                 // A duplicate-key error will occur here if a word is NOT unset in the unset() line. However as
                 // long as the words in $wl are NO longer as 60 chars (the baseword varchar is 60 characters...)
-                // this is not a problem.
-                $connection->insert(
-                    'index_words',
-                    [
-                        'wid' => $val['hash'],
-                        'baseword' => $key,
-                    ]
-                );
+                // this is not a problem, however we catch this exception, otherwise we will get into trouble.
+                try {
+                    $connection->insert(
+                        'index_words',
+                        [
+                            'wid' => $val['hash'],
+                            'baseword' => $key,
+                        ]
+                    );
+                } catch (UniqueConstraintViolationException) {
+                    $this->log_setTSlogMessage('Error while inserting words for wid ' . $val['hash'] . ' / baseword ' . $key, LogLevel::CRITICAL);
+                }
             }
         }
     }
@@ -1497,7 +1502,11 @@ class Indexer
         }
 
         if (!empty($rows)) {
-            $this->connectionPool->getConnectionForTable('index_rel')->bulkInsert('index_rel', $rows, $fields);
+            try {
+                $this->connectionPool->getConnectionForTable('index_rel')->bulkInsert('index_rel', $rows, $fields);
+            } catch (UniqueConstraintViolationException) {
+                $this->log_setTSlogMessage('Error while inserting words into index_rel due to duplicates.', LogLevel::CRITICAL);
+            }
         }
     }
 
