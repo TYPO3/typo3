@@ -1,14 +1,12 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-    The reference index contains information about all database relations in TYPO3.
-    It is used to find references between records and check their integrity.
-    This index should be regularly updated to ensure all references are tracked correctly.
+    Check and update the reference index, which tracks relations between database records in TYPO3.<br>
+    Use this tool to verify the integrity of existing references or to rebuild the index to ensure all relations are correctly recorded.
 </p>
-
 <p>
-    <strong>Check:</strong> Verifies the reference index and reports any issues without making changes.<br>
-    <strong>Update:</strong> Rebuilds the entire reference index. This may take a while on large installations.
+    <strong>Check:</strong> Verifies the reference index and reports issues without making changes.<br>
+    <strong>Update:</strong> Rebuilds the entire reference index. This may take some time on large installations.
 </p>
 
 <div class="t3js-module-content mb-4" data-reference-index-token="{referenceIndexToken}">
