@@ -1,18 +1,17 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-    TYPO3 stores processed files and cached images in a dedicated directory.
-    This directory is likely to grow quickly.
+    Remove processed files and cached images stored by TYPO3 to free up disk space.
 </p>
 <p>
-    With this action you can delete the files in this folder. Afterwards, you
-    should also clear the cache database tables.
+    TYPO3 stores processed files (such as image variants and thumbnails) in a dedicated directory
+    that can grow quickly over time.<br>
+    Use this action to delete these files. Afterward, clear the cache database tables to ensure consistency.
 </p>
 <p>
-    The File Abstraction Layer additionally stores a database record for every file
-    it needs to process. (e.g. image thumbnails). In case you modified some graphics
-    settings (All Configuration [GFX]) and you need all processed files to get regenerated,
-    you can use this tool to remove the "_processed_" ones.
+    The File Abstraction Layer (FAL) also keeps database records for processed files. If image processing settings
+    have changed (see <strong>System → Settings → Configure Installation-Wide Options → [GFX]</strong>),
+    removing processed files forces them to be regenerated with the updated configuration.
 </p>
 
 <div class="t3js-module-content" data-clear-typo3temp-delete-token="{clearTypo3tempFilesToken}">

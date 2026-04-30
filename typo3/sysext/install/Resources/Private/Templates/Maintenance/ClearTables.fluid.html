@@ -1,14 +1,15 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-    Some database tables in TYPO3 CMS hold semi-temporary data that is not deleted when clicking "Clear All Cache" in
-    the backend.
-    Those can be cleared here,
-    effectively removing all rows from it. This can be useful in rare cases.
+    Clear semi-temporary data stored in persistent database tables that are not affected by the
+    <strong>"Clear All Cache"</strong> action.
 </p>
 <p>
-    Use with care! Clearing tables here can have a negative impact on your site functionality.
-    You could log out all users, delete all their basket data, and lose logging information!
+    This removes all records from the selected tables and may be useful in specific maintenance scenarios.
+</p>
+<p>
+    <strong>Use with caution.</strong> Clearing these tables can affect site functionality, for example by logging out users,
+    removing session or basket data, and deleting log information.
 </p>
 
 <div class="t3js-module-content" data-clear-tables-clear-token="{clearTablesClearToken}">
