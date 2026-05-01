@@ -69,13 +69,18 @@ class SetCookieService
             $cookieScope = $this->getCookieScope($normalizedParams);
             // If the cookie lifetime is set, use it:
             $cookieExpire = $isRefreshTimeBasedCookie ? $GLOBALS['EXEC_TIME'] + $this->lifetime : 0;
-            // Valid options are "strict", "lax" or "none", whereas "none" only works in HTTPS requests (default & fallback is "strict")
+            // Valid options are "strict", "lax" or "none", whereas "none" only works in HTTPS requests.
             $cookieSameSite = $this->sanitizeSameSiteCookieValue(
                 strtolower($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
             );
-            // Use the secure option when the current request is served by a secure connection:
-            // SameSite "none" needs the secure option (only allowed on HTTPS)
-            $isSecure = $cookieSameSite === Cookie::SAMESITE_NONE || $normalizedParams->isHttps();
+            if ($cookieSameSite === Cookie::SAMESITE_NONE && !$normalizedParams->isHttps()) {
+                $cookieSameSite = Cookie::SAMESITE_STRICT;
+                $this->logger->warning(
+                    'Cookie SameSite none is only supported on HTTPS. Falling back to strict SameSite for this request.',
+                    ['cookieName' => $this->name, 'loginType' => $this->loginType]
+                );
+            }
+            $isSecure = $normalizedParams->isHttps();
             $sessionId = $userSession->getIdentifier();
             $cookieValue = $userSession->getJwt($cookieScope);
             $setCookie = new Cookie(
@@ -153,12 +158,24 @@ class SetCookieService
     public function removeCookie(NormalizedParams $normalizedParams): Cookie
     {
         $scope = $this->getCookieScope($normalizedParams);
+        $cookieSameSite = $this->sanitizeSameSiteCookieValue(
+            strtolower($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
+        );
+        if ($cookieSameSite === Cookie::SAMESITE_NONE && !$normalizedParams->isHttps()) {
+            $cookieSameSite = Cookie::SAMESITE_STRICT;
+        }
+        $isSecure = $normalizedParams->isHttps();
         return new Cookie(
             $this->name,
             '',
             -1,
             $scope->path,
-            $scope->domain
+            $scope->hostOnly ? null : $scope->domain,
+            $isSecure,
+            true,
+            false,
+            $cookieSameSite
         );
     }
 }
+
