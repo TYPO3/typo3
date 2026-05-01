@@ -174,6 +174,47 @@ final class TcaSelectItemsTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function addDataTranslatesItemDescriptionGivenAsArray(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => 'aValue',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectCheckBox',
+                            'items' => [
+                                0 => [
+                                    'label' => 'aLabel',
+                                    'value' => 'aValue',
+                                    'description' => [
+                                        'title' => 'LLL:EXT:test_tca_select_items/Resources/Private/Language/locallang.xlf:aLabel',
+                                        'description' => 'LLL:EXT:test_tca_select_items/Resources/Private/Language/locallang.xlf:aLabel',
+                                    ],
+                                ],
+                            ],
+                            'maxitems' => 99999,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->get(TcaSelectItems::class)->addData($this->addTcaSchemata($input));
+        self::assertSame(
+            [
+                'title' => 'translated',
+                'description' => 'translated',
+            ],
+            $result['processedTca']['columns']['aField']['config']['items'][0]['description']
+        );
+    }
+
+    #[Test]
     public function addDataAddsDividersIfItemGroupsAreDefined(): void
     {
         $input = [

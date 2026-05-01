@@ -442,7 +442,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => [
-                    ['label' => 'foo 1', 'value' => 1, 'description' => ['title' => 'optional title', 'description' => 'optional description']],
+                    ['label' => 'foo 1', 'value' => 1, 'description' => ['title' => 'styleguide.messages:translatedHelpTitleForSelectCheckBox3', 'description' => 'styleguide.messages:translatedHelpDescriptionForSelectCheckBox3']],
                     ['label' => 'foo 2', 'value' => 2, 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg', 'description' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:translatedHelpTextForSelectCheckBox3'],
                     ['label' => 'foo 3', 'value' => 3, 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
                     ['label' => 'foo 4', 'value' => 4],
