@@ -112,7 +112,9 @@ Custom authorization class
 
 For complex authorization logic, create a dedicated authorization class.
 This class supports dependency injection and can be reused across
-controllers.
+controllers. The class must be publicly available in the DI container,
+which can be achieved by annotating it with
+:php:`#[Autoconfigure(public: true)]`.
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Authorization/MyObjectAuthorization.php
@@ -121,7 +123,9 @@ controllers.
 
     use MyVendor\MyExtension\Domain\Model\MyObject;
     use TYPO3\CMS\Core\Context\Context;
+    use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
+    #[Autoconfigure(public: true)]
     class MyObjectAuthorization
     {
         public function __construct(
@@ -135,6 +139,7 @@ controllers.
                 === $userAspect->get('id');
         }
     }
+
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/Controller/MyController.php
