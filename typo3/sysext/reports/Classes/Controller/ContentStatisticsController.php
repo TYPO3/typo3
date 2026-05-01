@@ -70,9 +70,6 @@ final readonly class ContentStatisticsController
             )->renderResponse('ContentStatisticsDetail');
         }
 
-        $backButton = $this->componentFactory->createBackButton((string)$this->uriBuilder->buildUriFromRoute('system_reports'));
-        $buttonBar->addButton($backButton);
-
         $shortcutButton = $this->componentFactory->createShortcutButton()
             ->setRouteIdentifier('system_reports_contentstatistics')
             ->setDisplayName($languageService->sL('reports.messages:contentStatistics.title'));
