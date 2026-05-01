@@ -1172,6 +1172,11 @@ abstract class AbstractItemProvider
             if (!empty($item['description'])) {
                 if (is_string($item['description'])) {
                     $helpText = $languageService->sL($item['description']);
+                } elseif (is_array($item['description'])) {
+                    $helpText = [
+                        'title' => $languageService->sL($item['description']['title'] ?? ''),
+                        'description' => $languageService->sL($item['description']['description'] ?? ''),
+                    ];
                 } else {
                     $helpText = $item['description'];
                 }

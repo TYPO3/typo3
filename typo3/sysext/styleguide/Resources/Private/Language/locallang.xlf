@@ -336,6 +336,12 @@
       <trans-unit id="translatedHelpTextForSelectCheckBox3">
         <source>A localized help text</source>
       </trans-unit>
+      <trans-unit id="translatedHelpTitleForSelectCheckBox3">
+        <source>A localized help title</source>
+      </trans-unit>
+      <trans-unit id="translatedHelpDescriptionForSelectCheckBox3">
+        <source>A localized help description given as array</source>
+      </trans-unit>
       <trans-unit id="minimalTableTitle">
         <source>Form engine - Minimal table configuration</source>
       </trans-unit>
