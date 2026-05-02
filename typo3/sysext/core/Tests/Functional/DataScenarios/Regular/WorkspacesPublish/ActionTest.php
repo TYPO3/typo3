@@ -946,4 +946,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3'));
     }
+
+    #[Test]
+    public function modifyContentAndCreateNewVersion(): void
+    {
+        parent::modifyContentAndCreateNewVersion();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentAndCreateNewVersion.csv');
+    }
 }
