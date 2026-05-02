@@ -79,7 +79,7 @@ class FlexFormContainerContainer extends AbstractContainer
 
         $resultArray = $this->initializeResultArray();
 
-        $parentSectionContainer = sprintf('flexform-section-container-%s-%s-%s-%s', $this->data['flexFormSheetName'], $this->data['fieldName'], $this->data['flexFormFieldName'], md5($this->data['elementBaseName']));
+        $parentSectionContainer = sprintf('flexform-section-container-%s-%s-%s-%s', $this->data['flexFormSheetName'], $this->data['fieldName'], md5($this->data['flexFormFieldName']), md5($this->data['elementBaseName']));
         $flexFormDomContainerId = sprintf('%s-%s', $parentSectionContainer, $flexFormContainerIdentifier);
         $containerAttributes = [
             'class' => 'panel panel-default t3js-flex-section',

@@ -248,8 +248,8 @@ return [
                 <sheetTitle>section2</sheetTitle>
                 <type>array</type>
                 <el>
-                    <section_2>
-                        <title>section_2</title>
+                    <settings.section>
+                        <title>settings.section dotted name</title>
                         <type>array</type>
                         <section>1</section>
                         <el>
@@ -287,7 +287,7 @@ return [
                                 </el>
                             </container_2>
                         </el>
-                    </section_2>
+                    </settings.section>
                 </el>
             </ROOT>
         </sSection2>
