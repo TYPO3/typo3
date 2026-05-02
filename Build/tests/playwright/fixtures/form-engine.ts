@@ -21,29 +21,51 @@ export class FormEngine {
   async save() {
     await expect(this.saveButton).toBeEnabled();
 
-    // Wait for the save request to complete (navigation happens)
-    const loaded = this.formEngineLoaded();
-
+    const loaded = await this.formEngineLoaded();
     this.saveButton.click();
-    await loaded;
+    await loaded();
   }
 
   /**
    * Close the form engine
    */
   async close() {
-    const formEngineLoaded = this.formEngineLoaded();
+    const loaded = await this.formEngineLoaded();
     this.closeButton.click();
-    await formEngineLoaded;
+    await loaded();
 
     await expect(this.container).not.toBeAttached();
   }
 
-  async formEngineLoaded() {
-    return this.page.waitForFunction(() => {
-      return new Promise((resolve) => {
-        document.addEventListener('typo3-module-loaded', resolve, { once: true });
-      });
+  /**
+   * Returns a waiter for the next `typo3-module-loaded` event. Awaiting
+   * the call installs the listener; the returned waiter resolves when
+   * the event fires. Both awaits are needed so the listener is in
+   * place before the triggering action runs:
+   *
+   *   const ready = await formEngine.formEngineLoaded();
+   *   await action();
+   *   await ready();
+   */
+  async formEngineLoaded(): Promise<() => Promise<void>> {
+    const initial = await this.page.evaluate(() => {
+      const w = window as Window & { __typo3ModuleLoadedCounter?: number };
+      if (typeof w.__typo3ModuleLoadedCounter !== 'number') {
+        w.__typo3ModuleLoadedCounter = 0;
+        document.addEventListener('typo3-module-loaded', () => {
+          w.__typo3ModuleLoadedCounter = (w.__typo3ModuleLoadedCounter ?? 0) + 1;
+        });
+      }
+      return w.__typo3ModuleLoadedCounter;
     });
+    return async () => {
+      await this.page.waitForFunction(
+        (initial) => {
+          const w = window as Window & { __typo3ModuleLoadedCounter?: number };
+          return (w.__typo3ModuleLoadedCounter ?? 0) > initial;
+        },
+        initial,
+      );
+    };
   }
 }
