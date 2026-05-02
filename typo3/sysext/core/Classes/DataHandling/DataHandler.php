@@ -6506,6 +6506,12 @@ class DataHandler
             $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to create workspace version of "{table}:{uid}" which does not exist', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
+        if (((int)($row['t3ver_oid'] ?? 0)) > 0) {
+            // Reject "version of a version" before workspaceOL(): a current-workspace overlay
+            // legitimately has t3ver_oid > 0 and is handled by the early return further down.
+            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Record "{table}:{uid}" you wanted to versionize was already a version in archive (record has an online ID)', null, ['table' => $table, 'uid' => (int)$id]);
+            return null;
+        }
         BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
         $pageRecord = [];
         if ($table === 'pages') {
@@ -6519,12 +6525,6 @@ class DataHandler
         }
         if (!$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord)) {
             $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to create workspace version of "{table}:{uid}" without read permissions', null, ['table' => $table, 'uid' => (int)$id]);
-            return null;
-        }
-
-        if (($row['t3ver_oid'] ?? 0) > 0) {
-            // Record must be online record, otherwise we would create a version of a version
-            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Record "{table}:{uid}" you wanted to versionize was already a version in archive (record has an online ID)', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
         if ($delete) {

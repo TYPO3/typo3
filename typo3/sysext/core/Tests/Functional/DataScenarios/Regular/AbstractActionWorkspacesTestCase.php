@@ -283,4 +283,21 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->actionService->deleteRecord(self::TABLE_Content, 321);
     }
+
+    public function modifyContentAndCreateNewVersion(): void
+    {
+        // Create a modified record
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
+        // Create another 'new' version of that record: Artificial scenario, but still should not error out.
+        $this->actionService->invoke(
+            [],
+            [
+                self::TABLE_Content => [
+                    self::VALUE_ContentIdFirst => [
+                        'version' => ['action' => 'new', 'label' => 'Testing #1'],
+                    ],
+                ],
+            ]
+        );
+    }
 }

@@ -652,4 +652,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteMovedContentByDraftUid.csv');
     }
+
+    #[Test]
+    public function modifyContentAndCreateNewVersion(): void
+    {
+        parent::modifyContentAndCreateNewVersion();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentAndCreateNewVersion.csv');
+    }
 }

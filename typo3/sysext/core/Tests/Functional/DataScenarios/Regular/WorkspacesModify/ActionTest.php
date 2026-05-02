@@ -1358,4 +1358,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::deleteDeletedContentByDraftUid();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteDeletedContentByDraftUid.csv');
     }
+
+    #[Test]
+    public function modifyContentAndCreateNewVersion(): void
+    {
+        // versionizeRecord() must not raise "already a version in archive" when the
+        // user's current workspace already has an overlay for the live record.
+        parent::modifyContentAndCreateNewVersion();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentAndCreateNewVersion.csv');
+    }
 }
