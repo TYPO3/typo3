@@ -70,8 +70,8 @@ class FlexFormSectionContainer extends AbstractContainer
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormContainerContainerResult);
         }
 
-        $containerId = sprintf('flexform-section-container-%s-%s-%s-%s', $flexFormSheetName, $this->data['fieldName'], $flexFormFieldName, md5($this->data['elementBaseName']));
-        $sectionContainerId = sprintf('flexform-section-%s-%s-%s-%s', $flexFormSheetName, $this->data['fieldName'], $flexFormFieldName, md5($this->data['elementBaseName']));
+        $containerId = sprintf('flexform-section-container-%s-%s-%s-%s', $flexFormSheetName, $this->data['fieldName'], md5($flexFormFieldName), md5($this->data['elementBaseName']));
+        $sectionContainerId = sprintf('flexform-section-%s-%s-%s-%s', $flexFormSheetName, $this->data['fieldName'], md5($flexFormFieldName), md5($this->data['elementBaseName']));
         $hashedSectionContainerId = 'section-' . md5($sectionContainerId);
 
         // "New container" handling: Creates buttons for each possible container with all relevant information for the ajax call.
