@@ -2005,7 +2005,7 @@ class GeneralUtility
         } elseif (stripos($measurement, 'K')) {
             $bytes *= 1024;
         }
-        return (int)$bytes;
+        return $bytes >= PHP_INT_MAX ? PHP_INT_MAX : (int)$bytes;
     }
 
     /**

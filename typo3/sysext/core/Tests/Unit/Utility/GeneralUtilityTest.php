@@ -1066,6 +1066,10 @@ final class GeneralUtilityTest extends UnitTestCase
             '100 kilo Bytes' => ['102400', '100k'],
             '100 mega Bytes' => ['104857600', '100m'],
             '100 giga Bytes' => ['107374182400', '100g'],
+            'overflowing giga Bytes' => [PHP_INT_MAX, '1e20G'],
+            'overflowing mega Bytes' => [PHP_INT_MAX, '1e20M'],
+            'overflowing kilo Bytes' => [PHP_INT_MAX, '1e20K'],
+            'overflowing Bytes' => [PHP_INT_MAX, '1e20'],
         ];
     }
 
