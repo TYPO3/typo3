@@ -2,9 +2,9 @@ import { test, expect } from '../../fixtures/setup-fixtures';
 
 test.beforeEach(async ({ backend }) => {
   await backend.gotoModule('link_management');
-  const moduleLoaded = backend.moduleLoaded('qrcodes');
+  const moduleLoaded = await backend.moduleLoaded('qrcodes');
   await backend.docHeader.selectInDropDown('Module Overview', 'QR Codes');
-  await moduleLoaded;
+  await moduleLoaded();
 });
 
 test('See QR Code management module', async ({ backend }) => {
@@ -13,9 +13,9 @@ test('See QR Code management module', async ({ backend }) => {
 
 test('Create a new QR Code', async ({ page, backend }) => {
   const amountOfRedirects = await backend.contentFrame.locator('table > tbody > tr').count();
-  const formEngineReady = backend.formEngine.formEngineLoaded();
+  const formEngineReady = await backend.formEngine.formEngineLoaded();
   await backend.contentFrame.getByRole('button', { name: 'Add QR Code' }).click();
-  await formEngineReady;
+  await formEngineReady();
   await expect(backend.contentFrame.locator('h1')).toContainText('Create new QR Code');
 
   await backend.formEngine.container.getByLabel('[source_host]').fill('localhost');
@@ -38,9 +38,9 @@ test('Can edit a redirect by clicking the edit button', async ({ backend }) => {
 });
 
 test('See and download QR Code', async ({ page, backend }) => {
-  const formEngineReady = backend.formEngine.formEngineLoaded();
+  const formEngineReady = await backend.formEngine.formEngineLoaded();
   await backend.contentFrame.getByRole('button', { name: 'Add QR Code' }).click();
-  await formEngineReady;
+  await formEngineReady();
   await expect(backend.contentFrame.locator('h1')).toContainText('Create new QR Code');
 
   await backend.formEngine.container.getByLabel('[source_host]').fill('example.org');

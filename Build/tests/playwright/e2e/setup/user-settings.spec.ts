@@ -27,9 +27,9 @@ test.describe('User Settings', () => {
     });
 
     await test.step('Save settings', async () => {
-      const loaded = backend.formEngine.formEngineLoaded();
+      const loaded = await backend.formEngine.formEngineLoaded();
       await contentFrame.locator('button[name="data[save]"]').click();
-      await loaded;
+      await loaded();
     });
 
     await test.step('Verify setting persists after save', async () => {
@@ -52,9 +52,9 @@ test.describe('User Settings', () => {
         .locator('input[type="checkbox"]');
       await restoreCheckbox.click();
 
-      const loaded = backend.formEngine.formEngineLoaded();
+      const loaded = await backend.formEngine.formEngineLoaded();
       await contentFrame.locator('button[name="data[save]"]').click();
-      await loaded;
+      await loaded();
     });
   });
 });

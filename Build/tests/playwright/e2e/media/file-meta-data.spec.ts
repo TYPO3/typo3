@@ -26,10 +26,9 @@ test.describe('File Metadata', () => {
       // There may be multiple results, click the first one
       const fileButton = backend.contentFrame.getByRole('button', { name: 'bus_lane.jpg' }).first();
       await expect(fileButton).toBeVisible();
+      const formEngineReady = await backend.formEngine.formEngineLoaded();
       await fileButton.click();
-
-      // Wait for form engine to load
-      await backend.formEngine.formEngineLoaded();
+      await formEngineReady();
 
       // Verify the metadata editor heading
       await expect(backend.contentFrame.locator('h1')).toContainText('bus_lane.jpg');

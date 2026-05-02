@@ -16,10 +16,9 @@ test('Delete page and check recycler', async ({ page, backend }) => {
 
     await test.step('Add sys note on new page', async () => {
       await backend.pageTree.open('styleguide TCA demo', newPageTitle);
+      const formEngineLoaded = await backend.formEngine.formEngineLoaded();
       await backend.contentFrame.getByRole('button', { name: 'Create new record' }).click();
-      const formEngineLoaded = backend.formEngine.formEngineLoaded();
-      backend.formEngine.formEngineLoaded();
-      await formEngineLoaded;
+      await formEngineLoaded();
       await backend.contentFrame.getByRole('link', { name: 'Internal note' }).click();
 
       await expect(backend.contentFrame.locator('h1')).toContainText('Create new Internal note');
@@ -30,9 +29,9 @@ test('Delete page and check recycler', async ({ page, backend }) => {
 
     await test.step('Delete page', async () => {
       await backend.pageTree.open('styleguide TCA demo', newPageTitle);
-      const formEngineLoaded = backend.formEngine.formEngineLoaded();
+      const formEngineLoaded = await backend.formEngine.formEngineLoaded();
       backend.contentFrame.getByRole('button', { name: 'Edit page properties' }).click();
-      await formEngineLoaded;
+      await formEngineLoaded();
       const deleteButton = backend.contentFrame.getByRole('button', { name: 'Delete' });
       await backend.modal.open(deleteButton);
 

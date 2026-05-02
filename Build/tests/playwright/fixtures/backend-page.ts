@@ -44,22 +44,40 @@ export class BackendPage {
   async gotoModule(identifier: string) {
     await this.page.goto('module/web/layout');
     const moduleLink = this.page.locator(`a[data-modulemenu-identifier="${identifier}"]`);
-    const moduleLoaded = this.moduleLoaded(identifier);
+    const moduleLoaded = await this.moduleLoaded(identifier);
     moduleLink.click();
-    await moduleLoaded;
+    await moduleLoaded();
 
     await expect(moduleLink).toHaveClass(/modulemenu-action-active/);
   }
 
-  async moduleLoaded(identifier: string) {
-    return this.page.waitForFunction(() => {
-      return new Promise((resolve) => {
-        // Listen for module loaded event and verify it's the right module
+  /**
+   * Returns a waiter for the next `typo3-module-loaded` event. Awaiting
+   * the call installs the listener; the returned waiter resolves when
+   * the event fires. Both awaits are needed so the listener is in
+   * place before the triggering action runs.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async moduleLoaded(identifier: string): Promise<() => Promise<void>> {
+    const initial = await this.page.evaluate(() => {
+      const w = window as Window & { __typo3ModuleLoadedCounter?: number };
+      if (typeof w.__typo3ModuleLoadedCounter !== 'number') {
+        w.__typo3ModuleLoadedCounter = 0;
         document.addEventListener('typo3-module-loaded', () => {
-          resolve(true);
-        }, { once: true });
-      });
-    }, identifier);
+          w.__typo3ModuleLoadedCounter = (w.__typo3ModuleLoadedCounter ?? 0) + 1;
+        });
+      }
+      return w.__typo3ModuleLoadedCounter;
+    });
+    return async () => {
+      await this.page.waitForFunction(
+        (initial) => {
+          const w = window as Window & { __typo3ModuleLoadedCounter?: number };
+          return (w.__typo3ModuleLoadedCounter ?? 0) > initial;
+        },
+        initial,
+      );
+    };
   }
 
   async waitForModuleResponse(urlPattern?: string | RegExp): Promise<void> {

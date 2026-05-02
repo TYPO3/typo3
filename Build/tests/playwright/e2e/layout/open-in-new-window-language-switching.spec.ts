@@ -25,13 +25,13 @@ test('Switch between languages in "Open in new window"', async ({
       // Wait for modal iframe and navigate to full edit view
       const contextPanel = page.frameLocator('iframe[name="modal_frame"]');
       await expect(contextPanel.locator('.contextual-record-edit')).toBeVisible();
-      const formEngineReady = backend.formEngine.formEngineLoaded();
+      const formEngineReady = await backend.formEngine.formEngineLoaded();
       await contextPanel
         .getByTitle('Open full editing view')
         .click();
 
       // Wait for the EditDocumentController to load in the content frame
-      await formEngineReady;
+      await formEngineReady();
       await expect(
         backend.contentFrame.getByRole('heading', { name: 'staticdata' }),
       ).toBeVisible();
@@ -60,7 +60,11 @@ test('Switch between languages in "Open in new window"', async ({
       await expect(languageButton).toContainText('styleguide demo language');
 
       await test.step('make sure saving works on another language', async () => {
-        await standalonePage.getByLabel('Page Title').fill('changed language staticdata');
+        // FormEngine re-initializes the input after a language switch
+        // and would overwrite a value typed before init completes.
+        const titleInput = standalonePage.getByLabel('Page Title');
+        await expect(titleInput).toHaveAttribute('data-formengine-input-initialized', 'true');
+        await titleInput.fill('changed language staticdata');
 
         // Wait for save response instead of notification
         const saveResponse = standalonePage.waitForResponse(response =>
@@ -70,7 +74,8 @@ test('Switch between languages in "Open in new window"', async ({
         await saveResponse;
 
         // Verify the save persisted and the form re-rendered before switching languages
-        await expect(standalonePage.getByLabel('Page Title')).toHaveValue('changed language staticdata');
+        await expect(titleInput).toHaveAttribute('data-formengine-input-initialized', 'true');
+        await expect(titleInput).toHaveValue('changed language staticdata');
         await expect(languageButton).toContainText('styleguide demo language');
       });
     });

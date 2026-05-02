@@ -6,13 +6,13 @@ test.beforeEach(async ({ backend }) => {
 });
 
 test('Flex form section container with dot in field name expands on click', async ({ backend }) => {
-  const formEngineReady = backend.formEngine.formEngineLoaded();
+  const formEngineReady = await backend.formEngine.formEngineLoaded();
   // Filter excludes the "create new" link in the same records list.
   await backend.contentFrame
     .locator('a[href*="edit%5Btx_styleguide_flex%5D"][href*="%5D=edit"]')
     .first()
     .click();
-  await formEngineReady;
+  await formEngineReady();
 
   await backend.contentFrame.getByRole('tab', { name: 'section container' }).click();
   await backend.contentFrame.getByRole('tab', { name: 'section2', exact: true }).click();

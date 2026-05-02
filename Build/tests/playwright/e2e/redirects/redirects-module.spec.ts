@@ -2,9 +2,9 @@ import { test, expect } from '../../fixtures/setup-fixtures';
 
 test.beforeEach(async ({ backend }) => {
   await backend.gotoModule('link_management');
-  const moduleLoaded = backend.moduleLoaded('redirects');
+  const moduleLoaded = await backend.moduleLoaded('redirects');
   backend.docHeader.selectInDropDown('Module Overview', 'Redirects');
-  await moduleLoaded;
+  await moduleLoaded();
 });
 
 test('See redirect management module', async ({ backend }) => {
@@ -14,9 +14,9 @@ test('See redirect management module', async ({ backend }) => {
 test('Create a new redirect', async ({ page, backend }) => {
   const amountOfRedirects = await backend.contentFrame.locator('table > tbody > tr').count();
 
-  const formEngineReady = backend.formEngine.formEngineLoaded();
+  const formEngineReady = await backend.formEngine.formEngineLoaded();
   await backend.contentFrame.getByRole('button', { name: 'Add redirect' }).click();
-  await formEngineReady;
+  await formEngineReady();
   await expect(backend.contentFrame.locator('h1')).toContainText('Create new Redirect');
 
   await backend.contentFrame.getByLabel('Source Path [source_path]').pressSequentially('/my-path/');
