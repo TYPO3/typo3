@@ -2025,10 +2025,19 @@ class GeneralUtility
     {
         $bytes = (float)$measurement;
         if (stripos($measurement, 'G')) {
+            if ($bytes > intdiv(PHP_INT_MAX, 1024 * 1024 * 1024)) {
+                return 0;
+            }
             $bytes *= 1024 * 1024 * 1024;
         } elseif (stripos($measurement, 'M')) {
+            if ($bytes > intdiv(PHP_INT_MAX, 1024 * 1024)) {
+                return 0;
+            }
             $bytes *= 1024 * 1024;
         } elseif (stripos($measurement, 'K')) {
+            if ($bytes > intdiv(PHP_INT_MAX, 1024)) {
+                return 0;
+            }
             $bytes *= 1024;
         }
         return (int)$bytes;
