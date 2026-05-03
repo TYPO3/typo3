@@ -12,5 +12,6 @@ e2e playwright composer sqlite 8.2 pre-merge:
     paths:
       - typo3temp/var/tests/playwright-composer/var/log
       - typo3temp/var/tests/playwright-reports
+  parallel: 2
   script:
-    - Build/Scripts/runTests.sh -s e2e -p 8.2 -d sqlite
+    - Build/Scripts/runTests.sh -s e2e -p 8.2 -d sqlite -c $CI_NODE_INDEX/$CI_NODE_TOTAL

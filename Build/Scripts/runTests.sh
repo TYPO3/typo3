@@ -248,7 +248,11 @@ runPlaywright() {
 
     waitFor web 80
 
-    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run -- ${PLAYWRIGHT_PROJECT}"
+    PLAYWRIGHT_SHARD=""
+    if [ "${CHUNKS}" -gt 0 ]; then
+        PLAYWRIGHT_SHARD=" --shard=${THISCHUNK}/${CHUNKS}"
+    fi
+    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run -- ${PLAYWRIGHT_PROJECT}${PLAYWRIGHT_SHARD}"
     COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open -- ${PLAYWRIGHT_PROJECT}"
     PLAYWRIGHT_GUI_PORT=43837
 
@@ -595,8 +599,9 @@ Options:
             - 16    maintained until 2028-11-09
 
     -c <chunk/numberOfChunks>
-        Only with -s functional|acceptance
+        Only with -s functional|acceptance|e2e
         Hack functional or acceptance tests into #numberOfChunks pieces and run tests of #chunk.
+        For -s e2e this maps to Playwright's native --shard=#chunk/#numberOfChunks.
         Example -c 3/13
 
     -p <8.2|8.3|8.4|8.5>
