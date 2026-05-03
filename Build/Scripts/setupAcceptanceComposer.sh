@@ -44,7 +44,7 @@ if (($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['driver'] ?? ''
 EOF
 
 # `composer require` will implicitly perform an initial `composer install` since there is no composer.lock
-composer require --no-progress --no-interaction --dev typo3tests/dataset-import:@dev typo3/testing-framework:dev-main ${EXTRA_PACKAGES}
+composer require --no-progress --no-interaction --optimize-autoloader --dev typo3tests/dataset-import:@dev typo3/testing-framework:dev-main ${EXTRA_PACKAGES}
 
 TYPO3_SERVER_TYPE=apache \
 TYPO3_PROJECT_NAME="New TYPO3 site" \
