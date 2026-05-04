@@ -55,7 +55,6 @@ include:
   - local: 'Build/gitlab-ci/nightly/unit.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-install.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-application.yml'
-  - local: 'Build/gitlab-ci/nightly/acceptance-application-composer.yml'
   - local: 'Build/gitlab-ci/nightly/e2e.yml'
   - local: 'Build/gitlab-ci/nightly/accessibility.yml'
   - local: 'Build/gitlab-ci/nightly/functional.yml'

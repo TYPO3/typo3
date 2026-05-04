@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
-use Codeception\Attribute\Env;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 final class MaintenanceCest extends AbstractCest
@@ -37,7 +36,6 @@ final class MaintenanceCest extends AbstractCest
         $I->see('Caches cleared', '.alert-success .alert-title');
     }
 
-    #[Env('classic')]
     public function analyzeDatabaseStructureWorks(ApplicationTester $I): void
     {
         $I->click('Analyze database…');
@@ -52,14 +50,6 @@ final class MaintenanceCest extends AbstractCest
         $I->click('Scan temporary files…');
         $I->waitForElementVisible('.t3js-modal');
         $I->see('Remove Temporary Assets', '.t3js-modal .modal-header-title');
-    }
-
-    #[Env('classic')]
-    public function dumpAutoloadWorks(ApplicationTester $I): void
-    {
-        $I->click('Dump autoload');
-        $I->waitForElementVisible('.alert-success');
-        $I->see('Successfully dumped class loading information for extensions.', '.alert-success .alert-title');
     }
 
     public function clearPersistentTablesWorks(ApplicationTester $I): void

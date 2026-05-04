@@ -36,24 +36,3 @@ test('Filter installed extensions', async ({ backend }) => {
     expect(await backend.contentFrame.locator('#typo3-extension-list tbody tr[role="row"]:not(.hidden)').count()).toBeGreaterThanOrEqual(10);
   });
 });
-
-// @todo: Only in classic mode
-test.skip('Check if extension upload form appears', async ({ page, backend }) => {
-  await backend.contentFrame.getByRole('button', { name: 'Upload Extension' }).click();
-  await expect(page.locator('#extensionUploadForm')).toBeVisible();
-});
-
-// @todo: Only in classic mode
-test.skip('Check if extension uninstall and install is working', async ({ backend }) => {
-  await expect(backend.moduleNavigation.getByRole('menuitem', { name: 'Log' })).toBeVisible();
-
-  await test.step('Uninstall extension', async () => {
-    await backend.contentFrame.locator('#belog').getByRole('button', { name: 'Deactivate' }).click();
-    await expect(backend.moduleNavigation.getByRole('menuitem', { name: 'Log' })).not.toBeVisible();
-  });
-
-  await test.step('Install extension', async () => {
-    await backend.contentFrame.locator('#belog').getByRole('button', { name: 'Activate' }).click();
-    await expect(backend.moduleNavigation.getByRole('menuitem', { name: 'Log' })).toBeVisible();
-  });
-});

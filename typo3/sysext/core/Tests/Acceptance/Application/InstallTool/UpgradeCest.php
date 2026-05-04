@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
-use Codeception\Attribute\Env;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
@@ -29,16 +28,6 @@ final class UpgradeCest extends AbstractCest
         $this->logIntoInstallTool($I);
         $I->click('Upgrade');
         $I->see('Upgrade', 'h1');
-    }
-
-    #[Env('classic')]
-    public function seeUpgradeCore(ApplicationTester $I, ModalDialog $modalDialog): void
-    {
-        $I->click('Update Core…');
-        $modalDialog->canSeeDialog();
-
-        $I->amGoingTo('open the core updater');
-        $I->see('TYPO3 CMS core to its latest minor release');
     }
 
     public function seeViewUpgradeDocumentation(ApplicationTester $I, ModalDialog $modalDialog): void
