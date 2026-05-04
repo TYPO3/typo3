@@ -97,9 +97,12 @@ test.describe.serial('TypoScript module - site template lifecycle', () => {
     await editLink.click();
     await expect(contentFrame.locator('#EditDocumentController')).toBeVisible();
 
-    await contentFrame
-      .locator('input[data-formengine-input-name*="data[sys_template]"][data-formengine-input-name*="[title]"]')
-      .fill('Acceptance Test Site');
+    const titleInput = contentFrame
+      .locator('input[data-formengine-input-name*="data[sys_template]"][data-formengine-input-name*="[title]"]');
+    // FormEngine re-initializes inputs asynchronously; filling before the
+    // initialized flag is set silently drops the value.
+    await expect(titleInput).toHaveAttribute('data-formengine-input-initialized', 'true');
+    await titleInput.fill('Acceptance Test Site');
 
     const codeMirror = contentFrame.locator('typo3-t3editor-codemirror[name$="[config]"]');
     await expect(codeMirror).toBeVisible();

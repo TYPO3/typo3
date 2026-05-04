@@ -22,22 +22,30 @@ test('Switch between languages in "Open in new window"', async ({
         .getByRole('button', { name: 'Edit page properties' })
         .click();
 
-      // Wait for modal iframe and navigate to full edit view
+      // Wait for modal iframe and navigate to full edit view.
       const contextPanel = page.frameLocator('iframe[name="modal_frame"]');
       await expect(contextPanel.locator('.contextual-record-edit')).toBeVisible();
-      const formEngineReady = await backend.formEngine.formEngineLoaded();
-      await contextPanel
-        .getByTitle('Open full editing view')
-        .click();
 
-      // The `typo3-module-loaded` event is unreliable on this modal-driven
-      // navigation path (it sometimes does not bubble to the parent document
-      // at all). Cap the wait so we do not run into the test timeout; the
-      // expect() calls below auto-wait on the actual loaded form.
-      await Promise.race([
-        formEngineReady(),
-        page.waitForTimeout(3000),
-      ]);
+      // Clicking the "Open full editing view" link races the iframe's
+      // DocumentService.ready() handler that attaches the e.preventDefault()
+      // logic. When the click wins the race, the modal iframe just follows
+      // the href, the parent's content frame never navigates, and the
+      // FormEngine assertion below times out. Read the href and replicate
+      // both steps the click handler performs on its happy path:
+      // navigate the parent content frame, then dismiss the modal so its
+      // backdrop does not intercept later clicks on the form.
+      const fullEditUrl = await contextPanel.locator('.t3js-contextual-fullscreen').getAttribute('href');
+      const formEngineReady = await backend.formEngine.formEngineLoaded();
+      await page.evaluate((url) => {
+        const w = window as unknown as {
+          TYPO3: { Backend: { ContentContainer: { setUrl: (u: string) => void } } };
+        };
+        w.TYPO3.Backend.ContentContainer.setUrl(url);
+        window.postMessage({ actionName: 'typo3:editform:navigate' }, window.location.origin);
+      }, fullEditUrl);
+      await formEngineReady();
+
+      await expect(page.locator('typo3-backend-modal')).toHaveCount(0);
       await expect(backend.formEngine.container).toBeVisible();
       await expect(
         backend.contentFrame.getByRole('heading', { name: 'staticdata' }),
