@@ -60,7 +60,19 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
             $fieldConfig['config']['items'] = $this->addItemsFromFolder($result, $fieldName, $fieldConfig['config']['items']);
 
-            $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
+            // We never load foreign table relations for l10n_parent fields when sys_language_uid=0 - they should
+            // never populate the list now, as this could be massive. In general, we should rather migrate this to
+            // a better solution (e.g. custom type + more useful render type, or custom FormDataProvider) but for
+            // now we just do it like this, to ensure that editors do not need to wait for loading FormEngine too long
+            // on records with language>0 that have a lot of "possible" default language relations on the same pid.
+            $transOrigPointerField = $result['processedTca']['ctrl']['transOrigPointerField'] ?? '';
+            $languageField = $result['processedTca']['ctrl']['languageField'] ?? '';
+            $isTransOrigPointerFieldForDefaultLanguage = $fieldName === $transOrigPointerField
+                && $languageField !== ''
+                && (int)($result['databaseRow'][$languageField] ?? 0) <= 0;
+            if (!$isTransOrigPointerFieldForDefaultLanguage) {
+                $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
+            }
 
             // Resolve "itemsProcFunc"
             if (!empty($fieldConfig['config']['itemsProcFunc']) || !empty($fieldConfig['config']['itemsProcessors'])) {
