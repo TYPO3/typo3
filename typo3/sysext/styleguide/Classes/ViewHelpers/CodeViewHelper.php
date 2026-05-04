@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\CodeEditor\CodeEditor;
 use TYPO3\CMS\Backend\CodeEditor\Registry\ModeRegistry;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -105,9 +106,9 @@ final class CodeViewHelper extends AbstractViewHelper
         $markup[] =                 '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
         $markup[] =                     '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
         if ($this->arguments['decodeEntities']) {
-            $markup[] =                     htmlspecialchars_decode(str_replace('###UNIQUEID###', uniqid('code'), $content));
+            $markup[] =                     htmlspecialchars_decode(str_replace('###UNIQUEID###', StringUtility::getUniqueId('code'), $content));
         } else {
-            $markup[] =                     htmlspecialchars(str_replace('###UNIQUEID###', uniqid('code'), $content));
+            $markup[] =                     htmlspecialchars(str_replace('###UNIQUEID###', StringUtility::getUniqueId('code'), $content));
         }
         $markup[] =                     '</textarea>';
         $markup[] =                 '</typo3-t3editor-codemirror>';

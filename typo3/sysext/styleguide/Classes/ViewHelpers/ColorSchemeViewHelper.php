@@ -59,7 +59,7 @@ final class ColorSchemeViewHelper extends AbstractViewHelper
         $markup[] =     '<div class="styleguide-example-content">';
         $markup[] =         '<div class="example t3js-styleguide-example" id="' . htmlspecialchars($id) . '" data-color-scheme="' . $defaultScheme . '">';
         $markup[] =             '<typo3-styleguide-theme-switcher activetheme="' . htmlspecialchars($defaultScheme) . '" example="#' . htmlspecialchars($id) . '"></typo3-styleguide-theme-switcher>';
-        $markup[] =             str_replace('###UNIQUEID###', uniqid($defaultScheme), $content);
+        $markup[] =             str_replace('###UNIQUEID###', StringUtility::getUniqueId($defaultScheme), $content);
         $markup[] =         '</div>';
         $markup[] =     '</div>';
         $markup[] = '</div>';
