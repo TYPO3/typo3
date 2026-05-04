@@ -24,6 +24,12 @@ export class FormEngine {
     const loaded = await this.formEngineLoaded();
     this.saveButton.click();
     await loaded();
+
+    // Wait for TYPO3's "form is dirty" markers to clear. Otherwise a
+    // subsequent close() can race the typo3-module-loaded event and trip
+    // the unsaved-changes modal that FormEngine.preventExitIfNotSaved
+    // raises while .has-change or .is-new is still present.
+    await expect(this.contentFrame.locator('.has-change, .is-new')).toHaveCount(0, { timeout: 10000 });
   }
 
   /**
