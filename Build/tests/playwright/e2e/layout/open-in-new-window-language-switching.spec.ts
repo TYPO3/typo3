@@ -30,8 +30,15 @@ test('Switch between languages in "Open in new window"', async ({
         .getByTitle('Open full editing view')
         .click();
 
-      // Wait for the EditDocumentController to load in the content frame
-      await formEngineReady();
+      // The `typo3-module-loaded` event is unreliable on this modal-driven
+      // navigation path (it sometimes does not bubble to the parent document
+      // at all). Cap the wait so we do not run into the test timeout; the
+      // expect() calls below auto-wait on the actual loaded form.
+      await Promise.race([
+        formEngineReady(),
+        page.waitForTimeout(3000),
+      ]);
+      await expect(backend.formEngine.container).toBeVisible();
       await expect(
         backend.contentFrame.getByRole('heading', { name: 'staticdata' }),
       ).toBeVisible();
