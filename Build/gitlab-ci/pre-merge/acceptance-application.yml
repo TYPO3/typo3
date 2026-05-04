@@ -1,4 +1,4 @@
-acceptance application sys_template mariadb 10.4 php 8.5 pre-merge:
+acceptance application composer sys_template mysql 8.0 php 8.5 pre-merge:
   stage: main
   tags:
     - metal2
@@ -9,14 +9,14 @@ acceptance application sys_template mariadb 10.4 php 8.5 pre-merge:
   artifacts:
     when: on_failure
     paths:
-      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/acceptance-composer/var/log
       - typo3temp/var/tests/AcceptanceReports
   parallel: 10
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.5
-    - Build/Scripts/runTests.sh -s acceptance -p 8.5 -d mariadb -i 10.4 -t systemplate -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s acceptanceComposer -p 8.5 -d mysql -i 8.0 -t systemplate -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-acceptance application composer postgres 15 php 8.2 pre-merge:
+acceptance application composer sets postgres 15 php 8.2 pre-merge:
   stage: main
   tags:
     - metal2

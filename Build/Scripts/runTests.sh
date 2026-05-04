@@ -16,7 +16,7 @@ printSummary() {
     echo "Container runtime: ${CONTAINER_BIN}" >&2
     echo "Container suffix: ${SUFFIX}"
     echo "PHP: ${PHP_VERSION}" >&2
-    if [[ ${TEST_SUITE} =~ ^(functional|acceptance|acceptanceComposer|acceptanceInstall)$ ]]; then
+    if [[ ${TEST_SUITE} =~ ^(functional|acceptanceComposer|acceptanceInstall)$ ]]; then
         case "${DBMS}" in
             mariadb|mysql|postgres)
                 echo "DBMS: ${DBMS}  version ${DBMS_VERSION}  driver ${DATABASE_DRIVER}" >&2
@@ -208,7 +208,6 @@ getPhpImageVersion() {
 }
 
 # @todo: Add support for all available database engines (see -d option)
-# @todo: Add support for classic mode
 runPlaywright() {
     PREPAREPARAMS="-e TYPO3_DB_DRIVER=sqlite"
     TESTPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
@@ -488,7 +487,6 @@ Usage: $0 [options] [file]
 Options:
     -s <...>
         Specifies the test suite to run
-            - acceptance: main application acceptance tests
             - acceptanceComposer: main application acceptance tests
             - acceptanceInstall: installation acceptance tests, only with -d mariadb|postgres|sqlite
             - build: execute frontend build (TypeScript, Sass, Contrib, Assets)
@@ -560,7 +558,7 @@ Options:
                 - pdo_mysql
 
     -d <sqlite|mariadb|mysql|postgres>
-        Only with -s functional|acceptance|acceptanceComposer|acceptanceInstall
+        Only with -s functional|acceptanceComposer|acceptanceInstall
         Specifies on which DBMS tests are performed
             - sqlite: (default): use sqlite
             - mariadb: use mariadb
@@ -599,7 +597,7 @@ Options:
             - 16    maintained until 2028-11-09
 
     -c <chunk/numberOfChunks>
-        Only with -s functional|acceptance|e2e
+        Only with -s functional|acceptanceComposer|e2e
         Hack functional or acceptance tests into #numberOfChunks pieces and run tests of #chunk.
         For -s e2e this maps to Playwright's native --shard=#chunk/#numberOfChunks.
         Example -c 3/13
@@ -612,18 +610,18 @@ Options:
             - 8.5: use PHP 8.5
 
     -t sets|systemplate
-        Only with -s acceptance|acceptanceComposer
+        Only with -s acceptanceComposer
         Specifies which frontend rendering mechanism should be used
             - sets: (default): use site sets
             - systemplate: use sys_template records
 
     -g
-        Only with -s acceptance|acceptanceComposer|acceptanceInstall
+        Only with -s acceptanceComposer|acceptanceInstall
         Activate selenium grid as local port to watch browser clicking around. Can be surfed using
         http://localhost:7900/. A browser tab is opened automatically if xdg-open is installed.
 
     -x
-        Only with -s functional|unit|unitRandom|acceptance|acceptanceComposer|acceptanceInstall
+        Only with -s functional|unit|unitRandom|acceptanceComposer|acceptanceInstall
         Send information to host instance for test or system under test break points. This is especially
         useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
@@ -664,7 +662,7 @@ Examples:
     ./Build/Scripts/runTests.sh -s functional -d postgres -i 11
 
     # Run restricted set of application acceptance tests
-    ./Build/Scripts/runTests.sh -s acceptance typo3/sysext/core/Tests/Acceptance/Application/Login/BackendLoginCest.php:loginButtonMouseOver
+    ./Build/Scripts/runTests.sh -s acceptanceComposer typo3/sysext/core/Tests/Acceptance/Application/Login/BackendLoginCest.php:loginButtonMouseOver
 
     # Run installer tests of a new instance on sqlite
     ./Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite
@@ -901,86 +899,6 @@ fi
 
 # Suite execution
 case ${TEST_SUITE} in
-    acceptance)
-        CODECEPION_ENV="--env ci,classic,${ACCEPTANCE_TOPIC}"
-        if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-            CODECEPION_ENV="--env ci,classic,headless,${ACCEPTANCE_TOPIC}"
-        fi
-        if [ "${CHUNKS}" -gt 0 ]; then
-            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-splitter-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
-            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-            COMMAND=(php -d register_argc_argv=On bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} "$@" --html reports.html)
-        else
-            COMMAND=(php -d register_argc_argv=On bin/codecept run Application -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} "$@" --html reports.html)
-        fi
-        SELENIUM_GRID=""
-        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
-            SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
-        fi
-        rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance" "${CORE_ROOT}/typo3temp/var/tests/AcceptanceReports"
-        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance"
-        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/acceptance -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
-        ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome ${IMAGE_SELENIUM} >/dev/null
-        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        if [ ${CONTAINER_BIN} = "docker" ]; then
-            ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
-            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-            ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
-            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        else
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
-            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
-            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        fi
-        waitFor chrome 4444
-        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
-            waitFor chrome 7900
-        fi
-        waitFor web 80
-        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
-            xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
-        elif [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "open" >/dev/null; then
-            open http://localhost:7900/?autoconnect=1 >/dev/null
-        fi
-        case ${DBMS} in
-            mariadb)
-                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                waitFor mariadb-ac-${SUFFIX} 3306
-                CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mariadb-ac-${SUFFIX}"
-                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-mariadb ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
-                SUITE_EXIT_CODE=$?
-                ;;
-            mysql)
-                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                waitFor mysql-ac-${SUFFIX} 3306
-                CONTAINERPARAMS="-e typo3DatabaseName=func_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mysql-ac-${SUFFIX}"
-                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-mysql ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
-                SUITE_EXIT_CODE=$?
-                ;;
-            postgres)
-                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-ac-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                waitFor postgres-ac-${SUFFIX} 5432
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=func_test -e typo3DatabaseUsername=funcu -e typo3DatabasePassword=funcp -e typo3DatabaseHost=postgres-ac-${SUFFIX}"
-                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-postgres ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
-                SUITE_EXIT_CODE=$?
-                ;;
-            sqlite)
-                rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
-                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
-                SUITE_EXIT_CODE=$?
-                ;;
-        esac
-        ;;
     acceptanceComposer)
         rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-composer" "${CORE_ROOT}/typo3temp/var/tests/AcceptanceReports"
 
@@ -988,14 +906,14 @@ case ${TEST_SUITE} in
         TESTPARAMS=""
         case ${DBMS} in
             mariadb)
-                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=acp -e MYSQL_DATABASE=ac_test --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=acp -e MYSQL_DATABASE=ac_test --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci >/dev/null
                 SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor mariadb-ac-${SUFFIX} 3306
                 PREPAREPARAMS="-e TYPO3_DB_DRIVER=${DATABASE_DRIVER} -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=root -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=mariadb-ac-${SUFFIX} -e TYPO3_DB_PORT=3306"
                 TESTPARAMS="-e typo3DatabaseName=ac_test -e typo3DatabaseUsername=root -e typo3DatabasePassword=funcp -e typo3DatabaseHost=mariadb-ac-${SUFFIX}"
                 ;;
             mysql)
-                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=acp -e MYSQL_DATABASE=ac_test --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-ac-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=acp -e MYSQL_DATABASE=ac_test --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci >/dev/null
                 SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
                 waitFor mysql-ac-${SUFFIX} 3306
                 PREPAREPARAMS="-e TYPO3_DB_DRIVER=${DATABASE_DRIVER} -e TYPO3_DB_DBNAME=ac_test -e TYPO3_DB_USERNAME=root -e TYPO3_DB_PASSWORD=acp -e TYPO3_DB_HOST=mysql-ac-${SUFFIX} -e TYPO3_DB_PORT=3306"
