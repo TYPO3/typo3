@@ -20,12 +20,13 @@ test('System note can be created and edited from records module', async ({ backe
 
   await test.step('Verify the created system note is listed', async () => {
     await expect(backend.contentFrame.getByRole('heading', { name: 'Internal notes' })).toBeAttached();
-    await expect(backend.contentFrame.locator('.note-body').first()).toContainText('new sys_note');
+    await expect(backend.contentFrame.locator('.note-body', { hasText: 'new sys_note' })).toBeVisible();
   });
 
   await test.step('Edit the created system note', async () => {
     const loaded = await backend.moduleLoaded('records');
-    backend.contentFrame.getByRole('link', { name: 'Edit note record' }).first().click();
+    backend.contentFrame.locator('.note', { hasText: 'new sys_note' })
+      .getByRole('link', { name: 'Edit note record' }).click();
     await loaded();
 
     await expect(backend.contentFrame.locator('h1')).toContainText('new sys_note');
@@ -33,6 +34,6 @@ test('System note can be created and edited from records module', async ({ backe
     await backend.formEngine.save();
     await backend.formEngine.close();
 
-    await expect(backend.contentFrame.locator('.note-body').first()).toContainText('edited sys_note');
+    await expect(backend.contentFrame.locator('.note-body', { hasText: 'edited sys_note' })).toBeVisible();
   });
 });
