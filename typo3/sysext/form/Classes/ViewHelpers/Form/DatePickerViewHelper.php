@@ -89,7 +89,7 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper implements 
         if (isset($this->additionalArguments['id'])) {
             $id = $this->additionalArguments['id'];
         } else {
-            $id = 'field' . md5(StringUtility::getUniqueId());
+            $id = StringUtility::getUniqueId('field');
         }
 
         if (empty($placeholder)) {

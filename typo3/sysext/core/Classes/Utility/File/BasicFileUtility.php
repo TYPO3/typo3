@@ -110,7 +110,7 @@ class BasicFileUtility
                     $insert = '_' . sprintf('%02d', $a);
                 } else {
                     // .. then we try unique-strings...
-                    $insert = '_' . substr(md5(StringUtility::getUniqueId()), 0, $this->uniquePrecision);
+                    $insert = '_' . substr(StringUtility::getUniqueId(), 0, $this->uniquePrecision);
                 }
                 $theTestFile = $theTempFileBody . $insert . $theOrigExt;
                 $theDestFile = $theDest . '/' . $theTestFile;

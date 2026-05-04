@@ -2577,7 +2577,7 @@ class ResourceStorage implements ResourceStorageInterface
 
         $tries = 0;
         do {
-            $insert = '_' . substr(md5(StringUtility::getUniqueId()), 0, 6);
+            $insert = '_' . substr(StringUtility::getUniqueId(), 0, 6);
             $theDestFile = $theTempFileBody . $insert . $theOrigExt;
 
             if ($folder->hasFile($theDestFile) || $folder->hasFolder($theDestFile)) {

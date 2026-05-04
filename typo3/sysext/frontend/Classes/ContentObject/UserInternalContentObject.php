@@ -31,7 +31,7 @@ class UserInternalContentObject extends AbstractContentObject
     public function render($conf = [])
     {
         $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
-        $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
+        $substKey = StringUtility::getUniqueId('INT_SCRIPT.');
         $pageParts = $this->request->getAttribute('frontend.page.parts');
         $pageParts->addNotCachedContentElement([
             'substKey' => $substKey,

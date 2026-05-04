@@ -52,7 +52,7 @@ class ExtbasePluginContentObject extends AbstractContentObject
             $conf['userFunc'] = Bootstrap::class . '->run';
             $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
             $pageParts = $request->getAttribute('frontend.page.parts');
-            $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
+            $substKey = StringUtility::getUniqueId('INT_SCRIPT.');
             $content = '<!--' . $substKey . '-->';
             $pageParts->addNotCachedContentElement([
                 'substKey' => $substKey,

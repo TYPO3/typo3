@@ -49,7 +49,7 @@ readonly class AdminPanelInitiator implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (StateUtility::isActivatedForUser() && StateUtility::isOpen()) {
-            $request = $request->withAttribute('adminPanelRequestId', substr(md5(StringUtility::getUniqueId()), 0, 13));
+            $request = $request->withAttribute('adminPanelRequestId', substr(StringUtility::getUniqueId(), 0, 13));
             $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
             $modules = $this->moduleLoader->validateSortAndInitializeModules($adminPanelModuleConfiguration);
             $request = $this->initializeModules($request, $modules);

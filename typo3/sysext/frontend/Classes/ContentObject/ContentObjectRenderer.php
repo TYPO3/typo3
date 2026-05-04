@@ -2286,7 +2286,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_postUserFuncInt($content = '', $conf = []): string
     {
-        $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
+        $substKey = StringUtility::getUniqueId('INT_SCRIPT.');
         $pageParts = $this->getRequest()->getAttribute('frontend.page.parts');
         $pageParts->addNotCachedContentElement([
             'substKey' => $substKey,

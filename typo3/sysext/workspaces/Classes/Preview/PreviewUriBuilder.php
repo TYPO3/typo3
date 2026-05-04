@@ -343,7 +343,7 @@ readonly class PreviewUriBuilder
             return $keyword;
         }
         $lifetimeInSeconds = $this->getPreviewLinkLifetime() * 3600;
-        $keyword = md5(StringUtility::getUniqueId());
+        $keyword = StringUtility::getUniqueId();
         $this->connectionPool->getConnectionForTable('sys_preview')
             ->insert(
                 'sys_preview',

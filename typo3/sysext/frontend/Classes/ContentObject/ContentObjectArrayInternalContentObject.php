@@ -37,7 +37,7 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject
             $this->getTimeTracker()->setTSlogMessage('No elements in this content object array (COA_INT).', LogLevel::WARNING);
             return '';
         }
-        $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
+        $substKey = StringUtility::getUniqueId('INT_SCRIPT.');
         $pageParts = $this->request->getAttribute('frontend.page.parts');
         $pageParts->addNotCachedContentElement([
             'substKey' => $substKey,

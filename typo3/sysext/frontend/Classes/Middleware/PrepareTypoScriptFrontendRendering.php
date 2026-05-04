@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -230,7 +229,7 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
                 $locale = GeneralUtility::makeInstance(Locales::class)->createLocale((string)$language->getLocale());
             }
             $this->pageRenderer->setLanguage($locale, $request);
-            $pageParts->setPageRendererSubstitutionHash(md5(StringUtility::getUniqueId()));
+            $pageParts->setPageRendererSubstitutionHash(StringUtility::getUniqueId());
             $pageParts->setPageCacheGeneratedTimestamp($GLOBALS['EXEC_TIME']);
         }
         // Processing of page cache row done. Do not use this variable anymore.
@@ -320,7 +319,6 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
         }
 
         $pageCacheIdentifierParameters = [
-            'projectPath' => Environment::getProjectPath(),
             'id' => $pageId,
             'type' => $pageArguments->getPageType(),
             'groupIds' => implode(',', $this->context->getAspect('frontend.user')->getGroupIds()),

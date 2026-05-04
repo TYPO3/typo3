@@ -327,7 +327,7 @@ class GraphicalFunctions
     public function randomName()
     {
         GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
-        return Environment::getVarPath() . '/transient/' . md5(StringUtility::getUniqueId());
+        return Environment::getVarPath() . '/transient/' . StringUtility::getUniqueId();
     }
 
     /***********************************
