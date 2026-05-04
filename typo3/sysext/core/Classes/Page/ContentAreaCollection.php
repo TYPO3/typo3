@@ -89,7 +89,7 @@ final readonly class ContentAreaCollection implements ContainerInterface, \Itera
         foreach ($groupedRecords as $identifier => $data) {
             $areas[$identifier] = $data['area']->withRecords($data['records']);
         }
-        return new self($areas);
+        return new self($areas, $this->request);
     }
 
     /**
@@ -97,6 +97,10 @@ final readonly class ContentAreaCollection implements ContainerInterface, \Itera
      */
     public function getIterator(): \Traversable
     {
-        return new \ArrayIterator($this->contentAreas);
+        $result = [];
+        foreach (array_keys($this->contentAreas) as $key) {
+            $result[$key] = $this->get($key);
+        }
+        return new \ArrayIterator($result);
     }
 }
