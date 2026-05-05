@@ -59,6 +59,13 @@ export default defineConfig({
     {
       name: 'e2e-install',
       testMatch: 'e2e-install/**/*.spec.ts',
+      // Installer mutates state irreversibly. A failed run leaves the instance
+      // tainted, so an in-test retry can never succeed. CI rebuilds per job and
+      // retries there.
+      retries: 0,
+      // Full installer flow (folders, schema, default config, BE bootstrap) needs
+      // more than the 30s default on loaded CI runners.
+      timeout: 180 * 1000,
     },
   ],
   outputDir: '../typo3temp/var/tests/playwright-results'

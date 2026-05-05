@@ -50,8 +50,8 @@ final class AnnotationChecker extends AbstractPhpIntegrityChecker
                     'private', 'static', 'staticvar', 'staticVar',
                     // PHPDocumentor 2 tags
                     'author', 'category', 'copyright', 'deprecated', 'example', 'internal', 'license', 'link', 'param', 'property', 'return', 'see', 'since', 'throws', 'todo', 'TODO', 'var', 'version',
-                    // PHPUnit & codeception tags
-                    'depends', 'env',
+                    // PHPUnit tags
+                    'depends',
                     // PHPCheckStyle
                     'SuppressWarnings', 'noinspection',
                     // Extension scanner

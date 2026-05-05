@@ -60,14 +60,12 @@ final class PhpIntegrityChecker extends Command
         __DIR__ . '/../../typo3/sysext/*/Classes',
         __DIR__ . '/../../typo3/sysext/*/Tests/Unit',
         __DIR__ . '/../../typo3/sysext/*/Tests/Functional',
-        __DIR__ . '/../../typo3/sysext/core/Tests/Acceptance',
     ];
 
     /**
      * @var string[]
      */
     private array $finderNotPath = [
-        'typo3/sysext/core/Tests/Acceptance/Support/_generated',
         // exclude some files not providing classes
         'typo3/sysext/*/Configuration',
     ];
