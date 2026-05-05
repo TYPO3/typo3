@@ -101,17 +101,16 @@ async function openWizard(page: Page, backend: BackendPage): Promise<Locator> {
 }
 
 async function wizardItemClick(wizard: Locator, identifier: string): Promise<void> {
-  await wizard.evaluate((el: any, id: string) => {
-    el.shadowRoot.querySelector(`[data-identifier="${id}"]`).click();
+  await wizard.evaluate((el: HTMLElement, id: string) => {
+    el.querySelector<HTMLElement>(`[data-identifier="${id}"]`).click();
   }, identifier);
 }
 
 async function wizardSearchFill(wizard: Locator, value: string): Promise<void> {
-  // Set the value inside the shadow DOM and dispatch the input event the
-  // wizard listens for. Playwright's `fill()` does not always reach a
-  // search input wrapped in a shadow root reliably here.
-  await wizard.evaluate((el: any, v: string) => {
-    const input = el.shadowRoot.querySelector('input[type="search"]') as HTMLInputElement;
+  // Set the value and dispatch the input event the wizard listens for.
+  // Playwright's fill() does not always reach this search input reliably.
+  await wizard.evaluate((el: HTMLElement, v: string) => {
+    const input = el.querySelector<HTMLInputElement>('input[type="search"]');
     input.value = v;
     input.dispatchEvent(new Event('input', { bubbles: true }));
   }, value);

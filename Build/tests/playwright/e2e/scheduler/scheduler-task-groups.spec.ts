@@ -136,7 +136,7 @@ test('clicking Edit in the create-group modal opens the form pre-filled', async 
 });
 
 async function wizardItemClick(wizard: Locator, identifier: string): Promise<void> {
-  await wizard.evaluate((el: any, id: string) => {
-    el.shadowRoot.querySelector(`[data-identifier="${id}"]`).click();
+  await wizard.evaluate((el: HTMLElement, id: string) => {
+    el.querySelector<HTMLElement>(`[data-identifier="${id}"]`).click();
   }, identifier);
 }

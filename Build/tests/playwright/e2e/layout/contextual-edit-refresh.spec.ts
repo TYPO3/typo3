@@ -12,12 +12,11 @@ test('contextual record edit sheet survives a "Refresh required" round trip', as
 
   await test.step('create a Form content element with no form definition selected', async () => {
     await backend.contentFrame.locator('typo3-backend-new-content-element-wizard-button').first().click();
-    const wizard = page.locator('typo3-backend-new-record-wizard');
+    const wizard = page.getByRole('dialog', { name: 'New Page Content' }).locator('typo3-backend-new-record-wizard');
     await expect(wizard).toBeVisible();
-    // typo3-backend-new-record-wizard renders inside an open shadow root,
-    // Locator.click() does not reliably trigger the buttons; use evaluate.
-    await wizard.evaluate((el: any) => el.shadowRoot.querySelector('button[data-identifier="forms"]').click());
-    await wizard.evaluate((el: any) => el.shadowRoot.querySelector('button[data-identifier="forms_form_formframework"]').click());
+    // Locator.click() does not reliably trigger the wizard buttons; call click() on the element.
+    await wizard.getByRole('tab', { name: 'Form elements' }).evaluate((tab: HTMLButtonElement) => tab.click());
+    await wizard.getByRole('button', { name: /A form that allows website users to submit messages/ }).evaluate((button: HTMLButtonElement) => button.click());
     await expect(backend.contentFrame.getByRole('heading', { name: /Create new Form/ })).toBeVisible();
 
     await backend.contentFrame
