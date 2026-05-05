@@ -51,15 +51,13 @@ class StringUtility
     }
 
     /**
-     * This function generates a unique id by using the more entropy parameter.
-     * Furthermore, the dots are removed so the id can be used inside HTML attributes e.g. id.
+     * This function generates a random hexadecimal id, which can be used inside HTML attributes e.g. id.
      *
      * @return non-empty-string
      */
     public static function getUniqueId(string $prefix = ''): string
     {
-        $uniqueId = uniqid($prefix, true);
-        return str_replace('.', '', $uniqueId);
+        return $prefix . bin2hex(random_bytes(12));
     }
 
     /**

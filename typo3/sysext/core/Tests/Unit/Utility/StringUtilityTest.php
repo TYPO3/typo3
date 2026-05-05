@@ -142,6 +142,12 @@ final class StringUtilityTest extends UnitTestCase
         self::assertStringNotContainsString('.', StringUtility::getUniqueId());
     }
 
+    #[Test]
+    public function getUniqueIdReturnsPrefixedHexadecimalId(): void
+    {
+        self::assertMatchesRegularExpression('/^NEW[0-9a-f]{24}$/', StringUtility::getUniqueId('NEW'));
+    }
+
     #[DataProvider('escapeCssSelectorDataProvider')]
     #[Test]
     public function escapeCssSelector(string $selector, string $expectedValue): void

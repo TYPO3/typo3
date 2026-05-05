@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Styleguide\ViewHelpers;
 use TYPO3\CMS\Backend\CodeEditor\CodeEditorConfiguration;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Styleguide\Service\CodeExampleHeaderRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -106,7 +107,7 @@ final class ExampleViewHelper extends AbstractViewHelper
             ];
         }
 
-        $uniqueId = uniqid('code');
+        $uniqueId = StringUtility::getUniqueId('code');
         $exampleId = $uniqueId . '-example';
         $exampleAttributes = [
             'id' => $exampleId,
