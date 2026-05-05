@@ -19,7 +19,6 @@ scanPath="typo3/"
 ignoreFiles=()
 # auto generated file, shouldn't be checked
 ignoreFiles+="sysext/core/Tests/Acceptance/Support/_generated/ApplicationTesterActions.php"
-ignoreFiles+="sysext/core/Tests/Acceptance/Support/_generated/InstallTesterActions.php"
 # an exception in here throws a code from a previous exception/error
 ignoreFiles+="sysext/extbase/Classes/Core/Bootstrap.php"
 ignoreFiles+="sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.php"

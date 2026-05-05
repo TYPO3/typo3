@@ -56,6 +56,10 @@ export default defineConfig({
         storageState: path.join(__dirname, '.auth/login.json'),
       },
     },
+    {
+      name: 'e2e-install',
+      testMatch: 'e2e-install/**/*.spec.ts',
+    },
   ],
   outputDir: '../typo3temp/var/tests/playwright-results'
 });
