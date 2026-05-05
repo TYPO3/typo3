@@ -50,6 +50,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -260,8 +261,21 @@ class RecordListController
                 throw new \InvalidArgumentException(sprintf('TCA table "%s" does not support record visibility', $table), 1729166628);
             }
 
-            if (BackendUtility::getRecord($table, $uid, 'uid') === null) {
+            if (!$this->getBackendUserAuthentication()->check('tables_modify', $table)) {
+                throw new BadRequestException(sprintf('User has no modify access to table "%s"', $table), 1739376254);
+            }
+
+            $record = BackendUtility::getRecord($table, $uid, 'uid,pid');
+            if ($record === null) {
                 throw new BadRequestException(sprintf('A record with uid %d was not found', $uid), 1739376253);
+            }
+
+            $pid = $table === 'pages' ? (int)$record['uid'] : (int)$record['pid'];
+            $rootLevelCapability = $schema->hasCapability(TcaSchemaCapability::RestrictionRootLevel) ? $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel) : null;
+            if ($pid !== 0 || !$rootLevelCapability || !$rootLevelCapability->shallIgnoreRootLevelRestriction()) {
+                if (!BackendUtility::readPageAccess($pid, $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW))) {
+                    throw new BadRequestException(sprintf('User has no access to record with uid %d', $uid), 1739376255);
+                }
             }
 
             $hiddenField = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
