@@ -105,9 +105,9 @@ final class CodeViewHelper extends AbstractViewHelper
         $markup[] =                 '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
         $markup[] =                     '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
         if ($this->arguments['decodeEntities']) {
-            $markup[] =                     htmlspecialchars_decode(str_replace('###UNIQUEID###', uniqid('code'), $content));
+            $markup[] =                     htmlspecialchars_decode(str_replace('###UNIQUEID###', \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('code'), $content));
         } else {
-            $markup[] =                     htmlspecialchars(str_replace('###UNIQUEID###', uniqid('code'), $content));
+            $markup[] =                     htmlspecialchars(str_replace('###UNIQUEID###', \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('code'), $content));
         }
         $markup[] =                     '</textarea>';
         $markup[] =                 '</typo3-t3editor-codemirror>';

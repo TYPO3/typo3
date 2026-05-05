@@ -58,8 +58,7 @@ class StringUtility
      */
     public static function getUniqueId(string $prefix = ''): string
     {
-        $uniqueId = uniqid($prefix, true);
-        return str_replace('.', '', $uniqueId);
+        return $prefix . bin2hex(random_bytes(10));
     }
 
     /**

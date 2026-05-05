@@ -108,7 +108,7 @@ final class ExampleViewHelper extends AbstractViewHelper
             ];
         }
 
-        $uniqueId = uniqid('code');
+        $uniqueId = \TYPO3\CMS\Core\Utility\StringUtility::getUniqueId('code');
         $exampleId = $uniqueId . '-example';
         $exampleAttributes = [
             'id' => $exampleId,
