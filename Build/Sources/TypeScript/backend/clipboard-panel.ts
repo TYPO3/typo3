@@ -143,23 +143,26 @@ export class ClipboardPanel extends LitElement {
         </td>
         <td class="col-control nowrap">
           ${clipboardData.current !== tab.identifier ? nothing : html`
-            <div class="btn-group">
-              <input type="radio" class="btn-check" id="clipboard-copymode-copy" data-action="setCopyMode" ?checked=${clipboardData.copyMode === CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setCopyMode': '1' } })}">
-              <label class="btn btn-default btn-sm" for="clipboard-copymode-copy">
-                <typo3-backend-icon identifier="actions-edit-copy" size="small"></typo3-backend-icon>
-                ${clipboardData.labels.copyElements}
-              </label>
-              <input type="radio" class="btn-check" id="clipboard-copymode-move" data-action="setCopyMode" ?checked=${clipboardData.copyMode !== CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setCopyMode': '0' } })}">
-              <label class="btn btn-default btn-sm" for="clipboard-copymode-move">
-                <typo3-backend-icon identifier="actions-cut" size="small"></typo3-backend-icon>
-                ${clipboardData.labels.moveElements}
-              </label>
+            <div class="btn-toolbar btn-toolbar-nowrap">
+              <div class="btn-group">
+                <input type="radio" class="btn-check" id="clipboard-copymode-copy" data-action="setCopyMode" ?checked=${clipboardData.copyMode === CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setCopyMode': '1' } })}">
+                <label class="btn btn-default btn-sm" for="clipboard-copymode-copy">
+                  <typo3-backend-icon identifier="actions-edit-copy" size="small"></typo3-backend-icon>
+                  ${clipboardData.labels.copyElements}
+                </label>
+                <input type="radio" class="btn-check" id="clipboard-copymode-move" data-action="setCopyMode" ?checked=${clipboardData.copyMode !== CopyMode.copy} @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'setCopyMode': '0' } })}">
+                <label class="btn btn-default btn-sm" for="clipboard-copymode-move">
+                  <typo3-backend-icon identifier="actions-cut" size="small"></typo3-backend-icon>
+                  ${clipboardData.labels.moveElements}
+                </label>
+              </div>
+              ${!clipboardData.elementCount ? nothing : html`
+                <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeAll}" data-action="removeAll" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'removeAll': tab.identifier } })}">
+                  <typo3-backend-icon identifier="actions-minus" size="small"></typo3-backend-icon>
+                  ${clipboardData.labels.removeAll}
+                </button>
+              `}
             </div>
-            ${!clipboardData.elementCount ? nothing : html`
-              <button type="button" class="btn btn-default btn-sm" title="${clipboardData.labels.removeAll}" data-action="removeAll" @click="${(event: PointerEvent) => this.updateClipboard(event, { CB: { 'removeAll': tab.identifier } })}">
-                <typo3-backend-icon identifier="actions-minus" size="small"></typo3-backend-icon>
-                ${clipboardData.labels.removeAll}
-              </button>`}
           `}
         </td>
       </tr>
@@ -173,7 +176,7 @@ export class ClipboardPanel extends LitElement {
         <td class="col-icon nowrap ${classMap({ 'ps-4': !tabItem.identifier })}">
           ${unsafeHTML(tabItem.icon)}
         </td>
-        <td class="nowrap" style="width: 95%">
+        <td class="col-title col-responsive nowrap">
           ${unsafeHTML(tabItem.title)}
           ${tabIdentifier === 'normal' ? html`<strong>(${clipboardData.copyMode === CopyMode.copy ? html`${clipboardData.labels.copy}` : html`${clipboardData.labels.cut}`})</strong>` : nothing}
           ${tabItem.thumb ? html`<div class="d-block">${unsafeHTML(tabItem.thumb)}</div>` : nothing}
