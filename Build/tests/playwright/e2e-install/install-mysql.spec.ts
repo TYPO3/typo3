@@ -55,13 +55,16 @@ test.describe('TYPO3 installer - MySQL', () => {
     await page.locator('#create-site').click();
     await page.getByText('Finish installation').click();
 
-    // Verify backend login successful
+    // Verify backend login successful. Wait for login.js to wire its submit
+    // handler that copies #t3-password into hidden input[name=userident].
+    // Without it the form posts an empty password and the login is rejected.
     await expect(page.locator('#t3-username')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('body[data-typo3-login-ready="true"]')).toBeAttached();
     await page.locator('#t3-username').fill('admin');
     await page.locator('#t3-password').fill('Policy-Compliant_Password.1');
     await page.locator('#t3-login-submit-section > button').click();
     await expect(page.locator('.modulemenu')).toBeVisible({ timeout: 30000 });
-    await expect(page.locator('.scaffold-content iframe')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('.scaffold-content iframe')).toBeVisible();
     const cookies = await page.context().cookies();
     expect(cookies.find(c => c.name === 'be_typo_user')).toBeDefined();
 

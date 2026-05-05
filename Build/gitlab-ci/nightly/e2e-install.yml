@@ -2,6 +2,9 @@ e2e install playwright php 8.5 max:
   stage: acceptance
   tags:
     - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
   needs: []
   only:
     - schedules
@@ -21,6 +24,9 @@ e2e install playwright php 8.3 max:
   stage: acceptance
   tags:
     - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
   needs: []
   only:
     - schedules
@@ -40,6 +46,9 @@ e2e install playwright 8.2 min:
   stage: acceptance
   tags:
     - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
   needs: []
   only:
     - schedules

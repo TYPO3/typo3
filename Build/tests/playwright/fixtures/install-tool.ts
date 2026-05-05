@@ -65,9 +65,8 @@ export class InstallTool {
 
   /**
    * Asserts that a flash message with the given text appeared and dismisses
-   * all flash messages afterwards. Mirrors the cests' "wait for text + close
-   * notification" pattern so consecutive saves do not stack notifications and
-   * trip strict-mode locator violations.
+   * all flash messages afterwards, so consecutive saves do not stack
+   * notifications and trip strict-mode locator violations.
    */
   async expectFlashMessage(text: string): Promise<void> {
     const flashMessage = this.page.locator(FLASH_MESSAGE_SELECTOR, { hasText: text });

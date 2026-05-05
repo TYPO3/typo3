@@ -2,6 +2,9 @@ e2e install playwright php 8.2 pre-merge:
   stage: main
   tags:
     - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
   except:
     refs:
       - schedules

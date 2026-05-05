@@ -10,5 +10,6 @@ e2e playwright composer sqlite 8.4:
     paths:
       - typo3temp/var/tests/playwright-composer/var/log
       - typo3temp/var/tests/playwright-reports
+  parallel: 3
   script:
-    - Build/Scripts/runTests.sh -s e2e -p 8.4 -d sqlite
+    - Build/Scripts/runTests.sh -s e2e -p 8.4 -d sqlite -c $CI_NODE_INDEX/$CI_NODE_TOTAL

@@ -40,8 +40,6 @@ parameters:
     - ../../typo3/sysext/
 
   excludePaths:
-    # Checking acceptance Cest and Support files is cumbersome due to codeception dynamic mixin generation
-    - ../../typo3/sysext/core/Tests/Acceptance/*
     # These test fixtures *could* be streamlined but currently generate lots of failures
     - ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/*
     # ext_emconf.php get the $_EXTKEY set from outsite. We'll ignore all of them

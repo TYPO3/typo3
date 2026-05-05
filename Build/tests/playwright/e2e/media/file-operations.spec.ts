@@ -99,11 +99,12 @@ test.describe('File Operations', () => {
   });
 
   test('Upload file', async ({ backend, page }) => {
-    // Prepare file for upload with a timestamp attached to it
+    // Prepare file for upload with a timestamp attached to it. The test only
+    // verifies that the upload flow works, not the file's content, so create
+    // an empty placeholder rather than shipping a fixture binary.
     const randomUploadFileName = 'blue_mountains' + Date.now() + '.jpg';
-    const filePath = path.join(__dirname, '../../../../../typo3/sysext/core/Tests/Acceptance/Fixtures/Images', 'blue_mountains.jpg');
     const randomUploadFile = path.join(__dirname, '../../../../../typo3temp/var/tests/playwright-composer/public/fileadmin/_temp_', randomUploadFileName);
-    fs.copyFileSync(filePath, randomUploadFile);
+    fs.writeFileSync(randomUploadFile, '');
 
     const alertContainer = '#alert-container';
 

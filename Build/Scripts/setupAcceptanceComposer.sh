@@ -11,6 +11,7 @@ ACCEPTANCE_TOPIC="${3}"
 mkdir -p "${PROJECT_PATH}"
 ln -snf $(echo "${PROJECT_PATH}" | sed -e 's/[^\/][^\/]*/../g' -e 's/\/$//')/typo3/sysext "${PROJECT_PATH}/typo3-sysext"
 ln -snf $(echo "${PROJECT_PATH}" | sed -e 's/[^\/][^\/]*/../g' -e 's/\/$//')/Build/tests/packages "${PROJECT_PATH}/packages"
+ln -snf $(echo "${PROJECT_PATH}" | sed -e 's/[^\/][^\/]*/../g' -e 's/\/$//')/Build/tests/playwright/fixtures "${PROJECT_PATH}/playwright-fixtures"
 sed 's/..\/..\/typo3\/sysext/typo3-sysext/' Build/composer/composer.dist.json > "${PROJECT_PATH}/composer.json"
 
 cd "${PROJECT_PATH}"
@@ -58,7 +59,7 @@ TYPO3_SERVER_TYPE=apache \
 TYPO3_PROJECT_NAME="New TYPO3 site" \
 vendor/bin/typo3 setup --force --no-interaction
 
-vendor/bin/typo3 dataset:import vendor/typo3/cms-core/Tests/Acceptance/Fixtures/BackendEnvironment.csv
+vendor/bin/typo3 dataset:import playwright-fixtures/BackendEnvironment.csv
 vendor/bin/typo3 styleguide:generate -c tca
 if [ "${ACCEPTANCE_TOPIC}" = "systemplate" ]; then
     vendor/bin/typo3 styleguide:generate -c frontend-systemplate
