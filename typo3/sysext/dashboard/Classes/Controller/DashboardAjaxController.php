@@ -35,6 +35,7 @@ use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
 use TYPO3\CMS\Dashboard\Repository\DashboardRepository;
 use TYPO3\CMS\Dashboard\WidgetGroupInitializationService;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * @internal
@@ -378,7 +379,7 @@ readonly class DashboardAjaxController
             throw new \InvalidArgumentException('Argument "widget" not set.', 1714987384);
         }
         $widgets = $dashboard->getWidgetConfig();
-        $widgetIdentifier = sha1($widgetType . '-' . time());
+        $widgetIdentifier = StringUtility::getUniqueId($widgetType . '-');
         $widgets[$widgetIdentifier] = ['identifier' => $widgetType];
         $this->dashboardRepository->updateWidgetConfig($dashboard, $widgets);
 

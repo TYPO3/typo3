@@ -80,10 +80,10 @@ class DashboardRepository
         $title = $title ?: $dashboardPreset->getTitle();
 
         foreach ($dashboardPreset->getDefaultWidgets() as $defaultWidget) {
-            $hash = sha1(StringUtility::getUniqueId('widget_') . '-' . $defaultWidget['identifier']);
+            $hash = StringUtility::getUniqueId('widget_' . $defaultWidget['identifier'] . '_');
             $widgets[$hash] = $defaultWidget;
         }
-        $identifier = sha1($dashboardPreset->getIdentifier() . '-' . time());
+        $identifier = StringUtility::getUniqueId($dashboardPreset->getIdentifier() . '-');
         $this->getQueryBuilder()
             ->insert(self::TABLE)
             ->values([
