@@ -15,12 +15,11 @@ async function gotoStyleguidePageModule(backend: BackendPage): Promise<void> {
 }
 
 async function pickWizardTextpic(page): Promise<void> {
-  // typo3-backend-new-record-wizard renders inside an open shadow root.
-  // Locator.click() does not reliably trigger the buttons; use evaluate.
+  // Locator.click() does not reliably trigger the wizard buttons; use evaluate.
   const wizard = page.locator('typo3-backend-new-record-wizard');
   await expect(wizard).toBeVisible();
-  await wizard.evaluate((el: any) => el.shadowRoot.querySelector('button[data-identifier="default"]').click());
-  await wizard.evaluate((el: any) => el.shadowRoot.querySelector('button[data-identifier="default_textpic"]').click());
+  await wizard.evaluate((el: HTMLElement) => el.querySelector<HTMLButtonElement>('button[data-identifier="default"]').click());
+  await wizard.evaluate((el: HTMLElement) => el.querySelector<HTMLButtonElement>('button[data-identifier="default_textpic"]').click());
 }
 
 async function pickFileFromStyleguideFolder(modalContent: Locator, filename: string): Promise<void> {

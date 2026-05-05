@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators.js';
-import { html, css, LitElement, type CSSResult, type TemplateResult, nothing } from 'lit';
+import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import Modal from '@typo3/backend/modal';
 import '@typo3/backend/element/icon-element';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
@@ -162,234 +162,233 @@ interface Message {
 
 const LAST_USED_CATEGORY_IDENTIFIER = 'wizard-last-category/';
 
+const newRecordWizardStyles = `
+typo3-backend-new-record-wizard {
+  display: block;
+  container-type: inline-size;
+  height: 100%;
+}
+
+typo3-backend-new-record-wizard .element {
+  display: flex;
+  flex-direction: column;
+  gap: var(--typo3-spacing);
+  font-size: var(--typo3-component-font-size);
+  line-height: var(--typo3-component-line-height);
+  height: 100%;
+}
+
+typo3-backend-new-record-wizard .main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--typo3-spacing) * 2);
+}
+
+@container (min-width: 500px) {
+  typo3-backend-new-record-wizard .main {
+    flex-direction: row;
+    overflow: hidden;
+  }
+}
+
+typo3-backend-new-record-wizard .main > * {
+  flex-grow: 1;
+  padding-inline-end: calc(var(--typo3-spacing) / 4);
+}
+
+typo3-backend-new-record-wizard .navigation {
+  position: relative;
+  flex-shrink: 0;
+}
+
+@container (min-width: 500px) {
+  typo3-backend-new-record-wizard .navigation {
+    flex-grow: 0;
+    width: 200px;
+    overflow-block: auto;
+  }
+}
+
+@container (min-width: 500px) {
+  typo3-backend-new-record-wizard .navigation-toggle {
+    display: none !important;
+  }
+}
+
+typo3-backend-new-record-wizard .navigation-list {
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+typo3-backend-new-record-wizard .navigation-list.show {
+  display: flex;
+}
+
+@container (max-width: 499px) {
+  typo3-backend-new-record-wizard .navigation-list {
+    z-index: 1;
+    position: absolute;
+    top: calc(100% + 2px);
+    padding: 2px;
+    background: var(--typo3-component-bg);
+    border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    border-radius: var(--typo3-component-border-radius);
+    box-shadow: var(--typo3-component-box-shadow);
+  }
+}
+
+@container (min-width: 500px) {
+  typo3-backend-new-record-wizard .navigation-list {
+    display: flex;
+  }
+}
+
+typo3-backend-new-record-wizard .navigation-item {
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  gap: calc(var(--typo3-spacing) / 2);
+  text-align: start;
+  color: inherit;
+  background: transparent;
+  border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+  border-radius: var(--typo3-component-border-radius);
+  padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
+}
+
+typo3-backend-new-record-wizard .navigation-item-featured:has(+ .navigation-item:not(.navigation-item-featured)) {
+  margin-bottom: calc(var(--typo3-spacing) / 2);
+}
+
+@container (max-width: 499px) {
+  typo3-backend-new-record-wizard .navigation-item {
+    --typo3-component-border-color: transparent;
+    margin-bottom: 0 !important;
+    border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
+  }
+}
+
+typo3-backend-new-record-wizard .navigation-item:hover {
+  color: var(--typo3-component-hover-color);
+  background: var(--typo3-component-hover-bg);
+  border-color: var(--typo3-component-hover-border-color);
+}
+
+typo3-backend-new-record-wizard .navigation-item:focus {
+  outline: none;
+  color: var(--typo3-component-focus-color);
+  background: var(--typo3-component-focus-bg);
+  border-color: var(--typo3-component-focus-border-color);
+}
+
+typo3-backend-new-record-wizard .navigation-item.active {
+  color: var(--typo3-component-active-color);
+  background: var(--typo3-component-active-bg);
+  border-color: var(--typo3-component-active-border-color);
+}
+
+typo3-backend-new-record-wizard .navigation-item.active:focus-visible {
+  outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-component-active-border-color), transparent 25%);
+}
+
+typo3-backend-new-record-wizard .navigation-item[disabled] {
+  cursor: not-allowed;
+  color: var(--typo3-component-disabled-color);
+  background: var(--typo3-component-disabled-bg);
+  border-color: var(--typo3-component-disabled-border-color);
+}
+
+typo3-backend-new-record-wizard .navigation-item-label {
+  flex-grow: 1;
+}
+
+typo3-backend-new-record-wizard .navigation-item-count {
+  opacity: .75;
+  flex-shrink: 0;
+}
+
+typo3-backend-new-record-wizard .content {
+  container-type: inline-size;
+  overflow-block: auto;
+}
+
+typo3-backend-new-record-wizard .elementwizard-categories {
+  display: grid;
+  gap: var(--typo3-spacing);
+}
+
+typo3-backend-new-record-wizard .elementwizard-category-headline {
+  font-weight: bold;
+  color: var(--typo3-text-color-variant);
+  margin-bottom: calc(var(--typo3-spacing) / 2);
+}
+
+typo3-backend-new-record-wizard .elementwizard-category-items {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--typo3-spacing);
+}
+
+@container (min-width: 500px) {
+  typo3-backend-new-record-wizard .elementwizard-category-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container (min-width: 750px) {
+  typo3-backend-new-record-wizard .elementwizard-category-items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+typo3-backend-new-record-wizard .item {
+  cursor: pointer;
+  display: flex;
+  gap: calc(var(--typo3-spacing) / 2);
+  text-align: start;
+  border: var(--typo3-component-border-width) solid transparent;
+  border-radius: var(--typo3-component-border-radius);
+  padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
+  background: transparent;
+  color: inherit;
+}
+
+typo3-backend-new-record-wizard .item:hover {
+  color: var(--typo3-component-hover-color);
+  background: var(--typo3-component-hover-bg);
+  border-color: var(--typo3-component-hover-border-color);
+}
+
+typo3-backend-new-record-wizard .item:focus {
+  outline: none;
+  color: var(--typo3-component-focus-color);
+  background: var(--typo3-component-focus-bg);
+  border-color: var(--typo3-component-focus-border-color);
+}
+
+typo3-backend-new-record-wizard .item-body-label {
+  text-wrap: balance;
+  font-weight: bold;
+  margin-bottom: .25rem;
+}
+
+typo3-backend-new-record-wizard .item-body-description {
+  opacity: .75;
+  text-wrap: pretty;
+}
+`;
+
 /**
  * Module: @typo3/backend/new-record-wizard
  */
 @customElement('typo3-backend-new-record-wizard')
 export class NewRecordWizard extends LitElement {
-  static override styles: CSSResult[] = [
-    css`
-      :host {
-        display: block;
-        container-type: inline-size;
-        height: 100%;
-      }
-
-      .element {
-        display: flex;
-        flex-direction: column;
-        gap: var(--typo3-spacing);
-        font-size: var(--typo3-component-font-size);
-        line-height: var(--typo3-component-line-height);
-        height: 100%;
-      }
-
-      .main {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: calc(var(--typo3-spacing) * 2);
-      }
-
-      @container (min-width: 500px) {
-        .main {
-          flex-direction: row;
-          overflow: hidden;
-        }
-      }
-
-      .main > * {
-        flex-grow: 1;
-        padding-inline-end: calc(var(--typo3-spacing) / 4);
-      }
-
-      .navigation {
-        position: relative;
-        flex-shrink: 0;
-      }
-
-      @container (min-width: 500px) {
-        .navigation {
-          flex-grow: 0;
-          width: 200px;
-          overflow-block: auto;
-        }
-      }
-
-      @container (min-width: 500px) {
-        .navigation-toggle {
-          display: none !important;
-        }
-      }
-
-      .navigation-list {
-        display: none;
-        flex-direction: column;
-        gap: 2px;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .navigation-list.show {
-        display: flex;
-      }
-
-      @container (max-width: 499px) {
-        .navigation-list {
-          z-index: 1;
-          position: absolute;
-          top: calc(100% + 2px);
-          padding: 2px;
-          background: var(--typo3-component-bg);
-          border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
-          border-radius: var(--typo3-component-border-radius);
-          box-shadow: var(--typo3-component-box-shadow);
-        }
-      }
-
-      @container (min-width: 500px) {
-        .navigation-list {
-          display: flex;
-        }
-      }
-
-      .navigation-item {
-        cursor: pointer;
-        align-items: center;
-        display: flex;
-        width: 100%;
-        gap: calc(var(--typo3-spacing) / 2);
-        text-align: start;
-        color: inherit;
-        background: transparent;
-        border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
-        border-radius: var(--typo3-component-border-radius);
-        padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
-      }
-
-      .navigation-item-featured:has(+ .navigation-item:not(.navigation-item-featured)) {
-        margin-bottom: calc(var(--typo3-spacing) / 2);
-      }
-
-      @container (max-width: 499px) {
-        .navigation-item {
-          --typo3-component-border-color: transparent;
-          margin-bottom: 0 !important;
-          border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
-        }
-      }
-
-      .navigation-item:hover {
-        color: var(--typo3-component-hover-color);
-        background: var(--typo3-component-hover-bg);
-        border-color: var(--typo3-component-hover-border-color);
-      }
-
-      .navigation-item:focus {
-        outline: none;
-        color: var(--typo3-component-focus-color);
-        background: var(--typo3-component-focus-bg);
-        border-color: var(--typo3-component-focus-border-color);
-      }
-
-      .navigation-item.active {
-        color: var(--typo3-component-active-color);
-        background: var(--typo3-component-active-bg);
-        border-color: var(--typo3-component-active-border-color);
-      }
-
-      .navigation-item.active:focus-visible {
-        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-component-active-border-color), transparent 25%);
-      }
-
-      .navigation-item[disabled] {
-        cursor: not-allowed;
-        color: var(--typo3-component-disabled-color);
-        background: var(--typo3-component-disabled-bg);
-        border-color: var(--typo3-component-disabled-border-color);
-      }
-
-      .navigation-item-label {
-        flex-grow: 1;
-      }
-
-      .navigation-item-count {
-        opacity: .75;
-        flex-shrink: 0;
-      }
-
-      .content {
-        container-type: inline-size;
-        overflow-block: auto;
-      }
-
-      .elementwizard-categories {
-        display: grid;
-        gap: var(--typo3-spacing);
-      }
-
-      .elementwizard-category-headline {
-        font-weight: bold;
-        color: var(--typo3-text-color-variant);
-        margin-bottom: calc(var(--typo3-spacing) / 2);
-      }
-
-      .elementwizard-category-items {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: var(--typo3-spacing);
-      }
-
-      @container (min-width: 500px) {
-        .elementwizard-category-items {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      @container (min-width: 750px) {
-        .elementwizard-category-items {
-          grid-template-columns: repeat(3, 1fr);
-        }
-      }
-
-      .item {
-        cursor: pointer;
-        display: flex;
-        gap: calc(var(--typo3-spacing) / 2);
-        text-align: start;
-        border: var(--typo3-component-border-width) solid transparent;
-        border-radius: var(--typo3-component-border-radius);
-        padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
-        background: transparent;
-        color: inherit;
-      }
-
-      .item:hover {
-        color: var(--typo3-component-hover-color);
-        background: var(--typo3-component-hover-bg);
-        border-color: var(--typo3-component-hover-border-color);
-      }
-
-      .item:focus {
-        outline: none;
-        color: var(--typo3-component-focus-color);
-        background: var(--typo3-component-focus-bg);
-        border-color: var(--typo3-component-focus-border-color);
-      }
-
-      .item-body-label {
-        text-wrap: balance;
-        font-weight: bold;
-        margin-bottom: .25rem;
-      }
-
-      .item-body-description {
-        opacity: .75;
-        text-wrap: pretty;
-      }
-    `
-  ];
 
   @property({
     type: Object,
@@ -420,12 +419,19 @@ export class NewRecordWizard extends LitElement {
 
   private recordUsageStore!: RecordUsageStore;
 
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
+  }
+
   protected override firstUpdated(): void {
-    // Load shared css file
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', TYPO3.settings.cssUrls.backend);
-    this.shadowRoot!.appendChild(link);
+    // Inject styles into document if not already present. The wizard renders
+    // in the light DOM so bookmarklet text spacing reaches its contents.
+    if (!document.getElementById('typo3-new-record-wizard-styles')) {
+      const styleElement = document.createElement('style');
+      styleElement.id = 'typo3-new-record-wizard-styles';
+      styleElement.textContent = newRecordWizardStyles;
+      document.head.appendChild(styleElement);
+    }
 
     if (this.displayFilter === true) {
       const filterField = this.renderRoot.querySelector<HTMLInputElement>('input[name="search"]')!;
@@ -646,7 +652,7 @@ export class NewRecordWizard extends LitElement {
     }
 
     if (selectedCategory) {
-      const categoryButton = this.shadowRoot!.querySelector<HTMLButtonElement>(`button[data-identifier="${selectedCategory.identifier}"]`)!;
+      const categoryButton = this.renderRoot.querySelector<HTMLButtonElement>(`button[data-identifier="${selectedCategory.identifier}"]`)!;
       categoryButton.focus();
       this.handleNavigationClick(selectedCategory);
     }
