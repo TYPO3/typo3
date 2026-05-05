@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Page\PageLayout;
  * This DTO carries various Frontend rendering related page information. It is
  * set up by a Frontend middleware and attached to as 'frontend.page.information'
  * Request attribute.
- *
- * @internal Still experimental
  */
 final class PageInformation
 {
