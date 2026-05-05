@@ -22,6 +22,7 @@ import Icons from '@typo3/backend/icons';
 import Modal from '@typo3/backend/modal';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import Sortable from 'sortablejs';
+import dompurify from 'dompurify';
 import {
   type PropertyGridEditorEntry,
   PropertyGridEditorUpdateEvent
@@ -156,6 +157,37 @@ function getFormElementDefinition<T extends keyof FormElementDefinition>(
   formElementDefinitionKey?: T
 ): T extends keyof FormElementDefinition ? FormElementDefinition[T] : FormElementDefinition {
   return getFormEditorApp().getFormElementDefinition(formElement, formElementDefinitionKey);
+}
+
+const DOMPURIFY_LABEL_CONFIG = {
+  ALLOWED_TAGS: ['abbr', 'b', 'br', 'code', 'em', 'i', 'kbd', 'span', 'strong', 'u'],
+  ALLOWED_ATTR: ['class', 'title', 'role'],
+};
+
+const DOMPURIFY_DESCRIPTION_CONFIG = {
+  ALLOWED_TAGS: ['a', 'abbr', 'blockquote', 'b', 'br', 'code', 'em', 'i', 'kbd', 'li', 'p', 'pre', 'span', 'strong', 'u', 'ul', 'ol'],
+  ALLOWED_ATTR: ['class', 'href', 'title', 'target', 'role', 'rel'],
+};
+
+/**
+ * Safely sets sanitized HTML as label content on a DOM element.
+ * Only phrasing content (inline elements) is allowed, as required by the HTML
+ * specification for <label> elements.
+ */
+function setLabelHtmlContent(element: HTMLElement | null | undefined, html: string): void {
+  if (element) {
+    element.innerHTML = dompurify.sanitize(html, DOMPURIFY_LABEL_CONFIG);
+  }
+}
+
+/**
+ * Safely sets sanitized HTML as description content on a DOM element.
+ * Allows limited block-level markup (e.g. <p>, <ul>) in addition to inline elements.
+ */
+function setHtmlContent(element: HTMLElement | null | undefined, html: string): void {
+  if (element) {
+    element.innerHTML = dompurify.sanitize(html, DOMPURIFY_DESCRIPTION_CONFIG);
+  }
 }
 
 /**
@@ -853,7 +885,7 @@ export function renderCollectionElementSelectionEditor(
   collectionContainer?.replaceChildren();
 
   const labelEl = getHelper().getTemplatePropertyElement('label', editorHtml);
-  if (labelEl) { labelEl.append(document.createTextNode(editorConfiguration.label)); }
+  setLabelHtmlContent(labelEl, editorConfiguration.label);
   const selectElement = getHelper().getTemplatePropertyElement('selectOptions', editorHtml) as HTMLSelectElement | null;
   const hasAlreadySelectedCollectionElements = (
     !getUtility().isUndefinedOrNull(alreadySelectedCollectionElements) &&
@@ -897,7 +929,7 @@ export function renderCollectionElementSelectionEditor(
     selectGroup?.remove();
     const labelNoSelect = getHelper().getTemplatePropertyElement('label-no-select', editorHtml);
     if (hasAlreadySelectedCollectionElements) {
-      if (labelNoSelect) { labelNoSelect.textContent = editorConfiguration.label; }
+      setLabelHtmlContent(labelNoSelect, editorConfiguration.label);
     } else {
       labelNoSelect?.remove();
     }
@@ -1047,7 +1079,7 @@ export function renderCollectionElementHeaderEditor(
     const panelTitle = getHelper().getTemplatePropertyElement('panel-title', editorHtml);
     if (panelTitle) {
       panelTitle.removeAttribute('data-template-property');
-      panelTitle.append(document.createTextNode(editorConfiguration.label));
+      setLabelHtmlContent(panelTitle, editorConfiguration.label);
     }
   }
 }
@@ -1075,7 +1107,7 @@ export function renderFileMaxSizeEditor(
   if (editorConfiguration.label) {
     const element = getHelper().getTemplatePropertyElement('label', editorHtml);
     const maximumFileSize = element?.getAttribute(getHelper().getDomElementDataAttribute('maximumFileSize'));
-    element?.append(document.createTextNode(editorConfiguration.label.replace('{0}', maximumFileSize ?? '')));
+    setLabelHtmlContent(element, editorConfiguration.label.replace('{0}', maximumFileSize ?? ''));
   }
 }
 
@@ -1106,8 +1138,7 @@ export function renderTextEditor(
     1475421056
   );
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
   renderDescription(editorConfiguration, editorHtml);
 
   if (getUtility().isNonEmptyString(editorConfiguration.placeholder)) {
@@ -1194,8 +1225,7 @@ export function renderValidationErrorMessageEditor(
     1489874124
   );
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
   renderDescription(editorConfiguration, editorHtml);
 
   const propertyPath = getFormEditorApp().buildPropertyPath(editorConfiguration.propertyPath);
@@ -1254,8 +1284,7 @@ export function renderCountrySelectEditor(
     collectionName
   );
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
   renderDescription(editorConfiguration, editorHtml);
 
   const selectElement = getHelper().getTemplatePropertyElement('selectOptions', editorHtml) as HTMLSelectElement | null;
@@ -1326,8 +1355,7 @@ export function renderSingleSelectEditor(
     collectionName
   );
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
   renderDescription(editorConfiguration, editorHtml);
 
   const selectElement = getHelper().getTemplatePropertyElement('selectOptions', editorHtml) as HTMLSelectElement | null;
@@ -1386,8 +1414,7 @@ export function renderMultiSelectEditor(
     collectionName
   );
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
   renderDescription(editorConfiguration, editorHtml);
 
   const selectElement = getHelper().getTemplatePropertyElement('selectOptions', editorHtml) as HTMLSelectElement | null;
@@ -1457,8 +1484,7 @@ export function renderGridColumnViewPortConfigurationEditor(
     return;
   }
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
 
   const viewportButtonSel = getHelper().getDomElementDataIdentifierSelector('viewportButton');
   const viewportButtonTemplate = editorHtml.querySelector(viewportButtonSel)?.cloneNode(true) as HTMLElement | null;
@@ -1480,15 +1506,15 @@ export function renderGridColumnViewPortConfigurationEditor(
 
     const labelEl = getHelper().getTemplatePropertyElement('numbersOfColumnsToUse-label', numbersOfColumnsTemplateClone);
     if (labelEl) {
-      labelEl.append(document.createTextNode(
+      setLabelHtmlContent(labelEl,
         editorConfiguration.configurationOptions.numbersOfColumnsToUse.label
           .replace('{@viewPortLabel}', element.dataset.viewPortLabel ?? '')
-      ));
+      );
     }
 
     const descEl = getHelper().getTemplatePropertyElement('numbersOfColumnsToUse-description', numbersOfColumnsTemplateClone);
     if (descEl) {
-      descEl.append(document.createTextNode(editorConfiguration.configurationOptions.numbersOfColumnsToUse.description));
+      setHtmlContent(descEl, editorConfiguration.configurationOptions.numbersOfColumnsToUse.description);
     }
 
     const propertyPath = editorConfiguration.configurationOptions.numbersOfColumnsToUse.propertyPath
@@ -1579,8 +1605,7 @@ export function renderPropertyGridEditor(
     1475419232
   );
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
   renderDescription(editorConfiguration, editorHtml);
 
   const propertyPathPrefix = (() => {
@@ -1740,8 +1765,7 @@ export function renderRequiredValidatorEditor(
   );
 
   const validatorIdentifier = editorConfiguration.validatorIdentifier;
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
 
   let propertyValue: string;
   let propertyPath: string;
@@ -1767,11 +1791,15 @@ export function renderRequiredValidatorEditor(
     const validationErrorMessageTemplateClone = validationErrorMessageTemplate?.cloneNode(true) as HTMLElement | null;
     getEditorWrapperDomElement(editorHtml)?.after(validationErrorMessageTemplateClone);
 
-    getHelper().getTemplatePropertyElement('validationErrorMessage-label', validationErrorMessageTemplateClone)
-      ?.append(document.createTextNode(editorConfiguration.configurationOptions.validationErrorMessage.label));
+    setLabelHtmlContent(
+      getHelper().getTemplatePropertyElement('validationErrorMessage-label', validationErrorMessageTemplateClone),
+      editorConfiguration.configurationOptions.validationErrorMessage.label
+    );
 
-    getHelper().getTemplatePropertyElement('validationErrorMessage-description', validationErrorMessageTemplateClone)
-      ?.append(document.createTextNode(editorConfiguration.configurationOptions.validationErrorMessage.description));
+    setHtmlContent(
+      getHelper().getTemplatePropertyElement('validationErrorMessage-description', validationErrorMessageTemplateClone),
+      editorConfiguration.configurationOptions.validationErrorMessage.description
+    );
 
     propertyData = getCurrentlySelectedFormElement().get(validationErrorMessagePropertyPath);
     if (getUtility().isUndefinedOrNull(propertyData)) {
@@ -1863,8 +1891,7 @@ export function renderCheckboxEditor(
     1476218674
   );
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
   renderDescription(editorConfiguration, editorHtml);
 
   const propertyPath = getFormEditorApp()
@@ -1927,8 +1954,7 @@ export function renderTextareaEditor(
   const propertyPath = getFormEditorApp()
     .buildPropertyPath(editorConfiguration.propertyPath, collectionElementIdentifier, collectionName);
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
   renderDescription(editorConfiguration, editorHtml);
 
   const propertyData = getCurrentlySelectedFormElement().get(propertyPath);
@@ -2023,10 +2049,8 @@ export function renderTypo3WinBrowserEditor(
     1477300590
   );
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label));
-  getHelper().getTemplatePropertyElement('buttonLabel', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.buttonLabel));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label);
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('buttonLabel', editorHtml), editorConfiguration.buttonLabel);
   renderDescription(editorConfiguration, editorHtml);
 
   const formEl = editorHtml.querySelector('form');
@@ -2222,8 +2246,7 @@ export function renderDateEditor(
     collectionName
   );
 
-  getHelper().getTemplatePropertyElement('label', editorHtml)
-    ?.append(document.createTextNode(editorConfiguration.label || ''));
+  setLabelHtmlContent(getHelper().getTemplatePropertyElement('label', editorHtml), editorConfiguration.label || '');
   renderDescription(editorConfiguration, editorHtml);
 
   const editorElement = editorHtml.querySelector('typo3-form-date-editor');
@@ -2266,7 +2289,7 @@ export function renderDescription(
 ): void {
   const descEl = getHelper().getTemplatePropertyElement('description', editorHtml);
   if (getUtility().isNonEmptyString(editorConfiguration.description)) {
-    if (descEl) { descEl.textContent = editorConfiguration.description; }
+    setHtmlContent(descEl, editorConfiguration.description);
   } else {
     descEl?.remove();
   }
