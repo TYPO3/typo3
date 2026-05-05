@@ -43,7 +43,7 @@ include:
   # Pre-merge tests are triggered by pushing to changes to gerrit.
   # A push to gerrit has a change-id and a patch-set, a gerrit-gitlab-adapter
   # turns this into a branch 'change-patchset' which executes the pipeline
-  - local: 'Build/gitlab-ci/pre-merge/acceptance-install.yml'
+  - local: 'Build/gitlab-ci/pre-merge/e2e-install.yml'
   - local: 'Build/gitlab-ci/pre-merge/acceptance-application.yml'
   - local: 'Build/gitlab-ci/pre-merge/e2e.yml'
   - local: 'Build/gitlab-ci/pre-merge/accessibility.yml'
@@ -53,7 +53,7 @@ include:
   # Nightly tests are triggered by gitlab schedules
   - local: 'Build/gitlab-ci/nightly/integrity.yml'
   - local: 'Build/gitlab-ci/nightly/unit.yml'
-  - local: 'Build/gitlab-ci/nightly/acceptance-install.yml'
+  - local: 'Build/gitlab-ci/nightly/e2e-install.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-application.yml'
   - local: 'Build/gitlab-ci/nightly/e2e.yml'
   - local: 'Build/gitlab-ci/nightly/accessibility.yml'

@@ -16,7 +16,7 @@ printSummary() {
     echo "Container runtime: ${CONTAINER_BIN}" >&2
     echo "Container suffix: ${SUFFIX}"
     echo "PHP: ${PHP_VERSION}" >&2
-    if [[ ${TEST_SUITE} =~ ^(functional|acceptanceComposer|acceptanceInstall)$ ]]; then
+    if [[ ${TEST_SUITE} =~ ^(functional|acceptanceComposer|e2e-install|e2e-install-prepare|e2e-install-browser)$ ]]; then
         case "${DBMS}" in
             mariadb|mysql|postgres)
                 echo "DBMS: ${DBMS}  version ${DBMS_VERSION}  driver ${DATABASE_DRIVER}" >&2
@@ -309,6 +309,130 @@ runPlaywright() {
     fi
 }
 
+# Builds an empty composer-installed TYPO3 instance (no `vendor/bin/typo3 setup` performed),
+# starts apache/phpfpm and an optional database container, then runs the playwright install
+# spec matching the selected -d database. Each invocation rebuilds the instance from scratch
+# since the installer mutates state irreversibly.
+runPlaywrightInstall() {
+    rm -rf "${CORE_ROOT}/typo3temp/var/tests/playwright-install-composer" "${CORE_ROOT}/typo3temp/var/tests/playwright-reports" "${CORE_ROOT}/typo3temp/var/tests/playwright-results"
+    ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-install-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceInstallComposer.sh" "typo3temp/var/tests/playwright-install-composer"
+    if [[ $? -gt 0 ]]; then
+        kill -SIGINT -$$
+    fi
+
+    [[ -e "${CORE_ROOT}/Build/node_modules/.bin/playwright" ]] || ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX}-npm-ci \
+        -e HOME=${CORE_ROOT}/.cache \
+        ${IMAGE_NODEJS_CHROME} \
+        npm --prefix=Build ci
+        if [[ $? -gt 0 ]]; then
+            kill -SIGINT -$$
+        fi
+
+    INSTALL_ENV=""
+    PLAYWRIGHT_INSTALL_SPEC=""
+    case ${DBMS} in
+        mariadb)
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
+            waitFor mariadb-install-${SUFFIX} 3306
+            INSTALL_ENV="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mariadb-install-${SUFFIX}"
+            PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-mariadb.spec.ts"
+            ;;
+        mysql)
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
+            waitFor mysql-install-${SUFFIX} 3306
+            INSTALL_ENV="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mysql-install-${SUFFIX}"
+            PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-mysql.spec.ts"
+            ;;
+        postgres)
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-install-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu -e POSTGRES_DB=func_test --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
+            waitFor postgres-install-${SUFFIX} 5432
+            INSTALL_ENV="-e typo3InstallPostgresqlDatabasePort=5432 -e typo3InstallPostgresqlDatabaseName=func_test -e typo3InstallPostgresqlDatabaseHost=postgres-install-${SUFFIX} -e typo3InstallPostgresqlDatabaseUsername=funcu -e typo3InstallPostgresqlDatabasePassword=funcp"
+            PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-postgresql.spec.ts"
+            ;;
+        sqlite)
+            PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-sqlite.spec.ts"
+            ;;
+    esac
+
+    APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/playwright-install-composer/public -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
+    if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 1 || ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
+        APACHE_OPTIONS="${APACHE_OPTIONS} -p 127.0.0.1::80"
+    fi
+
+    if [ ${CONTAINER_BIN} = "docker" ]; then
+        ${CONTAINER_BIN} run --rm -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -e PHPFPM_PM_MAX_CHILDREN=50 -e PHPFPM_PM_START_SERVERS=10 -e PHPFPM_PM_MIN_SPARE_SERVERS=5 -e PHPFPM_PM_MAX_SPARE_SERVERS=15 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
+        ${CONTAINER_BIN} run --rm -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
+    else
+        ${CONTAINER_BIN} run ${CI_PARAMS} -d --name ac-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -e PHPFPM_PM_MAX_CHILDREN=50 -e PHPFPM_PM_START_SERVERS=10 -e PHPFPM_PM_MIN_SPARE_SERVERS=5 -e PHPFPM_PM_MAX_SPARE_SERVERS=15 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
+        ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
+        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
+    fi
+
+    waitFor web 80
+
+    COMMAND="npm --prefix=${CORE_ROOT}/Build run playwright:run -- ${PLAYWRIGHT_INSTALL_SPEC} ${PLAYWRIGHT_PROJECT}"
+    COMMAND_UI="npm --prefix=${CORE_ROOT}/Build run playwright:open -- ${PLAYWRIGHT_INSTALL_SPEC} ${PLAYWRIGHT_PROJECT}"
+    PLAYWRIGHT_GUI_PORT=43837
+
+    if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 && ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
+        PLAYWRIGHT_BASE_URL="http://$(${CONTAINER_BIN} port ac-web-${SUFFIX} 80/tcp)/"
+        ${CONTAINER_BIN} run -d ${CONTAINER_COMMON_PARAMS} --name ac-browser-${SUFFIX} -p $PLAYWRIGHT_GUI_PORT -e CHROME_SANDBOX=false -e PLAYWRIGHT_BASE_URL=http://web:80/ ${INSTALL_ENV} ${IMAGE_PLAYWRIGHT} ${COMMAND} --ui --ui-port=$PLAYWRIGHT_GUI_PORT --ui-host=0.0.0.0 > /dev/null 2>&1
+        SUITE_EXIT_CODE=$?
+        PLAYWRIGHT_BROWSER_URL="http://127.0.0.1:$(${CONTAINER_BIN} port ac-browser-${SUFFIX} ${PLAYWRIGHT_GUI_PORT}/tcp | head -n 1 | cut -d: -f2)"
+
+        echo -en "\033[32m✓\033[0m Playwright is ready..."
+        echo -en "\n  * Playwright GUI $PLAYWRIGHT_BROWSER_URL or press \"\033[32mo\033[0m\"."
+        echo -en "\n  * TYPO3 test installation $PLAYWRIGHT_BASE_URL or press \"\033[32mt\033[0m\"."
+        echo
+
+        if [ "$(uname)" = "Darwin" ]; then
+          OPEN_COMMAND=open
+        elif command -v xdg-open > /dev/null 2>&1; then
+          OPEN_COMMAND=xdg-open
+        fi
+
+        while true; do
+        read -rsn1 key
+        if [ "$key" = "o" ]; then
+            ${OPEN_COMMAND} "$PLAYWRIGHT_BROWSER_URL"
+        fi
+        if [ "$key" = "t" ]; then
+            ${OPEN_COMMAND} "$PLAYWRIGHT_BASE_URL"
+        fi
+        done </dev/tty
+    elif [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 ]]; then
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name e2e-install-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${INSTALL_ENV} ${IMAGE_PLAYWRIGHT} ${COMMAND}
+        SUITE_EXIT_CODE=$?
+    else
+        PLAYWRIGHT_BASE_URL="http://$(${CONTAINER_BIN} port ac-web-${SUFFIX} 80/tcp)/"
+        echo
+        echo -en "\033[32m✓\033[0m "
+        echo "Environment prepared. The installer mutates state irreversibly: re-run \`runTests.sh -s e2e-install-prepare -d ${DBMS}\` to reset between iterations."
+        echo
+        echo "  Run with local playwright (headless):"
+        echo -n "    "
+        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL} ${COMMAND}"
+        echo
+        echo "  Open local playwright UI:"
+        echo -n "    "
+        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL} ${COMMAND_UI}"
+        echo
+        echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to run tests in container)"
+        while read -r _; do
+            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name e2e-install-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${INSTALL_ENV} ${IMAGE_PLAYWRIGHT} ${COMMAND}
+            SUITE_EXIT_CODE=$?
+            echo
+            echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to re-run tests in container)"
+        done </dev/tty
+    fi
+}
+
 executeRstRendering() {
     local systemExtensionName="$1"
     local systemExtensionFolder="typo3/sysext/${systemExtensionName}"
@@ -488,7 +612,6 @@ Options:
     -s <...>
         Specifies the test suite to run
             - acceptanceComposer: main application acceptance tests
-            - acceptanceInstall: installation acceptance tests, only with -d mariadb|postgres|sqlite
             - build: execute frontend build (TypeScript, Sass, Contrib, Assets)
             - cgl: test and fix all core php files
             - cglGit: test and fix latest committed patch for CGL compliance
@@ -536,6 +659,9 @@ Options:
             - e2e: end to end tests (use e2e-prepare for manual execution)
             - e2e-prepare: Start a test instance of TYPO3
             - e2e-browser: end to end tests with the GUI running on http://127.0.0.1:43837
+            - e2e-install: installation end to end tests, only with -d mariadb|mysql|postgres|sqlite
+            - e2e-install-prepare: Start an empty installer instance for manual execution
+            - e2e-install-browser: installation end to end tests with the GUI running on http://127.0.0.1:43837
             - phpstan: phpstan tests
             - phpstanGenerateBaseline: regenerate phpstan baseline, handy after phpstan updates
             - unit (default): PHP unit tests
@@ -558,7 +684,7 @@ Options:
                 - pdo_mysql
 
     -d <sqlite|mariadb|mysql|postgres>
-        Only with -s functional|acceptanceComposer|acceptanceInstall
+        Only with -s functional|acceptanceComposer|e2e-install|e2e-install-prepare|e2e-install-browser
         Specifies on which DBMS tests are performed
             - sqlite: (default): use sqlite
             - mariadb: use mariadb
@@ -616,12 +742,12 @@ Options:
             - systemplate: use sys_template records
 
     -g
-        Only with -s acceptanceComposer|acceptanceInstall
+        Only with -s acceptanceComposer
         Activate selenium grid as local port to watch browser clicking around. Can be surfed using
         http://localhost:7900/. A browser tab is opened automatically if xdg-open is installed.
 
     -x
-        Only with -s functional|unit|unitRandom|acceptanceComposer|acceptanceInstall
+        Only with -s functional|unit|unitRandom|acceptanceComposer|e2e-install
         Send information to host instance for test or system under test break points. This is especially
         useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
@@ -665,7 +791,7 @@ Examples:
     ./Build/Scripts/runTests.sh -s acceptanceComposer typo3/sysext/core/Tests/Acceptance/Application/Login/BackendLoginCest.php:loginButtonMouseOver
 
     # Run installer tests of a new instance on sqlite
-    ./Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite
+    ./Build/Scripts/runTests.sh -s e2e-install -d sqlite
 
     # Run composer require to require a dependency
     ./Build/Scripts/runTests.sh -s composer -- require --dev typo3/testing-framework:dev-main
@@ -978,95 +1104,6 @@ case ${TEST_SUITE} in
             SUITE_EXIT_CODE=$?
         fi
         ;;
-    acceptanceInstall)
-        SELENIUM_GRID=""
-        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
-            SELENIUM_GRID="-p 7900:7900 -e SE_VNC_NO_PASSWORD=1 -e VNC_NO_PASSWORD=1"
-        fi
-        rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance" "${CORE_ROOT}/typo3temp/var/tests/AcceptanceReports"
-        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance"
-        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/acceptance -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
-        ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d ${SELENIUM_GRID} --name ac-install-chrome-${SUFFIX} --network ${NETWORK} --network-alias chrome ${IMAGE_SELENIUM} >/dev/null
-        SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        if [ ${CONTAINER_BIN} = "docker" ]; then
-            ${CONTAINER_BIN} run --rm -d --name ac-install-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm --add-host "${CONTAINER_HOST}:host-gateway" ${USERSET} -e PHPFPM_USER=${HOST_UID} -e PHPFPM_GROUP=${HOST_PID} -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm ${PHP_FPM_OPTIONS} >/dev/null
-            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-            ${CONTAINER_BIN} run --rm -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web --add-host "${CONTAINER_HOST}:host-gateway" -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
-            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        else
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-install-phpfpm-${SUFFIX} --network ${NETWORK} --network-alias phpfpm ${USERSET} -e PHPFPM_USER=0 -e PHPFPM_GROUP=0 -v ${CORE_ROOT}:${CORE_ROOT} ${IMAGE_PHP} php-fpm -R ${PHP_FPM_OPTIONS} >/dev/null
-            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} -d --name ac-install-web-${SUFFIX} --network ${NETWORK} --network-alias web -v ${CORE_ROOT}:${CORE_ROOT} ${APACHE_OPTIONS} ${IMAGE_APACHE} >/dev/null
-            SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-        fi
-        waitFor chrome 4444
-        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ]; then
-            waitFor chrome 7900
-        fi
-        waitFor web 80
-        if [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "xdg-open" >/dev/null; then
-            xdg-open http://localhost:7900/?autoconnect=1 >/dev/null
-        elif [ "${ACCEPTANCE_HEADLESS}" -eq 0 ] && type "open" >/dev/null; then
-            open http://localhost:7900/?autoconnect=1 >/dev/null
-        fi
-        case ${DBMS} in
-            mariadb)
-                CODECEPION_ENV="--env ci,mysql"
-                if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-                    CODECEPION_ENV="--env ci,mysql,headless"
-                fi
-                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                waitFor mariadb-ac-install-${SUFFIX} 3306
-                CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mariadb-ac-install-${SUFFIX}"
-                COMMAND="php -d register_argc_argv=On bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} --html reports.html"
-                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-install-mariadb ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
-                SUITE_EXIT_CODE=$?
-                ;;
-            mysql)
-                CODECEPION_ENV="--env ci,mysql"
-                if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-                    CODECEPION_ENV="--env ci,mysql,headless"
-                fi
-                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-ac-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                waitFor mysql-ac-install-${SUFFIX} 3306
-                CONTAINERPARAMS="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mysql-ac-install-${SUFFIX}"
-                COMMAND="php -d register_argc_argv=On bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} --html reports.html"
-                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-install-mysql ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
-                SUITE_EXIT_CODE=$?
-                ;;
-            postgres)
-                CODECEPION_ENV="--env ci,postgresql"
-                if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-                    CODECEPION_ENV="--env ci,postgresql,headless"
-                fi
-                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-ac-install-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                waitFor postgres-ac-install-${SUFFIX} 5432
-                CONTAINERPARAMS="-e typo3InstallPostgresqlDatabasePort=5432 -e typo3InstallPostgresqlDatabaseName=${USER} -e typo3InstallPostgresqlDatabaseHost=postgres-ac-install-${SUFFIX} -e typo3InstallPostgresqlDatabaseUsername=funcu -e typo3InstallPostgresqlDatabasePassword=funcp"
-                COMMAND="php -d register_argc_argv=On bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} --html reports.html"
-                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-install-postgres ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
-                SUITE_EXIT_CODE=$?
-                ;;
-            sqlite)
-                rm -rf "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/acceptance-sqlite-dbs/"
-                SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
-                CODECEPION_ENV="--env ci,sqlite"
-                if [ "${ACCEPTANCE_HEADLESS}" -eq 1 ]; then
-                    CODECEPION_ENV="--env ci,sqlite,headless"
-                fi
-                CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
-                COMMAND="php -d register_argc_argv=On bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${CODECEPION_ENV} --html reports.html"
-                ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name ac-install-sqlite ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} ${COMMAND}
-                SUITE_EXIT_CODE=$?
-                ;;
-        esac
-        ;;
     e2e)
         PLAYWRIGHT_PROJECT="--project e2e"
         PLAYWRIGHT_PREPARE_ONLY=0
@@ -1092,6 +1129,22 @@ case ${TEST_SUITE} in
         PLAYWRIGHT_PROJECT="--project accessibility"
         PLAYWRIGHT_PREPARE_ONLY=1
         runPlaywright
+        ;;
+    e2e-install)
+        PLAYWRIGHT_PROJECT="--project e2e-install"
+        PLAYWRIGHT_PREPARE_ONLY=0
+        runPlaywrightInstall
+        ;;
+    e2e-install-browser)
+        PLAYWRIGHT_PROJECT="--project e2e-install"
+        PLAYWRIGHT_PREPARE_ONLY=0
+        PLAYWRIGHT_BROWSER=1
+        runPlaywrightInstall
+        ;;
+    e2e-install-prepare)
+        PLAYWRIGHT_PROJECT="--project e2e-install"
+        PLAYWRIGHT_PREPARE_ONLY=1
+        runPlaywrightInstall
         ;;
     build*)
         COMMAND="cd Build; npm install && npm run build"
