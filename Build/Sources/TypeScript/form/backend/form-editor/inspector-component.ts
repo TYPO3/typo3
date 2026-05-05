@@ -1821,10 +1821,10 @@ export function renderRequiredValidatorEditor(
         getCurrentlySelectedFormElement().set(propertyPath, propertyValue);
       }
     } else {
-      getPublisherSubscriber().publish('view/inspector/removeCollectionElement/perform', [validatorIdentifier, 'validators']);
       if (getUtility().isNonEmptyString(propertyPath)) {
         getCurrentlySelectedFormElement().unset(propertyPath);
       }
+      getPublisherSubscriber().publish('view/inspector/removeCollectionElement/perform', [validatorIdentifier, 'validators']);
       propertyData = getCurrentlySelectedFormElement().get(validationErrorMessagePropertyPath);
       if (getUtility().isUndefinedOrNull(propertyData)) { propertyData = []; }
       getCurrentlySelectedFormElement().set(validationErrorMessagePropertyPath, renewValidationErrorMessages(

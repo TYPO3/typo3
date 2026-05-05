@@ -106,6 +106,10 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
         $rawFormDefinitionArray = $this->formDefinitionConversionService->sanitizeHtml($rawFormDefinitionArray, $rtePropertyPaths);
         $rawFormDefinitionArray = $this->formDefinitionConversionService->removeHmacData($rawFormDefinitionArray);
 
+        // Filter empty arrays again after removeHmacData, as removing _orig_* entries
+        // can leave previously non-empty arrays (e.g. fluidAdditionalAttributes) empty.
+        $rawFormDefinitionArray = $this->filterEmptyArrays($rawFormDefinitionArray);
+
         return GeneralUtility::makeInstance(FormDefinitionArray::class, $rawFormDefinitionArray);
     }
 
