@@ -5,6 +5,7 @@
 .btn-group-vertical {
     display: inline-flex;
     align-items: center;
+    vertical-align: middle;
 
     // A nested .dropdown acts as a transparent wrapper around a single .btn
     // so the inner button collapses borders with siblings as if it were a
@@ -99,6 +100,10 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: calc(var(--typo3-spacing) / 2);
+}
+
+.btn-toolbar-nowrap {
+    flex-wrap: nowrap;
 }
 
 //
