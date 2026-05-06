@@ -34,48 +34,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * You can fully use this once TCA is properly loaded (e.g. in ext_tables.php).
  */
 #[Autoconfigure(public: true)]
-class PageDoktypeRegistry
+readonly class PageDoktypeRegistry
 {
-    /**
-     * @deprecated will be removed in TYPO3 v15.0
-     */
-    protected array $pageTypes = [];
-
-    public function __construct(protected readonly TcaSchemaFactory $tcaSchemaFactory) {}
-
-    /**
-     * Adds a specific configuration for a doktype. By default, it is NOT restricted to only allow tables that
-     * have been explicitly added via addAllowedRecordTypes().
-     *
-     * @deprecated Use TCA option "allowedRecordTypes" instead.
-     */
-    public function add(int $dokType, array $configuration): void
-    {
-        trigger_error(
-            'Page Type configured by PageDoktypeRegistry->add() will be removed in TYPO3 v15.0, please use TCA option "allowedRecordTypes" instead.',
-            E_USER_DEPRECATED,
-        );
-        $this->pageTypes[$dokType] = $configuration;
-    }
-
-    /**
-     * @deprecated Override TCA option "allowedRecordTypes" instead.
-     */
-    public function addAllowedRecordTypes(array $recordTypes, ?int $doktype = null): void
-    {
-        trigger_error(
-            'Allowed record types added by PageDoktypeRegistry->addAllowedRecordTypes() will be removed in TYPO3 v15.0, please override TCA option "allowedRecordTypes" instead.',
-            E_USER_DEPRECATED,
-        );
-        if ($recordTypes === []) {
-            return;
-        }
-        $doktype ??= 'default';
-        $legacyAllowedTables = $this->pageTypes[$doktype]['allowedTables'] ?? '';
-        $legacyAllowedTables = GeneralUtility::trimExplode(',', $legacyAllowedTables);
-        $mergedAllowedRecordTypes = array_merge($legacyAllowedTables, $recordTypes);
-        $this->pageTypes[$doktype]['allowedTables'] = implode(',', array_unique($mergedAllowedRecordTypes));
-    }
+    public function __construct(protected TcaSchemaFactory $tcaSchemaFactory) {}
 
     /**
      * Check if a record can be added on a page with a given $doktype.
@@ -90,18 +51,6 @@ class PageDoktypeRegistry
     }
 
     /**
-     * @deprecated Is now always true.
-     */
-    public function doesDoktypeOnlyAllowSpecifiedRecordTypes(?int $doktype = null): bool
-    {
-        trigger_error(
-            'Call to PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes always returns true. This call can be removed safely. This method will be removed in TYPO3 v15.0',
-            E_USER_DEPRECATED,
-        );
-        return true;
-    }
-
-    /**
      * @internal only to be used within TYPO3 Core
      */
     public function getAllowedTypesForDoktype(int $doktype): array
@@ -111,11 +60,8 @@ class PageDoktypeRegistry
             return $pageTypes[$doktype]['allowedTables'];
         }
         $hardDefaults = ['pages', 'sys_category', 'sys_file_reference', 'sys_file_collection'];
-        // @todo Remove with breaking changes of method "add" and "addAllowedRecordTypes".
-        $legacyAllowedTables = $pageTypes['default']['allowedTables'] ?? '';
-        $legacyAllowedTables = GeneralUtility::trimExplode(',', $legacyAllowedTables);
         $defaultAllowedRecordTypes = $this->tcaSchemaFactory->get('pages')->getRawConfiguration()['defaultAllowedRecordTypes'] ?? [];
-        $mergedDefault = array_merge($hardDefaults, $legacyAllowedTables, $defaultAllowedRecordTypes);
+        $mergedDefault = array_merge($hardDefaults, $defaultAllowedRecordTypes);
         return array_unique($mergedDefault);
     }
 
@@ -128,16 +74,6 @@ class PageDoktypeRegistry
         foreach ($this->tcaSchemaFactory->get('pages')->getSubSchemata() as $pageType => $pageTypeSchema) {
             $allowedRecordTypes = $pageTypeSchema->getRawConfiguration()['allowedRecordTypes'] ?? [];
             $pageTypes[$pageType]['allowedTables'] = $allowedRecordTypes;
-        }
-        // @todo Remove with breaking changes of method "add" and "addAllowedRecordTypes".
-        foreach ($this->pageTypes as $pageType => $pageTypeConfiguration) {
-            $legacyAllowedTables = $pageTypeConfiguration['allowedTables'] ?? '';
-            $legacyAllowedTables = GeneralUtility::trimExplode(',', $legacyAllowedTables);
-            $mergedConfiguration = array_merge(
-                $pageTypes[$pageType]['allowedTables'] ?? [],
-                $legacyAllowedTables
-            );
-            $pageTypes[$pageType]['allowedTables'] = array_unique($mergedConfiguration);
         }
         return $pageTypes;
     }

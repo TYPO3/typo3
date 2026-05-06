@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -32,41 +30,6 @@ final class SwitchDoktypeTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $this->importCSVDataSet(__DIR__ . '/../DataHandler/DataSet/SwitchDoktype/base.csv');
         $this->setUpBackendUser(1);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function switchingDoktypeAllowedWhenStateAfterIsValidDeprecated(): void
-    {
-        $pageDoktypeRegistry = $this->get(PageDoktypeRegistry::class);
-        $pageDoktypeRegistry->add(1, ['allowedTables' => 'pages, sys_category']);
-        $actionService = new ActionService();
-        $actionService->modifyRecord(
-            'pages',
-            1,
-            [
-                'doktype' => 1,
-            ]
-        );
-        self::assertCSVDataSet(__DIR__ . '/../DataHandler/DataSet/SwitchDoktype/doktypeSwitched.csv');
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function switchingDoktypeAllowedWhenStateAfterIsValidDeprecatedAddAllowedRecords(): void
-    {
-        $pageDoktypeRegistry = $this->get(PageDoktypeRegistry::class);
-        $pageDoktypeRegistry->add(1, ['allowedTables' => 'pages']);
-        $pageDoktypeRegistry->addAllowedRecordTypes(['sys_category'], 1);
-        $actionService = new ActionService();
-        $actionService->modifyRecord(
-            'pages',
-            1,
-            [
-                'doktype' => 1,
-            ]
-        );
-        self::assertCSVDataSet(__DIR__ . '/../DataHandler/DataSet/SwitchDoktype/doktypeSwitched.csv');
     }
 
     #[Test]
