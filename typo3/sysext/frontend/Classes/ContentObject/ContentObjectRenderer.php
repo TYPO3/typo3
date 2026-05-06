@@ -2902,6 +2902,8 @@ class ContentObjectRenderer
                         } else {
                             if (is_array($cfg['callRecursive.']['tagStdWrap.'] ?? false)) {
                                 $tag = $this->stdWrap($tag, $cfg['callRecursive.']['tagStdWrap.']);
+                                // Update $tagName in case $tag has been modified (eg by remap), so closing tag matches the opening
+                                $tagName = strtolower($htmlParser->getFirstTagName($tag));
                             }
                             $parts[$k] = $tag . $parts[$k] . '</' . $tagName . '>';
                         }
