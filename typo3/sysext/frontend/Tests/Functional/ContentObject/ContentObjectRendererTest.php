@@ -497,6 +497,39 @@ final class ContentObjectRendererTest extends FunctionalTestCase
                 ],
                 '<p>&lt;em&gt;Example&lt;/em&gt; <u>underlined</u> text</p>',
             ],
+            'externalBlocks are remapped with updated closing tag' => [
+                '<p>Line 1</p>' . chr(10) . '<blockquote>Quoted line</blockquote>' . chr(10) . '<p>Line 3</p>',
+                [
+                    'parseFunc' => '1',
+                    'parseFunc.' => [
+                        'externalBlocks' => 'blockquote',
+                        'externalBlocks.' => [
+                            'blockquote.' => [
+                                'stripNL' => '1',
+                                'callRecursive' => '1',
+                                'callRecursive.' => [
+                                    'tagStdWrap.' => [
+                                        'HTMLparser' => '1',
+                                        'HTMLparser.' => [
+                                            'tags.' => [
+                                                'blockquote.' => [
+                                                    'remap' => 'div',
+                                                    'fixAttrib.' => [
+                                                        'class.' => [
+                                                            'default' => 'added-class',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                '<p>Line 1</p><div class="added-class">Quoted line</div><p>Line 3</p>',
+            ],
         ];
     }
 
