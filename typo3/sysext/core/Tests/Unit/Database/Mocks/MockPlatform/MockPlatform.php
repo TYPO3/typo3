@@ -208,7 +208,7 @@ class MockPlatform extends DoctrineAbstractPlatform
 
     protected function createReservedKeywordsList(): KeywordList
     {
-        return new class () extends KeywordList {
+        return new class extends KeywordList {
             protected function getKeywords(): array
             {
                 return [];

@@ -1307,7 +1307,7 @@ class DataMapProcessor
             $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
             $siteLanguage = $site->getLanguageById($language);
             $languageTitle = $siteLanguage->getTitle();
-        } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+        } catch (SiteNotFoundException|\InvalidArgumentException $e) {
             $languageTitle = '';
         }
 

@@ -263,27 +263,27 @@ class MailMessage extends Email
     // Compatibility methods, as it was possible in TYPO3 v9 / SwiftMailer.
     //
 
-    public function addFrom(Address|string|null|array ...$addresses): static
+    public function addFrom(Address|string|array|null ...$addresses): static
     {
         return parent::addFrom(...$this->convertNamedAddress(...$addresses));
     }
 
-    public function addReplyTo(Address|string|null|array ...$addresses): static
+    public function addReplyTo(Address|string|array|null ...$addresses): static
     {
         return parent::addReplyTo(...$this->convertNamedAddress(...$addresses));
     }
 
-    public function addTo(Address|string|null|array ...$addresses): static
+    public function addTo(Address|string|array|null ...$addresses): static
     {
         return parent::addTo(...$this->convertNamedAddress(...$addresses));
     }
 
-    public function addCc(Address|string|null|array ...$addresses): static
+    public function addCc(Address|string|array|null ...$addresses): static
     {
         return parent::addCc(...$this->convertNamedAddress(...$addresses));
     }
 
-    public function addBcc(Address|string|null|array ...$addresses): static
+    public function addBcc(Address|string|array|null ...$addresses): static
     {
         return parent::addBcc(...$this->convertNamedAddress(...$addresses));
     }

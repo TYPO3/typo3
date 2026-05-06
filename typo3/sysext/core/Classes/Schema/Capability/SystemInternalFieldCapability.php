@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Core\Schema\Capability;
 final readonly class SystemInternalFieldCapability implements SchemaCapabilityInterface
 {
     public function __construct(
-        protected string $fieldName
+        private string $fieldName
     ) {}
 
     public function getFieldName(): string

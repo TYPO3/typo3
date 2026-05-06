@@ -112,8 +112,8 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
             return $result;
         }
 
-        $result['processedTca']['columns'][$fieldName]['config']['inline']['parentSysLanguageUid'] =
-            is_array($result['databaseRow'][$parentLanguageFieldName])
+        $result['processedTca']['columns'][$fieldName]['config']['inline']['parentSysLanguageUid']
+            = is_array($result['databaseRow'][$parentLanguageFieldName])
                 ? (int)($result['databaseRow'][$parentLanguageFieldName][0] ?? 0)
                 : (int)$result['databaseRow'][$parentLanguageFieldName];
 

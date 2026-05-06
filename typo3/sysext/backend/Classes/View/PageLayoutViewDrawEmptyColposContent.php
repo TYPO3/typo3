@@ -30,8 +30,8 @@ class PageLayoutViewDrawEmptyColposContent
     public function __invoke(AfterSectionMarkupGeneratedEvent $event): void
     {
         if (($event->getColumnConfig()['name'] ?? '') === 'unused'
-            || (isset($event->getColumnConfig()['colPos']) &&
-                trim((string)$event->getColumnConfig()['colPos']) !== '')
+            || (isset($event->getColumnConfig()['colPos'])
+                && trim((string)$event->getColumnConfig()['colPos']) !== '')
         ) {
             // Early return for the special "unused" column or
             // in case the current column has a colPos set.

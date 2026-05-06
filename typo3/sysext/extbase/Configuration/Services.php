@@ -16,7 +16,7 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
     $container->registerForAutoconfiguration(Validation\Validator\ValidatorInterface::class)->addTag('extbase.validator');
     $container->addCompilerPass(new PublicServicePass('extbase.validator', true));
 
-    $container->addCompilerPass(new class () implements CompilerPassInterface {
+    $container->addCompilerPass(new class implements CompilerPassInterface {
         public function process(ContainerBuilder $container): void
         {
             foreach ($container->findTaggedServiceIds('extbase.controller') as $id => $tags) {

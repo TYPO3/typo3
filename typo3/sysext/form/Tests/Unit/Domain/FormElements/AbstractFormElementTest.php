@@ -140,12 +140,12 @@ final class AbstractFormElementTest extends UnitTestCase
         $formElement = new TestingFormElement();
         $secondFormElementMock = $this->createMock(TestingFormElement::class);
 
-        $secondFormElementMock->
-        expects($this->once())
+        $secondFormElementMock
+        ->expects($this->once())
             ->method('initializeFormElement')
             ->with($formElement);
 
-        $secondFormElementMockClassName = \get_class($secondFormElementMock);
+        $secondFormElementMockClassName = get_class($secondFormElementMock);
         GeneralUtility::addInstance($secondFormElementMockClassName, $secondFormElementMock);
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] = [

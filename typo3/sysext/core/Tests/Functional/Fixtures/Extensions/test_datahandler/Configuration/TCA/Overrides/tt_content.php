@@ -140,8 +140,8 @@ defined('TYPO3') or die();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
-    '--div--;DataHandler Test,' .
-    'tx_testdatahandler_category,tx_testdatahandler_categories, tx_testdatahandler_select,tx_testdatahandler_select_dynamic, tx_testdatahandler_group,' .
-    'tx_testdatahandler_radio,tx_testdatahandler_checkbox, tx_testdatahandler_checkbox_with_eval,' .
-    'tx_testdatahandler_input_minvalue,tx_testdatahandler_input_minvalue_zero, tx_testdatahandler_text_minvalue,tx_testdatahandler_richttext_minvalue '
+    '--div--;DataHandler Test,'
+    . 'tx_testdatahandler_category,tx_testdatahandler_categories, tx_testdatahandler_select,tx_testdatahandler_select_dynamic, tx_testdatahandler_group,'
+    . 'tx_testdatahandler_radio,tx_testdatahandler_checkbox, tx_testdatahandler_checkbox_with_eval,'
+    . 'tx_testdatahandler_input_minvalue,tx_testdatahandler_input_minvalue_zero, tx_testdatahandler_text_minvalue,tx_testdatahandler_richttext_minvalue '
 );

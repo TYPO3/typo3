@@ -73,24 +73,24 @@ final class InfoboxViewHelper extends AbstractViewHelper
         $icon = $this->arguments['iconName'] ?? $severity->getIconIdentifier();
         $iconTemplate = '';
         if (!$disableIcon) {
-            $iconTemplate = '' .
-                '<div class="callout-icon">' .
-                    '<span class="icon-emphasized">' .
-                        $iconFactory->getIcon($icon, IconSize::SMALL)->render() .
-                    '</span>' .
-                '</div>';
+            $iconTemplate = ''
+                . '<div class="callout-icon">'
+                    . '<span class="icon-emphasized">'
+                        . $iconFactory->getIcon($icon, IconSize::SMALL)->render()
+                    . '</span>'
+                . '</div>';
         }
         $titleTemplate = '';
         if ($title !== '') {
             $titleTemplate = '<div class="callout-title">' . htmlspecialchars($title) . '</div>';
         }
-        return '<div class="callout callout-' . htmlspecialchars($severity->getCssClass()) . '">' .
-                $iconTemplate .
-                '<div class="callout-content">' .
-                    $titleTemplate .
-                    '<div class="callout-body">' . $message . '</div>' .
-                '</div>' .
-            '</div>';
+        return '<div class="callout callout-' . htmlspecialchars($severity->getCssClass()) . '">'
+                . $iconTemplate
+                . '<div class="callout-content">'
+                    . $titleTemplate
+                    . '<div class="callout-body">' . $message . '</div>'
+                . '</div>'
+            . '</div>';
     }
 
     /**

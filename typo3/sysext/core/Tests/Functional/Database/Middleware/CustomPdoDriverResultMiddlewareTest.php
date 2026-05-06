@@ -40,7 +40,7 @@ final class CustomPdoDriverResultMiddlewareTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second']['driver'] = $driver;
-        $testConnectionPool = new class () extends ConnectionPool {
+        $testConnectionPool = new class extends ConnectionPool {
             public function callGetOrderedConnectionDriverMiddlewareConfiguration(string $connectionName): array
             {
                 return $this->getOrderedConnectionDriverMiddlewareConfiguration(
@@ -64,7 +64,7 @@ final class CustomPdoDriverResultMiddlewareTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second']['driverMiddlewares']['typo3/core/custom-pdo-driver-result-middleware'] = [
             'disabled' => true,
         ];
-        $testConnectionPool = new class () extends ConnectionPool {
+        $testConnectionPool = new class extends ConnectionPool {
             public function callGetDriverMiddlewares(string $connectionName): array
             {
                 return $this->getDriverMiddlewares($connectionName, $this->getConnectionParams($connectionName));
@@ -90,7 +90,7 @@ final class CustomPdoDriverResultMiddlewareTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second']['driver'] = $driver;
-        $testConnectionPool = new class () extends ConnectionPool {
+        $testConnectionPool = new class extends ConnectionPool {
             public function callGetOrderedConnectionDriverMiddlewareConfiguration(string $connectionName): array
             {
                 return $this->getOrderedConnectionDriverMiddlewareConfiguration(

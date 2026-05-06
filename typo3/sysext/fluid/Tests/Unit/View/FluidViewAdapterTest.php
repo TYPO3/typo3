@@ -33,7 +33,7 @@ final class FluidViewAdapterTest extends UnitTestCase
             [123, '123'],
             [123.456, '123.456'],
             [
-                new class () {
+                new class {
                     public function __toString(): string
                     {
                         return 'Stringable';
@@ -82,7 +82,7 @@ final class FluidViewAdapterTest extends UnitTestCase
             [[]],
             [[1, 2, 3]],
             [new \stdClass()],
-            [new class () {}],
+            [new class {}],
         ];
     }
 

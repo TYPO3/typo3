@@ -254,7 +254,7 @@ final class AbstractFinisherTest extends UnitTestCase
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with('date-1')->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with('date-1')->willReturn($date);
-        $stringableElement = new class () implements StringableFormElementInterface {
+        $stringableElement = new class implements StringableFormElementInterface {
             /**
              * @param \DateTimeInterface $value
              */

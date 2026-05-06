@@ -918,8 +918,8 @@ class ExtensionManagementUtility
             && !isset($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['itemGroups'][$groupIdentifier])
             && is_string($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'][$groupIdentifier] ?? false)
         ) {
-            $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['itemGroups'][$groupIdentifier] =
-                $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'][$groupIdentifier];
+            $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['itemGroups'][$groupIdentifier]
+                = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'][$groupIdentifier];
         }
 
         // Ensure to have at least some basic information available when editing the new type in FormEngine

@@ -187,23 +187,23 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
         $targetName = StringUtility::getUniqueId('name_');
         $target = StringUtility::getUniqueId('target_');
         return [
-            'Take target from $conf, if $conf[$targetName] is set.' =>
-                [
+            'Take target from $conf, if $conf[$targetName] is set.'
+                => [
                     'expected' => $target,
                     'conf' => [$targetName => $target], // $targetName is set
                     'name' => $targetName,
                 ],
-            ' If all hopes fail, an empty string is returned. ' =>
-                [
+            ' If all hopes fail, an empty string is returned. '
+                => [
                     'expected' => '',
                     'conf' => [],
                     'name' => $targetName,
                 ],
-            'It finally applies stdWrap' =>
-                [
+            'It finally applies stdWrap'
+                => [
                     'expected' => 'wrap_target',
-                    'conf' => [$targetName . '.' =>
-                        [ 'ifEmpty' => 'wrap_target' ],
+                    'conf' => [$targetName . '.'
+                        => [ 'ifEmpty' => 'wrap_target' ],
                     ],
                     'name' => $targetName,
                 ],

@@ -244,8 +244,8 @@ class ResourceCompressor
         foreach ($filesToInclude as $key => $filename) {
             if (GeneralUtility::isValidUrl($filename)) {
                 // check if it is possibly a local file with fully qualified URL
-                if (GeneralUtility::isOnCurrentHost($filename) &&
-                    str_starts_with(
+                if (GeneralUtility::isOnCurrentHost($filename)
+                    && str_starts_with(
                         $filename,
                         $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()
                     )
@@ -538,8 +538,8 @@ class ResourceCompressor
             // remove existing statements
             $contents = str_replace($matches[0], '', $contents);
             // add statements to the top of contents in the order they occur in original file
-            $contents =
-                $charset
+            $contents
+                = $charset
                 . $comment
                 . $namespaces
                 . $imports

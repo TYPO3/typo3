@@ -90,7 +90,7 @@ class DateTimeConverter extends AbstractTypeConverter
         string $targetType,
         array $convertedChildProperties = [],
         ?PropertyMappingConfigurationInterface $configuration = null
-    ): null|\DateTime|Error {
+    ): \DateTime|Error|null {
         $dateFormat = $this->getDefaultDateFormat($configuration);
         if (is_string($source)) {
             $dateAsString = $source;
@@ -158,8 +158,8 @@ class DateTimeConverter extends AbstractTypeConverter
      */
     protected function isDatePartKeysProvided(array $source): bool
     {
-        return isset($source['day'], $source['month'], $source['year']) &&
-            ctype_digit($source['day']) && ctype_digit($source['month']) && ctype_digit($source['year']);
+        return isset($source['day'], $source['month'], $source['year'])
+            && ctype_digit($source['day']) && ctype_digit($source['month']) && ctype_digit($source['year']);
     }
 
     /**

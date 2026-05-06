@@ -386,8 +386,8 @@ class EditDocumentController
             // In case save&view is requested, we have to add this information to the redirect
             // URL, since the ImmediateAction will be added to the module body afterwards.
             if (isset($parsedBody['_savedokview'])) {
-                $this->R_URI = rtrim($this->R_URI, '&') .
-                    HttpUtility::buildQueryString([
+                $this->R_URI = rtrim($this->R_URI, '&')
+                    . HttpUtility::buildQueryString([
                         'showPreview' => true,
                         'popViewId' => $parsedBody['popViewId'] ?? PreviewUriBuilder::getPreviewPageId(
                             ($this->firstEl['table'] ?? ''),
@@ -1114,7 +1114,7 @@ class EditDocumentController
                         $message = (!empty($beUser->errorMsg)) ? $beUser->errorMsg : $e->getMessage() . ' ' . $e->getCode();
                         $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
                         $editForm .= $this->getInfobox($message, $title);
-                    } catch (DatabaseRecordException | DatabaseRecordWorkspaceDeletePlaceholderException $e) {
+                    } catch (DatabaseRecordException|DatabaseRecordWorkspaceDeletePlaceholderException $e) {
                         $editForm .= $this->getInfobox($e->getMessage());
                     }
                 } // End of for each uid
@@ -1128,17 +1128,17 @@ class EditDocumentController
      */
     protected function getInfobox(string $message, ?string $title = null): string
     {
-        return '<div class="callout callout-danger">' .
-                '<div class="callout-icon">' .
-                    '<span class="icon-emphasized">' .
-                        $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render() .
-                    '</span>' .
-                '</div>' .
-                '<div class="callout-content">' .
-                    ($title ? '<div class="callout-title">' . htmlspecialchars($title) . '</div>' : '') .
-                    '<div class="callout-body">' . htmlspecialchars($message) . '</div>' .
-                '</div>' .
-            '</div>';
+        return '<div class="callout callout-danger">'
+                . '<div class="callout-icon">'
+                    . '<span class="icon-emphasized">'
+                        . $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render()
+                    . '</span>'
+                . '</div>'
+                . '<div class="callout-content">'
+                    . ($title ? '<div class="callout-title">' . htmlspecialchars($title) . '</div>' : '')
+                    . '<div class="callout-body">' . htmlspecialchars($message) . '</div>'
+                . '</div>'
+            . '</div>';
     }
 
     /**

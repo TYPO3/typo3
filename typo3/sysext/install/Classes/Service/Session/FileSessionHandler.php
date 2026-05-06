@@ -152,8 +152,8 @@ class FileSessionHandler implements \SessionHandlerInterface
         }
         if (!$result) {
             throw new Exception(
-                'Session file not writable. Please check permission on ' .
-                $this->sessionPath . ' and its subdirectories.',
+                'Session file not writable. Please check permission on '
+                . $this->sessionPath . ' and its subdirectories.',
                 1424355157
             );
         }

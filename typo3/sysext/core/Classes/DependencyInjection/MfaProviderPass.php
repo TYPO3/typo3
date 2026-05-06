@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class MfaProviderPass implements CompilerPassInterface
 {
-    protected string $tagName;
+    private string $tagName;
 
     public function __construct(string $tagName)
     {

@@ -66,8 +66,8 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $out = $subject->render();
 
         $expectedErrors = [
-            'The SHA-1 file hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in the index! ' .
-            'The file was added based on the current file hash.',
+            'The SHA-1 file hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in the index! '
+            . 'The file was added based on the current file hash.',
         ];
         $errors = $subject->getErrorLog();
         self::assertSame($expectedErrors, $errors);
@@ -110,8 +110,8 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $out = $subject->render();
 
         $expectedErrors = [
-            'The SHA-1 file hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in the index! ' .
-            'The file was added based on the current file hash.',
+            'The SHA-1 file hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in the index! '
+            . 'The file was added based on the current file hash.',
         ];
         $errors = $subject->getErrorLog();
         self::assertSame($expectedErrors, $errors);
@@ -134,8 +134,8 @@ final class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
      */
     protected function compileExportPagesAndRelatedTtContentWithImages(Export $subject): void
     {
-        $recordTypesIncludeFields =
-            [
+        $recordTypesIncludeFields
+            = [
                 'pages' => [
                     'title',
                     'deleted',

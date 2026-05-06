@@ -65,7 +65,7 @@ final class LoggerAwarePass implements CompilerPassInterface
         }
     }
 
-    protected function getClassChannelName(\ReflectionClass $class): ?string
+    private function getClassChannelName(\ReflectionClass $class): ?string
     {
         // Attribute channel definition is only supported on PHP 8 and later.
         if (class_exists('\ReflectionAttribute', false)) {

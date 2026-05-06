@@ -398,12 +398,12 @@ final class ConfigurationManagerTest extends UnitTestCase
             'foo' => 42,
             'bar' => 23,
         ];
-        $expectedContent =
-            '<?php' . LF .
-            'return [' . LF .
-            '    \'bar\' => 23,' . LF .
-            '    \'foo\' => 42,' . LF .
-            '];' . LF;
+        $expectedContent
+            = '<?php' . LF
+            . 'return [' . LF
+            . '    \'bar\' => 23,' . LF
+            . '    \'foo\' => 42,' . LF
+            . '];' . LF;
 
         $this->subject->writeLocalConfiguration($pairs);
         self::assertSame($expectedContent, file_get_contents($configurationFile));
@@ -434,11 +434,11 @@ final class ConfigurationManagerTest extends UnitTestCase
         $factoryConfigurationAbsoluteFile = $this->getTestDirectory() . '/' . $factoryConfigurationFile;
         $subject->method('getFactoryConfigurationFileLocation')->willReturn($factoryConfigurationAbsoluteFile);
         $uniqueContentString = StringUtility::getUniqueId('string_');
-        $validFactoryConfigurationFileContent =
-            '<?php' . LF .
-            'return [' . LF .
-            '\'' . $uniqueContentString . '\' => \'foo\',' . LF .
-            '];' . LF;
+        $validFactoryConfigurationFileContent
+            = '<?php' . LF
+            . 'return [' . LF
+            . '\'' . $uniqueContentString . '\' => \'foo\',' . LF
+            . '];' . LF;
         file_put_contents(
             $factoryConfigurationAbsoluteFile,
             $validFactoryConfigurationFileContent
@@ -464,9 +464,9 @@ final class ConfigurationManagerTest extends UnitTestCase
         $factoryConfigurationFile =  StringUtility::getUniqueId('test_') . '.php';
         $factoryConfigurationAbsoluteFile = $testDirectory . $factoryConfigurationFile;
         $subject->method('getFactoryConfigurationFileLocation')->willReturn($factoryConfigurationAbsoluteFile);
-        $validFactoryConfigurationFileContent =
-            '<?php' . LF .
-            'return [];' . LF;
+        $validFactoryConfigurationFileContent
+            = '<?php' . LF
+            . 'return [];' . LF;
         file_put_contents(
             $factoryConfigurationAbsoluteFile,
             $validFactoryConfigurationFileContent
@@ -477,11 +477,11 @@ final class ConfigurationManagerTest extends UnitTestCase
         $additionalFactoryConfigurationAbsoluteFile = $testDirectory . $additionalFactoryConfigurationFile;
         $subject->method('getAdditionalFactoryConfigurationFileLocation')->willReturn($additionalFactoryConfigurationAbsoluteFile);
         $uniqueContentString = StringUtility::getUniqueId('string_');
-        $validAdditionalFactoryConfigurationFileContent =
-            '<?php' . LF .
-            'return [' . LF .
-            '\'' . $uniqueContentString . '\' => \'foo\',' . LF .
-            '];' . LF;
+        $validAdditionalFactoryConfigurationFileContent
+            = '<?php' . LF
+            . 'return [' . LF
+            . '\'' . $uniqueContentString . '\' => \'foo\',' . LF
+            . '];' . LF;
         file_put_contents(
             $additionalFactoryConfigurationAbsoluteFile,
             $validAdditionalFactoryConfigurationFileContent

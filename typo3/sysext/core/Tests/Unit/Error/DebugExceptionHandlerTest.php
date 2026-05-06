@@ -111,7 +111,7 @@ final class DebugExceptionHandlerTest extends UnitTestCase
     {
         $subject = new DebugExceptionHandler();
 
-        $logger = new class () implements LoggerInterface {
+        $logger = new class implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
             public function log($level, string|\Stringable $message, array $context = []): void

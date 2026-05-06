@@ -145,9 +145,9 @@ class ColorElement extends AbstractFormElement
         $colorDefinitions = array_map(
             static fn(array $colorDefinition): array => [
                 'color' => $colorDefinition['value'],
-                'label' => ($colorDefinition['label'] ?? null) !== null ?
-                    sprintf('%s (%s)', $colorDefinition['label'], $colorDefinition['value']) :
-                    $colorDefinition['value'],
+                'label' => ($colorDefinition['label'] ?? null) !== null
+                    ? sprintf('%s (%s)', $colorDefinition['label'], $colorDefinition['value'])
+                    : $colorDefinition['value'],
             ],
             array_filter(
                 $tsConfig['colorPalettes.']['colors.'] ?? [],
@@ -155,8 +155,8 @@ class ColorElement extends AbstractFormElement
             ),
         );
 
-        $configuredPalette =
-            $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['colorPalette']
+        $configuredPalette
+            = $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['colorPalette']
             ?? $tsConfig['TCEFORM.'][$table . '.']['colorPalette']
             ?? $tsConfig['TCEFORM.']['colorPalette']
             ?? null;

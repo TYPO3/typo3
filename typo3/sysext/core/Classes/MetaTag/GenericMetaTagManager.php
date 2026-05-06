@@ -31,14 +31,14 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
      *
      * @var string
      */
-    protected $subPropertySeparator = ':';
+    private $subPropertySeparator = ':';
 
     /**
      * Array of properties that are set by the manager
      *
      * @var array
      */
-    protected $properties = [];
+    private $properties = [];
 
     /**
      * Add a property (including subProperties)
@@ -104,17 +104,17 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
         $metaTags = [];
         foreach ((array)$this->properties[$property] as $type => $propertyItems) {
             foreach ($propertyItems as $propertyItem) {
-                $metaTags[] = '<meta ' .
-                    htmlspecialchars($type) . '="' . htmlspecialchars($property) . '" ' .
-                    'content="' . htmlspecialchars($propertyItem['content']) . '"' . $endingSlash . '>';
+                $metaTags[] = '<meta '
+                    . htmlspecialchars($type) . '="' . htmlspecialchars($property) . '" '
+                    . 'content="' . htmlspecialchars($propertyItem['content']) . '"' . $endingSlash . '>';
 
                 if (!count($propertyItem['subProperties'])) {
                     continue;
                 }
                 foreach ($propertyItem['subProperties'] as $subProperty => $value) {
-                    $metaTags[] = '<meta ' .
-                        htmlspecialchars($type) . '="' . htmlspecialchars($property . $this->subPropertySeparator . $subProperty) . '" ' .
-                        'content="' . htmlspecialchars((string)$value) . '"' . $endingSlash . '>';
+                    $metaTags[] = '<meta '
+                        . htmlspecialchars($type) . '="' . htmlspecialchars($property . $this->subPropertySeparator . $subProperty) . '" '
+                        . 'content="' . htmlspecialchars((string)$value) . '"' . $endingSlash . '>';
                 }
             }
         }

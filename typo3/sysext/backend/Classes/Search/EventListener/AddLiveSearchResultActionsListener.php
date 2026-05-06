@@ -35,11 +35,11 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
  */
 final class AddLiveSearchResultActionsListener
 {
-    protected LanguageService $languageService;
+    private LanguageService $languageService;
 
     public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly LanguageServiceFactory $languageServiceFactory
+        private readonly IconFactory $iconFactory,
+        private readonly LanguageServiceFactory $languageServiceFactory
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
     }
@@ -57,11 +57,11 @@ final class AddLiveSearchResultActionsListener
         }
     }
 
-    protected function addSwitchUserAction(ResultItem $resultItem): void
+    private function addSwitchUserAction(ResultItem $resultItem): void
     {
         $row = $resultItem->getInternalData()['row'];
-        $backendUserIsActive =
-            (int)$row['disable'] === 0
+        $backendUserIsActive
+            = (int)$row['disable'] === 0
             && ($row['starttime'] === 0 && $row['endtime'] === 0 || $row['starttime'] <= time() && ($row['starttime'] === 0 && $row['endtime'] > time()));
         $currentUser = $this->getBackendUser();
 
@@ -79,7 +79,7 @@ final class AddLiveSearchResultActionsListener
         }
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator, ContainerBuilder $container) {
-    $container->addCompilerPass(new class () implements CompilerPassInterface {
+    $container->addCompilerPass(new class implements CompilerPassInterface {
         public function process(ContainerBuilder $container): void
         {
             foreach ($container->findTaggedServiceIds('frontend.contentobject') as $id => $tags) {

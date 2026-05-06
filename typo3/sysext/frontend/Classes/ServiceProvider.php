@@ -78,7 +78,7 @@ class ServiceProvider extends AbstractServiceProvider
     ): RequestHandlerInterface {
         // Provide fallback request handler instace for the case where the system is not installed yet (that means when we run without symfony DI).
         // This request handler is intended to be never executed, as the frontend application will perform an early redirect to the install tool.
-        return $requestHandler ?? new class () implements RequestHandlerInterface {
+        return $requestHandler ?? new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 throw new \RuntimeException('not implemented', 1689684150);

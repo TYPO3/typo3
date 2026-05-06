@@ -97,8 +97,8 @@ readonly class TcaPreparation
                 // Sanitize 'relationship'
                 if ($isFlexForm && !in_array($fieldConfig['config']['relationship'], ['oneToOne', 'oneToMany'], true)) {
                     throw new \UnexpectedValueException(
-                        '"relationship" must be one of "oneToOne" or "oneToMany", "manyToMany" is not supported as "relationship"' .
-                        ' for field ' . $fieldName . ' of type "category" in flexform.',
+                        '"relationship" must be one of "oneToOne" or "oneToMany", "manyToMany" is not supported as "relationship"'
+                        . ' for field ' . $fieldName . ' of type "category" in flexform.',
                         1627640208
                     );
                 }
@@ -118,8 +118,8 @@ readonly class TcaPreparation
                     // Therefore, maxitems must be 1. Sanitize for flex form fields as well.
                     if ((int)($fieldConfig['config']['maxitems'] ?? 0) > 1) {
                         throw new \RuntimeException(
-                            $fieldName . ' of table ' . $table . ' is defined as type category with an oneToOne relationship. ' .
-                            'Therefore maxitems must be 1. Otherwise, use oneToMany or manyToMany as relationship instead.',
+                            $fieldName . ' of table ' . $table . ' is defined as type category with an oneToOne relationship. '
+                            . 'Therefore maxitems must be 1. Otherwise, use oneToMany or manyToMany as relationship instead.',
                             1627335016
                         );
                     }
@@ -131,8 +131,8 @@ readonly class TcaPreparation
                     && (int)($fieldConfig['config']['maxitems'] ?? 0) === 1
                 ) {
                     throw new \RuntimeException(
-                        $fieldName . ' of table ' . $table . ' is defined as type category with a ' . $fieldConfig['config']['relationship'] .
-                        ' relationship. Therefore, maxitems can not be set to 1. Use oneToOne as relationship instead.',
+                        $fieldName . ' of table ' . $table . ' is defined as type category with a ' . $fieldConfig['config']['relationship']
+                        . ' relationship. Therefore, maxitems can not be set to 1. Use oneToOne as relationship instead.',
                         1627335017
                     );
                 }

@@ -117,9 +117,9 @@ class DropDownButton implements ButtonInterface
     {
         if (!$item->isValid()) {
             throw new \InvalidArgumentException(
-                'Only valid items may be assigned to a DropdownButton. "' .
-                $item->getType() .
-                '" did not pass validation',
+                'Only valid items may be assigned to a DropdownButton. "'
+                . $item->getType()
+                . '" did not pass validation',
                 1667645426
             );
         }

@@ -82,7 +82,7 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
     {
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('routing', new PageArguments(1, '', [], [], []));
-        $request = $request->withAttribute('frontend.typoscript', new class () {
+        $request = $request->withAttribute('frontend.typoscript', new class {
             public function getConfigArray(): array
             {
                 return [

@@ -129,9 +129,9 @@ final class DefaultValuesTest extends FunctionalTestCase
         // TCAdefaults from ext:test_defaulttsconfig/Configuration/page.tsconfig kick in here,
         // but are overridden by specific page record TSconfig here.
         $this->actionService->modifyRecord('pages', 88, [
-            'TSconfig' => chr(10) .
-                'TCAdefaults.pages.keywords = I am specific, not generic' . chr(10) .
-                'TCAdefaults.tt_content.header = local space',
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.pages.keywords = I am specific, not generic' . chr(10)
+                . 'TCAdefaults.tt_content.header = local space',
         ]);
 
         // Add subpage and verify TSconfig from above page kicks in.

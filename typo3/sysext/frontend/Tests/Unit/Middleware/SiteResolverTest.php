@@ -57,7 +57,7 @@ final class SiteResolverTest extends UnitTestCase
         $this->siteFinder = $this->getAccessibleMock(SiteFinder::class, null, [], '', false);
 
         // A request handler which expects a site to be found.
-        $this->siteFoundRequestHandler = new class () implements RequestHandlerInterface {
+        $this->siteFoundRequestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 $site = $request->getAttribute('site', false);

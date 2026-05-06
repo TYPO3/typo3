@@ -120,9 +120,9 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
         } else {
             $name = $this->arguments['name'] ?? '';
         }
-        if ($this->hasArgument('value') &&
-            is_object($this->arguments['value']) &&
-            !$this->persistenceManager->isNewObject($this->arguments['value'])
+        if ($this->hasArgument('value')
+            && is_object($this->arguments['value'])
+            && !$this->persistenceManager->isNewObject($this->arguments['value'])
         ) {
             $name .= '[__identity]';
         }

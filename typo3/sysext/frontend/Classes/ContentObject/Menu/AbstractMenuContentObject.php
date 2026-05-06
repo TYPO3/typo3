@@ -277,8 +277,8 @@ abstract class AbstractMenuContentObject
                         $rl_MParray[] = $v_rl['_MP_PARAM'];
                     }
                     // Add to register:
-                    $this->rL_uidRegister[] = 'ITEM:' . $v_rl['uid'] .
-                        (
+                    $this->rL_uidRegister[] = 'ITEM:' . $v_rl['uid']
+                        . (
                             !empty($rl_MParray)
                             ? ':' . implode(',', $rl_MParray)
                             : ''
@@ -317,8 +317,8 @@ abstract class AbstractMenuContentObject
                 if ($localRootLine[$currentLevel]['_MOUNT_OL'] ?? false) {
                     $nextMParray[] = $localRootLine[$currentLevel]['_MP_PARAM'] ?? [];
                 }
-                $this->nextActive = ($localRootLine[$currentLevel]['uid']  ?? 0) .
-                    (
+                $this->nextActive = ($localRootLine[$currentLevel]['uid']  ?? 0)
+                    . (
                         !empty($nextMParray)
                         ? ':' . implode(',', $nextMParray)
                         : ''
@@ -594,10 +594,10 @@ abstract class AbstractMenuContentObject
             }
             // Checking if the "disabled" state should be set.
             $pageTranslationVisibility = new PageTranslationVisibility((int)($currentPageWithNoOverlay['l18n_cfg'] ?? 0));
-            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $sUid &&
-                empty($lRecs) || $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() &&
-                (!$sUid || empty($lRecs)) ||
-                !($this->conf['special.']['normalWhenNoLanguage'] ?? false) && $sUid && empty($lRecs)
+            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $sUid
+                && empty($lRecs) || $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()
+                && (!$sUid || empty($lRecs))
+                || !($this->conf['special.']['normalWhenNoLanguage'] ?? false) && $sUid && empty($lRecs)
             ) {
                 $iState = $currentLanguageId === $sUid ? 'USERDEF2' : 'USERDEF1';
             } else {

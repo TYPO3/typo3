@@ -206,10 +206,10 @@ class RedirectHandler
         }
 
         $referrer = (string)(
-            $request->getParsedBody()['referer'] ??
-            $request->getQueryParams()['referer'] ??
-            $request->getServerParams()['HTTP_REFERER'] ??
-            ''
+            $request->getParsedBody()['referer']
+            ?? $request->getQueryParams()['referer']
+            ?? $request->getServerParams()['HTTP_REFERER']
+            ?? ''
         );
 
         // If the current request was initiated via sub-request, we use the URI of the original request as referrer

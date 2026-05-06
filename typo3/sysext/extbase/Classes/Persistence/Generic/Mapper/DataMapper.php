@@ -232,17 +232,17 @@ class DataMapper
             $nonProxyPropertyTypes = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
             if ($nonProxyPropertyTypes === []) {
                 throw new UnknownPropertyTypeException(
-                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified, therefore the desired value (' .
-                    var_export($propertyValue, true) . ') cannot be mapped onto it. The type of a class property is usually defined via property types or php doc blocks. ' .
-                    'Make sure the property has a property type or valid @var tag set which defines the type.',
+                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified, therefore the desired value ('
+                    . var_export($propertyValue, true) . ') cannot be mapped onto it. The type of a class property is usually defined via property types or php doc blocks. '
+                    . 'Make sure the property has a property type or valid @var tag set which defines the type.',
                     1579965021
                 );
             }
 
             if (count($nonProxyPropertyTypes) > 1) {
                 throw new UnknownPropertyTypeException(
-                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified because the property is defined as union or intersection type, therefore the desired value (' .
-                    var_export($propertyValue, true) . ') cannot be mapped onto it. Make sure to use only a single type.',
+                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified because the property is defined as union or intersection type, therefore the desired value ('
+                    . var_export($propertyValue, true) . ') cannot be mapped onto it. Make sure to use only a single type.',
                     1660215701
                 );
             }

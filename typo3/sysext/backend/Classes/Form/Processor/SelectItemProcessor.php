@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[Autoconfigure(public: true)]
 final class SelectItemProcessor
 {
-    public function __construct(protected readonly LanguageServiceFactory $languageServiceFactory) {}
+    public function __construct(private readonly LanguageServiceFactory $languageServiceFactory) {}
 
     /**
      * Is used when --div-- elements in the item list are used, or if groups are defined via "groupItems" config array.
@@ -157,7 +157,7 @@ final class SelectItemProcessor
      * @param array $sortOrders should be something like like [label => desc]
      * @return SelectItem[] the sorted items
      */
-    protected function sortItems(array $items, array $sortOrders): array
+    private function sortItems(array $items, array $sortOrders): array
     {
         foreach ($sortOrders as $order => $direction) {
             switch ($order) {

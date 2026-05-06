@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class SystemInformationController
 {
-    protected array $backendUserConfiguration;
+    private array $backendUserConfiguration;
 
     public function __construct(?array $backendUserConfiguration = null)
     {

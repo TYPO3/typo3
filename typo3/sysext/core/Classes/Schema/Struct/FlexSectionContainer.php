@@ -29,10 +29,10 @@ use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 final readonly class FlexSectionContainer
 {
     public function __construct(
-        protected string $sheetIdentifier,
-        protected string $title,
-        protected string $description,
-        protected FieldCollection $fields
+        private string $sheetIdentifier,
+        private string $title,
+        private string $description,
+        private FieldCollection $fields
     ) {}
 
     public function getFields(): FieldCollection

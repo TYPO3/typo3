@@ -39,7 +39,7 @@ final class OrderedProviderListTest extends UnitTestCase
     #[Test]
     public function compileReturnsResultChangedByDataProvider(): void
     {
-        $formDataProvider = new class () extends \stdClass implements FormDataProviderInterface {
+        $formDataProvider = new class extends \stdClass implements FormDataProviderInterface {
             public function addData(array $result)
             {
                 return ['foo'];

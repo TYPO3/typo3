@@ -134,7 +134,7 @@ final class BackendTest extends FunctionalTestCase
         string $table,
         ?\DateTimeInterface $value,
         bool $consistentDateTimeHandling,
-        null|string|int $expected,
+        string|int|null $expected,
     ): void {
         $bak = $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'] = $consistentDateTimeHandling;

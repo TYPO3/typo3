@@ -132,7 +132,7 @@ final class ModuleRegistry
      * @param ModuleInterface[] $modules
      * @return ModuleInterface[]
      */
-    protected function applyHierarchy(array $modules): array
+    private function applyHierarchy(array $modules): array
     {
         // Fetch top-level (parent) modules and fill them with sorted sub modules
         $topLevelModules = [];
@@ -165,7 +165,7 @@ final class ModuleRegistry
      * @param ModuleInterface[] $modules
      * @return ModuleInterface[]
      */
-    protected function applySorting(array $modules): array
+    private function applySorting(array $modules): array
     {
         $modulePositionInformation = [];
         // First create a list of all needed data, that is the identifier, and its position
@@ -234,7 +234,7 @@ final class ModuleRegistry
      * to be added have dependencies to other modules and those modules exist, corresponding
      * modules are added to $alreadyOrderedModuleIdentifiers on the correct position as well.
      */
-    protected function populateOrderingsForDependencies(
+    private function populateOrderingsForDependencies(
         array $moduleIdentifiersToBeAdded,
         array $modulePositionInformation,
         array $alreadyOrderedModuleIdentifiers = []
@@ -289,7 +289,7 @@ final class ModuleRegistry
     /**
      * Create a flat modules array (looping through each level by calling "getSubmodules()" on the parent)
      */
-    protected function flattenModules(array $modules, $flatModules = []): array
+    private function flattenModules(array $modules, $flatModules = []): array
     {
         foreach ($modules as $module) {
             $flatModules[$module->getIdentifier()] = $module;
@@ -300,7 +300,7 @@ final class ModuleRegistry
         return $flatModules;
     }
 
-    protected function populateAliasMapping(): void
+    private function populateAliasMapping(): void
     {
         foreach ($this->modules as $moduleIdentifier => $module) {
             foreach ($module->getAliases() as $aliasIdentifier) {

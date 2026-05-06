@@ -168,7 +168,7 @@ class CleanUpLocalProcessedFilesService
     {
         try {
             $basePath = $this->getAbsoluteBasePath($folder->getStorage()->getConfiguration());
-        } catch (InvalidPathException | InvalidConfigurationException $invalidPathException) {
+        } catch (InvalidPathException|InvalidConfigurationException $invalidPathException) {
             return [];
         }
 

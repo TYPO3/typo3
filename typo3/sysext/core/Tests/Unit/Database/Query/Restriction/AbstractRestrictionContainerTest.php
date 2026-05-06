@@ -60,7 +60,7 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     #[Test]
     public function crossClassWillBeRemovedWhenRemovedByType(): void
     {
-        $restriction = new class () extends HiddenRestriction {};
+        $restriction = new class extends HiddenRestriction {};
 
         $subject = new InstantiatableAbstractRestrictionContainer();
         $subject->add($restriction);

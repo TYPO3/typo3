@@ -30,7 +30,7 @@ final class LinktypeRegistryTest extends UnitTestCase
     public function registrationRequiresInterface(): void
     {
         $linktypes = [
-            new class () {},
+            new class {},
             $this->getLinkType('valid-identifier'),
         ];
 

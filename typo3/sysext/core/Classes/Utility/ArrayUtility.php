@@ -686,8 +686,8 @@ class ArrayUtility
                     self::mergeRecursiveWithOverrule($original[$key], $overrule[$key], $addKeys, $includeEmptyValues, $enableUnsetFeature);
                 }
             } elseif (
-                ($addKeys || isset($original[$key])) &&
-                ($includeEmptyValues || $overrule[$key])
+                ($addKeys || isset($original[$key]))
+                && ($includeEmptyValues || $overrule[$key])
             ) {
                 $original[$key] = $overrule[$key];
             }

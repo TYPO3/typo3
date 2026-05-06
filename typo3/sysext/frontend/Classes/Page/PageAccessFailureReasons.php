@@ -62,7 +62,7 @@ final class PageAccessFailureReasons
      *
      * @var string[]
      */
-    protected array $messages = [
+    private array $messages = [
         self::NO_PAGES_FOUND => 'No page on rootlevel found',
         self::PAGE_NOT_FOUND => 'The requested page does not exist',
         self::INVALID_EXTERNAL_URL => 'Page of type "External URL" could not be resolved properly',

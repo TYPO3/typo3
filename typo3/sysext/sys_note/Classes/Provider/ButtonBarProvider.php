@@ -102,7 +102,7 @@ final class ButtonBarProvider
     /**
      * Check if the user is allowed to create a sys_note record
      */
-    protected function canCreateNewRecord(int $id): bool
+    private function canCreateNewRecord(int $id): bool
     {
         $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get(self::TABLE_NAME);
         $pageRow = BackendUtility::getRecord('pages', $id);
@@ -121,7 +121,7 @@ final class ButtonBarProvider
     /**
      * Check if creation is allowed / denied in web_list via mod TSconfig
      */
-    protected function isCreationAllowed(array $modTSconfig): bool
+    private function isCreationAllowed(array $modTSconfig): bool
     {
         $allowedNewTables = GeneralUtility::trimExplode(',', $modTSconfig['allowedNewTables'] ?? '', true);
         $deniedNewTables = GeneralUtility::trimExplode(',', $modTSconfig['deniedNewTables'] ?? '', true);
@@ -131,17 +131,17 @@ final class ButtonBarProvider
                 && ($allowedNewTables === [] || in_array(self::TABLE_NAME, $allowedNewTables)));
     }
 
-    protected function getRequest(): ServerRequestInterface
+    private function getRequest(): ServerRequestInterface
     {
         return $GLOBALS['TYPO3_REQUEST'];
     }
 
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    private function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

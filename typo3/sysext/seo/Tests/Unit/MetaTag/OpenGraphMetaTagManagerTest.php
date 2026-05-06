@@ -122,11 +122,11 @@ final class OpenGraphMetaTagManagerTest extends UnitTestCase
             );
         }
 
-        $expected = '<meta property="og:image" content="/path/to/image">' . PHP_EOL .
-            '<meta property="og:image:width" content="400">' . PHP_EOL .
-            '<meta property="og:image:height" content="200">' . PHP_EOL .
-            '<meta property="og:image" content="/path/to/image2">' . PHP_EOL .
-            '<meta property="og:title" content="This is the new title">';
+        $expected = '<meta property="og:image" content="/path/to/image">' . PHP_EOL
+            . '<meta property="og:image:width" content="400">' . PHP_EOL
+            . '<meta property="og:image:height" content="200">' . PHP_EOL
+            . '<meta property="og:image" content="/path/to/image2">' . PHP_EOL
+            . '<meta property="og:title" content="This is the new title">';
 
         self::assertEquals($expected, $manager->renderAllProperties());
     }
@@ -196,9 +196,9 @@ final class OpenGraphMetaTagManagerTest extends UnitTestCase
                         ],
                     ],
                 ],
-                '<meta property="og:image" content="/path/to/image">' . PHP_EOL .
-                '<meta property="og:image:width" content="400">' . PHP_EOL .
-                '<meta property="og:image:height" content="400">',
+                '<meta property="og:image" content="/path/to/image">' . PHP_EOL
+                . '<meta property="og:image:width" content="400">' . PHP_EOL
+                . '<meta property="og:image:height" content="400">',
             ],
         ];
     }

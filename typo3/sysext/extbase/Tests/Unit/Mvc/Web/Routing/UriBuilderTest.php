@@ -536,7 +536,7 @@ final class UriBuilderTest extends UnitTestCase
     #[Test]
     public function buildFrontendUriConvertsStringableAfterArgumentsHaveBeenMerged(): void
     {
-        $stringable = new class () implements \Stringable {
+        $stringable = new class implements \Stringable {
             public function __toString(): string
             {
                 return 'string-from-stringable';

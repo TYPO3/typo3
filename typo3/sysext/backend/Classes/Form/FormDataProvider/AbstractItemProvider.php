@@ -1072,9 +1072,9 @@ abstract class AbstractItemProvider
         foreach ($itemArray as $key => $item) {
             $labelIndex = $item['value'] ?? '';
 
-            if ($labelIndex === '' &&
-                isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels']) &&
-                !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels'])
+            if ($labelIndex === ''
+                && isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels'])
+                && !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels'])
             ) {
                 $label = $languageService->sL($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels']);
             } elseif (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$labelIndex])

@@ -34,7 +34,7 @@ final class ConnectionPoolTest extends FunctionalTestCase
                 'typo3/core/custom-platform-driver-middleware',
             ],
         ];
-        $testConnectionPool = new class () extends ConnectionPool {
+        $testConnectionPool = new class extends ConnectionPool {
             public function callGetOrderedConnectionDriverMiddlewareConfiguration(string $connectionName): array
             {
                 return $this->getOrderedConnectionDriverMiddlewareConfiguration($connectionName, $this->getConnectionParams($connectionName));

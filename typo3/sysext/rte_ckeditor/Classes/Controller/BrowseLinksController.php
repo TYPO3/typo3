@@ -178,9 +178,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
                     $currentLinkClassIsAllowed = false;
                 }
                 if (
-                    isset($classesAnchor[$this->displayedLinkHandlerId]) &&
-                    in_array($linkClass, $classesAnchor['all'], true) &&
-                    !in_array($linkClass, $classesAnchor[$this->displayedLinkHandlerId], true)
+                    isset($classesAnchor[$this->displayedLinkHandlerId])
+                    && in_array($linkClass, $classesAnchor['all'], true)
+                    && !in_array($linkClass, $classesAnchor[$this->displayedLinkHandlerId], true)
                 ) {
                     // Current class is limited to specific link types but not available in current link type
                     $currentLinkClassIsAllowed = false;
@@ -347,9 +347,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
         return '
             <div class="element-browser-form-group">
-                <label for="lrel" class="form-label">' .
-                    htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:linkRelationship')) .
-                '</label>
+                <label for="lrel" class="form-label">'
+                    . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:linkRelationship'))
+                . '</label>
                 <input type="text" name="lrel" class="form-control" value="' . htmlspecialchars($currentRel) . '" />
             </div>
             ';

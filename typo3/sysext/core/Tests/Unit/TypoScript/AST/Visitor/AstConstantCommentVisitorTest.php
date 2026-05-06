@@ -40,8 +40,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
     private function getAssertionStructure(): array
     {
         return [
-            'string_1' =>
-            [
+            'string_1'
+            => [
                 'cat'                   => 'text',
                 'subcat_name'           => '200',
                 'subcat_label'          => '',
@@ -56,8 +56,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'value',
                 'isInCurrentTemplate'   => false,
             ],
-            'string_2' =>
-            [
+            'string_2'
+            => [
                 'cat'                   => 'text',
                 'subcat_name'           => '200',
                 'subcat_label'          => '',
@@ -72,8 +72,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'small_1' =>
-            [
+            'small_1'
+            => [
                 'cat'                   => 'text',
                 'subcat_name'           => '201',
                 'subcat_label'          => '',
@@ -88,8 +88,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'value',
                 'isInCurrentTemplate'   => false,
             ],
-            'small_2' =>
-            [
+            'small_2'
+            => [
                 'cat'                   => 'text',
                 'subcat_name'           => '201',
                 'subcat_label'          => '',
@@ -104,8 +104,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'wrap_1' =>
-            [
+            'wrap_1'
+            => [
                 'cat'                   => 'text',
                 'subcat_name'           => '202',
                 'subcat_label'          => '',
@@ -122,8 +122,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'value',
                 'isInCurrentTemplate'   => false,
             ],
-            'wrap_2' =>
-            [
+            'wrap_2'
+            => [
                 'cat'                   => 'text',
                 'subcat_name'           => '202',
                 'subcat_label'          => '',
@@ -140,8 +140,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'color_1' =>
-            [
+            'color_1'
+            => [
                 'cat'                   => 'color',
                 'subcat_name'           => '400',
                 'subcat_label'          => '',
@@ -156,8 +156,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'black',
                 'isInCurrentTemplate'   => false,
             ],
-            'color_2' =>
-            [
+            'color_2'
+            => [
                 'cat'                   => 'color',
                 'subcat_name'           => '400',
                 'subcat_label'          => '',
@@ -172,8 +172,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '#000000',
                 'isInCurrentTemplate'   => false,
             ],
-            'color_3' =>
-            [
+            'color_3'
+            => [
                 'cat'                   => 'color',
                 'subcat_name'           => '400',
                 'subcat_label'          => '',
@@ -188,8 +188,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '000000',
                 'isInCurrentTemplate'   => false,
             ],
-            'color_4' =>
-            [
+            'color_4'
+            => [
                 'cat'                   => 'color',
                 'subcat_name'           => '400',
                 'subcat_label'          => '',
@@ -204,8 +204,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'offset_1' =>
-            [
+            'offset_1'
+            => [
                 'cat'                   => 'offset',
                 'subcat_name'           => '300',
                 'subcat_label'          => '',
@@ -230,8 +230,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'x,y',
                 'isInCurrentTemplate'   => false,
             ],
-            'offset_2' =>
-            [
+            'offset_2'
+            => [
                 'cat'                   => 'offset',
                 'subcat_name'           => '300',
                 'subcat_label'          => '',
@@ -256,8 +256,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'x',
                 'isInCurrentTemplate'   => false,
             ],
-            'offset_3' =>
-            [
+            'offset_3'
+            => [
                 'cat'                   => 'offset',
                 'subcat_name'           => '300',
                 'subcat_label'          => '',
@@ -282,8 +282,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => ',y',
                 'isInCurrentTemplate'   => false,
             ],
-            'offset_4' =>
-            [
+            'offset_4'
+            => [
                 'cat'                   => 'offset',
                 'subcat_name'           => '300',
                 'subcat_label'          => '',
@@ -308,8 +308,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'user_1' =>
-            [
+            'user_1'
+            => [
                 'cat'                   => 'user',
                 'subcat_name'           => '500',
                 'subcat_label'          => '',
@@ -331,8 +331,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '0',
                 'isInCurrentTemplate'   => false,
             ],
-            'options_1' =>
-            [
+            'options_1'
+            => [
                 'cat'                   => 'options',
                 'subcat_name'           => '600',
                 'subcat_label'          => '',
@@ -369,8 +369,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'default',
                 'isInCurrentTemplate'   => false,
             ],
-            'options_2' =>
-            [
+            'options_2'
+            => [
                 'cat'                   => 'options',
                 'subcat_name'           => '600',
                 'subcat_label'          => '',
@@ -407,8 +407,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'option_2',
                 'isInCurrentTemplate'   => false,
             ],
-            'options_3' =>
-            [
+            'options_3'
+            => [
                 'cat'                   => 'options',
                 'subcat_name'           => '600',
                 'subcat_label'          => '',
@@ -445,8 +445,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'boolean_1' =>
-            [
+            'boolean_1'
+            => [
                 'cat'                   => 'boolean',
                 'subcat_name'           => '100',
                 'subcat_label'          => '',
@@ -462,8 +462,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '0',
                 'isInCurrentTemplate'   => false,
             ],
-            'boolean_2' =>
-            [
+            'boolean_2'
+            => [
                 'cat'                   => 'boolean',
                 'subcat_name'           => '100',
                 'subcat_label'          => '',
@@ -479,8 +479,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '1',
                 'isInCurrentTemplate'   => false,
             ],
-            'boolean_3' =>
-            [
+            'boolean_3'
+            => [
                 'cat'                   => 'boolean',
                 'subcat_name'           => '100',
                 'subcat_label'          => '',
@@ -496,8 +496,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'boolean_4' =>
-            [
+            'boolean_4'
+            => [
                 'cat'                   => 'boolean',
                 'subcat_name'           => '100',
                 'subcat_label'          => '',
@@ -513,8 +513,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '0',
                 'isInCurrentTemplate'   => false,
             ],
-            'int_1' =>
-            [
+            'int_1'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '101',
                 'subcat_label'          => '',
@@ -529,8 +529,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '1',
                 'isInCurrentTemplate'   => false,
             ],
-            'int_2' =>
-            [
+            'int_2'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '101',
                 'subcat_label'          => '',
@@ -545,8 +545,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'int_3' =>
-            [
+            'int_3'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '101',
                 'subcat_label'          => '',
@@ -561,8 +561,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '-100',
                 'isInCurrentTemplate'   => false,
             ],
-            'int_4' =>
-            [
+            'int_4'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '101',
                 'subcat_label'          => '',
@@ -580,8 +580,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '2',
                 'isInCurrentTemplate'   => false,
             ],
-            'int_5' =>
-            [
+            'int_5'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '101',
                 'subcat_label'          => '',
@@ -599,8 +599,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '2',
                 'isInCurrentTemplate'   => false,
             ],
-            'int_6' =>
-            [
+            'int_6'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '101',
                 'subcat_label'          => '',
@@ -618,8 +618,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '2',
                 'isInCurrentTemplate'   => false,
             ],
-            'int_7' =>
-            [
+            'int_7'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '101',
                 'subcat_label'          => '',
@@ -637,8 +637,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '2',
                 'isInCurrentTemplate'   => false,
             ],
-            'int_8' =>
-            [
+            'int_8'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '101',
                 'subcat_label'          => '',
@@ -655,8 +655,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '2',
                 'isInCurrentTemplate'   => false,
             ],
-            'intplus_1' =>
-            [
+            'intplus_1'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '102',
                 'subcat_label'          => '',
@@ -672,8 +672,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '1',
                 'isInCurrentTemplate'   => false,
             ],
-            'intplus_2' =>
-            [
+            'intplus_2'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '102',
                 'subcat_label'          => '',
@@ -689,8 +689,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'intplus_3' =>
-            [
+            'intplus_3'
+            => [
                 'cat'                   => 'integer',
                 'subcat_name'           => '101',
                 'subcat_label'          => '',
@@ -708,8 +708,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '2',
                 'isInCurrentTemplate'   => false,
             ],
-            'compat_input_1' =>
-            [
+            'compat_input_1'
+            => [
                 'cat'                   => 'compatibility',
                 'subcat_name'           => '900',
                 'subcat_label'          => '',
@@ -724,8 +724,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'value',
                 'isInCurrentTemplate'   => false,
             ],
-            'compat_input_2' =>
-            [
+            'compat_input_2'
+            => [
                 'cat'                   => 'compatibility',
                 'subcat_name'           => '900',
                 'subcat_label'          => '',
@@ -740,8 +740,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'compat_default_1' =>
-            [
+            'compat_default_1'
+            => [
                 'cat'                   => 'compatibility',
                 'subcat_name'           => '901',
                 'subcat_label'          => '',
@@ -756,8 +756,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'value',
                 'isInCurrentTemplate'   => false,
             ],
-            'compat_default_2' =>
-            [
+            'compat_default_2'
+            => [
                 'cat'                   => 'compatibility',
                 'subcat_name'           => '901',
                 'subcat_label'          => '',
@@ -772,8 +772,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'zeroorder_input_1' =>
-            [
+            'zeroorder_input_1'
+            => [
                 'cat'                   => 'zeroindex',
                 'subcat_name'           => 'other',
                 'subcat_label'          => 'Other',
@@ -788,8 +788,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'value',
                 'isInCurrentTemplate'   => false,
             ],
-            'zeroorder_input_3' =>
-            [
+            'zeroorder_input_3'
+            => [
                 'cat'                   => 'zeroindex',
                 'subcat_name'           => 'other',
                 'subcat_label'          => 'Other',
@@ -804,8 +804,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'zeroorder_input_2' =>
-            [
+            'zeroorder_input_2'
+            => [
                 'cat'                   => 'zeroindex',
                 'subcat_name'           => 'other',
                 'subcat_label'          => 'Other',
@@ -820,8 +820,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'nested.input_1' =>
-            [
+            'nested.input_1'
+            => [
                 'cat'                   => 'nested',
                 'subcat_name'           => 'other',
                 'subcat_label'          => 'Other',
@@ -836,8 +836,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => 'aDefault',
                 'isInCurrentTemplate'   => false,
             ],
-            'nested.input_2' =>
-            [
+            'nested.input_2'
+            => [
                 'cat'                   => 'nested',
                 'subcat_name'           => 'other',
                 'subcat_label'          => 'Other',
@@ -852,8 +852,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '',
                 'isInCurrentTemplate'   => false,
             ],
-            'predefined.int_1' =>
-            [
+            'predefined.int_1'
+            => [
                 'cat'                   => 'pre defined',
                 'subcat_name'           => 'dims',
                 'subcat_label'          => '',
@@ -868,8 +868,8 @@ final class AstConstantCommentVisitorTest extends UnitTestCase
                 'default_value'         => '42',
                 'isInCurrentTemplate'   => false,
             ],
-            'predefined.boolean_1' =>
-            [
+            'predefined.boolean_1'
+            => [
                 'cat'                   => 'pre defined',
                 'subcat_name'           => 'enable',
                 'subcat_label'          => '',

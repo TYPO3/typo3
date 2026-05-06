@@ -74,23 +74,23 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     public static function translateDataProvider(): array
     {
         return [
-            'get translated key' =>
-            ['key1', 'da', 'Dansk label for key1'],
+            'get translated key'
+            => ['key1', 'da', 'Dansk label for key1'],
 
-            'fallback to English when translation is missing for key' =>
-            ['key2', 'da', 'English label for key2'],
+            'fallback to English when translation is missing for key'
+            => ['key2', 'da', 'English label for key2'],
 
-            'fallback to English for non existing language' =>
-            ['key2', 'xx', 'English label for key2'],
+            'fallback to English for non existing language'
+            => ['key2', 'xx', 'English label for key2'],
 
-            'replace placeholder with argument' =>
-            ['keyWithPlaceholder', 'default', 'English label with number 100', [100]],
+            'replace placeholder with argument'
+            => ['keyWithPlaceholder', 'default', 'English label with number 100', [100]],
 
-            'placeholder and empty arguments in default' =>
-            ['keyWithPlaceholderAndNoArguments', 'default', '%d/%m/%Y', []],
+            'placeholder and empty arguments in default'
+            => ['keyWithPlaceholderAndNoArguments', 'default', '%d/%m/%Y', []],
 
-            'placeholder and empty arguments in translation' =>
-            ['keyWithPlaceholderAndNoArguments', 'da', '%d-%m-%Y', []],
+            'placeholder and empty arguments in translation'
+            => ['keyWithPlaceholderAndNoArguments', 'da', '%d-%m-%Y', []],
         ];
     }
 

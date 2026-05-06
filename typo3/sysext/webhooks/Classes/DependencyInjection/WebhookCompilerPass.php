@@ -84,7 +84,7 @@ final class WebhookCompilerPass implements CompilerPassInterface
     /**
      * Derives the class type of the first argument of a given method.
      */
-    protected function getParameterType(string $serviceName, Definition $definition, string $method = 'createFromEvent'): ?string
+    private function getParameterType(string $serviceName, Definition $definition, string $method = 'createFromEvent'): ?string
     {
         // A Reflection exception should never actually get thrown here, but linters want a try-catch just in case.
         try {

@@ -43,7 +43,7 @@ final class SiteBaseRedirectResolverTest extends FunctionalTestCase
     {
         parent::setUp();
         // A request handler which expects a site to be found.
-        $this->siteFoundRequestHandler = new class () implements RequestHandlerInterface {
+        $this->siteFoundRequestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 $site = $request->getAttribute('site', false);

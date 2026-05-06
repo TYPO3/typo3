@@ -34,7 +34,7 @@ class MethodCallMatcherFixture
         // Match: Too many args but some could be empty arrays
         $foo->confirmMsg(...$arg1, ...$arg2, ...$arg3, ...$arg4, ...$arg5, ...$arg6);
 
-        \confirmMsg();
+        confirmMsg();
 
         // No match: Only 3 args given
         $foo->confirmMsg('arg1', 'arg2', 'arg3');

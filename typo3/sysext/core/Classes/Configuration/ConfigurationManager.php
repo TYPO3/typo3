@@ -399,10 +399,10 @@ class ConfigurationManager
         $configuration = ArrayUtility::sortByKeyRecursive($configuration);
         $result = GeneralUtility::writeFile(
             $systemSettingsFile,
-            "<?php\n" .
-                'return ' .
-                    ArrayUtility::arrayExport($configuration) .
-                ";\n",
+            "<?php\n"
+                . 'return '
+                    . ArrayUtility::arrayExport($configuration)
+                . ";\n",
             true
         );
 

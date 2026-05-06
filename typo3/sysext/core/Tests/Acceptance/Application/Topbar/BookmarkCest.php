@@ -69,8 +69,8 @@ final class BookmarkCest
 
         // @test complete test when https://forge.typo3.org/issues/75689 is fixed
         $scenario->comment(
-            'Tests for deleting the item in the list and re-adding it are missing ' .
-            'as this is currently broken in the core. See https://forge.typo3.org/issues/75689'
+            'Tests for deleting the item in the list and re-adding it are missing '
+            . 'as this is currently broken in the core. See https://forge.typo3.org/issues/75689'
         );
 
         return $I;

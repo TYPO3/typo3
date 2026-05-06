@@ -79,7 +79,7 @@ final class RedirectModuleCest
         $I->canSee('Redirect Management', 'h1');
     }
 
-    protected function possibleRedirectStatusCodes(): array
+    private function possibleRedirectStatusCodes(): array
     {
         return [
             ['code' => 301],

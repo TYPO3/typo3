@@ -101,14 +101,14 @@ class HttpUtility
      */
     public static function buildUrl(array $urlParts): string
     {
-        return (isset($urlParts['scheme']) ? $urlParts['scheme'] . '://' : '') .
-            (isset($urlParts['user']) ? $urlParts['user'] .
-            (isset($urlParts['pass']) ? ':' . $urlParts['pass'] : '') . '@' : '') .
-            ($urlParts['host'] ?? '') .
-            (isset($urlParts['port']) ? ':' . $urlParts['port'] : '') .
-            ($urlParts['path'] ?? '') .
-            (isset($urlParts['query']) ? '?' . $urlParts['query'] : '') .
-            (isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '');
+        return (isset($urlParts['scheme']) ? $urlParts['scheme'] . '://' : '')
+            . (isset($urlParts['user']) ? $urlParts['user']
+            . (isset($urlParts['pass']) ? ':' . $urlParts['pass'] : '') . '@' : '')
+            . ($urlParts['host'] ?? '')
+            . (isset($urlParts['port']) ? ':' . $urlParts['port'] : '')
+            . ($urlParts['path'] ?? '')
+            . (isset($urlParts['query']) ? '?' . $urlParts['query'] : '')
+            . (isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '');
     }
 
     /**

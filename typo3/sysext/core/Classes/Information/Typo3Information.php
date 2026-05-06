@@ -101,17 +101,17 @@ class Typo3Information
                 '</a> '
             );
         }
-        return '<a href="' . htmlspecialchars(static::URL_COMMUNITY) . '" target="_blank" rel="noreferrer">' .
-            $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.cms') . '</a>. ' .
-            $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:copyright') . ' &copy; '
-            . htmlspecialchars($this->getCopyrightYear()) . ' Kasper Sk&aring;rh&oslash;j. ' .
-            $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' ' .
-            sprintf(
+        return '<a href="' . htmlspecialchars(static::URL_COMMUNITY) . '" target="_blank" rel="noreferrer">'
+            . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.cms') . '</a>. '
+            . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:copyright') . ' &copy; '
+            . htmlspecialchars($this->getCopyrightYear()) . ' Kasper Sk&aring;rh&oslash;j. '
+            . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' '
+            . sprintf(
                 $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.trademark'),
                 '<a href="' . htmlspecialchars(static::URL_TRADEMARK) . '" target="_blank" rel="noreferrer">',
                 '</a>'
-            ) . ' ' .
-            $warrantyNote
+            ) . ' '
+            . $warrantyNote
             . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:keep.notice');
     }
 

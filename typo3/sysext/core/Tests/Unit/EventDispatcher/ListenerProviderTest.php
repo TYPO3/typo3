@@ -94,7 +94,7 @@ final class ListenerProviderTest extends UnitTestCase
     #[Test]
     public function associatesToEventParentClass($listener, ?string $method = null): void
     {
-        $extendedEvent = new class () extends \stdClass {
+        $extendedEvent = new class extends \stdClass {
             public int $invoked = 0;
         };
 
@@ -111,7 +111,7 @@ final class ListenerProviderTest extends UnitTestCase
     #[Test]
     public function associatesToImplementedInterfaces($listener, ?string $method = null): void
     {
-        $eventImplementation = new class () implements \IteratorAggregate {
+        $eventImplementation = new class implements \IteratorAggregate {
             public int $invoked = 0;
 
             public function getIterator(): \Traversable
@@ -175,7 +175,7 @@ final class ListenerProviderTest extends UnitTestCase
         return [
             [
                 // Invokable
-                'listener' => new class () {
+                'listener' => new class {
                     public function __invoke(object $event): void
                     {
                         $event->invoked = 1;
@@ -185,7 +185,7 @@ final class ListenerProviderTest extends UnitTestCase
             ],
             [
                 // Class + method
-                'listener' => new class () {
+                'listener' => new class {
                     public function onEvent(object $event): void
                     {
                         $event->invoked = 1;

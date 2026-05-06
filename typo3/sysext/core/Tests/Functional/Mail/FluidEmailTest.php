@@ -304,7 +304,7 @@ final class FluidEmailTest extends FunctionalTestCase
     #[Test]
     public function bodiesAreNotRecreatedOnMultipleEnsureValidityCalls(): void
     {
-        $subject = new class () extends FluidEmail {
+        $subject = new class extends FluidEmail {
             public int $countRenderContentCalled = 0;
 
             protected function renderContent(string $format): string
@@ -330,7 +330,7 @@ final class FluidEmailTest extends FunctionalTestCase
     #[Test]
     public function bodiesAreRecreatedOnMultipleEnsureValidityCallsWithAssignUsedInBetween(): void
     {
-        $subject = new class () extends FluidEmail {
+        $subject = new class extends FluidEmail {
             public int $countRenderContentCalled = 0;
 
             protected function renderContent(string $format): string
@@ -368,7 +368,7 @@ final class FluidEmailTest extends FunctionalTestCase
     #[Test]
     public function bodiesAreRecreatedOnMultipleEnsureValidityCallsWithAssignMultipleUsedInBetween(): void
     {
-        $subject = new class () extends FluidEmail {
+        $subject = new class extends FluidEmail {
             public int $countRenderContentCalled = 0;
 
             protected function renderContent(string $format): string
@@ -406,7 +406,7 @@ final class FluidEmailTest extends FunctionalTestCase
     #[Test]
     public function bodiesAreNotRecreatedOnMultipleEnsureValidityCallsWithSetSubjectInBetween(): void
     {
-        $subject = new class () extends FluidEmail {
+        $subject = new class extends FluidEmail {
             public int $countRenderContentCalled = 0;
 
             protected function renderContent(string $format): string
@@ -440,7 +440,7 @@ final class FluidEmailTest extends FunctionalTestCase
     #[Test]
     public function bodiesAreNotRecreatedOnMultipleEnsureValidityCallsWithAssignedValuesButManualSetTextAndHtml(): void
     {
-        $subject = new class () extends FluidEmail {
+        $subject = new class extends FluidEmail {
             public int $countRenderContentCalled = 0;
 
             protected function renderContent(string $format): string

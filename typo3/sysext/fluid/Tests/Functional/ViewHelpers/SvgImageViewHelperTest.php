@@ -502,8 +502,8 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
         foreach ($dumpTables as $dumpTable => $expectedRecords) {
             $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($dumpTable);
-            $rows =
-                $queryBuilder
+            $rows
+                = $queryBuilder
                     ->select('*')
                     ->from($dumpTable)
                     ->executeQuery()

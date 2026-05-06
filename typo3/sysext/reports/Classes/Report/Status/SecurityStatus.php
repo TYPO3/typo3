@@ -187,8 +187,8 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
         if (
-            str_contains($GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'], 'Debug') ||
-            (Environment::getContext()->isProduction() && (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] === 1)
+            str_contains($GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'], 'Debug')
+            || (Environment::getContext()->isProduction() && (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] === 1)
         ) {
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_insecure');
             $severity = ContextualFeedbackSeverity::ERROR;

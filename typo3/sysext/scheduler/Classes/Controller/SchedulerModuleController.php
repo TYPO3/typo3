@@ -59,17 +59,17 @@ use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 #[BackendController]
 final class SchedulerModuleController
 {
-    protected SchedulerManagementAction $currentAction;
+    private SchedulerManagementAction $currentAction;
 
     public function __construct(
-        protected readonly Scheduler $scheduler,
-        protected readonly TaskSerializer $taskSerializer,
-        protected readonly SchedulerTaskRepository $taskRepository,
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly Context $context,
-        protected readonly TaskService $taskService,
+        private readonly Scheduler $scheduler,
+        private readonly TaskSerializer $taskSerializer,
+        private readonly SchedulerTaskRepository $taskRepository,
+        private readonly IconFactory $iconFactory,
+        private readonly UriBuilder $uriBuilder,
+        private readonly ModuleTemplateFactory $moduleTemplateFactory,
+        private readonly Context $context,
+        private readonly TaskService $taskService,
     ) {}
 
     /**
@@ -202,7 +202,7 @@ final class SchedulerModuleController
     /**
      * Set a task to deleted.
      */
-    protected function deleteTask(ModuleTemplate $view, int $taskUid): void
+    private function deleteTask(ModuleTemplate $view, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
@@ -249,7 +249,7 @@ final class SchedulerModuleController
      * Note this doesn't actually stop the running script. It just unmark execution.
      * @todo find a way to really kill the running task.
      */
-    protected function stopTask(ModuleTemplate $view, int $taskUid): void
+    private function stopTask(ModuleTemplate $view, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         if (!$taskUid > 0) {
@@ -280,7 +280,7 @@ final class SchedulerModuleController
     /**
      * Toggle the disabled state of a task and register for next execution if task is of type "single execution".
      */
-    protected function toggleDisabledFlag(ModuleTemplate $view, int $taskUid): void
+    private function toggleDisabledFlag(ModuleTemplate $view, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         if (!$taskUid > 0) {
@@ -316,7 +316,7 @@ final class SchedulerModuleController
     /**
      * Render add task form.
      */
-    protected function renderAddTaskFormView(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
+    private function renderAddTaskFormView(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $registeredClasses = $this->taskService->getAvailableTaskTypes();
@@ -393,7 +393,7 @@ final class SchedulerModuleController
     /**
      * Render edit task form.
      */
-    protected function renderEditTaskFormView(ModuleTemplate $view, ServerRequestInterface $request, ?int $taskUid = null): ResponseInterface
+    private function renderEditTaskFormView(ModuleTemplate $view, ServerRequestInterface $request, ?int $taskUid = null): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $registeredClasses = $this->taskService->getAvailableTaskTypes();
@@ -504,7 +504,7 @@ final class SchedulerModuleController
     /**
      * Execute a list of tasks.
      */
-    protected function executeTasks(ModuleTemplate $view, string $taskUids): void
+    private function executeTasks(ModuleTemplate $view, string $taskUids): void
     {
         $taskUids = GeneralUtility::intExplode(',', $taskUids, true);
         if (empty($taskUids)) {
@@ -535,7 +535,7 @@ final class SchedulerModuleController
     /**
      * Schedule selected tasks to be executed on next cron run
      */
-    protected function scheduleCrons(ModuleTemplate $view, string $taskUids): void
+    private function scheduleCrons(ModuleTemplate $view, string $taskUids): void
     {
         $taskUids = GeneralUtility::intExplode(',', $taskUids, true);
         if (empty($taskUids)) {
@@ -566,7 +566,7 @@ final class SchedulerModuleController
     /**
      * Assemble display of list of scheduled tasks
      */
-    protected function renderListTasksView(ModuleTemplate $view, ModuleData $moduleData): ResponseInterface
+    private function renderListTasksView(ModuleTemplate $view, ModuleData $moduleData): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $data = $this->taskRepository->getGroupedTasks();
@@ -600,7 +600,7 @@ final class SchedulerModuleController
         return $view->renderResponse('ListTasks');
     }
 
-    protected function isSubmittedTaskDataValid(ModuleTemplate $view, ServerRequestInterface $request, bool $isNewTask): bool
+    private function isSubmittedTaskDataValid(ModuleTemplate $view, ServerRequestInterface $request, bool $isNewTask): bool
     {
         $languageService = $this->getLanguageService();
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
@@ -679,7 +679,7 @@ final class SchedulerModuleController
     /**
      * Create a new task and persist. Return its new uid.
      */
-    protected function createTask(ModuleTemplate $view, ServerRequestInterface $request): int
+    private function createTask(ModuleTemplate $view, ServerRequestInterface $request): int
     {
         /** @var AbstractTask $task */
         $task = GeneralUtility::makeInstance($request->getParsedBody()['tx_scheduler']['class']);
@@ -702,7 +702,7 @@ final class SchedulerModuleController
     /**
      * Update data of an existing task.
      */
-    protected function updateTask(ModuleTemplate $view, ServerRequestInterface $request): void
+    private function updateTask(ModuleTemplate $view, ServerRequestInterface $request): void
     {
         $task = $this->taskRepository->findByUid((int)$request->getParsedBody()['tx_scheduler']['uid']);
         $task = $this->setTaskDataFromRequest($task, $request);
@@ -718,7 +718,7 @@ final class SchedulerModuleController
         $this->addMessage($view, $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.updateSuccess'));
     }
 
-    protected function setTaskDataFromRequest(AbstractTask $task, ServerRequestInterface $request): AbstractTask
+    private function setTaskDataFromRequest(AbstractTask $task, ServerRequestInterface $request): AbstractTask
     {
         $parsedBody = $request->getParsedBody()['tx_scheduler'];
         if ((int)$parsedBody['type'] === AbstractTask::TYPE_SINGLE) {
@@ -751,7 +751,7 @@ final class SchedulerModuleController
      *
      * @throws InvalidDateException
      */
-    protected function getTimestampFromDateString(string $input): int
+    private function getTimestampFromDateString(string $input): int
     {
         if ($input === '') {
             return 0;
@@ -770,7 +770,7 @@ final class SchedulerModuleController
         return $value;
     }
 
-    protected function formatTimestampForDatePicker(int $timestamp): string
+    private function formatTimestampForDatePicker(int $timestamp): string
     {
         if ($timestamp === 0) {
             return '';
@@ -784,7 +784,7 @@ final class SchedulerModuleController
     /**
      * Fetch list of all task groups.
      */
-    protected function getRegisteredTaskGroups(): array
+    private function getRegisteredTaskGroups(): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
         $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
@@ -799,7 +799,7 @@ final class SchedulerModuleController
     /**
      * Prepared additional fields from field providers for rendering.
      */
-    protected function addPreparedAdditionalFields(array $currentAdditionalFields, array $newAdditionalFields, string $class): array
+    private function addPreparedAdditionalFields(array $currentAdditionalFields, array $newAdditionalFields, string $class): array
     {
         foreach ($newAdditionalFields as $fieldID => $fieldInfo) {
             $currentAdditionalFields[] = [
@@ -820,7 +820,7 @@ final class SchedulerModuleController
         return $currentAdditionalFields;
     }
 
-    protected function addDocHeaderReloadButton(ModuleTemplate $moduleTemplate): void
+    private function addDocHeaderReloadButton(ModuleTemplate $moduleTemplate): void
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -831,7 +831,7 @@ final class SchedulerModuleController
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
     }
 
-    protected function addDocHeaderAddTaskButton(ModuleTemplate $moduleTemplate): void
+    private function addDocHeaderAddTaskButton(ModuleTemplate $moduleTemplate): void
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -857,7 +857,7 @@ final class SchedulerModuleController
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
     }
 
-    protected function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate): void
+    private function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate): void
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -878,7 +878,7 @@ final class SchedulerModuleController
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
     }
 
-    protected function addDocHeaderDeleteButton(ModuleTemplate $moduleTemplate, int $taskUid): void
+    private function addDocHeaderDeleteButton(ModuleTemplate $moduleTemplate, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -899,7 +899,7 @@ final class SchedulerModuleController
         $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 6);
     }
 
-    protected function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name, string $action = '', int $taskUid = 0): void
+    private function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name, string $action = '', int $taskUid = 0): void
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortcutArguments = [];
@@ -916,7 +916,7 @@ final class SchedulerModuleController
         $buttonBar->addButton($shortcutButton);
     }
 
-    protected function getHumanReadableTaskName(AbstractTask $task): string
+    private function getHumanReadableTaskName(AbstractTask $task): string
     {
         $class = get_class($task);
         $registeredClasses = $this->taskService->getAvailableTaskTypes();
@@ -929,7 +929,7 @@ final class SchedulerModuleController
     /**
      * Add a flash message to the flash message queue of this module.
      */
-    protected function addMessage(ModuleTemplate $moduleTemplate, string $message, ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
+    private function addMessage(ModuleTemplate $moduleTemplate, string $message, ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK): void
     {
         $moduleTemplate->addFlashMessage($message, '', $severity);
     }
@@ -969,12 +969,12 @@ final class SchedulerModuleController
             ->executeStatement();
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

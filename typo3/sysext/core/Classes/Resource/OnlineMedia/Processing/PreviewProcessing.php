@@ -31,9 +31,9 @@ use TYPO3\CMS\Core\Resource\Processing\TaskInterface;
 final class PreviewProcessing implements ProcessorInterface
 {
     public function __construct(
-        protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly LocalImageProcessor $localImageProcessor,
+        private readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LocalImageProcessor $localImageProcessor,
     ) {}
 
     public function canProcessTask(TaskInterface $task): bool
@@ -60,7 +60,7 @@ final class PreviewProcessing implements ProcessorInterface
         );
     }
 
-    protected function getPreviewImageFromOnlineMedia(File $file): string
+    private function getPreviewImageFromOnlineMedia(File $file): string
     {
         $onlineMediaHelper = $this->onlineMediaHelperRegistry->getOnlineMediaHelper($file);
         $previewImage = $onlineMediaHelper->getPreviewImage($file);

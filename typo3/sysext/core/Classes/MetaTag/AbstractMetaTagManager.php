@@ -125,8 +125,8 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
                     return;
                 }
 
-                if (isset($this->handledProperties[$property]['allowMultipleOccurrences']) &&
-                    (bool)$this->handledProperties[$property]['allowMultipleOccurrences']
+                if (isset($this->handledProperties[$property]['allowMultipleOccurrences'])
+                    && (bool)$this->handledProperties[$property]['allowMultipleOccurrences']
                 ) {
                     $this->properties[$property][] = ['content' => $content, 'subProperties' => $subPropertiesArray];
                 }
@@ -140,8 +140,8 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
                 foreach ((array)($handledPropertyConfig['allowedSubProperties'] ?? []) as $allowedSubProperty => $allowedSubPropertyConfig) {
                     $propertyKey = is_array($allowedSubPropertyConfig) ? $allowedSubProperty : $allowedSubPropertyConfig;
 
-                    if ($property !== $handledProperty . $this->subPropertySeparator . $propertyKey ||
-                        !isset($this->properties[$handledProperty])
+                    if ($property !== $handledProperty . $this->subPropertySeparator . $propertyKey
+                        || !isset($this->properties[$handledProperty])
                     ) {
                         continue;
                     }
@@ -158,9 +158,9 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
                             return;
                         }
 
-                        if (is_array($allowedSubPropertyConfig) &&
-                            isset($allowedSubPropertyConfig['allowMultipleOccurrences']) &&
-                            (bool)$allowedSubPropertyConfig['allowMultipleOccurrences']
+                        if (is_array($allowedSubPropertyConfig)
+                            && isset($allowedSubPropertyConfig['allowMultipleOccurrences'])
+                            && (bool)$allowedSubPropertyConfig['allowMultipleOccurrences']
                         ) {
                             $this->properties[$handledProperty][$lastIndex]['subProperties'][$propertyKey][] = $content;
                         }
@@ -227,18 +227,18 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
 
         if ($nameAttribute && $contentAttribute) {
             foreach ($this->getProperty($property) as $propertyItem) {
-                $metaTags[] = '<meta ' .
-                    htmlspecialchars($nameAttribute) . '="' . htmlspecialchars($property) . '" ' .
-                    htmlspecialchars($contentAttribute) . '="' . htmlspecialchars($propertyItem['content']) . '"' . $endingSlash . '>';
+                $metaTags[] = '<meta '
+                    . htmlspecialchars($nameAttribute) . '="' . htmlspecialchars($property) . '" '
+                    . htmlspecialchars($contentAttribute) . '="' . htmlspecialchars($propertyItem['content']) . '"' . $endingSlash . '>';
 
                 if (!count($propertyItem['subProperties'])) {
                     continue;
                 }
                 foreach ($propertyItem['subProperties'] as $subProperty => $subPropertyItems) {
                     foreach ($subPropertyItems as $subPropertyItem) {
-                        $metaTags[] = '<meta ' .
-                            htmlspecialchars($nameAttribute) . '="' . htmlspecialchars($property . $this->subPropertySeparator . $subProperty) . '" ' .
-                            htmlspecialchars($contentAttribute) . '="' . htmlspecialchars((string)$subPropertyItem) . '"' . $endingSlash . '>';
+                        $metaTags[] = '<meta '
+                            . htmlspecialchars($nameAttribute) . '="' . htmlspecialchars($property . $this->subPropertySeparator . $subProperty) . '" '
+                            . htmlspecialchars($contentAttribute) . '="' . htmlspecialchars((string)$subPropertyItem) . '"' . $endingSlash . '>';
                     }
                 }
             }

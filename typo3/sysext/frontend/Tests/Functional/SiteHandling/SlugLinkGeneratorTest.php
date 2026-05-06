@@ -653,8 +653,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ],
-                    1 =>
-                        [
+                    1
+                        => [
                             'title' => 'Announcements & News',
                             'link' => '/news',
                             'target' => '',

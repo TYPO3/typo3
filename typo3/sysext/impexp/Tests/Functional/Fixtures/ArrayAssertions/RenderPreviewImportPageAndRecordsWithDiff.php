@@ -16,10 +16,10 @@
 return [
     'update' => false,
     'showDiff' => true,
-    'insidePageTree' =>
-    [
-        0 =>
-        [
+    'insidePageTree'
+    => [
+        0
+        => [
             'ref' => 'pages:0',
             'type' => 'record',
             'msg' => '',
@@ -35,8 +35,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        1 =>
-        [
+        1
+        => [
             'ref' => 'sys_file:1',
             'type' => 'record',
             'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
@@ -52,8 +52,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        2 =>
-        [
+        2
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -67,8 +67,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        3 =>
-        [
+        3
+        => [
             'ref' => 'sys_file:2',
             'type' => 'record',
             'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
@@ -90,8 +90,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        4 =>
-        [
+        4
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -105,8 +105,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        5 =>
-        [
+        5
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'record',
             'msg' => 'TABLE "sys_file_storage" will be inserted on ROOT LEVEL! ',
@@ -122,8 +122,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        6 =>
-        [
+        6
+        => [
             'ref' => 'tt_content:1',
             'type' => 'record',
             'msg' => '',
@@ -144,8 +144,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        7 =>
-        [
+        7
+        => [
             'ref' => 'sys_file_reference:1',
             'type' => 'rel',
             'msg' => '',
@@ -159,8 +159,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        8 =>
-        [
+        8
+        => [
             'ref' => 'sys_file:1',
             'type' => 'rel',
             'msg' => '',
@@ -174,8 +174,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        9 =>
-        [
+        9
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -189,8 +189,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        10 =>
-        [
+        10
+        => [
             'ref' => 'tt_content:2',
             'type' => 'record',
             'msg' => '',
@@ -211,8 +211,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        11 =>
-        [
+        11
+        => [
             'ref' => 'sys_file_reference:2',
             'type' => 'rel',
             'msg' => '',
@@ -226,8 +226,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        12 =>
-        [
+        12
+        => [
             'ref' => 'sys_file:2',
             'type' => 'rel',
             'msg' => '',
@@ -241,8 +241,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        13 =>
-        [
+        13
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -256,8 +256,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        14 =>
-        [
+        14
+        => [
             'ref' => 'tt_content:3',
             'type' => 'record',
             'msg' => '',
@@ -273,8 +273,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        15 =>
-        [
+        15
+        => [
             'ref' => 'sys_file_reference:3',
             'type' => 'rel',
             'msg' => '',
@@ -288,8 +288,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        16 =>
-        [
+        16
+        => [
             'ref' => 'sys_file:2',
             'type' => 'rel',
             'msg' => '',
@@ -303,8 +303,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        17 =>
-        [
+        17
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -318,8 +318,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        18 =>
-        [
+        18
+        => [
             'ref' => 'sys_file_reference:1',
             'type' => 'record',
             'msg' => '',
@@ -335,8 +335,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        19 =>
-        [
+        19
+        => [
             'ref' => 'sys_file:1',
             'type' => 'rel',
             'msg' => '',
@@ -350,8 +350,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        20 =>
-        [
+        20
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -365,8 +365,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        21 =>
-        [
+        21
+        => [
             'ref' => 'sys_file_reference:2',
             'type' => 'record',
             'msg' => '',
@@ -382,8 +382,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        22 =>
-        [
+        22
+        => [
             'ref' => 'sys_file:2',
             'type' => 'rel',
             'msg' => '',
@@ -397,8 +397,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        23 =>
-        [
+        23
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -412,8 +412,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        24 =>
-        [
+        24
+        => [
             'ref' => 'sys_file_reference:3',
             'type' => 'record',
             'msg' => '',
@@ -429,8 +429,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        25 =>
-        [
+        25
+        => [
             'ref' => 'sys_file:2',
             'type' => 'rel',
             'msg' => '',
@@ -444,8 +444,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        26 =>
-        [
+        26
+        => [
             'ref' => 'sys_file_storage:1',
             'type' => 'rel',
             'msg' => '',
@@ -459,8 +459,8 @@ return [
             'controls' => '',
             'message' => '',
         ],
-        27 =>
-        [
+        27
+        => [
             'ref' => 'pages:1',
             'type' => 'record',
             'msg' => '',
@@ -478,7 +478,7 @@ Match',
             'message' => '',
         ],
     ],
-    'outsidePageTree' =>
-    [
+    'outsidePageTree'
+    => [
     ],
 ];

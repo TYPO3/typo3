@@ -22,12 +22,12 @@ final class JavaScriptItems implements \JsonSerializable
     /**
      * @var list<array>
      */
-    protected array $globalAssignments = [];
+    private array $globalAssignments = [];
 
     /**
      * @var list<JavaScriptModuleInstruction>
      */
-    protected array $javaScriptModuleInstructions = [];
+    private array $javaScriptModuleInstructions = [];
 
     public function jsonSerialize(): array
     {

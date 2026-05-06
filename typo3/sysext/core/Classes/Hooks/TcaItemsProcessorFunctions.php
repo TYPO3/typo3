@@ -418,8 +418,8 @@ readonly class TcaItemsProcessorFunctions
                     continue;
                 }
                 // Get Human Readable names of fields and table:
-                $allowOptions[$table . ':' . $field]['tableFieldLabel'] =
-                    $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') . ': '
+                $allowOptions[$table . ':' . $field]['tableFieldLabel']
+                    = $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') . ': '
                     . $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label'] ?? '');
 
                 foreach ($fieldConfig['items'] as $item) {

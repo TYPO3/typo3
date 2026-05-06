@@ -56,7 +56,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
             $this->get(FlashMessageService::class),
         );
         $this->request = new ServerRequest('/some/uri');
-        $this->requestHandler = new class () implements RequestHandlerInterface {
+        $this->requestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 // In case the module is valid, it is added to the request, together with the

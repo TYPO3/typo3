@@ -118,8 +118,8 @@ final class TwitterCardMetaTagManagerTest extends UnitTestCase
                         ],
                     ],
                 ],
-                '<meta name="twitter:image" content="/path/to/image">' . PHP_EOL .
-                '<meta name="twitter:image:alt" content="Alternative title">',
+                '<meta name="twitter:image" content="/path/to/image">' . PHP_EOL
+                . '<meta name="twitter:image:alt" content="Alternative title">',
             ],
         ];
     }
@@ -180,8 +180,8 @@ final class TwitterCardMetaTagManagerTest extends UnitTestCase
             );
         }
 
-        $expected = '<meta name="twitter:image" content="/path/to/image">' . PHP_EOL .
-            '<meta name="twitter:title" content="This is the new title">';
+        $expected = '<meta name="twitter:image" content="/path/to/image">' . PHP_EOL
+            . '<meta name="twitter:title" content="This is the new title">';
 
         self::assertEquals($expected, $manager->renderAllProperties());
     }

@@ -126,7 +126,7 @@ class ImportMap
 
     public function render(
         string $urlPrefix,
-        null|string|ConsumableNonce $nonce
+        string|ConsumableNonce|null $nonce
     ): string {
         if (count($this->extensionsToLoad) === 0 || count($this->getImportMaps()) === 0) {
             return '';

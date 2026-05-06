@@ -69,12 +69,12 @@ class ExportCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 sprintf(
-                    'The depth of the exported page tree. ' .
-                    '"%d": "Records on this page", ' .
-                    '"0": "This page", ' .
-                    '"1": "1 level down", ' .
-                    '.. ' .
-                    '"%d": "Infinite levels".',
+                    'The depth of the exported page tree. '
+                    . '"%d": "Records on this page", '
+                    . '"0": "This page", '
+                    . '"1": "1 level down", '
+                    . '.. '
+                    . '"%d": "Infinite levels".',
                     Export::LEVELS_RECORDS_ON_THIS_PAGE,
                     Export::LEVELS_INFINITE
                 ),

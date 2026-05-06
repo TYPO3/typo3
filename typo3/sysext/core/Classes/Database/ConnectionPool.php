@@ -155,8 +155,8 @@ class ConnectionPool
         }
         if (!is_a($connectionParams['wrapperClass'], Connection::class, true)) {
             throw new \UnexpectedValueException(
-                'The "wrapperClass" for the connection name "' . $connectionName .
-                '" needs to be a subclass of "' . Connection::class . '".',
+                'The "wrapperClass" for the connection name "' . $connectionName
+                . '" needs to be a subclass of "' . Connection::class . '".',
                 1459422968
             );
         }

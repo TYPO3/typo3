@@ -34,7 +34,7 @@ final class TimeTrackerInitialization implements MiddlewareInterface
 {
     private bool $isDebugEnabledInTypoScriptConfig = false;
 
-    public function __construct(protected readonly TimeTracker $timeTracker) {}
+    public function __construct(private readonly TimeTracker $timeTracker) {}
 
     /**
      * Starting time tracking (by setting up a singleton object)
@@ -73,13 +73,13 @@ final class TimeTrackerInitialization implements MiddlewareInterface
         }
     }
 
-    protected function isBackendUserCookieSet(ServerRequestInterface $request): bool
+    private function isBackendUserCookieSet(ServerRequestInterface $request): bool
     {
         $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
         return !empty($request->getCookieParams()[$configuredCookieName]);
     }
 
-    protected function isDebugModeEnabled(): bool
+    private function isDebugModeEnabled(): bool
     {
         if ($this->isDebugEnabledInTypoScriptConfig) {
             return true;

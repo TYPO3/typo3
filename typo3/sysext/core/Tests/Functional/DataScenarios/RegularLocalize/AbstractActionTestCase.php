@@ -133,7 +133,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             ->fetchAssociative();
         // cleanup some fields from record
         unset($record['uid'], $record['pid'], $record['l10n_diffsource']);
-        $record['l10n_state'] = \json_decode($record['l10n_state']);
+        $record['l10n_state'] = json_decode($record['l10n_state']);
         // modify record
         $modifiedRecord = array_replace($record, ['title' => 'Testing #2']);
         $this->actionService->modifyRecord(self::TABLE_Page, $this->recordIds['localizedPageId'], $modifiedRecord);

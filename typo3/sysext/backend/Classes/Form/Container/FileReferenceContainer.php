@@ -243,12 +243,12 @@ class FileReferenceContainer extends AbstractContainer
                         // Only use a thumbnail if the processing process was successful by checking if image width is set
                         if ($processedImage->getProperty('width')) {
                             $imageUrl = $processedImage->getPublicUrl() ?? '';
-                            $thumbnail = '<img src="' . htmlspecialchars($imageUrl) . '" ' .
-                                'width="' . $processedImage->getProperty('width') . '" ' .
-                                'height="' . $processedImage->getProperty('height') . '" ' .
-                                'alt="" ' .
-                                'title="' . htmlspecialchars($altText) . '" ' .
-                                'loading="lazy">';
+                            $thumbnail = '<img src="' . htmlspecialchars($imageUrl) . '" '
+                                . 'width="' . $processedImage->getProperty('width') . '" '
+                                . 'height="' . $processedImage->getProperty('height') . '" '
+                                . 'alt="" '
+                                . 'title="' . htmlspecialchars($altText) . '" '
+                                . 'loading="lazy">';
                         }
                     }
                 } catch (\InvalidArgumentException $e) {

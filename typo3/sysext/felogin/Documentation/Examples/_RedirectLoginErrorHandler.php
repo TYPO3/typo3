@@ -134,7 +134,7 @@ final class RedirectLoginErrorHandler implements PageErrorHandlerInterface
         return $this->isSimulatedBackendGroup();
     }
 
-    protected function isSimulatedBackendGroup(): bool
+    private function isSimulatedBackendGroup(): bool
     {
         if (!$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn')) {
             return false;

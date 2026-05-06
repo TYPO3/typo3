@@ -29,7 +29,7 @@ use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
  */
 final class IncrementHitCount
 {
-    protected Features $features;
+    private Features $features;
 
     public function __construct(Features $features)
     {

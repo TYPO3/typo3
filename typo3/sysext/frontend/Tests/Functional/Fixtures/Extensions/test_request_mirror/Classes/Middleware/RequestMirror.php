@@ -35,7 +35,7 @@ class RequestMirror implements MiddlewareInterface
         return GeneralUtility::makeInstance(ResponseFactoryInterface::class)
             ->createResponse(200, '')
             ->withHeader('Content-type', 'application/json')
-            ->withBody(GeneralUtility::makeInstance(StreamFactoryInterface::class)->createStream(\json_encode(
+            ->withBody(GeneralUtility::makeInstance(StreamFactoryInterface::class)->createStream(json_encode(
                 [
                     'uri' => (string)$request->getUri(),
                     'method' => $request->getMethod(),

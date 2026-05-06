@@ -26,7 +26,7 @@ final readonly class SchemaCollection implements \ArrayAccess, \IteratorAggregat
         /**
          * @var array<string, SchemaInterface>
          */
-        protected array $items
+        private array $items
     ) {}
 
     public function offsetExists(mixed $offset): bool

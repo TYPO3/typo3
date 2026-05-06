@@ -240,12 +240,12 @@ class PageInformationController extends InfoModuleController
                             $f2 = substr($field, 6);
                             if ($this->tcaSchemaFactory->has($f2)) {
                                 $schema = $this->tcaSchemaFactory->get($f2);
-                                $headerCells[$field] = '&nbsp;' .
-                                    '<span title="' .
-                                    htmlspecialchars($schema->getTitle($lang->sL(...)) ?: $f2) .
-                                    '">' .
-                                    $this->iconFactory->getIconForRecord($f2, [], IconSize::SMALL)->render() .
-                                    '</span>';
+                                $headerCells[$field] = '&nbsp;'
+                                    . '<span title="'
+                                    . htmlspecialchars($schema->getTitle($lang->sL(...)) ?: $f2)
+                                    . '">'
+                                    . $this->iconFactory->getIconForRecord($f2, [], IconSize::SMALL)->render()
+                                    . '</span>';
                             }
                         } else {
                             $headerCells[$field] = $editButton . '&nbsp;<strong>'
@@ -394,18 +394,18 @@ class PageInformationController extends InfoModuleController
                         $attributes = PreviewUriBuilder::create($row)
                             ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
                             ->serializeDispatcherAttributes();
-                        $editButton =
-                            '<button ' . ($attributes ?? 'disabled="true"') . ' class="btn btn-default" title="' .
-                            htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
-                            $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render() .
-                            '</button>';
+                        $editButton
+                            = '<button ' . ($attributes ?? 'disabled="true"') . ' class="btn btn-default" title="'
+                            . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">'
+                            . $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render()
+                            . '</button>';
 
                         if ($this->getBackendUser()->check('tables_modify', 'pages')) {
-                            $editButton .=
-                                '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' .
-                                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editDefaultLanguagePage')) . '">' .
-                                $this->iconFactory->getIcon('actions-page-open', IconSize::SMALL)->render() .
-                                '</a>';
+                            $editButton
+                                .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="'
+                                . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editDefaultLanguagePage')) . '">'
+                                . $this->iconFactory->getIcon('actions-page-open', IconSize::SMALL)->render()
+                                . '</a>';
                         }
                     }
                     // Since the uid is overwritten with the edit button markup we need to store

@@ -131,7 +131,7 @@ final readonly class PageInformationFactory
      * @throws PageInformationCreationFailedException
      * @throws StatusException
      */
-    protected function setPageAndRootline(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
+    private function setPageAndRootline(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
     {
         $id = $pageInformation->getId();
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
@@ -283,7 +283,7 @@ final readonly class PageInformationFactory
      * @throws PageInformationCreationFailedException
      * @throws StatusException
      */
-    protected function settingLanguage(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
+    private function settingLanguage(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
     {
         $site = $request->getAttribute('site');
         $language = $request->getAttribute('language', $site->getDefaultLanguage());
@@ -395,7 +395,7 @@ final readonly class PageInformationFactory
      * @throws PageInformationCreationFailedException
      * @throws StatusException
      */
-    protected function setContentFromPid(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
+    private function setContentFromPid(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
     {
         $contentFromPid = (int)($pageInformation->getPageRecord()['content_from_pid'] ?? 0);
         if ($contentFromPid === 0) {
@@ -415,7 +415,7 @@ final readonly class PageInformationFactory
     /**
      * Resolve the selected backend layout for the current page and add it to the page information
      */
-    protected function setPageLayout(PageInformation $pageInformation): PageInformation
+    private function setPageLayout(PageInformation $pageInformation): PageInformation
     {
         $pageLayout = $this->pageLayoutResolver->getLayoutForPage(
             $pageInformation->getPageRecord(),
@@ -440,7 +440,7 @@ final readonly class PageInformationFactory
      * @throws PageInformationCreationFailedException
      * @throws StatusException
      */
-    protected function checkRootlineForIncludeSection(ServerRequestInterface $request, PageInformation $pageInformation): void
+    private function checkRootlineForIncludeSection(ServerRequestInterface $request, PageInformation $pageInformation): void
     {
         $rootLine = $pageInformation->getRootLine();
         for ($a = 0; $a < count($rootLine); $a++) {
@@ -493,7 +493,7 @@ final readonly class PageInformationFactory
      * @throws PageInformationCreationFailedException
      * @throws StatusException
      */
-    protected function checkCrossDomainWithDirectId(ServerRequestInterface $request, PageInformation $pageInformation): void
+    private function checkCrossDomainWithDirectId(ServerRequestInterface $request, PageInformation $pageInformation): void
     {
         $directlyRequestedId = (int)($request->getQueryParams()['id'] ?? 0);
         $shortcutId = (int)($pageInformation->getOriginalShortcutPageRecord()['uid'] ?? 0);
@@ -524,7 +524,7 @@ final readonly class PageInformationFactory
      * @throws PageInformationCreationFailedException
      * @throws StatusException
      */
-    protected function checkBackendUserAccess(ServerRequestInterface $request, PageInformation $pageInformation): void
+    private function checkBackendUserAccess(ServerRequestInterface $request, PageInformation $pageInformation): void
     {
         // No backend user was logged in, nothing to check
         if (!$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
@@ -559,7 +559,7 @@ final readonly class PageInformationFactory
      * @throws PageInformationCreationFailedException
      * @throws StatusException
      */
-    protected function setSysTemplateRows(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
+    private function setSysTemplateRows(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
     {
         $site = $request->getAttribute('site');
         $rootLine = $pageInformation->getRootLine();
@@ -582,7 +582,7 @@ final readonly class PageInformationFactory
     /**
      * Calculate "local" rootLine that stops at first root=1 template.
      */
-    protected function setLocalRootLine(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
+    private function setLocalRootLine(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
     {
         $site = $request->getAttribute('site');
         $sysTemplateRows = $pageInformation->getSysTemplateRows();
@@ -608,7 +608,7 @@ final readonly class PageInformationFactory
      * @throws PageInformationCreationFailedException
      * @throws StatusException
      */
-    protected function getRootlineOrThrow(ServerRequestInterface $request, int $pageId, string $mountPoint): array
+    private function getRootlineOrThrow(ServerRequestInterface $request, int $pageId, string $mountPoint): array
     {
         $rootLine = [];
         try {
@@ -640,7 +640,7 @@ final readonly class PageInformationFactory
         }
     }
 
-    protected function getBackendUser(): ?FrontendBackendUserAuthentication
+    private function getBackendUser(): ?FrontendBackendUserAuthentication
     {
         return $GLOBALS['BE_USER'] ?? null;
     }

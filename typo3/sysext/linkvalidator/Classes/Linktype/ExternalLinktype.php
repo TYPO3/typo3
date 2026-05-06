@@ -211,7 +211,7 @@ class ExternalLinktype extends AbstractLinktype
             $this->errorParams['errorType'] = 'tooManyRedirects';
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
-        } catch (ClientException | ServerException $e) {
+        } catch (ClientException|ServerException $e) {
             // ClientException - A GuzzleHttp\Exception\ClientException is thrown for 400 level errors if the http_errors request option is set to true.
             // ServerException - A GuzzleHttp\Exception\ServerException is thrown for 500 level errors if the http_errors request option is set to true.
             if ($e->hasResponse()) {
@@ -222,7 +222,7 @@ class ExternalLinktype extends AbstractLinktype
             }
             $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
-        } catch (RequestException | ConnectException $e) {
+        } catch (RequestException|ConnectException $e) {
             // RequestException - In the event of a networking error (connection timeout, DNS errors, etc.), a GuzzleHttp\Exception\RequestException is thrown.
             // Catching this exception will catch any exception that can be thrown while transferring requests.
             // ConnectException - A GuzzleHttp\Exception\ConnectException exception is thrown in the event of a networking error.
@@ -363,7 +363,7 @@ class ExternalLinktype extends AbstractLinktype
                     $parts['host'] = $newDomain;
                     $url = HttpUtility::buildUrl($parts);
                 }
-            } catch (\Exception | \Throwable $e) {
+            } catch (\Exception|\Throwable $e) {
                 // ignore error and proceed with link checking
             }
         }

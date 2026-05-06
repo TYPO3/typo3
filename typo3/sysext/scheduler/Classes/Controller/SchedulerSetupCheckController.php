@@ -106,7 +106,7 @@ final class SchedulerSetupCheckController
         return $view->renderResponse('CheckScreen');
     }
 
-    protected function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name): void
+    private function addDocHeaderShortcutButton(ModuleTemplate $moduleTemplate, string $name): void
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -133,7 +133,7 @@ final class SchedulerSetupCheckController
         return sprintf('%s/%s/typo3', getenv('TYPO3_PATH_COMPOSER_ROOT'), $binDir);
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

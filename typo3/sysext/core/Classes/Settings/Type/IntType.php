@@ -44,13 +44,13 @@ readonly class IntType implements SettingsTypeInterface, SettingsTypeOptionAware
         }
 
         // Check optional constraints
-        if (array_key_exists('min', $definition->options) &&
-            $intValue < $definition->options['min']
+        if (array_key_exists('min', $definition->options)
+            && $intValue < $definition->options['min']
         ) {
             return false;
         }
-        if (array_key_exists('max', $definition->options) &&
-            $intValue > $definition->options['max']
+        if (array_key_exists('max', $definition->options)
+            && $intValue > $definition->options['max']
         ) {
             return false;
         }

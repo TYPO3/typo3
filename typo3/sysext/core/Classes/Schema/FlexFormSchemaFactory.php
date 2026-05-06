@@ -35,8 +35,8 @@ use TYPO3\CMS\Core\Schema\Struct\FlexSheet;
 final readonly class FlexFormSchemaFactory
 {
     public function __construct(
-        protected FlexFormTools $flexFormTools,
-        protected FieldTypeFactory $fieldTypeFactory
+        private FlexFormTools $flexFormTools,
+        private FieldTypeFactory $fieldTypeFactory
     ) {}
 
     /**

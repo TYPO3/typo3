@@ -121,12 +121,12 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
             $expectedTree,
         ];
 
-        $typoScript = "[GLOBAL]\n" .
-            "foo = fooValue\n" .
-            "[END]\n" .
-            "bar = barValue\n" .
-            "[GLOBAL]\n" .
-            "[END]\n";
+        $typoScript = "[GLOBAL]\n"
+            . "foo = fooValue\n"
+            . "[END]\n"
+            . "bar = barValue\n"
+            . "[GLOBAL]\n"
+            . "[END]\n";
         $typoScriptLineStream = (new LosslessTokenizer())->tokenize($typoScript);
         $typoScriptLineStreamArray = iterator_to_array($typoScriptLineStream->getNextLine());
         $tree = new FileInclude();
@@ -165,8 +165,8 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
             $expectedTree,
         ];
 
-        $typoScript = "[foo = bar]\n" .
-            'foo';
+        $typoScript = "[foo = bar]\n"
+            . 'foo';
         $typoScriptLineStream = (new LosslessTokenizer())->tokenize($typoScript);
         $typoScriptLineStreamArray = iterator_to_array($typoScriptLineStream->getNextLine());
         $tree = new FileInclude();
@@ -191,10 +191,10 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
             $expectedTree,
         ];
 
-        $typoScript = "[foo = bar]\n" .
-            "foo = fooValue\n" .
-            "[END]\n" .
-            'bar = barValue';
+        $typoScript = "[foo = bar]\n"
+            . "foo = fooValue\n"
+            . "[END]\n"
+            . 'bar = barValue';
         $typoScriptLineStream = (new LosslessTokenizer())->tokenize($typoScript);
         $typoScriptLineStreamArray = iterator_to_array($typoScriptLineStream->getNextLine());
         $tree = new FileInclude();
@@ -227,10 +227,10 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
             $expectedTree,
         ];
 
-        $typoScript = "[foo = bar]\n" .
-            "foo\n" .
-            "[GLOBAL]\n" .
-            'bar';
+        $typoScript = "[foo = bar]\n"
+            . "foo\n"
+            . "[GLOBAL]\n"
+            . 'bar';
         $typoScriptLineStream = (new LosslessTokenizer())->tokenize($typoScript);
         $typoScriptLineStreamArray = iterator_to_array($typoScriptLineStream->getNextLine());
         $tree = new FileInclude();
@@ -263,12 +263,12 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
             $expectedTree,
         ];
 
-        $typoScript = "[foo = bar]\n" .
-            "foo\n" .
-            "[ELSE]\n" .
-            "bar\n" .
-            "[END]\n" .
-            'baz';
+        $typoScript = "[foo = bar]\n"
+            . "foo\n"
+            . "[ELSE]\n"
+            . "bar\n"
+            . "[END]\n"
+            . 'baz';
         $typoScriptLineStream = (new LosslessTokenizer())->tokenize($typoScript);
         $typoScriptLineStreamArray = iterator_to_array($typoScriptLineStream->getNextLine());
         $tree = new FileInclude();
@@ -311,11 +311,11 @@ final class TreeFromLineStreamBuilderTest extends FunctionalTestCase
             $expectedTree,
         ];
 
-        $typoScript = "[foo = bar]\n" .
-            "foo\n" .
-            "[foo = baz]\n" .
-            "bar\n" .
-            "[END]\n";
+        $typoScript = "[foo = bar]\n"
+            . "foo\n"
+            . "[foo = baz]\n"
+            . "bar\n"
+            . "[END]\n";
         $typoScriptLineStream = (new LosslessTokenizer())->tokenize($typoScript);
         $typoScriptLineStreamArray = iterator_to_array($typoScriptLineStream->getNextLine());
         $tree = new FileInclude();

@@ -383,7 +383,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     #[Test]
     public function loadWithGlobbedImportsWithPathTraversalShouldFail(): void
     {
-        $logger = new class () extends AbstractLogger {
+        $logger = new class extends AbstractLogger {
             public array $logEntries = [];
 
             public function log($level, \Stringable|string $message, array $context = []): void

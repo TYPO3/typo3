@@ -284,8 +284,8 @@ class SetupModuleController
                 $contextData = $event->getContextData();
 
                 $passwordValid = true;
-                if ($passwordIsConfirmed &&
-                    !$this->passwordPolicyValidator->isValidPassword($be_user_data['password'], $contextData)
+                if ($passwordIsConfirmed
+                    && !$this->passwordPolicyValidator->isValidPassword($be_user_data['password'], $contextData)
                 ) {
                     $passwordValid = false;
                     $this->passwordIsUpdated = self::PASSWORD_POLICY_FAILED;
@@ -463,13 +463,13 @@ class SetupModuleController
                     }
 
                     $html = '<input id="field_' . htmlspecialchars($fieldName) . '"
-                        type="' . htmlspecialchars($type) . '" ' .
-                        ($addPasswordRequirementsDescription ? 'aria-describedby="description_' . htmlspecialchars($fieldName) . '" ' : '') .
-                        'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']" ' .
-                        $autocomplete .
-                        'value="' . htmlspecialchars((string)$value) . '" ' .
-                        $more .
-                        ' />';
+                        type="' . htmlspecialchars($type) . '" '
+                        . ($addPasswordRequirementsDescription ? 'aria-describedby="description_' . htmlspecialchars($fieldName) . '" ' : '')
+                        . 'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']" '
+                        . $autocomplete
+                        . 'value="' . htmlspecialchars((string)$value) . '" '
+                        . $more
+                        . ' />';
 
                     if ($addPasswordRequirementsDescription) {
                         $description = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_password_policy.xlf:passwordRequirements.description');
@@ -482,10 +482,10 @@ class SetupModuleController
                     $html = '<input id="field_' . htmlspecialchars($fieldName) . '"
                         type="checkbox"
                         class="form-check-input"
-                        name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
-                        ($value ? ' checked="checked"' : '') .
-                        $more .
-                        ' />';
+                        name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"'
+                        . ($value ? ' checked="checked"' : '')
+                        . $more
+                        . ' />';
                     break;
                 case 'language':
                     $html = $this->renderLanguageSelect();
@@ -495,8 +495,8 @@ class SetupModuleController
                         $html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this);
                     } else {
                         $html = '<select id="field_' . htmlspecialchars($fieldName) . '"
-                            name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
-                            $more . '>' . LF;
+                            name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"'
+                            . $more . '>' . LF;
                         foreach ($config['items'] as $key => $optionLabel) {
                             $html .= '<option value="' . htmlspecialchars((string)$key) . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', false) . '</option>' . LF;
                         }
@@ -552,18 +552,18 @@ class SetupModuleController
                         $defaultAvatarProvider = GeneralUtility::makeInstance(DefaultAvatarProvider::class);
                         $avatarImage = $defaultAvatarProvider->getImage($backendUser->user, 32);
                         if ($avatarImage) {
-                            $icon = '<span class="avatar avatar-size-medium mb-2"><span class="avatar-image">' .
-                                '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
-                                ' width="' . (int)$avatarImage->getWidth() . '"' .
-                                ' height="' . (int)$avatarImage->getHeight() . '"' .
-                                ' alt="" />' .
-                                '</span></span>';
+                            $icon = '<span class="avatar avatar-size-medium mb-2"><span class="avatar-image">'
+                                . '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl()) . '"'
+                                . ' width="' . (int)$avatarImage->getWidth() . '"'
+                                . ' height="' . (int)$avatarImage->getHeight() . '"'
+                                . ' alt="" />'
+                                . '</span></span>';
                             $html .= '<span id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
                         }
                     }
-                    $html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" ' .
-                            'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' . $more .
-                            ' value="' . $avatarFileUid . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
+                    $html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" '
+                            . 'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' . $more
+                            . ' value="' . $avatarFileUid . '" data-setup-avatar-field="' . htmlspecialchars($fieldName) . '" />';
 
                     $html .= '<typo3-formengine-container-files><div class="form-group"><div class="form-group"><div class="form-control-wrap">';
                     $html .= '<button type="button" id="add_button_' . htmlspecialchars($fieldName)

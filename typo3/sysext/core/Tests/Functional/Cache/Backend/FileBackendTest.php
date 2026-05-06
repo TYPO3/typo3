@@ -161,7 +161,7 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->setCache($mockCache);
         $subject->set($entryIdentifier, $data);
         self::assertFileExists($pathAndFilename);
-        $retrievedData = file_get_contents($pathAndFilename, false, null, 0, \strlen($data));
+        $retrievedData = file_get_contents($pathAndFilename, false, null, 0, strlen($data));
         self::assertEquals($data, $retrievedData);
     }
 
@@ -180,7 +180,7 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->set($entryIdentifier, $data2, [], 200);
         $pathAndFilename = $this->instancePath . '/Foo/cache/data/UnitTestCache/' . $entryIdentifier;
         self::assertFileExists($pathAndFilename);
-        $retrievedData = file_get_contents($pathAndFilename, false, null, 0, \strlen($data2));
+        $retrievedData = file_get_contents($pathAndFilename, false, null, 0, strlen($data2));
         self::assertEquals($data2, $retrievedData);
     }
 
@@ -197,7 +197,7 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->set($entryIdentifier, $data, ['Tag1', 'Tag2']);
         $pathAndFilename = $this->instancePath . '/Foo/cache/data/UnitTestCache/' . $entryIdentifier;
         self::assertFileExists($pathAndFilename);
-        $retrievedData = file_get_contents($pathAndFilename, false, null, \strlen($data) + FileBackend::EXPIRYTIME_LENGTH, 9);
+        $retrievedData = file_get_contents($pathAndFilename, false, null, strlen($data) + FileBackend::EXPIRYTIME_LENGTH, 9);
         self::assertEquals('Tag1 Tag2', $retrievedData);
     }
 

@@ -38,7 +38,7 @@ final class SiteResolverTest extends FunctionalTestCase
         $subject = $this->get(SiteResolver::class);
         $incomingRequest = new ServerRequest($incomingUrl, 'GET');
         $incomingRequest = $incomingRequest->withQueryParams(['id' => '9831:/styleguide/']);
-        $requestHandler = new class () implements RequestHandlerInterface {
+        $requestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 if ($request->getAttribute('site') instanceof NullSite) {

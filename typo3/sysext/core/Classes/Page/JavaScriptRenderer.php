@@ -102,7 +102,7 @@ class JavaScriptRenderer
     /**
      * @throws \InvalidArgumentException when a JavaScript module could not be resolved (no src URL in import map)
      */
-    public function render(null|string|ConsumableNonce $nonce = null, ?string $sitePath = null): string
+    public function render(string|ConsumableNonce|null $nonce = null, ?string $sitePath = null): string
     {
         if ($this->isEmpty()) {
             return '';
@@ -126,8 +126,8 @@ class JavaScriptRenderer
                     );
                 }
                 if (
-                    $instruction->getItems() !== [] ||
-                    ($instruction->getFlags() & JavaScriptModuleInstruction::FLAG_USE_TOP_WINDOW) !== 0
+                    $instruction->getItems() !== []
+                    || ($instruction->getFlags() & JavaScriptModuleInstruction::FLAG_USE_TOP_WINDOW) !== 0
                 ) {
                     $dynamicInstructions[] = [
                         'type' => 'javaScriptModuleInstruction',
@@ -166,7 +166,7 @@ class JavaScriptRenderer
         return $this->createItemHandlerElement($this->toArray(), true, $nonce);
     }
 
-    public function renderImportMap(string $sitePath, null|string|ConsumableNonce $nonce = null): string
+    public function renderImportMap(string $sitePath, string|ConsumableNonce|null $nonce = null): string
     {
         if (!$this->isEmpty() && ($this->instructionsWithItems > 0 || $this->items->getGlobalAssignments() !== [])) {
             $this->importMap->includeImportsFor('@typo3/core/java-script-item-handler.js');
@@ -179,7 +179,7 @@ class JavaScriptRenderer
         return $this->items->isEmpty();
     }
 
-    protected function createItemHandlerElement(array $payload, bool $async, null|string|ConsumableNonce $nonce = null): string
+    protected function createItemHandlerElement(array $payload, bool $async, string|ConsumableNonce|null $nonce = null): string
     {
         // actual JSON payload is stored as comment in `script.textContent`
         // and consumed by java-script-item-handler.js

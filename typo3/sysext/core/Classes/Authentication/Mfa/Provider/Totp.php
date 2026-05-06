@@ -78,7 +78,7 @@ class Totp
             $hmac[] = hexdec($hex);
         }
         // Generate a 4-byte string with dynamic truncation (DT)
-        $offset = $hmac[\count($hmac) - 1] & 0xf;
+        $offset = $hmac[count($hmac) - 1] & 0xf;
         $bits = ((($hmac[$offset + 0] & 0x7f) << 24) | (($hmac[$offset + 1] & 0xff) << 16) | (($hmac[$offset + 2] & 0xff) << 8) | ($hmac[$offset + 3] & 0xff));
         // Compute the TOTP value by reducing the bits modulo 10^Digits and filling it with zeros '0'
         return str_pad((string)($bits % (10 ** $this->length)), $this->length, '0', STR_PAD_LEFT);

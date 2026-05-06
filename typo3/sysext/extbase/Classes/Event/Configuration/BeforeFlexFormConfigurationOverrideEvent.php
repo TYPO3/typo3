@@ -27,9 +27,9 @@ namespace TYPO3\CMS\Extbase\Event\Configuration;
 final class BeforeFlexFormConfigurationOverrideEvent
 {
     public function __construct(
-        protected readonly array $frameworkConfiguration,
-        protected readonly array $originalFlexFormConfiguration,
-        protected array $flexFormConfiguration
+        private readonly array $frameworkConfiguration,
+        private readonly array $originalFlexFormConfiguration,
+        private array $flexFormConfiguration
     ) {}
 
     public function getFrameworkConfiguration(): array

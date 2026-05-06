@@ -79,11 +79,11 @@ class ImportCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 sprintf(
-                    'Set the import mode of this specific record. ' . PHP_EOL .
-                        'Pattern is "{table}:{record}={mode}". ' . PHP_EOL .
-                        'Available modes for new records are "%1$s" and "%3$s" ' .
-                        'and for existing records "%2$s", "%4$s", "%5$s" and "%3$s".' . PHP_EOL .
-                        'Examples are "pages:987=%1$s", "tt_content:1=%2$s", etc.',
+                    'Set the import mode of this specific record. ' . PHP_EOL
+                        . 'Pattern is "{table}:{record}={mode}". ' . PHP_EOL
+                        . 'Available modes for new records are "%1$s" and "%3$s" '
+                        . 'and for existing records "%2$s", "%4$s", "%5$s" and "%3$s".' . PHP_EOL
+                        . 'Examples are "pages:987=%1$s", "tt_content:1=%2$s", etc.',
                     Import::IMPORT_MODE_FORCE_UID,
                     Import::IMPORT_MODE_AS_NEW,
                     Import::IMPORT_MODE_EXCLUDE,

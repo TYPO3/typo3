@@ -32,8 +32,8 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 final class SearchRepository
 {
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly SearchProviderRegistry $searchProviderRegistry,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SearchProviderRegistry $searchProviderRegistry,
     ) {}
 
     /**

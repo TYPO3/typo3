@@ -58,19 +58,19 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 {
     private const RECURSIVE_PAGE_LEVEL = 99;
 
-    protected LanguageService $languageService;
-    protected string $userPermissions;
-    protected array $pageIdList = [];
+    private LanguageService $languageService;
+    private string $userPermissions;
+    private array $pageIdList = [];
 
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly IconFactory $iconFactory,
-        protected readonly LanguageServiceFactory $languageServiceFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly QueryParser $queryParser,
-        protected readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly ConnectionPool $connectionPool,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly IconFactory $iconFactory,
+        private readonly LanguageServiceFactory $languageServiceFactory,
+        private readonly UriBuilder $uriBuilder,
+        private readonly QueryParser $queryParser,
+        private readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly ConnectionPool $connectionPool,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
@@ -159,7 +159,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         return array_merge([], ...$result);
     }
 
-    protected function parseCommand(SearchDemand $searchDemand): array
+    private function parseCommand(SearchDemand $searchDemand): array
     {
         $tableName = null;
         $commandQuery = null;
@@ -189,7 +189,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         ];
     }
 
-    protected function getQueryBuilderForTable(SearchDemand $searchDemand, string $tableName): ?QueryBuilder
+    private function getQueryBuilderForTable(SearchDemand $searchDemand, string $tableName): ?QueryBuilder
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()
@@ -223,7 +223,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         return $event->getQueryBuilder();
     }
 
-    protected function countByTable(SearchDemand $searchDemand, string $tableName): int
+    private function countByTable(SearchDemand $searchDemand, string $tableName): int
     {
         $queryBuilder = $this->getQueryBuilderForTable($searchDemand, $tableName);
         return (int)$queryBuilder?->count('*')->executeQuery()->fetchOne();
@@ -232,7 +232,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     /**
      * @return ResultItem[]
      */
-    protected function findByTable(SearchDemand $searchDemand, string $tableName, int $limit, int $offset): array
+    private function findByTable(SearchDemand $searchDemand, string $tableName, int $limit, int $offset): array
     {
         $queryBuilder = $this->getQueryBuilderForTable($searchDemand, $tableName);
         if ($queryBuilder === null) {
@@ -300,7 +300,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         return $items;
     }
 
-    protected function canAccessTable(string $tableName): bool
+    private function canAccessTable(string $tableName): bool
     {
         if (!$this->tcaSchemaFactory->has($tableName)) {
             return true;
@@ -317,7 +317,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         return true;
     }
 
-    protected function getAccessibleTables(BeforeSearchInDatabaseRecordProviderEvent $event): array
+    private function getAccessibleTables(BeforeSearchInDatabaseRecordProviderEvent $event): array
     {
         return array_filter($this->tcaSchemaFactory->all()->getNames(), function (string $tableName) use ($event): bool {
             return $this->canAccessTable($tableName) && !$event->isTableIgnored($tableName);
@@ -329,7 +329,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
      *
      * @return int[]
      */
-    protected function getPageIdList(): array
+    private function getPageIdList(): array
     {
         if ($this->getBackendUser()->isAdmin()) {
             return [];
@@ -348,7 +348,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     /**
      * @return CompositeExpression[]
      */
-    protected function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder, string $tableName): array
+    private function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder, string $tableName): array
     {
         $platform = $queryBuilder->getConnection()->getDatabasePlatform();
         $isPostgres = $platform instanceof DoctrinePostgreSQLPlatform;
@@ -475,7 +475,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
      * @param array $row Current record row from database.
      * @return string Link to open an edit window for record.
      */
-    protected function getShowLink(array $row): string
+    private function getShowLink(array $row): string
     {
         $backendUser = $this->getBackendUser();
         $showLink = '';
@@ -502,7 +502,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
      * @return string Link to open an edit window for record.
      * @see \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess()
      */
-    protected function getEditLink(string $tableName, array $row): string
+    private function getEditLink(string $tableName, array $row): string
     {
         $backendUser = $this->getBackendUser();
         $editLink = '';
@@ -529,7 +529,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         return $editLink;
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

@@ -26,9 +26,9 @@ use TYPO3\CMS\Core\Schema\Struct\FlexSheet;
 final readonly class FlexFormSchema implements SchemaInterface
 {
     public function __construct(
-        protected string $structIdentifier,
+        private string $structIdentifier,
         /** @var FlexSheet[] */
-        protected array $sheets
+        private array $sheets
     ) {}
 
     public function getSheets(): array
@@ -67,7 +67,7 @@ final readonly class FlexFormSchema implements SchemaInterface
      * If the field is not set directly on the sheet, each section
      * of the sheet will be checked for a matching field.
      */
-    protected function getFieldFromSheet(string $sheetName, string $fieldName): ?FieldTypeInterface
+    private function getFieldFromSheet(string $sheetName, string $fieldName): ?FieldTypeInterface
     {
         if (!isset($this->sheets[$sheetName])) {
             return null;
@@ -90,7 +90,7 @@ final readonly class FlexFormSchema implements SchemaInterface
      *  - settings.mysettings.67fb88e136a4a575936...
      *  - my_settings.67fb88e136a4a575936...
      */
-    protected function getFieldFromSections(string $sheetName, string $fieldName): ?FieldTypeInterface
+    private function getFieldFromSections(string $sheetName, string $fieldName): ?FieldTypeInterface
     {
         $sheet = $this->sheets[$sheetName];
         $fieldPath = $sheetName . '.' . $fieldName;

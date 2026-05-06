@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
  */
 final class TaskGroupsCest
 {
-    protected string $groupName = 'My task group';
+    private string $groupName = 'My task group';
 
     public function _before(ApplicationTester $I): void
     {

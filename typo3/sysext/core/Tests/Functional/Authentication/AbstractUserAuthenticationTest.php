@@ -73,7 +73,7 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
     #[DataProvider('getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGivenDataProvider')]
     #[Test]
     public function getAuthInfoArrayReturnsCorrectPidConstraintForGivenCheckPidValue(
-        int|null|string $checkPid_value,
+        int|string|null $checkPid_value,
         string $expectedPids
     ): void {
         $sessionId = bin2hex(random_bytes(20));

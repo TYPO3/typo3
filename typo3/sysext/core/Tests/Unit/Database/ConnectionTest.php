@@ -306,8 +306,8 @@ final class ConnectionTest extends UnitTestCase
                     1,
                     10,
                 ],
-                'SELECT "aField", "anotherField" FROM "aTable" WHERE "aField" = :dcValue1 ' .
-                'GROUP BY "anotherField" ORDER BY "aField" ASC LIMIT 1 OFFSET 10',
+                'SELECT "aField", "anotherField" FROM "aTable" WHERE "aField" = :dcValue1 '
+                . 'GROUP BY "anotherField" ORDER BY "aField" ASC LIMIT 1 OFFSET 10',
                 ['dcValue1' => 'aValue'],
             ],
         ];

@@ -41,8 +41,8 @@ class CleanUpLocalProcessedFilesCommand extends Command
     {
         $this
             ->setDescription(
-                'Deletes local processed files from local storage that are no longer referenced and ' .
-                'deletes references to processed files that do no longer exist. Also allows to reset ALL files.'
+                'Deletes local processed files from local storage that are no longer referenced and '
+                . 'deletes references to processed files that do no longer exist. Also allows to reset ALL files.'
             )
             ->setHelp('If you want to get more detailed information, use the --verbose option.')
             ->addOption(

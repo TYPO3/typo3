@@ -225,9 +225,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     {
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.installationMethod',
-            'value' => Environment::isComposerMode() ?
-                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.installationMethod.composer') :
-                $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.installationMethod.classic'),
+            'value' => Environment::isComposerMode()
+                ? $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.installationMethod.composer')
+                : $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.installationMethod.classic'),
             'iconIdentifier' => 'actions-package',
         ];
     }

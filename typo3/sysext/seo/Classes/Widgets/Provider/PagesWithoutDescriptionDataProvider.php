@@ -58,7 +58,7 @@ final class PagesWithoutDescriptionDataProvider
                 $site = $this->siteFinder->getSiteByPageId($pageId);
                 // make sure the language of the row actually exists in the site
                 $site->getLanguageById($row['sys_language_uid']);
-            } catch (SiteNotFoundException | \InvalidArgumentException) {
+            } catch (SiteNotFoundException|\InvalidArgumentException) {
                 continue;
             }
             $router = $site->getRouter();

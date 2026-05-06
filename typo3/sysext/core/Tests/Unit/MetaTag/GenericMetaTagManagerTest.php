@@ -125,10 +125,10 @@ final class GenericMetaTagManagerTest extends UnitTestCase
             );
         }
 
-        $expected = '<meta name="description" content="This is a description">' . PHP_EOL .
-            '<meta property="og:image" content="/path/to/image2">' . PHP_EOL .
-            '<meta property="og:image:height" content="200">' . PHP_EOL .
-            '<meta name="twitter:card" content="This is the Twitter card">';
+        $expected = '<meta name="description" content="This is a description">' . PHP_EOL
+            . '<meta property="og:image" content="/path/to/image2">' . PHP_EOL
+            . '<meta property="og:image:height" content="200">' . PHP_EOL
+            . '<meta name="twitter:card" content="This is the Twitter card">';
 
         self::assertEquals($expected, $manager->renderAllProperties());
     }
@@ -236,8 +236,8 @@ final class GenericMetaTagManagerTest extends UnitTestCase
                         'subProperties' => ['width' => 100],
                     ],
                 ],
-                '<meta property="og:image" content="/path/to/image">' . PHP_EOL .
-                    '<meta property="og:image:width" content="100">',
+                '<meta property="og:image" content="/path/to/image">' . PHP_EOL
+                    . '<meta property="og:image:width" content="100">',
             ],
             [
                 [

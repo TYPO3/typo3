@@ -75,7 +75,7 @@ readonly class TcaFolder implements FormDataProviderInterface
                             'folder' => $folder,
                         ];
                     }
-                } catch (ResourceDoesNotExistException | InsufficientFolderAccessPermissionsException) {
+                } catch (ResourceDoesNotExistException|InsufficientFolderAccessPermissionsException) {
                     continue;
                 }
             }

@@ -1125,22 +1125,22 @@ final class ArrayUtilityTest extends UnitTestCase
             'qux' => 0.1,
             'qux2' => 0.000000001,
         ];
-        $expected =
-            '[' . LF .
-                '    \'foo\' => [' . LF .
-                    '        \'bar\' => 42,' . LF .
-                    '        \'bar2\' => [' . LF .
-                        '            \'baz\' => \'val\\\'ue\',' . LF .
-                        '            \'baz2\' => true,' . LF .
-                        '            \'baz3\' => false,' . LF .
-                        '            \'baz4\' => [],' . LF .
-                    '        ],' . LF .
-                '    ],' . LF .
-                '    \'baz\' => 23,' . LF .
-                '    \'foobar\' => null,' . LF .
-                '    \'qux\' => 0.1,' . LF .
-                '    \'qux2\' => 1.0E-9,' . LF .
-            ']';
+        $expected
+            = '[' . LF
+                . '    \'foo\' => [' . LF
+                    . '        \'bar\' => 42,' . LF
+                    . '        \'bar2\' => [' . LF
+                        . '            \'baz\' => \'val\\\'ue\',' . LF
+                        . '            \'baz2\' => true,' . LF
+                        . '            \'baz3\' => false,' . LF
+                        . '            \'baz4\' => [],' . LF
+                    . '        ],' . LF
+                . '    ],' . LF
+                . '    \'baz\' => 23,' . LF
+                . '    \'foobar\' => null,' . LF
+                . '    \'qux\' => 0.1,' . LF
+                . '    \'qux2\' => 1.0E-9,' . LF
+            . ']';
         self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
@@ -1165,12 +1165,12 @@ final class ArrayUtilityTest extends UnitTestCase
             23 => 'integer key',
             '42' => 'string key representing integer',
         ];
-        $expected =
-            '[' . LF .
-                '    \'foo\' => \'string key\',' . LF .
-                '    23 => \'integer key\',' . LF .
-                '    42 => \'string key representing integer\',' . LF .
-            ']';
+        $expected
+            = '[' . LF
+                . '    \'foo\' => \'string key\',' . LF
+                . '    23 => \'integer key\',' . LF
+                . '    42 => \'string key representing integer\',' . LF
+            . ']';
         self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
@@ -1182,12 +1182,12 @@ final class ArrayUtilityTest extends UnitTestCase
             1 => 'one',
             2 => 'two',
         ];
-        $expected =
-            '[' . LF .
-                '    \'zero\',' . LF .
-                '    \'one\',' . LF .
-                '    \'two\',' . LF .
-            ']';
+        $expected
+            = '[' . LF
+                . '    \'zero\',' . LF
+                . '    \'one\',' . LF
+                . '    \'two\',' . LF
+            . ']';
         self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
@@ -1200,13 +1200,13 @@ final class ArrayUtilityTest extends UnitTestCase
             3 => 'three',
             4 => 'four',
         ];
-        $expected =
-            '[' . LF .
-                '    0 => \'zero\',' . LF .
-                '    1 => \'one\',' . LF .
-                '    3 => \'three\',' . LF .
-                '    4 => \'four\',' . LF .
-            ']';
+        $expected
+            = '[' . LF
+                . '    0 => \'zero\',' . LF
+                . '    1 => \'one\',' . LF
+                . '    3 => \'three\',' . LF
+                . '    4 => \'four\',' . LF
+            . ']';
         self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
@@ -3148,7 +3148,7 @@ final class ArrayUtilityTest extends UnitTestCase
             'integer' => 1,
             'float' => 1.9,
             'object' => $testObject,
-            'objectWithStringConversion' => new class () {
+            'objectWithStringConversion' => new class {
                 /**
                  * @return string
                  */

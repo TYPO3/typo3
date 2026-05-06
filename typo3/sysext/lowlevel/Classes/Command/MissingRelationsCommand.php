@@ -151,9 +151,9 @@ If you want to get more detailed information, use the --verbose option.')
         if ($io->isVerbose() && count($results['deletedRecords'])) {
             $io->note([
                 'Found ' . count($results['deletedRecords']) . ' references pointing to deleted records.',
-                'Keeping the references is useful if you undelete the referenced records later, otherwise the references' .
-                'are lost completely when the deleted records are flushed at some point. Notice that if those records listed' .
-                'are themselves deleted (marked with "DELETED") it is not a problem.',
+                'Keeping the references is useful if you undelete the referenced records later, otherwise the references'
+                . 'are lost completely when the deleted records are flushed at some point. Notice that if those records listed'
+                . 'are themselves deleted (marked with "DELETED") it is not a problem.',
             ]);
             $io->listing($results['deletedRecords']);
         }
@@ -162,9 +162,9 @@ If you want to get more detailed information, use the --verbose option.')
         if ($io->isVerbose() && count($results['deletedRecordsInSoftReferenceRelations'])) {
             $io->note([
                 'Found ' . count($results['deletedRecordsInSoftReferenceRelations']) . ' soft references pointing  to deleted records.',
-                'Keeping the references is useful if you undelete the referenced records later, otherwise the references' .
-                'are lost completely when the deleted records are flushed at some point. Notice that if those records listed' .
-                'are themselves deleted (marked with "DELETED") it is not a problem.',
+                'Keeping the references is useful if you undelete the referenced records later, otherwise the references'
+                . 'are lost completely when the deleted records are flushed at some point. Notice that if those records listed'
+                . 'are themselves deleted (marked with "DELETED") it is not a problem.',
             ]);
             $io->listing($results['deletedRecordsInSoftReferenceRelations']);
         }
@@ -172,8 +172,8 @@ If you want to get more detailed information, use the --verbose option.')
         // Find missing references
         if (count($results['offlineVersionRecords']) || count($results['nonExistingRecords'])) {
             $io->note([
-                'Found ' . count($results['nonExistingRecords']) . ' references to non-existing records ' .
-                'and ' . count($results['offlineVersionRecords']) . ' references directly linked to offline versions.',
+                'Found ' . count($results['nonExistingRecords']) . ' references to non-existing records '
+                . 'and ' . count($results['offlineVersionRecords']) . ' references directly linked to offline versions.',
             ]);
 
             $this->removeReferencesToMissingRecords(

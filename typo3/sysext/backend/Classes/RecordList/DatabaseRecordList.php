@@ -613,16 +613,16 @@ class DatabaseRecordList
         }
         // default 100 for single table view
         $itemsLimitSingleTable = MathUtility::forceIntegerInRange((int)(
-            $itemsLimitSingleTableFromTca ??
-            $this->modTSconfig['itemsLimitSingleTable'] ??
-            100
+            $itemsLimitSingleTableFromTca
+            ?? $this->modTSconfig['itemsLimitSingleTable']
+            ?? 100
         ), 0, 10000);
 
         // default 20 for list view
         $itemsLimitPerTable = MathUtility::forceIntegerInRange((int)(
-            $itemsLimitPerTableFromTca ??
-            $this->modTSconfig['itemsLimitPerTable'] ??
-            20
+            $itemsLimitPerTableFromTca
+            ?? $this->modTSconfig['itemsLimitPerTable']
+            ?? 20
         ), 0, 10000);
 
         // Set limit depending on the view (single table vs. default)
@@ -1174,8 +1174,8 @@ class DatabaseRecordList
                 if ($this->isRecordDeletePlaceholder($row)) {
                     // Delete placeholder records do not link to formEngine edit and are rendered strike-through
                     $deletePlaceholderClass = ' deletePlaceholder';
-                    $theData[$fCol] = $theData['__label'] =
-                        $warning
+                    $theData[$fCol] = $theData['__label']
+                        = $warning
                         . '<span title="' . htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:row.deletePlaceholder.title')) . '">'
                             . htmlspecialchars($recTitle)
                         . '</span>';
@@ -1951,10 +1951,10 @@ class DatabaseRecordList
                 if ($cellOutput !== '') {
                     $icon = $this->iconFactory->getIcon('actions-menu-alternative', IconSize::SMALL);
                     $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
-                    $output .= ' <div class="btn-group dropdown">' .
-                        '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
-                        '<ul id="actions_' . $table . '_' . $row['uid'] . '" class="dropdown-menu">' . $cellOutput . '</ul>' .
-                        '</div>';
+                    $output .= ' <div class="btn-group dropdown">'
+                        . '<a title="' . htmlspecialchars($title) . '" href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>'
+                        . '<ul id="actions_' . $table . '_' . $row['uid'] . '" class="dropdown-menu">' . $cellOutput . '</ul>'
+                        . '</div>';
                 } else {
                     $output .= ' <div class="btn-group">' . $this->spaceIcon . '</div>';
                 }

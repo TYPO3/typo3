@@ -128,8 +128,8 @@ readonly class PreviewController
                 $rootline
             );
             // Edge case 1: live version is protected, draft version isn't
-            if (isset($queryParametersLive['ADMCMD_simUser']) &&
-                empty($queryParametersDraft['ADMCMD_simUser'])) {
+            if (isset($queryParametersLive['ADMCMD_simUser'])
+                && empty($queryParametersDraft['ADMCMD_simUser'])) {
                 // Use live versions ADMCMD_simUser for draft URL
                 $queryParametersDraft['ADMCMD_simUser'] = $queryParametersLive['ADMCMD_simUser'];
             }
@@ -143,7 +143,7 @@ readonly class PreviewController
                 ['ADMCMD_prev' => 'IGNORE']
             );
             $wsUrl = $this->generateUrl($site, $pageUid, $parameters);
-        } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
+        } catch (SiteNotFoundException|InvalidRouteArgumentsException $e) {
             throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $pageUid, $e->getMessage()), 1559794913, $e);
         }
 

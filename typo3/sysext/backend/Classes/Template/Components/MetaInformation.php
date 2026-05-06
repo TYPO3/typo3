@@ -102,9 +102,9 @@ class MetaInformation
     {
         $recordInformations = $this->getRecordInformations();
         if (!empty($recordInformations)) {
-            $recordInformation = $recordInformations['icon'] .
-                ' <strong>' . htmlspecialchars($recordInformations['title']) . ($recordInformations['uid'] !== '' ? '&nbsp;[' . $recordInformations['uid'] . ']' : '') . '</strong>' .
-                (!empty($recordInformations['additionalInfo']) ? ' ' . htmlspecialchars($recordInformations['additionalInfo']) : '');
+            $recordInformation = $recordInformations['icon']
+                . ' <strong>' . htmlspecialchars($recordInformations['title']) . ($recordInformations['uid'] !== '' ? '&nbsp;[' . $recordInformations['uid'] . ']' : '') . '</strong>'
+                . (!empty($recordInformations['additionalInfo']) ? ' ' . htmlspecialchars($recordInformations['additionalInfo']) : '');
         } else {
             $recordInformation = '';
         }

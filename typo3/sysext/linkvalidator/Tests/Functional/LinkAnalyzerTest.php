@@ -44,38 +44,38 @@ final class LinkAnalyzerTest extends FunctionalTestCase
     public static function findAllBrokenLinksDataProvider(): array
     {
         return [
-            'Test with one broken external link (not existing domain)' =>
-                [
+            'Test with one broken external link (not existing domain)'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_external.csv',
                 ],
-            'Test with one broken external link in pages:canonical_link' =>
-                [
+            'Test with one broken external link in pages:canonical_link'
+                => [
                     __DIR__ . '/Fixtures/input_page_with_broken_link_external_in_canonical_link.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_with_broken_link_external_in_canonical_link.csv',
                 ],
-            'Test with one broken page link (not existing page)' =>
-                [
+            'Test with one broken page link (not existing page)'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_page.csv',
                 ],
-            'Test with one broken file link (not existing file)' =>
-                [
+            'Test with one broken file link (not existing file)'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_file.csv',
                 ],
-            'Test with several broken external, page and file links' =>
-                [
+            'Test with several broken external, page and file links'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_links_several.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_links_several.csv',
                 ],
-            'Test with several pages with broken external, page and file links' =>
-                [
+            'Test with several pages with broken external, page and file links'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_links_several_pages.csv',
                     [1, 2],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_links_several_pages.csv',
@@ -112,20 +112,20 @@ final class LinkAnalyzerTest extends FunctionalTestCase
     {
         return [
             // Tests with one broken link
-            'Test with one broken external link' =>
-                [
+            'Test with one broken external link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
-            'Test with one broken page link' =>
-                [
+            'Test with one broken page link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
-            'Test with one broken file link' =>
-                [
+            'Test with one broken file link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_file.csv',
@@ -162,20 +162,20 @@ final class LinkAnalyzerTest extends FunctionalTestCase
     {
         return [
             // Tests with one broken link
-            'Test with one broken external link' =>
-                [
+            'Test with one broken external link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
-            'Test with one broken page link' =>
-                [
+            'Test with one broken page link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_page.csv',
                 ],
-            'Test with one broken file link' =>
-                [
+            'Test with one broken file link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_none.csv',
@@ -212,20 +212,20 @@ final class LinkAnalyzerTest extends FunctionalTestCase
     {
         return [
             // Tests with one broken link
-            'Test with one broken external link' =>
-                [
+            'Test with one broken external link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_external.csv',
                 ],
-            'Test with one broken page link' =>
-                [
+            'Test with one broken page link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
-            'Test with one broken file link' =>
-                [
+            'Test with one broken file link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.csv',
                     [1],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_none.csv',
@@ -262,8 +262,8 @@ final class LinkAnalyzerTest extends FunctionalTestCase
         $lagePageUidList = range(1, 200000, 1);
         return [
             // Tests with one broken link
-            'Test with one broken external link' =>
-                [
+            'Test with one broken external link'
+                => [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.csv',
                     $lagePageUidList,
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_link_external.csv',

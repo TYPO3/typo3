@@ -677,8 +677,8 @@ final class Parser
                             break;
                         default:
                             $this->syntaxError(
-                                'CHARACTER SET only supported for CHAR, VARCHAR, TEXT, MEDIUMTEXT, LONGTEXT, ' .
-                                'ENUM or SET columns'
+                                'CHARACTER SET only supported for CHAR, VARCHAR, TEXT, MEDIUMTEXT, LONGTEXT, '
+                                . 'ENUM or SET columns'
                             );
                     }
                     $b = 1;
@@ -698,17 +698,17 @@ final class Parser
                             break;
                         default:
                             $this->syntaxError(
-                                'COLLATE only supported for CHAR, VARCHAR, TEXT, MEDIUMTEXT, LONGTEXT, ' .
-                                'ENUM or SET columns'
+                                'COLLATE only supported for CHAR, VARCHAR, TEXT, MEDIUMTEXT, LONGTEXT, '
+                                . 'ENUM or SET columns'
                             );
                     }
                     $b = 1;
                     break;
                 default:
                     $this->syntaxError(
-                        'NOT, NULL, DEFAULT, AUTO_INCREMENT, UNIQUE, ' .
-                        'PRIMARY, COMMENT, COLUMN_FORMAT, STORAGE, REFERENCES, ' .
-                        'CHARACTER SET or COLLATE'
+                        'NOT, NULL, DEFAULT, AUTO_INCREMENT, UNIQUE, '
+                        . 'PRIMARY, COMMENT, COLUMN_FORMAT, STORAGE, REFERENCES, '
+                        . 'CHARACTER SET or COLLATE'
                     );
             }
         }
@@ -937,9 +937,9 @@ final class Parser
                 break;
             default:
                 $this->syntaxError(
-                    'BIT, TINYINT, SMALLINT, MEDIUMINT, INT, INTEGER, BIGINT, REAL, DOUBLE, FLOAT, DECIMAL, NUMERIC, ' .
-                    'DATE, TIME, TIMESTAMP, DATETIME, YEAR, CHAR, VARCHAR, BINARY, VARBINARY, TINYBLOB, BLOB, ' .
-                    'MEDIUMBLOB, LONGBLOB, TINYTEXT, TEXT, MEDIUMTEXT, LONGTEXT, ENUM, SET, or JSON'
+                    'BIT, TINYINT, SMALLINT, MEDIUMINT, INT, INTEGER, BIGINT, REAL, DOUBLE, FLOAT, DECIMAL, NUMERIC, '
+                    . 'DATE, TIME, TIMESTAMP, DATETIME, YEAR, CHAR, VARCHAR, BINARY, VARBINARY, TINYBLOB, BLOB, '
+                    . 'MEDIUMBLOB, LONGBLOB, TINYTEXT, TEXT, MEDIUMTEXT, LONGTEXT, ENUM, SET, or JSON'
                 );
         }
 
@@ -1448,11 +1448,11 @@ final class Parser
                     break;
                 default:
                     $this->syntaxError(
-                        'DEFAULT, ENGINE, AUTO_INCREMENT, AVG_ROW_LENGTH, CHARACTER SET, ' .
-                        'CHECKSUM, COLLATE, COMMENT, COMPRESSION, CONNECTION, DATA DIRECTORY, ' .
-                        'DELAY_KEY_WRITE, ENCRYPTION, INDEX DIRECTORY, INSERT_METHOD, KEY_BLOCK_SIZE, ' .
-                        'MAX_ROWS, MIN_ROWS, PACK_KEYS, PASSWORD, ROW_FORMAT, STATS_AUTO_RECALC, ' .
-                        'STATS_PERSISTENT, STATS_SAMPLE_PAGES or TABLESPACE'
+                        'DEFAULT, ENGINE, AUTO_INCREMENT, AVG_ROW_LENGTH, CHARACTER SET, '
+                        . 'CHECKSUM, COLLATE, COMMENT, COMPRESSION, CONNECTION, DATA DIRECTORY, '
+                        . 'DELAY_KEY_WRITE, ENCRYPTION, INDEX DIRECTORY, INSERT_METHOD, KEY_BLOCK_SIZE, '
+                        . 'MAX_ROWS, MIN_ROWS, PACK_KEYS, PASSWORD, ROW_FORMAT, STATS_AUTO_RECALC, '
+                        . 'STATS_PERSISTENT, STATS_SAMPLE_PAGES or TABLESPACE'
                     );
             }
         }

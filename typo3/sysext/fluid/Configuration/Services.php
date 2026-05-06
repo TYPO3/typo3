@@ -15,7 +15,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     // Tag ViewHelper services and configure them to be used by Fluid, which currently
     // cannot inject them properly and doesn't support shared ViewHelper classes
     $containerBuilder->registerForAutoconfiguration(ViewHelperInterface::class)->addTag('fluid.viewhelper');
-    $containerBuilder->addCompilerPass(new class () implements CompilerPassInterface {
+    $containerBuilder->addCompilerPass(new class implements CompilerPassInterface {
         public function process(ContainerBuilder $container): void
         {
             foreach ($container->findTaggedServiceIds('fluid.viewhelper') as $id => $tags) {

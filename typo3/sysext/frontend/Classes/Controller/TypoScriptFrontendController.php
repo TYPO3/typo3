@@ -821,8 +821,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $sendCacheHeadersForSharedCaches = $typoScriptConfigArray['sendCacheHeadersForSharedCaches'] ?? '';
             $isBehindReverseProxy = $request->getAttribute('normalizedParams')?->isBehindReverseProxy();
             if (
-                $sendCacheHeadersForSharedCaches === 'force' ||
-                ($sendCacheHeadersForSharedCaches === 'auto' && $isBehindReverseProxy)
+                $sendCacheHeadersForSharedCaches === 'force'
+                || ($sendCacheHeadersForSharedCaches === 'auto' && $isBehindReverseProxy)
             ) {
                 $headers = [
                     'Expires' => gmdate('D, d M Y H:i:s T', (min($GLOBALS['EXEC_TIME'] + $lifetime, PHP_INT_MAX))),

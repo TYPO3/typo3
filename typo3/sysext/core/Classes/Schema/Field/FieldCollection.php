@@ -26,7 +26,7 @@ final readonly class FieldCollection implements \ArrayAccess, \IteratorAggregate
         /**
          * @var array<string, FieldTypeInterface> $fieldDefinitions
          */
-        protected array $fieldDefinitions = []
+        private array $fieldDefinitions = []
     ) {}
 
     public static function __set_state(array $state): self

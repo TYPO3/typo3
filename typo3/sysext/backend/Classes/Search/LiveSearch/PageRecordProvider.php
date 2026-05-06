@@ -60,20 +60,20 @@ final class PageRecordProvider implements SearchProviderInterface
 {
     private const RECURSIVE_PAGE_LEVEL = 99;
 
-    protected LanguageService $languageService;
-    protected string $userPermissions;
-    protected array $pageIdList = [];
+    private LanguageService $languageService;
+    private string $userPermissions;
+    private array $pageIdList = [];
 
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly IconFactory $iconFactory,
-        protected readonly LanguageServiceFactory $languageServiceFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly QueryParser $queryParser,
-        protected readonly SiteFinder $siteFinder,
-        protected readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly ConnectionPool $connectionPool,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly IconFactory $iconFactory,
+        private readonly LanguageServiceFactory $languageServiceFactory,
+        private readonly UriBuilder $uriBuilder,
+        private readonly QueryParser $queryParser,
+        private readonly SiteFinder $siteFinder,
+        private readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly ConnectionPool $connectionPool,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
@@ -108,7 +108,7 @@ final class PageRecordProvider implements SearchProviderInterface
         return array_merge([], ...$result);
     }
 
-    protected function parseCommand(SearchDemand $searchDemand): SearchDemand
+    private function parseCommand(SearchDemand $searchDemand): SearchDemand
     {
         $commandQuery = null;
         $query = $searchDemand->getQuery();
@@ -136,7 +136,7 @@ final class PageRecordProvider implements SearchProviderInterface
         return $searchDemand;
     }
 
-    protected function getQueryBuilderForTable(SearchDemand $searchDemand): ?QueryBuilder
+    private function getQueryBuilderForTable(SearchDemand $searchDemand): ?QueryBuilder
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
@@ -176,7 +176,7 @@ final class PageRecordProvider implements SearchProviderInterface
     /**
      * @return ResultItem[]
      */
-    protected function findByTable(SearchDemand $searchDemand, int $limit): array
+    private function findByTable(SearchDemand $searchDemand, int $limit): array
     {
         $queryBuilder = $this->getQueryBuilderForTable($searchDemand);
         if ($queryBuilder === null) {
@@ -256,7 +256,7 @@ final class PageRecordProvider implements SearchProviderInterface
      *
      * @return int[]
      */
-    protected function getPageIdList(): array
+    private function getPageIdList(): array
     {
         if ($this->getBackendUser()->isAdmin()) {
             return [];
@@ -275,7 +275,7 @@ final class PageRecordProvider implements SearchProviderInterface
     /**
      * @return CompositeExpression[]
      */
-    protected function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder): array
+    private function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder): array
     {
         $platform = $queryBuilder->getConnection()->getDatabasePlatform();
         $isPostgres = $platform instanceof DoctrinePostgreSQLPlatform;
@@ -403,7 +403,7 @@ final class PageRecordProvider implements SearchProviderInterface
      * @param array $row Current record row from database.
      * @return string Link to open an edit window for record.
      */
-    protected function getShowLink(array $row): string
+    private function getShowLink(array $row): string
     {
         $backendUser = $this->getBackendUser();
         $showLink = '';
@@ -422,7 +422,7 @@ final class PageRecordProvider implements SearchProviderInterface
         return $showLink;
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

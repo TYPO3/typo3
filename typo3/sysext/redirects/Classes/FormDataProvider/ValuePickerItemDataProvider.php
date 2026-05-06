@@ -43,8 +43,8 @@ final readonly class ValuePickerItemDataProvider implements FormDataProviderInte
         if ($result['tableName'] === 'sys_redirect' && isset($result['processedTca']['columns']['source_host'])) {
             $domains = $this->sourceHostProvider->getHosts();
             foreach ($domains as $domain) {
-                $result['processedTca']['columns']['source_host']['config']['valuePicker']['items'][] =
-                    [
+                $result['processedTca']['columns']['source_host']['config']['valuePicker']['items'][]
+                    = [
                         $domain,
                         $domain,
                     ];

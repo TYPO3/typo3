@@ -182,7 +182,7 @@ final class AddPageTypeZeroSourceTest extends FunctionalTestCase
                     $changeItem = $changeItem
                         ->withSourcesCollection(new RedirectSourceCollection(...array_values($sources)));
                     $event->setSlugRedirectChangeItem($changeItem);
-                } catch (\InvalidArgumentException | InvalidRouteArgumentsException $e) {
+                } catch (\InvalidArgumentException|InvalidRouteArgumentsException $e) {
                     throw new UnableToLinkToPageException(
                         sprintf(
                             'The link to the page with ID "%d" and type "%d" could not be generated: %s',

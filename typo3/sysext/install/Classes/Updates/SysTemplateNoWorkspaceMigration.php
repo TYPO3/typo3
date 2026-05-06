@@ -40,9 +40,9 @@ final class SysTemplateNoWorkspaceMigration implements UpgradeWizardInterface
 
     public function getDescription(): string
     {
-        return 'Table "sys_template" is no longer workspace aware.' .
-            ' Existing database rows having field "t3ver_wsid" > 0 are set to "deleted" = 1 to not' .
-            ' leak into live when the workspace related columns are deleted.';
+        return 'Table "sys_template" is no longer workspace aware.'
+            . ' Existing database rows having field "t3ver_wsid" > 0 are set to "deleted" = 1 to not'
+            . ' leak into live when the workspace related columns are deleted.';
     }
 
     public function getPrerequisites(): array

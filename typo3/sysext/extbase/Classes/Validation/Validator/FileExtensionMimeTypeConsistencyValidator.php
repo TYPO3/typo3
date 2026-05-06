@@ -77,8 +77,8 @@ final class FileExtensionMimeTypeConsistencyValidator extends AbstractValidator
         $mimeTypeCompatibility = (new MimeTypeCompatibilityTypeGuesser())->getMimeTypeCompatibilityList();
         $additionalMappedMimeType = $mimeTypeCompatibility[$mimeType][$fileExtension] ?? null;
 
-        if (!in_array($mimeType, $assumedMimesTypeOfFileExtension, true) &&
-            !in_array($additionalMappedMimeType, $assumedMimesTypeOfFileExtension, true)
+        if (!in_array($mimeType, $assumedMimesTypeOfFileExtension, true)
+            && !in_array($additionalMappedMimeType, $assumedMimesTypeOfFileExtension, true)
         ) {
             $message = $this->translateErrorMessage(
                 $this->notAllowedMessage,

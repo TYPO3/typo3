@@ -69,7 +69,7 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
             try {
                 // By definition these files only contain the ID of the remote media source
                 $this->onlineMediaIdCache[$file->getUid()] = trim($file->getContents());
-            } catch (InsufficientFileAccessPermissionsException | IllegalFileExtensionException $e) {
+            } catch (InsufficientFileAccessPermissionsException|IllegalFileExtensionException $e) {
                 // User has no access to the file - online media id can not be fetched
                 return '';
             }

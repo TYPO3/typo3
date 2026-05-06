@@ -82,8 +82,8 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
             'compatVersion',
             static fn() => null, // Not implemented, we only use the evaluator
             static function ($arguments, mixed $str) {
-                return VersionNumberUtility::convertVersionNumberToInteger($arguments['typo3']->branch) >=
-                   VersionNumberUtility::convertVersionNumberToInteger((string)$str);
+                return VersionNumberUtility::convertVersionNumberToInteger($arguments['typo3']->branch)
+                   >= VersionNumberUtility::convertVersionNumberToInteger((string)$str);
             }
         );
     }

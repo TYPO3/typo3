@@ -29,9 +29,9 @@ use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 final readonly class EnrichPasswordValidationContextDataEvent
 {
     public function __construct(
-        protected ContextData $contextData,
-        protected array $userData,
-        protected string $initiatingClass
+        private ContextData $contextData,
+        private array $userData,
+        private string $initiatingClass
     ) {}
 
     public function getContextData(): ContextData

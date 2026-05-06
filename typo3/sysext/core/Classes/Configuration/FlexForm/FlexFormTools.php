@@ -207,8 +207,8 @@ readonly class FlexFormTools
                             foreach (array_keys($sheetElementData['el'][$valueContainerType]['el']) as $containerElement) {
                                 // Container type of this value container exists in DS. Iterate DS container to pick allowed single elements.
                                 if (isset($valueContainerElements['el'][$containerElement]['vDEF'])) {
-                                    $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF'] =
-                                        $valueContainerElements['el'][$containerElement]['vDEF'];
+                                    $newValueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['el'][$valueSectionContainerKey][$valueContainerType]['el'][$containerElement]['vDEF']
+                                        = $valueContainerElements['el'][$containerElement]['vDEF'];
                                 }
                             }
                         }
@@ -247,8 +247,8 @@ readonly class FlexFormTools
             ],
             'disableTypeAttrib' => 2,
         ];
-        return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF .
-            GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', 4, $options);
+        return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF
+            . GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', 4, $options);
     }
 
     /**

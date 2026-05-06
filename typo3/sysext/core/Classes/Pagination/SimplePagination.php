@@ -22,7 +22,7 @@ final class SimplePagination implements PaginationInterface
     /**
      * @var PaginatorInterface
      */
-    protected $paginator;
+    private $paginator;
 
     public function __construct(PaginatorInterface $paginator)
     {

@@ -153,8 +153,8 @@ final class FrontendTypoScript
     {
         if ($this->setupTree === null) {
             throw new \RuntimeException(
-                'Setup tree has not been initialized. This happens in cached Frontend scope where full TypoScript' .
-                ' is not needed by the system.',
+                'Setup tree has not been initialized. This happens in cached Frontend scope where full TypoScript'
+                . ' is not needed by the system.',
                 1666513644
             );
         }
@@ -180,8 +180,8 @@ final class FrontendTypoScript
     {
         if ($this->setupArray === null) {
             throw new \RuntimeException(
-                'Setup array has not been initialized. This happens in cached Frontend scope where full TypoScript' .
-                ' is not needed by the system.',
+                'Setup array has not been initialized. This happens in cached Frontend scope where full TypoScript'
+                . ' is not needed by the system.',
                 1666513645
             );
         }
@@ -263,9 +263,9 @@ final class FrontendTypoScript
     {
         if ($this->pageTree === null) {
             throw new \RuntimeException(
-                'PAGE node has not been initialized. This happens in cached Frontend scope where full TypoScript' .
-                ' is not needed by the system, and if a PAGE object for given type could not be determined.' .
-                ' Test with hasPage().',
+                'PAGE node has not been initialized. This happens in cached Frontend scope where full TypoScript'
+                . ' is not needed by the system, and if a PAGE object for given type could not be determined.'
+                . ' Test with hasPage().',
                 1710399966
             );
         }
@@ -297,9 +297,9 @@ final class FrontendTypoScript
     {
         if ($this->pageArray === null) {
             throw new \RuntimeException(
-                'PAGE array has not been initialized. This happens in cached Frontend scope where full TypoScript' .
-                ' is not needed by the system, and if a PAGE object for given type could not be determined.' .
-                ' Test with hasPage().',
+                'PAGE array has not been initialized. This happens in cached Frontend scope where full TypoScript'
+                . ' is not needed by the system, and if a PAGE object for given type could not be determined.'
+                . ' Test with hasPage().',
                 1710399967
             );
         }

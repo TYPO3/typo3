@@ -77,13 +77,13 @@ final class ConfigurationController
     {
         $html = '';
         if (!empty($incomingIdentifier)) {
-            $html .= '<div' .
-                ' class="treelist-collapse collapse"' .
-                ' data-persist-collapse-state="true"' .
-                ' data-persist-collapse-state-suffix="lowlevel-configuration-' . $labelHash . '"' .
-                ' data-persist-collapse-state-if-state="shown"' .
-                ' data-persist-collapse-state-not-if-search="true"' .
-                ' id="collapse-list-' . $incomingIdentifier . '">';
+            $html .= '<div'
+                . ' class="treelist-collapse collapse"'
+                . ' data-persist-collapse-state="true"'
+                . ' data-persist-collapse-state-suffix="lowlevel-configuration-' . $labelHash . '"'
+                . ' data-persist-collapse-state-if-state="shown"'
+                . ' data-persist-collapse-state-not-if-search="true"'
+                . ' id="collapse-list-' . $incomingIdentifier . '">';
         }
 
         $html .= '<ul class="treelist">';

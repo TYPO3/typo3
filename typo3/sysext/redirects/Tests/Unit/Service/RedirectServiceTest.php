@@ -354,8 +354,8 @@ final class RedirectServiceTest extends UnitTestCase
                 'example.com',
                 [
                     'flat' => [
-                        'special/page/' =>
-                            [
+                        'special/page/'
+                            => [
                                 1 => $row1,
                             ],
                     ],

@@ -53,8 +53,8 @@ class MigrateSiteSettingsConfigUpdate implements UpgradeWizardInterface
     public function getDescription(): string
     {
         return
-            'If site settings exist in a config.yaml file, this wizard migrates them to a dedicated settings.yaml file. ' .
-            'Please note that you should remove them from your existing config manually.';
+            'If site settings exist in a config.yaml file, this wizard migrates them to a dedicated settings.yaml file. '
+            . 'Please note that you should remove them from your existing config manually.';
     }
 
     public function executeUpdate(): bool

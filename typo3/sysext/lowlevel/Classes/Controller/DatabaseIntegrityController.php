@@ -1231,12 +1231,12 @@ class DatabaseIntegrityController
                 }
 
                 foreach ($this->tableArray[$from_table] as $val) {
-                    $this->MOD_SETTINGS['labels_noprefix'] =
-                        ($this->MOD_SETTINGS['labels_noprefix'] ?? '') == 1
+                    $this->MOD_SETTINGS['labels_noprefix']
+                        = ($this->MOD_SETTINGS['labels_noprefix'] ?? '') == 1
                             ? 'on'
                             : $this->MOD_SETTINGS['labels_noprefix'] ?? '';
-                    $prefixString =
-                        $this->MOD_SETTINGS['labels_noprefix'] === 'on'
+                    $prefixString
+                        = $this->MOD_SETTINGS['labels_noprefix'] === 'on'
                             ? ''
                             : ' [' . $tablePrefix . $val['uid'] . '] ';
                     if (GeneralUtility::inList($fieldValue, $tablePrefix . $val['uid'])
@@ -2288,7 +2288,7 @@ class DatabaseIntegrityController
     protected function getSubscript($arr): array
     {
         $retArr = [];
-        while (\is_array($arr)) {
+        while (is_array($arr)) {
             reset($arr);
             $key = key($arr);
             $retArr[] = $key;
@@ -2640,8 +2640,8 @@ class DatabaseIntegrityController
             // Making sure, index 0 is not set!
             unset($storeArray[0]);
             $writeArray['storeArray'] = serialize($storeArray);
-            $writeArray['storeQueryConfigs'] =
-                serialize($this->cleanStoreQueryConfigs($storeQueryConfigs, $storeArray));
+            $writeArray['storeQueryConfigs']
+                = serialize($this->cleanStoreQueryConfigs($storeQueryConfigs, $storeArray));
             $this->MOD_SETTINGS = BackendUtility::getModuleData(
                 $this->MOD_MENU,
                 $writeArray,
@@ -2889,17 +2889,17 @@ class DatabaseIntegrityController
                         $this->moduleName,
                         ['SET' => ['function' => 'records'], 'fixLostRecords_table' => $table, 'fixLostRecords_uid' => $data['uid']]
                     );
-                    $lostRecordList[] =
-                        '<div class="record">' .
-                            '<a href="' . htmlspecialchars($fixLink) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fixLostRecord')) . '">' .
-                                $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render() .
-                            '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
-                        '</div>';
+                    $lostRecordList[]
+                        = '<div class="record">'
+                            . '<a href="' . htmlspecialchars($fixLink) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fixLostRecord')) . '">'
+                                . $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render()
+                            . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20))
+                        . '</div>';
                 } else {
-                    $lostRecordList[] =
-                        '<div class="record-noicon">' .
-                            'uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
-                        '</div>';
+                    $lostRecordList[]
+                        = '<div class="record-noicon">'
+                            . 'uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20))
+                        . '</div>';
                 }
             }
             $tableStatistic[$table] = [
@@ -3022,9 +3022,9 @@ class DatabaseIntegrityController
         ], true);
 
         return
-            '<input ' . $attributes .
-            ($currentValue ? ' checked="checked"' : '') .
-            ($tagParams ? ' ' . $tagParams : '') .
-            ' />';
+            '<input ' . $attributes
+            . ($currentValue ? ' checked="checked"' : '')
+            . ($tagParams ? ' ' . $tagParams : '')
+            . ' />';
     }
 }

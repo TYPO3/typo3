@@ -59,7 +59,7 @@ final readonly class RelationMapBuilder
      * Note: Inside a section, it is not possible to add a field with a relation (type 'inline', 'file', 'folder', 'group', 'category').
      * See TcaFlexProcess class for details.
      */
-    protected function addRelationsForFlexFieldToRelationMap(array $tcaConfig, string $tableName, string $fieldName, RelationMap $relationMap): array
+    private function addRelationsForFlexFieldToRelationMap(array $tcaConfig, string $tableName, string $fieldName, RelationMap $relationMap): array
     {
         // @todo: FlexFormTools should not be used here, as it should only work with real records.
         $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);

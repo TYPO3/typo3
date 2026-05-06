@@ -37,8 +37,8 @@ class DataProcessorRegistry
         $dataProcessor = $this->dataProcessorLocator->get($identifer);
         if (!($dataProcessor instanceof DataProcessorInterface)) {
             throw new \UnexpectedValueException(
-                'Processor with alias / identifier "' . $identifer . '" ' .
-                'must implement interface "' . DataProcessorInterface::class . '"',
+                'Processor with alias / identifier "' . $identifer . '" '
+                . 'must implement interface "' . DataProcessorInterface::class . '"',
                 1666131903
             );
         }

@@ -85,7 +85,7 @@ class LocalizationFactory implements SingletonInterface
                 // @todo: this (providing an absolute file system path) likely does not work properly anyway in all cases and should rather be deprecated
                 $LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey);
             }
-        } catch (FileNotFoundException | UnknownPackagePathException $exception) {
+        } catch (FileNotFoundException|UnknownPackagePathException $exception) {
             // Source localization file not found, set empty data as there could be an override
             $this->store->setData($fileReference, $languageKey, []);
             $LOCAL_LANG = $this->store->getData($fileReference);

@@ -35,7 +35,7 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      *
      * @var array
      */
-    protected $objects = [];
+    private $objects = [];
 
     /**
      * Add a variable to the finisher container.

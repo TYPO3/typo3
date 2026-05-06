@@ -67,8 +67,8 @@ class Avatar
         $avatar = $this->cache->get($cacheId);
         if (!$avatar) {
             $icon = $showIcon ? $this->iconFactory->getIconForRecord('be_users', $backendUser, IconSize::SMALL)->render() : '';
-            $avatar =
-                '<span class="avatar" style="--avatar-size: ' . $size . 'px;">'
+            $avatar
+                = '<span class="avatar" style="--avatar-size: ' . $size . 'px;">'
                     . '<span class="avatar-image">' . $this->getImgTag($backendUser, $size) . '</span>'
                     . ($showIcon ? '<span class="avatar-icon">' . $icon . '</span>' : '')
                 . '</span>';
@@ -83,12 +83,12 @@ class Avatar
     protected function getImgTag(array $backendUser, int $size = 32): string
     {
         $avatarImage = $this->getImage($backendUser, $size);
-        return '<img src="' . htmlspecialchars($avatarImage->getUrl()) . '" ' .
-            'width="' . (int)$avatarImage->getWidth() . '" ' .
-            'height="' . (int)$avatarImage->getHeight() . '" ' .
-            'alt="" ' .
-            'aria-hidden="true" ' .
-            'loading="lazy" />';
+        return '<img src="' . htmlspecialchars($avatarImage->getUrl()) . '" '
+            . 'width="' . (int)$avatarImage->getWidth() . '" '
+            . 'height="' . (int)$avatarImage->getHeight() . '" '
+            . 'alt="" '
+            . 'aria-hidden="true" '
+            . 'loading="lazy" />';
     }
 
     /**

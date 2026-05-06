@@ -108,7 +108,7 @@ final class AddPageTypeZeroSource
                 0,
                 [],
             );
-        } catch (\InvalidArgumentException | InvalidRouteArgumentsException $e) {
+        } catch (\InvalidArgumentException|InvalidRouteArgumentsException $e) {
             throw new UnableToLinkToPageException(
                 sprintf(
                     'The link to the page with ID "%d" and type "%d" could not be generated: %s',

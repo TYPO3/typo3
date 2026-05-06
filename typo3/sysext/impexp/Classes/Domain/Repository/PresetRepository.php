@@ -33,10 +33,10 @@ use TYPO3\CMS\Impexp\Exception\PresetNotFoundException;
  */
 final class PresetRepository
 {
-    protected const PRESET_TABLE = 'tx_impexp_presets';
-    protected QueryBuilder $queryBuilder;
-    protected Connection $connection;
-    protected Context $context;
+    private const PRESET_TABLE = 'tx_impexp_presets';
+    private QueryBuilder $queryBuilder;
+    private Connection $connection;
+    private Context $context;
 
     public function __construct(
         ConnectionPool $connectionPool,
@@ -168,7 +168,7 @@ final class PresetRepository
      *
      * @throws PresetNotFoundException
      */
-    protected function getPreset(int $uid): array
+    private function getPreset(int $uid): array
     {
         $queryBuilder = $this->queryBuilder;
         $preset = $queryBuilder->select('*')
@@ -185,7 +185,7 @@ final class PresetRepository
         return $preset;
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

@@ -42,7 +42,7 @@ final class PreviewUriBuilderTest extends FunctionalTestCase
     #[Test]
     public function attributesContainAlternativeUri(): void
     {
-        $eventDispatcher = new class () implements EventDispatcherInterface {
+        $eventDispatcher = new class implements EventDispatcherInterface {
             public function dispatch(object $event)
             {
                 if ($event instanceof BeforePagePreviewUriGeneratedEvent) {

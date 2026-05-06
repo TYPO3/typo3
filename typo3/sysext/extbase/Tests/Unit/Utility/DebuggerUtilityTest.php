@@ -163,7 +163,7 @@ final class DebuggerUtilityTest extends UnitTestCase
     #[Test]
     public function varDumpShowsUninitializedVariable(): void
     {
-        $class = new class () {
+        $class = new class {
             protected \stdClass $test;
         };
 
@@ -175,7 +175,7 @@ final class DebuggerUtilityTest extends UnitTestCase
     public function varDumpUsesNonceValue(): void
     {
         DebuggerUtilityAccessibleProxy::setStylesheetEchoed(false);
-        $class = new class () {
+        $class = new class {
             protected \stdClass $test;
         };
         $result = DebuggerUtilityAccessibleProxy::var_dump($class, null, 8, false, false, true);

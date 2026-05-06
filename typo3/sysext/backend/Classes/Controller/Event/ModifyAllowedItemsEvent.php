@@ -27,8 +27,8 @@ final class ModifyAllowedItemsEvent
      * @param array<string, mixed> $currentLinkParts
      */
     public function __construct(
-        protected array $allowedItems,
-        protected array $currentLinkParts,
+        private array $allowedItems,
+        private array $currentLinkParts,
     ) {}
 
     /**

@@ -89,7 +89,7 @@ readonly class DataStructureIdentifierListener
         }
         $identifier = $event->getIdentifier();
         $currentFlexData = [];
-        if (!empty($row['pi_flexform']) && !\is_array($row['pi_flexform'])) {
+        if (!empty($row['pi_flexform']) && !is_array($row['pi_flexform'])) {
             $currentFlexData = GeneralUtility::xml2array($row['pi_flexform']);
         }
         // Add selected form value

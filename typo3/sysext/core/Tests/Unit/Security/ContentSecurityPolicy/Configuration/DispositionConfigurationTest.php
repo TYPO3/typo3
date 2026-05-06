@@ -108,7 +108,7 @@ final class DispositionConfigurationTest extends UnitTestCase
 
     #[DataProvider('reportingUrlIsNormalizedDataProvider')]
     #[Test]
-    public static function reportingUrlIsNormalized(mixed $reportingUrl, null|bool|string $expectation): void
+    public static function reportingUrlIsNormalized(mixed $reportingUrl, bool|string|null $expectation): void
     {
         $subject = new DispositionConfiguration(true, true, $reportingUrl);
         self::assertSame($expectation, $subject->reportingUrl);

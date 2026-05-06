@@ -74,9 +74,9 @@ class PasswordRecoveryController extends ActionController
 
         $userData = $this->userRepository->findUserByUsernameOrEmailOnPages($userIdentifier, $storagePageIds);
 
-        if ($userData &&
-            GeneralUtility::validEmail($userData['email']) &&
-            !$this->hasExceededMaximumAttemptsForReset($userData['email'])
+        if ($userData
+            && GeneralUtility::validEmail($userData['email'])
+            && !$this->hasExceededMaximumAttemptsForReset($userData['email'])
         ) {
             $hash = $this->recoveryConfiguration->getForgotHash();
             $this->userRepository->updateForgotHashForUserByUid($userData['uid'], $this->hashService->hmac($hash, self::class));

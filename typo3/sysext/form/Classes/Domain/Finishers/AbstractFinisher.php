@@ -174,7 +174,7 @@ abstract class AbstractFinisher implements FinisherInterface
         $optionValue = $this->substituteRuntimeReferences($optionValue, $formRuntime);
 
         if (is_string($optionValue)) {
-            $translationOptions = isset($this->options['translation']) && \is_array($this->options['translation'])
+            $translationOptions = isset($this->options['translation']) && is_array($this->options['translation'])
                                 ? $this->options['translation']
                                 : [];
 

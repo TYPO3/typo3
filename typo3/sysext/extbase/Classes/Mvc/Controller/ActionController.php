@@ -832,10 +832,10 @@ abstract class ActionController implements ControllerInterface
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );
 
-        $handleTargetNotFoundException = $exception instanceof TargetNotFoundException &&
-            (bool)($configuration['mvc']['showPageNotFoundIfTargetNotFoundException'] ?? false);
-        $handleRequiredArgumentMissingException = $exception instanceof RequiredArgumentMissingException &&
-            (bool)($configuration['mvc']['showPageNotFoundIfRequiredArgumentIsMissingException'] ?? false);
+        $handleTargetNotFoundException = $exception instanceof TargetNotFoundException
+            && (bool)($configuration['mvc']['showPageNotFoundIfTargetNotFoundException'] ?? false);
+        $handleRequiredArgumentMissingException = $exception instanceof RequiredArgumentMissingException
+            && (bool)($configuration['mvc']['showPageNotFoundIfRequiredArgumentIsMissingException'] ?? false);
 
         if ($handleTargetNotFoundException || $handleRequiredArgumentMissingException) {
             $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(

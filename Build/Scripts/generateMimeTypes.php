@@ -76,8 +76,8 @@ namespace TYPO3\CMS\Core\Resource;
 final class MimeTypeCollection
 {
     private $map = [
-' . rtrim($mimeTypeString, ',') .
-'    ];
+' . rtrim($mimeTypeString, ',')
+. '    ];
 
     /**
      * @return array<string, List<string>>

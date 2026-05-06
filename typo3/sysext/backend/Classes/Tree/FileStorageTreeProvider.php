@@ -46,7 +46,7 @@ class FileStorageTreeProvider
         $storage = $folder->getStorage();
         try {
             $parentFolder = $parentFolder ?? $folder->getParentFolder();
-        } catch (FolderDoesNotExistException | InsufficientFolderAccessPermissionsException $e) {
+        } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {
             $parentFolder = null;
         }
         if (str_contains($folder->getRole(), FolderInterface::ROLE_MOUNT)) {
@@ -62,7 +62,7 @@ class FileStorageTreeProvider
 
         try {
             $hasSubfolders = $storage->isBrowsable() && (is_array($children) ? $children !== [] : !empty($folder->getSubfolders()));
-        } catch (\InvalidArgumentException | InsufficientFolderReadPermissionsException $e) {
+        } catch (\InvalidArgumentException|InsufficientFolderReadPermissionsException $e) {
             $hasSubfolders = false;
         }
 

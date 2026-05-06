@@ -38,8 +38,8 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 final class LinkController
 {
     public function __construct(
-        protected readonly LinkService $linkService,
-        protected readonly ResourceFactory $resourceFactory
+        private readonly LinkService $linkService,
+        private readonly ResourceFactory $resourceFactory
     ) {}
 
     public function resourceAction(ServerRequestInterface $request): ResponseInterface
@@ -87,7 +87,7 @@ final class LinkController
     /**
      * Prepare response data for a JSON response
      */
-    protected function getResponseData(bool $success, ?string $message = null, ?string $link = null): array
+    private function getResponseData(bool $success, ?string $message = null, ?string $link = null): array
     {
         $flashMessageQueue = new FlashMessageQueue('backend');
         if ($message) {
@@ -106,7 +106,7 @@ final class LinkController
         ];
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

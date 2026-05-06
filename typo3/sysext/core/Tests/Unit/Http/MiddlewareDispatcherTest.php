@@ -34,7 +34,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
     #[Test]
     public function executesKernelWithEmptyMiddlewareStack(): void
     {
-        $kernel = new class () implements RequestHandlerInterface {
+        $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return (new Response())->withStatus(204);
@@ -50,7 +50,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
     #[Test]
     public function executesMiddlewaresLastInFirstOut(): void
     {
-        $kernel = new class () implements RequestHandlerInterface {
+        $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return (new Response())
@@ -59,7 +59,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
             }
         };
 
-        $middleware1 = new class () implements MiddlewareInterface {
+        $middleware1 = new class implements MiddlewareInterface {
             public $id = '0';
 
             public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -93,13 +93,13 @@ final class MiddlewareDispatcherTest extends UnitTestCase
     #[Test]
     public function doesNotInstantiateLazyMiddlewareInCaseOfAnEarlyReturningOuterMiddleware(): void
     {
-        $kernel = new class () implements RequestHandlerInterface {
+        $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new Response();
             }
         };
-        $middleware = new class () implements MiddlewareInterface {
+        $middleware = new class implements MiddlewareInterface {
             public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
             {
                 return (new Response())->withStatus(404);
@@ -120,7 +120,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1516821342);
 
-        $kernel = new class () implements RequestHandlerInterface {
+        $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new Response();
@@ -136,13 +136,13 @@ final class MiddlewareDispatcherTest extends UnitTestCase
     #[Test]
     public function canBeExecutedMultipleTimes(): void
     {
-        $kernel = new class () implements RequestHandlerInterface {
+        $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new Response();
             }
         };
-        $middleware = new class () implements MiddlewareInterface {
+        $middleware = new class implements MiddlewareInterface {
             public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
             {
                 return (new Response())->withStatus(204);
@@ -162,7 +162,7 @@ final class MiddlewareDispatcherTest extends UnitTestCase
     #[Test]
     public function canBeReExecutedRecursivelyDuringDispatch(): void
     {
-        $kernel = new class () implements RequestHandlerInterface {
+        $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new Response();
@@ -200,14 +200,14 @@ final class MiddlewareDispatcherTest extends UnitTestCase
     #[Test]
     public function fetchesMiddlewareFromContainer(): void
     {
-        $kernel = new class () implements RequestHandlerInterface {
+        $kernel = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 return new Response();
             }
         };
 
-        $middleware = new class () implements MiddlewareInterface {
+        $middleware = new class implements MiddlewareInterface {
             public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
             {
                 return (new Response())->withStatus(404);

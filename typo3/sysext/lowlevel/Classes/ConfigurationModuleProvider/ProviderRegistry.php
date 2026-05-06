@@ -28,7 +28,7 @@ final class ProviderRegistry
     /**
      * @var ProviderInterface[]
      */
-    protected array $providers = [];
+    private array $providers = [];
 
     public function registerProvider(ProviderInterface $provider, array $attributes): void
     {

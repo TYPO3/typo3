@@ -31,8 +31,8 @@ final class ExportTest extends AbstractImportExportTestCase
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
-    protected array $recordTypesIncludeFields =
-        [
+    protected array $recordTypesIncludeFields
+        = [
             'pages' => [
                 'title',
                 'deleted',
@@ -208,8 +208,8 @@ final class ExportTest extends AbstractImportExportTestCase
                         'ref' => 'FILE',
                         'type' => 'file',
                         'msg' => '',
-                        'preCode' =>
-                            '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard" aria-hidden="true">'
+                        'preCode'
+                            => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="FILE" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard" aria-hidden="true">'
                             . "\n" . "\t" . '<span class="icon-markup">'
                             . "\n" . '<img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png" width="16" height="16" alt="" />'
                             . "\n" . "\t" . '</span>' . "\n\t\n" . '</span>',

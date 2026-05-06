@@ -59,8 +59,8 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     public function notModifiedValueKeepsOriginalValue(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize(
-            "foo = originalValue\n" .
-            'foo := doesNotExistFunction()'
+            "foo = originalValue\n"
+            . 'foo := doesNotExistFunction()'
         );
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
@@ -72,8 +72,8 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     public function notModifiedValueKeepsOriginalValueCommentAware(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize(
-            "foo = originalValue\n" .
-            'foo := doesNotExistFunction()'
+            "foo = originalValue\n"
+            . 'foo := doesNotExistFunction()'
         );
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
@@ -85,8 +85,8 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     public function modifiedValueUpdatesOriginalValue(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize(
-            "foo = originalValue\n" .
-            'foo := testFunction(modifierArgument)'
+            "foo = originalValue\n"
+            . 'foo := testFunction(modifierArgument)'
         );
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
@@ -98,8 +98,8 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
     public function modifiedValueUpdatesOriginalValueCommentAware(): void
     {
         $tokens = (new LosslessTokenizer())->tokenize(
-            "foo = originalValue\n" .
-            'foo := testFunction(modifierArgument)'
+            "foo = originalValue\n"
+            . 'foo := testFunction(modifierArgument)'
         );
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());

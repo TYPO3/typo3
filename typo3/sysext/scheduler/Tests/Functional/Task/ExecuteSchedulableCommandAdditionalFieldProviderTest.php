@@ -37,7 +37,7 @@ final class ExecuteSchedulableCommandAdditionalFieldProviderTest extends Functio
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
 
         // Create a fake command and register it.
-        $command = new class () extends Command {
+        $command = new class extends Command {
             protected function configure(): void
             {
                 $this

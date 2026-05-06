@@ -136,8 +136,8 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
                 // This extbase specific code is a helper for a more detailed exception
                 // message, and a tribute to extbase backend extensions being upgraded.
                 // Introduced with v13, it could potentially vanish at some point again.
-                $templateFileName = $extbaseRequestParameters->getControllerName() . '/' .
-                    ucfirst($extbaseRequestParameters->getControllerActionName());
+                $templateFileName = $extbaseRequestParameters->getControllerName() . '/'
+                    . ucfirst($extbaseRequestParameters->getControllerActionName());
                 $extbaseRequestMessage = ' Expected template filename is "' . $templateFileName . '".';
             }
             throw new \InvalidArgumentException('A template filename must be provided.' . $extbaseRequestMessage, 1732184506);

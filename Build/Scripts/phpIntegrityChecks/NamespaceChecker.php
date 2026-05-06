@@ -219,7 +219,7 @@ final class NamespaceChecker extends AbstractPhpIntegrityChecker
             return '';
         }
         try {
-            $composerInfo = \json_decode(
+            $composerInfo = json_decode(
                 json: (string)file_get_contents($fullComposerJsonFilePath),
                 flags: JSON_OBJECT_AS_ARRAY | JSON_THROW_ON_ERROR,
             );

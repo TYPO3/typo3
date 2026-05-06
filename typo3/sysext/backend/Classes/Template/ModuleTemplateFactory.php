@@ -34,13 +34,13 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 final class ModuleTemplateFactory
 {
     public function __construct(
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleProvider $moduleProvider,
-        protected readonly FlashMessageService $flashMessageService,
-        protected readonly ExtensionConfiguration $extensionConfiguration,
-        protected readonly BackendViewFactory $viewFactory,
+        private readonly PageRenderer $pageRenderer,
+        private readonly IconFactory $iconFactory,
+        private readonly UriBuilder $uriBuilder,
+        private readonly ModuleProvider $moduleProvider,
+        private readonly FlashMessageService $flashMessageService,
+        private readonly ExtensionConfiguration $extensionConfiguration,
+        private readonly BackendViewFactory $viewFactory,
     ) {}
 
     public function create(ServerRequestInterface $request): ModuleTemplate

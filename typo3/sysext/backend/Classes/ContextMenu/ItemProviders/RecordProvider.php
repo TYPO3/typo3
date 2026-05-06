@@ -473,7 +473,7 @@ class RecordProvider extends AbstractProvider
      */
     protected function isDeletionDisabledInTS(): bool
     {
-        return (bool)\trim(
+        return (bool)trim(
             $this->backendUser->getTSConfig()['options.']['disableDelete.'][$this->table]
             ?? $this->backendUser->getTSConfig()['options.']['disableDelete']
             ?? ''

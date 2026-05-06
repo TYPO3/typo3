@@ -967,9 +967,9 @@ class HtmlParser
         // Hint: RteHtmlParser->TS_transform_db() is another layer of scrubbing
         //       which already removes any inline-level tags if they occur at
         //       block-level range.
-        $removeTagsArray = is_array($TSconfig['removeTags.'] ?? null) ?
-            $TSconfig['removeTags.'] :
-            GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags'] ?? ''), true);
+        $removeTagsArray = is_array($TSconfig['removeTags.'] ?? null)
+            ? $TSconfig['removeTags.']
+            : GeneralUtility::trimExplode(',', strtolower($TSconfig['removeTags'] ?? ''), true);
         foreach ($removeTagsArray as $removeTagName) {
             if (!is_string($removeTagName) || $removeTagName === '') {
                 continue;

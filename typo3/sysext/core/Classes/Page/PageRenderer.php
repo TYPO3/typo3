@@ -2215,8 +2215,8 @@ class PageRenderer implements SingletonInterface
     public function getApplicationType(): string
     {
         if (
-            ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface &&
-            ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+            ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
         ) {
             return 'FE';
         }

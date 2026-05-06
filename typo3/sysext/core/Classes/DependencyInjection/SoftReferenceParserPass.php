@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
  */
 final class SoftReferenceParserPass implements CompilerPassInterface
 {
-    protected string $tagName;
+    private string $tagName;
 
     public function __construct(string $tagName)
     {

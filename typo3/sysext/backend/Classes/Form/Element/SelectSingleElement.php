@@ -179,8 +179,8 @@ class SelectSingleElement extends AbstractFormElement
 
             if (is_array($selectItemGroup['items'])) {
                 foreach ($selectItemGroup['items'] as $item) {
-                    $options .= '<option value="' . htmlspecialchars($item['value']) . '" data-icon="' .
-                        htmlspecialchars($item['icon']) . '"'
+                    $options .= '<option value="' . htmlspecialchars($item['value']) . '" data-icon="'
+                        . htmlspecialchars($item['icon']) . '"'
                         . ($item['selected'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($item['title'], ENT_COMPAT, 'UTF-8', false) . '</option>';
 
                     // At least one select item with icon found.

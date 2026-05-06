@@ -75,7 +75,7 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
 
             $allowedMimeTypes = [];
             $validators = [];
-            if (isset($renderable->getProperties()['allowedMimeTypes']) && \is_array($renderable->getProperties()['allowedMimeTypes'])) {
+            if (isset($renderable->getProperties()['allowedMimeTypes']) && is_array($renderable->getProperties()['allowedMimeTypes'])) {
                 $allowedMimeTypes = array_filter($renderable->getProperties()['allowedMimeTypes']);
             }
             if (!empty($allowedMimeTypes)) {
@@ -153,7 +153,7 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
         try {
             $resourceFactory->getFolderObjectFromCombinedIdentifier($saveToFileMountIdentifier);
             return true;
-        } catch (\InvalidArgumentException | InsufficientFolderAccessPermissionsException | FolderDoesNotExistException $e) {
+        } catch (\InvalidArgumentException|InsufficientFolderAccessPermissionsException|FolderDoesNotExistException $e) {
             return false;
         }
     }
