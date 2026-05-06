@@ -42,11 +42,15 @@ The following PHP class methods that have previously been marked as deprecated w
 The following PHP static class methods that have previously been marked as deprecated for v14 have been removed:
 
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename()` :ref:`(Deprecation entry) <deprecation-107537-1760337101>`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()` :ref:`(Deprecation entry) <deprecation-109551-1775924599>`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::setIndpEnv()` :ref:`(Deprecation entry) <deprecation-109551-1775924599>`
 - :php:`\TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath()` :ref:`(Deprecation entry) <deprecation-107537-1761162068>`
 
 The following methods changed signature according to previous deprecations in v14 at the end of the argument list:
 
-- :php:`\TYPO3\CMS\SomeExtension\Some\ClassName->someMethod()` - description of change
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109523-1775680564>`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109548-1775851081>`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109544-1775761298>`
 
 The following public class properties have been dropped:
 

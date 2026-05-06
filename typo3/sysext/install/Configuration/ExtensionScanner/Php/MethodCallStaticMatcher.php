@@ -1805,6 +1805,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-109551-GeneralUtilityGetIndpEnv.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist' => [

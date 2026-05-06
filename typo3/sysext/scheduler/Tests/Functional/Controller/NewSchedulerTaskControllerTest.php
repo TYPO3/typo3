@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -166,7 +167,11 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
 
         $request = (new ServerRequest('http://localhost/typo3/scheduler/task/wizard/new', 'GET'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('route', new Route('/scheduler/task/wizard/new', ['packageName' => 'typo3/cms-scheduler', '_identifier' => 'ajax_new_scheduler_task_wizard']));
+            ->withAttribute('route', new Route('/scheduler/task/wizard/new', ['packageName' => 'typo3/cms-scheduler', '_identifier' => 'ajax_new_scheduler_task_wizard']))
+            ->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+                'HTTP_HOST' => 'localhost',
+                'SCRIPT_NAME' => '/typo3/index.php',
+            ]));
         $request = $request->withQueryParams([
             'returnUrl' => Environment::getPublicPath() . 'typo3/scheduler/manage?token=123&test=value',
             'defaultValues' => $defaultValues,

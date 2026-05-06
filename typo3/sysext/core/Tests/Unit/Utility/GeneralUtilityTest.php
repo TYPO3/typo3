@@ -1074,56 +1074,6 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     //////////////////////////////////
-    // Tests concerning getIndpEnv
-    //////////////////////////////////
-    #[Test]
-    #[IgnoreDeprecations]
-    public function getIndpEnvTypo3SitePathReturnNonEmptyString(): void
-    {
-        self::assertTrue(strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')) >= 1);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function getIndpEnvTypo3SitePathReturnsStringEndingWithSlash(): void
-    {
-        $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        self::assertEquals('/', $result[strlen($result) - 1]);
-    }
-
-    public static function hostnameAndPortDataProvider(): array
-    {
-        return [
-            'localhost ipv4 without port' => ['127.0.0.1', '127.0.0.1', ''],
-            'localhost ipv4 with port' => ['127.0.0.1:81', '127.0.0.1', '81'],
-            'localhost ipv6 without port' => ['[::1]', '[::1]', ''],
-            'localhost ipv6 with port' => ['[::1]:81', '[::1]', '81'],
-            'ipv6 without port' => ['[2001:DB8::1]', '[2001:DB8::1]', ''],
-            'ipv6 with port' => ['[2001:DB8::1]:81', '[2001:DB8::1]', '81'],
-            'hostname without port' => ['lolli.did.this', 'lolli.did.this', ''],
-            'hostname with port' => ['lolli.did.this:42', 'lolli.did.this', '42'],
-        ];
-    }
-
-    #[DataProvider('hostnameAndPortDataProvider')]
-    #[Test]
-    #[IgnoreDeprecations]
-    public function getIndpEnvTypo3HostOnlyParsesHostnamesAndIpAddresses($httpHost, $expectedIp): void
-    {
-        $_SERVER['HTTP_HOST'] = $httpHost;
-        self::assertEquals($expectedIp, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
-    }
-
-    #[DataProvider('hostnameAndPortDataProvider')]
-    #[Test]
-    #[IgnoreDeprecations]
-    public function getIndpEnvTypo3PortParsesHostnamesAndIpAddresses($httpHost, $dummy, $expectedPort): void
-    {
-        $_SERVER['HTTP_HOST'] = $httpHost;
-        self::assertEquals($expectedPort, GeneralUtility::getIndpEnv('TYPO3_PORT'));
-    }
-
-    //////////////////////////////////
     // Tests concerning underscoredToUpperCamelCase
     //////////////////////////////////
     /**
@@ -1356,9 +1306,11 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/subdir/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['SCRIPT_NAME'] = '/subdir/index.php';
-        self::assertEquals($path, GeneralUtility::sanitizeLocalUrl($path));
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+            'HTTP_HOST' => 'localhost',
+            'SCRIPT_NAME' => '/subdir/index.php',
+        ]));
+        self::assertEquals($path, GeneralUtility::sanitizeLocalUrl($path, $request));
     }
 
     #[DataProvider('sanitizeLocalUrlValidPathsDataProvider')]
@@ -1378,9 +1330,11 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/subdir/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['SCRIPT_NAME'] = '/subdir/index.php';
-        self::assertEquals(rawurlencode($path), GeneralUtility::sanitizeLocalUrl(rawurlencode($path)));
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+            'HTTP_HOST' => 'localhost',
+            'SCRIPT_NAME' => '/subdir/index.php',
+        ]));
+        self::assertEquals(rawurlencode($path), GeneralUtility::sanitizeLocalUrl(rawurlencode($path), $request));
     }
 
     /**
@@ -1445,9 +1399,11 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $_SERVER['HTTP_HOST'] = $host;
-        $_SERVER['SCRIPT_NAME'] = $subDirectory . 'index.php';
-        self::assertEquals($url, GeneralUtility::sanitizeLocalUrl($url));
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+            'HTTP_HOST' => $host,
+            'SCRIPT_NAME' => $subDirectory . 'index.php',
+        ]));
+        self::assertEquals($url, GeneralUtility::sanitizeLocalUrl($url, $request));
     }
 
     #[DataProvider('sanitizeLocalUrlValidUrlsDataProvider')]
@@ -1466,9 +1422,11 @@ final class GeneralUtilityTest extends UnitTestCase
             Environment::getPublicPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $_SERVER['HTTP_HOST'] = $host;
-        $_SERVER['SCRIPT_NAME'] = $subDirectory . 'index.php';
-        self::assertEquals(rawurlencode($url), GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
+        $request = (new ServerRequest())->withAttribute('normalizedParams', NormalizedParams::createFromServerParams([
+            'HTTP_HOST' => $host,
+            'SCRIPT_NAME' => $subDirectory . 'index.php',
+        ]));
+        self::assertEquals(rawurlencode($url), GeneralUtility::sanitizeLocalUrl(rawurlencode($url), $request));
     }
 
     /**

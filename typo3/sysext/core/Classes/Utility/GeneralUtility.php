@@ -76,12 +76,6 @@ class GeneralUtility
      */
     protected static array $finalClassNameCache = [];
 
-    /**
-     * @var array<string, string|bool|array<string, string|bool|null>|null>
-     * @deprecated Will be removed in TYPO3 v15
-     */
-    protected static array $indpEnvCache = [];
-
     final private function __construct() {}
 
     /**
@@ -407,27 +401,16 @@ class GeneralUtility
      * Scheme, hostname and (optional) port of the given URL are compared.
      *
      * @param string $url URL to compare with the TYPO3 request host
-     * @param ServerRequestInterface|null $request PSR-7 request including normalizedParams attribute. Will be mandatory with TYPO3 v15.0.
+     * @param ServerRequestInterface $request PSR-7 request including normalizedParams attribute
      * @return bool Whether the URL matches the TYPO3 request host
      */
-    public static function isOnCurrentHost(string $url, ?ServerRequestInterface $request = null): bool
+    public static function isOnCurrentHost(string $url, ServerRequestInterface $request): bool
     {
-        if ($request === null) {
-            // @todo v15: Remove this if-block and the null fallback. Change the signature to:
-            //            public static function isOnCurrentHost(string $url, ServerRequestInterface $request): bool
-            trigger_error(
-                'Calling GeneralUtility::isOnCurrentHost() without $request argument is deprecated since TYPO3 v14.3 and will be removed in TYPO3 v15.0. Pass the PSR-7 request as second argument.',
-                E_USER_DEPRECATED
-            );
-            $requestHost = self::getIndpEnv('TYPO3_REQUEST_HOST', true);
-        } else {
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            if ($normalizedParams === null) {
-                throw new \RuntimeException('GeneralUtility::isOnCurrentHost() requires the request to have a normalizedParams attribute.', 1775679512);
-            }
-            $requestHost = $normalizedParams->getRequestHost();
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        if ($normalizedParams === null) {
+            throw new \RuntimeException('GeneralUtility::isOnCurrentHost() requires the request to have a normalizedParams attribute.', 1775679512);
         }
-        return stripos($url . '/', $requestHost . '/') === 0;
+        return stripos($url . '/', $normalizedParams->getRequestHost() . '/') === 0;
     }
 
     /**
@@ -1964,28 +1947,21 @@ class GeneralUtility
      * @param string $path URL / path to prepend full URL addressing to.
      * @return ($path is non-empty-string ? non-empty-string : string)
      */
-    public static function locationHeaderUrl(string $path, ?ServerRequestInterface $request = null): string
+    public static function locationHeaderUrl(string $path, ServerRequestInterface $request): string
     {
-        if ($request === null) {
-            // @deprecated v15: Make $request argument mandatory, remove getIndpEnv() fallback below.
-            trigger_error(
-                'Calling GeneralUtility::locationHeaderUrl() without a request argument is deprecated since TYPO3 v14 and will throw a RuntimeException in TYPO3 v15.',
-                E_USER_DEPRECATED
-            );
-        }
         if (str_starts_with($path, '//')) {
             return $path;
         }
-        $normalizedParams = $request?->getAttribute('normalizedParams');
+        $normalizedParams = $request->getAttribute('normalizedParams');
         // relative to HOST
         if (str_starts_with($path, '/')) {
-            return ($normalizedParams?->getRequestHost() ?? self::getIndpEnv('TYPO3_REQUEST_HOST', true)) . $path;
+            return $normalizedParams->getRequestHost() . $path;
         }
 
         $urlComponents = parse_url($path);
         if (!($urlComponents['scheme'] ?? false)) {
             // No scheme either
-            return ($normalizedParams?->getRequestDir() ?? self::getIndpEnv('TYPO3_REQUEST_DIR', true)) . $path;
+            return $normalizedParams->getRequestDir() . $path;
         }
 
         return $path;
@@ -2061,339 +2037,6 @@ class GeneralUtility
             self::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $script, $content);
         }
         return $script;
-    }
-
-    /**
-     * This method is only for testing and should never be used outside tests.
-     *
-     * @param non-empty-string $envName
-     * @param string|bool|array<string, string|bool|null>|null $value
-     * @internal Will be removed in v15.0 together with getIndpEnv()
-     */
-    public static function setIndpEnv(string $envName, string|bool|array|null $value)
-    {
-        self::$indpEnvCache[$envName] = $value;
-    }
-
-    /**
-     * Abstraction method which returns System Environment Variables regardless of server OS, CGI/MODULE version etc. Basically this is SERVER variables for most of them.
-     * This should be used instead of getEnv() and $_SERVER/ENV_VARS to get reliable values for all situations.
-     *
-     * @param string $getEnvName Name of the "environment variable"/"server variable" you wish to use. Valid values are SCRIPT_NAME, SCRIPT_FILENAME, REQUEST_URI, PATH_INFO, REMOTE_ADDR, REMOTE_HOST, HTTP_REFERER, HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, QUERY_STRING, TYPO3_DOCUMENT_ROOT, TYPO3_HOST_ONLY, TYPO3_HOST_ONLY, TYPO3_REQUEST_HOST, TYPO3_REQUEST_URL, TYPO3_REQUEST_SCRIPT, TYPO3_REQUEST_DIR, TYPO3_SITE_URL, _ARRAY
-     * @return string|bool|array<string, string|bool|null>|null Value based on the input key, independent of server/OS environment.
-     * @throws \UnexpectedValueException
-     * @deprecated since TYPO3 v14.3, will be removed in TYPO3 v15.0. Use NormalizedParams from the PSR-7 request instead.
-     */
-    public static function getIndpEnv(string $getEnvName, bool $internalCall = false): string|bool|array|null
-    {
-        if (!$internalCall) {
-            // @todo: v15: Remove this method entirely, after adaption of remaining internal callers. Remove setIndpEnv() and self::$indpEnvCache
-            trigger_error(
-                'GeneralUtility::getIndpEnv() is deprecated since TYPO3 v14.3 and will be removed in TYPO3 v15.0. Use NormalizedParams from the PSR-7 request instead.',
-                E_USER_DEPRECATED
-            );
-        }
-        if (array_key_exists($getEnvName, self::$indpEnvCache)) {
-            return self::$indpEnvCache[$getEnvName];
-        }
-
-        /*
-        Conventions:
-        output from parse_url():
-        URL:	http://username:password@192.168.1.4:8080/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/?arg1,arg2,arg3&p1=parameter1&p2[key]=value#link1
-        [scheme] => 'http'
-        [user] => 'username'
-        [pass] => 'password'
-        [host] => '192.168.1.4'
-        [port] => '8080'
-        [path] => '/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/'
-        [query] => 'arg1,arg2,arg3&p1=parameter1&p2[key]=value'
-        [fragment] => 'link1'Further definition: [path_script] = '/typo3/32/temp/phpcheck/index.php'
-        [path_dir] = '/typo3/32/temp/phpcheck/'
-        [path_info] = '/arg1/arg2/arg3/'
-        [path] = [path_script/path_dir][path_info]Keys supported:URI______:
-        REQUEST_URI		=	[path]?[query]		= /typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/?arg1,arg2,arg3&p1=parameter1&p2[key]=value
-        HTTP_HOST		=	[host][:[port]]		= 192.168.1.4:8080
-        SCRIPT_NAME		=	[path_script]++		= /typo3/32/temp/phpcheck/index.php		// NOTICE THAT SCRIPT_NAME will return the php-script name ALSO. [path_script] may not do that (eg. '/somedir/' may result in SCRIPT_NAME '/somedir/index.php')!
-        PATH_INFO		=	[path_info]			= /arg1/arg2/arg3/
-        QUERY_STRING	=	[query]				= arg1,arg2,arg3&p1=parameter1&p2[key]=value
-        HTTP_REFERER	=	[scheme]://[host][:[port]][path]	= http://192.168.1.4:8080/typo3/32/temp/phpcheck/index.php/arg1/arg2/arg3/?arg1,arg2,arg3&p1=parameter1&p2[key]=value
-        (Notice: NO username/password + NO fragment)CLIENT____:
-        REMOTE_ADDR		=	(client IP)
-        REMOTE_HOST		=	(client host)
-        HTTP_USER_AGENT	=	(client user agent)
-        HTTP_ACCEPT_LANGUAGE	= (client accept language)SERVER____:
-        SCRIPT_FILENAME	=	Absolute filename of script		(Differs between windows/unix). On windows 'C:\\some\\path\\' will be converted to 'C:/some/path/'Special extras:
-        TYPO3_HOST_ONLY =		[host] = 192.168.1.4
-        TYPO3_PORT =			[port] = 8080 (blank if 80, taken from host value)
-        TYPO3_REQUEST_HOST = 		[scheme]://[host][:[port]]
-        TYPO3_REQUEST_URL =		[scheme]://[host][:[port]][path]?[query] (scheme will by default be "http" until we can detect something different)
-        TYPO3_REQUEST_SCRIPT =  	[scheme]://[host][:[port]][path_script]
-        TYPO3_REQUEST_DIR =		[scheme]://[host][:[port]][path_dir]
-        TYPO3_SITE_URL = 		[scheme]://[host][:[port]][path_dir] of the TYPO3 website frontend
-        TYPO3_SITE_PATH = 		[path_dir] of the TYPO3 website frontend
-        TYPO3_SITE_SCRIPT = 		[script / Speaking URL] of the TYPO3 website
-        TYPO3_DOCUMENT_ROOT =		Absolute path of root of documents: TYPO3_DOCUMENT_ROOT.SCRIPT_NAME = SCRIPT_FILENAME (typically)
-        TYPO3_SSL = 			Returns TRUE if this session uses SSL/TLS (https)
-        TYPO3_PROXY = 			Returns TRUE if this session runs over a well known proxyNotice: [fragment] is apparently NEVER available to the script!Testing suggestions:
-        - Output all the values.
-        - In the script, make a link to the script it self, maybe add some parameters and click the link a few times so HTTP_REFERER is seen
-        - ALSO TRY the script from the ROOT of a site (like 'http://www.mytest.com/' and not 'http://www.mytest.com/test/' !!)
-         */
-        $retVal = '';
-        switch ((string)$getEnvName) {
-            case 'SCRIPT_NAME':
-                $retVal = $_SERVER['SCRIPT_NAME'] ?? '';
-                // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '')) {
-                    if (self::getIndpEnv('TYPO3_SSL', true) && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
-                        $retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'] . $retVal;
-                    } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
-                        $retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix'] . $retVal;
-                    }
-                }
-                $retVal = self::encodeFileSystemPathComponentForUrlPath($retVal);
-                break;
-            case 'SCRIPT_FILENAME':
-                $retVal = Environment::getCurrentScript();
-                break;
-            case 'REQUEST_URI':
-                // Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))
-                if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar'])) {
-                    // This is for URL rewriters that store the original URI in a server variable (eg ISAPI_Rewriter for IIS: HTTP_X_REWRITE_URL)
-                    [$v, $n] = explode('|', $GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
-                    $retVal = $GLOBALS[$v][$n];
-                } elseif (empty($_SERVER['REQUEST_URI'])) {
-                    // This is for ISS/CGI which does not have the REQUEST_URI available.
-                    $retVal = '/' . ltrim(self::getIndpEnv('SCRIPT_NAME', true), '/') . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-                } else {
-                    $retVal = '/' . ltrim($_SERVER['REQUEST_URI'], '/');
-                }
-                // Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
-                if (isset($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])
-                    && self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])
-                ) {
-                    if (self::getIndpEnv('TYPO3_SSL', true) && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
-                        $retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL'] . $retVal;
-                    } elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix']) {
-                        $retVal = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefix'] . $retVal;
-                    }
-                }
-                break;
-            case 'PATH_INFO':
-                $retVal = $_SERVER['PATH_INFO'] ?? '';
-                break;
-            case 'TYPO3_REV_PROXY':
-                $retVal = self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
-                break;
-            case 'REMOTE_ADDR':
-                $retVal = $_SERVER['REMOTE_ADDR'] ?? '';
-                if (self::cmpIP($retVal, $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '')) {
-                    $ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '');
-                    // Choose which IP in list to use
-                    if (!empty($ip)) {
-                        switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
-                            case 'last':
-                                $ip = array_pop($ip);
-                                break;
-                            case 'first':
-                                $ip = array_shift($ip);
-                                break;
-                            case 'none':
-
-                            default:
-                                $ip = '';
-                        }
-                    }
-                    if (self::validIP((string)$ip)) {
-                        $retVal = $ip;
-                    }
-                }
-                break;
-            case 'HTTP_HOST':
-                // if it is not set we're most likely on the cli
-                $retVal = $_SERVER['HTTP_HOST'] ?? '';
-                if (isset($_SERVER['REMOTE_ADDR']) && static::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
-                    $host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '');
-                    // Choose which host in list to use
-                    if (!empty($host)) {
-                        switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
-                            case 'last':
-                                $host = array_pop($host);
-                                break;
-                            case 'first':
-                                $host = array_shift($host);
-                                break;
-                            case 'none':
-
-                            default:
-                                $host = '';
-                        }
-                    }
-                    if ($host) {
-                        $retVal = $host;
-                    }
-                }
-                break;
-            case 'HTTP_REFERER':
-
-            case 'HTTP_USER_AGENT':
-
-            case 'HTTP_ACCEPT_ENCODING':
-
-            case 'HTTP_ACCEPT_LANGUAGE':
-
-            case 'REMOTE_HOST':
-
-            case 'QUERY_STRING':
-                $retVal = $_SERVER[$getEnvName] ?? '';
-                break;
-            case 'TYPO3_DOCUMENT_ROOT':
-                // Get the web root (it is not the root of the TYPO3 installation)
-                // The absolute path of the script can be calculated with TYPO3_DOCUMENT_ROOT + SCRIPT_FILENAME
-                // Some CGI-versions (LA13CGI) and mod-rewrite rules on MODULE versions will deliver a 'wrong' DOCUMENT_ROOT (according to our description). Further various aliases/mod_rewrite rules can disturb this as well.
-                // Therefore the DOCUMENT_ROOT is now always calculated as the SCRIPT_FILENAME minus the end part shared with SCRIPT_NAME.
-                $SFN = self::getIndpEnv('SCRIPT_FILENAME', true);
-                // Use rawurldecode to reverse the result of self::encodeFileSystemPathComponentForUrlPath()
-                // which has been applied to getIndpEnv(SCRIPT_NAME) for web URI usage.
-                // We compare with a file system path (SCRIPT_FILENAME) in here and therefore need to undo the encoding.
-                $SN_A = array_map(rawurldecode(...), explode('/', strrev(self::getIndpEnv('SCRIPT_NAME', true))));
-                $SFN_A = explode('/', strrev($SFN));
-                $acc = [];
-                foreach ($SN_A as $kk => $vv) {
-                    if ((string)$SFN_A[$kk] === (string)$vv) {
-                        $acc[] = $vv;
-                    } else {
-                        break;
-                    }
-                }
-                $commonEnd = strrev(implode('/', $acc));
-                if ((string)$commonEnd !== '') {
-                    $retVal = substr($SFN, 0, -(strlen($commonEnd) + 1));
-                }
-                break;
-            case 'TYPO3_HOST_ONLY':
-                $httpHost = self::getIndpEnv('HTTP_HOST', true);
-                $httpHostBracketPosition = strpos($httpHost, ']');
-                $httpHostParts = explode(':', $httpHost);
-                $retVal = $httpHostBracketPosition !== false ? substr($httpHost, 0, $httpHostBracketPosition + 1) : array_shift($httpHostParts);
-                break;
-            case 'TYPO3_PORT':
-                $httpHost = self::getIndpEnv('HTTP_HOST', true);
-                $httpHostOnly = self::getIndpEnv('TYPO3_HOST_ONLY', true);
-                $retVal = strlen($httpHost) > strlen($httpHostOnly) ? substr($httpHost, strlen($httpHostOnly) + 1) : '';
-                break;
-            case 'TYPO3_REQUEST_HOST':
-                $retVal = (self::getIndpEnv('TYPO3_SSL', true) ? 'https://' : 'http://') . self::getIndpEnv('HTTP_HOST', true);
-                break;
-            case 'TYPO3_REQUEST_URL':
-                $retVal = self::getIndpEnv('TYPO3_REQUEST_HOST', true) . self::getIndpEnv('REQUEST_URI', true);
-                break;
-            case 'TYPO3_REQUEST_SCRIPT':
-                $retVal = self::getIndpEnv('TYPO3_REQUEST_HOST', true) . self::getIndpEnv('SCRIPT_NAME', true);
-                break;
-            case 'TYPO3_REQUEST_DIR':
-                $retVal = self::getIndpEnv('TYPO3_REQUEST_HOST', true) . self::dirname(self::getIndpEnv('SCRIPT_NAME', true)) . '/';
-                break;
-            case 'TYPO3_SITE_URL':
-                if (Environment::getCurrentScript()) {
-                    $lPath = PathUtility::stripPathSitePrefix(PathUtility::dirnameDuringBootstrap(Environment::getCurrentScript())) . '/';
-                    $url = self::getIndpEnv('TYPO3_REQUEST_DIR', true);
-                    $siteUrl = substr($url, 0, -strlen($lPath));
-                    if (substr($siteUrl, -1) !== '/') {
-                        $siteUrl .= '/';
-                    }
-                    $retVal = $siteUrl;
-                }
-                break;
-            case 'TYPO3_SITE_PATH':
-                $retVal = substr(self::getIndpEnv('TYPO3_SITE_URL', true), strlen(self::getIndpEnv('TYPO3_REQUEST_HOST', true)));
-                break;
-            case 'TYPO3_SITE_SCRIPT':
-                $retVal = substr(self::getIndpEnv('TYPO3_REQUEST_URL', true), strlen(self::getIndpEnv('TYPO3_SITE_URL', true)));
-                break;
-            case 'TYPO3_SSL':
-                // How does TYPO3 determine if the connection was established via TLS/SSL/https?
-                // 1. If reverseProxySSL matches, then we now that Client -> Proxy is SSL,
-                //    and Proxy -> App Server is non-SSL. SSL Termination happens at Proxy at ALL times.
-                // 2. If reverseProxyIP matches, and HTTP_X_FORWARDED_PROTO is set, it is evaluated
-                // 3. If no other matches, see webserverUsesHttps()
-                // Note: HTTP_X_FORWARDED_PROTO is ONLY evaluated at the point, where we know
-                //       that the incoming REMOTE_ADDR is a trusted proxy!
-                $configuredProxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] ?? '');
-                $configuredProxyRegular = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '');
-                if ($configuredProxySSL === '*') {
-                    $configuredProxySSL = $configuredProxyRegular;
-                }
-                if (self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $configuredProxySSL)) {
-                    // If the reverseProxySSL matches, we know that the connection from client to proxy is secure.
-                    $retVal = true;
-                } elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $configuredProxyRegular)) {
-                    $retVal = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https';
-                } else {
-                    $retVal = self::webserverUsesHttps();
-                }
-                break;
-            case '_ARRAY':
-                $out = [];
-                // Here, list ALL possible keys to this function for debug display.
-                $envTestVars = [
-                    'HTTP_HOST',
-                    'TYPO3_HOST_ONLY',
-                    'TYPO3_PORT',
-                    'PATH_INFO',
-                    'QUERY_STRING',
-                    'REQUEST_URI',
-                    'HTTP_REFERER',
-                    'TYPO3_REQUEST_HOST',
-                    'TYPO3_REQUEST_URL',
-                    'TYPO3_REQUEST_SCRIPT',
-                    'TYPO3_REQUEST_DIR',
-                    'TYPO3_SITE_URL',
-                    'TYPO3_SITE_SCRIPT',
-                    'TYPO3_SSL',
-                    'TYPO3_REV_PROXY',
-                    'SCRIPT_NAME',
-                    'TYPO3_DOCUMENT_ROOT',
-                    'SCRIPT_FILENAME',
-                    'REMOTE_ADDR',
-                    'REMOTE_HOST',
-                    'HTTP_USER_AGENT',
-                    'HTTP_ACCEPT_LANGUAGE',
-                ];
-                foreach ($envTestVars as $v) {
-                    $out[$v] = self::getIndpEnv($v, true);
-                }
-                reset($out);
-                $retVal = $out;
-                break;
-        }
-        self::$indpEnvCache[$getEnvName] = $retVal;
-        return $retVal;
-    }
-
-    /**
-     * Determine if the webserver uses HTTPS.
-     *
-     * HEADS UP: This does not check if the client performed a
-     * HTTPS request, as possible proxies are not taken into
-     * account. It provides raw information about the current
-     * webservers configuration only.
-     */
-    protected static function webserverUsesHttps(): bool
-    {
-        if (!empty($_SERVER['SSL_SESSION_ID'])) {
-            return true;
-        }
-
-        // https://secure.php.net/manual/en/reserved.variables.server.php
-        // "Set to a non-empty value if the script was queried through the HTTPS protocol."
-        return !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
-    }
-
-    protected static function encodeFileSystemPathComponentForUrlPath(string $path): string
-    {
-        return implode('/', array_map(rawurlencode(...), explode('/', $path)));
     }
 
     /*************************
@@ -2509,15 +2152,8 @@ class GeneralUtility
      * @param string $url potential URL to check
      * @return string $url or empty string
      */
-    public static function sanitizeLocalUrl(string $url, ?ServerRequestInterface $request = null): string
+    public static function sanitizeLocalUrl(string $url, ServerRequestInterface $request): string
     {
-        if ($request === null) {
-            // @deprecated v15: Make $request argument mandatory, remove getIndpEnv() fallback below.
-            trigger_error(
-                'Calling GeneralUtility::sanitizeLocalUrl() without a request argument is deprecated since TYPO3 v14 and will be mandatory in TYPO3 v15.',
-                E_USER_DEPRECATED
-            );
-        }
         $sanitizedUrl = '';
         if (!empty($url)) {
             if (strpbrk($url, "\n\r\x00") !== false) {
@@ -2532,11 +2168,11 @@ class GeneralUtility
             }
 
             $parsedUrl = parse_url($decodedUrl);
-            $normalizedParams = $request?->getAttribute('normalizedParams');
-            $requestHost = $normalizedParams?->getRequestHost() ?? self::getIndpEnv('TYPO3_REQUEST_HOST', true);
-            $siteUrl = $normalizedParams?->getSiteUrl() ?? self::getIndpEnv('TYPO3_SITE_URL', true);
-            $sitePath = $normalizedParams?->getSitePath() ?? self::getIndpEnv('TYPO3_SITE_PATH', true);
-            $scriptName = $normalizedParams?->getScriptName() ?? self::getIndpEnv('SCRIPT_NAME', true);
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            $requestHost = $normalizedParams->getRequestHost();
+            $siteUrl = $normalizedParams->getSiteUrl();
+            $sitePath = $normalizedParams->getSitePath();
+            $scriptName = $normalizedParams->getScriptName();
             // Pass if URL is on the current host:
             if (self::isValidUrl($decodedUrl)) {
                 if (stripos($decodedUrl . '/', $requestHost . '/') === 0 && str_starts_with($decodedUrl, $siteUrl)) {
@@ -3062,7 +2698,6 @@ class GeneralUtility
     /**
      * Flushes some internal runtime caches:
      * - the class-name mapping used by `makeInstance()`
-     * - the cache for `getIndpEnv()`
      *
      * This function is intended to be used in unit tests to keep environment changes from spilling into the next test.
      *
@@ -3071,7 +2706,6 @@ class GeneralUtility
     public static function flushInternalRuntimeCaches(): void
     {
         self::$finalClassNameCache = [];
-        self::$indpEnvCache = [];
     }
 
     /**
