@@ -2614,16 +2614,19 @@ return [
     'TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface' => [
         'restFiles' => [
             'Deprecation-107436-LocalizationParsers.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser' => [
         'restFiles' => [
             'Deprecation-107436-LocalizationParsers.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Localization\Parser\XliffParser' => [
         'restFiles' => [
             'Deprecation-107436-LocalizationParsers.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Annotation\FileUpload' => [
@@ -2684,6 +2687,7 @@ return [
     'TYPO3\CMS\Frontend\Resource\FilePathSanitizer' => [
         'restFiles' => [
             'Deprecation-107537-FilePathSanitizer.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Service\FlexFormService' => [
@@ -2754,6 +2758,7 @@ return [
     'TYPO3\CMS\Core\Console\CommandNameAlreadyInUseException' => [
         'restFiles' => [
             'Deprecation-108667-DeprecateCommandNameAlreadyInUseException.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Command\LanguagePackCommand' => [
@@ -2779,6 +2784,7 @@ return [
     'TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck' => [
         'restFiles' => [
             'Deprecation-107931-LowlevelDatabaseIntegrityCheck.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

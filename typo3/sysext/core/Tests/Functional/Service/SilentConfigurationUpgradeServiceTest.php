@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
-use TYPO3\CMS\Core\Localization\Parser\XliffParser;
 use TYPO3\CMS\Core\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -656,7 +655,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
                     'requireApprovedLocalizations' => '1',
                     'format' => ['priority' => 'xlf'],
                     'parser' => [
-                        'xliff' => XliffParser::class,
+                        'xliff' => 'TYPO3\CMS\Core\Localization\Parser\XliffParser',
                     ],
                 ],
                 'locallangXMLOverride' => [
@@ -750,7 +749,7 @@ final class SilentConfigurationUpgradeServiceTest extends FunctionalTestCase
         $testConfig = [
             'SYS' => [
                 'lang' => [
-                    'parser' => XliffParser::class,
+                    'parser' => 'TYPO3\CMS\Core\Localization\Parser\XliffParser',
                 ],
             ],
         ];

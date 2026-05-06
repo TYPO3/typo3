@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolvePublicResourceException;
 use TYPO3\CMS\Core\SystemResource\Exception\CanNotResolveSystemResourceException;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
@@ -51,9 +50,6 @@ readonly class PathUtility
      * @todo: And this exactly is a big issue as it mixes file system paths with (relative) URLs.
      *        Additionally, it depends on the current request and can not do its job on CLI.
      *        Deprecate entirely and replace with stricter API.
-     *
-     * Until we have a replacement for this API, the safest way to call this method is by providing absolute filesystem paths
-     * and use \TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath whenever possible.
      *
      * @param string $targetPath can be "../typo3conf/ext/myext/myfile.js" or "/myfile.js"
      * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which are subject to removal.
@@ -101,32 +97,6 @@ readonly class PathUtility
     }
 
     /**
-     * Dedicated method to resolve the path of public extension resources
-     *
-     * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which is subject to removal.
-     * @throws CanNotResolvePublicResourceException
-     * @throws CanNotResolveSystemResourceException
-     *
-     * @deprecated use system resource API instead
-     */
-    public static function getPublicResourceWebPath(string $resourcePath, bool $prefixWithSitePath = true): string
-    {
-        trigger_error('PathUtility::getPublicResourceWebPath was marked @internal and is now deprecated and will be removed in v15. Use system resource API instead.', E_USER_DEPRECATED);
-        if (!self::isExtensionPath($resourcePath)) {
-            throw new InvalidFileException(sprintf('Given resource path "%s" must start with "EXT:", but does not.', $resourcePath), 1630089406);
-        }
-        if ($prefixWithSitePath) {
-            return (string)self::getSystemResourceUri($resourcePath, null, new UriGenerationOptions(cacheBusting: false));
-        }
-        // Other implementations of SystemResourcePublisherInterface
-        // might not evaluate the uriPrefix options, so good this method is deprecated and will be removed
-        return (string)self::getSystemResourceUri($resourcePath, null, new UriGenerationOptions(uriPrefix: '', cacheBusting: false));
-    }
-
-    /**
-     * This method is used to replace all usages of getPublicResourceWebPath() in TYPO3 Core
-     * until these places are refactored to use the new resources API
-     *
      * @internal Will be removed (or made private) before v14 LTS release
      *
      * @throws CanNotResolvePublicResourceException
