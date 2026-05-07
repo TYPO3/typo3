@@ -156,10 +156,9 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $out = '';
         // Create the header, showing the current page for which the listing is.
         // Includes link to the page itself, if pages are amount allowed tables.
-        $titleLen = (int)$backendUser->uc['titleLen'];
         $mainPageRecord = BackendUtility::getRecordWSOL('pages', $this->expandPage);
         if (is_array($mainPageRecord)) {
-            $pText = htmlspecialchars(GeneralUtility::fixed_lgd_cs($mainPageRecord['title'], $titleLen));
+            $pText = htmlspecialchars(BackendUtility::cropToTitleLength($mainPageRecord['title']));
 
             $out .= '<p>' . $this->iconFactory->getIconForRecord('pages', $mainPageRecord, IconSize::SMALL)->render() . '&nbsp;';
             if (in_array('pages', $tablesArr, true)) {

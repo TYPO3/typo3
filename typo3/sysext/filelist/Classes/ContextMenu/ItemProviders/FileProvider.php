@@ -410,7 +410,7 @@ class FileProvider extends AbstractProvider
                     'data-button-ok-text' => $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_file.yes'),
                 ];
             }
-            $recordInfo = GeneralUtility::fixed_lgd_cs($this->record->getName(), (int)($this->backendUser->uc['titleLen'] ?? 0));
+            $recordInfo = BackendUtility::cropToTitleLength($this->record->getName());
             if ($this->isFolder()) {
                 if ($this->backendUser->shallDisplayDebugInformation()) {
                     $recordInfo .= ' [' . $this->record->getIdentifier() . ']';

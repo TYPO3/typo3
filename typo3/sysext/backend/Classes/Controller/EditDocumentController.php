@@ -665,7 +665,7 @@ class EditDocumentController
                             break;
                         }
                     }
-                    $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), (int)$this->getBackendUser()->uc['titleLen']);
+                    $recordTitle = BackendUtility::cropToTitleLength(BackendUtility::getRecordTitle($table, $row));
                     $messages[] = sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:notification.record_saved.message'), $recordTitle);
                 }
             }
@@ -895,13 +895,12 @@ class EditDocumentController
                         $formHeading = $this->getLanguageService()->sL('core.core:labels.createNew') . ' ' . $tableTitle;
                         $formResult['html'] = '<h1>' . $formHeading . '</h1>' . $formResult['html'];
                     } else {
-                        $recordTitle = htmlspecialchars(
-                            trim($formData['recordTitle']) !== ''
+                        $recordTitle = trim($formData['recordTitle']) !== ''
                             ? $formData['recordTitle']
-                            : '[' . $this->getLanguageService()->sL('core.core:labels.no_title') . ']'
-                        );
+                            : '[' . $this->getLanguageService()->sL('core.core:labels.no_title') . ']';
+                        $recordTitle = BackendUtility::cropToTitleLength($recordTitle);
                         $recordIdentity = $this->getRecordIdentityHtml($table, $formData['databaseRow']);
-                        $formResult['html'] = '<h1>' . $recordTitle . '</h1>' . $recordIdentity . $formResult['html'];
+                        $formResult['html'] = '<h1>' . htmlspecialchars($recordTitle) . '</h1>' . $recordIdentity . $formResult['html'];
                     }
 
                     // Seems the pid is set as hidden field (again) at end?!
@@ -2022,8 +2021,10 @@ class EditDocumentController
         }
 
         $recordTitle = trim($firstEl->title) !== ''
-            ? htmlspecialchars($firstEl->title)
-            : '[' . htmlspecialchars($languageService->sL('core.core:labels.no_title')) . ']';
+            ? $firstEl->title
+            : '[' . $languageService->sL('core.core:labels.no_title') . ']';
+        $recordTitle = BackendUtility::cropToTitleLength($recordTitle);
+        $recordTitle = htmlspecialchars($recordTitle);
 
         return implode(' · ', array_filter([$recordTitle, $typeLabel, '#' . $firstEl->uid]));
     }

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -121,8 +122,6 @@ class GroupElement extends AbstractFormElement
         }
         $fieldId = StringUtility::getUniqueId('tceforms-multiselect-');
 
-        $maxTitleLength = (int)$backendUser->uc['titleLen'];
-
         $listOfSelectedValues = [];
         $selectorOptionsHtml = [];
         foreach ($selectedItems as $selectedItem) {
@@ -132,7 +131,7 @@ class GroupElement extends AbstractFormElement
             if (empty($title)) {
                 $title = '[' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']';
             }
-            $shortenedTitle = GeneralUtility::fixed_lgd_cs($title, $maxTitleLength);
+            $shortenedTitle = BackendUtility::cropToTitleLength($title);
             $selectorOptionsHtml[]
                 = '<option value="' . htmlspecialchars($tableWithUid) . '" title="' . htmlspecialchars($title) . '">'
                     . htmlspecialchars($this->appendValueToLabelInDebugMode($shortenedTitle, $tableWithUid))

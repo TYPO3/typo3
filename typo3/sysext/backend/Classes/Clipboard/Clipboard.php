@@ -306,7 +306,7 @@ class Clipboard
                             . 'height="' . htmlspecialchars((string)$processedFile->getProperty('height')) . '" '
                             . 'title="' . htmlspecialchars($processedFile->getName()) . '" alt="" loading="lazy" />';
                     }
-                    $linkItemText = GeneralUtility::fixed_lgd_cs($fileObject->getName(), (int)($this->getBackendUser()->uc['titleLen'] ?? 0));
+                    $linkItemText = BackendUtility::cropToTitleLength($fileObject->getName());
                     $combinedIdentifier = $fileObject->getParentFolder()->getCombinedIdentifier();
                     $filesRequested = $currentTable === '_FILE';
                     $records[] = [
@@ -335,10 +335,10 @@ class Clipboard
                     $records[] = [
                         'identifier' => $table . '|' . $uid,
                         'icon' => $this->iconFactory->getIconForRecord($table, $record, IconSize::SMALL)->render(),
-                        'title' => $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle(
+                        'title' => $this->linkItemText(htmlspecialchars(BackendUtility::cropToTitleLength(BackendUtility::getRecordTitle(
                             $table,
                             $record
-                        ), (int)$this->getBackendUser()->uc['titleLen'])), $record, $isRequestedTable),
+                        ))), $record, $isRequestedTable),
                         'infoDataDispatch' => [
                             'action' => 'TYPO3.InfoWindow.showItem',
                             'args' => GeneralUtility::jsonEncodeForHtmlAttribute([$table, (int)$uid], false),
@@ -419,7 +419,7 @@ class Clipboard
             ->orderBy($languageCapability->getLanguageField()->getName());
 
         foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $record) {
-            $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $record), (int)$this->getBackendUser()->uc['titleLen']));
+            $title = htmlspecialchars(BackendUtility::cropToTitleLength(BackendUtility::getRecordTitle($table, $record)));
             if (!$isRequestedTable) {
                 // In case the current table is not the requested table, e.g. "_FILE", wrap title in "muted" style
                 $title = '<span class="text-variant">' . $title . '</span>';

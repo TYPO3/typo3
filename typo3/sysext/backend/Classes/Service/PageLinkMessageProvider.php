@@ -278,7 +278,8 @@ readonly class PageLinkMessageProvider
         $linkToPid = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
         $schema = $this->tcaSchemaFactory->get($table);
         $label = BackendUtility::getRecordTitle($table, $record);
-        $linkedPath = '<a href="' . htmlspecialchars($linkToPid) . '">' . $label . '</a>';
+        $label = BackendUtility::cropToTitleLength($label);
+        $linkedPath = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($label) . '</a>';
         $message = sprintf(
             $languageService->translate('link_destination_record', 'backend.pages.messages'),
             $languageService->translate('link', 'core.db.pages.doktype'),
