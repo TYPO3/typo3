@@ -6,18 +6,6 @@
 Form/ File storage
 ==================
 
-Form definitions are stored in the file system (FAL) so EXT:form needs
-write access to the file system. Form definitions are stored in the
-``form_definitions`` file mount by default. You can configure a different and/ or an additional
-file mount for storing and reading form definitions.
-
-A backend user will only see form definitions that are stored in
-file mounts where they have at least read access. The ``form editor`` and
-``form plugin`` respect these access rights, meaning you can
-implement ACLs. If you have configured more than one file mount and a
-backend user has access, the ``form manager`` will allow the
-user to choose their preferred storage.
-
 Form definitions can also be stored in and shipped with your own
 extensions and backend users can then
 embed your forms. Furthermore, you can configure that your form
@@ -34,41 +22,6 @@ ACL system available.
 as FAL objects. The file mounts for file uploads can be configured.
 When adding/ editing a file upload element, backend users can select the
 storage for the uploads.
-
-.. note::
-
-   In principle, files in file mounts are publicly accessible. If the
-   uploaded files could contain sensitive data, you should suppress any
-   HTTP access to the file mount. You could do this by
-   creating a :file:`.htaccess` file if you are using an Apache web
-   server. The :file:`.htaccess` file directive is as follows:
-
-   .. code-block:: apache
-
-      # Apache ≥ 2.3
-      <IfModule mod_authz_core.c>
-         Require all denied
-      </IfModule>
-
-      # Apache < 2.3
-      <IfModule !mod_authz_core.c>
-         Order allow,deny
-         Deny from all
-         Satisfy All
-      </IfModule>
-
-Configure additional file mounts for form definitions as follows:
-
-.. code-block:: yaml
-
-   persistenceManager:
-     allowedFileMounts:
-       # default file mount, no need to redeclare it again
-       # just to show you the structure
-       # 10: 1:/form_definitions/
-       # additional file mounts
-       100: 1:/custom/forms/
-       110: 2:/cloudstorage/forms/
 
 Add your extension path as an additional file mount for form definitions as follows:
 

@@ -17,6 +17,7 @@ The following PHP classes that have previously been marked as deprecated with v1
 - :php:`\TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser` :ref:`(Deprecation entry) <deprecation-107436-1736639846>`
 - :php:`\TYPO3\CMS\Core\Localization\Parser\XliffParser` :ref:`(Deprecation entry) <deprecation-107436-1736639846>`
 - :php:`\TYPO3\CMS\Form\Mvc\Configuration\InheritancesResolverService` :ref:`(Deprecation entry) <deprecation-97857-1761224875>`
+- :php:`\TYPO3\CMS\Form\Storage\FileMountStorageAdapter` :ref:`(Deprecation entry) <deprecation-108653-1741600000>`
 - :php:`\TYPO3\CMS\Frontend\Resource\FilePathSanitizer` :ref:`(Deprecation entry) <deprecation-107537-1760305681>`
 - :php:`\TYPO3\CMS\Form\Domain\Model\FormElements\DatePicker` :ref:`(Deprecation entry) <deprecation-109152-1741600000>`
 - :php:`\TYPO3\CMS\Form\ViewHelpers\Form\DatePickerViewHelper` :ref:`(Deprecation entry) <deprecation-109152-1741600000>`
@@ -117,6 +118,7 @@ The following form yaml configurations that have previously been marked as depre
 
 - :yaml:`fieldExplanationText` :ref:`(Deprecation entry) <deprecation-107068-1759214357>`
 - :yaml:`__inheritances` :ref:`(Deprecation entry) <deprecation-97857-1761224875>`
+- :yaml:`persistenceManager.allowedFileMounts` :ref:`(Deprecation entry) <deprecation-108653-1741600000>`
 
 The following global option handling have been dropped and are ignored:
 

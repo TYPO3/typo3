@@ -13,42 +13,6 @@
 Properties
 ==========
 
-.. _persistencemanager.allowedfilemounts:
-
-allowedFileMounts
------------------
-
-:aspect:`Option path`
-      persistenceManager.allowedFileMounts
-
-:aspect:`Data type`
-      array
-
-:aspect:`Needed by`
-      Frontend/ Backend (form manager/ form editor/ plugin)
-
-:aspect:`Mandatory`
-      Yes (if :ref:`allowedExtensionPaths <persistenceManager.allowedExtensionPaths>` is not set)
-
-:aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 3
-
-         persistenceManager:
-           allowedFileMounts:
-             10: '1:/form_definitions/'
-
-:aspect:`Good to know`
-      :ref:`Form/ File storages<concepts-form-file-storages>`
-
-:aspect:`Description`
-      EXT:form stores the form definitions within the file system and thus needs
-      write access to this storage. By default, the folder ``form_definitions`` is
-      created and used. It is possible to configure a different and/ or an additional
-      file mount which is then utilized for storing and reading forms.
-
-
 .. _persistencemanager.allowSaveToExtensionPaths:
 
 allowSaveToExtensionPaths
@@ -216,7 +180,7 @@ allowedExtensionPaths
       Frontend/ Backend (form manager/ form editor/ plugin)
 
 :aspect:`Mandatory`
-      Yes (if :ref:`allowedFileMounts <persistenceManager.allowedFileMounts>` is not set)
+      No
 
 :aspect:`Default value`
       undefined

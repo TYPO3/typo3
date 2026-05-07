@@ -73,19 +73,6 @@ final readonly class PersistenceConfigurationService
     }
 
     /**
-     * Get allowed file mounts from form configuration
-     *
-     * @return string[] Array of allowed file mount paths (e.g., ["1:/forms/", "2:/user_forms/"])
-     * @deprecated since v14.2, will be removed in v15.0. Use database storage instead.
-     */
-    public function getAllowedFileMounts(): array
-    {
-        $persistenceSettings = $this->getPersistenceManagerSettings();
-        $allowedFileMounts = $persistenceSettings['allowedFileMounts'] ?? [];
-        return is_array($allowedFileMounts) ? $allowedFileMounts : [];
-    }
-
-    /**
      * Get allowed extension paths from form configuration
      *
      * @return string[] Array of allowed extension paths (e.g., ["EXT:my_extension/Configuration/Forms/"])

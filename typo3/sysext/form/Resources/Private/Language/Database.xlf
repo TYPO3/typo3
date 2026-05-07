@@ -1320,12 +1320,6 @@ If you need higher values contact your administrator for help.
       <trans-unit id="formManager.storage.database.description">
         <source>Store the form as a record in the database. Recommended for most use cases, because it treats forms as user-generated content and allows integrated versioning.</source>
       </trans-unit>
-      <trans-unit id="formManager.storage.fileMount.label">
-        <source>File (deprecated)</source>
-      </trans-unit>
-      <trans-unit id="formManager.storage.fileMount.description">
-        <source>Store the form as a YAML file. This option will be removed in a future TYPO3 version. Use "Database" instead. Files can still be provided within extensions.</source>
-      </trans-unit>
       <trans-unit id="formManager.storage.extension.label">
         <source>Extension</source>
       </trans-unit>

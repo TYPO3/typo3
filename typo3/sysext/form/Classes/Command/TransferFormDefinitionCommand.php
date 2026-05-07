@@ -70,9 +70,7 @@ class TransferFormDefinitionCommand extends Command
                 . '  - database:   Always "0" (fixed; forms are stored at the root level).' . LF
                 . '  - extension:  An EXT: path configured in "persistenceManager.allowedExtensionPaths",' . LF
                 . '                with "persistenceManager.allowSaveToExtensionPaths: true" set.' . LF
-                . '                e.g. --target-location="EXT:my_extension/Resources/Private/Forms/"' . LF
-                . '  - filemount:  A FAL folder path configured in "persistenceManager.allowedFileMounts",' . LF
-                . '                e.g. --target-location="1:/forms/"' . LF . LF
+                . '                e.g. --target-location="EXT:my_extension/Resources/Private/Forms/"' . LF . LF
                 . 'Use --dry-run to preview which forms would be transferred.' . LF
                 . 'Use --move to delete the source form after successful transfer.' . LF . LF
                 . 'After a successful transfer, content element references in "tt_content" are automatically' . LF
@@ -94,7 +92,7 @@ class TransferFormDefinitionCommand extends Command
                 'target-location',
                 'l',
                 InputOption::VALUE_REQUIRED,
-                'Target storage location. For "database": always "0". For "extension": EXT: path from allowedExtensionPaths. For "filemount": FAL path from allowedFileMounts.',
+                'Target storage location. For "database": always "0". For "extension": EXT: path from allowedExtensionPaths.',
                 '0',
             )
             ->addOption(
@@ -174,8 +172,6 @@ class TransferFormDefinitionCommand extends Command
                 'extension' => 'For extension storage, provide an EXT: path that is registered in "persistenceManager.allowedExtensionPaths"' . LF
                     . 'and ensure "persistenceManager.allowSaveToExtensionPaths: true" is set in your form YAML setup.' . LF
                     . 'Example: --target-location="EXT:my_extension/Resources/Private/Forms/"',
-                'filemount' => 'For filemount storage, provide a FAL folder path that is registered in "persistenceManager.allowedFileMounts".' . LF
-                    . 'Example: --target-location="1:/forms/"',
                 default => 'Check the storage adapter documentation for valid location formats.',
             };
             $io->error(sprintf(

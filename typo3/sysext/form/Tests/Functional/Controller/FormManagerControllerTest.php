@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -58,10 +59,6 @@ final class FormManagerControllerTest extends FunctionalTestCase
         'typo3/sysext/form/Tests/Functional/Fixtures/Extensions/form_manager_controller_tests',
     ];
 
-    protected array $pathsToProvideInTestInstance = [
-        'typo3/sysext/form/Tests/Functional/Controller/Fixtures/Folders/fileadmin/form_definitions' => 'fileadmin/form_definitions',
-    ];
-
     #[Test]
     public function getFormManagerAppInitialDataReturnsProcessedArray(): void
     {
@@ -70,9 +67,9 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
         $formPersistenceManagerMock->method('getAccessibleStorageAdapters')->willReturn([
             [
-                'typeIdentifier' => 'filemount',
-                'label' => 'File Storage',
-                'description' => 'Store forms in file system',
+                'typeIdentifier' => 'database',
+                'label' => 'Database Storage',
+                'description' => 'Store forms in database',
                 'iconIdentifier' => 'content-form',
                 'options' => [],
             ],
@@ -109,9 +106,9 @@ final class FormManagerControllerTest extends FunctionalTestCase
             ],
             'accessibleStorageAdapters' => [
                 0 => [
-                    'typeIdentifier' => 'filemount',
-                    'label' => 'File Storage',
-                    'description' => 'Store forms in file system',
+                    'typeIdentifier' => 'database',
+                    'label' => 'Database Storage',
+                    'description' => 'Store forms in database',
                     'iconIdentifier' => 'content-form',
                     'options' => [],
                 ],
@@ -157,7 +154,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
             persistenceIdentifier: '1:/user_uploads/someFormName.yaml',
             readOnly: false,
             removable: true,
-            storageType: 'filemount',
+            storageType: 'database',
             duplicateIdentifier: false,
         );
         // Reference count enrichment now happens inside FormPersistenceManager::listForms().
@@ -595,7 +592,6 @@ final class FormManagerControllerTest extends FunctionalTestCase
     #[Test]
     public function formIsCreatedFromTemplateWithEnvSubstitution(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
 
@@ -610,8 +606,8 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 'formName' => 'testform',
                 'templatePath' => 'EXT:form/Tests/Functional/Controller/Fixtures/FormTemplate.yaml',
                 'prototypeName' => 'standard',
-                'storage' => 'filemount',
-                'storageLocation' => '1:/form_definitions/',
+                'storage' => 'database',
+                'storageLocation' => '0',
             ])
             ->withAttribute('route', $route)
             ->withAttribute('module', $route->getOption('module'))
@@ -620,11 +616,13 @@ final class FormManagerControllerTest extends FunctionalTestCase
         $bootstrap = $this->get(Bootstrap::class);
         $result = $bootstrap->handleBackendRequest($serverRequest);
         $status = json_decode((string)$result->getBody(), true)['status'] ?? null;
-        $targetFilePath = $this->instancePath . '/fileadmin/form_definitions/testform.form.yaml';
 
         self::assertSame('success', $status);
-        self::assertFileExists($targetFilePath);
-        self::assertStringContainsString('Form env:' . $testEnv, file_get_contents($targetFilePath));
+
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('form_definition');
+        $record = $connection->select(['configuration'], 'form_definition', [])->fetchAssociative();
+        self::assertNotFalse($record, 'Form was saved to database');
+        self::assertStringContainsString('Form env:' . $testEnv, $record['configuration']);
     }
 
     /**

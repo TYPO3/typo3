@@ -33,10 +33,6 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
         'typo3/sysext/form/Tests/Functional/Mvc/Persistence/Fixtures/Extensions/test_form_persistence',
     ];
 
-    protected array $pathsToProvideInTestInstance = [
-        'typo3/sysext/form/Tests/Functional/Mvc/Persistence/Fixtures/Folders/fileadmin/form_definitions' => 'fileadmin/form_definitions',
-    ];
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -77,22 +73,6 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function loadFormFromFilemountStorageReturnsFormDefinition(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
-        $subject = $this->get(FormPersistenceManager::class);
-        $persistenceIdentifier = '1:/form_definitions/TestFilemountForm.form.yaml';
-        $result = $subject->load($persistenceIdentifier);
-
-        self::assertArrayHasKey('identifier', $result);
-        self::assertArrayHasKey('label', $result);
-        self::assertArrayHasKey('renderables', $result);
-        self::assertSame('filemount-test-form', $result['identifier']);
-        self::assertSame('Test Filemount Form', $result['label']);
-        self::assertSame('standard', $result['prototypeName']);
-    }
-
-    #[Test]
     public function loadFormFromExtensionStorageReturnsFormDefinition(): void
     {
         $subject = $this->get(FormPersistenceManager::class);
@@ -105,21 +85,6 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
         self::assertSame('test-extension-form', $result['identifier']);
         self::assertSame('Test Extension Form', $result['label']);
         self::assertSame('standard', $result['prototypeName']);
-    }
-
-    #[Test]
-    public function loadNonExistentFormFromFilemountStorageReturnsInvalidFormDefinition(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file_storage.csv');
-        $subject = $this->get(FormPersistenceManager::class);
-        $persistenceIdentifier = '1:/form_definitions/NonExistentForm.form.yaml';
-        $result = $subject->load($persistenceIdentifier);
-
-        self::assertArrayHasKey('invalid', $result);
-        self::assertTrue($result['invalid']);
-        self::assertArrayHasKey('label', $result);
-        self::assertArrayHasKey('identifier', $result);
-        self::assertSame($persistenceIdentifier, $result['identifier']);
     }
 
     #[Test]
