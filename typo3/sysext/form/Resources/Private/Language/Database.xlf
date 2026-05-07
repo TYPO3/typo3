@@ -1092,12 +1092,6 @@
       <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum">
         <source>Maximum date</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.minimum.placeholder">
-        <source>A date in format Y-m-d (e.g 2018-03-17)</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.validators.DateRange.editor.maximum.placeholder">
-        <source>A date in format Y-m-d (e.g 2018-03-17)</source>
-      </trans-unit>
       <trans-unit id="formEditor.elements.Password.label">
         <source>Password</source>
       </trans-unit>
@@ -1158,38 +1152,8 @@
       <trans-unit id="formEditor.elements.SingleSelect.description">
         <source>An element for creating a dropdown list for selecting a single option</source>
       </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.label">
-        <source>Date picker (jQuery)</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.description">
-        <source>A text field for selecting a date via a calendar interface</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.editor.dateFormat.label">
-        <source>Date format</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.editor.enableDatePicker.label">
-        <source>Enable datepicker (needs jQuery UI)</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.editor.displayTimeSelector.label">
-        <source>Display time selector</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.editor.validators.label">
-        <source>Validators</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.editor.validators.EmptyValue.label">
-        <source>Add validator</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.editor.validators.DateTime.label">
-        <source>Date/time</source>
-      </trans-unit>
       <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.header.label">
         <source>Date/time</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.label">
-        <source>Custom error message</source>
-      </trans-unit>
-      <trans-unit id="formEditor.elements.DatePicker.validators.DateTime.editor.validationErrorMessage.description">
-        <source>Error message which is shown if the validation does not succeed</source>
       </trans-unit>
       <trans-unit id="formEditor.elements.StaticText.label">
         <source>Static text</source>

@@ -6,12 +6,6 @@
       <trans-unit id="element.ImageUpload.properties.SummaryPage.altText">
         <source>Uploaded image</source>
       </trans-unit>
-      <trans-unit id="element.DatePicker.properties.timeSelectorHourLabel">
-        <source>Hour</source>
-      </trans-unit>
-      <trans-unit id="element.DatePicker.properties.timeSelectorMinuteLabel">
-        <source>Minute</source>
-      </trans-unit>
       <trans-unit id="validation.error.1221560910">
         <source>This field is mandatory.</source>
       </trans-unit>

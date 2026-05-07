@@ -111,8 +111,6 @@ Properties
                [...]
              SingleSelect:
                [...]
-             DatePicker:
-               [...]
              StaticText:
                [...]
              ContentElement:
@@ -808,7 +806,6 @@ Concrete configurations
     formElementTypes/Checkbox
     formElementTypes/ContentElement
     formElementTypes/Date
-    formElementTypes/DatePicker
     formElementTypes/Email
     formElementTypes/Fieldset
     formElementTypes/FileUpload

@@ -39,7 +39,6 @@ imports:
   - { resource: 'EXT:form/Configuration/Form/Base/FormElements/RadioButton.yaml' }
   - { resource: 'EXT:form/Configuration/Form/Base/FormElements/SingleSelect.yaml' }
   - { resource: 'EXT:form/Configuration/Form/Base/FormElements/CountrySelect.yaml' }
-  - { resource: 'EXT:form/Configuration/Form/Base/FormElements/DatePicker.yaml' }
   - { resource: 'EXT:form/Configuration/Form/Base/FormElements/StaticText.yaml' }
   - { resource: 'EXT:form/Configuration/Form/Base/FormElements/ContentElement.yaml' }
   - { resource: 'EXT:form/Configuration/Form/Base/FormElements/FileUpload.yaml' }

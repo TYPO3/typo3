@@ -159,16 +159,6 @@ prevent further interaction by the user.
     }
 
 
-.. _faq-date-picker:
-
-How does the date picker (jQuery) work?
-=======================================
-
-EXT:form ships a datepicker form element. You will need to
-add jquery JavaScript files, jqueryUi JavaScript and CSS files to
-your frontend.
-
-
 .. _faq-user-registration:
 
 Is it possible to build frontend user registration with EXT:form?

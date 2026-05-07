@@ -631,7 +631,6 @@ formElementGroups
       - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Checkbox.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.checkbox.formeditor.group>`
       - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.ContentElement.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.contentelement.formeditor.group>`
       - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Date.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.date.formeditor.group>`
-      - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.DatePicker.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.datepicker.formeditor.group>`
       - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Email.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.email.formeditor.group>`
       - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.Fieldset.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.fieldset.formeditor.group>`
       - :ref:`"prototypes.prototypeIdentifier.formElementsDefinition.FileUpload.formEditor.group"<prototypes.prototypeIdentifier.formelementsdefinition.fileupload.formeditor.group>`

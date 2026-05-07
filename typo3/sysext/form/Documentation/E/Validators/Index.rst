@@ -331,12 +331,3 @@ The settings of the validator are as follows:
 
 - **Custom error message**: Custom error message that will be shown if the
   validation fails.
-
-**The validator is available for the following form elements**:
-
-- :ref:`"Date picker (jQuery)"<form-elements-advanced-elements-datepicker>`
-
-.. figure:: Images/form_validators_dateTime.png
-   :alt: In the Inspector - Settings of the 'Date/ Time' validator.
-
-   In the Inspector - Settings of the 'Date/ Time' validator.

@@ -142,14 +142,6 @@ renderables:
         identifier: fileupload-1
         label: 'File upload'
       -
-        properties:
-          dateFormat: Y-m-d
-          enableDatePicker: true
-          displayTimeSelector: true
-        type: DatePicker
-        identifier: datepicker-1
-        label: 'Date picker (jQuery)'
-      -
         defaultValue: hiddenValue
         type: Hidden
         identifier: hidden-1

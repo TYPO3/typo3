@@ -308,7 +308,7 @@ options.elements.<formElementIdentifier>.dateFormat
       - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      If the internal Datatype is \DateTime which is true for the form element types "DatePicker" and "Date",
+      If the internal Datatype is \DateTime which is true for the form element type "Date",
       the object needs to be converted into a string value.
       This option allows you to define the format of the date.
       You can use every format accepted by PHP's date() function (https://php.net/manual/en/function.date.php#refsect1-function.date-parameters).

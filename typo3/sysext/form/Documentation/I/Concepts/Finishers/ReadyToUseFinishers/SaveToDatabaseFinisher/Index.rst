@@ -123,8 +123,8 @@ programmatically:
     :type: string
     :default: `'U'`
 
-    If the internal datatype is :php:`\DateTime` (true for the form element types
-    :yaml:`DatePicker` and :yaml:`Date`), the object needs to be converted into a string.
+    If the internal datatype is :php:`\DateTime` (true for the form element type
+    :yaml:`Date`), the object needs to be converted into a string.
     This option defines the format of the date. You can use any format accepted by
     the PHP :php:`date()` function.
     Default is `'U'` (Unix timestamp).

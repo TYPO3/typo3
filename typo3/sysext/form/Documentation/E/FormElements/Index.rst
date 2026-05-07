@@ -440,36 +440,6 @@ An element to upload a file to the :guilabel:`File > Filelist` module. This elem
     documents, contact your administrator to create a secure storage path.
 
 
-.. _form-elements-advanced-elements-datepicker:
-
-Date picker
-===========
-
-A single-line text field to select a date using a calendar. A JavaScript library
-is used for this purpose. This form element is an alternative to the `Date`
-element, which is also supported by older browsers (e.g. Internet Explorer 11).
-However, it has limited accessibility. This element has the
-:ref:`basic settings <form-elements-settings>`. Additional settings:
-
-- **Date format**: select date format (e.g. **d.m.Y** or **Y-m-d** or **d-m-Y**)
-   - **d**: day
-   - **m**: month
-   - **Y**: year
-- **Enable date selection**: Check this to display a calendar.
-- **Show time selection**: Check this to display two dropdowns for '**Hour**'
-  and '**Minute**' respectively.
-
-.. figure:: Images/form_elements_datePicker_1.png
-   :alt: Element 'Date picker' - preview in the frontend.
-
-   Element 'Date picker' - preview in the frontend.
-
-.. figure:: Images/form_elements_datePicker_2.png
-   :alt: Settings for the 'Date picker' element.
-
-   Settings for the 'Date picker' element.
-
-
 .. _form-elements-advanced-elements-hidden:
 
 Hidden

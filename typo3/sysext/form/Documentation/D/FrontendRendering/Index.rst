@@ -229,8 +229,7 @@ for the full method reference.
     *   -   :php-short:`\TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement`
         -   Base class of all concrete elements. Most element types use
             :php-short:`\TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement`;
-            specialized subclasses include
-            :php-short:`\TYPO3\CMS\Form\Domain\Model\FormElements\DatePicker` and
+            specialized subclasses include, e.g.
             :php-short:`\TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload`.
             Set properties (:php:`setProperty()`), add validators
             (:php:`createValidator()`), define default values
