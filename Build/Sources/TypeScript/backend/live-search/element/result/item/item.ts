@@ -27,8 +27,10 @@ export interface ResultItemInterface {
   defaultAction: ResultItemActionInterface;
   icon: Record<string, string>;
   language: ResultItemLanguageInterface | null;
+  thumbnailUrl: string | null;
   itemTitle: string;
   typeLabel: string;
+  properties: Record<string, string>;
   extraData: { [key: string]: any }
 }
 
