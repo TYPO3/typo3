@@ -83,10 +83,7 @@ class MetaInformation
             }
         }
         // Setting the path of the page
-        // crop the title to title limit (or 50, if not defined)
-        $beUser = $this->getBackendUser();
-        $cropLength = empty($beUser->uc['titleLen']) ? 50 : (int)$beUser->uc['titleLen'];
-        $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);
+        $croppedTitle = BackendUtility::cropToTitleLength($title, null, true);
         if ($croppedTitle !== $title) {
             $pagePath = '<abbr title="' . htmlspecialchars($title) . '">' . htmlspecialchars($croppedTitle) . '</abbr>';
         } else {
@@ -142,11 +139,7 @@ class MetaInformation
         } else {
             $title = '';
         }
-
-        // crop the title to title limit (or 50, if not defined)
-        $beUser = $this->getBackendUser();
-        $cropLength = empty($beUser->uc['titleLen']) ? 50 : (int)$beUser->uc['titleLen'];
-        return htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, $cropLength));
+        return htmlspecialchars(BackendUtility::cropToTitleLength($title));
     }
 
     /**
@@ -241,6 +234,7 @@ class MetaInformation
             $theIcon = BackendUtility::wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid'], '', $pageRecord);
             $uid = $pageRecord['uid'];
             $title = BackendUtility::getRecordTitle('pages', $pageRecord);
+            $title = BackendUtility::cropToTitleLength($title);
         } else {
             // On root-level of page tree
             // Make Icon

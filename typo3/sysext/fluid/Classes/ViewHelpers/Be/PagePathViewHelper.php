@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ViewHelper which returns the current page path as known from TYPO3 backend modules.
@@ -60,10 +59,7 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
         }
         // Setting the path of the page
         $pagePath = htmlspecialchars(self::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
-        // crop the title to title limit (or 50, if not defined)
-        $cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
-        $cropLength = (int)$cropLength;
-        $croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);
+        $croppedTitle = BackendUtility::cropToTitleLength($title, null, true);
         if ($croppedTitle !== $title) {
             $pagePath .= '<abbr title="' . htmlspecialchars($title) . '">' . htmlspecialchars($croppedTitle) . '</abbr>';
         } else {

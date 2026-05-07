@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Render details of selected records,
@@ -42,12 +41,10 @@ class RecordsOverview extends AbstractNode
     public function render(): array
     {
         $languageService = $this->getLanguageService();
-        $backendUser = $this->getBackendUserAuthentication();
         $result = $this->initializeResultArray();
 
         $parameterArray = $this->data['parameterArray'];
         $selectedItems = $parameterArray['itemFormElValue'];
-        $maxTitleLength = (int)$backendUser->uc['titleLen'];
 
         $recordsOverviewHtml = [];
         foreach ($selectedItems as $selectedItem) {
@@ -55,7 +52,7 @@ class RecordsOverview extends AbstractNode
             if (empty($title)) {
                 $title = '[' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']';
             }
-            $shortenedTitle = GeneralUtility::fixed_lgd_cs($title, $maxTitleLength);
+            $shortenedTitle = BackendUtility::cropToTitleLength($title);
             $linkedIcon = BackendUtility::wrapClickMenuOnIcon(
                 $this->iconFactory->getIconForRecord($selectedItem['table'], $selectedItem['row'], IconSize::SMALL)->render(),
                 $selectedItem['table'],

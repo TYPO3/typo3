@@ -160,11 +160,16 @@ readonly class ContextualRecordEditController
             );
         }
 
+        $recordTitle = $firstEl !== null && trim($firstEl->title) !== ''
+            ? $firstEl->title
+            : '[' . $this->getLanguageService()->sL('core.core:labels.no_title') . ']';
+        $recordTitle = BackendUtility::cropToTitleLength($recordTitle);
+
         // Contextual JS module with options
         $contextualOptions = [];
         if ($queryParams['justSaved'] ?? false) {
             $contextualOptions['justSaved'] = true;
-            $contextualOptions['savedRecordTitle'] = $firstEl !== null ? $firstEl->title : '';
+            $contextualOptions['savedRecordTitle'] = $recordTitle;
         }
         if ($queryParams['closed'] ?? false) {
             $contextualOptions['closed'] = true;
@@ -177,9 +182,6 @@ readonly class ContextualRecordEditController
 
         // Template variables
         $view->assign('bodyHtml', $body);
-        $recordTitle = $firstEl !== null && trim($firstEl->title) !== ''
-            ? $firstEl->title
-            : '[' . $this->getLanguageService()->sL('core.core:labels.no_title') . ']';
         $view->assign('recordTitle', $recordTitle);
 
         // Full edit URL points to the standard EditDocumentController

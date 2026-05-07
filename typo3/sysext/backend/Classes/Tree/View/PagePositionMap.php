@@ -137,7 +137,7 @@ class PagePositionMap
 
             $lines[] = '<span class="text-nowrap">' . $icon . ' '
                 . $this->boldTitle(
-                    htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], (int)$this->getBackendUser()->uc['titleLen'])),
+                    htmlspecialchars(BackendUtility::cropToTitleLength($dat['row']['title'])),
                     $dat,
                     $id
                 )

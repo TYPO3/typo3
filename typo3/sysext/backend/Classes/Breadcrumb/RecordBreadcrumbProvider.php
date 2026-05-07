@@ -130,7 +130,7 @@ final readonly class RecordBreadcrumbProvider implements BreadcrumbProviderInter
                     $icon = $this->iconFactory->getIconForRecord('pages', $item, IconSize::SMALL);
                     $breadcrumb[] = new BreadcrumbNode(
                         identifier: (string)$item['uid'],
-                        label: $item['title'] ?? '',
+                        label: BackendUtility::cropToTitleLength($item['title'] ?? ''),
                         icon: $icon->getIdentifier(),
                         iconOverlay: $icon->getOverlayIcon()?->getIdentifier(),
                         url: (string)$this->uriBuilder->buildUriFromRoute($targetModule, ['id' => $item['uid']]),
@@ -164,12 +164,10 @@ final readonly class RecordBreadcrumbProvider implements BreadcrumbProviderInter
                 IconSize::SMALL
             );
 
+            $recordTitle = BackendUtility::getRecordTitle($record->getMainType(), $record->getRawRecord()?->toArray());
             return new BreadcrumbNode(
                 identifier: (string)$record->getUid(),
-                label: BackendUtility::getRecordTitle(
-                    $record->getMainType(),
-                    $record->getRawRecord()?->toArray(),
-                ),
+                label: BackendUtility::cropToTitleLength($recordTitle),
                 icon: $icon->getIdentifier(),
                 iconOverlay: $icon->getOverlayIcon()?->getIdentifier(),
                 url: $record->getMainType() === 'pages' ? (string)$this->uriBuilder->buildUriFromRoute($targetModule, ['id' => (string)$record->getUid()]) : null,

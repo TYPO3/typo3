@@ -372,6 +372,7 @@ class PageLayoutController
             } else {
                 $linkToPid = $this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $this->pageContext->pageRecord['content_from_pid']]);
                 $title = BackendUtility::getRecordTitle('pages', $contentPage);
+                $title = BackendUtility::cropToTitleLength($title);
                 $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageContext->pageRecord['content_from_pid'] . ')</a>';
                 $infoBoxes[] = [
                     'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_title'), $link),
@@ -407,6 +408,7 @@ class PageLayoutController
             foreach ($rows as $row) {
                 $linkToPid = $this->uriBuilder->buildUriFromRoute('web_layout', ['id' =>  $row['uid']]);
                 $title = BackendUtility::getRecordTitle('pages', $row);
+                $title = BackendUtility::cropToTitleLength($title);
                 $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$row['uid'] . ')</a>';
                 $links[] = $link;
             }

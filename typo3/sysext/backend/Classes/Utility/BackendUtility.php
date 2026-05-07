@@ -1416,17 +1416,46 @@ class BackendUtility
      */
     public static function getRecordTitlePrep($title, $titleLength = 0)
     {
-        // If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']:
+        // If $titleLength is not a valid positive integer, set 0 to use BE_USER->uc['titleLen']
         if (!$titleLength || !MathUtility::canBeInterpretedAsInteger($titleLength) || $titleLength < 0) {
-            $titleLength = (int)static::getBackendUserAuthentication()->uc['titleLen'];
+            $titleLength = 0;
         }
         $titleOrig = htmlspecialchars($title);
-        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, (int)$titleLength));
+        $title = htmlspecialchars(static::cropToTitleLength($title, (int)$titleLength));
         // If title was cropped, offer a tooltip:
         if ($titleOrig != $title) {
             $title = '<span title="' . $titleOrig . '">' . $title . '</span>';
         }
         return $title;
+    }
+
+    /**
+     * Crops a title to a maximum length, appending "..." where it's cut.
+     *
+     * The length is resolved in this order:
+     *  - an explicit positive $maxLength is used as-is;
+     *  - null or 0 falls back to the backend user's "titleLen" setting;
+     *  - if no backend user or setting is available, it defaults to 50.
+     *
+     * With $reverse = true the title is cropped from the start instead of the end,
+     * so the "..." is prepended and the end of the title is kept.
+     *
+     * @param string $title The title to crop.
+     * @param int|null $maxLength Max characters; 0 or null uses the user's titleLen (fallback 50).
+     * @param bool $reverse Crop from the start (keep the end) instead of from the end.
+     * @return string The cropped title, or the original if it's already short enough.
+     */
+    public static function cropToTitleLength(string $title, ?int $maxLength = null, bool $reverse = false): string
+    {
+        $maxLength = $maxLength === 0 || is_null($maxLength)
+            ? (int)(static::getBackendUserAuthentication()?->uc['titleLen'] ?? 50)
+            : abs($maxLength);
+
+        if ($reverse) {
+            $maxLength = -$maxLength;
+        }
+
+        return GeneralUtility::fixed_lgd_cs($title, $maxLength);
     }
 
     /**

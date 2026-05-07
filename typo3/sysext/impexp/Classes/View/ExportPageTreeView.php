@@ -144,7 +144,6 @@ class ExportPageTreeView extends AbstractTreeView
      */
     public function printTree($treeArr = '')
     {
-        $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
         if (!is_array($treeArr)) {
             $treeArr = $this->tree;
         }
@@ -160,7 +159,7 @@ class ExportPageTreeView extends AbstractTreeView
                 <li id="' . $idAttr . '">
                     <span class="treelist-group">
                         <span class="treelist-icon">' . $treeItem['HTML'] . '</span>
-                        <span class="treelist-title">' . $this->getTitleStr($treeItem['row'], $titleLen) . '</span>
+                        <span class="treelist-title">' . $this->getTitleStr($treeItem['row']) . '</span>
                     </span>';
 
             if (!($treeItem['hasSub'] ?? false)) {
@@ -203,12 +202,14 @@ class ExportPageTreeView extends AbstractTreeView
      * Do NOT htmlspecialchar the string from this function - has already been done.
      *
      * @param array $row The input row array (where the key "title" is used for the title)
-     * @param int $titleLen Title length (30)
      * @return string The title.
      */
-    protected function getTitleStr($row, $titleLen)
+    protected function getTitleStr(array $row): string
     {
-        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], (int)$titleLen));
-        return trim($title) === '' ? '<em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>' : $title;
+        $recordTitle = $row['title'] ?? '';
+        if (trim($recordTitle) === '') {
+            return '<em>[' . htmlspecialchars($this->getLanguageService()->sL('core.core:labels.no_title')) . ']</em>';
+        }
+        return htmlspecialchars(BackendUtility::cropToTitleLength($recordTitle));
     }
 }

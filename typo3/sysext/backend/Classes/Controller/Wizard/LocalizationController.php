@@ -86,9 +86,10 @@ readonly class LocalizationController
         }
 
         $schema = $this->schemaFactory->get($recordType);
+        $recordTitle = BackendUtility::getRecordTitle($recordType, $record);
         $recordInfo = [
             'uid' => $record['uid'],
-            'title' => BackendUtility::getRecordTitle($recordType, $record),
+            'title' => BackendUtility::cropToTitleLength($recordTitle),
             'icon' => $this->iconFactory->getIconForRecord($recordType, $record, IconSize::SMALL)->getIdentifier(),
             'type' => $recordType,
             'typeName' => $schema->getTitle($this->getLanguageService()->sL(...)),
@@ -369,9 +370,10 @@ readonly class LocalizationController
             if (!isset($records[$colPos])) {
                 $records[$colPos] = [];
             }
+            $recordTitle = BackendUtility::getRecordTitle('tt_content', $row);
             $records[$colPos][] = [
                 'icon' => $this->iconFactory->getIconForRecord('tt_content', $row, IconSize::SMALL)->getIdentifier(),
-                'title' => BackendUtility::getRecordTitle('tt_content', $row),
+                'title' => BackendUtility::cropToTitleLength($recordTitle),
                 'uid' => $row['uid'],
             ];
             $flatRecords[] = $row;

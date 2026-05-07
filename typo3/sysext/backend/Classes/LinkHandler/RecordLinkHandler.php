@@ -235,10 +235,9 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         $moduleData = new ModuleData('records', is_array($existingModuleData) ? $existingModuleData : []);
 
         // If table is 'pages', add a pre-entry to make selected page selectable directly.
-        $titleLen = (int)$backendUser->uc['titleLen'];
         $mainPageRecord = BackendUtility::getRecordWSOL('pages', $selectedPage);
         if (is_array($mainPageRecord)) {
-            $pText = htmlspecialchars(GeneralUtility::fixed_lgd_cs($mainPageRecord['title'], $titleLen));
+            $pText = htmlspecialchars(BackendUtility::cropToTitleLength($mainPageRecord['title']));
             $html[] = '<p>' . $this->iconFactory->getIconForRecord('pages', $mainPageRecord, IconSize::SMALL)->render() . '&nbsp;';
             if ($table === 'pages') {
                 $html[] = '<span data-uid="' . htmlspecialchars((string)$mainPageRecord['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($mainPageRecord['title']) . '">';

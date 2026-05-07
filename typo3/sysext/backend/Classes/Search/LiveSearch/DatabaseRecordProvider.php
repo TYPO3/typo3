@@ -320,8 +320,9 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             }
 
             $icon = $this->iconFactory->getIconForRecord($tableName, $row, IconSize::SMALL);
+            $recordTitle = BackendUtility::getRecordTitle($tableName, $row);
             $items[] = (new ResultItem(self::class))
-                ->setItemTitle(BackendUtility::getRecordTitle($tableName, $row))
+                ->setItemTitle(BackendUtility::cropToTitleLength($recordTitle))
                 ->setTypeLabel($schema->getTitle($this->languageService->sL(...)) ?: $tableName)
                 ->setIcon($icon)
                 ->setActions(...array_values($actions))

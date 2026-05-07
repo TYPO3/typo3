@@ -158,7 +158,7 @@ class GridColumnItem extends AbstractGridObject
 
     public function getDeleteMessage(): string
     {
-        $recordInfo = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->getRow()), (int)$this->getBackendUser()->uc['titleLen']);
+        $recordInfo = BackendUtility::cropToTitleLength(BackendUtility::getRecordTitle($this->table, $this->getRow()));
         if ($this->getBackendUser()->shallDisplayDebugInformation()) {
             $recordInfo .= ' [' . $this->table . ':' . $this->record->getUid() . ']';
         }

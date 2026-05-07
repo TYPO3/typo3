@@ -103,7 +103,6 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function formatCurrentUrl()
     {
         $lang = $this->getLanguageService();
-        $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 
         $id = (int)$this->linkParts['url']['pageuid'];
 
@@ -117,7 +116,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
         $pageTitle = $pageRecord['title'] ?? '';
         return $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:page')
-            . ($pageTitle ? ' \'' . GeneralUtility::fixed_lgd_cs($pageTitle, $titleLen) . '\'' : '')
+            . ($pageTitle ? ' \'' . BackendUtility::cropToTitleLength($pageTitle) . '\'' : '')
             . ' (' . $idInfo . ')';
     }
 

@@ -98,12 +98,12 @@ final readonly class MoveElementController
 
         $contentElement = BackendUtility::getRecordWSOL('tt_content', $contentElementUid);
         $pageInfo = BackendUtility::readPageAccess($pageId, $permsClause);
-
+        $contentElementTitle = BackendUtility::getRecordTitle('tt_content', $contentElement);
         $assigns = [
             'record' => $contentElement,
             'makeCopyChecked' => $makeCopy,
             'pageInfo' => $pageInfo,
-            'recordTitle' => BackendUtility::getRecordTitle('tt_content', $contentElement),
+            'recordTitle' => BackendUtility::cropToTitleLength($contentElementTitle),
         ];
         if (is_array($pageInfo) && $this->getBackendUser()->isInWebMount($pageInfo['uid'], $permsClause)) {
             // Initialize the content position map:
@@ -112,8 +112,9 @@ final readonly class MoveElementController
             $contentPositionMap->moveUid = $contentElementUid;
             $contentPositionMap->cur_sys_language = $sysLanguage;
 
+            $pageTitle = BackendUtility::getRecordTitle('pages', $pageInfo);
             $assigns['pageRecord']['recordTooltip'] = BackendUtility::getRecordIconAltText($pageInfo, 'pages', false);
-            $assigns['pageRecord']['recordTitle'] = BackendUtility::getRecordTitle('pages', $pageInfo);
+            $assigns['pageRecord']['recordTitle'] = BackendUtility::cropToTitleLength($pageTitle);
             $assigns['contentElementColumns'] = $contentPositionMap->printContentElementColumns($pageId, $pageInfo, $request);
         }
         return $assigns;
