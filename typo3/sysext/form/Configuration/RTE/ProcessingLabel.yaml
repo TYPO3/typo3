@@ -14,7 +14,7 @@ processing:
     - i
     - strong
 
-  denyTags: b,u,img,br,div,center,pre,figure,figcaption,font,hr,sub,sup,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn
+  denyTags: b,u,img,div,center,pre,figure,figcaption,font,hr,sub,sup,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn
 
   ## Tags that are allowed outside of paragraphs
   allowTagsOutside: []
