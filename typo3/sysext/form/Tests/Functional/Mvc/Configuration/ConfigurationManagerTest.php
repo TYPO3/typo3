@@ -26,7 +26,6 @@ use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManager;
 use TYPO3\CMS\Form\Mvc\Configuration\FormYamlCollector;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
-use TYPO3\CMS\Form\Service\FormDefinitionMigrationService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ConfigurationManagerTest extends FunctionalTestCase
@@ -48,7 +47,6 @@ final class ConfigurationManagerTest extends FunctionalTestCase
             $this->createMock(YamlSource::class),
             $cacheMock,
             $this->createMock(TypoScriptService::class),
-            $this->createMock(FormDefinitionMigrationService::class),
             new FormYamlCollector(),
         );
         $configurationManager->getYamlConfiguration(
@@ -103,7 +101,6 @@ final class ConfigurationManagerTest extends FunctionalTestCase
             $this->createMock(YamlSource::class),
             $cacheMock,
             $this->createMock(TypoScriptService::class),
-            $this->createMock(FormDefinitionMigrationService::class),
             new FormYamlCollector(),
         );
         $result = $configurationManagerMock->getYamlConfiguration([], true);

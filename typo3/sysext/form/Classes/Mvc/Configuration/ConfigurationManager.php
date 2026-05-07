@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
-use TYPO3\CMS\Form\Service\FormDefinitionMigrationService;
 
 /**
  * Extend the ExtbaseConfigurationManager to read YAML configurations.
@@ -43,7 +42,6 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
         #[Autowire(service: 'cache.assets')]
         private FrontendInterface $cache,
         private TypoScriptService $typoScriptService,
-        private FormDefinitionMigrationService $migrationService,
         private FormYamlCollector $formYamlCollector,
     ) {}
 
@@ -87,7 +85,6 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
             $yamlSettings = InheritancesResolverService::create($this->yamlSource->load($yamlSettingsFilePaths))->getResolvedConfiguration();
             $yamlSettings = ArrayUtility::removeNullValuesRecursive($yamlSettings);
             $yamlSettings = ArrayUtility::sortArrayWithIntegerKeysRecursive($yamlSettings);
-            $yamlSettings = $this->migrationService->migrate($yamlSettings);
             $this->cache->set($cacheKey, $yamlSettings);
         }
 

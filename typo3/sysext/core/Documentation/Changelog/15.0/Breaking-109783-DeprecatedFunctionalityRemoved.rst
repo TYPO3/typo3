@@ -74,6 +74,10 @@ The following user TSconfig options have been removed:
 
 - :typoscript:`options.some.option`
 
+The following form yaml configurations that have previously been marked as deprecated for v14 have been removed:
+
+- :yaml:`fieldExplanationText` :ref:`(Deprecation entry) <deprecation-107068-1759214357>`
+
 The following global option handling have been dropped and are ignored:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SOME']['option']`
