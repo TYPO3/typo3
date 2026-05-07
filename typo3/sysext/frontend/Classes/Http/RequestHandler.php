@@ -176,6 +176,8 @@ readonly class RequestHandler implements RequestHandlerInterface
                 $pageRecord = $pageInformation->getPageRecord();
 
                 $lifetime = $this->cacheLifetimeCalculator->calculateLifetimeForPage($pageInformation->getId(), $pageInformation->getPageRecord(), $typoScriptConfigArray, $this->context);
+
+                $cacheDataCollector->addCacheTags(new CacheTag('site_' . $request->getAttribute('site')->getIdentifier()));
                 $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $pageId, $lifetime));
                 if ($pageId !== $pageInformation->getContentFromPid()) {
                     // Respect the page cache when content from different pid is shown
