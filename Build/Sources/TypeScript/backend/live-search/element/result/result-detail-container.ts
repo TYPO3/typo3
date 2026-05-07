@@ -32,12 +32,25 @@ export class ResultDetailContainer extends LitElement {
       return nothing;
     }
 
+    const propertyEntries = Object.entries(this.resultItem.properties ?? {});
+
     return html`
       <div class="livesearch-detail-preamble">
-        <typo3-backend-icon identifier="${this.resultItem.icon.identifier}" overlay="${this.resultItem.icon.overlay}" size="large"></typo3-backend-icon>
+        ${this.resultItem.thumbnailUrl
+    ? html`<div class="livesearch-detail-preamble-thumbnail"><img src="${this.resultItem.thumbnailUrl}" loading="lazy" alt=""></div>`
+    : html`<typo3-backend-icon identifier="${this.resultItem.icon.identifier}" overlay="${this.resultItem.icon.overlay}" size="large"></typo3-backend-icon>`
+}
         <h3>${this.resultItem.itemTitle}</h3>
         <p class="livesearch-detail-preamble-type">${this.resultItem.typeLabel}</p>
       </div>
+      ${propertyEntries.length > 0 ? html`
+        <dl class="livesearch-detail-properties">
+          ${propertyEntries.map(([label, value]: [string, string]) => html`
+            <dt>${label}</dt>
+            <dd>${value}</dd>
+          `)}
+        </dl>
+      ` : nothing}
       <typo3-backend-live-search-result-item-action-container .resultItem="${this.resultItem}"></typo3-backend-live-search-result-item-action-container>
     `;
   }

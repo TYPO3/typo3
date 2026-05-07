@@ -30,6 +30,11 @@ final class ResultItem implements \JsonSerializable
     private string $typeLabel = '';
     private ?Icon $icon = null;
     private ?array $language = null;
+    private ?string $thumbnailUrl = null;
+    /**
+     * @var array<string, string>
+     */
+    private array $properties = [];
     /**
      * @var ResultItemAction[]
      */
@@ -65,6 +70,20 @@ final class ResultItem implements \JsonSerializable
     public function setIcon(Icon $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function setThumbnailUrl(?string $thumbnailUrl): self
+    {
+        $this->thumbnailUrl = $thumbnailUrl;
+
+        return $this;
+    }
+
+    public function addProperty(string $label, string $value): self
+    {
+        $this->properties[$label] = $value;
 
         return $this;
     }
@@ -135,6 +154,8 @@ final class ResultItem implements \JsonSerializable
                 'identifier' => $this->icon?->getIdentifier(),
                 'overlay' => $this->icon?->getOverlayIcon()?->getIdentifier(),
             ],
+            'thumbnailUrl' => $this->thumbnailUrl,
+            'properties' => $this->properties,
             'actions' => $this->actions,
             'defaultAction' => $this->defaultAction ?? $this->actions[0],
             'language' => $this->language,

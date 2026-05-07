@@ -122,6 +122,45 @@ typo3-backend-live-search-result-item-detail-container {
         }
     }
 
+    .livesearch-detail-preamble-thumbnail {
+        display: flex;
+        height: 115px;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            max-height: 100%;
+            max-width: 100%;
+            width: auto;
+            height: auto;
+            outline: 2px solid var(--typo3-resource-tile-border-color);
+            outline-offset: 0;
+            border-radius: 2px;
+            box-shadow: var(--typo3-component-box-shadow-strong);
+        }
+    }
+
+    .livesearch-detail-properties {
+        display: grid;
+        grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+        column-gap: var(--typo3-spacing);
+        row-gap: calc(var(--typo3-spacing) * .5);
+        margin: 0 0 var(--typo3-livesearch-padding);
+        padding: 0 0 var(--typo3-livesearch-padding);
+        border-bottom: var(--typo3-livesearch-border-width) solid var(--typo3-livesearch-border-color);
+        font-size: var(--typo3-font-size-small);
+
+        dt {
+            font-weight: normal;
+            opacity: .6;
+        }
+
+        dd {
+            margin: 0;
+            word-break: break-word;
+        }
+    }
+
     .livesearch-detail-preamble-type {
         opacity: .5;
     }

@@ -6,6 +6,24 @@
       <trans-unit id="search">
         <source>Search "%s" in %s</source>
       </trans-unit>
+      <trans-unit id="live_search.file_provider.filter_label">
+        <source>Files</source>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.type_label">
+        <source>File</source>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.show_in_list">
+        <source>Show in file list</source>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.property.location">
+        <source>Location</source>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.property.size">
+        <source>Size</source>
+      </trans-unit>
+      <trans-unit id="live_search.file_provider.property.modified">
+        <source>Last modified</source>
+      </trans-unit>
       <trans-unit id="search.reset">
         <source>Reset search</source>
       </trans-unit>
