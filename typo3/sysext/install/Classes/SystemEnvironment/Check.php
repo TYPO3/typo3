@@ -211,8 +211,8 @@ class Check implements CheckInterface
      */
     protected function checkMemorySettings()
     {
-        $minimumMemoryLimit = 64;
-        $recommendedMemoryLimit = 128;
+        $minimumMemoryLimit = 256;
+        $recommendedMemoryLimit = 512;
         $memoryLimit = $this->getBytesFromSizeMeasurement((string)ini_get('memory_limit'));
         if ($memoryLimit <= 0) {
             if (Environment::isCli()) {
