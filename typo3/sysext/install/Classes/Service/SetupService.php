@@ -204,6 +204,7 @@ readonly class SetupService
         $this->configurationManager->createLocalConfigurationFromFactoryConfiguration();
         $randomKey = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(96);
         $this->configurationManager->setLocalConfigurationValueByPath('SYS/encryptionKey', $randomKey);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $randomKey;
         $extensionConfiguration = new ExtensionConfiguration();
         $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
 
