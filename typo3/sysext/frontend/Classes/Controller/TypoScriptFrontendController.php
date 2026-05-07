@@ -331,6 +331,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         $lifetime = $this->get_cache_timeout($request);
         $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+        $cacheDataCollector->addCacheTags(new CacheTag('site_' . $request->getAttribute('site')->getIdentifier()));
         $cacheDataCollector->addCacheTags(new CacheTag('pageId_' . $pageId, $lifetime));
 
         // Respect the page cache when content of pid is shown
