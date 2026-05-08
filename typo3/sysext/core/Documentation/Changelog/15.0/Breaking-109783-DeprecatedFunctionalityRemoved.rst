@@ -126,7 +126,13 @@ The following JavaScript method behaviours have changed:
 
 The following JavaScript methods have been removed:
 
-- :js:`someMethod()` of :js:`@typo3/some-extension/some-module.js`
+- :js:`createAbstractViewFormElementToolbar()`,
+  :js:`wireAbstractViewFormElementToolbarEventListeners()`,
+  :js:`eachTemplateProperty()`, :js:`renderCheckboxTemplate()`,
+  :js:`renderSimpleTemplate()`, :js:`renderSimpleTemplateWithValidators()`,
+  :js:`renderSelectTemplates()`, :js:`renderFileUploadTemplates()` of
+  :js:`@typo3/form/backend/form-editor/stage-component`
+  :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
 
 The following smooth migration for JavaScript modules have been removed:
 
@@ -138,7 +144,16 @@ The following localization XLIFF files have been removed:
 
 The following template files have been removed:
 
-- :file:`EXT:some_extension/Resources/Private/Templates/SomeTemplate.html`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/SimpleTemplate.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/SelectTemplate.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/FileUploadTemplate.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/ContentElement.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/Fieldset.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/StaticText.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/Page.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/SummaryPage.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/_ElementToolbar.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/_UnknownElement.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
 
 The following content element definitions have been removed:
 

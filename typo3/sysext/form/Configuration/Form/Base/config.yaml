@@ -93,8 +93,6 @@ prototypes:
           10: 'EXT:form/Resources/Private/Backend/Layouts/FormEditor/'
 
       formEditorPartials:
-        FormElement-_ElementToolbar: Stage/_ElementToolbar
-        FormElement-_UnknownElement: Stage/_UnknownElement
         Modal-InsertElements: Modals/InsertElements
         Modal-InsertPages: Modals/InsertPages
         Modal-ValidationErrors: Modals/ValidationErrors

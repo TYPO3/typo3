@@ -448,32 +448,6 @@ formEditorPartials
 
          formEditor:
            formEditorPartials:
-             FormElement-_ElementToolbar: Stage/_ElementToolbar
-             FormElement-_UnknownElement: Stage/_UnknownElement
-             FormElement-Page: Stage/Page
-             FormElement-SummaryPage: Stage/SummaryPage
-             FormElement-Fieldset: Stage/Fieldset
-             FormElement-GridRow: Stage/Fieldset
-             FormElement-Text: Stage/SimpleTemplate
-             FormElement-Password: Stage/SimpleTemplate
-             FormElement-AdvancedPassword: Stage/SimpleTemplate
-             FormElement-Textarea: Stage/SimpleTemplate
-             FormElement-Checkbox: Stage/SimpleTemplate
-             FormElement-MultiCheckbox: Stage/SelectTemplate
-             FormElement-MultiSelect: Stage/SelectTemplate
-             FormElement-RadioButton: Stage/SelectTemplate
-             FormElement-SingleSelect: Stage/SelectTemplate
-             FormElement-DatePicker: Stage/SimpleTemplate
-             FormElement-StaticText: Stage/StaticText
-             FormElement-Hidden: Stage/SimpleTemplate
-             FormElement-ContentElement: Stage/ContentElement
-             FormElement-FileUpload: Stage/FileUploadTemplate
-             FormElement-ImageUpload: Stage/FileUploadTemplate
-             FormElement-Email: 'Stage/SimpleTemplate'
-             FormElement-Telephone: 'Stage/SimpleTemplate'
-             FormElement-Url: 'Stage/SimpleTemplate'
-             FormElement-Number: 'Stage/SimpleTemplate'
-             FormElement-Date: 'Stage/SimpleTemplate'
              Modal-InsertElements: Modals/InsertElements
              Modal-InsertPages: Modals/InsertPages
              Modal-ValidationErrors: Modals/ValidationErrors
