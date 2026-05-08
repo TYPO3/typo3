@@ -73,18 +73,17 @@ test.describe('Install Tool', () => {
         expect(await page.locator('.card').count()).toBe(6);
       });
 
-      await test.step('Assert page Upgrade contains the 7 expected cards', async () => {
+      await test.step('Assert page Upgrade contains the 6 expected cards', async () => {
         await installTool.navigateTo('Upgrade');
 
         await expect(page.locator('h2.card-title', { hasText: 'Update TYPO3 Core' })).toBeVisible();
         await expect(page.locator('h2.card-title', { hasText: 'Upgrade Wizard' })).toBeVisible();
         await expect(page.locator('h2.card-title', { hasText: 'View Upgrade Documentation' })).toBeVisible();
-        await expect(page.locator('h2.card-title', { hasText: 'Check TCA in ext_tables.php' })).toBeVisible();
         await expect(page.locator('h2.card-title', { hasText: 'Check for Broken Extensions' })).toBeVisible();
         await expect(page.locator('h2.card-title', { hasText: 'Check TCA Migrations' })).toBeVisible();
         await expect(page.locator('h2.card-title', { hasText: 'Scan Extension Files' })).toBeVisible();
 
-        expect(await page.locator('.card').count()).toBe(7);
+        expect(await page.locator('.card').count()).toBe(6);
       });
 
       await test.step('Assert page Environment contains the 6 expected cards', async () => {
@@ -319,19 +318,12 @@ test.describe('Install Tool', () => {
       await expect(page.locator('#version-2')).toContainText(textCurrentFirstPanelHeading!);
     });
 
-    test('check TCA works', async ({ installTool }) => {
-      const modal = await installTool.openModal('Check TCA…');
-      await expect(modal).toContainText('No TCA changes in ext_tables.php files.');
-    });
-
     test('check for broken extensions works', async ({ installTool }) => {
       const modal = await installTool.openModal('Check Extension Compatibility…');
       await expect(modal).toContainText('ext_localconf.php of all loaded extensions successfully loaded');
-      await expect(modal).toContainText('ext_tables.php of all loaded extensions successfully loaded');
 
       await modal.getByRole('button', { name: 'Check extensions' }).click();
       await expect(modal).toContainText('ext_localconf.php of all loaded extensions successfully loaded');
-      await expect(modal).toContainText('ext_tables.php of all loaded extensions successfully loaded');
     });
 
     test('check TCA migrations works', async ({ installTool }) => {

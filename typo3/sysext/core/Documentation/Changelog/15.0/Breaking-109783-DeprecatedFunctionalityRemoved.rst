@@ -118,6 +118,10 @@ The following hooks have been removed:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['some']['hook']`
 
+The following extension file loading has been removed:
+
+- :file:`ext_tables.php` files in extensions are no longer considered during bootstrap :ref:`(Deprecation entry) <deprecation-109438-1774951763>`
+
 The following TCA options are not evaluated anymore:
 
 - :php:`$GLOBALS['TCA'][$table]['some']['option']`

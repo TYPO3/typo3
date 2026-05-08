@@ -39,7 +39,7 @@ readonly class ClearCacheService
      * framework and uses them to clear all file based cache (typo3temp/Cache)
      * and database caches (tables prefixed with cf_) manually.
      *
-     * After that ext_tables and ext_localconf of extensions are loaded, those
+     * After that ext_localconf of extensions are loaded, those
      * may register additional caches in the caching framework with different
      * backend, and will then clear them with the usual flush() method.
      */
@@ -58,7 +58,7 @@ readonly class ClearCacheService
         }
 
         // From this point on, the code may fatal, if some broken extension is loaded.
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $this->lateBootService->loadExtLocalconfDatabase();
 
         $extensionCaches = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
         // Loose comparison on purpose to allow changed ordering of the array

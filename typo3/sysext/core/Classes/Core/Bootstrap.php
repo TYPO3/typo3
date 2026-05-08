@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
-use TYPO3\CMS\Core\Configuration\Extension\ExtTablesFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
@@ -149,7 +148,6 @@ readonly class Bootstrap
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
         $tcaFactory = $container->get(TcaFactory::class);
         $container->get(ExtLocalconfFactory::class)->load();
-        static::unsetReservedGlobalVariables();
         $GLOBALS['TCA'] = $tcaFactory->get();
         static::checkEncryptionKey();
         $bootState->complete = true;
@@ -454,18 +452,6 @@ readonly class Bootstrap
     }
 
     /**
-     * Unsetting reserved global variables:
-     * Those are set in "ext:core/ext_tables.php" file:
-     *
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public static function unsetReservedGlobalVariables()
-    {
-        unset($GLOBALS['TCA']);
-        unset($GLOBALS['BE_USER']);
-    }
-
-    /**
      * Check if a configuration key has been configured
      */
     protected static function checkEncryptionKey()
@@ -475,27 +461,6 @@ readonly class Bootstrap
                 'TYPO3 Encryption is empty. $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'encryptionKey\'] needs to be set for TYPO3 to work securely',
                 1502987245
             );
-        }
-    }
-
-    /**
-     * Load ext_tables and friends.
-     *
-     * This will mainly load and execute ext_tables.php files of loaded extensions
-     * or the according cache file if exists.
-     *
-     * @param bool $allowCaching True, if reading compiled ext_tables file from cache is allowed
-     * @internal This is not a public API method, do not use in own extensions
-     * @todo: It would be better to remove this method and use the factory directly.
-     *        Needs a pre-patch in testing-framework.
-     */
-    public static function loadExtTables(bool $allowCaching = true, ?FrontendInterface $coreCache = null)
-    {
-        $container = GeneralUtility::getContainer();
-        if ($allowCaching) {
-            $container->get(ExtTablesFactory::class)->load();
-        } else {
-            $container->get(ExtTablesFactory::class)->loadUncached();
         }
     }
 

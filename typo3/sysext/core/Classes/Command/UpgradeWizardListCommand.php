@@ -56,7 +56,7 @@ class UpgradeWizardListCommand extends Command
     protected function bootstrap(): void
     {
         $this->upgradeWizardsService = $this->bootService
-            ->loadExtLocalconfDatabaseAndExtTables(false, false)
+            ->loadExtLocalconfDatabase(false, false)
             ->get(UpgradeWizardsService::class);
         Bootstrap::initializeBackendAuthentication();
     }

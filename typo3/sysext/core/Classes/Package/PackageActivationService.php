@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Package;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
-use TYPO3\CMS\Core\Configuration\Extension\ExtTablesFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -60,7 +59,6 @@ class PackageActivationService
         $container->get(ExtLocalconfFactory::class)->loadUncached();
         $tcaFactory = $container->get(TcaFactory::class);
         $GLOBALS['TCA'] = $tcaFactory->create();
-        $container->get(ExtTablesFactory::class)->loadUncached();
         $container->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         // Set up packages

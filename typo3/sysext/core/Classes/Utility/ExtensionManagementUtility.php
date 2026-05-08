@@ -157,7 +157,7 @@ class ExtensionManagementUtility
      * Adds an array with $GLOBALS['TCA'] column-configuration to the $GLOBALS['TCA']-entry for that table.
      * This function adds the configuration needed for rendering of the field in TCEFORMS - but it does NOT add the field names to the types lists!
      * So to have the fields displayed you must also call fx. addToAllTCAtypes or manually add the fields to the types list.
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php . Use in ext_tables.php FILES may break the frontend.
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
      *
      * @param string $table The table name of a table already present in $GLOBALS['TCA'] with a columns section
      * @param array $columnArray The array with the additional columns (typical some fields an extension wants to add)
@@ -176,7 +176,7 @@ class ExtensionManagementUtility
      * Adds a string $string (comma separated list of field names) to all ["types"][xxx]["showitem"] entries for table $table (unless limited by $typeList)
      * This is needed to have new fields shown automatically in the TCEFORMS of a record from $table.
      * Typically this function is called after having added new columns (database fields) with the addTCAcolumns function
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
      *
      * @param string $table Table name
      * @param string $newFieldsString Field list to add.
@@ -272,7 +272,7 @@ class ExtensionManagementUtility
      * Adds new fields to all palettes that is defined after an existing field.
      * If the field does not have a following palette yet, it's created automatically
      * and gets called "generatedFor-$field".
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
      *
      * See unit tests for more examples and edge cases.
      *
@@ -357,7 +357,7 @@ class ExtensionManagementUtility
     /**
      * Adds new fields to a palette.
      * If the palette does not exist yet, it's created automatically.
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
      *
      * @param string $table Name of the table
      * @param string $palette Name of the palette to be extended
@@ -383,7 +383,7 @@ class ExtensionManagementUtility
      * Warning: Do not use this method for radio or check types, especially not
      * with $relativeToField and $relativePosition parameters. This would shift
      * existing database data 'off by one'.
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
      *
      * As an example, this can be used to add an item to tt_content CType select
      * drop-down after the existing 'mailform' field with these parameters:
@@ -857,7 +857,7 @@ class ExtensionManagementUtility
      *
      * Can be used in favor of addPlugin() and addTcaSelectItem().
      *
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
      *
      * @param array|SelectItem $item The item to add to the select field
      * @param string $showItemList A string containing all fields to be used / displayed in this type
@@ -910,7 +910,7 @@ class ExtensionManagementUtility
      * manually defining $GLOBALS['TCA']['tt_content']['types']['my_plugin'|['showitem'] or by calling further
      * helper methods, such as {@see ExtensionManagementUtility::addToAllTCAtypes()}.
      *
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
      *
      * @param array|SelectItem $itemArray Numerical or assoc array: [0 or 'label'] => Plugin label, [1 or 'value'] => Plugin identifier / plugin key, ideally prefixed with an extension-specific name (e.g. "events2_list"), [2 or 'icon'] => Icon identifier or path to plugin icon, [3 or 'group'] => an optional "group" ID, falls back to "plugins"
      * @param string $flexForm The flex form (data structure) to be used for the plugin. Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
@@ -957,7 +957,7 @@ class ExtensionManagementUtility
     /**
      * Adds an entry to the "ds" array of the tt_content field "pi_flexform".
      * This is used by plugins to add a flexform XML reference / content for use when they are selected as plugin or content element.
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
      *
      * @param string $_ previously $piKeyToMatch but now unused since there is no plugin key anymore => plugins are proper record (content) types
      * @param string $value Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
@@ -982,7 +982,7 @@ class ExtensionManagementUtility
     /**
      * Adds the $table tablename to the list of tables allowed to be includes by content element type "Insert records"
      * By using $content_table and $content_field you can also use the function for other tables.
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
+     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
      *
      * @param string $table Table name to allow for "insert record
      * @param string $content_table Table name TO WHICH the $table name is applied. See $content_field as well.
@@ -997,7 +997,7 @@ class ExtensionManagementUtility
 
     /**
      * Call this method to add an entry in the static template list found in sys_templates
-     * FOR USE IN Configuration/TCA/Overrides/sys_template.php Use in ext_tables.php may break the frontend.
+     * FOR USE IN Configuration/TCA/Overrides/sys_template.php.
      *
      * @param string $extKey Is of course the extension key
      * @param string $path Is the path where the template files "constants.typoscript", "setup.typoscript", and "include_static_file.txt"

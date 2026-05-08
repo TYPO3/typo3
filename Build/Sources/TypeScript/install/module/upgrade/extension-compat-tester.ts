@@ -81,16 +81,9 @@ class ExtensionCompatTester extends AbstractInteractableModule {
           if (data.success === true) {
             this.loadExtLocalconf().then((): void => {
               innerOutputContainer.append(InfoBox.create(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded'));
-              this.loadExtTables().then((): void => {
-                innerOutputContainer.append(InfoBox.create(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded'));
-              }, async (error: AjaxResponse): Promise<void> => {
-                this.renderFailureMessages('ext_tables.php', (await error.response.json()).brokenExtensions, innerOutputContainer);
-              }).finally((): void => {
-                this.unlockModal();
-              });
             }, async (error: AjaxResponse): Promise<void> => {
               this.renderFailureMessages('ext_localconf.php', (await error.response.json()).brokenExtensions, innerOutputContainer);
-              innerOutputContainer.append(InfoBox.create(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors'));
+            }).finally((): void => {
               this.unlockModal();
             });
           } else {
@@ -137,16 +130,6 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     return new AjaxRequest(Router.getUrl()).post({
       'install': {
         'action': 'extensionCompatTesterLoadExtLocalconf',
-        'token': executeToken,
-      },
-    });
-  }
-
-  private loadExtTables(): Promise<AjaxResponse> {
-    const executeToken = this.getModuleContent().dataset.extensionCompatTesterLoadExt_tablesToken;
-    return new AjaxRequest(Router.getUrl()).post({
-      'install': {
-        'action': 'extensionCompatTesterLoadExtTables',
         'token': executeToken,
       },
     });

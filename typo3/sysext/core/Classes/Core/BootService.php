@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Core;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
-use TYPO3\CMS\Core\Configuration\Extension\ExtTablesFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -104,18 +103,15 @@ class BootService
     }
 
     /**
-     * Bootstrap a non-failsafe container and load ext_localconf
+     * Bootstrap a non-failsafe container and load ext_localconf.phps of all extensions.
      *
      * Use by actions like the database analyzer and the upgrade wizards which
      * need additional bootstrap actions performed.
      *
      * Those actions can potentially fatal if some old extension is loaded that triggers
-     * a fatal in ext_localconf or ext_tables code! Use only if really needed.
-     *
-     * @param bool $resetContainer
-     * @param bool $allowCaching
+     * a fatal in ext_localconf code! Use only if really needed.
      */
-    public function loadExtLocalconfDatabaseAndExtTables(bool $resetContainer = false, bool $allowCaching = true, bool $loadExtTables = true): ContainerInterface
+    public function loadExtLocalconfDatabase(bool $resetContainer = false, bool $allowCaching = true): ContainerInterface
     {
         $container = $this->getContainer($allowCaching);
 
@@ -130,7 +126,6 @@ class BootService
         } else {
             $container->get(ExtLocalconfFactory::class)->loadUncached();
         }
-        Bootstrap::unsetReservedGlobalVariables();
         $GLOBALS['BE_USER'] = $beUserBackup;
         if ($allowCaching) {
             $GLOBALS['TCA'] = $tcaFactory->get();
@@ -144,14 +139,6 @@ class BootService
             $container->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         }
         $eventDispatcher->dispatch(new BootCompletedEvent($allowCaching));
-        if ($loadExtTables) {
-            if ($allowCaching) {
-                $container->get(ExtTablesFactory::class)->load();
-            } else {
-                $container->get(ExtTablesFactory::class)->loadUncached();
-            }
-        }
-
         if ($resetContainer) {
             $this->makeCurrent(null, $backup);
         }

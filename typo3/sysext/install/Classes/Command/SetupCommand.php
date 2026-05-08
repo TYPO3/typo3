@@ -293,7 +293,7 @@ EOT
         // The new container is kept in GeneralUtility because the following code, especially
         // the current state of the data import during extension setup still relies on GeneralUtility::makeInstance
         // to fetch objects from the container
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $container = $this->lateBootService->loadExtLocalconfDatabase(false);
         $this->setupDatabaseService->markWizardsDone($container);
         Bootstrap::initializeBackendAuthentication();
         $this->setupService->setupExtensions($container);

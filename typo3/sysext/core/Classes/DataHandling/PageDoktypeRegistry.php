@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * NOTE: The 'default' entry array is the 'base' for all types, and for every type the
  * entries simply overrides the entries in the 'default' type!
  *
- * You can fully use this once TCA is properly loaded (e.g. in ext_tables.php).
+ * You can fully use this once TCA is properly loaded.
  */
 #[Autoconfigure(public: true)]
 readonly class PageDoktypeRegistry

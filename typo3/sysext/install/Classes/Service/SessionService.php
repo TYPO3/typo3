@@ -95,7 +95,7 @@ class SessionService implements SingletonInterface
         }
         if (session_status() === PHP_SESSION_ACTIVE) {
             $sessionCreationError = 'Session already started by session_start().<br />';
-            $sessionCreationError .= 'Make sure no installed extension is starting a session in its ext_localconf.php or ext_tables.php.';
+            $sessionCreationError .= 'Make sure no installed extension is starting a session in its ext_localconf.php.';
             throw new Exception($sessionCreationError, 1294587486);
         }
     }

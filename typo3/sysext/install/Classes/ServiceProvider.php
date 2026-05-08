@@ -60,7 +60,6 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\ViewHelpers\NormalizedUrlViewHelper;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Service\LateBootService;
-use TYPO3\CMS\Install\Service\LoadTcaService;
 use TYPO3\CMS\Install\Service\SessionService;
 use TYPO3\CMS\Install\Service\SetupDatabaseService;
 use TYPO3\CMS\Install\Service\SetupService;
@@ -93,7 +92,6 @@ class ServiceProvider extends AbstractServiceProvider
             Service\CoreUpdateService::class => self::getCoreUpdateService(...),
             Service\CoreVersionService::class => self::getCoreVersionService(...),
             Service\LateBootService::class => self::getLateBootService(...),
-            Service\LoadTcaService::class => self::getLoadTcaService(...),
             Service\SilentTemplateFileUpgradeService::class => self::getSilentTemplateFileUpgradeService(...),
             Service\WebServerConfigurationFileService::class => self::getWebServerConfigurationFileService(...),
             Service\SessionService::class => self::getSessionService(...),
@@ -204,13 +202,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\LateBootService(
             $container->get(ContainerBuilder::class),
             $container
-        );
-    }
-
-    public static function getLoadTcaService(ContainerInterface $container): Service\LoadTcaService
-    {
-        return new Service\LoadTcaService(
-            $container->get(Service\LateBootService::class)
         );
     }
 
@@ -379,8 +370,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(PackageManager::class),
             $container->get(Service\LateBootService::class),
             $container->get(DatabaseUpgradeWizardsService::class),
-            $container->get(FormProtectionFactory::class),
-            $container->get(LoadTcaService::class)
+            $container->get(FormProtectionFactory::class)
         );
     }
 

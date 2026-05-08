@@ -9086,12 +9086,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "028295bb1f2577fc0e9e66c1823ac14a4de08484"
+                "reference": "1a571c8849132cbe6d55b83a4bf90d63824f2457"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/028295bb1f2577fc0e9e66c1823ac14a4de08484",
-                "reference": "028295bb1f2577fc0e9e66c1823ac14a4de08484",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/1a571c8849132cbe6d55b83a4bf90d63824f2457",
+                "reference": "1a571c8849132cbe6d55b83a4bf90d63824f2457",
                 "shasum": ""
             },
             "require": {
@@ -9145,7 +9145,7 @@
                     "role": "Contributor"
                 }
             ],
-            "description": "The TYPO3 testing framework provides base classes for unit, functional and acceptance testing.",
+            "description": "The TYPO3 testing framework provides base classes for unit and functional testing.",
             "homepage": "https://typo3.org/",
             "keywords": [
                 "testing",
@@ -9157,7 +9157,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2026-05-06T15:26:28+00:00"
+            "time": "2026-05-26T20:40:52+00:00"
         }
     ],
     "aliases": [],

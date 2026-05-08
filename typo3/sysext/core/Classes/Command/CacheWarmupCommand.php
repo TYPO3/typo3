@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
-use TYPO3\CMS\Core\Configuration\Extension\ExtTablesFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -86,18 +85,12 @@ EOF
         if ($group === 'system' || $group === 'all') {
             $allowExtFileCaches = false;
             $container->get(ExtLocalconfFactory::class)->createCacheEntry();
-            $container->get(ExtTablesFactory::class)->createCacheEntry();
         }
         // Perform a full boot to load localconf (requirement for extensions and for TCA loading).
-        $this->bootService->loadExtLocalconfDatabaseAndExtTables(false, $allowExtFileCaches, false);
+        $this->bootService->loadExtLocalconfDatabase(false, $allowExtFileCaches);
         if ($group === 'system' || $group === 'all') {
             $tcaFactory = $container->get(TcaFactory::class);
             $tcaFactory->createBaseTcaCacheFile($GLOBALS['TCA']);
-        }
-        if ($allowExtFileCaches) {
-            $container->get(ExtTablesFactory::class)->load();
-        } else {
-            $container->get(ExtTablesFactory::class)->loadUncached();
         }
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);

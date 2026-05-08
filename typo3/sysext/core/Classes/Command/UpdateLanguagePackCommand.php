@@ -83,7 +83,7 @@ class UpdateLanguagePackCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->bootService->loadExtLocalconfDatabaseAndExtTables();
+        $container = $this->bootService->loadExtLocalconfDatabase();
         $languagePackService = $container->get(LanguagePackService::class);
         $noProgress = $input->getOption('no-progress') || $output->isVerbose();
         $isos = (array)$input->getArgument('locales');

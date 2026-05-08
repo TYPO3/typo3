@@ -48,8 +48,8 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
  *
  * Important: $GLOBALS['TYPO3_REQUEST'] is NOT available before the RequestHandler has been
  * called. This especially means the question "Is this a frontend or backend request?"
- * can NOT be answered in the TYPO3 bootstrap related extension files ext_localconf.php,
- * ext_tables.php and Configuration/TCA/* files.
+ * can NOT be answered in the TYPO3 bootstrap related extension files ext_localconf.php
+ * and Configuration/TCA/* files.
  */
 enum ApplicationType: string
 {

@@ -579,10 +579,10 @@ final readonly class InstallerController
         // The new container is kept in GeneralUtility because the following code, especially
         // the current state of the data import during extension setup still relies on GeneralUtility::makeInstance
         // to fetch objects from the container
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $container = $this->lateBootService->loadExtLocalconfDatabase(false);
         // Use the container here instead of makeInstance() to use the factory of the container
         // for building the UriBuilder, although it is functionally the same, as we now expose the
-        // container in GeneralUtility with $this->lateBootService->loadExtLocalconfDatabaseAndExtTables()
+        // container in GeneralUtility with $this->lateBootService->loadExtLocalconfDatabase()
         $uriBuilder = $container->get(UriBuilder::class);
         $nextStepUrl = $uriBuilder->buildUriFromRoute('login');
 

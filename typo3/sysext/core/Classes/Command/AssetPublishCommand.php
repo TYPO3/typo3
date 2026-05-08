@@ -59,7 +59,7 @@ class AssetPublishCommand extends Command
         $failsafeContainer = $this->bootService->getFailsafeContainer();
         $failsafeResourcePublisher = $failsafeContainer->has(AssetPublishing::class) ? $failsafeContainer->get(SystemResourcePublisherInterface::class) : null;
         try {
-            $container = $this->bootService->loadExtLocalconfDatabaseAndExtTables(false, false);
+            $container = $this->bootService->loadExtLocalconfDatabase(false, false);
         } catch (\Throwable $e) {
             if ($output->isVerbose()) {
                 throw $e;

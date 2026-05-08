@@ -99,7 +99,7 @@ class CommandApplication implements ApplicationInterface
             // Load ext_localconf, except if a low level command shortcut was found
             // or if essential configuration is missing
             if (!$isLowLevelCommandShortcut && Bootstrap::checkIfEssentialConfigurationExists($this->configurationManager)) {
-                $this->bootService->loadExtLocalconfDatabaseAndExtTables();
+                $this->bootService->loadExtLocalconfDatabase();
             }
         }
 

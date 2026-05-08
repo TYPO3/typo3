@@ -24,7 +24,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\Error\MethodNotAllowedException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
@@ -58,8 +57,6 @@ readonly class BackendRouteInitialization implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // @todo Find another place for this call, since it's not related to this middleware anymore
-        Bootstrap::loadExtTables();
         $this->uriBuilder->setRequestContext($this->requestContextFactory->fromBackendRequest($request));
 
         try {

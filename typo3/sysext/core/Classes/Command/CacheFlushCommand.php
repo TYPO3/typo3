@@ -75,7 +75,7 @@ class CacheFlushCommand extends Command
 
         $this->flushCoreCaches($group, $container);
 
-        $this->bootService->loadExtLocalconfDatabaseAndExtTables(false, true);
+        $this->bootService->loadExtLocalconfDatabase(false, true);
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
 

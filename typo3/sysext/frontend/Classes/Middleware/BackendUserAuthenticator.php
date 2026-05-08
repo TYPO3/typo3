@@ -23,7 +23,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -61,11 +60,9 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         }
         $GLOBALS['BE_USER'] = $backendUserObject;
         // Load specific dependencies which are necessary for a valid Backend User
-        // like $GLOBALS['LANG'] for labels in the language of the BE User, the router, and ext_tables.php for all modules
-        // So things like Frontend Editing and Admin Panel can use this for generating links to the TYPO3 Backend.
+        // like $GLOBALS['LANG'] for labels in the language of the BE User (so AdminPanel works)
         if ($backendUserObject !== null) {
             $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
-            Bootstrap::loadExtTables();
             $this->setBackendUserAspect($GLOBALS['BE_USER']);
             if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
                 && (strtolower($request->getServerParams()['HTTP_CACHE_CONTROL'] ?? '') === 'no-cache'
@@ -126,7 +123,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
             return false;
         }
         // Check SSL (https)
-        if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !$normalizedParams->isHttps()) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] && !$normalizedParams->isHttps()) {
             return false;
         }
         return $user->backendCheckLogin($request);

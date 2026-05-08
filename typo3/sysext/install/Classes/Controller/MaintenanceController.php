@@ -109,7 +109,7 @@ class MaintenanceController extends AbstractController
      */
     public function clearTypo3tempFilesStatsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $container = $this->lateBootService->loadExtLocalconfDatabase(false);
         $typo3tempFileService = $container->get(Typo3tempFileService::class);
 
         $view = $this->initializeView($request);
@@ -137,7 +137,7 @@ class MaintenanceController extends AbstractController
      */
     public function clearTypo3tempFilesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
+        $container = $this->lateBootService->loadExtLocalconfDatabase(false);
         $typo3tempFileService = $container->get(Typo3tempFileService::class);
         $messageQueue = new FlashMessageQueue('install');
         $folder = $request->getParsedBody()['install']['folder'];
@@ -225,7 +225,7 @@ class MaintenanceController extends AbstractController
      */
     public function databaseAnalyzerAnalyzeAction(ServerRequestInterface $request): ResponseInterface
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $container = $this->lateBootService->loadExtLocalconfDatabase();
         $schemaMigrator = $container->get(SchemaMigrator::class);
 
         $messageQueue = new FlashMessageQueue('install');
@@ -379,7 +379,7 @@ class MaintenanceController extends AbstractController
      */
     public function databaseAnalyzerExecuteAction(ServerRequestInterface $request): ResponseInterface
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        $container = $this->lateBootService->loadExtLocalconfDatabase();
         $messageQueue = new FlashMessageQueue('install');
         $selectedHashes = $request->getParsedBody()['install']['hashes'] ?? [];
         if (empty($selectedHashes)) {
@@ -596,7 +596,7 @@ class MaintenanceController extends AbstractController
             'languagePacksUpdateIsoTimesToken' => $formProtection->generateToken('installTool', 'languagePacksUpdateIsoTimes'),
         ]);
         // This action needs TYPO3_CONF_VARS for full GeneralUtility::getUrl() config
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
+        $container = $this->lateBootService->loadExtLocalconfDatabase(false, true);
         $languagePackService = $container->get(LanguagePackService::class);
         $extensions = $languagePackService->getExtensionLanguagePackDetails();
         $extensionList = array_map(function (array $extension) {
@@ -758,7 +758,7 @@ class MaintenanceController extends AbstractController
      */
     public function languagePacksUpdatePackAction(ServerRequestInterface $request): ResponseInterface
     {
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
+        $container = $this->lateBootService->loadExtLocalconfDatabase(false, true);
         $iso = $request->getParsedBody()['install']['iso'];
         $key = $request->getParsedBody()['install']['extension'];
 
@@ -845,7 +845,7 @@ class MaintenanceController extends AbstractController
     {
         $isCheckOnly = (bool)($request->getParsedBody()['install']['checkOnly'] ?? false);
 
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false, true);
+        $container = $this->lateBootService->loadExtLocalconfDatabase(false, true);
         $result = $container->get(ReferenceIndex::class)->updateIndex($isCheckOnly);
 
         $messageQueue = new FlashMessageQueue('install');

@@ -38,7 +38,7 @@ final class DatabaseSchemaService
     /**
      * Get schema SQL of required cache framework tables.
      *
-     * This method needs ext_localconf and ext_tables loaded!
+     * This method needs ext_localconf loaded!
      *
      * @return string Cache framework SQL
      */

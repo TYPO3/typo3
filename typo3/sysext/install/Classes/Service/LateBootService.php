@@ -30,8 +30,8 @@ class LateBootService extends BootService
         return parent::getContainer($allowCaching);
     }
 
-    public function loadExtLocalconfDatabaseAndExtTables(bool $resetContainer = true, bool $allowCaching = false, bool $loadExtTables = true): ContainerInterface
+    public function loadExtLocalconfDatabase(bool $resetContainer = true, bool $allowCaching = false): ContainerInterface
     {
-        return parent::loadExtLocalconfDatabaseAndExtTables($resetContainer, $allowCaching, $loadExtTables);
+        return parent::loadExtLocalconfDatabase($resetContainer, $allowCaching);
     }
 }

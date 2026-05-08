@@ -508,10 +508,10 @@ class SetupDatabaseService
      */
     public function importDatabaseData(): array
     {
-        // Will load ext_localconf and ext_tables. This is pretty safe here since we are
-        // in first install (database empty), so it is very likely that no extension is loaded
-        // that could trigger a fatal at this point.
-        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        // Will load ext_localconf. This is pretty safe here since we are in first install
+        // (database empty), so it is very likely that no extension is loaded that could
+        // trigger a fatal at this point.
+        $container = $this->lateBootService->loadExtLocalconfDatabase();
 
         $sqlReader = $container->get(SqlReader::class);
         $sqlCode = $sqlReader->getTablesDefinitionString(true);
