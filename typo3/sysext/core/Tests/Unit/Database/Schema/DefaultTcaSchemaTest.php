@@ -1020,10 +1020,6 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ],
             [
                 new Index(
-                    'uid_local',
-                    ['uid_local']
-                ),
-                new Index(
                     'uid_foreign',
                     ['uid_foreign']
                 ),
@@ -1097,12 +1093,13 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ],
             [
                 new Index(
-                    'uid_local',
-                    ['uid_local']
+                    'uniq_uid_local_uid_foreign',
+                    ['uid_local', 'uid_foreign'],
+                    true
                 ),
                 new Index(
-                    'uid_foreign',
-                    ['uid_foreign']
+                    'uid_foreign_uid_local',
+                    ['uid_foreign', 'uid_local']
                 ),
                 new Index(
                     'primary',
@@ -1185,10 +1182,6 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ],
             [
                 new Index(
-                    'uid_local',
-                    ['uid_local']
-                ),
-                new Index(
                     'uid_foreign',
                     ['uid_foreign']
                 ),
@@ -1267,10 +1260,6 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                 ),
             ],
             [
-                new Index(
-                    'uid_local',
-                    ['uid_local']
-                ),
                 new Index(
                     'uid_foreign',
                     ['uid_foreign']
@@ -1351,10 +1340,6 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             ],
             [
                 new Index(
-                    'uid_local',
-                    ['uid_local']
-                ),
-                new Index(
                     'uid_foreign',
                     ['uid_foreign']
                 ),
@@ -1363,6 +1348,100 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                     ['uid_local', 'uid_foreign', 'tablenames', 'fieldname'],
                     true,
                     true
+                ),
+            ]
+        );
+        self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
+    }
+
+    #[Test]
+    public function enrichAddsMmWithTablenamesAndFieldnameWithGroupAndAllowedAllAndMultipleIsSet(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $tca['aTable']['columns']['aField']['config'] = [
+            'type' => 'group',
+            'MM' => 'tx_myext_atable_afield_mm',
+            'allowed' => '*',
+            'multiple' => true,
+        ];
+        $subject = new DefaultTcaSchema($this->getPreparedTcaSchemaFactory($tca));
+        $result = $subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedMmTable = new Table(
+            'tx_myext_atable_afield_mm',
+            [
+                new Column(
+                    '`uid`',
+                    new IntegerType(),
+                    [
+                        'default' => null,
+                        'autoincrement' => true,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`uid_local`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`uid_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`tablenames`',
+                    new StringType(),
+                    [
+                        'default' => '',
+                        'length' => 64,
+                    ]
+                ),
+                new Column(
+                    '`fieldname`',
+                    new StringType(),
+                    [
+                        'default' => '',
+                        'length' => 64,
+                    ]
+                ),
+            ],
+            [
+                new Index(
+                    'primary',
+                    ['uid'],
+                    true,
+                    true
+                ),
+                new Index(
+                    'uniq_uid_local_uid_foreign_tablenames_fieldname',
+                    ['uid_local', 'uid_foreign', 'tablenames', 'fieldname'],
+                    true
+                ),
+                new Index(
+                    'uid_foreign_uid_local',
+                    ['uid_foreign', 'uid_local']
                 ),
             ]
         );
