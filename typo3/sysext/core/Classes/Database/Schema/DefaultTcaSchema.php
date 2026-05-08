@@ -617,9 +617,6 @@ class DefaultTcaSchema
                         ]
                     );
                 }
-                if (!$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_local')) {
-                    $tables[$tablePosition]->addIndex(['uid_local'], 'uid_local');
-                }
 
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'uid_foreign')) {
                     $tables[$tablePosition]->addColumn(
@@ -631,9 +628,6 @@ class DefaultTcaSchema
                             'unsigned' => true,
                         ]
                     );
-                }
-                if (!$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_foreign')) {
-                    $tables[$tablePosition]->addIndex(['uid_foreign'], 'uid_foreign');
                 }
 
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'sorting')) {
@@ -702,10 +696,31 @@ class DefaultTcaSchema
                 // Primary key handling: If there is a uid field, PK has been added above already.
                 // Otherwise, the PK combination is either "uid_local, uid_foreign", or
                 // "uid_local, uid_foreign, tablenames, fieldname" if this is a multi-foreign setup.
-                if (!$hasUid && $tables[$tablePosition]->getPrimaryKey() === null && $hasTablenamesFieldname) {
-                    $tables[$tablePosition]->setPrimaryKey(['uid_local', 'uid_foreign', 'tablenames', 'fieldname']);
-                } elseif (!$hasUid && $tables[$tablePosition]->getPrimaryKey() === null) {
-                    $tables[$tablePosition]->setPrimaryKey(['uid_local', 'uid_foreign']);
+                $table = $tables[$tablePosition];
+
+                $relationFields = ['uid_local', 'uid_foreign'];
+
+                if ($hasTablenamesFieldname) {
+                    $relationFields[] = 'tablenames';
+                    $relationFields[] = 'fieldname';
+                }
+
+                if (!$hasUid && $table->getPrimaryKey() === null) {
+                    $table->setPrimaryKey($relationFields);
+
+                    if (!$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_foreign')) {
+                        $table->addIndex(['uid_foreign'], 'uid_foreign');
+                    }
+                } else {
+                    $uniqueIndexName = 'uniq_' . implode('_', $relationFields);
+
+                    if (!$this->isIndexDefinedForTable($tables, $mmTableName, $uniqueIndexName)) {
+                        $table->addUniqueIndex($relationFields, $uniqueIndexName);
+                    }
+
+                    if (!$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_foreign_uid_local')) {
+                        $table->addIndex(['uid_foreign', 'uid_local'], 'uid_foreign_uid_local');
+                    }
                 }
             }
         }
