@@ -1133,7 +1133,11 @@ class DefaultTcaSchema
                         ]
                     );
                 }
-                if (!$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_local')) {
+                // Without "multiple", the primary key set below starts with "uid_local" and already
+                // indexes it, so a dedicated single-column index would be a redundant prefix. With
+                // "multiple" the primary key is the "uid" field instead, so a "uid_local" index is
+                // kept to serve relation lookups by the local side.
+                if ($needsUid && !$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_local')) {
                     $tables[$mmTableName]->addIndex(['uid_local'], 'uid_local');
                 }
 
