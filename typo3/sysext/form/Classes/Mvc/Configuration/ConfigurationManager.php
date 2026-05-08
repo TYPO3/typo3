@@ -58,7 +58,6 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
      *
      * The following post-processing steps are applied to the merged configuration:
      *
-     * * Resolve all declared inheritances
      * * Remove all keys whose values are NULL
      * * Sort by array keys if all keys within a nesting level are numerical
      * * Resolve possible TypoScript settings in FE mode
@@ -70,7 +69,7 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
         if ($this->cache->has($cacheKey)) {
             $yamlSettings = $this->cache->get($cacheKey);
         } else {
-            $yamlSettings = InheritancesResolverService::create($this->yamlSource->load($yamlSettingsFilePaths))->getResolvedConfiguration();
+            $yamlSettings = $this->yamlSource->load($yamlSettingsFilePaths);
             $yamlSettings = ArrayUtility::removeNullValuesRecursive($yamlSettings);
             $yamlSettings = ArrayUtility::sortArrayWithIntegerKeysRecursive($yamlSettings);
             $this->cache->set($cacheKey, $yamlSettings);

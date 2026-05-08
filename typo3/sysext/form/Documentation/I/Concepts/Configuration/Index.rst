@@ -159,8 +159,6 @@ a sequential compilation process:
 
 - Registered configuration files are parsed as YAML and
   are combined according to their order.
-- The ``__inheritances`` operator is applied. It is a unique
-  operator introduced by the form framework.
 - Finally, all configuration entries with a value of ``null`` are deleted.
 
 Instead of inheritance, you can also extend/override the frontend configuration
@@ -238,67 +236,6 @@ You can avoid duplication in your YAML files by using anchors (&), aliases (*) a
               editors:
                 <<: *customEditor
                 1761226184: *otherCustomEditor
-
-.. _concepts-configuration-inheritances-operator:
-
-__inheritances operator
-^^^^^^^^^^^^^^^^^^^^^^^
-
-..  deprecated:: 14.0
-    The ``__inheritances`` operator has been marked as deprecated.
-    Support will be removed in TYPO3 v15. Use native YAML syntax to :ref:`prevent duplication <concepts-configuration-prevent-duplication>`
-
-The ``__inheritances`` behaves similar to the ``<`` operator in TypoScript.
-That is, the definition of the source object is copied to the target object.
-The configuration can be inherited from several parent objects and can be overridden afterwards.
-The following example will show you the usage and behaviour of the ``__inheritances`` operator.
-
-.. code-block:: yaml
-
-   Form:
-     part01:
-       key01: value
-       key02:
-         key03: value
-     part02:
-       __inheritances:
-         10: Form.part01
-
-The configuration above results in:
-
-.. code-block:: yaml
-
-   Form:
-     part01:
-       key01: value
-       key02:
-         key03: value
-     part02:
-       key01: value
-       key02:
-         key03: value
-
-As you can see, ``part02`` inherited all of ``part01``'s properties.
-
-.. code-block:: yaml
-
-   Form:
-     part01:
-       key: value
-     part02:
-       __inheritances:
-         10: Form.part01
-       key: 'value override'
-
-The configuration above results in:
-
-.. code-block:: yaml
-
-   Form:
-     part01:
-       key: value
-     part02:
-       key: 'value override'
 
 
 .. _concepts-configuration-prototypes:
