@@ -49,7 +49,7 @@
         <source>Confirm deletion</source>
       </trans-unit>
       <trans-unit id="formManager.remove_form_message">
-        <source>Permanently delete form "{0}"? You cannot undo this action.</source>
+        <source>Delete form "{0}"? Forms saved as files are permanently deleted and cannot be restored from the Recycler.</source>
       </trans-unit>
       <trans-unit id="formManager.newFormWizard.step1.title">
         <source>Create new form</source>
