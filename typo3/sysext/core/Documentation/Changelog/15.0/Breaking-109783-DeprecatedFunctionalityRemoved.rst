@@ -68,7 +68,7 @@ The following class constants have been dropped:
 
 The following TypoScript options have been dropped or adapted:
 
-- :typoscript:`some.typoscript.option`
+- :typoscript:`plugin.tx_form.settings.yamlConfigurations` and :typoscript:`module.tx_form.settings.yamlConfigurations` :ref:`(Deprecation entry) <deprecation-109412-1742000001>`
 
 The following user TSconfig options have been removed:
 

@@ -66,18 +66,6 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
     public function getYamlConfiguration(array $typoScriptSettings, bool $isFrontend, ?ServerRequestInterface $request = null): array
     {
         $yamlSettingsFilePaths = $this->formYamlCollector->getPaths();
-        if (isset($typoScriptSettings['yamlConfigurations']) && $typoScriptSettings['yamlConfigurations'] !== []) {
-            trigger_error(
-                'TypoScript-based registration of form YAML files via plugin.tx_form.settings.yamlConfigurations'
-                . ' or module.tx_form.settings.yamlConfigurations has been deprecated in TYPO3 v14.2 and will'
-                . ' be removed in TYPO3 v15.0. Use the auto-discovery directory convention'
-                . ' EXT:my_extension/Configuration/Form/<SetName>/config.yaml instead.',
-                E_USER_DEPRECATED
-            );
-            $legacyPaths = ArrayUtility::sortArrayWithIntegerKeys($typoScriptSettings['yamlConfigurations']);
-            $legacyPaths = array_filter($legacyPaths, static fn(string $path): bool => !in_array($path, $yamlSettingsFilePaths, true));
-            $yamlSettingsFilePaths = array_merge($yamlSettingsFilePaths, array_values($legacyPaths));
-        }
         $cacheKey = strtolower('YamlSettings_form' . md5(json_encode($yamlSettingsFilePaths)));
         if ($this->cache->has($cacheKey)) {
             $yamlSettings = $this->cache->get($cacheKey);

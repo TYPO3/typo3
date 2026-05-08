@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Configuration;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -30,31 +29,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ConfigurationManagerTest extends FunctionalTestCase
 {
-    #[Test]
-    #[IgnoreDeprecations]
-    public function getYamlConfigurationTriggersDeprecationForLegacyTypoScriptYamlConfigurations(): void
-    {
-        $this->expectUserDeprecationMessage(
-            'TypoScript-based registration of form YAML files via plugin.tx_form.settings.yamlConfigurations'
-            . ' or module.tx_form.settings.yamlConfigurations has been deprecated in TYPO3 v14.2 and will'
-            . ' be removed in TYPO3 v15.0. Use the auto-discovery directory convention'
-            . ' EXT:my_extension/Configuration/Form/<SetName>/config.yaml instead.'
-        );
-        $cacheMock = $this->createMock(FrontendInterface::class);
-        $cacheMock->method('has')->willReturn(true);
-        $cacheMock->method('get')->willReturn([]);
-        $configurationManager = new ConfigurationManager(
-            $this->createMock(YamlSource::class),
-            $cacheMock,
-            $this->createMock(TypoScriptService::class),
-            new FormYamlCollector(),
-        );
-        $configurationManager->getYamlConfiguration(
-            ['yamlConfigurations' => [10 => 'EXT:my_extension/Configuration/Yaml/MySetup.yaml']],
-            false
-        );
-    }
-
     #[Test]
     public function getConfigurationDoesNotEvaluateTypoScriptLookalikeInstructionsFromYamlSettingsInFrontendContext(): void
     {
