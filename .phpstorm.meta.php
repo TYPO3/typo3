@@ -25,7 +25,7 @@ namespace PHPSTORM_META {
         'frontend.user' => \TYPO3\CMS\Core\Context\UserAspect::class,
         'workspace' => \TYPO3\CMS\Core\Context\WorkspaceAspect::class,
         'language' => \TYPO3\CMS\Core\Context\LanguageAspect::class,
-        'frontend.preview' => \TYPO3\CMS\Frontend\Context\PreviewAspect::class,
+        'frontend.preview' => \TYPO3\CMS\Frontend\Aspect\PreviewAspect::class,
     ]));
     expectedArguments(
         \TYPO3\CMS\Core\Context\DateTimeAspect::get(),
@@ -71,7 +71,7 @@ namespace PHPSTORM_META {
         'legacyOverlayType'
     );
     expectedArguments(
-        \TYPO3\CMS\Frontend\Context\PreviewAspect::get(),
+        \TYPO3\CMS\Frontend\Aspect\PreviewAspect::get(),
         0,
         'isPreview'
     );
