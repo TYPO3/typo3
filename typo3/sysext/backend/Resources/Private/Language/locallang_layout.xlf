@@ -315,8 +315,11 @@
       <trans-unit id="pageIsMisconfiguredExternalLinkMessage" x-unused-since="14.0">
         <source>Page is configured to be an external link but there is actually no URL defined.</source>
       </trans-unit>
-      <trans-unit id="goToListModule">
-        <source>Go to list module</source>
+      <trans-unit id="goToListModule" x-unused-since="14.3.1">
+        <source>Go to record module</source>
+      </trans-unit>
+      <trans-unit id="goToRecordsModule">
+        <source>Go to records module</source>
       </trans-unit>
       <trans-unit id="goToListModuleMessage">
         <source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
