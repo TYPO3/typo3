@@ -26,12 +26,11 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
-use TYPO3\CMS\Scheduler\SchedulerManagementAction;
+use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -49,7 +48,6 @@ final readonly class SchedulerTaskPersistenceValidator
     public function __construct(
         private TaskService $taskService,
         private SchedulerTaskRepository $taskRepository,
-        private SchedulerModuleController $schedulerModuleController,
         FlashMessageService $flashMessageService,
     ) {
         $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
@@ -76,22 +74,18 @@ final readonly class SchedulerTaskPersistenceValidator
             $changedTaskType = ($incomingFieldArray['tasktype'] ?? false) !== ($fullRecord['tasktype'] ?? false);
             if (!isset($incomingFieldArray['tasktype'])) {
                 $taskType = $fullRecord['tasktype'];
-                $this->schedulerModuleController->setCurrentAction(SchedulerManagementAction::EDIT);
             } else {
                 $taskType = $incomingFieldArray['tasktype'];
-                $this->schedulerModuleController->setCurrentAction(SchedulerManagementAction::ADD);
             }
             if (!empty($fullRecord['serialized_executions'])) {
                 // If there's a registered execution, the task should not be edited. May happen if a cron started the task meanwhile.
                 $this->addErrorMessage($dataHandler, $id, 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotEditRunningTask');
             }
+            $task = $this->taskRepository->findByUid((int)$id);
         } else {
             $isNewTask = true;
             $changedTaskType = true;
             $taskType = $incomingFieldArray['tasktype'];
-            $this->schedulerModuleController->setCurrentAction(SchedulerManagementAction::ADD);
-        }
-        if ($isNewTask) {
             try {
                 $task = $this->taskService->createNewTask($taskType);
             } catch (InvalidTaskException $e) {
@@ -100,8 +94,6 @@ final readonly class SchedulerTaskPersistenceValidator
                 $incomingFieldArray = false;
                 return;
             }
-        } else {
-            $task = $this->taskRepository->findByUid((int)$id);
         }
         $decodedAndExtractedFieldArray = $this->decodeValues($incomingFieldArray);
         if (!$this->isSubmittedTaskDataValid($dataHandler, $id, $decodedAndExtractedFieldArray, $task)) {
@@ -113,18 +105,14 @@ final readonly class SchedulerTaskPersistenceValidator
             return;
         }
         // Now let's transform our data
+        $this->setTaskDataFromRequest($task, $decodedAndExtractedFieldArray);
+        $incomingFieldArray = array_replace_recursive($incomingFieldArray, $this->taskService->getFieldsForRecord($task));
         if ($isNewTask) {
-            $this->taskService->setTaskDataFromRequest($task, $decodedAndExtractedFieldArray);
-            $incomingFieldArray = array_replace_recursive($incomingFieldArray, $this->taskService->getFieldsForRecord($task));
             $incomingFieldArray['parameters'] = $incomingFieldArray['parameters'] ?? [];
             $incomingFieldArray['pid'] = 0;
-        } else {
-            $this->taskService->setTaskDataFromRequest($task, $decodedAndExtractedFieldArray);
-            $incomingFieldArray = array_replace_recursive($incomingFieldArray, $this->taskService->getFieldsForRecord($task));
-            if ($changedTaskType) {
-                $incomingFieldArray['parameters'] = [];
-                $incomingFieldArray['tasktype'] = $taskType;
-            }
+        } elseif ($changedTaskType) {
+            $incomingFieldArray['parameters'] = [];
+            $incomingFieldArray['tasktype'] = $taskType;
         }
     }
 
@@ -212,11 +200,6 @@ final readonly class SchedulerTaskPersistenceValidator
                 }
             }
         }
-        $provider = $this->taskService->getAdditionalFieldProviderForTask($task->getTaskType());
-        if ($provider !== null) {
-            // Providers should add messages for failed validations on their own.
-            $result = $result && $provider->validateAdditionalFields($parsedBody, $this->schedulerModuleController);
-        }
         return $result && (!method_exists($task, 'validateTaskParameters') || $task->validateTaskParameters($parsedBody));
     }
 
@@ -263,6 +246,31 @@ final readonly class SchedulerTaskPersistenceValidator
         }
 
         return $fieldArray;
+    }
+
+    private function setTaskDataFromRequest(AbstractTask $task, array $incomingData): void
+    {
+        $endTime = $incomingData['end'] ?? '';
+        $frequency = $incomingData['frequency'] ?? $incomingData['cronCmd'] ?? '';
+        $runningType = (int)($incomingData['runningType'] ?? ($frequency ? AbstractTask::TYPE_RECURRING : AbstractTask::TYPE_SINGLE));
+        if ($runningType === AbstractTask::TYPE_SINGLE) {
+            $execution = Execution::createSingleExecution($this->getTimestampFromDateString($incomingData['start']));
+        } else {
+            $execution = Execution::createRecurringExecution(
+                $this->getTimestampFromDateString($incomingData['start']),
+                is_numeric($frequency) ? (int)$frequency : 0,
+                !empty($endTime) ? $this->getTimestampFromDateString($endTime) : 0,
+                (bool)($incomingData['multiple'] ?? false),
+                !is_numeric($frequency) ? $frequency : '',
+            );
+        }
+        $task->setExecution($execution);
+        $task->setDisabled($incomingData['disable'] ?? false);
+        $task->setDescription($incomingData['description'] ?? '');
+        if (str_starts_with((string)($incomingData['task_group'] ?? ''), 'tx_scheduler_task_group_')) {
+            $incomingData['task_group'] = (int)substr($incomingData['task_group'], 24);
+        }
+        $task->setTaskGroup((int)($incomingData['task_group'] ?? 0));
     }
 
     private function getLanguageService(): LanguageService

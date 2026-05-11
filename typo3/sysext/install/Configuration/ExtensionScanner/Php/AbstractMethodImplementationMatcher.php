@@ -18,4 +18,19 @@ return [
             'Breaking-108148-Fluid50.rst',
         ],
     ],
+    'TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskTitle' => [
+        'restFiles' => [
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskDescription' => [
+        'restFiles' => [
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
+    'TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskClassName' => [
+        'restFiles' => [
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

@@ -24,11 +24,7 @@ use TYPO3\CMS\Core\Schema\Field\NoneFieldType;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
-use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
-use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
 
@@ -52,7 +48,6 @@ readonly class TaskService
      * ['extension'] => Key of the extension which provides the class
      * ['filename'] => Path to the file containing the class
      * ['title'] => String (possibly localized) containing a human-readable name for the class
-     * ['provider'] => Name of class that implements the interface for additional fields, if necessary
      *
      * The name of the class itself is used as the key of the list array
      */
@@ -69,7 +64,6 @@ readonly class TaskService
                 'icon' => $registrationInformation['icon'] ?? '',
                 'title' => $title,
                 'description' => $description,
-                'provider' => $registrationInformation['additionalFields'] ?? '',
                 'isNativeTask' => false,
                 'additionalFields' => [],
             ];
@@ -100,7 +94,6 @@ readonly class TaskService
                         'iconOverlay' => $item['iconOverlay'] ?? '',
                         'title' => $languageService?->sL($item['label'] ?? '') ?? $item['label'] ?? '',
                         'description' => $languageService?->sL($item['description'] ?? '') ?? $item['description'] ?? '',
-                        'provider' => '',
                         'isNativeTask' => true,
                         'additionalFields' => $additionalFields,
                     ];
@@ -124,7 +117,6 @@ readonly class TaskService
                 'title' => $registrationInformation['title'],
                 'fullTitle' => $registrationInformation['title'] . ' [' . $registrationInformation['extension'] . ']',
                 'description' => $registrationInformation['description'],
-                'provider' => $registrationInformation['provider'] ?? '',
                 'isNativeTask' => $registrationInformation['isNativeTask'],
                 'additionalFields' => $registrationInformation['additionalFields'],
             ];
@@ -222,21 +214,6 @@ readonly class TaskService
         return $fields;
     }
 
-    public function getAdditionalFieldProviderForTask(string $taskType): ?AdditionalFieldProviderInterface
-    {
-        $taskInformation = $this->getTaskDetailsFromTaskType($taskType);
-        $provider = null;
-        if (!empty($taskInformation['provider'])) {
-            trigger_error(
-                $taskInformation['provider'] . ' is using AdditionalFieldProviderInterface, which is deprecated and will be removed in TYPO3 v15.0. Use native TCA-based scheduler tasks instead.',
-                E_USER_DEPRECATED
-            );
-            /** @var AdditionalFieldProviderInterface $provider */
-            $provider = GeneralUtility::makeInstance($taskInformation['provider']);
-        }
-        return $provider;
-    }
-
     public function createNewTask(string $taskType): AbstractTask
     {
         if (!$this->isTaskTypeRegistered($taskType)) {
@@ -256,88 +233,6 @@ readonly class TaskService
             throw new \RuntimeException('Task Type ' . $task->getTaskType() . ' not found in list of registered tasks', 1641658569);
         }
         return $this->getAllTaskTypes()[$task->getTaskType()]['fullTitle'];
-    }
-
-    /**
-     * Prepared additional fields from field providers for rendering.
-     */
-    public function prepareAdditionalFields(string $taskType, array $newAdditionalFields, array $currentAdditionalFields = []): array
-    {
-        foreach ($newAdditionalFields as $fieldID => $fieldInfo) {
-            // fetch the name attribute of the input tag
-            $inputName = '';
-            if (is_string($fieldInfo['code'] ?? null) && str_contains($fieldInfo['code'] ?? '', '<input')) {
-                $matches = [];
-                preg_match('/name="([^"]+)"/', $fieldInfo['code'], $matches);
-                $inputName = $matches[1];
-            }
-            $currentAdditionalFields[] = [
-                'taskType' => $taskType,
-                'fieldID' => $fieldID,
-                'htmlClassName' => strtolower(str_replace('\\', '-', $taskType)),
-                'code' => $fieldInfo['code'] ?? '',
-                'cshKey' => $fieldInfo['cshKey'] ?? '',
-                'cshLabel' => $fieldInfo['cshLabel'] ?? '',
-                'langLabel' => $this->getLanguageService()?->sL($fieldInfo['label'] ?? ''),
-                'browser' => $fieldInfo['browser'] ?? '',
-                'browserParams' => ($inputName ? $inputName . '|||' . 'pages' . '|' : ''),
-                'pageTitle' => $fieldInfo['pageTitle'] ?? '',
-                'pageUid' => (int)($fieldInfo['pageUid'] ?? 0),
-                'renderType' => $fieldInfo['type'] ?? '',
-                'description' => $fieldInfo['description'] ?? '',
-            ];
-        }
-        return $currentAdditionalFields;
-    }
-
-    public function setTaskDataFromRequest(AbstractTask $task, array $incomingData): void
-    {
-        $endTime = $incomingData['end'] ?? '';
-        $frequency = $incomingData['frequency'] ?? $incomingData['cronCmd'] ?? '';
-        $runningType = (int)($incomingData['runningType'] ?? ($frequency ? AbstractTask::TYPE_RECURRING : AbstractTask::TYPE_SINGLE));
-        if ($runningType === AbstractTask::TYPE_SINGLE) {
-            $execution = Execution::createSingleExecution($this->getTimestampFromDateString($incomingData['start']));
-        } else {
-            $execution = Execution::createRecurringExecution(
-                $this->getTimestampFromDateString($incomingData['start']),
-                is_numeric($frequency) ? (int)$frequency : 0,
-                !empty($endTime) ? $this->getTimestampFromDateString($endTime) : 0,
-                (bool)($incomingData['multiple'] ?? false),
-                !is_numeric($frequency) ? $frequency : '',
-            );
-        }
-        $task->setExecution($execution);
-        $task->setDisabled($incomingData['disable'] ?? false);
-        $task->setDescription($incomingData['description'] ?? '');
-        if (str_starts_with((string)($incomingData['task_group'] ?? ''), 'tx_scheduler_task_group_')) {
-            $incomingData['task_group'] = (int)substr($incomingData['task_group'], 24);
-        }
-        $task->setTaskGroup((int)($incomingData['task_group'] ?? 0));
-        $provider = $this->getAdditionalFieldProviderForTask($task->getTaskType());
-        $provider?->saveAdditionalFields($incomingData, $task);
-    }
-
-    /**
-     * Convert input to DateTime and retrieve timestamp.
-     *
-     * @throws InvalidDateException
-     */
-    protected function getTimestampFromDateString(int|string $input): int
-    {
-        if ($input === '') {
-            return 0;
-        }
-        if (MathUtility::canBeInterpretedAsInteger($input)) {
-            // Already looks like a timestamp
-            return (int)$input;
-        }
-        try {
-            // Convert from ISO 8601 dates
-            $value = (new \DateTime($input))->getTimestamp();
-        } catch (\Exception $e) {
-            throw new InvalidDateException($e->getMessage(), 1746744540);
-        }
-        return $value;
     }
 
     /**

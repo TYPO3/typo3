@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Scheduler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Attribute\AsController as BackendController;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -41,7 +41,6 @@ use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Scheduler;
-use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 
 /**
@@ -49,22 +48,20 @@ use TYPO3\CMS\Scheduler\Service\TaskService;
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-#[BackendController]
-final class SchedulerModuleController
+#[AsController]
+final readonly class SchedulerModuleController
 {
-    private SchedulerManagementAction $currentAction;
-
     public function __construct(
-        private readonly Scheduler $scheduler,
-        private readonly SchedulerTaskRepository $taskRepository,
-        private readonly IconFactory $iconFactory,
-        private readonly UriBuilder $uriBuilder,
-        private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly ComponentFactory $componentFactory,
-        private readonly Context $context,
-        private readonly TaskService $taskService,
-        private readonly PageRenderer $pageRenderer,
-        private readonly Registry $registry,
+        private Scheduler $scheduler,
+        private SchedulerTaskRepository $taskRepository,
+        private IconFactory $iconFactory,
+        private UriBuilder $uriBuilder,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private ComponentFactory $componentFactory,
+        private Context $context,
+        private TaskService $taskService,
+        private PageRenderer $pageRenderer,
+        private Registry $registry,
     ) {}
 
     /**
@@ -118,23 +115,6 @@ final class SchedulerModuleController
         ]);
         $this->addSetupCheckInformation($view);
         return $view->renderResponse('CheckScreen');
-    }
-
-    /**
-     * This is (unfortunately) used by additional field providers to distinct between "create new task" and "edit task".
-     */
-    public function getCurrentAction(): SchedulerManagementAction
-    {
-        return $this->currentAction;
-    }
-
-    /**
-     * This is (unfortunately) needed so getCurrentAction() used by additional field providers - it is required
-     * to distinct between "create new task" and "edit task".
-     */
-    public function setCurrentAction(SchedulerManagementAction $currentAction): void
-    {
-        $this->currentAction = $currentAction;
     }
 
     /**

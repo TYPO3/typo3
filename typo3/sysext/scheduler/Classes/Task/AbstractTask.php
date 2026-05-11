@@ -127,44 +127,6 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * This method returns the title of the scheduler task.
-     * Unused since TYPO3 v14.0, can be deprecated and removed once we migrate task registration away from TYPO3_CONF_VARS.
-     * Note by benni in 2025: This method will cease to exist at some point, as the title is loaded from TCA eventually.
-     *
-     * @return string
-     * @deprecated since TYPO3 v14.0, may be removed in TYPO3 v15.0.
-     */
-    public function getTaskTitle()
-    {
-        return $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['title'] ?? '');
-    }
-
-    /**
-     * This method returns the description of the scheduler task
-     * Unused since TYPO3 v14.0, can be deprecated and removed once we migrate task registration away from TYPO3_CONF_VARS.
-     * Note by benni in 2025: This method will cease to exist at some point, as the description is loaded from TCA eventually.
-     *
-     * @return string
-     * @deprecated since TYPO3 v14.0, may be removed in TYPO3 v15.0.
-     */
-    public function getTaskDescription()
-    {
-        return $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['description'] ?? '');
-    }
-
-    /**
-     * This method returns the class name of the scheduler task
-     * Unused since TYPO3 v14.0, can be deprecated and removed once we migrate task registration away from TYPO3_CONF_VARS.
-     *
-     * @return string
-     * @deprecated since TYPO3 v14.0, may be removed in TYPO3 v15.0.
-     */
-    public function getTaskClassName()
-    {
-        return static::class;
-    }
-
-    /**
      * This method returns the disabled status of the task
      *
      * @return bool TRUE if task is disabled, FALSE otherwise

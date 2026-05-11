@@ -28,6 +28,7 @@ The following PHP classes that have previously been marked as deprecated with v1
 - :php:`\TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Install\Updates\Confirmation\DatabaseUpdatedPrerequisite` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -41,6 +42,7 @@ The following PHP interfaces that have previously been marked as deprecated with
 - :php:`\TYPO3\CMS\Install\Updates\PrerequisiteInterface` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Install\Updates\RepeatableInterface` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Install\Updates\UpgradeWizardInterface` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
 
 The following PHP interfaces changed:
 
@@ -82,6 +84,9 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->removeMetaTag()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\AbstractContentObject->getPageRenderer()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->readFlexformIntoConf()` :ref:`(Deprecation entry) <deprecation-109575>`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskClassName()` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskDescription()` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
+- :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskTitle()` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
 
 The following PHP static class methods that have previously been marked as deprecated for v14 have been removed:
 

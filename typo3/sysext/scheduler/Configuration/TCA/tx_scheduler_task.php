@@ -75,7 +75,6 @@ return [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.parameters',
             'config' => [
                 'type' => 'json',
-                'renderType' => 'schedulerAdditionalFields',
             ],
         ],
         'execution_details' => [
@@ -179,7 +178,6 @@ return [
                     tasktype,
                     task_group,
                     description,
-                    parameters,
                 --div--;core.form.tabs:timing,
                     --palette--;;execution,
                 --div--;core.form.tabs:access,

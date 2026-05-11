@@ -93,24 +93,4 @@ final class MyTask extends AbstractTask
         return implode(', ', $info);
     }
 
-    /**
-     * is called by additional field provider
-     * Todo: Remove setters once TYPO3 13 support is dropped
-     * @deprecated
-     */
-    public function setMyField(string $myField): void
-    {
-        $this->myField = $myField;
-    }
-
-    /**
-     * is called by additional field provider
-     * Todo: Remove setters once TYPO3 13 support is dropped
-     * @deprecated
-     */
-    public function setEmailList(string $emailList): void
-    {
-        $this->emailList = $emailList;
-    }
-
 }

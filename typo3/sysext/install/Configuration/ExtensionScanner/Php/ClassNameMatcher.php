@@ -2668,11 +2668,13 @@ return [
     'TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider' => [
         'restFiles' => [
             'Deprecation-98453-SchedulerTaskRegistrationViaSCOPTIONS.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface' => [
         'restFiles' => [
             'Deprecation-98453-SchedulerTaskRegistrationViaSCOPTIONS.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\MetaInformation' => [
