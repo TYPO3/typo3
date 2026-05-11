@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
@@ -40,11 +39,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\Field\JsonFieldType;
 use TYPO3\CMS\Core\Schema\Field\NoneFieldType;
 use TYPO3\CMS\Core\Schema\Field\PassthroughFieldType;
@@ -277,58 +272,6 @@ class BackendUtility
         return ' AND ' . ($inv ? $invQuery : $query);
     }
 
-    /**
-     * Fetches the localization for a given record.
-     *
-     * Note: For new code, consider using LocalizationRepository::getRecordTranslation()
-     * instead, which provides dependency injection support, better type safety, and returns
-     * a RawRecord object instead of an array.
-     *
-     * @param string $table Table name, available in Schema API
-     * @param int $uid The uid of the record
-     * @param int $language The id of the site language
-     * @param string $andWhereClause Optional additional WHERE clause (default: '')
-     * @return mixed Multidimensional array with selected records, empty array if none exists and FALSE if table is not localizable
-     * @see \TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository::getRecordTranslation()
-     * @deprecated will be removed in TYPO3 v15.0 - use LocalizationRepository->getRecordTranslation() instead.
-     */
-    public static function getRecordLocalization(string $table, $uid, $language, $andWhereClause = '')
-    {
-        trigger_error('BackendUtility::getRecordLocalization() will be removed in TYPO3 v15.0, use LocalizationRepository::getRecordTranslation() instead.', E_USER_DEPRECATED);
-        $recordLocalization = false;
-        $schema = static::getTcaSchema($table);
-        if ($schema !== null && $schema->hasCapability(TcaSchemaCapability::Language)) {
-            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-            $queryBuilder = self::getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, static::getBackendUserAuthentication()->workspace));
-
-            $queryBuilder->select('*')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $languageCapability->hasTranslationSourceField() ? $languageCapability->getTranslationSourceField()->getName() : $languageCapability->getTranslationOriginPointerField()->getName(),
-                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        $languageCapability->getLanguageField()->getName(),
-                        $queryBuilder->createNamedParameter((int)$language, Connection::PARAM_INT)
-                    )
-                )
-                ->setMaxResults(1);
-
-            if ($andWhereClause) {
-                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($andWhereClause));
-            }
-
-            $recordLocalization = $queryBuilder->executeQuery()->fetchAllAssociative();
-        }
-
-        return $recordLocalization;
-    }
-
     /*******************************************
      *
      * Page tree, TCA related
@@ -497,54 +440,6 @@ class BackendUtility
     }
 
     /**
-     * Fetch all records of the given page ID.
-     * Does not check permissions.
-     *
-     * @param int[] $limitToLanguageIds
-     * @internal
-     * @deprecated will be removed in TYPO3 v15.0 - use LocalizationRepository->getPageTranslations() instead.
-     */
-    public static function getExistingPageTranslations(int $pageUid, array $limitToLanguageIds = []): array
-    {
-        trigger_error('BackendUtility::translationCount() will be removed in TYPO3 v15.0, use LocalizationRepository::getPageTranslations() instead.', E_USER_DEPRECATED);
-        if ($pageUid === 0 || !($schema = self::getTcaSchema('pages'))?->hasCapability(TcaSchemaCapability::Language)) {
-            return [];
-        }
-        $queryBuilder = self::getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, self::getBackendUserAuthentication()->workspace));
-        $queryBuilder
-            ->select('*')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
-                    $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
-                )
-            );
-        if (!empty($limitToLanguageIds)) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
-                    $queryBuilder->createNamedParameter($limitToLanguageIds, Connection::PARAM_INT_ARRAY)
-                )
-            );
-        }
-
-        $result = $queryBuilder->executeQuery();
-
-        $rows = [];
-        while ($row = $result->fetchAssociative()) {
-            BackendUtility::workspaceOL('pages', $row, self::getBackendUserAuthentication()->workspace);
-            if ($row && VersionState::tryFrom($row['t3ver_state']) !== VersionState::DELETE_PLACEHOLDER) {
-                $rows[] = $row;
-            }
-        }
-        return $rows;
-    }
-
-    /**
      * Returns the path (visually) of a page $uid, fx. "/First page/Second page/Another subpage"
      * Each part of the path will be limited to $titleLimit characters
      * Deleted pages are filtered out.
@@ -579,23 +474,6 @@ class BackendUtility
             return [$output, $fullOutput];
         }
         return $output;
-    }
-
-    /**
-     * Determines whether a table is localizable and has the languageField and transOrigPointerField set.
-     *
-     * @param string $table The table to check
-     * @return bool Whether a table is localizable
-     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
-     */
-    public static function isTableLocalizable(string $table): bool
-    {
-        trigger_error(
-            'BackendUtility::isTableLocalizable() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with $schema->hasCapability(TcaSchemaCapability::Language) instead.',
-            E_USER_DEPRECATED
-        );
-
-        return (bool)self::getTcaSchema($table)?->hasCapability(TcaSchemaCapability::Language);
     }
 
     /**
@@ -963,75 +841,6 @@ class BackendUtility
     }
 
     /**
-     * Resolves file references for a given record.
-     *
-     * @param string $tableName Name of the table of the record
-     * @param string $fieldName Name of the field of the record
-     * @param array $element Record data
-     * @param int|null $workspaceId Workspace to fetch data for
-     * @return \TYPO3\CMS\Core\Resource\FileReference[]|null
-     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
-     */
-    public static function resolveFileReferences($tableName, $fieldName, $element, $workspaceId = null)
-    {
-        trigger_error(
-            'BackendUtility::resolveFileReferences() has been deprecated in TYPO3 v14.0 and will be removed in v15.0.',
-            E_USER_DEPRECATED
-        );
-
-        if (!($schema = self::getTcaSchema($tableName))?->hasField($fieldName)) {
-            return null;
-        }
-        $field = $schema->getField($fieldName);
-        if ($field instanceof FileFieldType === false) {
-            return null;
-        }
-
-        $fileReferences = [];
-        $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
-        if ($workspaceId !== null) {
-            $relationHandler->setWorkspaceId($workspaceId);
-        }
-        $relationHandler->initializeForField(
-            $tableName,
-            $field->getConfiguration(),
-            $element,
-            $element[$fieldName],
-        );
-        $relationHandler->processDeletePlaceholder();
-        $referenceUids = $relationHandler->tableArray[$field->getConfiguration()['foreign_table']] ?? [];
-
-        foreach ($referenceUids as $referenceUid) {
-            try {
-                $fileReference = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject(
-                    $referenceUid,
-                    [],
-                    $workspaceId === 0
-                );
-                $fileReferences[$fileReference->getUid()] = $fileReference;
-            } catch (FileDoesNotExistException $e) {
-                /**
-                 * We just catch the exception here
-                 * Reasoning: There is nothing an editor or even admin could do
-                 */
-            } catch (\InvalidArgumentException $e) {
-                /**
-                 * The storage does not exist anymore
-                 * Log the exception message for admins as they maybe can restore the storage
-                 */
-                self::getLogger()->error($e->getMessage(), [
-                    'table' => $tableName,
-                    'fieldName' => $fieldName,
-                    'referenceUid' => $referenceUid,
-                    'exception' => $e,
-                ]);
-            }
-        }
-
-        return $fileReferences;
-    }
-
-    /**
      * Returns title-attribute information for a page-record informing about id, doktype, hidden, starttime, endtime, fe_group etc.
      *
      * @param array $row Input must be a page row ($row) with the proper fields set (be sure - send the full range of fields for the table)
@@ -1229,82 +1038,6 @@ class BackendUtility
         }
 
         return $escapeResult ? htmlspecialchars(implode(' - ', $parts)) : implode(' - ', $parts);
-    }
-
-    /**
-     * Returns the label of the first found entry in an "items" array from the column $col in table $table, where $key is the item's value
-     *
-     * @param string $table Table name, available in Schema API
-     * @param string $col Field name, available in Schema API
-     * @param string $key items-array value to match
-     * @param array $columnConfig @internal Needs to be migrated properly - will not stay! Is required for "volatile" columns config, {@see FlexFormValueFormatter}
-     * @return string Label for item entry
-     * @deprecated will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelForFieldValue() instead.
-     */
-    public static function getLabelFromItemlist($table, $col, $key, array $row = [], array $columnConfig = [])
-    {
-        trigger_error('BackendUtility::getLabelFromItemlist() will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelForFieldValue() instead.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(SchemaLabelResolver::class)
-            ->getLabelForFieldValue($table, $col, $key, $row, $columnConfig);
-    }
-
-    /**
-     * Return the label of a field by additionally checking TsConfig values
-     *
-     * @param string $table Table name
-     * @param string $column Field Name
-     * @param string $key item value
-     * @return string Label for item entry
-     * @deprecated will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelForFieldValue() instead.
-     */
-    public static function getLabelFromItemListMerged(int $pageId, $table, $column, $key, array $row = [])
-    {
-        trigger_error('BackendUtility::getLabelFromItemListMerged() will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelForFieldValue() instead.', E_USER_DEPRECATED);
-        $pageTsConfig = static::getPagesTSconfig($pageId);
-        $columnTsConfig = $pageTsConfig['TCEFORM.'][$table . '.'][$column . '.'] ?? [];
-        return GeneralUtility::makeInstance(SchemaLabelResolver::class)
-            ->getLabelForFieldValue($table, $column, $key, $row, is_array($columnTsConfig) ? $columnTsConfig : []);
-    }
-
-    /**
-     * Splits the given key with commas and returns the list of all the localized items labels, separated by a comma.
-     *
-     * @param string $table Table name, present in TCA
-     * @param string $column Field name
-     * @param string $keyList Key or comma-separated list of keys.
-     * @param array $columnTsConfig page TSconfig for $column (TCEMAIN.<table>.<column>)
-     * @param array $columnConfig @internal Needs to be migrated properly - will not stay! Is required for "volatile" columns config, {@see FlexFormValueFormatter}
-     * @return string Comma-separated list of localized labels
-     * @deprecated will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelsForFieldValues() instead.
-     */
-    public static function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = [], array $row = [], array $columnConfig = []): string
-    {
-        trigger_error('BackendUtility::getLabelsFromItemsList() will be removed in TYPO3 v15.0. Use SchemaLabelResolver->getLabelsForFieldValues() instead.', E_USER_DEPRECATED);
-        $labels = GeneralUtility::makeInstance(SchemaLabelResolver::class)
-            ->getLabelsForFieldValues($table, $column, $keyList, $row, $columnTsConfig, $columnConfig);
-        $languageService = static::getLanguageService();
-        return implode(', ', array_map($languageService->sL(...), $labels));
-    }
-
-    /**
-     * Returns the label-value for fieldname $column in table $table.
-     *
-     * @param string $table Table name, available in Schema API
-     * @param string $column Field name, available in Schema API
-     * @return string|null Value of the $column "label" or null if not set
-     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
-     */
-    public static function getItemLabel(string $table, string $column): ?string
-    {
-        trigger_error(
-            'BackendUtility::getItemLabel() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use $schema->getField($fieldName)->getLabel() instead.',
-            E_USER_DEPRECATED
-        );
-
-        if (!($schema = self::getTcaSchema($table))?->hasField($column)) {
-            return null;
-        }
-        return $schema->getField($column)->getConfiguration()['label'] ?? null;
     }
 
     /**
@@ -1798,60 +1531,6 @@ class BackendUtility
     }
 
     /**
-     * Returns fields for a table, $table, which would typically be interesting to select
-     * This includes uid, the fields defined for title, icon-field.
-     * Returned as a list ready for query ($prefix can be set to eg. "pages." if you are selecting from the pages table and want the table name prefixed)
-     *
-     * @param string $table Table name, available in Schema API
-     * @param string $prefix Table prefix
-     * @param array $fields Preset fields (must include prefix if that is used)
-     * @return string List of fields.
-     * @internal should only be used from within TYPO3 Core
-     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
-     */
-    public static function getCommonSelectFields($table, $prefix = '', $fields = [])
-    {
-        trigger_error(
-            'BackendUtility::getCommonSelectFields() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API instead to retrieve the fields.',
-            E_USER_DEPRECATED
-        );
-
-        $fields[] = 'uid';
-        $fields[] = 'pid';
-
-        if (($schema = self::getTcaSchema($table)) !== null) {
-            if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-                $fields = array_merge($fields, $schema->getCapability(TcaSchemaCapability::Label)->getAllLabelFieldNames());
-            }
-            if ($schema->isWorkspaceAware()) {
-                $fields[] = 't3ver_state';
-                $fields[] = 't3ver_wsid';
-            }
-            if ($schema->getRawConfiguration()['selicon_field'] ?? '') {
-                $fields[] = $schema->getRawConfiguration()['selicon_field'];
-            }
-            if ($schema->getRawConfiguration()['typeicon_column'] ?? '') {
-                $fields[] = $schema->getRawConfiguration()['typeicon_column'];
-            }
-            $capabilities = [
-                TcaSchemaCapability::SoftDelete,
-                TcaSchemaCapability::RestrictionDisabledField,
-                TcaSchemaCapability::RestrictionStartTime,
-                TcaSchemaCapability::RestrictionEndTime,
-                TcaSchemaCapability::RestrictionUserGroup,
-            ];
-            foreach ($capabilities as $capability) {
-                if ($schema->hasCapability($capability)) {
-                    $fields[] = $schema->getCapability($capability)->getFieldName();
-                }
-            }
-        }
-
-        $fields = array_unique($fields);
-        return implode(',', array_map(static fn(string $value): string => $prefix . $value, $fields));
-    }
-
-    /**
      * Makes click menu link (context sensitive menu)
      *
      * Returns $str wrapped in a link which will activate the context sensitive
@@ -2295,41 +1974,6 @@ class BackendUtility
     }
 
     /**
-     * Returns TSConfig for the TCEFORM object in page TSconfig.
-     * Used in TCEFORMs
-     *
-     * @param string $table Table name present in TCA
-     * @param array $row Row from table
-     * @deprecated will be removed in TYPO3 v15.0 Copy this logic in your own code, but its better to rely on FormEngine.
-     */
-    public static function getTCEFORM_TSconfig($table, $row): array
-    {
-        trigger_error('BackendUtility::getTCEFORM_TSconfig() will be removed in TYPO3 v15.0. Copy this logic in your own code, but its better to rely on your own.', E_USER_DEPRECATED);
-        $res = [];
-        // Get main config for the table
-        [$TScID, $cPid] = self::getTSCpid($table, $row['uid'] ?? 0, $row['pid'] ?? 0, true);
-        if ($TScID >= 0) {
-            $tsConfig = static::getPagesTSconfig($TScID)['TCEFORM.'][$table . '.'] ?? [];
-            $typeVal = self::getTCAtypeValue($table, $row, true);
-            foreach ($tsConfig as $key => $val) {
-                if (is_array($val)) {
-                    $fieldN = substr($key, 0, -1);
-                    $res[$fieldN] = $val;
-                    unset($res[$fieldN]['types.']);
-                    if ($typeVal !== null && is_array($val['types.'][$typeVal . '.'] ?? false)) {
-                        $res[$fieldN] = array_replace_recursive($res[$fieldN], $val['types.'][$typeVal . '.']);
-                    }
-                }
-            }
-        }
-        $res['_CURRENT_PID'] = $cPid;
-        $res['_THIS_UID'] = $row['uid'] ?? 0;
-        // So the row will be passed to foreign_table_where_query()
-        $res['_THIS_ROW'] = $row;
-        return $res;
-    }
-
-    /**
      * Find the real PID of the record (with $uid from $table).
      * This MAY be impossible if the pid is set as a reference to the former record or a page (if two records are created at one time).
      *
@@ -2339,7 +1983,6 @@ class BackendUtility
      * @return int|null
      * @internal
      * @see \TYPO3\CMS\Core\DataHandling\DataHandler::copyRecord()
-     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid()
      */
     public static function getTSconfig_pidValue($table, $uid, $pid)
     {
@@ -2374,57 +2017,6 @@ class BackendUtility
             }
         }
         return $thePidValue;
-    }
-
-    /**
-     * Return the real pid of a record and caches the result.
-     * The non-cached method needs database queries to do the job, so this method
-     * can be used if code sometimes calls the same record multiple times to save
-     * some queries. This should not be done if the calling code may change the
-     * same record meanwhile.
-     *
-     * @param string $table Tablename
-     * @param string $uid UID value
-     * @param string $pid PID value
-     * @return array Array of two integers; first is the real PID of a record, second is the PID value for TSconfig.
-     * @deprecated will be removed in TYPO3 v15.0. Use BackendUtility::getTSCpid() directly.
-     */
-    public static function getTSCpidCached($table, $uid, $pid)
-    {
-        trigger_error('BackendUtility::getTSCpidCached() will be removed in TYPO3 v15.0, use BackendUtility::getRealPageId() instead', E_USER_DEPRECATED);
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-        $firstLevelCache = $runtimeCache->get('backendUtilityTscPidCached') ?: [];
-        $key = $table . ':' . $uid . ':' . $pid;
-        if (!isset($firstLevelCache[$key])) {
-            $firstLevelCache[$key] = static::getTSCpid($table, (int)$uid, (int)$pid, true);
-            $runtimeCache->set('backendUtilityTscPidCached', $firstLevelCache);
-        }
-        return $firstLevelCache[$key];
-    }
-
-    /**
-     * Returns the REAL pid of the record, if possible. If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
-     *
-     * @param string $table Table name
-     * @param int $uid Record uid
-     * @param int|string $pid Record pid
-     * @return array Array of two integers; first is the REAL PID of a record and if its a new record negative values are resolved to the true PID,
-     * second value is the PID value for TSconfig (uid if table is pages, otherwise the pid)
-     * @internal
-     * @see \TYPO3\CMS\Core\DataHandling\DataHandler::setHistory()
-     * @see \TYPO3\CMS\Core\DataHandling\DataHandler::process_datamap()
-     * @deprecated will be removed in TYPO3 v15.0. Implement the parts of the method yourself that you need.
-     */
-    public static function getTSCpid($table, $uid, $pid, bool $isInternalCall = false)
-    {
-        if (!$isInternalCall) {
-            trigger_error('BackendUtility::getTSCpid() will be removed in TYPO3 v15.0. Implement the parts of the method yourself that you need.', E_USER_DEPRECATED);
-        }
-        // If pid is negative (referring to another record) the pid of the other record is fetched and returned.
-        $cPid = self::getTSconfig_pidValue($table, $uid, $pid);
-        // $TScID is the id of $table = pages, else it's the pid of the record.
-        $TScID = $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $cPid;
-        return [$TScID, $cPid];
     }
 
     /**
@@ -2490,55 +2082,6 @@ class BackendUtility
             return $msg ? sprintf($msg, $count) : $count;
         }
         return $msg ? '' : 0;
-    }
-
-    /**
-     * Counting translations of records
-     *
-     * Note: Consider using LocalizationRepository::getRecordTranslations() with count() instead,
-     * which provides a DI-friendly alternative with workspace overlay support.
-     *
-     * @param string $table Table name
-     * @param string|int $ref Reference: the record's uid
-     * @param string $msg Message with %s, eg. "This record has %s translation(s) which will be deleted, too!
-     * @return string Output string (or int count value if no msg string specified)
-     * @see \TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository::getRecordTranslations()
-     * @deprecated will be removed in TYPO3 v15.0 - use LocalizationRepository->getRecordTranslations() instead.
-     */
-    public static function translationCount(string $table, $ref, $msg = ''): string
-    {
-        trigger_error('BackendUtility::translationCount() will be removed in TYPO3 v15.0, use LocalizationRepository::getRecordTranslations() instead.', E_USER_DEPRECATED);
-        $schema = self::getTcaSchema($table);
-        $count = 0;
-        if ($schema?->hasCapability(TcaSchemaCapability::Language)) {
-            /** @var LanguageAwareSchemaCapability $languageCapability */
-            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-            $queryBuilder = self::getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            $count = (int)$queryBuilder
-                ->count('*')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $languageCapability->getTranslationOriginPointerField()->getName(),
-                        $queryBuilder->createNamedParameter((int)$ref, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->neq(
-                        $languageCapability->getLanguageField()->getName(),
-                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                    )
-                )
-                ->executeQuery()
-                ->fetchOne();
-        }
-
-        if ($count > 0) {
-            return $msg ? sprintf($msg, $count) : (string)$count;
-        }
-        return $msg ? '' : '0';
     }
 
     /*******************************************
@@ -2878,62 +2421,6 @@ class BackendUtility
      * Miscellaneous
      *
      *******************************************/
-
-    /**
-     * Determines whether a table is enabled for workspaces.
-     *
-     * @param string $table Name of the table to be checked
-     * @return bool
-     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
-     */
-    public static function isTableWorkspaceEnabled(string $table): bool
-    {
-        trigger_error(
-            'BackendUtility::isTableWorkspaceEnabled() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with $schema->hasCapability(TcaSchemaCapability::Workspace) instead.',
-            E_USER_DEPRECATED
-        );
-
-        return (bool)self::getTcaSchema($table)?->hasCapability(TcaSchemaCapability::Workspace);
-    }
-
-    /**
-     * Whether to ignore restrictions on a web-mount of a table.
-     * The regular behaviour is that records to be accessed need to be
-     * in a valid user's web-mount.
-     *
-     * @param string $table Name of the table
-     * @return bool
-     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
-     */
-    public static function isWebMountRestrictionIgnored($table)
-    {
-        trigger_error(
-            'BackendUtility::isWebMountRestrictionIgnored() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with $schema->hasCapability(TcaSchemaCapability::RestrictionWebMount) instead.',
-            E_USER_DEPRECATED
-        );
-
-        return (bool)self::getTcaSchema($table)?->hasCapability(TcaSchemaCapability::RestrictionWebMount);
-
-    }
-
-    /**
-     * Whether to ignore restrictions on root-level records.
-     * The regular behaviour is that records on the root-level (page-id 0)
-     * only can be accessed by admin users.
-     *
-     * @param string $table Name of the table
-     * @return bool
-     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
-     */
-    public static function isRootLevelRestrictionIgnored($table)
-    {
-        trigger_error(
-            'BackendUtility::isRootLevelRestrictionIgnored() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with $schema->get($table)->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()',
-            E_USER_DEPRECATED
-        );
-
-        return (bool)self::getTcaSchema($table)?->getCapability(TcaSchemaCapability::RestrictionRootLevel)?->shallIgnoreRootLevelRestriction();
-    }
 
     /**
      * Get all fields of a table, which are allowed for the current user

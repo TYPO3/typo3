@@ -1663,6 +1663,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath' => [
@@ -1677,6 +1678,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable' => [
@@ -1684,6 +1686,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled' => [
@@ -1691,6 +1694,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::isRootLevelRestrictionIgnored' => [
@@ -1698,6 +1702,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel' => [
@@ -1705,6 +1710,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue' => [
@@ -1763,6 +1769,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-108761-BackendUtilityTSconfigMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpidCached' => [
@@ -1770,6 +1777,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-108761-BackendUtilityTSconfigMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid' => [
@@ -1777,6 +1785,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-108761-BackendUtilityTSconfigMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization' => [
@@ -1784,6 +1793,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-108810-BackendUtilityLocalizationMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getExistingPageTranslations' => [
@@ -1791,6 +1801,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-108810-BackendUtilityLocalizationMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::translationCount' => [
@@ -1798,6 +1809,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-108810-BackendUtilityLocalizationMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv' => [
@@ -1813,6 +1825,7 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-109519-BackendUtilityItemListLabelMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemListMerged' => [
@@ -1820,6 +1833,7 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-109519-BackendUtilityItemListLabelMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getLabelsFromItemsList' => [
@@ -1827,6 +1841,7 @@ return [
         'maximumNumberOfArguments' => 6,
         'restFiles' => [
             'Deprecation-109519-BackendUtilityItemListLabelMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

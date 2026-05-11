@@ -44,6 +44,22 @@ The following PHP class methods that have previously been marked as deprecated w
 
 The following PHP static class methods that have previously been marked as deprecated for v14 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields()` :ref:`(Deprecation entry) <deprecation-106393-1742454612>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getExistingPageTranslations()` :ref:`(Deprecation entry) <deprecation-108810-1738253894>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel()` :ref:`(Deprecation entry) <deprecation-106393-1742454612>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist()` :ref:`(Deprecation entry) <deprecation-109519-1775665165>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemListMerged()` :ref:`(Deprecation entry) <deprecation-109519-1775665165>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelsFromItemsList()` :ref:`(Deprecation entry) <deprecation-109519-1775665165>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization()` :ref:`(Deprecation entry) <deprecation-108810-1738253894>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig()` :ref:`(Deprecation entry) <deprecation-108761-1769281290>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid()` :ref:`(Deprecation entry) <deprecation-108761-1769281290>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpidCached()` :ref:`(Deprecation entry) <deprecation-108761-1769281290>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isRootLevelRestrictionIgnored()` :ref:`(Deprecation entry) <deprecation-106393-1742454612>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable()` :ref:`(Deprecation entry) <deprecation-106393-1742454612>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled()` :ref:`(Deprecation entry) <deprecation-106393-1742454612>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isWebMountRestrictionIgnored()` :ref:`(Deprecation entry) <deprecation-106393-1742454612>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::resolveFileReferences()` :ref:`(Deprecation entry) <deprecation-106393-1742454612>`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::translationCount()` :ref:`(Deprecation entry) <deprecation-108810-1738253894>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename()` :ref:`(Deprecation entry) <deprecation-107537-1760337101>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()` :ref:`(Deprecation entry) <deprecation-109551-1775924599>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::setIndpEnv()` :ref:`(Deprecation entry) <deprecation-109551-1775924599>`

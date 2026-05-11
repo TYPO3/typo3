@@ -3396,7 +3396,6 @@ class DataHandler
             return null;
         }
 
-        // NOT using \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
         $tscPID = (int)BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
 
         // Check if table is allowed on destination page
