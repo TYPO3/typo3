@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Scheduler\Domain\Repository;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -112,12 +114,18 @@ readonly class SchedulerTaskRepository
             'disable' => $forceDisablingTask ? true : $fields['disable'],
             'execution_details' => $fields['execution_details'],
         ];
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+        if ($backendUser === null && Environment::isCli()) {
+            /** @var CommandLineUserAuthentication $backendUser */
+            $backendUser = Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
+            $backendUser->authenticate();
+        }
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([
             self::TABLE_NAME => [
                 $taskUid => $fields,
             ],
-        ], []);
+        ], [], $backendUser);
         $dataHandler->process_datamap();
     }
 

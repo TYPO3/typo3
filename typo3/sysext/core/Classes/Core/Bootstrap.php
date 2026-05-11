@@ -503,9 +503,8 @@ readonly class Bootstrap
      * Initialize backend user object in globals
      *
      * @param string $className usually \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class but can be used for CLI
-     * @param ServerRequestInterface|null $request
      */
-    public static function initializeBackendUser($className = BackendUserAuthentication::class, ?ServerRequestInterface $request = null)
+    public static function initializeBackendUser($className = BackendUserAuthentication::class, ?ServerRequestInterface $request = null): BackendUserAuthentication
     {
         /** @var BackendUserAuthentication $backendUser */
         $backendUser = GeneralUtility::makeInstance($className);
@@ -513,6 +512,7 @@ readonly class Bootstrap
         // might trigger code which relies on it. See: #45625
         $GLOBALS['BE_USER'] = $backendUser;
         $backendUser->start($request);
+        return $backendUser;
     }
 
     /**
