@@ -121,6 +121,8 @@ readonly class SchedulerTaskRepository
             $backendUser->authenticate();
         }
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        // We don't want every execution information logged
+        $dataHandler->enableLogging = false;
         $dataHandler->start([
             self::TABLE_NAME => [
                 $taskUid => $fields,
