@@ -57,8 +57,8 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\VariableRenderableInterface;
 use TYPO3\CMS\Form\Domain\Renderer\RendererInterface;
 use TYPO3\CMS\Form\Domain\Runtime\Exception\PropertyMappingException;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\FormSession;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface;
 use TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent;
+use TYPO3\CMS\Form\Event\AfterFormStateInitializedEvent;
 use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Validation\EmptyValidator;
@@ -254,12 +254,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     protected function triggerAfterFormStateInitialized(): void
     {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterFormStateInitialized'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if ($hookObj instanceof AfterFormStateInitializedInterface) {
-                $hookObj->afterFormStateInitialized($this);
-            }
-        }
+        $this->eventDispatcher->dispatch(
+            new AfterFormStateInitializedEvent($this, $this->request)
+        );
     }
 
     /**

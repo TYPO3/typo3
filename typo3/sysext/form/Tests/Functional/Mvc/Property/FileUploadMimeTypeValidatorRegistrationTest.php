@@ -18,14 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Property;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\FormSession;
-use TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration;
+use TYPO3\CMS\Form\Event\AfterFormStateInitializedEvent;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -34,7 +37,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  *
  * The MimeTypeValidator must be registered on the processing rule based on the
  * element's configured "allowedMimeTypes". This registration happens at runtime
- * in PropertyMappingConfiguration (the afterFormStateInitialized hook), because
+ * in PropertyMappingConfiguration (the AfterFormStateInitialized hook), because
  * the concrete form definition properties are not yet available when
  * FileUpload::initializeFormElement() runs during form building.
  */
@@ -105,8 +108,9 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
     {
         $formDefinition = $this->buildFormDefinition(['allowedMimeTypes' => ['application/pdf']]);
 
-        $this->get(PropertyMappingConfiguration::class)
-            ->afterFormStateInitialized($this->runtimeAllowingSubmission($formDefinition));
+        $this->get(EventDispatcherInterface::class)->dispatch(
+            new AfterFormStateInitializedEvent($this->runtimeAllowingSubmission($formDefinition), new Request((new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())))
+        );
 
         self::assertTrue(
             $this->processingRuleHasMimeTypeValidator($formDefinition),
@@ -119,8 +123,9 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
     {
         $formDefinition = $this->buildFormDefinition(['allowedMimeTypes' => []]);
 
-        $this->get(PropertyMappingConfiguration::class)
-            ->afterFormStateInitialized($this->runtimeAllowingSubmission($formDefinition));
+        $this->get(EventDispatcherInterface::class)->dispatch(
+            new AfterFormStateInitializedEvent($this->runtimeAllowingSubmission($formDefinition), new Request((new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters())))
+        );
 
         self::assertFalse(
             $this->processingRuleHasMimeTypeValidator($formDefinition),
@@ -132,11 +137,15 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
     public function mimeTypeValidatorIsRegisteredOnlyOnceWhenHookRunsMultipleTimes(): void
     {
         $formDefinition = $this->buildFormDefinition(['allowedMimeTypes' => ['application/pdf']]);
-        $subject = $this->get(PropertyMappingConfiguration::class);
         $formRuntime = $this->runtimeAllowingSubmission($formDefinition);
+        $request = new Request((new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters()));
 
-        $subject->afterFormStateInitialized($formRuntime);
-        $subject->afterFormStateInitialized($formRuntime);
+        $this->get(EventDispatcherInterface::class)->dispatch(
+            new AfterFormStateInitializedEvent($formRuntime, $request)
+        );
+        $this->get(EventDispatcherInterface::class)->dispatch(
+            new AfterFormStateInitializedEvent($formRuntime, $request)
+        );
 
         $mimeTypeValidatorCount = 0;
         foreach ($formDefinition->getProcessingRules()['file-1']->getValidators() as $validator) {

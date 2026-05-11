@@ -113,6 +113,11 @@ return [
             'Breaking-79464-ExtFormRefactorFluidRendering.rst',
         ],
     ],
+    'TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface' => [
+        'restFiles' => [
+            'Breaking-109811-RemovedAfterFormStateInitializedHook.rst',
+        ],
+    ],
     'TYPO3\CMS\Form\ViewHelpers\Form\CheckboxViewHelper' => [
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',

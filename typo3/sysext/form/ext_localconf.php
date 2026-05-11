@@ -8,7 +8,6 @@ use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Evaluation\EmailOrFormElementIdentifier;
 use TYPO3\CMS\Form\Hooks\FormDefinitionDataHandlerHook;
 use TYPO3\CMS\Form\Hooks\ImportExportHook;
-use TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration;
 
 defined('TYPO3') or die();
 
@@ -30,9 +29,6 @@ if (empty($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['form-content'])) {
 // Deny direct DataHandler write access to form_definition: only DatabaseStorageAdapter may persist form definitions
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['form'] = FormDefinitionDataHandlerHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['form'] = FormDefinitionDataHandlerHook::class;
-
-// FE file upload processing
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterFormStateInitialized'][1613296803] = PropertyMappingConfiguration::class;
 
 // Add validation call for input which contains email or form element identifier
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][EmailOrFormElementIdentifier::class] = '';

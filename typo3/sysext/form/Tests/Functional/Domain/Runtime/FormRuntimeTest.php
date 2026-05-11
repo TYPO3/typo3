@@ -37,6 +37,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Event\AfterCurrentPageIsResolvedEvent;
+use TYPO3\CMS\Form\Event\AfterFormStateInitializedEvent;
 use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -45,6 +46,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class FormRuntimeTest extends FunctionalTestCase
 {
     public const AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY = 'after-current-page-is-resolved-listener';
+    public const AFTER_FORM_STATE_INITIALIZED_LISTENER_KEY = 'after-form-state-initialized-listener';
     public const BEFORE_RENDERABLE_IS_VALIDATED_LISTENER_KEY = 'before-renderable-is-validated-listener';
 
     protected array $coreExtensionsToLoad = [
@@ -203,6 +205,31 @@ final class FormRuntimeTest extends FunctionalTestCase
 
         self::assertInstanceOf(AfterCurrentPageIsResolvedEvent::class, $state[self::AFTER_CURRENT_PAGE_IS_RESOLVED_LISTENER_KEY]);
         self::assertNull($formRuntime->getCurrentPage());
+    }
+
+    #[Test]
+    public function afterFormStateInitializedEventIsTriggered(): void
+    {
+        $container = $this->get('service_container');
+        $state = [
+            self::AFTER_FORM_STATE_INITIALIZED_LISTENER_KEY => null,
+        ];
+        $container->set(
+            self::AFTER_FORM_STATE_INITIALIZED_LISTENER_KEY,
+            static function (AfterFormStateInitializedEvent $event) use (&$state): void {
+                $state[self::AFTER_FORM_STATE_INITIALIZED_LISTENER_KEY] = $event;
+                $event->formRuntime->getFormState()->setFormValue('test-key', 'test-value');
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(AfterFormStateInitializedEvent::class, self::AFTER_FORM_STATE_INITIALIZED_LISTENER_KEY);
+
+        $formDefinition = $this->buildFormDefinition();
+        $formRuntime = $formDefinition->bind($this->request);
+
+        self::assertInstanceOf(AfterFormStateInitializedEvent::class, $state[self::AFTER_FORM_STATE_INITIALIZED_LISTENER_KEY]);
+        self::assertSame('test-value', $formRuntime->getElementValue('test-key'));
     }
 
     #[Test]

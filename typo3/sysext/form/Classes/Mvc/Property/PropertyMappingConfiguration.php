@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Property;
 
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
-use TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface;
+use TYPO3\CMS\Form\Event\AfterFormStateInitializedEvent;
 use TYPO3\CMS\Form\Mvc\ProcessingRule;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
@@ -33,16 +33,13 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
  * Scope: frontend
  * @internal
  */
-#[Autoconfigure(public: true)]
-class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
+#[AsEventListener(identifier: 'form/property-mapping-configuration')]
+class PropertyMappingConfiguration
 {
-    /**
-     * @param FormRuntime $formRuntime holding current form state and static form definition
-     */
-    public function afterFormStateInitialized(FormRuntime $formRuntime): void
+    public function __invoke(AfterFormStateInitializedEvent $event): void
     {
-        foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $renderable) {
-            $this->adjustPropertyMappingForFileUploadsAtRuntime($formRuntime, $renderable);
+        foreach ($event->formRuntime->getFormDefinition()->getRenderablesRecursively() as $renderable) {
+            $this->adjustPropertyMappingForFileUploadsAtRuntime($event->formRuntime, $renderable);
         }
     }
 

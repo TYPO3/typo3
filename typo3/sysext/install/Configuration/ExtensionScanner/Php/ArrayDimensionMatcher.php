@@ -1305,6 +1305,12 @@ return [
             'Feature-107566-IntroducePSR14AfterCurrentPageIsResolvedEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'afterFormStateInitialized\']' => [
+        'restFiles' => [
+            'Breaking-109811-RemovedAfterFormStateInitializedHook.rst',
+            'Feature-109811-PSR14AfterFormStateInitializedEvent.rst',
+        ],
+    ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'afterSubmit\']' => [
         'restFiles' => [
             'Breaking-107568-RemovedAfterSubmitHook.rst',

@@ -15,20 +15,19 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle;
+namespace TYPO3\CMS\Form\Event;
 
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
- * Event is triggered with current form state and form session, which is
- * not the case with e.g. `afterBuildingFinished`. Can be used to further
- * enrich components with runtime state.
- * @internal
+ * Listeners to this Event will be able to modify the form runtime after it has been initialized.
  */
-interface AfterFormStateInitializedInterface
+final class AfterFormStateInitializedEvent
 {
-    /**
-     * @param FormRuntime $formRuntime holding current form state and static form definition
-     */
-    public function afterFormStateInitialized(FormRuntime $formRuntime): void;
+    public function __construct(
+        public FormRuntime $formRuntime,
+        public readonly RequestInterface $request,
+    ) {}
+
 }

@@ -32,6 +32,8 @@
 ..  _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering-connect:
 ..  _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering-use:
 ..  _apireference-events-legacy-hooks-buildformvalidationconfiguration:
+..  _apireference-events-legacy-hooks-afterformstateinitialized:
+..  _apireference-events-legacy-hooks:
 
 ================
 PSR-14 Events
@@ -135,6 +137,11 @@ These events are dispatched during form rendering in the frontend.
          <https://docs.typo3.org/permalink/t3coreapi:beforeemailfinisherinitializedevent>`_
       -  Modify the options used by the :php:`EmailFinisher` (e.g. recipients,
          subject) before they are applied.
+   *  -  `AfterFormStateInitializedEvent
+         <https://docs.typo3.org/permalink/t3coreapi:afterformstateinitializedevent>`_
+      -  Enrich components with runtime data after the :php:`FormState` has
+         been restored from the request (form state and form session are
+         both available at this point).
    *  -  `AfterFormDefinitionLoadedEvent
          <https://docs.typo3.org/permalink/t3coreapi:afterformdefinitionloadedevent>`_
       -  Dispatched by :php:`FormPersistenceManager` after a YAML form
@@ -162,33 +169,3 @@ Register a listener via the :php:`#[AsEventListener]` PHP attribute:
     :ref:`t3coreapi:EventDispatcher` – TYPO3 Core API documentation on how to
     register and implement PSR-14 event listeners.
 
-..  _apireference-events-legacy-hooks:
-
-Legacy hooks (still supported)
-===============================
-
-The following :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']` hooks are
-**still active** in the current codebase. They have not yet been replaced by
-PSR-14 events. Avoid using them in new code if a PSR-14 alternative exists.
-
-..  _apireference-events-legacy-hooks-afterformstateinitialized:
-
-afterFormStateInitialized
---------------------------
-
-Dispatched by :php:`FormRuntime` after the :php:`FormState` has been
-restored from the request. At this point both the form state (submitted
-values) and the static form definition are available, which makes it
-suitable for enriching components that need runtime data.
-
-Implement :php:`\TYPO3\CMS\Form\Domain\Runtime\FormRuntime\Lifecycle\AfterFormStateInitializedInterface`
-and register the class:
-
-..  literalinclude:: _codesnippets/_ext-localconf-after-form-state-initialized.php
-    :language: php
-    :caption: EXT:my_extension/ext_localconf.php
-
-
-..  literalinclude:: _codesnippets/_MyAfterFormStateInitializedHook.php
-    :language: php
-    :caption: EXT:my_extension/Classes/Hooks/MyAfterFormStateInitializedHook.php
