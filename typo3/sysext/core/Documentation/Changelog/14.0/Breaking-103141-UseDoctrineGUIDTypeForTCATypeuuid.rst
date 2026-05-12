@@ -17,7 +17,7 @@ matching database type for UUID's.
 Postgresql natively supports the UUID data type and is way faster
 than the prior `VARCHAR(36)` generated from the string type.
 
-The Doctrine DBAL GUID type uses `CHAR(26)` as the fixed field column size
+The Doctrine DBAL GUID type uses `CHAR(36)` as the fixed field column size
 for non-postgres databases, which is compatible as long
 as valid UUID values were persisted in the configured database
 table.
