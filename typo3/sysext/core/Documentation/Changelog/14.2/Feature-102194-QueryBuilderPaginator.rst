@@ -35,7 +35,7 @@ grouping.
     **not** handle language overlays. Applying overlays to the result set can
     lead to unexpected item count differences between pages when some records
     are hidden after overlay processing. Use
-    :php-short:`\TYPO3\CMS\Core\Pagination\QueryResultPaginator` or
+    :php-short:`\TYPO3\CMS\Extbase\Pagination\QueryResultPaginator` or
     :php-short:`\TYPO3\CMS\Core\Pagination\ArrayPaginator` when language
     overlay handling is required.
 
