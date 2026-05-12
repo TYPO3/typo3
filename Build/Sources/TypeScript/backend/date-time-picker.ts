@@ -73,7 +73,7 @@ class DateTimePicker {
     // Custom "first day of week" user preference
     const dow = Persistent.get('dateTimeFirstDayOfWeek');
 
-    if (dow !== '') {
+    if (dow != null && dow !== '') {
       // stored number is 1-index based, convert to 0-index.
       const dowNumber = parseInt(dow, 10) - 1;
 
