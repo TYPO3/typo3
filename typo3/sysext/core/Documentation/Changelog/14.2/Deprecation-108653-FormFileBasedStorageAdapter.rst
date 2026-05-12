@@ -120,6 +120,13 @@ Migration
         persistenceManager:
           allowedFileMounts: []
 
+    ..  important::
+
+        If an inherited form set (e.g. ``typo3/form-base``) already defines
+        entries for :yaml:`allowedFileMounts`, you must remove the key
+        entirely. Use :yaml:`~` (YAML null) to override it — an empty
+        array (:yaml:`[]`) is not sufficient.
+
 3.  Optionally, if the upgrade wizard did not delete the YAML files (e.g.,
     due to file permission issues), delete them manually from the file system
     after confirming that the migration was successful.
