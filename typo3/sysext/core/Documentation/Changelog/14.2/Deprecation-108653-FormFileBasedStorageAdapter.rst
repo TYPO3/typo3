@@ -111,14 +111,14 @@ Migration
 
     **After:**
 
-    Remove the :yaml:`allowedFileMounts` key entirely, or set it to an empty
-    array to explicitly disable file mount storage:
+    To explicitly disable file mount storage, set :yaml:`allowedFileMounts`
+    to null (:yaml:`~`):
 
     ..  code-block:: yaml
         :caption: EXT:my_extension/Configuration/Yaml/FormSetup.yaml
 
         persistenceManager:
-          allowedFileMounts: []
+          allowedFileMounts: ~
 
 3.  Optionally, if the upgrade wizard did not delete the YAML files (e.g.,
     due to file permission issues), delete them manually from the file system
