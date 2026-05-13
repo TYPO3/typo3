@@ -15,11 +15,18 @@ import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, type TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
 
+export interface ResultItemLanguageInterface {
+  id: number;
+  title: string;
+  iconIdentifier: string;
+}
+
 export interface ResultItemInterface {
   provider: string;
   actions: ResultItemActionInterface[];
   defaultAction: ResultItemActionInterface;
   icon: Record<string, string>;
+  language: ResultItemLanguageInterface | null;
   itemTitle: string;
   typeLabel: string;
   extraData: { [key: string]: any }

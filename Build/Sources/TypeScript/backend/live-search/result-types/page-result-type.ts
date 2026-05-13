@@ -10,6 +10,7 @@ export function registerRenderer(type: string) {
     (attributes: ResultItemInterface): TemplateResult => {
       return html`<typo3-backend-live-search-result-item-page-provider
         .icon="${attributes.icon}"
+        .language="${attributes.language}"
         .itemTitle="${attributes.itemTitle}"
         .typeLabel="${attributes.typeLabel}"
         .extraData="${attributes.extraData}">

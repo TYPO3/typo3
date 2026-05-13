@@ -204,18 +204,6 @@ final class PageRecordProvider implements SearchProviderInterface
                 continue;
             }
 
-            $flagIconData = [];
-            try {
-                $site = $this->siteFinder->getSiteByPageId($row['l10n_source'] > 0 ? $row['l10n_source'] : $row['uid']);
-                $siteLanguage = $site->getLanguageById($row['sys_language_uid']);
-                $flagIconData = [
-                    'identifier' => $siteLanguage->getFlagIdentifier(),
-                    'title' => $siteLanguage->getTitle(),
-                ];
-            } catch (SiteNotFoundException|\InvalidArgumentException) {
-                // intended fall-thru, perhaps broken data in database or pages without (=deleted) site config
-            }
-
             $actions = [];
 
             $editActionLink = $this->getEditActionLink($row);
@@ -261,9 +249,9 @@ final class PageRecordProvider implements SearchProviderInterface
                 ->setIcon($icon)
                 ->setActions(...array_values($actions))
                 ->setDefaultAction($defaultAction)
+                ->setLanguage($this->resolveLanguage($row['l10n_source'] > 0 ? $row['l10n_source'] : $row['uid'], (int)$row['sys_language_uid']))
                 ->setExtraData([
                     'breadcrumb' => BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0),
-                    'flagIcon' => $flagIconData,
                     'inWorkspace' => $hasWorkspaceCapability && $row['t3ver_wsid'] > 0,
                 ])
                 ->setInternalData([
@@ -497,6 +485,20 @@ final class PageRecordProvider implements SearchProviderInterface
                 && !$pagesSchema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
                 && $backendUser->check('tables_select', 'pages')
             );
+    }
+
+    private function resolveLanguage(int $pageUid, int $languageId): ?array
+    {
+        try {
+            $siteLanguage = $this->siteFinder->getSiteByPageId($pageUid)->getLanguageById($languageId);
+            return [
+                'id' => $siteLanguage->getLanguageId(),
+                'title' => $siteLanguage->getTitle(),
+                'iconIdentifier' => $siteLanguage->getFlagIdentifier(),
+            ];
+        } catch (SiteNotFoundException|\InvalidArgumentException) {
+            return null;
+        }
     }
 
     private function getBackendUser(): BackendUserAuthentication

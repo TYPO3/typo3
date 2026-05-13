@@ -29,6 +29,7 @@ final class ResultItem implements \JsonSerializable
     private string $itemTitle = '';
     private string $typeLabel = '';
     private ?Icon $icon = null;
+    private ?array $language = null;
     /**
      * @var ResultItemAction[]
      */
@@ -117,6 +118,13 @@ final class ResultItem implements \JsonSerializable
         return $this;
     }
 
+    public function setLanguage(?array $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
     public function jsonSerialize(): array
     {
         return [
@@ -129,6 +137,7 @@ final class ResultItem implements \JsonSerializable
             ],
             'actions' => $this->actions,
             'defaultAction' => $this->defaultAction ?? $this->actions[0],
+            'language' => $this->language,
             'extraData' => $this->extraData,
         ];
     }

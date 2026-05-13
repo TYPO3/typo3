@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -46,6 +47,7 @@ use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -67,6 +69,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly IconFactory $iconFactory,
         private readonly LanguageServiceFactory $languageServiceFactory,
+        private readonly SiteFinder $siteFinder,
         private readonly UriBuilder $uriBuilder,
         private readonly QueryParser $queryParser,
         private readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
@@ -308,6 +311,14 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 $extraData['breadcrumb'] = BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0);
             }
 
+            $language = null;
+            if ($schema->hasCapability(TcaSchemaCapability::Language)) {
+                $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+                $languageFieldName = $languageCapability->getLanguageField()->getName();
+                $languageId = (int)($row[$languageFieldName] ?? 0);
+                $language = $this->resolveLanguage((int)($row['pid'] ?? 0), $languageId);
+            }
+
             $icon = $this->iconFactory->getIconForRecord($tableName, $row, IconSize::SMALL);
             $items[] = (new ResultItem(self::class))
                 ->setItemTitle(BackendUtility::getRecordTitle($tableName, $row))
@@ -315,6 +326,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 ->setIcon($icon)
                 ->setActions(...array_values($actions))
                 ->setDefaultAction($defaultAction)
+                ->setLanguage($language)
                 ->setExtraData($extraData)
                 ->setInternalData([
                     'row' => $row,
@@ -564,6 +576,20 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 && !$pagesSchema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
                 && $backendUser->check('tables_select', 'pages')
             );
+    }
+
+    private function resolveLanguage(int $pageUid, int $languageId): ?array
+    {
+        try {
+            $siteLanguage = $this->siteFinder->getSiteByPageId($pageUid)->getLanguageById($languageId);
+            return [
+                'id' => $siteLanguage->getLanguageId(),
+                'title' => $siteLanguage->getTitle(),
+                'iconIdentifier' => $siteLanguage->getFlagIdentifier(),
+            ];
+        } catch (SiteNotFoundException|\InvalidArgumentException) {
+            return null;
+        }
     }
 
     private function getBackendUser(): BackendUserAuthentication
