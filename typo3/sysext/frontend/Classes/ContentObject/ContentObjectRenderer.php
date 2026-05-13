@@ -26,7 +26,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -38,7 +37,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\Record;
@@ -102,7 +100,6 @@ use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
-use TYPO3\CMS\Frontend\Typolink\LinkResultService;
 use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
@@ -121,8 +118,6 @@ use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 #[Autoconfigure(shared: false)]
 class ContentObjectRenderer
 {
-    use PublicPropertyDeprecationTrait;
-
     use DefaultJavaScriptAssetTrait;
 
     /**
@@ -292,14 +287,6 @@ class ContentObjectRenderer
     ];
 
     /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    protected array $deprecatedPublicProperties = [
-        'lastTypoLinkResult' => '$lastTypoLinkResult is deprecated since TYPO3 v14 and will be removed in TYPO3 v15. Use the return value of createLink() instead.',
-        'checkPid_badDoktypeList' => '$checkPid_badDoktypeList is deprecated since TYPO3 v14 and will be removed in TYPO3 v15.',
-    ];
-
-    /**
      * Loaded with the current data-record.
      *
      * If the instance of this class is used to render records from the database those records are found in this array.
@@ -322,33 +309,9 @@ class ContentObjectRenderer
     public string $currentRecord = '';
 
     /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     * @internal
-     */
-    public int $currentRecordNumber = 0;
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     * @internal
-     */
-    public int $parentRecordNumber = 0;
-
-    /**
      * @internal
      */
     protected array $parentRecord = [];
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     * @internal
-     */
-    protected string|int|null $checkPid_badDoktypeList = null;
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15. Use the return value of createLink() instead.
-     * @internal
-     */
-    protected ?LinkResultInterface $lastTypoLinkResult = null;
 
     /**
      * Current file object during iterations over files.
@@ -408,7 +371,6 @@ class ContentObjectRenderer
         private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly FlexFormTools $flexFormTools,
         private readonly LinkFactory $linkFactory,
-        private readonly LinkResultService $linkResultService,
         // TimeTracker is a stateful singleton, we would usually not inject this. This
         // instance however is set up early in middlewares and carried around with its accumulating
         // state throughout entire FE rendering. As such, it is ok to get it injected here,
@@ -436,13 +398,7 @@ class ContentObjectRenderer
             'parameters' => $this->parameters,
             'currentValKey' => $this->currentValKey,
             'currentRecord' => $this->currentRecord,
-            'currentRecordNumber' => $this->currentRecordNumber,
-            'parentRecordNumber' => $this->parentRecordNumber,
             'parentRecord' => $this->parentRecord,
-            'checkPid_badDoktypeList' => $this->checkPid_badDoktypeList,
-            'lastTypoLinkResult' => $this->lastTypoLinkResult !== null
-                ? $this->linkResultService->getState($this->lastTypoLinkResult)
-                : null,
             'doConvertToUserIntObject' => $this->doConvertToUserIntObject,
             'userObjectType' => $this->userObjectType,
             'stopRendering' => $this->stopRendering,
@@ -469,13 +425,7 @@ class ContentObjectRenderer
         $this->parameters = $state['parameters'];
         $this->currentValKey = $state['currentValKey'];
         $this->currentRecord = $state['currentRecord'];
-        $this->currentRecordNumber = $state['currentRecordNumber'];
-        $this->parentRecordNumber = $state['parentRecordNumber'];
         $this->parentRecord = $state['parentRecord'];
-        $this->checkPid_badDoktypeList = $state['checkPid_badDoktypeList'];
-        $this->lastTypoLinkResult = isset($state['lastTypoLinkResult'])
-            ? $this->linkResultService->fromState($state['lastTypoLinkResult'])
-            : null;
         $this->doConvertToUserIntObject = $state['doConvertToUserIntObject'];
         $this->userObjectType = $state['userObjectType'];
         $this->stopRendering = $state['stopRendering'];
@@ -824,56 +774,6 @@ class ContentObjectRenderer
             $this->timeTracker->setTSlogMessage(self::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', LogLevel::WARNING);
         } else {
             $this->doConvertToUserIntObject = true;
-        }
-    }
-
-    /**
-     * Converts a given config in Flexform to a conf-array
-     *
-     * @param string|array $flexData Flexform data
-     * @param array $conf Array to write the data into, by reference
-     * @param bool $recursive Is set if called recursive. Don't call function with this parameter, it's used inside the function only
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function readFlexformIntoConf($flexData, &$conf, $recursive = false)
-    {
-        trigger_error(
-            'ContentObjectRenderer::readFlexformIntoConf() is deprecated since TYPO3 v14 and will be removed in TYPO3 v15 without replacement.',
-            E_USER_DEPRECATED
-        );
-        if ($recursive === false && is_string($flexData)) {
-            $flexData = GeneralUtility::xml2array($flexData, 'T3');
-        }
-        if (is_array($flexData) && isset($flexData['data']['sDEF']['lDEF'])) {
-            $flexData = $flexData['data']['sDEF']['lDEF'];
-        }
-        if (!is_array($flexData)) {
-            return;
-        }
-        foreach ($flexData as $key => $value) {
-            if (!is_array($value)) {
-                continue;
-            }
-            if (isset($value['el'])) {
-                if (is_array($value['el']) && !empty($value['el'])) {
-                    foreach ($value['el'] as $ekey => $element) {
-                        if (isset($element['vDEF'])) {
-                            $conf[$ekey] = $element['vDEF'];
-                        } else {
-                            if (is_array($element)) {
-                                $this->readFlexformIntoConf($element, $conf[$key][key($element)][$ekey], true);
-                            } else {
-                                $this->readFlexformIntoConf($element, $conf[$key][$ekey], true);
-                            }
-                        }
-                    }
-                } else {
-                    $this->readFlexformIntoConf($value['el'], $conf[$key], true);
-                }
-            }
-            if (isset($value['vDEF'])) {
-                $conf[$key] = $value['vDEF'];
-            }
         }
     }
 
@@ -3821,18 +3721,6 @@ class ContentObjectRenderer
                         $languageService = $this->languageServiceFactory->createFromSiteLanguage($language);
                         $retVal = $languageService->sL('LLL:' . $key);
                         break;
-                    case 'cobj':
-                        // @deprecated: Remove case in TYPO3 v15.
-                        switch ($key) {
-                            case 'parentRecordNumber':
-                                trigger_error(
-                                    'getData() type "cobj:parentRecordNumber" is deprecated since TYPO3 v14 and will be removed in TYPO3 v15.',
-                                    E_USER_DEPRECATED
-                                );
-                                $retVal = $this->parentRecordNumber;
-                                break;
-                        }
-                        break;
                     case 'debug':
                         switch ($key) {
                             case 'rootLine':
@@ -4190,10 +4078,7 @@ class ContentObjectRenderer
      */
     public function createLink(string $linkText, array $conf): LinkResultInterface
     {
-        $this->lastTypoLinkResult = null;
-        $linkResult = $this->linkFactory->create($linkText, $conf, $this);
-        $this->lastTypoLinkResult = $linkResult;
-        return $linkResult;
+        return $this->linkFactory->create($linkText, $conf, $this);
     }
 
     /**
@@ -5003,9 +4888,9 @@ class ContentObjectRenderer
     }
 
     /**
-     * Removes Page UID numbers from the input array which are not available due to enableFields() or the list of bad doktype numbers ($this->checkPid_badDoktypeList)
+     * Removes Page UID numbers from the input array which are not available due to enableFields().
      *
-     * @param int[] $pageIds Array of Page UID numbers for select and for which pages with enablefields and bad doktypes should be removed.
+     * @param int[] $pageIds Array of Page UID numbers for select and for which pages with enablefields should be removed.
      * @return array Returns the array of remaining page UID numbers
      * @internal
      */
@@ -5021,17 +4906,6 @@ class ContentObjectRenderer
             return $pageIds;
         }
         $restrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
-        if ($this->checkPid_badDoktypeList) {
-            // @deprecated: Remove branch in TYPO3 v15.
-            trigger_error(
-                'ContentObjectRenderer::$checkPid_badDoktypeList is deprecated since TYPO3 v14 and will be removed in TYPO3 v15.',
-                E_USER_DEPRECATED
-            );
-            $restrictionContainer->add(GeneralUtility::makeInstance(
-                DocumentTypeExclusionRestriction::class,
-                GeneralUtility::intExplode(',', (string)$this->checkPid_badDoktypeList, true)
-            ));
-        }
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         return $pageRepository->filterAccessiblePageIds($pageIds, $restrictionContainer);
     }
@@ -5269,16 +5143,6 @@ class ContentObjectRenderer
     {
         if ($this->request instanceof ServerRequestInterface) {
             return $this->request;
-        }
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
-            // @deprecated: Remove fallback in TYPO3 v15. Third-party code must call setRequest() after
-            //              instantiation or unserialization before invoking any method that calls getRequest().
-            trigger_error(
-                'Fallback to $GLOBALS[\'TYPO3_REQUEST\'] in ContentObjectRenderer::getRequest() is deprecated'
-                . ' since TYPO3 v14 and will be removed in TYPO3 v15. Call setRequest() after object instantiation.',
-                E_USER_DEPRECATED
-            );
-            return $GLOBALS['TYPO3_REQUEST'];
         }
         throw new ContentRenderingException(
             'PSR-7 request is missing in ContentObjectRenderer. Call setRequest() after object instantiation.',

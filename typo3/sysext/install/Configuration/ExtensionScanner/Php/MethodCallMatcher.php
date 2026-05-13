@@ -6951,6 +6951,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-109575-ContentObjectRendererPropertiesAndMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     /** Note (leave this at the bottom):

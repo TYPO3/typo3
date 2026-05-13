@@ -41,6 +41,7 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->add()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->readFlexformIntoConf()` :ref:`(Deprecation entry) <deprecation-109575>`
 
 The following PHP static class methods that have previously been marked as deprecated for v14 have been removed:
 
@@ -73,7 +74,10 @@ The following methods changed signature according to previous deprecations in v1
 
 The following public class properties have been dropped:
 
-- :php:`\TYPO3\CMS\SomeExtension\Some\ClassName->someProperty`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->checkPid_badDoktypeList` :ref:`(Deprecation entry) <deprecation-109575>`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkResult` :ref:`(Deprecation entry) <deprecation-109575>`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->parentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
 
 The following class property has changed/enforced type:
 
@@ -86,6 +90,7 @@ The following class constants have been dropped:
 The following TypoScript options have been dropped or adapted:
 
 - :typoscript:`plugin.tx_form.settings.yamlConfigurations` and :typoscript:`module.tx_form.settings.yamlConfigurations` :ref:`(Deprecation entry) <deprecation-109412-1742000001>`
+- :typoscript:`getData` type :typoscript:`cobj:parentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
 
 The following user TSconfig options have been removed:
 
@@ -118,7 +123,7 @@ The following extbase validator options have been removed:
 
 The following fallbacks have been removed:
 
-- Description of removed fallback
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getRequest()` no longer falls back to :php:`$GLOBALS['TYPO3_REQUEST']`; code must call :php:`setRequest()` after instantiation :ref:`(Deprecation entry) <deprecation-109575>`
 
 The following upgrade wizards have been removed:
 

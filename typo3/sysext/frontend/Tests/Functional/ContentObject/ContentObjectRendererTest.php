@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -67,7 +66,6 @@ use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -4510,25 +4508,6 @@ content="benni">',
     }
 
     #[Test]
-    public function typolinkLinkResultStateContainsOnlyScalarValues(): void
-    {
-        $subject = $this->get(ContentObjectRenderer::class);
-        $subject->setRequest($this->getPreparedRequest());
-        $linkResult = $subject->typoLink('Link text', [
-            'parameter' => 'https://example.tld',
-            'ATagParams' => 'class="test-class"',
-            'title' => 'Test title',
-            'returnLast' => 'result',
-        ]);
-
-        self::assertInstanceOf(LinkResult::class, $linkResult);
-        $state = $subject->getState();
-
-        self::assertNotEmpty($state['lastTypoLinkResult']);
-        self::assertTrue(ArrayUtility::containsOnlyScalarValues($state), 'The array contains non-scalar values');
-    }
-
-    #[Test]
     public function typoLinkReturnsOnlyLinkTextIfNoLinkResolvingIsPossible(): void
     {
         $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
@@ -6136,16 +6115,6 @@ content="benni">',
         $subject->setRequest($request);
         self::assertEquals('en-US', $subject->getData('siteLanguage:hreflang', []));
         self::assertEquals('de-DE', $subject->getData('siteLanguage:locale:full', []));
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function getDataWithTypeParentRecordNumber(): void
-    {
-        $recordNumber = random_int(0, mt_getrandmax());
-        $subject = $this->get(ContentObjectRenderer::class);
-        $subject->parentRecordNumber = $recordNumber;
-        self::assertEquals($recordNumber, $subject->getData('cobj:parentRecordNumber', []));
     }
 
     #[Test]
