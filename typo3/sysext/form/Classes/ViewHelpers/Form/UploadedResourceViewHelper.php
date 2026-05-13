@@ -72,23 +72,22 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
         }
 
         if ($resource !== null) {
-            $resourcePointerIdAttribute = '';
-            if (isset($this->additionalArguments['id'])) {
-                $resourcePointerIdAttribute = ' id="' . htmlspecialchars($this->additionalArguments['id']) . '-file-reference"';
-            }
             if ($resource instanceof FileReference) {
-                $resourcePointerValue = $resource->getUid();
-                if ($resourcePointerValue === null) {
-                    $resourcePointerValue = 'file:' . $resource->getOriginalResource()->getOriginalFile()->getUid();
-                }
-                $output .= '<input type="hidden" name="' . htmlspecialchars($this->getName()) . '[__submittedFiles][0][submittedFile][resourcePointer]" value="' . htmlspecialchars($this->hashService->appendHmac((string)$resourcePointerValue, HashScope::ResourcePointer->prefix())) . '"' . $resourcePointerIdAttribute . ' />';
+                $resourcePointerValue = $resource->getUid() ?? ('file:' . $resource->getOriginalResource()->getOriginalFile()->getUid());
+                $output .= $this->buildResourcePointerInput(
+                    0,
+                    (string)$resourcePointerValue,
+                    $this->buildResourcePointerIdAttribute(),
+                );
             } elseif ($resource instanceof ObjectStorage) {
                 foreach ($resource as $index => $file) {
-                    $resourcePointerValue = $file->getUid();
-                    if ($resourcePointerValue === null) {
-                        $resourcePointerValue = 'file:' . $file->getOriginalResource()->getOriginalFile()->getUid();
-                    }
-                    $output .= '<input type="hidden" name="' . htmlspecialchars($this->getName()) . '[__submittedFiles][' . $index . '][submittedFile][resourcePointer]" value="' . htmlspecialchars($this->hashService->appendHmac((string)$resourcePointerValue, HashScope::ResourcePointer->prefix())) . '"' . $resourcePointerIdAttribute . ' />';
+                    $index = (int)$index;
+                    $resourcePointerValue = $file->getUid() ?? ('file:' . $file->getOriginalResource()->getOriginalFile()->getUid());
+                    $output .= $this->buildResourcePointerInput(
+                        $index,
+                        (string)$resourcePointerValue,
+                        $this->buildResourcePointerIdAttribute('-' . $index),
+                    );
                 }
             }
 
@@ -113,6 +112,25 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
         $output .= $this->tag->render();
 
         return $output;
+    }
+
+    private function buildResourcePointerInput(int $index, string $resourcePointerValue, string $idAttribute): string
+    {
+        $name = htmlspecialchars($this->getName());
+        $hmac = htmlspecialchars($this->hashService->appendHmac($resourcePointerValue, HashScope::ResourcePointer->prefix()));
+        return '<input type="hidden"'
+            . ' name="' . $name . '[__submittedFiles][' . $index . '][submittedFile][resourcePointer]"'
+            . ' value="' . $hmac . '"'
+            . $idAttribute
+            . ' />';
+    }
+
+    private function buildResourcePointerIdAttribute(string $suffix = ''): string
+    {
+        if (!isset($this->additionalArguments['id'])) {
+            return '';
+        }
+        return ' id="' . htmlspecialchars($this->additionalArguments['id']) . '-file-reference' . $suffix . '"';
     }
 
     /**
