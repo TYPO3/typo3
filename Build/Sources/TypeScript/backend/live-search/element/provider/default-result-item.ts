@@ -15,10 +15,12 @@ import { customElement, property } from 'lit/decorators.js';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
 import miscLabels from '~labels/core.misc';
+import type { ResultItemLanguageInterface } from '@typo3/backend/live-search/element/result/item/item';
 
 @customElement('typo3-backend-live-search-result-item-default')
 export class DefaultProviderResultItem extends LitElement {
   @property({ type: Object, attribute: false }) icon: Record<string, string>;
+  @property({ type: Object, attribute: false }) language: ResultItemLanguageInterface | null = null;
   @property({ type: String, attribute: false }) itemTitle: string;
   @property({ type: String, attribute: false }) typeLabel: string;
   @property({ type: Object, attribute: false }) extraData: { [key: string]: any };
@@ -32,6 +34,7 @@ export class DefaultProviderResultItem extends LitElement {
     return html`
       <div class="livesearch-result-item-icon">
         <typo3-backend-icon title="${this.icon.title}" identifier="${this.icon.identifier}" overlay="${this.icon.overlay}" size="small"></typo3-backend-icon>
+        ${this.language ? html`<typo3-backend-icon title="${this.language.title}" identifier="${this.language.iconIdentifier}" size="small"></typo3-backend-icon>` : nothing}
       </div>
       <div class="livesearch-result-item-summary">
         <div class="livesearch-result-item-title">

@@ -89,6 +89,7 @@ export class ItemContainer extends LitElement {
       innerResultItemComponent = html`<typo3-backend-live-search-result-item-default
         title="${resultItem.typeLabel}: ${resultItem.itemTitle}"
         .icon="${resultItem.icon}"
+        .language="${resultItem.language}"
         .itemTitle="${resultItem.itemTitle}"
         .typeLabel="${resultItem.typeLabel}"
         .extraData="${resultItem.extraData}">
