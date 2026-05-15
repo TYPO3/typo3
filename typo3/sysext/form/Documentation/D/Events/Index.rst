@@ -133,6 +133,11 @@ These events are dispatched during form rendering in the frontend.
          <https://docs.typo3.org/permalink/t3coreapi:beforerenderableisrenderedevent>`_
       -  Modify the renderable or the :php:`FormRuntime` just before a
          renderable is output to the browser.
+   *  -  `ModifyFormValueForRenderingEvent
+         <https://docs.typo3.org/permalink/t3coreapi:modifyformvalueforrenderingevent>`_
+      -  Modify the :php:`$data` array (e.g. :php:`processedValue`) before it
+         is assigned to the Fluid variable provider in
+         :php:`RenderFormValueViewHelper`.
    *  -  `BeforeEmailFinisherInitializedEvent
          <https://docs.typo3.org/permalink/t3coreapi:beforeemailfinisherinitializedevent>`_
       -  Modify the options used by the :php:`EmailFinisher` (e.g. recipients,

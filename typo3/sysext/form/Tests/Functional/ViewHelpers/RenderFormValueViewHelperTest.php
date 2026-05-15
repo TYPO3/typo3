@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Form\Tests\Functional\ViewHelpers;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -29,6 +31,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Event\ModifyFormValueForRenderingEvent;
 use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -118,6 +121,46 @@ final class RenderFormValueViewHelperTest extends FunctionalTestCase
             '<formvh:renderFormValue renderable="{element}" as="var">' . $body . '</formvh:renderFormValue>'
         );
         return new TemplateView($context)->render();
+    }
+
+    #[Test]
+    public function respectsModifyFormValueForRenderingEvent(): void
+    {
+        $template = '<formvh:renderFormValue renderable="{element}" as="var">{var.processedValue}</formvh:renderFormValue>';
+
+        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
+        $this->get(ExtbaseConfigurationManagerInterface::class)->setRequest(
+            new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+        );
+        $definition = $this->buildFormDefinition();
+        $runtime = $definition->bind($this->buildExtbaseRequest());
+        $element = $definition->getElementByIdentifier('text-1');
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set(
+            'modify-form-value-for-rendering-listener',
+            static function (ModifyFormValueForRenderingEvent $event) use ($element): void {
+                $data = $event->getData();
+                self::assertSame([
+                    'element' => $element,
+                    'value' => 'element value',
+                    'processedValue' => 'element value',
+                    'isMultiValue' => false,
+                ], $data);
+                $data['processedValue'] = 'processed value';
+                $event->setData($data);
+            }
+        );
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(ModifyFormValueForRenderingEvent::class, 'modify-form-value-for-rendering-listener');
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getVariableProvider()->add('element', $element);
+        $context->getViewHelperVariableContainer()
+            ->add(RenderRenderableViewHelper::class, 'formRuntime', $runtime);
+        $context->getTemplatePaths()->setTemplateSource($template);
+        self::assertSame('processed value', new TemplateView($context)->render());
     }
 
     private function buildExtbaseRequest(): Request

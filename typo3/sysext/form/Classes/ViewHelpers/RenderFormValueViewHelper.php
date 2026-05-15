@@ -21,8 +21,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
+use TYPO3\CMS\Form\Event\ModifyFormValueForRenderingEvent;
 use TYPO3\CMS\Form\Service\FormValueResolver;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
@@ -43,7 +45,8 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     public function __construct(
-        private readonly FormValueResolver $formValueResolver
+        private readonly FormValueResolver $formValueResolver,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     public function initializeArguments(): void
@@ -81,7 +84,10 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
                 'isMultiValue' => is_iterable($value),
             ];
         }
-        $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$this->arguments['as'] => $data]));
+        $event = new ModifyFormValueForRenderingEvent($data);
+        $this->eventDispatcher->dispatch($event);
+
+        $variableProvider = new ScopedVariableProvider($this->renderingContext->getVariableProvider(), new StandardVariableProvider([$this->arguments['as'] => $event->getData()]));
         $this->renderingContext->setVariableProvider($variableProvider);
         $output = (string)$this->renderChildren();
         $this->renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
