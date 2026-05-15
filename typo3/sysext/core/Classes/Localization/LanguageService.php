@@ -42,6 +42,11 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
  *     ->createFromUserPreferences($GLOBALS['BE_USER']);
  * ```
+ *
+ * @phpstan-type TranslationPair array{source: string, target: string}
+ * @phpstan-type TranslationLabels array<string, array<int, TranslationPair>>
+ * @phpstan-type TranslationFile array<string, TranslationLabels>
+ * @phpstan-type LabelOverrides array<string, string>
  */
 #[Exclude]
 class LanguageService
@@ -59,7 +64,7 @@ class LanguageService
     protected array $labels = [];
 
     /**
-     * @var string[][]
+     * @var array<string, TranslationFile>
      */
     protected array $overrideLabels = [];
 
@@ -253,7 +258,7 @@ class LanguageService
      * Includes a locallang file and returns the $LOCAL_LANG array found inside.
      *
      * @param string $fileRef Input is a file-reference to be a 'local_lang' file containing a $LOCAL_LANG array
-     * @return array value of $LOCAL_LANG found in the included file, empty if none found
+     * @return TranslationFile value of $LOCAL_LANG found in the included file, empty if none found
      */
     protected function readLLfile(string $fileRef): array
     {
@@ -297,27 +302,38 @@ class LanguageService
     /**
      * Define custom labels which can be overridden for a given file. This is typically
      * the case for TypoScript plugins.
+     *
+     * @param array<string, LabelOverrides> $labels
      */
     public function overrideLabels(string $fileRef, array $labels): void
     {
+        /** @var array<string, LabelOverrides> $localLanguage */
         $localLanguage = [
             'default' => $labels['default'] ?? [],
         ];
         $mainLanguageKey = $this->getTypo3LanguageKey();
+        // Special handling for legacy reasons:
+        // Default and EN were historically the same. It is valid though to have an EN(-XX)-XLF translation.
+        // Therefore, copy the overrides of "default" over to "en-*", if no specific overrides exist for this yet.
+        if (str_starts_with($mainLanguageKey, 'en') && !isset($labels[$mainLanguageKey])) {
+            $localLanguage[$mainLanguageKey] = $localLanguage['default'];
+        }
         if ($mainLanguageKey !== 'default') {
             $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
             $allLocales = array_reverse($allLocales);
             foreach ($allLocales as $language) {
-                // Populate the initial values with default, if no labels for the current language are given
-                if (!isset($localLanguage[$mainLanguageKey])) {
-                    $localLanguage[$mainLanguageKey] = $localLanguage['default'];
-                }
                 if (isset($labels[$language])) {
-                    $localLanguage[$mainLanguageKey] = array_replace_recursive($localLanguage[$mainLanguageKey], $labels[$language]);
+                    $localLanguage[$mainLanguageKey] = array_replace_recursive($localLanguage[$mainLanguageKey] ?? [], $labels[$language]);
                 }
             }
         }
-        $this->overrideLabels[$fileRef] = $localLanguage;
+        // prepare $localLanguage to match TranslationLabels-Structure
+        $this->overrideLabels[$fileRef] = [];
+        foreach ($localLanguage as $languageKey => $value) {
+            foreach ($value as $labelKey => $labelValue) {
+                $this->overrideLabels[$fileRef][$languageKey][$labelKey][0]['target'] = $labelValue;
+            }
+        }
     }
 
     public function getLocale(): ?Locale

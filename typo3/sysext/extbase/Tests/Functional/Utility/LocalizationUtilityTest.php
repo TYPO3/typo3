@@ -148,6 +148,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ->willReturn(['_LOCAL_LANG' => [
                 'default' => [
                     'key3' => 'English label for key3 from TypoScript',
+                    'key6' => 'key6 TypoScript label overridden only for English',
                 ],
                 'da' => [
                     'key1' => 'key1 value from TS core',
@@ -163,12 +164,22 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             ]);
         GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
-        self::assertSame('key1 value from TS core', LocalizationUtility::translate('key1', 'label_test', languageKey: 'da'));
-        // Label from XLF file, no override
-        self::assertSame('English label for key2', LocalizationUtility::translate('key2', 'label_test', languageKey: 'da'));
-        self::assertSame('English label for key3 from TypoScript', LocalizationUtility::translate('key3', 'label_test', languageKey: 'da'));
-        self::assertSame('key3.subkey1 value from TypoScript', LocalizationUtility::translate('key3.subkey1', 'label_test', languageKey: 'da'));
-        self::assertSame('key3.subkey2.subsubkey value from TypoScript', LocalizationUtility::translate('key3.subkey2.subsubkey', 'label_test', languageKey: 'da'));
+        $cases = [
+            ['key1', 'da', 'key1 value from TS core'],
+            ['key6', 'default', 'key6 TypoScript label overridden only for English'],
+            ['key6', 'da', 'Dansk label for key6'],
+            ['key2', 'da', 'English label for key2'],
+            ['key3', 'default', 'English label for key3 from TypoScript'],
+            // This case is edgy. key3 has no translation in DA, but has a TS override for EN.
+            // we can't support this override, because we would need to process all overrides for all languages
+            // in the potential fallback chain.
+            ['key3', 'da', 'English label for key3'],
+            ['key3.subkey1', 'da', 'key3.subkey1 value from TypoScript'],
+            ['key3.subkey2.subsubkey', 'da', 'key3.subkey2.subsubkey value from TypoScript'],
+        ];
+        foreach ($cases as $case) {
+            self::assertSame($case[2], LocalizationUtility::translate($case[0], 'label_test', languageKey: $case[1]));
+        }
     }
 
     #[Test]

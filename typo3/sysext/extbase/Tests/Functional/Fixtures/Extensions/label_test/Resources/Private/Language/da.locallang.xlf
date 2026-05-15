@@ -8,7 +8,7 @@
 				<target>Dansk label for key1</target>
 			</trans-unit>
 			<trans-unit id="key4" approved="yes">
-				<source>English label for key5</source>
+				<source>English label for key4</source>
 				<target></target>
 			</trans-unit>
 			<trans-unit id="key5" approved="yes">
