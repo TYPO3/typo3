@@ -19,6 +19,7 @@ The following PHP classes that have previously been marked as deprecated with v1
 - :php:`\TYPO3\CMS\Form\Mvc\Configuration\InheritancesResolverService` :ref:`(Deprecation entry) <deprecation-97857-1761224875>`
 - :php:`\TYPO3\CMS\Frontend\Resource\FilePathSanitizer` :ref:`(Deprecation entry) <deprecation-107537-1760305681>`
 - :php:`\TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck` :ref:`(Deprecation entry) <deprecation-107931-1775647667>`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Debug\RenderViewHelper` :ref:`(Deprecation entry) <deprecation-107208-1754387701>`
 
 The following PHP classes have been declared :php:`final`:
 
