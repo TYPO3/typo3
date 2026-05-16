@@ -33,17 +33,6 @@ final class ViewHelperResolverTest extends FunctionalTestCase
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/resolverdelegate_test',
     ];
 
-    protected array $configurationToUseInTestInstance = [
-        'SYS' => [
-            'fluid' => [
-                'namespaces' => [
-                    'instance_legacy' => ['TYPO3Tests\\FluidTest\\Instance'],
-                    'event' => ['TYPO3Tests\\FluidTest\\Instance'],
-                ],
-            ],
-        ],
-    ];
-
     #[Test]
     public function resolverDelegateCanInjectService(): void
     {
@@ -58,11 +47,9 @@ final class ViewHelperResolverTest extends FunctionalTestCase
     public static function namespacesAreProperlyMergedDataProvider(): array
     {
         return [
-            ['instance_legacy', ['TYPO3Tests\\FluidTest\\NamespacesPhp', 'TYPO3Tests\\FluidTest\\Instance']],
-            ['thirdparty_legacy', ['TYPO3Tests\\FluidNamespaceOverride\\NamespacesPhp', 'TYPO3Tests\\FluidTest\\ExtLocalconf', 'TYPO3Tests\\FluidNamespaceOverride\\ExtLocalconf']],
             ['f', ['TYPO3Fluid\\Fluid\\ViewHelpers', 'TYPO3\\CMS\\Fluid\\ViewHelpers', 'TYPO3Tests\\FluidTest\\NamespacesPhp']],
             ['thirdparty', ['TYPO3Tests\\FluidTest\\NamespacesPhp', 'TYPO3Tests\\FluidNamespaceOverride\\NamespacesPhp']],
-            ['event', ['TYPO3Tests\\FluidTest\\EventBefore', 'TYPO3Tests\\FluidTest\\NamespacesPhp', 'TYPO3Tests\\FluidTest\\Instance', 'TYPO3Tests\\FluidTest\\EventAfter']],
+            ['event', ['TYPO3Tests\\FluidTest\\EventBefore', 'TYPO3Tests\\FluidTest\\NamespacesPhp', 'TYPO3Tests\\FluidTest\\EventAfter']],
         ];
     }
 

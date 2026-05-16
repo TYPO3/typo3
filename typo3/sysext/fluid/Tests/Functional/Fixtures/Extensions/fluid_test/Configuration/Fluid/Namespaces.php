@@ -1,8 +1,6 @@
 <?php
 
 return [
-    // Extend instance namespace (from settings/additional.php)
-    'instance_legacy' => ['TYPO3Tests\\FluidTest\\NamespacesPhp'],
     // Extend core namespace (from Namespaces.php)
     'f' => ['TYPO3Tests\\FluidTest\\NamespacesPhp'],
     // Define namespace to be extended by another extension

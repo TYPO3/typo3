@@ -46,12 +46,7 @@ final readonly class ViewHelperResolverFactory implements ViewHelperResolverFact
 
     public function create(): ViewHelperResolver
     {
-        // @deprecated remove merging with TYPO3_CONF_VARS in TYPO3 v15.0
-        $namespaces = array_merge_recursive(
-            (array)$this->namespaces,
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'] ?? [],
-        );
-        $event = $this->eventDispatcher->dispatch(new ModifyNamespacesEvent($namespaces));
+        $event = $this->eventDispatcher->dispatch(new ModifyNamespacesEvent((array)$this->namespaces));
         return new ViewHelperResolver(
             $this->container,
             $event->getNamespaces(),

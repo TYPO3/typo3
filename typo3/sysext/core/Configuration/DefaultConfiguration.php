@@ -519,8 +519,6 @@ return [
                 \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\MathExpressionNode::class,
                 \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode::class,
             ],
-            // @deprecated drop backward compatibility with TYPO3 v15.0
-            'namespaces' => [],
         ],
         'defaultScheme' => \TYPO3\CMS\Core\LinkHandling\LinkHandlingInterface::DEFAULT_SCHEME,
         'linkHandler' => [ // Array: Available link types, class which implement the LinkHandling interface

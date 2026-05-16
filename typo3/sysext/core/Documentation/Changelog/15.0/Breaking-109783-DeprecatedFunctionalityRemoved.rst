@@ -104,7 +104,7 @@ The following form yaml configurations that have previously been marked as depre
 
 The following global option handling have been dropped and are ignored:
 
-- :php:`$GLOBALS['TYPO3_CONF_VARS']['SOME']['option']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']` :ref:`(Deprecation entry) <deprecation-108524-1766073657>`
 
 The following global variables have been changed:
 
