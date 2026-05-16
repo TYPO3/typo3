@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -383,48 +382,7 @@ abstract class ActionController implements ControllerInterface
             $this->initializeView($this->view);
         }
         $response = $this->callActionMethod($request);
-        $this->renderAssetsForRequest($request);
         return $response;
-    }
-
-    /**
-     * Method which initializes assets that should be attached to the response
-     * for the given $request, which contains parameters that an override can
-     * use to determine which assets to add via PageRenderer.
-     *
-     * This default implementation will attempt to render the sections "HeaderAssets"
-     * and "FooterAssets" from the template that is being rendered, inserting the
-     * rendered content into either page header or footer, as appropriate. Both
-     * sections are optional and can be used one or both in combination.
-     *
-     * You can add assets with this method without worrying about duplicates, if
-     * for example you do this in a plugin that gets used multiple time on a page.
-     *
-     * @internal
-     */
-    protected function renderAssetsForRequest(RequestInterface $request): void
-    {
-        if (!($this->view instanceof FluidViewAdapter)) {
-            return;
-        }
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $variables = ['request' => $request, 'arguments' => $this->arguments];
-        $headerAssets = $this->view->renderSection('HeaderAssets', $variables, true);
-        $footerAssets = $this->view->renderSection('FooterAssets', $variables, true);
-        if (!empty(trim($headerAssets))) {
-            trigger_error(
-                'HeaderAssets section has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use f:page.headerData viewHelper instead.',
-                E_USER_DEPRECATED
-            );
-            $pageRenderer->addHeaderData($headerAssets);
-        }
-        if (!empty(trim($footerAssets))) {
-            trigger_error(
-                'FooterAssets section has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use f:page.footerData viewHelper instead.',
-                E_USER_DEPRECATED
-            );
-            $pageRenderer->addFooterData($footerAssets);
-        }
     }
 
     /**

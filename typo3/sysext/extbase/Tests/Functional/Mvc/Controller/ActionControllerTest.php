@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,7 +27,6 @@ use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -44,7 +42,6 @@ use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
-use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\ActionControllerTest\Controller\TestController;
 use TYPO3Tests\ActionControllerTest\Domain\Model\Model;
@@ -236,58 +233,6 @@ final class ActionControllerTest extends FunctionalTestCase
         $reflectionMethod = $reflectionClass->getProperty('view');
         $view = $reflectionMethod->getValue($subject);
         self::assertInstanceOf(JsonView::class, $view);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function renderAssetsForRequestAssignsHeaderDataFromViewIntoPageRenderer(): void
-    {
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
-
-        $viewMock = $this->createMock(FluidViewAdapter::class);
-        $viewMock->expects($this->exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('custom-header-data', '');
-        $expectedHeader = 'custom-header-data';
-
-        $pageRenderer = $this->createMock(PageRenderer::class);
-        $pageRenderer->expects($this->atLeastOnce())->method('addHeaderData')->with($expectedHeader);
-        $pageRenderer->expects($this->never())->method('addFooterData');
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
-
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest));
-
-        $subject = $this->get(TestController::class);
-        $subject->view = $viewMock;
-        $subject->renderAssetsForRequest($request);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function renderAssetsForRequestAssignsFooterDataFromViewIntoPageRenderer(): void
-    {
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
-
-        $viewMock = $this->createMock(FluidViewAdapter::class);
-        $viewMock->expects($this->exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('', 'custom-footer-data');
-        $expectedFooter = 'custom-footer-data';
-
-        $pageRenderer = $this->createMock(PageRenderer::class);
-        $pageRenderer->expects($this->never())->method('addHeaderData');
-        $pageRenderer->expects($this->atLeastOnce())->method('addFooterData')->with($expectedFooter);
-        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
-
-        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
-        $request = (new Request($serverRequest));
-
-        $subject = $this->get(TestController::class);
-        $subject->view = $viewMock;
-        $subject->renderAssetsForRequest($request);
     }
 
     #[Test]

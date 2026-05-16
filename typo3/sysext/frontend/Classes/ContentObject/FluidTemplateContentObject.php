@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Information\Typo3Information;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
@@ -39,7 +38,6 @@ class FluidTemplateContentObject extends AbstractContentObject
         private readonly ContentDataProcessor $contentDataProcessor,
         private readonly TypoScriptService $typoScriptService,
         private readonly ViewFactoryInterface $viewFactory,
-        private readonly PageRenderer $pageRenderer,
     ) {}
 
     /**
@@ -164,8 +162,6 @@ class FluidTemplateContentObject extends AbstractContentObject
             );
         }
 
-        $this->renderFluidTemplateAssetsIntoPageRenderer($view, $variables);
-
         if (isset($conf['stdWrap.'])) {
             return $this->cObj->stdWrap($content, $conf['stdWrap.']);
         }
@@ -228,31 +224,6 @@ class FluidTemplateContentObject extends AbstractContentObject
             $request = $requestBuilder->build($request);
         }
         return $request;
-    }
-
-    /**
-     * Attempts to render HeaderAssets and FooterAssets sections from the
-     * Fluid template, then adds each (if not empty) to either header or
-     * footer, as appropriate, using PageRenderer.
-     */
-    protected function renderFluidTemplateAssetsIntoPageRenderer(FluidViewAdapter $view, array $variables): void
-    {
-        $headerAssets = $view->renderSection('HeaderAssets', [...$variables, 'contentObject' => $this], true);
-        $footerAssets = $view->renderSection('FooterAssets', [...$variables, 'contentObject' => $this], true);
-        if (!empty(trim($headerAssets))) {
-            trigger_error(
-                'HeaderAssets section has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use f:page.headerData viewHelper instead.',
-                E_USER_DEPRECATED
-            );
-            $this->pageRenderer->addHeaderData($headerAssets);
-        }
-        if (!empty(trim($footerAssets))) {
-            trigger_error(
-                'FooterAssets section has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use f:page.footerData viewHelper instead.',
-                E_USER_DEPRECATED
-            );
-            $this->pageRenderer->addFooterData($footerAssets);
-        }
     }
 
     /**

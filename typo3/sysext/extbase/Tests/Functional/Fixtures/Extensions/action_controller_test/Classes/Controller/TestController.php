@@ -43,11 +43,6 @@ class TestController extends ActionController
         return $this->arguments;
     }
 
-    public function renderAssetsForRequest($request): void
-    {
-        parent::renderAssetsForRequest($request);
-    }
-
     public function initializeActionMethodArguments(): void
     {
         parent::initializeActionMethodArguments();

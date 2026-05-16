@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -397,22 +396,6 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         );
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
         self::assertStringContainsString('1+1=2', (string)$response->getBody());
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function renderFluidTemplateAssetsIntoPageRendererRendersAndAttachesAssets(): void
-    {
-        $this->setUpFrontendRootPage(
-            self::ROOT_PAGE_ID,
-            [
-                'EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Configuration/TypoScript/assets.typoscript',
-            ]
-        );
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
-        $responseBody = (string)$response->getBody();
-        self::assertStringContainsString('Foo Header' . "\n\n" . '</head>', $responseBody);
-        self::assertStringContainsString('Foo Footer' . "\n" . '</body>', $responseBody);
     }
 
     #[Test]
