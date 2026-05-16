@@ -19,8 +19,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Asset;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Parser\ParsingState;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperNodeInitializedEventInterface;
 
 /**
  * ViewHelper to add JavaScript to the TYPO3 AssetCollector. Either a file or inline JavaScript can be added.
@@ -34,7 +37,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-asset-script
  */
-final class ScriptViewHelper extends AbstractTagBasedViewHelper
+final class ScriptViewHelper extends AbstractTagBasedViewHelper implements ViewHelperNodeInitializedEventInterface
 {
     /**
      * This VH does not produce direct output, thus does not need to be wrapped in an escaping node
@@ -128,10 +131,6 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
         $useNonce = $this->arguments['useNonce'];
         // Deprecated useNonce argument maps to csp
         if ($useNonce !== null) {
-            trigger_error(
-                'The "useNonce" argument of f:asset.script is deprecated. Use "csp" instead.',
-                E_USER_DEPRECATED
-            );
             return (bool)$useNonce;
         }
         if ($csp !== null) {
@@ -139,5 +138,15 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
         }
         // Default: true for external files (allows hash collection), false for inline
         return $defaultForStatic;
+    }
+
+    public static function nodeInitializedEvent(ViewHelperNode $node, array $arguments, ParsingState $parsingState): void
+    {
+        if (array_key_exists('useNonce', $arguments)) {
+            trigger_error(
+                'The "useNonce" argument of f:asset.script is deprecated. Use "csp" instead.',
+                E_USER_DEPRECATED
+            );
+        }
     }
 }
