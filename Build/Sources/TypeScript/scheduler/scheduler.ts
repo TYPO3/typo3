@@ -90,14 +90,14 @@ class Scheduler {
         // Schedule selected tasks for next cron run
         const goCron: HTMLInputElement = document.createElement('input');
         goCron.setAttribute('type', 'hidden');
-        goCron.setAttribute('name', 'scheduleCron');
+        goCron.setAttribute('name', 'action[scheduleCron]');
         goCron.setAttribute('value', taskIds.join(','));
         form.append(goCron);
       } else {
         // Execute selected tasks directly
         const executeTasks: HTMLInputElement = document.createElement('input');
         executeTasks.setAttribute('type', 'hidden');
-        executeTasks.setAttribute('name', 'execute');
+        executeTasks.setAttribute('name', 'action[execute]');
         executeTasks.setAttribute('value', taskIds.join(','));
         form.append(executeTasks);
       }
