@@ -120,7 +120,6 @@ class AuthenticationService
             ->subject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
             ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
             ->setTemplate('Security/InstallToolLoginAttempt')
-            ->assign('lastCharactersOfPassword', substr(md5($formValues['password']), -5))
             ->setRequest($request);
         $this->sendEmail($email);
     }
