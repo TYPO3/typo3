@@ -207,6 +207,13 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       'result': 'abc'
     },
     {
+      'description': 'works for command lower with mixed case value',
+      'command': 'lower',
+      'value': 'Editor@Example.ORG',
+      'config': { 'field': 'foo' },
+      'result': 'editor@example.org'
+    },
+    {
       'description': 'works for command integer with numeric value',
       'command': 'integer',
       'value': '1234',

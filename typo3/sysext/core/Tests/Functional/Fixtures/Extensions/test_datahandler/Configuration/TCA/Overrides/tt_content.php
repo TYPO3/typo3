@@ -130,6 +130,29 @@ defined('TYPO3') or die();
                 'default' => '',
             ],
         ],
+        'tx_testdatahandler_email' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Email',
+            'config' => [
+                'type' => 'email',
+            ],
+        ],
+        'tx_testdatahandler_email_lower' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Email with eval lower',
+            'config' => [
+                'type' => 'email',
+                'eval' => 'lower',
+            ],
+        ],
+        'tx_testdatahandler_email_lower_unique' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Email with eval lower and unique',
+            'config' => [
+                'type' => 'email',
+                'eval' => 'unique,lower',
+            ],
+        ],
         'tx_testdatahandler_checkbox_with_eval' => [
             'exclude' => true,
             'label' => 'DataHandler Test Checkbox with eval and validation',
@@ -187,5 +210,6 @@ defined('TYPO3') or die();
     . 'tx_testdatahandler_radio,tx_testdatahandler_checkbox, tx_testdatahandler_checkbox_with_eval,'
     . 'tx_testdatahandler_checkbox_undefined_items,tx_testdatahandler_checkbox_failing_items,'
     . 'tx_testdatahandler_radio_failing_items,'
+    . 'tx_testdatahandler_email,tx_testdatahandler_email_lower,tx_testdatahandler_email_lower_unique,'
     . 'tx_testdatahandler_input_minvalue,tx_testdatahandler_input_minvalue_zero, tx_testdatahandler_text_minvalue,tx_testdatahandler_richttext_minvalue '
 );

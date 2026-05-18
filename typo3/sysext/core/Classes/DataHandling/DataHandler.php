@@ -1647,6 +1647,12 @@ class DataHandler
         }
         $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
 
+        // Lowercase before the unique evaluations below, so uniqueness is determined
+        // with the value that is eventually persisted.
+        if ($res['value'] !== '' && in_array('lower', $evalCodesArray, true)) {
+            $res['value'] = mb_strtolower($res['value'], 'utf-8');
+        }
+
         // Process UNIQUE settings:
         // Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning
         if ($field && !empty($res['value'])) {
