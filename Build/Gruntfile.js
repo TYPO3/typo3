@@ -239,6 +239,10 @@ module.exports = function (grunt) {
         src: '<%= paths.sass %>backend.scss',
         dest: '<%= paths.backend %>Public/Css/backend.css',
       },
+      ckeditor5: {
+        src: '<%= paths.sass %>ckeditor5.scss',
+        dest: '<%= paths.sysext %>rte_ckeditor/Resources/Public/Css/editor.css',
+      },
       dashboard: {
         src: '<%= paths.sass %>dashboard.scss',
         dest: '<%= paths.dashboard %>Public/Css/dashboard.css',

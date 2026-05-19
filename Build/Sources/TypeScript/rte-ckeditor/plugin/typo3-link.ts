@@ -5,11 +5,9 @@ import * as Typing from '@ckeditor/ckeditor5-typing';
 import * as Widget from '@ckeditor/ckeditor5-widget';
 import * as Utils from '@ckeditor/ckeditor5-utils';
 import * as Link from '@ckeditor/ckeditor5-link';
-import { LinkUtils } from '@ckeditor/ckeditor5-link';
 import { default as modalObject, type ModalElement } from '@typo3/backend/modal';
 import type { ViewAttributeElement, ViewElement, ModelSchema, ModelWriter } from '@ckeditor/ckeditor5-engine';
-import type { GeneralHtmlSupport, DataFilter } from '@ckeditor/ckeditor5-html-support';
-import type { GHSViewAttributes } from '@ckeditor/ckeditor5-html-support/src/utils';
+import type { GeneralHtmlSupport, DataFilter, GHSViewAttributes } from '@ckeditor/ckeditor5-html-support';
 import { IconLink, IconPencil, IconUnlink } from '@ckeditor/ckeditor5-icons';
 
 export const LINK_ALLOWED_ATTRIBUTES = ['href', 'title', 'class', 'target', 'rel'];
@@ -53,7 +51,7 @@ export class Typo3LinkCommand extends Core.Command {
 
     // A check for any integration that allows linking elements (e.g. `LinkImage`).
     // Currently, the selection reads attributes from text nodes only. See #7429 and #7465.
-    const sourceSelection = LinkUtils.isLinkableElement(selectedElement, model.schema) ? selectedElement : selection;
+    const sourceSelection = Link.isLinkableElement(selectedElement, model.schema) ? selectedElement : selection;
     if (sourceSelection === selectedElement) {
       this.value = selectedElement.getAttribute('linkHref') as string;
       this.isEnabled = model.schema.checkAttribute(selectedElement, 'linkHref');
@@ -226,7 +224,7 @@ export class Typo3UnlinkCommand extends Core.Command {
     const selection = model.document.selection;
     const selectedElement = selection.getSelectedElement();
 
-    if (LinkUtils.isLinkableElement(selectedElement, model.schema)) {
+    if (Link.isLinkableElement(selectedElement, model.schema)) {
       this.isEnabled = model.schema.checkAttribute(selectedElement, 'linkHref');
     } else {
       this.isEnabled = model.schema.checkAttributeInSelection(selection, 'linkHref');
@@ -436,7 +434,7 @@ export class Typo3LinkUI extends Core.Plugin {
     const t = editor.t;
 
     // Handle the `Ctrl+K` keystroke and show the panel.
-    editor.keystrokes.set(LinkUtils.LINK_KEYSTROKE, (keyEvtData, cancel) => {
+    editor.keystrokes.set(Link._LINK_KEYSTROKE, (keyEvtData, cancel) => {
       // Prevent focusing the search bar in FF, Chrome and Edge. See https://github.com/ckeditor/ckeditor5/issues/4811.
       cancel();
       if (linkCommand.isEnabled) {
@@ -450,7 +448,7 @@ export class Typo3LinkUI extends Core.Plugin {
       linkButton.isEnabled = true;
       linkButton.label = t('Link');
       linkButton.icon = IconLink;
-      linkButton.keystroke = LinkUtils.LINK_KEYSTROKE;
+      linkButton.keystroke = Link._LINK_KEYSTROKE;
       linkButton.tooltip = true;
       linkButton.isToggleable = true;
       linkButton.bind('isEnabled').to(linkCommand, 'isEnabled');
@@ -465,7 +463,7 @@ export class Typo3LinkUI extends Core.Plugin {
       const linkCommand = editor.commands.get('link');
       button.bind('isEnabled').to(linkCommand, 'value', href => !!href);
       button.bind('href').to(linkCommand, 'value', href => {
-        return href && LinkUtils.ensureSafeUrl(href, allowedProtocols);
+        return href && Link._ensureSafeLinkUrl(href, allowedProtocols);
       });
 
       button.icon = undefined;
@@ -732,7 +730,7 @@ export class Typo3LinkUI extends Core.Plugin {
   }
 
   private findLinkElementAncestor(position: any) {
-    return position.getAncestors().find((ancestor: any) => LinkUtils.isLinkElement(ancestor));
+    return position.getAncestors().find((ancestor: any) => Link.isLinkElement(ancestor));
   }
 
   /**

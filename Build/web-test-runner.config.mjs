@@ -176,7 +176,6 @@ export default {
             '@ckeditor/ckeditor5-special-characters': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-special-characters.js',
             '@ckeditor/ckeditor5-style': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-style.js',
             '@ckeditor/ckeditor5-table': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-table.js',
-            '@ckeditor/ckeditor5-theme-lark': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-theme-lark.js',
             '@ckeditor/ckeditor5-typing': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-typing.js',
             '@ckeditor/ckeditor5-ui': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-ui.js',
             '@ckeditor/ckeditor5-undo': './typo3/rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-undo.js',
