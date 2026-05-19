@@ -1317,6 +1317,12 @@ return [
             'Feature-98239-IntroducePSR14AfterFormIsBuiltEvent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ext/form\'][\'buildFormDefinitionValidationConfiguration\']' => [
+        'restFiles' => [
+            'Breaking-109849-RemovedBuildFormDefinitionValidationConfigurationHook.rst',
+            'Feature-109849-PSR14AfterFormDefinitionValidationConfigurationIsBuiltEvent.rst',
+        ],
+    ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'BackendLayoutDataProvider\']' => [
         'restFiles' => [
             'Breaking-107784-RemoveBackendLayoutDataProviderRegistrationViaGLOBALS.rst',

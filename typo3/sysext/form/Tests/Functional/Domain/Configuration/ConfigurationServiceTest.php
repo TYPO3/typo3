@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Domain\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
+use TYPO3\CMS\Form\Event\AfterFormDefinitionValidationConfigurationIsBuiltEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -52,6 +54,7 @@ final class ConfigurationServiceTest extends FunctionalTestCase
             $this->createMock(TranslationService::class),
             $this->createMock(PhpFrontend::class),
             $this->createMock(PhpFrontend::class),
+            $this->createMock(EventDispatcherInterface::class),
         );
         $expected = [
             'key' => 'value',
@@ -75,6 +78,7 @@ final class ConfigurationServiceTest extends FunctionalTestCase
             $this->createMock(TranslationService::class),
             $this->createMock(PhpFrontend::class),
             $this->createMock(PhpFrontend::class),
+            $this->createMock(EventDispatcherInterface::class),
         );
         $this->expectException(PrototypeNotFoundException::class);
         $this->expectExceptionCode(1475924277);
@@ -107,6 +111,7 @@ final class ConfigurationServiceTest extends FunctionalTestCase
             $this->createMock(TranslationService::class),
             $this->createMock(PhpFrontend::class),
             $this->createMock(PhpFrontend::class),
+            $this->createMock(EventDispatcherInterface::class),
         );
         $expected = [
             'standard',
@@ -566,115 +571,6 @@ final class ConfigurationServiceTest extends FunctionalTestCase
         self::assertTrue($subjectMock->isFormElementTypeDefinedInFormSetup($validationDto));
         $validationDto = new ValidationDto('standard', 'Foo');
         self::assertFalse($subjectMock->isFormElementTypeDefinedInFormSetup($validationDto));
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfHookResultIsNoFormDefinitionValidation(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528633966);
-        $subjectMock = $this->getAccessibleMock(ConfigurationService::class, null, [], '', false);
-        $input = ['dummy'];
-        $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', '', $input, []);
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPrototypeDoesNotMatch(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528634966);
-        $subjectMock = $this->getAccessibleMock(ConfigurationService::class, null, [], '', false);
-        $validationDto = new ValidationDto('Bar', 'Foo');
-        $input = [$validationDto];
-        $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfFormElementTypeDoesNotMatch(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528633967);
-        $subjectMock = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['isFormElementTypeDefinedInFormSetup'],
-            [],
-            '',
-            false
-        );
-        $subjectMock->method('isFormElementTypeDefinedInFormSetup')->willReturn(false);
-        $validationDto = new ValidationDto('standard', 'Text');
-        $input = [$validationDto];
-        $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPropertyCollectionNameIsInvalid(): void
-    {
-        $this->expectException(PropertyException::class);
-        $this->expectExceptionCode(1528636941);
-        $subjectMock = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['isFormElementTypeDefinedInFormSetup'],
-            [],
-            '',
-            false
-        );
-        $subjectMock->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
-        $validationDto = new ValidationDto('standard', 'Text', null, null, 'Bar', 'Baz');
-        $input = [$validationDto];
-        $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []);
-    }
-
-    #[Test]
-    public function addAdditionalPropertyPathsFromHookAddPaths(): void
-    {
-        $subjectMock = $this->getAccessibleMock(
-            ConfigurationService::class,
-            ['isFormElementTypeDefinedInFormSetup'],
-            [],
-            '',
-            false
-        );
-        $subjectMock->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
-        $input = [
-            new ValidationDto('standard', 'Text', null, 'options.xxx', 'validators', 'Baz'),
-            new ValidationDto('standard', 'Text', null, 'options.yyy', 'validators', 'Baz'),
-            new ValidationDto('standard', 'Text', null, 'options.zzz', 'validators', 'Custom'),
-            new ValidationDto('standard', 'Text', null, 'properties.xxx'),
-            new ValidationDto('standard', 'Text', null, 'properties.yyy'),
-            new ValidationDto('standard', 'Custom', null, 'properties.xxx'),
-        ];
-        $expected = [
-            'formElements' => [
-                'Text' => [
-                    'collections' => [
-                        'validators' => [
-                            'Baz' => [
-                                'additionalPropertyPaths' => [
-                                    'options.xxx',
-                                    'options.yyy',
-                                ],
-                            ],
-                            'Custom' => [
-                                'additionalPropertyPaths' => [
-                                    'options.zzz',
-                                ],
-                            ],
-                        ],
-                    ],
-                    'additionalPropertyPaths' => [
-                        'properties.xxx',
-                        'properties.yyy',
-                    ],
-                ],
-                'Custom' => [
-                    'additionalPropertyPaths' => [
-                        'properties.xxx',
-                    ],
-                ],
-            ],
-        ];
-        self::assertSame($expected, $subjectMock->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, []));
     }
 
     public static function buildFormDefinitionValidationConfigurationFromFormEditorSetupDataProvider(): array
@@ -1222,23 +1118,53 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     {
         $translationServiceMock = $this->createMock(TranslationService::class);
         $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcherMock->method('dispatch')->willReturnArgument(0);
         $subjectMock = $this->getAccessibleMock(
             ConfigurationService::class,
-            [
-                'getPrototypeConfiguration',
-                'executeBuildFormDefinitionValidationConfigurationHooks',
-            ],
+            ['getPrototypeConfiguration'],
             [
                 $this->createMock(ExtbaseConfigurationManagerInterface::class),
                 $this->createMock(ExtFormConfigurationManagerInterface::class),
                 $translationServiceMock,
                 $this->createMock(FrontendInterface::class),
                 $this->createMock(FrontendInterface::class),
+                $eventDispatcherMock,
             ],
         );
         $subjectMock->method('getPrototypeConfiguration')->willReturn($configuration);
-        $subjectMock->method('executeBuildFormDefinitionValidationConfigurationHooks')->willReturnArgument(1);
         self::assertSame($expected, $subjectMock->_call('buildFormDefinitionValidationConfigurationFromFormEditorSetup', 'standard'));
+    }
+
+    #[Test]
+    public function afterFormDefinitionValidationConfigurationIsBuiltEventIsDispatched(): void
+    {
+        $translationServiceMock = $this->createMock(TranslationService::class);
+        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $dispatchedEvent = null;
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcherMock->method('dispatch')->willReturnCallback(
+            static function (object $event) use (&$dispatchedEvent): object {
+                $dispatchedEvent = $event;
+                return $event;
+            }
+        );
+        $subjectMock = $this->getAccessibleMock(
+            ConfigurationService::class,
+            ['getPrototypeConfiguration'],
+            [
+                $this->createMock(ExtbaseConfigurationManagerInterface::class),
+                $this->createMock(ExtFormConfigurationManagerInterface::class),
+                $translationServiceMock,
+                $this->createMock(FrontendInterface::class),
+                $this->createMock(FrontendInterface::class),
+                $eventDispatcherMock,
+            ],
+        );
+        $subjectMock->method('getPrototypeConfiguration')->willReturn([]);
+        $subjectMock->_call('buildFormDefinitionValidationConfigurationFromFormEditorSetup', 'standard');
+        self::assertInstanceOf(AfterFormDefinitionValidationConfigurationIsBuiltEvent::class, $dispatchedEvent);
+        self::assertSame('standard', $dispatchedEvent->getPrototypeName());
     }
 
     public static function formElementPropertyHasLimitedAllowedValuesDefinedWithinFormEditorSetupDataProvider(): array

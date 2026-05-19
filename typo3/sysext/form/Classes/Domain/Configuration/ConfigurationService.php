@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Configuration;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\Proper
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PredefinedDefaultsExtractor as CollectionPredefinedDefaultsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PropertyPathsExtractor as CollectionPropertyPathsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\SelectOptionsExtractor as CollectionSelectOptionsExtractor;
+use TYPO3\CMS\Form\Event\AfterFormDefinitionValidationConfigurationIsBuiltEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 
@@ -65,6 +67,7 @@ class ConfigurationService
         protected FrontendInterface $assetsCache,
         #[Autowire(service: 'cache.runtime')]
         protected FrontendInterface $runtimeCache,
+        protected EventDispatcherInterface $eventDispatcher,
     ) {}
 
     /**
@@ -127,9 +130,9 @@ class ConfigurationService
      * then (for example) "options.xxx.yyy" is a valid property path to write.
      * If you use a custom form editor "inspector editor" implementation which does not define the writable
      * property paths by one of the above described inspector editor properties (e.g "propertyPath") within
-     * the form setup, you must provide the writable property paths with a hook.
+     * the form setup, you must provide the writable property paths via the
+     * AfterFormDefinitionValidationConfigurationIsBuiltEvent PSR-14 event.
      *
-     * @see executeBuildFormDefinitionValidationConfigurationHooks()
      * @internal
      */
     public function isFormElementPropertyDefinedInFormEditorSetup(ValidationDto $dto): bool
@@ -157,11 +160,11 @@ class ConfigurationService
      * and
      * "formElementsDefinition.<formElementType>.formEditor.propertyCollections.<finishers|validators>.<index>.editors.<index>.propertyPath = options.xxx"
      * that (for example) "options.xxx.yyy" is a valid property path to write.
-     * If you use a custom form editor "inspector editor" implementation which not defines the writable
+     * If you use a custom form elements finisher|validator editor implementation which does not define the writable
      * property paths by one of the above described inspector editor properties (e.g "propertyPath") within
-     * the form setup, you must provide the writable property paths with a hook.
+     * the form setup, you must provide the writable property paths via the
+     * AfterFormDefinitionValidationConfigurationIsBuiltEvent PSR-14 event.
      *
-     * @see executeBuildFormDefinitionValidationConfigurationHooks()
      * @internal
      */
     public function isPropertyCollectionPropertyDefinedInFormEditorSetup(ValidationDto $dto): bool
@@ -574,121 +577,10 @@ class ConfigurationService
             );
             $configuration = $extractorDto->getResult();
             $configuration = $this->translateValues($prototypeConfiguration, $configuration);
-            $configuration = $this->executeBuildFormDefinitionValidationConfigurationHooks(
-                $prototypeName,
-                $configuration
-            );
+            $configuration = $this->eventDispatcher
+                ->dispatch(new AfterFormDefinitionValidationConfigurationIsBuiltEvent($prototypeName, $configuration))
+                ->getConfiguration();
             $this->setCacheEntry($cacheKey, $configuration);
-        }
-        return $configuration;
-    }
-
-    /**
-     * If you use a custom form editor "inspector editor" implementation which does not define the writable
-     * property paths by one of the described inspector editor properties (e.g "propertyPath") within
-     * the form setup, you must provide the writable property paths with a hook.
-     *
-     * @see isFormElementPropertyDefinedInFormEditorSetup()
-     * @see isPropertyCollectionPropertyDefinedInFormEditorSetup()
-     * Connect to the hook:
-     * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['buildFormDefinitionValidationConfiguration'][] = \Vendor\YourNamespace\YourClass::class;
-     * Use the hook:
-     * public function addAdditionalPropertyPaths(\TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto $validationDto): array
-     * {
-     *     $textValidationDto = $validationDto->withFormElementType('Text');
-     *     $textValidatorsValidationDto = $textValidationDto->withPropertyCollectionName('validators');
-     *     $dateValidationDto = $validationDto->withFormElementType('Date');
-     *     $propertyPaths = [
-     *         $textValidationDto->withPropertyPath('properties.my.custom.property'),
-     *         $textValidationDto->withPropertyPath('properties.my.other.custom.property'),
-     *         $textValidatorsValidationDto->withPropertyCollectionElementIdentifier('StringLength')->withPropertyPath('options.custom.property'),
-     *         $textValidatorsValidationDto->withPropertyCollectionElementIdentifier('CustomValidator')->withPropertyPath('options.other.custom.property'),
-     *         $dateValidationDto->withPropertyPath('properties.custom.property'),
-     *         // ..
-     *     ];
-     *     return $propertyPaths;
-     * }
-     * @throws PropertyException
-     */
-    protected function executeBuildFormDefinitionValidationConfigurationHooks(
-        string $prototypeName,
-        array $configuration
-    ): array {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['buildFormDefinitionValidationConfiguration'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'addAdditionalPropertyPaths')) {
-                $validationDto = GeneralUtility::makeInstance(ValidationDto::class, $prototypeName);
-                $propertyPathsFromHook = $hookObj->addAdditionalPropertyPaths($validationDto);
-                if (!is_array($propertyPathsFromHook)) {
-                    $message = 'Return value of "%s->addAdditionalPropertyPaths() must be type "array"';
-                    throw new PropertyException(sprintf($message, $className), 1528633965);
-                }
-                $configuration = $this->addAdditionalPropertyPathsFromHook(
-                    $className,
-                    $prototypeName,
-                    $propertyPathsFromHook,
-                    $configuration
-                );
-            }
-        }
-        return $configuration;
-    }
-
-    /**
-     * @throws PropertyException
-     */
-    protected function addAdditionalPropertyPathsFromHook(
-        string $hookClassName,
-        string $prototypeName,
-        array $propertyPathsFromHook,
-        array $configuration
-    ): array {
-        foreach ($propertyPathsFromHook as $index => $validationDto) {
-            if (!($validationDto instanceof ValidationDto)) {
-                $message = 'Return value of "%s->addAdditionalPropertyPaths()[%s] must be an instance of "%s"';
-                throw new PropertyException(
-                    sprintf($message, $hookClassName, $index, ValidationDto::class),
-                    1528633966
-                );
-            }
-            if ($validationDto->getPrototypeName() !== $prototypeName) {
-                $message = 'The prototype name "%s" does not match "%s" on "%s->addAdditionalPropertyPaths()[%s]';
-                throw new PropertyException(
-                    sprintf(
-                        $message,
-                        $validationDto->getPrototypeName(),
-                        $hookClassName,
-                        $index,
-                        ValidationDto::class
-                    ),
-                    1528634966
-                );
-            }
-            $formElementType = $validationDto->getFormElementType();
-            if (!$this->isFormElementTypeDefinedInFormSetup($validationDto)) {
-                $message = 'Form element type "%s" does not exist in prototype configuration "%s"';
-                throw new PropertyException(
-                    sprintf($message, $formElementType, $validationDto->getPrototypeName()),
-                    1528633967
-                );
-            }
-            if ($validationDto->hasPropertyCollectionName()
-                && $validationDto->hasPropertyCollectionElementIdentifier()) {
-                $propertyCollectionName = $validationDto->getPropertyCollectionName();
-                $propertyCollectionElementIdentifier = $validationDto->getPropertyCollectionElementIdentifier();
-                if ($propertyCollectionName !== 'finishers' && $propertyCollectionName !== 'validators') {
-                    $message = 'The property collection name "%s" for form element "%s" must be "finishers" or "validators"';
-                    throw new PropertyException(
-                        sprintf($message, $propertyCollectionName, $formElementType),
-                        1528636941
-                    );
-                }
-                $configuration['formElements'][$formElementType]['collections'][$propertyCollectionName][$propertyCollectionElementIdentifier]['additionalPropertyPaths'][]
-                    = $validationDto->getPropertyPath();
-            } else {
-                $configuration['formElements'][$formElementType]['additionalPropertyPaths'][]
-                    = $validationDto->getPropertyPath();
-            }
         }
         return $configuration;
     }

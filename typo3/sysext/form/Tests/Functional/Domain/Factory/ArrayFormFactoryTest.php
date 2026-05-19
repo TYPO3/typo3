@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Factory;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -56,6 +57,7 @@ final class ArrayFormFactoryTest extends FunctionalTestCase
             $this->createMock(TranslationService::class),
             $this->createMock(FrontendInterface::class),
             $this->createMock(FrontendInterface::class),
+            $this->createMock(EventDispatcherInterface::class),
         );
         $prototypeConfiguration = $configurationService->getPrototypeConfiguration('standard');
 

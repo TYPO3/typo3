@@ -31,6 +31,7 @@
 ..  _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering:
 ..  _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering-connect:
 ..  _apireference-frontendrendering-runtimemanipulation-hooks-beforerendering-use:
+..  _apireference-events-legacy-hooks-buildformvalidationconfiguration:
 
 ================
 PSR-14 Events
@@ -139,6 +140,11 @@ These events are dispatched during form rendering in the frontend.
       -  Dispatched by :php:`FormPersistenceManager` after a YAML form
          definition has been loaded from disk. Modify the definition globally
          before it reaches the form factory.
+   *  -  `AfterFormDefinitionValidationConfigurationIsBuiltEvent
+         <https://docs.typo3.org/permalink/t3coreapi:afterformdefinitionvalidationconfigurationisbuiltevent>`_
+      -  Dispatched after the form definition validation configuration has
+         been built from the form editor setup. Add additional writable
+         property paths for custom inspector editor implementations.
 
 ..  _apireference-events-register:
 
@@ -186,26 +192,3 @@ and register the class:
 ..  literalinclude:: _codesnippets/_MyAfterFormStateInitializedHook.php
     :language: php
     :caption: EXT:my_extension/Classes/Hooks/MyAfterFormStateInitializedHook.php
-
-
-..  _apireference-events-legacy-hooks-buildformvalidationconfiguration:
-
-buildFormDefinitionValidationConfiguration
-------------------------------------------
-
-Used when a custom **form editor inspector** editor does not declare its
-writable property paths via the standard YAML configuration (e.g.
-:yaml:`propertyPath`). Implement :php:`addAdditionalPropertyPaths()` to
-return additional :php:`ValidationDto` objects that tell the backend form
-editor which properties may be written.
-
-Register the hook class:
-
-..  literalinclude:: _codesnippets/_ext-localconf-validation-configuration.php
-    :language: php
-    :caption: EXT:my_extension/ext_localconf.php
-
-
-..  literalinclude:: _codesnippets/_MyValidationConfigurationHook.php
-    :language: php
-    :caption: EXT:my_extension/Classes/Hooks/MyValidationConfigurationHook.php

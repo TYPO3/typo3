@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Model\Renderable;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -51,6 +52,7 @@ final class AbstractRenderableTest extends FunctionalTestCase
             $this->createMock(TranslationService::class),
             $this->createMock(FrontendInterface::class),
             $this->createMock(FrontendInterface::class),
+            $this->createMock(EventDispatcherInterface::class),
         );
         $prototypeConfiguration = $configurationService->getPrototypeConfiguration('standard');
 
