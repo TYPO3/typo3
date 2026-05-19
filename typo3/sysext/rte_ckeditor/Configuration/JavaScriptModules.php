@@ -49,7 +49,6 @@ return [
         '@ckeditor/ckeditor5-special-characters' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-special-characters.js',
         '@ckeditor/ckeditor5-style' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-style.js',
         '@ckeditor/ckeditor5-table' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-table.js',
-        '@ckeditor/ckeditor5-theme-lark' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-theme-lark.js',
         '@ckeditor/ckeditor5-typing' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-typing.js',
         '@ckeditor/ckeditor5-ui' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-ui.js',
         '@ckeditor/ckeditor5-undo' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-undo.js',

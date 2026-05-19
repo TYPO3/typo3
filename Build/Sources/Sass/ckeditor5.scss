@@ -1,0 +1,34 @@
+@import "../../node_modules/ckeditor5/dist/ckeditor5";
+
+.ck.ck-content * {
+    user-select: auto !important;
+}
+
+.ck.ck-linktext {
+    max-width: 300px;
+    overflow: hidden;
+    align-items: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    user-select: none;
+    border: 1px solid transparent !important;
+    line-height: var(--ck-ui-component-min-height) !important;
+}
+
+.ck.ck-word-count {
+    margin-top: .5rem;
+}
+
+.ck.ck-softhyphen {
+    color: #0078e6;
+    background-color: rgba(0, 120, 230, .1);
+    padding-left: .1em;
+    padding-right: .1em;
+}
+
+.ck.ck-nbsp {
+    color: #c83c3c;
+    background-color: rgba(200, 60, 60, .1);
+    padding-left: .1em;
+    padding-right: .1em;
+}

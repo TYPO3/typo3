@@ -16,7 +16,7 @@ import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { type Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix } from '@typo3/rte-ckeditor/plugin/typo3-link';
 import type * as Core from '@ckeditor/ckeditor5-core';
-import type { ModelPosition } from '@ckeditor/ckeditor5-engine/src/model/position';
+import type { ModelPosition } from '@ckeditor/ckeditor5-engine';
 import '@typo3/backend/element/combobox-element';
 
 /**
