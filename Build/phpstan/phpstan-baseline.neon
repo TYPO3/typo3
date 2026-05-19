@@ -349,12 +349,6 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Functional/Service/TranslationServiceTest.php
 
 		-
-			rawMessage: Negated boolean expression is always true.
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
 			rawMessage: 'Call to function is_array() with null will always evaluate to false.'
 			identifier: function.impossibleType
 			count: 1
