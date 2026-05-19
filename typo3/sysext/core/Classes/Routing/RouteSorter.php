@@ -136,7 +136,7 @@ class RouteSorter
         if ($missingSelfVariables === [] && $missingOtherVariables !== []) {
             return $action;
         }
-        if ($missingSelfVariables !== [] && $missingOtherVariables === []) {
+        if ($missingOtherVariables === []) {
             return -$action;
         }
         return null;
