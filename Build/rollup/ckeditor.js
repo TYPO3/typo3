@@ -5,43 +5,70 @@ import postcss from 'postcss';
 import cssnano from 'cssnano';
 import svg from 'rollup-plugin-svg';
 import { minify } from 'rollup-plugin-esbuild';
-import { styles } from '@ckeditor/ckeditor5-dev-utils';
-import { resolve } from 'path';
-import { readdirSync, readFileSync, statSync, existsSync } from 'fs';
+import { relative, resolve } from 'path';
+import { readdirSync, readFileSync } from 'fs';
 import { translations } from './ckeditor/translations.js';
 
-const postCssConfig = styles.getPostCssConfig({
-  themeImporter: {
-    themePath: new URL(import.meta.resolve('@ckeditor/ckeditor5-theme-lark')).pathname
-  },
-});
-
-const postCssPocessor = postcss([
-  ...postCssConfig.plugins,
+const postCssProcessor = postcss([
   cssnano({
     preset: 'default',
   }),
 ]);
 
-const packages = readdirSync('node_modules/@ckeditor')
-  .filter(dir =>
-    statSync(`node_modules/@ckeditor/${dir}`).isDirectory() &&
-    existsSync(`node_modules/@ckeditor/${dir}/package.json`) &&
-    !['ckeditor5-dev-translations', 'ckeditor5-dev-utils'].includes(dir)
-  );
+const packages = [
+  'ckeditor5-inspector',
+  'ckeditor5-alignment',
+  'ckeditor5-autoformat',
+  'ckeditor5-basic-styles',
+  'ckeditor5-block-quote',
+  'ckeditor5-clipboard',
+  'ckeditor5-code-block',
+  'ckeditor5-core',
+  'ckeditor5-editor-classic',
+  'ckeditor5-editor-decoupled',
+  'ckeditor5-editor-multi-root',
+  'ckeditor5-engine',
+  'ckeditor5-enter',
+  'ckeditor5-essentials',
+  'ckeditor5-find-and-replace',
+  'ckeditor5-font',
+  'ckeditor5-fullscreen',
+  'ckeditor5-heading',
+  'ckeditor5-highlight',
+  'ckeditor5-horizontal-line',
+  'ckeditor5-html-support',
+  'ckeditor5-icons',
+  'ckeditor5-image',
+  'ckeditor5-indent',
+  'ckeditor5-language',
+  'ckeditor5-link',
+  'ckeditor5-list',
+  'ckeditor5-mention',
+  'ckeditor5-paragraph',
+  'ckeditor5-paste-from-office',
+  'ckeditor5-remove-format',
+  'ckeditor5-select-all',
+  'ckeditor5-show-blocks',
+  'ckeditor5-source-editing',
+  'ckeditor5-special-characters',
+  'ckeditor5-style',
+  'ckeditor5-table',
+  'ckeditor5-typing',
+  'ckeditor5-ui',
+  'ckeditor5-undo',
+  'ckeditor5-upload',
+  'ckeditor5-utils',
+  'ckeditor5-watchdog',
+  'ckeditor5-widget',
+  'ckeditor5-word-count',
+];
 
 export default [
   ...packages.map(pkg => {
     const packageName = `@ckeditor/${pkg}`;
-    const packageJson = `node_modules/${packageName}/package.json`;
-    const entryPoint = JSON.parse(readFileSync(packageJson, 'utf8')).main
-    let input = `./node_modules/${packageName}/${entryPoint}`;
-    if (packageName === '@ckeditor/ckeditor5-link') {
-      input = 'Sources/JavaScript/rte_ckeditor/contrib/ckeditor5-link.js';
-    }
     return {
       input: [
-        input,
+        packageName,
       ],
       output: {
         compact: true,
@@ -58,14 +85,14 @@ export default [
         {
           name: 'resolve imports',
           resolveId: (source, from) => {
+            if (source.startsWith('@ckeditor/ckeditor5-') && source.endsWith('/dist/index.js')) {
+              return { id: source.replace('/dist/index.js', ''), external: true }
+            }
             if (source.startsWith('@ckeditor/') && !source.startsWith(packageName) && !source.endsWith('.svg') && !source.endsWith('.css')) {
               if (source.split('/').length > 2) {
                 throw new Error(`Non package-entry point was imported: ${source}`);
               }
               return { id: source.replace(/.js$/, ''), external: true }
-            }
-            if (source.startsWith('ckeditor5/src/')) {
-              return { id: '@ckeditor/ckeditor5-' + source.substring(14).replace(/.js$/, ''), external: true };
             }
             if (source.startsWith('@ckeditor/') && source.endsWith('.js') && source.split('/').length === 2) {
               throw new Error(`JS File with suffix: ${source} import from ${from}`);
@@ -74,10 +101,8 @@ export default [
               !source.startsWith('@ckeditor/') &&
               !source.startsWith('.') &&
               !source.startsWith('/') &&
-              !source.startsWith('Sources/JavaScript/rte_ckeditor/contrib') &&
               source !== 'es-toolkit/compat' &&
               source !== 'es-toolkit/compat/isEqual' &&
-              source !== 'vanilla-colorful/hex-color-picker.js' &&
               source !== 'vanilla-colorful/lib/entrypoints/hex' &&
               source !== 'color-convert' &&
               source !== 'color-name' &&
@@ -91,7 +116,7 @@ export default [
         {
           name: 'patchLinkEditing',
           transform(code, id) {
-            if (!id.endsWith('@ckeditor/ckeditor5-link/src/linkediting.js')) {
+            if (!id.endsWith('@ckeditor/ckeditor5-link/dist/index.js')) {
               return null;
             }
             const ms = new MagicString(code);
@@ -100,10 +125,10 @@ export default [
             // @todo: Fix this upstream: htmlA should theoretically be removed automatically
             // when linkHref is removed as it is defined to be a coupledAttribute with linkHref.
             // (see @ckeditor/ckeditor5-html-support/src/schemadefinitions.js)
-            const source = "return textAttributes.filter(attribute => attribute.startsWith('link'));";
-            const target = "return textAttributes.filter(attribute => attribute.startsWith('link') || attribute === 'htmlA');";
+            const source = 'return schema.getDefinition("$text").allowAttributes.filter((attribute) => attribute.startsWith("link"));';
+            const target = 'return schema.getDefinition("$text").allowAttributes.filter((attribute) => attribute.startsWith("link")||attribute==="htmlA");';
             if (!code.includes(source)) {
-              throw new Error(`Expected to find "${search}" in "${id}". Please adapt the rollup plugin "patchLinkEditing".`);
+              throw new Error(`Expected to find "${source}" in "${id}". Please adapt the rollup plugin "patchLinkEditing".`);
             }
             ms.replace(source, target);
             return { code: ms.toString(), map: ms.generateMap({ id, includeContent: true, hires: true }) }
@@ -115,7 +140,7 @@ export default [
             if (!id.endsWith('.css')) {
               return;
             }
-            const { css } = await postCssPocessor.process(code, { from: id });
+            const { css } = await postCssProcessor.process(code, { from: id });
             const importPath = resolve('./rollup/shim/style-inject.js');
             return {
               code: `
@@ -134,6 +159,6 @@ export default [
       ]
     }
   }),
-  ...translations()
+  ...translations(packages)
 ];
 
