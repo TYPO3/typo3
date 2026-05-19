@@ -331,6 +331,12 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Security/SudoMode/PasswordVerification.php
 
 		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Template/Components/Buttons/Action/ShortcutButton.php
+
+		-
 			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Imaging\\Icon and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
@@ -351,7 +357,13 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 2
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Template/Components/MetaInformation.php
+
+		-
+			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
 			path: ../../typo3/sysext/backend/Classes/Template/Components/MetaInformation.php
 
 		-
@@ -899,6 +911,12 @@ parameters:
 			identifier: class.extendsFinalByPhpDoc
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Schema/TableDiff.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between 2 and 2 will always evaluate to true\.$#'
+			identifier: identical.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DependencyInjection/ServiceProviderCompilationPass.php
 
 		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Package\\PackageInterface\:\:getServiceProvider\(\)\.$#'
@@ -1473,13 +1491,13 @@ parameters:
 		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
-			count: 1
+			count: 2
 			path: ../../typo3/sysext/core/Classes/Routing/RouteSorter.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between non\-empty\-array and array\{\} will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
-			count: 1
+			count: 2
 			path: ../../typo3/sysext/core/Classes/Routing/RouteSorter.php
 
 		-
@@ -3139,9 +3157,15 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Model/DownloadQueue.php
 
 		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Repository/ExtensionRepository.php
+
+		-
 			message: '#^Strict comparison using \=\=\= between 0 and 0 will always evaluate to true\.$#'
 			identifier: identical.alwaysTrue
-			count: 1
+			count: 3
 			path: ../../typo3/sysext/extensionmanager/Classes/Domain/Repository/ExtensionRepository.php
 
 		-
@@ -3597,12 +3621,6 @@ parameters:
 		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
@@ -4193,6 +4211,12 @@ parameters:
 			identifier: arrayValues.list
 			count: 1
 			path: ../../typo3/sysext/redirects/Classes/EventListener/AddPlainSlugReplacementSource.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../../typo3/sysext/redirects/Classes/Service/RedirectCacheService.php
 
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Resource\\File and TYPO3\\CMS\\Core\\Resource\\File will always evaluate to true\.$#'
