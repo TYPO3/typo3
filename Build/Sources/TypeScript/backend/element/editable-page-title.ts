@@ -211,9 +211,11 @@ export class EditablePageTitle extends LitElement {
     return this.editable && this.pageId > 0;
   }
 
-  private endEditing(): void {
+  private async endEditing(): Promise<void> {
     if (this.isEditable()) {
       this._isEditing = false;
+      await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+      this.shadowRoot.querySelector<HTMLButtonElement>('button[data-action="edit"]')?.focus();
     }
   }
 
