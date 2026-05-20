@@ -30,7 +30,7 @@ small_1 = value
 small_2 =
 
 # cat=Text/202/10; type=wrap; label=Wrap 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
-wrap_1 = value
+wrap_1 = value|second value
 # cat=Text/202/11; type=wrap; label=Wrap 2 - no value
 wrap_2 =
 

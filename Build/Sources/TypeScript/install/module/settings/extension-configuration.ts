@@ -180,12 +180,10 @@ class ExtensionConfiguration extends AbstractInteractableModule {
 
       parent.appendChild(offsetGroup);
 
-      parent.querySelectorAll('.t3js-emconf-offsetfield').forEach((offsetField: HTMLInputElement) => {
-        new RegularEvent('keyup', (event: KeyboardEvent) => {
-          const target = parent.querySelector<HTMLInputElement>((event.currentTarget as HTMLElement).dataset.target);
-          target.value = parent.querySelector<HTMLInputElement>(target.dataset.offsetfieldX).value + ',' + parent.querySelector<HTMLInputElement>(target.dataset.offsetfieldY).value;
-        }).bindTo(offsetField);
-      });
+      new RegularEvent('keyup', (event: KeyboardEvent, offsetField: HTMLInputElement): void => {
+        const target = parent.querySelector<HTMLInputElement>(offsetField.dataset.target);
+        target.value = parent.querySelector<HTMLInputElement>(target.dataset.offsetfieldX).value + ',' + parent.querySelector<HTMLInputElement>(target.dataset.offsetfieldY).value;
+      }).delegateTo(parent, '.t3js-emconf-offsetfield');
     });
 
     this.currentModal.querySelectorAll('.t3js-emconf-wrap').forEach((element: HTMLInputElement): void => {
@@ -201,12 +199,10 @@ class ExtensionConfiguration extends AbstractInteractableModule {
 
       parent.appendChild(offsetGroup);
 
-      parent.querySelectorAll('.t3js-emconf-wrapfield').forEach((wrapField: HTMLInputElement) => {
-        new RegularEvent('keyup', (event: KeyboardEvent) => {
-          const target = parent.querySelector<HTMLInputElement>((event.currentTarget as HTMLElement).dataset.target);
-          target.value = parent.querySelector<HTMLInputElement>(target.dataset.wrapfieldStart).value + '|' + parent.querySelector<HTMLInputElement>(target.dataset.wrapfieldEnd).value;
-        }).bindTo(wrapField);
-      });
+      new RegularEvent('keyup', (event: KeyboardEvent, wrapField: HTMLInputElement): void => {
+        const target = parent.querySelector<HTMLInputElement>(wrapField.dataset.target);
+        target.value = parent.querySelector<HTMLInputElement>(target.dataset.wrapfieldStart).value + '|' + parent.querySelector<HTMLInputElement>(target.dataset.wrapfieldEnd).value;
+      }).delegateTo(parent, '.t3js-emconf-wrapfield');
     });
   }
 }

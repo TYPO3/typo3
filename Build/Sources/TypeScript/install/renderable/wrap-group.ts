@@ -16,12 +16,12 @@ class WrapGroupElement extends LitElement {
       <div class="form-multigroup-wrap">
         <div class="form-multigroup-item">
           <div class="input-group">
-            <input id="${this.wrapId}_wrap_start" class="form-control t3js-emconf-wrapfield" data-target="#${this.wrapId}" value="${this.values[0].trim()}"/>
+            <input id="${this.wrapId}_wrap_start" class="form-control t3js-emconf-wrapfield" data-target="#${this.wrapId}" value="${this.values[0]?.trim()}"/>
           </div>
         </div>
         <div class="form-multigroup-item">
           <div class="input-group">
-            <input id="${this.wrapId}_wrap_end" class="form-control t3js-emconf-wrapfield" data-target="#${this.wrapId}" value="${this.values[0].trim()}"/>
+            <input id="${this.wrapId}_wrap_end" class="form-control t3js-emconf-wrapfield" data-target="#${this.wrapId}" value="${this.values[1]?.trim()}"/>
           </div>
         </div>
       </div>
