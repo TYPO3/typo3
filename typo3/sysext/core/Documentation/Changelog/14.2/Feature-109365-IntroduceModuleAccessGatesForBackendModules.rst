@@ -50,18 +50,18 @@ Example: Custom module access gate
     use TYPO3\CMS\Core\Attribute\AsModuleAccessGate;
     use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
-    #[AsModuleAccessGate(identifier: 'editor')]
+    #[AsModuleAccessGate(identifier: 'myEditor')]
     final readonly class EditorGate implements ModuleAccessGateInterface
     {
         public function decide(
             ModuleInterface $module,
             BackendUserAuthentication $user,
         ): ModuleAccessResult {
-            if ($module->getAccess() !== 'editor') {
+            if ($module->getAccess() !== 'myEditor') {
                 return ModuleAccessResult::Abstain;
             }
             // Custom logic: Check for a specific user group.
-            return $user->check('groupList', '3')
+            return in_array(3, $user->userGroupsUID, true)
                 ? ModuleAccessResult::Granted
                 : ModuleAccessResult::Denied;
         }
@@ -74,8 +74,8 @@ The custom gate can then be referenced in the module registration:
 
     return [
         'my_module' => [
-            'access' => 'editor',
-            'labels' => 'LLL:EXT:my_extension/Resources/Private/Language/locallang_mod.xlf',
+            'access' => 'myEditor',
+            'labels' => 'my_extension.module',
             // ...
         ],
     ];
@@ -88,7 +88,7 @@ evaluation order when multiple gates are registered:
 
 ..  code-block:: php
 
-    #[AsModuleAccessGate(identifier: 'editor', after: ['user'])]
+    #[AsModuleAccessGate(identifier: 'myEditor', after: ['user'])]
     final readonly class EditorGate implements ModuleAccessGateInterface
     {
         // ...
