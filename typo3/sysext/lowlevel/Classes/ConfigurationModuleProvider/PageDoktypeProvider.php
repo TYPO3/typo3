@@ -28,27 +28,18 @@ class PageDoktypeProvider extends AbstractProvider
     public function getConfiguration(): array
     {
         $configuration = [];
-        $allLabels = $this->prepareLabelsForAllTypes();
-        $providerConfiguration = $this->doktypeRegistry->exportConfiguration();
-        ksort($providerConfiguration);
-        foreach ($providerConfiguration as $pageType => $typeConfiguration) {
-            if (isset($allLabels[$pageType])) {
-                $typeConfiguration['name'] = $allLabels[$pageType];
-            }
-            $configuration[$pageType] = $typeConfiguration;
-        }
-        return $configuration;
-    }
-
-    protected function prepareLabelsForAllTypes(): array
-    {
-        $types = [];
         $languageService = $this->getLanguageService();
         foreach ($this->doktypeRegistry->getAllDoktypes() as $item) {
-            if (!$item->isDivider()) {
-                $types[(int)$item->getValue()] = $languageService->sL($item->getLabel());
+            if ($item->isDivider()) {
+                continue;
             }
+            $pageType = $item->getValue();
+            $configuration[$pageType] = [
+                'allowedTables' => $this->doktypeRegistry->getAllowedTypesForDoktype((int)$pageType),
+                'name' => $languageService->sL($item->getLabel()),
+            ];
         }
-        return $types;
+        ksort($configuration);
+        return $configuration;
     }
 }

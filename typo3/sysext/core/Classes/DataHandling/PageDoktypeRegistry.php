@@ -52,30 +52,22 @@ readonly class PageDoktypeRegistry
 
     /**
      * @internal only to be used within TYPO3 Core
+     * @return string[]
      */
     public function getAllowedTypesForDoktype(int $doktype): array
     {
-        $pageTypes = $this->exportConfiguration();
-        if (($pageTypes[$doktype]['allowedTables'] ?? []) !== []) {
-            return $pageTypes[$doktype]['allowedTables'];
+        $pagesSchema = $this->tcaSchemaFactory->get('pages');
+        if ($pagesSchema->hasSubSchema((string)$doktype)) {
+            $pageTypeSchema = $pagesSchema->getSubSchema((string)$doktype);
+            $allowedRecordTypes = $pageTypeSchema->getRawConfiguration()['allowedRecordTypes'] ?? [];
+            if ($allowedRecordTypes !== []) {
+                return $allowedRecordTypes;
+            }
         }
         $hardDefaults = ['pages', 'sys_category', 'sys_file_reference', 'sys_file_collection'];
-        $defaultAllowedRecordTypes = $this->tcaSchemaFactory->get('pages')->getRawConfiguration()['defaultAllowedRecordTypes'] ?? [];
+        $defaultAllowedRecordTypes = $pagesSchema->getRawConfiguration()['defaultAllowedRecordTypes'] ?? [];
         $mergedDefault = array_merge($hardDefaults, $defaultAllowedRecordTypes);
         return array_unique($mergedDefault);
-    }
-
-    /**
-     * @internal only to be used within TYPO3 Core
-     */
-    public function exportConfiguration(): array
-    {
-        $pageTypes = [];
-        foreach ($this->tcaSchemaFactory->get('pages')->getSubSchemata() as $pageType => $pageTypeSchema) {
-            $allowedRecordTypes = $pageTypeSchema->getRawConfiguration()['allowedRecordTypes'] ?? [];
-            $pageTypes[$pageType]['allowedTables'] = $allowedRecordTypes;
-        }
-        return $pageTypes;
     }
 
     /**
