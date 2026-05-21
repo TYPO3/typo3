@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
+use TYPO3\CMS\Frontend\Preview\PreviewSimulatorCalculator;
 
 /**
  * Middleware for handling preview settings
@@ -41,7 +42,10 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  */
 readonly class PreviewSimulator implements MiddlewareInterface
 {
-    public function __construct(protected Context $context) {}
+    public function __construct(
+        protected Context $context,
+        protected PreviewSimulatorCalculator $previewSimulatorCalculator = new PreviewSimulatorCalculator(),
+    ) {}
 
     /**
      * Evaluates preview settings if a backend user is logged in
@@ -166,22 +170,31 @@ readonly class PreviewSimulator implements MiddlewareInterface
 
     /**
      * Simulate user group for preview functionality. When previewing a page with a user group restriction,
-     * the parameter ADMCMD_simUser = <groupId> will be added to the preview url. Simulation happens.
+     * the parameter ADMCMD_simUser = <groupId(s)> will be added to the preview url. Simulation happens.
+     * Multiple group IDs can be provided as a comma-separated list (e.g. ADMCMD_simUser=1,2) to simulate
+     * a user that simultaneously satisfies multiple group restrictions, e.g. when a page's live and workspace
+     * versions are protected by different groups.
      * This functionality needs to be loaded after BackendAuthenticator as it is only relevant for
      * logged in backend users and needs to be done before any page resolving starts.
      */
     protected function simulateUserGroup(ServerRequestInterface $request): bool
     {
-        $simulateUserGroup = (int)($request->getQueryParams()['ADMCMD_simUser'] ?? 0);
-        if (!$simulateUserGroup) {
+        $simulatedUserGroups = $request->getQueryParams()['ADMCMD_simUser'] ?? '';
+        if (!is_scalar($simulatedUserGroups)) {
+            return false;
+        }
+        $simulateUserGroups = $this->previewSimulatorCalculator->getUserGroupIds((string)$simulatedUserGroups);
+        if ($simulateUserGroups === []) {
             return false;
         }
         $frontendUser = $request->getAttribute('frontend.user');
-        $frontendUser->user[$frontendUser->usergroup_column] = (string)$simulateUserGroup;
-        $frontendUser->userGroups[$simulateUserGroup] = [
-            'uid' => $simulateUserGroup,
-            'title' => '_PREVIEW_',
-        ];
+        $frontendUser->user[$frontendUser->usergroup_column] = implode(',', $simulateUserGroups);
+        foreach ($simulateUserGroups as $simulateUserGroup) {
+            $frontendUser->userGroups[$simulateUserGroup] = [
+                'uid' => $simulateUserGroup,
+                'title' => '_PREVIEW_',
+            ];
+        }
         // let's fake having a user with that group, too
         $frontendUser->user[$frontendUser->userid_column] = PHP_INT_MAX;
         // Set this option so the is_online timestamp is not updated in updateOnlineTimestamp()

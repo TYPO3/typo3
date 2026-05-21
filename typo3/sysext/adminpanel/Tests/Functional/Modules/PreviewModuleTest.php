@@ -74,6 +74,54 @@ final class PreviewModuleTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[TestWith(['2', [2]], 'A single group')]
+    #[TestWith(['2,3', [2, 3, 4]], 'Several groups with their subgroups')]
+    public function simulateUserFromPreviewParameterRespectsAllGroups(string $simulatedUserGroups, array $expectedGroupUids): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/PreviewModuleTestSimulateUsergroup.csv');
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+
+        $frontendUser = new FrontendUserAuthentication();
+        $request = (new ServerRequest())
+            ->withAttribute('frontend.user', $frontendUser)
+            ->withQueryParams(['ADMCMD_simUser' => $simulatedUserGroups]);
+
+        $configurationService = self::createStub(ConfigurationService::class);
+        $configurationService->method('getMainConfiguration')->willReturn([]);
+        $configurationService->method('getConfigurationOption')->willReturnMap([
+            ['preview', 'showHiddenPages', '0'],
+            ['preview', 'simulateDate', '0'],
+            ['preview', 'simulateUserGroup', '0'],
+            ['preview', 'showScheduledRecords', '0'],
+            ['preview', 'showHiddenRecords', '0'],
+            ['preview', 'showFluidDebug', '0'],
+        ]);
+
+        $previewModule = $this->get(PreviewModule::class);
+        $previewModule->injectConfigurationService($configurationService);
+        $previewModule->enrich($request);
+
+        self::assertSame($simulatedUserGroups, $frontendUser->user[$frontendUser->usergroup_column]);
+        self::assertEqualsCanonicalizing($expectedGroupUids, array_keys($frontendUser->userGroups));
+        self::assertEqualsCanonicalizing(
+            array_merge($expectedGroupUids, [-2]),
+            $this->get(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds')
+        );
+    }
+
+    #[Test]
+    public function previewSimulatorRunsAfterAdminPanelSoPreviewParametersTakePrecedence(): void
+    {
+        // The dispatcher wraps each middleware around the ones before it, so the last entry runs first.
+        $executionOrder = array_flip(array_reverse(array_keys($this->get('frontend.middlewares')->getArrayCopy())));
+
+        self::assertGreaterThan(
+            $executionOrder['typo3/cms-adminpanel/initiator'],
+            $executionOrder['typo3/cms-frontend/preview-simulator']
+        );
+    }
+
+    #[Test]
     #[TestWith(['1', true])]
     #[TestWith(['0', false])]
     public function showFluidDebugActivatesFluidDebugAndDisablesCache(string $showFluidDebug, bool $expected): void
