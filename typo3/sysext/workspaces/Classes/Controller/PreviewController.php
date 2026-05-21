@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Domain\PageAncestryResolver;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -40,6 +41,7 @@ use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Preview\PreviewSimulatorCalculator;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -62,6 +64,7 @@ final readonly class PreviewController
         private ExtensionConfiguration $extensionConfiguration,
         private LanguageServiceFactory $languageServiceFactory,
         private PageAncestryResolver $pageAncestryResolver,
+        private PreviewSimulatorCalculator $previewSimulatorCalculator,
     ) {}
 
     /**
@@ -144,22 +147,29 @@ final readonly class PreviewController
                 clone $this->context,
                 $rootline
             );
-            // Edge case 1: live version is protected, draft version isn't
-            if (isset($queryParametersLive['ADMCMD_simUser'])
-                && empty($queryParametersDraft['ADMCMD_simUser'])) {
-                // Use live versions ADMCMD_simUser for draft URL
-                $queryParametersDraft['ADMCMD_simUser'] = $queryParametersLive['ADMCMD_simUser'];
-            }
-            // Edge case 2: both versions are protected by different groups
-            if (($queryParametersLive['ADMCMD_simUser'] ?? 0) !== ($queryParametersDraft['ADMCMD_simUser'] ?? 0)) {
-                // TODO: figure out how the handle this edge case
+            // The frontend checks access on the live version and on the draft version overlaying it,
+            // so the simulated user has to pass the restrictions of both.
+            $simulatedUserGroups = $this->previewSimulatorCalculator->mergeUserGroups(
+                (string)($queryParametersLive['ADMCMD_simUser'] ?? ''),
+                (string)($queryParametersDraft['ADMCMD_simUser'] ?? '')
+            );
+            unset($queryParametersDraft['ADMCMD_simUser']);
+            if ($simulatedUserGroups !== '') {
+                $queryParametersDraft['ADMCMD_simUser'] = $simulatedUserGroups;
             }
             $parameters = array_merge(
                 $queryParameters,
                 $queryParametersDraft,
                 ['ADMCMD_prev' => 'IGNORE']
             );
-            $wsUrl = $this->generateUrl($site, $pageUid, $parameters);
+            // Without a frontend user, the draft version of a restricted page is not found when
+            // generating the URL, so the simulated groups are applied to the context as well,
+            // plus -2 ("show at any login"), which every logged-in frontend user has.
+            $draftContext = clone $this->context;
+            if ($simulatedUserGroups !== '') {
+                $draftContext->setAspect('frontend.user', new UserAspect(null, [-2, ...$this->previewSimulatorCalculator->getUserGroupIds($simulatedUserGroups)]));
+            }
+            $wsUrl = $this->generateUrl($site, $pageUid, $parameters, $draftContext);
         } catch (SiteNotFoundException|InvalidRouteArgumentsException $e) {
             throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $pageUid, $e->getMessage()), 1559794913, $e);
         }

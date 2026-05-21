@@ -1,0 +1,18 @@
+"pages",,,,,,,,,,,,,
+,"uid","pid","title","slug","doktype","is_siteroot","fe_group","t3ver_oid","t3ver_wsid","t3ver_state","perms_everybody","sys_language_uid","l10n_parent"
+,1,0,"Root","/",1,1,"",0,0,0,15,0,0
+,2,1,"Public","/public",1,0,"",0,0,0,15,0,0
+,3,1,"Restricted","/restricted",1,0,"1",0,0,0,15,0,0
+,4,1,"Restricted modified","/restricted-modified",1,0,"1",0,0,0,15,0,0
+,14,1,"Restricted modified (draft)","/restricted-modified",1,0,"1",4,91,0,15,0,0
+,5,1,"Restricted only in draft","/restricted-only-in-draft",1,0,"",0,0,0,15,0,0
+,15,1,"Restricted only in draft (draft)","/restricted-only-in-draft",1,0,"2",5,91,0,15,0,0
+,6,1,"Different groups","/different-groups",1,0,"1",0,0,0,15,0,0
+,16,1,"Different groups (draft)","/different-groups",1,0,"2",6,91,0,15,0,0
+,7,1,"New restricted","/new-restricted",1,0,"3",0,91,1,15,0,0
+,10,1,"Show at any login","/show-at-any-login",1,0,"-2",0,0,0,15,0,0
+,20,1,"Show at any login (draft)","/show-at-any-login",1,0,"-2",10,91,0,15,0,0
+,8,1,"Translated in draft","/translated-in-draft",1,0,"",0,0,0,15,0,0
+,18,1,"Translated in draft (DE)","/translated-in-draft-de",1,0,"",0,91,1,15,1,8
+,9,1,"Restricted translated in draft","/restricted-translated-in-draft",1,0,"1",0,0,0,15,0,0
+,19,1,"Restricted translated in draft (DE)","/restricted-translated-in-draft-de",1,0,"1",0,91,1,15,1,9

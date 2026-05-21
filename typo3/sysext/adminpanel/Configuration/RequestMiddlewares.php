@@ -17,6 +17,7 @@ return [
                 'typo3/cms-frontend/prepare-tsfe-rendering',
                 'typo3/cms-frontend/tsfe',
                 'typo3/cms-frontend/page-resolver',
+                'typo3/cms-frontend/preview-simulator',
             ],
             'after' => [
                 'typo3/cms-frontend/authentication',
