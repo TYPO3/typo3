@@ -389,11 +389,13 @@ class TranslationService implements SingletonInterface
             throw new \InvalidArgumentException('The argument "code" is empty', 1489272978);
         }
 
-        $validationErrors = $element->getProperties()['validationErrorMessages'] ?? null;
-        if (is_array($validationErrors)) {
-            foreach ($validationErrors as $validationError) {
-                if ((int)$validationError['code'] === $code) {
-                    return sprintf($validationError['message'], ...$arguments);
+        if ($element instanceof FormElementInterface) {
+            $validationErrors = $element->getProperties()['validationErrorMessages'] ?? null;
+            if (is_array($validationErrors)) {
+                foreach ($validationErrors as $validationError) {
+                    if ((int)$validationError['code'] === $code) {
+                        return sprintf($validationError['message'], ...$arguments);
+                    }
                 }
             }
         }

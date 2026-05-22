@@ -1099,7 +1099,6 @@ final class TranslationServiceTest extends FunctionalTestCase
     #[Test]
     public function translateFormElementErrorResolvesWithContentElementUidSuffix(): void
     {
-        self::markTestSkipped('translateFormElementError() calls getProperties() on RootRenderableInterface, which fails. See #100477');
         $formRuntimeXlfPaths = ['EXT:form_labels/Resources/Private/Language/locallang_ceuid_suffix_01.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier-42';
@@ -1134,7 +1133,6 @@ final class TranslationServiceTest extends FunctionalTestCase
     #[Test]
     public function translateFormElementErrorResolvesWithOriginalIdentifier(): void
     {
-        self::markTestSkipped('translateFormElementError() calls getProperties() on RootRenderableInterface, which fails. See #100477');
         $formRuntimeXlfPaths = ['EXT:form_labels/Resources/Private/Language/locallang_ceuid_suffix_02.xlf'];
 
         $formRuntimeIdentifier = 'form-runtime-identifier-42';
