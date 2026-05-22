@@ -521,7 +521,10 @@ class UriBuilder
         }
         /** @var ?ContentObjectRenderer $currentContentObject */
         $currentContentObject = $this->request->getAttribute('currentContentObject');
-        return $currentContentObject?->createUrl($typolinkConfiguration) ?? '';
+        if (!$currentContentObject) {
+            throw new \RuntimeException('Extbase UriBuilder needs a ContentObjectRenderer on its request', 1779442754);
+        }
+        return $currentContentObject->createUrl($typolinkConfiguration);
     }
 
     /**
