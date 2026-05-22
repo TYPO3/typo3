@@ -325,22 +325,10 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
 
 		-
-			rawMessage: 'Call to an undefined method TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface::getProperties().'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Service/TranslationService.php
-
-		-
 			rawMessage: 'Call to function is_object() with object will always evaluate to true.'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderFormValueViewHelper.php
-
-		-
-			rawMessage: Unreachable statement - code above always terminates.
-			identifier: deadCode.unreachable
-			count: 2
-			path: ../../typo3/sysext/form/Tests/Functional/Service/TranslationServiceTest.php
 
 		-
 			rawMessage: 'Call to function is_array() with null will always evaluate to false.'
