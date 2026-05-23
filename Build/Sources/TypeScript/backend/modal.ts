@@ -390,6 +390,8 @@ export class ModalElement extends LitElement {
             if (this.ajaxCallback) {
               this.ajaxCallback(this);
             }
+            // Native autofocus only covers content present when the dialog opens
+            this.querySelector<HTMLElement>(`${Identifiers.body} [autofocus]`)?.focus();
             this.dispatchEvent(new CustomEvent('modal-loaded'));
           });
         })
@@ -945,11 +947,10 @@ class Modal {
     }
 
     currentModal.addEventListener('typo3-modal-shown', (): void => {
-      // focus the button which was configured as active button
-      const activeButton = currentModal.querySelector(`${Identifiers.footer} .t3js-active`) as HTMLInputElement | null;
-      if (activeButton !== null) {
-        activeButton.focus();
-      }
+      // Prefer an autofocus field over the active button
+      const focusTarget = currentModal.querySelector<HTMLElement>(`${Identifiers.body} [autofocus]`)
+        ?? currentModal.querySelector<HTMLElement>(`${Identifiers.footer} .t3js-active`);
+      focusTarget?.focus();
     });
 
     // Remove modal from Modal.instances when hidden

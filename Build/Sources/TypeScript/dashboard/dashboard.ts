@@ -565,10 +565,10 @@ export class Dashboard extends LitElement {
 
   private editDashboard(dashboard: DashboardInterface): void {
     const content = html`
-      <form>
+      <form id="dashboard-edit-form">
         <div class="form-group">
           <label class="form-label" for="dashboard-form-edit-title">${labels.get('dashboard.title')}</label>
-          <input class="form-control" id="dashboard-form-edit-title" type="text" name="title" value=${dashboard.title || ''} required="required">
+          <input class="form-control" id="dashboard-form-edit-title" type="text" name="title" value=${dashboard.title || ''} required="required" autofocus>
         </div>
       </form>
     `;
@@ -580,11 +580,6 @@ export class Dashboard extends LitElement {
       severity: SeverityEnum.notice,
       content,
       callback: (currentModal: ModalElement): void => {
-
-        currentModal.addEventListener('typo3-modal-shown', (): void => {
-          (currentModal.querySelector('#dashboard-form-edit-title') as HTMLInputElement)?.focus();
-        });
-
         currentModal.querySelector('form').addEventListener('submit', (e: Event): void => {
           e.preventDefault();
           const form = e.target as HTMLFormElement;
@@ -608,7 +603,7 @@ export class Dashboard extends LitElement {
           text: labels.get('dashboard.configure.button.ok'),
           btnClass: 'btn-primary',
           name: 'save',
-          trigger: (e, modal) => modal.querySelector('form').requestSubmit(),
+          form: 'dashboard-edit-form',
         },
       ]
     });

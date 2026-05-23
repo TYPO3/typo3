@@ -57,10 +57,7 @@ class FileListReplaceHandler {
             text: labels.get('file_replace.button.replace'),
             btnClass: 'btn-primary',
             name: 'rename',
-            trigger: (): void => {
-              const form: HTMLFormElement = modal.querySelector('form');
-              form?.requestSubmit();
-            },
+            form: 'file-list-replace-form',
           },
         ],
         callback: function (modal: ModalElement) {
@@ -126,10 +123,10 @@ class FileListReplaceHandler {
             </dl>
           </div>
         </div>
-        <form>
+        <form id="file-list-replace-form">
           <div class="form-group">
             <label class="form-label" for="file_replace">${labels.get('file_replace.new_file.label')}</label>
-            <input id="file_replace" type="file" class="form-control" name="replace_1">
+            <input id="file_replace" type="file" class="form-control" name="replace_1" autofocus>
           </div>
           <div class="form-check">
             <input type="checkbox" value="1" id="keepFilename" name="keepFilename" class="form-check-input" checked>

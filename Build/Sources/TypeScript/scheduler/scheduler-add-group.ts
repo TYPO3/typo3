@@ -37,7 +37,7 @@ class SchedulerAddGroups {
       element.addEventListener('click', (button: MouseEvent) => {
         button.preventDefault();
         const content: TemplateResult = html`
-          <form name="scheduler-create-group" @submit=${this.createGroup}>
+          <form id="scheduler-create-group" name="scheduler-create-group" @submit=${this.createGroup}>
             <label class="form-label" for="actionCreateGroup">Group name</label>
             <input class="form-control" id="actionCreateGroup" required="" name="action[createGroup]" autofocus type="text">
             <div class="form-text mt-3">
@@ -46,7 +46,7 @@ class SchedulerAddGroups {
           </form>
         `;
 
-        const modal = Modal.advanced({
+        Modal.advanced({
           content: content,
           title: labels.get('function.group.add'),
           size: Modal.sizes.small,
@@ -57,20 +57,12 @@ class SchedulerAddGroups {
               btnClass: 'btn-default',
               name: 'cancel'
             },{
-              trigger: (): void => {
-                const form: HTMLFormElement = Modal.currentModal.querySelector('form[name="scheduler-create-group"]');
-                form.requestSubmit();
-              },
               text: labels.get('button.group.modalOk'),
               btnClass: 'btn-primary',
-              name: 'ok'
+              name: 'ok',
+              form: 'scheduler-create-group'
             }
           ]
-        });
-
-        modal.addEventListener('typo3-modal-shown', (): void => {
-          const input: HTMLInputElement = Modal.currentModal.querySelector('input[name="action[createGroup]"]');
-          input.focus();
         });
       });
     }

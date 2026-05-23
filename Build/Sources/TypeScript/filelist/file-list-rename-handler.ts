@@ -51,10 +51,7 @@ class FileListRenameHandler {
             text: labels.get('file_rename.button.rename'),
             btnClass: 'btn-primary',
             name: 'rename',
-            trigger: (): void => {
-              const form: HTMLFormElement = modal.querySelector('form');
-              form?.requestSubmit();
-            },
+            form: 'file-list-rename-form',
           },
         ],
         callback: function (modal: ModalElement) {
@@ -119,11 +116,11 @@ class FileListRenameHandler {
       labels.get('folder_rename.label') :
       labels.get('file_rename.label');
     return html`
-      <form>
+      <form id="file-list-rename-form">
         <label class="form-label" for="rename_target">
           ${label}
         </label>
-        <input id="rename_target" name="name" class="form-control" value="${resource.name}" required>
+        <input id="rename_target" name="name" class="form-control" value="${resource.name}" required autofocus>
       </form>
     `;
   }

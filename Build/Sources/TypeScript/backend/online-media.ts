@@ -106,9 +106,7 @@ class OnlineMedia {
         text: btnSubmit,
         btnClass: 'btn btn-primary',
         name: 'ok',
-        trigger: (): void => {
-          onlineMediaForm.querySelector('form').requestSubmit();
-        },
+        form: 'online-media-form',
       }],
     });
   }

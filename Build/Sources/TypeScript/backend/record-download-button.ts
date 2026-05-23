@@ -65,16 +65,15 @@ export class RecordDownloadButton extends PseudoButtonLitElement {
           text: this.ok || listLabels.get('button.ok'),
           btnClass: 'btn-primary',
           name: 'download',
-          trigger: (): void => {
-            const form: HTMLFormElement = modal.querySelector('form');
-            form?.submit();
-            modal.hideModal();
-          }
+          form: 'downloadSettingsForm',
         }
       ],
       ajaxCallback: (): void => {
+        const form: HTMLFormElement = modal.querySelector('form');
         const formatSelect: HTMLSelectElement = modal.querySelector(Selectors.formatSelector);
         const formatOptions: NodeListOf<HTMLDivElement> = modal.querySelectorAll(Selectors.formatOptions);
+
+        form?.addEventListener('submit', (): void => modal.hideModal());
 
         if (formatSelect === null || !formatOptions.length) {
           // Return in case elements do not exist in the ajax loaded modal content
