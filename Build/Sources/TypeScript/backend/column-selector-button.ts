@@ -160,7 +160,7 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
           text: this.buttonOk,
           btnClass: 'btn-primary',
           name: 'update',
-          trigger: (e: Event, modal: ModalElement): void => this.processSelection(modal)
+          form: 'columnSelectorForm',
         }
       ],
       ajaxCallback: (): void => this.handleModalContentLoaded(modal)
@@ -198,7 +198,10 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
       return;
     }
     // Prevent the form from being submitted as the form data will be send via an ajax request
-    form.addEventListener('submit', (e: Event): void => { e.preventDefault(); });
+    form.addEventListener('submit', (e: Event): void => {
+      e.preventDefault();
+      this.processSelection(currentModal);
+    });
 
     const columns: NodeListOf<HTMLInputElement> = currentModal.querySelectorAll(Selectors.columnsSelector);
     const columnsFilter: HTMLInputElement = currentModal.querySelector(Selectors.columnsFilterSelector);

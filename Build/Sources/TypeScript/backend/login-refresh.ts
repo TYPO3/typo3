@@ -284,15 +284,7 @@ class LoginRefresh {
           active: false,
           btnClass: 'btn-primary',
           name: 'refreshSession',
-          trigger: async (e: Event, modal: ModalElement) => {
-            modal.querySelector('form').requestSubmit();
-            const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.login_refresh).get();
-            const data = await response.resolve();
-            modal.hideModal();
-            if (!data.refresh.success) {
-              modal.dispatchEvent(new Event('show-login-form'));
-            }
-          }
+          form: 'beLoginRefresh',
         }
       ],
       content: html`

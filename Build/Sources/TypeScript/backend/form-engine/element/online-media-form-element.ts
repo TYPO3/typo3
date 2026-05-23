@@ -30,9 +30,9 @@ export class OnlineMediaFormElement extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <form @submit="${ this.dispatchSubmitEvent }">
+      <form id="online-media-form" @submit="${ this.dispatchSubmitEvent }">
         <div class="form-control-wrap">
-          <input type="text" class="form-control" name="online-media-url" placeholder="${this.placeholder}" required>
+          <input type="text" class="form-control" name="online-media-url" placeholder="${this.placeholder}" required autofocus>
           <div class="form-text">
             ${this.allowedExtensionsHelpText}<br>
             <ul class="badge-list">
