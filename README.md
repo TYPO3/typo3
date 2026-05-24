@@ -155,7 +155,7 @@ fund core development of TYPO3. The decision about what the funds are
 used for, is made by all members of the Association and the TYPO3
 Association Board. The decisions will be made transparent to the community
 and especially the supporting members. Your funds will also serve for
-other purposes as laid out in the bylaws.
+other purposes as laid out in the by laws.
 
 * [Donate to TYPO3](https://typo3.org/donate)
 * [Become a member of the TYPO3 Association](
