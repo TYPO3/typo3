@@ -222,19 +222,6 @@ class ClassSchema
             /** @var array<string, list<Attribute\IgnoreValidation>> $validateAttributes */
             $ignoreValidationAttributes = [];
 
-            // @todo Remove validation attribute and annotation parts with v15
-            if ($isAction) {
-                foreach ($reflectionMethod->getAttributes() as $attribute) {
-                    $attributeInstance = $attribute->newInstance();
-
-                    match ($attribute->getName()) {
-                        Attribute\Validate::class, Annotation\Validate::class => $validateAttributes[$attributeInstance->param ?? ''][] = $attributeInstance,
-                        Attribute\IgnoreValidation::class, Annotation\IgnoreValidation::class => $ignoreValidationAttributes[$attributeInstance->argumentName ?? ''][] = $attributeInstance,
-                        default => '' // non-extbase attributes
-                    };
-                }
-            }
-
             $docComment = $reflectionMethod->getDocComment();
             $docComment = is_string($docComment) ? $docComment : '';
 
@@ -248,9 +235,8 @@ class ClassSchema
                 if ($isAction) {
                     foreach ($parameterAttributes as $parameterAttribute) {
                         match ($parameterAttribute->getName()) {
-                            // @todo Remove Annotation fallbacks with v15
-                            Attribute\Validate::class, Annotation\Validate::class => $validateAttributes[$parameterName][] = $parameterAttribute->newInstance(),
-                            Attribute\IgnoreValidation::class, Annotation\IgnoreValidation::class => $ignoreValidationAttributes[$parameterName][] = $parameterAttribute->newInstance(),
+                            Attribute\Validate::class => $validateAttributes[$parameterName][] = $parameterAttribute->newInstance(),
+                            Attribute\IgnoreValidation::class => $ignoreValidationAttributes[$parameterName][] = $parameterAttribute->newInstance(),
                             default => '' // non-extbase attributes
                         };
                     }

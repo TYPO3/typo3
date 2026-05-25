@@ -17,16 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties;
-use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParam;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParamTypeHint;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
-use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClassSchemaTest extends UnitTestCase
@@ -101,17 +98,6 @@ final class ClassSchemaTest extends UnitTestCase
         $this->expectExceptionCode(1515075192);
 
         new ClassSchema(DummyControllerWithValidateAttributeWithoutParamTypeHint::class);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function classSchemaGenerationThrowsExceptionWithValidateAttributesForMissingParam(): void
-    {
-        $this->expectException(InvalidValidationConfigurationException::class);
-        $this->expectExceptionMessage('Invalid #[Validate] attribute in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParam->methodWithValidateAttributesAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');
-        $this->expectExceptionCode(1515073585);
-
-        new ClassSchema(DummyControllerWithValidateAttributeWithoutParam::class);
     }
 
     #[Test]

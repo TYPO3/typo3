@@ -122,6 +122,11 @@ The following extbase validator options have been removed:
 
 - :php:`someOption` in :php:`\TYPO3\CMS\Extbase\Validation\Validator\SomeValidator`
 
+The following extbase attribute usages have been removed:
+
+- :php:`#[IgnoreValidation]` for parameters at method level :ref:`(Deprecation entry) <deprecation-108227-1763668119>`
+- :php:`#[Validate]` for parameters at method level :ref:`(Deprecation entry) <deprecation-108227-1763668119>`
+
 The following fallbacks have been removed:
 
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getRequest()` no longer falls back to :php:`$GLOBALS['TYPO3_REQUEST']`; code must call :php:`setRequest()` after instantiation :ref:`(Deprecation entry) <deprecation-109575>`
