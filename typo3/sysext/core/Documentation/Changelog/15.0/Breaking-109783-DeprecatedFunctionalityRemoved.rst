@@ -186,6 +186,10 @@ The following content element definitions have been removed:
 
 - :typoscript:`tt_content.some_element`
 
+The following Fluid rendering mechanisms have been removed:
+
+- :php:`HeaderAssets` and :php:`FooterAssets` Fluid template sections are no longer auto-rendered  :ref:`(Deprecation entry) <deprecation-107057-1756471326>`
+
 Impact
 ======
 
