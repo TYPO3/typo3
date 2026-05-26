@@ -88,7 +88,7 @@ class SlugElement {
   }
 
   private registerEvents(): void {
-    const fieldsToListenOnList = Object.values(this.getAvailableFieldsForProposalGeneration()).map((field: HTMLElement) => `[id="${field.id}"]`);
+    const fieldsToListenOnList = Object.values(this.getAvailableFieldsForProposalGeneration()).map((field: HTMLElement) => field.dataset.slugSelector);
     const recreateButton: HTMLButtonElement = this.fullElement.querySelector(Selectors.recreateButton);
 
     // Listen on 'listenerFieldNames' for new pages. This is typically the 'title' field
@@ -217,12 +217,20 @@ class SlugElement {
   private getAvailableFieldsForProposalGeneration(): { [key: string]: HTMLElement } {
     const availableFields: { [key: string]: HTMLElement } = {};
     for (const [fieldName, selector] of Object.entries(this.fieldsToListenOn)) {
-      let field = document.querySelector('[data-formengine-input-name="' + selector + '"]') as HTMLElement;
-      if (field === null) {
+      const selectorCandidates = [
+        '[data-formengine-input-name="' + selector + '"]',
         // Also check for fields, which do not point to a hidden input field (e.g. "input type=hidden", readOnly, or select fields)
-        field = document.querySelector('[name="' + selector + '"]') as HTMLElement;
-      }
+        '[name="' + selector + '"]'
+      ];
+      let field: HTMLElement;
+      let usedSelector = '';
+      selectorCandidates.some((testSelector: string) => {
+        field = document.querySelector(testSelector) as HTMLElement;
+        usedSelector = testSelector;
+        return field !== null;
+      });
       if (field !== null) {
+        field.dataset.slugSelector = usedSelector;
         availableFields[fieldName] = field;
       }
     }
