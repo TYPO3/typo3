@@ -72,6 +72,10 @@ The following methods changed signature according to previous deprecations in v1
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109523-1775680564>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109548-1775851081>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109544-1775761298>`
+- :php:`\TYPO3\CMS\Extbase\Attribute\ORM\Cascade->__construct()` - argument :php:`$value` is now a :php:`?string` :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
+- :php:`\TYPO3\CMS\Extbase\Attribute\IgnoreValidation->__construct()` - accepts no arguments any more :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
+- :php:`\TYPO3\CMS\Extbase\Attribute\Validate->__construct()` - argument :php:`$validator` is not a :php:`string`, argument :php:`$param` has been removed :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
+
 
 The following public class properties have been dropped:
 

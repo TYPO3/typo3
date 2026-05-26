@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Attribute;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Extbase\Attribute\FileUpload;
@@ -26,41 +25,20 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class FileUploadTest extends UnitTestCase
 {
     #[Test]
-    #[IgnoreDeprecations]
-    public function constructorAcceptsConfigurationOptionsAsArray(): void
+    public function constructorAcceptsAttributeArguments(): void
     {
-        $this->expectUserDeprecationMessage(
-            'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. '
-            . 'Use explicit constructor parameters instead.',
+        $actual = new FileUpload(
+            validation: ['required' => true],
+            uploadFolder: '1:/user_upload',
+            addRandomSuffix: false,
+            createUploadFolderIfNotExist: false,
+            duplicationBehavior: DuplicationBehavior::RENAME,
         );
-
-        $actual = new FileUpload([
-            'validation' => [
-                'required' => true,
-            ],
-            'addRandomSuffix' => false,
-            'uploadFolder' => '1:/user_upload',
-            'createUploadFolderIfNotExist' => false,
-            'duplicationBehavior' => DuplicationBehavior::RENAME,
-        ]);
 
         self::assertSame(['required' => true], $actual->validation);
         self::assertSame('1:/user_upload', $actual->uploadFolder);
         self::assertFalse($actual->addRandomSuffix);
         self::assertFalse($actual->createUploadFolderIfNotExist);
         self::assertSame(DuplicationBehavior::RENAME, $actual->duplicationBehavior);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function constructorThrowsExceptionIfInvalidValueForDuplicationBehaviorIsPassed(): void
-    {
-        $this->expectExceptionObject(
-            new \RuntimeException('Wrong attribute configuration for "duplicationBehavior". Ensure, that the value is a valid DuplicationBehavior.', 1711453150),
-        );
-
-        new FileUpload([
-            'duplicationBehavior' => 'foo',
-        ]);
     }
 }

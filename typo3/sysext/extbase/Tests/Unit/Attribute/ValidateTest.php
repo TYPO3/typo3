@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Attribute;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Attribute\Validate;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -25,36 +24,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class ValidateTest extends UnitTestCase
 {
     #[Test]
-    #[IgnoreDeprecations]
-    public function constructorAcceptsConfigurationOptionsAsArray(): void
+    public function constructorAcceptsAttributeArguments(): void
     {
-        $this->expectUserDeprecationMessage(
-            'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. '
-            . 'Use explicit constructor parameters instead.',
-        );
-
-        $actual = new Validate([
-            'validator' => 'NotEmpty',
-            'options' => [
+        $actual = new Validate(
+            validator: 'NotEmpty',
+            options: [
                 'nullMessage' => 'No value given.',
-            ],
-            'param' => 'foo',
-        ]);
+            ]
+        );
 
         self::assertSame('NotEmpty', $actual->validator);
         self::assertSame(['nullMessage' => 'No value given.'], $actual->options);
-        self::assertSame('foo', $actual->param);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function constructorTriggersDeprecationErrorWhenParameterNameIsPassed(): void
-    {
-        $this->expectUserDeprecationMessage(
-            'Passing a parameter name to a #[Validate] attribute is deprecated and will be removed in TYPO3 v15.0. '
-            . 'Place the attribute on the method parameter instead.',
-        );
-
-        new Validate(validator: 'NotEmpty', param: 'foo');
     }
 }

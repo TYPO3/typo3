@@ -20,64 +20,17 @@ namespace TYPO3\CMS\Extbase\Attribute;
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class Validate
 {
-    public readonly string $validator;
-
     /**
-     * @var array<string, mixed>
-     */
-    public readonly array $options;
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15
-     */
-    public readonly ?string $param;
-
-    /**
-     * @param string|array{value?: non-empty-string, validator?: non-empty-string, options?: array<string, mixed>, param?: string} $validator
-     * @param array<string, mixed> $options
-     */
+      * @param array<string, mixed> $options
+      */
     public function __construct(
-        // @todo Convert to string and use CPP in TYPO3 v15.0
-        string|array $validator,
-        array $options = [],
-        ?string $param = null,
-    ) {
-        // @todo Remove with TYPO3 v15.0
-        if (is_array($validator)) {
-            trigger_error(
-                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. '
-                . 'Use explicit constructor parameters instead.',
-                E_USER_DEPRECATED,
-            );
-
-            $values = $validator;
-
-            $this->validator = $values['validator'] ?? $values['value'] ?? '';
-            $this->options = $values['options'] ?? $options;
-            $this->param = $values['param'] ?? $param;
-        } else {
-            $this->validator = $validator;
-            $this->options = $options;
-            $this->param = $param;
-        }
-
-        if ($this->param !== null) {
-            trigger_error(
-                'Passing a parameter name to a #[Validate] attribute is deprecated and will be removed in TYPO3 v15.0. '
-                . 'Place the attribute on the method parameter instead.',
-                E_USER_DEPRECATED,
-            );
-        }
-    }
+        public readonly string $validator,
+        public readonly array $options = []
+    ) {}
 
     public function __toString(): string
     {
         $strings = [];
-
-        if ($this->param !== null) {
-            $strings[] = $this->param;
-        }
-
         $strings[] = $this->validator;
 
         if (count($this->options) > 0) {

@@ -18,42 +18,4 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Attribute;
 
 #[\Attribute(\Attribute::TARGET_PARAMETER)]
-class IgnoreValidation
-{
-    /**
-     * @var non-empty-string|null
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15
-     */
-    public readonly ?string $argumentName;
-
-    /**
-     * @param non-empty-string|array{value?: non-empty-string, argumentName?: non-empty-string}|null $argumentName
-     */
-    public function __construct(
-        // @deprecated Remove with TYPO3 v15.0
-        string|array|null $argumentName = null,
-    ) {
-        // @deprecated Remove with TYPO3 v15.0
-        if (is_array($argumentName)) {
-            trigger_error(
-                'Passing an array of configuration values to Extbase attributes will be removed in TYPO3 v15.0. '
-                . 'Use explicit constructor parameters instead.',
-                E_USER_DEPRECATED,
-            );
-
-            $values = $argumentName;
-
-            $this->argumentName = $values['value'] ?? $values['argumentName'] ?? null;
-        } else {
-            $this->argumentName = $argumentName;
-        }
-
-        if ($this->argumentName !== null) {
-            trigger_error(
-                'Passing an argument name to an #[IgnoreValidation] attribute is deprecated and will be removed in '
-                . 'TYPO3 v15.0. Place the attribute on the method parameter instead.',
-                E_USER_DEPRECATED,
-            );
-        }
-    }
-}
+class IgnoreValidation {}
