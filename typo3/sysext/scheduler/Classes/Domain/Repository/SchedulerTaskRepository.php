@@ -56,6 +56,36 @@ readonly class SchedulerTaskRepository
     ) {}
 
     /**
+     * Adds a task to the pool.
+     *
+     * @param AbstractTask $task The object representing the task to add
+     * @return bool TRUE if the task was successfully added, FALSE otherwise
+     */
+    public function add(AbstractTask $task): bool
+    {
+        $taskUid = $task->getTaskUid();
+        if (!empty($taskUid)) {
+            return false;
+        }
+        $fields = $this->taskService->getFieldsForRecord($task);
+        $fields['pid'] = 0;
+        $newId = uniqid('NEW');
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([
+            self::TABLE_NAME => [
+                $newId => $fields,
+            ],
+        ], []);
+        $dataHandler->process_datamap();
+        $taskUid = (int)$dataHandler->substNEWwithIDs[$newId];
+        if ($taskUid) {
+            $task->setTaskUid($taskUid);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Removes a task completely from the system.
      *
      * @param int|AbstractTask $task The object representing the task to delete
@@ -149,6 +179,22 @@ readonly class SchedulerTaskRepository
         }
 
         return $this->createValidTaskObjectOrDisableTask($row);
+    }
+
+    /**
+     * Fetches the DB record for a given task UID.
+     *
+     * @param int $uid Primary key of the task to get
+     * @return array|null Database record for the task
+     * @see findByUid()
+     */
+    public function findRecordByUid(int $uid): ?array
+    {
+        $row = BackendUtility::getRecord(self::TABLE_NAME, $uid);
+        if (empty($row)) {
+            return null;
+        }
+        return $row;
     }
 
     /**
