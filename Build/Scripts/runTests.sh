@@ -923,10 +923,16 @@ fi
 
 handleDbmsOptions
 
-# ENV var "CI" is set by gitlab-ci. Use it to force some CI details.
 if [ "${CI}" == "true" ]; then
+    # ENV var "CI" is set by gitlab-ci. Use it to force some CI details.
     PHPSTAN_CONFIG_FILE="phpstan.ci.neon"
     CONTAINER_INTERACTIVE=""
+elif [ ! -t 0 ] || [ ! -t 1 ]; then
+    # If stdin or stdout is not a TTY (e.g. a script runner, pipe, or non-interactive shell),
+    # drop the interactive "-it" flags automatically to avoid podman warning "The input device
+    # is not a TTY." and docker failure, and to keep redirected output free of TTY control characters.
+    # Keep "--init" so the PID 1 init process still forwards signals (e.g. ctrl-c) to the test process.
+    CONTAINER_INTERACTIVE="--init"
 fi
 
 # determine default container binary to use: 1. podman 2. docker
