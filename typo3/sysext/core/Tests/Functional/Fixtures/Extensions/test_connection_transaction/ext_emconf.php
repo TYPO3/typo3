@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Provides configuration to test connection transaction',
     'description' => 'Provides configuration to test connection transaction',
     'category' => 'example',
-    'version' => '13.4.30',
+    'version' => '13.4.31',
     'state' => 'stable',
     'author' => 'Stefan Bürk',
     'author_email' => 'stefan@buerk.tech',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.30',
+            'typo3' => '13.4.31',
         ],
         'conflicts' => [],
         'suggests' => [],

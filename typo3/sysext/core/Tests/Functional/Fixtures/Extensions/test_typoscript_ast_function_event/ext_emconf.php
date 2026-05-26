@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'TypoScript AST function evaluation test',
     'description' => 'TypoScript AST function evaluation test',
     'category' => 'example',
-    'version' => '13.4.30',
+    'version' => '13.4.31',
     'state' => 'beta',
     'author' => 'Christian Kuhn',
     'author_email' => 'lolli@schwarzbu.ch',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.30',
+            'typo3' => '13.4.31',
         ],
         'conflicts' => [],
         'suggests' => [],
