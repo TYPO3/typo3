@@ -63,6 +63,32 @@ final class TcaColumnsProcessRecordTitleTest extends UnitTestCase
     }
 
     #[Test]
+    public function addDataSkipsAllColumnsForInlineChildWithFormattedLabelUserFunc(): void
+    {
+        $input = [
+            'columnsToProcess' => [],
+            'isInlineChild' => true,
+            'inlineParentConfig' => [
+                'foreign_label' => 'aForeignLabelField',
+            ],
+            'processedTca' => [
+                'ctrl' => [
+                    'label' => 'title',
+                    'label_alt' => 'relation1,relation2',
+                    'formattedLabel_userFunc' => 'MyVendor\\MyExt\\UserFunc->getLabel',
+                ],
+                'columns' => [],
+            ],
+        ];
+
+        $expected = $input;
+        // columnsToProcess must stay empty: formattedLabel_userFunc takes full precedence,
+        // so no expensive label/label_alt field processing should be triggered.
+        $expected['columnsToProcess'] = [];
+        self::assertSame($expected, (new TcaColumnsProcessRecordTitle())->addData($input));
+    }
+
+    #[Test]
     public function addDataRegistersForeignLabelInInlineContext(): void
     {
         $input = [
