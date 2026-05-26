@@ -33,6 +33,12 @@ class TcaColumnsProcessRecordTitle implements FormDataProviderInterface
      */
     public function addData(array $result)
     {
+        // formattedLabel_userFunc takes full precedence for inline children: no field
+        // processing is needed since the user function receives the full databaseRow directly.
+        if ($result['isInlineChild'] && !empty($result['processedTca']['ctrl']['formattedLabel_userFunc'])) {
+            return $result;
+        }
+
         // If a field name is given for the label we need to process the field
         if (!empty($result['processedTca']['ctrl']['label'])) {
             $result['columnsToProcess'][] = $result['processedTca']['ctrl']['label'];
