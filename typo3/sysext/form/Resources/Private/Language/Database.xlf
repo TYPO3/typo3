@@ -1272,12 +1272,6 @@ If you need higher values contact your administrator for help.
       <trans-unit id="formEditor.stage.toolbar.remove">
         <source>Remove</source>
       </trans-unit>
-      <trans-unit id="formEditor.stage.toolbar.new_element.inside" x-unused-since="14.2">
-        <source>Inside</source>
-      </trans-unit>
-      <trans-unit id="formEditor.stage.toolbar.new_element.after" x-unused-since="14.2">
-        <source>After</source>
-      </trans-unit>
       <trans-unit id="formEditor.inspector.editor.formelement_selector.title">
         <source>Insert formelement identifier</source>
       </trans-unit>

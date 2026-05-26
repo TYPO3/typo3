@@ -3,17 +3,8 @@
   <file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/db.xlf" date="2018-08-09T16:22:32Z" product-name="seo">
     <header/>
     <body>
-      <trans-unit id="pages.tabs.seo" x-unused-since="14.0">
-        <source>SEO</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.seo" x-unused-since="14.0">
-        <source>General SEO settings</source>
-      </trans-unit>
       <trans-unit id="pages.seo_title">
         <source>Title for search engines</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.robots" x-unused-since="14.0">
-        <source>Robot instructions</source>
       </trans-unit>
       <trans-unit id="pages.no_index">
         <source>No index</source>
@@ -27,9 +18,6 @@
       <trans-unit id="pages.no_follow_formlabel">
         <source>Follow this page</source>
       </trans-unit>
-      <trans-unit id="pages.palettes.opengraph" x-unused-since="14.0">
-        <source>Open Graph (Facebook)</source>
-      </trans-unit>
       <trans-unit id="pages.og_title">
         <source>Open Graph Title</source>
       </trans-unit>
@@ -38,9 +26,6 @@
       </trans-unit>
       <trans-unit id="pages.og_image">
         <source>Open Graph Image</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.twittercards" x-unused-since="14.0">
-        <source>X / Twitter Cards</source>
       </trans-unit>
       <trans-unit id="pages.twitter_title">
         <source>X / Twitter Title</source>
@@ -60,20 +45,11 @@
       <trans-unit id="pages.twitter_card.summary_large_image">
         <source>Summary Card with a large image</source>
       </trans-unit>
-      <trans-unit id="pages.palettes.canonical" x-unused-since="14.0">
-        <source>Canonical</source>
-      </trans-unit>
       <trans-unit id="pages.canonical_link">
         <source>Canonical link</source>
       </trans-unit>
       <trans-unit id="pages.canonical_link.description">
         <source>A canonical URL is the URL of a page that search engines are advised to choose as the most representative from a set of duplicate pages. Often called deduplication, this process helps search engines show only one version of the otherwise duplicate content in its search results. TYPO3 automatically sets this to the most likely URL of the page if not set explicitly - which is most likely the URL of the page itself. If set here, the page will be removed from the XML sitemap.</source>
-      </trans-unit>
-      <trans-unit id="pages.tabs.socialmedia" x-unused-since="14.0">
-        <source>Social media</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.sitemap" x-unused-since="14.0">
-        <source>Sitemap</source>
       </trans-unit>
       <trans-unit id="pages.sitemap_changefreq">
         <source>Change frequency</source>

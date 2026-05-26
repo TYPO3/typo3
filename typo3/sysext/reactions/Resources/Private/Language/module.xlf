@@ -6,9 +6,6 @@
       <trans-unit id="title">
         <source>Reactions</source>
       </trans-unit>
-      <trans-unit id="shortDescription" x-unused-since="14.0">
-        <source>Manage incoming HTTP webhooks to external system</source>
-      </trans-unit>
       <trans-unit id="short_description">
         <source>Manage incoming HTTP webhooks to external system</source>
       </trans-unit>

@@ -21,9 +21,6 @@
       <trans-unit id="overview.noPages.link.label">
         <source>Open the documentation</source>
       </trans-unit>
-      <trans-unit id="overview.noSiteConfiguration" x-unused-since="14.0">
-        <source>This site does not have a configuration, yet.</source>
-      </trans-unit>
       <trans-unit id="overview.addSiteConfiguration">
         <source>Add new site configuration for this site</source>
       </trans-unit>
@@ -230,9 +227,6 @@
       </trans-unit>
       <trans-unit id="labels.detail">
         <source>View Site Configuration "%s"</source>
-      </trans-unit>
-      <trans-unit id="labels.edit" x-unused-since="14.2">
-        <source>Edit Site Configuration "%s"</source>
       </trans-unit>
       <trans-unit id="contextMenu.editSiteSettings">
         <source>Edit Site Settings</source>

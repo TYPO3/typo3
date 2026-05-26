@@ -24,9 +24,6 @@
       <trans-unit id="filter.depth">
         <source>Depth</source>
       </trans-unit>
-      <trans-unit id="label_refresh" x-unused-since="14.2">
-        <source>Refresh display</source>
-      </trans-unit>
       <trans-unit id="filter.type">
         <source>Type</source>
       </trans-unit>
@@ -252,9 +249,6 @@
       </trans-unit>
       <trans-unit id="label_update-link-list">
         <source>Checking links, please stand by.</source>
-      </trans-unit>
-      <trans-unit id="label_refresh-link-list" x-unused-since="14.2">
-        <source>Refreshing link list, please stand by.</source>
       </trans-unit>
       <trans-unit id="needs-recheck">
         <source>Needs recheck</source>

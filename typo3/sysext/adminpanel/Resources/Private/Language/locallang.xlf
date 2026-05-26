@@ -18,9 +18,6 @@
       <trans-unit id="button.view">
         <source>View</source>
       </trans-unit>
-      <trans-unit id="button.clearAll" x-unused-since="14.2">
-        <source>Clear all</source>
-      </trans-unit>
     </body>
   </file>
 </xliff>

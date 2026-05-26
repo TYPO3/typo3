@@ -39,9 +39,6 @@
       <trans-unit id="panel.header.configuration">
         <source>Configuration</source>
       </trans-unit>
-      <trans-unit id="panel.header.numberOfSearchMatches" x-unused-since="14.2">
-        <source>%s search match(es)</source>
-      </trans-unit>
       <trans-unit id="panel.info.conditionActiveCount.multiple">
         <source>%s active conditions</source>
       </trans-unit>

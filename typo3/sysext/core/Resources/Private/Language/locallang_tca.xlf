@@ -156,35 +156,11 @@
       <trans-unit id="be_users.languageItemGroups.unavailable">
         <source>Unavailable Languages</source>
       </trans-unit>
-      <trans-unit id="be_users.tabs.permissions" x-unused-since="14.0">
-        <source>Module Permissions</source>
-      </trans-unit>
-      <trans-unit id="be_users.tabs.mounts_and_workspaces" x-unused-since="14.0">
-        <source>Mounts</source>
-      </trans-unit>
-      <trans-unit id="be_users.tabs.options" x-unused-since="14.0">
-        <source>Options</source>
-      </trans-unit>
       <trans-unit id="be_users.tabs.extended">
         <source>Extended</source>
       </trans-unit>
       <trans-unit id="be_users.tabs.access">
         <source>Access</source>
-      </trans-unit>
-      <trans-unit id="be_users.tabs.personal_data" x-unused-since="14.0">
-        <source>Personal Data</source>
-      </trans-unit>
-      <trans-unit id="be_users.tabs.permissionRecords" x-unused-since="14.0">
-        <source>Record Permissions</source>
-      </trans-unit>
-      <trans-unit id="be_users.palettes.account" x-unused-since="14.0">
-        <source>Account</source>
-      </trans-unit>
-      <trans-unit id="be_users.palettes.authentication" x-unused-since="14.0">
-        <source>Authentication</source>
-      </trans-unit>
-      <trans-unit id="be_users.palettes.permissionLanguages" x-unused-since="14.0">
-        <source>Language permissions</source>
       </trans-unit>
       <trans-unit id="be_users.user_settings">
         <source>User Settings</source>
@@ -227,27 +203,6 @@
       </trans-unit>
       <trans-unit id="be_groups.subgroup">
         <source>Inherit settings from groups</source>
-      </trans-unit>
-      <trans-unit id="be_groups.tabs.record_permissions" x-unused-since="14.0">
-        <source>Record Permissions</source>
-      </trans-unit>
-      <trans-unit id="be_groups.tabs.module_permissions" x-unused-since="14.0">
-        <source>Module Permissions</source>
-      </trans-unit>
-      <trans-unit id="be_groups.tabs.mounts_and_workspaces" x-unused-since="14.0">
-        <source>Mounts</source>
-      </trans-unit>
-      <trans-unit id="be_groups.palettes.authentication" x-unused-since="14.0">
-        <source>Authentication</source>
-      </trans-unit>
-      <trans-unit id="be_groups.palettes.permissionGeneral" x-unused-since="14.0">
-        <source>General permissions</source>
-      </trans-unit>
-      <trans-unit id="be_groups.palettes.permissionLanguages" x-unused-since="14.0">
-        <source>Language permissions</source>
-      </trans-unit>
-      <trans-unit id="be_groups.palettes.permissionSpecific" x-unused-since="14.0">
-        <source>Specific permissions</source>
       </trans-unit>
       <trans-unit id="be_groups.fileoper_perms">
         <source>Fileoperation permissions</source>
@@ -320,9 +275,6 @@
       </trans-unit>
       <trans-unit id="be_groups.fileoper_perms_diroper_perms_delete">
         <source>Directory: Delete recursively (rm -Rf)</source>
-      </trans-unit>
-      <trans-unit id="be_groups.tabs.options" x-unused-since="14.0">
-        <source>Options</source>
       </trans-unit>
       <trans-unit id="be_groups.tabs.extended">
         <source>Extended</source>
@@ -401,15 +353,6 @@
       </trans-unit>
       <trans-unit id="pages.nav_hide_toggle_formlabel">
         <source>Page enabled in menus</source>
-      </trans-unit>
-      <trans-unit id="doktype.I.0" x-unused-since="14.2">
-        <source>Standard</source>
-      </trans-unit>
-      <trans-unit id="doktype.I.1" x-unused-since="14.2">
-        <source>SysFolder</source>
-      </trans-unit>
-      <trans-unit id="doktype.I.folder" x-unused-since="14.2">
-        <source>Folder</source>
       </trans-unit>
       <trans-unit id="title">
         <source>Page title</source>
@@ -662,9 +605,6 @@
       </trans-unit>
       <trans-unit id="sys_category.tabs.category">
         <source>Categories</source>
-      </trans-unit>
-      <trans-unit id="sys_category.tabs.items" x-unused-since="14.0">
-        <source>Items</source>
       </trans-unit>
     </body>
   </file>

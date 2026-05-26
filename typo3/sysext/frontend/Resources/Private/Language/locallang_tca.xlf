@@ -3,105 +3,6 @@
   <file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms">
     <header/>
     <body>
-      <trans-unit id="mod_tx_cms_webinfo_page" x-unused-since="14.0">
-        <source>Pagetree Overview</source>
-      </trans-unit>
-      <trans-unit id="mod_tx_cms_webinfo_page.description" x-unused-since="14.0">
-        <source>View page records and settings in a tree structure with detailed metadata.</source>
-      </trans-unit>
-      <trans-unit id="mod_tx_cms_webinfo_lang" x-unused-since="14.0">
-        <source>Localization Overview</source>
-      </trans-unit>
-      <trans-unit id="mod_tx_cms_webinfo_lang.description" x-unused-since="14.0">
-        <source>Check translation status and manage localized content for pages.</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.standard" x-unused-since="14.0">
-        <source>Page</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.title" x-unused-since="14.0">
-        <source>Title</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.visibility" x-unused-since="14.0">
-        <source>Visibility</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.access" x-unused-since="14.0">
-        <source>Publish Dates and Access Rights</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.abstract" x-unused-since="14.0">
-        <source>Abstract</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.metatags" x-unused-since="14.0">
-        <source>Meta Tags</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.editorial" x-unused-since="14.0">
-        <source>Editorial</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.layout" x-unused-since="14.0">
-        <source>Page Layout</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.module" x-unused-since="14.0">
-        <source>Use as Container</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.replace" x-unused-since="14.0">
-        <source>Replace Content</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.links" x-unused-since="14.0">
-        <source>Links to this Page</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.caching" x-unused-since="14.0">
-        <source>Caching</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.language" x-unused-since="14.0">
-        <source>Language</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.miscellaneous" x-unused-since="14.0">
-        <source>Miscellaneous</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.media" x-unused-since="14.0">
-        <source>Files</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.storage" x-unused-since="14.0">
-        <source>General Record Storage Page</source>
-      </trans-unit>
-      <trans-unit id="pages.palettes.config" x-unused-since="14.0">
-        <source>Page TSconfig</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype_formlabel" x-unused-since="14.2">
-        <source>Type</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.I.0" x-unused-since="14.2">
-        <source>Advanced</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.I.2" x-unused-since="14.2">
-        <source>Shortcut</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.I.3" x-unused-since="14.2">
-        <source>Not in Menu</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.I.4" x-unused-since="14.2">
-        <source>Backend User Section</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.I.5" x-unused-since="14.2">
-        <source>Mount Point</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.I.7" x-unused-since="14.2">
-        <source>Menu Separator</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.link" x-unused-since="14.2">
-        <source>Link</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.I.8" x-unused-since="14.0">
-        <source>Link to External URL</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.div.page" x-unused-since="14.2">
-        <source>Page</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.div.link" x-unused-since="14.2">
-        <source>Link</source>
-      </trans-unit>
-      <trans-unit id="pages.doktype.div.special" x-unused-since="14.2">
-        <source>Special</source>
-      </trans-unit>
       <trans-unit id="pages.title_formlabel">
         <source>Page Title</source>
       </trans-unit>
@@ -166,9 +67,6 @@
         <source>Link Target</source>
       </trans-unit>
       <trans-unit id="pages.url">
-        <source>URL</source>
-      </trans-unit>
-      <trans-unit id="pages.url_formlabel" x-unused-since="14.0">
         <source>URL</source>
       </trans-unit>
       <trans-unit id="pages.lastUpdated">
@@ -414,9 +312,6 @@
       <trans-unit id="fe_users.usergroup">
         <source>Groups</source>
       </trans-unit>
-      <trans-unit id="fe_users.tabs.personalData" x-unused-since="14.0">
-        <source>Personal Data</source>
-      </trans-unit>
       <trans-unit id="fe_users.tabs.access">
         <source>Access</source>
       </trans-unit>
@@ -515,9 +410,6 @@
       </trans-unit>
       <trans-unit id="sys_template.tabs.files">
         <source>Resources</source>
-      </trans-unit>
-      <trans-unit id="sys_template.tabs.options" x-unused-since="14.0">
-        <source>Advanced Options</source>
       </trans-unit>
       <trans-unit id="sys_template.tabs.access">
         <source>Access</source>

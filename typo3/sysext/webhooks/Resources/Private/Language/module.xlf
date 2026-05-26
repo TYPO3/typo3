@@ -9,9 +9,6 @@
       <trans-unit id="short_description">
         <source>Manage outgoing HTTP webhooks to external system</source>
       </trans-unit>
-      <trans-unit id="shortDescription" x-unused-since="14.0">
-        <source>Manage outgoing HTTP webhooks to external system</source>
-      </trans-unit>
       <trans-unit id="description">
         <source>Configure TYPO3 webhooks to notify external systems when defined system events occur. Supports integrations with platforms such as Slack, Discord, payment providers, CRM systems, and more.</source>
       </trans-unit>

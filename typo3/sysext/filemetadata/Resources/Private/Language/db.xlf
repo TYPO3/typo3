@@ -134,41 +134,11 @@
         <source>Height</source>
       </trans-unit>
       <!-- sys_file_metadata tabs -->
-      <trans-unit id="tabs.metadata" x-unused-since="14.0">
-        <source>Metadata</source>
-      </trans-unit>
-      <trans-unit id="tabs.camera" x-unused-since="14.0">
-        <source>Camera Data</source>
-      </trans-unit>
-      <trans-unit id="tabs.audio" x-unused-since="14.0">
-        <source>Audio</source>
-      </trans-unit>
-      <trans-unit id="tabs.video" x-unused-since="14.0">
-        <source>Video</source>
-      </trans-unit>
       <!-- sys_file_metadata placeholder -->
       <trans-unit id="placeholder.keywords">
         <source>Keyword #1, keyword #2, ...</source>
       </trans-unit>
       <!-- sys_file_metadata palette -->
-      <trans-unit id="palette.metrics" x-unused-since="14.0">
-        <source>Metrics</source>
-      </trans-unit>
-      <trans-unit id="palette.geo_location" x-unused-since="14.0">
-        <source>Geo Location</source>
-      </trans-unit>
-      <trans-unit id="palette.visibility" x-unused-since="14.0">
-        <source>Visibility</source>
-      </trans-unit>
-      <trans-unit id="palette.content_date" x-unused-since="14.0">
-        <source>Content Date</source>
-      </trans-unit>
-      <trans-unit id="palette.accessibility" x-unused-since="14.0">
-        <source>Accessibility</source>
-      </trans-unit>
-      <trans-unit id="palette.gps" x-unused-since="14.0">
-        <source>GPS</source>
-      </trans-unit>
       <!-- fe_groups fields -->
       <trans-unit id="fe_groups.files">
         <source>Allowed files</source>

@@ -44,45 +44,13 @@ use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 readonly class LocalizationFactory
 {
     protected const MOVED_FILES = [
-        // @todo: remove the following files in TYPO3 v15.0, they serve as a fallback for old syntax and files that have been moved
-        'EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf' => 'EXT:lowlevel/Resources/Private/Language/Modules/database_integrity.xlf',
-        'EXT:dashboard/Resources/Private/Language/locallang_tca.xlf' => 'EXT:dashboard/Resources/Private/Language/db.xlf',
-        'EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf' => 'EXT:filemetadata/Resources/Private/Language/db.xlf',
-        'EXT:impexp/Resources/Private/Language/locallang_tca.xlf' => 'EXT:impexp/Resources/Private/Language/db.xlf',
-        'EXT:linkvalidator/Resources/Private/Language/locallang.xlf' => 'EXT:linkvalidator/Resources/Private/Language/db.xlf',
-        'EXT:seo/Resources/Private/Language/locallang_tca.xlf' => 'EXT:seo/Resources/Private/Language/db.xlf',
-        'EXT:webhooks/Resources/Private/Language/Modules/webhooks.xlf' => 'EXT:webhooks/Resources/Private/Language/module.xlf',
-        'EXT:reactions/Resources/Private/Language/Modules/webhooks.xlf' => 'EXT:reactions/Resources/Private/Language/module.xlf',
+        // Files that have been moved to a new location.
+        // Add entries as: 'EXT:old/path/file.xlf' => 'EXT:new/path/file.xlf'
     ];
 
     protected const DEPRECATED_FILES = [
-        // @todo: remove the following files in TYPO3 v15.0
-        'EXT:backend/Resources/Private/Language/locallang_view_help.xlf',
-        'EXT:backend/Resources/Private/Language/locallang_view_help.xlf',
-        'EXT:backend/Resources/Private/Language/locallang_sitesettings_module.xlf',
-        'EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf',
-        'EXT:backend/Resources/Private/Language/locallang_mod.xlf',
-        'EXT:belog/Resources/Private/Language/locallang_mod.xlf',
-        'EXT:beuser/Resources/Private/Language/locallang_mod.xlf',
-        'EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
-        'EXT:core/Resources/Private/Language/locallang_mod_system.xlf',
-        'EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
-        'EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
-        'EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
-        'EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf',
-        'EXT:core/Resources/Private/Language/locallang_tsfe.xlf',
-        'EXT:dashboard/Resources/Private/Language/locallang_mod.xlf',
-        'EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf',
-        'EXT:form/Resources/Private/Language/locallang_module.xlf',
-        'EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf',
-        'EXT:install/Resources/Private/Language/ModuleInstallUpgrade.xlf',
-        'EXT:install/Resources/Private/Language/ModuleInstallSettings.xlf',
-        'EXT:install/Resources/Private/Language/ModuleInstallMaintenance.xlf',
-        'EXT:install/Resources/Private/Language/ModuleInstallEnvironment.xlf',
-        'EXT:install/Resources/Private/Language/BackendModule.xlf',
-        'EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf',
-        'EXT:linkvalidator/Resources/Private/Language/Module/locallang_mod.xlf',
-        'EXT:recycler/Resources/Private/Language/locallang_mod.xlf',
+        // Files that are deprecated and should no longer be referenced.
+        // Add entries as: 'EXT:ext/Resources/Private/Language/file.xlf'
     ];
 
     public function __construct(
@@ -108,6 +76,7 @@ readonly class LocalizationFactory
     public function isLanguageFileDeprecated(string $fileReference): bool
     {
         return in_array($fileReference, self::DEPRECATED_FILES)
+            // @phpstan-ignore isset.offset (MOVED_FILES is intentionally empty for now, remove this once a first entry is added)
             || isset(self::MOVED_FILES[$fileReference]);
     }
 
@@ -185,6 +154,7 @@ readonly class LocalizationFactory
                 E_USER_DEPRECATED
             );
         }
+        // @phpstan-ignore isset.offset (MOVED_FILES is intentionally empty for now, remove this once a first entry is added)
         if (isset(self::MOVED_FILES[$fileReference])) {
             trigger_error('The file ' . $fileReference . ' has been moved to ' . self::MOVED_FILES[$fileReference] . '. Please update your code accordingly.', E_USER_DEPRECATED);
             $fileReference = self::MOVED_FILES[$fileReference];

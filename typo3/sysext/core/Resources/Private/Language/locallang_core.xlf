@@ -234,9 +234,6 @@
       <trans-unit id="labels.csv">
         <source>Download CSV file</source>
       </trans-unit>
-      <trans-unit id="labels.clear_cache" x-unused-since="14.2">
-        <source>Clear cache for this page</source>
-      </trans-unit>
       <trans-unit id="labels.no_title">
         <source>No title</source>
       </trans-unit>
@@ -377,15 +374,6 @@
       </trans-unit>
       <trans-unit id="labels.editMultiple">
         <source>Edit multiple</source>
-      </trans-unit>
-      <trans-unit id="labels.editMultiplePages" x-unused-since="14.2">
-        <source>Edit multiple pages</source>
-      </trans-unit>
-      <trans-unit id="labels.editMultipleRecords" x-unused-since="14.2">
-        <source>Edit multiple "%s" records on page "%s"</source>
-      </trans-unit>
-      <trans-unit id="labels.editMultipleRecordsRootLevel" x-unused-since="14.2">
-        <source>Edit multiple "%s" records on root level</source>
       </trans-unit>
       <trans-unit id="labels.records">
         <source>{count, plural, one {# record} other {# records}}</source>
@@ -1065,45 +1053,6 @@
       <trans-unit id="rm.closeDoc">
         <source>Close</source>
       </trans-unit>
-      <trans-unit id="rm.clearCache_thisPage" x-unused-since="14.2">
-        <source>This page</source>
-      </trans-unit>
-      <trans-unit id="rm.clearCache_all" x-unused-since="14.2">
-        <source>Clear FE cache</source>
-      </trans-unit>
-      <trans-unit id="rm.clearCache_pages" x-unused-since="14.2">
-        <source>Clear Page Cache</source>
-      </trans-unit>
-      <trans-unit id="rm.clearCache_allTypo3Conf" x-unused-since="14.2">
-        <source>Clear cache in typo3conf/</source>
-      </trans-unit>
-      <trans-unit id="rm.clearCacheMenu_all" x-unused-since="14.2">
-        <source>Clear all caches</source>
-      </trans-unit>
-      <trans-unit id="rm.clearCacheMenu_pages" x-unused-since="14.2">
-        <source>Clear page content cache</source>
-      </trans-unit>
-      <trans-unit id="rm.clearCacheMenu_allTypo3Conf" x-unused-since="14.2">
-        <source>Clear configuration cache</source>
-      </trans-unit>
-      <trans-unit id="flushPageCachesTitle" x-unused-since="14.2">
-        <source>Flush frontend caches</source>
-      </trans-unit>
-      <trans-unit id="flushPageCachesDescription" x-unused-since="14.2">
-        <source>Clear frontend and page-related caches.</source>
-      </trans-unit>
-      <trans-unit id="flushAllCachesTitle2" x-unused-since="14.2">
-        <source>Flush all caches</source>
-      </trans-unit>
-      <trans-unit id="flushAllCachesDescription2" x-unused-since="14.2">
-        <source>Clear frontend and page-related caches, all system-related caches, including localization, extension configuration, file and opcode caches. Rebuilding these caches may take some time.</source>
-      </trans-unit>
-      <trans-unit id="flushCaches.error" x-unused-since="14.2">
-        <source>An error occurred</source>
-      </trans-unit>
-      <trans-unit id="flushCaches.error.description" x-unused-since="14.2">
-        <source>An error occurred while clearing the cache. Some caches may not have been cleared successfully.</source>
-      </trans-unit>
       <trans-unit id="rm.adminFunctions">
         <source>Admin functions</source>
       </trans-unit>
@@ -1475,9 +1424,6 @@
       </trans-unit>
       <trans-unit id="error.missingLanguageIsocode">
         <source>Missing ISO code for language "%s" (UID %d), please edit the language record and set it.</source>
-      </trans-unit>
-      <trans-unit id="error.misconfiguredPasswordRules" x-unused-since="14.2">
-        <source>No password could be generated due to misconfigured password rules.</source>
       </trans-unit>
       <trans-unit id="labels.deleteTitle">
         <source>Revert to default Constant</source>

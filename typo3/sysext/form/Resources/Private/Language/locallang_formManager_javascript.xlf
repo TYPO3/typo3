@@ -12,12 +12,6 @@
       <trans-unit id="formManager.new_form_name">
         <source>New form name</source>
       </trans-unit>
-      <trans-unit id="formManager.form_save_path" x-unused-since="14.2">
-        <source>Storage</source>
-      </trans-unit>
-      <trans-unit id="formManager.form_save_path_description" x-unused-since="14.2">
-        <source>Select the storage where your form definition will be saved.</source>
-      </trans-unit>
       <trans-unit id="formManager.form_storageLocation">
         <source>Location</source>
       </trans-unit>

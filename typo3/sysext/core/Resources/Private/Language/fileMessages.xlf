@@ -15,9 +15,6 @@
       <trans-unit id="FileUtility.CouldNotDeleteDirectory">
         <source>Folder "%s" could not be deleted. It must be empty, as recursive deletion is not enabled.</source>
       </trans-unit>
-      <trans-unit id="FileUtility.CouldNotDeleteDirectory1" x-unused-since="14.1">
-        <source>Could not delete directory "%s"! There might be a problem with write permissions.</source>
-      </trans-unit>
       <trans-unit id="FileUtility.CouldNotDeleteFile">
         <source>File "%s" cannot not be deleted due to insufficent write permissions.</source>
       </trans-unit>
@@ -87,17 +84,11 @@
       <trans-unit id="FileUtility.FileExtensionIsNotATextfileFormat">
         <source>File extension "%s" is not a supported text file format. Supported formats: %s.</source>
       </trans-unit>
-      <trans-unit id="FileUtility.FileExtensionIsNotzip" x-unused-since="14.1">
-        <source>File extension is not "zip".</source>
-      </trans-unit>
       <trans-unit id="FileUtility.FileMovedTo">
         <source>File "%s" moved to "%s".</source>
       </trans-unit>
       <trans-unit id="FileUtility.FileNameWasNotAllowed">
         <source>The file name %s is not allowed.</source>
-      </trans-unit>
-      <trans-unit id="FileUtility.FileOrDestinationWasNotWithinYourMountpoints" x-unused-since="14.1">
-        <source>File "%s" or destination "%s" was not within your mountpoints!</source>
       </trans-unit>
       <trans-unit id="FileUtility.FileOrDirectoryExistedAlready">
         <source>File or directory "%s" already exists.</source>
@@ -122,9 +113,6 @@
       </trans-unit>
       <trans-unit id="FileUtility.FileWasNotSaved">
         <source>File "%s" cannot be saved due to insufficent write permissions.</source>
-      </trans-unit>
-      <trans-unit id="FileUtility.FileWasNotSaved2" x-unused-since="14.1">
-        <source>File "%s" was not saved! File extension rejected!</source>
       </trans-unit>
       <trans-unit id="FileUtility.NoFileWasUploaded">
         <source>No file was uploaded.</source>
@@ -171,9 +159,6 @@
       <trans-unit id="FileUtility.TheUploadedFileExceedsTheSize-limit">
         <source>The uploaded file "%s" exceeds the maximum allowed file size.</source>
       </trans-unit>
-      <trans-unit id="FileUtility.UnzippingFileIn" x-unused-since="14.1">
-        <source>Unzipping file "%s" in "%s".</source>
-      </trans-unit>
       <trans-unit id="FileUtility.UploadedFileCouldNotBeMoved">
         <source>Uploaded file could not be moved in "%s" due to insufficent write permissions.</source>
       </trans-unit>
@@ -218,9 +203,6 @@
       </trans-unit>
       <trans-unit id="FileUtility.YouAreNotAllowedToRenameFiles">
         <source>Renaming files is not permitted.</source>
-      </trans-unit>
-      <trans-unit id="FileUtility.YouAreNotAllowedToUnzipFiles" x-unused-since="14.1">
-        <source>You are not allowed to unzip files.</source>
       </trans-unit>
       <trans-unit id="FileUtility.YouAreNotAllowedToUploadFiles">
         <source>Uploading files is not permitted.</source>

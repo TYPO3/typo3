@@ -266,9 +266,6 @@
           </strong>
 				]]></source>
       </trans-unit>
-      <trans-unit id="dependencyCheck.unresolvedDependencies.question" x-unused-since="14.0">
-        <source>Are you sure you want to proceed?</source>
-      </trans-unit>
       <trans-unit id="dependencyCheck.unresolvedDependencies.proceed">
         <source>Activate the extension</source>
       </trans-unit>
@@ -289,9 +286,6 @@
       </trans-unit>
       <trans-unit id="downloadExtension.dependencies.resolveAutomatically">
         <source>Shall these dependencies be resolved automatically?</source>
-      </trans-unit>
-      <trans-unit id="downloadExtension.dependencies.errorTitle" x-unused-since="14.0">
-        <source>Dependencies could not be resolved</source>
       </trans-unit>
       <trans-unit id="dependencyCheck.modalTitle.activate">
         <source>Activate Extension "%s"</source>
@@ -427,9 +421,6 @@
       </trans-unit>
       <trans-unit id="distributions">
         <source>Get preconfigured distribution</source>
-      </trans-unit>
-      <trans-unit id="extensionList.installDistribution" x-unused-since="14.2">
-        <source>Install</source>
       </trans-unit>
       <trans-unit id="extensionList.installImpexp">
         <source>Please install the Import/Export (impexp) extension to enable distribution support.</source>
