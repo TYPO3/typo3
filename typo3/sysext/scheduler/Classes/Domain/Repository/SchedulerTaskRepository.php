@@ -286,7 +286,7 @@ readonly class SchedulerTaskRepository
             $taskData['lastExecutionFailure'] = false;
             if (!empty($row['lastexecution_failure'])) {
                 $taskData['lastExecutionFailure'] = true;
-                $exceptionArray = @unserialize($row['lastexecution_failure']);
+                $exceptionArray = unserialize($row['lastexecution_failure'], ['allowed_classes' => false]);
                 $taskData['lastExecutionFailureCode'] = '';
                 $taskData['lastExecutionFailureMessage'] = '';
                 if (is_array($exceptionArray)) {
