@@ -971,7 +971,7 @@ if [ "${DBMS}" = "postgres" ] && [ "${DBMS_VERSION}" -ge 18 ]; then
     POSTGRES_TMPFS_MOUNT="/var/lib/postgresql"
 fi
 # Not a bug; render-guides has no "1.x" release yet.
-IMAGE_RSTRENDERING="ghcr.io/typo3-documentation/render-guides:0.37"
+IMAGE_RSTRENDERING="ghcr.io/typo3-documentation/render-guides:0.40"
 
 # Remove handled options and leaving the rest in the line, so it can be passed raw to commands
 shift $((OPTIND - 1))
