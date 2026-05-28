@@ -739,22 +739,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/ConnectionPool.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1010Platform.php
-
-		-
 			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MariaDB1010Platform\)\.$#'
 			identifier: varTag.nativeType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1010Platform.php
-
-		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1052Platform.php
 
 		-
 			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MariaDB1052Platform\)\.$#'
@@ -763,22 +751,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1052Platform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1060Platform.php
-
-		-
 			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MariaDB1060Platform\)\.$#'
 			identifier: varTag.nativeType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDB1060Platform.php
-
-		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDBPlatform.php
 
 		-
 			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MariaDBPlatform\)\.$#'
@@ -787,22 +763,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDBPlatform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL80Platform.php
-
-		-
 			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MySQL80Platform\)\.$#'
 			identifier: varTag.nativeType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL80Platform.php
-
-		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL84Platform.php
 
 		-
 			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MySQL84Platform\)\.$#'
@@ -811,22 +775,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQL84Platform.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQLPlatform.php
-
-		-
 			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\MySQLPlatform\)\.$#'
 			identifier: varTag.nativeType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Platform/MySQLPlatform.php
-
-		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/PostgreSQLPlatform.php
 
 		-
 			message: '#^PHPDoc tag @var with type Doctrine\\DBAL\\Platforms\\AbstractPlatform is not subtype of native type \$this\(TYPO3\\CMS\\Core\\Database\\Platform\\PostgreSQLPlatform\)\.$#'
@@ -1771,7 +1723,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/GeneralUtility.php
 
 		-
-			message: '#^Binary operation "&" between string and string\|false results in an error\.$#'
+			message: '#^Binary operation "&" between non\-empty\-string and string\|false results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/IpAnonymizationUtility.php
