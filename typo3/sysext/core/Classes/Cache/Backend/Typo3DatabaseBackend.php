@@ -287,10 +287,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $cacheEntryIdentifiers = $result->fetchFirstColumn();
         if (!empty($cacheEntryIdentifiers)) {
             // Delete tag rows connected to expired cache entries
-            $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
-            $queryBuilder->delete($this->tagsTable)
-                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                ->executeStatement();
+            $this->deleteTagsChunked($cacheEntryIdentifiers);
         }
         $queryBuilder->delete($this->cacheTable)
             ->where($queryBuilder->expr()->lt(
@@ -315,10 +312,22 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $tagsEntryIdentifiers = $result->fetchFirstColumn();
 
         if (!empty($tagsEntryIdentifiers)) {
+            $this->deleteTagsChunked($tagsEntryIdentifiers);
+        }
+    }
+
+    /**
+     * @param string[] $items
+     */
+    protected function deleteTagsChunked(array $items): void
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tagsTable);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+        foreach (array_chunk($items, $maxBindParameters, true) as $itemsChunk) {
             $queryBuilder = $connection->createQueryBuilder();
-            $quotedIdentifiers = $queryBuilder->createNamedParameter($tagsEntryIdentifiers, Connection::PARAM_STR_ARRAY);
-            $queryBuilder->delete($this->tagsTable)
-                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+            $queryBuilder
+                ->delete($this->tagsTable)
+                ->where($queryBuilder->expr()->in('identifier', $queryBuilder->quoteArrayBasedValueListToStringList($itemsChunk)))
                 ->executeStatement();
         }
     }
