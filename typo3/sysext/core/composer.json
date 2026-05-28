@@ -137,9 +137,6 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Core\\": "Classes/"
 		},
-		"classmap": [
-			"DeprecatedClasses/ext-install/"
-		],
 		"files": [
 			"Resources/PHP/GlobalDebugFunctions.php"
 		]

@@ -20,6 +20,10 @@ The following PHP classes that have previously been marked as deprecated with v1
 - :php:`\TYPO3\CMS\Frontend\Resource\FilePathSanitizer` :ref:`(Deprecation entry) <deprecation-107537-1760305681>`
 - :php:`\TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck` :ref:`(Deprecation entry) <deprecation-107931-1775647667>`
 - :php:`\TYPO3\CMS\Fluid\ViewHelpers\Debug\RenderViewHelper` :ref:`(Deprecation entry) <deprecation-107208-1754387701>`
+- :php:`\TYPO3\CMS\Install\Attribute\UpgradeWizard` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Install\Updates\Confirmation\DatabaseUpdatedPrerequisite` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -28,6 +32,11 @@ The following PHP classes have been declared :php:`final`:
 The following PHP interfaces that have previously been marked as deprecated with v14 have been removed:
 
 - :php:`\TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface` :ref:`(Deprecation entry) <deprecation-107436-1736639846>`
+- :php:`\TYPO3\CMS\Install\Updates\ChattyInterface` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Install\Updates\ConfirmableInterface` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Install\Updates\PrerequisiteInterface` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Install\Updates\RepeatableInterface` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Install\Updates\UpgradeWizardInterface` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 
 The following PHP interfaces changed:
 
