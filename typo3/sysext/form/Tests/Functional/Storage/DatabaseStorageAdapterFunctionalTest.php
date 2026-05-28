@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Storage;
 
 use Doctrine\DBAL\Types\Types;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -156,6 +157,9 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
         self::assertSame('crud-test-form', $result->identifier);
     }
 
+    #[Group('not-mysql')]
+    #[Group('not-mariadb')]
+    #[Group('not-postgres')]
     #[Test]
     public function readThrowsExceptionForInvalidJsonInDatabase(): void
     {
@@ -172,6 +176,35 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
             'deleted' => 0,
         ], [
             'configuration' => Types::STRING,
+        ]);
+
+        $subject = $this->getSubject();
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+
+        $this->expectException(PersistenceManagerException::class);
+        // @todo Needs to be changed to `1767199423` with https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
+        $this->expectExceptionCode(1767199444);
+
+        $subject->read(new FormIdentifier('100'), $request);
+    }
+
+    #[Test]
+    public function readThrowsExceptionForDoubleEncodedJsonInDatabase(): void
+    {
+        // Insert a record with invalid JSON directly via raw SQL,
+        // bypassing Doctrine's JSON type validation which would reject it during CSV import.
+        $connection = $this->get(ConnectionPool::class)
+            ->getConnectionForTable('form_definition');
+        $connection->insert('form_definition', [
+            'uid' => 100,
+            'pid' => 0,
+            'identifier' => 'invalid-json-form',
+            'label' => 'Invalid JSON Form',
+            'configuration' => 'this-is-not-valid-json{{{',
+            'deleted' => 0,
+        ], [
+            // Ensure double json encoding with https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
+            'configuration' => Types::JSON,
         ]);
 
         $subject = $this->getSubject();
