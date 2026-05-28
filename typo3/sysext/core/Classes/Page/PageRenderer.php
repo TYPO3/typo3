@@ -261,20 +261,8 @@ class PageRenderer implements SingletonInterface
     /**
      * Sets language
      */
-    public function setLanguage(Locale $locale, ?ServerRequestInterface $request = null): void
+    public function setLanguage(Locale $locale, ServerRequestInterface $request): void
     {
-        if ($request === null) {
-            // @deprecated since v14. Method signature in v15: setLanguage(Locale $locale, ServerRequestInterface $request)
-            //             Remove this if in v15.
-            trigger_error(
-                'PageRenderer->setLanguage() without ServerRequestInterface as second argument is deprecated since version 14.3. Argument will be mandatory in version 15.0',
-                E_USER_DEPRECATED
-            );
-            $request = $GLOBALS['TYPO3_REQUEST'];
-            if (!$request instanceof ServerRequestInterface) {
-                throw new \RuntimeException('Request not found in globals', 1765333738);
-            }
-        }
         $this->locale = $locale;
         $this->setDefaultHtmlTag($request);
     }
@@ -363,20 +351,8 @@ class PageRenderer implements SingletonInterface
     /**
      * FE only, BE is hard coded HTML5
      */
-    public function setDocType(DocType $docType, ?ServerRequestInterface $request = null): void
+    public function setDocType(DocType $docType, ServerRequestInterface $request): void
     {
-        if ($request === null) {
-            // @deprecated since v14. Method signature in v15: setDocType(DocType $docType, ServerRequestInterface $request): void
-            //             Remove this if in v15.
-            trigger_error(
-                'PageRenderer->setDocType() without ServerRequestInterface as second argument is deprecated since version 14.3. Argument will be mandatory in version 15.0',
-                E_USER_DEPRECATED
-            );
-            $request = $GLOBALS['TYPO3_REQUEST'];
-            if (!$request instanceof ServerRequestInterface) {
-                throw new \RuntimeException('Request not found in globals', 1765333739);
-            }
-        }
         $this->docType = $docType;
         $this->xmlPrologAndDocType = $docType->getDoctypeDeclaration();
         $this->setDefaultHtmlTag($request);
@@ -895,20 +871,8 @@ class PageRenderer implements SingletonInterface
      *
      * @return string Content of rendered page
      */
-    public function render(?ServerRequestInterface $request = null): string
+    public function render(ServerRequestInterface $request): string
     {
-        if ($request === null) {
-            // @deprecated since v14. Method signature in v15: render(ServerRequestInterface $request): string
-            //             Remove this if in v15.
-            trigger_error(
-                'PageRenderer->render() without ServerRequestInterface as first argument is deprecated since version 14.3. Argument will be mandatory in version 15.0',
-                E_USER_DEPRECATED
-            );
-            $request = $GLOBALS['TYPO3_REQUEST'];
-            if (!$request instanceof ServerRequestInterface) {
-                throw new \RuntimeException('Request not found in globals', 1765333737);
-            }
-        }
         $this->prepareRendering();
         [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs] = $this->renderJavaScriptAndCss($request);
         $metaTags = implode(LF, $this->renderMetaTagsFromAPI($this->docType));
@@ -986,42 +950,10 @@ class PageRenderer implements SingletonInterface
      * BE only.
      */
     public function renderResponse(
-        ServerRequestInterface|int $requestOrCode = 200,
-        int|string $codeOrReasonPhrase = '',
+        ServerRequestInterface $request,
+        int $code = 200,
         string $reasonPhrase = '',
     ): ResponseInterface {
-        if (is_int($requestOrCode) && is_string($codeOrReasonPhrase)) {
-            // Old API usage
-            // @deprecated since v14. Method signature in v15:
-            //             renderResponse(ServerRequestInterface $request, int $code = 200, string $reasonPhrase = ''): ResponseInterface
-            //             Remove if/else and exception below in v15.
-            trigger_error(
-                'Calling PageRenderer->renderResponse() without ServerRequestInterface as first argument is deprecated since version 14.3. This will be mandatory in version 15.0',
-                E_USER_DEPRECATED
-            );
-            $request = $GLOBALS['TYPO3_REQUEST'];
-            $code = $requestOrCode;
-            $reasonPhrase = $codeOrReasonPhrase;
-        } else {
-            // New API usage
-            if (!$requestOrCode instanceof ServerRequestInterface) {
-                trigger_error(
-                    'Calling PageRenderer->renderResponse() without ServerRequestInterface as first argument is deprecated since version 14.3. This will be mandatory in version 15.0',
-                    E_USER_DEPRECATED
-                );
-                $request = $GLOBALS['TYPO3_REQUEST'];
-            } else {
-                $request = $requestOrCode;
-            }
-            $code = 200;
-            if (is_int($codeOrReasonPhrase)) {
-                $code = $codeOrReasonPhrase;
-            }
-        }
-        if (!$request instanceof ServerRequestInterface) {
-            throw new \RuntimeException('No request given and unable to get from globals', 1765333223);
-        }
-
         $stream = $this->streamFactory->createStream($this->render($request));
         return $this->responseFactory->createResponse($code, $reasonPhrase)
             ->withHeader('Content-Type', 'text/html; charset=utf-8')
@@ -1519,13 +1451,7 @@ class PageRenderer implements SingletonInterface
         }
         $cssItems = [0 => [], 1 => []];
         foreach ($this->cssInline as $name => $properties) {
-            if (isset($properties['useNonce'])) {
-                trigger_error(
-                    'The array key "useNonce" for CSS inline blocks is deprecated, use "csp" instead.',
-                    E_USER_DEPRECATED
-                );
-            }
-            $useCsp = !empty($properties['csp']) || !empty($properties['useNonce']);
+            $useCsp = !empty($properties['csp']);
             $nonceKey = (int)$useCsp;
             $cssCode = '/*' . htmlspecialchars($name) . '*/' . LF . ($properties['code'] ?? '') . LF;
             if ($properties['forceOnTop'] ?? false) {
@@ -1706,13 +1632,7 @@ class PageRenderer implements SingletonInterface
         $regularItems = [0 => [], 1 => []];
         $footerItems = [0 => [], 1 => []];
         foreach ($this->jsInline as $name => $properties) {
-            if (isset($properties['useNonce'])) {
-                trigger_error(
-                    'The array key "useNonce" for JS inline blocks is deprecated, use "csp" instead.',
-                    E_USER_DEPRECATED
-                );
-            }
-            $useCsp = !empty($properties['csp']) || !empty($properties['useNonce']);
+            $useCsp = !empty($properties['csp']);
             $nonceKey = (int)$useCsp;
             $jsCode = '/*' . htmlspecialchars($name) . '*/' . LF . ($properties['code'] ?? '') . LF;
             if ($properties['forceOnTop'] ?? false) {
@@ -1982,170 +1902,4 @@ class PageRenderer implements SingletonInterface
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getLanguage(): string
-    {
-        trigger_error('PageRenderer->getLanguage() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return (string)$this->locale;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getTitle(): string
-    {
-        trigger_error('PageRenderer->getTitle() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->title;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getDocType(): DocType
-    {
-        trigger_error('PageRenderer->getDocType() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->docType;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getHtmlTag(): string
-    {
-        trigger_error('PageRenderer->getHtmlTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->htmlTag;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getHeadTag(): string
-    {
-        trigger_error('PageRenderer->getHeadTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->headTag;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getFavIcon(): string
-    {
-        trigger_error('PageRenderer->getFavIcon() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->favIcon;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getIconMimeType(): string
-    {
-        trigger_error('PageRenderer->getIconMimeType() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->iconMimeType;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getTemplateFile(): string
-    {
-        trigger_error('PageRenderer->getTemplateFile() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->templateFile;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getMoveJsFromHeaderToFooter(): bool
-    {
-        trigger_error('PageRenderer->getMoveJsFromHeaderToFooter() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->moveJsFromHeaderToFooter;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getBodyContent(): string
-    {
-        trigger_error('PageRenderer->getBodyContent() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->bodyContent;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getInlineLanguageLabels(): array
-    {
-        trigger_error('PageRenderer->getInlineLanguageLabels() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->inlineLanguageLabels;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getInlineLanguageLabelFiles(): array
-    {
-        trigger_error('PageRenderer->getInlineLanguageLabelFiles() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        return $this->inlineLanguageLabelFiles;
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function getMetaTag(string $type, string $name): array
-    {
-        trigger_error('PageRenderer->getMetaTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        // Lowercase all the things
-        $type = strtolower($type);
-        $name = strtolower($name);
-        $manager = $this->metaTagRegistry->getManagerForProperty($name);
-        $propertyContent = $manager->getProperty($name, $type);
-        if (!empty($propertyContent[0])) {
-            return [
-                'type' => $type,
-                'name' => $name,
-                'content' => $propertyContent[0]['content'],
-            ];
-        }
-        return [];
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function removeMetaTag(string $type, string $name): void
-    {
-        trigger_error('PageRenderer->removeMetaTag() is deprecated since version 14.3. Use PageRenderer as data sink only.', E_USER_DEPRECATED);
-        // Lowercase all the things
-        $type = strtolower($type);
-        $name = strtolower($name);
-        $manager = $this->metaTagRegistry->getManagerForProperty($name);
-        $manager->removeProperty($name, $type);
-    }
-
-    /**
-     * Loads all labels from a language domain and prefixes them with the domain name.
-     *
-     * The domain name follows the format "extension.domain" (e.g. 'core.common', 'core.modules.media').
-     * The language file is resolved automatically by the LanguageService,
-     * e.g. 'EXT:core/Resources/Private/Language/locallang_common.xlf', 'EXT:core/Resources/Private/Language/Modules/media.xlf'.
-     *
-     * Labels are accessible in JavaScript as TYPO3.lang['domain:key'], e.g. TYPO3.lang['core.common:notAvailableAbbreviation'].
-     *
-     * @param string $domain The domain name in format "extension.domain" (e.g. 'core.common', 'core.modules.media')
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public function addInlineLanguageDomain(string $domain): void
-    {
-        trigger_error(
-            'PageRenderer->addInlineLanguageDomain is deprecated and will be removed with TYPO3 v15. Use "~label/{language.dom}" imports instead',
-            E_USER_DEPRECATED
-        );
-        $languageService = $this->languageServiceFactory->create($this->locale);
-        $allLabels = $languageService->getLabelsFromResource($domain);
-        foreach ($allLabels as $label => $value) {
-            $this->inlineLanguageLabels[$domain . ':' . $label] = $value;
-        }
-    }
 }

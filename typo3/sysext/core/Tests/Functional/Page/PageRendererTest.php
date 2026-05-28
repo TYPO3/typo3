@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -509,23 +508,6 @@ final class PageRendererTest extends FunctionalTestCase
         $renderedString = $subject->render($request);
         self::assertMatchesRegularExpression('/<!\[CDATA\[(.|\n)*var\sx\s=(.|\n)*]]>/', $renderedString);
         self::assertMatchesRegularExpression('/<!\[CDATA\[(.|\n)*body\s{margin:20px;}(.|\n)*]]>/', $renderedString);
-    }
-
-    #[IgnoreDeprecations]
-    #[Test]
-    public function pageRendererResolvesInlineLanguageDomainLabels(): void
-    {
-        $request = $this->createRequest();
-        $subject = $this->createPageRenderer();
-        $subject->setLanguage(new Locale(), $request);
-
-        $subject->addInlineLanguageDomain('core.common');
-        $subject->addInlineLanguageDomain('core.modules.media');
-
-        $labels = $subject->getInlineLanguageLabels();
-
-        self::assertArrayHasKey('core.common:notAvailableAbbreviation', $labels);
-        self::assertArrayHasKey('core.modules.media:title', $labels);
     }
 
     public static function loadJavaScriptLanguageStringsAddsProcessesLabelsToInlineLanguageLabelsDataProvider(): array

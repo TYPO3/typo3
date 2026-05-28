@@ -60,6 +60,22 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->add()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->addInlineLanguageDomain()` :ref:`(Deprecation entry) <deprecation-108963-1770907005>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getBodyContent()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getDocType()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getFavIcon()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getHeadTag()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getHtmlTag()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getIconMimeType()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getInlineLanguageLabelFiles()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getInlineLanguageLabels()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getLanguage()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getMetaTag()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getMoveJsFromHeaderToFooter()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getTemplateFile()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->getTitle()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->removeMetaTag()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\AbstractContentObject->getPageRenderer()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->readFlexformIntoConf()` :ref:`(Deprecation entry) <deprecation-109575>`
 
 The following PHP static class methods that have previously been marked as deprecated for v14 have been removed:
@@ -87,6 +103,10 @@ The following PHP static class methods that have previously been marked as depre
 
 The following methods changed signature according to previous deprecations in v14 at the end of the argument list:
 
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->render()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109286-1773844395>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->renderResponse()` - argument :php:`$request` is now mandatory and the first argument. The transitional :php:`ServerRequestInterface|int $requestOrCode` union has been removed :ref:`(Deprecation entry) <deprecation-109286-1773844395>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setDocType()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109286-1773844395>`
+- :php:`\TYPO3\CMS\Core\Page\PageRenderer->setLanguage()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109286-1773844395>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109523-1775680564>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109548-1775851081>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109544-1775761298>`

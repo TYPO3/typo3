@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 
@@ -68,14 +67,5 @@ abstract class AbstractContentObject
     protected function getPageRepository(): PageRepository
     {
         return GeneralUtility::makeInstance(PageRepository::class);
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        trigger_error('AbstractContentObject->getPageRenderer() is deprecated since version 14.3. Use dependency injection to retrieve an instance if needed.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }
