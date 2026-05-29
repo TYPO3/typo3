@@ -30,7 +30,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3Tests\TestValidators\Domain\Model\AliasedModel;
 use TYPO3Tests\TestValidators\Domain\Model\AnotherModel;
 use TYPO3Tests\TestValidators\Domain\Model\MixedSymfonyModel;
 use TYPO3Tests\TestValidators\Domain\Model\Model;
@@ -57,71 +56,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
 
         // Test that iconFactory is injected (will throw exception if not injected)
         self::assertNotEmpty($validator->iconFactory->getIcon('actions-brand-typo3'));
-    }
-
-    #[Test]
-    public function ValidatorsUsingAliasedAnnotationNamespaceAreApplied(): void
-    {
-        $subject = $this->getAccessibleMock(
-            ValidatorResolver::class,
-            null,
-            [$this->get(ReflectionService::class)]
-        );
-
-        $subject->getBaseValidatorConjunction(AliasedModel::class);
-
-        $baseValidatorConjunctions = $subject->_get('baseValidatorConjunctions');
-        self::assertIsArray($baseValidatorConjunctions);
-        self::assertCount(1, $baseValidatorConjunctions);
-        self::assertArrayHasKey(AliasedModel::class, $baseValidatorConjunctions);
-
-        $conjunctionValidator = $baseValidatorConjunctions[AliasedModel::class];
-        self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
-
-        $baseValidators = $conjunctionValidator->getValidators();
-        $baseValidators->rewind();
-        self::assertTrue($baseValidators->valid());
-        $validator = $baseValidators->current();
-        self::assertInstanceOf(GenericObjectValidator::class, $validator);
-
-        $propertyValidators = $validator->getPropertyValidators();
-        self::assertCount(1, $propertyValidators);
-        self::assertArrayHasKey('foo', $propertyValidators);
-
-        $fooPropertyValidators = $propertyValidators['foo'];
-        self::assertCount(3, $fooPropertyValidators);
-
-        $fooPropertyValidators->rewind();
-        $propertyValidator = $fooPropertyValidators->current();
-        self::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
-        self::assertSame(
-            [
-                'minimum' => 1,
-                'maximum' => PHP_INT_MAX,
-                'betweenMessage' => null,
-                'lessMessage' => null,
-                'exceedMessage' => null,
-            ],
-            $propertyValidator->getOptions()
-        );
-
-        $fooPropertyValidators->next();
-        $propertyValidator = $fooPropertyValidators->current();
-        self::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
-        self::assertSame(
-            [
-                'minimum' => 0,
-                'maximum' => 10,
-                'betweenMessage' => null,
-                'lessMessage' => null,
-                'exceedMessage' => null,
-            ],
-            $propertyValidator->getOptions()
-        );
-
-        $fooPropertyValidators->next();
-        $propertyValidator = $fooPropertyValidators->current();
-        self::assertInstanceOf(NotEmptyValidator::class, $propertyValidator);
     }
 
     #[Test]

@@ -2632,31 +2632,37 @@ return [
     'TYPO3\CMS\Extbase\Annotation\FileUpload' => [
         'restFiles' => [
             'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Annotation\IgnoreValidation' => [
         'restFiles' => [
             'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Annotation\Validate' => [
         'restFiles' => [
             'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Annotation\ORM\Cascade' => [
         'restFiles' => [
             'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Annotation\ORM\Lazy' => [
         'restFiles' => [
             'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Annotation\ORM\Transient' => [
         'restFiles' => [
             'Breaking-107229-RemovedSupportOfAnnotationsInExtbase.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider' => [

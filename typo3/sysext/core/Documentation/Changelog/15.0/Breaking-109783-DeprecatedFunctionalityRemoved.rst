@@ -48,7 +48,12 @@ The following PHP interfaces changed:
 
 The following PHP class aliases that have previously been marked as deprecated with v14 have been removed:
 
-- :php:`\TYPO3\CMS\SomeExtension\Some\ClassName`
+- :php:`\TYPO3\CMS\Extbase\Annotation\FileUpload` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
+- :php:`\TYPO3\CMS\Extbase\Annotation\IgnoreValidation` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
+- :php:`\TYPO3\CMS\Extbase\Annotation\ORM\Cascade` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
+- :php:`\TYPO3\CMS\Extbase\Annotation\ORM\Lazy` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
+- :php:`\TYPO3\CMS\Extbase\Annotation\ORM\Transient` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
+- :php:`\TYPO3\CMS\Extbase\Annotation\Validate` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
 
 The following PHP class methods that have previously been marked as deprecated with v14 have been removed:
 

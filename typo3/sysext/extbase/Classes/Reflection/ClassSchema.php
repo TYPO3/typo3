@@ -25,7 +25,6 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Validator\Constraint;
 use TYPO3\CMS\Core\Type\BitSet;
-use TYPO3\CMS\Extbase\Annotation;
 use TYPO3\CMS\Extbase\Attribute;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodException;
@@ -142,12 +141,11 @@ class ClassSchema
             $fileUploadAttributes = [];
             foreach ($reflectionProperty->getAttributes() as $attribute) {
                 match ($attribute->getName()) {
-                    // @todo Remove Annotation fallbacks with v15
-                    Attribute\Validate::class, Annotation\Validate::class => $validateAttributes[] = $attribute,
-                    Attribute\FileUpload::class, Annotation\FileUpload::class => $fileUploadAttributes[] = $attribute,
-                    Attribute\ORM\Lazy::class, Annotation\ORM\Lazy::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_LAZY,
-                    Attribute\ORM\Transient::class, Annotation\ORM\Transient::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT,
-                    Attribute\ORM\Cascade::class, Annotation\ORM\Cascade::class => $this->properties[$propertyName]['c'] = $attribute->newInstance()->value,
+                    Attribute\Validate::class => $validateAttributes[] = $attribute,
+                    Attribute\FileUpload::class => $fileUploadAttributes[] = $attribute,
+                    Attribute\ORM\Lazy::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_LAZY,
+                    Attribute\ORM\Transient::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT,
+                    Attribute\ORM\Cascade::class => $this->properties[$propertyName]['c'] = $attribute->newInstance()->value,
                     default => '' // non-extbase attributes
                 };
 

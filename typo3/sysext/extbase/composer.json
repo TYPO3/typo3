@@ -52,11 +52,6 @@
 		"branch-alias": {
 			"dev-main": "15.0.x-dev"
 		},
-		"typo3/class-alias-loader": {
-			"class-alias-maps": [
-				"Migrations/Code/ClassAliasMap.php"
-			]
-		},
 		"typo3/cms": {
 			"Package": {
 				"serviceProvider": "TYPO3\\CMS\\Extbase\\ServiceProvider",
