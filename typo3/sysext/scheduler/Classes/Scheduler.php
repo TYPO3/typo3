@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Scheduler;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
@@ -23,6 +24,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
+use TYPO3\CMS\Scheduler\Event\AfterTaskExecutionEvent;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
@@ -44,8 +46,12 @@ class Scheduler implements SingletonInterface
     /**
      * Constructor, makes sure all derived client classes are included
      */
-    public function __construct(LoggerInterface $logger, TaskSerializer $taskSerializer, SchedulerTaskRepository $schedulerTaskRepository)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        TaskSerializer $taskSerializer,
+        SchedulerTaskRepository $schedulerTaskRepository,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+    ) {
         $this->logger = $logger;
         $this->taskSerializer = $taskSerializer;
         $this->schedulerTaskRepository = $schedulerTaskRepository;
@@ -160,12 +166,15 @@ class Scheduler implements SingletonInterface
         ]);
 
         $failureString = '';
+        $success = false;
+        $e = null;
         try {
             // Execute task
             $successfullyExecuted = $task->execute();
             if (!$successfullyExecuted) {
                 throw new FailedExecutionException('Task failed to execute successfully. Task Type: ' . $task->getTaskType() . ', UID: ' . $task->getTaskUid(), 1250596541);
             }
+            $success = true;
             return true;
         } catch (\Throwable $e) {
             // Log failed execution
@@ -198,6 +207,9 @@ class Scheduler implements SingletonInterface
                 'taskType' => $task->getTaskType(),
                 'uid' => $task->getTaskUid(),
             ]);
+            $this->eventDispatcher->dispatch(
+                new AfterTaskExecutionEvent($task, $success, $e)
+            );
         }
     }
 
