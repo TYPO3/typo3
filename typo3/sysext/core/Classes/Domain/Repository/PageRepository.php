@@ -62,9 +62,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 /**
  * Page functions, a lot of sql/pages-related functions
  *
- * Mainly used in the frontend but also in some cases in the backend. It's
- * important to set the right $where_hid_del in the object so that the
- * functions operate properly
+ * Mainly used in the frontend but also in some cases in the backend.
  *
  * For the Context, the workspace aspect is used to determine the workspace.
  * The Workspace ID is relevant for previewing
@@ -94,17 +92,6 @@ class PageRepository implements LoggerAwareInterface
     public const SHORTCUT_MODE_PARENT_PAGE = 3;
 
     /**
-     * This is not the final clauses. There will normally be conditions for the
-     * hidden, starttime and endtime fields as well. This is initialized in the init() function.
-     */
-    protected string $where_hid_del = 'pages.deleted=0';
-
-    /**
-     * Clause for fe_group access
-     */
-    protected string $where_groupAccess = '';
-
-    /**
      * Computed properties that are added to database rows.
      */
     protected array $computedPropertyNames = [
@@ -129,17 +116,16 @@ class PageRepository implements LoggerAwareInterface
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->tcaSchemaFactory = $tcaSchemaFactory ?? GeneralUtility::makeInstance(TcaSchemaFactory::class);
         $this->pageTypeLinkResolver = $pageTypeLinkResolver ?? GeneralUtility::makeInstance(PageTypeLinkResolver::class);
-        $this->init();
     }
 
     /**
-     * This sets the internal variable $this->where_hid_del to the correct where
-     * clause for page records taking deleted/hidden/starttime/endtime/t3ver_state
-     * into account.
+     * Builds the where clause for page records taking
+     * deleted/hidden/starttime/endtime/t3ver_state into account.
      *
-     * @internal
+     * The result is kept in the runtime cache, keyed by the relevant context aspects, so
+     * it is built at most once per distinct workspace/user/date/visibility state.
      */
-    protected function init(): void
+    protected function getEnableFieldsConstraint(): string
     {
         $workspaceId = (int)$this->context->getPropertyFromAspect('workspace', 'id');
         // As PageRepository may be used multiple times during the frontend request, and may
@@ -175,42 +161,32 @@ class PageRepository implements LoggerAwareInterface
         );
         $cacheEntry = $cache->get($cacheIdentifier);
         if ($cacheEntry) {
-            $this->where_hid_del = $cacheEntry;
-        } else {
-            // @todo: This is bad. init() is called by __construct() which then performs stuff that
-            //        depends on DB setup being ready.
-            //        This makes early injection of PageRepository impossible - when DB does not
-            //        exist or has not been set up.
-            //        The acceptance tests with their early ext:styleguide for instance triggers
-            //        events that trigger this indirectly. See comment in ext:form DataStructureIdentifierListener,
-            //        it is the reason it declares some dependencies lazy.
-            //        After all, when PageRepository is injected, it must not by default start
-            //        preparing DB queries. This needs to vanish, the code must not be triggered by __construct().
-            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages')
-                ->expr();
-            if ($workspaceId > 0) {
-                // For version previewing, make sure that enable-fields are not
-                // de-selecting hidden pages - we need versionOL() to unset them only
-                // if the overlay record instructs us to.
-                // Clear where_hid_del and restrict to live and current workspaces
-                $this->where_hid_del = (string)$expressionBuilder->and(
-                    $expressionBuilder->eq('pages.deleted', 0),
-                    $expressionBuilder->or(
-                        $expressionBuilder->eq('pages.t3ver_wsid', 0),
-                        $expressionBuilder->eq('pages.t3ver_wsid', $workspaceId)
-                    )
-                );
-            } else {
-                // add starttime / endtime, and check for hidden/deleted
-                // Filter out new/deleted place-holder pages in case we are NOT in a
-                // versioning preview (that means we are online!)
-                $constraints = $this->getDefaultConstraints('pages', ['fe_group' => true]);
-                $this->where_hid_del = $constraints === [] ? '' : (string)$expressionBuilder->and(...$constraints);
-            }
-            $cache->set($cacheIdentifier, $this->where_hid_del);
+            return $cacheEntry;
         }
-        $this->where_groupAccess = $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages')
+            ->expr();
+        if ($workspaceId > 0) {
+            // For version previewing, make sure that enable-fields are not
+            // de-selecting hidden pages - we need versionOL() to unset them only
+            // if the overlay record instructs us to.
+            // Restrict to live and current workspaces
+            $enableFieldsConstraint = (string)$expressionBuilder->and(
+                $expressionBuilder->eq('pages.deleted', 0),
+                $expressionBuilder->or(
+                    $expressionBuilder->eq('pages.t3ver_wsid', 0),
+                    $expressionBuilder->eq('pages.t3ver_wsid', $workspaceId)
+                )
+            );
+        } else {
+            // add starttime / endtime, and check for hidden/deleted
+            // Filter out new/deleted place-holder pages in case we are NOT in a
+            // versioning preview (that means we are online!)
+            $constraints = $this->getDefaultConstraints('pages', ['fe_group' => true]);
+            $enableFieldsConstraint = $constraints === [] ? '' : (string)$expressionBuilder->and(...$constraints);
+        }
+        $cache->set($cacheIdentifier, $enableFieldsConstraint);
+        return $enableFieldsConstraint;
     }
 
     /**************************
@@ -228,11 +204,8 @@ class PageRepository implements LoggerAwareInterface
      * Language overlay and versioning overlay are applied. Mount Point
      * handling is not done, an overlaid Mount Point is not replaced.
      *
-     * The result has constraints filled by the properties $this->where_groupAccess
-     * and $this->where_hid_del that are preset by the init() method.
-     *
-     * @see PageRepository::where_groupAccess
-     * @see PageRepository::where_hid_del
+     * The result is constrained by the enable-field and fe_group access clauses,
+     * which are computed lazily on first use.
      *
      * By default, the usergroup access check is enabled. Use the second method argument
      * to disable the usergroup access check.
@@ -257,13 +230,15 @@ class PageRepository implements LoggerAwareInterface
         }
         $disableGroupAccessCheck = $event->isGroupAccessCheckSkipped();
         $uid = $event->getPageId();
+        $enableFieldsConstraint = $this->getEnableFieldsConstraint();
+        $whereGroupAccess = $disableGroupAccessCheck ? '' : $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages');
         $cacheIdentifier = 'PageRepository_getPage_' . md5(
             implode(
                 '-',
                 [
                     $uid,
-                    $disableGroupAccessCheck ? '' : $this->where_groupAccess,
-                    $this->where_hid_del,
+                    $whereGroupAccess,
+                    $enableFieldsConstraint,
                     $this->context->getPropertyFromAspect('language', 'id', 0),
                 ]
             )
@@ -280,15 +255,11 @@ class PageRepository implements LoggerAwareInterface
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$uid, Connection::PARAM_INT)),
-                $this->where_hid_del
+                $enableFieldsConstraint
             );
 
-        $originalWhereGroupAccess = '';
         if (!$disableGroupAccessCheck) {
-            $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess));
-        } else {
-            $originalWhereGroupAccess = $this->where_groupAccess;
-            $this->where_groupAccess = '';
+            $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($whereGroupAccess));
         }
 
         $row = $queryBuilder->executeQuery()->fetchAssociative();
@@ -299,17 +270,13 @@ class PageRepository implements LoggerAwareInterface
             }
         }
 
-        if ($disableGroupAccessCheck) {
-            $this->where_groupAccess = $originalWhereGroupAccess;
-        }
-
         $cache->set($cacheIdentifier, $result);
         return $result;
     }
 
     /**
-     * Return the $row for the page with uid = $uid WITHOUT checking for
-     * ->where_hid_del (start- and endtime or hidden). Only "deleted" is checked!
+     * Return the $row for the page with uid = $uid WITHOUT checking the
+     * enable-field constraints (start- and endtime or hidden). Only "deleted" is checked!
      *
      * @param int $uid The page id to look up
      * @return array The page row with overlaid localized fields. Empty array if no page.
@@ -912,11 +879,6 @@ class PageRepository implements LoggerAwareInterface
     ): array {
         $relationField = $parentPages ? 'pid' : 'uid';
 
-        if ($disableGroupAccessCheck) {
-            $whereGroupAccessCheck = $this->where_groupAccess;
-            $this->where_groupAccess = '';
-        }
-
         $schema = $this->tcaSchemaFactory->get('pages');
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
@@ -935,8 +897,8 @@ class PageRepository implements LoggerAwareInterface
                     $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
-                $this->where_hid_del,
-                QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
+                $this->getEnableFieldsConstraint(),
+                QueryHelper::stripLogicalOperatorPrefix($disableGroupAccessCheck ? '' : $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages')),
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
             );
 
@@ -960,11 +922,11 @@ class PageRepository implements LoggerAwareInterface
             }
 
             // Add a mount point parameter if needed
-            $page = $this->addMountPointParameterToPage((array)$page);
+            $page = $this->addMountPointParameterToPage((array)$page, $disableGroupAccessCheck);
 
             // If shortcut, look up if the target exists and is currently visible
             if ($checkShortcuts) {
-                $page = $this->checkValidShortcutOfPage($page, $additionalWhereClause);
+                $page = $this->checkValidShortcutOfPage($page, $additionalWhereClause, $disableGroupAccessCheck);
                 $page = $this->checkValidLinkOfPage($page, $disableGroupAccessCheck);
             }
 
@@ -972,10 +934,6 @@ class PageRepository implements LoggerAwareInterface
             if (!empty($page)) {
                 $pages[$originalUid] = $page;
             }
-        }
-
-        if ($disableGroupAccessCheck) {
-            $this->where_groupAccess = $whereGroupAccessCheck;
         }
 
         // Finally load language overlays
@@ -995,9 +953,10 @@ class PageRepository implements LoggerAwareInterface
      * @todo Find a better name. The current doesn't hit the point.
      *
      * @param array $page The page record to handle.
+     * @param bool $disableGroupAccessCheck set to true to disable group access check
      * @return array The given page record or it's replacement.
      */
-    protected function addMountPointParameterToPage(array $page): array
+    protected function addMountPointParameterToPage(array $page, bool $disableGroupAccessCheck = false): array
     {
         if (empty($page)) {
             return [];
@@ -1010,7 +969,7 @@ class PageRepository implements LoggerAwareInterface
         if (is_array($mountPointInfo) && $mountPointInfo['overlay']) {
             // Using "getPage" is OK since we need the check for enableFields AND for type 2
             // of mount pids we DO require a doktype < 200!
-            $mountPointPage = $this->getPage((int)$mountPointInfo['mount_pid']);
+            $mountPointPage = $this->getPage((int)$mountPointInfo['mount_pid'], $disableGroupAccessCheck);
 
             if (!empty($mountPointPage)) {
                 $page = $mountPointPage;
@@ -1027,8 +986,9 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param array $page The page to check
      * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%some text%'" for instance.
+     * @param bool $disableGroupAccessCheck set to true to disable group access check
      */
-    protected function checkValidShortcutOfPage(array $page, string $additionalWhereClause): array
+    protected function checkValidShortcutOfPage(array $page, string $additionalWhereClause, bool $disableGroupAccessCheck = false): array
     {
         if (empty($page)) {
             return [];
@@ -1065,8 +1025,8 @@ class PageRepository implements LoggerAwareInterface
                         $searchField,
                         $queryBuilder->createNamedParameter($searchUid, Connection::PARAM_INT)
                     ),
-                    $this->where_hid_del,
-                    QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
+                    $this->getEnableFieldsConstraint(),
+                    QueryHelper::stripLogicalOperatorPrefix($disableGroupAccessCheck ? '' : $this->getMultipleGroupsWhereClause('pages.fe_group', 'pages')),
                     QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
                 )
                 ->executeQuery()
