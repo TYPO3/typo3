@@ -26,11 +26,9 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
-use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
 
 /**
  * Configuration source based on YAML files
@@ -41,7 +39,6 @@ use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
 readonly class YamlSource
 {
     public function __construct(
-        private FilePersistenceSlot $filePersistenceSlot,
         private YamlFileLoader $yamlFileLoader,
     ) {}
 
@@ -88,29 +85,11 @@ readonly class YamlSource
 
         $yaml = Yaml::dump($configuration, 99, 2);
 
-        if ($fileToSave instanceof File) {
-            try {
-                $this->filePersistenceSlot->allowInvocation(
-                    FilePersistenceSlot::COMMAND_FILE_SET_CONTENTS,
-                    $this->buildCombinedIdentifier(
-                        $fileToSave->getParentFolder(),
-                        $fileToSave->getName()
-                    ),
-                    $this->filePersistenceSlot->getContentSignature(
-                        $header . LF . $yaml
-                    )
-                );
-                $fileToSave->setContents($header . LF . $yaml);
-            } catch (InsufficientFileAccessPermissionsException $e) {
-                throw new FileWriteException($e->getMessage(), 1512582753, $e);
-            }
-        } else {
-            $byteCount = @file_put_contents($fileToSave, $header . LF . $yaml);
-            if ($byteCount === false) {
-                $error = error_get_last();
-                $errorMessage = $error['message'] ?? 'Check that the file exists and can be written.';
-                throw new FileWriteException($errorMessage, 1512582929);
-            }
+        $byteCount = @file_put_contents($fileToSave, $header . LF . $yaml);
+        if ($byteCount === false) {
+            $error = error_get_last();
+            $errorMessage = $error['message'] ?? 'Check that the file exists and can be written.';
+            throw new FileWriteException($errorMessage, 1512582929);
         }
     }
 
@@ -178,15 +157,5 @@ readonly class YamlSource
             }
         }
         return $header;
-    }
-
-    protected function buildCombinedIdentifier(FolderInterface $folder, string $fileName): string
-    {
-        return sprintf(
-            '%d:%s%s',
-            $folder->getStorage()->getUid(),
-            $folder->getIdentifier(),
-            $fileName
-        );
     }
 }
