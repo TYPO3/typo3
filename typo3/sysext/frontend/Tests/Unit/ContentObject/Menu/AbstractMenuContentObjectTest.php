@@ -94,7 +94,7 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $tcaFactoryMocked = $this->createMock(TcaSchemaFactory::class);
         $pageTypeLinkResolverMocked = $this->createMock(PageTypeLinkResolver::class);
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context, $tcaFactoryMocked, $pageTypeLinkResolverMocked])->onlyMethods(['init', 'getPage', 'getLanguageOverlay'])->getMock();
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context, $tcaFactoryMocked, $pageTypeLinkResolverMocked])->onlyMethods(['getPage', 'getLanguageOverlay'])->getMock();
         $pageRepository->expects($this->once())->method('getPage')->willReturn(['sys_language_uid' => 1]);
         $pageRepository->expects($this->once())->method('getLanguageOverlay')->willReturn(['uid' => 0, 'header' => 'OVERLAID']);
         $subject->sys_page = $pageRepository;

@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -113,6 +115,30 @@ final class PageRepositoryTest extends FunctionalTestCase
         self::assertEquals('1002', $rows[1003]['_LOCALIZED_UID']);
         self::assertEquals('1001-1003', $rows[1003]['_MP_PARAM']);
         self::assertCount(2, $rows);
+    }
+
+    #[Test]
+    public function getMenuWithMountPointResolvesGroupRestrictedTargetWhenGroupAccessIsDisabled(): void
+    {
+        // Restrict the mount point overlay target (page 1001, referenced by mount point page 1003)
+        // to a frontend user group ...
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('pages')
+            ->update('pages', ['fe_group' => '1'], ['uid' => 1001]);
+        // ... and act as a visitor that is not a member of that group, so the group access
+        // clause actually filters page 1001.
+        $context = new Context();
+        $context->setAspect('frontend.user', new UserAspect(null, [0, -2]));
+        $subject = new PageRepository($context);
+
+        // Menu generation disables the group access check. The mount point overlay must still
+        // resolve its (group restricted) target page, otherwise the entry vanishes from the menu.
+        $rows = $subject->getMenu([1000], '*', 'sorting', '', true, true);
+
+        self::assertArrayHasKey(1003, $rows);
+        self::assertEquals('root default language', $rows[1003]['title']);
+        self::assertEquals('1001', $rows[1003]['uid']);
+        self::assertEquals('1001-1003', $rows[1003]['_MP_PARAM']);
     }
 
     #[Test]
