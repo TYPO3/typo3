@@ -10,9 +10,6 @@ options.bookmarkGroups {
 }
 
 options.pageTree {
-  # @deprecated in TYPO3 v14.2 and will be removed in v15.0
-  # This value will be ignored if not modified and contains the default value
-  doktypesToShowInNewPageDragArea := addToList(1,6,4,7,3,254,199)
   searchInTranslatedPages = 1
   searchByFrontendUri = 1
 }

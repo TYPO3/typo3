@@ -47,7 +47,6 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -116,7 +115,6 @@ class TreeController
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly SiteFinder $siteFinder,
         protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
-        protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly FormDataCompiler $formDataCompiler,
     ) {}
 
@@ -217,57 +215,10 @@ class TreeController
     }
 
     /**
-     * Returns the list of doktypes to display in page tree toolbar drag area
+     * Returns the list of doktypes to display in page tree toolbar drag area,
+     * automatically determined based on the user's group permissions.
      */
     protected function getDokTypes(ServerRequestInterface $request): array
-    {
-        $backendUser = $this->getBackendUser();
-        $doktypesToShowInNewPageDragArea = (string)($backendUser->getTSConfig()['options.']['pageTree.']['doktypesToShowInNewPageDragArea'] ?? '');
-        if ($doktypesToShowInNewPageDragArea !== '' && $doktypesToShowInNewPageDragArea !== '1,6,4,7,3,254,199') {
-            trigger_error(
-                'User TSConfig option "options.pageTree.doktypesToShowInNewPageDragArea" has been deprecated in TYPO3 v14.2 and will be removed in v15.0. '
-                . 'Available doktypes are now automatically determined based on the users group permissions.',
-                E_USER_DEPRECATED
-            );
-            return $this->getDokTypesByTsConfig($doktypesToShowInNewPageDragArea);
-        }
-
-        return $this->getDokTypesByFormDataCompiler($request);
-    }
-
-    /**
-     * @deprecated since v14.2, will be removed in v15.0.
-     */
-    protected function getDokTypesByTsConfig(string $doktypesToShowInNewPageDragArea): array
-    {
-        $backendUser = $this->getBackendUser();
-        $doktypeLabelMap = [];
-        foreach ($this->pageDoktypeRegistry->getAllDoktypes() as $selectionItem) {
-            $doktypeLabelMap[$selectionItem->getValue()] = $selectionItem->getLabel();
-        }
-        $doktypes = GeneralUtility::intExplode(',', $doktypesToShowInNewPageDragArea, true);
-        $doktypes = array_unique($doktypes);
-        $output = [];
-        $allowedDoktypes = GeneralUtility::intExplode(',', (string)($backendUser->groupData['pagetypes_select'] ?? ''), true);
-        $isAdmin = $backendUser->isAdmin();
-        if (!$isAdmin && $allowedDoktypes === []) {
-            return $output;
-        }
-        foreach ($doktypes as $doktype) {
-            if (!isset($doktypeLabelMap[$doktype]) || (!$isAdmin && !in_array($doktype, $allowedDoktypes, true))) {
-                continue;
-            }
-            $label = htmlspecialchars($this->getLanguageService()->sL($doktypeLabelMap[$doktype]));
-            $output[] = [
-                'nodeType' => $doktype,
-                'icon' => $this->tcaSchemaFactory->get('pages')->getRawConfiguration()['typeicon_classes'][$doktype] ?? '',
-                'title' => $label,
-            ];
-        }
-        return $output;
-    }
-
-    protected function getDokTypesByFormDataCompiler(ServerRequestInterface $request): array
     {
         $formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
         // Skip DatabaseUserPermissionCheck::class to return doktypes even if the user cannot create pages at root level
