@@ -1,7 +1,7 @@
 name: typo3/styleguide
 label: Styleguide Theme
 
-dependencies:
+optionalDependencies:
   - typo3/fluid-styled-content
   - typo3/form
   - typo3/felogin
