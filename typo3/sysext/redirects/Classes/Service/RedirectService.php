@@ -44,7 +44,6 @@ use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\PageInformationFactory;
-use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\TypolinkBuilderInterface;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
@@ -353,55 +352,30 @@ readonly class RedirectService
         }
         $builderType = $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']];
         $contentObjectRenderer = $this->bootFrontendController($site, $queryParams, $originalRequest);
-        if ($builderType && is_subclass_of($builderType, TypolinkBuilderInterface::class)) {
-            /** @var TypolinkBuilderInterface $linkBuilder */
-            $linkBuilder = GeneralUtility::makeInstance($builderType);
-            $configuration = [
-                'parameter' => (string)$redirectRecord['target'],
-                'forceAbsoluteUrl' => true,
-                'linkAccessRestrictedPages' => true,
-            ];
-            if ($redirectRecord['force_https']) {
-                $configuration['forceAbsoluteUrl.']['scheme'] = 'https';
-            }
-            if ($redirectRecord['keep_query_parameters']) {
-                $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
-            }
-            $request = $originalRequest->withAttribute('currentContentObject', $contentObjectRenderer);
-            try {
-                $result = $linkBuilder->buildLink($linkDetails, $configuration, $request);
-                $this->cleanupContext();
-                return new Uri($result->getUrl());
-            } catch (UnableToLinkException $e) {
-                $this->cleanupContext();
-                return null;
-            }
-        } else {
-            // @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0 - however this code is kept without
-            // a trigger_error() to not SPAM deprecation logs via redirects.
-            if (!is_subclass_of($builderType, AbstractTypolinkBuilder::class)) {
-                throw new \RuntimeException('Single link builder must extend AbstractTypolinkBuilder', 1646504471);
-            }
-            $linkBuilder = GeneralUtility::makeInstance($builderType);
-            try {
-                $configuration = [
-                    'parameter' => (string)$redirectRecord['target'],
-                    'forceAbsoluteUrl' => true,
-                    'linkAccessRestrictedPages' => true,
-                ];
-                if ($redirectRecord['force_https']) {
-                    $configuration['forceAbsoluteUrl.']['scheme'] = 'https';
-                }
-                if ($redirectRecord['keep_query_parameters']) {
-                    $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
-                }
-                $result = $linkBuilder->_build($linkDetails, '', '', $configuration, $originalRequest, $contentObjectRenderer);
-                $this->cleanupContext();
-                return new Uri($result->getUrl());
-            } catch (UnableToLinkException) {
-                $this->cleanupContext();
-                return null;
-            }
+        /** @var TypolinkBuilderInterface $linkBuilder */
+        $linkBuilder = GeneralUtility::makeInstance($builderType);
+        if (! $linkBuilder instanceof TypolinkBuilderInterface) {
+            throw new \RuntimeException('Single link builder must implement TypolinkBuilderInterface', 1780062714);
+        }
+        $configuration = [
+            'parameter' => (string)$redirectRecord['target'],
+            'forceAbsoluteUrl' => true,
+            'linkAccessRestrictedPages' => true,
+        ];
+        if ($redirectRecord['force_https']) {
+            $configuration['forceAbsoluteUrl.']['scheme'] = 'https';
+        }
+        if ($redirectRecord['keep_query_parameters']) {
+            $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
+        }
+        $request = $originalRequest->withAttribute('currentContentObject', $contentObjectRenderer);
+        try {
+            $result = $linkBuilder->buildLink($linkDetails, $configuration, $request);
+            $this->cleanupContext();
+            return new Uri($result->getUrl());
+        } catch (UnableToLinkException $e) {
+            $this->cleanupContext();
+            return null;
         }
     }
 

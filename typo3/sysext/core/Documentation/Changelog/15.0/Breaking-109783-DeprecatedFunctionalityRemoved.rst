@@ -84,6 +84,7 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->removeMetaTag()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\AbstractContentObject->getPageRenderer()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->readFlexformIntoConf()` :ref:`(Deprecation entry) <deprecation-109575>`
+- :php:`\TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder::build()`  :ref:`(Deprecation entry) <deprecation-106405-1742674605>`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskClassName()` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskDescription()` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskTitle()` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
@@ -132,6 +133,10 @@ The following public class properties have been dropped:
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkResult` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->parentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
+
+The following protected class properties have been dropped:
+
+- :php:`\TYPO3\CMS\Frontend\Typolink\ContentObjectRenderer->parentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
 
 The following class property has changed/enforced type:
 

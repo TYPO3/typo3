@@ -29,42 +29,6 @@ use TYPO3\CMS\Frontend\Page\FrontendUrlPrefix;
 abstract class AbstractTypolinkBuilder
 {
     /**
-     * @deprecated this will be removed in TYPO3 v15.0. The ContentObjectRenderer will be passed to the buildLink() method of TypolinkBuilderInterface via the PSR-7 Request attribute "currentContentObject" instead.
-     */
-    protected ContentObjectRenderer $contentObjectRenderer;
-
-    /**
-     * The method is not implemented anymore, the class now only serves as a wrapper for helper methods.
-     *
-     * @param array $linkDetails parsed link details by the LinkService
-     * @param string $linkText the link text
-     * @param string $target the target to point to
-     * @param array $conf the TypoLink configuration array
-     * @throws UnableToLinkException
-     * @deprecated this method will be removed from this class in TYPO3 v15.
-     */
-    // abstract public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface;
-
-    /**
-     * This method is only here to keep BC for the build() method which will be removed in TYPO3 v15.0.
-     * The actual implementation should be done in buildLink() instead.
-     * @internal this method will be removed in TYPO3 v15.0 again.
-     */
-    public function _build(array &$linkDetails, string $linkText, string $target, array $conf, ServerRequestInterface $request, ContentObjectRenderer $contentObjectRenderer): LinkResultInterface
-    {
-        // For people already migrating in v13, adding the method but not the interface, this works as well :)
-        if (method_exists($this, 'buildLink')) {
-            return $this->buildLink($linkDetails, $conf, $request, $linkText);
-        }
-        // This one is in order to keep BC for v14 as we avoid adding the abstract method "build" to implement by subclasses
-        $this->contentObjectRenderer = $contentObjectRenderer;
-        if (method_exists($this, 'build')) {
-            return $this->build($linkDetails, $linkText, $target, $conf);
-        }
-        throw new UnableToLinkException('Invalid link builder, so ' . $linkText . ' was not linked.', 1756746193, null, $linkText);
-    }
-
-    /**
      * Forces a given URL to be absolute.
      *
      * @param string $url The URL to be forced to be absolute

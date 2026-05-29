@@ -191,22 +191,4 @@ final class AbstractTypolinkBuilderTest extends UnitTestCase
         $conf = ['target' . '.' => ['ifEmpty' => 'wrap_target']];
         self::assertEquals('called', $subject->resolveTargetAttribute($conf, 'target', $cObj));
     }
-
-    #[Test]
-    public function buildMethodKeepsLinkTextAndTargetForBackwardsCompatibility(): void
-    {
-        $subject = new AbstractTypolinkBuilderFixture();
-        $linkDetails = ['type' => 'url'];
-        $subject->_build(
-            $linkDetails,
-            'my-link-text',
-            '_blank',
-            [],
-            new ServerRequest('https://example.com', 'GET'),
-            $this->createMock(ContentObjectRenderer::class)
-        );
-
-        self::assertSame('my-link-text', $subject->lastLinkText);
-        self::assertSame('_blank', $subject->lastTarget);
-    }
 }

@@ -159,24 +159,6 @@ readonly class LinkFactory
                 // Only return the link text directly
                 throw $e;
             }
-        } elseif ($builderType !== null) {
-            /** @var AbstractTypolinkBuilder $linkBuilder */
-            $linkBuilder = GeneralUtility::makeInstance($builderType, $contentObjectRenderer);
-            try {
-                $request = $contentObjectRenderer->getRequest();
-                $request = $request->withAttribute('currentContentObject', $contentObjectRenderer);
-                if (!method_exists($linkBuilder, 'buildLink')) {
-                    trigger_error($builderType . ' is not a valid TypolinkBuilderInterface, and will stop working in TYPO3 v15.0', E_USER_DEPRECATED);
-                }
-                return $linkBuilder->_build($linkDetails, $linkText, $target, $linkConfiguration, $request, $contentObjectRenderer);
-            } catch (UnableToLinkException $e) {
-                $this->logger->debug('Unable to link "{text}"', [
-                    'text' => $e->getLinkText(),
-                    'exception' => $e,
-                ]);
-                // Only return the link text directly (done in cObj->typolink)
-                throw $e;
-            }
         } elseif (isset($linkDetails['url'])) {
             $linkResult = new LinkResult($linkDetails['type'], $linkDetails['url']);
             return $linkResult

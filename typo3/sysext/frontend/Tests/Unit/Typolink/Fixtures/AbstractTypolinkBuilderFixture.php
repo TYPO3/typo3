@@ -20,20 +20,11 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink\Fixtures;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
-use TYPO3\CMS\Frontend\Typolink\LinkResult;
-use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 
 final class AbstractTypolinkBuilderFixture extends AbstractTypolinkBuilder
 {
     public ?string $lastLinkText = null;
     public ?string $lastTarget = null;
-
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
-    {
-        $this->lastLinkText = $linkText;
-        $this->lastTarget = $target;
-        return new LinkResult('type', 'url');
-    }
 
     public function forceAbsoluteUrl(string $url, array $configuration, ?ServerRequestInterface $request = null): string
     {
