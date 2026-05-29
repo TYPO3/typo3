@@ -88,7 +88,7 @@ class TranslationService implements SingletonInterface
 
         if (!empty($locallangPathAndFilename) && $request) {
             $typoScript = $request->getAttribute('frontend.typoscript');
-            if ($typoScript instanceof FrontendTypoScript) {
+            if ($typoScript instanceof FrontendTypoScript && $typoScript->hasSetup()) {
                 $overrideLabels = $languageService->loadTypoScriptLabelsFromExtension('form', $typoScript);
                 if ($overrideLabels !== []) {
                     $languageService->overrideLabels($locallangPathAndFilename, $overrideLabels);
