@@ -48,6 +48,7 @@ The following PHP interfaces changed:
 
 The following PHP class aliases that have previously been marked as deprecated with v14 have been removed:
 
+- :php:`\TYPO3\CMS\Core\Service\FlexFormService` :ref:`(Deprecation entry) <breaking-107945-1761875852>`
 - :php:`\TYPO3\CMS\Extbase\Annotation\FileUpload` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
 - :php:`\TYPO3\CMS\Extbase\Annotation\IgnoreValidation` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
 - :php:`\TYPO3\CMS\Extbase\Annotation\ORM\Cascade` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`

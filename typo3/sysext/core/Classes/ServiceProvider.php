@@ -31,8 +31,6 @@ use TYPO3\CMS\Core\Command\Output\MessageRenderer;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
-use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
-use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -131,8 +129,6 @@ class ServiceProvider extends AbstractServiceProvider
             Resource\StorageRepository::class => self::getStorageRepository(...),
             Service\DatabaseUpgradeWizardsService::class => self::getDatabaseUpgradeWizardsService(...),
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
-            // @deprecated since TYPO3 v14, will be removed in TYPO3 v15
-            Service\FlexFormService::class => self::getFlexFormService(...),
             Localization\LanguagePackService::class => self::getLanguagePackService(...),
             Service\OpcodeCacheService::class => self::getOpcodeCacheService(...),
             Service\SilentConfigurationUpgradeService::class => self::getSilentConfigurationUpgradeService(...),
@@ -629,18 +625,6 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Resource\Driver\DriverRegistry::class),
             $container->get(FlexFormTools::class),
             $container->get(Log\LogManager::class)->getLogger(Resource\StorageRepository::class),
-        ]);
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15.
-     */
-    public static function getFlexFormService(ContainerInterface $container): Service\FlexFormService
-    {
-        return self::new($container, Service\FlexFormService::class, [
-            $container->get(EventDispatcherInterface::class),
-            new TcaMigration(),
-            new TcaPreparation(),
         ]);
     }
 
