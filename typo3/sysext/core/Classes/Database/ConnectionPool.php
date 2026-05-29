@@ -177,73 +177,8 @@ class ConnectionPool
     private function migrateConnectionParams(string $connectionName, #[\SensitiveParameter] array $params): array
     {
         $params['defaultTableOptions'] ??= [];
-        $params = $this->migrateTableOptionsToDefaultTableOptions($connectionName, $params);
-        $params = $this->migrateDefaultTableOptionCollateToCollation($connectionName, $params);
         $params = $this->removeInvalidConnectionParams($params);
         return $this->ensureDefaultConnectionCharset($params);
-    }
-
-    /**
-     * Migrate old `tableoptions` to `defaultTableOptions` on MariaDB/MySQL connections.
-     * Note `tableoptions` overrides `defaultTableOptions` for now.
-     *
-     * @deprecated since 13.4 and will be removed in v15 (or later as it does not hurt to keep them).
-    */
-    private function migrateTableOptionsToDefaultTableOptions(string $connectionName, #[\SensitiveParameter] array $params): array
-    {
-        $params['defaultTableOptions'] ??= [];
-        if (array_key_exists('tableoptions', $params)
-            && is_array($params['tableoptions'])
-            && $params['tableoptions'] !== []
-        ) {
-            trigger_error(
-                sprintf(
-                    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'DB\'][\'Connections\'][\'%s\'][\'tableoptions\'] '
-                    . 'is deprecated since v13 and will be ignored in v15 (or later). Use '
-                    . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'DB\'][\'Connections\'][\'%s\'][\'defaultTableOptions\'] '
-                    . 'instead. Note in v13 the deprecated key still takes precedence over the new key if set.',
-                    $connectionName,
-                    $connectionName,
-                ),
-                E_USER_DEPRECATED,
-            );
-            $params['defaultTableOptions'] = array_replace(
-                $params['defaultTableOptions'],
-                $params['tableoptions'],
-            );
-            unset($params['tableoptions']);
-        }
-        return $params;
-    }
-
-    /**
-     * Transform deprecated `collate` option to `collation` for `defaultTableOptions` on MySQL/MariaDB connections.
-     * Note that `collate` overrides manual set `collation` for now.
-     *
-     * @link https://github.com/doctrine/dbal/pull/5246
-     * @deprecated since 13.4 and will be removed in v15 (or later as it does not hurt to keep them).
-     */
-    private function migrateDefaultTableOptionCollateToCollation(string $connectionName, #[\SensitiveParameter] array $params): array
-    {
-        $params['defaultTableOptions'] ??= [];
-        if (is_array($params['defaultTableOptions'])
-            && array_key_exists('collate', $params['defaultTableOptions'])
-            && is_string($params['defaultTableOptions']['collate'])
-            && $params['defaultTableOptions']['collate'] !== ''
-        ) {
-            trigger_error(
-                sprintf(
-                    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'DB\'][\'Connections\'][\'%s\'][\'defaultTableOptions\'][\'collate\'] '
-                    . 'is deprecated since v13 and will be ignored in v15 (or later). Set "collation" instead. Note "collate" overrides '
-                    . '"collation" in v13.',
-                    $connectionName,
-                ),
-                E_USER_DEPRECATED,
-            );
-            $params['defaultTableOptions']['collation'] = $params['defaultTableOptions']['collate'];
-            unset($params['defaultTableOptions']['collate']);
-        }
-        return $params;
     }
 
     /**

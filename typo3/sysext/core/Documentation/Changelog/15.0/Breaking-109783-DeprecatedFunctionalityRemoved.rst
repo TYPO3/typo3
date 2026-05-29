@@ -148,6 +148,8 @@ The following form yaml configurations that have previously been marked as depre
 The following global option handling have been dropped and are ignored:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']` :ref:`(Deprecation entry) <deprecation-108524-1766073657>`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][/*...*/]['tableoptions']` :ref:`(Deprecation entry) <deprecation-105297-1728836814>`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][/*...*/]['defaultTableOptions']['collate']` :ref:`(Deprecation entry) <deprecation-105297-1728836814>`
 
 The following global variables have been changed:
 
