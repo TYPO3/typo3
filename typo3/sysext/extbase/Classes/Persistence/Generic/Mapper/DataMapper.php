@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 use Doctrine\Instantiator\InstantiatorInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Country\Country;
@@ -81,7 +80,6 @@ class DataMapper
         private readonly InstantiatorInterface $instantiator,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly CountryProvider $countryProvider,
-        private readonly Features $features,
     ) {}
 
     public function setQuery(QueryInterface $query): void
@@ -378,39 +376,22 @@ class DataMapper
         $isNullable = true,
         $targetType = \DateTime::class
     ) {
-        if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling')) {
-            $dateTime = DateTimeFactory::createFromDatabaseValueAndTCAConfig(
-                $value,
-                // Reconstruct TCA from our ColumnMap
-                [
-                    'type' => 'datetime',
-                    'format' => $format,
-                    'dbType' => $storageFormat,
-                    'nullable' => $isNullable,
-                ]
-            );
+        $dateTime = DateTimeFactory::createFromDatabaseValueAndTCAConfig(
+            $value,
+            // Reconstruct TCA from our ColumnMap
+            [
+                'type' => 'datetime',
+                'format' => $format,
+                'dbType' => $storageFormat,
+                'nullable' => $isNullable,
+            ]
+        );
 
-            return $dateTime === null ? null : match ($targetType) {
-                \DateTimeImmutable::class => $dateTime,
-                \DateTime::class => \DateTime::createFromImmutable($dateTime),
-                default => GeneralUtility::makeInstance($targetType, $dateTime->format('Y-m-d H:i:s.v e')),
-            };
-        }
-
-        $dateTimeTypes = QueryHelper::getDateTimeTypes();
-
-        // Invalid values are converted to NULL
-        if (empty($value) || $value === '0000-00-00' || $value === '0000-00-00 00:00:00' || $value === '00:00:00') {
-            return null;
-        }
-        if (!in_array($storageFormat, $dateTimeTypes, true)) {
-            // Integer timestamps are also stored "as is" in the database, but are UTC by definition,
-            // so we convert the timestamp to an ISO representation.
-            $value = date('c', (int)$value);
-        }
-        // All date/datetime/time values are stored in the database "as is", independent of any time zone information.
-        // It is therefore only important to use the same time zone in PHP when storing and retrieving the values.
-        return GeneralUtility::makeInstance($targetType, $value);
+        return $dateTime === null ? null : match ($targetType) {
+            \DateTimeImmutable::class => $dateTime,
+            \DateTime::class => \DateTime::createFromImmutable($dateTime),
+            default => GeneralUtility::makeInstance($targetType, $dateTime->format('Y-m-d H:i:s.v e')),
+        };
     }
 
     /**
@@ -937,15 +918,13 @@ class DataMapper
      */
     public function getPlainValue(mixed $input, ?ColumnMap $columnMap = null): int|string
     {
-        if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling')) {
-            if ($input instanceof \DateTimeInterface || ($input === null && $columnMap?->type === TableColumnType::DATETIME)) {
-                return QueryHelper::transformDateTimeToDatabaseValue(
-                    $input,
-                    $columnMap->isNullable ?? false,
-                    $columnMap->dateTimeFormat ?? 'datetime',
-                    $columnMap?->dateTimeStorageFormat
-                ) ?? 'NULL';
-            }
+        if ($input instanceof \DateTimeInterface || ($input === null && $columnMap?->type === TableColumnType::DATETIME)) {
+            return QueryHelper::transformDateTimeToDatabaseValue(
+                $input,
+                $columnMap->isNullable ?? false,
+                $columnMap->dateTimeFormat ?? 'datetime',
+                $columnMap?->dateTimeStorageFormat
+            ) ?? 'NULL';
         }
 
         if ($input === null) {
@@ -966,20 +945,6 @@ class DataMapper
 
         if (is_int($input)) {
             return $input;
-        }
-
-        if ($input instanceof \DateTimeInterface) {
-            if ($columnMap !== null && $columnMap->dateTimeStorageFormat !== null) {
-                $storageFormat = $columnMap->dateTimeStorageFormat;
-                return match ($storageFormat) {
-                    'datetime' => $input->format('Y-m-d H:i:s'),
-                    'date' => $input->format('Y-m-d'),
-                    'time' => $input->format('H:i'),
-                    default => throw new \InvalidArgumentException('Column map DateTime format "' . $storageFormat . '" is unknown. Allowed values are date, datetime or time.', 1395353470),
-                };
-            }
-
-            return $input->format('U');
         }
 
         if ($input instanceof Country) {

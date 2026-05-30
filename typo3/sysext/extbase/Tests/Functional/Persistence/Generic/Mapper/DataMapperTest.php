@@ -376,33 +376,16 @@ final class DataMapperTest extends FunctionalTestCase
      */
     public static function mapDateTimeHandlesDifferentFieldEvaluationsDataProvider(): \Generator
     {
-        $variants = [
-            'nothing' => [null, null, null, null],
-            'timestamp' => [1, null, date('c', 1)],
-            'invalid date' => ['0000-00-00', 'date', null],
-            'valid date' => ['2013-01-01', 'date', date('c', strtotime('2013-01-01 00:00:00'))],
-            'invalid datetime' => ['0000-00-00 00:00:00', 'datetime', null],
-            'valid datetime' => ['2013-01-01 01:02:03', 'datetime', date('c', strtotime('2013-01-01 01:02:03'))],
-            'invalid time' => ['00:00:00', 'time', '1970-01-01T00:00:00+00:00', null],
-            'valid time' => ['01:02:03', 'time', date('c', strtotime('1970-01-01 01:02:03')), date('c', strtotime('01:02:03'))],
-            'null datetime' => [null, 'datetime', null],
-            'null time' => [null, 'time', null],
-        ];
-
-        foreach ($variants as $description => $variant) {
-            yield $description . ' (consistentDateTimeHandling=true)' => [
-                $variant[0],
-                $variant[1],
-                $variant[2],
-                true,
-            ];
-            yield $description . ' (consistentDateTimeHandling=false)' => [
-                $variant[0],
-                $variant[1],
-                array_key_exists(3, $variant) ? $variant[3] : $variant[2],
-                false,
-            ];
-        }
+        yield 'nothing' => [null, null, null];
+        yield 'timestamp' => [1, null, date('c', 1)];
+        yield 'invalid date' => ['0000-00-00', 'date', null];
+        yield 'valid date' => ['2013-01-01', 'date', date('c', strtotime('2013-01-01 00:00:00'))];
+        yield 'invalid datetime' => ['0000-00-00 00:00:00', 'datetime', null];
+        yield 'valid datetime' => ['2013-01-01 01:02:03', 'datetime', date('c', strtotime('2013-01-01 01:02:03'))];
+        yield 'invalid time' => ['00:00:00', 'time', '1970-01-01T00:00:00+00:00'];
+        yield 'valid time' => ['01:02:03', 'time', date('c', strtotime('1970-01-01 01:02:03'))];
+        yield 'null datetime' => [null, 'datetime', null];
+        yield 'null time' => [null, 'time', null];
     }
 
     #[DataProvider('mapDateTimeHandlesDifferentFieldEvaluationsDataProvider')]
@@ -411,10 +394,7 @@ final class DataMapperTest extends FunctionalTestCase
         string|int|null $value,
         ?string $storageFormat,
         ?string $expectedValue,
-        bool $consistentDateTimeHandling,
     ): void {
-        $bak = $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'];
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'] = $consistentDateTimeHandling;
         $rows = [
             [
                 'uid' => 123,
@@ -430,7 +410,6 @@ final class DataMapperTest extends FunctionalTestCase
         // Flush DataMapFactory cache on each run.
         $cacheManager = $this->get(CacheManager::class);
         $cacheManager->getCache('extbase')->flush();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'] = $bak;
     }
 
     #[DataProvider('mapDateTimeHandlesDifferentFieldEvaluationsDataProvider')]
@@ -439,10 +418,7 @@ final class DataMapperTest extends FunctionalTestCase
         string|int|null $value,
         ?string $storageFormat,
         ?string $expectedValue,
-        bool $consistentDateTimeHandling,
     ): void {
-        $bak = $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'];
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'] = $consistentDateTimeHandling;
         $rows = [
             [
                 'uid' => 123,
@@ -458,7 +434,6 @@ final class DataMapperTest extends FunctionalTestCase
         // Flush DataMapFactory cache on each run.
         $cacheManager = $this->get(CacheManager::class);
         $cacheManager->getCache('extbase')->flush();
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'] = $bak;
     }
 
     public static function mapDateTimeHandlesDifferentFieldEvaluationsWithTimeZoneDataProvider(): array
@@ -542,33 +517,18 @@ final class DataMapperTest extends FunctionalTestCase
 
     public static function getPlainValueReturnsExpectedValuesDataProvider(): \Generator
     {
-        $variants = [
-            'datetime to timestamp' => [1365866253, new \DateTime('@1365866253'), '1365866253'],
-            'boolean true to 1' => [1, true],
-            'boolean false to 0' => [0, false],
-            'NULL is handled as string' => ['NULL', null],
-            'string value is returned unchanged' => ['RANDOM string', 'RANDOM string'],
-            'array is flattened' => ['a,b,c', ['a', 'b', 'c']],
-            'deep array is flattened' => ['a,b,c', [['a', 'b'], 'c']],
-            'traversable domain object to identifier' => [1, new TraversableDomainObjectExample()],
-            'integer value is returned unchanged' => [1234, 1234],
-            'float is converted to string' => ['1234.56', 1234.56],
-            'string backed enum converted to string' => ['One', StringBackedEnum::ONE],
-            'int backed enum converted to int' => [1, IntegerBackedEnum::ONE],
-        ];
-
-        foreach ($variants as $description => $variant) {
-            yield $description . ' (consistentDateTimeHandling=true)' => [
-                $variant[0],
-                $variant[1],
-                true,
-            ];
-            yield $description . ' (consistentDateTimeHandling=false)' => [
-                array_key_exists(2, $variant) ? $variant[2] : $variant[0],
-                $variant[1],
-                false,
-            ];
-        }
+        yield 'datetime to timestamp' => [1365866253, new \DateTime('@1365866253')];
+        yield 'boolean true to 1' => [1, true];
+        yield 'boolean false to 0' => [0, false];
+        yield 'NULL is handled as string' => ['NULL', null];
+        yield 'string value is returned unchanged' => ['RANDOM string', 'RANDOM string'];
+        yield 'array is flattened' => ['a,b,c', ['a', 'b', 'c']];
+        yield 'deep array is flattened' => ['a,b,c', [['a', 'b'], 'c']];
+        yield 'traversable domain object to identifier' => [1, new TraversableDomainObjectExample()];
+        yield 'integer value is returned unchanged' => [1234, 1234];
+        yield 'float is converted to string' => ['1234.56', 1234.56];
+        yield 'string backed enum converted to string' => ['One', StringBackedEnum::ONE];
+        yield 'int backed enum converted to int' => [1, IntegerBackedEnum::ONE];
     }
 
     #[DataProvider('getPlainValueReturnsExpectedValuesDataProvider')]
@@ -576,16 +536,12 @@ final class DataMapperTest extends FunctionalTestCase
     public function getPlainValueReturnsExpectedValues(
         string|int $expectedValue,
         mixed $input,
-        bool $consistentDateTimeHandling
     ): void {
-        $bak = $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'];
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'] = $consistentDateTimeHandling;
         $dataMapper = $this->get(DataMapper::class);
 
         $plainValue = $dataMapper->getPlainValue($input);
 
         self::assertSame($expectedValue, $plainValue);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['extbase.consistentDateTimeHandling'] = $bak;
     }
 
     #[Test]

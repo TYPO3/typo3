@@ -254,6 +254,10 @@ The following FormEngine result array keys have been removed:
 
 - :php:`additionalHiddenFields`, hidden fields are now added to the :php:`html` key directly :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
 
+The following features are now always enabled:
+
+- :php:`extbase.consistentDateTimeHandling` - Extbase DateTime persistence is aligned with FormEngine and DataHandler, the feature flag has been dropped :ref:`(Feature introduction) <important-106467-1743452295>`
+
 Impact
 ======
 

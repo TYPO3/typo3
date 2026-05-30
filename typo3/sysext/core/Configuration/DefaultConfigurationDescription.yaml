@@ -208,16 +208,6 @@ SYS:
               frontend.cache.autoTagging:
                 type: bool
                 description: 'Frontend caches are automatically tagged with the records they use, allowing affected caches to be evicted when those records change.'
-              extbase.consistentDateTimeHandling:
-                type: bool
-                description: |
-                  Extbase DataMapper and Query components handle transformation of <code>type=datetime</code> fields consistently with FormEngine and DataHandler. This includes:<br>
-                  <ul>
-                  <li>Mapping date and datetime with named timezone instead of offset
-                  <li>Interpret integer based time fields as seconds without timezone offset
-                  <li>Interpreting <code>00:00:00</code> as non empty time value for nullable time properties
-                  <li>Constructing time properties based on <code>1970-01-01</code>
-                  </ul>
               extbase.enableHistoryTracking:
                 type: bool
                 description: 'Extbase persistence changes (update, add, delete) can be tracked in the general history (sys_history database table). When enabled, it can also be configured distinctly for each database table via TCA "[$tableName][ctrl][enableHistoryTracking]" (defaults to "true" / enabled). When the feature flag is disabled, the TCA setting is not evaluated.'

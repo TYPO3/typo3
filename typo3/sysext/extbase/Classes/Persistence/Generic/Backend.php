@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -79,7 +78,6 @@ class Backend implements BackendInterface
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ReferenceIndex $referenceIndex,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
-        protected readonly Features $features,
     ) {
         $this->aggregateRootObjects = new ObjectStorage();
         $this->deletedEntities = new ObjectStorage();
@@ -894,9 +892,7 @@ class Backend implements BackendInterface
             return GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap);
         }
 
-        if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling')
-            && $columnMap?->type === TableColumnType::DATETIME
-        ) {
+        if ($columnMap?->type === TableColumnType::DATETIME) {
             return QueryHelper::transformDateTimeToDatabaseValue(
                 null,
                 $columnMap->isNullable,
@@ -918,25 +914,6 @@ class Backend implements BackendInterface
         // Nullable domain model property
         if (is_subclass_of($className, DomainObjectInterface::class)) {
             return 0;
-        }
-        // Nullable DateTime property (superseded by extbase.consistentDateTimeHandling above)
-        // @todo remove in TYPO3 v15 when extbase.consistentDateTimeHandling will be enforced
-        if ($columnMap && is_subclass_of($className, \DateTimeInterface::class)) {
-            if ($columnMap->isNullable() && $property->isNullable()) {
-                return null;
-            }
-
-            $datetimeFormats = QueryHelper::getDateTimeFormats();
-            $dateFormat = $columnMap->dateTimeStorageFormat;
-            if (!$dateFormat) {
-                // Datetime property with no TCA dbType
-                return 0;
-            }
-            if (isset($datetimeFormats[$dateFormat])) {
-                // Datetime property with TCA dbType defined. Nullable fields will be saved with the empty value
-                // (e.g. "00:00:00" for dbType = time) as well, but DataMapper will correctly map those values to null
-                return $datetimeFormats[$dateFormat]['empty'];
-            }
         }
         return null;
     }

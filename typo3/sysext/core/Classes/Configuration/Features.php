@@ -63,6 +63,8 @@ readonly class Features
      * returns "enabled" for future versions.
      */
     private const ALWAYS_ACTIVE_FEATURES = [
+        // Enabled since v15.0 at any time.
+        'extbase.consistentDateTimeHandling',
         // Enabled since v13.0 at any time.
         'security.usePasswordPolicyForFrontendUsers',
         'security.backend.enforceContentSecurityPolicy',
