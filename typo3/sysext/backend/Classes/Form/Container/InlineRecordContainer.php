@@ -128,11 +128,9 @@ class InlineRecordContainer extends AbstractContainer
                 }
             }
         }
-        $hiddenFieldHtml = implode(LF, $resultArray['additionalHiddenFields'] ?? []);
-
         if ($inlineConfig['renderFieldsOnly'] ?? false) {
             // Render "body" part only
-            $html .= $hiddenFieldHtml . $combinationHtml;
+            $html .= $combinationHtml;
         } else {
             // Render header row and content (if expanded)
             if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
@@ -184,7 +182,7 @@ class InlineRecordContainer extends AbstractContainer
                             ' . $this->renderForeignRecordHeader($data, $isExpanded, $ariaControls) . '
                         </div>
                     </div>
-                    <div class="panel-collapse collapse' . ($isExpanded ? ' show' : '') . '" id="' . $ariaControls . '">' . $html . $hiddenFieldHtml . $combinationHtml . '</div>
+                    <div class="panel-collapse collapse' . ($isExpanded ? ' show' : '') . '" id="' . $ariaControls . '">' . $html . $combinationHtml . '</div>
                 </div>';
         }
 

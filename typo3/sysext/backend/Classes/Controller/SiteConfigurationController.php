@@ -281,8 +281,6 @@ readonly class SiteConfigurationController
             'rootPageId' => $isNewConfig ? $pageUid : $allSites[$siteIdentifier]->getRootPageId(),
             'returnUrl' => $returnUrl,
             'formEngineHtml' => $formResult->html,
-            // @deprecated since v14.2, will be removed in v15. Kept for BC with third-party FormEngine elements.
-            'formEngineFooter' => implode(LF, $formResult->hiddenFieldsHtml),
         ]);
         $this->configureEditViewDocHeader($view, $siteIdentifier, $documentTitle);
         $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);

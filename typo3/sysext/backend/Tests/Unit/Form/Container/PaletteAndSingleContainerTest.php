@@ -33,7 +33,6 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $singleFieldContainerMock = $this->createMock(SingleFieldContainer::class);
         $singleFieldContainerReturn = [
-            'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
             'javaScriptModules' => [],
@@ -98,7 +97,6 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $singleFieldContainerMock = $this->createMock(SingleFieldContainer::class);
         $singleFieldContainerReturn = [
-            'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
             'javaScriptModules' => [],
@@ -167,7 +165,6 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         $nodeFactoryMock = $this->createMock(NodeFactory::class);
         $singleFieldContainerMock = $this->createMock(SingleFieldContainer::class);
         $singleFieldContainerReturn = [
-            'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
             'javaScriptModules' => [],

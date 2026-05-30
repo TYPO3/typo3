@@ -82,7 +82,7 @@ final readonly class PageWizardStepBuilder
             ->withConfigurationData([
                 'title' => $this->getLanguageService()->sL($wizardStep->getTitle()),
                 'key' => $wizardStep->getIdentifier(),
-                'html' => '<form name="editform">' . $formResult->html . implode(LF, $formResult->hiddenFieldsHtml) . '<input type="submit" hidden></form>',
+                'html' => '<form name="editform">' . $formResult->html . '<input type="submit" hidden></form>',
                 'modules' => [
                     JavaScriptModuleInstruction::create('@typo3/backend/form-engine.js')
                         ->invoke(

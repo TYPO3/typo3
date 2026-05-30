@@ -61,6 +61,7 @@ The following PHP class aliases that have previously been marked as deprecated w
 
 The following PHP class methods that have previously been marked as deprecated with v14 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\Form\FormResultCollection->getHiddenFieldsHtml()` :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->add()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
@@ -121,6 +122,7 @@ The following methods changed signature according to previous deprecations in v1
 
 The following public class properties have been dropped:
 
+- :php:`\TYPO3\CMS\Backend\Form\FormResult->hiddenFieldsHtml` :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->checkPid_badDoktypeList` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkResult` :ref:`(Deprecation entry) <deprecation-109575>`
@@ -242,6 +244,10 @@ The following content element definitions have been removed:
 The following Fluid rendering mechanisms have been removed:
 
 - :php:`HeaderAssets` and :php:`FooterAssets` Fluid template sections are no longer auto-rendered  :ref:`(Deprecation entry) <deprecation-107057-1756471326>`
+
+The following FormEngine result array keys have been removed:
+
+- :php:`additionalHiddenFields`, hidden fields are now added to the :php:`html` key directly :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
 
 Impact
 ======

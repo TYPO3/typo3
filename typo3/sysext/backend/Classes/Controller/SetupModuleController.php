@@ -191,7 +191,6 @@ class SetupModuleController
             'typo3Info' => $this->typo3Information,
             'isLanguageUpdate' => $this->languageUpdate,
             'formEngineHtml' => $formResult->html,
-            'formEngineFooter' => implode(LF, $formResult->hiddenFieldsHtml),
             'formToken' => $formProtection->generateToken('BE user setup', 'edit'),
         ]);
         return $view->renderResponse('Setup/Main');

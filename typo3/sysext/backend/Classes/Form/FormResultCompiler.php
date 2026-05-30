@@ -37,11 +37,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FormResultCompiler
 {
     /**
-     * @var array HTML of additional hidden fields rendered by sub containers
-     */
-    protected array $hiddenFieldAccum = [];
-
-    /**
      * Data array from IRRE pushed to frontend as json array
      */
     protected array $inlineData = [];
@@ -83,9 +78,6 @@ class FormResultCompiler
                 );
             }
             $this->javaScriptModules[] = $module;
-        }
-        foreach ($resultArray['additionalHiddenFields'] as $element) {
-            $this->hiddenFieldAccum[] = $element;
         }
         foreach ($resultArray['stylesheetFiles'] as $stylesheetFile) {
             if (!in_array($stylesheetFile, $this->stylesheetFiles)) {
@@ -131,8 +123,6 @@ class FormResultCompiler
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
-        // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
-        $html = implode(LF, $this->hiddenFieldAccum);
         // load the main module for FormEngine with all important JS functions
         $this->javaScriptModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine.js')
             ->invoke(
@@ -158,7 +148,7 @@ class FormResultCompiler
             $pageRenderer->addInlineSettingArray('FormEngineInline', $this->inlineData);
         }
 
-        return $html;
+        return '';
     }
 
     protected function getLanguageService(): LanguageService

@@ -50,7 +50,6 @@ class FormResultFactory
             stylesheetFiles: array_unique(array_values($resultArray['stylesheetFiles'] ?? [])),
             inlineData: $resultArray['inlineData'],
             additionalInlineLanguageLabelFiles: $resultArray['additionalInlineLanguageLabelFiles'],
-            hiddenFieldsHtml: $resultArray['additionalHiddenFields'],
         );
     }
 }

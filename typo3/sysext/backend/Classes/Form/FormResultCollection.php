@@ -108,21 +108,6 @@ class FormResultCollection implements \IteratorAggregate, \Countable
         return array_unique($files);
     }
 
-    /**
-     * @return string[]
-     * @deprecated since v14.2, will be removed in v15. Add hidden fields to the 'html' key directly.
-     */
-    public function getHiddenFieldsHtml(): array
-    {
-        $fields = [];
-        foreach ($this->results as $result) {
-            foreach ($result->hiddenFieldsHtml as $field) {
-                $fields[] = $field;
-            }
-        }
-        return array_unique($fields);
-    }
-
     public function getHtml(): string
     {
         $html = '';

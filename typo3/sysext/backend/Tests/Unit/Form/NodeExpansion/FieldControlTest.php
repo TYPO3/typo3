@@ -99,7 +99,6 @@ final class FieldControlTest extends UnitTestCase
         });
 
         $expected = [
-            'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
             'javaScriptModules' => [

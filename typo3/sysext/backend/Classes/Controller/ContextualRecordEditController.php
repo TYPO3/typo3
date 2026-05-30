@@ -150,7 +150,6 @@ readonly class ContextualRecordEditController
                     ' . $formResult['results']->getHtml() . '
                     <input type="hidden" name="returnUrl" value="' . htmlspecialchars($returnUrl) . '" />
                     <input type="hidden" name="closeDoc" value="0" />
-                    ' . implode(LF, $formResult['results']->getHiddenFieldsHtml()) . '
                 </form>';
         } else {
             $view->setUiBlock(false);

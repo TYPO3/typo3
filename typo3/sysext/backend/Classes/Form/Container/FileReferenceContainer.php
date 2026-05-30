@@ -124,11 +124,9 @@ class FileReferenceContainer extends AbstractContainer
                 }
             }
         }
-        $hiddenFieldHtml = implode("\n", $resultArray['additionalHiddenFields'] ?? []);
-
         if ($this->data['inlineParentConfig']['renderFieldsOnly'] ?? false) {
             // Render "body" part only
-            $resultArray['html'] = $html . $hiddenFieldHtml . $combinationHtml;
+            $resultArray['html'] = $html . $combinationHtml;
             return $resultArray;
         }
 
@@ -167,7 +165,7 @@ class FileReferenceContainer extends AbstractContainer
                         ' . $this->renderFileHeader($isExpanded, $ariaControls) . '
                     </div>
                 </div>
-                <div class="panel-collapse collapse' . ($isExpanded ? ' show' : '') . '" id="' . $ariaControls . '">' . $html . $hiddenFieldHtml . $combinationHtml . '</div>
+                <div class="panel-collapse collapse' . ($isExpanded ? ' show' : '') . '" id="' . $ariaControls . '">' . $html . $combinationHtml . '</div>
             </div>';
 
         return $resultArray;
