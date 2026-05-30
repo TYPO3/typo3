@@ -195,6 +195,7 @@ The following extbase attribute usages have been removed:
 The following fallbacks have been removed:
 
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getRequest()` no longer falls back to :php:`$GLOBALS['TYPO3_REQUEST']`; code must call :php:`setRequest()` after instantiation :ref:`(Deprecation entry) <deprecation-109575>`
+- Page layout content area columns without an :html:`identifier` no longer fall back to a generated hash based on the page layout identifier and :html:`colPos`; a missing identifier now throws a :php:`\RuntimeException` :ref:`(Feature introduction) <feature-104974-1726401724>`
 
 The following upgrade wizards have been removed:
 

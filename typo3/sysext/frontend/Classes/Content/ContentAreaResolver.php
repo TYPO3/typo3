@@ -64,12 +64,10 @@ final readonly class ContentAreaResolver
             $disallowedContentTypes = GeneralUtility::trimExplode(',', $structure['disallowedContentTypes'] ?? '', true);
             $identifier = (string)($structure['identifier'] ?? '');
             if ($identifier === '') {
-                // @deprecated Identifier has to be set -> throw exception in v15
-                trigger_error(
-                    'No identifier given for column with colPos "' . $colPos . '" in page layout "' . $layout->getIdentifier() . '". Setting an identifier will be mandatory in TYPO3 v15',
-                    E_USER_DEPRECATED
+                throw new \RuntimeException(
+                    'No identifier given for column with colPos "' . $colPos . '" in page layout "' . $layout->getIdentifier() . '". Setting an identifier is mandatory.',
+                    1780173420
                 );
-                $identifier = md5($layout->getIdentifier() . $colPos);
             }
             $contentAreas[$identifier] = new ContentAreaClosure(
                 function (ServerRequestInterface $request) use ($identifier, $name, $colPos, $slideMode, $allowedContentTypes, $disallowedContentTypes, $structure): ContentArea {

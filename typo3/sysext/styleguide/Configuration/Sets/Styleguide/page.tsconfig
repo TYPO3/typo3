@@ -13,6 +13,7 @@ mod {
                                     1 {
                                         name =  LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:backendLayouts.styleguideFrontend.colpos.0
                                         colPos = 0
+                                        identifier = main
                                     }
                                 }
                             }
