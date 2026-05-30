@@ -32,26 +32,26 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
     #[Test]
     public function emptyFieldCollectionForUnknownSchema(): void
     {
-        $fieldsCollector = $this->getContainer()->get(SearchableSchemaFieldsCollector::class);
+        $fieldsCollector = $this->get(SearchableSchemaFieldsCollector::class);
         self::assertCount(0, $fieldsCollector->getFields('unknown'));
     }
 
     #[Test]
     public function emptyFieldCollectionForEmptySearchFields(): void
     {
-        $schemaFactory = $this->getContainer()->get(TcaSchemaFactory::class);
+        $schemaFactory = $this->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
             ['aTable' => ['ctrl' => []]]
         );
 
-        $fieldsCollector = $this->getContainer()->get(SearchableSchemaFieldsCollector::class);
+        $fieldsCollector = $this->get(SearchableSchemaFieldsCollector::class);
         self::assertCount(0, $fieldsCollector->getFields('aTable'));
     }
 
     #[Test]
     public function searchableFieldsAreReturned(): void
     {
-        $schemaFactory = $this->getContainer()->get(TcaSchemaFactory::class);
+        $schemaFactory = $this->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
             [
                 'aTable' => [
@@ -68,7 +68,7 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
         // Returns only foo as only this field is searchable. "bar"
         // exists but is not searchable and baz does not exists at all.
 
-        $fieldsCollector = $this->getContainer()->get(SearchableSchemaFieldsCollector::class);
+        $fieldsCollector = $this->get(SearchableSchemaFieldsCollector::class);
         $fields = $fieldsCollector->getFields('aTable');
         self::assertCount(1, $fields);
         $fieldsArray = iterator_to_array($fields);
@@ -80,7 +80,7 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
     #[Test]
     public function specialSearchFieldsAreReturned(): void
     {
-        $schemaFactory = $this->getContainer()->get(TcaSchemaFactory::class);
+        $schemaFactory = $this->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
             [
                 'aTable' => [
@@ -97,7 +97,7 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
         // Returns only foo as only this field is searchable. "bar"
         // exists but is not searchable and baz does not exists at all.
 
-        $fieldsCollector = $this->getContainer()->get(SearchableSchemaFieldsCollector::class);
+        $fieldsCollector = $this->get(SearchableSchemaFieldsCollector::class);
         $fields =  $fieldsCollector->getFields('aTable');
         self::assertCount(2, $fields);
         $fieldsArray = iterator_to_array($fields);
@@ -117,7 +117,7 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
     #[Test]
     public function manualSearchFieldsAreReturned(): void
     {
-        $schemaFactory = $this->getContainer()->get(TcaSchemaFactory::class);
+        $schemaFactory = $this->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
             [
                 'aTable' => [
@@ -132,7 +132,7 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
         );
 
         $manualSearchFields = ['foo', 'foobar', 'bazbar'];
-        $fieldsCollector = $this->getContainer()->get(SearchableSchemaFieldsCollector::class);
+        $fieldsCollector = $this->get(SearchableSchemaFieldsCollector::class);
         $fields =  $fieldsCollector->getFields('aTable', $manualSearchFields);
         self::assertCount(2, $fields);
         $fieldsArray = iterator_to_array($fields);
@@ -177,7 +177,7 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
     #[Test]
     public function uniqueFieldListIsReturned(array $expected, array $existingFields, bool $includeSpecialFields): void
     {
-        $schemaFactory = $this->getContainer()->get(TcaSchemaFactory::class);
+        $schemaFactory = $this->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
             [
                 'aTable' => [
@@ -189,7 +189,7 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
             ]
         );
 
-        $fieldsCollector = $this->getContainer()->get(SearchableSchemaFieldsCollector::class);
+        $fieldsCollector = $this->get(SearchableSchemaFieldsCollector::class);
         self::assertEquals($expected, array_values($fieldsCollector->getUniqueFieldList('aTable', $existingFields, $includeSpecialFields)));
     }
 }

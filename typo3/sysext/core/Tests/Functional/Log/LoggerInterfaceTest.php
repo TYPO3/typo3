@@ -70,8 +70,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function loggerAwareClassWithClassLevelChannelAttributeIsRead(): void
     {
-        $container = $this->getContainer();
-        $container->get(LoggerAwareClassAttributeChannelTester::class);
+        $this->get(LoggerAwareClassAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -81,8 +80,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function loggerAwareClassWithoutClassLevelChannelAttributeUsesClassname(): void
     {
-        $container = $this->getContainer();
-        $container->get(LoggerAwareClassWithoutAttributeChannelTester::class);
+        $this->get(LoggerAwareClassWithoutAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -92,8 +90,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function constructorWithoutChannelAttributeUsesClassName(): void
     {
-        $container = $this->getContainer();
-        $container->get(ConstructorWithoutAttributeTester::class);
+        $this->get(ConstructorWithoutAttributeTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -103,8 +100,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function constructorChannelAttributeIsRead(): void
     {
-        $container = $this->getContainer();
-        $container->get(ConstructorAttributeChannelTester::class);
+        $this->get(ConstructorAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -114,8 +110,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function constructorClassChannelAttributeIsRead(): void
     {
-        $container = $this->getContainer();
-        $container->get(ConstructorClassAttributeChannelTester::class);
+        $this->get(ConstructorClassAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -125,8 +120,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function injectMethodChannelAttributeIsRead(): void
     {
-        $container = $this->getContainer();
-        $container->get(InjectMethodAttributeChannelTester::class);
+        $this->get(InjectMethodAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -136,8 +130,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function injectMethodClassChannelAttributeIsRead(): void
     {
-        $container = $this->getContainer();
-        $container->get(InjectMethodClassAttributeChannelTester::class);
+        $this->get(InjectMethodClassAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -147,8 +140,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function injectMethodWithoutChannelAttributeUsesClassName(): void
     {
-        $container = $this->getContainer();
-        $container->get(InjectMethodWithoutAttributeChannelTester::class);
+        $this->get(InjectMethodWithoutAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -158,8 +150,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function parentInjectMethodChannelAttributeIsRead(): void
     {
-        $container = $this->getContainer();
-        $container->get(ParentInjectMethodAttributeChannelTester::class);
+        $this->get(ParentInjectMethodAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -169,8 +160,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function parentInjectMethodClassChannelAttributeIsRead(): void
     {
-        $container = $this->getContainer();
-        $container->get(ParentInjectMethodClassAttributeChannelTester::class);
+        $this->get(ParentInjectMethodClassAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -180,8 +170,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function grandParentInjectMethodClassChannelAttributeIsRead(): void
     {
-        $container = $this->getContainer();
-        $container->get(GrandParentInjectMethodClassAttributeChannelTester::class);
+        $this->get(GrandParentInjectMethodClassAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -191,8 +180,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function GrandParentInjectMethodNoClassAttributeTesterChildAttributeIsRead(): void
     {
-        $container = $this->getContainer();
-        $container->get(GrandParentInjectMethodNoClassAttributeTester::class);
+        $this->get(GrandParentInjectMethodNoClassAttributeTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());
@@ -202,8 +190,7 @@ final class LoggerInterfaceTest extends FunctionalTestCase
     #[Test]
     public function parentInjectMethodWithoutChannelAttributeUsesClassName(): void
     {
-        $container = $this->getContainer();
-        $container->get(ParentInjectMethodWithoutAttributeChannelTester::class);
+        $this->get(ParentInjectMethodWithoutAttributeChannelTester::class);
 
         self::assertCount(1, DummyWriter::$logs);
         self::assertSame('beep beep', DummyWriter::$logs[0]->getMessage());

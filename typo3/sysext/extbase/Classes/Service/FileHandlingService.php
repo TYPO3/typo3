@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\UploadedFile;
@@ -29,7 +30,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Resource\StorageRepository;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -50,7 +50,8 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 /**
  * @internal Only to be used within Extbase, not part of TYPO3 Core API.
  */
-readonly class FileHandlingService implements SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class FileHandlingService
 {
     use ResourceInstructionTrait;
 

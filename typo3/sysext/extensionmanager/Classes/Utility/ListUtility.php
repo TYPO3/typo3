@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -40,7 +39,7 @@ use TYPO3\CMS\Extensionmanager\Enum\ExtensionType;
  * - The name 'listUtility' is not good, the methods could be moved to some 'extensionInformationUtility', or a repository?
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class ListUtility implements SingletonInterface
+class ListUtility
 {
     /**
      * @var EmConfUtility

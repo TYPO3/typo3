@@ -46,7 +46,7 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
     #[Test]
     public function emptyFieldCollectionForEmptyRecord(): void
     {
-        $schemaFactory = $this->getContainer()->get(TcaSchemaFactory::class);
+        $schemaFactory = $this->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
             [
                 'aTable' => [
@@ -61,7 +61,7 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
     #[Test]
     public function expectedFieldCollectionWithoutType(): void
     {
-        $schemaFactory = $this->getContainer()->get(TcaSchemaFactory::class);
+        $schemaFactory = $this->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
             [
                 'aTable' => [

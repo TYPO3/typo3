@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 use Doctrine\DBAL\Exception as DBALException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
@@ -34,7 +35,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -56,7 +56,8 @@ use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
  * A Storage backend
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class Typo3DbBackend implements BackendInterface
 {
     public function __construct(
         protected CacheService $cacheService,

@@ -274,10 +274,10 @@ final class PasswordSetCommandTest extends FunctionalTestCase
         return new FailsafeContainer(
             [new ServiceProvider()],
             [
-                PasswordHashFactory::class => $this->getContainer()->get(PasswordHashFactory::class),
-                ConfigurationManager::class => $this->getContainer()->get(ConfigurationManager::class),
-                LanguageServiceFactory::class => $this->getContainer()->get(LanguageServiceFactory::class),
-                PasswordService::class => $this->getContainer()->get(PasswordService::class),
+                PasswordHashFactory::class => $this->get(PasswordHashFactory::class),
+                ConfigurationManager::class => $this->get(ConfigurationManager::class),
+                LanguageServiceFactory::class => $this->get(LanguageServiceFactory::class),
+                PasswordService::class => $this->get(PasswordService::class),
             ]
         );
     }

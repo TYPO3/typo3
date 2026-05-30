@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
@@ -48,7 +47,7 @@ use TYPO3\CMS\Extbase\Security\HashScope;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class MvcPropertyMappingConfigurationService implements SingletonInterface
+class MvcPropertyMappingConfigurationService
 {
     protected HashService $hashService;
 

@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Event\BeforePackageActivationEvent;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -34,7 +33,7 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 /**
  * Service class for managing multiple step processes (dependencies for example)
  */
-class ExtensionManagementService implements SingletonInterface
+class ExtensionManagementService
 {
     protected DependencyUtility $dependencyUtility;
     protected InstallUtility $installUtility;

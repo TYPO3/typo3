@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Dashboard;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
 use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
@@ -32,7 +32,8 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
 /**
  * @internal
  */
-class WidgetRegistry implements SingletonInterface
+#[Autoconfigure(public: true)]
+class WidgetRegistry
 {
     /**
      * @var array<string,WidgetConfigurationInterface>

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
@@ -33,7 +32,7 @@ use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
  * Utility for dealing with dependencies
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class DependencyUtility implements SingletonInterface
+class DependencyUtility
 {
     /**
      * @var ExtensionRepository

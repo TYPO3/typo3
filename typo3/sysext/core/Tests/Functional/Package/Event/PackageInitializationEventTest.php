@@ -97,10 +97,10 @@ final class PackageInitializationEventTest extends FunctionalTestCase
     public function coreListenersAddStorageEntries(): void
     {
         /** @var PackageInitializationEvent $event */
-        $event = $this->getContainer()->get(EventDispatcherInterface::class)->dispatch(
+        $event = $this->get(EventDispatcherInterface::class)->dispatch(
             new PackageInitializationEvent(
                 extensionKey: 'test_package_initialization',
-                package: $this->getContainer()->get(PackageManager::class)->getPackage('test_package_initialization'),
+                package: $this->get(PackageManager::class)->getPackage('test_package_initialization'),
             )
         );
 

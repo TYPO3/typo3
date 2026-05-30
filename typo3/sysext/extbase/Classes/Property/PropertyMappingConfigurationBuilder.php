@@ -17,14 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Property;
 
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 
 /**
  * This builder creates the default configuration for Property Mapping, if no configuration has been passed to the Property Mapper.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class PropertyMappingConfigurationBuilder implements SingletonInterface
+class PropertyMappingConfigurationBuilder
 {
     /**
      * Builds the default property mapping configuration.

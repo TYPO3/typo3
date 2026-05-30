@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
@@ -31,7 +30,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * @internal
  */
 #[Autoconfigure(public: true)]
-readonly class FormEditorEnrichmentService implements SingletonInterface
+readonly class FormEditorEnrichmentService
 {
     public function __construct(
         private RichTextConfigurationService $richTextConfigurationService,

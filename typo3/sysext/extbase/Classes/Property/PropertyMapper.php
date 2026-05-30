@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Property;
 
-use TYPO3\CMS\Core\SingletonInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException;
@@ -26,7 +26,8 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  * The Property Mapper transforms simple types (arrays, strings, integers, floats, booleans) to objects or other simple types.
  * It is used most prominently to map incoming HTTP arguments to objects.
  */
-class PropertyMapper implements SingletonInterface
+#[Autoconfigure(public: true)]
+class PropertyMapper
 {
     /**
      * A list of property mapping messages (errors, warnings) which have occurred on last mapping.

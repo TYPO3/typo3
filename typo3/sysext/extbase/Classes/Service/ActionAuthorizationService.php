@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Service;
 
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Attribute\Authorize;
 use TYPO3\CMS\Extbase\Authorization\AuthorizationFailureReason;
@@ -28,7 +27,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 /**
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-readonly class ActionAuthorizationService implements SingletonInterface
+readonly class ActionAuthorizationService
 {
     public function __construct(protected Context $context) {}
 

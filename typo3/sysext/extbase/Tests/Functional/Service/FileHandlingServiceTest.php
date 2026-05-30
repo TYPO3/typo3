@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\Argument;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
@@ -41,18 +40,10 @@ final class FileHandlingServiceTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/file_upload'];
 
-    private FileHandlingService $fileHandlingService;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->fileHandlingService = $this->getContainer()->get(FileHandlingService::class);
-    }
-
     #[Test]
     public function noFileUploadConfigurationIsInitializedIfRequestMethodIsNotPost(): void
     {
-        $validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
+        $validator = new ConjunctionValidator();
 
         $argument = new Argument('fileUploadSingleFileReference', FileReferencePropertySingle::class);
         $argument->setValidator($validator);
@@ -65,7 +56,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
 
-        $this->fileHandlingService->initializeFileUploadConfigurationsFromRequest($request, $arguments);
+        $this->get(FileHandlingService::class)->initializeFileUploadConfigurationsFromRequest($request, $arguments);
 
         $fileUploadPropertiesArgument = $arguments->getArgument('fileUploadSingleFileReference');
         self::assertEmpty($fileUploadPropertiesArgument->getFileHandlingServiceConfiguration()->getFileUploadConfigurations());
@@ -84,7 +75,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
 
-        $this->fileHandlingService->initializeFileUploadConfigurationsFromRequest($request, $arguments);
+        $this->get(FileHandlingService::class)->initializeFileUploadConfigurationsFromRequest($request, $arguments);
 
         $fileUploadPropertiesArgument = $arguments->getArgument('fileUploadSingleFileReference');
         self::assertEmpty($fileUploadPropertiesArgument->getFileHandlingServiceConfiguration()->getFileUploadConfigurations());
@@ -95,7 +86,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
     {
         $argument = new Argument('fileUploadSingleFileReference', FileReferencePropertySingle::class);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -107,7 +98,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
 
-        $this->fileHandlingService->initializeFileUploadConfigurationsFromRequest($request, $arguments);
+        $this->get(FileHandlingService::class)->initializeFileUploadConfigurationsFromRequest($request, $arguments);
 
         $fileUploadPropertiesArgument = $arguments->getArgument('fileUploadSingleFileReference');
         $fileUploadConfigurations = $fileUploadPropertiesArgument->getFileHandlingServiceConfiguration()
@@ -123,7 +114,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
     {
         $argument = new Argument('fileUploadMultipleProperties', FileUploadMultipleProperties::class);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -135,7 +126,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
 
-        $this->fileHandlingService->initializeFileUploadConfigurationsFromRequest($request, $arguments);
+        $this->get(FileHandlingService::class)->initializeFileUploadConfigurationsFromRequest($request, $arguments);
 
         $fileUploadPropertiesArgument = $arguments->getArgument('fileUploadMultipleProperties');
         $fileUploadConfigurations = $fileUploadPropertiesArgument->getFileHandlingServiceConfiguration()
@@ -146,7 +137,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
     #[Test]
     public function noFileUploadDeletionConfigurationIsInitializedIfRequestMethodIsNotPost(): void
     {
-        $validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
+        $validator = new ConjunctionValidator();
 
         $argument = new Argument('fileUploadSingleFileReference', FileReferencePropertySingle::class);
         $argument->setValidator($validator);
@@ -159,7 +150,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
 
-        $this->fileHandlingService->initializeFileUploadDeletionConfigurationsFromRequest($request, $arguments);
+        $this->get(FileHandlingService::class)->initializeFileUploadDeletionConfigurationsFromRequest($request, $arguments);
 
         $fileUploadPropertiesArgument = $arguments->getArgument('fileUploadSingleFileReference');
         self::assertEmpty($fileUploadPropertiesArgument->getFileHandlingServiceConfiguration()->getFileUploadDeletionConfigurations());
@@ -172,7 +163,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $frontendTypoScript->setSetupTree(new RootNode());
         $frontendTypoScript->setSetupArray([]);
 
-        $validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
+        $validator = new ConjunctionValidator();
 
         $argument = new Argument('fileUploadSingleFileReference', FileReferencePropertySingle::class);
         $argument->setValidator($validator);
@@ -196,7 +187,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
         $configurationManager->setRequest($request);
 
-        $this->fileHandlingService->initializeFileUploadDeletionConfigurationsFromRequest($request, $arguments);
+        $this->get(FileHandlingService::class)->initializeFileUploadDeletionConfigurationsFromRequest($request, $arguments);
 
         $fileUploadPropertiesArgument = $arguments->getArgument('fileUploadSingleFileReference');
         self::assertEmpty($fileUploadPropertiesArgument->getFileHandlingServiceConfiguration()->getFileUploadDeletionConfigurations());
@@ -209,7 +200,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $frontendTypoScript->setSetupTree(new RootNode());
         $frontendTypoScript->setSetupArray([]);
 
-        $validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
+        $validator = new ConjunctionValidator();
 
         $argument = new Argument('fileUploadSingleFileReference', FileReferencePropertySingle::class);
         $argument->setValidator($validator);
@@ -242,7 +233,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
         $configurationManager->setRequest($request);
 
         $this->expectException(InvalidHashStringException::class);
-        $this->fileHandlingService->initializeFileUploadDeletionConfigurationsFromRequest($request, $arguments);
+        $this->get(FileHandlingService::class)->initializeFileUploadDeletionConfigurationsFromRequest($request, $arguments);
     }
 
     #[Test]
@@ -250,7 +241,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
     {
         $argument = new Argument('xclassedModel', ModelWithTextfield::class);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -262,7 +253,7 @@ final class FileHandlingServiceTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $request = new Request($serverRequest);
 
-        $this->fileHandlingService->initializeFileUploadConfigurationsFromRequest($request, $arguments);
+        $this->get(FileHandlingService::class)->initializeFileUploadConfigurationsFromRequest($request, $arguments);
 
         $fileUploadPropertiesArgument = $arguments->getArgument('xclassedModel');
         self::assertNotEmpty($fileUploadPropertiesArgument->getFileHandlingServiceConfiguration()->getFileUploadConfigurations());

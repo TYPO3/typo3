@@ -24,7 +24,6 @@ use Symfony\Component\Mailer\Transport\AbstractTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -37,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is handled internally in TransportFactory
  */
-class MemorySpool extends AbstractTransport implements SingletonInterface, DelayedTransportInterface
+class MemorySpool extends AbstractTransport implements DelayedTransportInterface
 {
     use BlockSerializationTrait;
 

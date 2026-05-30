@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard;
 
-use TYPO3\CMS\Core\SingletonInterface;
-
 /**
  * @internal
  */
-class WidgetGroupRegistry implements SingletonInterface
+class WidgetGroupRegistry
 {
     /**
      * @var WidgetGroup[]
