@@ -34,9 +34,4 @@ class DummyClassWithAllTypesOfMethods
     public function methodWithDefaultValueParam($param = 'foo'): void {}
 
     public function methodWithTypeHintedParam(string $param): void {}
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods $param
-     */
-    public function methodWithDocBlockTypeHintOnly($param): void {}
 }

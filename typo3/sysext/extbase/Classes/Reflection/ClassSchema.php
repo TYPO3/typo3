@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Reflection;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlockFactory;
-use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -32,7 +30,6 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\PropertyCharacteristics;
-use TYPO3\CMS\Extbase\Reflection\DocBlock\Tags\Null_;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
@@ -55,7 +52,6 @@ class ClassSchema
     private array $properties = [];
     private array $methods = [];
     private static ?PropertyInfoExtractor $propertyInfoExtractor = null;
-    private static ?DocBlockFactoryInterface $docBlockFactory = null;
 
     /**
      * Constructs this class schema
@@ -85,28 +81,6 @@ class ClassSchema
                 [],
                 [$phpDocExtractor, $reflectionExtractor]
             );
-        }
-
-        if (self::$docBlockFactory === null) {
-            self::$docBlockFactory = DocBlockFactory::createInstance([
-                'author' => Null_::class,
-                'covers' => Null_::class,
-                'deprecated' => Null_::class,
-                'link' => Null_::class,
-                'method' => Null_::class,
-                'property-read' => Null_::class,
-                'property' => Null_::class,
-                'property-write' => Null_::class,
-                'return' => Null_::class,
-                'see' => Null_::class,
-                'since' => Null_::class,
-                'source' => Null_::class,
-                'throw' => Null_::class,
-                'throws' => Null_::class,
-                'uses' => Null_::class,
-                'var' => Null_::class,
-                'version' => Null_::class,
-            ]);
         }
 
         $this->reflectProperties($reflectionClass);
@@ -220,10 +194,7 @@ class ClassSchema
             /** @var array<string, list<Attribute\IgnoreValidation>> $validateAttributes */
             $ignoreValidationAttributes = [];
 
-            $docComment = $reflectionMethod->getDocComment();
-            $docComment = is_string($docComment) ? $docComment : '';
-
-            foreach ($reflectionMethod->getParameters() as $parameterPosition => $reflectionParameter) {
+            foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
                 $parameterName = $reflectionParameter->getName();
                 $parameterAttributes = $reflectionParameter->getAttributes();
 
@@ -282,32 +253,6 @@ class ClassSchema
                     }
                 }
 
-                $typeDetectedViaDocBlock = false;
-                if ($docComment !== '' && $this->methods[$methodName]['params'][$parameterName]['type'] === null) {
-                    /*
-                     * We create (redundant) instances here in this loop due to the fact that
-                     * we do not want to analyse all doc blocks of all available methods. We
-                     * use this technique only if we couldn't grasp all necessary data via
-                     * reflection.
-                     *
-                     * Also, if we analyze all method doc blocks, we will trigger numerous errors
-                     * due to non PSR-5 compatible tags in the core and in user land code.
-                     *
-                     * Fetching the data type via doc blocks is deprecated and will be removed in the near future.
-                     * Currently, this affects at least fooAction() ActionController methods, which does not
-                     * deprecate non-PHP-type-hinted methods.
-                     */
-                    $params = self::$docBlockFactory->create($docComment)
-                        ->getTagsByName('param');
-
-                    if (isset($params[$parameterPosition])) {
-                        /** @var Param $param */
-                        $param = $params[$parameterPosition];
-                        $this->methods[$methodName]['params'][$parameterName]['type'] = ltrim((string)$param->getType(), '\\');
-                        $typeDetectedViaDocBlock = true;
-                    }
-                }
-
                 // Extbase Validation
                 if ($validateAttributes[$parameterName] !== []) {
                     if ($this->methods[$methodName]['params'][$parameterName]['type'] === null) {
@@ -315,14 +260,6 @@ class ClassSchema
                             'Missing type information for parameter "$' . $parameterName . '" in ' . $this->className . '->' . $methodName . '(): Use a type hint.',
                             1515075192
                         );
-                    }
-                    if ($typeDetectedViaDocBlock) {
-                        $parameterType = $this->methods[$methodName]['params'][$parameterName]['type'];
-                        $errorMessage = <<<MESSAGE
-The type ($parameterType) of parameter \$$parameterName of method $this->className::$methodName() is defined via php DocBlock. Use a proper PHP parameter type hint instead:
-[private|protected|public] function $methodName($parameterType \$$parameterName)
-MESSAGE;
-                        throw new \RuntimeException($errorMessage, 1639224354);
                     }
 
                     $this->methods[$methodName]['params'][$parameterName]['validators'] = array_map(
