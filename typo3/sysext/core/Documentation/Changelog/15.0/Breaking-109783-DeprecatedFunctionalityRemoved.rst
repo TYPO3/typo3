@@ -198,7 +198,7 @@ The following fallbacks have been removed:
 
 The following upgrade wizards have been removed:
 
-- Description of removed upgrade wizard
+- :php:`\TYPO3\CMS\Core\Upgrades\SysFileMimeTypeMigration` (identifier ``sysFileMimeTypeMigration``)
 
 The following row updater has been removed:
 
