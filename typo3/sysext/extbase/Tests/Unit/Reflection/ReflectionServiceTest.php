@@ -24,11 +24,6 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithInvalidTypeHint;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @see test for reflection
- * @link second test for reflection
- * @link second test for reflection with second value
- */
 final class ReflectionServiceTest extends UnitTestCase
 {
     #[Test]
@@ -54,45 +49,10 @@ final class ReflectionServiceTest extends UnitTestCase
     #[Test]
     public function reflectionServiceCanBeSerializedAndUnserialized(): void
     {
-        $class = new class {};
-
         $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
         $serialized = serialize($reflectionService);
         unset($reflectionService);
-
         $reflectionService = unserialize($serialized, ['allowed_classes' => [ReflectionService::class]]);
-
         self::assertInstanceOf(ReflectionService::class, $reflectionService);
-    }
-
-    #[Test]
-    public function reflectionServiceCanBeSerializedAndUnserializedWithCacheManager(): void
-    {
-        $class = new class {};
-
-        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
-        $serialized = serialize($reflectionService);
-        unset($reflectionService);
-
-        $reflectionService = unserialize($serialized, ['allowed_classes' => [ReflectionService::class]]);
-
-        self::assertInstanceOf(ReflectionService::class, $reflectionService);
-    }
-
-    /**
-     * @deprecated This needs a look in v14, it can be *probably* removed along with the fixture file?!
-     */
-    #[Test]
-    public function reflectionServiceIsResetDuringWakeUp(): void
-    {
-        $insecureString = file_get_contents(__DIR__ . '/Fixture/InsecureSerializedReflectionService.txt');
-        // Note: We need to use the silence operator here for `unserialize()`, otherwise PHP8.3 would emit a warning
-        //       because of unneeded bytes in the content which needs to be unserialized.
-        $reflectionService = @unserialize($insecureString);
-
-        $reflectionClass = new \ReflectionClass($reflectionService);
-        $classSchemaProperty = $reflectionClass->getProperty('classSchemata');
-
-        self::assertSame([], $classSchemaProperty->getValue($reflectionService));
     }
 }
