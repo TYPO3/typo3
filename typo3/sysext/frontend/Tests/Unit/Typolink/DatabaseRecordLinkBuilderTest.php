@@ -161,7 +161,6 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript)->withAttribute('currentContentObject', $contentObjectRendererMock);
         $contentObjectRendererMock->method('getRequest')->willReturn($request);
         GeneralUtility::setSingletonInstance(Context::class, new Context());
-        GeneralUtility::addInstance(PageRepository::class, $pageRepositoryMock);
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
 
         $pageRepositoryMock
@@ -185,6 +184,7 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
                 new NullFrontend('testing'),
                 new TypoLinkCodecService(new NoopEventDispatcher()),
                 new NoopEventDispatcher(),
+                $pageRepositoryMock,
             ]
         );
         $databaseRecordLinkBuilder->method('getPageTsConfig')->willReturn($pageTsConfig);

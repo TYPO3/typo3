@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Pagination\PaginationInterface;
@@ -89,6 +90,7 @@ final class SearchControllerTest extends FunctionalTestCase
             $this->createMock(TypoScriptService::class),
             $this->createMock(Lexer::class),
             $this->createMock(LinkFactory::class),
+            $this->createMock(PageRepository::class),
         ) extends SearchController {
             public function initializeForTest(ViewInterface $view, Request $request): void
             {
@@ -147,6 +149,7 @@ final class SearchControllerTest extends FunctionalTestCase
             $this->createMock(TypoScriptService::class),
             $this->createMock(Lexer::class),
             $this->createMock(LinkFactory::class),
+            $this->createMock(PageRepository::class),
         ) extends SearchController {
             public function callBuildPagination(array $searchData, array $rows, int $count): PaginationInterface
             {

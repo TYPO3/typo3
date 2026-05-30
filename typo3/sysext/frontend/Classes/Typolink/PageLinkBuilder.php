@@ -90,6 +90,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         protected readonly LoggerInterface $logger,
         protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
         protected readonly RecordFactory $recordFactory,
+        protected readonly PageRepository $pageRepository,
     ) {}
 
     public function buildLink(array $linkDetails, array $configuration, ServerRequestInterface $request, string $linkText = ''): LinkResultInterface
@@ -408,11 +409,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
                 $mountPointPairs['closest'] = $temp_MP;
             }
         }
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         // Look for overlay Mount Point:
-        $mount_info = $pageRepository->getMountPointInfo($page['uid'], $page);
+        $mount_info = $this->pageRepository->getMountPointInfo($page['uid'], $page);
         if (is_array($mount_info) && $mount_info['overlay']) {
-            $page = $pageRepository->getPage((int)$mount_info['mount_pid'], $disableGroupAccessCheck);
+            $page = $this->pageRepository->getPage((int)$mount_info['mount_pid'], $disableGroupAccessCheck);
             if (empty($page)) {
                 throw new UnableToLinkException('Mount point "' . $mount_info['mount_pid'] . '" was not available, so "' . $linkText . '" was not linked.', 1490987337, null, $linkText);
             }
@@ -476,8 +476,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
     protected function modifyUrlForAccessRestrictedPage(string $url, array $page, string $overridePageType, ServerRequestInterface $request): string
     {
         $frontendTypoScriptConfigArray = $request->getAttribute('frontend.typoscript')?->getConfigArray();
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $thePage = $pageRepository->getPage((int)($frontendTypoScriptConfigArray ['typolinkLinkAccessRestrictedPages'] ?? 0));
+        $thePage = $this->pageRepository->getPage((int)($frontendTypoScriptConfigArray ['typolinkLinkAccessRestrictedPages'] ?? 0));
         $addParams = str_replace(
             [
                 '###RETURN_URL###',
@@ -806,11 +805,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
         if ($id <= 0) {
             return;
         }
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         // First level, check id
         if (!$level) {
             // Find mount point if any:
-            $mount_info = $pageRepository->getMountPointInfo($id);
+            $mount_info = $this->pageRepository->getMountPointInfo($id);
             // Overlay mode:
             if (is_array($mount_info) && $mount_info['overlay']) {
                 $MP_array[] = $mount_info['MPvar'];
@@ -848,7 +846,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
                 // Find mount point if any:
                 $next_id = (int)$row['uid'];
                 $next_MP_array = $MP_array;
-                $mount_info = $pageRepository->getMountPointInfo($next_id, $row);
+                $mount_info = $this->pageRepository->getMountPointInfo($next_id, $row);
                 // Overlay mode:
                 if (is_array($mount_info) && $mount_info['overlay']) {
                     $next_MP_array[] = $mount_info['MPvar'];

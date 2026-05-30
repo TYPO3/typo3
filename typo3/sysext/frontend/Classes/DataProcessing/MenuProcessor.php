@@ -154,6 +154,7 @@ class MenuProcessor implements DataProcessorInterface
     public function __construct(
         protected ContentDataProcessor $contentDataProcessor,
         protected MenuContentObjectFactory $menuContentObjectFactory,
+        protected PageRepository $pageRepository,
     ) {}
 
     /**
@@ -254,8 +255,7 @@ class MenuProcessor implements DataProcessorInterface
         $menu = $this->menuContentObjectFactory->getMenuObjectByType('TMENU');
         $menu->parent_cObj = $cObj;
 
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        if (!$menu->start(null, $pageRepository, '', $this->menuConfig, 1, '', $request)) {
+        if (!$menu->start(null, $this->pageRepository, '', $this->menuConfig, 1, '', $request)) {
             return $processedData;
         }
         $menu->makeMenu();

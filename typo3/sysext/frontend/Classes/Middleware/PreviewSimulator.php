@@ -41,7 +41,10 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  */
 readonly class PreviewSimulator implements MiddlewareInterface
 {
-    public function __construct(protected Context $context) {}
+    public function __construct(
+        protected Context $context,
+        protected PageRepository $pageRepository,
+    ) {}
 
     /**
      * Evaluates preview settings if a backend user is logged in
@@ -94,7 +97,6 @@ readonly class PreviewSimulator implements MiddlewareInterface
     protected function checkIfRootlineRequiresPreview(int $pageId): bool
     {
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId, '', $this->context);
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         $groupRestricted = false;
         $timeRestricted = false;
         $hidden = false;
@@ -126,16 +128,15 @@ readonly class PreviewSimulator implements MiddlewareInterface
      */
     protected function checkIfPageIsHidden(int $pageId, ServerRequestInterface $request): bool
     {
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         $site = $request->getAttribute('site', null);
         // always check both the page in the requested language and the page in the default language, as due to the
         // overlay handling, a hidden default page will require setting the preview flag to allow previewing of the
         // translation
         $languageAspectFromRequest = LanguageAspectFactory::createFromSiteLanguage($request->getAttribute('language', $site->getDefaultLanguage()));
-        $pageIsHidden = $pageRepository->checkIfPageIsHidden($pageId, $languageAspectFromRequest);
+        $pageIsHidden = $this->pageRepository->checkIfPageIsHidden($pageId, $languageAspectFromRequest);
 
         if ($languageAspectFromRequest->getId() > 0) {
-            $pageIsHidden = $pageIsHidden || $pageRepository->checkIfPageIsHidden(
+            $pageIsHidden = $pageIsHidden || $this->pageRepository->checkIfPageIsHidden(
                 $pageId,
                 LanguageAspectFactory::createFromSiteLanguage($site->getDefaultLanguage())
             );

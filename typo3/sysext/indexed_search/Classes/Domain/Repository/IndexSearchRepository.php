@@ -140,6 +140,7 @@ class IndexSearchRepository
         private readonly TimeTracker $timeTracker,
         private readonly ConnectionPool $connectionPool,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PageRepository $pageRepository,
     ) {}
 
     /**
@@ -501,8 +502,7 @@ class IndexSearchRepository
         if ($searchRootPageIdList[0] >= 0) {
             // Collecting all pages IDs in which to search
             // filtering out ALL pages that are not accessible due to restriction containers. Does NOT look for "no_search" field!
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            $idList = $pageRepository->getPageIdsRecursive($searchRootPageIdList, 9999);
+            $idList = $this->pageRepository->getPageIdsRecursive($searchRootPageIdList, 9999);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'ISEC.page_id',
@@ -945,8 +945,7 @@ class IndexSearchRepository
             // filtering out ALL pages that are not accessible due to restriction containers.
             // Does NOT look for "no_search" field!
             $siteIdNumbers = GeneralUtility::intExplode(',', $this->searchRootPageIdList);
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            $pageIdList = $pageRepository->getPageIdsRecursive($siteIdNumbers, 9999);
+            $pageIdList = $this->pageRepository->getPageIdsRecursive($siteIdNumbers, 9999);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'ISEC.page_id',

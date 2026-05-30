@@ -81,6 +81,7 @@ final readonly class PageInformationFactory
         private TcaSchemaFactory $tcaSchemaFactory,
         private PageTypeLinkResolver $pageTypeLinkResolver,
         private PageDoktypeRegistry $pageDoktypeRegistry,
+        private PageRepository $pageRepository,
     ) {}
 
     /**
@@ -149,9 +150,8 @@ final readonly class PageInformationFactory
     private function setPageAndRootline(ServerRequestInterface $request, PageInformation $pageInformation): PageInformation
     {
         $id = $pageInformation->getId();
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $mountPoint = $pageInformation->getMountPoint();
-        $pageRecord = $pageRepository->getPage($id);
+        $pageRecord = $this->pageRepository->getPage($id);
 
         if (empty($pageRecord)) {
             // @todo: This logic could be streamlined is general. The idea of PageRepository->getPage() is
@@ -173,7 +173,7 @@ final readonly class PageInformationFactory
             if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField) && !$includeHiddenPages) {
                 // Page is hidden, user has no access. 404. This is deliberately done in default language
                 // since language overlays should not be rendered when default language is hidden.
-                $rawPageRecord = $pageRepository->getPage_noCheck($id);
+                $rawPageRecord = $this->pageRepository->getPage_noCheck($id);
                 $hiddenField = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
                 if ($rawPageRecord === [] || $rawPageRecord[$hiddenField]) {
                     $response = $this->errorController->pageNotFoundAction(
@@ -184,7 +184,7 @@ final readonly class PageInformationFactory
                     throw new PageInformationCreationFailedException($response, 1674144383);
                 }
             }
-            $requestedPageRowWithoutGroupCheck = $pageRepository->getPage($id, true);
+            $requestedPageRowWithoutGroupCheck = $this->pageRepository->getPage($id, true);
             if (!empty($requestedPageRowWithoutGroupCheck)) {
                 // We know now the page could not be received, but the reason is *not* that the
                 // page is hidden and the user has no hidden access. So group access failed? 403.
@@ -232,8 +232,6 @@ final readonly class PageInformationFactory
             // or if a translation of the page overwrites the shortcut target, and we need to follow the new target.
             $pageInformation = $this->settingLanguage($request, $pageInformation);
             // Reset vars to new state that may have been created by settingLanguage()
-            /** @var PageRepository $pageRepository */
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $pageRecord = $pageInformation->getPageRecord();
             if ($pageDoktype === PageRepository::DOKTYPE_LINK) {
                 $pageInformation->setOriginalShortcutPageRecord($pageRecord);
@@ -241,7 +239,7 @@ final readonly class PageInformationFactory
                 // The link destination was a page, we have to prevent infinitive loops
                 if ($typolinkInformation['type'] === 'page') {
                     try {
-                        $pageRecord = $pageRepository->resolveLinkPage($pageRecord);
+                        $pageRecord = $this->pageRepository->resolveLinkPage($pageRecord);
                     } catch (ShortcutTargetPageNotFoundException|LinkedPageNotResolvableException|CircularPageReferenceChainException|PageReferenceResolvingReachedIterationLimitException) {
                         $response = $this->errorController->pageNotFoundAction(
                             $request,
@@ -259,7 +257,7 @@ final readonly class PageInformationFactory
             if ($pageDoktype === PageRepository::DOKTYPE_SHORTCUT) {
                 $pageInformation->setOriginalShortcutPageRecord($pageRecord);
                 try {
-                    $pageRecord = $pageRepository->resolveShortcutPage($pageRecord);
+                    $pageRecord = $this->pageRepository->resolveShortcutPage($pageRecord);
                 } catch (ShortcutTargetPageNotFoundException|LinkedPageNotResolvableException|CircularPageReferenceChainException|PageReferenceResolvingReachedIterationLimitException) {
                     $response = $this->errorController->pageNotFoundAction(
                         $request,
@@ -281,7 +279,7 @@ final readonly class PageInformationFactory
             // We thus change the current page id.
             $originalMountPointPageRecord = $pageRecord;
             $pageInformation->setOriginalMountPointPageRecord($pageRecord);
-            $pageRecord = $pageRepository->getPage((int)$originalMountPointPageRecord['mount_pid']);
+            $pageRecord = $this->pageRepository->getPage((int)$originalMountPointPageRecord['mount_pid']);
             if (empty($pageRecord)) {
                 // Target mount point page not accessible for some reason.
                 $response = $this->errorController->pageNotFoundAction(
@@ -336,8 +334,7 @@ final readonly class PageInformationFactory
         $pageTranslationVisibility = new PageTranslationVisibility((int)($pageRecord['l18n_cfg'] ?? 0));
         if ($languageAspect->getId() > 0) {
             // If the incoming language is set to another language than default
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            $olRec = $pageRepository->getPageOverlay($pageRecord, $languageAspect);
+            $olRec = $this->pageRepository->getPageOverlay($pageRecord, $languageAspect);
             $overlaidLanguageId = (int)($olRec['sys_language_uid'] ?? 0);
             if ($overlaidLanguageId !== $languageAspect->getId()) {
                 // If requested translation is not available

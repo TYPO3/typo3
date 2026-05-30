@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class deals with metadata translation as an event listener which reacts on an event MetadataRepository.
@@ -32,8 +31,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this is a concrete TYPO3 Event Listener and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
-final class FileMetadataOverlayAspect
+final readonly class FileMetadataOverlayAspect
 {
+    public function __construct(
+        private PageRepository $pageRepository,
+    ) {}
+
     /**
      * Do translation and workspace overlay
      */
@@ -48,10 +51,9 @@ final class FileMetadataOverlayAspect
             return;
         }
         $overlaidMetaData = $event->getRecord();
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $pageRepository->versionOL('sys_file_metadata', $overlaidMetaData);
+        $this->pageRepository->versionOL('sys_file_metadata', $overlaidMetaData);
         // getLanguageOverlay also calls versionOL() on the language overlaid record
-        $overlaidMetaData = $pageRepository->getLanguageOverlay('sys_file_metadata', $overlaidMetaData);
+        $overlaidMetaData = $this->pageRepository->getLanguageOverlay('sys_file_metadata', $overlaidMetaData);
         if ($overlaidMetaData !== null) {
             $event->setRecord($overlaidMetaData);
         }

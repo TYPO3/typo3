@@ -99,6 +99,7 @@ class SearchController extends ActionController
         private readonly TypoScriptService $typoScriptService,
         private readonly Lexer $lexer,
         private readonly LinkFactory $linkFactory,
+        private readonly PageRepository $pageRepository,
     ) {}
 
     /**
@@ -980,11 +981,10 @@ class SearchController extends ActionController
      */
     protected function getMenuOfPages(int $pageUid): array
     {
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         if ($this->settings['displayLevelxAllTypes']) {
-            return $pageRepository->getMenuForPages([$pageUid]);
+            return $this->pageRepository->getMenuForPages([$pageUid]);
         }
-        return $pageRepository->getMenu($pageUid);
+        return $this->pageRepository->getMenu($pageUid);
     }
 
     /**

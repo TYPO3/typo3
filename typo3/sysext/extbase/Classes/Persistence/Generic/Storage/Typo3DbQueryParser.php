@@ -102,6 +102,7 @@ class Typo3DbQueryParser
         protected readonly DataMapper $dataMapper,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly ConnectionPool $connectionPool,
+        protected readonly PageRepository $pageRepository,
     ) {}
 
     /**
@@ -687,11 +688,10 @@ class Typo3DbQueryParser
      */
     protected function getFrontendConstraintStatement(string $tableName, string $tableAlias, bool $ignoreEnableFields, array $enableFieldsToBeIgnored, bool $includeDeleted): string
     {
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $statement = '';
         if ($ignoreEnableFields && !$includeDeleted) {
             if (!empty($enableFieldsToBeIgnored)) {
-                $constraints = $pageRepository->getDefaultConstraints($tableName, $enableFieldsToBeIgnored, $tableAlias);
+                $constraints = $this->pageRepository->getDefaultConstraints($tableName, $enableFieldsToBeIgnored, $tableAlias);
                 if ($constraints !== []) {
                     $statement = implode(' AND ', $constraints);
                 }
@@ -703,7 +703,7 @@ class Typo3DbQueryParser
                 }
             }
         } elseif (!$ignoreEnableFields && !$includeDeleted) {
-            $constraints = $pageRepository->getDefaultConstraints($tableName, [], $tableAlias);
+            $constraints = $this->pageRepository->getDefaultConstraints($tableName, [], $tableAlias);
             if ($constraints !== []) {
                 $statement = implode(' AND ', $constraints);
             }

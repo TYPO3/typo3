@@ -45,6 +45,7 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
         private FrontendInterface $runtimeCache,
         private TypoLinkCodecService $typoLinkCodecService,
         private EventDispatcherInterface $eventDispatcher,
+        private PageRepository $pageRepository,
     ) {}
 
     public function buildLink(
@@ -82,11 +83,10 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
         );
         $record = $event->record;
         if ($record === null) {
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             if ($typoScriptLinkHandlerConfiguration[$configurationKey]['forceLink'] ?? false) {
-                $record = $pageRepository->getRawRecord($databaseTable, (int)$linkDetails['uid']);
+                $record = $this->pageRepository->getRawRecord($databaseTable, (int)$linkDetails['uid']);
             } else {
-                $record = $pageRepository->checkRecord($databaseTable, (int)$linkDetails['uid']);
+                $record = $this->pageRepository->checkRecord($databaseTable, (int)$linkDetails['uid']);
                 $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
                 if (is_array($record) && $this->schemaFactory->has($databaseTable)) {
                     $schema = $this->schemaFactory->get($databaseTable);
@@ -97,7 +97,7 @@ readonly class DatabaseRecordLinkBuilder implements TypolinkBuilderInterface
                         // If a record is already in a localized version OR if the record is set to "All Languages"
                         // we allow the generation of the link
                         if ($languageIdOfRecord === 0 && $languageAspect->doOverlays()) {
-                            $overlay = $pageRepository->getLanguageOverlay(
+                            $overlay = $this->pageRepository->getLanguageOverlay(
                                 $databaseTable,
                                 $record,
                                 $languageAspect

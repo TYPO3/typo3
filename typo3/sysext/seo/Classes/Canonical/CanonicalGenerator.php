@@ -44,6 +44,7 @@ readonly class CanonicalGenerator
         private EventDispatcherInterface $eventDispatcher,
         private PageRenderer $pageRenderer,
         private RecordFactory $recordFactory,
+        private PageRepository $pageRepository,
     ) {}
 
     public function generate(array $params): string
@@ -118,8 +119,7 @@ readonly class CanonicalGenerator
         if ($id !== $contentPid) {
             $targetPid = $contentPid;
             if ($targetPid > 0) {
-                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-                $targetPageRecord = $pageRepository->getPage($contentPid, true);
+                $targetPageRecord = $this->pageRepository->getPage($contentPid, true);
                 if (!empty($targetPageRecord['canonical_link'])) {
                     $targetPid = $targetPageRecord['canonical_link'];
                 }

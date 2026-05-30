@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -96,6 +97,7 @@ final class RedirectServiceTest extends UnitTestCase
                 $this->createMock(TcaSchemaFactory::class),
                 $this->createMock(PageTypeLinkResolver::class),
                 $this->createMock(PageDoktypeRegistry::class),
+                $this->createMock(PageRepository::class),
             ),
             new FrontendTypoScriptFactory(
                 $this->createMock(ContainerInterface::class),
@@ -662,6 +664,7 @@ final class RedirectServiceTest extends UnitTestCase
                     $this->createMock(TcaSchemaFactory::class),
                     $this->createMock(PageTypeLinkResolver::class),
                     $this->createMock(PageDoktypeRegistry::class),
+                    $this->createMock(PageRepository::class),
                 ),
                 new FrontendTypoScriptFactory(
                     $this->createMock(ContainerInterface::class),

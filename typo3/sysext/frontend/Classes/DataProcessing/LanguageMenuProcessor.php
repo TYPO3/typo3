@@ -82,6 +82,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
 
     public function __construct(
         protected readonly MenuContentObjectFactory $menuContentObjectFactory,
+        protected readonly PageRepository $pageRepository,
     ) {}
 
     /**
@@ -191,8 +192,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
         $menu = $this->menuContentObjectFactory->getMenuObjectByType('TMENU');
         $menu->parent_cObj = $cObj;
 
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        if (!$menu->start(null, $pageRepository, '', $this->menuConfig, 1, '', $request)) {
+        if (!$menu->start(null, $this->pageRepository, '', $this->menuConfig, 1, '', $request)) {
             return $processedData;
         }
         $menu->makeMenu();

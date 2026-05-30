@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Domain\Repository;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
@@ -52,6 +51,7 @@ use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\CircularPageReferenceChainException;
 use TYPO3\CMS\Core\Exception\Page\PageReferenceResolvingReachedIterationLimitException;
 use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -69,10 +69,8 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * If > 0, versioning preview of other record versions is allowed. This should only
  * be set if the page is not cached and truly previewed by a backend user!
  */
-class PageRepository implements LoggerAwareInterface
+readonly class PageRepository
 {
-    use LoggerAwareTrait;
-
     /**
      * Named constants for "magic numbers" of the field doktype
      */
@@ -94,7 +92,7 @@ class PageRepository implements LoggerAwareInterface
     /**
      * Computed properties that are added to database rows.
      */
-    protected array $computedPropertyNames = [
+    protected const COMPUTED_PROPERTY_NAMES = [
         '_LOCALIZED_UID',
         '_REQUESTED_OVERLAY_LANGUAGE',
         '_MP_PARAM',
@@ -106,16 +104,18 @@ class PageRepository implements LoggerAwareInterface
     protected Context $context;
     protected TcaSchemaFactory $tcaSchemaFactory;
     protected PageTypeLinkResolver $pageTypeLinkResolver;
+    protected LoggerInterface $logger;
 
     /**
      * PageRepository constructor to set the base context, this will effectively remove the necessity for
      * setting properties from the outside.
      */
-    public function __construct(?Context $context = null, ?TcaSchemaFactory $tcaSchemaFactory = null, ?PageTypeLinkResolver $pageTypeLinkResolver = null)
+    public function __construct(?Context $context = null, ?TcaSchemaFactory $tcaSchemaFactory = null, ?PageTypeLinkResolver $pageTypeLinkResolver = null, ?LoggerInterface $logger = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->tcaSchemaFactory = $tcaSchemaFactory ?? GeneralUtility::makeInstance(TcaSchemaFactory::class);
         $this->pageTypeLinkResolver = $pageTypeLinkResolver ?? GeneralUtility::makeInstance(PageTypeLinkResolver::class);
+        $this->logger = $logger ?? GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
     }
 
     /**
@@ -1755,10 +1755,11 @@ class PageRepository implements LoggerAwareInterface
      * @see BackendUtility::getWorkspaceVersionOfRecord()
      * @internal this is a rather low-level method, it is recommended to use versionOL instead()
      */
-    public function getWorkspaceVersionOfRecord(string $table, array $liveRecord, bool $bypassEnableFieldsCheck = false): array|int|bool
+    public function getWorkspaceVersionOfRecord(string $table, array $liveRecord, bool $bypassEnableFieldsCheck = false, ?Context $context = null): array|int|bool
     {
+        $context ??= $this->context;
         $uid = (int)$liveRecord['uid'];
-        $workspace = (int)$this->context->getPropertyFromAspect('workspace', 'id');
+        $workspace = (int)$context->getPropertyFromAspect('workspace', 'id');
         // No look up in database because versioning not enabled / or workspace not offline
         if ($workspace === 0) {
             return false;
@@ -1809,7 +1810,7 @@ class PageRepository implements LoggerAwareInterface
         $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
         // If version found, check if the versioned record has access ("enableFields")
         if (is_array($versionedRecord)) {
-            if ($bypassEnableFieldsCheck || $accessVoter->accessGranted($table, $versionedRecord, $this->context)) {
+            if ($bypassEnableFieldsCheck || $accessVoter->accessGranted($table, $versionedRecord, $context)) {
                 // Return offline version, tested for its enableFields.
                 return $versionedRecord;
             }
@@ -1818,7 +1819,7 @@ class PageRepository implements LoggerAwareInterface
         }
         // OK, so no workspace version was found. Then check if online version can be
         // selected with full enable fields and if so, return 1:
-        if ($bypassEnableFieldsCheck || $accessVoter->accessGranted($table, $liveRecord, $this->context)) {
+        if ($bypassEnableFieldsCheck || $accessVoter->accessGranted($table, $liveRecord, $context)) {
             // Means search was done, but no version found.
             return 1;
         }
@@ -2089,13 +2090,13 @@ class PageRepository implements LoggerAwareInterface
         }
         $page = $queryBuilder->executeQuery()->fetchAssociative();
         if ((int)$this->context->getPropertyFromAspect('workspace', 'id') > 0) {
-            // Fetch overlay of page if in workspace and check if it is hidden
-            $backupContext = clone $this->context;
-            $this->context->setAspect('visibility', new VisibilityAspect());
-            $targetPage = $this->getWorkspaceVersionOfRecord('pages', $page);
+            // Fetch overlay of page if in workspace and check if it is hidden. The visibility aspect is
+            // reset on a cloned context so the workspace version is evaluated against default visibility.
+            $context = clone $this->context;
+            $context->setAspect('visibility', new VisibilityAspect());
+            $targetPage = $this->getWorkspaceVersionOfRecord('pages', $page, false, $context);
             // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
             $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);
-            $this->context = $backupContext;
         } else {
             $result = is_array($page) && ($page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] || $page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME']);
         }
@@ -2167,7 +2168,7 @@ class PageRepository implements LoggerAwareInterface
      */
     protected function purgeComputedProperties(array $row): array
     {
-        foreach ($this->computedPropertyNames as $computedPropertyName) {
+        foreach (self::COMPUTED_PROPERTY_NAMES as $computedPropertyName) {
             if (array_key_exists($computedPropertyName, $row)) {
                 unset($row[$computedPropertyName]);
             }
