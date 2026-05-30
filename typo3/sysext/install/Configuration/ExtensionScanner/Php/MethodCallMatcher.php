@@ -140,6 +140,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-75363-DeprecateFormResultCompilerJStop.rst',
         ],
     ],

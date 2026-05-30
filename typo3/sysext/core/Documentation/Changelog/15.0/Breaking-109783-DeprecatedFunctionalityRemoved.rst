@@ -13,6 +13,9 @@ Description
 
 The following PHP classes that have previously been marked as deprecated with v14 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\Form\Container\OuterWrapContainer` :ref:`(Deprecation entry) <deprecation-109192-1741560000>`
+- :php:`\TYPO3\CMS\Backend\Form\FieldInformation\TcaDescription` :ref:`(Deprecation entry) <deprecation-109280-1742109280>`
+- :php:`\TYPO3\CMS\Backend\Form\FormResultCompiler` :ref:`(Deprecation entry) <deprecation-109230-1773404000>`
 - :php:`\TYPO3\CMS\Core\Console\CommandNameAlreadyInUseException` :ref:`(Deprecation entry) <deprecation-108667-1768743166>`
 - :php:`\TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser` :ref:`(Deprecation entry) <deprecation-107436-1736639846>`
 - :php:`\TYPO3\CMS\Core\Localization\Parser\XliffParser` :ref:`(Deprecation entry) <deprecation-107436-1736639846>`

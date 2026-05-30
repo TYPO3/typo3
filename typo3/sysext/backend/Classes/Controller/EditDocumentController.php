@@ -879,7 +879,7 @@ class EditDocumentController
                     }
 
                     // Set list if only specific fields should be rendered. This will trigger
-                    // ListOfFieldsContainer instead of FullRecordContainer in OuterWrapContainer
+                    // ListOfFieldsContainer instead of FullRecordContainer in FormWrapContainer
                     if (!empty($this->columnsOnly[$table])) {
                         $formData['fieldListToRender'] = implode(',', $this->columnsOnly[$table]);
                         if (!empty($this->columnsOnly['__hiddenGeneratorFields'][$table])) {

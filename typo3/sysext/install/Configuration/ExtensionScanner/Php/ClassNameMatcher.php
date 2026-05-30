@@ -2786,6 +2786,7 @@ return [
     ],
     'TYPO3\CMS\Backend\Form\FormResultCompiler' => [
         'restFiles' => [
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-109230-FormResultCompiler.rst',
         ],
     ],

@@ -64,7 +64,6 @@ class NodeFactory
         'listOfFieldsContainer' => Container\ListOfFieldsContainer::class,
         'noTabsContainer' => Container\NoTabsContainer::class,
         'formWrapContainer' => Container\FormWrapContainer::class,
-        'outerWrapContainer' => Container\OuterWrapContainer::class,
         'paletteAndSingleContainer' => Container\PaletteAndSingleContainer::class,
         'singleFieldContainer' => Container\SingleFieldContainer::class,
         'tabsContainer' => Container\TabsContainer::class,
@@ -118,7 +117,6 @@ class NodeFactory
         'fieldWizard' => NodeExpansion\FieldWizard::class,
 
         // Element information
-        'tcaDescription' => FieldInformation\TcaDescription::class,
         'adminIsSystemMaintainer' => FieldInformation\AdminIsSystemMaintainer::class,
         'backendLayoutFromParentPage' => FieldInformation\BackendLayoutFromParentPage::class,
         'noSelectableItemsAvailable' => FieldInformation\NoSelectableItemsAvailable::class,
