@@ -25,7 +25,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Header\HeaderInterface;
 use Symfony\Component\Mime\Header\Headers;
 use Symfony\Component\Mime\RawMessage;
-use TYPO3\CMS\Core\Serializer\Exception\PolymorphicDeserializerException;
+use TYPO3\CMS\Core\Serializer\Exception\DeserializerException;
 use TYPO3\CMS\Core\Serializer\PolymorphicDeserializer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -74,40 +74,12 @@ final class PolymorphicDeserializerTest extends FunctionalTestCase
     #[DataProvider('spooledMailMessageCannotBeDeserializedDataProvider')]
     public function spooledMailMessageCannotBeDeserialized(string $payload, string $expectedExceptionMessage, int $expectedExceptionCode): void
     {
-        $this->expectException(PolymorphicDeserializerException::class);
+        $this->expectException(DeserializerException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
         $this->expectExceptionCode($expectedExceptionCode);
 
         $result = $this->subject->deserialize($payload, [SentMessage::class]);
         self::assertInstanceOf(SentMessage::class, $result);
-    }
-
-    public static function canParseClassNamesDataProvider(): iterable
-    {
-        yield 'simple example' => [
-            'a:2:{i:0;O:10:"ValidClass":0:{}i:1;s:21:" O:12:"InvalidClass":0:{} ";i:2;O:333:"IncorrectLengthClass":0:{}}',
-            ['ValidClass'],
-        ];
-        yield 'serialized mail message' => [
-            file_get_contents(__DIR__ . '/Fixtures/BoE4HIpmXv.message'),
-            [
-                \Symfony\Component\Mailer\SentMessage::class,
-                \TYPO3\CMS\Core\Mail\FluidEmail::class,
-                \Symfony\Component\Mime\Header\Headers::class,
-                \Symfony\Component\Mime\Header\MailboxListHeader::class,
-                \Symfony\Component\Mime\Address::class,
-                \Symfony\Component\Mime\Header\UnstructuredHeader::class,
-                \Symfony\Component\Mime\RawMessage::class,
-                \Symfony\Component\Mailer\DelayedEnvelope::class,
-            ],
-        ];
-    }
-
-    #[Test]
-    #[DataProvider('canParseClassNamesDataProvider')]
-    public function canParseClassNames(string $payload, array $expectedClassNames): void
-    {
-        self::assertEquals($expectedClassNames, $this->subject->parseClassNames($payload));
     }
 
     #[Test]
