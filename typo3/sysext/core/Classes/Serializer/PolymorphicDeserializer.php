@@ -17,29 +17,33 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Serializer;
 
-use TYPO3\CMS\Core\Serializer\Exception\PolymorphicDeserializerException;
+use TYPO3\CMS\Core\Serializer\Exception\DeserializerException;
 
 /**
  * @internal Only to be used by TYPO3 core
  */
 final readonly class PolymorphicDeserializer
 {
+    public function __construct(
+        private DeserializationService $deserializationService = new DeserializationService(),
+    ) {}
+
     /**
      * Validates the serialized payload by checking a static list of base classes or interfaces to be included in the
      * de-serialized output. If a non-allowed class is hit, the method throws an PolymorphicDeserializerException.
      * If the serialized payload is syntactically incorrect, PolymorphicDeserializerException is thrown as well.
      *
      * @param list<class-string> $allowedClasses
-     * @throws PolymorphicDeserializerException
+     * @throws DeserializerException
      */
     public function deserialize(string $payload, array $allowedClasses): mixed
     {
         // When allowing inheritance, extract all class names from payload and validate them
-        $classNames = $this->parseClassNames($payload);
+        $classNames = $this->deserializationService->parseClassNames($payload);
 
         foreach ($classNames as $className) {
             if (!$this->isInstanceOf($className, $allowedClasses)) {
-                throw new PolymorphicDeserializerException('Invalid class name "' . $className . '" found in payload', 1767987405);
+                throw new DeserializerException('Invalid class name "' . $className . '" found in payload', 1767987405);
             }
 
             // Add the class if it's a valid subclass of any allowed class
@@ -48,63 +52,16 @@ final readonly class PolymorphicDeserializer
             }
         }
 
-        $result = @unserialize($payload, ['allowed_classes' => $allowedClasses]);
-        if ($result === false) {
-            if ($payload === serialize(false)) {
-                // Do not throw an exception in case the serialized string is *actually* false
-                // See https://www.php.net/manual/en/function.unserialize.php#refsect1-function.unserialize-notes
-                return false;
-            }
-            $exceptionMessage = 'Syntax error in payload, unable to de-serialize';
-            $lastError = error_get_last();
-            if ($lastError !== null) {
-                $exceptionMessage .= ': ' . $lastError['message'];
-            }
-            throw new PolymorphicDeserializerException($exceptionMessage, 1768212616);
-        }
-
-        return $result;
+        return $this->deserializationService->deserialize($payload, $allowedClasses);
     }
 
+    /**
+     * @return list<class-string>
+     * @deprecated use DeserializationService::parseClassNames instead; will be removed in v15
+     */
     public function parseClassNames(string $payload): array
     {
-        // Build string ranges once upfront to avoid re-scanning the payload per class-name token
-        $stringRanges = [];
-        if (preg_match_all('/s:(\d+):"/', $payload, $stringMatches, PREG_OFFSET_CAPTURE)) {
-            foreach ($stringMatches[0] as $i => $match) {
-                $contentStart = $match[1] + strlen($match[0]);
-                $stringRanges[] = [$contentStart, $contentStart + (int)$stringMatches[1][$i][0]];
-            }
-        }
-
-        $classNames = [];
-        if (preg_match_all('/[CO]:(?P<length>\d+):"(?P<className>[^"]+)"/', $payload, $matches, PREG_OFFSET_CAPTURE)) {
-            foreach ($matches['className'] as $i => $classNameMatch) {
-                // Offset of the custom-class/object pattern
-                $className = $classNameMatch[0];
-                $matchOffset = (int)$matches[0][$i][1];
-                $declaredLength = (int)$matches['length'][$i][0];
-
-                if (strlen($className) !== $declaredLength) {
-                    continue;
-                }
-                if (in_array($className, $classNames, true)) {
-                    continue;
-                }
-                // Validate: not inside a string value
-                $insideString = false;
-                foreach ($stringRanges as [$start, $end]) {
-                    if ($matchOffset >= $start && $matchOffset < $end) {
-                        $insideString = true;
-                        break;
-                    }
-                }
-                if (!$insideString) {
-                    $classNames[] = $className;
-                }
-            }
-        }
-        return $classNames;
+        return $this->deserializationService->parseClassNames($payload);
     }
 
     /**
