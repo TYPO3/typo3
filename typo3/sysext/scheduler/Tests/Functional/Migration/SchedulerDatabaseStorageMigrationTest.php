@@ -36,7 +36,7 @@ final class SchedulerDatabaseStorageMigrationTest extends FunctionalTestCase
     #[Test]
     public function schedulerTasksAreMigrated(): void
     {
-        $subject = new SchedulerDatabaseStorageMigration();
+        $subject = $this->get(SchedulerDatabaseStorageMigration::class);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseStorageMigrationBase.csv');
         self::assertTrue($subject->updateNecessary());
         self::assertTrue($subject->executeUpdate());
@@ -51,7 +51,7 @@ final class SchedulerDatabaseStorageMigrationTest extends FunctionalTestCase
     #[Test]
     public function schedulerTasksWithFailuresKeepWizardShowingUp(): void
     {
-        $subject = new SchedulerDatabaseStorageMigration();
+        $subject = $this->get(SchedulerDatabaseStorageMigration::class);
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseStorageFailedMigrationBase.csv');
         self::assertTrue($subject->updateNecessary());
         self::assertFalse($subject->executeUpdate());

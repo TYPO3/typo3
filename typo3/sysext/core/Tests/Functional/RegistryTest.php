@@ -25,16 +25,24 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RegistryTest extends FunctionalTestCase
 {
+    private Registry $subject;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->subject = $this->get(Registry::class);
+    }
+
     #[Test]
     public function getReturnsNullIfEntryIsNotInDatabase(): void
     {
-        self::assertNull((new Registry())->get('myExtension', 'myKey'));
+        self::assertNull($this->subject->get('myExtension', 'myKey'));
     }
 
     #[Test]
     public function getReturnsDefaultValueIfEntryIsNotInDatabase(): void
     {
-        self::assertSame('myDefault', (new Registry())->get('myExtension', 'myKey', 'myDefault'));
+        self::assertSame('myDefault', $this->subject->get('myExtension', 'myKey', 'myDefault'));
     }
 
     #[Test]
@@ -52,13 +60,13 @@ final class RegistryTest extends FunctionalTestCase
                     'entry_value' => Connection::PARAM_LOB,
                 ]
             );
-        self::assertSame('myValue', (new Registry())->get('myExtension', 'myKey'));
+        self::assertSame('myValue', $this->subject->get('myExtension', 'myKey'));
     }
 
     #[Test]
     public function setInsertsEntryInDatabase(): void
     {
-        (new Registry())->set('myExtension', 'myKey', 'myValue');
+        $this->subject->set('myExtension', 'myKey', 'myValue');
         $valueInDatabase = (new ConnectionPool())->getConnectionForTable('sys_registry')
             ->select(
                 ['entry_value'],
@@ -66,7 +74,7 @@ final class RegistryTest extends FunctionalTestCase
                 ['entry_namespace' => 'myExtension', 'entry_key' => 'myKey']
             )
             ->fetchAssociative();
-        self::assertSame('myValue', unserialize($valueInDatabase['entry_value']));
+        self::assertSame('myValue', $this->deserialize($valueInDatabase['entry_value']));
     }
 
     #[Test]
@@ -84,7 +92,7 @@ final class RegistryTest extends FunctionalTestCase
                     'entry_value' => Connection::PARAM_LOB,
                 ]
             );
-        (new Registry())->set('myExtension', 'myKey', 'myNewValue');
+        $this->subject->set('myExtension', 'myKey', 'myNewValue');
         $valueInDatabase = (new ConnectionPool())->getConnectionForTable('sys_registry')
             ->select(
                 ['entry_value'],
@@ -92,7 +100,7 @@ final class RegistryTest extends FunctionalTestCase
                 ['entry_namespace' => 'myExtension', 'entry_key' => 'myKey']
             )
             ->fetchAssociative();
-        self::assertSame('myNewValue', unserialize($valueInDatabase['entry_value']));
+        self::assertSame('myNewValue', $this->deserialize($valueInDatabase['entry_value']));
     }
 
     #[Test]
@@ -112,7 +120,7 @@ final class RegistryTest extends FunctionalTestCase
             ]
         );
 
-        (new Registry())->remove('ns1', 'k1');
+        $this->subject->remove('ns1', 'k1');
 
         self::assertSame(0, $connection->count('*', 'sys_registry', ['entry_namespace' => 'ns1', 'entry_key' => 'k1']));
         self::assertSame(1, $connection->count('*', 'sys_registry', ['entry_namespace' => 'ns1', 'entry_key' => 'k2']));
@@ -136,7 +144,7 @@ final class RegistryTest extends FunctionalTestCase
             ]
         );
 
-        (new Registry())->removeAllByNamespace('ns1');
+        $this->subject->removeAllByNamespace('ns1');
 
         self::assertSame(0, $connection->count('*', 'sys_registry', ['entry_namespace' => 'ns1', 'entry_key' => 'k1']));
         self::assertSame(0, $connection->count('*', 'sys_registry', ['entry_namespace' => 'ns1', 'entry_key' => 'k2']));
@@ -146,35 +154,36 @@ final class RegistryTest extends FunctionalTestCase
     #[Test]
     public function canGetSetEntry(): void
     {
-        $registry = new Registry();
-        $registry->set('ns1', 'key1', 'value1');
-        self::assertSame('value1', $registry->get('ns1', 'key1'));
+        $this->subject->set('ns1', 'key1', 'value1');
+        self::assertSame('value1', $this->subject->get('ns1', 'key1'));
     }
 
     #[Test]
     public function getReturnsNewValueIfValueHasBeenSetMultipleTimes(): void
     {
-        $registry = new Registry();
-        $registry->set('ns1', 'key1', 'value1');
-        $registry->set('ns1', 'key1', 'value2');
-        self::assertSame('value2', $registry->get('ns1', 'key1'));
+        $this->subject->set('ns1', 'key1', 'value1');
+        $this->subject->set('ns1', 'key1', 'value2');
+        self::assertSame('value2', $this->subject->get('ns1', 'key1'));
     }
 
     #[Test]
     public function canNotGetRemovedEntry(): void
     {
-        $registry = new Registry();
-        $registry->set('ns1', 'key1', 'value1');
-        $registry->remove('ns1', 'key1');
-        self::assertNull($registry->get('ns1', 'key1'));
+        $this->subject->set('ns1', 'key1', 'value1');
+        $this->subject->remove('ns1', 'key1');
+        self::assertNull($this->subject->get('ns1', 'key1'));
     }
 
     #[Test]
     public function canNotGetRemovedAllByNamespaceEntry(): void
     {
-        $registry = new Registry();
-        $registry->set('ns1', 'key1', 'value1');
-        $registry->removeAllByNamespace('ns1');
-        self::assertNull($registry->get('ns1', 'key1'));
+        $this->subject->set('ns1', 'key1', 'value1');
+        $this->subject->removeAllByNamespace('ns1');
+        self::assertNull($this->subject->get('ns1', 'key1'));
+    }
+
+    private function deserialize(string $serialized): mixed
+    {
+        return unserialize($serialized, ['allowed_classes' => false]);
     }
 }

@@ -42,7 +42,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertNull($ast->getChildByName('foo')->getValue());
-        self::assertEquals($ast, unserialize(serialize($ast)));
+        self::assertRootNodeIsSerializable($ast);
     }
 
     #[Test]
@@ -52,7 +52,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertNull($ast->getChildByName('foo')->getValue());
-        self::assertEquals($ast, unserialize(serialize($ast)));
+        self::assertRootNodeIsSerializable($ast);
     }
 
     #[Test]
@@ -65,7 +65,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue', $ast->getChildByName('foo')->getValue());
-        self::assertEquals($ast, unserialize(serialize($ast)));
+        self::assertRootNodeIsSerializable($ast);
     }
 
     #[Test]
@@ -78,7 +78,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue', $ast->getChildByName('foo')->getValue());
-        self::assertEquals($ast, unserialize(serialize($ast)));
+        self::assertRootNodeIsSerializable($ast);
     }
 
     #[Test]
@@ -91,7 +91,7 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(AstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue modifierArgument', $ast->getChildByName('foo')->getValue());
-        self::assertEquals($ast, unserialize(serialize($ast)));
+        self::assertRootNodeIsSerializable($ast);
     }
 
     #[Test]
@@ -104,6 +104,15 @@ final class AstBuilderInterfaceTest extends FunctionalTestCase
         $astBuilder = $this->get(CommentAwareAstBuilder::class);
         $ast = $astBuilder->build($tokens, new RootNode());
         self::assertSame('originalValue modifierArgument', $ast->getChildByName('foo')->getValue());
-        self::assertEquals($ast, unserialize(serialize($ast)));
+        self::assertRootNodeIsSerializable($ast);
+    }
+
+    /**
+     * The TYPO3 caching framework serializes cached objects.
+     * A successful serialize/unserialize round-trip proves the AST is cacheable.
+     */
+    private static function assertRootNodeIsSerializable(RootNode $ast): void
+    {
+        self::assertEquals($ast, unserialize(serialize($ast), ['allowed_classes' => true]));
     }
 }
