@@ -60,7 +60,7 @@ final class TreeNodeTest extends UnitTestCase
     public function deserializeFixture(): void
     {
         $source = trim(file_get_contents(__DIR__ . '/Fixtures/serialized.txt'));
-        $node = unserialize($source);
+        $node = unserialize($source, ['allowed_classes' => [TreeNode::class]]);
         $serializedString = serialize($node);
         self::assertSame($source, $serializedString);
     }
