@@ -81,7 +81,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
     }
@@ -101,7 +101,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -127,7 +127,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
             new LossyTokenizer(),
             $siteFinder->getSiteByPageId(1)
         );
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('testValueFromSite', $ast->getChildByName('testConstantFromSite')->getValue());
     }
@@ -151,7 +151,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -177,7 +177,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -204,7 +204,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('setup', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -230,7 +230,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertNull($ast->getChildByName('foo'));
         self::assertSame('barValue', $ast->getChildByName('bar')->getValue());
@@ -250,7 +250,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertNull($ast->getChildByName('bar'));
@@ -270,7 +270,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('loadedByBasedOn', $ast->getChildByName('bar')->getValue());
@@ -290,7 +290,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('loadedByBasedOn', $ast->getChildByName('bar')->getValue());
@@ -310,7 +310,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $sysTemplateRepository = $this->get(SysTemplateRepository::class);
         $subject = $this->get(SysTemplateTreeBuilder::class);
         $includeTree = $subject->getTreeBySysTemplateRowsAndSite('constants', $sysTemplateRepository->getSysTemplateRowsByRootline($rootline), new LossyTokenizer());
-        self::assertEquals($includeTree, unserialize(serialize($includeTree)));
+        self::assertRootNodeIsSerializable($this->getAst($includeTree));
         $ast = $this->getAst($includeTree);
         self::assertSame('fooValue', $ast->getChildByName('foo')->getValue());
         self::assertSame('includeStaticTarget', $ast->getChildByName('bar')->getValue());
@@ -327,5 +327,14 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
         $traverser = new IncludeTreeTraverser();
         $traverser->traverse($rootInclude, [$astBuilderVisitor]);
         return $astBuilderVisitor->getAst();
+    }
+
+    /**
+     * The TYPO3 caching framework serializes cached objects.
+     * A successful serialize/unserialize round-trip proves the AST is cacheable.
+     */
+    private static function assertRootNodeIsSerializable(RootNode $ast): void
+    {
+        self::assertEquals($ast, unserialize(serialize($ast), ['allowed_classes' => true]));
     }
 }
