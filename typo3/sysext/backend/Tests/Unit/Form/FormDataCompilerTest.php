@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
@@ -69,11 +70,46 @@ final class FormDataCompilerTest extends UnitTestCase
         $this->subject->compile($input, $this->formDataGroupMock);
     }
 
+    public static function compileAcceptsValidVanillaUidDataProvider(): array
+    {
+        return [
+            'integer' => [3565],
+            'integer as string' => ['5654'],
+            'string with NEW prefix' => ['NEW45565'],
+        ];
+    }
+
+    #[DataProvider('compileAcceptsValidVanillaUidDataProvider')]
     #[Test]
-    public function compileThrowsExceptionIfUidIsNotAnInteger(): void
+    public function compileAcceptsValidVanillaUid(mixed $vanillaUid): void
     {
         $input = [
-            'vanillaUid' => 'foo123',
+            'request' => new ServerRequest(),
+            'vanillaUid' => $vanillaUid,
+        ];
+
+        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnArgument(0);
+        $result = $this->subject->compile($input, $this->formDataGroupMock);
+
+        self::assertSame($vanillaUid, $result['vanillaUid']);
+    }
+
+    public static function compileThrowsExceptionIfVanillaUidIsInvalidDataProvider(): array
+    {
+        return [
+            'string not starting with NEW' => ['foo123'],
+            'null' => [null],
+            'bool' => [false],
+            'float' => [1.45],
+        ];
+    }
+
+    #[DataProvider('compileThrowsExceptionIfVanillaUidIsInvalidDataProvider')]
+    #[Test]
+    public function compileThrowsExceptionIfVanillaUidIsInvalid(mixed $vanillaUid): void
+    {
+        $input = [
+            'vanillaUid' => $vanillaUid,
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437654247);
