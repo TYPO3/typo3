@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Package\Cache;
 use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
 use TYPO3\CMS\Core\Package\PackageInterface;
-use TYPO3\CMS\Core\Serializer\PolymorphicDeserializer;
+use TYPO3\CMS\Core\Serializer\DeserializationService;
 
 /**
  * A TYPO3 Package cache entry.
@@ -121,9 +121,9 @@ class PackageCacheEntry
             $packageData['composerNameToPackageKeyMap'],
             unserialize(
                 $packageData['packageObjects'],
-                [
-                    'allowed_classes' => $packageData['packageClasses'],
-                ],
+                // data is read from `PackageStates.php` already, if that file is tainted for
+                // deserialization, code execution would have been possible anyway already
+                ['allowed_classes' => $packageData['packageClasses']],
             ),
         );
         $cacheEntry->identifier = $packageData['identifier'] ?? null;
@@ -134,7 +134,7 @@ class PackageCacheEntry
     public function serialize(): string
     {
         $serializedPackages = serialize($this->packages);
-        $deserializer = new PolymorphicDeserializer();
+        $deserializationService = new DeserializationService();
         return var_export(
             [
                 'identifier' => $this->identifier,
@@ -142,7 +142,7 @@ class PackageCacheEntry
                 'packageAliasMap' => $this->aliasMap,
                 'composerNameToPackageKeyMap' => $this->composerNameMap,
                 'packageObjects' => $serializedPackages,
-                'packageClasses' => $deserializer->parseClassNames($serializedPackages),
+                'packageClasses' => $deserializationService->parseClassNames($serializedPackages),
             ],
             true
         );

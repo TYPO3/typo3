@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Core\Serializer\Exception;
 use TYPO3\CMS\Core\Exception;
 
 /**
- * An exception if de-serializing an object failed
+ * Base exception for deserialization failures.
  *
  * @internal
  */
-class PolymorphicDeserializerException extends Exception {}
+class DeserializerException extends Exception {}
