@@ -19,8 +19,6 @@ namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -49,12 +47,10 @@ final class RecoveryConfigurationTest extends UnitTestCase
     ];
 
     private RecoveryConfiguration $subject;
-    private LoggerInterface $logger;
 
     protected function setUp(): void
     {
         $this->configurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
-        $this->logger = new NullLogger();
 
         parent::setUp();
     }
@@ -74,8 +70,6 @@ final class RecoveryConfigurationTest extends UnitTestCase
             new Random(),
             new HashService()
         );
-
-        $this->subject->setLogger($this->logger);
     }
 
     #[Test]

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Html\EventListener;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Html\Event\AfterTransformTextForPersistenceEvent;
@@ -51,7 +52,7 @@ final class RteHtmlParserTest extends FunctionalTestCase
         $listenerProvider->addListener(BeforeTransformTextForRichTextEditorEvent::class, 'before-transform-text-for-richtexteditor');
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
 
         $result = $subject->transformTextForRichTextEditor('Something something dark side', $this->procOptions);
         self::assertInstanceOf(BeforeTransformTextForRichTextEditorEvent::class, $beforeTransformTextForRichTextEditorEvent);
@@ -77,7 +78,7 @@ final class RteHtmlParserTest extends FunctionalTestCase
         $listenerProvider->addListener(AfterTransformTextForRichTextEditorEvent::class, 'after-transform-text-for-richtexteditor');
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
 
         $result = $subject->transformTextForRichTextEditor('Something something dark side', $this->procOptions);
         self::assertInstanceOf(AfterTransformTextForRichTextEditorEvent::class, $afterTransformTextForRichTextEditorEvent);
@@ -103,7 +104,7 @@ final class RteHtmlParserTest extends FunctionalTestCase
         $listenerProvider->addListener(BeforeTransformTextForPersistenceEvent::class, 'before-transform-text-for-richtexteditor');
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
 
         $result = $subject->transformTextForPersistence("\n\nSomething something dark side\n\n", $this->procOptions);
         self::assertInstanceOf(BeforeTransformTextForPersistenceEvent::class, $beforeTransformTextForPersistenceEvent);
@@ -129,7 +130,7 @@ final class RteHtmlParserTest extends FunctionalTestCase
         $listenerProvider->addListener(AfterTransformTextForPersistenceEvent::class, 'after-transform-text-for-richtexteditor');
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
 
         $result = $subject->transformTextForPersistence("\n\nSomething something dark side\n\n", $this->procOptions);
         self::assertInstanceOf(AfterTransformTextForPersistenceEvent::class, $afterTransformTextForPersistenceEvent);

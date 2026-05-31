@@ -20,8 +20,7 @@ namespace TYPO3\CMS\Filelist\Controller;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
@@ -71,10 +70,8 @@ use TYPO3\CMS\Filelist\Type\ViewMode;
  * @internal this is a concrete TYPO3 controller implementation and solely used for EXT:filelist and not part of TYPO3's Core API.
  */
 #[AsController]
-class FileListController implements LoggerAwareInterface
+class FileListController
 {
-    use LoggerAwareTrait;
-
     protected string $id = '';
     protected string $cmd = '';
     protected string $searchTerm = '';
@@ -97,6 +94,7 @@ class FileListController implements LoggerAwareInterface
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly ComponentFactory $componentFactory,
+        protected readonly LoggerInterface $logger,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface

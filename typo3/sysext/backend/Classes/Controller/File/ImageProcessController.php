@@ -19,8 +19,7 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -31,19 +30,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class ImageProcessController implements LoggerAwareInterface
+readonly class ImageProcessController
 {
-    use LoggerAwareTrait;
-
-    /**
-     * @var ImageProcessingService
-     */
-    private $imageProcessingService;
-
-    public function __construct(ImageProcessingService $imageProcessingService)
-    {
-        $this->imageProcessingService = $imageProcessingService;
-    }
+    public function __construct(
+        private ImageProcessingService $imageProcessingService,
+        private LoggerInterface $logger,
+    ) {}
 
     public function process(ServerRequestInterface $request): ResponseInterface
     {

@@ -22,8 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\RateLimiter\LimiterInterface;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Context\Context;
@@ -37,14 +36,13 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 /**
  * This middleware authenticates a Frontend User (fe_users).
  */
-class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInterface
+readonly class FrontendUserAuthenticator implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        protected readonly Context $context,
-        protected readonly RateLimiterFactoryInterface $rateLimiterFactory,
-        protected readonly EventDispatcherInterface $eventDispatcher
+        protected Context $context,
+        protected RateLimiterFactoryInterface $rateLimiterFactory,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected LoggerInterface $logger,
     ) {}
 
     /**

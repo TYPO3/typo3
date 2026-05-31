@@ -21,8 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\SecurityAspect;
@@ -37,10 +36,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @internal
  */
-class RequestTokenMiddleware implements MiddlewareInterface, LoggerAwareInterface
+class RequestTokenMiddleware implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
     protected const COOKIE_PREFIX = 'typo3nonce_';
     protected const SECURE_PREFIX = '__Secure-';
 
@@ -49,8 +46,10 @@ class RequestTokenMiddleware implements MiddlewareInterface, LoggerAwareInterfac
     protected SecurityAspect $securityAspect;
     protected NoncePool $noncePool;
 
-    public function __construct(Context $context)
-    {
+    public function __construct(
+        Context $context,
+        protected readonly LoggerInterface $logger,
+    ) {
         $this->securityAspect = SecurityAspect::provideIn($context);
         $this->noncePool = $this->securityAspect->getNoncePool();
     }

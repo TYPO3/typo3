@@ -21,8 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -52,12 +51,11 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  *
  * @internal
  */
-class PageContextInitialization implements MiddlewareInterface, LoggerAwareInterface
+readonly class PageContextInitialization implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        protected readonly PageContextFactory $pageContextFactory,
+        protected PageContextFactory $pageContextFactory,
+        protected LoggerInterface $logger,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

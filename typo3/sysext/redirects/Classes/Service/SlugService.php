@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -49,10 +48,8 @@ use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItemFactory;
 /**
  * @internal Due to some possible refactorings in TYPO3 v10+
  */
-class SlugService implements LoggerAwareInterface
+class SlugService
 {
-    use LoggerAwareTrait;
-
     /**
      * `dechex(1569615472)` (similar to timestamps used with exceptions, but in hex)
      */
@@ -75,7 +72,8 @@ class SlugService implements LoggerAwareInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ConnectionPool $connectionPool,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
-        private readonly TemporaryPermissionMutationService $temporaryPermissionMutationService
+        private readonly TemporaryPermissionMutationService $temporaryPermissionMutationService,
+        private readonly LoggerInterface $logger,
     ) {}
 
     public function rebuildSlugsForSlugChange(int $pageId, SlugRedirectChangeItem $changeItem, CorrelationId $correlationId): void

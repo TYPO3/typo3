@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Validation;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -31,13 +30,12 @@ use TYPO3\CMS\FrontendLogin\Event\ModifyRedirectUrlValidationResultEvent;
  *
  * @internal for now as it might get adopted for further streamlining against other validation paradigms
  */
-class RedirectUrlValidator implements LoggerAwareInterface
+readonly class RedirectUrlValidator
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         protected SiteFinder $siteFinder,
-        protected EventDispatcherInterface $eventDispatcher
+        protected EventDispatcherInterface $eventDispatcher,
+        protected LoggerInterface $logger,
     ) {}
 
     /**

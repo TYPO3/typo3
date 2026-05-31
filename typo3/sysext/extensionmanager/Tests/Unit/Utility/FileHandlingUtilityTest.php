@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -115,7 +116,8 @@ final class FileHandlingUtilityTest extends UnitTestCase
             $this->createMock(EmConfUtility::class),
             $this->createMock(OpcodeCacheService::class),
             $this->createMock(ZipService::class),
-            $this->createMock(LanguageServiceFactory::class)
+            $this->createMock(LanguageServiceFactory::class),
+            new NullLogger(),
         );
         $subject->removeDirectory($absoluteSymlinkPath);
         self::assertFalse(is_link($absoluteSymlinkPath));
@@ -135,7 +137,8 @@ final class FileHandlingUtilityTest extends UnitTestCase
             $this->createMock(EmConfUtility::class),
             $this->createMock(OpcodeCacheService::class),
             $this->createMock(ZipService::class),
-            $this->createMock(LanguageServiceFactory::class)
+            $this->createMock(LanguageServiceFactory::class),
+            new NullLogger(),
         );
         $subject->removeDirectory($absoluteSymlinkPath);
         self::assertTrue(is_file($absoluteDirectoryPath . $relativeFilePath));
@@ -345,6 +348,7 @@ final class FileHandlingUtilityTest extends UnitTestCase
                 $this->createMock(OpcodeCacheService::class),
                 $this->createMock(ZipService::class),
                 $this->createMock(LanguageServiceFactory::class),
+                new NullLogger(),
             ]
         );
         $subject->_call('writeEmConfToFile', $extKey, $emConfData, $rootPath);

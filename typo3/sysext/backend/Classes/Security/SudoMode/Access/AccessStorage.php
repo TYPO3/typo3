@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Security\SudoMode\Access;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
@@ -28,17 +27,16 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class AccessStorage implements LoggerAwareInterface
+readonly class AccessStorage
 {
-    use LoggerAwareTrait;
-
     protected const CLAIM_KEY = 'backend.sudo-mode.claim';
     protected const GRANT_KEY = 'backend.sudo-mode.grant';
 
-    protected readonly int $currentTimestamp;
+    protected int $currentTimestamp;
 
     public function __construct(
-        protected readonly AccessFactory $factory
+        protected AccessFactory $factory,
+        protected LoggerInterface $logger,
     ) {
         $this->currentTimestamp = (int)($GLOBALS['EXEC_TIME'] ?? time());
     }

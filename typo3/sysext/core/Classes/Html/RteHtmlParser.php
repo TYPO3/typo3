@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Html;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Html\Event\AfterTransformTextForPersistenceEvent;
@@ -42,10 +41,8 @@ use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
  * This means: RteHtmlParser always returns CRLFs to be maximum compatible with all formats.
  */
 #[Autoconfigure(public: true)]
-class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
+class RteHtmlParser extends HtmlParser
 {
-    use LoggerAwareTrait;
-
     /**
      * List of elements that are not wrapped into a "p" tag while doing the transformation.
      */
@@ -114,7 +111,8 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     ];
 
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly LoggerInterface $logger,
     ) {}
 
     /**

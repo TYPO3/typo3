@@ -62,8 +62,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->testHostName = 'hostname.tld';
         $this->testSitePath = '/';
-        $this->accessibleFixture = $this->getAccessibleMock(RedirectUrlValidator::class, null, [$mockedSiteFinder, $this->eventDispatcher]);
-        $this->accessibleFixture->setLogger(new NullLogger());
+        $this->accessibleFixture = $this->getAccessibleMock(RedirectUrlValidator::class, null, [$mockedSiteFinder, $this->eventDispatcher, new NullLogger()]);
         $this->setUpFakeSitePathAndHost();
     }
 

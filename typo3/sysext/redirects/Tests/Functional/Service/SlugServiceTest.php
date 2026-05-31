@@ -162,17 +162,17 @@ final class SlugServiceTest extends FunctionalTestCase
         $this->get(SiteMatcher::class)->refresh();
         $this->get(SiteFinder::class)->getAllSites(false);
         $subject = new SlugService(
-            context: $this->get(Context::class),
-            pageRepository: $this->get(PageRepository::class),
-            linkService: $this->get(LinkService::class),
-            redirectCacheService: $this->get(RedirectCacheService::class),
-            slugRedirectChangeItemFactory: $this->get(SlugRedirectChangeItemFactory::class),
-            eventDispatcher: $this->get(EventDispatcherInterface::class),
-            connectionPool: $this->getConnectionPool(),
-            tcaSchemaFactory: $this->get(TcaSchemaFactory::class),
-            temporaryPermissionMutationService: $this->get(TemporaryPermissionMutationService::class)
+            $this->get(Context::class),
+            $this->get(PageRepository::class),
+            $this->get(LinkService::class),
+            $this->get(RedirectCacheService::class),
+            $this->get(SlugRedirectChangeItemFactory::class),
+            $this->get(EventDispatcherInterface::class),
+            $this->getConnectionPool(),
+            $this->get(TcaSchemaFactory::class),
+            $this->get(TemporaryPermissionMutationService::class),
+            new NullLogger(),
         );
-        $subject->setLogger(new NullLogger());
         return $subject;
     }
 

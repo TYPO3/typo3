@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception\Archive\ExtractException;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -36,10 +35,8 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  *
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class FileHandlingUtility implements LoggerAwareInterface
+class FileHandlingUtility
 {
-    use LoggerAwareTrait;
-
     private LanguageService $languageService;
 
     public function __construct(
@@ -48,6 +45,7 @@ class FileHandlingUtility implements LoggerAwareInterface
         private readonly OpcodeCacheService $opcodeCacheService,
         private readonly ZipService $zipService,
         LanguageServiceFactory $languageServiceFactory,
+        private readonly LoggerInterface $logger,
     ) {
         $this->languageService = $languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
     }

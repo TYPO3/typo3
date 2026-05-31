@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Configuration;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
@@ -29,19 +27,17 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class RecoveryConfiguration implements LoggerAwareInterface
+class RecoveryConfiguration
 {
-    use LoggerAwareTrait;
-
-    protected string $forgotHash;
+    protected readonly string $forgotHash;
     protected ?Address $replyTo = null;
     protected Address $sender;
-    protected array $settings;
+    protected readonly array $settings;
     protected string $mailTemplateName = '';
     protected ?int $timestamp = null;
 
     public function __construct(
-        protected Context $context,
+        protected readonly Context $context,
         ConfigurationManagerInterface $configurationManager,
         Random $random,
         HashService $hashService

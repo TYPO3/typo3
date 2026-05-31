@@ -20,8 +20,7 @@ namespace TYPO3\CMS\Backend\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\RateLimiter\LimiterInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
@@ -45,10 +44,8 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  *
  * @internal
  */
-class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAuthenticator implements LoggerAwareInterface
+class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAuthenticator
 {
-    use LoggerAwareTrait;
-
     /**
      * List of requests that don't need a valid BE user
      */
@@ -70,17 +67,13 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         '/ajax/login/timedout',
     ];
 
-    private LanguageServiceFactory $languageServiceFactory;
-    private RateLimiterFactoryInterface $rateLimiterFactory;
-
     public function __construct(
         Context $context,
-        LanguageServiceFactory $languageServiceFactory,
-        RateLimiterFactoryInterface $rateLimiterFactory
+        private readonly LanguageServiceFactory $languageServiceFactory,
+        private readonly RateLimiterFactoryInterface $rateLimiterFactory,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct($context);
-        $this->languageServiceFactory = $languageServiceFactory;
-        $this->rateLimiterFactory = $rateLimiterFactory;
     }
 
     /**

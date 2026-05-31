@@ -21,8 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
@@ -40,12 +39,11 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  *
  * @internal
  */
-class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareInterface
+readonly class ShortcutAndMountPointRedirect implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        protected readonly PageTypeLinkResolver $pageTypeLinkResolver,
+        protected PageTypeLinkResolver $pageTypeLinkResolver,
+        protected LoggerInterface $logger,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

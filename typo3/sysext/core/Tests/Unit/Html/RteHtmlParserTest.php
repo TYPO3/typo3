@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -107,7 +108,7 @@ final class RteHtmlParserTest extends UnitTestCase
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals($expectedResult, $subject->transformTextForPersistence($content, $this->procOptions));
     }
 
@@ -183,7 +184,7 @@ final class RteHtmlParserTest extends UnitTestCase
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
     }
 
@@ -215,7 +216,7 @@ final class RteHtmlParserTest extends UnitTestCase
         // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
     }
 
@@ -401,7 +402,7 @@ final class RteHtmlParserTest extends UnitTestCase
     public function paragraphCorrectlyTransformedOnWayToDatabase($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals($expectedResult, $subject->transformTextForPersistence($content, $this->procOptions));
     }
 
@@ -499,7 +500,7 @@ final class RteHtmlParserTest extends UnitTestCase
     public function lineBreakCorrectlyTransformedOnWayToRTE($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($content, $this->procOptions));
     }
 
@@ -649,7 +650,7 @@ final class RteHtmlParserTest extends UnitTestCase
     public function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
     }
 
@@ -683,7 +684,7 @@ final class RteHtmlParserTest extends UnitTestCase
     public function anchorCorrectlyTransformedOnWayToDatabase(string $content, string $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals($expectedResult, $subject->transformTextForPersistence($content, $this->procOptions));
     }
 
@@ -717,7 +718,7 @@ final class RteHtmlParserTest extends UnitTestCase
     public function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE(string $content, string $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
     }
 
@@ -725,7 +726,7 @@ final class RteHtmlParserTest extends UnitTestCase
     public function allowTagsOutsidePreventsWrappingTaginPTag(): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals('<abbr>Allowed outside of p-tag</abbr>', $subject->transformTextForRichTextEditor('<abbr>Allowed outside of p-tag</abbr>', $this->procOptions));
         self::assertEquals('<p><span>Not allowed outside of p-tag</span></p>', $subject->transformTextForRichTextEditor('<span>Not allowed outside of p-tag</span>', $this->procOptions));
     }
@@ -734,7 +735,7 @@ final class RteHtmlParserTest extends UnitTestCase
     public function tableAndFigureApplyCorrectlyOutsideOfParagraphTags(): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         self::assertEquals('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '</figure>', $subject->transformTextForRichTextEditor('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '</figure>', $this->procOptions));
         self::assertEquals('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $subject->transformTextForRichTextEditor('<figure class="table">' . CRLF . '<table>Allowed outside of p-tag</table>' . CRLF . '<figcaption>My Logo</figcaption></figure>', $this->procOptions));
     }
@@ -743,7 +744,7 @@ final class RteHtmlParserTest extends UnitTestCase
     public function resetsAllowTagsWhenProcessingConfigurationChanges(): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser($eventDispatcher, new NullLogger());
         $input = '<remove>Foo</remove><keep>Bar</keep>';
         $transformed = 'Foo<keep>Bar</keep>';
         $result = $subject->transformTextForPersistence($input, [
@@ -769,7 +770,7 @@ final class RteHtmlParserTest extends UnitTestCase
             ]
         );
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceMock);
-        $subject = new RteHtmlParser($this->createMock(EventDispatcherInterface::class));
+        $subject = new RteHtmlParser($this->createMock(EventDispatcherInterface::class), new NullLogger());
         $input = '<a href="t3://file?uid=123" download>Download Image</a>';
         $result = $subject->transformTextForPersistence($input, [
             'mode' => 'ts_links',
