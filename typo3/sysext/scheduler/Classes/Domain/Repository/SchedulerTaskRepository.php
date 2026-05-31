@@ -332,7 +332,7 @@ readonly class SchedulerTaskRepository
             $taskData['lastExecutionFailure'] = false;
             if (!empty($row['lastexecution_failure'])) {
                 $taskData['lastExecutionFailure'] = true;
-                $exceptionArray = @unserialize($row['lastexecution_failure']);
+                $exceptionArray = @unserialize($row['lastexecution_failure'], ['allowed_classes' => false]);
                 $taskData['lastExecutionFailureCode'] = '';
                 $taskData['lastExecutionFailureMessage'] = '';
                 if (is_array($exceptionArray)) {
@@ -467,7 +467,7 @@ readonly class SchedulerTaskRepository
 
             $runningExecutions = $previousExecutions !== null
                 && $previousExecutions !== ''
-                    ? unserialize($previousExecutions)
+                    ? unserialize($previousExecutions, ['allowed_classes' => false])
                     : [];
 
             // Count the number of existing executions and use that number as a key
@@ -513,7 +513,7 @@ readonly class SchedulerTaskRepository
                 break;
             }
 
-            $runningExecutions = unserialize($previousExecutions);
+            $runningExecutions = unserialize($previousExecutions, ['allowed_classes' => false]);
             // Remove the selected execution
             unset($runningExecutions[$executionID]);
             if (!empty($runningExecutions)) {
