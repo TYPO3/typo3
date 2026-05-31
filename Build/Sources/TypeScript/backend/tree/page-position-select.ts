@@ -237,7 +237,11 @@ export class PagePositionSelect extends LitElement {
     }
 
     await this.tree.addNode(insideNode, currentNode, TreeNodePositionEnum.INSIDE);
-    await this.tree.addNode(afterNode, currentNode, TreeNodePositionEnum.AFTER);
+
+    // The tree root has no valid "after" sibling, so the option is only added for real pages.
+    if (currentNode.identifier !== '0') {
+      await this.tree.addNode(afterNode, currentNode, TreeNodePositionEnum.AFTER);
+    }
 
     for (const childNode of childNodes) {
       const afterChildNode: TreeNodeInterface = {
@@ -301,4 +305,3 @@ declare global {
     'typo3-backend-component-page-position-select-tree': PagePositionSelectTree;
   }
 }
-
