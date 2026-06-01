@@ -6598,6 +6598,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-107813-DeprecateMetaInformationAPI.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setMetaInformationForResource' => [
@@ -6605,6 +6606,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-107813-DeprecateMetaInformationAPI.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeGenericButton' => [

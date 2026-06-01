@@ -160,11 +160,8 @@ final readonly class BreadcrumbFactory
     /**
      * Creates breadcrumb context from a page record array.
      *
-     * This is the most common migration path from DocHeaderComponent::setMetaInformation().
-     *
-     * Example migration:
-     * Before: `$view->getDocHeaderComponent()->setMetaInformation($pageInfo);`
-     * After:  `$view->getDocHeaderComponent()->setBreadcrumbContext($this->breadcrumbFactory->forPageArray($pageInfo));`
+     * Example:
+     * `$view->getDocHeaderComponent()->setBreadcrumbContext($this->breadcrumbFactory->forPageArray($pageInfo));`
      *
      * @param array $pageRecord The page record array (must contain 'uid')
      * @return BreadcrumbContext Context with the page record or null on failure

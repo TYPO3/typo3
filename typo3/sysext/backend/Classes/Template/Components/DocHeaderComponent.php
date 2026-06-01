@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbFactory;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
-use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -66,13 +65,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DocHeaderComponent
 {
     /**
-     * Legacy meta information component (deprecated).
-     *
-     * @deprecated Will be removed in TYPO3 v15. Use breadcrumbContext instead.
-     */
-    protected MetaInformation $metaInformation;
-
-    /**
      * Button bar component for managing action buttons.
      */
     protected ButtonBar $buttonBar;
@@ -112,53 +104,11 @@ class DocHeaderComponent
 
     public function __construct(
         protected readonly MenuRegistry $menuRegistry,
-        protected readonly RecordFactory $recordFactory,
         protected readonly BreadcrumbFactory $breadcrumbFactory,
         protected readonly ComponentFactory $componentFactory,
     ) {
         $this->buttonBar = GeneralUtility::makeInstance(ButtonBar::class);
-        $this->metaInformation = GeneralUtility::makeInstance(MetaInformation::class);
         $this->breadcrumb = GeneralUtility::makeInstance(Breadcrumb::class);
-    }
-
-    /**
-     * Set page information
-     *
-     * @param array $metaInformation Record array
-     * @deprecated since v14, will be removed in v15. Use setPageBreadcrumb() instead.
-     */
-    public function setMetaInformation(array $metaInformation): void
-    {
-        trigger_error(
-            'DocHeaderComponent::setMetaInformation() is deprecated and will be removed in TYPO3 v15. Use setPageBreadcrumb() instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->metaInformation->setRecordArray($metaInformation);
-
-        // Migrate meta information for breadcrumbs
-        if (isset($metaInformation['uid'])) {
-            $record = $this->recordFactory->createResolvedRecordFromDatabaseRow('pages', $metaInformation);
-            $this->breadcrumbContext = new BreadcrumbContext($record, []);
-        }
-    }
-
-    /**
-     * Set meta information for a file/folder resource.
-     *
-     * @deprecated since v14, will be removed in v15. Use setResourceBreadcrumb() instead.
-     */
-    public function setMetaInformationForResource(ResourceInterface $resource): void
-    {
-        trigger_error(
-            'DocHeaderComponent::setMetaInformationForResource() is deprecated and will be removed in TYPO3 v15. Use setResourceBreadcrumb() instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->metaInformation->setResource($resource);
-
-        // Migrate meta information for breadcrumbs
-        $this->breadcrumbContext = new BreadcrumbContext($resource, []);
     }
 
     /**
@@ -180,8 +130,6 @@ class DocHeaderComponent
 
     /**
      * Sets breadcrumb from a page record array.
-     *
-     * This is the direct replacement for setMetaInformation().
      *
      * Example:
      *     $view->getDocHeaderComponent()->setPageBreadcrumb($pageInfo);

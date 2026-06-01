@@ -2680,6 +2680,7 @@ return [
     'TYPO3\CMS\Backend\Template\Components\MetaInformation' => [
         'restFiles' => [
             'Deprecation-107813-DeprecateMetaInformationAPI.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Reports\ReportInterface' => [
