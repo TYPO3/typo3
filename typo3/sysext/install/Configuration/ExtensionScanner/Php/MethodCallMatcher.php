@@ -6696,6 +6696,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-93981-GraphicalFunctionsGifOrJpg.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent->getActions' => [

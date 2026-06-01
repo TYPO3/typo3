@@ -190,13 +190,6 @@ class GraphicalFunctions
     protected string $im5fx_sharpenSteps = '1x2,2x2,3x2,2x3,3x3,4x3,3x4,4x4,4x5,5x5';
 
     /**
-     * This is the limit for the number of pixels in an image before it will be rendered as JPG instead of GIF/PNG
-     *
-     * @var int<1, max>
-     */
-    protected int $pixelLimitGif = 10000;
-
-    /**
      * @var int<1, 100>
      */
     protected int $jpegQuality = 85;
@@ -735,31 +728,6 @@ class GraphicalFunctions
      * Various IO functions
      *
      ***********************************/
-
-    /**
-     * Returns an image extension for an output image based on the number of pixels of the output and the file extension of the original file.
-     * For example: If the number of pixels exceeds $this->pixelLimitGif (normally 10000) then it will be a "jpg" string in return.
-     *
-     * @param string $type The file extension, lowercase.
-     * @param int $w The width of the output image.
-     * @param int $h The height of the output image.
-     * @return string The filename, either "jpg" or "png"
-     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0. Use determineDefaultProcessingFileExtension() instead.
-     * @todo - Move this internal method to a new service class and then update this deprecation info.
-     * @see $this->determineDefaultProcessingFileExtension()
-     */
-    public function gif_or_jpg($type, $w, $h)
-    {
-        trigger_error(
-            'GraphicalFunctions->gif_or_jpg() has been deprecated in TYPO3 v14.0 and will be removed in v15.0.',
-            E_USER_DEPRECATED
-        );
-
-        if ($type === 'ai' || $type === 'gif' || $w * $h < $this->pixelLimitGif) {
-            return 'png';
-        }
-        return 'jpg';
-    }
 
     /**
      * Helper method available to all GraphicalFunctions/AbstractTask implementations, looks up the definition
