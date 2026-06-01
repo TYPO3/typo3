@@ -65,6 +65,12 @@ The following PHP class aliases that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent` :ref:`(Deprecation entry) <deprecation-109027-1771514240>`
 - :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent` :ref:`(Deprecation entry) <deprecation-109027-1771514240>`
 
+The following PSR-14 events that have previously been marked as deprecated with v14 have been removed:
+
+- :php:`\TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent` :ref:`(Deprecation entry) <deprecation-109529-1775733107>`
+- :php:`\TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent` :ref:`(Deprecation entry) <deprecation-109529-1775733107>`
+- :php:`\TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent` :ref:`(Deprecation entry) <deprecation-109529-1775733107>`
+
 The following PHP class methods that have previously been marked as deprecated with v14 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Form\FormResultCollection->getHiddenFieldsHtml()` :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
@@ -80,6 +86,8 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setMetaInformationForResource()` :ref:`(Deprecation entry) <deprecation-107813-1730000000>`
 - :php:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu->makeMenuItem()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
 - :php:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry->makeMenu()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn->getAfterSectionMarkup()` :ref:`(Deprecation entry) <deprecation-109529-1775733107>`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn->getBeforeSectionMarkup()` :ref:`(Deprecation entry) <deprecation-109529-1775733107>`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->recordEditAccessInternals()` :ref:`(Deprecation entry) <deprecation-108568-1734962478>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->add()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`

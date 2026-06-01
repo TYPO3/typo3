@@ -41,7 +41,6 @@
         </f:else>
     </f:if>
 </div>
-<f:format.raw>{column.beforeSectionMarkup}</f:format.raw>
 <f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent} && {column.active}">
     <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}">
         <f:render partial="PageLayout/ActionControls" arguments="{column: column, allowEditContent: allowEditContent, url: column.newContentUrl}" />

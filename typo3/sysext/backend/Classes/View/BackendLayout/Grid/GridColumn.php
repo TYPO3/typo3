@@ -17,10 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
-use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Page\ContentSlideMode;
@@ -57,7 +54,6 @@ class GridColumn extends AbstractGridObject
     protected readonly int $rowSpan;
     protected readonly ?string $identifier;
     protected readonly ContentSlideMode $slideMode;
-    private readonly EventDispatcherInterface $eventDispatcher;
 
     /**
      * @param array<string, mixed> $definition
@@ -75,7 +71,6 @@ class GridColumn extends AbstractGridObject
         $this->rowSpan = (int)($definition['rowspan'] ?? 1);
         $this->identifier = isset($definition['identifier']) ? (string)$definition['identifier'] : null;
         $this->slideMode = ContentSlideMode::tryFrom($definition['slideMode'] ?? null);
-        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     /**
@@ -218,30 +213,6 @@ class GridColumn extends AbstractGridObject
     public function getTitleUnassigned(): string
     {
         return $this->getLanguageService()->sL($this->columnName) . ' (' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:notAssigned') . ')';
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15 together
-     *             with `BeforeSectionMarkupGeneratedEvent`. Has no
-     *             replacement.
-     */
-    public function getBeforeSectionMarkup(): string
-    {
-        $event = new BeforeSectionMarkupGeneratedEvent($this->definition, $this->context, $this->getRecords());
-        $this->eventDispatcher->dispatch($event);
-        return $event->getContent();
-    }
-
-    /**
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15 together
-     *             with `AfterSectionMarkupGeneratedEvent`. Has no
-     *             replacement.
-     */
-    public function getAfterSectionMarkup(): string
-    {
-        $event = new AfterSectionMarkupGeneratedEvent($this->definition, $this->context, $this->getRecords());
-        $this->eventDispatcher->dispatch($event);
-        return $event->getContent();
     }
 
     public function isUnassigned(): bool
