@@ -33,18 +33,6 @@ use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 readonly class PathUtility
 {
     /**
-     * Gets the relative path from the current used script to a given directory.
-     *
-     * The allowed TYPO3 path is checked as well, thus it's not possible to go to upper levels.
-     * @deprecated will be removed in TYPO3 v15.0.
-     */
-    public static function getRelativePathTo(string $absolutePath): ?string
-    {
-        trigger_error('PathUtility::getRelativePathTo() will be removed in TYPO3 v15.0', E_USER_DEPRECATED);
-        return self::getRelativePath(self::dirname(Environment::getCurrentScript()), $absolutePath, false);
-    }
-
-    /**
      * Creates an absolute URL out of really any input path, removes '../' parts for the targetPath
      *
      * @todo: And this exactly is a big issue as it mixes file system paths with (relative) URLs.
@@ -118,44 +106,6 @@ readonly class PathUtility
         return
             str_starts_with($path, 'EXT:')
             || ($includePackagePaths && str_starts_with($path, 'PKG:'));
-    }
-
-    /**
-     * Gets the relative path from a source directory to a target directory.
-     * The allowed TYPO3 path is checked as well, thus it's not possible to go to upper levels.
-     *
-     * @param string $sourcePath Absolute source path
-     * @param string $targetPath Absolute target path
-     * @deprecated will be removed in TYPO3 v15.0
-     */
-    public static function getRelativePath(string $sourcePath, string $targetPath, bool $triggerDeprecation = true): ?string
-    {
-        if ($triggerDeprecation) {
-            trigger_error('PathUtility::getRelativePath() will be removed in TYPO3 v15.0', E_USER_DEPRECATED);
-        }
-        $relativePath = null;
-        $sourcePath = rtrim(GeneralUtility::fixWindowsFilePath($sourcePath), '/');
-        $targetPath = rtrim(GeneralUtility::fixWindowsFilePath($targetPath), '/');
-        if ($sourcePath !== $targetPath) {
-            $commonPrefix = self::getCommonPrefix([$sourcePath, $targetPath]);
-            if ($commonPrefix !== null && GeneralUtility::isAllowedAbsPath($commonPrefix)) {
-                $commonPrefixLength = strlen($commonPrefix);
-                $resolvedSourcePath = '';
-                $resolvedTargetPath = '';
-                $sourcePathSteps = 0;
-                if (strlen($sourcePath) > $commonPrefixLength) {
-                    $resolvedSourcePath = (string)substr($sourcePath, $commonPrefixLength);
-                }
-                if (strlen($targetPath) > $commonPrefixLength) {
-                    $resolvedTargetPath = (string)substr($targetPath, $commonPrefixLength);
-                }
-                if ($resolvedSourcePath !== '') {
-                    $sourcePathSteps = count(explode('/', $resolvedSourcePath));
-                }
-                $relativePath = self::sanitizeTrailingSeparator(str_repeat('../', $sourcePathSteps) . $resolvedTargetPath);
-            }
-        }
-        return $relativePath;
     }
 
     /**

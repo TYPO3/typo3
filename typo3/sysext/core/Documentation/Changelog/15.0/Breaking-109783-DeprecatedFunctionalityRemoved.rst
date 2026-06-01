@@ -124,6 +124,8 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()` :ref:`(Deprecation entry) <deprecation-109551-1775924599>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::setIndpEnv()` :ref:`(Deprecation entry) <deprecation-109551-1775924599>`
 - :php:`\TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath()` :ref:`(Deprecation entry) <deprecation-107537-1761162068>`
+- :php:`\TYPO3\CMS\Core\Utility\PathUtility::getRelativePath()` :ref:`(Deprecation entry) <deprecation-107413-1725875222>`
+- :php:`\TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo()` :ref:`(Deprecation entry) <deprecation-107413-1725875222>`
 
 The following methods changed signature according to previous deprecations in v14:
 

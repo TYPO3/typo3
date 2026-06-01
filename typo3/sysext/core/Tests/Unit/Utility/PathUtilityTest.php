@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -130,56 +129,6 @@ final class PathUtilityTest extends UnitTestCase
                     'C:\\www\\myhost.com\\t3lib\\utility\\',
                 ],
                 'C:/www/myhost.com/',
-            ],
-        ];
-    }
-
-    /**
-     * @param string $source
-     * @param string $target
-     * @param string $expected
-     */
-    #[DataProvider('isRelativePathResolvedCorrectlyDataProvider')]
-    #[Test]
-    #[IgnoreDeprecations]
-    public function isRelativePathResolvedCorrectly($source, $target, $expected): void
-    {
-        $relativePath = PathUtility::getRelativePath($source, $target);
-        self::assertEquals($expected, $relativePath);
-    }
-
-    public static function isRelativePathResolvedCorrectlyDataProvider(): array
-    {
-        return [
-            [
-                '/',
-                Environment::getPublicPath() . '/directory',
-                null,
-            ],
-            [
-                Environment::getPublicPath() . '/t3lib/',
-                Environment::getPublicPath() . '/t3lib/',
-                '',
-            ],
-            [
-                Environment::getPublicPath() . '/typo3/',
-                Environment::getPublicPath() . '/t3lib/',
-                '../t3lib/',
-            ],
-            [
-                Environment::getPublicPath() . '/',
-                Environment::getPublicPath() . '/t3lib/',
-                't3lib/',
-            ],
-            [
-                Environment::getPublicPath() . '/t3lib/',
-                Environment::getPublicPath() . '/t3lib/stddb/',
-                'stddb/',
-            ],
-            [
-                Environment::getPublicPath() . '/typo3/sysext/frontend/',
-                Environment::getPublicPath() . '/t3lib/utility/',
-                '../../../t3lib/utility/',
             ],
         ];
     }
