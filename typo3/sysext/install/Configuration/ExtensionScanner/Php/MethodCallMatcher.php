@@ -516,6 +516,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-109295-DatabaseWriterSetLogTableGetLogTable.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Log\Writer\DatabaseWriter->setLogTable' => [
@@ -523,6 +524,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-109295-DatabaseWriterSetLogTableGetLogTable.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Messaging\FlashMessage->getIconName' => [

@@ -82,6 +82,8 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\Imaging\GraphicalFunctions->gif_or_jpg()` :ref:`(Deprecation entry) <deprecation-93981-1751961645>`
+- :php:`\TYPO3\CMS\Core\Log\Writer\DatabaseWriter->getLogTable()` :ref:`(Deprecation entry) <deprecation-109295-1742407200>`
+- :php:`\TYPO3\CMS\Core\Log\Writer\DatabaseWriter->setLogTable()` :ref:`(Deprecation entry) <deprecation-109295-1742407200>`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->addInlineLanguageDomain()` :ref:`(Deprecation entry) <deprecation-108963-1770907005>`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->getBodyContent()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->getDocType()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
