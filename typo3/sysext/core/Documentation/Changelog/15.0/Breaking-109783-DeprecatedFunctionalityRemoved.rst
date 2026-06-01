@@ -115,7 +115,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::setIndpEnv()` :ref:`(Deprecation entry) <deprecation-109551-1775924599>`
 - :php:`\TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath()` :ref:`(Deprecation entry) <deprecation-107537-1761162068>`
 
-The following methods changed signature according to previous deprecations in v14 at the end of the argument list:
+The following methods changed signature according to previous deprecations in v14:
 
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->render()` - argument :php:`$request` is now mandatory :ref:`(Deprecation entry) <deprecation-109286-1773844395>`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->renderResponse()` - argument :php:`$request` is now mandatory and the first argument. The transitional :php:`ServerRequestInterface|int $requestOrCode` union has been removed :ref:`(Deprecation entry) <deprecation-109286-1773844395>`
@@ -127,6 +127,7 @@ The following methods changed signature according to previous deprecations in v1
 - :php:`\TYPO3\CMS\Extbase\Attribute\ORM\Cascade->__construct()` - argument :php:`$value` is now a :php:`?string` :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
 - :php:`\TYPO3\CMS\Extbase\Attribute\IgnoreValidation->__construct()` - accepts no arguments any more :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
 - :php:`\TYPO3\CMS\Extbase\Attribute\Validate->__construct()` - argument :php:`$validator` is not a :php:`string`, argument :php:`$param` has been removed :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
+- :php:`\TYPO3\CMS\Filelist\FileList->start()` - argument :php:`$sortDirection` no longer accepts a :php:`bool`, a :php:`\TYPO3\CMS\Filelist\Type\SortDirection` enum is now required :ref:`(Deprecation entry) <deprecation-107225-1754640245>`
 
 
 The following public class properties have been dropped:

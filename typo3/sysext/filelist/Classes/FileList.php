@@ -231,23 +231,14 @@ class FileList
      * @param Folder $folderObject The folder to work on
      * @param int $currentPage The current page to render
      * @param string $sortField Sorting column
-     * @param bool|SortDirection $sortDirection Sorting direction
      * @param Mode $mode Mode of the file list
      */
-    public function start(Folder $folderObject, int $currentPage, string $sortField, bool|SortDirection $sortDirection, Mode $mode = Mode::MANAGE)
+    public function start(Folder $folderObject, int $currentPage, string $sortField, SortDirection $sortDirection, Mode $mode = Mode::MANAGE): void
     {
         $this->folderObject = $folderObject;
         $this->currentPage = MathUtility::forceIntegerInRange($currentPage, 1, 100000);
         $this->sortField = $sortField;
-        if (is_bool($sortDirection)) {
-            trigger_error(
-                'Passing the sort direction as boolean is deprecated and will be removed in future versions of TYPO3. Pass a ' . SortDirection::class . ' enum instead.',
-                E_USER_DEPRECATED
-            );
-            $this->sortDirection = $sortDirection ? SortDirection::DESCENDING : SortDirection::ASCENDING;
-        } else {
-            $this->sortDirection = $sortDirection;
-        }
+        $this->sortDirection = $sortDirection;
         $this->totalbytes = 0;
         $this->resourceDownloadMatcher = null;
         $this->resourceDisplayMatcher = null;
