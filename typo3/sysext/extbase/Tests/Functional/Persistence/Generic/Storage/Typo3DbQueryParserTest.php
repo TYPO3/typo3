@@ -633,6 +633,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $context = new Context();
         $querySettings = new Typo3QuerySettings($context, $this->get(ConfigurationManagerInterface::class));
         $querySettings->setRespectStoragePage(false);
+        $querySettings->setIgnoreEnableFields(false);
         $query = $blogRepository->createQuery();
         $query->setQuerySettings($querySettings);
 
