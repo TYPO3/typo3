@@ -118,7 +118,7 @@ class ProcessedFile extends AbstractFile
     {
         $this->taskType = $this->taskType ?: $databaseRow['task_type'];
         // @todo In case the original configuration contained file objects the reconstitution fails. See ConfigurationService->serialize()
-        $this->processingConfiguration = $this->processingConfiguration ?: (array)unserialize($databaseRow['configuration'] ?? '');
+        $this->processingConfiguration = $this->processingConfiguration ?: (array)unserialize($databaseRow['configuration'] ?? '', ['allowed_classes' => false]);
 
         $this->originalFileSha1 = $databaseRow['originalfilesha1'];
         $this->identifier = (string)$databaseRow['identifier'];
