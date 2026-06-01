@@ -360,7 +360,7 @@ readonly class GridDataService
                 if ($hiddenField !== null) {
                     $recordState = $this->workspaceState($versionRecord['t3ver_state'], (bool)$origRecord[$hiddenField], (bool)$versionRecord[$hiddenField], $hasDiff);
                 } else {
-                    $recordState = $this->workspaceState($versionRecord['t3ver_state'], $hasDiff);
+                    $recordState = $this->workspaceState($versionRecord['t3ver_state'], false, false, $hasDiff);
                 }
 
                 $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
