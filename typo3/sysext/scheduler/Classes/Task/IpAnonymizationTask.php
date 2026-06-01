@@ -178,7 +178,11 @@ class IpAnonymizationTask extends AbstractTask
 
         $tableConfigurationFromConfVars = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][self::class]['options']['tables'] ?? [];
         if (!empty($tableConfigurationFromConfVars)) {
-            trigger_error('Usage of $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'scheduler\'][\'tasks\'][' . self::class . '][\'options\'][\'tables\'] to define table options is deprecated and will stop working in TYPO3 v15. Use $tca[\'tx_scheduler_task\'][\'types\'][' . self::class . '][\'taskOptions\'][\'tables\'] instead.', E_USER_DEPRECATED);
+            // @deprecated will be removed in v16: this SC_OPTIONS fallback is intentionally
+            //             kept beyond v15 because SC_OPTIONS-based scheduler task registration
+            //             is still read in TaskService::getAvailableTaskTypes() to keep legacy
+            //             (non-native) tasks migratable. Remove together with that support.
+            trigger_error('Usage of $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'scheduler\'][\'tasks\'][' . self::class . '][\'options\'][\'tables\'] to define table options is deprecated and will stop working in TYPO3 v16. Use $tca[\'tx_scheduler_task\'][\'types\'][' . self::class . '][\'taskOptions\'][\'tables\'] instead.', E_USER_DEPRECATED);
             if (is_array($tableConfigurationFromConfVars)) {
                 $tableConfiguration = array_replace_recursive($tableConfiguration, $tableConfigurationFromConfVars);
             }

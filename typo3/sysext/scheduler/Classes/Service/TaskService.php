@@ -55,6 +55,11 @@ readonly class TaskService
     {
         $languageService = $this->getLanguageService();
         $list = [];
+        // @deprecated will be removed in v16: SC_OPTIONS-based scheduler task registration
+        //             is intentionally still read here in v15 to keep legacy (non-native)
+        //             tasks listed and migratable. The per-task ['options']['tables'] fallbacks
+        //             in IpAnonymizationTask and TableGarbageCollectionTask are kept for the
+        //             same reason. Remove all of this together.
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'] ?? [] as $className => $registrationInformation) {
             $title = isset($registrationInformation['title']) ? ($languageService?->sL($registrationInformation['title']) ?? $registrationInformation['title']) : '';
             $description = isset($registrationInformation['description']) ? ($languageService?->sL($registrationInformation['description']) ?? $registrationInformation['description']) : '';
