@@ -113,7 +113,7 @@ readonly class LoginController
         $backendUser = $this->getBackendUserAuthentication();
         if (!empty($backendUser->user['uid'])) {
             // If BE user is logged in, redirect to backend. Also handles "refresh" foo.
-            $this->checkRedirect($request, $backendUser, $loginRefresh);
+            $this->checkRedirect($request, $loginRefresh);
         }
 
         $languageService = $this->getLanguageService();
@@ -200,7 +200,7 @@ readonly class LoginController
     /**
      * @throws PropagateResponseException
      */
-    protected function checkRedirect(ServerRequestInterface $request, BackendUserAuthentication $backendUser, bool $loginRefresh): void
+    protected function checkRedirect(ServerRequestInterface $request, bool $loginRefresh): void
     {
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         if (!$formProtection instanceof BackendFormProtection) {
@@ -213,16 +213,7 @@ readonly class LoginController
         } else {
             $formProtection->storeSessionTokenInRegistry();
             // @todo: Consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different
-            $tsConfigRedirectToURL = (string)($backendUser->getTSConfig()['auth.']['BE.']['redirectToURL'] ?? '');
-            if ($tsConfigRedirectToURL !== '') {
-                trigger_error(
-                    'User TSConfig auth.BE.redirectToURL has been deprecated in TYPO3 v14.0 and will be removed in v15.0.',
-                    E_USER_DEPRECATED
-                );
-            }
-
-            $redirectToURL = $tsConfigRedirectToURL
-                ?: (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
+            $redirectToURL = (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
             throw new PropagateResponseException(new RedirectResponse($redirectToURL, 303), 1724705833);
         }
     }

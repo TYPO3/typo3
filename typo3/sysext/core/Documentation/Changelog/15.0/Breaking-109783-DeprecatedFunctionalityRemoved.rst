@@ -176,6 +176,7 @@ The following TypoScript options have been dropped or adapted:
 
 The following user TSconfig options have been removed:
 
+- :typoscript:`auth.BE.redirectToURL` :ref:`(Deprecation entry) <deprecation-106969-1750853865>`
 - :typoscript:`options.pageTree.doktypesToShowInNewPageDragArea` :ref:`(Deprecation entry) <deprecation-109196-1742122800>`
 
 The following form yaml configurations that have previously been marked as deprecated for v14 have been removed:
