@@ -67,6 +67,16 @@ The following PHP class aliases that have previously been marked as deprecated w
 The following PHP class methods that have previously been marked as deprecated with v14 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Form\FormResultCollection->getHiddenFieldsHtml()` :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeButton()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeDropDownButton()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeFullyRenderedButton()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeGenericButton()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeInputButton()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeLinkButton()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeShortcutButton()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeSplitButton()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu->makeMenuItem()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry->makeMenu()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->add()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
@@ -200,6 +210,7 @@ The following fallbacks have been removed:
 
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getRequest()` no longer falls back to :php:`$GLOBALS['TYPO3_REQUEST']`; code must call :php:`setRequest()` after instantiation :ref:`(Deprecation entry) <deprecation-109575>`
 - Page layout content area columns without an :html:`identifier` no longer fall back to a generated hash based on the page layout identifier and :html:`colPos`; a missing identifier now throws a :php:`\RuntimeException` :ref:`(Feature introduction) <feature-104974-1726401724>`
+- Manually creating and adding a :php:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton` to the button bar is no longer detected and no longer suppresses the automatic shortcut button; controllers must use :php:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setShortcutContext()` instead :ref:`(Deprecation entry) <deprecation-108008-1762896168>`
 
 The following upgrade wizards have been removed:
 

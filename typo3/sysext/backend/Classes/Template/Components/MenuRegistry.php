@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Template\Components;
 
 use TYPO3\CMS\Backend\Template\Components\Menu\Menu;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Central registry for managing menus in the backend module document header.
@@ -92,15 +91,5 @@ class MenuRegistry
             }
         }
         return $this->menus;
-    }
-
-    /**
-     * @deprecated since v14, will be removed in v15. Use GeneralUtility::makeInstance(Menu::class) directly or inject ComponentFactory and use createMenu().
-     */
-    public function makeMenu(): Menu
-    {
-        // @todo Activate once core is migrated
-        // trigger_error('MenuRegistry::makeMenu() is deprecated and will be removed in TYPO3 v15. Use GeneralUtility::makeInstance(Menu::class) directly or inject ComponentFactory and use createMenu().', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(Menu::class);
     }
 }

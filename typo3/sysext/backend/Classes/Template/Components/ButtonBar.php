@@ -20,16 +20,8 @@ namespace TYPO3\CMS\Backend\Template\Components;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
-use TYPO3\CMS\Backend\Template\Components\Buttons\FullyRenderedButton;
-use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
-use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
-use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
-use TYPO3\CMS\Backend\Template\Components\Buttons\SplitButton;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Container for managing buttons in the backend module document header.
@@ -138,7 +130,6 @@ class ButtonBar
     protected array $buttons = [];
 
     public function __construct(
-        protected readonly ComponentFactory $componentFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
@@ -172,22 +163,6 @@ class ButtonBar
         // We make the button immutable here
         $this->buttons[$buttonPosition][$buttonGroup][] = clone $button;
         return $this;
-    }
-
-    /**
-     * Creates a new button of the given type
-     *
-     * @param string $button ButtonClass to invoke. Must implement ButtonInterface
-     * @throws \InvalidArgumentException In case a ButtonClass does not implement ButtonInterface
-     * @deprecated since v14, will be removed in v15. Use GeneralUtility::makeInstance() directly or inject ComponentFactory and use its create*() methods.
-     */
-    public function makeButton(string $button): ButtonInterface
-    {
-        trigger_error('ButtonBar::makeButton() is deprecated and will be removed in TYPO3 v15. Use GeneralUtility::makeInstance() directly or inject ComponentFactory and use its create*() methods.', E_USER_DEPRECATED);
-        if (!in_array(ButtonInterface::class, class_implements($button) ?: [], true)) {
-            throw new \InvalidArgumentException('A Button must implement ButtonInterface', 1441706378);
-        }
-        return GeneralUtility::makeInstance($button);
     }
 
     /**
@@ -228,68 +203,5 @@ class ButtonBar
             }
         }
         return false;
-    }
-
-    /**
-     * @deprecated since v14, will be removed in v15. Inject ComponentFactory and use ComponentFactory::createGenericButton() instead.
-     */
-    public function makeGenericButton(): GenericButton
-    {
-        trigger_error('ButtonBar::makeGenericButton() is deprecated, inject ComponentFactory and use ComponentFactory::createGenericButton() instead.', E_USER_DEPRECATED);
-        return $this->componentFactory->createGenericButton();
-    }
-
-    /**
-     * @deprecated since v14, will be removed in v15. Inject ComponentFactory and use ComponentFactory::createInputButton() instead.
-     */
-    public function makeInputButton(): InputButton
-    {
-        trigger_error('ButtonBar::makeInputButton() is deprecated, inject ComponentFactory and use ComponentFactory::createInputButton() instead.', E_USER_DEPRECATED);
-        return $this->componentFactory->createInputButton();
-    }
-
-    /**
-     * @deprecated since v14, will be removed in v15. Inject ComponentFactory and use ComponentFactory::createSplitButton() instead.
-     */
-    public function makeSplitButton(): SplitButton
-    {
-        trigger_error('ButtonBar::makeSplitButton() is deprecated, inject ComponentFactory and use ComponentFactory::createSplitButton() instead.', E_USER_DEPRECATED);
-        return $this->componentFactory->createSplitButton();
-    }
-
-    /**
-     * @deprecated since v14, will be removed in v15. Inject ComponentFactory and use ComponentFactory::createDropDownButton() instead.
-     */
-    public function makeDropDownButton(): DropDownButton
-    {
-        trigger_error('ButtonBar::makeDropDownButton() is deprecated, inject ComponentFactory and use ComponentFactory::createDropDownButton() instead.', E_USER_DEPRECATED);
-        return $this->componentFactory->createDropDownButton();
-    }
-
-    /**
-     * @deprecated since v14, will be removed in v15. Inject ComponentFactory and use ComponentFactory::createLinkButton() instead.
-     */
-    public function makeLinkButton(): LinkButton
-    {
-        trigger_error('ButtonBar::makeLinkButton() is deprecated, inject ComponentFactory and use ComponentFactory::createLinkButton() instead.', E_USER_DEPRECATED);
-        return $this->componentFactory->createLinkButton();
-    }
-
-    /**
-     * @deprecated since v14, will be removed in v15. Inject ComponentFactory and use ComponentFactory::createFullyRenderedButton() instead.
-     */
-    public function makeFullyRenderedButton(): FullyRenderedButton
-    {
-        trigger_error('ButtonBar::makeFullyRenderedButton() is deprecated, inject ComponentFactory and use ComponentFactory::createFullyRenderedButton() instead.', E_USER_DEPRECATED);
-        return $this->componentFactory->createFullyRenderedButton();
-    }
-
-    /**
-     * @deprecated since v14, will be removed in v15. Inject ComponentFactory and use ComponentFactory::createShortcutButton() instead.
-     */
-    public function makeShortcutButton(): ShortcutButton
-    {
-        trigger_error('ButtonBar::makeShortcutButton() is deprecated, inject ComponentFactory and use ComponentFactory::createShortcutButton() instead.', E_USER_DEPRECATED);
-        return $this->componentFactory->createShortcutButton();
     }
 }

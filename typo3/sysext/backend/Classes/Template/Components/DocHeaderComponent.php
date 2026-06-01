@@ -398,8 +398,6 @@ class DocHeaderComponent
      * This method is called automatically by docHeaderContent() and handles:
      * - Adding automatic reload button (if enabled)
      * - Adding automatic shortcut button (if configured)
-     * - Backwards compatibility detection for controllers that manually add shortcut buttons
-     * - Deprecation warnings for manual shortcut button creation
      *
      * The buttons are added to groups 90 and 91 on the right side, which are conventionally
      * used for these system buttons. This ensures they appear at the end of the button bar
@@ -420,20 +418,10 @@ class DocHeaderComponent
             $this->buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 90);
         }
 
-        // Check if shortcut button was manually added (for backwards compatibility)
-        $hasManualShortcutButton = $this->buttonBar->hasButtonOfType(ShortcutButton::class);
-
-        // Add automatic shortcut button if configured and not manually added
-        if ($this->automaticShortcutButton !== null && !$hasManualShortcutButton) {
+        // Add automatic shortcut button if configured
+        if ($this->automaticShortcutButton !== null) {
             // Add to group 91 on the right (conventionally last position)
             $this->buttonBar->addButton($this->automaticShortcutButton);
-        } elseif ($hasManualShortcutButton) {
-            // Trigger deprecation if shortcut button was manually added
-            trigger_error(
-                'Manually adding ShortcutButton to the button bar is deprecated and will be removed in TYPO3 v15. '
-                . 'Use DocHeaderComponent::setShortcutContext() instead to provide the shortcut configuration.',
-                E_USER_DEPRECATED
-            );
         }
     }
 

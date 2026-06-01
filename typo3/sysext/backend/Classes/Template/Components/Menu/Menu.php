@@ -121,15 +121,6 @@ class Menu
         return $this;
     }
 
-    /**
-     * @deprecated since v14, will be removed in v15. Use GeneralUtility::makeInstance(MenuItem::class) directly or inject ComponentFactory and use createMenuItem().
-     */
-    public function makeMenuItem(): MenuItem
-    {
-        trigger_error('Menu::makeMenuItem() is deprecated and will be removed in TYPO3 v15. Use GeneralUtility::makeInstance(MenuItem::class) directly or inject ComponentFactory and use createMenuItem().', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(MenuItem::class);
-    }
-
     public function isValid(): bool
     {
         return trim($this->getIdentifier()) !== '';

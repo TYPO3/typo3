@@ -6609,6 +6609,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeInputButton' => [
@@ -6616,6 +6617,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeSplitButton' => [
@@ -6623,6 +6625,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeDropDownButton' => [
@@ -6630,6 +6633,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeLinkButton' => [
@@ -6637,6 +6641,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeFullyRenderedButton' => [
@@ -6644,6 +6649,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeShortcutButton' => [
@@ -6651,6 +6657,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeButton' => [
@@ -6658,6 +6665,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\Menu\Menu->makeMenuItem' => [
@@ -6665,6 +6673,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\MenuRegistry->makeMenu' => [
@@ -6672,6 +6681,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-107823-ButtonBarMakeMethods.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Index\ExtractorRegistry->registerExtractionService' => [
