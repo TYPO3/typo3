@@ -6483,6 +6483,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-107287-FileCollectionRegistryAddTypeToTCA.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\RecordList\DatabaseRecordList->renderListRow' => [

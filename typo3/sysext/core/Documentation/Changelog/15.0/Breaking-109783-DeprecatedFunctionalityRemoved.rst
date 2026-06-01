@@ -97,6 +97,7 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->getTemplateFile()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->getTitle()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Core\Page\PageRenderer->removeMetaTag()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
+- :php:`\TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry->addTypeToTCA()` :ref:`(Deprecation entry) <deprecation-107287-1734253200>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\AbstractContentObject->getPageRenderer()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->readFlexformIntoConf()` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder::build()`  :ref:`(Deprecation entry) <deprecation-106405-1742674605>`

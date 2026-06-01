@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Core\Resource\Collection;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Registry for FileCollection classes
@@ -75,46 +74,6 @@ class FileCollectionRegistry implements SingletonInterface
 
         $this->types[$type] = $className;
         return true;
-    }
-
-    /**
-     * Add the type to the TCA of sys_file_collection
-     *
-     * @param string $type
-     * @param string $label
-     * @param string $availableFields comma separated list of fields to show
-     * @param array $additionalColumns Additional columns configuration
-     * @return array adjusted TCA for sys_file_collection
-     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
-     */
-    public function addTypeToTCA($type, $label, $availableFields, array $additionalColumns = [])
-    {
-        trigger_error(
-            'FileCollectionRegistry->addTypeToTCA() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Add new types via TCA directly.',
-            E_USER_DEPRECATED
-        );
-        $GLOBALS['TCA']['sys_file_collection']['types'][$type] = [
-            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, ' . $availableFields,
-        ];
-
-        // search for existing type when found override label
-        $typeFound = false;
-        foreach ($GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'] as $key => $item) {
-            if ($item['value'] === $type) {
-                $typeFound = true;
-                $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][$key]['label'] = $label;
-            }
-        }
-        if (!$typeFound) {
-            $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][] = [
-                'label' => $label,
-                'value' => $type,
-            ];
-        }
-        if ($additionalColumns !== []) {
-            ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TCA']['sys_file_collection']['columns'], $additionalColumns);
-        }
-        return $GLOBALS['TCA']['sys_file_collection'];
     }
 
     /**

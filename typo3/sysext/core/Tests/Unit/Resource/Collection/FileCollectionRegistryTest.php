@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection;
 
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Collection\Fixtures\OtherTestingFileCollection;
@@ -130,48 +129,5 @@ final class FileCollectionRegistryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredFileCollections'] = [];
         $subject = new FileCollectionRegistry();
         self::assertFalse($subject->fileCollectionTypeExists(StringUtility::getUniqueId('name_')));
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function addNewTypeToTCA(): void
-    {
-        // Create a TCA fixture for sys_file_collection
-        // define phpstan array shape, to avoid complaint about missing "my_type"
-        /** @var array{columns:array, types:array{typeB:array, my_type:array}} $sysFileCollection */
-        $sysFileCollection = [
-            'types' => [
-                'typeB' => ['showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldD'],
-            ],
-            'columns' => [
-                'type' => [
-                    'config' => [
-                        'items' => [
-                            ['label' => 'Type B', 'value' => 'typeB'],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $GLOBALS['TCA']['sys_file_collection'] = $sysFileCollection;
-
-        $type = 'my_type';
-        $label = 'The Label';
-
-        $subject = new FileCollectionRegistry();
-        $subject->addTypeToTCA($type, $label, 'something');
-
-        // Add another item, so that phpstan doesn't complain about non-existing array keys.
-        $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][] = [
-            ['label' => 'Type C', 'value' => 'typeC'],
-        ];
-
-        // check type
-        self::assertEquals('sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, something', $GLOBALS['TCA']['sys_file_collection']['types']['my_type']['showitem']);
-
-        // check if columns.type.item exist
-        self::assertEquals($type, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][1]['value']);
-        self::assertEquals($label, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][1]['label']);
     }
 }
