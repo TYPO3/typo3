@@ -234,9 +234,11 @@ The following smooth migration for JavaScript modules have been removed:
 
 - :js:`@typo3/some-extension/old-module` to :js:`@typo3/some-extension/new-module`
 
-The following localization XLIFF files have been removed:
+The following localization XLIFF files/labels have been removed:
 
-- :file:`EXT:some_extension/Resources/Private/Language/some_file.xlf`
+- Several deprecated files (`see commit <https://review.typo3.org/c/Packages/TYPO3.CMS/+/94158>`__)
+  have been removed and are too many to list. These can be identified in TYPO3 v14 source
+  files by searching for the XML attribute `x-unused-since`.
 
 The following template files have been removed:
 
