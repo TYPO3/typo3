@@ -955,31 +955,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds an entry to the "ds" array of the tt_content field "pi_flexform".
-     * This is used by plugins to add a flexform XML reference / content for use when they are selected as plugin or content element.
-     * FOR USE IN files in Configuration/TCA/Overrides/*.php.
-     *
-     * @param string $_ previously $piKeyToMatch but now unused since there is no plugin key anymore => plugins are proper record (content) types
-     * @param string $value Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
-     * @param string $CTypeToMatch Value of tt_content.CType (Content Type) to add the data structure
-     * @see addPlugin()
-     * @deprecated Will be removed in TYPO3 v15
-     */
-    public static function addPiFlexFormValue(string $_, string $value, string $CTypeToMatch = ''): void
-    {
-        trigger_error(
-            __METHOD__ . ' is deprecated and will be removed in TYPO3 v15. Define the data structure for you content type by adding it in the addPlugin() call or setting it via columnsOverrides directly.',
-            E_USER_DEPRECATED
-        );
-
-        if ($CTypeToMatch === '' || $value === '') {
-            return;
-        }
-
-        $GLOBALS['TCA']['tt_content']['types'][$CTypeToMatch]['columnsOverrides']['pi_flexform']['config']['ds'] = $value;
-    }
-
-    /**
      * Adds the $table tablename to the list of tables allowed to be includes by content element type "Insert records"
      * By using $content_table and $content_field you can also use the function for other tables.
      * FOR USE IN files in Configuration/TCA/Overrides/*.php.

@@ -1718,6 +1718,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-107047-ExtensionManagementUtilityAddPiFlexFormValue.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings' => [
