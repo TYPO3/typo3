@@ -6850,6 +6850,7 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-108568-BackendUserAuthenticationRecordEditAccessInternals.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes' => [

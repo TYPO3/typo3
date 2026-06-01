@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -68,13 +67,7 @@ use TYPO3\CMS\Install\Service\SessionService;
  */
 class BackendUserAuthentication extends AbstractUserAuthentication
 {
-    use PublicPropertyDeprecationTrait;
-
     public const ROLE_SYSTEMMAINTAINER = 'systemMaintainer';
-
-    protected array $deprecatedPublicProperties = [
-        'errorMsg' => '$errorMsg is deprecated since TYPO3 v14, will be removed in v15.0. Use checkRecordEditAccess() to get error messages.',
-    ];
 
     /**
      * Should be set to the usergroup-column (id-list) in the user-record
@@ -136,13 +129,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @todo: Should vanish, see todo below.
      */
     protected bool $userTSUpdated = false;
-
-    /**
-     * Contains last error message
-     * @deprecated since TYPO3 v14, will be removed in v15.0. Use checkRecordEditAccess() to get error messages.
-     * @internal should only be used from within TYPO3 Core
-     */
-    protected string $errorMsg = '';
 
     /**
      * Cache for checkWorkspaceCurrent()
@@ -798,38 +784,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         // Finally, return TRUE if all is well.
         return new AccessCheckResult(true);
-    }
-
-    /**
-     * Checking if a user has editing access to a record from a $GLOBALS['TCA'] table.
-     * The checks do not take page permissions and other "environmental" things into account.
-     * It only deals with record internals; If any values in the record fields disallows it.
-     * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
-     * It will check for workspace-dependent access.
-     * The function takes an ID (int) or row (array) as second argument.
-     *
-     * @param string $table Table name
-     * @param array|RecordInterface $row Full record row
-     * @param bool $newRecord Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
-     * @param null $_ unused
-     * @param bool $checkFullLanguageAccess Set, whenever access to all translations of the record is required
-     * @return bool TRUE if OK, otherwise FALSE
-     * @deprecated since TYPO3 v14, will be removed in v15.0. Use checkRecordEditAccess() instead.
-     * @internal should only be used from within TYPO3 Core
-     */
-    public function recordEditAccessInternals(string $table, array|RecordInterface $row, $newRecord = false, $_ = null, $checkFullLanguageAccess = false): bool
-    {
-        trigger_error(
-            'Calling BackendUserAuthentication->recordEditAccessInternals is deprecated, use BackendUserAuthentication->checkRecordEditAccess instead.',
-            E_USER_DEPRECATED
-        );
-
-        $result = $this->checkRecordEditAccess($table, $row, $newRecord, $checkFullLanguageAccess);
-
-        // Maintain backward compatibility by setting errorMsg
-        $this->errorMsg = $result->errorMessage;
-
-        return $result->isAllowed;
     }
 
     /**

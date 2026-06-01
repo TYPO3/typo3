@@ -77,6 +77,7 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Backend\Template\Components\ButtonBar->makeSplitButton()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
 - :php:`\TYPO3\CMS\Backend\Template\Components\Menu\Menu->makeMenuItem()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
 - :php:`\TYPO3\CMS\Backend\Template\Components\MenuRegistry->makeMenu()` :ref:`(Deprecation entry) <deprecation-107823-1761297638>`
+- :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->recordEditAccessInternals()` :ref:`(Deprecation entry) <deprecation-108568-1734962478>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->add()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->addAllowedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
 - :php:`\TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes()` :ref:`(Deprecation entry) <deprecation-108557-1768610680>`
@@ -145,6 +146,7 @@ The following methods changed signature according to previous deprecations in v1
 The following public class properties have been dropped:
 
 - :php:`\TYPO3\CMS\Backend\Form\FormResult->hiddenFieldsHtml` :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
+- :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->errorMsg` :ref:`(Deprecation entry) <deprecation-108568-1734962478>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->checkPid_badDoktypeList` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkResult` :ref:`(Deprecation entry) <deprecation-109575>`

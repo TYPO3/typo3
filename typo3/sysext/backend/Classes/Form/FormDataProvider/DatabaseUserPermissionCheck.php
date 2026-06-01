@@ -141,7 +141,7 @@ readonly class DatabaseUserPermissionCheck implements FormDataProviderInterface
                     1437679856
                 );
             }
-            // If general access is allowed, check "recordEditAccessInternals"
+            // If general access is allowed, check record edit access
             if ($exception === null
                 && !($result['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)
             ) {
