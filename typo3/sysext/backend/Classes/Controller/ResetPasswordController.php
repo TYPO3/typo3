@@ -72,6 +72,9 @@ class ResetPasswordController
      */
     public function forgetPasswordFormAction(ServerRequestInterface $request): ResponseInterface
     {
+        if (!$this->passwordReset->isEnabled()) {
+            return $this->redirectToLoginForm($request);
+        }
         $this->initialize($request);
         $this->initializeForgetPasswordView($request);
         $this->pageRenderer->setBodyContent('<body>' . $this->view->render('Login/ForgetPasswordForm'));
@@ -85,6 +88,9 @@ class ResetPasswordController
      */
     public function initiatePasswordResetAction(ServerRequestInterface $request): ResponseInterface
     {
+        if (!$this->passwordReset->isEnabled()) {
+            return $this->redirectToLoginForm($request);
+        }
         $this->initialize($request);
         $this->initializeForgetPasswordView($request);
         $emailAddress = $request->getParsedBody()['email'] ?? '';
@@ -112,6 +118,9 @@ class ResetPasswordController
      */
     public function passwordResetAction(ServerRequestInterface $request): ResponseInterface
     {
+        if (!$this->passwordReset->isEnabled()) {
+            return $this->redirectToLoginForm($request);
+        }
         $this->initialize($request);
         $this->initializeResetPasswordView($request);
         if (!$this->passwordReset->isValidResetTokenFromRequest($request)) {
@@ -128,6 +137,9 @@ class ResetPasswordController
      */
     public function passwordResetFinishAction(ServerRequestInterface $request): ResponseInterface
     {
+        if (!$this->passwordReset->isEnabled()) {
+            return $this->redirectToLoginForm($request);
+        }
         // Token is invalid
         if (!$this->passwordReset->isValidResetTokenFromRequest($request)) {
             return $this->passwordResetAction($request);
@@ -141,6 +153,14 @@ class ResetPasswordController
         }
         $this->pageRenderer->setBodyContent('<body>' . $this->view->render('Login/ResetPasswordForm'));
         return $this->pageRenderer->renderResponse();
+    }
+
+    private function redirectToLoginForm(ServerRequestInterface $request): ResponseInterface
+    {
+        return new RedirectResponse(
+            $this->uriBuilder->buildUriWithRedirect('login', [], RouteRedirect::createFromRequest($request)),
+            303
+        );
     }
 
     protected function initializeForgetPasswordView(ServerRequestInterface $request): void

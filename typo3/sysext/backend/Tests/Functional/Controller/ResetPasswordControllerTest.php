@@ -83,6 +83,66 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
+    private function createSubjectWithDisabledPasswordReset(): ResetPasswordController
+    {
+        $passwordResetMock = $this->createMock(PasswordReset::class);
+        $passwordResetMock->method('isEnabled')->willReturn(false);
+
+        return new ResetPasswordController(
+            $this->get(Context::class),
+            $this->get(Locales::class),
+            $this->get(Features::class),
+            $this->get(UriBuilder::class),
+            $this->get(PageRenderer::class),
+            $passwordResetMock,
+            $this->get(Typo3Information::class),
+            $this->get(AuthenticationStyleInformation::class),
+            new ExtensionConfiguration(),
+            $this->get(BackendViewFactory::class),
+        );
+    }
+
+    #[Test]
+    public function forgetPasswordFormActionRedirectsToLoginWhenPasswordResetIsDisabled(): void
+    {
+        $subject = $this->createSubjectWithDisabledPasswordReset();
+        $GLOBALS['TYPO3_REQUEST'] = $this->request;
+        $response = $subject->forgetPasswordFormAction($this->request);
+        self::assertSame(303, $response->getStatusCode());
+        self::assertStringContainsString('/typo3/login', $response->getHeaderLine('location'));
+    }
+
+    #[Test]
+    public function initiatePasswordResetActionRedirectsToLoginWhenPasswordResetIsDisabled(): void
+    {
+        $subject = $this->createSubjectWithDisabledPasswordReset();
+        $request = $this->request->withParsedBody(['email' => 'admin@example.com']);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $subject->initiatePasswordResetAction($request);
+        self::assertSame(303, $response->getStatusCode());
+        self::assertStringContainsString('/typo3/login', $response->getHeaderLine('location'));
+    }
+
+    #[Test]
+    public function passwordResetActionRedirectsToLoginWhenPasswordResetIsDisabled(): void
+    {
+        $subject = $this->createSubjectWithDisabledPasswordReset();
+        $GLOBALS['TYPO3_REQUEST'] = $this->request;
+        $response = $subject->passwordResetAction($this->request);
+        self::assertSame(303, $response->getStatusCode());
+        self::assertStringContainsString('/typo3/login', $response->getHeaderLine('location'));
+    }
+
+    #[Test]
+    public function passwordResetFinishActionRedirectsToLoginWhenPasswordResetIsDisabled(): void
+    {
+        $subject = $this->createSubjectWithDisabledPasswordReset();
+        $GLOBALS['TYPO3_REQUEST'] = $this->request;
+        $response = $subject->passwordResetFinishAction($this->request);
+        self::assertSame(303, $response->getStatusCode());
+        self::assertStringContainsString('/typo3/login', $response->getHeaderLine('location'));
+    }
+
     #[Test]
     public function throwsPropagateResponseExceptionOnLoggedInUser(): void
     {
