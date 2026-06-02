@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
@@ -142,7 +143,7 @@ readonly class TreeController
                 } catch (InsufficientFolderAccessPermissionsException) {
                     $nextFolder = null;
                 }
-            } while ($nextFolder?->getIdentifier() !== '/');
+            } while ($nextFolder instanceof FolderInterface && $nextFolder->getIdentifier() !== '/');
             // Add the storage / sys_filemount itself
             $storageData = $this->treeProvider->prepareFolderInformation(
                 $storage->getRootLevelFolder(true),
