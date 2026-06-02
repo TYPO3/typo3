@@ -62,7 +62,6 @@ use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent;
 
 /**
  * Script class for the User Settings module
@@ -248,13 +247,6 @@ class SetupModuleController
 
     protected function processAdditionalJavaScriptModules(ServerRequestInterface $request): void
     {
-        // @deprecated since TYPO3 v14, remove this dispatch with TYPO3 v15
-        $legacyEvent = new AddJavaScriptModulesEvent($request);
-        $legacyEvent = $this->eventDispatcher->dispatch($legacyEvent);
-        foreach ($legacyEvent->getJavaScriptModules() as $specifier) {
-            $this->pageRenderer->loadJavaScriptModule($specifier);
-        }
-
         $event = new AddUserSettingsJavaScriptModulesEvent($request);
         $event = $this->eventDispatcher->dispatch($event);
         foreach ($event->getJavaScriptModules() as $specifier) {

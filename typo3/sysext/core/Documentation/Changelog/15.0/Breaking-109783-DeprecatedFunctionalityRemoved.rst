@@ -64,12 +64,15 @@ The following PHP class aliases that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Install\Command\LanguagePackCommand` :ref:`(Deprecation entry) <deprecation-109027-1771514240>`
 - :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent` :ref:`(Deprecation entry) <deprecation-109027-1771514240>`
 - :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent` :ref:`(Deprecation entry) <deprecation-109027-1771514240>`
+- :php:`\TYPO3\CMS\Setup\Form\Element\AvatarElement` :ref:`(Important entry) <important-109517-1744105200>`
+- :php:`\TYPO3\CMS\Setup\UserFunctions\UserSettingsItemsProcFunc` :ref:`(Important entry) <important-109517-1744105200>`
 
 The following PSR-14 events that have previously been marked as deprecated with v14 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent` :ref:`(Deprecation entry) <deprecation-109529-1775733107>`
 - :php:`\TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent` :ref:`(Deprecation entry) <deprecation-109529-1775733107>`
 - :php:`\TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent` :ref:`(Deprecation entry) <deprecation-109529-1775733107>`
+- :php:`\TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent` :ref:`(Deprecation entry) <deprecation-109517-1744105201>`
 
 The following PHP class methods that have previously been marked as deprecated with v14 have been removed:
 
