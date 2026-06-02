@@ -404,7 +404,7 @@ final class PageRecordProvider implements SearchProviderInterface
                     $permissionSet->editContentPermissionIsGranted()
                     && !$schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
                     && $backendUser->check('tables_modify', 'pages')
-                    && $backendUser->recordEditAccessInternals('pages', $row)
+                    && $backendUser->checkRecordEditAccess('pages', $row)->isAllowed
                 )
             )
         ) {
