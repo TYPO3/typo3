@@ -87,7 +87,7 @@ class TcaFlexProcess implements FormDataProviderInterface
      * This approach is obviously limited. It is not possible to override flex form DS via pageTsConfig for other complex
      * or dynamically created data structure definitions. And worse, the fallback to "default" may lead to naming clashes
      * if two different data structures have identical sheet and field names.
-     * Also, the exclude field handling is limited and it is not possible to respect 'exclude' fields in flex form
+     * Also, the exclude field handling is limited, and it is not possible to respect 'exclude' fields in flex form
      * data structures if the dataStructureIdentifier is based on type="record" or manipulated by a hook in FlexFormTools.
      * All that can only be solved by changing the pageTsConfig syntax referencing flex fields, probably by involving the whole
      * data structure identifier and going away from this "simple" approach. For exclude fields there is the additional
@@ -97,24 +97,16 @@ class TcaFlexProcess implements FormDataProviderInterface
      * more comments on this.
      * Another limitation is that the current syntax in both pageTsConfig and exclude fields does not
      * consider flex form section containers at all.
-     *
-     * @deprecated will be removed in TYPO3 v15
      */
     protected function getSimplifiedDataStructureIdentifier(string $dataStructureIdentifier): string
     {
         $identifierArray = json_decode($dataStructureIdentifier, true);
         $simpleDataStructureIdentifier = 'default';
-        if (isset($identifierArray['type'], $identifierArray['dataStructureKey']) && $identifierArray['type'] === 'tca') {
-            $explodedKey = explode(',', $identifierArray['dataStructureKey']);
-            if (!empty($explodedKey[1])) {
-                $simpleDataStructureIdentifier = $explodedKey[1];
-                trigger_error(
-                    'Resolving the comma-separated dataStructureKey \'' . $identifierArray['dataStructureKey'] . '\' has been deprecated and will be removed in TYPO3 v15.',
-                    E_USER_DEPRECATED
-                );
-            } elseif (!empty($explodedKey[0])) {
-                $simpleDataStructureIdentifier = $explodedKey[0];
-            }
+        if (isset($identifierArray['type'], $identifierArray['dataStructureKey'])
+            && $identifierArray['type'] === 'tca'
+            && $identifierArray['dataStructureKey'] !== ''
+        ) {
+            $simpleDataStructureIdentifier = $identifierArray['dataStructureKey'];
         }
         return $simpleDataStructureIdentifier;
     }

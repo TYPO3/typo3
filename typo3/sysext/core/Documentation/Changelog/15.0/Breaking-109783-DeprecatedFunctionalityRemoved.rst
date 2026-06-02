@@ -246,6 +246,7 @@ The following fallbacks have been removed:
 - Manually creating and adding a :php:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton` to the button bar is no longer detected and no longer suppresses the automatic shortcut button; controllers must use :php:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setShortcutContext()` instead :ref:`(Deprecation entry) <deprecation-108008-1762896168>`
 - A legacy :file:`typo3conf/LocalConfiguration.php` and :file:`typo3conf/AdditionalConfiguration.php` are no longer automatically migrated to :file:`config/system/settings.php` and :file:`config/system/additional.php` on first request. The configuration files have to reside at their final location. :ref:`(Breaking entry) <breaking-98319-1664641595>`
 - The redis cache backend no longer accepts an array for the ``password`` option as a workaround to configure a username and password at once. Use the separate ``username`` and ``password`` options instead. :ref:`(Deprecation entry) <deprecation-107725-1760807740>`
+- Flex form pageTsConfig (:typoscript:`TCEFORM`) and exclude-field addressing no longer resolves comma-separated :php:`dataStructureKey` values (the legacy :php:`list_type,CType` form); the data structure key is used as-is :ref:`(Breaking entry) <breaking-107047-1751982363>`
 
 The following upgrade wizards have been removed:
 
