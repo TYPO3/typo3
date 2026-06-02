@@ -33,18 +33,8 @@ services:
         identifier: 'services'
         label: 'lowlevel.messages:t3services'
         globalVariableKey: 'T3_SERVICES'
-        before: 'userSettings'
-        after: 'tca'
-
-  lowlevel.configuration.module.provider.usersettings:
-    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
-    tags:
-      - name: 'lowlevel.configuration.module.provider'
-        identifier: 'userSettings'
-        label: 'lowlevel.messages:usersettings'
-        globalVariableKey: 'TYPO3_USER_SETTINGS'
         before: 'pagesTypes'
-        after: 'services'
+        after: 'tca'
 
   lowlevel.configuration.module.provider.pagestypes:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\PageDoktypeProvider'
@@ -53,7 +43,7 @@ services:
         identifier: 'pagesTypes'
         label: 'lowlevel.messages:pagesTypes'
         before: 'beUserUc'
-        after: 'userSettings'
+        after: 'services'
 
   lowlevel.configuration.module.provider.beuseruc:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\BackendUserSettingsProvider'

@@ -507,24 +507,6 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds a list of new fields to the TYPO3 USER SETTINGS configuration "showitem" list, the array with
-     * the new fields itself needs to be added additionally to show up in the user setup, like
-     * $GLOBALS['TYPO3_USER_SETTINGS']['columns'] += $tempColumns
-     *
-     * @param string $addFields List of fields to be added to the user settings
-     * @param string $insertionPosition Insert fields before (default) or after one
-     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15. Use addUserSetting() instead.
-     */
-    public static function addFieldsToUserSettings(string $addFields, string $insertionPosition = ''): void
-    {
-        trigger_error(
-            'ExtensionManagementUtility::addFieldsToUserSettings() is deprecated since TYPO3 v14 and will be removed in v15. Use ExtensionManagementUtility::addUserSetting() instead.',
-            E_USER_DEPRECATED
-        );
-        $GLOBALS['TYPO3_USER_SETTINGS']['showitem'] = self::executePositionedStringInsertion($GLOBALS['TYPO3_USER_SETTINGS']['showitem'] ?? '', $addFields, $insertionPosition);
-    }
-
-    /**
      * Adds a new field to the backend user settings configuration.
      *
      * The field configuration is stored in TCA at:

@@ -1726,6 +1726,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-108843-ExtensionManagementUtilityAddFieldsToUserSettings.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo' => [

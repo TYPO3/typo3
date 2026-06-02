@@ -21,7 +21,7 @@
       <trans-unit id="beUser">
         <source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
       </trans-unit>
-      <trans-unit id="usersettings">
+      <trans-unit id="usersettings" x-unused-since="15.0">
         <source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
       </trans-unit>
       <trans-unit id="routes">

@@ -136,6 +136,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::isWebMountRestrictionIgnored()` :ref:`(Deprecation entry) <deprecation-106393-1742454612>`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::resolveFileReferences()` :ref:`(Deprecation entry) <deprecation-106393-1742454612>`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::translationCount()` :ref:`(Deprecation entry) <deprecation-108810-1738253894>`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings()` :ref:`(Deprecation entry) <deprecation-108843-1738600000>`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue()` :ref:`(Deprecation entry) <deprecation-107047-1751984220>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename()` :ref:`(Deprecation entry) <deprecation-107537-1760337101>`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()` :ref:`(Deprecation entry) <deprecation-109551-1775924599>`
@@ -206,6 +207,7 @@ The following global option handling have been dropped and are ignored:
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][/*...*/]['tableoptions']` :ref:`(Deprecation entry) <deprecation-105297-1728836814>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][/*...*/]['defaultTableOptions']['collate']` :ref:`(Deprecation entry) <deprecation-105297-1728836814>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['fallbackToLegacyHash']`; the transitional fallback to the legacy md5-based cHash validation has been removed, only the HMAC-SHA3 cHash is accepted :ref:`(Breaking entry) <breaking-106307-1763824774>`
+- :php:`$GLOBALS['TYPO3_USER_SETTINGS']`; backend user profile settings are now configured via TCA (the :php:`be_users` ``user_settings`` column) using :php:`ExtensionManagementUtility::addUserSetting()` :ref:`(Deprecation entry) <deprecation-108843-1738600000>`
 
 The following global variables have been changed:
 

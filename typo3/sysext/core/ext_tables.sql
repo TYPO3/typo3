@@ -13,7 +13,7 @@ CREATE TABLE be_sessions (
 CREATE TABLE be_users (
 	# No TCA column defined since it is a general storage blob
 	uc mediumblob,
-	# Profile settings stored as JSON, populated from TYPO3_USER_SETTINGS
+	# Profile settings stored as JSON
 	user_settings json,
 	# No TCA column defined
 	workspace_id int(11) DEFAULT '0' NOT NULL,

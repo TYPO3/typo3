@@ -24,35 +24,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UserSettingsFactoryTest extends UnitTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        // @deprecated since TYPO3 v14, remove in TYPO3 v15
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'columns' => [
-                'colorScheme' => ['type' => 'select'],
-                'titleLen' => ['type' => 'number'],
-                'emailMeAtLogin' => ['type' => 'check'],
-                'lang' => ['type' => 'language', 'table' => 'be_users'],
-                'email' => ['type' => 'email', 'table' => 'be_users'],
-                'realName' => ['type' => 'text', 'table' => 'be_users'],
-                'password' => ['type' => 'password', 'table' => 'be_users'],
-                'resetConfiguration' => ['type' => 'button'],
-                'mfaProviders' => ['type' => 'mfa'],
-            ],
-        ];
-    }
-
-    protected function tearDown(): void
-    {
-        unset($GLOBALS['TYPO3_USER_SETTINGS']);
-        parent::tearDown();
-    }
-
     #[Test]
     public function createFromUserRecordExtractsJsonFieldSettings(): void
     {
-        $schema = new UserSettingsSchema();
+        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
+        $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
 
         $userRecord = [
@@ -70,7 +47,9 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUserRecordExtractsDbColumnSettings(): void
     {
-        $schema = new UserSettingsSchema();
+        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
+        $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
 
         $userRecord = [
@@ -90,7 +69,9 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUserRecordFallsBackToUcForMissingJsonFieldSettings(): void
     {
-        $schema = new UserSettingsSchema();
+        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
+        $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
 
         $userRecord = [
@@ -114,7 +95,9 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUserRecordJsonFieldSettingsTakePrecedenceOverUc(): void
     {
-        $schema = new UserSettingsSchema();
+        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
+        $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
 
         $userRecord = [
@@ -132,14 +115,16 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUcExtractsOnlyJsonFieldSettings(): void
     {
-        $schema = new UserSettingsSchema();
+        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
+        $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
 
         $uc = [
             'colorScheme' => 'dark',
             'titleLen' => 80,
             'emailMeAtLogin' => 1,
-            'moduleData' => ['some' => 'data'], // Not in TYPO3_USER_SETTINGS
+            'moduleData' => ['some' => 'data'], // Not a registered setting
         ];
 
         $userSettings = $factory->createFromUc($uc);
@@ -153,7 +138,9 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUcIgnoresDbColumnFields(): void
     {
-        $schema = new UserSettingsSchema();
+        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
+        $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
 
         $uc = [
@@ -170,7 +157,9 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUserRecordMergesDbColumnAndJsonFieldSettings(): void
     {
-        $schema = new UserSettingsSchema();
+        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
+        $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
 
         $userRecord = [

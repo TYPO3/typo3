@@ -22,11 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Provides unified access to backend user settings configuration.
  *
- * This class consolidates access to user settings from both:
- * - TCA at $GLOBALS['TCA']['be_users']['columns']['user_settings']
- * - Legacy $GLOBALS['TYPO3_USER_SETTINGS'] (deprecated)
- *
- * TCA is the preferred source. Legacy global is supported for backward compatibility.
+ * This class consolidates access to user settings configuration stored in
+ * TCA at $GLOBALS['TCA']['be_users']['columns']['user_settings'].
  *
  * @internal This class is not part of the TYPO3 Core API yet.
  */
@@ -42,19 +39,9 @@ readonly class UserSettingsSchema
     {
         $columns = [];
 
-        // First, get columns from TCA (primary source)
         $tcaColumns = $GLOBALS['TCA']['be_users']['columns']['user_settings']['columns'] ?? [];
         foreach ($tcaColumns as $fieldName => $tcaConfig) {
             $columns[$fieldName] = $this->resolveTcaColumn($fieldName, $tcaConfig);
-        }
-
-        // Then merge legacy global (for third-party backward compat)
-        // @deprecated since TYPO3 v14, remove in TYPO3 v15
-        $legacyColumns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'] ?? [];
-        foreach ($legacyColumns as $fieldName => $legacyConfig) {
-            if (!isset($columns[$fieldName])) {
-                $columns[$fieldName] = $legacyConfig;
-            }
         }
 
         return $columns;
@@ -65,15 +52,12 @@ readonly class UserSettingsSchema
      */
     public function getColumn(string $fieldName): ?array
     {
-        // Check TCA first
         $tcaConfig = $GLOBALS['TCA']['be_users']['columns']['user_settings']['columns'][$fieldName] ?? null;
         if ($tcaConfig !== null) {
             return $this->resolveTcaColumn($fieldName, $tcaConfig);
         }
 
-        // Fall back to legacy global
-        // @deprecated since TYPO3 v14, remove in TYPO3 v15
-        return $GLOBALS['TYPO3_USER_SETTINGS']['columns'][$fieldName] ?? null;
+        return null;
     }
 
     /**
@@ -83,14 +67,6 @@ readonly class UserSettingsSchema
     {
         $columns = $GLOBALS['TCA']['be_users']['columns']['user_settings']['columns'] ?? [];
         foreach ($columns as $fieldName => $columnConfig) {
-            $partitionedFieldName = $this->getTcaFieldName($fieldName);
-            $columns[$partitionedFieldName] = $this->resolveInheritFromParent($fieldName, $columnConfig);
-        }
-
-        // Fall back to legacy global, note that the 'after:...' notation seems to not take effect anymore.
-        // @deprecated since TYPO3 v14, remove in TYPO3 v15
-        $legacyColumns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'] ?? [];
-        foreach ($legacyColumns as $fieldName => $columnConfig) {
             $partitionedFieldName = $this->getTcaFieldName($fieldName);
             $columns[$partitionedFieldName] = $this->resolveInheritFromParent($fieldName, $columnConfig);
         }
@@ -155,20 +131,11 @@ readonly class UserSettingsSchema
     }
 
     /**
-     * Get the raw showitem string (merged from TCA and legacy global).
+     * Get the raw showitem string.
      */
     public function getRawShowitem(): string
     {
-        $tcaShowitem = trim($GLOBALS['TCA']['be_users']['columns']['user_settings']['showitem'] ?? '');
-        // @deprecated since TYPO3 v14, remove in TYPO3 v15
-        $legacyShowitem = trim($GLOBALS['TYPO3_USER_SETTINGS']['showitem'] ?? '');
-
-        if ($tcaShowitem !== '' && $legacyShowitem !== '') {
-            // Merge: TCA first, then legacy additions
-            return $tcaShowitem . ',' . $legacyShowitem;
-        }
-
-        return $tcaShowitem !== '' ? $tcaShowitem : $legacyShowitem;
+        return trim($GLOBALS['TCA']['be_users']['columns']['user_settings']['showitem'] ?? '');
     }
 
     /**

@@ -25,28 +25,8 @@ final class UserSettingsSchemaTest extends UnitTestCase
 {
     protected function tearDown(): void
     {
-        unset($GLOBALS['TYPO3_USER_SETTINGS']);
         unset($GLOBALS['TCA']['be_users']['columns']['user_settings']);
         parent::tearDown();
-    }
-
-    #[Test]
-    public function getColumnsReturnsColumnsFromLegacyGlobal(): void
-    {
-        // @deprecated since TYPO3 v14, remove in TYPO3 v15
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'columns' => [
-                'colorScheme' => ['type' => 'select', 'label' => 'Color'],
-                'titleLen' => ['type' => 'number', 'label' => 'Title Length'],
-            ],
-        ];
-
-        $schema = new UserSettingsSchema();
-        $columns = $schema->getColumns();
-
-        self::assertArrayHasKey('colorScheme', $columns);
-        self::assertArrayHasKey('titleLen', $columns);
-        self::assertSame('select', $columns['colorScheme']['type']);
     }
 
     #[Test]
@@ -67,34 +47,6 @@ final class UserSettingsSchemaTest extends UnitTestCase
         self::assertArrayHasKey('colorScheme', $columns);
         self::assertSame('select', $columns['colorScheme']['type']);
         self::assertSame('Color Scheme', $columns['colorScheme']['label']);
-    }
-
-    #[Test]
-    public function getColumnsMergesTcaAndLegacyPreferringTca(): void
-    {
-        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
-            'columns' => [
-                'colorScheme' => [
-                    'label' => 'TCA Label',
-                    'config' => ['type' => 'select', 'renderType' => 'selectSingle'],
-                ],
-            ],
-        ];
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'columns' => [
-                'colorScheme' => ['type' => 'select', 'label' => 'Legacy Label'],
-                'thirdPartyField' => ['type' => 'check', 'label' => 'Third Party'],
-            ],
-        ];
-
-        $schema = new UserSettingsSchema();
-        $columns = $schema->getColumns();
-
-        // TCA takes precedence
-        self::assertSame('TCA Label', $columns['colorScheme']['label']);
-        // Legacy third-party fields are included
-        self::assertArrayHasKey('thirdPartyField', $columns);
-        self::assertSame('Third Party', $columns['thirdPartyField']['label']);
     }
 
     #[Test]
@@ -120,7 +72,6 @@ final class UserSettingsSchemaTest extends UnitTestCase
     public function getColumnReturnsNullForUnknownField(): void
     {
         $GLOBALS['TCA']['be_users']['columns']['user_settings'] = ['columns' => []];
-        $GLOBALS['TYPO3_USER_SETTINGS'] = ['columns' => []];
 
         $schema = new UserSettingsSchema();
         self::assertNull($schema->getColumn('unknownField'));
@@ -135,20 +86,6 @@ final class UserSettingsSchemaTest extends UnitTestCase
 
         $schema = new UserSettingsSchema();
         self::assertSame('--div--;Tab1,field1,field2', $schema->getTcaShowitem());
-    }
-
-    #[Test]
-    public function getShowitemMergesTcaAndLegacy(): void
-    {
-        $GLOBALS['TCA']['be_users']['columns']['user_settings'] = [
-            'showitem' => '--div--;Tab1,field1',
-        ];
-        $GLOBALS['TYPO3_USER_SETTINGS'] = [
-            'showitem' => 'thirdPartyField',
-        ];
-
-        $schema = new UserSettingsSchema();
-        self::assertSame('--div--;Tab1,field1,thirdPartyField', $schema->getTcaShowitem());
     }
 
     #[Test]

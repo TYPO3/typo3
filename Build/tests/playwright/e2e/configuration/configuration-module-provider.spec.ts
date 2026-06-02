@@ -32,7 +32,6 @@ test.describe('Configuration Module Provider', () => {
       '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)',
       '$GLOBALS[\'TCA\'] (Table configuration array)',
       '$GLOBALS[\'T3_SERVICES\'] (Registered Services)',
-      '$GLOBALS[\'TYPO3_USER_SETTINGS\'] (User Settings Configuration)',
       'Table permissions per page type',
       '$GLOBALS[\'BE_USER\']->uc (User Settings)',
       '$GLOBALS[\'BE_USER\']->getTSConfig() (User TSconfig)',
