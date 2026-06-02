@@ -183,16 +183,9 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
 
     /**
      * Setter for authentication password
-     *
-     * @todo: Change signature to `setPassword(string $password)` in TYPO3 v15 as breaking change.
      */
-    protected function setPassword(#[\SensitiveParameter] array|string $password): void
+    protected function setPassword(#[\SensitiveParameter] string $password): void
     {
-        // @deprecated Remove complete if-condition block with TYPO3 v15.
-        if (is_array($password)) {
-            $this->setAuthenticationFromWorkaroundPasswordArray($password);
-            return;
-        }
         $this->password = $password;
     }
 
@@ -479,37 +472,5 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
             // No authentication configured.
             default => null,
         };
-    }
-
-    /**
-     * Redis 6.0 allowed to set authentication as username/password pair, which was not covered by this class and
-     * lead to workaround by the community providing the authentication tuple as array for the password, which
-     * worked due to missing typed method arguments ignoring method phpdoc-block intentionally.
-     *
-     * @deprecated remove in TYPO3 v15 along with aligning signature in {@see self::setPassword()} and removing call
-     *             to this method here.
-     */
-    private function setAuthenticationFromWorkaroundPasswordArray(#[\SensitiveParameter] array $authentication): void
-    {
-        trigger_error(
-            'Set "password" option with array for redis cache backend is deprecated since version 14.0, will be removed in version 15.0',
-            E_USER_DEPRECATED,
-        );
-        if (isset($authentication['user']) && isset($authentication['pass'])) {
-            // Handle concrete associative array
-            $this->username = $authentication['user'];
-            $this->password = $authentication['password'];
-        } elseif (count($authentication) === 2) {
-            // Fallback array handling for list-array or associative arrays using other keys as generic as possible,
-            // without making to extensive handling here. Passing authentication as password was never officially
-            // supported and a workaround possible due to missing native types on method arguments.
-            $this->username = $authentication[array_key_first($authentication)];
-            $this->password = $authentication[array_key_last($authentication)];
-        } else {
-            throw new \RuntimeException(
-                'Cannot extract username and password from workaround array as password',
-                1761139334,
-            );
-        }
     }
 }
