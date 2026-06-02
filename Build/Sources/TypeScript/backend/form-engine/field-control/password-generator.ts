@@ -19,15 +19,6 @@ import Notification from '@typo3/backend/notification';
 import labels from '~labels/core.core';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
-interface PasswordRules {
-  length: number;
-  random: string;
-  digitCharacters: boolean;
-  lowerCaseCharacters: boolean;
-  upperCaseCharacters: boolean;
-  specialCharacters: boolean;
-}
-
 /**
  * Handles the "Generate Password" field control
  */
@@ -35,7 +26,6 @@ class PasswordGenerator {
   private controlElement: HTMLAnchorElement = null;
   private humanReadableField: HTMLInputElement = null;
   private hiddenField: HTMLInputElement = null;
-  private passwordRules: PasswordRules = null;
   private passwordPolicy: string = null;
 
   constructor(controlElementId: string) {
@@ -47,7 +37,6 @@ class PasswordGenerator {
       this.hiddenField = <HTMLInputElement>document.querySelector(
         'input[name="' + this.controlElement.dataset.itemName + '"]',
       );
-      this.passwordRules = JSON.parse(this.controlElement.dataset.passwordRules || '{}');
       this.passwordPolicy = this.controlElement.dataset.passwordPolicy || null;
 
       // Set human-readable field to disable and readonly in case edit is disallowed in the field control settings
@@ -77,7 +66,6 @@ class PasswordGenerator {
 
     // Generate new password
     (new AjaxRequest(TYPO3.settings.ajaxUrls.password_generate)).post({
-      passwordRules: this.passwordRules,
       passwordPolicy: this.passwordPolicy,
     })
       .then(async (response: AjaxResponse): Promise<void> => {

@@ -23,8 +23,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Exception\InvalidPasswordRulesException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGeneratorInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,7 +34,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 readonly class PasswordGeneratorController
 {
     public function __construct(
-        private Random $random,
         private ResponseFactoryInterface $responseFactory,
         private StreamFactoryInterface $streamFactory,
         private LoggerInterface $logger,
@@ -44,7 +41,6 @@ readonly class PasswordGeneratorController
 
     public function generate(ServerRequestInterface $request): ResponseInterface
     {
-        $passwordRules = $request->getParsedBody()['passwordRules'] ?? [];
         $passwordPolicy = $request->getParsedBody()['passwordPolicy'] ?? null;
 
         try {
@@ -77,20 +73,7 @@ readonly class PasswordGeneratorController
                     'password' => $password,
                 ]);
             }
-
-            if (is_array($passwordRules)) {
-                trigger_error(
-                    'Using the Random password generator directly has been deprecated in TYPO3 v14.2 and will be removed in v15.0.'
-                    . 'Use a passwort generator that implements the PasswordGeneratorInterface instead and adjust your TCA configuration.',
-                    E_USER_DEPRECATED
-                );
-                $password = $this->random->generateRandomPassword($passwordRules);
-                return $this->createResponse([
-                    'success' => true,
-                    'password' => $password,
-                ]);
-            }
-        } catch (\LogicException|InvalidPasswordRulesException $exception) {
+        } catch (\LogicException $exception) {
             $this->logger->error('Password generation failed', ['exception' => $exception]);
         }
 

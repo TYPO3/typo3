@@ -228,7 +228,7 @@ The following extension file loading has been removed:
 
 The following TCA options are not evaluated anymore:
 
-- :php:`$GLOBALS['TCA'][$table]['some']['option']`
+- :php:`passwordRules` option of the :php:`passwordGenerator` field control; use :php:`passwordPolicy` instead :ref:`(Deprecation entry) <deprecation-69190-1770668741>`
 
 The following extbase validator options have been removed:
 

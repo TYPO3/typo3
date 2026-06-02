@@ -13,6 +13,49 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1536238257] = [
 
 $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['RTE-Styleguide'] = 'EXT:styleguide/Configuration/RTE/RTE-Styleguide.yaml';
 
+// Register password generator policies referenced by the passwordGenerator
+// field control demos in tx_styleguide_elements_basic
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['styleguideHex'] = [
+    'generator' => [
+        'className' => \TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator::class,
+        'options' => [
+            'length' => 30,
+            'random' => 'hex',
+        ],
+    ],
+    'validators' => [],
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['styleguideBase64'] = [
+    'generator' => [
+        'className' => \TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator::class,
+        'options' => [
+            'length' => 35,
+            'random' => 'base64',
+        ],
+    ],
+    'validators' => [],
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['styleguideAllCharacters'] = [
+    'generator' => [
+        'className' => \TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator::class,
+        'options' => [
+            'specialCharacters' => true,
+        ],
+    ],
+    'validators' => [],
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['passwordPolicies']['styleguideDigits'] = [
+    'generator' => [
+        'className' => \TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator::class,
+        'options' => [
+            'length' => 8,
+            'lowerCaseCharacters' => false,
+            'upperCaseCharacters' => false,
+        ],
+    ],
+    'validators' => [],
+];
+
 // Register some custom permission options shown in BE group access lists
 $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions']['tx_styleguide_custom'] = [
     'header' => 'Custom styleguide permissions',

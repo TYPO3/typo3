@@ -616,10 +616,7 @@ return [
                         'renderType' => 'passwordGenerator',
                         'options' => [
                             'title' => 'Create random hex string',
-                            'passwordRules' => [
-                                'length' => 30,
-                                'random' => 'hex',
-                            ],
+                            'passwordPolicy' => 'styleguideHex',
                         ],
                     ],
                 ],
@@ -636,10 +633,7 @@ return [
                         'options' => [
                             'title' => 'Create random base64 string',
                             'allowEdit' => false,
-                            'passwordRules' => [
-                                'length' => 35,
-                                'random' => 'base64',
-                            ],
+                            'passwordPolicy' => 'styleguideBase64',
                         ],
                     ],
                 ],
@@ -655,9 +649,7 @@ return [
                         'renderType' => 'passwordGenerator',
                         'options' => [
                             'title' => 'Create random password',
-                            'passwordRules' => [
-                                'specialCharacters' => true,
-                            ],
+                            'passwordPolicy' => 'styleguideAllCharacters',
                         ],
                     ],
                 ],
@@ -673,11 +665,7 @@ return [
                         'renderType' => 'passwordGenerator',
                         'options' => [
                             'title' => 'Create random number',
-                            'passwordRules' => [
-                                'length' => 8,
-                                'lowerCaseCharacters' => false,
-                                'upperCaseCharacters' => false,
-                            ],
+                            'passwordPolicy' => 'styleguideDigits',
                         ],
                     ],
                 ],

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Controller\PasswordGeneratorController;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -101,21 +100,10 @@ final class PasswordGeneratorControllerTest extends FunctionalTestCase
                 ];
             },
         ];
-
-        // @deprecated. Remove in TYPO3 15.
-        yield 'generate via raw rules' => [
-            [
-                'passwordRules' => [
-                    'length' => 12,
-                ],
-            ],
-            null,
-        ];
     }
 
     #[Test]
     #[DataProvider('generateReturnsSuccessfulJsonResponseDataProvider')]
-    #[IgnoreDeprecations]
     public function generateReturnsSuccessfulJsonResponse(array $parsedBody, ?callable $setupConfig = null): void
     {
         if ($setupConfig !== null) {
@@ -161,20 +149,4 @@ final class PasswordGeneratorControllerTest extends FunctionalTestCase
         self::assertFalse($result['success']);
     }
 
-    #[Test]
-    #[IgnoreDeprecations]
-    /**
-     * @deprecated Remove in TYPO3 15.
-     */
-    public function generateReturnsFalseOnInvalidRules(): void
-    {
-        $request = (new ServerRequest())->withParsedBody([
-            'passwordRules' => ['length' => 4],
-        ]);
-
-        $response = $this->controller->generate($request);
-        $result = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
-
-        self::assertFalse($result['success']);
-    }
 }
