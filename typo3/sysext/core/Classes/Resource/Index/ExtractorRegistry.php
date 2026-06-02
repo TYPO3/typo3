@@ -66,15 +66,6 @@ readonly class ExtractorRegistry
     }
 
     /**
-     * @deprecated remove in v15
-     */
-    public function registerExtractionService(): void
-    {
-        // Method kept for backwards compatibility, but does nothing.
-        // Registration happens automatically via ExtractorInterface.
-    }
-
-    /**
      * Compare the priority of two Extractor classes.
      * Is used for sorting array of Extractor instances by priority.
      * We want the result to be ordered from high to low so a higher
