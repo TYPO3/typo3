@@ -29,13 +29,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * ReferenceIndex Prerequisite
  *
  * Defines that the reference index needs to be up-to-date before an upgrade wizard may be run
- *
- * @final with TYPO3 v15 when {@see \TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite} is removed.
  */
 #[Autoconfigure(public: true)]
-class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
+final class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
 {
-    protected OutputInterface $output;
+    private OutputInterface $output;
 
     public function __construct(
         private readonly ReferenceIndex $referenceIndex,

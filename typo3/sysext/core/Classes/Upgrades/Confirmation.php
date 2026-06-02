@@ -17,18 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Upgrades;
 
-/**
- * @todo Make class readonly when {@see \TYPO3\CMS\Install\Updates\Confirmation} has been removed in v15.
- */
-class Confirmation
+readonly class Confirmation
 {
     public function __construct(
-        protected readonly string $title,
-        protected readonly string $message,
-        protected readonly bool $defaultValue = false,
-        protected readonly string $confirm = 'Yes, execute',
-        protected readonly string $deny = 'No, do not execute',
-        protected readonly bool $required = false
+        protected string $title,
+        protected string $message,
+        protected bool $defaultValue = false,
+        protected string $confirm = 'Yes, execute',
+        protected string $deny = 'No, do not execute',
+        protected bool $required = false
     ) {}
 
     public function getConfirm(): string

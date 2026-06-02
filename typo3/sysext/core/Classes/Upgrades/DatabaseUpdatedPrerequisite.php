@@ -24,13 +24,11 @@ use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
 
 /**
  * Prerequisite for upgrade wizards to ensure the database is up-to-date
- *
- * @final with TYPO3 v15 when {@see \TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite} is removed.
  */
 #[Autoconfigure(public: true)]
-class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
+final class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
 {
-    protected OutputInterface $output;
+    private OutputInterface $output;
 
     public function __construct(
         private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
