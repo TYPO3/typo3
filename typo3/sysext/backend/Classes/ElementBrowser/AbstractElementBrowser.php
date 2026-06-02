@@ -51,14 +51,6 @@ abstract class AbstractElementBrowser
      */
     protected ElementBrowserParameters $browserParameters;
 
-    /**
-     * Legacy bparams string - kept for backward compatibility.
-     *
-     * @deprecated since TYPO3 v14.2, will be removed in TYPO3 v15.0. Use $this->browserParameters instead. Remove this in v15.0 together with ElementBrowserParameters::toBparams() and ::fromBparams()
-     * @var string
-     */
-    protected $bparams = '';
-
     protected ?ServerRequestInterface $request = null;
     protected ViewInterface $view;
 
@@ -98,8 +90,6 @@ abstract class AbstractElementBrowser
     protected function initVariables(ServerRequestInterface $request)
     {
         $this->browserParameters = ElementBrowserParameters::fromRequest($request);
-        // @deprecated Remove in v15.0: Keep bparams populated for backward compatibility
-        $this->bparams = $this->browserParameters->toBparams();
     }
 
     protected function getBodyTagParameters(): string

@@ -23,11 +23,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Data Transfer Object for Element Browser parameters.
  *
- * Replaces the legacy pipe-delimited `bparams` string with a proper typed object
- * for cleaner communication between FormEngine and ElementBrowser.
- *
- * Legacy bparams format: "fieldRef|rteParams|rteConfig|allowedTypes|irreObjectId"
- * Example: "data[tt_content][123][image]|||gif,jpg|data-4-pages-4-nav_icon"
+ * Provides type-safe access to the parameters passed between FormEngine and
+ * the Element Browser.
  *
  * @internal This class is not part of the TYPO3 Core API.
  */
@@ -52,60 +49,13 @@ final readonly class ElementBrowserParameters implements \JsonSerializable
     ) {}
 
     /**
-     * Creates an instance from the legacy pipe-delimited bparams string.
-     *
-     * @param string $bparams Legacy bparams string (e.g., "data[tt_content][123][image]|||gif,jpg|data-4-pages-4-nav_icon")
-     * @deprecated Remove in v15.0: This method only exists for backward compatibility with the legacy bparams format.
-     */
-    public static function fromBparams(string $bparams): self
-    {
-        $params = explode('|', $bparams);
-        $allowedTypesRaw = $params[3] ?? '';
-
-        // Parse legacy format: "allowed=jpg,png~disallowed=exe,bat" or simple "jpg,png"
-        $allowedTypes = '';
-        $disallowedFileExtensions = '';
-
-        if (str_contains($allowedTypesRaw, '~') || str_contains($allowedTypesRaw, '=')) {
-            $parts = GeneralUtility::trimExplode('~', $allowedTypesRaw, true);
-            foreach ($parts as $part) {
-                if (str_starts_with($part, 'allowed=')) {
-                    $allowedTypes = preg_replace('/^allowed=/', '', $part, 1);
-                } elseif (str_starts_with($part, 'disallowed=')) {
-                    $disallowedFileExtensions = preg_replace('/^disallowed=/', '', $part, 1);
-                }
-            }
-        } else {
-            $allowedTypes = $allowedTypesRaw;
-        }
-
-        return new self(
-            fieldReference: $params[0],
-            rteParameters: $params[1] ?? '',
-            rteConfiguration: $params[2] ?? '',
-            allowedTypes: $allowedTypes,
-            disallowedFileExtensions: $disallowedFileExtensions,
-            irreObjectId: $params[4] ?? '',
-        );
-    }
-
-    /**
      * Creates an instance from the current HTTP request.
-     *
-     * Supports both legacy bparams parameter and new separate parameters for backward compatibility.
      */
     public static function fromRequest(ServerRequestInterface $request): self
     {
         $queryParams = $request->getQueryParams();
         $parsedBody = $request->getParsedBody() ?? [];
 
-        // @deprecated Remove me in v15.0: Check for legacy bparams parameter first (backward compatibility)
-        $bparams = $parsedBody['bparams'] ?? $queryParams['bparams'] ?? null;
-        if ($bparams !== null && $bparams !== '') {
-            return self::fromBparams($bparams);
-        }
-
-        // Use new separate parameters
         return new self(
             fieldReference: (string)($parsedBody['fieldReference'] ?? $queryParams['fieldReference'] ?? ''),
             rteParameters: (string)($parsedBody['rteParameters'] ?? $queryParams['rteParameters'] ?? ''),
@@ -115,46 +65,6 @@ final readonly class ElementBrowserParameters implements \JsonSerializable
             irreObjectId: (string)($parsedBody['irreObjectId'] ?? $queryParams['irreObjectId'] ?? ''),
             useEvents: (bool)(int)($parsedBody['useEvents'] ?? $queryParams['useEvents'] ?? 0),
         );
-    }
-
-    /**
-     * Converts the parameters back to the legacy pipe-delimited bparams string.
-     *
-     * @return string Legacy bparams format
-     * @deprecated remove this method in v15.0: This method only exists for backward compatibility with the legacy bparams format.
-     */
-    public function toBparams(): string
-    {
-        // Build legacy allowedTypes format
-        $allowedTypes = $this->buildLegacyAllowedTypes();
-
-        return implode('|', [
-            $this->fieldReference,
-            $this->rteParameters,
-            $this->rteConfiguration,
-            $allowedTypes,
-            $this->irreObjectId,
-        ]);
-    }
-
-    /**
-     * Builds the legacy allowedTypes string format for backward compatibility.
-     *
-     * @deprecated remove in v15.0 together with toBparams()
-     */
-    private function buildLegacyAllowedTypes(): string
-    {
-        // If there are disallowed extensions, build the complex format
-        if ($this->disallowedFileExtensions !== '') {
-            $parts = [];
-            if ($this->allowedTypes !== '') {
-                $parts[] = 'allowed=' . $this->allowedTypes;
-            }
-            $parts[] = 'disallowed=' . $this->disallowedFileExtensions;
-            return implode('~', $parts);
-        }
-
-        return $this->allowedTypes;
     }
 
     /**

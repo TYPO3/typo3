@@ -176,6 +176,7 @@ The following public class properties have been dropped:
 The following protected class properties have been dropped:
 
 - :php:`\TYPO3\CMS\Frontend\Typolink\ContentObjectRenderer->parentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
+- :php:`\TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser->bparams`. The legacy pipe-delimited :php:`bparams` element browser request parameter is no longer evaluated. FormEngine now passes the individual :php:`fieldReference`, :php:`allowedTypes` and further parameters, which are handled by the typed :php:`\TYPO3\CMS\Backend\ElementBrowser\ElementBrowserParameters`. Its :php:`fromBparams()` and :php:`toBparams()` conversion methods have been removed as well.
 
 The following class property has changed/enforced type:
 
