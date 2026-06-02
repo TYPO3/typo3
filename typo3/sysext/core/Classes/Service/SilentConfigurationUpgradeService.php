@@ -215,6 +215,8 @@ class SilentConfigurationUpgradeService
         'FE/compressionLevel',
         // #108114
         'FE/additionalAbsRefPrefixDirectories',
+        // #109959
+        'FE/cacheHash/fallbackToLegacyHash',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}

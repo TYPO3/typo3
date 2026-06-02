@@ -52,20 +52,6 @@ class CacheHashCalculator
     }
 
     /**
-     * @internal only used for `fallbackToLegacyHash` behavior, will be removed in TYPO3 v15.0
-     * @deprecated will be removed in TYPO3 v15.0
-     */
-    public function calculateLegacyCacheHash(array $params): string
-    {
-        if ($params === []) {
-            return '';
-        }
-        $params['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-        ksort($params);
-        return md5(serialize($params));
-    }
-
-    /**
      * Returns the cHash based on provided query parameters and added values from internal call
      *
      * @param string $queryString Query-parameters: "&xxx=yyy&zzz=uuu

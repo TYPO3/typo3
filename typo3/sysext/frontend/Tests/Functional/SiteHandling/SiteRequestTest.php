@@ -34,9 +34,6 @@ final class SiteRequestTest extends AbstractTestCase
 {
     protected function setUp(): void
     {
-        // enable fallback to legacy MD5 cache-hash when validating cache-hashes
-        $this->configurationToUseInTestInstance['FE']['cacheHash']['fallbackToLegacyHash'] = true;
-
         parent::setUp();
         $this->withDatabaseSnapshot(function () {
             $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -826,9 +823,6 @@ final class SiteRequestTest extends AbstractTestCase
             // '?&cHash=76796a848e61a31b6cf1f1ae696e12409189abfc7a06364e8a971c7a2eb40922&id=1000',
             // default SHA3-256 HMAC
             '?&cHash=1a3af6ba153b6210cf8abb271ca8b360b9b06163a22790a43540df76ded1ba31&id=1100',
-            // '?&cHash=7d1f13fa91159dac7feb3c824936b39d&id=1000',
-            // legacy MD5 "HMAC"
-            '?&cHash=f42b850e435f0cedd366f5db749fc1af&id=1100',
         ];
         $customQueries = [
             '&testing[value]=1',

@@ -201,6 +201,7 @@ The following global option handling have been dropped and are ignored:
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']` :ref:`(Deprecation entry) <deprecation-108524-1766073657>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][/*...*/]['tableoptions']` :ref:`(Deprecation entry) <deprecation-105297-1728836814>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][/*...*/]['defaultTableOptions']['collate']` :ref:`(Deprecation entry) <deprecation-105297-1728836814>`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['fallbackToLegacyHash']`; the transitional fallback to the legacy md5-based cHash validation has been removed, only the HMAC-SHA3 cHash is accepted :ref:`(Breaking entry) <breaking-106307-1763824774>`
 
 The following global variables have been changed:
 
