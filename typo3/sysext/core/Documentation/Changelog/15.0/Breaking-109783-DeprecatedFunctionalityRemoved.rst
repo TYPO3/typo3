@@ -178,7 +178,11 @@ The following class property has changed/enforced type:
 
 The following class constants have been dropped:
 
-- :php:`\TYPO3\CMS\SomeExtension\Some\ClassName::SOME_CONSTANT`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_NOTICE` :ref:`(Deprecation entry) <deprecation-107648-1744465200>`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO` :ref:`(Deprecation entry) <deprecation-107648-1744465200>`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_OK` :ref:`(Deprecation entry) <deprecation-107648-1744465200>`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_WARNING` :ref:`(Deprecation entry) <deprecation-107648-1744465200>`
+- :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR` :ref:`(Deprecation entry) <deprecation-107648-1744465200>`
 
 The following TypoScript options have been dropped or adapted:
 

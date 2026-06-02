@@ -36,31 +36,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 final class InfoboxViewHelper extends AbstractViewHelper
 {
     /**
-     * @deprecated since v14, will be removed in v15. Use ContextualFeedbackSeverity::NOTICE instead.
-     */
-    public const STATE_NOTICE = -2;
-
-    /**
-     * @deprecated since v14, will be removed in v15. Use ContextualFeedbackSeverity::INFO instead.
-     */
-    public const STATE_INFO = -1;
-
-    /**
-     * @deprecated since v14, will be removed in v15. Use ContextualFeedbackSeverity::OK instead.
-     */
-    public const STATE_OK = 0;
-
-    /**
-     * @deprecated since v14, will be removed in v15. Use ContextualFeedbackSeverity::WARNING instead.
-     */
-    public const STATE_WARNING = 1;
-
-    /**
-     * @deprecated since v14, will be removed in v15. Use ContextualFeedbackSeverity::ERROR instead.
-     */
-    public const STATE_ERROR = 2;
-
-    /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
      * @var bool
@@ -83,7 +58,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
         $message = (string)$this->renderChildren();
         $state = $this->arguments['state'];
 
-        // Accept both ContextualFeedbackSeverity enum and integer for backwards compatibility
+        // The state argument accepts both a ContextualFeedbackSeverity enum and a raw integer value
         if ($state instanceof ContextualFeedbackSeverity) {
             $severity = $state;
         } else {
