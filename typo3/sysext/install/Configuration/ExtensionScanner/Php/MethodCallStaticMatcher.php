@@ -1671,6 +1671,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-106618-GeneralUtilityresolveBackPath.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields' => [

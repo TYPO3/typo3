@@ -2689,7 +2689,8 @@ final class GeneralUtilityTest extends UnitTestCase
     #[IgnoreDeprecations]
     public function resolveBackPathWithDataProvider(string $input, string $expectedValue): void
     {
-        self::assertEquals($expectedValue, GeneralUtility::resolveBackPath($input));
+        $subject = new \ReflectionMethod(GeneralUtility::class, 'resolveBackPath');
+        self::assertEquals($expectedValue, $subject->invoke(null, $input));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////

@@ -1907,38 +1907,6 @@ class GeneralUtility
     }
 
     /**
-     * Resolves "../" sections in the input path string.
-     * For example "fileadmin/directory/../other_directory/" will be resolved to "fileadmin/other_directory/"
-     *
-     * @param string $pathStr File path in which "/../" is resolved
-     * @deprecated will be made protected in TYPO3 v15.0, as it is only used internally then.
-     */
-    public static function resolveBackPath(string $pathStr): string
-    {
-        trigger_error('GeneralUtility::resolveBackPath() will be removed in TYPO3 v15.0. Avoid working with relative paths as TYPO3 will not canonicalize them anymore.', E_USER_DEPRECATED);
-        if (!str_contains($pathStr, '..')) {
-            return $pathStr;
-        }
-        $parts = explode('/', $pathStr);
-        $output = [];
-        $c = 0;
-        foreach ($parts as $part) {
-            if ($part === '..') {
-                if ($c) {
-                    array_pop($output);
-                    --$c;
-                } else {
-                    $output[] = $part;
-                }
-            } else {
-                ++$c;
-                $output[] = $part;
-            }
-        }
-        return implode('/', $output);
-    }
-
-    /**
      * Prefixes a URL used with 'header-location' with 'http://...' depending on whether it has it already.
      * - If already having a scheme, nothing is prepended
      * - If having REQUEST_URI slash '/', then prefixing 'http://[host]' (relative to host)
@@ -2151,6 +2119,9 @@ class GeneralUtility
      *
      * @param string $url potential URL to check
      * @return string $url or empty string
+     * @todo: This method needs an overhaul in v15. It still relies on the deprecated resolveBackPath()
+     *        helper below to canonicalize relative paths. It should be reworked to no longer deal with
+     *        relative paths at all, so the deprecated helper can be dropped.
      */
     public static function sanitizeLocalUrl(string $url, ServerRequestInterface $request): string
     {
@@ -2190,6 +2161,40 @@ class GeneralUtility
             static::getLogger()->notice('The URL "{url}" is not considered to be local and was denied.', ['url' => $url]);
         }
         return $sanitizedUrl;
+    }
+
+    /**
+     * Resolves "../" sections in the input path string.
+     * For example "fileadmin/directory/../other_directory/" will be resolved to "fileadmin/other_directory/"
+     *
+     * @param string $pathStr File path in which "/../" is resolved
+     * @deprecated The only remaining caller is sanitizeLocalUrl() above and no new callers must be
+     *             added. This helper exists solely for the legacy relative path canonicalization in
+     *             sanitizeLocalUrl() and is removed once that method has been reworked.
+     */
+    private static function resolveBackPath(string $pathStr): string
+    {
+        trigger_error('GeneralUtility::resolveBackPath() will likely be removed in TYPO3 v15.0 when sanitizeLocalUrl() is reworked. Avoid working with relative paths as TYPO3 will not canonicalize them anymore.', E_USER_DEPRECATED);
+        if (!str_contains($pathStr, '..')) {
+            return $pathStr;
+        }
+        $parts = explode('/', $pathStr);
+        $output = [];
+        $c = 0;
+        foreach ($parts as $part) {
+            if ($part === '..') {
+                if ($c) {
+                    array_pop($output);
+                    --$c;
+                } else {
+                    $output[] = $part;
+                }
+            } else {
+                ++$c;
+                $output[] = $part;
+            }
+        }
+        return implode('/', $output);
     }
 
     /**

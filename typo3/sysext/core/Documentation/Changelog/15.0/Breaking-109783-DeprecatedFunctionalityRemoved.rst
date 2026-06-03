@@ -38,6 +38,10 @@ The following PHP classes have been declared :php:`final`:
 
 - :php:`\TYPO3\CMS\SomeExtension\Some\ClassName`
 
+The following PHP methods have been set to :php:`private` and can no longer be called from outside the class:
+
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath()` :ref:`(Deprecation entry) <deprecation-106618-1745587818>`
+
 The following PHP interfaces that have previously been marked as deprecated with v14 have been removed:
 
 - :php:`\TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface` :ref:`(Deprecation entry) <deprecation-107436-1736639846>`
