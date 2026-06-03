@@ -145,12 +145,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/Cache/PackageStatesPackageCache.php
 
 		-
-			rawMessage: Offset string does not exist on null.
-			identifier: offsetAccess.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
-
-		-
 			rawMessage: 'Parameter #2 $selectedStatements of method TYPO3\CMS\Core\Database\Schema\SchemaMigrator::migrate() expects array<string>, array<int|string, true> given.'
 			identifier: argument.type
 			count: 1

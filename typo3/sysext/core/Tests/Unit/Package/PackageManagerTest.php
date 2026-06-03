@@ -91,6 +91,10 @@ final class PackageManagerTest extends UnitTestCase
             'extra' => [
                 'typo3/cms' => [
                     'extension-key' => $packageKey,
+                    'version' => '1.0.0',
+                    'Package' => [
+                        'providesPackages' => [],
+                    ],
                 ],
             ],
         ];
@@ -175,7 +179,7 @@ final class PackageManagerTest extends UnitTestCase
             $packagePath = $this->testRoot . 'Packages/Application/' . $packageKey . '/';
 
             mkdir($packagePath, 0770, true);
-            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test", "extra": {"typo3/cms": {"extension-key": "' . $packageKey . '"}}}');
+            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test", "extra": {"typo3/cms": {"extension-key": "' . $packageKey . '", "version": "1.0.0", "Package": {"providesPackages": {}}}}}');
         }
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates'], [new DependencyOrderingService()]);
@@ -206,7 +210,7 @@ final class PackageManagerTest extends UnitTestCase
             $packagePaths[] = $packagePath;
 
             mkdir($packagePath, 0770, true);
-            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test", "extra": {"typo3/cms": {"extension-key": "' . $packageKey . '"}}}');
+            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test", "extra": {"typo3/cms": {"extension-key": "' . $packageKey . '", "version": "1.0.0", "Package": {"providesPackages": {}}}}}');
         }
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, null, [new DependencyOrderingService()]);
@@ -272,7 +276,7 @@ final class PackageManagerTest extends UnitTestCase
             $packagePath = $this->testRoot . 'Packages/Application/' . $packageKey . '/';
 
             mkdir($packagePath, 0770, true);
-            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test", "extra": {"typo3/cms": {"extension-key": "' . $packageKey . '"}}}');
+            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test", "extra": {"typo3/cms": {"extension-key": "' . $packageKey . '", "version": "1.0.0", "Package": {"providesPackages": {}}}}}');
             $packagePaths[] = $packagePath;
         }
 

@@ -213,6 +213,7 @@ The following global option handling have been dropped and are ignored:
 The following extension file loading has been removed:
 
 - :file:`ext_tables.php` files in extensions are no longer considered during bootstrap :ref:`(Deprecation entry) <deprecation-109438-1774951763>`
+- :file:`ext_emconf.php` files in extensions are no longer evaluated for package metadata. In TYPO3 classic (non-Composer) mode the :file:`composer.json` must declare the extension version and the :php:`providesPackages` definition in the :php:`extra/typo3/cms` section. These two fields are now mandatory, also for extensions that no longer ship an :file:`ext_emconf.php`, otherwise loading the extension throws an exception. :ref:`(Deprecation entry) <deprecation-108345-1774126701>`
 
 The following TCA options are not evaluated anymore:
 

@@ -824,7 +824,12 @@ class PackageManager implements SingletonInterface
             }
             fclose($fileHandle);
         }
-        $packageStatesCode = "<?php\n$fileDescription\nreturn " . ArrayUtility::arrayExport($this->packageStatesConfiguration) . ";\n";
+        $packageConfiguration = $this->packageStatesConfiguration;
+        // The VirtualAppPackage must never be written to PackageStates.php
+        // It is either pulled from cache, or registered manually after
+        // all real packages have been pulled in from disk
+        unset($packageConfiguration['packages'][VirtualAppPackage::APP_PACKAGE_KEY]);
+        $packageStatesCode = "<?php\n$fileDescription\nreturn " . ArrayUtility::arrayExport($packageConfiguration) . ";\n";
         GeneralUtility::writeFile($this->packageStatesPathAndFilename, $packageStatesCode, true);
         // Cache depends on package states file, therefore we invalidate it
         $this->packageCache->invalidate();
@@ -913,7 +918,7 @@ class PackageManager implements SingletonInterface
      * @throws InvalidPackageManifestException
      * @internal
      */
-    public function getComposerManifest(string $manifestPath, bool $ignoreExtEmConf = false)
+    public function getComposerManifest(string $manifestPath, bool $isBuildingPackageArtifact = false)
     {
         $composerManifest = new \stdClass();
         if (file_exists($manifestPath . 'composer.json')) {
@@ -926,150 +931,32 @@ class PackageManager implements SingletonInterface
             }
         }
 
-        if ($ignoreExtEmConf || $this->isComposerOnlyCapable($composerManifest)) {
+        if ($isBuildingPackageArtifact
+            // Framework packages (TYPO3 system extensions) derive their version from Typo3Version and are
+            // not required to declare "providesPackages". Every other extension must declare the required
+            // metadata in composer.json, since ext_emconf.php is no longer evaluated as a fallback for it.
+            || $this->isFrameworkPackage($composerManifest->name)
+            || $this->declaresRequiredPackageMetadata($composerManifest)
+        ) {
             return $composerManifest;
         }
-
-        $packageKey = $this->getPackageKeyFromManifest($composerManifest, $manifestPath);
-        $extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath, $packageKey);
-        if ($extensionManagerConfiguration !== null) {
-            trigger_error(
-                sprintf(
-                    'Extension "%s" is having an ext_emconf.php file, which is deprecated. Additionally the composer.json is missing "version" and "providesPackages" declaration. See %s for details.',
-                    $packageKey,
-                    Typo3Information::getDocsLink('changelog:deprecation-108345-1774126701'),
-                ),
-                E_USER_DEPRECATED
-            );
-            $composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(
-                $packageKey,
-                $extensionManagerConfiguration,
-                $composerManifest
-            );
-        }
-
-        return $composerManifest;
+        throw new InvalidPackageManifestException(
+            sprintf(
+                'The composer.json of extension "%s" must declare the extension version and the "providesPackages" definition in the "extra/typo3/cms" section. See %s for details.',
+                $this->getPackageKeyFromManifest($composerManifest, $manifestPath),
+                Typo3Information::getDocsLink('changelog:deprecation-108345-1774126701'),
+            ),
+            1780502553
+        );
     }
 
-    private function isComposerOnlyCapable(\stdClass $manifest): bool
+    private function declaresRequiredPackageMetadata(\stdClass $manifest): bool
     {
         return isset($manifest->extra->{'typo3/cms'}->Package->providesPackages)
             && (
                 ($manifest->version ?? null) !== null
                 || isset($manifest->extra->{'typo3/cms'}->version)
             );
-    }
-
-    /**
-     * Fetches MetaData information from ext_emconf.php, used for
-     * resolving dependencies as well.
-     *
-     * @return array|null if no ext_emconf.php was found, or the contents of the ext_emconf.php file.
-     * @throws Exception\InvalidPackageManifestException
-     */
-    protected function getExtensionEmConf(string $packagePath, string $packageKey): ?array
-    {
-        $_EXTKEY = $packageKey;
-        $path = $packagePath . 'ext_emconf.php';
-        $EM_CONF = null;
-        if (@file_exists($path)) {
-            include $path;
-            if (is_array($EM_CONF[$_EXTKEY])) {
-                return $EM_CONF[$_EXTKEY];
-            }
-            throw new InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
-        }
-        return null;
-    }
-
-    /**
-     * Fetches information from ext_emconf.php and maps it so it is treated as it would come from composer.json
-     *
-     * @param string|PackageKey $packageKey
-     * @return \stdClass
-     * @throws Exception\InvalidPackageManifestException
-     */
-    protected function mapExtensionManagerConfigurationToComposerManifest($packageKey, array $extensionManagerConfiguration, \stdClass $composerManifest)
-    {
-        $this->setComposerManifestValueIfEmpty($composerManifest, 'name', $packageKey);
-        $this->setComposerManifestValueIfEmpty($composerManifest, 'type', 'typo3-cms-extension');
-        $this->setComposerManifestValueIfEmpty($composerManifest, 'description', $extensionManagerConfiguration['description'] ?? '');
-        $this->setComposerManifestValueIfEmpty($composerManifest, 'authors', [['name' => $extensionManagerConfiguration['author'] ?? '', 'email' => $extensionManagerConfiguration['author_email'] ?? '']]);
-        $composerManifest->version = $extensionManagerConfiguration['version'] ?? null;
-        // "Invent" a new title attribute here for internal use in non Composer mode
-        $composerManifest->title = $extensionManagerConfiguration['title'] ?? null;
-        // "Invent" a new state attribute here for internal use in non Composer mode
-        $state = $extensionManagerConfiguration['state'] ?? null;
-        $composerManifest->state = $state;
-        if ($state === 'excludeFromUpdates') {
-            $composerManifest->state = null;
-            $composerManifest->extra->{'typo3/cms'}->{'exclude-from-updates'} = true;
-        }
-        $composerManifest->require = new \stdClass();
-        $composerManifest->conflict = new \stdClass();
-        $composerManifest->suggest = new \stdClass();
-        if (isset($extensionManagerConfiguration['constraints']['depends']) && is_array($extensionManagerConfiguration['constraints']['depends'])) {
-            foreach ($extensionManagerConfiguration['constraints']['depends'] as $requiredPackageKey => $requiredPackageVersion) {
-                if (!empty($requiredPackageKey)) {
-                    if ($requiredPackageKey === 'typo3') {
-                        // Add implicit dependency to 'core'
-                        $composerManifest->require->core = $requiredPackageVersion;
-                    } else {
-                        $composerManifest->require->{$requiredPackageKey} = $requiredPackageVersion;
-                    }
-                } else {
-                    throw new InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in depends section. Extension key is missing!', $packageKey), 1439552058);
-                }
-            }
-        }
-        if (isset($extensionManagerConfiguration['constraints']['conflicts']) && is_array($extensionManagerConfiguration['constraints']['conflicts'])) {
-            foreach ($extensionManagerConfiguration['constraints']['conflicts'] as $conflictingPackageKey => $conflictingPackageVersion) {
-                if (!empty($conflictingPackageKey)) {
-                    $composerManifest->conflict->$conflictingPackageKey = $conflictingPackageVersion;
-                } else {
-                    throw new InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in conflicts section. Extension key is missing!', $packageKey), 1439552059);
-                }
-            }
-        }
-        if (isset($extensionManagerConfiguration['constraints']['suggests']) && is_array($extensionManagerConfiguration['constraints']['suggests'])) {
-            foreach ($extensionManagerConfiguration['constraints']['suggests'] as $suggestedPackageKey => $suggestedPackageVersion) {
-                if (!empty($suggestedPackageKey)) {
-                    $composerManifest->suggest->$suggestedPackageKey = $suggestedPackageVersion;
-                } else {
-                    throw new InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in suggests section. Extension key is missing!', $packageKey), 1439552060);
-                }
-            }
-        }
-        if (isset($extensionManagerConfiguration['autoload'])) {
-            $autoload = json_encode($extensionManagerConfiguration['autoload']);
-            if ($autoload !== false) {
-                $composerManifest->autoload = json_decode($autoload);
-            }
-        }
-        // composer.json autoload-dev information must be discarded, as it may contain information only available after a composer install
-        unset($composerManifest->{'autoload-dev'});
-        if (isset($extensionManagerConfiguration['autoload-dev'])) {
-            $autoloadDev = json_encode($extensionManagerConfiguration['autoload-dev']);
-            if ($autoloadDev !== false) {
-                $composerManifest->{'autoload-dev'} = json_decode($autoloadDev);
-            }
-        }
-
-        return $composerManifest;
-    }
-
-    /**
-     * @param string $property
-     * @param mixed $value
-     * @return \stdClass
-     */
-    protected function setComposerManifestValueIfEmpty(\stdClass $manifest, $property, $value)
-    {
-        if (empty($manifest->{$property})) {
-            $manifest->{$property} = $value;
-        }
-
-        return $manifest;
     }
 
     /**

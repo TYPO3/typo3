@@ -145,9 +145,8 @@ class Package implements PackageInterface
     {
         $this->packageMetaData = new MetaData($this->getPackageKey());
         $manifest = $this->getValueFromComposerManifest();
-        $description = $manifest->description ?? null;
+        $title = $description = $manifest->description ?? null;
         $descriptionParts = explode(' - ', $description ?? '', 2);
-        $title = $manifest->title ?? $description;
         if (count($descriptionParts) === 2) {
             [$title, $description] = $descriptionParts;
         }
@@ -158,13 +157,6 @@ class Package implements PackageInterface
         $version = $manifest->extra->{'typo3/cms'}->{'version'} ?? $manifest->version ?? self::NO_VERSION_SET;
         if ($isFrameworkPackage) {
             $version = (new Typo3Version())->getVersion();
-        } elseif (is_string($manifest->state ?? null)
-            && $version !== self::NO_VERSION_SET
-            // Third party extensions might have a state in version already
-            && !str_contains($version, '-')
-        ) {
-            $stability = Stability::tryFrom($manifest->state);
-            $version .= ($stability === null ? '+' : '-') . $manifest->state;
         }
         $this->packageMetaData->setVersion($version);
         $this->packageMetaData->setExcludeFromUpdates($manifest->extra->{'typo3/cms'}->{'exclude-from-updates'} ?? false);
