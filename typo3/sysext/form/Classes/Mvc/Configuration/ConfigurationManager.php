@@ -52,10 +52,6 @@ readonly class ConfigurationManager implements ExtFormConfigurationManagerInterf
      * active extension's Configuration/Form/<SetName>/ directory and returns
      * all paths sorted by priority.
      *
-     * Legacy TypoScript-based paths from {@code yamlConfigurations} are still
-     * honoured during the deprecation period (TYPO3 v14.2–v15.0) and merged
-     * after the auto-discovered paths.
-     *
      * The following post-processing steps are applied to the merged configuration:
      *
      * * Remove all keys whose values are NULL
