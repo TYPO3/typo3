@@ -64,14 +64,8 @@ readonly class AssetRenderer
         $template = '<script%attributes%></script>';
         $assets = $this->assetCollector->getJavaScripts($priority);
         foreach ($assets as &$assetData) {
-            if (isset($assetData['options']['useNonce'])) {
-                trigger_error(
-                    'The option key "useNonce" for assets is deprecated, use "csp" instead.',
-                    E_USER_DEPRECATED
-                );
-            }
             // Collect CSP hash from original source path before URL transformation
-            if (!empty($assetData['options']['csp']) || !empty($assetData['options']['useNonce'])) {
+            if (!empty($assetData['options']['csp'])) {
                 $integrity = $assetData['attributes']['integrity'] ?? '';
                 if ($integrity !== '') {
                     $this->directiveHashCollection->addGenericHashValue(Directive::ScriptSrcElem, $integrity);
@@ -106,14 +100,8 @@ readonly class AssetRenderer
         $assets = $this->assetCollector->getStyleSheets($priority);
         foreach ($assets as &$assetData) {
             $originalSource = $assetData['source'];
-            if (isset($assetData['options']['useNonce'])) {
-                trigger_error(
-                    'The option key "useNonce" for assets is deprecated, use "csp" instead.',
-                    E_USER_DEPRECATED
-                );
-            }
             // Collect CSP hash from original source path before URL transformation
-            if (!empty($assetData['options']['csp']) || !empty($assetData['options']['useNonce'])) {
+            if (!empty($assetData['options']['csp'])) {
                 $integrity = $assetData['attributes']['integrity'] ?? '';
                 if ($integrity !== '') {
                     $this->directiveHashCollection->addGenericHashValue(Directive::StyleSrcElem, $integrity);
@@ -149,13 +137,7 @@ readonly class AssetRenderer
         $results = [];
         foreach ($assets as $assetData) {
             $attributes = $assetData['attributes'];
-            if (isset($assetData['options']['useNonce'])) {
-                trigger_error(
-                    'The option key "useNonce" for assets is deprecated, use "csp" instead.',
-                    E_USER_DEPRECATED
-                );
-            }
-            $useCsp = !empty($assetData['options']['csp']) || !empty($assetData['options']['useNonce']);
+            $useCsp = !empty($assetData['options']['csp']);
             if ($isInline && $useCsp) {
                 $this->directiveHashCollection->addInlineHash($directive, $assetData['source']);
             }

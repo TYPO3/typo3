@@ -182,7 +182,7 @@ container.isCollapsed(); // returns boolean</f:variable>
                 <button type="button" class="btn btn-default" id="collapse-navigation">Collapse Navigation</button>
             </div>
         </sg:example>
-        <f:asset.script identifier="resizableContainerControlsDemo" useNonce="true">
+        <f:asset.script identifier="resizableContainerControlsDemo" csp="true">
             const container = document.getElementById('demo-container');
             document.getElementById('expand-navigation').addEventListener('click', () => {
                 container.expandNavigation();
@@ -276,7 +276,7 @@ container.isNavigationHidden(); // returns boolean</f:variable>
                 <button type="button" class="btn btn-default" id="toggle-navigation">Toggle Navigation Visibility</button>
             </div>
         </sg:example>
-        <f:asset.script identifier="contentNavigationHidingDemo" useNonce="true">
+        <f:asset.script identifier="contentNavigationHidingDemo" csp="true">
             const hidingContainer = document.getElementById('hiding-container');
             document.getElementById('toggle-navigation').addEventListener('click', () => {
                 if (hidingContainer.isNavigationHidden()) {
@@ -493,7 +493,7 @@ container.isNavigationHidden(); // returns boolean</f:variable>
                 transition: width 0.3s ease;
             }
         </f:asset.css>
-        <f:asset.script identifier="contentNavigationFlyoutDemo" useNonce="true">
+        <f:asset.script identifier="contentNavigationFlyoutDemo" csp="true">
             const flyoutWrapper = document.getElementById('flyout-demo-wrapper');
             const flyoutContainer = document.getElementById('flyout-container');
             document.getElementById('flyout-narrow').addEventListener('click', () => {

@@ -76,7 +76,7 @@
                 </button>
             </div>
         </div>
-        <f:asset.script identifier="modalDemo" useNonce="true">
+        <f:asset.script identifier="modalDemo" csp="true">
             const positionSelect = document.getElementById('modal-demo-position');
             const sizeSelect = document.getElementById('modal-demo-size');
             const severitySelect = document.getElementById('modal-demo-severity');
@@ -191,7 +191,7 @@
                 </button>
             </div>
         </div>
-        <f:asset.script identifier="modalSizeConfigDemo" useNonce="true">
+        <f:asset.script identifier="modalSizeConfigDemo" csp="true">
             import('@typo3/backend/modal.js').then(({ default: Modal }) => {
                 document.getElementById('modal-demo-sizeconfig-compose').addEventListener('click', () => {
                     Modal.advanced({

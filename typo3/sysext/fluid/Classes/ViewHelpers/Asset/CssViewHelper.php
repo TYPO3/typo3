@@ -19,11 +19,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Asset;
 
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Parser\ParsingState;
-use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
-use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperNodeInitializedEventInterface;
 
 /**
  * ViewHelper to add CSS to the TYPO3 AssetCollector. Either a file or inline CSS can be added.
@@ -37,7 +34,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperNodeInitializedEventInterface;
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-asset-css
  */
-final class CssViewHelper extends AbstractTagBasedViewHelper implements ViewHelperNodeInitializedEventInterface
+final class CssViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * This VH does not produce direct output, thus does not need to be wrapped in an escaping node
@@ -79,7 +76,6 @@ final class CssViewHelper extends AbstractTagBasedViewHelper implements ViewHelp
         parent::initializeArguments();
         $this->registerArgument('disabled', 'bool', 'Define whether or not the described stylesheet should be loaded and applied to the document.');
         $this->registerArgument('csp', 'bool', 'Whether to collect a CSP hash value for this asset (default: true for external files, false for inline)', false, null);
-        $this->registerArgument('useNonce', 'bool', 'Whether to use the global nonce value (deprecated, use csp instead)', false, null);
         $this->registerArgument('identifier', 'string', 'Use this identifier within templates to only inject your CSS once, even though it is added multiple times.', true);
         $this->registerArgument('priority', 'boolean', 'Define whether the CSS should be included before other CSS. CSS will always be output in the <head> tag.', false, false);
         $this->registerArgument('inline', 'bool', 'Define whether or not the referenced file should be loaded as inline styles (Only to be used if \'href\' is set).', false, false);
@@ -124,25 +120,10 @@ final class CssViewHelper extends AbstractTagBasedViewHelper implements ViewHelp
     private function resolveCspOption(bool $defaultForStatic): bool
     {
         $csp = $this->arguments['csp'];
-        $useNonce = $this->arguments['useNonce'];
-        // Deprecated useNonce argument maps to csp
-        if ($useNonce !== null) {
-            return (bool)$useNonce;
-        }
         if ($csp !== null) {
             return (bool)$csp;
         }
         // Default: true for external files (allows hash collection), false for inline
         return $defaultForStatic;
-    }
-
-    public static function nodeInitializedEvent(ViewHelperNode $node, array $arguments, ParsingState $parsingState): void
-    {
-        if (array_key_exists('useNonce', $arguments)) {
-            trigger_error(
-                'The "useNonce" argument of f:asset.css is deprecated. Use "csp" instead.',
-                E_USER_DEPRECATED
-            );
-        }
     }
 }

@@ -314,6 +314,11 @@ The following Fluid rendering mechanisms have been removed:
 
 - :php:`HeaderAssets` and :php:`FooterAssets` Fluid template sections are no longer auto-rendered  :ref:`(Deprecation entry) <deprecation-107057-1756471326>`
 
+The following asset ViewHelper arguments and options have been removed:
+
+- The :html:`useNonce` argument of the :html:`f:asset.script` and :html:`f:asset.css` ViewHelpers has been removed. Use the :html:`csp` argument instead. :ref:`(Deprecation entry) <deprecation-100887-1774712028>`
+- The :php:`useNonce` option key for JavaScript and stylesheet assets added via :php:`\TYPO3\CMS\Core\Page\AssetCollector` has been removed. Use the :php:`csp` option instead. :ref:`(Deprecation entry) <deprecation-100887-1774712028>`
+
 The following FormEngine result array keys have been removed:
 
 - :php:`additionalHiddenFields`, hidden fields are now added to the :php:`html` key directly :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
