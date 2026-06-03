@@ -1,0 +1,5 @@
+"sys_file_reference"
+,"uid","pid","crdate","deleted","uid_local","uid_foreign","tablenames","crop"
+,1,0,1704650830,0,1,1,"tt_content","{""default"":{""cropArea"":{""x"":0,""y"":0,""width"":0.5,""height"":0.5},""selectedRatio"":""NaN"",""focusArea"":null}}"
+,2,0,1704650830,0,1,2,"tt_content","{""default"":{""cropArea"":{""x"":0,""y"":0,""width"":0.5086612656,""height"":0.0029166667},""selectedRatio"":""NaN"",""focusArea"":null}}"
+,3,0,1704650830,0,1,3,"tt_content","{""default"":{""cropArea"":{""x"":1.78125e-16,""y"":0,""width"":0.5086612656,""height"":0.5},""selectedRatio"":""NaN"",""focusArea"":null}}"
