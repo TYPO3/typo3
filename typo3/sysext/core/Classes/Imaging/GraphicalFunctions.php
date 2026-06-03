@@ -404,7 +404,7 @@ class GraphicalFunctions
         $command = '';
         if ($processingInstructions->cropArea) {
             $cropArea = $processingInstructions->cropArea;
-            $command .= ' -crop ' . $cropArea->getWidth() . 'x' . $cropArea->getHeight() . '+' . $cropArea->getOffsetLeft() . '+' . $cropArea->getOffsetTop() . '! +repage ';
+            $command .= ' -crop ' . (int)round($cropArea->getWidth()) . 'x' . (int)round($cropArea->getHeight()) . '+' . (int)round($cropArea->getOffsetLeft()) . '+' . (int)round($cropArea->getOffsetTop()) . '! +repage ';
         }
 
         // Start with the default scale command
