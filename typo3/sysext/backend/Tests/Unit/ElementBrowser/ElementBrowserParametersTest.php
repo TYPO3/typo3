@@ -30,16 +30,12 @@ final class ElementBrowserParametersTest extends UnitTestCase
     {
         $params = new ElementBrowserParameters(
             fieldReference: 'data[tt_content][123][image]',
-            rteParameters: 'rteParam',
-            rteConfiguration: 'rteConfig',
             allowedTypes: 'gif,jpg,png',
             disallowedFileExtensions: 'exe,bat',
             irreObjectId: 'data-4-pages-4-nav_icon'
         );
 
         self::assertSame('data[tt_content][123][image]', $params->fieldReference);
-        self::assertSame('rteParam', $params->rteParameters);
-        self::assertSame('rteConfig', $params->rteConfiguration);
         self::assertSame('gif,jpg,png', $params->allowedTypes);
         self::assertSame('exe,bat', $params->disallowedFileExtensions);
         self::assertSame('data-4-pages-4-nav_icon', $params->irreObjectId);
@@ -51,8 +47,6 @@ final class ElementBrowserParametersTest extends UnitTestCase
         $params = new ElementBrowserParameters();
 
         self::assertSame('', $params->fieldReference);
-        self::assertSame('', $params->rteParameters);
-        self::assertSame('', $params->rteConfiguration);
         self::assertSame('', $params->allowedTypes);
         self::assertSame('', $params->disallowedFileExtensions);
         self::assertSame('', $params->irreObjectId);
@@ -195,16 +189,11 @@ final class ElementBrowserParametersTest extends UnitTestCase
     {
         $params = new ElementBrowserParameters(
             fieldReference: 'data[tt_content][123][image]',
-            rteParameters: 'rteParam',
-            rteConfiguration: 'rteConfig',
             irreObjectId: 'data-4-pages-4-nav_icon'
         );
 
         $expected = [
-            'data-form-field-name' => 'data[data[tt_content][123][image]][rteParam][rteConfig]',
             'data-field-reference' => 'data[tt_content][123][image]',
-            'data-rte-parameters' => 'rteParam',
-            'data-rte-configuration' => 'rteConfig',
             'data-irre-object-id' => 'data-4-pages-4-nav_icon',
             'data-use-events' => null,
         ];
@@ -222,8 +211,6 @@ final class ElementBrowserParametersTest extends UnitTestCase
         $attributes = $params->toDataAttributes();
 
         self::assertSame('data[tt_content][123][image]', $attributes['data-field-reference']);
-        self::assertNull($attributes['data-rte-parameters']);
-        self::assertNull($attributes['data-rte-configuration']);
         self::assertNull($attributes['data-irre-object-id']);
     }
 
@@ -232,8 +219,6 @@ final class ElementBrowserParametersTest extends UnitTestCase
     {
         $params = new ElementBrowserParameters(
             fieldReference: 'data[tt_content][123][image]',
-            rteParameters: 'rteParam',
-            rteConfiguration: 'rteConfig',
             allowedTypes: 'gif,jpg',
             disallowedFileExtensions: 'exe,bat',
             irreObjectId: 'data-4-pages',
@@ -242,8 +227,6 @@ final class ElementBrowserParametersTest extends UnitTestCase
 
         $expected = [
             'fieldReference' => 'data[tt_content][123][image]',
-            'rteParameters' => 'rteParam',
-            'rteConfiguration' => 'rteConfig',
             'allowedTypes' => 'gif,jpg',
             'disallowedFileExtensions' => 'exe,bat',
             'irreObjectId' => 'data-4-pages',
@@ -281,8 +264,6 @@ final class ElementBrowserParametersTest extends UnitTestCase
 
         $expected = [
             'fieldReference' => 'data[tt_content][123][image]',
-            'rteParameters' => '',
-            'rteConfiguration' => '',
             'allowedTypes' => 'gif,jpg',
             'disallowedFileExtensions' => '',
             'irreObjectId' => '',

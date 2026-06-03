@@ -32,16 +32,12 @@ final readonly class ElementBrowserParameters implements \JsonSerializable
 {
     /**
      * @param string $fieldReference Form field name reference, e.g., "data[tt_content][123][image]"
-     * @param string $rteParameters Legacy RTE parameters (editorNo:contentTypo3Language) - deprecated, kept for BC @deprecated Remove in v15.0
-     * @param string $rteConfiguration Legacy RTE configuration (RTEtsConfigParams) - deprecated, kept for BC @deprecated Remove in v15.0
      * @param string $allowedTypes Allowed types: tables (comma-separated) for db mode, or file extensions for file mode
      * @param string $disallowedFileExtensions Disallowed file extensions (comma-separated) for file mode
      * @param string $irreObjectId IRRE uniqueness target, e.g., "data-4-pages-4-nav_icon-sys_file_reference"
      */
     public function __construct(
         public string $fieldReference = '',
-        public string $rteParameters = '',
-        public string $rteConfiguration = '',
         public string $allowedTypes = '',
         public string $disallowedFileExtensions = '',
         public string $irreObjectId = '',
@@ -58,8 +54,6 @@ final readonly class ElementBrowserParameters implements \JsonSerializable
 
         return new self(
             fieldReference: (string)($parsedBody['fieldReference'] ?? $queryParams['fieldReference'] ?? ''),
-            rteParameters: (string)($parsedBody['rteParameters'] ?? $queryParams['rteParameters'] ?? ''),
-            rteConfiguration: (string)($parsedBody['rteConfiguration'] ?? $queryParams['rteConfiguration'] ?? ''),
             allowedTypes: (string)($parsedBody['allowedTypes'] ?? $queryParams['allowedTypes'] ?? ''),
             disallowedFileExtensions: (string)($parsedBody['disallowedFileExtensions'] ?? $queryParams['disallowedFileExtensions'] ?? ''),
             irreObjectId: (string)($parsedBody['irreObjectId'] ?? $queryParams['irreObjectId'] ?? ''),
@@ -165,13 +159,7 @@ final readonly class ElementBrowserParameters implements \JsonSerializable
     public function toDataAttributes(): array
     {
         return [
-            // @deprecated Remove in v15.0: data-form-field-name is a legacy attribute
-            'data-form-field-name' => 'data[' . $this->fieldReference . '][' . $this->rteParameters . '][' . $this->rteConfiguration . ']',
             'data-field-reference' => $this->fieldReference,
-            // @deprecated Remove in v15.0: data-rte-parameters is a legacy attribute
-            'data-rte-parameters' => $this->rteParameters ?: null,
-            // @deprecated Remove in v15.0: data-rte-configuration is a legacy attribute
-            'data-rte-configuration' => $this->rteConfiguration ?: null,
             'data-irre-object-id' => $this->irreObjectId ?: null,
             'data-use-events' => $this->useEvents ? 'true' : null,
         ];
@@ -182,8 +170,6 @@ final readonly class ElementBrowserParameters implements \JsonSerializable
      *
      * @return array{
      *   fieldReference: string,
-     *   rteParameters: string,
-     *   rteConfiguration: string,
      *   allowedTypes: string,
      *   disallowedFileExtensions: string,
      *   irreObjectId: string,
@@ -194,8 +180,6 @@ final readonly class ElementBrowserParameters implements \JsonSerializable
     {
         return [
             'fieldReference' => $this->fieldReference,
-            'rteParameters' => $this->rteParameters,
-            'rteConfiguration' => $this->rteConfiguration,
             'allowedTypes' => $this->allowedTypes,
             'disallowedFileExtensions' => $this->disallowedFileExtensions,
             'irreObjectId' => $this->irreObjectId,
@@ -213,12 +197,6 @@ final readonly class ElementBrowserParameters implements \JsonSerializable
         $params = [];
         if ($this->fieldReference !== '') {
             $params['fieldReference'] = $this->fieldReference;
-        }
-        if ($this->rteParameters !== '') {
-            $params['rteParameters'] = $this->rteParameters;
-        }
-        if ($this->rteConfiguration !== '') {
-            $params['rteConfiguration'] = $this->rteConfiguration;
         }
         if ($this->allowedTypes !== '') {
             $params['allowedTypes'] = $this->allowedTypes;

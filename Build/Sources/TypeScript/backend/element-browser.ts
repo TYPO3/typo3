@@ -15,11 +15,6 @@ import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import DocumentService from '@typo3/core/document-service';
 import Modal from '@typo3/backend/modal';
 
-interface RTESettings {
-  parameters: string;
-  configuration: string;
-}
-
 interface InlineSettings {
   objectId: string;
 }
@@ -54,10 +49,6 @@ declare global {
 class ElementBrowser {
   private opener: Window = null;
   private fieldReference: string = '';
-  private readonly rte: RTESettings = {
-    parameters: '',
-    configuration: '',
-  };
   private readonly irre: InlineSettings = {
     objectId: '',
   };
@@ -66,8 +57,6 @@ class ElementBrowser {
     DocumentService.ready().then((): void => {
       const data = document.body.dataset;
       this.fieldReference = data.fieldReference;
-      this.rte.parameters = data.rteParameters;
-      this.rte.configuration = data.rteConfiguration;
       this.irre.objectId = data.irreObjectId;
     });
   }
@@ -164,7 +153,7 @@ class ElementBrowser {
       return true;
     }
 
-    if (this.fieldReference && !this.rte.parameters && !this.rte.configuration) {
+    if (this.fieldReference) {
       this.addElement(title, value ? value : table + '_' + uid, close);
     }
     return false;
