@@ -273,6 +273,7 @@ The following JavaScript modules have been removed:
 The following JavaScript method behaviours have changed:
 
 - :js:`@typo3/backend/form-engine` no longer adds the :html:`doSave` hidden field to the form on save actions. Third-party code must no longer rely on the :html:`doSave` POST parameter. :ref:`(Deprecation entry) <deprecation-109029-1771804800>`
+- :js:`@typo3/backend/tab` no longer dispatches the legacy :js:`show.bs.tab` and :js:`shown.bs.tab` events on tab switches. Listen for :js:`typo3:tab:show` (:js:`TabShowEvent`) and :js:`typo3:tab:shown` (:js:`TabShownEvent`) instead. :ref:`(Deprecation entry) <deprecation-109171-1741254000>`
 
 The following JavaScript methods have been removed:
 

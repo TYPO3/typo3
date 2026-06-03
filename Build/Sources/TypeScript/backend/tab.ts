@@ -154,13 +154,6 @@ export class Tab {
       return;
     }
 
-    // @deprecated since v14, will be removed in v15. Use TabShowEvent ('typo3:tab:show') instead.
-    button.dispatchEvent(new CustomEvent('show.bs.tab', {
-      bubbles: true,
-      cancelable: false,
-      detail: { relatedTarget: previousButton }
-    }));
-
     // Deactivate current active link in same tablist
     if (tabList) {
       for (const link of tabList.querySelectorAll<HTMLElement>('.nav-link.active')) {
@@ -185,12 +178,6 @@ export class Tab {
 
     // Dispatch typo3:tab:shown (after switch)
     button.dispatchEvent(new TabShownEvent(previousButton));
-
-    // @deprecated since v14, will be removed in v15. Use TabShownEvent ('typo3:tab:shown') instead.
-    button.dispatchEvent(new CustomEvent('shown.bs.tab', {
-      bubbles: true,
-      detail: { relatedTarget: previousButton }
-    }));
   }
 
   private static getTargetIdentifier(button: HTMLElement): string | null {
