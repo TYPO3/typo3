@@ -217,7 +217,11 @@ readonly class TranslationDomainMapper
         // Parse domain into extension key part and resource part
         [$extensionKey, $resourcePart] = explode('.', $domain, 2);
 
-        $allDomainsInPackage = $this->findLabelResourcesInPackage($extensionKey);
+        try {
+            $allDomainsInPackage = $this->findLabelResourcesInPackage($extensionKey);
+        } catch (\InvalidArgumentException) {
+            return $domain;
+        }
 
         // Fall back to domain, in case it's just a file reference.
         return $allDomainsInPackage[$domain] ?? $domain;

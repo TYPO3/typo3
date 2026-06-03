@@ -707,4 +707,12 @@ final class LanguageServiceTest extends FunctionalTestCase
         $result = $subject->label('test_localization.icu:sprintf_style', [42]);
         self::assertSame('Downloaded 42 times', $result);
     }
+
+    #[Test]
+    public function labelWithPointAndColonTest(): void
+    {
+        $subject = $this->get(LanguageServiceFactory::class)->create('en');
+        $input = 'a.b:c';
+        self::assertEquals($input, $subject->sL($input));
+    }
 }
