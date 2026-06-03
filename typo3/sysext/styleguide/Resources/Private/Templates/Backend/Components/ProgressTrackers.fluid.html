@@ -49,7 +49,7 @@
             <button type="button" id="progressTrackerDemoMinus" class="btn btn-default">- Stage</button>
             <button type="button" id="progressTrackerDemoPlus" class="btn btn-default">+ Stage</button>
         </sg:colorScheme>
-        <f:asset.script identifier="progressTrackerDemo" useNonce="true">
+        <f:asset.script identifier="progressTrackerDemo" csp="true">
             const progressTrackerDemo = document.querySelector('#progressTrackerDemo');
             const progressTrackerDemoMinus = document.querySelector('#progressTrackerDemoMinus');
             progressTrackerDemoMinus.addEventListener('click', () => {

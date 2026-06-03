@@ -151,7 +151,7 @@
             <typo3-backend-progress-bar id="progressBarDemoReuseElement" label="Click button to start demo"></typo3-backend-progress-bar>
         </div>
 
-        <f:asset.script identifier="progressBarDemo" useNonce="true">
+        <f:asset.script identifier="progressBarDemo" csp="true">
             document.querySelector('#progressBarDemoIndeterminate').addEventListener('click', () => {
                 const target = document.querySelector('#progressBarDemoIndeterminateTarget');
                 target.innerHTML = '';
