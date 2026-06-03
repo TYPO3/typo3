@@ -268,7 +268,7 @@ The following database table fields have been removed:
 
 The following JavaScript modules have been removed:
 
-- :js:`@typo3/some-extension/some-module.js`
+- The legacy CKEditor5 alias modules :js:`@typo3/ckeditor5-bundle.js` and :js:`@typo3/ckeditor5-inspector.js` have been removed. Use the :js:`@ckeditor/ckeditor5-*` modules directly. The inspector is available as :js:`@ckeditor/ckeditor5-inspector`. :ref:`(Deprecation entry) <deprecation-102099>`
 
 The following JavaScript method behaviours have changed:
 

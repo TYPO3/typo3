@@ -58,8 +58,5 @@ return [
         '@ckeditor/ckeditor5-watchdog' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-watchdog.js',
         '@ckeditor/ckeditor5-widget' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-widget.js',
         '@ckeditor/ckeditor5-word-count' => 'EXT:rte_ckeditor/Resources/Public/Contrib/@ckeditor/ckeditor5-word-count.js',
-        // Provided for backwards compatibility reasons
-        '@typo3/ckeditor5-bundle.js' => 'EXT:rte_ckeditor/Resources/Public/JavaScript/legacy/ckeditor5-bundle.js',
-        '@typo3/ckeditor5-inspector.js' => 'EXT:rte_ckeditor/Resources/Public/JavaScript/legacy/ckeditor5-inspector.js',
     ],
 ];
