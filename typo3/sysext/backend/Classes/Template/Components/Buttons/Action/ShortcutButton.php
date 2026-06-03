@@ -59,7 +59,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * }
  * ```
  *
- * Note: As of TYPO3 v14, manually adding ShortcutButton is deprecated.
+ * Note: Manually creating and adding a ShortcutButton to the button bar is not supported.
+ * It is no longer detected and does not suppress the automatic shortcut button.
  * Use DocHeaderComponent::setShortcutContext() instead.
  */
 class ShortcutButton implements ButtonInterface, PositionInterface
