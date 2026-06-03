@@ -61,6 +61,7 @@ The following PHP class aliases that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Extbase\Annotation\ORM\Lazy` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
 - :php:`\TYPO3\CMS\Extbase\Annotation\ORM\Transient` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
 - :php:`\TYPO3\CMS\Extbase\Annotation\Validate` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
+- :php:`\TYPO3\CMS\Frontend\Content\ContentSlideMode` :ref:`(Feature introduction) <feature-104974-1726401724>`
 - :php:`\TYPO3\CMS\Install\Command\LanguagePackCommand` :ref:`(Deprecation entry) <deprecation-109027-1771514240>`
 - :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent` :ref:`(Deprecation entry) <deprecation-109027-1771514240>`
 - :php:`\TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent` :ref:`(Deprecation entry) <deprecation-109027-1771514240>`

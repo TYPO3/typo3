@@ -146,9 +146,6 @@
 	},
 	"extra": {
 		"typo3/class-alias-loader": {
-			"class-alias-maps": [
-				"typo3/sysext/frontend/Migrations/Code/ClassAliasMap.php"
-			],
 			"always-add-alias-loader": true
 		},
 		"branch-alias": {
