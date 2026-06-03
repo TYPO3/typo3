@@ -514,17 +514,6 @@ export default class FormEngineValidation {
   }
 
   /**
-   * Helper function to mark a field as changed.
-   *
-   * @deprecated
-   */
-  public static markFieldAsChanged(field: FormEngineFieldElement): void {
-    console.warn('Calling markFieldAsChanged() from \'@typo3/backend/form-engine-validation\' is deprecated and will be removed in TYPO3 v15. Instead, call the method from \'@typo3/backend/form-engine\'.');
-
-    formEngineInstance.markFieldAsChanged(field);
-  }
-
-  /**
    * Parse value to integer
    */
   public static parseInt(value: number|string|boolean): number {

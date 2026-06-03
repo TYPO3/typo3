@@ -283,6 +283,7 @@ The following JavaScript methods have been removed:
   :js:`renderSelectTemplates()`, :js:`renderFileUploadTemplates()` of
   :js:`@typo3/form/backend/form-editor/stage-component`
   :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
+- :js:`markFieldAsChanged()` of :js:`@typo3/backend/form-engine-validation`. Call :js:`markFieldAsChanged()` of :js:`@typo3/backend/form-engine` instead. :ref:`(Deprecation entry) <deprecation-106527-1744189076>`
 
 The following smooth migration for JavaScript modules have been removed:
 
