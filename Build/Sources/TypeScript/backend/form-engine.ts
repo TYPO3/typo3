@@ -537,23 +537,6 @@ export default (function() {
       top.TYPO3.Backend.consumerScope.attach(FormEngine);
       window.addEventListener('pagehide', () => top.TYPO3.Backend.consumerScope.detach(FormEngine), { once: true });
     }
-
-    FormEngine.formElement.addEventListener('submit', function(e: SubmitEvent) {
-      const form = e.target as HTMLFormElement;
-      const submitterName = (e.submitter as HTMLInputElement | HTMLButtonElement | null)?.name ?? '';
-      const isSaveAction = submitterName === FormAction.save
-        || submitterName === FormAction.saveAndClose
-        || submitterName === FormAction.saveAndView
-        || submitterName === FormAction.saveAndNew
-        || form.querySelector(
-          'input[name="_savedok"], input[name="_saveandclosedok"], input[name="_savedokview"], input[name="_savedoknew"]'
-        ) !== null;
-
-      if (isSaveAction) {
-        addDeprecatedDoSaveField(form);
-      }
-    }, { capture: true });
-
   };
 
   FormEngine.consume = function(interactionRequest: TriggerRequest): Promise<void> {
@@ -1355,26 +1338,12 @@ export default (function() {
     FormEngine.formElement.submit();
   };
 
-  // @deprecated since TYPO3 v14, will be removed in v15. The doSave field is only kept for
-  // backwards compatibility with third-party code that reads it from POST data.
-  const addDeprecatedDoSaveField = (form: HTMLFormElement): void => {
-    if (form.querySelector('input[name="doSave"]') === null) {
-      const doSaveField = document.createElement('input');
-      doSaveField.type = 'hidden';
-      doSaveField.name = 'doSave';
-      doSaveField.value = '1';
-      form.append(doSaveField);
-    }
-  };
-
   const submitFormWithAction = (name: string): void => {
     const currentlyFocussed = document.activeElement;
     if (currentlyFocussed instanceof HTMLInputElement || currentlyFocussed instanceof HTMLSelectElement || currentlyFocussed instanceof HTMLTextAreaElement) {
       // Blur currently focussed :input element to trigger FormEngine's internal data normalization
       currentlyFocussed.blur();
     }
-
-    addDeprecatedDoSaveField(FormEngine.formElement);
 
     // Try to find a matching submit button so the SubmitInterceptor can handle spinner
     // and disable state. If no button exists, fall back to a hidden input to carry the action value.
