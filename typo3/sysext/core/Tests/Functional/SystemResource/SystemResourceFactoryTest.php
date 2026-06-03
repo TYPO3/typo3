@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\SystemResource;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -252,18 +251,6 @@ final class SystemResourceFactoryTest extends FunctionalTestCase
         $this->expectException(CanNotResolveSystemResourceException::class);
         $resourceFactory = $this->get(SystemResourceFactory::class);
         $resourceFactory->createResource($resourceString);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function createResourceCreatesResourceForAllowedFolder(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'] = 'typo3temp/foo,typo3temp/bar/';
-        $resourceFactory = $this->get(SystemResourceFactory::class);
-        $resource = $resourceFactory->createResource('PKG:typo3/app:typo3temp/foo/Extension.svg');
-        self::assertInstanceOf(PublicResourceInterface::class, $resource);
-        $resource = $resourceFactory->createResource('PKG:typo3/app:typo3temp/bar/Extension.svg');
-        self::assertInstanceOf(PublicResourceInterface::class, $resource);
     }
 
     public static function createPublicResourceThrowsWhenResolvingPrivateResourcesDataProvider(): \Generator

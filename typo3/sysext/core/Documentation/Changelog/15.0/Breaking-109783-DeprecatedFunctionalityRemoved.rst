@@ -218,6 +218,7 @@ The following global option handling have been dropped and are ignored:
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][/*...*/]['defaultTableOptions']['collate']` :ref:`(Deprecation entry) <deprecation-105297-1728836814>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['fallbackToLegacyHash']`; the transitional fallback to the legacy md5-based cHash validation has been removed, only the HMAC-SHA3 cHash is accepted :ref:`(Breaking entry) <breaking-106307-1763824774>`
 - :php:`$GLOBALS['TYPO3_USER_SETTINGS']`; backend user profile settings are now configured via TCA (the :php:`be_users` ``user_settings`` column) using :php:`ExtensionManagementUtility::addUserSetting()` :ref:`(Deprecation entry) <deprecation-108843-1738600000>`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']`; additional public folders are now exposed via resource definitions instead :ref:`(Deprecation entry) <deprecation-109409-1774774806>`
 
 The following global variables have been changed:
 

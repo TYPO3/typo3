@@ -217,6 +217,8 @@ class SilentConfigurationUpgradeService
         'FE/additionalAbsRefPrefixDirectories',
         // #109959
         'FE/cacheHash/fallbackToLegacyHash',
+        // #109986
+        'FE/addAllowedPaths',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}

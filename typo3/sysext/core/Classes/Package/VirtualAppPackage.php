@@ -17,10 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Package;
 
-use TYPO3\CMS\Core\Package\Resource\Definition\PublicResourceDefinition;
 use TYPO3\CMS\Core\Package\Resource\ResourceCollection;
 use TYPO3\CMS\Core\Package\Resource\ResourceCollectionInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This represents the app package (root package in Composer terms)
@@ -66,15 +64,6 @@ final class VirtualAppPackage extends Package
         $resources = parent::getResources();
         if (!$resources instanceof ResourceCollection) {
             throw new \RuntimeException('Resource object must not be overridden', 1774537784);
-        }
-        $resourceDefinitions = [];
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'])) {
-            trigger_error('$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'addAllowedPaths\'] is deprecated. Use resource definitions instead.', E_USER_DEPRECATED);
-            $allowedFolders = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths'], true);
-            foreach ($allowedFolders as $folder) {
-                $resourceDefinitions[] = new PublicResourceDefinition($this->relativePublicPath . trim($folder, '/'));
-            }
-            $resources = $resources->withAdditionalResources(new ResourceCollection($resourceDefinitions, null));
         }
         return $resources;
     }
