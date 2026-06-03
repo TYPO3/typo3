@@ -307,6 +307,10 @@ The following template files have been removed:
 - :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/_ElementToolbar.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
 - :file:`EXT:form/Resources/Private/Backend/Partials/FormEditor/Stage/_UnknownElement.fluid.html` :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
 
+The following CSS classes have been removed:
+
+- :css:`.table-sorting-button` and :css:`.table-sorting-icon`. These backend table sorting helper classes were not used by the core.
+
 The following content element definitions have been removed:
 
 - :typoscript:`tt_content.some_element`
