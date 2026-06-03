@@ -212,51 +212,9 @@ readonly class Bootstrap
             return false;
         }
 
-        $systemConfigurationPath = $configurationManager->getSystemConfigurationFileLocation();
-        $additionalConfigurationPath = $configurationManager->getAdditionalConfigurationFileLocation();
-
-        $systemConfigurationFileExists = file_exists($systemConfigurationPath);
-        $additionalConfigurationFileExists = file_exists($additionalConfigurationPath);
-        if ($systemConfigurationFileExists && $additionalConfigurationFileExists) {
-            // We have a complete configuration, off we go
-            return true;
-        }
-
-        // If system configuration file exists and no legacy additional configuration is present, we are good
-        $legacyAdditionConfigurationPath = Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php';
-        $legacyAdditionalConfigurationFileExists = file_exists($legacyAdditionConfigurationPath);
-        if ($systemConfigurationFileExists && !$legacyAdditionalConfigurationFileExists) {
-            return true;
-        }
-
-        // @deprecated All code below is deprecated and can be removed with TYPO3 v15.0 (or later as
-        //              it does not hurt to keep this migration for now) and replaced with `return false;`
-
-        // All other cases will probably need some migration work
-        $migrated = false;
-
-        // In case no system configuration file exists at this point, check for the legacy "LocalConfiguration"
-        // file. If it exists, move it to the new location. Otherwise, the system is not complete.
-        if (!$systemConfigurationFileExists) {
-            $legacyLocalConfigurationPath = $configurationManager->getLocalConfigurationFileLocation();
-            $legacySystemConfigurationFileExists = file_exists($legacyLocalConfigurationPath);
-            if ($legacySystemConfigurationFileExists) {
-                mkdir(dirname($systemConfigurationPath), 02775, true);
-                rename($legacyLocalConfigurationPath, $systemConfigurationPath);
-                $migrated = true;
-            } else {
-                // Directly return as essential system configuration does not exist
-                return false;
-            }
-        }
-        // In case no additional configuration file exists at this point, check for the legacy
-        // "AdditionalConfiguration" file. If it exists, move it to the new location as well.
-        if (!$additionalConfigurationFileExists && $legacyAdditionalConfigurationFileExists) {
-            rename($legacyAdditionConfigurationPath, $additionalConfigurationPath);
-            $migrated = true;
-        }
-
-        return $migrated;
+        // The system configuration file (settings.php) is mandatory, the additional configuration
+        // file (additional.php) is optional.
+        return file_exists($configurationManager->getSystemConfigurationFileLocation());
     }
 
     /**

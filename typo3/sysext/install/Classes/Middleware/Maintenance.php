@@ -24,7 +24,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -313,20 +312,7 @@ class Maintenance implements MiddlewareInterface
      */
     protected function checkIfEssentialConfigurationExists(): bool
     {
-        if (file_exists($this->configurationManager->getSystemConfigurationFileLocation())) {
-            return true;
-        }
-        // @deprecated since TYPO3 v12.0, will be removed in TYPO3 v15.0.
-        if (file_exists($this->configurationManager->getLocalConfigurationFileLocation())) {
-            mkdir(dirname($this->configurationManager->getSystemConfigurationFileLocation()), 02775, true);
-            rename($this->configurationManager->getLocalConfigurationFileLocation(), $this->configurationManager->getSystemConfigurationFileLocation());
-            if (file_exists(Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php')) {
-                rename(Environment::getLegacyConfigPath() . '/AdditionalConfiguration.php', $this->configurationManager->getAdditionalConfigurationFileLocation());
-            }
-
-            return file_exists($this->configurationManager->getSystemConfigurationFileLocation());
-        }
-        return false;
+        return file_exists($this->configurationManager->getSystemConfigurationFileLocation());
     }
 
     /**

@@ -109,31 +109,13 @@ class ConfigurationManager
     }
 
     /**
-     * Return configuration array of typo3conf/system/settings.php or config/system/settings.php, falls back
-     * to typo3conf/LocalConfiguration.php
+     * Return configuration array of typo3conf/system/settings.php or config/system/settings.php
      *
      * @return array Content array of local configuration file
      */
     public function getLocalConfiguration(): array
     {
-        $settingsFile = $this->getSystemConfigurationFileLocation();
-        if (is_file($settingsFile)) {
-            return require $settingsFile;
-        }
-        return require $this->getLocalConfigurationFileLocation();
-    }
-
-    /**
-     * Get the file location of the local configuration file,
-     * currently the path and filename.
-     *
-     * Path to local overload TYPO3_CONF_VARS file.
-     *
-     * @internal
-     */
-    public function getLocalConfigurationFileLocation(): string
-    {
-        return Environment::getLegacyConfigPath() . '/LocalConfiguration.php';
+        return require $this->getSystemConfigurationFileLocation();
     }
 
     /**

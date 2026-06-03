@@ -239,6 +239,7 @@ The following fallbacks have been removed:
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getRequest()` no longer falls back to :php:`$GLOBALS['TYPO3_REQUEST']`; code must call :php:`setRequest()` after instantiation :ref:`(Deprecation entry) <deprecation-109575>`
 - Page layout content area columns without an :html:`identifier` no longer fall back to a generated hash based on the page layout identifier and :html:`colPos`; a missing identifier now throws a :php:`\RuntimeException` :ref:`(Feature introduction) <feature-104974-1726401724>`
 - Manually creating and adding a :php:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton` to the button bar is no longer detected and no longer suppresses the automatic shortcut button; controllers must use :php:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setShortcutContext()` instead :ref:`(Deprecation entry) <deprecation-108008-1762896168>`
+- A legacy :file:`typo3conf/LocalConfiguration.php` and :file:`typo3conf/AdditionalConfiguration.php` are no longer automatically migrated to :file:`config/system/settings.php` and :file:`config/system/additional.php` on first request. The configuration files have to reside at their final location. :ref:`(Breaking entry) <breaking-98319-1664641595>`
 
 The following upgrade wizards have been removed:
 
