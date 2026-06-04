@@ -85,7 +85,7 @@ readonly class SuggestWizardController
                     true
                 );
             }
-            if ($recordType !== null) {
+            if ($recordType !== null && $schema->hasSubSchema($recordType)) {
                 $fieldConfig = $schema->getSubSchema($recordType)->getField($fieldName)->getConfiguration();
             }
         } else {
