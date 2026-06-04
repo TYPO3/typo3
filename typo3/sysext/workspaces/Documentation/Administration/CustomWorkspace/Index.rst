@@ -212,9 +212,6 @@ i.e. any changes to them performed in the workspace will be
 directly visible on the web site, rather than going through
 the review process.
 
-"Swap modes" defines if swapping should take place or not
-upon automatic publishing.
-
 The "Publish access" setting further refines publishing rights.
 If the "Publish only content in publish stage" box is checked,
 modified content cannot be forcefully published by workspace owners at

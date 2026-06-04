@@ -35,7 +35,7 @@ as the live version. However, all "offline" versions have a pid
 value of "-1" to set them apart. Furthermore they have a database
 field called "t3ver\_oid" which points to their live ("online") counterpart.
 
-When a future/past version is swapped with the live version it is done
+Publishing a workspace version is done
 by *swapping all field values except the uid and pid* fields (and of
 course versioning related fields are manipulated according to their
 function). It means that online content is always identified by the
