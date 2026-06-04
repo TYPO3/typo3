@@ -71,7 +71,13 @@ This change affects the following PSR-14 events:
 *   :php-short:`\TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent`
 
 A fallback for TYPO3 v14 resolves comma-separated `dataStructureKey`
-values (for example, `list_type,CType`) to `CType`.
+values (for example, `list_type,CType`) to `CType`. Such comma-separated
+keys were used to address flex form fields in page TSconfig overrides via
+`TCEFORM.<table>.<field>.<dataStructureKey>` and in backend user exclude-field
+definitions via `<table>:<field>;<dataStructureKey>`. This fallback emits a
+PHP deprecation notice and is removed in TYPO3 v15, so page TSconfig and
+exclude-field addressing then use the data structure key as-is (the record
+type value, for example `textpic`).
 
 To address circular dependencies during schema building,
 :php-short:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools` now supports
