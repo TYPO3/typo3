@@ -33,6 +33,7 @@ The following PHP classes that have previously been marked as deprecated with v1
 - :php:`\TYPO3\CMS\Install\Updates\Confirmation\DatabaseUpdatedPrerequisite` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
+- :php:`\TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate` :ref:`(Deprecation entry) <deprecation-105076-1726923626>`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -257,6 +258,10 @@ The following fallbacks have been removed:
 The following upgrade wizards have been removed:
 
 - :php:`\TYPO3\CMS\Core\Upgrades\SysFileMimeTypeMigration` (identifier ``sysFileMimeTypeMigration``)
+- :php:`\TYPO3\CMS\Core\Upgrades\PagesRecyclerDoktypeMigration` (identifier ``pagesRecyclerDoktypeMigration``)
+- :php:`\TYPO3\CMS\Core\Upgrades\NullToDefaultUpdateWizard` (identifier ``nullToDefaultUpdateWizard``)
+- :php:`\TYPO3\CMS\Frontend\Upgrades\SynchronizeColPosAndCTypeWithDefaultLanguage` (identifier ``synchronizeColPosAndCTypeWithDefaultLanguage``)
+- :php:`\TYPO3\CMS\IndexedSearch\Upgrades\IndexedSearchCTypeMigration` (identifier ``indexedSearchCTypeMigration``)
 
 The following row updater has been removed:
 

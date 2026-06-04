@@ -2742,6 +2742,7 @@ return [
     'TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite' => [
