@@ -373,7 +373,7 @@ export class RecordTableElement extends LitElement {
    * @param {string} action
    * @param {string} iconIdentifier
    * @param {object} additionalAttributes
-   * @return {JQuery}
+   * @return {TemplateResult}
    */
   private getAction(condition: boolean, action: string, iconIdentifier: string, additionalAttributes?: Record<string, string>): TemplateResult {
     return html`

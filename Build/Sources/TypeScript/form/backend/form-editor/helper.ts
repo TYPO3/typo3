@@ -210,8 +210,7 @@ export function getDomElementDataIdentifierSelector(
  * Returns the template container element matching the given name.
  * Note: callers typically need the *inner content* of the container, not the
  * container itself. Use `element.innerHTML` or `element.firstElementChild`
- * to obtain the actual template markup, analogous to the deprecated
- * `getTemplate()` + jQuery's `.html()` pattern.
+ * to obtain the actual template markup.
  */
 export function getTemplateElement(templateName: string): HTMLTemplateElement | null {
   if (!getUtility().isUndefinedOrNull(configuration.domElementDataAttributeValues[templateName])) {

@@ -121,8 +121,6 @@ export default {
             'flatpickr/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/flatpickr/',
             'interactjs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/interact.js',
             'intl-messageformat': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/intl-messageformat.js',
-            'jquery': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.js',
-            'jquery/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/',
             '@lit/reactive-element': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/reactive-element.js',
             '@lit/reactive-element/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/',
             '@lit/task': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/task/index.js',

@@ -34,7 +34,6 @@ interface AfterProcessEventDict {
 class AjaxDataHandler {
   /**
    * AJAX call to record_process route (SimpleDataHandlerController->processAjaxRequest)
-   * returns a jQuery Promise to work with
    *
    * @param {string | object} params
    * @returns {Promise<ResponseInterface>}

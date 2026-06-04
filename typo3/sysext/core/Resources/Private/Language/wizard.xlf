@@ -3,25 +3,25 @@
   <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/wizard.xlf" date="2016-02-14T16:11:24Z" product-name="core">
     <header/>
     <body>
-      <trans-unit id="wizard.button.next">
+      <trans-unit id="wizard.button.next" x-unused-since="15.0">
         <source>Next</source>
       </trans-unit>
-      <trans-unit id="wizard.button.prev">
+      <trans-unit id="wizard.button.prev" x-unused-since="15.0">
         <source>Previous</source>
       </trans-unit>
-      <trans-unit id="wizard.button.cancel">
+      <trans-unit id="wizard.button.cancel" x-unused-since="15.0">
         <source>Cancel</source>
       </trans-unit>
-      <trans-unit id="wizard.progress">
+      <trans-unit id="wizard.progress" x-unused-since="15.0">
         <source>Step {0} of {1}</source>
       </trans-unit>
-      <trans-unit id="wizard.progressStep.configure">
+      <trans-unit id="wizard.progressStep.configure" x-unused-since="15.0">
         <source>Configure</source>
       </trans-unit>
-      <trans-unit id="wizard.progressStep.finish">
+      <trans-unit id="wizard.progressStep.finish" x-unused-since="15.0">
         <source>Finish</source>
       </trans-unit>
-      <trans-unit id="wizard.processing.title">
+      <trans-unit id="wizard.processing.title" x-unused-since="15.0">
         <source>Processing...</source>
       </trans-unit>
       <trans-unit id="wizard.step.required">

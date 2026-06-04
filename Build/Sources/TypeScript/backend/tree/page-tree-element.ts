@@ -282,7 +282,7 @@ export class EditablePageTree extends PageTree {
       ]
     );
 
-    modal.addEventListener('button.clicked', (e: JQueryEventObject) => {
+    modal.addEventListener('button.clicked', (e: Event) => {
       const target = e.target as HTMLInputElement;
       if (target.name === 'move') {
         options.command = TreeNodeCommandEnum.MOVE;

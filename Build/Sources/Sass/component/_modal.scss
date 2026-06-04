@@ -485,23 +485,3 @@ $modal-heights: (
         }
     }
 }
-
-.modal-multi-step-wizard {
-    .modal-body {
-        .carousel {
-            &.slide {
-                min-height: 21em;
-            }
-        }
-
-        .carousel-inner {
-            width: auto;
-            margin: -5px;
-            padding: 5px;
-        }
-
-        .carousel-item > *:last-child {
-            margin-bottom: 0 !important;
-        }
-    }
-}

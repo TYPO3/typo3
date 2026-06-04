@@ -470,7 +470,6 @@ module.exports = function (grunt) {
         { name: 'flatpickr', bundle: true },
         { name: 'flatpickr/dist/l10n', src: 'node_modules/flatpickr/dist/esm/l10n/index.js', bundle: true },
         'interactjs',
-        'jquery',
         'luxon',
         'marked',
         'shortcut-buttons-flatpickr',

@@ -46,7 +46,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
     private array $definedResources = [
         'extensionCSS' => 'EXT:rte_ckeditor/Resources/Public/Css/contents.css',
         'externalCSS' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
-        'extensionJS' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.js',
+        'extensionJS' => 'EXT:core/Resources/Public/JavaScript/Contrib/luxon.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
         'localImage' => 'EXT:frontend/Resources/Public/Icons/Extension.svg',
     ];
@@ -57,7 +57,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
     private array $resolvedResources = [
         'extensionCSS' => 'typo3/sysext/rte_ckeditor/Resources/Public/Css/contents.css',
         'externalCSS' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
-        'extensionJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.js',
+        'extensionJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/luxon.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
         'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.svg',
     ];

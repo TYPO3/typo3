@@ -15,7 +15,6 @@ declare namespace TYPO3 {
   export namespace ModuleMenu {
     export let App: typeof import('@typo3/backend/module-menu').default.App;
   }
-  export let MultiStepWizard: typeof import('@typo3/backend/multi-step-wizard').default;
   export let Notification: typeof import('@typo3/backend/notification').default;
   export let Modal: typeof import('@typo3/backend/modal').default;
   export let LiveSearch: typeof import('@typo3/backend/live-search/live-search').default;

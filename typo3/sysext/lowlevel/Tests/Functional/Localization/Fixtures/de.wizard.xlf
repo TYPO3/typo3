@@ -3,8 +3,8 @@
   <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/wizard.xlf" date="2016-02-14T16:11:24Z" product-name="core" target-language="de">
     <header/>
     <body>
-      <trans-unit id="wizard.button.next" approved="yes">
-        <source>Next Testinglabelsearch</source>
+      <trans-unit id="wizard.step.required" approved="yes">
+        <source>Required fields Testinglabelsearch</source>
         <target state="final">Testinglabelsearchsuche</target>
       </trans-unit>
     </body>

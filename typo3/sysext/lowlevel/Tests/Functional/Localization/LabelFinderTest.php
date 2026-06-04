@@ -44,15 +44,15 @@ final class LabelFinderTest extends FunctionalTestCase
     public function labelFinderWillReturnDefaultLanguageStrings(): void
     {
         $packages = $this->get(PackageManager::class)->getActivePackages();
-        $result = $this->get(LabelFinder::class)->findLabels($packages, 'default', 'Processing...');
+        $result = $this->get(LabelFinder::class)->findLabels($packages, 'default', 'Save and view page');
         self::assertCount(2, $result);
-        self::assertSame('wizard.processing.title', $result[0]->labels[0]->reference);
-        self::assertSame('core.wizard', $result[0]->domain);
-        self::assertSame('EXT:core/Resources/Private/Language/wizard.xlf', $result[0]->resource);
+        self::assertSame('saveAndViewPage', $result[0]->labels[0]->reference);
+        self::assertSame('core.common', $result[0]->domain);
+        self::assertSame('EXT:core/Resources/Private/Language/locallang_common.xlf', $result[0]->resource);
 
-        self::assertSame('localize.view.processing', $result[1]->labels[0]->reference);
-        self::assertSame('backend.layout', $result[1]->domain);
-        self::assertSame('EXT:backend/Resources/Private/Language/locallang_layout.xlf', $result[1]->resource);
+        self::assertSame('rm.saveDocShow', $result[1]->labels[0]->reference);
+        self::assertSame('core.core', $result[1]->domain);
+        self::assertSame('EXT:core/Resources/Private/Language/locallang_core.xlf', $result[1]->resource);
     }
 
     #[Test]
@@ -72,15 +72,15 @@ final class LabelFinderTest extends FunctionalTestCase
     public function labelFinderWillReturnDefaultLanguageStringsWhenUsingEnglishLocale(): void
     {
         $packages = $this->get(PackageManager::class)->getActivePackages();
-        $result = $this->get(LabelFinder::class)->findLabels($packages, 'en', 'Processing...');
+        $result = $this->get(LabelFinder::class)->findLabels($packages, 'en', 'Save and view page');
         self::assertCount(2, $result);
-        self::assertSame('wizard.processing.title', $result[0]->labels[0]->reference);
-        self::assertSame('core.wizard', $result[0]->domain);
-        self::assertSame('EXT:core/Resources/Private/Language/wizard.xlf', $result[0]->resource);
+        self::assertSame('saveAndViewPage', $result[0]->labels[0]->reference);
+        self::assertSame('core.common', $result[0]->domain);
+        self::assertSame('EXT:core/Resources/Private/Language/locallang_common.xlf', $result[0]->resource);
 
-        self::assertSame('localize.view.processing', $result[1]->labels[0]->reference);
-        self::assertSame('backend.layout', $result[1]->domain);
-        self::assertSame('EXT:backend/Resources/Private/Language/locallang_layout.xlf', $result[1]->resource);
+        self::assertSame('rm.saveDocShow', $result[1]->labels[0]->reference);
+        self::assertSame('core.core', $result[1]->domain);
+        self::assertSame('EXT:core/Resources/Private/Language/locallang_core.xlf', $result[1]->resource);
     }
 
     #[Test]
@@ -102,7 +102,7 @@ final class LabelFinderTest extends FunctionalTestCase
         $packages = $this->get(PackageManager::class)->getActivePackages();
         $result = $this->get(LabelFinder::class)->findLabels($packages, 'de', 'Testinglabelsearchsuche');
         self::assertCount(1, $result, 'Translated label not found. Proper label file was not loaded.');
-        self::assertSame('wizard.button.next', $result[0]->labels[0]->reference);
+        self::assertSame('wizard.step.required', $result[0]->labels[0]->reference);
         self::assertSame('core.wizard', $result[0]->domain);
         self::assertSame('EXT:core/Resources/Private/Language/wizard.xlf', $result[0]->resource);
 

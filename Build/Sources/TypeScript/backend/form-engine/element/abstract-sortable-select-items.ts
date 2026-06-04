@@ -119,8 +119,11 @@ export abstract class AbstractSortableSelectItems {
       e.preventDefault();
 
       const relatedFieldName = target.dataset.fieldname;
-      const relatedField = FormEngine.getFieldElement(relatedFieldName).get(0) as HTMLSelectElement;
-      const relatedAvailableValuesField = FormEngine.getFieldElement(relatedFieldName,'_avail').get(0) as HTMLSelectElement;
+      const relatedField = FormEngine.getFieldElement(relatedFieldName) as HTMLSelectElement | null;
+      const relatedAvailableValuesField = FormEngine.getFieldElement(relatedFieldName, '_avail') as HTMLSelectElement | null;
+      if (relatedField === null || relatedAvailableValuesField === null) {
+        return;
+      }
 
       if (target.classList.contains('t3js-btn-moveoption-top')) {
         AbstractSortableSelectItems.moveOptionToTop(fieldElement);
@@ -148,8 +151,11 @@ export abstract class AbstractSortableSelectItems {
    */
   private readonly registerKeyboardEventHandler = (fieldElement: HTMLSelectElement): void => {
     const relatedFieldName = fieldElement.dataset.formengineInputName;
-    const relatedField = FormEngine.getFieldElement(relatedFieldName).get(0) as HTMLSelectElement;
-    const relatedAvailableValuesField = FormEngine.getFieldElement(relatedFieldName,'_avail').get(0) as HTMLSelectElement;
+    const relatedField = FormEngine.getFieldElement(relatedFieldName) as HTMLSelectElement | null;
+    const relatedAvailableValuesField = FormEngine.getFieldElement(relatedFieldName, '_avail') as HTMLSelectElement | null;
+    if (relatedField === null || relatedAvailableValuesField === null) {
+      return;
+    }
 
     new RegularEvent('keydown', (e: KeyboardEvent): void => {
       if (e.code === 'Delete' || e.code === 'Backspace') {

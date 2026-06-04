@@ -303,7 +303,6 @@ The following example module is a template you can use containing the recommende
    /**
     * Module: @my-vendor/my-site-package/backend/form-editor/view-model.js
     */
-   import $ from 'jquery';
    import * as Helper from '@typo3/form/backend/form-editor/helper.js'
 
    /**
@@ -378,7 +377,7 @@ The following example module is a template you can use containing the recommende
     * @throws 1491643380
     */
    function _helperSetup() {
-       assert('function' === $.type(Helper.bootstrap),
+       assert('function' === typeof Helper.bootstrap,
            'The view model helper does not implement the method "bootstrap"',
            1491643380
        );

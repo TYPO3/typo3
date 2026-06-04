@@ -97,25 +97,6 @@ export default [...compat.extends(
     "no-var": "error",
     "no-case-declarations": "off",
     "no-unneeded-ternary": "error",
-
-    "no-restricted-properties": ["error", {
-      object: "window",
-      property: "jQuery",
-      message: "Use `import jQuery from 'jquery'` instead.",
-    }, {
-      object: "window",
-      property: "$",
-      message: "Use `import $ from 'jquery'` instead.",
-    }],
-
-    "no-restricted-globals": ["error", {
-      name: "jQuery",
-      message: "Use `import jQuery from 'jquery'` instead.",
-    }, {
-      name: "$",
-      message: "Use `import $ from 'jquery'` instead.",
-    }],
-
     "object-curly-spacing": ["error", "always"],
     quotes: ["error", "single"],
     radix: "error",
