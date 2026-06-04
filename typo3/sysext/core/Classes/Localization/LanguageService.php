@@ -42,6 +42,11 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
  *     ->createFromUserPreferences($GLOBALS['BE_USER']);
  * ```
+ *
+ * @phpstan-import-type TranslationLabel from LocalizationFactory
+ * @phpstan-type TranslationFile array<string, TranslationLabel>
+ * @phpstan-type LabelOverrides array<string, string>
+ * @phpstan-type TypoScriptLabels array<string, LabelOverrides>
  */
 #[Exclude]
 class LanguageService implements TranslatorInterface
@@ -54,7 +59,7 @@ class LanguageService implements TranslatorInterface
     protected ?Locale $locale = null;
 
     /**
-     * @var string[][]
+     * @var array<string, TranslationFile>
      */
     protected array $overrideLabels = [];
 
@@ -93,7 +98,7 @@ class LanguageService implements TranslatorInterface
      * Returns the label with key $index from the $LOCAL_LANG array used as the second argument
      *
      * @param string $index Label key
-     * @param array $localLanguage $LOCAL_LANG array to get label key from
+     * @param TranslationFile $localLanguage $LOCAL_LANG array to get label key from
      */
     protected function getLLL(string $index, array $localLanguage, bool $returnNullIfNotSet = false): ?string
     {
@@ -380,7 +385,7 @@ class LanguageService implements TranslatorInterface
      * Includes a locallang file and returns the labels found inside.
      *
      * @param string $fileReferenceOrDomain Input is a file-reference to be a 'local_lang' file containing a $LOCAL_LANG array
-     * @return array value of $LOCAL_LANG found in the included file, empty if none found
+     * @return TranslationFile value of $LOCAL_LANG found in the included file, empty if none found
      */
     protected function readLLfile(string $fileReferenceOrDomain): array
     {
@@ -409,23 +414,30 @@ class LanguageService implements TranslatorInterface
     /**
      * Define custom labels which can be overridden for a given file. This is typically
      * the case for TypoScript plugins.
+     *
+     * @param TypoScriptLabels $labels
      */
     public function overrideLabels(string $fileRef, array $labels): void
     {
+        /** @var TypoScriptLabels $localLanguage */
         $localLanguage = [
             // Default is kept for fallback purposes when coming from TypoScript
             'en' => $labels['en'] ?? $labels['default'] ?? [],
         ];
         $mainLanguageKey = $this->getTypo3LanguageKey();
-        if ($mainLanguageKey !== 'en') {
-            // Populate the initial values with "en", if no labels for the current language are given
+        // Special handling for legacy reasons:
+        // Default and EN were historically the same. It is valid though to have an EN(-XX)-XLF translation.
+        // Therefore, copy the overrides of "default" over to "en-*", if no specific overrides exist for this yet.
+        if (str_starts_with($mainLanguageKey, 'en') && !isset($labels[$mainLanguageKey])) {
             $localLanguage[$mainLanguageKey] = $localLanguage['en'];
+        }
+        if ($mainLanguageKey !== 'default') {
             $allLocales = array_merge([$mainLanguageKey], $this->locale->getDependencies());
             $allLocales = array_unique($allLocales);
             $allLocales = array_reverse($allLocales);
             foreach ($allLocales as $language) {
                 if (isset($labels[$language])) {
-                    $localLanguage[$mainLanguageKey] = array_replace_recursive($localLanguage[$mainLanguageKey], $labels[$language]);
+                    $localLanguage[$mainLanguageKey] = array_replace_recursive($localLanguage[$mainLanguageKey] ?? [], $labels[$language]);
                 }
             }
         }
@@ -439,6 +451,7 @@ class LanguageService implements TranslatorInterface
      *     plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
      *
      * @internal not part of TYPO3 Core API.
+     * @return TypoScriptLabels
      */
     public function loadTypoScriptLabelsFromExtension(string $extensionName, FrontendTypoScript $typoScript, string $pluginName = ''): array
     {

@@ -156,6 +156,12 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             'TS override simple key (key1)'
             => ['key1', 'label_test', 'da', 'key1 value from TS core'],
 
+            'TS override simple key (key6) but only in English'
+            => ['key6', 'label_test', 'default', 'key6 TypoScript label overridden only for English'],
+
+            'No TS override for key6 in DA'
+            => ['key6', 'label_test', 'da', 'Dansk label for key6'],
+
             'TS override traditional LLL string does not work'
             => ['LLL:EXT:label_test/Resources/Private/Language/locallang.xlf:key1', null, 'da', 'Dansk label for key1'],
 
@@ -174,8 +180,11 @@ final class LocalizationUtilityTest extends FunctionalTestCase
             'XLF label no override (key2)'
             => ['key2', 'label_test', 'da', 'English label for key2'],
 
+            // This case is edgy. key3 has no translation in DA, but has a TS override for EN.
+            // we can't support this override, because we would need to process all overrides for all languages
+            // in the potential fallback chain.
             'TS override key3 (top-level)'
-            => ['key3', 'label_test', 'da', 'English label for key3 from TypoScript'],
+            => ['key3', 'label_test', 'da', 'English label for key3'],
 
             'TS nested subkey (key3.subkey1)'
             => ['key3.subkey1', 'label_test', 'da', 'key3.subkey1 value from TypoScript'],
@@ -205,6 +214,7 @@ final class LocalizationUtilityTest extends FunctionalTestCase
                 'tx_labeltest.' => ['_LOCAL_LANG.' => [
                     'default.' => [
                         'key3' => 'English label for key3 from TypoScript',
+                        'key6' => 'key6 TypoScript label overridden only for English',
                     ],
                     'da.' => [
                         'key1' => 'key1 value from TS core',

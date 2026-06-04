@@ -40,6 +40,9 @@ use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
  *
  * The main issue with this class is that it does not resolve proper dependencies, thus the fallback logic
  * is marode. You can see this when checking for ArrayUtility both here and in LanguageService.
+ *
+ * @phpstan-type TranslationPlural array<int, string>
+ * @phpstan-type TranslationLabel array<string, string|TranslationPlural>
  */
 readonly class LocalizationFactory
 {
@@ -101,7 +104,7 @@ readonly class LocalizationFactory
      * @param Locale|string|null $locale Locale with dependencies or language key. Null value is set to 'en' with fallback 'default'. @internal Language key as string loads language data with "en" and "default" as the default fallback dependency.
      * @param bool $renewCache Recompute data and renew cache entry.
      *
-     * @return array<string, string|array<int, array<string, string>>>
+     * @return TranslationLabel
      */
     public function getParsedData(string $fileReference, Locale|string|null $locale, bool $renewCache = false): array
     {
@@ -231,6 +234,8 @@ readonly class LocalizationFactory
 
     /**
      * Get the catalogue and convert to TYPO3 format
+     *
+     * @return TranslationLabel
      */
     protected function loadWithSymfonyTranslator(string $languageKey, string $domainName): array
     {
@@ -270,6 +275,8 @@ readonly class LocalizationFactory
 
     /**
      * Convert Symfony MessageCatalogue to TYPO3's legacy format
+     *
+     * @return TranslationLabel
      */
     protected function convertCatalogueToLegacyFormat(MessageCatalogueInterface $catalogue, string $domain): array
     {
@@ -293,6 +300,8 @@ readonly class LocalizationFactory
 
     /**
      * Simple parser for ICU plural format - extracts plural values
+     *
+     * @return TranslationPlural
      */
     protected function parseIcuPlural(string $icuString): array
     {
