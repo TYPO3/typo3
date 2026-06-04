@@ -1,0 +1,10 @@
+"pages",
+,"uid","pid","title","nav_title","subtitle","doktype","hidden","nav_hide","sorting","link"
+,1,0,"Home","Home","Root",1,0,0,0,""
+,2,1,"About Us","About","About Company",1,0,0,0,""
+,3,1,"Services","Our Services","",1,0,0,128,""
+,4,3,"Consulting","Consulting","",1,0,0,0,""
+,5,1,"Contact","","",1,0,1,256,""
+,6,0,"External Link","External","",3,0,0,128,"https://example.com"
+,7,1,"Hidden Page","Hidden","",1,1,0,512,""
+,8,1,"Spacer Page","Spacer","",199,0,0,1024,""
