@@ -59,7 +59,7 @@ correspond to the following operations:
 
 #. *Show changes*: opens the detailed view
 
-#. *Swap*: swaps the workspace and live version of that record
+#. *Publish*: publishes the workspace version of that record to live
 
 #. *Preview element*: opens the preview window
 
@@ -178,7 +178,7 @@ in the overview and using the menu at the bottom left:
 The mass action menu
 ^^^^^^^^^^^^^^^^^^^^
 
-You can also publish, swap or discard a **whole workspace** at once with
+You can also publish or discard a **whole workspace** at once with
 the third menu at the bottom. This select box – called "Mass
 Actions" - is only active when no element is selected:
 

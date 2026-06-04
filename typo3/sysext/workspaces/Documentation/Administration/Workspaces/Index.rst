@@ -51,26 +51,16 @@ two types of workspaces:
     Plus a review process as simple or complete as needed.
 
 
+.. _publishing:
 .. _publishing-and-swapping:
 
-Publishing and swapping
-"""""""""""""""""""""""
+Publishing
+""""""""""
 
-There are two ways to publish an element in a workspace; publish or
-swap. In both cases the draft content is published live. But when
-swapping it means the current live element is attached to the
-workspace when taken offline. This is contrary to the publish mode
-which pushes the live item out of any workspace and "into the
-archive".
-
-The swapping mode is useful if you have a temporary campaign, say a
-Christmas special frontpage and website section. You create the
-Christmas edition in a custom workspace and two weeks before Christmas
-you swap in the Christmas edition. All normal pages and elements that
-were unpublished are now in the workspace, waiting for Christmas to
-pass by and eventually the old frontpage etc. will be swapped back in.
-The Christmas edition is now back in the workspace and ready for next
-year.
+When an element is published, the draft content of the workspace
+version is pushed live. The live element keeps its uid, which means
+all references to it stay intact. The previous live content is
+replaced by the workspace content.
 
 
 .. _extensions-and-workspaces:
