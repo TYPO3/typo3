@@ -72,6 +72,8 @@ class TranslationService
             $key = $locallangPathAndFilename . ':' . $key;
         }
 
+        // Parse the key to extract file reference and label key separately, which is
+        // required for TypoScript label overrides that are keyed by the file reference.
         $keyParts = explode(':', $key);
         if (str_starts_with($key, 'LLL:')) {
             $locallangPathAndFilename = $keyParts[1] . ':' . $keyParts[2];
@@ -88,20 +90,12 @@ class TranslationService
         $languageService = $this->createLanguageService($locale, $request);
 
         if (!empty($locallangPathAndFilename) && $request) {
-            $typoScript = $request->getAttribute('frontend.typoscript');
-            if ($typoScript instanceof FrontendTypoScript && $typoScript->hasSetup()) {
-                $overrideLabels = $languageService->loadTypoScriptLabelsFromExtension('form', $typoScript);
-                if ($overrideLabels !== []) {
-                    $languageService->overrideLabels($locallangPathAndFilename, $overrideLabels);
-                }
-            }
+            $this->applyTypoScriptOverrides($languageService, $locallangPathAndFilename, $request);
         }
 
-        $value = $languageService->translate($key, $locallangPathAndFilename, $arguments ?? []);
-        if ($value === null) {
-            $value = $defaultValue;
-        }
-        return $value;
+        $fullReference = !empty($locallangPathAndFilename) ? $locallangPathAndFilename . ':' . $key : $key;
+        $value = $languageService->label($fullReference, $arguments ?? []);
+        return $value ?? $defaultValue;
     }
 
     /**
@@ -469,21 +463,31 @@ class TranslationService
     }
 
     /**
-     * @return string|null
+     * @return string|\Stringable|null
      */
     protected function processTranslationChain(
         array $translationKeyChain,
         Locale|string|null $locale = null,
         ?array $arguments = null
     ) {
-        $translatedValue = null;
+        $request = $this->getRequest();
+        $languageService = $this->createLanguageService($locale, $request);
+        $appliedOverridesForFiles = [];
+
         foreach ($translationKeyChain as $translationKey) {
-            $translatedValue = $this->translate($translationKey, $arguments, null, $locale);
+            if ($request) {
+                $fileRef = $this->extractFileReferenceFromKey($translationKey);
+                if ($fileRef !== '' && !isset($appliedOverridesForFiles[$fileRef])) {
+                    $this->applyTypoScriptOverrides($languageService, $fileRef, $request);
+                    $appliedOverridesForFiles[$fileRef] = true;
+                }
+            }
+            $translatedValue = $languageService->label($translationKey, $arguments ?? []);
             if (!$this->isEmptyTranslatedValue($translatedValue)) {
-                break;
+                return $translatedValue;
             }
         }
-        return $translatedValue;
+        return null;
     }
 
     /**
@@ -528,12 +532,49 @@ class TranslationService
         return false;
     }
 
+    /**
+     * Creates a LanguageService for the given locale or the locale from the current request.
+     * Returns a LanguageService (which implements TranslatorInterface) rather than the interface
+     * directly, since TypoScript label overrides require LanguageService-specific methods.
+     */
     private function createLanguageService(Locale|string|null $locale, ?ServerRequestInterface $request): LanguageService
     {
         if ($locale) {
             return $this->languageServiceFactory->create($locale);
         }
         return $this->languageServiceFactory->create(GeneralUtility::makeInstance(Locales::class)->createLocaleFromRequest($request));
+    }
+
+    /**
+     * Applies TypoScript label overrides (plugin.tx_form._LOCAL_LANG) to the given language
+     * service for the specified file reference, if a frontend TypoScript setup is present.
+     */
+    private function applyTypoScriptOverrides(LanguageService $languageService, string $fileRef, ServerRequestInterface $request): void
+    {
+        $typoScript = $request->getAttribute('frontend.typoscript');
+        if ($typoScript instanceof FrontendTypoScript && $typoScript->hasSetup()) {
+            $overrideLabels = $languageService->loadTypoScriptLabelsFromExtension('form', $typoScript);
+            if ($overrideLabels !== []) {
+                $languageService->overrideLabels($fileRef, $overrideLabels);
+            }
+        }
+    }
+
+    /**
+     * Extracts the file reference (domain) part from a full translation key reference such as
+     * 'EXT:my_ext/path/file.xlf:my.key' or 'LLL:EXT:my_ext/path/file.xlf:my.key'.
+     * Returns an empty string when no file reference can be determined.
+     */
+    private function extractFileReferenceFromKey(string $key): string
+    {
+        $strippedKey = str_starts_with($key, 'LLL:') ? substr($key, 4) : $key;
+        $keyParts = explode(':', $strippedKey);
+        if (PathUtility::isExtensionPath($strippedKey)) {
+            // e.g. EXT:my_ext/path/file.xlf -> keyParts[0]='EXT', keyParts[1]='my_ext/path/file.xlf'
+            return $keyParts[0] . ':' . ($keyParts[1] ?? '');
+        }
+        // Semantic domain, e.g. 'my.domain:my.key' -> 'my.domain'
+        return $keyParts[0];
     }
 
     private function getRequest(): ?ServerRequestInterface
