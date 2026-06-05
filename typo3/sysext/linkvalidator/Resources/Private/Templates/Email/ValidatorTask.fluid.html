@@ -1,31 +1,31 @@
 <f:layout name="SystemEmail" />
-<f:section name="Title"><f:translate key="tasks.email.title" extensionName="linkvalidator"/></f:section>
+<f:section name="Title"><f:translate key="tasks.email.title" domain="linkvalidator.db"/></f:section>
 <f:section name="Main">
 
-    <h3><f:translate key="tasks.email.overview" extensionName="linkvalidator"/></h3>
+    <h3><f:translate key="tasks.email.overview" domain="linkvalidator.db"/></h3>
 
     <p>
-        <strong><f:translate key="tasks.email.overview.all" extensionName="linkvalidator" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.total, 1: linkAnalyzerResult.oldBrokenLinkCounts.total}"/></strong><br />
-        <f:translate key="tasks.email.overview.internal" extensionName="linkvalidator" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.db, 1: linkAnalyzerResult.oldBrokenLinkCounts.db}"/><br />
-        <f:translate key="tasks.email.overview.external" extensionName="linkvalidator" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.external, 1: linkAnalyzerResult.oldBrokenLinkCounts.external}"/><br />
-        <f:translate key="tasks.email.overview.file" extensionName="linkvalidator" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.file, 1: linkAnalyzerResult.oldBrokenLinkCounts.file}"/><br />
+        <strong><f:translate key="tasks.email.overview.all" domain="linkvalidator.db" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.total, 1: linkAnalyzerResult.oldBrokenLinkCounts.total}"/></strong><br />
+        <f:translate key="tasks.email.overview.internal" domain="linkvalidator.db" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.db, 1: linkAnalyzerResult.oldBrokenLinkCounts.db}"/><br />
+        <f:translate key="tasks.email.overview.external" domain="linkvalidator.db" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.external, 1: linkAnalyzerResult.oldBrokenLinkCounts.external}"/><br />
+        <f:translate key="tasks.email.overview.file" domain="linkvalidator.db" arguments="{0: linkAnalyzerResult.newBrokenLinkCounts.file, 1: linkAnalyzerResult.oldBrokenLinkCounts.file}"/><br />
     </p>
 
     <f:if condition="{linkAnalyzerResult.brokenLinks}">
-        <h3><f:translate key="tasks.email.listing" extensionName="linkvalidator"/></h3>
+        <h3><f:translate key="tasks.email.listing" domain="linkvalidator.db"/></h3>
         <small>
-            <f:translate key="tasks.email.listing.pageExplanation" extensionName="linkvalidator"/><br/>
-            <f:translate key="tasks.email.listing.hoverExpalantion" extensionName="linkvalidator"/>
+            <f:translate key="tasks.email.listing.pageExplanation" domain="linkvalidator.db"/><br/>
+            <f:translate key="tasks.email.listing.hoverExpalantion" domain="linkvalidator.db"/>
         </small>
         <table class="statistics">
             <thead>
                 <tr>
-                    <th><f:translate key="task.email.brokenLinks.record" extensionName="linkvalidator"/></th>
-                    <th><f:translate key="task.email.brokenLinks.language" extensionName="linkvalidator"/></th>
-                    <th><f:translate key="task.email.brokenLinks.page" extensionName="linkvalidator"/></th>
-                    <th><f:translate key="task.email.brokenLinks.recordType" extensionName="linkvalidator"/></th>
-                    <th><f:translate key="task.email.brokenLinks.target" extensionName="linkvalidator"/></th>
-                    <th><f:translate key="task.email.brokenLinks.type" extensionName="linkvalidator"/></th>
+                    <th><f:translate key="task.email.brokenLinks.record" domain="linkvalidator.db"/></th>
+                    <th><f:translate key="task.email.brokenLinks.language" domain="linkvalidator.db"/></th>
+                    <th><f:translate key="task.email.brokenLinks.page" domain="linkvalidator.db"/></th>
+                    <th><f:translate key="task.email.brokenLinks.recordType" domain="linkvalidator.db"/></th>
+                    <th><f:translate key="task.email.brokenLinks.target" domain="linkvalidator.db"/></th>
+                    <th><f:translate key="task.email.brokenLinks.type" domain="linkvalidator.db"/></th>
                 </tr>
             </thead>
             <tbody>
@@ -36,7 +36,7 @@
                         <td><span title="{link.page_record.title}" aria-label="{link.page_record.title}">{link.real_pid}</span></td>
                         <td>{link.record_type}</td>
                         <td><span title="{link.target}" aria-label="{link.target}">{link.target -> f:format.crop(maxCharacters: 15)}</span></td>
-                        <td><f:translate key="task.email.brokenLinks.type.{link.link_type}" extensionName="linkvalidator"/></td>
+                        <td><f:translate key="task.email.brokenLinks.type.{link.link_type}" domain="linkvalidator.db"/></td>
                     </tr>
                 </f:for>
             </tbody>
