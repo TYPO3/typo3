@@ -19,7 +19,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Slot\FilePersistenceSlot;
 
 /**
- * @internal will be removed once FileFormsToDatabaseUpgradeWizard is removed
+ * @internal
+ * @deprecated: Remove in v16 along with the FileFormsToDatabaseUpgradeWizard
  */
 class ImportExportHook
 {

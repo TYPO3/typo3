@@ -18,25 +18,47 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Upgrades;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Upgrades\ConfirmableInterface;
 use TYPO3\CMS\Core\Upgrades\Confirmation;
 use TYPO3\CMS\Core\Upgrades\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Form\Domain\Configuration\PersistenceConfigurationService;
+use TYPO3\CMS\Form\Domain\DTO\FormData;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\Domain\Repository\FormDefinitionRepository;
+use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
+use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
+use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
+use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\FormTransferService;
 
 /**
  * Migrate file-based form definitions (YAML) to database storage.
  *
- * This wizard uses the FormTransferService to read all form definitions from
- * the configured file mount storage, imports them into the form_definition
- * database table, and updates all tt_content references (FlexForm
- * persistenceIdentifier) to point to the new database records.
+ * This wizard reads all form definitions from the paths configured in
+ * `persistenceManager.allowedFileMounts` (deprecated since v14.2),
+ * imports them into the form_definition database table,
+ * and updates all tt_content references (FlexForm persistenceIdentifier) to
+ * point to the new database records.
  *
  * After successful migration, the original YAML files are deleted from
  * file storage to avoid duplicates.
+ *
+ * When removing this class in v16, also remove all classes and methods tagged with
+ * `@deprecated Remove in v16 along with the FileFormsToDatabaseUpgradeWizard`.
  *
  * @since 14.2
  * @internal
@@ -44,12 +66,14 @@ use TYPO3\CMS\Form\Service\FormTransferService;
 #[UpgradeWizard('formFileFormsToDatabaseMigration')]
 final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardInterface, ConfirmableInterface
 {
-    private const SOURCE_STORAGE_TYPE = 'filemount';
-
     public function __construct(
         private FormDefinitionRepository $formDefinitionRepository,
         private FormTransferService $formTransferService,
         private LoggerInterface $logger,
+        private YamlSource $yamlSource,
+        private ResourceFactory $resourceFactory,
+        private PersistenceConfigurationService $storageConfiguration,
+        private StorageRepository $storageRepository,
     ) {}
 
     public function getTitle(): string
@@ -128,9 +152,8 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
         foreach ($forms as $form) {
             $persistenceIdentifier = $form->persistenceIdentifier ?? $form->identifier;
 
-            // Read form definition from file storage via the transfer service
             try {
-                $formData = $this->formTransferService->readForm(self::SOURCE_STORAGE_TYPE, $persistenceIdentifier);
+                $formData = $this->readForm($persistenceIdentifier);
             } catch (\Exception $e) {
                 $this->logger->error('Failed to load form definition from "{identifier}": {message}', [
                     'identifier' => $persistenceIdentifier,
@@ -218,15 +241,27 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
     }
 
     /**
-     * Find all YAML form definitions in configured file mounts
-     * using the FormTransferService.
+     * Find all YAML form definitions in configured file mounts.
      *
      * @return list<FormMetadata>
      */
     private function getFileBasedForms(): array
     {
         try {
-            return $this->formTransferService->listSourceForms(self::SOURCE_STORAGE_TYPE);
+            $results = [];
+            foreach ($this->retrieveYamlFilesFromStorageFolders() as $file) {
+                $formMetadata = $this->loadMetaData($file);
+
+                if (!$this->looksLikeAFormDefinition($formMetadata)) {
+                    continue;
+                }
+
+                if (!$this->hasValidFileExtension($file->getCombinedIdentifier())) {
+                    continue;
+                }
+                $results[] = $formMetadata;
+            }
+            return $results;
         } catch (\Exception $e) {
             $this->logger->warning('Could not list file-based forms: {message}', [
                 'message' => $e->getMessage(),
@@ -236,8 +271,7 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
     }
 
     /**
-     * Delete original YAML files from file storage after successful migration
-     * using the FormTransferService.
+     * Delete original YAML files from file storage after successful migration.
      *
      * Files that cannot be deleted (e.g. due to permissions) are logged but
      * do not cause the overall migration to fail — the database records are
@@ -252,7 +286,7 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
 
         foreach ($persistenceIdentifiers as $persistenceIdentifier) {
             try {
-                $this->formTransferService->deleteForm(self::SOURCE_STORAGE_TYPE, $persistenceIdentifier);
+                $this->deleteForm($persistenceIdentifier);
                 $deletedCount++;
 
                 $this->logger->info('Deleted original YAML file "{identifier}".', [
@@ -268,4 +302,258 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
 
         return $deletedCount;
     }
+
+    private function readForm(string $identifier): FormData
+    {
+        $file = $this->retrieveFileByPersistenceIdentifier($identifier);
+        $formDefinition = $this->yamlSource->load([$file]);
+        $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($formDefinition, $identifier);
+        return FormData::fromArray($formDefinition);
+    }
+
+    private function deleteForm(string $identifier): void
+    {
+        if (!$this->hasValidFileExtension($identifier)) {
+            throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $identifier), 1472239534);
+        }
+        if (!$this->exists($identifier)) {
+            throw new PersistenceManagerException(sprintf('The file "%s" could not be removed.', $identifier), 1764879545);
+        }
+        [$storageUid, $fileIdentifier] = explode(':', $identifier, 2);
+        $storage = $this->getStorageByUid((int)$storageUid);
+        $file = $storage->getFile($fileIdentifier);
+        if (!$storage->checkFileActionPermission('delete', $file)) {
+            throw new PersistenceManagerException(sprintf('No delete access to file "%s".', $identifier), 1472239516);
+        }
+        $storage->deleteFile($file);
+    }
+
+    /**
+     * @throws PersistenceManagerException
+     * @throws NoSuchFileException
+     */
+    private function retrieveFileByPersistenceIdentifier(string $identifier): File
+    {
+        $this->ensureValidPersistenceIdentifier($identifier);
+        try {
+            $file = $this->resourceFactory->retrieveFileOrFolderObject($identifier);
+        } catch (\Exception) {
+            // Top level catch to ensure useful following exception handling, because FAL throws top level exceptions.
+            $file = null;
+        }
+        if ($file === null) {
+            throw new NoSuchFileException(sprintf('YAML file "%s" could not be loaded', $identifier), 1524684442);
+        }
+        if (!$file->getStorage()->checkFileActionPermission('read', $file)) {
+            throw new PersistenceManagerException(sprintf('No read access to file "%s".', $identifier), 1471630578);
+        }
+        return $file;
+    }
+
+    /**
+     * @throws PersistenceManagerException
+     */
+    private function ensureValidPersistenceIdentifier(string $identifier): void
+    {
+        if (pathinfo($identifier, PATHINFO_EXTENSION) !== 'yaml') {
+            throw new PersistenceManagerException(sprintf('The file "%s" could not be loaded.', $identifier), 1477679819);
+        }
+    }
+
+    /**
+     * @throws PersistenceManagerException
+     */
+    private function generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension(array $formDefinition, string $identifier): void
+    {
+        if ($this->looksLikeAFormDefinitionArray($formDefinition) && !$this->hasValidFileExtension($identifier)) {
+            throw new PersistenceManagerException(sprintf('Form definition "%s" does not end with ".form.yaml".', $identifier), 1780660703);
+        }
+    }
+
+    /**
+     * Check if array looks like a form definition
+     */
+    private function looksLikeAFormDefinitionArray(array $data): bool
+    {
+        return !empty($data['identifier']) && trim($data['type'] ?? '') === 'Form';
+    }
+
+    private function hasValidFileExtension(string $identifier): bool
+    {
+        return str_ends_with($identifier, FormPersistenceManagerInterface::FORM_DEFINITION_FILE_EXTENSION);
+    }
+
+    private function exists(string $identifier): bool
+    {
+        $exists = false;
+        if ($this->hasValidFileExtension($identifier) && $this->pathIsIntendedAsFileMountPath($identifier)) {
+            [$storageUid, $fileIdentifier] = explode(':', $identifier, 2);
+            $storage = $this->getStorageByUid((int)$storageUid);
+            $exists = $storage->hasFile($fileIdentifier);
+        }
+        return $exists;
+    }
+
+    /**
+     * Returns a ResourceStorage for a given uid
+     *
+     * @throws PersistenceManagerException
+     */
+    private function getStorageByUid(int $storageUid): ResourceStorage
+    {
+        $storage = $this->storageRepository->findByUid($storageUid);
+        if (!$storage?->isBrowsable()) {
+            throw new PersistenceManagerException(sprintf('Could not access storage with uid "%d".', $storageUid), 1471630581);
+        }
+        return $storage;
+    }
+
+    private function pathIsIntendedAsFileMountPath(string $path): bool
+    {
+        if (empty($path)) {
+            return false;
+        }
+        [$storageUid, $pathIdentifier] = explode(':', $path, 2);
+        if (empty($storageUid) || empty($pathIdentifier)) {
+            return false;
+        }
+        return MathUtility::canBeInterpretedAsInteger($storageUid);
+    }
+
+    /**
+     * Retrieves yaml files from storage folders for further processing.
+     * At this time it's not determined yet, whether these files contain form data.
+     *
+     * @return File[]
+     */
+    private function retrieveYamlFilesFromStorageFolders(): array
+    {
+        $filesFromStorageFolders = [];
+        $fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
+        $fileExtensionFilter->setAllowedFileExtensions(['yaml']);
+        foreach ($this->getAccessibleFormStorageFolders() as $folder) {
+            $storage = $folder->getStorage();
+            $storage->setFileAndFolderNameFilters([
+                [$fileExtensionFilter, 'filterFileList'],
+            ]);
+            $files = $folder->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true);
+            array_push($filesFromStorageFolders, ...array_values($files));
+            $storage->resetFileAndFolderNameFiltersToDefault();
+        }
+        return $filesFromStorageFolders;
+    }
+
+    /**
+     * Return a list of all accessible file mountpoints for the
+     * current backend user.
+     *
+     * Only registered mount points from
+     * persistenceManager.allowedFileMounts
+     * are listed.
+     *
+     * @return Folder[]
+     */
+    private function getAccessibleFormStorageFolders(): array
+    {
+        $storageFolders = [];
+        $allowedFileMounts = $this->storageConfiguration->getPersistenceManagerSettings()['allowedFileMounts'];
+
+        if (empty($allowedFileMounts)) {
+            return $storageFolders;
+        }
+
+        foreach ($allowedFileMounts as $allowedFileMount) {
+            $allowedFileMount = rtrim($allowedFileMount, '/') . '/';
+            [$storageUid, $fileMountPath] = explode(':', $allowedFileMount, 2);
+            try {
+                $storage = $this->getStorageByUid((int)$storageUid);
+            } catch (PersistenceManagerException) {
+                continue;
+            }
+            $isStorageFileMount = false;
+            $parentFolder = $storage->getRootLevelFolder(false);
+            foreach ($storage->getFileMounts() as $storageFileMount) {
+                $storageFileMountFolder = $storageFileMount['folder'];
+                // Normally should use ResourceStorage::isWithinFolder() to check if the configured file mount path is within
+                // a storage file mount but this requires a valid Folder object and thus a directory which already exists.
+                // And the folder could simply not exist yet.
+                if (str_starts_with($fileMountPath, $storageFileMountFolder->getIdentifier())) {
+                    $isStorageFileMount = true;
+                    $parentFolder = $storageFileMountFolder;
+                }
+            }
+            // Get storage folder object, create it if missing
+            try {
+                $fileMountFolder = $storage->getFolder($fileMountPath);
+            } catch (InsufficientFolderAccessPermissionsException) {
+                continue;
+            } catch (FolderDoesNotExistException) {
+                if ($isStorageFileMount) {
+                    $fileMountPath = substr(
+                        $fileMountPath,
+                        strlen($parentFolder->getIdentifier())
+                    );
+                }
+                try {
+                    $fileMountFolder = $storage->createFolder($fileMountPath, $parentFolder);
+                } catch (InsufficientFolderAccessPermissionsException) {
+                    continue;
+                }
+            }
+            $storageFolders[$allowedFileMount] = $fileMountFolder;
+        }
+        return $storageFolders;
+    }
+
+    private function loadMetaData(File $file): FormMetadata
+    {
+        $persistenceIdentifier = $file->getCombinedIdentifier();
+        $rawYamlContent = $file->getContents();
+
+        try {
+            $yaml = $this->extractMetaDataFromCouldBeFormDefinition($rawYamlContent);
+            $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($yaml, $persistenceIdentifier);
+            return FormMetadata::createFromYaml(
+                $yaml,
+                $persistenceIdentifier,
+                $file->getUid()
+            );
+        } catch (\Exception $e) {
+            return FormMetadata::createInvalid($persistenceIdentifier, $e->getMessage());
+        }
+    }
+
+    private function extractMetaDataFromCouldBeFormDefinition(string $maybeRawFormDefinition): array
+    {
+        $metaDataProperties = ['identifier', 'type', 'label', 'prototypeName'];
+        $metaData = [];
+        foreach (explode(LF, $maybeRawFormDefinition) as $line) {
+            if (empty($line) || $line[0] === ' ') {
+                continue;
+            }
+            $parts = explode(':', $line, 2);
+            $key = trim($parts[0]);
+            if (!($parts[1] ?? null) || !in_array($key, $metaDataProperties, true)) {
+                continue;
+            }
+            if ($key === 'label') {
+                try {
+                    $parsedLabelLine = Yaml::parse($line);
+                    $value = $parsedLabelLine['label'] ?? '';
+                } catch (ParseException) {
+                    $value = '';
+                }
+            } else {
+                $value = trim($parts[1], " '\"\r");
+            }
+            $metaData[$key] = $value;
+        }
+        return $metaData;
+    }
+
+    private function looksLikeAFormDefinition(FormMetadata $formMetadata): bool
+    {
+        return !empty($formMetadata->identifier) && trim($formMetadata->type) === 'Form';
+    }
+
 }

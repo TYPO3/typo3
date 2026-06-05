@@ -89,7 +89,7 @@ readonly class YamlSource
         $yaml = Yaml::dump($configuration, 99, 2);
 
         if ($fileToSave instanceof File) {
-            // Can be removed once FileFormsToDatabaseUpgradeWizard is removed
+            // @deprecated: Remove in v16 along with the FileFormsToDatabaseUpgradeWizard
             try {
                 $this->filePersistenceSlot->allowInvocation(
                     FilePersistenceSlot::COMMAND_FILE_SET_CONTENTS,
@@ -181,6 +181,9 @@ readonly class YamlSource
         return $header;
     }
 
+    /*
+     * @deprecated: Remove in v16 along with the FileFormsToDatabaseUpgradeWizard
+     */
     protected function buildCombinedIdentifier(FolderInterface $folder, string $fileName): string
     {
         return sprintf(

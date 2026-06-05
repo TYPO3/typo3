@@ -32,7 +32,8 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 /**
  * A PSR-14 event listener for various FAL related functionality.
  *
- * @internal will be removed once FileFormsToDatabaseUpgradeWizard is removed
+ * @internal
+ * @deprecated: Remove in v16 along with the FileFormsToDatabaseUpgradeWizard
  */
 final class FilePersistenceSlot implements SingletonInterface
 {

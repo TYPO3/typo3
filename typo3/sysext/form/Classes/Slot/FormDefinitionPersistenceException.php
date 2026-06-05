@@ -19,5 +19,6 @@ namespace TYPO3\CMS\Form\Slot;
 
 /**
  * @internal
+ * @deprecated: Remove in v16 along with the FileFormsToDatabaseUpgradeWizard
  */
 class FormDefinitionPersistenceException extends \RuntimeException {}
