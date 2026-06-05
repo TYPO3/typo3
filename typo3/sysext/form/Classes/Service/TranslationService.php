@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Domain\Translation\FormTranslationKeyChainBuilder;
 
 /**
  * Advanced translations
@@ -45,7 +46,8 @@ class TranslationService
 {
     public function __construct(
         protected readonly LanguageServiceFactory $languageServiceFactory,
-        protected readonly Locales $locales
+        protected readonly Locales $locales,
+        protected readonly FormTranslationKeyChainBuilder $keyChainBuilder,
     ) {}
 
     /**
@@ -214,14 +216,13 @@ class TranslationService
             $originalFormIdentifier = $formRuntime->getRenderingOptions()['_originalIdentifier'];
         }
 
-        $translationKeyChain = [];
-        foreach ($translationFiles as $translationFile) {
-            if (!empty($originalFormIdentifier)) {
-                $translationKeyChain[] = sprintf('%s:%s.finisher.%s.%s', $translationFile, $originalFormIdentifier, $finisherIdentifier, $optionKey);
-            }
-            $translationKeyChain[] = sprintf('%s:%s.finisher.%s.%s', $translationFile, $formRuntime->getIdentifier(), $finisherIdentifier, $optionKey);
-            $translationKeyChain[] = sprintf('%s:finisher.%s.%s', $translationFile, $finisherIdentifier, $optionKey);
-        }
+        $translationKeyChain = $this->keyChainBuilder->buildForFinisherOption(
+            $translationFiles,
+            $formRuntime->getIdentifier(),
+            $finisherIdentifier,
+            $optionKey,
+            $originalFormIdentifier
+        );
 
         $translatedValue = $this->processTranslationChain($translationKeyChain, $locale, $arguments);
         $translatedValue = $this->isEmptyTranslatedValue($translatedValue) ? $optionValue : $translatedValue;
@@ -301,21 +302,34 @@ class TranslationService
             $originalFormIdentifier = $formRuntime->getRenderingOptions()['_originalIdentifier'];
         }
 
+        $elementIsFormRuntime = $element instanceof FormRuntime;
+        $elementIdentifier = $element->getIdentifier();
+        $elementType = $element->getType();
+
         if ($property === 'options' && is_array($defaultValue)) {
             foreach ($defaultValue as $optionValue => &$optionLabel) {
-                $translationKeyChain = [];
-                foreach ($translationFiles as $translationFile) {
-                    if (!empty($originalFormIdentifier)) {
-                        if ($element instanceof FormRuntime) {
-                            $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s.%s', $translationFile, $originalFormIdentifier, $originalFormIdentifier, $propertyType, $property, $optionValue);
-                            $translationKeyChain[] = sprintf('%s:element.%s.%s.%s.%s', $translationFile, $originalFormIdentifier, $propertyType, $property, $optionValue);
-                        } else {
-                            $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s.%s', $translationFile, $originalFormIdentifier, $element->getIdentifier(), $propertyType, $property, $optionValue);
-                        }
-                    }
-                    $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $property, $optionValue);
-                    $translationKeyChain[] = sprintf('%s:element.%s.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $property, $optionValue);
-                    $translationKeyChain[] = sprintf('%s:element.%s.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $property, $optionValue);
+                if ($elementIsFormRuntime) {
+                    $translationKeyChain = $this->keyChainBuilder->buildForFormRuntimeOption(
+                        $translationFiles,
+                        $formRuntime->getIdentifier(),
+                        $elementIdentifier,
+                        $elementType,
+                        $propertyType,
+                        $property,
+                        $optionValue,
+                        $originalFormIdentifier
+                    );
+                } else {
+                    $translationKeyChain = $this->keyChainBuilder->buildForElementOption(
+                        $translationFiles,
+                        $formRuntime->getIdentifier(),
+                        $elementIdentifier,
+                        $elementType,
+                        $propertyType,
+                        $property,
+                        $optionValue,
+                        $originalFormIdentifier
+                    );
                 }
 
                 $translatedValue = $this->processTranslationChain($translationKeyChain, $locale, $arguments);
@@ -331,19 +345,26 @@ class TranslationService
                 $defaultValue = [];
             }
             foreach ($defaultValue as $propertyName => &$propertyValue) {
-                $translationKeyChain = [];
-                foreach ($translationFiles as $translationFile) {
-                    if (!empty($originalFormIdentifier)) {
-                        if ($element instanceof FormRuntime) {
-                            $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s', $translationFile, $originalFormIdentifier, $originalFormIdentifier, $propertyType, $propertyName);
-                            $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $originalFormIdentifier, $propertyType, $propertyName);
-                        } else {
-                            $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s', $translationFile, $originalFormIdentifier, $element->getIdentifier(), $propertyType, $propertyName);
-                        }
-                    }
-                    $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $propertyName);
-                    $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $propertyName);
-                    $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $propertyName);
+                if ($elementIsFormRuntime) {
+                    $translationKeyChain = $this->keyChainBuilder->buildForFormRuntimeProperty(
+                        $translationFiles,
+                        $formRuntime->getIdentifier(),
+                        $elementIdentifier,
+                        $elementType,
+                        $propertyType,
+                        $propertyName,
+                        $originalFormIdentifier
+                    );
+                } else {
+                    $translationKeyChain = $this->keyChainBuilder->buildForElementProperty(
+                        $translationFiles,
+                        $formRuntime->getIdentifier(),
+                        $elementIdentifier,
+                        $elementType,
+                        $propertyType,
+                        $propertyName,
+                        $originalFormIdentifier
+                    );
                 }
 
                 $translatedValue = $this->processTranslationChain($translationKeyChain, $locale, $arguments);
@@ -351,19 +372,26 @@ class TranslationService
             }
             $translatedValue = $defaultValue;
         } else {
-            $translationKeyChain = [];
-            foreach ($translationFiles as $translationFile) {
-                if (!empty($originalFormIdentifier)) {
-                    if ($element instanceof FormRuntime) {
-                        $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s', $translationFile, $originalFormIdentifier, $originalFormIdentifier, $propertyType, $property);
-                        $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $originalFormIdentifier, $propertyType, $property);
-                    } else {
-                        $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s', $translationFile, $originalFormIdentifier, $element->getIdentifier(), $propertyType, $property);
-                    }
-                }
-                $translationKeyChain[] = sprintf('%s:%s.element.%s.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $propertyType, $property);
-                $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getIdentifier(), $propertyType, $property);
-                $translationKeyChain[] = sprintf('%s:element.%s.%s.%s', $translationFile, $element->getType(), $propertyType, $property);
+            if ($elementIsFormRuntime) {
+                $translationKeyChain = $this->keyChainBuilder->buildForFormRuntimeProperty(
+                    $translationFiles,
+                    $formRuntime->getIdentifier(),
+                    $elementIdentifier,
+                    $elementType,
+                    $propertyType,
+                    $property,
+                    $originalFormIdentifier
+                );
+            } else {
+                $translationKeyChain = $this->keyChainBuilder->buildForElementProperty(
+                    $translationFiles,
+                    $formRuntime->getIdentifier(),
+                    $elementIdentifier,
+                    $elementType,
+                    $propertyType,
+                    $property,
+                    $originalFormIdentifier
+                );
             }
 
             $translatedValue = $this->processTranslationChain($translationKeyChain, $locale, $arguments);
@@ -417,21 +445,22 @@ class TranslationService
             $originalFormIdentifier = $formRuntime->getRenderingOptions()['_originalIdentifier'];
         }
 
-        $translationKeyChain = [];
-        foreach ($translationFiles as $translationFile) {
-            if (!empty($originalFormIdentifier)) {
-                if ($element instanceof FormRuntime) {
-                    $translationKeyChain[] = sprintf('%s:%s.validation.error.%s.%s', $translationFile, $originalFormIdentifier, $originalFormIdentifier, $code);
-                    $translationKeyChain[] = sprintf('%s:validation.error.%s.%s', $translationFile, $originalFormIdentifier, $code);
-                } else {
-                    $translationKeyChain[] = sprintf('%s:%s.validation.error.%s.%s', $translationFile, $originalFormIdentifier, $element->getIdentifier(), $code);
-                }
-                $translationKeyChain[] = sprintf('%s:%s.validation.error.%s', $translationFile, $originalFormIdentifier, $code);
-            }
-            $translationKeyChain[] = sprintf('%s:%s.validation.error.%s.%s', $translationFile, $formRuntime->getIdentifier(), $element->getIdentifier(), $code);
-            $translationKeyChain[] = sprintf('%s:%s.validation.error.%s', $translationFile, $formRuntime->getIdentifier(), $code);
-            $translationKeyChain[] = sprintf('%s:validation.error.%s.%s', $translationFile, $element->getIdentifier(), $code);
-            $translationKeyChain[] = sprintf('%s:validation.error.%s', $translationFile, $code);
+        if ($element instanceof FormRuntime) {
+            $translationKeyChain = $this->keyChainBuilder->buildForFormRuntimeValidationError(
+                $translationFiles,
+                $formRuntime->getIdentifier(),
+                $element->getIdentifier(),
+                $code,
+                $originalFormIdentifier
+            );
+        } else {
+            $translationKeyChain = $this->keyChainBuilder->buildForValidationError(
+                $translationFiles,
+                $formRuntime->getIdentifier(),
+                $element->getIdentifier(),
+                $code,
+                $originalFormIdentifier
+            );
         }
 
         $translatedValue = $this->processTranslationChain($translationKeyChain, $locale, $arguments);

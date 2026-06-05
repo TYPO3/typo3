@@ -26,6 +26,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\CMS\Form\Domain\Translation\FormTranslationKeyChainBuilder;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -39,7 +40,8 @@ final class TranslationServiceTest extends FunctionalTestCase
         parent::setUp();
         $this->subject = new TranslationService(
             $this->get(LanguageServiceFactory::class),
-            new Locales()
+            new Locales(),
+            new FormTranslationKeyChainBuilder(),
         );
     }
 
