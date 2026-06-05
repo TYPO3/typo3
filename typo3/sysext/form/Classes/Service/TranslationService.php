@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
@@ -42,7 +41,7 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class TranslationService implements SingletonInterface
+class TranslationService
 {
     public function __construct(
         protected readonly LanguageServiceFactory $languageServiceFactory,

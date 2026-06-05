@@ -89,6 +89,15 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter implements Lo
     protected HashService $hashService;
     protected PersistenceManagerInterface $persistenceManager;
     protected StorageRepository $storageRepository;
+    protected TranslationService $translationService;
+
+    /**
+     * @internal
+     */
+    public function injectTranslationService(TranslationService $translationService): void
+    {
+        $this->translationService = $translationService;
+    }
 
     /**
      * @internal
@@ -555,7 +564,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter implements Lo
             default => 'upload.error.150530348',
         };
 
-        return GeneralUtility::makeInstance(TranslationService::class)->translate(
+        return $this->translationService->translate(
             $translationKey,
             null,
             'EXT:form/Resources/Private/Language/locallang.xlf'

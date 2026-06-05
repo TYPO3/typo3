@@ -18,14 +18,17 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\EventListener;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Form\Domain\Model\Renderable\AbstractRenderable;
 use TYPO3\CMS\Form\Event\BeforeRenderableIsValidatedEvent;
 use TYPO3\CMS\Form\Service\TranslationService;
 
-class ValidateAdvancedPasswordRenderable
+readonly class ValidateAdvancedPasswordRenderable
 {
+    public function __construct(
+        private TranslationService $translationService,
+    ) {}
+
     #[AsEventListener('form-framework/validate-advanced-password')]
     public function __invoke(BeforeRenderableIsValidatedEvent $event): void
     {
@@ -41,9 +44,8 @@ class ValidateAdvancedPasswordRenderable
         if ($elementValue['password'] !== $elementValue['confirmation']) {
             $processingRule = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier());
             $processingRule->getProcessingMessages()->addError(
-                GeneralUtility::makeInstance(
-                    Error::class,
-                    GeneralUtility::makeInstance(TranslationService::class)->translate('validation.error.1556283177', null, 'EXT:form/Resources/Private/Language/locallang.xlf'),
+                new Error(
+                    $this->translationService->translate('validation.error.1556283177', null, 'EXT:form/Resources/Private/Language/locallang.xlf'),
                     1556283177
                 )
             );
