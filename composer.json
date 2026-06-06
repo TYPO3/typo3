@@ -122,7 +122,7 @@
 		"bnf/phpstan-psr-container": "^1.1.0",
 		"composer/composer": "^2.9.8",
 		"friendsofphp/php-cs-fixer": "^3.95",
-		"phpstan/phpstan": "^2.2.1",
+		"phpstan/phpstan": "^2.2.2",
 		"phpstan/phpstan-phpunit": "^2.0.16",
 		"phpunit/phpunit": "^11.5.55",
 		"sebastian/recursion-context": "^6.0.3",
