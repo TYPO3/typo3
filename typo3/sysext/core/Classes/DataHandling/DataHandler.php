@@ -5159,7 +5159,7 @@ class DataHandler
                 }
                 $dbAnalysisCurrent->itemArray[] = $item;
             }
-        } elseif (!empty($ids)) {
+        } else {
             foreach ($ids as $childId) {
                 if (!MathUtility::canBeInterpretedAsInteger($childId) || !isset($elementsOriginal[$childId])) {
                     continue;
