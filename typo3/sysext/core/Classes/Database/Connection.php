@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Database;
 
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\Connection as DoctrineConnection;
 use Doctrine\DBAL\Connection\StaticServerVersionProvider;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
@@ -30,8 +31,6 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\ServerVersionProvider;
 use Doctrine\DBAL\Types\Type;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
@@ -42,10 +41,19 @@ use TYPO3\CMS\Core\Database\Schema\SchemaInformation;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterface
+/**
+ * Note: This is a fragile base class. It owns no contract of its own and specializes Doctrine's
+ * concrete Connection by overriding quoting, insert/update/delete and connect behavior.
+ * Subclassing is forced on us though: Doctrine's DriverManager only accepts a `wrapperClass` that
+ * is a Doctrine\DBAL\Connection, and DBAL exposes no high-level connection interface to compose
+ * against, so a real composition decorator is not possible.
+ *
+ * Integrators may in turn point the `wrapperClass` connection option at a subclass of this
+ * class, but because of the fragility described above such subclasses are not covered by the
+ * backward-compatibility promise.
+ */
+class Connection extends DoctrineConnection
 {
-    use LoggerAwareTrait;
-
     /**
      * Represents a SQL NULL data type.
      */
@@ -462,16 +470,13 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * the transaction is rolled back and the exception re-thrown.
      *
      * @param \Closure(self):T $func The function to execute transactionally.
-     *
      * @return T The value returned by $func
-     *
      * @throws \Throwable
-     *
      * @template T
      */
     public function transactional(\Closure $func): mixed
     {
-        /** @var \Closure(\Doctrine\DBAL\Connection):T $func Required to satisfy PHPStan. */
+        /** @var \Closure(DoctrineConnection):T $func Required to satisfy PHPStan. */
         return parent::transactional($func);
     }
 
