@@ -31,6 +31,7 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-105076-PluginContentElementAndPluginSubTypes.rst',
+            'Important-105538-ListTypeAndSubTypes.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl' => [

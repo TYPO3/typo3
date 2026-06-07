@@ -17,6 +17,7 @@ return [
         ],
         'restFiles' => [
             'Deprecation-105076-PluginContentElementAndPluginSubTypes.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Utility\ExtensionUtility->configurePlugin' => [
@@ -28,6 +29,7 @@ return [
         ],
         'restFiles' => [
             'Deprecation-105076-PluginContentElementAndPluginSubTypes.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     /** Note (leave this at the bottom):

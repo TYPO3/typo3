@@ -2707,36 +2707,43 @@ return [
     'TYPO3\CMS\Install\Attribute\UpgradeWizard' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\ChattyInterface' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\ConfirmableInterface' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\Confirmation' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\PrerequisiteInterface' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\RepeatableInterface' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\UpgradeWizardInterface' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate' => [
@@ -2748,11 +2755,13 @@ return [
     'TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite' => [
         'restFiles' => [
             'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\PrerequisiteCollection' => [
@@ -2774,16 +2783,19 @@ return [
     'TYPO3\CMS\Install\Command\LanguagePackCommand' => [
         'restFiles' => [
             'Deprecation-109027-MoveLanguageUpdateCommandAndEventsToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Service\Event\ModifyLanguagePacksEvent' => [
         'restFiles' => [
             'Deprecation-109027-MoveLanguageUpdateCommandAndEventsToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent' => [
         'restFiles' => [
             'Deprecation-109027-MoveLanguageUpdateCommandAndEventsToEXTcore.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Form\FormResultCompiler' => [

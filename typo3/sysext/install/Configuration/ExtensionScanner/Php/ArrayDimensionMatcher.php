@@ -1358,6 +1358,7 @@ return [
         'restFiles' => [
             'Deprecation-108524-FluidNamespacesInTYPO3_CONF_VARS.rst',
             'Feature-108524-ConfigurationFileToRegisterGlobalFluidNamespaces.rst',
+            'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

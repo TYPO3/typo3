@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * This session backend takes these optional configuration options: 'hostname' (default '127.0.0.1'),
  * 'database' (default 0), 'port' (default 3679), 'username' (no default value) and 'password' (no default value).
+ *
+ * @todo: Declare this class final.
  */
 class RedisSessionBackend implements SessionBackendInterface, HashableSessionBackendInterface, LoggerAwareInterface
 {
@@ -98,6 +100,14 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
                     1481270923
                 );
             }
+        }
+
+        if (!is_string($this->configuration['password'] ?? '')) {
+            throw new \InvalidArgumentException(
+                'The specified password must be a string. To authenticate with a username and password'
+                . ' tuple, use the separate "username" and "password" options.',
+                1780850765
+            );
         }
     }
 
@@ -334,10 +344,5 @@ class RedisSessionBackend implements SessionBackendInterface, HashableSessionBac
     protected function getSessionKeyName(string $sessionId): string
     {
         return $this->applicationIdentifier . $sessionId;
-    }
-
-    protected function getSessionTimeout(): int
-    {
-        return (int)($GLOBALS['TYPO3_CONF_VARS'][$this->identifier]['sessionTimeout'] ?? 86400);
     }
 }

@@ -30,14 +30,11 @@ The following PHP classes that have previously been marked as deprecated with v1
 - :php:`\TYPO3\CMS\Fluid\ViewHelpers\Debug\RenderViewHelper` :ref:`(Deprecation entry) <deprecation-107208-1754387701>`
 - :php:`\TYPO3\CMS\Install\Attribute\UpgradeWizard` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
-- :php:`\TYPO3\CMS\Install\Updates\Confirmation\DatabaseUpdatedPrerequisite` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Install\Updates\Confirmation` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
+- :php:`\TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
 - :php:`\TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate` :ref:`(Deprecation entry) <deprecation-105076-1726923626>`
-
-The following PHP classes have been declared :php:`final`:
-
-- :php:`\TYPO3\CMS\SomeExtension\Some\ClassName`
 
 The following PHP methods have been set to :php:`private` and can no longer be called from outside the class:
 
@@ -53,13 +50,9 @@ The following PHP interfaces that have previously been marked as deprecated with
 - :php:`\TYPO3\CMS\Install\Updates\UpgradeWizardInterface` :ref:`(Deprecation entry) <deprecation-106947-1750759241>`
 - :php:`\TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
 
-The following PHP interfaces changed:
-
-- :php:`\TYPO3\CMS\SomeExtension\Some\InterfaceName->someMethod()` added
-
 The following PHP class aliases that have previously been marked as deprecated with v14 have been removed:
 
-- :php:`\TYPO3\CMS\Core\Service\FlexFormService` :ref:`(Deprecation entry) <breaking-107945-1761875852>`
+- :php:`\TYPO3\CMS\Core\Service\FlexFormService` :ref:`(Breaking entry) <breaking-107945-1761875852>`
 - :php:`\TYPO3\CMS\Extbase\Annotation\FileUpload` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
 - :php:`\TYPO3\CMS\Extbase\Annotation\IgnoreValidation` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
 - :php:`\TYPO3\CMS\Extbase\Annotation\ORM\Cascade` :ref:`(Deprecation entry) <deprecation-107229-1760116732>`
@@ -123,7 +116,7 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry->registerExtractionService()` :ref:`(Breaking entry) <breaking-107783-1760945127>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\AbstractContentObject->getPageRenderer()` :ref:`(Deprecation entry) <deprecation-109329-1774349266>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->readFlexformIntoConf()` :ref:`(Deprecation entry) <deprecation-109575>`
-- :php:`\TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder::build()`  :ref:`(Deprecation entry) <deprecation-106405-1742674605>`
+- :php:`\TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder::build()` :ref:`(Deprecation entry) <deprecation-106405-1742674605>`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskClassName()` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskDescription()` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
 - :php:`\TYPO3\CMS\Scheduler\Task\AbstractTask->getTaskTitle()` :ref:`(Deprecation entry) <deprecation-98453-1738408355>`
@@ -169,7 +162,6 @@ The following methods changed signature according to previous deprecations in v1
 - :php:`\TYPO3\CMS\Extbase\Attribute\Validate->__construct()` - argument :php:`$validator` is not a :php:`string`, argument :php:`$param` has been removed :ref:`(Deprecation entry) <deprecation-97559-1760453281>`
 - :php:`\TYPO3\CMS\Filelist\FileList->start()` - argument :php:`$sortDirection` no longer accepts a :php:`bool`, a :php:`\TYPO3\CMS\Filelist\Type\SortDirection` enum is now required :ref:`(Deprecation entry) <deprecation-107225-1754640245>`
 
-
 The following public class properties have been dropped:
 
 - :php:`\TYPO3\CMS\Backend\Form\FormResult->hiddenFieldsHtml` :ref:`(Deprecation entry) <deprecation-109102-1740480000>`
@@ -177,16 +169,13 @@ The following public class properties have been dropped:
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->checkPid_badDoktypeList` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->lastTypoLinkResult` :ref:`(Deprecation entry) <deprecation-109575>`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->parentRecord` :ref:`(Deprecation entry) <deprecation-109575>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->parentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
 
 The following protected class properties have been dropped:
 
-- :php:`\TYPO3\CMS\Frontend\Typolink\ContentObjectRenderer->parentRecordNumber` :ref:`(Deprecation entry) <deprecation-109575>`
+- :php:`\TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder->contentObjectRenderer` :ref:`(Deprecation entry) <deprecation-106405-1742674605>`
 - :php:`\TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser->bparams`. The legacy pipe-delimited :php:`bparams` element browser request parameter is no longer evaluated. FormEngine now passes the individual :php:`fieldReference`, :php:`allowedTypes` and further parameters, which are handled by the typed :php:`\TYPO3\CMS\Backend\ElementBrowser\ElementBrowserParameters`. Its :php:`fromBparams()` and :php:`toBparams()` conversion methods have been removed as well.
-
-The following class property has changed/enforced type:
-
-- :php:`\TYPO3\CMS\SomeExtension\Some\ClassName->someProperty` (is now :php:`\Some\Type`)
 
 The following class constants have been dropped:
 
@@ -221,14 +210,6 @@ The following global option handling have been dropped and are ignored:
 - :php:`$GLOBALS['TYPO3_USER_SETTINGS']`; backend user profile settings are now configured via TCA (the :php:`be_users` ``user_settings`` column) using :php:`ExtensionManagementUtility::addUserSetting()` :ref:`(Deprecation entry) <deprecation-108843-1738600000>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']`; additional public folders are now exposed via resource definitions instead :ref:`(Deprecation entry) <deprecation-109409-1774774806>`
 
-The following global variables have been changed:
-
-- :php:`$GLOBALS['TYPO3_CONF_VARS']['SOME']['option']` description of change
-
-The following hooks have been removed:
-
-- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['some']['hook']`
-
 The following extension file loading has been removed:
 
 - :file:`ext_tables.php` files in extensions are no longer considered during bootstrap :ref:`(Deprecation entry) <deprecation-109438-1774951763>`
@@ -236,10 +217,6 @@ The following extension file loading has been removed:
 The following TCA options are not evaluated anymore:
 
 - :php:`passwordRules` option of the :php:`passwordGenerator` field control; use :php:`passwordPolicy` instead :ref:`(Deprecation entry) <deprecation-69190-1770668741>`
-
-The following extbase validator options have been removed:
-
-- :php:`someOption` in :php:`\TYPO3\CMS\Extbase\Validation\Validator\SomeValidator`
 
 The following extbase attribute usages have been removed:
 
@@ -253,6 +230,7 @@ The following fallbacks have been removed:
 - Manually creating and adding a :php:`\TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton` to the button bar is no longer detected and no longer suppresses the automatic shortcut button; controllers must use :php:`\TYPO3\CMS\Backend\Template\Components\DocHeaderComponent->setShortcutContext()` instead :ref:`(Deprecation entry) <deprecation-108008-1762896168>`
 - A legacy :file:`typo3conf/LocalConfiguration.php` and :file:`typo3conf/AdditionalConfiguration.php` are no longer automatically migrated to :file:`config/system/settings.php` and :file:`config/system/additional.php` on first request. The configuration files have to reside at their final location. :ref:`(Breaking entry) <breaking-98319-1664641595>`
 - The redis cache backend no longer accepts an array for the ``password`` option as a workaround to configure a username and password at once. Use the separate ``username`` and ``password`` options instead. :ref:`(Deprecation entry) <deprecation-107725-1760807740>`
+- The redis session backend no longer accepts an array for the ``password`` option as a workaround to configure a username and password at once. Use the separate ``username`` and ``password`` options instead. :ref:`(Deprecation entry) <deprecation-107802-1770827443>`
 - Flex form pageTsConfig (:typoscript:`TCEFORM`) and exclude-field addressing no longer resolves comma-separated :php:`dataStructureKey` values (the legacy :php:`list_type,CType` form); the data structure key is used as-is :ref:`(Breaking entry) <breaking-107047-1751982363>`
 
 The following upgrade wizards have been removed:
@@ -262,14 +240,6 @@ The following upgrade wizards have been removed:
 - :php:`\TYPO3\CMS\Core\Upgrades\NullToDefaultUpdateWizard` (identifier ``nullToDefaultUpdateWizard``)
 - :php:`\TYPO3\CMS\Frontend\Upgrades\SynchronizeColPosAndCTypeWithDefaultLanguage` (identifier ``synchronizeColPosAndCTypeWithDefaultLanguage``)
 - :php:`\TYPO3\CMS\IndexedSearch\Upgrades\IndexedSearchCTypeMigration` (identifier ``indexedSearchCTypeMigration``)
-
-The following row updater has been removed:
-
-- :php:`\TYPO3\CMS\Install\Updates\RowUpdater\SomeMigration`
-
-The following database table fields have been removed:
-
-- :sql:`some_table.some_field`
 
 The following JavaScript modules have been removed:
 
@@ -291,15 +261,11 @@ The following JavaScript methods have been removed:
   :ref:`(Deprecation entry) <deprecation-109306-1774010043>`
 - :js:`markFieldAsChanged()` of :js:`@typo3/backend/form-engine-validation`. Call :js:`markFieldAsChanged()` of :js:`@typo3/backend/form-engine` instead. :ref:`(Deprecation entry) <deprecation-106527-1744189076>`
 
-The following smooth migration for JavaScript modules have been removed:
-
-- :js:`@typo3/some-extension/old-module` to :js:`@typo3/some-extension/new-module`
-
 The following localization XLIFF files/labels have been removed:
 
 - Several deprecated files (`see commit <https://review.typo3.org/c/Packages/TYPO3.CMS/+/94158>`__)
   have been removed and are too many to list. These can be identified in TYPO3 v14 source
-  files by searching for the XML attribute `x-unused-since`.
+  files by searching for the XML attribute `x-unused-since`. :ref:`(Deprecation entry) <deprecation-107938-1762181263>`
 
 The following template files have been removed:
 
@@ -318,13 +284,9 @@ The following CSS classes have been removed:
 
 - :css:`.table-sorting-button` and :css:`.table-sorting-icon`. These backend table sorting helper classes were not used by the core.
 
-The following content element definitions have been removed:
-
-- :typoscript:`tt_content.some_element`
-
 The following Fluid rendering mechanisms have been removed:
 
-- :php:`HeaderAssets` and :php:`FooterAssets` Fluid template sections are no longer auto-rendered  :ref:`(Deprecation entry) <deprecation-107057-1756471326>`
+- :php:`HeaderAssets` and :php:`FooterAssets` Fluid template sections are no longer auto-rendered :ref:`(Deprecation entry) <deprecation-107057-1756471326>`
 
 The following asset ViewHelper arguments and options have been removed:
 

@@ -62,4 +62,23 @@ final class RedisSessionBackendTest extends UnitTestCase
         $this->expectExceptionCode(1481270923);
         $subject->validateConfiguration();
     }
+
+    #[Test]
+    public function passwordConfigurationMustNotBeAnArray(): void
+    {
+        $subject = new RedisSessionBackend();
+        $subject->initialize(
+            'default',
+            [
+                'password' => [
+                    'user' => 'redis',
+                    'pass' => 'redis',
+                ],
+            ]
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1780850765);
+        $subject->validateConfiguration();
+    }
 }
