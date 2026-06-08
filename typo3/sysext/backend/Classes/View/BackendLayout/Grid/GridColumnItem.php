@@ -26,9 +26,12 @@ use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\Event\AfterPageContentPreviewRenderedEvent;
 use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -49,7 +52,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class GridColumnItem extends AbstractGridObject
+class GridColumnItem
 {
     /**
      * @var GridColumnItem[]
@@ -57,16 +60,22 @@ class GridColumnItem extends AbstractGridObject
     protected array $translations = [];
     protected TcaSchema $schema;
     protected BackendLayoutView $backendLayoutView;
+    protected readonly IconFactory $iconFactory;
 
     public function __construct(
-        PageLayoutContext $context,
+        protected readonly PageLayoutContext $context,
         protected readonly GridColumn $column,
         protected RecordInterface $record,
         protected readonly string $table = 'tt_content'
     ) {
-        parent::__construct($context);
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->table);
         $this->backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
+    }
+
+    public function getContext(): PageLayoutContext
+    {
+        return $this->context;
     }
 
     public function isVersioned(): bool
@@ -452,5 +461,15 @@ class GridColumnItem extends AbstractGridObject
     protected function getDisabledFieldName(): ?string
     {
         return $this->schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField) ? (string)$this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField) : null;
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

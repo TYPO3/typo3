@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
+use TYPO3\CMS\Backend\View\PageLayoutContext;
+
 /**
  * Grid
  *
@@ -35,12 +37,21 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
  *
  * @internal
  */
-class Grid extends AbstractGridObject
+class Grid
 {
     /**
      * @var GridRow[]
      */
     protected array $rows = [];
+
+    public function __construct(
+        protected readonly PageLayoutContext $context,
+    ) {}
+
+    public function getContext(): PageLayoutContext
+    {
+        return $this->context;
+    }
 
     public function addRow(GridRow $row): void
     {

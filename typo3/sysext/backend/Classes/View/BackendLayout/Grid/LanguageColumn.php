@@ -21,6 +21,8 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -44,14 +46,21 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class LanguageColumn extends AbstractGridObject
+class LanguageColumn
 {
+    protected readonly IconFactory $iconFactory;
+
     public function __construct(
-        protected PageLayoutContext $context,
+        protected readonly PageLayoutContext $context,
         protected readonly Grid $grid,
         protected readonly array $translationInfo
     ) {
-        parent::__construct($context);
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    }
+
+    public function getContext(): PageLayoutContext
+    {
+        return $this->context;
     }
 
     public function getGrid(): Grid
@@ -138,5 +147,10 @@ class LanguageColumn extends AbstractGridObject
             ->withRootLine(BackendUtility::BEgetRootLine($pageId))
             ->withLanguage($languageId)
             ->serializeDispatcherAttributes();
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

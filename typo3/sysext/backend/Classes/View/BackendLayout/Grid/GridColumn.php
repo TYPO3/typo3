@@ -19,7 +19,8 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
-use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\ContentSlideMode;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -40,7 +41,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class GridColumn extends AbstractGridObject
+class GridColumn
 {
     /**
      * @var GridColumnItem[]
@@ -59,11 +60,10 @@ class GridColumn extends AbstractGridObject
      * @param array<string, mixed> $definition
      */
     public function __construct(
-        protected PageLayoutContext $context,
+        protected readonly PageLayoutContext $context,
         protected readonly array $definition,
         protected readonly string $table = 'tt_content'
     ) {
-        parent::__construct($context);
         $this->columnNumber = isset($definition['colPos']) ? (int)$definition['colPos'] : null;
         $this->columnName = (string)($definition['name'] ?? 'default');
         $this->icon = (string)($definition['icon'] ?? '');
@@ -71,6 +71,11 @@ class GridColumn extends AbstractGridObject
         $this->rowSpan = (int)($definition['rowspan'] ?? 1);
         $this->identifier = isset($definition['identifier']) ? (string)$definition['identifier'] : null;
         $this->slideMode = ContentSlideMode::tryFrom($definition['slideMode'] ?? null);
+    }
+
+    public function getContext(): PageLayoutContext
+    {
+        return $this->context;
     }
 
     /**
@@ -242,22 +247,13 @@ class GridColumn extends AbstractGridObject
             );
     }
 
-    /**
-     * Get the raw records for the current column
-     *
-     * @return RecordInterface[]
-     */
-    protected function getRecords(): array
+    protected function getLanguageService(): LanguageService
     {
-        if ($this->items === []) {
-            return [];
-        }
+        return $GLOBALS['LANG'];
+    }
 
-        $records = [];
-        foreach ($this->items as $item) {
-            $record = $item->getRecord();
-            $records[$record->getUid()] = $record;
-        }
-        return $records;
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
