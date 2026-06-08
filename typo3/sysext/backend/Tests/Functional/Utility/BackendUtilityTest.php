@@ -1183,4 +1183,40 @@ final class BackendUtilityTest extends FunctionalTestCase
         $uid = 42;
         self::assertSame(42, BackendUtility::wsMapId($tableName, $uid));
     }
+
+    #[Test]
+    public function daysUntilCalculatesResultWithIntegerInput(): void
+    {
+        $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 10, 28, 2026);
+
+        $tstamp = mktime(0, 0, 0, 10, 28, 1979);
+        $daysUntil = BackendUtility::daysUntil($tstamp);
+        self::assertSame(-17167, $daysUntil);
+
+        $tstamp = mktime(0, 0, 0, 10, 28, 2027);
+        $daysUntil = BackendUtility::daysUntil($tstamp);
+        self::assertSame(365, $daysUntil);
+    }
+
+    #[Test]
+    public function daysUntilCalculatesResultWithDateTimeInterfaceInput(): void
+    {
+        $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 10, 28, 2026);
+
+        $tstamp = new \DateTimeImmutable('1979-10-28 00:00:00');
+        $daysUntil = BackendUtility::daysUntil($tstamp);
+        self::assertSame(-17167, $daysUntil);
+
+        $tstamp = new \DateTimeImmutable('2027-10-28 00:00:00');
+        $daysUntil = BackendUtility::daysUntil($tstamp);
+        self::assertSame(365, $daysUntil);
+
+        $tstamp = new \DateTime('1979-10-28 00:00:00');
+        $daysUntil = BackendUtility::daysUntil($tstamp);
+        self::assertSame(-17167, $daysUntil);
+
+        $tstamp = new \DateTime('2027-10-28 00:00:00');
+        $daysUntil = BackendUtility::daysUntil($tstamp);
+        self::assertSame(365, $daysUntil);
+    }
 }

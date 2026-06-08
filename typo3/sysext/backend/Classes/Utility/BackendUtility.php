@@ -738,10 +738,13 @@ class BackendUtility
     /**
      * Returns the difference in days between input $tstamp and $EXEC_TIME
      *
-     * @param int $tstamp Time stamp, seconds
+     * @param int|\DateTimeInterface $tstamp Time stamp (seconds) or DateTime object
      */
-    public static function daysUntil($tstamp): int
+    public static function daysUntil(int|\DateTimeInterface $tstamp): int
     {
+        if ($tstamp instanceof \DateTimeInterface) {
+            $tstamp = $tstamp->getTimestamp();
+        }
         $delta_t = $tstamp - $GLOBALS['EXEC_TIME'];
         return (int)ceil($delta_t / (3600 * 24));
     }

@@ -16,10 +16,15 @@ return [
         'translationSource' => 'l10n_source',
         'enablecolumns' => [
             'disabled' => 'hidden',
+            'starttime' => 'starttime',
+            'endtime' => 'endtime',
         ],
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
+    ],
+    'palettes' => [
+        'timeRestriction' => ['showitem' => 'starttime, endtime'],
     ],
 
     'columns' => [
@@ -35,7 +40,9 @@ return [
 
     'types' => [
         '0' => [
-            'showitem' => 'input_1',
+            'showitem' => 'input_1,
+                --div--;core.form.tabs:access,
+                hidden,--palette--;;timeRestriction',
         ],
     ],
 
