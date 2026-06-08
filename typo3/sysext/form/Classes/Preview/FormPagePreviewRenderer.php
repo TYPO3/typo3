@@ -15,19 +15,19 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Hooks;
+namespace TYPO3\CMS\Form\Preview;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Preview\PreviewRendererInterface;
 use TYPO3\CMS\Backend\Preview\RecordFieldPreviewProcessor;
 use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Core\Domain\FlexFormFieldValues;
 use TYPO3\CMS\Core\Error\Exception;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
@@ -39,17 +39,20 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class FormPagePreviewRenderer extends StandardContentPreviewRenderer implements PreviewRendererInterface
+final readonly class FormPagePreviewRenderer implements PreviewRendererInterface
 {
-    private const L10N_PREFIX = 'LLL:EXT:form/Resources/Private/Language/Database.xlf:';
-
     public function __construct(
-        protected readonly FormPersistenceManagerInterface $formPersistenceManager,
-        protected readonly FlashMessageService $flashMessageService,
-        protected ?RecordFieldPreviewProcessor $fieldProcessor,
-        protected ?TcaSchemaFactory $tcaSchemaFactory,
-        protected ?LocalizationRepository $localizationRepository,
+        private FormPersistenceManagerInterface $formPersistenceManager,
+        private FlashMessageService $flashMessageService,
+        private RecordFieldPreviewProcessor $fieldProcessor,
+        private StandardContentPreviewRenderer $standardContentPreviewRenderer,
+        private LoggerInterface $logger,
     ) {}
+
+    public function renderPageModulePreviewHeader(GridColumnItem $item): string
+    {
+        return $this->standardContentPreviewRenderer->renderPageModulePreviewHeader($item);
+    }
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
@@ -62,13 +65,13 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer implements 
                 if ($flexFormData->has('sDEF/settings.persistenceIdentifier')) {
                     $persistenceIdentifier = $flexFormData->get('sDEF/settings.persistenceIdentifier');
                 } else {
-                    $this->logger?->warning(
+                    $this->logger->warning(
                         'Field "pi_flexform" for record-uid "{uid}" does not contain a persistence identifier.',
                         ['uid' => $record->getUid()]
                     );
                 }
             } else {
-                $this->logger?->warning(
+                $this->logger->warning(
                     'Type "{type}" of field "pi_flexform" for record-uid "{uid}" is not valid.',
                     ['type' => get_debug_type($flexFormData), 'uid' => $record->getUid()]
                 );
@@ -82,49 +85,59 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer implements 
                     $formLabel = $formDefinition['label'];
                 } catch (ParseErrorException $e) {
                     $formLabel = sprintf(
-                        $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidPersistenceIdentifier'),
+                        $languageService->sL('form.database:tt_content.preview.invalidPersistenceIdentifier'),
                         $persistenceIdentifier
                     );
                 } catch (PersistenceManagerException $e) {
                     $formLabel = sprintf(
-                        $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
+                        $languageService->sL('form.database:tt_content.preview.inaccessiblePersistenceIdentifier'),
                         $persistenceIdentifier
                     );
                 } catch (Exception $e) {
                     $formLabel = sprintf(
-                        $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
+                        $languageService->sL('form.database:tt_content.preview.notExistingdPersistenceIdentifier'),
                         $persistenceIdentifier
                     );
                 }
             } catch (NoSuchFileException $e) {
                 $this->addInvalidFrameworkConfigurationFlashMessage($persistenceIdentifier, $e);
                 $formLabel = sprintf(
-                    $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.notExistingdPersistenceIdentifier'),
+                    $languageService->sL('form.database:tt_content.preview.notExistingdPersistenceIdentifier'),
                     $persistenceIdentifier
                 );
             } catch (ParseErrorException $e) {
                 $this->addInvalidFrameworkConfigurationFlashMessage($persistenceIdentifier, $e);
                 $formLabel = sprintf(
-                    $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration'),
+                    $languageService->sL('form.database:tt_content.preview.invalidFrameworkConfiguration'),
                     $persistenceIdentifier
                 );
             } catch (\Exception $e) {
                 // Top level catch - FAL throws top level exceptions on missing files, eg. in getFileInfoByIdentifier() of LocalDriver
                 $this->addInvalidFrameworkConfigurationFlashMessage($persistenceIdentifier, $e);
                 $formLabel = sprintf(
-                    $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
+                    $languageService->sL('form.database:tt_content.preview.invalidFrameworkConfiguration.text'),
                     $persistenceIdentifier,
                     $e->getMessage()
                 );
             }
         } else {
-            $formLabel = $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.noPersistenceIdentifier');
+            $formLabel = $languageService->sL('form.database:tt_content.preview.noPersistenceIdentifier');
         }
         $itemContent = '<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong><br />';
         return $this->fieldProcessor->linkToEditForm($itemContent . htmlspecialchars($formLabel), $record, $request);
     }
 
-    protected function addInvalidFrameworkConfigurationFlashMessage(string $persistenceIdentifier, \Exception $e): void
+    public function renderPageModulePreviewFooter(GridColumnItem $item): string
+    {
+        return $this->standardContentPreviewRenderer->renderPageModulePreviewFooter($item);
+    }
+
+    public function wrapPageModulePreview(string $previewHeader, string $previewContent, GridColumnItem $item): string
+    {
+        return $this->standardContentPreviewRenderer->wrapPageModulePreview($previewHeader, $previewContent, $item);
+    }
+
+    private function addInvalidFrameworkConfigurationFlashMessage(string $persistenceIdentifier, \Exception $e): void
     {
         $languageService = $this->getLanguageService();
         $this->flashMessageService
@@ -132,14 +145,19 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer implements 
             ->enqueue(
                 new FlashMessage(
                     sprintf(
-                        $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.text'),
+                        $languageService->sL('form.database:tt_content.preview.invalidFrameworkConfiguration.text'),
                         $persistenceIdentifier,
                         $e->getMessage()
                     ),
-                    $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.invalidFrameworkConfiguration.title'),
+                    $languageService->sL('form.database:tt_content.preview.invalidFrameworkConfiguration.title'),
                     ContextualFeedbackSeverity::ERROR,
                     true
                 )
             );
+    }
+
+    private function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

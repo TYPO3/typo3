@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\View\Event;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
+use TYPO3\CMS\Backend\Preview\PreviewRendererInterface;
 use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
@@ -46,7 +46,7 @@ final class AfterPageContentPreviewRenderedTest extends FunctionalTestCase
     #[Test]
     public function eventMethodReturnsExpectedValue(): void
     {
-        $standardPreviewRenderer = $this->createMock(StandardContentPreviewRenderer::class);
+        $standardPreviewRenderer = $this->createMock(PreviewRendererInterface::class);
         $standardPreviewRenderer->expects($this->once())->method('renderPageModulePreviewHeader')->willReturn('My Preview Header');
         $standardPreviewRenderer->expects($this->once())->method('renderPageModulePreviewContent')->willReturn('My Content');
         $standardPreviewRenderer->expects($this->once())->method('wrapPageModulePreview')->willReturn('<div class="element-preview"><div class="element-preview-header">My Preview Header</div><div class="element-preview-content">My Content</div></div>');

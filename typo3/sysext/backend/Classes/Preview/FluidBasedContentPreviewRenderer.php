@@ -20,11 +20,9 @@ namespace TYPO3\CMS\Backend\Preview;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
-use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -47,33 +45,24 @@ final readonly class FluidBasedContentPreviewRenderer
     #[AsEventListener('typo3-backend/fluid-preview/content')]
     public function __invoke(PageContentPreviewRenderingEvent $event): void
     {
-        $previewContent = $this->renderContentElementPreviewFromFluidTemplate(
-            $event->getRecord(),
-            $event->getTable(),
-            $event->getRecordType(),
-            $event->getPageLayoutContext()
-        );
-        if ($previewContent !== null) {
-            $event->setPreviewContent($previewContent);
-        }
-    }
-
-    private function renderContentElementPreviewFromFluidTemplate(RecordInterface $record, string $table, string $recordType, PageLayoutContext $context): ?string
-    {
-        $fluidTemplateFile = BackendUtility::getPagesTSconfig($record->getPid())['mod.']['web_layout.'][$table . '.']['preview.'][$recordType] ?? '';
+        $record = $event->getRecord();
+        $context = $event->getPageLayoutContext();
+        $fluidTemplateFile = BackendUtility::getPagesTSconfig($record->getPid())['mod.']['web_layout.'][$event->getTable() . '.']['preview.'][$event->getRecordType()] ?? '';
         if ($fluidTemplateFile === '') {
-            return null;
+            return;
         }
 
         $fluidTemplateFileAbsolutePath = GeneralUtility::getFileAbsFileName($fluidTemplateFile);
         if ($fluidTemplateFileAbsolutePath === '') {
-            return null;
+            return;
         }
         try {
-            return $this->viewFactory
-                ->create(new ViewFactoryData(templatePathAndFilename: $fluidTemplateFileAbsolutePath, request: $context->getCurrentRequest()))
-                ->assign('record', $record)
-                ->render();
+            $event->setPreviewContent(
+                $this->viewFactory
+                    ->create(new ViewFactoryData(templatePathAndFilename: $fluidTemplateFileAbsolutePath, request: $context->getCurrentRequest()))
+                    ->assign('record', $record)
+                    ->render()
+            );
         } catch (\Exception $e) {
             $this->logger->warning('The backend preview for content element {uid} can not be rendered using the Fluid template file "{file}"', [
                 'uid' => $record->getUid(),
@@ -81,15 +70,16 @@ final readonly class FluidBasedContentPreviewRenderer
                 'exception' => $e,
             ]);
             if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-                return $this->viewFactory
-                    ->create(new ViewFactoryData(templatePathAndFilename: 'EXT:backend/Resources/Private/Templates/PageLayout/FluidBasedContentPreviewRenderingException.fluid.html'))
-                    ->assign('error', [
-                        'message' => str_replace(Environment::getProjectPath(), '', $e->getMessage()),
-                        'title' => 'Error while rendering FluidTemplate preview using ' . str_replace(Environment::getProjectPath(), '', $fluidTemplateFileAbsolutePath),
-                    ])
-                    ->render();
+                $event->setPreviewContent(
+                    $this->viewFactory
+                        ->create(new ViewFactoryData(templatePathAndFilename: 'EXT:backend/Resources/Private/Templates/PageLayout/FluidBasedContentPreviewRenderingException.fluid.html'))
+                        ->assign('error', [
+                            'message' => str_replace(Environment::getProjectPath(), '', $e->getMessage()),
+                            'title' => 'Error while rendering FluidTemplate preview using ' . str_replace(Environment::getProjectPath(), '', $fluidTemplateFileAbsolutePath),
+                        ])
+                        ->render()
+                );
             }
-            return null;
         }
     }
 

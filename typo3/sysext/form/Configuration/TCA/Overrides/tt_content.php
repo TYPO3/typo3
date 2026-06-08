@@ -14,5 +14,5 @@ call_user_func(static function () {
         'FILE:EXT:form/Configuration/FlexForms/FormFramework.xml',
     );
 
-    $GLOBALS['TCA']['tt_content']['types'][$contentTypeName]['previewRenderer'] = \TYPO3\CMS\Form\Hooks\FormPagePreviewRenderer::class;
+    $GLOBALS['TCA']['tt_content']['types'][$contentTypeName]['previewRenderer'] = \TYPO3\CMS\Form\Preview\FormPagePreviewRenderer::class;
 });

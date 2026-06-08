@@ -17,11 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Preview;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
@@ -29,11 +26,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record;
-use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -45,48 +40,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * StandardPreviewRendererResolver which detects the renderer
  * based on TCA configuration.
  *
- * Can be replaced and/or subclassed by custom implementations
- * by changing this TCA configuration.
+ * Can be replaced by custom implementations by changing this TCA configuration.
  *
  * See also PreviewRendererInterface documentation.
  */
 #[Autoconfigure(public: true)]
-class StandardContentPreviewRenderer implements PreviewRendererInterface, LoggerAwareInterface
+final readonly class StandardContentPreviewRenderer implements PreviewRendererInterface
 {
-    use LoggerAwareTrait;
-    protected ?RecordFieldPreviewProcessor $fieldProcessor = null;
-    protected ?TcaSchemaFactory $tcaSchemaFactory = null;
-    protected ?LocalizationRepository $localizationRepository = null;
-    protected ?BackendLayoutView $backendLayoutView = null;
-
-    public function __construct()
-    {
-        $this->initialize();
-    }
-
-    /**
-     * We use this workaround for the subclasses that do DI since TYPO3 v11, but do not call this constructor.
-     * This is a backwards-compatible layer until we have a better API than PreviewRendererInterface.
-     */
-    private function initialize(): void
-    {
-        if (!isset($this->fieldProcessor)) {
-            $this->fieldProcessor = GeneralUtility::makeInstance(RecordFieldPreviewProcessor::class);
-        }
-        if (!isset($this->tcaSchemaFactory)) {
-            $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
-        }
-        if (!isset($this->localizationRepository)) {
-            $this->localizationRepository = GeneralUtility::makeInstance(LocalizationRepository::class);
-        }
-        if (!isset($this->backendLayoutView)) {
-            $this->backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
-        }
-    }
+    public function __construct(
+        private RecordFieldPreviewProcessor $fieldProcessor,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private LocalizationRepository $localizationRepository,
+        private BackendLayoutView $backendLayoutView,
+        private IconFactory $iconFactory,
+    ) {}
 
     public function renderPageModulePreviewHeader(GridColumnItem $item): string
     {
-        $this->initialize();
         $record = $item->getRecord()->getRawRecord() ?? $item->getRecord();
         $request = $item->getContext()->getCurrentRequest();
         if (!$this->tcaSchemaFactory->has($record->getFullType())) {
@@ -127,7 +97,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
-        $this->initialize();
         $recordObj = $item->getRecord();
         // This preview should only be used for tt_content records.
         if ($recordObj->getMainType() !== 'tt_content') {
@@ -167,7 +136,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 break;
             case 'shortcut':
                 if ($recordObj->has('records') && ($records = $recordObj->get('records'))) {
-                    $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                     $shortcutContent = '';
                     $shortcutRecords = $records instanceof \Traversable ? $records : [$records];
                     foreach ($shortcutRecords as $shortcutRecord) {
@@ -176,7 +144,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         if ($recordObj instanceof Record) {
                             $shortcutRecord = $this->translateShortcutRecord($recordObj, $shortcutRecord, $shortcutTableName);
                         }
-                        $icon = $iconFactory->getIconForRecord($shortcutTableName, $row, IconSize::SMALL)->render();
+                        $icon = $this->iconFactory->getIconForRecord($shortcutTableName, $row, IconSize::SMALL)->render();
                         $icon = BackendUtility::wrapClickMenuOnIcon(
                             $icon,
                             $shortcutTableName,
@@ -265,7 +233,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      */
     public function renderPageModulePreviewFooter(GridColumnItem $item): string
     {
-        $this->initialize();
         $info = [];
         $record = $item->getRecord()->getRawRecord() ?? $item->getRecord();
         $schema = $this->tcaSchemaFactory->get($item->getTable());
@@ -309,7 +276,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         return $previewHeader || $previewContent ? '<div class="element-preview">' . $previewHeader . $previewContent . '</div>' : '';
     }
 
-    protected function translateShortcutRecord(Record $targetRecord, Record $shortcutRecord, string $tableName): RawRecord
+    private function translateShortcutRecord(Record $targetRecord, Record $shortcutRecord, string $tableName): RawRecord
     {
         $targetLanguage = ($targetRecord->getLanguageId() ?? 0);
         if ($targetLanguage === 0
@@ -324,41 +291,12 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         return $shortcutRecordLocalization ?? $shortcutRecord->getRawRecord();
     }
 
-    protected function getProcessedValue(GridColumnItem $item, string|array $fieldList, array &$info): void
-    {
-        $fieldArr = is_array($fieldList) ? $fieldList : explode(',', $fieldList);
-        foreach ($fieldArr as $field) {
-            $fieldValue = $this->fieldProcessor->prepareFieldWithLabel($item->getRecord()->getRawRecord() ?? $item->getRecord(), $field);
-            if ($fieldValue !== null) {
-                $info[] = $fieldValue;
-            }
-        }
-    }
-
-    protected function getThumbCodeUnlinked(iterable|FileReference $fileReferences): string
-    {
-        return (string)$this->fieldProcessor->prepareFiles($fileReferences);
-    }
-
-    /**
-     * Processing of larger amounts of text (usually from RTE/bodytext fields) with word wrapping etc.
-     *
-     * @param string $input Input string
-     * @return string Output string
-     */
-    protected function renderText(string $input): string
-    {
-        $input = strip_tags($input);
-        $input = GeneralUtility::fixed_lgd_cs($input, 1500);
-        return nl2br(htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8', false));
-    }
-
     /**
      * Generates a list of selected pages or categories for the menu content types
      *
      * @param array $record row from pages
      */
-    protected function generateListForMenuContentTypes(array $record, string $contentType): string
+    private function generateListForMenuContentTypes(array $record, string $contentType): string
     {
         $table = 'pages';
         $field = 'pages';
@@ -383,54 +321,13 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         return $content ? '<ul class="list-group">' . $content . '</ul>' : '';
     }
 
-    /**
-     * Will create a link on the input string and possibly a big button after the string which links to editing in the
-     * RTE. Used for content element content displayed so the user can click the content / "Edit in Rich Text Editor"
-     * button
-     *
-     * @param string $linkText String to link. Must be prepared for HTML output.
-     * @param RecordInterface $record The record.
-     * @return string If the whole thing was editable and $linkText is not empty $linkText is returned with link
-     *                around. Otherwise just $linkText.
-     */
-    protected function linkEditContent(string $linkText, RecordInterface $record): string
-    {
-        if (empty($linkText)) {
-            return $linkText;
-        }
-        $table = $record->getMainType();
-        $backendUser = $this->getBackendUser();
-        if ($backendUser->check('tables_modify', $table)
-            && $backendUser->checkRecordEditAccess($table, $record)->isAllowed
-            && (new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $record->getPid()) ?? [])))->editContentPermissionIsGranted()
-        ) {
-            $returnUrl = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $table . '-' . $record->getUid();
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $editParams = [
-                'edit' => [$table => [$record->getUid() => 'edit']],
-                'returnUrl' => $returnUrl,
-            ];
-            return '<typo3-backend-contextual-record-edit-trigger'
-                . ' url="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('record_edit_contextual', $editParams)) . '"'
-                . ' edit-url="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('record_edit', $editParams)) . '"'
-                . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:edit')) . '"'
-                . '>' . $linkText . '</typo3-backend-contextual-record-edit-trigger>';
-        }
-        return $linkText;
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    protected function getIconFactory(): IconFactory
-    {
-        return GeneralUtility::makeInstance(IconFactory::class);
     }
 }

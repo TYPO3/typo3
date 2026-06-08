@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Backend\Preview;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
@@ -45,15 +47,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * The result is always HTML, and it's always HSCed -> ready to be rendered.
  */
 #[Autoconfigure(public: true)]
-final class RecordFieldPreviewProcessor
+final readonly class RecordFieldPreviewProcessor
 {
-    private array $itemLabels = [];
-
     public function __construct(
-        private readonly TcaSchemaFactory $schemaFactory,
-        private readonly UriBuilder $uriBuilder,
-        private readonly IconFactory $iconFactory,
-        private readonly SanitizerBuilderFactory $sanitizerBuilderFactory,
+        private TcaSchemaFactory $schemaFactory,
+        private UriBuilder $uriBuilder,
+        private IconFactory $iconFactory,
+        private SanitizerBuilderFactory $sanitizerBuilderFactory,
+        #[Autowire(service: 'cache.runtime')]
+        private FrontendInterface $runtimeCache,
     ) {}
 
     /**
@@ -236,13 +238,17 @@ final class RecordFieldPreviewProcessor
 
     private function getItemLabels(RecordInterface $record): array
     {
-        if (!isset($this->itemLabels[$record->getMainType()])) {
-            $this->itemLabels[$record->getMainType()] = [];
-            foreach ($this->schemaFactory->get($record->getMainType())->getFields() as $field) {
-                $this->itemLabels[$record->getMainType()][$field->getName()] = $this->getLanguageService()->sL($field->getLabel());
+        $mainType = $record->getMainType();
+        $cacheIdentifier = 'recordfieldpreviewprocessor-' . $mainType;
+        $itemLabels = $this->runtimeCache->get($cacheIdentifier);
+        if ($itemLabels === false) {
+            $itemLabels = [];
+            foreach ($this->schemaFactory->get($mainType)->getFields() as $field) {
+                $itemLabels[$field->getName()] = $this->getLanguageService()->sL($field->getLabel());
             }
+            $this->runtimeCache->set($cacheIdentifier, $itemLabels);
         }
-        return $this->itemLabels[$record->getMainType()];
+        return $itemLabels;
     }
 
     private function getBackendUser(): BackendUserAuthentication
