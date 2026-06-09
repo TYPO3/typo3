@@ -21,6 +21,9 @@
       <trans-unit id="ajax.error.message.resourceOutsideOfStorages">
         <source>Access to files outside your configured storages is not permitted.</source>
       </trans-unit>
+      <trans-unit id="ajax.error.message.resourceNoPermissionRead">
+        <source>Reading this resource is not permitted.</source>
+      </trans-unit>
       <trans-unit id="ajax.error.message.resourceNoPermissionRename">
         <source>Renaming this resource is not permitted.</source>
       </trans-unit>
