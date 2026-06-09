@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Styleguide\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,9 +30,6 @@ final class User1Element extends AbstractFormElement
 {
     use OnFieldChangeTrait;
 
-    /**
-     * @return array<string, array<int, string|JavaScriptModuleInstruction>|string> As defined in initializeResultArray() of AbstractNode
-     */
     public function render(): array
     {
         $result = $this->initializeResultArray();

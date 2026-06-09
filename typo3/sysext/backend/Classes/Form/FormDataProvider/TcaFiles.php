@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -40,7 +41,10 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
     private const FILE_REFERENCE_TABLE = 'sys_file_reference';
     private const FOREIGN_SELECTOR = 'uid_local';
 
-    public function __construct(private readonly InlineStackProcessor $inlineStackProcessor) {}
+    public function __construct(
+        private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly LoggerInterface $logger,
+    ) {}
 
     public function addData(array $result): array
     {

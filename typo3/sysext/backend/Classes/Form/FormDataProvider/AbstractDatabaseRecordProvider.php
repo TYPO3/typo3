@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
@@ -27,10 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Extended by other provider that fetch records from database
  */
-abstract class AbstractDatabaseRecordProvider implements LoggerAwareInterface
+abstract class AbstractDatabaseRecordProvider
 {
-    use LoggerAwareTrait;
-
     private ConnectionPool $connectionPool;
 
     public function injectConnectionPool(ConnectionPool $connectionPool): void

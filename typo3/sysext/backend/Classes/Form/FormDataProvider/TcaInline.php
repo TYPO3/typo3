@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
@@ -41,6 +42,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
     public function __construct(
         private readonly FlashMessageService $flashMessageService,
         private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly LoggerInterface $logger,
     ) {}
 
     /**

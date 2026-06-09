@@ -17,19 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Domain\DateTimeFormat;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Base class for container and single elements - their abstracts extend from here.
  */
-abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
+abstract class AbstractNode implements NodeInterface
 {
-    use LoggerAwareTrait;
-
     /**
      * Main data array to work on, given from parent to child elements
      */
@@ -77,16 +74,21 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
      * Initialize the array that is returned to parent after calling. This structure
      * is identical for *all* nodes. Parent will merge the return of a child with its
      * own stuff and in itself return an array of the same structure.
+     *
+     * @return array{
+     *     additionalInlineLanguageLabelFiles: list<string>,
+     *     stylesheetFiles: list<string>,
+     *     javaScriptModules: list<JavaScriptModuleInstruction>,
+     *     inlineData: array<string, mixed>,
+     *     html: string,
+     * }
      */
     protected function initializeResultArray(): array
     {
-        /** @var list<\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction> */
-        $javaScriptModules = [];
-
         return [
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
-            'javaScriptModules' => $javaScriptModules,
+            'javaScriptModules' => [],
             'inlineData' => [],
             'html' => '',
         ];
