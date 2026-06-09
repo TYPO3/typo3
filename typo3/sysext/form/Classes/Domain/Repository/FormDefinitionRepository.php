@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\DTO\FormData;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
+use TYPO3\CMS\Form\Storage\Security\FormDefinitionPersistenceCommand;
+use TYPO3\CMS\Form\Storage\Security\FormDefinitionPersistenceGuard;
 
 /**
  * Repository class to fetch available form definitions.
@@ -36,6 +38,7 @@ readonly class FormDefinitionRepository
 
     public function __construct(
         private ConnectionPool $connectionPool,
+        private FormDefinitionPersistenceGuard $persistenceGuard,
     ) {}
 
     /**
@@ -180,19 +183,22 @@ readonly class FormDefinitionRepository
     public function add(string $persistenceIdentifier, int $pid, FormData $formDefinition): ?int
     {
         $formDefinitionJson = json_encode($formDefinition->toArray(), JSON_THROW_ON_ERROR);
+        $fields = [
+            'pid' => $pid,
+            'label' => $formDefinition->name,
+            'identifier' => $formDefinition->identifier,
+            'configuration' => $formDefinitionJson,
+        ];
+
+        $this->persistenceGuard->allowInvocation(FormDefinitionPersistenceCommand::Create, $persistenceIdentifier, $fields);
         /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start([
-            self::TABLE_NAME => [
-                $persistenceIdentifier => [
-                    'pid' => $pid,
-                    'label' => $formDefinition->name,
-                    'identifier' => $formDefinition->identifier,
-                    'configuration' => $formDefinitionJson,
-                ],
-            ],
-        ], []);
-        $dataHandler->process_datamap();
+        $dataHandler->start([self::TABLE_NAME => [$persistenceIdentifier => $fields]], []);
+        try {
+            $dataHandler->process_datamap();
+        } finally {
+            $this->persistenceGuard->consumeInvocation(FormDefinitionPersistenceCommand::Create, $persistenceIdentifier, $fields);
+        }
 
         if ($dataHandler->errorLog !== []) {
             return null;
@@ -235,16 +241,15 @@ readonly class FormDefinitionRepository
      */
     public function remove(int $uid): bool
     {
+        $this->persistenceGuard->allowInvocation(FormDefinitionPersistenceCommand::Delete, $uid);
         /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start([], [
-            self::TABLE_NAME => [
-                $uid => [
-                    'delete' => 1,
-                ],
-            ],
-        ]);
-        $dataHandler->process_cmdmap();
+        $dataHandler->start([], [self::TABLE_NAME => [$uid => ['delete' => 1]]]);
+        try {
+            $dataHandler->process_cmdmap();
+        } finally {
+            $this->persistenceGuard->consumeInvocation(FormDefinitionPersistenceCommand::Delete, $uid);
+        }
         return $dataHandler->errorLog === [];
     }
 
@@ -263,19 +268,21 @@ readonly class FormDefinitionRepository
         }
 
         $formDefinitionJson = json_encode($formDefinition->toArray(), JSON_THROW_ON_ERROR);
+        $fields = [
+            'label' => $formDefinition->name,
+            'identifier' => $formDefinition->identifier,
+            'configuration' => $formDefinitionJson,
+        ];
 
+        $this->persistenceGuard->allowInvocation(FormDefinitionPersistenceCommand::Update, $uid, $fields);
         /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start([
-            self::TABLE_NAME => [
-                $uid => [
-                    'label' => $formDefinition->name,
-                    'identifier' => $formDefinition->identifier,
-                    'configuration' => $formDefinitionJson,
-                ],
-            ],
-        ], []);
-        $dataHandler->process_datamap();
+        $dataHandler->start([self::TABLE_NAME => [$uid => $fields]], []);
+        try {
+            $dataHandler->process_datamap();
+        } finally {
+            $this->persistenceGuard->consumeInvocation(FormDefinitionPersistenceCommand::Update, $uid, $fields);
+        }
 
         return $dataHandler->errorLog === [];
     }
