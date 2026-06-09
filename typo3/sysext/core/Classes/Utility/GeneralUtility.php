@@ -2541,10 +2541,11 @@ class GeneralUtility
         if (substr($path, 0, 6) === 'vfs://') {
             return true;
         }
+        $path = PathUtility::sanitizeTrailingSeparator($path);
         return PathUtility::isAbsolutePath($path) && static::validPathStr($path)
             && (
-                str_starts_with($path, Environment::getProjectPath())
-                || str_starts_with($path, Environment::getPublicPath())
+                str_starts_with($path, Environment::getProjectPath() . '/')
+                || str_starts_with($path, Environment::getPublicPath() . '/')
                 || PathUtility::isAllowedAdditionalPath($path)
             );
     }

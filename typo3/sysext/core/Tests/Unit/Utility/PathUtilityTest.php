@@ -565,7 +565,9 @@ final class PathUtilityTest extends UnitTestCase
         yield ['/var/shared/', '/var/shared', true];
         yield ['/var/shared', '/var/shared/', true];
         yield ['/var/shared/', '/var/shared/', true];
+        yield ['/var/shared', '/var/shared/file.png', true];
         yield ['/var/shared/', '/var/shared/file.png', true];
+        yield ['/var/shared', '/var/shared-secret', false];
         yield ['/var/shared/', '/var/shared-secret', false];
         yield ['/var/shared/', '/var', false];
         // array settings
@@ -573,7 +575,9 @@ final class PathUtilityTest extends UnitTestCase
         yield [['/var/shared/'], '/var/shared', true];
         yield [['/var/shared'], '/var/shared/', true];
         yield [['/var/shared/'], '/var/shared/', true];
+        yield [['/var/shared'], '/var/shared/file.png', true];
         yield [['/var/shared/'], '/var/shared/file.png', true];
+        yield [['/var/shared'], '/var/shared-secret', false];
         yield [['/var/shared/'], '/var/shared-secret', false];
         yield [['/var/shared/'], '/var', false];
     }
