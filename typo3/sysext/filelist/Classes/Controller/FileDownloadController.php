@@ -101,7 +101,9 @@ class FileDownloadController
         }
         $zipFile->close();
         $response = $this->createResponse($zipFileName, $filesAdded);
-        unlink($zipFileName);
+        if ($filesAdded > 0) {
+            unlink($zipFileName);
+        }
         return $response;
     }
 
@@ -132,6 +134,10 @@ class FileDownloadController
         foreach ($items as $itemIdentifier) {
             $fileOrFolderObject = $this->resourceFactory->retrieveFileOrFolderObject($itemIdentifier);
             if ($fileOrFolderObject === null) {
+                continue;
+            }
+            // Files from fallback storage must be skipped in general
+            if ($fileOrFolderObject->getStorage()->isFallbackStorage()) {
                 continue;
             }
             $baseIdentifier = dirname($fileOrFolderObject->getIdentifier());
