@@ -1,0 +1,17 @@
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody"
+,1,0,128,"Root 1",0,31
+,2,1,128,"Page 1",0,31
+,3,1,128,"Page 2",0,31
+,4,0,128,"Root 2",0,31
+,5,4,128,"Page 1",0,31
+tt_content,,,,,,,,
+,uid,pid,header,sys_language_uid,l18n_parent,assets,CType
+,1,2,"A Header on page uid 2",0,0,0,"header"
+,2,5,"A Header on page uid 4",0,0,0,"header"
+be_groups,,,,,,,,,
+,uid,pid,title,deleted,db_mountpoints,tables_select,tables_modify,non_exclude_fields,explicit_allowdeny
+,9,0,"editors",0,1,"pages,tt_content","pages,tt_content","pages:title,tt_content:header,tt_content:CType","tt_content:CType:header"
+"be_users",,,,,,,
+,"uid","pid","username","usergroup","deleted","admin","options"
+,9,0,"editor",9,0,0,3
