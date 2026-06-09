@@ -280,7 +280,7 @@ runPlaywright() {
         fi
         done </dev/tty
     elif [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 ]]; then
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name accessibility-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
         SUITE_EXIT_CODE=$?
     else
         PLAYWRIGHT_BASE_URL="http://$(${CONTAINER_BIN} port ac-web-${SUFFIX} 80/tcp)/"
@@ -299,7 +299,7 @@ runPlaywright() {
         echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to run tests in container)"
         # maybe use https://stackoverflow.com/a/58508884/4223467
         while read -r _; do
-            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name accessibility-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
+            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
             SUITE_EXIT_CODE=$?
             echo
             echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to re-run tests in container)"
@@ -652,7 +652,6 @@ Options:
             - lintYaml: YAML Linting (excluding Services.yaml)
             - normalizeXliff: normalize .xlf files
             - npm: "npm" command dispatcher, to execute various npm commands directly
-            - accessibility: accessibility tests (use accessibility-prepare for manual execution)
             - e2e: end to end tests (use e2e-prepare for manual execution)
             - e2e-prepare: Start a test instance of TYPO3
             - e2e-browser: end to end tests with the GUI running on http://127.0.0.1:43837
@@ -1017,16 +1016,6 @@ case ${TEST_SUITE} in
         ;;
     e2e-prepare)
         PLAYWRIGHT_PROJECT="--project e2e"
-        PLAYWRIGHT_PREPARE_ONLY=1
-        runPlaywright
-        ;;
-    accessibility)
-        PLAYWRIGHT_PROJECT="--project accessibility"
-        PLAYWRIGHT_PREPARE_ONLY=0
-        runPlaywright
-        ;;
-    accessibility-prepare)
-        PLAYWRIGHT_PROJECT="--project accessibility"
         PLAYWRIGHT_PREPARE_ONLY=1
         runPlaywright
         ;;
