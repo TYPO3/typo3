@@ -1,0 +1,10 @@
+{
+    "name": "typo3tests/form-storage-tests",
+    "type": "typo3-cms-extension",
+    "require": {},
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "form_storage_tests"
+        }
+    }
+}
