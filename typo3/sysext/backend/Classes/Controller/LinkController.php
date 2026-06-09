@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -47,11 +48,10 @@ final class LinkController
         $identifier = $request->getParsedBody()['identifier'] ?? null;
         $resource = null;
 
-        if ($identifier) {
-            $resource = $this->resourceFactory->retrieveFileOrFolderObject($identifier);
-        }
-
         try {
+            if ($identifier) {
+                $resource = $this->resourceFactory->retrieveFileOrFolderObject($identifier);
+            }
             if (!$resource instanceof File && !$resource instanceof Folder) {
                 throw new \InvalidArgumentException('Resource must be a file or a folder', 1679039649);
             }
@@ -59,22 +59,34 @@ final class LinkController
                 throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1679039650);
             }
             if ($resource instanceof File) {
+                if (!$resource->checkActionPermission('read')) {
+                    throw new InsufficientFileAccessPermissionsException('You are not allowed to access this file', 1779001351);
+                }
                 $parameters = [
                     'type' => LinkService::TYPE_FILE,
                     'file' => $resource,
                 ];
             }
             if ($resource instanceof Folder) {
+                // Note: No explicit `$resource->checkActionPermission('read')` check here, as that would
+                // be a no-op since `ResourceStorage::getFolder()` calls `assureFolderReadPermission()`
+                // and throws `InsufficientFolderAccessPermissionsException`
                 $parameters = [
                     'type' => LinkService::TYPE_FOLDER,
                     'folder' => $resource,
                 ];
             }
             $link = $this->linkService->asString($parameters);
+        } catch (InsufficientFileAccessPermissionsException|InsufficientFolderAccessPermissionsException $exception) {
+            $message = match ($exception->getCode()) {
+                1679039650 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceOutsideOfStorages'),
+                default => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNoPermissionRead'),
+            };
+
+            return new JsonResponse($this->getResponseData(false, $message));
         } catch (\Exception $exception) {
             $message = match ($exception->getCode()) {
                 1679039649 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNotFileOrFolder'),
-                1679039650 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceOutsideOfStorages'),
                 default => $exception->getMessage(),
             };
 
