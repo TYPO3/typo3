@@ -29,11 +29,13 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -669,21 +671,34 @@ class Clipboard
 
         foreach ($this->clipData[$this->current]['el'] as $reference => $value) {
             [$table, $uid] = explode('|', $reference);
-            if ($table !== '_FILE') {
-                if (!$value || !is_array(BackendUtility::getRecord($table, (int)$uid, 'uid'))) {
-                    unset($this->clipData[$this->current]['el'][$reference]);
-                    $this->changed = true;
-                }
-            } elseif (!$value) {
-                unset($this->clipData[$this->current]['el'][$reference]);
-                $this->changed = true;
-            } else {
+            $unset = false;
+
+            if (!$value) {
+                $unset = true;
+            } elseif ($table === '_FILE') {
                 try {
-                    $this->resourceFactory->retrieveFileOrFolderObject($value);
-                } catch (ResourceDoesNotExistException $e) {
-                    // The file has been deleted in the meantime, so just remove it silently
-                    unset($this->clipData[$this->current]['el'][$reference]);
+                    $fileOrFolder = $this->resourceFactory->retrieveFileOrFolderObject($value);
+
+                    if (($fileOrFolder instanceof File || $fileOrFolder instanceof Folder)
+                        && !$fileOrFolder->checkActionPermission('read')
+                    ) {
+                        $unset = true;
+                    }
+                } catch (InsufficientFolderAccessPermissionsException|ResourceDoesNotExistException) {
+                    // If either the file has been deleted in the meantime or the user lacks permissions
+                    // for the folder, we just remove the clipboard entry silently
+                    $unset = true;
                 }
+            } elseif (!is_array($row = BackendUtility::getRecord($table, (int)$uid, 'uid,pid'))
+                || !$this->getBackendUser()->check('tables_select', $table)
+                || !is_array($page = BackendUtility::getRecord('pages', (int)($table === 'pages' ? $row['uid'] : $row['pid'])))
+                || !$this->getBackendUser()->doesUserHaveAccess($page, Permission::PAGE_SHOW)
+            ) {
+                $unset = true;
+            }
+
+            if ($unset) {
+                $this->removeElement($reference);
             }
         }
     }
