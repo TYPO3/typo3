@@ -37,10 +37,14 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FormPersistenceManagerTest extends FunctionalTestCase
 {
-    protected bool $initializeDatabase = false;
-
     protected array $coreExtensionsToLoad = [
         'form',
+    ];
+
+    protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/form/Tests/Functional/Mvc/Persistence/Fixtures/ContactForm.form.yaml' => 'fileadmin/form_definitions/ContactForm.form.yaml',
+        'typo3/sysext/form/Tests/Functional/Mvc/Persistence/Fixtures/ContactFormWithoutType.yaml' => 'fileadmin/form_definitions/ContactFormWithoutType.yaml',
+        'typo3/sysext/form/Tests/Functional/Mvc/Persistence/Fixtures/ContactFormWithType.yaml' => 'fileadmin/form_definitions/ContactFormWithType.yaml',
     ];
 
     #[Test]
@@ -92,6 +96,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
         ];
         $expected = [
             'identifier' => 'ext-form-identifier',
+            'type' => 'Form',
             'prototypeName' => 'standard',
             'label' => 'Label',
             'renderables' => [
@@ -140,6 +145,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
         ];
         $expected = [
             'identifier' => 'ext-form-identifier',
+            'type' => 'Form',
             'prototypeName' => 'standard',
             'label' => 'Label override',
             'renderables' => [
@@ -190,6 +196,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
         ];
         $formDefinitionYaml = [
             'identifier' => 'ext-form-identifier',
+            'type' => 'Form',
             'prototypeName' => 'standard',
             'label' => [
                 'value' => 'Label override',
@@ -212,6 +219,7 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
         ];
         $expected = [
             'identifier' => 'ext-form-identifier',
+            'type' => 'Form',
             'prototypeName' => 'standard',
             'label' => [
                 'value' => 'Label override',
@@ -1031,5 +1039,21 @@ final class FormPersistenceManagerTest extends FunctionalTestCase
         );
         $subjectMock->method('getStorageByUid')->willReturn($storageMock);
         self::assertEquals($expected, $subjectMock->isAllowedPersistencePath($persistencePath, $formSettings));
+    }
+
+    public static function loadThrowsExceptionWhenFormDefinitionHasInvalidFileExtensionDataProvider(): iterable
+    {
+        yield ['1:/form_definitions/ContactForm.form.yaml', null];
+        yield ['1:/form_definitions/ContactFormWithType.yaml', true];
+        yield ['1:/form_definitions/ContactFormWithoutType.yaml', true];
+    }
+
+    #[Test]
+    #[DataProvider('loadThrowsExceptionWhenFormDefinitionHasInvalidFileExtensionDataProvider')]
+    public function loadThrowsExceptionWhenFormDefinitionHasInvalidFileExtension(string $identifier, ?bool $expectedInvalid): void
+    {
+        $subject = $this->get(FormPersistenceManager::class);
+        $formDefinition = $subject->load($identifier, [], []);
+        self::assertSame($expectedInvalid, $formDefinition['invalid'] ?? null);
     }
 }

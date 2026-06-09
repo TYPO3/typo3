@@ -89,7 +89,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
             }
             try {
                 $formDefinition = $this->yamlSource->load([$file]);
-                $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($formDefinition, $persistenceIdentifier);
+                $this->generateErrorsIfFormDefinitionIsInvalidOrHasInvalidFileExtension($formDefinition, $persistenceIdentifier);
             } catch (\Exception $e) {
                 $formDefinition = [
                     'type' => 'Form',
@@ -648,7 +648,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
                 throw new NoSuchFileException(sprintf('YAML file "%s" could not be loaded', $persistenceIdentifier), 1524684462);
             }
             $yaml = $this->extractMetaDataFromCouldBeFormDefinition($rawYamlContent);
-            $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($yaml, $persistenceIdentifier);
+            $this->generateErrorsIfFormDefinitionIsInvalidOrHasInvalidFileExtension($yaml, $persistenceIdentifier);
             if ($file !== null) {
                 $yaml['fileUid'] = $file->getUid();
             }
@@ -694,9 +694,9 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * @throws PersistenceManagerException
      */
-    protected function generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension(array $formDefinition, string $persistenceIdentifier): void
+    protected function generateErrorsIfFormDefinitionIsInvalidOrHasInvalidFileExtension(array $formDefinition, string $persistenceIdentifier): void
     {
-        if ($this->looksLikeAFormDefinition($formDefinition) && !$this->hasValidFileExtension($persistenceIdentifier)) {
+        if (!$this->looksLikeAFormDefinition($formDefinition) || !$this->hasValidFileExtension($persistenceIdentifier)) {
             throw new PersistenceManagerException(sprintf('Form definition "%s" does not end with ".form.yaml".', $persistenceIdentifier), 1531160649);
         }
     }

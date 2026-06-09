@@ -1,4 +1,5 @@
 identifier: ext-form-identifier
+type: Form
 prototypeName: standard
 label: 'Label'
 renderables:
