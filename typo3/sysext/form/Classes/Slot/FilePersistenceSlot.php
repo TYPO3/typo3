@@ -172,7 +172,10 @@ final class FilePersistenceSlot implements SingletonInterface
 
     private function isFormDefinition(string $identifier): bool
     {
-        return str_ends_with($identifier, FormPersistenceManagerInterface::FORM_DEFINITION_FILE_EXTENSION);
+        return str_ends_with(
+            mb_strtolower($identifier),
+            FormPersistenceManagerInterface::FORM_DEFINITION_FILE_EXTENSION
+        );
     }
 
     private function isRecycleFolder(FolderInterface $folder): bool

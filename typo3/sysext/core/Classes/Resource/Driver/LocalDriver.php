@@ -301,7 +301,8 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     /**
      * Returns a string where any character not matching [.a-zA-Z0-9_-] is
      * substituted by '_'
-     * Trailing dots are removed
+     * Trailing dots are removed and characters are lowercased if using
+     * a case insensitive file system.
      *
      * Previously in \TYPO3\CMS\Core\Utility\File\BasicFileUtility::cleanFileName()
      *
@@ -320,10 +321,16 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             // Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
             $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
+            if (!$this->isCaseSensitiveFileSystem()) {
+                $cleanFileName = mb_strtolower($cleanFileName, 'utf-8');
+            }
         } else {
             $fileName = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII($charset, $fileName);
             // Replace unwanted characters with underscores
             $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
+            if (!$this->isCaseSensitiveFileSystem()) {
+                $cleanFileName = strtolower($cleanFileName);
+            }
         }
         // Strip trailing dots and return
         $cleanFileName = rtrim($cleanFileName, '.');
