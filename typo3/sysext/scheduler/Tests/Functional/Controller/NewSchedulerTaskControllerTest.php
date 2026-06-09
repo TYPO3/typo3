@@ -173,7 +173,7 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
                 'SCRIPT_NAME' => '/typo3/index.php',
             ]));
         $request = $request->withQueryParams([
-            'returnUrl' => Environment::getPublicPath() . 'typo3/scheduler/manage?token=123&test=value',
+            'returnUrl' => Environment::getPublicPath() . '/typo3/scheduler/manage?token=123&test=value',
             'defaultValues' => $defaultValues,
         ]);
 

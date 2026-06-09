@@ -2071,9 +2071,10 @@ class GeneralUtility
      */
     public static function isAllowedAbsPath(string $path): bool
     {
+        $path = PathUtility::sanitizeTrailingSeparator($path);
         return PathUtility::isAbsolutePath($path) && static::validPathStr($path)
             && (
-                str_starts_with($path, Environment::getProjectPath())
+                str_starts_with($path, Environment::getProjectPath() . '/')
                 || PathUtility::isAllowedAdditionalPath($path)
             );
     }
