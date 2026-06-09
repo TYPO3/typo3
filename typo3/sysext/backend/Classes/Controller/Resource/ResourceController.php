@@ -65,6 +65,9 @@ final readonly class ResourceController
         if ($resource === null) {
             return new JsonResponse(null, 404);
         }
+        if (!$resource->checkActionPermission('read')) {
+            return new JsonResponse(null, 403);
+        }
 
         return new JsonResponse($this->getResourceResponseData($resource));
     }

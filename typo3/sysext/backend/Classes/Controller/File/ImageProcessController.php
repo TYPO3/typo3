@@ -42,6 +42,9 @@ readonly class ImageProcessController
         $processedFileId = (int)($request->getQueryParams()['id'] ?? 0);
         try {
             $processedFile = $this->imageProcessingService->process($processedFileId);
+            if (!$processedFile->getOriginalFile()->checkActionPermission('read')) {
+                return new HtmlResponse('', 403);
+            }
 
             return new RedirectResponse(
                 GeneralUtility::locationHeaderUrl($processedFile->getPublicUrl() ?? '', $request)
