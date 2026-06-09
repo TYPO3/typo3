@@ -161,6 +161,10 @@ final class DefaultSanitizerBuilderTest extends FunctionalTestCase
                 '<?xml >s<img src=x onerror=alert(1)> ?>',
                 '&lt;?xml &gt;s&lt;img src=x onerror=alert(1)&gt; ?&gt;',
             ],
+            '#942' => [
+                '<div xmlns:x="&quot;&gt;&lt;img src=x onerror=alert(1)&gt;">text</div>',
+                '<div xmlns:x="&quot;&gt;&lt;img src=x onerror=alert(1)&gt;">text</div>',
+            ],
             '#951' => [
                 '<span class="icon"><svg class="icon__svg" role="img" aria-hidden="true"><use href="#icon"></use></svg></span>',
                 '<span class="icon"><svg class="icon__svg" role="img" aria-hidden="true"><use href="#icon" /></svg></span>',
