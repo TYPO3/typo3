@@ -683,7 +683,25 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $label = 'Include ' . $nonCacheableData[$nonCacheableKey]['type'];
                     $timeTracker->push($label);
                     $nonCacheableContent = '';
-                    $contentObjectRendererForNonCacheable = unserialize($nonCacheableData[$nonCacheableKey]['cObj']);
+                    // The cObj payload originates from one of two trusted sources and in
+                    // neither case does it require gadget-list filtering:
+                    //
+                    // 1. Served from page cache: the entire page-cache entry (including
+                    //    INTincScript) is HMAC-verified by VariableFrontend before it
+                    //    reaches this point, so the payload is cryptographically guaranteed
+                    //    to be unmodified server-produced data.
+                    //
+                    // 2. Produced in the same request: when a page is built without a
+                    //    cache hit, ContentObjectRenderer serializes the cObj via PHP's own
+                    //    serialize() within the same process. The data never leaves the
+                    //    process before it is deserialized here, so no external actor can
+                    //    have influenced it.
+                    //
+                    // In both cases the serialized data is trusted server-side output;
+                    // allowing all classes is safe and required because ContentObjectRenderer
+                    // itself carries __wakeup() (to restore TSFE and currentFile references)
+                    // and would therefore be blocked by DenyListDeserializer.
+                    $contentObjectRendererForNonCacheable = unserialize($nonCacheableData[$nonCacheableKey]['cObj'], ['allowed_classes' => true]);
                     if ($contentObjectRendererForNonCacheable instanceof ContentObjectRenderer) {
                         $contentObjectRendererForNonCacheable->setRequest($request);
                         $nonCacheableContent = match ($nonCacheableData[$nonCacheableKey]['type']) {

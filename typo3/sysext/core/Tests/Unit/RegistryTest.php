@@ -18,17 +18,31 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
+use TYPO3\CMS\Core\Serializer\DeserializationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RegistryTest extends UnitTestCase
 {
+    private DenyListDeserializer $deserializer;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->willReturn(false);
+        $this->deserializer = new DenyListDeserializer($cacheMock, new HashService(), new DeserializationService());
+    }
+
     #[Test]
     public function getThrowsExceptionForInvalidNamespacesUsingNoNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry())->get('', 'someKey');
+        (new Registry($this->deserializer))->get('', 'someKey');
     }
 
     #[Test]
@@ -36,7 +50,7 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry())->get('t', 'someKey');
+        (new Registry($this->deserializer))->get('t', 'someKey');
     }
 
     #[Test]
@@ -44,7 +58,7 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry())->set('', 'someKey', 'someValue');
+        (new Registry($this->deserializer))->set('', 'someKey', 'someValue');
     }
 
     #[Test]
@@ -52,7 +66,7 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry())->set('t', 'someKey', 'someValue');
+        (new Registry($this->deserializer))->set('t', 'someKey', 'someValue');
     }
 
     #[Test]
@@ -60,7 +74,7 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry())->remove('t', 'someKey');
+        (new Registry($this->deserializer))->remove('t', 'someKey');
     }
 
     #[Test]
@@ -68,6 +82,6 @@ final class RegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
-        (new Registry())->removeAllByNamespace('');
+        (new Registry($this->deserializer))->removeAllByNamespace('');
     }
 }

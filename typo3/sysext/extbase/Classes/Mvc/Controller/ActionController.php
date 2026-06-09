@@ -657,7 +657,8 @@ abstract class ActionController implements ControllerInterface
             $arguments = [];
             if (is_string($referringRequestArguments['arguments'] ?? null)) {
                 $arguments = unserialize(
-                    base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments'], HashScope::ReferringArguments->prefix()))
+                    base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments'], HashScope::ReferringArguments->prefix())),
+                    ['allowed_classes' => true]
                 );
             }
             $replacedArguments = array_replace_recursive($arguments, $referrerArray);

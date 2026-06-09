@@ -465,7 +465,16 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getRegistry(ContainerInterface $container): Registry
     {
-        return self::new($container, Registry::class);
+        $denyListDeserializer = $container->has(Serializer\DenyListDeserializer::class)
+            ? $container->get(Serializer\DenyListDeserializer::class)
+            : new Serializer\DenyListDeserializer(
+                $container->get('cache.core'),
+                $container->get(HashService::class),
+                new Serializer\DeserializationService(),
+            );
+        return self::new($container, Registry::class, [
+            $denyListDeserializer,
+        ]);
     }
 
     public static function getFileIndexRepository(ContainerInterface $container): Resource\Index\FileIndexRepository

@@ -19,7 +19,11 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Log\Writer\NullWriter;
+use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
+use TYPO3\CMS\Core\Serializer\DeserializationService;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 use TYPO3\CMS\Scheduler\Tests\Unit\Task\Fixtures\TestTask;
@@ -27,6 +31,19 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TaskSerializerTest extends UnitTestCase
 {
+    private TaskSerializer $subject;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'test-encryption-key';
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->willReturn(false);
+        $this->subject = new TaskSerializer(
+            new DenyListDeserializer($cacheMock, new HashService(), new DeserializationService())
+        );
+    }
+
     public static function dataIsDeserializedDataProvider(): array
     {
         $testTaskWithString = new TestTask();
@@ -51,8 +68,7 @@ final class TaskSerializerTest extends UnitTestCase
     #[Test]
     public function dataIsDeserialized(string $data, $expectation): void
     {
-        $taskSerializer = new TaskSerializer();
-        self::assertEquals($expectation, $taskSerializer->deserialize($data));
+        self::assertEquals($expectation, $this->subject->deserialize($data));
     }
 
     public static function deserializationThrowsExceptionDataProvider(): array
@@ -75,13 +91,17 @@ final class TaskSerializerTest extends UnitTestCase
         );
 
         return [
+            'serialized false' => [
+                serialize(false),
+                1642956282,
+            ],
             'blank' => [
                 '',
-                1642956282,
+                1740514197,
             ],
             'invalid' => [
                 '{}',
-                1642956282,
+                1740514197,
             ],
             'invalid task' => [
                 'O:29:"TYPO3\CMS\Testing\InvalidTask":1:{s:5:"value";s:5:"value";}',
@@ -108,8 +128,7 @@ final class TaskSerializerTest extends UnitTestCase
     {
         $this->expectException(InvalidTaskException::class);
         $this->expectExceptionCode($exceptionCode);
-        $taskSerializer = new TaskSerializer();
-        $taskSerializer->deserialize($data);
+        $this->subject->deserialize($data);
     }
 
     public static function classNameIsResolvedDataProvider(): array
@@ -133,8 +152,7 @@ final class TaskSerializerTest extends UnitTestCase
     #[Test]
     public function classNameIsResolved(?object $task, ?string $expectation): void
     {
-        $taskSerializer = new TaskSerializer();
-        self::assertSame($expectation, $taskSerializer->resolveClassName($task));
+        self::assertSame($expectation, $this->subject->resolveClassName($task));
     }
 
     public static function classNameIsExtractedDataProvider(): array
@@ -159,7 +177,6 @@ final class TaskSerializerTest extends UnitTestCase
     #[Test]
     public function classNameIsExtracted(string $serializedTask, ?string $expectation): void
     {
-        $taskSerializer = new TaskSerializer();
-        self::assertSame($expectation, $taskSerializer->extractClassName($serializedTask));
+        self::assertSame($expectation, $this->subject->extractClassName($serializedTask));
     }
 }

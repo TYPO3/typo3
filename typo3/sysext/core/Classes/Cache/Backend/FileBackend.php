@@ -40,7 +40,7 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
     protected $cacheEntryFileExtension = '';
 
     /**
-     * @var array
+     * @var array<string, true>
      */
     protected $cacheEntryIdentifiers = [];
 
@@ -107,7 +107,10 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         parent::setCache($cache);
         if (file_exists($this->cacheDirectory . 'FrozenCache.data')) {
             $this->frozen = true;
-            $this->cacheEntryIdentifiers = unserialize((string)file_get_contents($this->cacheDirectory . 'FrozenCache.data'));
+            $this->cacheEntryIdentifiers = unserialize(
+                (string)file_get_contents($this->cacheDirectory . 'FrozenCache.data'),
+                ['allowed_classes' => false]
+            );
         }
     }
 

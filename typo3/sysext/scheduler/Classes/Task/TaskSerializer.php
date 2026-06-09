@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 
 /**
@@ -26,6 +27,8 @@ use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
  */
 class TaskSerializer
 {
+    public function __construct(private readonly DenyListDeserializer $denyListDeserializer) {}
+
     /**
      * This method takes care of safely deserializing tasks from the database
      * and either returns a valid Task or throws an InvalidTaskException, which
@@ -36,7 +39,7 @@ class TaskSerializer
     public function deserialize(string $serializedTask): AbstractTask
     {
         try {
-            $task = @unserialize($serializedTask);
+            $task = $this->denyListDeserializer->deserialize($serializedTask);
             if ($task === false) {
                 throw new InvalidTaskException('The serialized task is corrupted', 1642956282);
             }
