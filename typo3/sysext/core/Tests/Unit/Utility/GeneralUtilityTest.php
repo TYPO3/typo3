@@ -1384,18 +1384,28 @@ final class GeneralUtilityTest extends UnitTestCase
                 'localhost',
                 '/cms/',
             ],
-            '/cms/typo3/alt_intro.php&param=oneparam' => [
-                '/cms/typo3/alt_intro.php&param=oneparam',
+            '/cms/foo/%3Fbar?baz' => [
+                '/cms/foo/%3Fbar?baz',
                 'localhost',
                 '/cms/',
             ],
-            '/cms/typo3/alt_intro.php&param=oneparam with spaces' => [
-                '/cms/typo3/alt_intro.php&param=oneparam with spaces',
+            '/cms/typo3/alt_intro.php?param=oneparam' => [
+                '/cms/typo3/alt_intro.php?param=oneparam',
                 'localhost',
                 '/cms/',
             ],
-            '/cms/typo3/alt_intro.php&param=oneparam with spaces&normalparam=2' => [
-                '/cms/typo3/alt_intro.php&param=oneparam with spaces',
+            '/cms/typo3/alt_intro.php?param=oneparam+with+spaces' => [
+                '/cms/typo3/alt_intro.php?param=oneparam+with+spaces',
+                'localhost',
+                '/cms/',
+            ],
+            '/cms/typo3/alt_intro.php?param=oneparam%20with%20spaces' => [
+                '/cms/typo3/alt_intro.php?param=oneparam%20with%20spaces',
+                'localhost',
+                '/cms/',
+            ],
+            '/cms/typo3/alt_intro.php?param=oneparam%20with%20spaces&normalparam=2' => [
+                '/cms/typo3/alt_intro.php?param=oneparam%20with%20spaces',
                 'localhost',
                 '/cms/',
             ],
@@ -1453,7 +1463,28 @@ final class GeneralUtilityTest extends UnitTestCase
             'empty string' => [''],
             'http domain' => ['http://www.google.de/'],
             'https domain' => ['https://www.google.de/'],
+            'https domain with' => ['https://www.google.de/'],
+            'https domain with escape at start' => ['https:\\//www.google.de'],
+            'https domain with escape in between' => ['https:/\\/www.google.de'],
+            'https domain with escape after' => ['https://\\www.google.de'],
+            'https domain with escape instead of slash' => ['https:/\\www.google.de'],
+            'https domain with double backslash' => ['https:\\\\www.google.de'],
+            'https domain with double backslash and one slash' => ['https:\\/www.google.de'],
+            'https domain with quad slash' => ['https:////www.google.de'],
+            'https domain with newline' => ["htt\nps://www.google.de"],
             'domain without schema' => ['//www.google.de/'],
+            'domain without schema escape at start' => ['\\//www.google.de', true],
+            'domain without schema escape in between' => ['/\\/www.google.de', true],
+            'domain without schema escape after' => ['//\\www.google.de', true],
+            'domain without schema escape instead of slash' => ['/\\www.google.de', true],
+            'domain without schema with double backslash' => ['\\\\www.google.de', true],
+            'domain without schema with double backslash and one slash' => ['\\/www.google.de', true],
+            'domain without schema with quad slash' => ['////www.google.de'],
+            'domain without schema with newline' => ["/\n/www.google.de", true],
+            'domain without schema with EOT' => ["\x04//google.de", true],
+            'domain without schema with bell' => ["\x07//google.de", true],
+            'domain without schema with backspace' => ["\x08//google.de", true],
+            'domain without schema with form feed' => ["\x0c//google.de", true],
             'XSS attempt' => ['" onmouseover="alert(123)"'],
             'invalid URL, UNC path' => ['\\\\foo\\bar\\'],
             'invalid URL, HTML break out attempt' => ['" >blabuubb'],
@@ -1463,6 +1494,7 @@ final class GeneralUtilityTest extends UnitTestCase
             'relative URL with location header injection attempt (not known to work) via vertical white space' => ["\v" . '//evil.site/'],
             'HTTP header smuggling attempt' => ["/\r\nX-Injected: evil", true],
             'null-byte break out attempt' => ["http\x00://www.google.de"],
+            'path invalid because it contains unencoded spaces' => ['/cms/typo3/alt_intro.php&param=oneparam with spaces', true],
         ];
     }
 
