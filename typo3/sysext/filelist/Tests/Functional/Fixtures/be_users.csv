@@ -1,0 +1,7 @@
+"be_users"
+,"uid","pid","tstamp","username","password","admin","TSconfig","description"
+# The password is "password"
+,1,0,1366642540,"admin1","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,"","User with all rights"
+,2,0,1366642540,"admin2","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,"options.file_list.fileDownload.enabled = 0","User with denied file download"
+,3,0,1366642540,"admin3","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,"options.file_list.fileDownload.allowedFileExtensions = pdf","User with .pdf as allowed file extension"
+,4,0,1366642540,"admin4","$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1",1,"options.file_list.fileDownload.disallowedFileExtensions = txt","User with .txt as disallowed file extension"
