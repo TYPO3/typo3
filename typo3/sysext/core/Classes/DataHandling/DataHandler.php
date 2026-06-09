@@ -4591,6 +4591,11 @@ class DataHandler
             }
         } else {
             if ($isMovingToDifferentPid) {
+                if (!$this->hasPermissionToUpdate($table, $sourcePageRecord)) {
+                    // When record is moved to different target, update permissions on source page are needed
+                    $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} to pid "{targetPid}" without having permissions to update the source page (uid={sourcePid})', null, ['table' => $table, 'uid' => $sourceUid, 'targetPid' => $updateFields['pid'], 'sourcePid' => $sourcePid], $sourcePid);
+                    return;
+                }
                 if (!$this->hasPermissionToInsert($table, $updateFields['pid'], $targetPageRecord)) {
                     // When record is moved to different page, insert permissions on target are needed
                     $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} to pid "{targetPid}" without having permissions to insert', null, ['table' => $table, 'uid' => $sourceUid, 'targetPid' => $updateFields['pid']], $updateFields['pid']);
