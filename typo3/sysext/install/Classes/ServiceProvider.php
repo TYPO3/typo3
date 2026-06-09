@@ -41,7 +41,6 @@ use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute as NormalizedParamsMiddleware;
 use TYPO3\CMS\Core\Middleware\ResponsePropagation as ResponsePropagationMiddleware;
-use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -62,11 +61,8 @@ use TYPO3\CMS\Core\ViewHelpers\IconViewHelper;
 use TYPO3\CMS\Core\ViewHelpers\NormalizedUrlViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Sanitize\HtmlViewHelper;
-use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SessionService;
-use TYPO3\CMS\Install\Service\SetupDatabaseService;
-use TYPO3\CMS\Install\Service\SetupService;
 use TYPO3\CMS\Install\Service\WebServerConfigurationFileService;
 
 /**
@@ -100,14 +96,12 @@ class ServiceProvider extends AbstractServiceProvider
             Service\WebServerConfigurationFileService::class => self::getWebServerConfigurationFileService(...),
             Service\SessionService::class => self::getSessionService(...),
             Service\SetupService::class => self::getSetupService(...),
-            Service\SetupDatabaseService::class => self::getSetupDatabaseService(...),
             Middleware\Installer::class => self::getInstallerMiddleware(...),
             Middleware\Maintenance::class => self::getMaintenanceMiddleware(...),
             Middleware\AssetPublishing::class => self::getAssetPublishing(...),
             Middleware\JavaScriptLanguageDomainProvider::class => self::getJavaScriptLanguageDomainProvider(...),
             Controller\EnvironmentController::class => self::getEnvironmentController(...),
             Controller\IconController::class => self::getIconController(...),
-            Controller\InstallerController::class => self::getInstallerController(...),
             Controller\LayoutController::class => self::getLayoutController(...),
             Controller\LoginController::class => self::getLoginController(...),
             Controller\MaintenanceController::class => self::getMaintenanceController(...),
@@ -116,7 +110,6 @@ class ServiceProvider extends AbstractServiceProvider
             Command\PasswordSetCommand::class => self::getPasswordGenerateCommand(...),
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
-            Database\PermissionsCheck::class => self::getPermissionsCheck(...),
             IconViewHelper::class => self::getIconViewHelper(...),
             HtmlViewHelper::class => self::getHtmlViewHelper(...),
             InfoboxViewHelper::class => self::getInfoboxViewHelper(...),
@@ -241,20 +234,10 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function getSetupDatabaseService(ContainerInterface $container): Service\SetupDatabaseService
-    {
-        return new Service\SetupDatabaseService(
-            $container->get(Service\LateBootService::class),
-            $container->get(ConfigurationManager::class),
-            $container->get(PermissionsCheck::class),
-            $container->get(Registry::class),
-        );
-    }
-
     public static function getInstallerMiddleware(ContainerInterface $container): Middleware\Installer
     {
         return new Middleware\Installer(
-            $container,
+            $container->get(Service\LateBootService::class),
             $container->get(FormProtectionFactory::class),
             $container->get(SessionService::class),
         );
@@ -302,23 +285,6 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Controller\IconController(
             $container->get(IconFactory::class)
-        );
-    }
-
-    public static function getInstallerController(ContainerInterface $container): Controller\InstallerController
-    {
-        return new Controller\InstallerController(
-            $container->get(Service\LateBootService::class),
-            $container->get(ConfigurationManager::class),
-            $container->get(FailsafePackageManager::class),
-            $container->get(VerifyHostHeader::class),
-            $container->get(FormProtectionFactory::class),
-            $container->get(SetupService::class),
-            $container->get(SetupDatabaseService::class),
-            $container->get(Factory\ImportMapFactory::class),
-            $container->get(HashService::class),
-            $container->get(IconRegistry::class),
-            $container->get(DirectiveHashCollection::class),
         );
     }
 
@@ -386,7 +352,6 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Command\SetupCommand(
             'setup',
-            $container->get(Service\SetupDatabaseService::class),
             $container->get(Service\SetupService::class),
             $container->get(ConfigurationManager::class),
             $container->get(LateBootService::class),

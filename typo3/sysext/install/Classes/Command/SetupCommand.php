@@ -56,7 +56,6 @@ class SetupCommand extends Command
 
     public function __construct(
         string $name,
-        private readonly SetupDatabaseService $setupDatabaseService,
         private readonly SetupService $setupService,
         private readonly ConfigurationManager $configurationManager,
         private readonly LateBootService $lateBootService,
@@ -238,20 +237,23 @@ EOT
             $this->setupService->prepareSystemSettings(true);
         }
 
+        $container = $this->lateBootService->getContainer();
+        $backup = $this->lateBootService->makeCurrent($container);
+        $setupDatabaseService = $container->get(SetupDatabaseService::class);
+
         // Get database connection details
-        $databaseConnection = $this->getConnectionDetails($questionHelper, $input, $output);
+        $databaseConnection = $this->getConnectionDetails($setupDatabaseService, $questionHelper, $input, $output);
 
         // Select the database and prepare it
-        if ($exitCode = $this->selectAndImportDatabase($questionHelper, $input, $output, $databaseConnection)) {
+        if ($exitCode = $this->selectAndImportDatabase($setupDatabaseService, $questionHelper, $input, $output, $databaseConnection)) {
             return $exitCode;
         }
 
-        $container = $this->lateBootService->getContainer();
-        $backup = $this->lateBootService->makeCurrent($container);
         $container->get(CommandLineUserCreation::class)->ensureCliUserExists();
         $this->lateBootService->makeCurrent(null, $backup);
+
         $username = $this->getAdminUserName($questionHelper, $input, $output);
-        $password = $this->getAdminUserPassword($questionHelper, $input, $output);
+        $password = $this->getAdminUserPassword($setupDatabaseService, $questionHelper, $input, $output);
         if ($password !== null) {
             $email = $this->getAdminEmailAddress($questionHelper, $input, $output);
             $this->setupService->createUser($username, $password, $email);
@@ -294,7 +296,7 @@ EOT
         // the current state of the data import during extension setup still relies on GeneralUtility::makeInstance
         // to fetch objects from the container
         $container = $this->lateBootService->loadExtLocalconfDatabase(false);
-        $this->setupDatabaseService->markWizardsDone($container);
+        $setupDatabaseService->markWizardsDone($container);
         Bootstrap::initializeBackendAuthentication();
         $this->setupService->setupExtensions($container);
         $this->writeSuccess($output, 'Congratulations - TYPO3 Setup is done.');
@@ -302,15 +304,20 @@ EOT
         return Command::SUCCESS;
     }
 
-    protected function selectAndImportDatabase(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output, mixed $databaseConnection): int
-    {
+    protected function selectAndImportDatabase(
+        SetupDatabaseService $setupDatabaseService,
+        QuestionHelper $questionHelper,
+        InputInterface $input,
+        OutputInterface $output,
+        mixed $databaseConnection,
+    ): int {
         if ($databaseConnection['driver'] !== 'pdo_sqlite') {
             // Set temporary database configuration, so we are able to
             // get the available databases listed
             $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME] = $databaseConnection;
 
             try {
-                $databaseList = $this->setupDatabaseService->getDatabaseList();
+                $databaseList = $setupDatabaseService->getDatabaseList();
             } catch (DBALException $exception) {
                 $this->writeError($output, $exception->getMessage());
 
@@ -367,7 +374,7 @@ EOT
                 $databaseConnection['database'] = $dbnameFromCli;
             }
 
-            $checkDatabase = $this->setupDatabaseService->checkExistingDatabase($databaseConnection['database']);
+            $checkDatabase = $setupDatabaseService->checkExistingDatabase($databaseConnection['database']);
             if ($checkDatabase->getSeverity() !== ContextualFeedbackSeverity::OK) {
                 $this->writeError($output, $checkDatabase->getMessage());
 
@@ -377,7 +384,7 @@ EOT
             $databaseConnection['availableSet'] = 'sqliteManualConfiguration';
         }
 
-        [$success, $messages] = $this->setupDatabaseService->setDefaultConnectionSettings($databaseConnection);
+        [$success, $messages] = $setupDatabaseService->setDefaultConnectionSettings($databaseConnection);
         if (!$success) {
             foreach ($messages as $message) {
                 $this->writeError($output, $message->getMessage());
@@ -389,8 +396,8 @@ EOT
         // Load the actual config written to disk
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME] = $this->configurationManager->getLocalConfigurationValueByPath('DB/Connections/Default');
 
-        $this->setupDatabaseService->checkRequiredDatabasePermissions();
-        $importResults = $this->setupDatabaseService->importDatabaseData();
+        $setupDatabaseService->checkRequiredDatabasePermissions();
+        $importResults = $setupDatabaseService->importDatabaseData();
         foreach ($importResults as $result) {
             $this->writeError($output, (string)$result);
         }
@@ -403,11 +410,15 @@ EOT
         return Command::SUCCESS;
     }
 
-    protected function getConnectionDetails(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): array
-    {
+    protected function getConnectionDetails(
+        SetupDatabaseService $setupDatabaseService,
+        QuestionHelper $questionHelper,
+        InputInterface $input,
+        OutputInterface $output,
+    ): array {
         $input->hasParameterOption('--driver');
         $driverTypeCli = $this->getFallbackValueEnvOrOption($input, 'driver', 'TYPO3_DB_DRIVER');
-        $driverOptions = $this->setupDatabaseService->getDriverOptions();
+        $driverOptions = $setupDatabaseService->getDriverOptions();
         $availableConnectionTypes = implode(', ', array_keys($this->connectionLabels));
 
         $connectionValidator = static function ($connectionType) use ($driverOptions, $availableConnectionTypes) {
@@ -477,8 +488,8 @@ EOT
                         $question->setHidden(true);
                         $question->setHiddenFallback(false);
                     } elseif ($key === 'host') {
-                        $hostValidator = function ($host) {
-                            if (!$this->setupDatabaseService->isValidDbHost($host)) {
+                        $hostValidator = function ($host) use ($setupDatabaseService) {
+                            if (!$setupDatabaseService->isValidDbHost($host)) {
                                 throw new \RuntimeException(
                                     'Please enter a valid database host name.',
                                     1669747572
@@ -488,9 +499,9 @@ EOT
                         };
                         $question->setValidator($hostValidator);
                     } elseif ($key === 'port') {
-                        $portValidator = function ($port) {
+                        $portValidator = function ($port) use ($setupDatabaseService) {
                             $port = (int)$port;
-                            if (!$this->setupDatabaseService->isValidDbPort($port)) {
+                            if (!$setupDatabaseService->isValidDbPort($port)) {
                                 throw new \RuntimeException(
                                     'Please use a port in the range between 1 and 65535.',
                                     1669747592,
@@ -584,10 +595,14 @@ EOT
         return $usernameValidator($usernameFromCli);
     }
 
-    protected function getAdminUserPassword(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): ?string
-    {
-        $passwordValidator = function ($password) {
-            $passwordValidationErrors = $this->setupDatabaseService->getBackendUserPasswordValidationErrors((string)$password);
+    protected function getAdminUserPassword(
+        SetupDatabaseService $setupDatabaseService,
+        QuestionHelper $questionHelper,
+        InputInterface $input,
+        OutputInterface $output,
+    ): ?string {
+        $passwordValidator = function ($password) use ($setupDatabaseService) {
+            $passwordValidationErrors = $setupDatabaseService->getBackendUserPasswordValidationErrors((string)$password);
             if (!empty($passwordValidationErrors)) {
                 throw new \RuntimeException(
                     'Administrator password not secure enough!' . PHP_EOL

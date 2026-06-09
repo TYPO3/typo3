@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller;
 
 use Doctrine\DBAL\DriverManager;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\CommandLineUserCreation;
@@ -36,7 +38,7 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
-use TYPO3\CMS\Core\Package\FailsafePackageManager;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\Behavior;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\DirectiveHashCollection;
@@ -44,7 +46,6 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Middleware\PolicyBag;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Type\Map;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\View\FluidViewAdapter;
@@ -52,7 +53,6 @@ use TYPO3\CMS\Install\Factory\ImportMapFactory;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationDirectoryDoesNotExistException;
-use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SetupDatabaseService;
 use TYPO3\CMS\Install\Service\SetupService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
@@ -66,14 +66,14 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  * @phpstan-import-type Params from DriverManager
  */
+#[Autoconfigure(public: true)]
 final readonly class InstallerController
 {
     use ControllerTrait;
 
     public function __construct(
-        private LateBootService $lateBootService,
         private ConfigurationManager $configurationManager,
-        private FailsafePackageManager $packageManager,
+        private PackageManager $packageManager,
         private VerifyHostHeader $verifyHostHeader,
         private FormProtectionFactory $formProtectionFactory,
         private SetupService $setupService,
@@ -82,6 +82,12 @@ final readonly class InstallerController
         private HashService $hashService,
         private IconRegistry $iconRegistry,
         private DirectiveHashCollection $directiveHashCollection,
+        private CommandLineUserCreation $commandLineUserCreation,
+        private UriBuilder $uriBuilder,
+        private RenderingContextFactory $renderingContextFactory,
+        private ConnectionPool $connectionPool,
+        // @todo remove once SetupDatabaseService is adapted to avoid this argument
+        private ContainerInterface $container,
     ) {}
 
     /**
@@ -163,7 +169,7 @@ final readonly class InstallerController
         foreach ($setupCheckMessages as $message) {
             $systemCheckMessageQueue->enqueue($message);
         }
-        $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
+        $folderStructureFactory = new DefaultFactory();
         $structureFacade = $folderStructureFactory->getStructure(WebserverType::fromRequest($request));
         $structureMessageQueue = $structureFacade->getStatus();
         return new JsonResponse([
@@ -352,7 +358,7 @@ final readonly class InstallerController
         if ($success === false) {
             // remove the database again if we created it
             if ($request->getParsedBody()['install']['values']['type'] === 'new') {
-                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                $connection = $this->connectionPool
                     ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
                 $connection
                     ->createSchemaManager()
@@ -441,7 +447,7 @@ final readonly class InstallerController
      */
     public function checkDatabaseDataAction(): ResponseInterface
     {
-        $existingTables = GeneralUtility::makeInstance(ConnectionPool::class)
+        $existingTables = $this->connectionPool
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
             ->createSchemaManager()
             ->listTableNames();
@@ -523,10 +529,7 @@ final readonly class InstallerController
             ]);
         }
 
-        $container = $this->lateBootService->getContainer();
-        $backup = $this->lateBootService->makeCurrent($container);
-        $container->get(CommandLineUserCreation::class)->ensureCliUserExists();
-        $this->lateBootService->makeCurrent(null, $backup);
+        $this->commandLineUserCreation->ensureCliUserExists();
         $this->setupService->createUser($username, $password, $email);
         $this->setupService->setInstallToolPassword($password);
 
@@ -576,15 +579,7 @@ final readonly class InstallerController
             // Distribution handles all site creation (pages, content, site configuration)
             $this->setupService->activateDistributionPackage($selectedDistribution);
         }
-        // The new container is kept in GeneralUtility because the following code, especially
-        // the current state of the data import during extension setup still relies on GeneralUtility::makeInstance
-        // to fetch objects from the container
-        $container = $this->lateBootService->loadExtLocalconfDatabase(false);
-        // Use the container here instead of makeInstance() to use the factory of the container
-        // for building the UriBuilder, although it is functionally the same, as we now expose the
-        // container in GeneralUtility with $this->lateBootService->loadExtLocalconfDatabase()
-        $uriBuilder = $container->get(UriBuilder::class);
-        $nextStepUrl = $uriBuilder->buildUriFromRoute('login');
+        $nextStepUrl = $this->uriBuilder->buildUriFromRoute('login');
 
         if ($siteSetup === 'createsite') {
             $siteUrl = $request->getAttribute('normalizedParams')->getSiteUrl();
@@ -594,7 +589,7 @@ final readonly class InstallerController
             && $this->packageManager->isPackageActive('extensionmanager')
         ) {
             // Update the URL to redirect after login to the extension manager distributions list
-            $nextStepUrl = $uriBuilder->buildUriWithRedirect(
+            $nextStepUrl = $this->uriBuilder->buildUriWithRedirect(
                 'login',
                 [],
                 RouteRedirect::create(
@@ -611,11 +606,11 @@ final readonly class InstallerController
         }
 
         // Mark upgrade wizards as done
-        $this->setupDatabaseService->markWizardsDone($container);
+        $this->setupDatabaseService->markWizardsDone($this->container);
 
         // Set up all installed extensions
         // (includes e.g. publishing of assets, importing distribution data)
-        $this->setupService->setupExtensions($container);
+        $this->setupService->setupExtensions($this->container);
 
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $formProtection->clean();
@@ -636,7 +631,7 @@ final readonly class InstallerController
         $templatePaths = [
             'templateRootPaths' => ['EXT:install/Resources/Private/Templates'],
         ];
-        $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create($templatePaths, $request);
+        $renderingContext = $this->renderingContextFactory->create($templatePaths, $request);
         $fluidView = new FluidTemplateView($renderingContext);
         return new FluidViewAdapter($fluidView);
     }

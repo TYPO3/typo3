@@ -21,6 +21,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
@@ -49,6 +50,7 @@ use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
  *
  * @phpstan-import-type Params from DriverManager
  */
+#[Autoconfigure(public: true)]
 class SetupDatabaseService
 {
     protected array $validDrivers = [

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Middleware;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -27,6 +26,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Install\Controller\InstallerController;
 use TYPO3\CMS\Install\Service\EnableFileService;
+use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -36,7 +36,7 @@ use TYPO3\CMS\Install\Service\SessionService;
 readonly class Installer implements MiddlewareInterface
 {
     public function __construct(
-        private ContainerInterface $container,
+        private LateBootService $lateBootService,
         private FormProtectionFactory $formProtectionFactory,
         private SessionService $sessionService
     ) {}
@@ -55,8 +55,11 @@ readonly class Installer implements MiddlewareInterface
         // a request/ normalizedParams to the icon URL generation
         $GLOBALS['TYPO3_REQUEST'] = $request;
 
+        $container = $this->lateBootService->getContainer();
+        $backup = $this->lateBootService->makeCurrent($container);
+
         // Lazy load InstallerController, to instantiate the class and the dependencies only if we handle an install request.
-        $controller = $this->container->get(InstallerController::class);
+        $controller = $container->get(InstallerController::class);
         $actionName = $request->getParsedBody()['install']['action'] ?? $request->getQueryParams()['install']['action'] ?? 'init';
         $action = $actionName . 'Action';
 
@@ -117,6 +120,8 @@ readonly class Installer implements MiddlewareInterface
                 $this->sessionService->destroySession($request);
             }
         }
+
+        $this->lateBootService->makeCurrent(null, $backup);
 
         return $response;
     }
