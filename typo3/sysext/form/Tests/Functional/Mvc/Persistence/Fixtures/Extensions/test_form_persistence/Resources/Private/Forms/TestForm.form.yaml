@@ -1,4 +1,5 @@
 identifier: test-extension-form
+type: Form
 prototypeName: standard
 label: 'Test Extension Form'
 renderables:

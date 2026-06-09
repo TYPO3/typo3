@@ -1,4 +1,5 @@
 identifier: filemount-test-form
+type: Form
 prototypeName: standard
 label: 'Test Filemount Form'
 renderables:

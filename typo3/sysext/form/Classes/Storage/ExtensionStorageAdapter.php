@@ -84,7 +84,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
         $this->ensureValidPersistenceIdentifier($identifier->identifier);
         $file = $identifier->identifier;
         $formDefinition = $this->yamlSource->load([$file]);
-        $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($formDefinition, $identifier->identifier);
+        $this->generateErrorsIfFormDefinitionIsInvalidOrHasInvalidFileExtension($formDefinition, $identifier->identifier);
         return FormData::fromArray($formDefinition);
     }
 
@@ -262,7 +262,7 @@ class ExtensionStorageAdapter extends AbstractFileStorageAdapter implements Stor
                 throw new NoSuchFileException(sprintf('YAML file "%s" could not be loaded', $persistenceIdentifier), 1524684462);
             }
             $yaml = $this->extractMetaDataFromCouldBeFormDefinition($rawYamlContent);
-            $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($yaml, $persistenceIdentifier);
+            $this->generateErrorsIfFormDefinitionIsInvalidOrHasInvalidFileExtension($yaml, $persistenceIdentifier);
             return FormMetadata::createFromYaml(
                 $yaml,
                 $persistenceIdentifier,

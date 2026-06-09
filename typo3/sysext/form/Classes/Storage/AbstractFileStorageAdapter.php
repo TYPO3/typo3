@@ -130,9 +130,9 @@ abstract class AbstractFileStorageAdapter
     /**
      * @throws PersistenceManagerException
      */
-    protected function generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension(array $formDefinition, string $identifier): void
+    protected function generateErrorsIfFormDefinitionIsInvalidOrHasInvalidFileExtension(array $formDefinition, string $identifier): void
     {
-        if ($this->looksLikeAFormDefinitionArray($formDefinition) && !$this->hasValidFileExtension($identifier)) {
+        if (!$this->looksLikeAFormDefinitionArray($formDefinition) || !$this->hasValidFileExtension($identifier)) {
             throw new PersistenceManagerException(sprintf('Form definition "%s" does not end with ".form.yaml".', $identifier), 1531160649);
         }
     }

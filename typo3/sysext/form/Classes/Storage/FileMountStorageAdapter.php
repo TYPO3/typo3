@@ -92,7 +92,7 @@ class FileMountStorageAdapter extends AbstractFileStorageAdapter implements Stor
     {
         $file = $this->retrieveFileByPersistenceIdentifier($identifier->identifier);
         $formDefinition = $this->yamlSource->load([$file]);
-        $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($formDefinition, $identifier->identifier);
+        $this->generateErrorsIfFormDefinitionIsInvalidOrHasInvalidFileExtension($formDefinition, $identifier->identifier);
         return FormData::fromArray($formDefinition);
     }
 
@@ -326,7 +326,7 @@ class FileMountStorageAdapter extends AbstractFileStorageAdapter implements Stor
 
         try {
             $yaml = $this->extractMetaDataFromCouldBeFormDefinition($rawYamlContent);
-            $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($yaml, $persistenceIdentifier);
+            $this->generateErrorsIfFormDefinitionIsInvalidOrHasInvalidFileExtension($yaml, $persistenceIdentifier);
             return FormMetadata::createFromYaml(
                 $yaml,
                 $persistenceIdentifier,
