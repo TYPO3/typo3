@@ -193,6 +193,12 @@ return [
                 ],
             ],
         ],
+        'deserialization' => [
+            // List of class names that are allowed to be deserialized even if they carry
+            // __destruct() or __wakeup() and would otherwise be blocked. Use this to
+            // explicitly permit classes that have been reviewed and are known to be safe.
+            'allowedClassNames' => [],
+        ],
         'caching' => [
             'cacheConfigurations' => [
                 // The core cache is is for core php code only and must

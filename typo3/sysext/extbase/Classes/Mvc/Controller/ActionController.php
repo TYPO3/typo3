@@ -655,7 +655,8 @@ abstract class ActionController implements ControllerInterface
                         $referringRequestArguments['arguments'],
                         HashScope::ReferringArguments->prefix(),
                         HashAlgo::SHA3_256
-                    ))
+                    )),
+                    ['allowed_classes' => true]
                 );
             }
             $replacedArguments = array_replace_recursive($arguments, $referrerArray);

@@ -22,6 +22,7 @@ use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
 use TYPO3\CMS\Core\Upgrades\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,6 +39,8 @@ use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 class SchedulerDatabaseStorageMigration implements UpgradeWizardInterface
 {
     protected const TABLE_NAME = 'tx_scheduler_task';
+
+    public function __construct(private readonly DenyListDeserializer $deserializer) {}
 
     public function getTitle(): string
     {
@@ -77,7 +80,7 @@ class SchedulerDatabaseStorageMigration implements UpgradeWizardInterface
                     // unserialize() will only give a E_NOTICE and false result, not throw an error. Silence this
                     // (for tests) and operate on the "false". If future PHP promotes this to an exception, the Throwable
                     // catch will kick in.
-                    $taskObject = @unserialize($record['serialized_task_object']);
+                    $taskObject = $this->deserializer->deserialize($record['serialized_task_object']);
                 }
                 if ($taskObject instanceof AbstractTask) {
                     $fieldsToUpdate = [

@@ -1115,7 +1115,7 @@ readonly class RequestHandler implements RequestHandlerInterface
                     $this->timeTracker->push($label);
                     $contentObjectRendererForNonCacheable = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                     $contentObjectRendererForNonCacheable->setRequest($request);
-                    $contentObjectRendererForNonCacheable->updateState(unserialize($nonCacheableConfig['cObjData']));
+                    $contentObjectRendererForNonCacheable->updateState(unserialize($nonCacheableConfig['cObjData'], ['allowed_classes' => false]));
                     $nonCacheableContent = match ($nonCacheableConfig['type']) {
                         'COA' => $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableConfig['conf']),
                         'FUNC' => $contentObjectRendererForNonCacheable->cObjGetSingle('USER', $nonCacheableConfig['conf']),

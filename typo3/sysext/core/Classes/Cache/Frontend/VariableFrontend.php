@@ -18,6 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Cache\Frontend;
 
 use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
+use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\Serializer\AuthenticatedMessageDeserializer;
+use TYPO3\CMS\Core\Serializer\DeserializationService;
+use TYPO3\CMS\Core\Serializer\Exception\DeserializerException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -54,7 +58,9 @@ class VariableFrontend extends AbstractFrontend
             GeneralUtility::callUserFunction($_funcRef, $params, $this);
         }
         if (!$this->backend instanceof TransientBackendInterface) {
-            $data = serialize($data);
+            // No DI/GeneralUtility::makeInstance usage, since caching needs to operate prior to DI container setup.
+            $deserializer = new AuthenticatedMessageDeserializer(new HashService(), new DeserializationService());
+            $data = $deserializer->serialize($data, VariableFrontend::class);
         }
         $this->backend->set($entryIdentifier, $data, $tags, $lifetime);
     }
@@ -74,6 +80,15 @@ class VariableFrontend extends AbstractFrontend
         if ($rawResult === false) {
             return false;
         }
-        return $this->backend instanceof TransientBackendInterface ? $rawResult : unserialize($rawResult);
+        if ($this->backend instanceof TransientBackendInterface) {
+            return $rawResult;
+        }
+        try {
+            // No DI/GeneralUtility::makeInstance usage, since caching needs to operate prior to DI container setup.
+            $deserializer = new AuthenticatedMessageDeserializer(new HashService(), new DeserializationService());
+            return $deserializer->deserialize($rawResult, VariableFrontend::class);
+        } catch (DeserializerException) {
+            return false;
+        }
     }
 }

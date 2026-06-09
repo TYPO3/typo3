@@ -47,6 +47,7 @@
 		"composer-runtime-api": "^2.1",
 		"bacon/bacon-qr-code": "^3.1.1",
 		"christian-riesen/base32": "^1.6",
+		"composer/class-map-generator": "^1.7.2",
 		"composer/semver": "^3.4",
 		"doctrine/dbal": "~4.4.3",
 		"doctrine/lexer": "^3.0.1",

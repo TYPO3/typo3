@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -41,6 +42,7 @@ class Registry implements SingletonInterface
      */
     protected $loadedNamespaces = [];
 
+    public function __construct(protected readonly DenyListDeserializer $deserializer) {}
     /**
      * Returns a persistent entry.
      *
@@ -169,7 +171,7 @@ class Registry implements SingletonInterface
                 ['entry_namespace' => $namespace]
             );
         while ($row = $result->fetchAssociative()) {
-            $this->entries[$namespace][$row['entry_key']] = unserialize($row['entry_value']);
+            $this->entries[$namespace][$row['entry_key']] = $this->deserializer->deserialize($row['entry_value']);
         }
         $this->loadedNamespaces[$namespace] = true;
     }
