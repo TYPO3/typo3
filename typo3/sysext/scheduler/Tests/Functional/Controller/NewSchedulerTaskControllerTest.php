@@ -168,7 +168,7 @@ final class NewSchedulerTaskControllerTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', new Route('/scheduler/task/wizard/new', ['packageName' => 'typo3/cms-scheduler', '_identifier' => 'ajax_new_scheduler_task_wizard']));
         $request = $request->withQueryParams([
-            'returnUrl' => Environment::getPublicPath() . 'typo3/scheduler/manage?token=123&test=value',
+            'returnUrl' => Environment::getPublicPath() . '/typo3/scheduler/manage?token=123&test=value',
             'defaultValues' => $defaultValues,
         ]);
 
