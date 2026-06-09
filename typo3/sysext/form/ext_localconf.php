@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Evaluation\EmailOrFormElementIdentifier;
+use TYPO3\CMS\Form\Hooks\FormDefinitionDataHandlerHook;
 use TYPO3\CMS\Form\Hooks\ImportExportHook;
 use TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration;
 
@@ -25,6 +26,10 @@ if (empty($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['form-label'])) {
 if (empty($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['form-content'])) {
     $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['form-content'] = 'EXT:form/Configuration/RTE/FormContent.yaml';
 }
+
+// Deny direct DataHandler write access to form_definition: only DatabaseStorageAdapter may persist form definitions
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['form'] = FormDefinitionDataHandlerHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['form'] = FormDefinitionDataHandlerHook::class;
 
 // FE file upload processing
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterFormStateInitialized'][1613296803] = PropertyMappingConfiguration::class;
