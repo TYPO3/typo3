@@ -23,10 +23,24 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\Serializer\AuthenticatedMessageDeserializer;
+use TYPO3\CMS\Core\Serializer\DeserializationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class VariableFrontendTest extends UnitTestCase
 {
+    private AuthenticatedMessageDeserializer $deserializer;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'test-encryption-key';
+        $this->deserializer = new AuthenticatedMessageDeserializer(
+            new HashService(),
+            new DeserializationService(),
+        );
+    }
     public static function constructAcceptsValidIdentifiersDataProvider(): array
     {
         return [
@@ -240,7 +254,10 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $theString = 'Just some value';
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects($this->once())->method('set')->with('VariableCacheTest', serialize($theString));
+        $backend->expects($this->once())->method('set')->with(
+            'VariableCacheTest',
+            $this->serialize($theString)
+        );
         $cache = new VariableFrontend('VariableFrontend', $backend);
         $cache->set('VariableCacheTest', $theString);
     }
@@ -250,7 +267,10 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $theArray = ['Just some value', 'and another one.'];
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects($this->once())->method('set')->with('VariableCacheTest', serialize($theArray));
+        $backend->expects($this->once())->method('set')->with(
+            'VariableCacheTest',
+            $this->serialize($theArray)
+        );
         $cache = new VariableFrontend('VariableFrontend', $backend);
         $cache->set('VariableCacheTest', $theArray);
     }
@@ -261,7 +281,12 @@ final class VariableFrontendTest extends UnitTestCase
         $theString = 'Just some value';
         $theLifetime = 1234;
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects($this->once())->method('set')->with('VariableCacheTest', serialize($theString), [], $theLifetime);
+        $backend->expects($this->once())->method('set')->with(
+            'VariableCacheTest',
+            $this->serialize($theString),
+            [],
+            $theLifetime
+        );
         $cache = new VariableFrontend('VariableFrontend', $backend);
         $cache->set('VariableCacheTest', $theString, [], $theLifetime);
     }
@@ -269,10 +294,11 @@ final class VariableFrontendTest extends UnitTestCase
     #[Test]
     public function getFetchesStringValueFromBackend(): void
     {
+        $theString = 'Just some value';
         $backend = $this->createMock(BackendInterface::class);
-        $backend->expects($this->once())->method('get')->willReturn(serialize('Just some value'));
+        $backend->expects($this->once())->method('get')->willReturn(serialize($theString));
         $cache = new VariableFrontend('VariableFrontend', $backend);
-        self::assertEquals('Just some value', $cache->get('VariableCacheTest'));
+        self::assertEquals($theString, $cache->get('VariableCacheTest'));
     }
 
     #[Test]
@@ -294,6 +320,24 @@ final class VariableFrontendTest extends UnitTestCase
         self::assertFalse($cache->get('VariableCacheTest'));
     }
 
+    public static function getHavingUnsignedDataInBackendReturnsValueDataProvider(): iterable
+    {
+        yield 'int' => [13, 13];
+        yield 'string' => ['Just some value', 'Just some value'];
+        yield 'array' => [['Just some value', 'and another one.'], ['Just some value', 'and another one.']];
+        yield 'stdClass' => [new \stdClass(), false];
+    }
+
+    #[Test]
+    #[DataProvider('getHavingUnsignedDataInBackendReturnsValueDataProvider')]
+    public function getHavingUnsignedDataInBackendReturnsValue(mixed $payload, mixed $expectation): void
+    {
+        $backend = $this->createMock(BackendInterface::class);
+        $backend->expects($this->once())->method('get')->willReturn(serialize($payload));
+        $cache = new VariableFrontend('VariableFrontend', $backend);
+        self::assertSame($expectation, $cache->get('VariableCacheTest'));
+    }
+
     #[Test]
     public function hasReturnsResultFromBackend(): void
     {
@@ -311,5 +355,10 @@ final class VariableFrontendTest extends UnitTestCase
         $backend->expects($this->once())->method('remove')->with(self::equalTo($cacheIdentifier))->willReturn(true);
         $cache = new VariableFrontend('VariableFrontend', $backend);
         self::assertTrue($cache->remove($cacheIdentifier));
+    }
+
+    private function serialize(mixed $payload): string
+    {
+        return $this->deserializer->serialize($payload, VariableFrontend::class);
     }
 }

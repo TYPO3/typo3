@@ -201,7 +201,8 @@ class UpgradeController extends AbstractController
         protected readonly PackageManager $packageManager,
         private readonly LateBootService $lateBootService,
         private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
-        private readonly FormProtectionFactory $formProtectionFactory
+        private readonly FormProtectionFactory $formProtectionFactory,
+        private readonly Registry $registry,
     ) {}
 
     /**
@@ -650,8 +651,7 @@ class UpgradeController extends AbstractController
     {
         $foundRestFileHashes = (array)($request->getParsedBody()['install']['hashes'] ?? []);
         // First un-mark files marked as scanned-ok
-        $registry = new Registry();
-        $registry->removeAllByNamespace('extensionScannerNotAffected');
+        $this->registry->removeAllByNamespace('extensionScannerNotAffected');
         // Find all .rst files (except those from v8), see if they are tagged with "FullyScanned"
         // and if their content is not in incoming "hashes" array, mark as "not affected"
         $documentationFile = new DocumentationFile();
@@ -680,7 +680,7 @@ class UpgradeController extends AbstractController
             }
         }
         foreach ($fullyScannedRestFilesNotAffected as $fileHash) {
-            $registry->set('extensionScannerNotAffected', $fileHash, $fileHash);
+            $this->registry->set('extensionScannerNotAffected', $fileHash, $fileHash);
         }
         return new JsonResponse([
             'success' => true,
@@ -885,10 +885,9 @@ class UpgradeController extends AbstractController
      */
     public function upgradeDocsMarkReadAction(ServerRequestInterface $request): ResponseInterface
     {
-        $registry = new Registry();
         $filePath = $request->getParsedBody()['install']['ignoreFile'];
         $fileHash = md5_file($filePath);
-        $registry->set('upgradeAnalysisIgnoredFiles', $fileHash, $filePath);
+        $this->registry->set('upgradeAnalysisIgnoredFiles', $fileHash, $filePath);
         return new JsonResponse([
             'success' => true,
         ]);
@@ -899,10 +898,9 @@ class UpgradeController extends AbstractController
      */
     public function upgradeDocsUnmarkReadAction(ServerRequestInterface $request): ResponseInterface
     {
-        $registry = new Registry();
         $filePath = $request->getParsedBody()['install']['ignoreFile'];
         $fileHash = md5_file($filePath);
-        $registry->remove('upgradeAnalysisIgnoredFiles', $fileHash);
+        $this->registry->remove('upgradeAnalysisIgnoredFiles', $fileHash);
         return new JsonResponse([
             'success' => true,
         ]);

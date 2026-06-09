@@ -22,7 +22,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\DisabledFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -32,6 +34,8 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
+use TYPO3\CMS\Core\Serializer\DeserializationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FormProtectionFactoryTest extends UnitTestCase
@@ -44,6 +48,9 @@ final class FormProtectionFactoryTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->runtimeCacheMock = new VariableFrontend('null', new TransientMemoryBackend());
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->willReturn(false);
+        $deserializer = new DenyListDeserializer($cacheMock, new HashService(), new DeserializationService());
         $this->subject = new FormProtectionFactory(
             new FlashMessageService(),
             new LanguageServiceFactory(
@@ -51,7 +58,7 @@ final class FormProtectionFactoryTest extends UnitTestCase
                 $this->createMock(LocalizationFactory::class),
                 new NullFrontend('null')
             ),
-            new Registry(),
+            new Registry($deserializer),
             $this->runtimeCacheMock
         );
         parent::setUp();

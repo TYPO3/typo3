@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RegistryTest extends FunctionalTestCase
@@ -159,6 +160,36 @@ final class RegistryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function canGetEntryWithClassInstance(): void
+    {
+        $object = new \stdClass();
+        $object->foo = 'bar';
+
+        $connection = (new ConnectionPool())->getConnectionForTable('sys_registry');
+        $connection->bulkInsert(
+            'sys_registry',
+            [
+                ['ns1', 'key1', serialize($object)],
+                ['ns2', 'key1', serialize($object)],
+            ],
+            ['entry_namespace', 'entry_key', 'entry_value'],
+            [
+                'entry_value' => Connection::PARAM_LOB,
+            ]
+        );
+
+        // first hit for stdClass (not in DenyListSerializer cache)
+        $result = $this->subject->get('ns1', 'key1');
+        self::assertInstanceOf(\stdClass::class, $result);
+        self::assertSame($object->foo, $result->foo);
+
+        // second hit for stdClass (should come from DenyListSerializer cache)
+        $result = $this->subject->get('ns2', 'key1');
+        self::assertInstanceOf(\stdClass::class, $result);
+        self::assertSame($object->foo, $result->foo);
+    }
+
+    #[Test]
     public function getReturnsNewValueIfValueHasBeenSetMultipleTimes(): void
     {
         $this->subject->set('ns1', 'key1', 'value1');
@@ -184,6 +215,6 @@ final class RegistryTest extends FunctionalTestCase
 
     private function deserialize(string $serialized): mixed
     {
-        return unserialize($serialized, ['allowed_classes' => false]);
+        return $this->get(DenyListDeserializer::class)->deserialize($serialized);
     }
 }

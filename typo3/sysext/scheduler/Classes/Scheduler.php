@@ -90,7 +90,8 @@ class Scheduler implements SingletonInterface
         $maxDuration = $this->extConf['maxLifetime'] * 60;
         while ($row = $result->fetchAssociative()) {
             $executions = [];
-            if ($serialized_executions = unserialize($row['serialized_executions'])) {
+            // serialized in \TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository::addExecutionToTask as `array<int, int>`
+            if ($serialized_executions = unserialize($row['serialized_executions'], ['allowed_classes' => false])) {
                 foreach ($serialized_executions as $task) {
                     if ($tstamp - $task < $maxDuration) {
                         $executions[] = $task;
