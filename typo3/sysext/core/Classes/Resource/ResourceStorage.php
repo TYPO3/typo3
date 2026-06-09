@@ -615,6 +615,18 @@ class ResourceStorage implements ResourceStorageInterface
         return $this->fileMounts;
     }
 
+    public function isFileMountFolder(Folder $folder): bool
+    {
+        foreach ($this->fileMounts as $mount) {
+            $rootLevelFolder = $mount['folder'] ?? null;
+            if ($rootLevelFolder instanceof Folder && $rootLevelFolder->getCombinedIdentifier() === $folder->getCombinedIdentifier()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Checks if the given subject is within one of the registered user
      * file mounts. If not, working with the file is not permitted for the user.
@@ -830,7 +842,25 @@ class ResourceStorage implements ResourceStorageInterface
         if ($isWriteCheck && !$folderPermissions['w']) {
             return false;
         }
+
+        // Check 5: File mount check
+        if (!$this->isAllowedActionOnMountFolder($action, $folder)) {
+            return false;
+        }
+
         return true;
+    }
+
+    protected function isAllowedActionOnMountFolder(string $action, FolderInterface $folder): bool
+    {
+        $deniedMountActions = ['move', 'delete', 'rename'];
+
+        // Early return if the given folder is not a mount folder
+        if (!$folder instanceof Folder || !$this->isFileMountFolder($folder)) {
+            return true;
+        }
+
+        return !in_array($action, $deniedMountActions, true);
     }
 
     /**
