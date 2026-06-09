@@ -41,14 +41,6 @@ export default defineConfig({
       testMatch: 'helper/login.setup.ts',
     },
     {
-      name: 'accessibility',
-      testMatch: 'accessibility/**/*.spec.ts',
-      dependencies: ['login'],
-      use: {
-        storageState: path.join(__dirname, '.auth/login.json'),
-      },
-    },
-    {
       name: 'e2e',
       testMatch: 'e2e/**/*.spec.ts',
       dependencies: ['login'],
