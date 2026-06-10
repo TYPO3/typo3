@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Enum\ExtensionType;
@@ -70,6 +71,8 @@ class ListUtility implements SingletonInterface
      */
     protected $dependencyUtility;
 
+    protected DownloadQueue $downloadQueue;
+
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -93,6 +96,11 @@ class ListUtility implements SingletonInterface
     public function injectDependencyUtility(DependencyUtility $dependencyUtility)
     {
         $this->dependencyUtility = $dependencyUtility;
+    }
+
+    public function injectDownloadQueue(DownloadQueue $downloadQueue)
+    {
+        $this->downloadQueue = $downloadQueue;
     }
 
     /**
@@ -276,14 +284,34 @@ class ListUtility implements SingletonInterface
             0,
             false
         );
-        if ($extensionUpdates->count() > 0) {
+        if ($extensionUpdates->count() === 0) {
+            return null;
+        }
+        // Determining the update candidate is a query: it only reports whether an update
+        // could be installed. The dependency check however marks dependent extensions for
+        // download, update and installation as a side effect, and those queues are shared.
+        // Candidates of a single extension key may require conflicting versions of the same
+        // dependency - for instance an extension maintained for two core versions in
+        // parallel, whose major lines depend on different major versions of a shared base
+        // extension. Queueing both lets DownloadQueue::addExtensionToQueue() throw, which
+        // breaks the extension list and the extension status report entirely. Candidates
+        // are therefore probed with empty queues, restoring the state of an enclosing
+        // dependency resolve run afterwards.
+        $extensionQueue = $this->downloadQueue->resetExtensionQueue();
+        $extensionInstallStorage = $this->downloadQueue->resetExtensionInstallStorage();
+        try {
             foreach ($extensionUpdates as $extensionUpdate) {
                 /** @var Extension $extensionUpdate */
                 $this->dependencyUtility->checkDependencies($extensionUpdate);
                 if (!$this->dependencyUtility->hasDependencyErrors()) {
                     return $extensionUpdate;
                 }
+                $this->downloadQueue->resetExtensionQueue();
+                $this->downloadQueue->resetExtensionInstallStorage();
             }
+        } finally {
+            $this->downloadQueue->restoreExtensionQueue($extensionQueue);
+            $this->downloadQueue->restoreExtensionInstallStorage($extensionInstallStorage);
         }
         return null;
     }

@@ -1,0 +1,19 @@
+{
+	"name": "typo3tests/deepl-base",
+	"type": "typo3-cms-extension",
+	"description": "Extension (Base) - Demonstrate a base extension required by another extension",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "13.4.*@dev",
+		"typo3/cms-extensionmanager": "13.4.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "deepl_base",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	}
+}
