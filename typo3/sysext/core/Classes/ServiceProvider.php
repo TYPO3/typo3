@@ -745,7 +745,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getAssetsCache(ContainerInterface $container): FrontendInterface
     {
-        return Bootstrap::createCache('assets');
+        return Bootstrap::createCache('assets', $container->get('boot.state')->cacheDisabled);
     }
 
     public static function getRuntimeCache(ContainerInterface $container): FrontendInterface
