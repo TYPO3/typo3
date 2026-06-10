@@ -34,7 +34,7 @@ final class FormTranslationKeychainBuilder
      * (e.g. "label", "placeholder", any renderingOption).
      *
      * @param string[] $translationFiles
-     * @return string[]
+     * @return list<string>
      */
     public function buildForElementProperty(
         array $translationFiles,
@@ -60,7 +60,7 @@ final class FormTranslationKeychainBuilder
      * where the original form identifier is used as the element segment.
      *
      * @param string[] $translationFiles
-     * @return string[]
+     * @return list<string>
      */
     public function buildForFormRuntimeProperty(
         array $translationFiles,
@@ -87,7 +87,7 @@ final class FormTranslationKeychainBuilder
      * array property on a regular element (e.g. Select / RadioButton / Checkbox groups).
      *
      * @param string[] $translationFiles
-     * @return string[]
+     * @return list<string>
      */
     public function buildForElementOption(
         array $translationFiles,
@@ -114,7 +114,7 @@ final class FormTranslationKeychainBuilder
      * where the original form identifier is used as the element segment.
      *
      * @param string[] $translationFiles
-     * @return string[]
+     * @return list<string>
      */
     public function buildForFormRuntimeOption(
         array $translationFiles,
@@ -141,7 +141,7 @@ final class FormTranslationKeychainBuilder
      * Builds the keychain for a validation error code on a regular form element.
      *
      * @param string[] $translationFiles
-     * @return string[]
+     * @return list<string>
      */
     public function buildForValidationError(
         array $translationFiles,
@@ -166,7 +166,7 @@ final class FormTranslationKeychainBuilder
      * where the original form identifier is used as the element segment.
      *
      * @param string[] $translationFiles
-     * @return string[]
+     * @return list<string>
      */
     public function buildForFormRuntimeValidationError(
         array $translationFiles,
@@ -191,7 +191,7 @@ final class FormTranslationKeychainBuilder
      * Builds the keychain for a single finisher option.
      *
      * @param string[] $translationFiles
-     * @return string[]
+     * @return list<string>
      */
     public function buildForFinisherOption(
         array $translationFiles,
@@ -213,11 +213,11 @@ final class FormTranslationKeychainBuilder
 
     private function hasOriginalFormIdentifier(?string $originalFormIdentifier): bool
     {
-        return $originalFormIdentifier !== null && $originalFormIdentifier !== '';
+        return is_string($originalFormIdentifier) && $originalFormIdentifier !== '';
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     private function buildElementPropertyKeys(
         string $translationFile,
@@ -235,7 +235,7 @@ final class FormTranslationKeychainBuilder
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     private function buildElementOptionKeys(
         string $translationFile,
@@ -254,7 +254,7 @@ final class FormTranslationKeychainBuilder
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     private function buildValidationErrorKeys(
         string $translationFile,
