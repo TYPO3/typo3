@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 /**
  * A caching backend which forgets everything immediately
  */
-class NullBackend implements PhpCapableBackendInterface, TaggableBackendInterface
+class NullBackend implements PhpCapableBackendInterface, TaggableBackendInterface, TransientBackendInterface
 {
-    public function set(string $entryIdentifier, string $data, array $tags = [], ?int $lifetime = null): void {}
+    public function set(string $entryIdentifier, mixed $data, array $tags = [], ?int $lifetime = null): void {}
 
     public function get(string $entryIdentifier): false
     {
