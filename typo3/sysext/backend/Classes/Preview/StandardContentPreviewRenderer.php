@@ -214,7 +214,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 }
                 break;
             case 'bullets':
-                $list = GeneralUtility::trimExplode(LF, $recordObj->get('bodytext'), true);
+                $list = GeneralUtility::trimExplode(LF, $recordObj->get('bodytext') ?? '', true);
                 if ($list !== []) {
                     switch ($recordObj->get('bullets_type')) {
                         case 0:
