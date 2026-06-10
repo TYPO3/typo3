@@ -141,4 +141,26 @@ class DownloadQueue implements SingletonInterface
 
         return $storage;
     }
+
+    /**
+     * Restores a previously retrieved download/update queue state, for example a state
+     * taken with {@see self::resetExtensionQueue()} before a temporary dependency check.
+     *
+     * @param array<string, array<string, Extension>> $extensionStorage
+     */
+    public function restoreExtensionQueue(array $extensionStorage): void
+    {
+        $this->extensionStorage = $extensionStorage;
+    }
+
+    /**
+     * Restores a previously retrieved install queue state, for example a state taken
+     * with {@see self::resetExtensionInstallStorage()} before a temporary dependency check.
+     *
+     * @param array<string, Extension> $extensionInstallStorage
+     */
+    public function restoreExtensionInstallStorage(array $extensionInstallStorage): void
+    {
+        $this->extensionInstallStorage = $extensionInstallStorage;
+    }
 }
