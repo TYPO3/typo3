@@ -111,7 +111,7 @@ readonly class PageLinkMessageProvider
         $linkToContentElement = sprintf('<a href="%s">%s</a>', htmlspecialchars($uri), $recordLabel);
         return sprintf(
             $languageService->translate('link_destination_content_element', 'backend.pages.messages'),
-            $languageService->translate('link', 'core.db.pages.doktype'),
+            $languageService->translate('doktype.link', 'core.db.pages'),
             $linkToContentElement,
             $linkedPage
         );
@@ -130,7 +130,7 @@ readonly class PageLinkMessageProvider
             'message' => sprintf(
                 $languageService->translate('link_missing', 'backend.pages.messages'),
                 $languageService->translate('link', 'core.db.pages'),
-                $languageService->translate('link', 'core.db.pages.doktype'),
+                $languageService->translate('doktype.link', 'core.db.pages'),
             ),
             'state' => ContextualFeedbackSeverity::ERROR,
         ];
@@ -166,7 +166,7 @@ readonly class PageLinkMessageProvider
         }
         $message = sprintf(
             $languageService->translate('link_destination', 'backend.pages.messages'),
-            $languageService->translate('link', 'core.db.pages.doktype'),
+            $languageService->translate('doktype.link', 'core.db.pages'),
             $languageService->translate('page', 'backend.links'),
             $linkedPath
         );
@@ -192,12 +192,12 @@ readonly class PageLinkMessageProvider
         if ($queryParameters === '') {
             return sprintf(
                 $languageService->translate('link_current', 'backend.pages.messages'),
-                $languageService->translate('link', 'core.db.pages.doktype'),
+                $languageService->translate('doktype.link', 'core.db.pages'),
             );
         }
         return sprintf(
             $languageService->translate('link_current_with_added_queryparameters', 'backend.pages.messages'),
-            $languageService->translate('link', 'core.db.pages.doktype'),
+            $languageService->translate('doktype.link', 'core.db.pages'),
             $queryParameters,
         );
     }
@@ -233,7 +233,7 @@ readonly class PageLinkMessageProvider
         return [
             'message' => sprintf(
                 $languageService->translate('link_destination', 'backend.pages.messages'),
-                $languageService->translate('link', 'core.db.pages.doktype'),
+                $languageService->translate('doktype.link', 'core.db.pages'),
                 $linkTypeLabel,
                 $pageLinkHtml
             ),
@@ -282,7 +282,7 @@ readonly class PageLinkMessageProvider
         $linkedPath = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($label) . '</a>';
         $message = sprintf(
             $languageService->translate('link_destination_record', 'backend.pages.messages'),
-            $languageService->translate('link', 'core.db.pages.doktype'),
+            $languageService->translate('doktype.link', 'core.db.pages'),
             $languageService->sL($schema->getTitle()),
             $linkedPath,
         );
