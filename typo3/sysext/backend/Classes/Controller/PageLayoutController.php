@@ -184,39 +184,15 @@ class PageLayoutController
      */
     protected function createViewModeSelection(ModuleTemplate $view): void
     {
-        $languageService = $this->getLanguageService();
-        $modes = [
-            PageViewMode::LayoutView->value => $languageService->sL(PageViewMode::LayoutView->getLabel()),
-        ];
-
-        // Only show comparison mode if page has translations
-        if (!empty($this->pageContext->languageInformation->existingTranslations)) {
-            $modes[PageViewMode::LanguageComparisonView->value] = $languageService->sL(PageViewMode::LanguageComparisonView->getLabel());
-        }
-
-        // Apply TSconfig blinding
-        $moduleTsConfig = $this->pageContext->getModuleTsConfig('web_layout');
-        $blindActions = $moduleTsConfig['menu']['functions'] ?? [];
-        foreach ($blindActions as $key => $value) {
-            if (!$value && array_key_exists($key, $modes)) {
-                unset($modes[$key]);
-            }
-        }
+        $modes = $this->determineAvailableViewModes();
 
         // Only create menu if there are multiple actions to choose from
         if (count($modes) <= 1) {
-            if (count($modes) === 1) {
-                $this->moduleData->set('viewMode', array_key_first($modes));
-            }
             return;
         }
 
-        $selectedMode = (int)$this->moduleData->get('viewMode');
-        if (!array_key_exists($selectedMode, $modes)) {
-            // Current function is not in available modes - reset to first available mode
-            $this->moduleData->set('viewMode', array_key_first($modes));
-            $selectedMode = (int)array_key_first($modes);
-        }
+        $languageService = $this->getLanguageService();
+        $selectedMode = $this->getEffectiveViewMode()->value;
 
         $actionMenu = $this->componentFactory->createMenu();
         $actionMenu->setIdentifier('actionMenu');
@@ -276,13 +252,62 @@ class PageLayoutController
         return $params;
     }
 
+    /**
+     * The view modes the current page offers. Comparison mode requires translations
+     * of this very page and may be blinded via page TSconfig.
+     *
+     * @return non-empty-array<int, string> Mode value as key, label as value
+     */
+    private function determineAvailableViewModes(): array
+    {
+        $languageService = $this->getLanguageService();
+        $modes = [
+            PageViewMode::LayoutView->value => $languageService->sL(PageViewMode::LayoutView->getLabel()),
+        ];
+        if (!empty($this->pageContext->languageInformation->existingTranslations)) {
+            $modes[PageViewMode::LanguageComparisonView->value] = $languageService->sL(PageViewMode::LanguageComparisonView->getLabel());
+        }
+
+        $blindActions = $this->pageContext->getModuleTsConfig('web_layout')['menu']['functions'] ?? [];
+        foreach ($blindActions as $key => $value) {
+            if (!$value && array_key_exists($key, $modes)) {
+                unset($modes[$key]);
+            }
+        }
+
+        // TSconfig is able to blind every mode, for instance layout mode on a page without
+        // translations. The module still has to draw the page, so layout mode is the floor
+        // that blinding can not remove. No menu is rendered for a single mode anyway.
+        if ($modes === []) {
+            $modes = [PageViewMode::LayoutView->value => $languageService->sL(PageViewMode::LayoutView->getLabel())];
+        }
+
+        return $modes;
+    }
+
+    /**
+     * Returns the view mode to use for the current page, which is the stored preference
+     * as long as the page offers that mode, and LayoutView otherwise.
+     *
+     * The stored moduleData value is the user's preference across pages and sites, so it
+     * must never be overwritten here: a page without translations falls back to LayoutView
+     * without losing the preference for the next page that does have translations.
+     */
+    private function getEffectiveViewMode(): PageViewMode
+    {
+        $modes = $this->determineAvailableViewModes();
+        $storedMode = (int)$this->moduleData->get('viewMode');
+        if (!array_key_exists($storedMode, $modes)) {
+            return PageViewMode::tryFrom((int)array_key_first($modes)) ?? PageViewMode::LayoutView;
+        }
+        return PageViewMode::tryFrom($storedMode) ?? PageViewMode::LayoutView;
+    }
+
     protected function createPageLayoutContext(
         ServerRequestInterface $request
     ): PageLayoutContext {
         $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($this->pageContext->pageId);
-        $viewMode = count($this->pageContext->languageInformation->availableLanguages) > 1
-            ? PageViewMode::tryFrom((int)$this->moduleData->get('viewMode')) ?? PageViewMode::LayoutView
-            : PageViewMode::LayoutView;
+        $viewMode = $this->getEffectiveViewMode();
         $configuration = DrawingConfiguration::create($backendLayout, $this->pageContext->pageTsConfig, $viewMode);
         $configuration->setShowHidden((bool)$this->moduleData->get('showHidden'));
 
@@ -487,7 +512,7 @@ class PageLayoutController
             [
                 'id' => $this->pageContext->pageId,
                 'showHidden' => (bool)$this->moduleData->get('showHidden'),
-                'viewMode' => (int)$this->moduleData->get('viewMode'),
+                'viewMode' => $this->getEffectiveViewMode()->value,
                 'languages' => $this->pageContext->selectedLanguageIds,
             ]
         );
@@ -529,7 +554,7 @@ class PageLayoutController
         if (
             $this->pageContext->hasMultipleLanguagesSelected()
             || VersionState::tryFrom($this->pageContext->pageRecord['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
-            || PageViewMode::tryFrom((int)$this->moduleData->get('viewMode')) !== PageViewMode::LayoutView
+            || $this->getEffectiveViewMode() !== PageViewMode::LayoutView
         ) {
             return null;
         }
@@ -552,7 +577,7 @@ class PageLayoutController
     {
         $primaryLanguageId = $this->pageContext->getPrimaryLanguageId();
         if (!$this->isPageEditable($primaryLanguageId)
-            || PageViewMode::tryFrom((int)$this->moduleData->get('viewMode')) !== PageViewMode::LayoutView
+            || $this->getEffectiveViewMode() !== PageViewMode::LayoutView
         ) {
             return null;
         }
@@ -588,7 +613,7 @@ class PageLayoutController
             return;
         }
 
-        $viewMode = PageViewMode::tryFrom((int)$this->moduleData->get('viewMode')) ?? PageViewMode::LayoutView;
+        $viewMode = $this->getEffectiveViewMode();
         $isComparisonMode = $viewMode === PageViewMode::LanguageComparisonView;
         $mode = $isComparisonMode ? LanguageSelectorMode::MULTI_SELECT : LanguageSelectorMode::SINGLE_SELECT;
 
@@ -612,7 +637,7 @@ class PageLayoutController
      */
     protected function getNumberOfHiddenElements(): int
     {
-        $isComparisonView = (PageViewMode::tryFrom((int)$this->moduleData->get('viewMode')) ?? PageViewMode::LayoutView) === PageViewMode::LanguageComparisonView;
+        $isComparisonView = $this->getEffectiveViewMode() === PageViewMode::LanguageComparisonView;
         $andWhere = [];
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()
