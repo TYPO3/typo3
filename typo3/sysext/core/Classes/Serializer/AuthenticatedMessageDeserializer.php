@@ -53,7 +53,7 @@ final readonly class AuthenticatedMessageDeserializer
             // in case the payload does not contain any class names, continue with
             // a secure deserialization attempt, not allowing any class names
             if ($classNames === []) {
-                return unserialize($payload, ['allowed_classes' => false]);
+                return @unserialize($payload, ['allowed_classes' => false]);
             }
             throw new DeserializerException(
                 'Authenticated Message Deserialization failed',
