@@ -1,0 +1,23 @@
+{
+	"name": "typo3tests/deepl-write",
+	"type": "typo3-cms-extension",
+	"description": "Extension (Third) - Demonstrate extension requiring Extension (Base)",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "14.*.*@dev || 15.*.*@dev",
+		"typo3/cms-extensionmanager": "14.*.*@dev || 15.*.*@dev",
+		"typo3tests/deepl-base": "1.0.0@dev"
+	},
+	"suggests": {
+		"typo3tests/deepltranslate-core": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "deepl_write",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	}
+}
