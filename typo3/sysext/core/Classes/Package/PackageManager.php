@@ -275,6 +275,12 @@ class PackageManager implements SingletonInterface
     {
         $this->packageStatesConfiguration = (@include $this->packageStatesPathAndFilename) ?: [];
         PackageCacheEntry::ensureValidPackageConfiguration($this->packageStatesConfiguration);
+        // The VirtualAppPackage must never be loaded from PackageStates.php. It is
+        // either pulled from cache, or registered manually in initialize() after all
+        // real packages have been pulled in from disk. Older TYPO3 v14 versions could
+        // accidentally persist it to PackageStates.php, so a leftover entry is dropped
+        // here to avoid a duplicate registration once it is added again in initialize().
+        unset($this->packageStatesConfiguration['packages'][VirtualAppPackage::APP_PACKAGE_KEY]);
         $this->registerPackagesFromConfiguration($this->packageStatesConfiguration['packages'], false);
     }
 
@@ -824,7 +830,12 @@ class PackageManager implements SingletonInterface
             }
             fclose($fileHandle);
         }
-        $packageStatesCode = "<?php\n$fileDescription\nreturn " . ArrayUtility::arrayExport($this->packageStatesConfiguration) . ";\n";
+        $packageConfiguration = $this->packageStatesConfiguration;
+        // The VirtualAppPackage must never be written to PackageStates.php
+        // It is either pulled from cache, or registered manually after
+        // all real packages have been pulled in from disk
+        unset($packageConfiguration['packages'][VirtualAppPackage::APP_PACKAGE_KEY]);
+        $packageStatesCode = "<?php\n$fileDescription\nreturn " . ArrayUtility::arrayExport($packageConfiguration) . ";\n";
         GeneralUtility::writeFile($this->packageStatesPathAndFilename, $packageStatesCode, true);
         // Cache depends on package states file, therefore we invalidate it
         $this->packageCache->invalidate();

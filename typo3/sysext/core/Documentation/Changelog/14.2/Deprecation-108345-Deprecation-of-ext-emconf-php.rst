@@ -15,6 +15,19 @@ TYPO3 extensions that still ship an `ext_emconf.php` file
 **and** do not declare future compatibility to omit this file
 will now trigger a deprecation message during cache warm-up.
 
+With TYPO3 v15 the `ext_emconf.php` file is no longer evaluated.
+For TYPO3 classic (non-Composer) mode to keep working, TYPO3 then needs to
+know the extension version and which `require` and `suggest` entries are not
+TYPO3 extensions. The extension version and the `providesPackages` definition
+therefore become mandatory fields in `composer.json`, regardless of whether an
+`ext_emconf.php` file is still shipped.
+
+In TYPO3 v14 these fields are not yet mandatory, because the deprecated
+`ext_emconf.php` can still provide this information. A deprecation message is
+triggered only when the `version` or `providesPackages` field is missing, so
+that an extension can stay compatible with both TYPO3 v14 and v15 at the same
+time.
+
 To avoid this deprecation message, the extension must provide
 the required package metadata in `composer.json`.
 
