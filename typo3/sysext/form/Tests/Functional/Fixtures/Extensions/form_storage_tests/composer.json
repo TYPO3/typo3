@@ -1,10 +1,20 @@
 {
     "name": "typo3tests/form-storage-tests",
     "type": "typo3-cms-extension",
-    "require": {},
+    "description": "",
+    "version": "1.0.0",
+    "license": [
+        "GPL-2.0-or-later"
+    ],
+    "require": {
+        "typo3/cms-core": "14.3.*@dev"
+    },
     "extra": {
         "typo3/cms": {
-            "extension-key": "form_storage_tests"
+            "extension-key": "form_storage_tests",
+            "Package": {
+                "providesPackages": []
+            }
         }
     }
 }
