@@ -74,7 +74,7 @@ test.describe('File Operations', () => {
       await expect(modal).not.toBeVisible();
 
       // Verify file appears in list
-      await expect(backend.contentFrame.locator('[data-multi-record-selection-element="true"]').getByText(fileName)).toBeVisible();
+      await expect(backend.contentFrame.locator('[data-multi-record-selection-element="true"]').getByText(fileName).first()).toBeVisible();
     });
 
     await test.step('Delete the file', async () => {
