@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 /**
  * A caching backend which forgets everything immediately
  */
-class NullBackend extends AbstractBackend implements PhpCapableBackendInterface, TaggableBackendInterface
+class NullBackend extends AbstractBackend implements PhpCapableBackendInterface, TaggableBackendInterface, TransientBackendInterface
 {
     /**
      * Acts as if it would save data
