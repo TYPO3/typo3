@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
-use TYPO3\CMS\Form\Domain\Translation\FormTranslationKeyChainBuilder;
+use TYPO3\CMS\Form\Domain\Translation\FormTranslationKeychainBuilder;
 
 /**
  * Advanced translations
@@ -47,7 +47,7 @@ class TranslationService
     public function __construct(
         protected readonly LanguageServiceFactory $languageServiceFactory,
         protected readonly Locales $locales,
-        protected readonly FormTranslationKeyChainBuilder $keyChainBuilder,
+        protected readonly FormTranslationKeychainBuilder $keychainBuilder,
     ) {}
 
     /**
@@ -216,7 +216,7 @@ class TranslationService
             $originalFormIdentifier = $formRuntime->getRenderingOptions()['_originalIdentifier'];
         }
 
-        $translationKeyChain = $this->keyChainBuilder->buildForFinisherOption(
+        $translationKeyChain = $this->keychainBuilder->buildForFinisherOption(
             $translationFiles,
             $formRuntime->getIdentifier(),
             $finisherIdentifier,
@@ -309,7 +309,7 @@ class TranslationService
         if ($property === 'options' && is_array($defaultValue)) {
             foreach ($defaultValue as $optionValue => &$optionLabel) {
                 if ($elementIsFormRuntime) {
-                    $translationKeyChain = $this->keyChainBuilder->buildForFormRuntimeOption(
+                    $translationKeyChain = $this->keychainBuilder->buildForFormRuntimeOption(
                         $translationFiles,
                         $formRuntime->getIdentifier(),
                         $elementIdentifier,
@@ -320,7 +320,7 @@ class TranslationService
                         $originalFormIdentifier
                     );
                 } else {
-                    $translationKeyChain = $this->keyChainBuilder->buildForElementOption(
+                    $translationKeyChain = $this->keychainBuilder->buildForElementOption(
                         $translationFiles,
                         $formRuntime->getIdentifier(),
                         $elementIdentifier,
@@ -346,7 +346,7 @@ class TranslationService
             }
             foreach ($defaultValue as $propertyName => &$propertyValue) {
                 if ($elementIsFormRuntime) {
-                    $translationKeyChain = $this->keyChainBuilder->buildForFormRuntimeProperty(
+                    $translationKeyChain = $this->keychainBuilder->buildForFormRuntimeProperty(
                         $translationFiles,
                         $formRuntime->getIdentifier(),
                         $elementIdentifier,
@@ -356,7 +356,7 @@ class TranslationService
                         $originalFormIdentifier
                     );
                 } else {
-                    $translationKeyChain = $this->keyChainBuilder->buildForElementProperty(
+                    $translationKeyChain = $this->keychainBuilder->buildForElementProperty(
                         $translationFiles,
                         $formRuntime->getIdentifier(),
                         $elementIdentifier,
@@ -373,7 +373,7 @@ class TranslationService
             $translatedValue = $defaultValue;
         } else {
             if ($elementIsFormRuntime) {
-                $translationKeyChain = $this->keyChainBuilder->buildForFormRuntimeProperty(
+                $translationKeyChain = $this->keychainBuilder->buildForFormRuntimeProperty(
                     $translationFiles,
                     $formRuntime->getIdentifier(),
                     $elementIdentifier,
@@ -383,7 +383,7 @@ class TranslationService
                     $originalFormIdentifier
                 );
             } else {
-                $translationKeyChain = $this->keyChainBuilder->buildForElementProperty(
+                $translationKeyChain = $this->keychainBuilder->buildForElementProperty(
                     $translationFiles,
                     $formRuntime->getIdentifier(),
                     $elementIdentifier,
@@ -446,7 +446,7 @@ class TranslationService
         }
 
         if ($element instanceof FormRuntime) {
-            $translationKeyChain = $this->keyChainBuilder->buildForFormRuntimeValidationError(
+            $translationKeyChain = $this->keychainBuilder->buildForFormRuntimeValidationError(
                 $translationFiles,
                 $formRuntime->getIdentifier(),
                 $element->getIdentifier(),
@@ -454,7 +454,7 @@ class TranslationService
                 $originalFormIdentifier
             );
         } else {
-            $translationKeyChain = $this->keyChainBuilder->buildForValidationError(
+            $translationKeyChain = $this->keychainBuilder->buildForValidationError(
                 $translationFiles,
                 $formRuntime->getIdentifier(),
                 $element->getIdentifier(),

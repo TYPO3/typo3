@@ -18,15 +18,15 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Translation;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Form\Domain\Translation\FormTranslationKeyChainBuilder;
+use TYPO3\CMS\Form\Domain\Translation\FormTranslationKeychainBuilder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-final class FormTranslationKeyChainBuilderTest extends UnitTestCase
+final class FormTranslationKeychainBuilderTest extends UnitTestCase
 {
     #[Test]
     public function buildForElementPropertyReturnsGenericKeysWhenNoOriginalIdentifier(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForElementProperty(
+        $chain = (new FormTranslationKeychainBuilder())->buildForElementProperty(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'my-element',
@@ -46,7 +46,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForElementPropertyPrefixesOriginalFormIdentifierKeys(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForElementProperty(
+        $chain = (new FormTranslationKeychainBuilder())->buildForElementProperty(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'my-element',
@@ -67,7 +67,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForFormRuntimePropertyUsesOriginalIdentifierAsElementSegment(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForFormRuntimeProperty(
+        $chain = (new FormTranslationKeychainBuilder())->buildForFormRuntimeProperty(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'my-form',
@@ -89,7 +89,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForElementPropertyIteratesMultipleTranslationFiles(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForElementProperty(
+        $chain = (new FormTranslationKeychainBuilder())->buildForElementProperty(
             ['EXT:ext_a/locallang.xlf', 'EXT:ext_b/locallang.xlf'],
             'form',
             'elem',
@@ -107,7 +107,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForElementOptionAppendsOptionValueToKey(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForElementOption(
+        $chain = (new FormTranslationKeychainBuilder())->buildForElementOption(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'my-select',
@@ -128,7 +128,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForElementOptionSupportsIntegerOptionValues(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForElementOption(
+        $chain = (new FormTranslationKeychainBuilder())->buildForElementOption(
             ['EXT:my_ext/locallang.xlf'],
             'form',
             'elem',
@@ -145,7 +145,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForElementOptionPrefixesOriginalFormIdentifierKeys(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForElementOption(
+        $chain = (new FormTranslationKeychainBuilder())->buildForElementOption(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'my-select',
@@ -167,7 +167,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForFormRuntimeOptionUsesOriginalIdentifierAsElementSegment(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForFormRuntimeOption(
+        $chain = (new FormTranslationKeychainBuilder())->buildForFormRuntimeOption(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'my-form',
@@ -190,7 +190,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForValidationErrorReturnsGenericKeysWhenNoOriginalIdentifier(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForValidationError(
+        $chain = (new FormTranslationKeychainBuilder())->buildForValidationError(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'my-element',
@@ -209,7 +209,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForValidationErrorPrefixesOriginalFormIdentifierKeys(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForValidationError(
+        $chain = (new FormTranslationKeychainBuilder())->buildForValidationError(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'my-element',
@@ -230,7 +230,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForFormRuntimeValidationErrorUsesOriginalIdentifierAsElementSegment(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForFormRuntimeValidationError(
+        $chain = (new FormTranslationKeychainBuilder())->buildForFormRuntimeValidationError(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'my-form',
@@ -252,7 +252,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForFinisherOptionReturnsGenericKeysWhenNoOriginalIdentifier(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForFinisherOption(
+        $chain = (new FormTranslationKeychainBuilder())->buildForFinisherOption(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'SaveToDatabase',
@@ -269,7 +269,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForFinisherOptionPrefixesOriginalFormIdentifierKey(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForFinisherOption(
+        $chain = (new FormTranslationKeychainBuilder())->buildForFinisherOption(
             ['EXT:my_ext/locallang.xlf'],
             'my-form',
             'SaveToDatabase',
@@ -287,7 +287,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForFinisherOptionIteratesMultipleTranslationFiles(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForFinisherOption(
+        $chain = (new FormTranslationKeychainBuilder())->buildForFinisherOption(
             ['EXT:ext_a/locallang.xlf', 'EXT:ext_b/locallang.xlf'],
             'form',
             'Email',
@@ -303,7 +303,7 @@ final class FormTranslationKeyChainBuilderTest extends UnitTestCase
     #[Test]
     public function buildForFinisherOptionReturnsEmptyArrayForEmptyTranslationFiles(): void
     {
-        $chain = (new FormTranslationKeyChainBuilder())->buildForFinisherOption([], 'form', 'Email', 'to', null);
+        $chain = (new FormTranslationKeychainBuilder())->buildForFinisherOption([], 'form', 'Email', 'to', null);
 
         self::assertSame([], $chain);
     }

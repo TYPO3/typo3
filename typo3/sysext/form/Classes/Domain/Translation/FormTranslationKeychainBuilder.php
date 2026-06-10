@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Translation;
 
 /**
- * Builds ordered translation key chains for form-specific entities.
+ * Builds ordered translation keychains for form-specific entities.
  *
  * The chain follows a specificity-first order:
  *   1. form-specific + element/finisher-specific
@@ -27,10 +27,10 @@ namespace TYPO3\CMS\Form\Domain\Translation;
  *
  * @internal
  */
-final class FormTranslationKeyChainBuilder
+final class FormTranslationKeychainBuilder
 {
     /**
-     * Builds the key chain for a scalar property on a regular form element
+     * Builds the keychain for a scalar property on a regular form element
      * (e.g. "label", "placeholder", any renderingOption).
      *
      * @param string[] $translationFiles
@@ -56,7 +56,7 @@ final class FormTranslationKeyChainBuilder
     }
 
     /**
-     * Builds the key chain for a scalar property on the FormRuntime itself,
+     * Builds the keychain for a scalar property on the FormRuntime itself,
      * where the original form identifier is used as the element segment.
      *
      * @param string[] $translationFiles
@@ -83,7 +83,7 @@ final class FormTranslationKeyChainBuilder
     }
 
     /**
-     * Builds the key chain for a single option entry inside an "options"
+     * Builds the keychain for a single option entry inside an "options"
      * array property on a regular element (e.g. Select / RadioButton / Checkbox groups).
      *
      * @param string[] $translationFiles
@@ -110,7 +110,7 @@ final class FormTranslationKeyChainBuilder
     }
 
     /**
-     * Builds the key chain for a single option entry on the FormRuntime itself,
+     * Builds the keychain for a single option entry on the FormRuntime itself,
      * where the original form identifier is used as the element segment.
      *
      * @param string[] $translationFiles
@@ -138,7 +138,7 @@ final class FormTranslationKeyChainBuilder
     }
 
     /**
-     * Builds the key chain for a validation error code on a regular form element.
+     * Builds the keychain for a validation error code on a regular form element.
      *
      * @param string[] $translationFiles
      * @return string[]
@@ -162,7 +162,7 @@ final class FormTranslationKeyChainBuilder
     }
 
     /**
-     * Builds the key chain for a validation error code on the FormRuntime itself,
+     * Builds the keychain for a validation error code on the FormRuntime itself,
      * where the original form identifier is used as the element segment.
      *
      * @param string[] $translationFiles
@@ -188,7 +188,7 @@ final class FormTranslationKeyChainBuilder
     }
 
     /**
-     * Builds the key chain for a single finisher option.
+     * Builds the keychain for a single finisher option.
      *
      * @param string[] $translationFiles
      * @return string[]
