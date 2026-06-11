@@ -682,11 +682,7 @@ class Clipboard
                     // for the folder, we just remove the clipboard entry silently
                     $unset = true;
                 }
-            } elseif (!is_array($row = BackendUtility::getRecord($table, (int)$uid, ['uid', 'pid']))
-                || !$this->getBackendUser()->check('tables_select', $table)
-                || !is_array($page = BackendUtility::getRecord('pages', (int)($table === 'pages' ? $row['uid'] : $row['pid'])))
-                || !$this->getBackendUser()->doesUserHaveAccess($page, Permission::PAGE_SHOW)
-            ) {
+            } elseif (!$this->isRecordAccessAllowed($table, (int)$uid)) {
                 $unset = true;
             }
 
@@ -694,6 +690,37 @@ class Clipboard
                 $this->removeElement($reference);
             }
         }
+    }
+
+    protected function isRecordAccessAllowed(string $table, int $uid): bool
+    {
+        $row = BackendUtility::getRecord($table, (int)$uid, ['uid', 'pid']);
+        if (!is_array($row)) {
+            return false;
+        }
+
+        if (!$this->getBackendUser()->check('tables_select', $table)) {
+            return false;
+        }
+
+        $schema = $this->tcaSchemaFactory->get($table);
+        $rootLevelCapability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+
+        $pid = (int)($table === 'pages' ? $row['uid'] : $row['pid']);
+        if ($pid === 0) {
+            return $this->getBackendUser()->isAdmin() || $rootLevelCapability->canAccessRecordsOnRootLevel();
+        }
+
+        $page = BackendUtility::getRecord('pages', $pid);
+        if (!is_array($page)) {
+            return false;
+        }
+
+        if (!$this->getBackendUser()->doesUserHaveAccess($page, Permission::PAGE_SHOW)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
