@@ -179,17 +179,6 @@ return [
         ],
     ],
 
-    'db_new_pages' => [
-        'path' => '/record/new-page',
-        'target' => Controller\NewRecordController::class . '::newPageAction',
-        'redirect' => [
-            'enable' => true,
-            'parameters' => [
-                'id' => true,
-            ],
-        ],
-    ],
-
     // Register sort pages
     'pages_sort' => [
         'path' => '/pages/sort',

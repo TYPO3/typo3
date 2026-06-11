@@ -30,7 +30,7 @@
       <trans-unit id="createNewPage">
         <source>Create a new page</source>
       </trans-unit>
-      <trans-unit id="insertNewPageHere">
+      <trans-unit id="insertNewPageHere" x-unused-since="15.0">
         <source>Insert the new page here</source>
       </trans-unit>
       <trans-unit id="insertNewRecordHere">

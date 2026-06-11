@@ -52,6 +52,5 @@ mod.wizards {
   newRecord.pages.show {
     pageInside = 1
     pageAfter = 1
-    pageSelectPosition = 1
   }
 }
