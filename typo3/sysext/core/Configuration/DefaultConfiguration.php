@@ -178,7 +178,13 @@ return [
             // List of class names that are allowed to be deserialized even if they carry
             // __destruct() or __wakeup() and would otherwise be blocked. Use this to
             // explicitly permit classes that have been reviewed and are known to be safe.
-            'allowedClassNames' => [],
+            'allowedClassNames' => [
+                // Scheduler task entries prior to v9.5.4 contained
+                // a serialized logger instance.
+                // The `__wakeup()` method of this class is safe to be
+                // deserialized and is therefore excluded from the deny list
+                \TYPO3\CMS\Core\Log\Logger::class,
+            ],
         ],
         'caching' => [
             'cacheConfigurations' => [

@@ -21,9 +21,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Log\Writer\NullWriter;
 use TYPO3\CMS\Core\Serializer\DenyListDeserializer;
 use TYPO3\CMS\Core\Serializer\DeserializationService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 use TYPO3\CMS\Scheduler\Tests\Unit\Task\Fixtures\TestTask;
@@ -69,6 +72,31 @@ final class TaskSerializerTest extends UnitTestCase
     public function dataIsDeserialized(string $data, $expectation): void
     {
         self::assertEquals($expectation, $this->subject->deserialize($data));
+    }
+
+    #[Test]
+    public function taskWithLegacyLoggerInstanceCanBeDeserialized(): void
+    {
+        $logger = new Logger('dummy', '');
+
+        $logManagerMock = $this->getMockBuilder(LogManager::class)->getMock();
+        $logManagerMock
+            ->expects($this->once())
+            ->method('getLogger')
+            ->willReturn($logger);
+        GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
+
+        $testTaskWithLogger = new TestTask();
+        // Prior to #86785 (that is <9.5.4) the serialized task that was
+        // persisted in the database contained a reference to the logger
+        $testTaskWithLogger->setLogger($logger);
+
+        $data = serialize($testTaskWithLogger);
+        $deserialized = $this->subject->deserialize($data);
+
+        GeneralUtility::removeSingletonInstance(LogManager::class, $logManagerMock);
+
+        self::assertInstanceOf(TestTask::class, $deserialized);
     }
 
     public static function deserializationThrowsExceptionDataProvider(): array
