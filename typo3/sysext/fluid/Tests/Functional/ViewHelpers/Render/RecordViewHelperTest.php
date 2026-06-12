@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Event\ModifyRenderedRecordEvent;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -62,7 +61,6 @@ final class RecordViewHelperTest extends FunctionalTestCase
         $request = $this->createRequest();
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:render.record record="{record}" />');
-        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
 
         $view = new TemplateView($context);
         $view->assign('record', $record);
@@ -98,7 +96,6 @@ final class RecordViewHelperTest extends FunctionalTestCase
         $request = $this->createRequest();
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('{record -> f:render.record()}');
-        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
 
         $view = new TemplateView($context);
         $view->assign('record', $record);
@@ -118,7 +115,6 @@ final class RecordViewHelperTest extends FunctionalTestCase
         $request = $this->createRequest();
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:render.record record="{record}" />');
-        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
 
         $view = new TemplateView($context);
         $view->assign('record', $record);
@@ -138,7 +134,6 @@ final class RecordViewHelperTest extends FunctionalTestCase
         $request = $this->createRequest();
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('{record -> f:render.record()}');
-        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
 
         $view = new TemplateView($context);
         $view->assign('record', $record);

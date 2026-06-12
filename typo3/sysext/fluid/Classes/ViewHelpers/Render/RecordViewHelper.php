@@ -21,8 +21,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Event\ModifyRenderedRecordEvent;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -54,7 +54,6 @@ final class RecordViewHelper extends AbstractViewHelper
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ConfigurationManagerInterface $configurationManager,
     ) {}
 
     public function initializeArguments(): void
@@ -102,7 +101,15 @@ final class RecordViewHelper extends AbstractViewHelper
         }
         $contentObjectRenderer->start($data, $table);
 
-        $setup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $frontendTypoScript = $request->getAttribute('frontend.typoscript');
+        if (!$frontendTypoScript instanceof FrontendTypoScript || !$frontendTypoScript->hasSetup()) {
+            throw new \RuntimeException(
+                'Full TypoScript setup is not available in the current request. The "f:render.record" ViewHelper'
+                . ' can only be used in Frontend rendering context.',
+                1781223613
+            );
+        }
+        $setup = $frontendTypoScript->getSetupArray();
         if (!isset($setup[$table])) {
             throw new InvalidArgumentValueException(
                 'No Content Object definition found at TypoScript object path "' . $table . '"',
