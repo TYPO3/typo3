@@ -1,0 +1,4 @@
+tt_content
+,uid,pid,CType,header
+,1,1,text,"Content with type text"
+,2,1,header,"Content with type header"

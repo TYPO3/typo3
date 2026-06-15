@@ -1,0 +1,4 @@
+pages
+,uid,pid,title,TSconfig
+,1,0,"FormDataProvider test page","TCEFORM.tt_content.header.label = Generic override
+TCEFORM.tt_content.header.types.text.label = Per type override"
