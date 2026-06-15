@@ -742,6 +742,7 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCountry::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldDescriptions::class => [
@@ -1398,6 +1399,7 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldDescriptions::class => [
