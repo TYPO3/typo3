@@ -35,12 +35,16 @@ readonly class EnvVarProcessor implements EnvVarProcessorInterface
      */
     public function getEnv(string $prefix, string $name, \Closure $getEnv): mixed
     {
-        $callable = [Environment::class, 'get' . ucfirst($name)];
-        if (!is_callable($callable)) {
-            $callable = [Environment::class, 'is' . ucfirst($name)];
+        if (str_starts_with($name, 'is')) {
+            $callable = [Environment::class, $name];
+        } else {
+            $callable = [Environment::class, 'get' . ucfirst($name)];
             if (!is_callable($callable)) {
-                throw new \RuntimeException('Environment ' . $name . ' not available in ' . Environment::class, 1562314987);
+                $callable = [Environment::class, 'is' . ucfirst($name)];
             }
+        }
+        if (!is_callable($callable)) {
+            throw new \RuntimeException('Environment ' . $name . ' not available in ' . Environment::class, 1562314987);
         }
         return $callable();
     }
