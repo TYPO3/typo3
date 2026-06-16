@@ -52,8 +52,8 @@ final class ConsoleCommandPass implements CompilerPassInterface
             foreach ($tags as $attributes) {
                 $command = $attributes['command'] ?? null;
                 $description = $attributes['description'] ?? $description;
-                $hidden = (bool)($attributes['hidden'] ?? $hidden);
-                $schedulable = (bool)($attributes['schedulable'] ?? true);
+                $hidden = $attributes['hidden'] ?? $hidden;
+                $schedulable = $attributes['schedulable'] ?? true;
                 $aliasFor = null;
                 if ($command === null) {
                     continue;
