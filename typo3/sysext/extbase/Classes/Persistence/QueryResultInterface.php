@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
 
 /**
  * A lazy result list that is returned by Query::execute()
- * @template TKey
+ * @template TKey of int
  * @template TValue of object
  * @extends \Iterator<TKey,TValue>
  * @extends \ArrayAccess<TKey,TValue>
