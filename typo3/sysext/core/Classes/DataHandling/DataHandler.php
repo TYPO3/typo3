@@ -217,6 +217,8 @@ class DataHandler
      * Errors are collected in this variable.
      *
      * @internal should only be used from within TYPO3 Core
+     *
+     * @var list<non-empty-string>
      */
     public array $errorLog = [];
 
