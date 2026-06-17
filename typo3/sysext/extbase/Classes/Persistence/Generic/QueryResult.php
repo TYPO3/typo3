@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  *
  * @todo v12: Candidate to declare final - Can be decorated or standalone class implementing the interface
  * @template TValue of object
- * @implements QueryResultInterface<mixed,TValue>
+ * @implements QueryResultInterface<int,TValue>
  */
 #[Autoconfigure(public: true, shared: false)]
 class QueryResult implements QueryResultInterface

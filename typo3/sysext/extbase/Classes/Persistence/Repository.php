@@ -127,8 +127,8 @@ class Repository implements RepositoryInterface, SingletonInterface
     /**
      * Returns all objects of this repository.
      *
-     * @return QueryResultInterface|array
-     * @phpstan-return QueryResultInterface|iterable<T>
+     * @return QueryResultInterface
+     * @phpstan-return QueryResultInterface<int,T>
      */
     public function findAll()
     {
@@ -238,8 +238,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * @phpstan-param array<non-empty-string, QueryInterface::ORDER_*>|null $orderBy
      * @phpstan-param 0|positive-int|null $limit
      * @phpstan-param 0|positive-int|null $offset
-     * @phpstan-return QueryResultInterface<T>
-     * @return QueryResultInterface
+     * @phpstan-return QueryResultInterface<int,T>
      */
     public function findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): QueryResultInterface
     {
