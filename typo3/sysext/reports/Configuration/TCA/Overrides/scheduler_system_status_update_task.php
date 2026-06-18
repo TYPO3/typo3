@@ -45,7 +45,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
             description,
             tx_reports_notification_email,
             tx_reports_notification_all,
-        --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+        --div--;core.form.tabs:timing,
             --palette--;;execution,
         --div--;core.form.tabs:access,
             disable,

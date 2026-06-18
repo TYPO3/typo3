@@ -22,7 +22,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task']) && !GeneralUtility::makeInstance
                 tasktype,
                 task_group,
                 description,
-            --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+            --div--;core.form.tabs:timing,
                 --palette--;;execution,
             --div--;core.form.tabs:access,
                 disable,

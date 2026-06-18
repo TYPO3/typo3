@@ -19,7 +19,7 @@ ExtensionManagementUtility::addRecordType(
             task_group,
             description,
             number_of_days;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.recyclerGarbageCollection.numberOfDays,
-        --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+        --div--;core.form.tabs:timing,
             --palette--;;execution,
         --div--;core.form.tabs:access,
             disable,

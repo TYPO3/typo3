@@ -41,7 +41,7 @@ ExtensionManagementUtility::addRecordType(
             ip_mask,
             selected_tables;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.table,
             number_of_days;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.numberOfDays,
-        --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+        --div--;core.form.tabs:timing,
             --palette--;;execution,
         --div--;core.form.tabs:access,
             disable,

@@ -45,7 +45,7 @@ ExtensionManagementUtility::addRecordType(
             file_storage;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageIndexing.storage,
             max_file_count,
             registered_extractors,
-        --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+        --div--;core.form.tabs:timing,
             --palette--;;execution,
         --div--;core.form.tabs:access,
             disable,
