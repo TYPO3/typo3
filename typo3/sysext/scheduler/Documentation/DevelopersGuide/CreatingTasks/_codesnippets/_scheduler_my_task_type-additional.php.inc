@@ -51,7 +51,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
                 description,
                 my_extension_field,
                 my_extension_email_list,
-            --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+            --div--;core.form.tabs:timing,
                 execution_details,
                 nextexecution,
                 --palette--;;lastexecution,

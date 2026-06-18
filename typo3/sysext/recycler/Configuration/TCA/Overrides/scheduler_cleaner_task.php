@@ -21,7 +21,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
                 description,
                 selected_tables;LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskTCA,
                 number_of_days;LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskPeriod,
-            --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+            --div--;core.form.tabs:timing,
                 --palette--;;execution,
             --div--;core.form.tabs:access,
                 disable,

@@ -37,7 +37,7 @@ ExtensionManagementUtility::addRecordType(
             task_group,
             description,
             cache_backends;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cachingFrameworkGarbageCollection.selectBackends,
-        --div--;LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.timing,
+        --div--;core.form.tabs:timing,
             --palette--;;execution,
         --div--;core.form.tabs:access,
             disable,

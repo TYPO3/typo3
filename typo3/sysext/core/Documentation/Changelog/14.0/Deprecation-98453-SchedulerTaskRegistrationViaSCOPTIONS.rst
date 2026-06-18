@@ -157,7 +157,7 @@ After:
                 description,
                 my_extension_field,
                 my_extension_email_list,
-            --div--;scheduler.messages:scheduler.form.palettes.timing,
+            --div--;core.form.tabs:timing,
                 --palette--;;execution,
             --div--;core.tabs:access,
                 disable,

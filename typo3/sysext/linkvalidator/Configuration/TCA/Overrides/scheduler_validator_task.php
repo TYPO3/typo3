@@ -89,7 +89,7 @@ if (isset($GLOBALS['TCA']['tx_scheduler_task'])) {
             tx_linkvalidator_email,
             tx_linkvalidator_email_on_broken_link_only,
             tx_linkvalidator_email_template_name,
-        --div--;scheduler.messages:scheduler.form.palettes.timing,
+        --div--;core.form.tabs:timing,
             --palette--;;execution,
         --div--;core.form.tabs:access,
             disable,
