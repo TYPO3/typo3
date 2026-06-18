@@ -323,7 +323,9 @@ readonly class ImageProcessingInstructions
         }
 
         if (isset($options['crop'])) {
-            if (is_string($options['crop'])) {
+            if ($options['crop'] === '') {
+                unset($options['crop']);
+            } elseif (is_string($options['crop'])) {
                 // check if it is a json object
                 $cropData = json_decode($options['crop']);
                 if ($cropData) {
@@ -333,9 +335,11 @@ readonly class ImageProcessingInstructions
                     } else {
                         $options['crop'] = new Area((float)$cropData->x, (float)$cropData->y, (float)$cropData->width, (float)$cropData->height);
                     }
-                } else {
+                } elseif (substr_count($options['crop'], ',') === 3) {
                     [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $options['crop'], 4);
                     $options['crop'] = new Area((float)$offsetLeft, (float)$offsetTop, (float)$newWidth, (float)$newHeight);
+                } else {
+                    unset($options['crop']);
                 }
                 if (isset($options['crop']) && $options['crop']->isEmpty()) {
                     unset($options['crop']);
