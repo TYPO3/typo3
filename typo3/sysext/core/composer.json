@@ -66,6 +66,8 @@
 		"symfony/mime": "^7.4.12",
 		"symfony/options-resolver": "^7.4",
 		"symfony/polyfill-php83": "^1.31",
+		"symfony/polyfill-php84": "^1.38",
+		"symfony/polyfill-php85": "^1.38",
 		"symfony/process": "^7.4",
 		"symfony/rate-limiter": "^7.4",
 		"symfony/routing": "^7.4.13",
