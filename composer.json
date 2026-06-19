@@ -103,6 +103,8 @@
 		"symfony/mime": "^7.4.12",
 		"symfony/options-resolver": "^7.4.8",
 		"symfony/polyfill-php83": "^1.36.0",
+		"symfony/polyfill-php84": "^1.38",
+		"symfony/polyfill-php85": "^1.38",
 		"symfony/process": "^7.4.8",
 		"symfony/property-access": "^7.4.8",
 		"symfony/property-info": "^7.4.8",
