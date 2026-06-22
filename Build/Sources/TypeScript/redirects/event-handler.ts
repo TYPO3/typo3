@@ -89,9 +89,9 @@ class EventHandler {
   }
 
   private revert(correlationIds: string[]): Promise<AjaxResponse> {
-    const request = new AjaxRequest(TYPO3.settings.ajaxUrls.redirects_revert_correlation).withQueryArguments({
-      correlation_ids: correlationIds
-    }).get();
+    const request = new AjaxRequest(TYPO3.settings.ajaxUrls.redirects_revert_correlation).post({
+      correlation_ids: correlationIds,
+    });
 
     request.then(async (response: AjaxResponse): Promise<void> => {
       const json = await response.resolve();

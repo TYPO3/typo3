@@ -45,7 +45,7 @@ readonly class RecordHistoryRollbackController
     {
         $languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $revertedCorrelationTypes = [];
-        $correlationIds = $request->getQueryParams()['correlation_ids'] ?? [];
+        $correlationIds = $request->getParsedBody()['correlation_ids'] ?? [];
         /** @var CorrelationId[] $correlationIds */
         $correlationIds = array_map(
             static function (string $correlationId) {
@@ -84,12 +84,23 @@ readonly class RecordHistoryRollbackController
 
     protected function rollBackCorrelation(CorrelationId $correlationId): void
     {
+        $currentUserId = $this->getBackendUser()->getUserId();
+        $historyEntries = GeneralUtility::makeInstance(RecordHistory::class)->findEventsForCorrelation((string)$correlationId);
+
+        // Verify the correlation belongs to the current user before allowing rollback.
+        // All entries sharing a correlation_id are written by the same user, so checking
+        // any one entry is sufficient; we use the first (most recent) for the guard.
+        $firstEntry = reset($historyEntries);
+        if ($firstEntry === false || (int)$firstEntry['userid'] !== $currentUserId) {
+            return;
+        }
+
         // Temporary add permissions to the user to perform the action.
         // Store if we need to revert those changes after the actions.
         $addedTableSelect = $this->temporaryPermissionMutationService->addTableSelect();
         $addedTableModify = $this->temporaryPermissionMutationService->addTableModify();
 
-        foreach (GeneralUtility::makeInstance(RecordHistory::class)->findEventsForCorrelation((string)$correlationId) as $recordHistoryEntry) {
+        foreach ($historyEntries as $recordHistoryEntry) {
             $element = $recordHistoryEntry['tablename'] . ':' . $recordHistoryEntry['recuid'];
             $tempRecordHistory = GeneralUtility::makeInstance(RecordHistory::class, $element);
             $tempRecordHistory->setLastHistoryEntryNumber((int)$recordHistoryEntry['uid']);
