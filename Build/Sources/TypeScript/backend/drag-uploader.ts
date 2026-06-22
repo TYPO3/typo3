@@ -47,6 +47,8 @@ enum Mode {
   BROWSE = 'browse',
 }
 
+const uploadFinishedEventName = 'typo3:drag-uploader:upload-finished';
+
 /**
  * Properties of a file as returned from the AJAX action; essential, this is a serialized instance of
  * \TYPO3\CMS\Core\Resource\File plus some extra properties (see FileController::flattenResultDataValue())
@@ -208,6 +210,8 @@ export default class DragUploader {
     dropzoneCloseButton.addEventListener('click', this.hideDropzone);
     this.dropzone.append(dropzoneCloseButton);
 
+    document.addEventListener(uploadFinishedEventName, this.closeDropzone);
+
     // no filelist then create own progress table
     if (this.fileList === null) {
       this.fileList = document.createElement('table');
@@ -289,6 +293,18 @@ export default class DragUploader {
     this.dropzone.removeAttribute('hidden');
   }
 
+  public closeDropzone = (): void => {
+    this.dropzone.hidden = true;
+    this.dropzone.classList.remove('drop-status-ok');
+
+    if (this.irreObjectUid !== undefined) {
+      // Hide artificial file table in IRRE context
+      this.fileList.parentElement.hidden = true;
+    }
+    // User manually hides the dropzone, so we can reset the flag
+    this.manuallyTriggered = false;
+  };
+
   /**
    *
    * @param {Event} event
@@ -296,10 +312,7 @@ export default class DragUploader {
   public hideDropzone = (event: Event): void => {
     event.stopPropagation();
     event.preventDefault();
-    this.dropzone.setAttribute('hidden', 'hidden');
-    this.dropzone.classList.remove('drop-status-ok');
-    // User manually hides the dropzone, so we can reset the flag
-    this.manuallyTriggered = false;
+    this.closeDropzone();
   };
 
   /**
@@ -442,6 +455,8 @@ export default class DragUploader {
     if (this.queueLength > 0) {
       this.queueLength--;
       if (this.queueLength === 0) {
+        document.dispatchEvent(new CustomEvent(uploadFinishedEventName));
+
         const timeout: number = messages && messages.length ? 5000 : 0;
         if (timeout) {
           for (const flashMessage of messages) {
@@ -612,6 +627,8 @@ export default class DragUploader {
 
     modal.addEventListener('typo3-modal-hidden', () => {
       this.askForOverride = [];
+
+      document.dispatchEvent(new CustomEvent(uploadFinishedEventName));
     });
   }
 }
