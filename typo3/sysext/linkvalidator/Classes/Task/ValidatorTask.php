@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Linkvalidator\Event\ModifyValidatorTaskEmailEvent;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\CMS\Linkvalidator\Result\LinkAnalyzerResult;
-use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -107,7 +106,7 @@ class ValidatorTask extends AbstractTask
      *
      * @var string
      */
-    protected $languageFile = 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf';
+    protected $languageFile = 'LLL:EXT:linkvalidator/Resources/Private/Language/db.xlf';
 
     /**
      * Merged mod TSconfig
@@ -115,13 +114,6 @@ class ValidatorTask extends AbstractTask
      * @var array
      */
     protected $modTSconfig = [];
-
-    /**
-     * Defines if the task should be updated as some values have changed during task execution
-     *
-     * @var bool
-     */
-    protected $taskNeedsUpdate = false;
 
     /**
      * Function execute from the Scheduler
@@ -144,11 +136,6 @@ class ValidatorTask extends AbstractTask
             && (!$this->emailOnBrokenLinkOnly || $linkAnalyzerResult->isDifferentToLastResult())
         ) {
             $successfullyExecuted = $this->reportEmail($linkAnalyzerResult);
-        }
-
-        if ($this->taskNeedsUpdate) {
-            $this->taskNeedsUpdate = false;
-            GeneralUtility::makeInstance(SchedulerTaskRepository::class)->update($this);
         }
 
         return $successfullyExecuted;
@@ -272,7 +259,6 @@ class ValidatorTask extends AbstractTask
             if (str_contains($this->email, ',')) {
                 $emailList = GeneralUtility::trimExplode(',', $this->email, true);
                 $this->email = implode(LF, $emailList);
-                $this->taskNeedsUpdate = true;
             } else {
                 $emailList = GeneralUtility::trimExplode(LF, $this->email, true);
             }
@@ -425,7 +411,6 @@ class ValidatorTask extends AbstractTask
         if ($this->emailTemplateName === '' || !$this->templateFilesExist($this->getTemplateRootPaths())) {
             // Add default template name to task if empty or given template name does not exist
             $this->emailTemplateName = 'ValidatorTask';
-            $this->taskNeedsUpdate = true;
             $this->logger->notice($this->getLanguageService()->sL($this->languageFile . ':tasks.notice.useDefaultTemplate'));
         }
 
@@ -451,8 +436,8 @@ class ValidatorTask extends AbstractTask
     protected function templateFilesExist(array $templatePaths): bool
     {
         foreach ($templatePaths as $templatePath) {
-            if (file_exists($templatePath . $this->emailTemplateName . '.html')
-                && file_exists($templatePath . $this->emailTemplateName . '.txt')
+            if ((file_exists($templatePath . $this->emailTemplateName . '.html') || file_exists($templatePath . $this->emailTemplateName . '.fluid.html'))
+                && (file_exists($templatePath . $this->emailTemplateName . '.txt') || file_exists($templatePath . $this->emailTemplateName . '.fluid.txt'))
             ) {
                 return true;
             }
