@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
 
 /**
@@ -113,6 +114,29 @@ readonly class ExtensionRepository
         return Extension::createObjectFromRow($row);
     }
 
+    /**
+     * Resolve a single package by its full remote identity (package key + version + remote).
+     * All three fields are applied as constraints. Use {@see findOneByExtensionKeyAndVersion}
+     * when the remote is not known.
+     */
+    public function findOneByPackageIdentifier(PackageIdentifier $packageIdentifier): ?Extension
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $row = $queryBuilder->select('*')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($packageIdentifier->packageKey, Connection::PARAM_STR)),
+                $queryBuilder->expr()->eq('version', $queryBuilder->createNamedParameter($packageIdentifier->version, Connection::PARAM_STR)),
+                $queryBuilder->expr()->eq('remote', $queryBuilder->createNamedParameter($packageIdentifier->remote, Connection::PARAM_STR)),
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+        if (is_array($row)) {
+            return Extension::createObjectFromRow($row);
+        }
+        return null;
+    }
+
     public function findOneByCurrentVersionByExtensionKey(string $extensionKey): ?Extension
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
@@ -132,6 +156,14 @@ readonly class ExtensionRepository
     }
 
     /**
+     * Find a single extension by key and version when the remote is not known.
+     * Callers that do know the remote should use {@see findOneByPackageIdentifier} instead.
+     *
+     * Note: if the same key/version exists for more than one remote the returned record is
+     * arbitrary. This is intentional for the two use-cases that require it: looking up TER
+     * data for a locally installed extension (no remote stored on disk) and the update flow,
+     * where the frontend currently only submits key and version.
+     *
      * @param string $version (example: 4.3.10)
      */
     public function findOneByExtensionKeyAndVersion(string $extensionKey, string $version): ?Extension

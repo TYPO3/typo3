@@ -62,11 +62,17 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $this->uriBuilder->setRequest($request);
         $action = 'checkDependencies';
+        $packageIdentifier = $extension->getPackageIdentifier();
         $this->uriBuilder->reset();
         $this->uriBuilder->setFormat('json');
         $uri = $this->uriBuilder->uriFor($action, [
-            'extension' => (int)$extension->uid,
+            'identifier' => [
+                'packageKey' => $packageIdentifier->packageKey,
+                'version' => $packageIdentifier->version,
+                'remote' => $packageIdentifier->remote,
+            ],
         ], 'Download');
+        $this->tag->addAttribute('class', 'download');
         $this->tag->addAttribute('data-href', $uri);
 
         $labelKeySuffix = $this->automaticInstallation ? '' : '.downloadOnly';
