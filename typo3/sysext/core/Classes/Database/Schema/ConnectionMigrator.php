@@ -109,7 +109,7 @@ class ConnectionMigrator
         $schemaDiff = $this->buildSchemaDiff();
         if ($remove === false) {
             return array_merge_recursive(
-                ['add' => [], 'create_table' => [], 'change' => [], 'change_currentValue' => []],
+                ['create_table' => [], 'change' => [], 'change_currentValue' => [], 'add' => []],
                 $this->getNewFieldUpdateSuggestions($schemaDiff),
                 $this->getNewTableUpdateSuggestions($schemaDiff),
                 $this->getChangedFieldUpdateSuggestions($schemaDiff),
