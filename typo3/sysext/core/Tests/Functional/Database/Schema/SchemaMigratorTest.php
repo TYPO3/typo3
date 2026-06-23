@@ -421,6 +421,27 @@ final class SchemaMigratorTest extends AbstractSchemaBasedTestCase
         self::assertEquals('Title', $this->getTableDetails()->getColumn('title')->getDefault());
     }
 
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function addNewColumnAndChangeExistingColumn(bool $emptyDefaultTableOptions): void
+    {
+        $subject = $this->createSchemaMigrator();
+        $this->prepareTestTable($subject);
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/addColumnToTableAndChangeExistingColumn.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = [
+            ...$updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['add'],
+            ...$updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'],
+        ];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        self::assertTrue($this->getTableDetails()->hasColumn('title'));
+        self::assertEquals(80, $this->getTableDetails()->getColumn('title')->getLength());
+        self::assertTrue($this->getTableDetails()->hasColumn('description'));
+        self::assertCount(7, $this->getTableDetails()->getColumns());
+    }
+
     #[Group('not-postgres')]
     #[Group('not-sqlite')]
     #[TestWith(['emptyDefaultTableOptions' => false])]
