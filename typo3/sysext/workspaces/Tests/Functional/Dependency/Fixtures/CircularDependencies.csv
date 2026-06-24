@@ -1,0 +1,32 @@
+"pages",,,,,,,,,
+,"uid","pid","title","sorting","t3ver_oid","t3ver_stage","t3ver_wsid","deleted","perms_everybody"
+,1,0,"Root",128,0,0,0,0,15
+,2,1,"Sub",256,0,0,0,0,15
+"tt_content",,,,,,,,
+,"uid","pid","header","sorting","t3ver_oid","t3ver_stage","t3ver_wsid","deleted"
+,1001,1,"Live A",128,0,0,0,0
+,1002,1,"Live B",256,0,0,0,0
+,1003,1,"Live C",384,0,0,0,0
+,2001,1,"Draft A",128,1001,0,91,0
+,2002,1,"Draft B",256,1002,0,91,0
+,2003,1,"Draft C",384,1003,0,91,0
+,1011,2,"Live outer 1",128,0,0,0,0
+,1012,2,"Live outer 2",256,0,0,0,0
+,1013,2,"Live nested A",384,0,0,0,0
+,1014,2,"Live nested B",512,0,0,0,0
+,1015,2,"Live nested C",640,0,0,0,0
+,2011,2,"Draft outer 1",128,1011,0,91,0
+,2012,2,"Draft outer 2",256,1012,0,91,0
+,2013,2,"Draft nested A",384,1013,0,91,0
+,2014,2,"Draft nested B",512,1014,0,91,0
+,2015,2,"Draft nested C",640,1015,0,91,0
+"sys_refindex",,,,,,,
+,"hash","tablename","recuid","field","ref_table","ref_uid","workspace","sorting"
+,"00000000000000000000000000000001","tt_content",2003,"pi_flexform","tt_content",2001,91,1
+,"00000000000000000000000000000002","tt_content",2001,"pi_flexform","tt_content",2002,91,1
+,"00000000000000000000000000000003","tt_content",2002,"pi_flexform","tt_content",2001,91,1
+,"00000000000000000000000000000011","tt_content",2011,"pi_flexform","tt_content",2013,91,1
+,"00000000000000000000000000000012","tt_content",2012,"pi_flexform","tt_content",2014,91,1
+,"00000000000000000000000000000013","tt_content",2013,"pi_flexform","tt_content",2014,91,2
+,"00000000000000000000000000000014","tt_content",2013,"pi_flexform","tt_content",2015,91,3
+,"00000000000000000000000000000015","tt_content",2014,"pi_flexform","tt_content",2013,91,2

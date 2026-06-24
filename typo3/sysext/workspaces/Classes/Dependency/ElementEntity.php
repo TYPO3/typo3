@@ -314,19 +314,39 @@ class ElementEntity
     /**
      * Gets nested children accumulated.
      *
-     * @return ReferenceEntity[]
+     * @return ElementEntity[]
      */
     public function getNestedChildren(): array
     {
         if (!isset($this->nestedChildren)) {
-            $this->nestedChildren = [];
-            $children = $this->getChildren();
-            /** @var ReferenceEntity $child */
-            foreach ($children as $child) {
-                $this->nestedChildren = array_merge($this->nestedChildren, [$child->getElement()->__toString() => $child->getElement()], $child->getElement()->getNestedChildren());
-            }
+            $visitedElements = [$this->__toString() => true];
+            $this->nestedChildren = $this->collectNestedChildren($visitedElements);
         }
         return $this->nestedChildren;
+    }
+
+    /**
+     * Collects all nested children, skipping elements that have been collected before.
+     * Relations may form a cycle, for example A -> B -> A, which would otherwise make
+     * this traversal endless, and shared sub structures would be walked repeatedly.
+     *
+     * @param array<string, true> $visitedElements
+     * @return ElementEntity[]
+     */
+    private function collectNestedChildren(array &$visitedElements): array
+    {
+        $nestedChildren = [];
+        foreach ($this->getChildren() as $child) {
+            $element = $child->getElement();
+            $identifier = $element->__toString();
+            if (isset($visitedElements[$identifier])) {
+                continue;
+            }
+            $visitedElements[$identifier] = true;
+            $nestedChildren[$identifier] = $element;
+            $nestedChildren += $element->collectNestedChildren($visitedElements);
+        }
+        return $nestedChildren;
     }
 
     /**
