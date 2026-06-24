@@ -173,8 +173,12 @@ readonly class BackendController
         $sidebar = $this->sidebarFactory->create($sidebarContext);
         $view = $this->viewFactory->create($request);
         $this->assignTopbarDetailsToView($request, $view, $sidebar);
+        $startupModule = $this->getStartupModule($request);
+        $noModuleAccess = $startupModule[0] === null && empty($this->moduleProvider->getModulesForModuleMenu($backendUser));
         $view->assignMultiple([
-            'startupModule' => $this->getStartupModule($request),
+            'startupModule' => $startupModule,
+            'noModuleAccess' => $noModuleAccess,
+            'workspaceAccessDenied' => $noModuleAccess && $backendUser->workspace === -99,
             'entryPoint' => $this->backendEntryPointResolver->getPathFromRequest($request),
             'stateTracker' => (string)$this->uriBuilder->buildUriFromRoute('state-tracker'),
             'sitename' => $title,
@@ -273,6 +277,8 @@ readonly class BackendController
 
     /**
      * Sets the startup module from either "redirect" GET parameters or user configuration.
+     *
+     * @return array{?string, ?string}
      */
     protected function getStartupModule(ServerRequestInterface $request): array
     {

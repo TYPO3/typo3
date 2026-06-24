@@ -138,6 +138,18 @@
       <trans-unit id="module.noAccess.message">
         <source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
       </trans-unit>
+      <trans-unit id="noModuleAccess.workspace.title">
+        <source>No workspace access</source>
+      </trans-unit>
+      <trans-unit id="noModuleAccess.workspace.message">
+        <source>Your user account or user group is not assigned to any workspace and does not have permission to edit the live workspace. Please contact your administrator.</source>
+      </trans-unit>
+      <trans-unit id="noModuleAccess.permissions.title">
+        <source>No module access</source>
+      </trans-unit>
+      <trans-unit id="noModuleAccess.permissions.message">
+        <source>Your user account does not have access to any backend module. Please contact your administrator.</source>
+      </trans-unit>
       <trans-unit id="clearcache.title">
         <source>Page cache</source>
       </trans-unit>

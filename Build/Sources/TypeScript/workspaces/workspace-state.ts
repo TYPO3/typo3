@@ -30,7 +30,7 @@ export interface Workspace {
 }
 
 interface WorkspaceInfoResponse {
-  current: Workspace;
+  current: Workspace | null;
   workspaces: Workspace[];
 }
 
