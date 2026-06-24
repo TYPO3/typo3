@@ -167,6 +167,18 @@
 ### End: Browser caching of resource files ###
 
 
+### Begin: Caching of robots.txt ###
+
+<IfModule mod_headers.c>
+	<Files "robots.txt">
+		Header unset Expires
+		Header set Cache-Control "public, max-age=3600, must-revalidate"
+	</Files>
+</IfModule>
+
+### End: Caching of robots.txt ###
+
+
 ### Begin: MIME types ###
 
 # Proper MIME types for all files
