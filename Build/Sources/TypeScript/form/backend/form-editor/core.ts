@@ -720,17 +720,30 @@ function extendModel<D extends object, T extends ModelData<D>>(
     modelToExtend.set(pathPrefix, modelExtension, disablePublishersOnSet);
   } else {
     const _modelExtension = { ...modelExtension } as Record<string, T | [] | Record<string, never>>;
-    for (const key of Object.keys(_modelExtension)) {
-      const path = (pathPrefix === '') ? key : pathPrefix + '.' + key;
 
-      modelToExtend.on(path, 'core/formElement/somePropertyChanged');
+    // A "leaf map" is an object whose values are all scalars (e.g. select
+    // options or finisher recipients keyed by their value). Its keys may
+    // contain dots (e.g. email addresses used as recipient keys) and must
+    // therefore be stored as a whole, otherwise Model.set() would split the
+    // key into a nested object path and thus corrupt the data.
+    const isLeafMap = pathPrefix !== '' && Object.values(_modelExtension).every(
+      (value) => value === null || typeof value !== 'object'
+    );
 
-      if (_modelExtension[key] !== null && (typeof (_modelExtension[key]) === 'object' || Array.isArray(_modelExtension[key]))) {
-        extendModel(modelToExtend, _modelExtension[key], path, disablePublishersOnSet);
-      } else if (pathPrefix === 'properties.options') {
-        modelToExtend.set(pathPrefix, modelExtension, disablePublishersOnSet);
-      } else {
-        modelToExtend.set(path, _modelExtension[key], disablePublishersOnSet);
+    if (isLeafMap) {
+      modelToExtend.on(pathPrefix, 'core/formElement/somePropertyChanged');
+      modelToExtend.set(pathPrefix, modelExtension, disablePublishersOnSet);
+    } else {
+      for (const key of Object.keys(_modelExtension)) {
+        const path = (pathPrefix === '') ? key : pathPrefix + '.' + key;
+
+        modelToExtend.on(path, 'core/formElement/somePropertyChanged');
+
+        if (_modelExtension[key] !== null && (typeof (_modelExtension[key]) === 'object' || Array.isArray(_modelExtension[key]))) {
+          extendModel(modelToExtend, _modelExtension[key], path, disablePublishersOnSet);
+        } else {
+          modelToExtend.set(path, _modelExtension[key], disablePublishersOnSet);
+        }
       }
     }
   }
