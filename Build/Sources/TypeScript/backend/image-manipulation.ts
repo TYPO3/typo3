@@ -385,7 +385,7 @@ class ImageManipulation {
         // Initialize current crop variant
         this.update(this.currentCropVariant);
       },
-      crop: this.cropMoveHandler.bind(this),
+      crop: this.cropMoveHandler,
       data: this.currentCropVariant.cropArea,
     }));
 
