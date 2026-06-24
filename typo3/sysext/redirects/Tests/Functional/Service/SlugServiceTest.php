@@ -23,6 +23,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -233,7 +234,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -276,7 +277,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(1);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(1, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(1, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(1, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -325,7 +326,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -368,7 +369,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(31, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(31, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(31, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -411,7 +412,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(31);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(31, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(31, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(31, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -454,7 +455,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(3);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(3, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(3, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(3, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -498,7 +499,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(5);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(5, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(5, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(5, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -558,7 +559,7 @@ final class SlugServiceTest extends FunctionalTestCase
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         self::assertInstanceOf(ModifyAutoCreateRedirectRecordBeforePersistingEvent::class, $modifyAutoCreateRedirectRecordBeforePersisting);
@@ -599,7 +600,7 @@ final class SlugServiceTest extends FunctionalTestCase
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         self::assertInstanceOf(AfterAutoCreateRedirectHasBeenPersistedEvent::class, $afterAutoCreateRedirectHasBeenPersisted);
@@ -641,7 +642,7 @@ final class SlugServiceTest extends FunctionalTestCase
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         $this->assertSlugsAndRedirectsExists(
@@ -671,7 +672,7 @@ final class SlugServiceTest extends FunctionalTestCase
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         $this->assertSlugsAndRedirectsExists(
@@ -701,7 +702,7 @@ final class SlugServiceTest extends FunctionalTestCase
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         $this->assertSlugsAndRedirectsExists(
@@ -731,7 +732,7 @@ final class SlugServiceTest extends FunctionalTestCase
         /** @var SlugRedirectChangeItem $changeItem */
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         $this->assertSlugsAndRedirectsExists(
@@ -755,7 +756,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -782,7 +783,7 @@ final class SlugServiceTest extends FunctionalTestCase
         $subject = $this->createSubject();
         $changeItem = $this->get(SlugRedirectChangeItemFactory::class)->create(2);
         $changeItem = $changeItem->withChanged(array_merge($changeItem->getOriginal(), ['slug' => $newPageSlug]));
-        $subject->rebuildSlugsForSlugChange(2, $changeItem, CorrelationId::forScope(StringUtility::getUniqueId('test')));
+        $subject->rebuildSlugsForSlugChange(2, $changeItem, $this->createCorrelationId());
         $this->setPageSlug(2, $newPageSlug);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -829,5 +830,10 @@ final class SlugServiceTest extends FunctionalTestCase
 
         self::assertSame([], $dataHandler->errorLog);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/AssertionDataSets/RelativeTargetDataHandler.csv');
+    }
+
+    private function createCorrelationId(): CorrelationId
+    {
+        return CorrelationId::forScope($this->get(Random::class)->generateRandomBase64String(32));
     }
 }

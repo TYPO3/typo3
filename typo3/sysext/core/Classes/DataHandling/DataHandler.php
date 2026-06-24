@@ -464,7 +464,7 @@ class DataHandler
 
         // set correlation id for each new set of data or commands
         $this->correlationId = CorrelationId::forScope(
-            md5(StringUtility::getUniqueId(self::class))
+            $this->randomGenerator->generateRandomBase64String(32)
         );
 
         // Get default values from user TSconfig
