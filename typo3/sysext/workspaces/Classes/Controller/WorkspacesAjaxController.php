@@ -132,10 +132,6 @@ final readonly class WorkspacesAjaxController
         $currentWorkspaceId = $backendUser->workspace;
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces(true);
 
-        if (!isset($availableWorkspaces[$currentWorkspaceId])) {
-            throw new \RuntimeException('Current workspace' . $currentWorkspaceId . ' does not exist.', 1770726380);
-        }
-
         $workspaces = [];
         foreach ($availableWorkspaces as $workspaceId => $workspaceData) {
             $workspaces[] = [
@@ -146,13 +142,18 @@ final readonly class WorkspacesAjaxController
             ];
         }
 
-        return new JsonResponse([
-            'current' => [
+        $current = null;
+        if (isset($availableWorkspaces[$currentWorkspaceId])) {
+            $current = [
                 'id' => $currentWorkspaceId,
                 'title' => $availableWorkspaces[$currentWorkspaceId]['title'],
                 'color' => $availableWorkspaces[$currentWorkspaceId]['color'] ?? '',
                 'description' => $availableWorkspaces[$currentWorkspaceId]['description'],
-            ],
+            ];
+        }
+
+        return new JsonResponse([
+            'current' => $current,
             'workspaces' => $workspaces,
         ]);
     }

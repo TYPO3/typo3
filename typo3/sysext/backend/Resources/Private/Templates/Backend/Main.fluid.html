@@ -44,14 +44,36 @@
         >
             <div slot="navigation"></div>
             <div slot="content">
-                <typo3-backend-module-router
-                    module="{startupModule.0}"
-                    endpoint="{startupModule.1}"
-                    state-tracker="{stateTracker}"
-                    sitename="{sitename}"
-                    {f:if(condition: sitenameFirstInBackendTitle, then: 'sitename-first')}
-                    entry-point="{entryPoint}"
-                ></typo3-backend-module-router>
+                <f:if condition="{workspaceAccessDenied}">
+                    <f:then>
+                        <div class="m-4">
+                            <f:be.infobox
+                                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:noModuleAccess.workspace.title')}"
+                                message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:noModuleAccess.workspace.message')}"
+                                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}"
+                            />
+                        </div>
+                    </f:then>
+                    <f:else if="{noModuleAccess}">
+                        <div class="m-4">
+                            <f:be.infobox
+                                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:noModuleAccess.permissions.title')}"
+                                message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:noModuleAccess.permissions.message')}"
+                                state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}"
+                            />
+                        </div>
+                    </f:else>
+                    <f:else>
+                        <typo3-backend-module-router
+                            module="{startupModule.0}"
+                            endpoint="{startupModule.1}"
+                            state-tracker="{stateTracker}"
+                            sitename="{sitename}"
+                            {f:if(condition: sitenameFirstInBackendTitle, then: 'sitename-first')}
+                        entry-point="{entryPoint}"
+                        ></typo3-backend-module-router>
+                    </f:else>
+                </f:if>
             </div>
         </typo3-backend-content-navigation>
     </div>
