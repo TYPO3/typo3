@@ -57,6 +57,14 @@ readonly class Random
     }
 
     /**
+     * Generates cryptographic secure pseudo-random base64 string
+     */
+    public function generateRandomBase64String(int $length): string
+    {
+        return substr(StringUtility::base64urlEncode($this->generateRandomBytes((int)ceil(($length / 4) * 3))), 0, $length);
+    }
+
+    /**
      * Generates cryptographic secure pseudo-random password based on given password rules
      *
      * @internal Only to be used within TYPO3. Might change in the future.
@@ -120,13 +128,5 @@ readonly class Random
         }
 
         return $password;
-    }
-
-    /**
-     * Generates cryptographic secure pseudo-random base64 string
-     */
-    protected function generateRandomBase64String(int $length): string
-    {
-        return substr(StringUtility::base64urlEncode($this->generateRandomBytes((int)ceil(($length / 4) * 3))), 0, $length);
     }
 }
