@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Type\VirtualRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
@@ -220,11 +221,12 @@ class DataHandlerHook
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: {reason}', null, ['reason' => $errorCode]);
             return;
         }
-        $pageRecord = [];
         if ($table === 'pages') {
             $pageRecord = $record;
         } elseif ((int)$record['pid'] > 0) {
             $pageRecord = BackendUtility::getRecord('pages', $record['pid']) ?? [];
+        } else {
+            $pageRecord = VirtualRecord::RootPage;
         }
         if (!$dataHandler->hasPermissionToUpdate($table, $pageRecord)) {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed because you do not have edit access');
@@ -275,11 +277,12 @@ class DataHandlerHook
         }
         // Store original live version for publish history
         $originalLiveVersion = $curVersion;
-        $pageRecord = [];
         if ($table === 'pages') {
             $pageRecord = $curVersion;
         } elseif ((int)$curVersion['pid'] > 0) {
             $pageRecord = BackendUtility::getRecord('pages', $curVersion['pid']) ?? [];
+        } else {
+            $pageRecord = VirtualRecord::RootPage;
         }
         if (!$dataHandler->hasPermissionToUpdate($table, $pageRecord)) {
             // Return early if online record editing is denied
@@ -289,7 +292,7 @@ class DataHandlerHook
         // Versioned records which contents will be moved into $curVersion
         $isNewRecord = VersionState::tryFrom($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER;
         if ($isNewRecord) {
-            if (!$dataHandler->hasPagePermission(Permission::PAGE_SHOW, $pageRecord)) {
+            if (!$dataHandler->hasPageContextPermission('pages', Permission::PAGE_SHOW, $pageRecord)) {
                 $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'You cannot publish a record you do not have edit and show permissions for');
                 return;
             }
@@ -318,13 +321,14 @@ class DataHandlerHook
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage', null, ['workspace' => $workspaceId]);
             return;
         }
-        $workspaceSwapPageRecord = [];
         if ($table === 'pages') {
             $workspaceSwapPageRecord = $swapVersion;
         } elseif ((int)$swapVersion['pid'] > 0) {
             $workspaceSwapPageRecord = BackendUtility::getRecord('pages', $swapVersion['pid']) ?? [];
+        } else {
+            $workspaceSwapPageRecord = VirtualRecord::RootPage;
         }
-        if (!$dataHandler->hasPagePermission(Permission::PAGE_SHOW, $workspaceSwapPageRecord)
+        if (!$dataHandler->hasPageContextPermission($table, Permission::PAGE_SHOW, $workspaceSwapPageRecord)
             || !$dataHandler->hasPermissionToUpdate($table, $workspaceSwapPageRecord)
         ) {
             $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'You cannot publish a record you do not have edit and show permissions for');

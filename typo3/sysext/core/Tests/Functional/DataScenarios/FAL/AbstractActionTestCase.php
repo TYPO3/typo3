@@ -33,6 +33,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_FileIdFirst = 1;
     protected const VALUE_FileIdSecond = 21;
     protected const VALUE_FileIdThird = 22;
+    protected const VALUE_FileMetaIdFirst = 1;
     protected const VALUE_LanguageId = 1;
 
     protected const VALUE_FileReferenceContentFirstFileFirst = 126;

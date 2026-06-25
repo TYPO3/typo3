@@ -84,6 +84,7 @@ use TYPO3\CMS\Core\SysLog\Repository\LogEntryRepository;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Type\VirtualRecord;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -866,11 +867,12 @@ class DataHandler
                         // Skip if there is no record. Skip if record has no pid column indicating incomplete DB.
                         continue;
                     }
-                    $pageRecord = [];
                     if ($table === 'pages') {
                         $pageRecord = $currentRecord;
                     } elseif ((int)$currentRecord['pid'] > 0) {
                         $pageRecord = BackendUtility::getRecord('pages', $currentRecord['pid']) ?? [];
+                    } else {
+                        $pageRecord = VirtualRecord::RootPage;
                     }
                     foreach ($hookObjectsArr as $hookObj) {
                         if (method_exists($hookObj, 'checkRecordUpdateAccess')) {
@@ -882,9 +884,7 @@ class DataHandler
                             $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record {table}:{uid} denied by checkRecordUpdateAccess hook', null, ['table' => $table, 'uid' => $id], (int)$currentRecord['pid']);
                             continue;
                         }
-                    } elseif ($pageRecord === [] && $currentRecord['pid'] === 0 && !($this->BE_USER->isAdmin() || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction())
-                        || (($pageRecord !== [] || $currentRecord['pid'] !== 0) && !$this->hasPermissionToUpdate($table, $pageRecord))
-                    ) {
+                    } elseif (!$this->hasPermissionToUpdate($table, $pageRecord)) {
                         $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record {table}:{uid} without permission or non-existing page', null, ['table' => $table, 'uid' => $id], (int)$currentRecord['pid']);
                         continue;
                     }
@@ -3381,23 +3381,23 @@ class DataHandler
             return null;
         }
         BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
-        $pageRecord = [];
         if ($table === 'pages') {
-            $pageRecord = $row;
+            $pageContext = $row;
         } elseif ((int)$row['pid'] > 0) {
-            $pageRecord = BackendUtility::getRecord('pages', $row['pid']);
-            if (!is_array($pageRecord)) {
+            $pageContext = BackendUtility::getRecord('pages', $row['pid']);
+            if (!is_array($pageContext)) {
                 $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" which is not assigned to a valid page', null, ['table' => $table, 'uid' => (int)$uid]);
                 return null;
             }
+        } else {
+            $pageContext = VirtualRecord::RootPage;
         }
-        if (($pageRecord === [] && $row['pid'] === 0 && !($this->BE_USER->isAdmin() || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()))
-            || (($pageRecord !== [] || $row['pid'] !== 0) && !$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord))
-        ) {
+        if (!$this->hasPageContextPermission($table, Permission::PAGE_SHOW, $pageContext)) {
             $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" without read permissions', null, ['table' => $table, 'uid' => (int)$uid]);
             return null;
         }
 
+        $pageRecord = is_array($pageContext) ? $pageContext : [];
         $tscPID = (int)BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
 
         // Check if table is allowed on destination page
@@ -4472,7 +4472,7 @@ class DataHandler
                     $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move pages:{uid} to inside of its own rootline', null, ['uid' => $sourceUid]);
                     return;
                 }
-                if (!$this->hasPagePermission(Permission::PAGE_DELETE, $sourcePageRecord)) {
+                if (!$this->hasPageContextPermission($table, Permission::PAGE_DELETE, $sourcePageRecord)) {
                     // When page is moved to a different parent page, delete permissions are needed for the source page
                     $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move page {table}:{uid} without having permissions to do so', null, ['table' => $table, 'uid' => $sourceUid], $sourcePid);
                     return;
@@ -4759,7 +4759,6 @@ class DataHandler
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} that did not exist', null, ['table' => $table, 'uid' => (int)$uid]);
             return false;
         }
-        $pageRecord = [];
         if ($table === 'pages') {
             $pageRecord = $row;
         } elseif ((int)$row['pid'] > 0) {
@@ -4768,10 +4767,10 @@ class DataHandler
                 $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record "{table}:{uid}" which is not assigned to a valid page', null, ['table' => $table, 'uid' => (int)$uid]);
                 return false;
             }
+        } else {
+            $pageRecord = VirtualRecord::RootPage;
         }
-        if (($pageRecord === [] && $row['pid'] === 0 && !($this->BE_USER->isAdmin() || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()))
-            || (($pageRecord !== [] || $row['pid'] !== 0) && !$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord))
-        ) {
+        if (!$this->hasPageContextPermission($table, Permission::PAGE_SHOW, $pageRecord)) {
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} without permission', null, ['table' => $table, 'uid' => (int)$uid]);
             return false;
         }
@@ -5494,17 +5493,16 @@ class DataHandler
         }
 
         if (!$noRecordCheck) {
-            $pageRecord = [];
             if ((int)$recordToDelete['pid'] > 0) {
                 $pageRecord = BackendUtility::getRecord('pages', $recordToDelete['pid'], '*', '', false);
                 if (!is_array($pageRecord)) {
                     $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record "{table}:{uid}" which is not assigned to a valid page', null, ['table' => $table, 'uid' => $uid]);
                     return;
                 }
+            } else {
+                $pageRecord = VirtualRecord::RootPage;
             }
-            $allowRootLevelDeletion = (int)$recordToDelete['pid'] === 0
-                && $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction();
-            if (!$allowRootLevelDeletion && !$this->hasPagePermission($perms, $pageRecord)) {
+            if (!$this->hasPageContextPermission($table, $perms, $pageRecord)) {
                 $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record "{table}:{uid}" without permission', null, ['table' => $table, 'uid' => $uid]);
                 return;
             }
@@ -5731,7 +5729,7 @@ class DataHandler
         if ($localizationParent > 0) {
             $pageRecordToCheck = $defaultLanguagePageRecord;
         }
-        if (!$this->hasPagePermission(Permission::PAGE_DELETE, $pageRecordToCheck, $useDeleteClause)) {
+        if (!$this->hasPageContextPermission('pages', Permission::PAGE_DELETE, $pageRecordToCheck, $useDeleteClause)) {
             return 'Attempt to delete page without permissions';
         }
         if (!$this->BE_USER->checkRecordEditAccess('pages', $pageRecord, false, $localizationParent === $pageRecord['uid'])->isAllowed) {
@@ -6166,11 +6164,12 @@ class DataHandler
         }
         $versionRecord = $record;
 
-        $pageRecord = [];
         if ($table === 'pages') {
             $pageRecord = $versionRecord;
         } elseif ((int)$versionRecord['pid'] > 0) {
             $pageRecord = BackendUtility::getRecord('pages', $versionRecord['pid']) ?? [];
+        } else {
+            $pageRecord = VirtualRecord::RootPage;
         }
 
         // User access checks
@@ -6544,7 +6543,6 @@ class DataHandler
             return null;
         }
         BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
-        $pageRecord = [];
         if ($table === 'pages') {
             $pageRecord = $row;
         } elseif ((int)$row['pid'] > 0) {
@@ -6553,8 +6551,10 @@ class DataHandler
                 $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to create workspace version of "{table}:{uid}" which is not assigned to a valid page', null, ['table' => $table, 'uid' => (int)$id]);
                 return null;
             }
+        } else {
+            $pageRecord = VirtualRecord::RootPage;
         }
-        if (!$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord)) {
+        if (!$this->hasPageContextPermission($table, Permission::PAGE_SHOW, $pageRecord)) {
             $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to create workspace version of "{table}:{uid}" without read permissions', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
@@ -6585,7 +6585,7 @@ class DataHandler
                     // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
                     $perms = Permission::PAGE_EDIT;
                 }
-                if (!$this->hasPagePermission($perms, $pageRecord)) {
+                if (!$this->hasPageContextPermission($table, $perms, $pageRecord)) {
                     $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Record {table}:{uid} cannot be deleted due to missing edit permissions', null, ['table' => $table, 'uid' => (int)$id]);
                     return null;
                 }
@@ -7424,7 +7424,7 @@ class DataHandler
      *
      * @internal Strictly internal. May change or vanish any time.
      */
-    public function hasPermissionToUpdate(string $table, array $pageRecord): bool
+    public function hasPermissionToUpdate(string $table, array|VirtualRecord $pageRecord): bool
     {
         if (!$this->tcaSchemaFactory->has($table)) {
             return false;
@@ -7435,7 +7435,7 @@ class DataHandler
         } else {
             $perms = Permission::CONTENT_EDIT;
         }
-        if (!$this->hasPagePermission($perms, $pageRecord)) {
+        if (!$this->hasPageContextPermission($table, $perms, $pageRecord)) {
             return false;
         }
         return true;
@@ -7448,7 +7448,6 @@ class DataHandler
      */
     protected function hasPermissionToInsert($table, $pid, array $pageRecord, int $language = 0): bool
     {
-        $schema = $this->tcaSchemaFactory->get($table);
         $pid = (int)$pid;
         if ($table === 'pages' && $language > 0) {
             // Localizing a page is treated as "PAGE_EDIT": This is not about creating a new sub-page which
@@ -7463,16 +7462,7 @@ class DataHandler
         } else {
             $perms = Permission::CONTENT_EDIT;
         }
-        if (
-            (
-                $pid !== 0
-                || (
-                    !$this->BE_USER->isAdmin()
-                    && !$schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()
-                )
-            )
-            && !$this->hasPagePermission($perms, $pageRecord)
-        ) {
+        if (!$this->hasPageContextPermission($table, $perms, $pid !== 0 ? $pageRecord : VirtualRecord::RootPage)) {
             // If page does not exist, it can still be an attempt to add to pid 0. Check this case
             // and deny record insert by looking at admin flag and TCA root level restriction as well.
             return false;
@@ -7503,13 +7493,9 @@ class DataHandler
         ) {
             return false;
         }
-        $allowed = false;
         // Check root-level
-        if (!$pageUid) {
-            if ($this->BE_USER->isAdmin() || $rootLevelCapability->shallIgnoreRootLevelRestriction()) {
-                $allowed = true;
-            }
-            return $allowed;
+        if ($pageUid === 0) {
+            return $this->BE_USER->isAdmin() || $rootLevelCapability->shallIgnoreRootLevelRestriction();
         }
         // Check non-root-level
         return $this->pageDoktypeRegistry->isRecordTypeAllowedForDoktype($table, (int)$pageRecord['doktype']);
@@ -7644,28 +7630,50 @@ class DataHandler
     }
 
     /**
-     * Check access permissions to a given page record
+     * @deprecated will be removed in TYPO3 v15.0 (it was always internal -> no deprecation logging)
+     * @internal Strictly internal. May change or vanish any time.
+     */
+    public function hasPagePermission(int $perms, array $page, bool $useDeleteClause = true): bool
+    {
+        return $this->hasPageContextPermission('pages', $perms, $page, $useDeleteClause);
+    }
+
+    /**
+     * Checks whether the current backend user holds the requested permissions
+     * for a record of $table in the context of the given page.
      *
+     * When $page is a VirtualRecord the standard page-permission bitmask check
+     * is bypassed. For VirtualRecord::RootPage the table's root-level restriction
+     * capability (security.ignoreRootLevelRestriction) is consulted instead; if
+     * the table opts out of the restriction, access is granted unconditionally.
+     *
+     * @param string $table Table name of the record on the particular page to be checked
      * @param int $perms Permission restrictions to observe. An integer bitmask of Permission constants
      * @param array $page Full page record
      * @param bool $useDeleteClause Use the delete clause to check if the page is deleted
      * @internal Strictly internal. May change or vanish any time.
      */
-    public function hasPagePermission(int $perms, array $page, bool $useDeleteClause = true): bool
+    public function hasPageContextPermission(string $table, int $perms, array|VirtualRecord $page, bool $useDeleteClause = true): bool
     {
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return false;
+        }
         if (!$perms) {
             throw new \RuntimeException('Invalid $perms bitset: "' . $perms . '"', 1270853920);
+        }
+        $beUserUid = $this->BE_USER->getUserId();
+        if (!$beUserUid) {
+            return false;
         }
         if ($this->bypassAccessCheckForRecords || $this->BE_USER->isAdmin()) {
             return true;
         }
-
+        if ($page === VirtualRecord::RootPage) {
+            $tableSchema = $this->tcaSchemaFactory->get($table);
+            return $tableSchema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction();
+        }
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
         if (!$pagesSchema->hasCapability(TcaSchemaCapability::RestrictionWebMount) && !$this->BE_USER->isInWebMount($page, '', $useDeleteClause)) {
-            return false;
-        }
-        $beUserUid = $this->BE_USER->getUserId();
-        if (!$beUserUid) {
             return false;
         }
         $permission = new Permission($perms);
