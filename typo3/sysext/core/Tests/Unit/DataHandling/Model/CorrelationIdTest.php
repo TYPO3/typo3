@@ -20,12 +20,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Model;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CorrelationIdTest extends UnitTestCase
 {
     public static function canBeParsedDataProvider(): array
     {
+        $base64Value = StringUtility::base64urlEncode('i??i>>');
         return [
             [
                 '0400$subject',
@@ -42,6 +44,10 @@ final class CorrelationIdTest extends UnitTestCase
             [
                 '0400$scope:subject/aspect-a/aspect-b',
                 ['scope' => 'scope', 'subject' => 'subject', 'aspects' => ['aspect-a', 'aspect-b']],
+            ],
+            [
+                '0400$' . $base64Value . ':' . $base64Value . '/' . $base64Value,
+                ['scope' => $base64Value, 'subject' => $base64Value, 'aspects' => [$base64Value]],
             ],
         ];
     }

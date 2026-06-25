@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CorrelationId implements \JsonSerializable
 {
     protected const DEFAULT_VERSION = 1;
-    protected const PATTERN_V1 = '#^(?P<flags>[[:xdigit:]]{4})\$(?:(?P<scope>[[:alnum:]]+):)?(?P<subject>[[:alnum:]]+)(?P<aspects>(?:\/[[:alnum:]._-]+)*)$#';
+    protected const PATTERN_V1 = '#^(?P<flags>[[:xdigit:]]{4})\$(?:(?P<scope>[[:alnum:]_-]+):)?(?P<subject>[[:alnum:]_-]+)(?P<aspects>(?:\/[[:alnum:]._-]+)*)$#';
     protected int $version = self::DEFAULT_VERSION;
     protected ?string $scope = null;
     protected int $capabilities = 0;
