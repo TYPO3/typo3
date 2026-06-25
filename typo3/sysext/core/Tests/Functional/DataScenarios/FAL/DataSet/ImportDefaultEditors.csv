@@ -1,0 +1,6 @@
+"be_groups",,,,,,,,
+,"uid","pid","title","deleted","db_mountpoints","tables_select","tables_modify","non_exclude_fields"
+,11,0,"file-metadata-editors",0,88,"pages,tt_content,sys_file_metadata","pages,tt_content,sys_file_metadata","sys_file_metadata:title"
+"be_users",,,,,,,,
+,"uid","pid","username","usergroup","deleted","admin","workspace_perms"
+,11,0,"file_editor","11",0,0,1

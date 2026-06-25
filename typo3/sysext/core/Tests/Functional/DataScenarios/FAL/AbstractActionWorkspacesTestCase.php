@@ -25,6 +25,12 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefaultEditors.csv');
+    }
+
     public function localizeLiveModifyWsDefaultLang(): void
     {
         // Localize page and tt_content in live, so we have a localized parent tt_content plus it's children in live.
