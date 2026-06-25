@@ -31,7 +31,7 @@ final class TransactionalTest extends FunctionalTestCase
     #[Test]
     public function transactionInsertValidRecordIsPersisted(): void
     {
-        $connection = (new ConnectionPool())->getConnectionForTable('tx_testconnectiontransaction');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tx_testconnectiontransaction');
         $expectedRecord = [
             'uid' => 1,
             'pid' => 0,
@@ -60,7 +60,7 @@ final class TransactionalTest extends FunctionalTestCase
     #[Test]
     public function transactionRecordsAreRolledBackWhenExceptionIsThrown(): void
     {
-        $connection = (new ConnectionPool())->getConnectionForTable('tx_testconnectiontransaction');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tx_testconnectiontransaction');
         try {
             $connection->transactional(function (Connection $connection): array {
                 // valid record

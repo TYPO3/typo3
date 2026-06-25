@@ -1150,7 +1150,7 @@ final class SchemaMigratorTest extends AbstractSchemaBasedTestCase
         $this->verifyMigrationResult($result);
         $this->verifyCleanDatabaseState($createTableDDL);
 
-        $schemaManager = (new ConnectionPool())->getConnectionForTable($tableName)->createSchemaManager();
+        $schemaManager = $this->get(ConnectionPool::class)->getConnectionForTable($tableName)->createSchemaManager();
         self::assertTrue($schemaManager->tableExists($tableName));
         $table = $schemaManager->introspectTable($tableName);
         self::assertTrue($table->hasColumn($fieldName));
@@ -1178,7 +1178,7 @@ final class SchemaMigratorTest extends AbstractSchemaBasedTestCase
         $this->verifyMigrationResult($result);
         $this->verifyCleanDatabaseState($createTableDDL);
 
-        $schemaInfo = (new ConnectionPool())->getConnectionForTable($tableName)->getSchemaInformation();
+        $schemaInfo = $this->get(ConnectionPool::class)->getConnectionForTable($tableName)->getSchemaInformation();
         $tableInfo = $schemaInfo->getTableInfo($tableName);
         self::assertTrue($tableInfo->hasColumnInfo($fieldName));
         self::assertSame($expectedType, $tableInfo->getColumnInfo($fieldName)->getType()::class);
@@ -1205,7 +1205,7 @@ final class SchemaMigratorTest extends AbstractSchemaBasedTestCase
         $this->verifyMigrationResult($result);
         $this->verifyCleanDatabaseState($createTableDDL);
 
-        $schemaInfo = (new ConnectionPool())->getConnectionForTable($tableName)->getSchemaInformation();
+        $schemaInfo = $this->get(ConnectionPool::class)->getConnectionForTable($tableName)->getSchemaInformation();
         $tableColumnInfos = $schemaInfo->listTableColumnInfos($tableName);
         self::assertArrayHasKey($fieldName, $tableColumnInfos);
         $columnInfo = $tableColumnInfos[$fieldName];

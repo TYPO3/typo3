@@ -33,7 +33,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function inSetReturnsExpectedDataSetsWithColumn(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -102,7 +102,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function inSetReturnsExpectedDataSets(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -137,7 +137,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function inSetReturnsExpectedDataSetsWithInts(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -172,7 +172,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function inSetReturnsExpectedDataSetsIfValueContainsLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -207,7 +207,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function inSetReturnsExpectedDataSetsIfValueContainsBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -242,7 +242,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function inSetReturnsExpectedDataSetsIfValueContainsClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -277,7 +277,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function inSetReturnsExpectedDataSetsIfValueContainsOpeningAndClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -312,7 +312,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function inSetReturnsExpectedDataSetsIfValueContainsBracketsAroundWord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -347,7 +347,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function inSetReturnsExpectedDataSetsIfValueContainsBracketsAroundLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -382,7 +382,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function notInSetReturnsExpectedDataSetsWithColumn(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $result = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest')
@@ -513,7 +513,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function notInSetReturnsExpectedDataSets(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $queryBuilder
             ->count('uid')
             ->from('tx_expressionbuildertest');
@@ -537,7 +537,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function notInSetReturnsExpectedDataSetsWithInts(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $queryBuilder
             ->count('uid')
             ->from('tx_expressionbuildertest')
@@ -551,7 +551,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function notInSetReturnsExpectedDataSetsIfValueContainsLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $queryBuilder
             ->count('uid')
             ->from('tx_expressionbuildertest')
@@ -565,7 +565,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function notInSetReturnsExpectedDataSetsIfValueContainsBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $queryBuilder
             ->count('uid')
             ->from('tx_expressionbuildertest')
@@ -579,7 +579,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function notInSetReturnsExpectedDataSetsIfValueContainsClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $queryBuilder
             ->count('uid')
             ->from('tx_expressionbuildertest')
@@ -593,7 +593,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function notInSetReturnsExpectedDataSetsIfValueContainsOpeningAndClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $queryBuilder
             ->count('uid')
             ->from('tx_expressionbuildertest')
@@ -607,7 +607,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundWord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $queryBuilder
             ->count('uid')
             ->from('tx_expressionbuildertest')
@@ -621,7 +621,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         $queryBuilder
             ->count('uid')
             ->from('tx_expressionbuildertest')
@@ -693,7 +693,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function concatReturnsExpectedResult(int $pageId, array $expectedRow): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderConcat.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $row = $queryBuilder
             ->select('uid', 'pid', 'title', 'subtitle')
             ->addSelectLiteral(
@@ -755,7 +755,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function castVarcharReturnsExpectedResult(int $pageId, string $field, array $fields, int $length, string $asIdentifier, int $expectedLength, array $expectedRow): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderCastVarchar.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $row = $queryBuilder
             ->select('uid', 'pid', 'title', 'subtitle')
             ->addSelectLiteral(
@@ -787,7 +787,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
             'titleAsInteger' => 123,
         ];
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderCastInt.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $row = $queryBuilder
             ->select('uid', 'pid', 'title', 'subtitle')
             ->addSelectLiteral(
@@ -938,7 +938,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function repeatReturnsExpectedResult(int|string $numberOfRepeats, string $repeatValue, string $expectedRepeatAsString): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $repeatValue = $queryBuilder->quote($repeatValue);
         $row = $queryBuilder
             ->selectLiteral(
@@ -955,7 +955,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function repeatWithValueExpressionReturnsExpectedResult(int|string $numberOfRepeats, string $repeatValue, string $expectedRepeatAsString): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $repeatValue = $queryBuilder->expr()->concat(
             $queryBuilder->quote(''),
             $queryBuilder->quote($repeatValue),
@@ -995,7 +995,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function spaceReturnsCorrectNumberOfSpaces(int|string $numberOfSpaces, string $expectedSpacesString): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $row = $queryBuilder
             ->selectLiteral(
                 $queryBuilder->expr()->space($numberOfSpaces, 'spacesString')
@@ -1045,7 +1045,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function leftReturnsExpectedResult(int|string $length, string $value, string $expectedValue): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $row = $queryBuilder
             ->selectLiteral(
                 $queryBuilder->expr()->left($length, $queryBuilder->quote($value)) . ' AS ' . $queryBuilder->quoteIdentifier('expectedValue'),
@@ -1098,7 +1098,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function rightReturnsExpectedResult(int|string $length, string $value, string $expectedValue): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $row = $queryBuilder
             ->selectLiteral(
                 $queryBuilder->expr()->right($length, $queryBuilder->quote($value)) . ' AS ' . $queryBuilder->quoteIdentifier('expectedValue'),
@@ -1139,7 +1139,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function leftPadReturnsExpectedResult(string $value, int|string $length, string $paddingValue, string $expectedValue): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $row = $queryBuilder
             ->selectLiteral(
                 $queryBuilder->expr()->leftPad($queryBuilder->quote($value), $length, $paddingValue, 'expectedValue'),
@@ -1180,7 +1180,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function leftPadWithValueSubexpressionReturnsExpectedResult(array $value, int|string $length, string $paddingValue, string $expectedValue): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $value = array_map(fn($value) => $queryBuilder->quote($value), array_values($value));
         $row = $queryBuilder
             ->selectLiteral(
@@ -1224,7 +1224,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function rightPadReturnsExpectedResult(string $value, int|string $length, string $paddingValue, string $expectedValue): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $row = $queryBuilder
             ->selectLiteral(
                 $queryBuilder->expr()->rightPad($queryBuilder->quote($value), $length, $paddingValue, 'expectedValue')
@@ -1243,7 +1243,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function rightPadReturnsWithQuotedAliasExpectedResult(string $value, int|string $length, string $paddingValue, string $expectedValue): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $row = $queryBuilder
             ->selectLiteral(
                 $queryBuilder->expr()->rightPad($queryBuilder->quote($value), $length, $paddingValue, $queryBuilder->quoteIdentifier('expectedValue'))
@@ -1284,7 +1284,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function rightPadWithValueSubexpressionReturnsExpectedResult(array $value, int|string $length, string $paddingValue, string $expectedValue): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $value = array_map(fn($value) => $queryBuilder->quote($value), array_values($value));
         $row = $queryBuilder
             ->selectLiteral(
@@ -1304,7 +1304,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function rightPadWithValueSubexpressionWithQuotedAliasReturnsExpectedResult(array $value, int|string $length, string $paddingValue, string $expectedValue): void
     {
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $value = array_map(fn($value) => $queryBuilder->quote($value), array_values($value));
         $row = $queryBuilder
             ->selectLiteral(
@@ -1326,7 +1326,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         $this->expectExceptionCode(1709658914);
         $this->expectException(\InvalidArgumentException::class);
 
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $queryBuilder->expr()->leftPad('uid', 10, '');
     }
 
@@ -1336,7 +1336,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         $this->expectExceptionCode(1709659006);
         $this->expectException(\InvalidArgumentException::class);
 
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $queryBuilder->expr()->leftPad('uid', 10, '..');
     }
 
@@ -1346,7 +1346,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         $this->expectExceptionCode(1709664589);
         $this->expectException(\InvalidArgumentException::class);
 
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $queryBuilder->expr()->rightPad('uid', 10, '');
     }
 
@@ -1356,7 +1356,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
         $this->expectExceptionCode(1709664598);
         $this->expectException(\InvalidArgumentException::class);
 
-        $queryBuilder = (new ConnectionPool())->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
+        $queryBuilder = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->createQueryBuilder();
         $queryBuilder->expr()->rightPad('uid', 10, '..');
     }
 
@@ -1364,7 +1364,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     public function ifExpressionReturnsExpectedDataSets(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderIf.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
         $result = $queryBuilder
             ->select('uid', 'title')
@@ -1401,7 +1401,7 @@ final class ExpressionBuilderTest extends FunctionalTestCase
     #[Test]
     public function castTextExpressionReturnsExpectedResult(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->selectLiteral(...[
             $queryBuilder->expr()->castText('(1 * 10)', 'virtual_field'),

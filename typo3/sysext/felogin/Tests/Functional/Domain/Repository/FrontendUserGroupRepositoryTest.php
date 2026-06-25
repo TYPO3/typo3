@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Domain\Repository;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserGroupRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -30,7 +29,7 @@ final class FrontendUserGroupRepositoryTest extends FunctionalTestCase
     public function findRedirectPageIdByGroupId(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/fe_groups.csv');
-        $subject = new FrontendUserGroupRepository(new ConnectionPool());
+        $subject = $this->get(FrontendUserGroupRepository::class);
         self::assertNull($subject->findRedirectPageIdByGroupId(99));
         self::assertSame(10, $subject->findRedirectPageIdByGroupId(1));
     }

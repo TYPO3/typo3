@@ -40,17 +40,7 @@ final class CustomPdoDriverResultMiddlewareTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second']['driver'] = $driver;
-        $testConnectionPool = new class extends ConnectionPool {
-            public function callGetOrderedConnectionDriverMiddlewareConfiguration(string $connectionName): array
-            {
-                return $this->getOrderedConnectionDriverMiddlewareConfiguration(
-                    $connectionName,
-                    $this->getConnectionParams($connectionName)
-                );
-            }
-        };
-
-        $driverMiddlewares = $testConnectionPool->callGetOrderedConnectionDriverMiddlewareConfiguration('second');
+        $driverMiddlewares = $this->callGetOrderedConnectionDriverMiddlewareConfiguration('second');
         self::assertArrayHasKey('typo3/core/custom-pdo-driver-result-middleware', $driverMiddlewares);
     }
 
@@ -64,13 +54,7 @@ final class CustomPdoDriverResultMiddlewareTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second']['driverMiddlewares']['typo3/core/custom-pdo-driver-result-middleware'] = [
             'disabled' => true,
         ];
-        $testConnectionPool = new class extends ConnectionPool {
-            public function callGetDriverMiddlewares(string $connectionName): array
-            {
-                return $this->getDriverMiddlewares($connectionName, $this->getConnectionParams($connectionName));
-            }
-        };
-        $driverMiddlewares = $testConnectionPool->callGetDriverMiddlewares('second');
+        $driverMiddlewares = $this->callGetDriverMiddlewares('second');
         foreach ($driverMiddlewares as $driverMiddleware) {
             self::assertIsObject($driverMiddleware);
             self::assertNotInstanceOf(CustomPdoDriverResultMiddleware::class, $driverMiddleware);
@@ -90,17 +74,43 @@ final class CustomPdoDriverResultMiddlewareTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second']['driver'] = $driver;
-        $testConnectionPool = new class extends ConnectionPool {
-            public function callGetOrderedConnectionDriverMiddlewareConfiguration(string $connectionName): array
-            {
-                return $this->getOrderedConnectionDriverMiddlewareConfiguration(
-                    $connectionName,
-                    $this->getConnectionParams($connectionName)
-                );
-            }
-        };
-
-        $driverMiddlewares = $testConnectionPool->callGetOrderedConnectionDriverMiddlewareConfiguration('second');
+        $driverMiddlewares = $this->callGetOrderedConnectionDriverMiddlewareConfiguration('second');
         self::assertArrayNotHasKey('typo3/core/custom-pdo-driver-result-middleware', $driverMiddlewares);
+    }
+
+    private function callGetOrderedConnectionDriverMiddlewareConfiguration(string $connectionName): array
+    {
+        $connectionPool = $this->get(ConnectionPool::class);
+        $getOrderedConnectionDriverMiddlewareConfigurationReflection = new \ReflectionMethod(
+            $connectionPool,
+            'getOrderedConnectionDriverMiddlewareConfiguration'
+        );
+        $getConnectionParamsReflection = new \ReflectionMethod(
+            $connectionPool,
+            'getConnectionParams'
+        );
+        return $getOrderedConnectionDriverMiddlewareConfigurationReflection->invoke(
+            $connectionPool,
+            $connectionName,
+            $getConnectionParamsReflection->invoke($connectionPool, $connectionName),
+        );
+    }
+
+    private function callGetDriverMiddlewares(string $connectionName): array
+    {
+        $connectionPool = $this->get(ConnectionPool::class);
+        $getDriverMiddlewaresReflection = new \ReflectionMethod(
+            $connectionPool,
+            'getDriverMiddlewares'
+        );
+        $getConnectionParamsReflection = new \ReflectionMethod(
+            $connectionPool,
+            'getConnectionParams'
+        );
+        return $getDriverMiddlewaresReflection->invoke(
+            $connectionPool,
+            'second',
+            $getConnectionParamsReflection->invoke($connectionPool, $connectionName),
+        );
     }
 }
