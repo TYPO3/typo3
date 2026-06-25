@@ -48,7 +48,7 @@ final class DatabaseWriterTest extends FunctionalTestCase
 
         (new DatabaseWriter())->writeLog($logRecord);
 
-        $rowInDatabase = (new ConnectionPool())->getConnectionForTable('sys_log')
+        $rowInDatabase = $this->get(ConnectionPool::class)->getConnectionForTable('sys_log')
             ->select(
                 array_keys($logRecordData),
                 'sys_log',
@@ -68,7 +68,7 @@ final class DatabaseWriterTest extends FunctionalTestCase
 
         (new DatabaseWriter())->writeLog($logRecord);
 
-        $row = (new ConnectionPool())->getConnectionForTable('sys_log')
+        $row = $this->get(ConnectionPool::class)->getConnectionForTable('sys_log')
             ->select(['tstamp'], 'sys_log', ['request_id' => '5862c0e7838ad'])
             ->fetchAssociative();
 

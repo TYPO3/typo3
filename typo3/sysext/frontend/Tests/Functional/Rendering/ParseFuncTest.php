@@ -70,7 +70,7 @@ final class ParseFuncTest extends FunctionalTestCase
 
     private function createTypoScriptTemplate(string $fluidTemplateSource): void
     {
-        (new ConnectionPool())->getConnectionForTable('sys_template')
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_template')
             ->insert(
                 'sys_template',
                 [

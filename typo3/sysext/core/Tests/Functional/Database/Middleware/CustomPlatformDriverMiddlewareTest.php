@@ -26,16 +26,25 @@ final class CustomPlatformDriverMiddlewareTest extends FunctionalTestCase
     #[Test]
     public function driverMiddlewareIsRegistered(): void
     {
-        $testConnectionPool = new class extends ConnectionPool {
-            public function callGetOrderedConnectionDriverMiddlewareConfiguration(string $connectionName): array
-            {
-                return $this->getOrderedConnectionDriverMiddlewareConfiguration(
-                    $connectionName,
-                    $this->getConnectionParams($connectionName)
-                );
-            }
-        };
-        $driverMiddlewares = $testConnectionPool->callGetOrderedConnectionDriverMiddlewareConfiguration(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $driverMiddlewares = $this->callGetOrderedConnectionDriverMiddlewareConfiguration(ConnectionPool::DEFAULT_CONNECTION_NAME);
         self::assertArrayHasKey('typo3/core/custom-platform-driver-middleware', $driverMiddlewares);
+    }
+
+    protected function callGetOrderedConnectionDriverMiddlewareConfiguration(string $connectionName): array
+    {
+        $connectionPool = $this->get(ConnectionPool::class);
+        $getOrderedConnectionDriverMiddlewareConfigurationReflection = new \ReflectionMethod(
+            $connectionPool,
+            'getOrderedConnectionDriverMiddlewareConfiguration'
+        );
+        $getConnectionParamsReflection = new \ReflectionMethod(
+            $connectionPool,
+            'getConnectionParams'
+        );
+        return $getOrderedConnectionDriverMiddlewareConfigurationReflection->invoke(
+            $connectionPool,
+            $connectionName,
+            $getConnectionParamsReflection->invoke($connectionPool, $connectionName),
+        );
     }
 }

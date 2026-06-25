@@ -113,7 +113,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
     #[Test]
     public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound(): void
     {
-        (new ConnectionPool())->getConnectionForTable('sys_template')->insert(
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_template')->insert(
             'sys_template',
             [
                 'pid' => 123,
@@ -131,7 +131,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
     #[Test]
     public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet(): void
     {
-        (new ConnectionPool())->getConnectionForTable('pages')->insert(
+        $this->get(ConnectionPool::class)->getConnectionForTable('pages')->insert(
             'pages',
             [
                 'deleted' => 0,

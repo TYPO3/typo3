@@ -285,7 +285,7 @@ final class RelationTest extends FunctionalTestCase
     #[Test]
     public function mmRelationWithMatchFieldIsResolvedFromLocalSide(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('sys_category_record_mm');
         $queryBuilder->getRestrictions()
             ->removeAll();
         $countCategories = $queryBuilder
@@ -330,7 +330,7 @@ final class RelationTest extends FunctionalTestCase
     #[Test]
     public function mmRelationWithMatchFieldIsCreatedFromLocalSide(): void
     {
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('sys_category_record_mm');
         $queryBuilder->getRestrictions()
             ->removeAll();
         $countCategories = $queryBuilder
@@ -364,7 +364,7 @@ final class RelationTest extends FunctionalTestCase
         $postRepository->update($post);
         $this->persistenceManager->persistAll();
 
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('sys_category_record_mm');
         $queryBuilder->getRestrictions()
             ->removeAll();
         $countCategories = $queryBuilder
@@ -406,7 +406,7 @@ final class RelationTest extends FunctionalTestCase
         $this->persistenceManager->persistAll();
 
         // re-fetch Post and Blog
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('sys_category_record_mm');
         $queryBuilder->getRestrictions()
             ->removeAll();
         $newBlogCategoryCount = $queryBuilder

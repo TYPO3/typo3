@@ -149,7 +149,7 @@ final class BackendTest extends FunctionalTestCase
         $backend->setChangedEntities($changedEntities);
         $backend->commit();
 
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable($table);
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
         $row = $queryBuilder
             ->select($field)

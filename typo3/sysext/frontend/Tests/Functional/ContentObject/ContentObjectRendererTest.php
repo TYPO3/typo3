@@ -218,7 +218,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $subject->setRequest($request);
 
-        $connection = (new ConnectionPool())->getConnectionForTable('tt_content');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content');
         $result = $subject->getQuery($connection, $table, $conf);
 
         $databasePlatform = $connection->getDatabasePlatform();

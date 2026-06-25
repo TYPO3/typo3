@@ -19,7 +19,6 @@ namespace TYPO3\CMS\SysNote\Tests\Functional\Repository;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -50,7 +49,7 @@ final class SysNoteRepositoryTest extends FunctionalTestCase
     {
         $this->setUpBackendUser(1);
 
-        $subject = new SysNoteRepository(new ConnectionPool());
+        $subject = $this->get(SysNoteRepository::class);
         $data = $subject->findByCategoryRestricted($category);
 
         $collectedUids = [];
@@ -80,7 +79,7 @@ final class SysNoteRepositoryTest extends FunctionalTestCase
     {
         $this->setUpBackendUser(1);
 
-        $subject = new SysNoteRepository(new ConnectionPool());
+        $subject = $this->get(SysNoteRepository::class);
         $data = $subject->findByPidAndAuthorId($pid, $author, $position);
 
         $collectedUids = [];

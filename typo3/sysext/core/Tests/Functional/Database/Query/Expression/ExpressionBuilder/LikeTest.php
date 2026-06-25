@@ -234,7 +234,7 @@ final class LikeTest extends FunctionalTestCase
             self::markTestSkipped('Case-sensitive like not implemented yet.');
         }
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LikeAndNotLike_TEXT.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         if ($excludePlatforms !== []) {
             $platform = $queryBuilder->getConnection()->getDatabasePlatform();
             foreach ($excludePlatforms as $excludePlatform) {
@@ -273,7 +273,7 @@ final class LikeTest extends FunctionalTestCase
             self::markTestSkipped('Case-sensitive like not implemented yet.');
         }
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LikeAndNotLike_VARCHAR.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest_varchar');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest_varchar');
         if ($excludePlatforms !== []) {
             $platform = $queryBuilder->getConnection()->getDatabasePlatform();
             foreach ($excludePlatforms as $excludePlatform) {
@@ -495,7 +495,7 @@ final class LikeTest extends FunctionalTestCase
             self::markTestSkipped('Case-sensitive notLike() not implemented yet.');
         }
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LikeAndNotLike_TEXT.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest');
         if ($excludePlatforms !== []) {
             $platform = $queryBuilder->getConnection()->getDatabasePlatform();
             foreach ($excludePlatforms as $excludePlatform) {
@@ -534,7 +534,7 @@ final class LikeTest extends FunctionalTestCase
             self::markTestSkipped('Case-sensitive notLike() not implemented yet.');
         }
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LikeAndNotLike_VARCHAR.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest_varchar');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest_varchar');
         if ($excludePlatforms !== []) {
             $platform = $queryBuilder->getConnection()->getDatabasePlatform();
             foreach ($excludePlatforms as $excludePlatform) {
@@ -614,7 +614,7 @@ final class LikeTest extends FunctionalTestCase
             self::markTestSkipped('Case-sensitive like not implemented yet.');
         }
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LikeAndNotLike_INTEGER.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest_integer');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest_integer');
         $rows = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest_integer')
@@ -674,7 +674,7 @@ final class LikeTest extends FunctionalTestCase
             self::markTestSkipped('Case-sensitive notLike() not implemented yet.');
         }
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LikeAndNotLike_INTEGER.csv');
-        $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest_integer');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_expressionbuildertest_integer');
         $rows = $queryBuilder
             ->select('uid', 'aCsvField')
             ->from('tx_expressionbuildertest_integer')
