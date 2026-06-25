@@ -100,4 +100,52 @@ After:
                 <<: *customEditor
                 1761226184: *otherCustomEditor
 
+Inheriting a complete element across files
+------------------------------------------
+
+A common use case of :yaml:`__inheritances` was to base a new form element on
+the complete configuration of an existing (core) element and then override only
+a few properties. YAML anchors and aliases are file-local and therefore cannot
+reference a definition from another file. This can instead be solved with the
+:yaml:`imports` key and :yaml:`%...%` placeholders of the TYPO3 YAML loader.
+
+Because a placeholder is resolved *after* parsing and replaces a whole value,
+the inheritance and the overrides must live in two files: the imported file
+copies the complete element subtree, the importing file then merges its
+overrides on top.
+
+Imported file, copies the whole :yaml:`Text` element to :yaml:`CustomText`:
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Form/CustomElement/CustomTextInherit.yaml
+
+    imports:
+      - { resource: 'EXT:form/Configuration/Form/Base/FormElements/Text.yaml' }
+
+    prototypes:
+      standard:
+        formElementsDefinition:
+          CustomText: '%prototypes.standard.formElementsDefinition.Text%'
+
+Importing file, overrides only single properties:
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Form/CustomElement/config.yaml
+
+    imports:
+      - { resource: 'EXT:my_extension/Configuration/Form/CustomElement/CustomTextInherit.yaml' }
+
+    prototypes:
+      standard:
+        formElementsDefinition:
+          CustomText:
+            formEditor:
+              label: 'Custom Text'
+              group: custom
+
+:yaml:`CustomText` now inherits the complete configuration of the core
+:yaml:`Text` element (:yaml:`implementationClassName`, :yaml:`renderingOptions`,
+all :yaml:`formEditor.editors`, :yaml:`predefinedDefaults`, …) while only the
+listed properties are overridden.
+
 ..  index:: Backend, ext:form, NotScanned

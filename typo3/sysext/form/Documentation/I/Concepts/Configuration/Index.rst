@@ -301,6 +301,94 @@ The configuration above results in:
        key: 'value override'
 
 
+.. _concepts-configuration-placeholders:
+
+Referencing values with placeholders
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In addition to anchors and aliases, the TYPO3 YAML loader supports ``%...%``
+placeholders. Unlike anchors, they work *across* imported files, because they
+are resolved *after* all files have been parsed and merged.
+
+A placeholder is a dot-separated path into the merged configuration. The
+referenced value is looked up and substituted:
+
+``%path.to.value%``
+
+How the result is inserted depends on where the placeholder is used:
+
+*   **Whole value** – if the placeholder is the *only* content of a value, it is
+    replaced by the referenced value as-is. This may be a scalar **or a complete
+    array/subtree**.
+
+*   **Inside a string** – if the placeholder is embedded in a larger string, the
+    referenced value must be scalar (string or numeric) and is interpolated.
+
+Placeholders can be nested and are resolved recursively. If a referenced path
+does not exist, the placeholder is left unchanged.
+
+Reusing a single value from an existing form element works the same way – here
+the new ``CustomText`` element takes over the label of the core ``Text``
+element:
+
+..  code-block:: yaml
+
+    prototypes:
+      standard:
+        formElementsDefinition:
+          CustomText:
+            formEditor:
+              label: '%prototypes.standard.formElementsDefinition.Text.formEditor.label%'
+
+
+.. _concepts-configuration-inherit-across-files:
+
+Inheriting a complete element across files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Because a whole-value placeholder substitutes a complete subtree, it can be used 
+to base a new form element on the complete configuration of an existing (core) element and
+override only a few properties.
+
+A placeholder is resolved *after* parsing and replaces a whole value. The
+inheritance and the overrides therefore live in two files: the imported file
+copies the complete element subtree, the importing file merges its overrides on
+top.
+
+Imported file, copies the whole ``Text`` element to ``CustomText``:
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Form/CustomElement/CustomTextInherit.yaml
+
+    imports:
+      - { resource: 'EXT:form/Configuration/Form/Base/FormElements/Text.yaml' }
+
+    prototypes:
+      standard:
+        formElementsDefinition:
+          CustomText: '%prototypes.standard.formElementsDefinition.Text%'
+
+Importing file, overrides only single properties:
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Form/CustomElement/config.yaml
+
+    imports:
+      - { resource: 'EXT:my_extension/Configuration/Form/CustomElement/CustomTextInherit.yaml' }
+
+    prototypes:
+      standard:
+        formElementsDefinition:
+          CustomText:
+            formEditor:
+              label: 'Custom Text'
+              group: custom
+              iconIdentifier: form-text
+
+``CustomText`` now inherits the complete configuration of the core ``Text``
+element, while only the listed properties are overridden.
+
+
 .. _concepts-configuration-prototypes:
 
 Prototypes
