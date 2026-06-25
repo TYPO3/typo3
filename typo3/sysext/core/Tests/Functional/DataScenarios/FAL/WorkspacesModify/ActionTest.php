@@ -31,6 +31,13 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {
     #[Test]
+    public function modifyFileMetadataAsNonAdminEditor(): void
+    {
+        parent::modifyFileMetadataAsNonAdminEditor();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyFileMetadataAsNonAdminEditor.csv');
+    }
+
+    #[Test]
     public function verifyCleanReferenceIndex(): void
     {
         // Fix refindex, then compare with import csv again to verify nothing changed.

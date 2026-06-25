@@ -155,6 +155,13 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         );
     }
 
+    public function modifyFileMetadataAsNonAdminEditor(): void
+    {
+        $this->backendUser = $this->setUpBackendUser(11);
+        $this->setWorkspaceId(static::VALUE_WorkspaceId);
+        $this->actionService->modifyRecord(self::TABLE_FileMetadata, self::VALUE_FileMetaIdFirst, ['title' => 'Modified by editor']);
+    }
+
     public function modifyContentLocalizeAddDefaultLangRelationSynchronize(): void
     {
         // Localize page so we can localize content elements later.
