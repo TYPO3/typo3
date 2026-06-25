@@ -171,7 +171,7 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ]
         );
-        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,
             'root' => 1,
             'clear' => 1,

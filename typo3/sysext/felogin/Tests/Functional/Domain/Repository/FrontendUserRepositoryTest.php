@@ -36,7 +36,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
     #[Test]
     public function findUserByUsernameOrEmailOnPages(): void
     {
-        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        $subject = new FrontendUserRepository(new Context(), $this->get(ConnectionPool::class));
         self::assertNull($subject->findUserByUsernameOrEmailOnPages(''));
         self::assertNull($subject->findUserByUsernameOrEmailOnPages('non-existent-email-or-username'));
         self::assertNull($subject->findUserByUsernameOrEmailOnPages('user-with-username-without-email'));
@@ -50,7 +50,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
     #[Test]
     public function existsUserWithHash(): void
     {
-        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        $subject = new FrontendUserRepository(new Context(), $this->get(ConnectionPool::class));
         self::assertFalse($subject->existsUserWithHash('non-existent-hash'));
         self::assertTrue($subject->existsUserWithHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
     }
@@ -58,7 +58,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
     #[Test]
     public function findOneByForgotPasswordHash(): void
     {
-        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        $subject = new FrontendUserRepository(new Context(), $this->get(ConnectionPool::class));
         self::assertNull($subject->findOneByForgotPasswordHash(''));
         self::assertNull($subject->findOneByForgotPasswordHash('non-existent-hash'));
         self::assertIsArray($subject->findOneByForgotPasswordHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
@@ -67,7 +67,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
     #[Test]
     public function findRedirectIdPageByUserId(): void
     {
-        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        $subject = new FrontendUserRepository(new Context(), $this->get(ConnectionPool::class));
         self::assertNull($subject->findRedirectIdPageByUserId(99));
         self::assertSame(10, $subject->findRedirectIdPageByUserId(1));
     }
@@ -77,7 +77,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
     {
         $uid = 1;
         $newPasswordHash = 'new-hash';
-        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        $subject = new FrontendUserRepository(new Context(), $this->get(ConnectionPool::class));
         $subject->updateForgotHashForUserByUid($uid, $newPasswordHash);
         $queryBuilder = $this->getConnectionPool()->getConnectionForTable('fe_users')->createQueryBuilder();
         $result = $queryBuilder
@@ -92,7 +92,7 @@ final class FrontendUserRepositoryTest extends FunctionalTestCase
     #[Test]
     public function updatePasswordAndInvalidateHash(): void
     {
-        $subject = new FrontendUserRepository(new Context(), new ConnectionPool());
+        $subject = new FrontendUserRepository(new Context(), $this->get(ConnectionPool::class));
         $subject->updatePasswordAndInvalidateHash('cf8edd6fa435b4a9fcbb953f81bd84f2', 'new-password');
         $queryBuilder = $this->getConnectionPool()->getConnectionForTable('fe_users')->createQueryBuilder();
         $user = $queryBuilder

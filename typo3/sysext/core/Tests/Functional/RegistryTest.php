@@ -49,7 +49,7 @@ final class RegistryTest extends FunctionalTestCase
     #[Test]
     public function getReturnsEntryFromDatabase(): void
     {
-        (new ConnectionPool())->getConnectionForTable('sys_registry')
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_registry')
             ->insert(
                 'sys_registry',
                 [
@@ -68,7 +68,7 @@ final class RegistryTest extends FunctionalTestCase
     public function setInsertsEntryInDatabase(): void
     {
         $this->subject->set('myExtension', 'myKey', 'myValue');
-        $valueInDatabase = (new ConnectionPool())->getConnectionForTable('sys_registry')
+        $valueInDatabase = $this->get(ConnectionPool::class)->getConnectionForTable('sys_registry')
             ->select(
                 ['entry_value'],
                 'sys_registry',
@@ -81,7 +81,7 @@ final class RegistryTest extends FunctionalTestCase
     #[Test]
     public function setOverridesExistingEntryInDatabase(): void
     {
-        (new ConnectionPool())->getConnectionForTable('sys_registry')
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_registry')
             ->insert(
                 'sys_registry',
                 [
@@ -94,7 +94,7 @@ final class RegistryTest extends FunctionalTestCase
                 ]
             );
         $this->subject->set('myExtension', 'myKey', 'myNewValue');
-        $valueInDatabase = (new ConnectionPool())->getConnectionForTable('sys_registry')
+        $valueInDatabase = $this->get(ConnectionPool::class)->getConnectionForTable('sys_registry')
             ->select(
                 ['entry_value'],
                 'sys_registry',
@@ -107,7 +107,7 @@ final class RegistryTest extends FunctionalTestCase
     #[Test]
     public function removeDeletesEntryInDatabaseButLeavesOthers(): void
     {
-        $connection = (new ConnectionPool())->getConnectionForTable('sys_registry');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_registry');
         $connection->bulkInsert(
             'sys_registry',
             [
@@ -131,7 +131,7 @@ final class RegistryTest extends FunctionalTestCase
     #[Test]
     public function removeAllByNamespaceDeletesEntryInDatabaseAndLeavesOthers(): void
     {
-        $connection = (new ConnectionPool())->getConnectionForTable('sys_registry');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_registry');
         $connection->bulkInsert(
             'sys_registry',
             [
@@ -165,7 +165,7 @@ final class RegistryTest extends FunctionalTestCase
         $object = new \stdClass();
         $object->foo = 'bar';
 
-        $connection = (new ConnectionPool())->getConnectionForTable('sys_registry');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_registry');
         $connection->bulkInsert(
             'sys_registry',
             [

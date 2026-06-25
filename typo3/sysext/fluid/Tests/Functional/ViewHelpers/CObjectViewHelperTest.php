@@ -48,7 +48,7 @@ final class CObjectViewHelperTest extends FunctionalTestCase
     #[Test]
     public function viewHelperAcceptsDataParameter(): void
     {
-        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,
             'root' => 1,
             'clear' => 1,
@@ -70,7 +70,7 @@ EOT
     #[Test]
     public function viewHelperAcceptsChildrenClosureAsData(): void
     {
-        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,
             'root' => 1,
             'clear' => 1,
@@ -92,7 +92,7 @@ EOT
     #[Test]
     public function viewHelperAcceptsIntegerBasedTagContentAsData(): void
     {
-        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,
             'root' => 1,
             'clear' => 1,
@@ -114,7 +114,7 @@ EOT
     #[Test]
     public function renderThrowsExceptionIfTypoScriptObjectPathDoesNotExist(): void
     {
-        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,
             'root' => 1,
             'clear' => 1,
@@ -135,7 +135,7 @@ EOT
     #[Test]
     public function renderThrowsExceptionIfNestedTypoScriptObjectPathDoesNotExist(): void
     {
-        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,
             'root' => 1,
             'clear' => 1,

@@ -221,7 +221,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
         self::assertIsInt($recordId);
         self::assertGreaterThan(0, $recordId);
 
-        $connection = (new ConnectionPool())->getConnectionForTable('sys_webhook');
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('sys_webhook');
         $row = $connection
             ->select(
                 array_keys($expectedRow),
