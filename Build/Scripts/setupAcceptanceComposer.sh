@@ -74,3 +74,11 @@ ln -snf ../vendor/typo3/cms-backend/Resources/Public/Icons/favicon.ico public/fa
 
 # @todo: needed for ugly InstallTool tests, that should be replace by a CLI command that properly enables install tool, both in composer and classic mode
 mkdir -p var/transient/
+
+# Generate a per-instance secret for the playwright helper middleware. Its
+# endpoints (e.g. install-tool/enable) require this token in the
+# `X-Playwright-Helper-Secret` request header. The Playwright fixture reads the
+# same file and adds the header for every helper request. The instance ports
+# are reachable from the host, so authenticating these endpoints is mandatory.
+php -r 'echo bin2hex(random_bytes(32));' > var/transient/playwright-helper.secret
+chmod 600 var/transient/playwright-helper.secret

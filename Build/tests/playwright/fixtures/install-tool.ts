@@ -1,8 +1,21 @@
 import { test as base, Page, expect, Locator, APIRequestContext } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import config from '../config';
 
 export const INSTALL_TOOL_PASSWORD = 'Temporary Password - 123';
 export const FLASH_MESSAGE_SELECTOR = '#alert-container typo3-notification-message';
+
+const HELPER_SECRET_HEADER = 'X-Playwright-Helper-Secret';
+const HELPER_SECRET_FILE = resolve(__dirname, '../../../../typo3temp/var/tests/playwright-composer/var/transient/playwright-helper.secret');
+
+function readHelperSecret(): string {
+  if (process.env.PLAYWRIGHT_HELPER_SECRET) {
+    return process.env.PLAYWRIGHT_HELPER_SECRET;
+  }
+  const file = process.env.PLAYWRIGHT_HELPER_SECRET_FILE || HELPER_SECRET_FILE;
+  return readFileSync(file, 'utf-8').trim();
+}
 
 export type InstallToolPage = 'Maintenance' | 'Settings' | 'Upgrade' | 'Environment';
 
@@ -13,22 +26,24 @@ export interface InstallToolStatus {
 export class InstallTool {
   private readonly page: Page;
   private readonly request: APIRequestContext;
+  private readonly helperHeaders: Record<string, string>;
 
   constructor(page: Page, request: APIRequestContext) {
     this.page = page;
     this.request = request;
+    this.helperHeaders = { [HELPER_SECRET_HEADER]: readHelperSecret() };
   }
 
   async enable(): Promise<void> {
-    await this.request.get(`${config.baseUrl}playwright-helper/install-tool/enable`);
+    await this.request.get(`${config.baseUrl}playwright-helper/install-tool/enable`, { headers: this.helperHeaders });
   }
 
   async disable(): Promise<void> {
-    await this.request.get(`${config.baseUrl}playwright-helper/install-tool/disable`);
+    await this.request.get(`${config.baseUrl}playwright-helper/install-tool/disable`, { headers: this.helperHeaders });
   }
 
   async getStatus(): Promise<InstallToolStatus> {
-    const response = await this.request.get(`${config.baseUrl}playwright-helper/install-tool/status`);
+    const response = await this.request.get(`${config.baseUrl}playwright-helper/install-tool/status`, { headers: this.helperHeaders });
     return await response.json();
   }
 
