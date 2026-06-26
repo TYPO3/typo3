@@ -358,6 +358,14 @@ return [
                             <maxitems>5</maxitems>
                         </config>
                     </file_1>
+                    <file.one>
+                        <label>file.one</label>
+                        <config>
+                            <type>file</type>
+                            <allowed>common-image-types</allowed>
+                            <maxitems>2</maxitems>
+                        </config>
+                    </file.one>
                 </el>
             </ROOT>
         </sInline>

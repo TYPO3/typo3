@@ -311,9 +311,12 @@ class InlineRecordContainer extends AbstractContainer
         }
 
         $objectId = htmlspecialchars($domObjectId . '-' . $foreignTable . '-' . ($record['uid'] ?? 0));
+        // The object id may contain dots, e.g. for FlexForm field identifiers like "settings.image".
+        // Bootstrap does not escape "data-bs-target", so an attribute selector is used instead of
+        // an id selector, where a dot would be treated as a class.
         return '
             <button class="panel-button' . ($isExpanded ? '' : ' collapsed') . '" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#' . $ariaControls . '"
+                    data-bs-toggle="collapse" data-bs-target="[id=&quot;' . $ariaControls . '&quot;]"
                     aria-expanded="' . ($isExpanded ? 'true' : 'false') . '" aria-controls="' . $ariaControls . '">
                 <span class="caret"></span>
                 <div class="panel-icon" id="' . $objectId . '_iconcontainer">

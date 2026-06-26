@@ -243,6 +243,30 @@ final class InlineStackProcessorTest extends FunctionalTestCase
                     'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField---data---sDEF---lDEF---grandParentFlexForm---vDEF-parentTable-parentUid-parentField',
                 ],
             ],
+            'flexform 2-level table-uid structure with dot in flexform field identifier' => [
+                'data-pageId-parentTable-parentUid-parentField---data---sDEF---lDEF---settings.image---vDEF-childTable-childUid',
+                [
+                    'stable' => [
+                        [
+                            'table' => 'parentTable',
+                            'uid' => 'parentUid',
+                            'field' => 'parentField',
+                            'flexform' => [
+                                'data', 'sDEF', 'lDEF', 'settings.image', 'vDEF',
+                            ],
+                            'config' => [],
+                        ],
+                    ],
+                    'unstable' => [
+                        'table' => 'childTable',
+                        'uid' => 'childUid',
+                    ],
+                ],
+                [
+                    'form' => 'data[parentTable][parentUid][parentField][data][sDEF][lDEF][settings.image][vDEF]',
+                    'object' => 'data-pageId-parentTable-parentUid-parentField---data---sDEF---lDEF---settings.image---vDEF',
+                ],
+            ],
         ];
     }
 
