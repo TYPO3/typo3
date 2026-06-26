@@ -62,6 +62,11 @@ export class AjaxDispatcher {
       return this.processResponse(await response.resolve());
     });
     sentRequest.catch((reason: Error): void => {
+      if (reason instanceof DOMException && reason.name === 'AbortError') {
+        // The request was deliberately aborted (e.g. a record was collapsed again
+        // before loading finished), this is not an error worth notifying about.
+        return;
+      }
       Notification.error('Error ' + reason.message);
     });
 
