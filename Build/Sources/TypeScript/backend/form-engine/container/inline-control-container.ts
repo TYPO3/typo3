@@ -642,6 +642,13 @@ class InlineControlContainer extends HTMLElement {
           const recordContainer = this.getRecordContainer(objectId);
           this.removeUsed(recordContainer);
         }
+      }).catch((reason: Error): void => {
+        if (reason instanceof DOMException && reason.name === 'AbortError') {
+          // Request was aborted because the record was collapsed again before
+          // loading finished. Nothing to do, the abort handling already cleaned up.
+          return;
+        }
+        throw reason;
       });
 
       this.requestQueue[objectId] = ajaxRequest;
