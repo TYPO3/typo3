@@ -67,6 +67,10 @@
     &.ck-toolbar > .ck-toolbar__items > .ck-link-toolbar__preview {
         // @todo: this styling becomes obsolete once the link preview can render <a> tags
         padding: 0 var(--ck-spacing-medium);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 80vw;
     }
 
     &.ck-fullscreen {
