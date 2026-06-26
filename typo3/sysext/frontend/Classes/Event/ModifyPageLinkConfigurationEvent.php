@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Event;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * A generic PSR 14 Event to allow modifying the incoming (and resolved) page when building a "page link".
  *
@@ -32,7 +34,8 @@ final class ModifyPageLinkConfigurationEvent
         private readonly array $linkDetails,
         private array $page,
         private array $queryParameters,
-        private string $fragment
+        private string $fragment,
+        private readonly ServerRequestInterface $request,
     ) {}
 
     public function getConfiguration(): array
@@ -84,5 +87,10 @@ final class ModifyPageLinkConfigurationEvent
     public function pageWasModified(): bool
     {
         return $this->pageWasModified;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 }

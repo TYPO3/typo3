@@ -105,7 +105,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $queryParameters['MP'] = $mountPointParameter;
         }
 
-        $event = new ModifyPageLinkConfigurationEvent($conf, $linkDetails, $page, $queryParameters, $fragment);
+        $event = new ModifyPageLinkConfigurationEvent($conf, $linkDetails, $page, $queryParameters, $fragment, $request);
         $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
         $conf = $event->getConfiguration();
         $page = $event->getPage();
