@@ -264,7 +264,7 @@ class ConnectionMigrator
 
         // Build the schema definitions
         $fromSchema = $this->buildExistingSchemaDefinitions($schemaManager);
-        $toSchema = $this->buildExpectedSchemaDefinitions($this->connectionName);
+        $toSchema = $this->buildExpectedSchemaDefinitions($this->connectionName, $schemaManager);
 
         // A name that exists as a view is not TYPO3's to manage: the view may map onto anything, so
         // altering or dropping it would act on something the declaration does not describe, and
@@ -342,10 +342,16 @@ class ConnectionMigrator
      * @throws \Doctrine\DBAL\Exception
      * @throws \InvalidArgumentException
      */
-    protected function buildExpectedSchemaDefinitions(string $connectionName): Schema
+    protected function buildExpectedSchemaDefinitions(string $connectionName, AbstractSchemaManager $schemaManager): Schema
     {
         $schemaConfig = new SchemaConfig();
-        $schemaConfig->setName($this->connection->getDatabase());
+        // Doctrine uses the schema name as the default namespace and prepends it to every unqualified
+        // table name. Derive it the same way the introspected ("from") schema does, so both schemas stay
+        // comparable: the schema config carries the current schema name (null for platforms without schema
+        // support like MySQL/MariaDB/SQLite). Using the raw database name here would break database names
+        // containing a dot. `createSchemaConfig()->getName()` is used because the underlying
+        // `getCurrentSchemaName()` is protected and thus not callable directly.
+        $schemaConfig->setName($schemaManager->createSchemaConfig()->getName());
         if (isset($this->connection->getParams()['defaultTableOptions'])) {
             $schemaConfig->setDefaultTableOptions($this->connection->getParams()['defaultTableOptions']);
         }
