@@ -592,7 +592,11 @@ class Import extends ImportExport
         foreach ($this->dat['header']['records']['sys_file'] as $sysFileUid => $_) {
             $fileRecord = &$this->dat['records']['sys_file:' . $sysFileUid]['data'];
 
-            $temporaryFile = null;
+            if (!preg_match('/^[[:xdigit:]]{40}$/', $fileRecord['sha1'] ?? '')) {
+                $this->addError(sprintf('Error: Invalid SHA1 hash format for sys_file record "%s"', $sysFileUid));
+                continue;
+            }
+
             $temporaryFilePath = $temporaryFolder . '/' . $fileRecord['sha1'];
 
             if ($this->isFilesSavedOutsideImportFile) {
