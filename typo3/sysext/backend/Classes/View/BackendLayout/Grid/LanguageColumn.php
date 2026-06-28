@@ -96,6 +96,11 @@ class LanguageColumn extends AbstractGridObject
         return $this->context->getLocalizedPageRecord()['uid'] ?? $this->context->getPageRecord()['uid'];
     }
 
+    public function getPageRecord(): array
+    {
+        return $this->context->getLocalizedPageRecord() ?: $this->context->getPageRecord();
+    }
+
     public function getPageEditUrl(): string
     {
         return (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('record_edit_contextual', $this->getPageEditUrlParameters());
