@@ -25,6 +25,7 @@
                             {languageColumn.context.localizedPageTitle}
                         </typo3-backend-editable-page-title>
                         <div>
+                            <core:iconForRecord table="pages" row="{languageColumn.pageRecord}" />
                             <core:icon identifier="{languageColumn.context.siteLanguage.flagIdentifier}" />
                             {languageColumn.context.siteLanguage.title}
                             <f:if condition="{languageColumn.context.languageMode}">
