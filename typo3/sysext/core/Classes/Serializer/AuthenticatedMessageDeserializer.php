@@ -62,6 +62,7 @@ final readonly class AuthenticatedMessageDeserializer
             );
         }
         // explicitly allowing all classes here after successful HMAC validation
+        /* @phpstan-ignore unserialize.allowedClasses.insecure (Integrity check already happens via HMAC validation) */
         return unserialize($serialized, ['allowed_classes' => true]);
     }
 }

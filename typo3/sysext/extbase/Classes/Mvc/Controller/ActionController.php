@@ -656,6 +656,7 @@ abstract class ActionController implements ControllerInterface
             );
             $arguments = [];
             if (is_string($referringRequestArguments['arguments'] ?? null)) {
+                /* @phpstan-ignore unserialize.allowedClasses.insecure (Integrity check already happens via HMAC validation) */
                 $arguments = unserialize(
                     base64_decode($this->hashService->validateAndStripHmac($referringRequestArguments['arguments'], HashScope::ReferringArguments->prefix())),
                     ['allowed_classes' => true]

@@ -2701,21 +2701,9 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/LazyLoadingProxyTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with arguments ''TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyLoadingProxy'', TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyLoadingProxy and ''Assert that …'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/LazyLoadingProxyTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with arguments ''TYPO3Tests\\\\BlogExample\\\\Domain\\\\Model\\\\Post'', TYPO3Tests\\BlogExample\\Domain\\Model\\Post and ''Assert that \$posts…'' will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/LazyObjectStorageTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with arguments ''TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyObjectStorage'', TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyObjectStorage and ''Assert that …'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/LazyObjectStorageTest.php
 
 		-

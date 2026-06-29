@@ -701,6 +701,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     // allowing all classes is safe and required because ContentObjectRenderer
                     // itself carries __wakeup() (to restore TSFE and currentFile references)
                     // and would therefore be blocked by DenyListDeserializer.
+                    /* @phpstan-ignore unserialize.allowedClasses.insecure (see comment above) */
                     $contentObjectRendererForNonCacheable = unserialize($nonCacheableData[$nonCacheableKey]['cObj'], ['allowed_classes' => true]);
                     if ($contentObjectRendererForNonCacheable instanceof ContentObjectRenderer) {
                         $contentObjectRendererForNonCacheable->setRequest($request);

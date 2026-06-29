@@ -3204,6 +3204,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
      */
     private static function assertRootNodeIsSerializable(RootNode $expectedAst, RootNode $ast): void
     {
+        /* @phpstan-ignore unserialize.allowedClasses.insecure (Serialization within testing context does no harm) */
         self::assertEquals($expectedAst, unserialize(serialize($ast), ['allowed_classes' => true]));
     }
 }
