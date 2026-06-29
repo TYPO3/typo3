@@ -335,6 +335,7 @@ final class SysTemplateTreeBuilderTest extends FunctionalTestCase
      */
     private static function assertRootNodeIsSerializable(RootNode $ast): void
     {
+        /* @phpstan-ignore unserialize.allowedClasses.insecure (Serialization within testing context does no harm) */
         self::assertEquals($ast, unserialize(serialize($ast), ['allowed_classes' => true]));
     }
 }
