@@ -53,6 +53,7 @@ final class LazyObjectStorageTest extends FunctionalTestCase
 
         self::assertFalse(str_contains($serialized, 'dataMapper'), 'Assert that serialized object string does not contain dataMapper');
 
+        /* @phpstan-ignore unserialize.allowedClasses.insecure (Serialization within testing context does no harm) */
         $postsProxy = unserialize($serialized, ['allowed_classes' => true]);
         self::assertInstanceOf(LazyObjectStorage::class, $postsProxy, 'Assert that $postsProxy is an instance of LazyObjectStorage');
 

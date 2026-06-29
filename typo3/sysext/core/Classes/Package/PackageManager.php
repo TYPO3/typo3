@@ -49,6 +49,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * @phpstan-type PackageName non-empty-string
  * @phpstan-type PackageConstraints array{dependencies: list<PackageKey>, suggestions: list<PackageKey>}
  * @phpstan-type StateConfiguration array{packagePath?: non-empty-string}
+ * @phpstan-type StatesConfiguration array{packages?: array<PackageKey, StateConfiguration>, version?: int}
  */
 class PackageManager implements SingletonInterface
 {
@@ -109,7 +110,7 @@ class PackageManager implements SingletonInterface
 
     /**
      * Package states configuration as stored in the PackageStates.php file
-     * @var array{packages?: array<PackageKey, StateConfiguration>, version?: int}
+     * @var StatesConfiguration
      */
     protected $packageStatesConfiguration = [];
 

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Package\Cache;
 use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Serializer\DeserializationService;
 
 /**
@@ -28,28 +29,46 @@ use TYPO3\CMS\Core\Serializer\DeserializationService;
  * It interfaces between PackageManager and PackageCacheInterface.
  *
  * @internal
+ *
+ * @phpstan-import-type PackageKey from PackageManager
+ * @phpstan-import-type PackageName from PackageManager
+ * @phpstan-import-type StatesConfiguration from PackageManager
+ * @phpstan-type CacheArray array{
+ *     identifier: string|null,
+ *     packageStatesConfiguration: StatesConfiguration,
+ *     packageAliasMap: array<PackageName, PackageKey>,
+ *     composerNameToPackageKeyMap: array<PackageName, PackageKey>,
+ *     packageObjects: string,
+ *     packageClasses: list<class-string>,
+ * }
  */
 class PackageCacheEntry
 {
     /**
      * Package configuration. Used by the PackageManager to identify "active" packages.
      * Every key in this array represents an active extension.
+     *
+     * @var StatesConfiguration
      */
     private array $configuration;
 
     /**
      * Alternative names for packages mapping to the package key.
      * Typically filled from replace section in composer.json
+     *
+     * @var array<PackageName, PackageKey>
      */
     private array $aliasMap;
 
     /**
      * Map from composer name of a package (key in this array) to its package key (value)
+     *
+     * @var array<PackageName, PackageKey>
      */
     private array $composerNameMap;
 
     /**
-     * @var PackageInterface[]
+     * @var array<PackageKey, PackageInterface>
      */
     private array $packages;
 
@@ -61,6 +80,12 @@ class PackageCacheEntry
      */
     private ?string $identifier = null;
 
+    /**
+     * @param StatesConfiguration $configuration
+     * @param array<PackageName, PackageKey> $aliasMap
+     * @param array<PackageName, PackageKey> $composerNameMap
+     * @param array<PackageKey, PackageInterface> $packages
+     */
     private function __construct(
         array $configuration,
         array $aliasMap,
@@ -85,6 +110,12 @@ class PackageCacheEntry
         }
     }
 
+    /**
+     * @param StatesConfiguration $packageStatesConfiguration
+     * @param array<PackageName, PackageKey> $packageAliasMap
+     * @param array<PackageName, PackageKey> $composerNameToPackageKeyMap
+     * @param array<PackageKey, PackageInterface> $packageObjects
+     */
     public static function fromPackageData(
         array $packageStatesConfiguration,
         array $packageAliasMap,
@@ -101,6 +132,9 @@ class PackageCacheEntry
         );
     }
 
+    /**
+     * @param CacheArray $packageData
+     */
     public static function fromCache(array $packageData): self
     {
         try {
@@ -161,23 +195,32 @@ class PackageCacheEntry
         return $newEntry;
     }
 
+    /**
+     * @return StatesConfiguration
+     */
     public function getConfiguration(): array
     {
         return $this->configuration;
     }
 
+    /**
+     * @return array<PackageName, PackageKey>
+     */
     public function getAliasMap(): array
     {
         return $this->aliasMap;
     }
 
+    /**
+     * @return array<PackageName, PackageKey>
+     */
     public function getComposerNameMap(): array
     {
         return $this->composerNameMap;
     }
 
     /**
-     * @return PackageInterface[]
+     * @return array<PackageKey, PackageInterface>
      */
     public function getPackages(): array
     {

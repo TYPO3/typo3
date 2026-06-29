@@ -25,6 +25,10 @@ services:
         - 'TYPO3\CMS\Frontend\Tests'
     tags:
       - phpstan.rules.rule
+  -
+    class: \TYPO3\CMS\PHPStan\Rules\Classes\UnserializeRule
+    tags:
+      - phpstan.rules.rule
 
 parameters:
   # Use local .cache dir instead of /tmp
