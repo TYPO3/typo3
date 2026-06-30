@@ -62,14 +62,17 @@ How to handle a truly "hung" task
 If a task hangs or is stuck (for example due to an infinite loop or external I/O),
 then stopping it via TYPO3 (either UI or CLI) will only clear TYPO3’s internal flag.
 
-But the actual PHP process that’s running the task will continue on the system
+The actual PHP process running the task will continue on the system
 until it finishes or the OS/PHP process manager kills it.
 
 If a task keeps running indefinitely:
 
-#.  Identify the process (via ps, top, or your process manager — for example, systemd or cron).
-#.  Manually terminate the PHP process (for example, kill <pid>).
-#.  Then run: :command:`typo3 scheduler:run --task=<taskUid> --stop`
+#.  **Identify the process PID** You can find the hanging PHP process using
+tools like `top`, `ps aux | grep scheduler`, or via `systemctl status` if you run TYPO3 via a
+systemd service.
+#.  **Manually terminate the PHP process** (for example, `kill <pid>`).
+#.  **Clear the TYPO3 execution flag** by running:
+:command:`vendor/bin/typo3 scheduler:run --task=<taskUid> --stop`
 
 ..  warning::
     Manually terminating a scheduler process using `sudo kill <pid>` should only
