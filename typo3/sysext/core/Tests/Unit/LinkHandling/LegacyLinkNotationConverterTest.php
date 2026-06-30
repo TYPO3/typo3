@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LegacyLinkNotationConverter;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -156,7 +157,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
     #[Test]
     public function splitParametersToUnifiedIdentifier(string $input, array $parameters, string $expected): void
     {
-        $subject = new LinkService();
+        $subject = new LinkService(new NoopEventDispatcher());
         self::assertEquals($expected, $subject->asString($parameters));
     }
 
@@ -336,7 +337,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
             $parameters['folder'] = $folderObject;
         }
 
-        $subject = new LinkService();
+        $subject = new LinkService(new NoopEventDispatcher());
         self::assertEquals($expected, $subject->asString($parameters));
     }
 

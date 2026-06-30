@@ -64,6 +64,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
             $this->get(IconFactory::class),
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
+            $this->get(FlashMessageService::class),
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
         $this->hashService = new HashService();

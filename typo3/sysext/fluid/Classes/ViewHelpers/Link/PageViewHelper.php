@@ -49,7 +49,8 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
     protected $tagName = 'a';
 
     public function __construct(
-        private readonly BackendUriBuilder $uriBuilder
+        private readonly BackendUriBuilder $uriBuilder,
+        private readonly LinkFactory $linkFactory
     ) {
         parent::__construct();
     }
@@ -147,8 +148,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         try {
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $cObj->setRequest($request);
-            $linkFactory = GeneralUtility::makeInstance(LinkFactory::class);
-            $linkResult = $linkFactory->create((string)$this->renderChildren(), $typolinkConfiguration, $cObj);
+            $linkResult = $this->linkFactory->create((string)$this->renderChildren(), $typolinkConfiguration, $cObj);
 
             // Removing TypoLink target here to ensure same behaviour with extbase uri builder in this context.
             $linkResultAttributes = $linkResult->getAttributes();

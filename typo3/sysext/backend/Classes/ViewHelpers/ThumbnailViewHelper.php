@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -42,12 +41,10 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'img';
 
-    private ImageService $imageService;
-
-    public function __construct()
-    {
+    public function __construct(
+        private readonly ImageService $imageService
+    ) {
         parent::__construct();
-        $this->imageService = GeneralUtility::makeInstance(ImageService::class);
     }
 
     public function initializeArguments(): void

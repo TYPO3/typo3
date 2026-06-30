@@ -73,6 +73,7 @@ final class MfaSetupControllerTest extends FunctionalTestCase
             $this->get(ExtensionConfiguration::class),
             new NullLogger(),
             $this->get(BackendViewFactory::class),
+            $this->get(FlashMessageService::class),
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
         $this->hashService = new HashService();

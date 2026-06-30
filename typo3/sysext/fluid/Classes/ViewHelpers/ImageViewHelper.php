@@ -52,12 +52,10 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'img';
 
-    private ImageService $imageService;
-
-    public function __construct()
-    {
+    public function __construct(
+        private readonly ImageService $imageService
+    ) {
         parent::__construct();
-        $this->imageService = GeneralUtility::makeInstance(ImageService::class);
     }
 
     public function initializeArguments(): void

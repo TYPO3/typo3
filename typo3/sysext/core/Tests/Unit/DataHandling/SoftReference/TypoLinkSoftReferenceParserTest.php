@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -168,6 +169,8 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
     #[Test]
     public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement): void
     {
+        $linkService = new LinkService(new NoopEventDispatcher());
+        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
         $subject = $this->getParserByKey('typolink');
         $subject->setParserKey('typolink', $softrefConfiguration);
         $result = $subject->parse(
@@ -273,6 +276,8 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
             ['fileadmin/download.jpg', $fileObject],
         ]);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+        $linkService = new LinkService(new NoopEventDispatcher());
+        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
 
         $subject = $this->getParserByKey('typolink');
         $subject->setParserKey('typolink', $softrefConfiguration);
@@ -314,6 +319,8 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         $resourceFactory->expects($this->once())->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/foo/bar/baz')->willReturn($folderObject);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+        $linkService = new LinkService(new NoopEventDispatcher());
+        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
 
         $result = $this->getParserByKey('typolink')->parse(
             'tt_content',

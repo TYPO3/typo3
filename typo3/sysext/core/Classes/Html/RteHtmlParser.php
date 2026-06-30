@@ -113,6 +113,7 @@ class RteHtmlParser extends HtmlParser
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly LoggerInterface $logger,
+        protected readonly LinkService $linkService,
     ) {}
 
     /**
@@ -330,15 +331,14 @@ class RteHtmlParser extends HtmlParser
             if ($k % 2) {
                 [$tagAttributes] = $this->get_tag_attributes($this->getFirstTag($v), true);
 
-                // Anchors would not have an href attribute
+                // Anchors would not have a href attribute
                 if (!isset($tagAttributes['href'])) {
                     continue;
                 }
-                $linkService = GeneralUtility::makeInstance(LinkService::class);
                 // Store the link as <a> tag as default by TYPO3, with the link service syntax
                 try {
-                    $linkInformation = $linkService->resolve($tagAttributes['href'] ?? '');
-                    $tagAttributes['href'] = $linkService->asString($linkInformation);
+                    $linkInformation = $this->linkService->resolve($tagAttributes['href']);
+                    $tagAttributes['href'] = $this->linkService->asString($linkInformation);
                 } catch (UnknownLinkHandlerException $e) {
                     $tagAttributes['href'] = $linkInformation['href'] ?? $tagAttributes['href'];
                 }
@@ -781,7 +781,6 @@ class RteHtmlParser extends HtmlParser
     protected function markBrokenLinks(string $content): string
     {
         $blocks = $this->splitIntoBlock('A', $content);
-        $linkService = GeneralUtility::makeInstance(LinkService::class);
         foreach ($blocks as $position => $value) {
             if ($position % 2 === 0) {
                 continue;
@@ -792,7 +791,7 @@ class RteHtmlParser extends HtmlParser
             }
 
             try {
-                $hrefInformation = $linkService->resolve($attributes['href']);
+                $hrefInformation = $this->linkService->resolve($attributes['href']);
 
                 $brokenLinkAnalysis = new BrokenLinkAnalysisEvent($hrefInformation['type'], $hrefInformation);
                 $this->eventDispatcher->dispatch($brokenLinkAnalysis);

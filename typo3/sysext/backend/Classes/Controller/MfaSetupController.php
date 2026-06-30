@@ -63,6 +63,7 @@ class MfaSetupController extends AbstractMfaController
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly LoggerInterface $logger,
         protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly FlashMessageService $flashMessageService,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -245,7 +246,7 @@ class MfaSetupController extends AbstractMfaController
     protected function addSuccessMessage(string $mfaProviderTitle): void
     {
         $lang = $this->getLanguageService();
-        GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->enqueue(
+        $this->flashMessageService->getMessageQueueByIdentifier()->enqueue(
             GeneralUtility::makeInstance(
                 FlashMessage::class,
                 sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.success.message'), $lang->sL($mfaProviderTitle)),

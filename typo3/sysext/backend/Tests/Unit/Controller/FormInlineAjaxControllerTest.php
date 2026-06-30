@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaBuilder;
@@ -56,7 +57,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
             );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory());
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory(), new FlashMessageService());
         $subject->createAction($request);
     }
 
@@ -74,7 +75,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
             );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory());
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory(), new FlashMessageService());
         $subject->createAction($request);
     }
 
@@ -99,7 +100,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
             );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory());
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory(), new FlashMessageService());
         $subject->createAction($request);
     }
 
@@ -117,7 +118,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
             );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory());
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory(), new FlashMessageService());
         $subject->detailsAction($request);
     }
 
@@ -135,7 +136,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
             );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory());
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory(), new FlashMessageService());
         $subject->detailsAction($request);
     }
 
@@ -160,7 +161,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
             );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory());
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory(), new FlashMessageService());
         $subject->detailsAction($request);
     }
 
@@ -178,7 +179,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
             );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory());
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory(), new FlashMessageService());
         $subject->synchronizeLocalizeAction($request);
     }
 
@@ -196,7 +197,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
             );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory());
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory(), new FlashMessageService());
         $subject->synchronizeLocalizeAction($request);
     }
 
@@ -221,7 +222,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
             );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory());
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class), $this->getTcaSchemaFactory(), new FlashMessageService());
         $subject->synchronizeLocalizeAction($request);
     }
 

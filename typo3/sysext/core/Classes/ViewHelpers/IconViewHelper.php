@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconState;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -40,6 +39,10 @@ final class IconViewHelper extends AbstractViewHelper
      * @var bool
      */
     protected $escapeOutput = false;
+
+    public function __construct(
+        private readonly IconFactory $iconFactory
+    ) {}
 
     public function initializeArguments(): void
     {
@@ -61,8 +64,7 @@ final class IconViewHelper extends AbstractViewHelper
         $overlay = $this->arguments['overlay'];
         $state = IconState::tryFrom($this->arguments['state']);
         $alternativeMarkupIdentifier = $this->arguments['alternativeMarkupIdentifier'];
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $iconFactory->getIcon($identifier, $size, $overlay, $state);
+        $icon = $this->iconFactory->getIcon($identifier, $size, $overlay, $state);
         if ($this->arguments['title'] ?? false) {
             $icon->setTitle($this->arguments['title']);
         }

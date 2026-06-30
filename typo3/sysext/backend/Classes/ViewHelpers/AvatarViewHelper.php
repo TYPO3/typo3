@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\ViewHelpers;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -43,7 +42,8 @@ final class AvatarViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     public function __construct(
-        private readonly ConnectionPool $connectionPool
+        private readonly ConnectionPool $connectionPool,
+        private readonly Avatar $avatar
     ) {}
 
     public function initializeArguments(): void
@@ -79,7 +79,6 @@ final class AvatarViewHelper extends AbstractViewHelper
             // no BE user can be retrieved from DB, probably deleted
             return '';
         }
-        $avatar = GeneralUtility::makeInstance(Avatar::class);
-        return $avatar->render($backendUser, $this->arguments['size'], $this->arguments['showIcon']);
+        return $this->avatar->render($backendUser, $this->arguments['size'], $this->arguments['showIcon']);
     }
 }

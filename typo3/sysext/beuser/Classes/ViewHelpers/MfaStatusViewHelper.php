@@ -36,6 +36,12 @@ final class MfaStatusViewHelper extends AbstractTagBasedViewHelper
 {
     protected $tagName = 'span';
 
+    public function __construct(
+        private readonly MfaProviderRegistry $mfaProviderRegistry
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -53,15 +59,13 @@ final class MfaStatusViewHelper extends AbstractTagBasedViewHelper
         $backendUser->enablecolumns = ['deleted' => true];
         $backendUser->setBeUserByUid($userUid);
 
-        $mfaProviderRegistry = GeneralUtility::makeInstance(MfaProviderRegistry::class);
-
         // Check if user has active providers
-        if (!$mfaProviderRegistry->hasActiveProviders($backendUser)) {
+        if (!$this->mfaProviderRegistry->hasActiveProviders($backendUser)) {
             return '';
         }
 
         // Check locked providers
-        if ($mfaProviderRegistry->hasLockedProviders($backendUser)) {
+        if ($this->mfaProviderRegistry->hasLockedProviders($backendUser)) {
             $this->tag->addAttribute('class', 'badge badge-warning');
             $this->tag->setContent(htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:lockedMfaProviders')));
             return $this->tag->render();

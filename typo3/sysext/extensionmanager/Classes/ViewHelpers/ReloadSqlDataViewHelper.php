@@ -42,7 +42,8 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
     private static string $registryNamespace = 'extensionDataImport';
 
     public function __construct(
-        private readonly IconFactory $iconFactory
+        private readonly IconFactory $iconFactory,
+        private readonly Registry $registry,
     ) {
         parent::__construct();
     }
@@ -62,8 +63,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
             return '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
         }
 
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $oldFileHash = $registry->get(self::$registryNamespace, $registryKey);
+        $oldFileHash = $this->registry->get(self::$registryNamespace, $registryKey);
 
         $fileHashIsEqual = true;
         // We used to only store "1" in the database when data was imported

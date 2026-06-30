@@ -47,7 +47,8 @@ readonly class FormInlineAjaxController extends AbstractFormEngineAjaxController
         private HashService $hashService,
         private NodeFactory $nodeFactory,
         private InlineStackProcessor $inlineStackProcessor,
-        private TcaSchemaFactory $tcaSchemaFactory
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private FlashMessageService $flashMessageService,
     ) {}
 
     /**
@@ -308,8 +309,7 @@ readonly class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
             // Render error messages from DataHandler
             $tce->printLogErrorMessages();
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
+            $messages = $this->flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
             if (!empty($messages)) {
                 foreach ($messages as $message) {
                     $jsonArray['messages'][] = [

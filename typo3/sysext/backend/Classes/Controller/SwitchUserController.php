@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\SysLog\Type;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
@@ -48,12 +47,13 @@ class SwitchUserController
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         UriBuilder $uriBuilder,
-        ResponseFactoryInterface $responseFactory
+        ResponseFactoryInterface $responseFactory,
+        SessionManager $sessionManager
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->uriBuilder = $uriBuilder;
         $this->responseFactory = $responseFactory;
-        $this->sessionBackend = GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('BE');
+        $this->sessionBackend = $sessionManager->getSessionBackend('BE');
     }
 
     /**

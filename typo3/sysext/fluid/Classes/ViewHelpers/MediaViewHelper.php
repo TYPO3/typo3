@@ -48,6 +48,13 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'img';
 
+    public function __construct(
+        private readonly RendererRegistry $rendererRegistry,
+        private readonly ImageService $imageService
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -89,7 +96,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
             );
         }
 
-        $fileRenderer = GeneralUtility::makeInstance(RendererRegistry::class)->getRenderer($file);
+        $fileRenderer = $this->rendererRegistry->getRenderer($file);
 
         // Fallback to image when no renderer is found
         if ($fileRenderer === null) {
@@ -127,9 +134,8 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         if (!empty($fileExtension)) {
             $processingInstructions['fileExtension'] = $fileExtension;
         }
-        $imageService = $this->getImageService();
-        $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
-        $imageUri = $imageService->getImageUri($processedImage);
+        $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
+        $imageUri = $this->imageService->getImageUri($processedImage);
 
         if (!$this->tag->hasAttribute('data-focus-area')) {
             $focusArea = $cropVariantCollection->getFocusArea($cropVariant);
@@ -159,10 +165,5 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         }
 
         return $this->tag->render();
-    }
-
-    private function getImageService(): ImageService
-    {
-        return GeneralUtility::makeInstance(ImageService::class);
     }
 }

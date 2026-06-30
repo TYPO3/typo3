@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -223,7 +225,7 @@ final class TypolinkViewHelperTest extends UnitTestCase
         $mock = \Closure::bind(static function (TypolinkViewHelper $typolinkViewHelper) use ($decodedConfiguration, $viewHelperArguments, &$result) {
             $result = $typolinkViewHelper->mergeTypoLinkConfiguration($decodedConfiguration, $viewHelperArguments);
         }, null, TypolinkViewHelper::class);
-        $mock(new TypolinkViewHelper());
+        $mock(new TypolinkViewHelper(new TypoLinkCodecService($this->createMock(EventDispatcherInterface::class))));
         self::assertSame($expectation, $result);
     }
 }

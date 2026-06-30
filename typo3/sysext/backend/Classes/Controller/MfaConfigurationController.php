@@ -55,6 +55,7 @@ class MfaConfigurationController extends AbstractMfaController
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly FlashMessageService $flashMessageService,
     ) {}
 
     /**
@@ -348,8 +349,7 @@ class MfaConfigurationController extends AbstractMfaController
     protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true);
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 

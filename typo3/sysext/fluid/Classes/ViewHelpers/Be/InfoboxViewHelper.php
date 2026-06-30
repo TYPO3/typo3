@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -42,6 +41,10 @@ final class InfoboxViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly IconFactory $iconFactory
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('message', 'string', 'The message of the info box, if NULL tag content is used');
@@ -53,7 +56,6 @@ final class InfoboxViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $title = (string)$this->arguments['title'];
         $message = (string)$this->renderChildren();
         $state = $this->arguments['state'];
@@ -72,7 +74,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
             $iconTemplate = ''
                 . '<div class="callout-icon">'
                     . '<span class="icon-emphasized">'
-                        . $iconFactory->getIcon($icon, IconSize::SMALL)->render()
+                        . $this->iconFactory->getIcon($icon, IconSize::SMALL)->render()
                     . '</span>'
                 . '</div>';
         }

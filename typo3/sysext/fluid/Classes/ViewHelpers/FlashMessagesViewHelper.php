@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
@@ -59,7 +58,8 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
 
     public function __construct(
         private readonly FlashMessageService $flashMessageService,
-        private readonly FlashMessageRendererResolver $flashMessageRendererResolver
+        private readonly FlashMessageRendererResolver $flashMessageRendererResolver,
+        private readonly ExtensionService $extensionService
     ) {}
 
     public function initializeArguments(): void
@@ -93,8 +93,7 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
                 );
             }
             $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
-            $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
-            $pluginNamespace = $extensionService->getPluginNamespace($request->getControllerExtensionName(), $request->getPluginName());
+            $pluginNamespace = $this->extensionService->getPluginNamespace($request->getControllerExtensionName(), $request->getPluginName());
             $queueIdentifier = 'extbase.flashmessages.' . $pluginNamespace;
         }
         $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier($queueIdentifier);

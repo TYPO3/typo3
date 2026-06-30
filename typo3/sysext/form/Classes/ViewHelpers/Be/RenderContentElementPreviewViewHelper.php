@@ -57,6 +57,7 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
     public function __construct(
         private readonly PageContextFactory $pageContextFactory,
         private readonly UriBuilder $uriBuilder,
+        private readonly RecordFactory $recordFactory,
     ) {}
 
     public function initializeArguments(): void
@@ -96,7 +97,7 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
                 $manipulatedRequest
             );
             $gridColumn = GeneralUtility::makeInstance(GridColumn::class, $pageLayoutContext, []);
-            $contentRecord = GeneralUtility::makeInstance(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $contentRecord, null, $pageLayoutContext->getRecordIdentityMap());
+            $contentRecord = $this->recordFactory->createResolvedRecordFromDatabaseRow('tt_content', $contentRecord, null, $pageLayoutContext->getRecordIdentityMap());
             $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $pageLayoutContext, $gridColumn, $contentRecord);
             return $columnItem->getPreview();
         }

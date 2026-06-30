@@ -895,7 +895,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         $typoScriptCache = $this->get(CacheManager::class)->getCache('typoscript');
         $redirectService = new RedirectService(
             new RedirectCacheService(),
-            new LinkService(),
+            $this->get(LinkService::class),
             $siteFinder,
             $this->get(EventDispatcherInterface::class),
             $this->get(PageInformationFactory::class),

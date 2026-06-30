@@ -53,8 +53,9 @@ class LinkService implements SingletonInterface
     /**
      * LinkService constructor initializes the registered handlers.
      */
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly EventDispatcherInterface $eventDispatcher,
+    ) {
         $registeredLinkHandlers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler'] ?? [];
         $registeredLinkHandlers = is_array($registeredLinkHandlers) ? $registeredLinkHandlers : [];
         /** @var array<string,class-string> $registeredLinkHandlers */
@@ -140,7 +141,7 @@ class LinkService implements SingletonInterface
                 $result['type'] = self::TYPE_TELEPHONE;
             }
         } finally {
-            $result = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            $result = $this->eventDispatcher->dispatch(
                 new AfterLinkResolvedByStringRepresentationEvent(
                     result: $result,
                     urn: $urn,

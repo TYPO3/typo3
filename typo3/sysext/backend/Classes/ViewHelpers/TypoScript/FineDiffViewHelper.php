@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\ViewHelpers\TypoScript;
 
 use TYPO3\CMS\Core\Utility\DiffUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -33,6 +32,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class FineDiffViewHelper extends AbstractViewHelper
 {
+    public function __construct(
+        private readonly DiffUtility $diffUtility
+    ) {}
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -42,7 +45,6 @@ final class FineDiffViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
-        return $diffUtility->diff($this->arguments['from'], $this->arguments['to']);
+        return $this->diffUtility->diff($this->arguments['from'], $this->arguments['to']);
     }
 }

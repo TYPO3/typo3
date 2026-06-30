@@ -57,7 +57,9 @@ use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
+use TYPO3\CMS\Core\ViewHelpers\IconViewHelper;
 use TYPO3\CMS\Core\ViewHelpers\NormalizedUrlViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SessionService;
@@ -113,6 +115,8 @@ class ServiceProvider extends AbstractServiceProvider
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
+            IconViewHelper::class => self::getIconViewHelper(...),
+            InfoboxViewHelper::class => self::getInfoboxViewHelper(...),
             NormalizedUrlViewHelper::class => self::getNormalizedUrlViewHelper(...),
             PasswordGenerator::class => self::getPasswordGenerator(...),
             Random::class => self::getRandom(...),
@@ -409,6 +413,20 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
+    }
+
+    public static function getIconViewHelper(ContainerInterface $container): IconViewHelper
+    {
+        return self::new($container, IconViewHelper::class, [
+            $container->get(IconFactory::class),
+        ]);
+    }
+
+    public static function getInfoboxViewHelper(ContainerInterface $container): InfoboxViewHelper
+    {
+        return self::new($container, InfoboxViewHelper::class, [
+            $container->get(IconFactory::class),
+        ]);
     }
 
     public static function getNormalizedUrlViewHelper(ContainerInterface $container): NormalizedUrlViewHelper

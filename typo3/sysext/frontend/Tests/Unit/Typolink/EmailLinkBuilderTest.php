@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Frontend\Typolink\EmailLinkBuilder;
@@ -36,7 +37,7 @@ final class EmailLinkBuilderTest extends UnitTestCase
             'email' => 'michael@bluth-company.com',
             'typoLinkParameter' => 'michael@bluth-company.com',
         ];
-        $subject = new EmailLinkBuilder(new LinkService());
+        $subject = new EmailLinkBuilder(new LinkService(new NoopEventDispatcher()));
         $actualResult = $subject->buildLink($linkDetails, [], new ServerRequest('https://example.com'));
         self::assertSame('michael@bluth-company.com', $actualResult->getLinkText());
     }
@@ -61,7 +62,7 @@ final class EmailLinkBuilderTest extends UnitTestCase
                 }
             })
         );
-        $subject = new EmailLinkBuilder(new LinkService());
+        $subject = new EmailLinkBuilder(new LinkService(new NoopEventDispatcher()));
         $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('michael(at)bluth-company.com', $actualResult->getLinkText());
     }
@@ -86,7 +87,7 @@ final class EmailLinkBuilderTest extends UnitTestCase
                 }
             })
         );
-        $subject = new EmailLinkBuilder(new LinkService());
+        $subject = new EmailLinkBuilder(new LinkService(new NoopEventDispatcher()));
         /** @var LinkResult $actualResult */
         $actualResult = $subject->buildLink($linkDetails, [], $request);
         self::assertSame('<a href="#" data-mailto-token="pdlowr-qr&#039;pdloCdfph1frp" data-mailto-vector="3">no&#039;mail(at)acme.com</a>', (string)$actualResult);

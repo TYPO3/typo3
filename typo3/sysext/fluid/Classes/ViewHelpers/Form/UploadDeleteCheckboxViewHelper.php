@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Crypto\HashService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
@@ -45,6 +44,7 @@ final class UploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
 
     public function __construct(
         private readonly HashService $hashService,
+        private readonly ExtensionService $extensionService,
     ) {
         parent::__construct();
     }
@@ -84,8 +84,7 @@ final class UploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
             'fileReference' => $fileReference->getUid(),
         ];
 
-        $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
-        $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
+        $pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
         $formObjectName = $this->getFormObjectName();
         $fileReferenceIdentifier = $this->hashService->hmac($property . $fileReference->getUid(), self::class);
         $nameAttribute = $pluginNamespace . '[' . FileHandlingService::DELETE_IDENTIFIER . ']'

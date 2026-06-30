@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Transform;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Html\HtmlWorker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -52,6 +51,10 @@ final class HtmlViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly HtmlWorker $htmlWorker
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('selector', 'string', 'comma separated list of node attributes to be considered', false, 'a.href');
@@ -64,12 +67,10 @@ final class HtmlViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $content = $this->renderChildren();
-        /** @var HtmlWorker $worker */
-        $worker = GeneralUtility::makeInstance(HtmlWorker::class);
         $selector = $this->arguments['selector'];
         $onFailure = $this->arguments['onFailure'];
         $onFailureFlags = self::MAP_ON_FAILURE[$onFailure] ?? HtmlWorker::REMOVE_ENCLOSURE_ON_FAILURE;
-        return (string)$worker
+        return (string)$this->htmlWorker
             ->parse((string)$content)
             ->transformUri($selector, $onFailureFlags);
     }

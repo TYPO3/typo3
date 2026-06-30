@@ -64,6 +64,10 @@ final class TranslateViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
+    public function __construct(
+        private readonly TranslationDomainMapper $translationDomainMapper
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('key', 'string', 'Translation Key');
@@ -114,8 +118,7 @@ final class TranslateViewHelper extends AbstractViewHelper
                     $possibleDomain,
                     $possibleId
                 ] = explode(':', $id, 2);
-                $domainMapper = GeneralUtility::makeInstance(TranslationDomainMapper::class);
-                if ($domainMapper->isValidDomainName($possibleDomain) && $domainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
+                if ($this->translationDomainMapper->isValidDomainName($possibleDomain) && $this->translationDomainMapper->mapDomainToFileName($possibleDomain) !== $possibleDomain) {
                     $extensionName = $possibleDomain;
                     $id = $possibleId;
                 }

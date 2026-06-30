@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -182,6 +183,8 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
     #[Test]
     public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement, int $amountOfMatches = 1): void
     {
+        $linkService = new LinkService(new NoopEventDispatcher());
+        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
         $subject = $this->getParserByKey('typolink_tag');
         $subject->setParserKey('typolink_tag', $softrefConfiguration);
         $result = $subject->parse(
@@ -239,6 +242,8 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
         $resourceFactory->method('retrieveFileOrFolderObject')->with('42')->willReturn($fileObject);
 
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+        $linkService = new LinkService(new NoopEventDispatcher());
+        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
 
         $subject = $this->getParserByKey('typolink_tag');
         $subject->setParserKey('typolink_tag', $softrefConfiguration);
@@ -285,6 +290,8 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
         $resourceFactory->expects($this->once())->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/foo/bar/baz')->willReturn($folderObject);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
+        $linkService = new LinkService(new NoopEventDispatcher());
+        GeneralUtility::setSingletonInstance(LinkService::class, $linkService);
 
         $result = $this->getParserByKey('typolink_tag')->parse(
             'tt_content',

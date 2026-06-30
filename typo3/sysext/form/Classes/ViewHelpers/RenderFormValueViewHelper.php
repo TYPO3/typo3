@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -47,6 +46,10 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      * @var bool
      */
     protected $escapeOutput = false;
+
+    public function __construct(
+        private readonly CountryProvider $countryProvider
+    ) {}
 
     public function initializeArguments(): void
     {
@@ -103,7 +106,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
         $properties = $element->getProperties();
         $options = $properties['options'] ?? null;
         if ($element->getType() === 'CountrySelect') {
-            $country = GeneralUtility::makeInstance(CountryProvider::class)->getByIsoCode($value ?? '');
+            $country = $this->countryProvider->getByIsoCode($value ?? '');
             if ($country !== null) {
                 return (string)LocalizationUtility::translate($country->getLocalizedNameLabel());
             }

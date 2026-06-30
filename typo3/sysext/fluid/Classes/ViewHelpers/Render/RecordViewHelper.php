@@ -54,6 +54,7 @@ final class RecordViewHelper extends AbstractViewHelper
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly TimeTracker $timeTracker,
     ) {}
 
     public function initializeArguments(): void
@@ -117,7 +118,7 @@ final class RecordViewHelper extends AbstractViewHelper
             );
         }
 
-        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
+        $timeTracker = $this->timeTracker;
         if ($timeTracker->LR) {
             $timeTracker->push('/f:render.record/', '<' . $table);
         }

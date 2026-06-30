@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Object to collect files from various sources during runtime.
@@ -62,6 +61,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
         protected readonly FileCollectionRepository $fileCollectionRepository,
         protected readonly FileRepository $fileRepository,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly LinkService $linkService,
     ) {}
 
     /**
@@ -167,8 +167,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
             try {
                 if (str_starts_with($folderIdentifier, 't3://folder')) {
                     // a t3://folder link to a folder in FAL
-                    $linkService = GeneralUtility::makeInstance(LinkService::class);
-                    $data = $linkService->resolveByStringRepresentation($folderIdentifier);
+                    $data = $this->linkService->resolveByStringRepresentation($folderIdentifier);
                     $folder = $data['folder'];
                 } else {
                     $folder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($folderIdentifier);

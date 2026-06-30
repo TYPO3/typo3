@@ -42,6 +42,10 @@ final class TypolinkViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly TypoLinkCodecService $typoLinkCodecService
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('parameter', 'mixed', 'stdWrap.typolink style parameter string', true);
@@ -67,10 +71,9 @@ final class TypolinkViewHelper extends AbstractViewHelper
     {
         $parameter = $this->arguments['parameter'] ?? '';
         $partsAs = $this->arguments['partsAs'] ?? $this->arguments['parts-as'] ?? 'typoLinkParts';
-        $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
         if (!$parameter instanceof TypolinkParameter) {
             $parameter = TypolinkParameter::createFromTypolinkParts(
-                is_scalar($parameter) ? $typoLinkCodecService->decode((string)$parameter) : []
+                is_scalar($parameter) ? $this->typoLinkCodecService->decode((string)$parameter) : []
             );
         }
         // Merge the $parameter with other arguments
@@ -82,7 +85,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $content = (string)$this->renderChildren();
         // clean up exposed variables
         $this->renderingContext->setVariableProvider($variableProvider->getGlobalVariableProvider());
-        $typolink = $typoLinkCodecService->encode($typolinkParameter);
+        $typolink = $this->typoLinkCodecService->encode($typolinkParameter);
         if ($typolink !== '') {
             $request = null;
             if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {

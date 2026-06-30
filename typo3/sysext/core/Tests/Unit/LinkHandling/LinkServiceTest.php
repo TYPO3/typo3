@@ -199,7 +199,7 @@ final class LinkServiceTest extends UnitTestCase
     #[Test]
     public function resolveReturnsSplitParameters(string $input, array $expected, string $finalString): void
     {
-        $subject = new LinkService();
+        $subject = new LinkService(new NoopEventDispatcher());
         self::assertEquals($expected, $subject->resolve($input));
     }
 
@@ -207,7 +207,7 @@ final class LinkServiceTest extends UnitTestCase
     #[Test]
     public function splitParametersToUnifiedIdentifier(string $input, array $parameters, string $expected): void
     {
-        $subject = new LinkService();
+        $subject = new LinkService(new NoopEventDispatcher());
         self::assertEquals($expected, $subject->asString($parameters));
     }
 
@@ -217,7 +217,7 @@ final class LinkServiceTest extends UnitTestCase
         $this->expectException(UnknownLinkHandlerException::class);
         $this->expectExceptionCode(1460581769);
 
-        (new LinkService())->resolveByStringRepresentation('t3://invalid');
+        (new LinkService(new NoopEventDispatcher()))->resolveByStringRepresentation('t3://invalid');
     }
 
     #[Test]
@@ -226,7 +226,7 @@ final class LinkServiceTest extends UnitTestCase
         $this->expectException(UnknownUrnException::class);
         $this->expectExceptionCode(1457177667);
 
-        (new LinkService())->resolveByStringRepresentation('invalid');
+        (new LinkService(new NoopEventDispatcher()))->resolveByStringRepresentation('invalid');
     }
 
     #[Test]
@@ -248,14 +248,15 @@ final class LinkServiceTest extends UnitTestCase
         $listenerProvider = new ListenerProvider($container);
         $listenerProvider->addListener(AfterLinkResolvedByStringRepresentationEvent::class, 'after-link-resolved-by-string-representation-listener');
         $container->set(ListenerProvider::class, $listenerProvider);
-        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProvider));
+        $eventDispatcher = new EventDispatcher($listenerProvider);
+        $container->set(EventDispatcherInterface::class, $eventDispatcher);
 
         // Note: The $urn will trigger the UnknownLinkHandlerException. This exception is
         // being caught and since the event listener sets a "type" the exception is not thrown.
         // However, the exception is passed to the event to provide extensions as much information as possible
         $urn = 't3://invalid';
         $expectedExceptionMessage = 'LinkHandler for invalid was not registered';
-        $result = (new LinkService())->resolveByStringRepresentation($urn);
+        $result = (new LinkService($eventDispatcher))->resolveByStringRepresentation($urn);
 
         self::assertSame($modifiedResult, $result);
         self::assertInstanceOf(AfterLinkResolvedByStringRepresentationEvent::class, $afterLinkResolvedByStringRepresentationEvent);
