@@ -936,7 +936,8 @@ class PackageManager implements SingletonInterface
             // Framework packages (TYPO3 system extensions) derive their version from Typo3Version and are
             // not required to declare "providesPackages". Every other extension must declare the required
             // metadata in composer.json, since ext_emconf.php is no longer evaluated as a fallback for it.
-            || $this->isFrameworkPackage($composerManifest->name)
+            // @todo validate the contents and availability of the composer manifest instead of applying nullsafe fallbacks here
+            || $this->isFrameworkPackage($composerManifest->name ?? '')
             || $this->declaresRequiredPackageMetadata($composerManifest)
         ) {
             return $composerManifest;
