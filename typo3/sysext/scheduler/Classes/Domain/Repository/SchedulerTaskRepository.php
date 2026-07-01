@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Scheduler\Domain\Repository;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
@@ -31,12 +32,14 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\ProgressProviderInterface;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
+use TYPO3\CMS\Scheduler\Task\TaskStatus;
 use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
 /**
@@ -53,6 +56,7 @@ readonly class SchedulerTaskRepository
         protected TaskSerializer $taskSerializer,
         protected TaskService $taskService,
         protected TcaSchemaFactory $tcaSchemaFactory,
+        protected Context $context,
     ) {}
 
     /**
@@ -342,6 +346,8 @@ readonly class SchedulerTaskRepository
                 }
             }
 
+            $taskData['statuses'] = $this->buildTaskStatuses($taskData, (bool)$row['isTaskGroupHidden']);
+
             // If a group is deleted or no group is set it needs to go into "not assigned groups"
             $groupIndex = $row['isTaskGroupDeleted'] === 1 || $row['isTaskGroupDeleted'] === null ? 0 : (int)$row['task_group'];
             if (!isset($taskGroupsWithTasks[$groupIndex])) {
@@ -590,6 +596,76 @@ readonly class SchedulerTaskRepository
     protected function isValidTaskObject($task): bool
     {
         return (new TaskValidator())->isValid($task);
+    }
+
+    /**
+     * Resolves the status flags of a single task into an ordered list, shared as a single
+     * source of truth by the backend module listing and the "scheduler:list" CLI command.
+     *
+     * @return list<TaskStatus>
+     */
+    private function buildTaskStatuses(array $task, bool $groupHidden): array
+    {
+        $now = $this->context->getAspect('date')->get('timestamp');
+        $statuses = [];
+
+        if ($task['isRunning']) {
+            $statuses[] = new TaskStatus(
+                type: 'running',
+                severity: ContextualFeedbackSeverity::INFO,
+                state: 'running',
+                label: 'scheduler.messages:status.running',
+            );
+        }
+        if ($task['nextExecution'] && $task['nextExecution'] < $now && !$groupHidden && !$task['disabled']) {
+            $statuses[] = new TaskStatus(
+                type: 'late',
+                severity: ContextualFeedbackSeverity::WARNING,
+                state: 'warning',
+                label: 'scheduler.messages:status.late',
+            );
+        }
+        if ($task['disabled'] && !$task['isRunning']) {
+            $statuses[] = new TaskStatus(
+                type: 'disabled',
+                severity: ContextualFeedbackSeverity::NOTICE,
+                state: 'disabled',
+                label: 'scheduler.messages:status.disabled',
+            );
+        }
+        if ($groupHidden && !$task['isRunning']) {
+            $statuses[] = new TaskStatus(
+                type: 'disabledByGroup',
+                severity: ContextualFeedbackSeverity::NOTICE,
+                state: 'disabled',
+                label: 'scheduler.messages:status.disabledByGroup',
+            );
+        }
+        if ($task['lastExecutionFailure'] ?? false) {
+            if (($task['lastExecutionFailureMessage'] ?? '') !== '') {
+                $statuses[] = new TaskStatus(
+                    type: 'failure',
+                    severity: ContextualFeedbackSeverity::ERROR,
+                    state: 'danger',
+                    label: 'scheduler.messages:status.failure',
+                    message: 'scheduler.messages:msg.executionFailureReport',
+                    messageArguments: [
+                        $task['lastExecutionFailureCode'],
+                        $task['lastExecutionFailureMessage'],
+                    ],
+                );
+            } else {
+                $statuses[] = new TaskStatus(
+                    type: 'failure',
+                    severity: ContextualFeedbackSeverity::ERROR,
+                    state: 'default',
+                    label: 'scheduler.messages:status.failure',
+                    message: 'scheduler.messages:msg.executionFailureDefault',
+                );
+            }
+        }
+
+        return $statuses;
     }
 
     private function resolvePriorityLabel(int $priority): string

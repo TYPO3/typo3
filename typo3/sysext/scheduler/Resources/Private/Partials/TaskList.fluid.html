@@ -317,46 +317,12 @@
                                         </f:if>
                                     </td>
                                     <td class="align-top col-min">
-                                        <f:if condition="{task.isRunning}">
-                                            <span class="badge badge-success"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.running" /></span>
-                                        </f:if>
-                                        <f:if condition="{task.nextExecution} && {task.nextExecution} < {now} && !{group.hidden} && !{task.disabled}">
-                                                <span
-                                                    class="badge badge-warning"
-                                                    title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.legend.scheduled')}"
-                                                >
-                                                    <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.late" />
-                                                </span>
-                                        </f:if>
-                                        <f:if condition="{task.disabled} && !{task.isRunning}">
-                                            <span class="badge badge-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" /></span>
-                                        </f:if>
-                                        <f:if condition="{group.hidden} && !{task.isRunning}">
-                                            <span class="badge badge-secondary"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabledByGroup" /></span>
-                                        </f:if>
-                                        <f:if condition="{task.lastExecutionFailure}">
-                                            <f:if condition="{task.lastExecutionFailureMessage}">
-                                                <f:then>
-                                                        <span
-                                                            class="badge badge-danger"
-                                                            title="{f:translate(
-                                                                key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executionFailureReport',
-                                                                arguments:{0: task.lastExecutionFailureCode, 1: task.lastExecutionFailureMessage}
-                                                            )}"
-                                                        >
-                                                            <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.failure" />
-                                                        </span>
-                                                </f:then>
-                                                <f:else>
-                                                        <span
-                                                            class="badge badge-danger"
-                                                            title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executionFailureDefault')}"
-                                                        >
-                                                            <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.failure" />
-                                                        </span>
-                                                </f:else>
-                                            </f:if>
-                                        </f:if>
+                                        <f:for each="{task.statuses}" as="status">
+                                            <f:variable name="statusTitle"><f:if condition="{status.message}"><f:translate key="{status.message}" arguments="{status.messageArguments}" /></f:if></f:variable>
+                                            <span class="badge badge-{status.severity.cssClass}" title="{statusTitle}">
+                                                <f:translate key="{status.label}" />
+                                            </span>
+                                        </f:for>
                                         <f:for each="{task.labels}" as="label">
                                             <span class="badge badge-{label.class}" title="{label.description}">{label.text}</span>
                                         </f:for>

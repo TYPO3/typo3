@@ -334,7 +334,6 @@ final class SchedulerModuleController
             'groups' => $groups,
             'groupsWithoutTasks' => $this->getGroupsWithoutTasks($groups),
             'hasAvailableTaskTypes' => $hasAvailableTaskTypes,
-            'now' => $this->context->getAspect('date')->get('timestamp'),
             'errorClasses' => $data['errorClasses'],
             'returnUrl' => $this->uriBuilder->buildUriFromRoute('scheduler'),
             'errorClassesCollapsed' => (bool)($moduleData->get('task-group-missing', false)),

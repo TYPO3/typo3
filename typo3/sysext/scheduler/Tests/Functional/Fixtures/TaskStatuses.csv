@@ -1,0 +1,11 @@
+"tx_scheduler_task_group"
+,"uid","deleted","hidden","groupName","description","color","sorting"
+,10,0,1,"Hidden group","","",1
+"tx_scheduler_task"
+,"uid","tasktype","deleted","disable","description","task_group","parameters","execution_details","nextexecution","priority","serialized_executions","lastexecution_failure"
+,11,"TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask",0,0,"Overdue task",0,"{}","{""start"":1000,""end"":0,""interval"":3600,""multiple"":false,""cronCmd"":"""",""isNewSingleExecution"":false}",500,50,"",""
+,12,"TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask",0,1,"Disabled task",0,"{}","{""start"":1000,""end"":0,""interval"":3600,""multiple"":false,""cronCmd"":"""",""isNewSingleExecution"":false}",500,50,"",""
+,13,"TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask",0,0,"Running task",0,"{}","{""start"":1000,""end"":0,""interval"":3600,""multiple"":false,""cronCmd"":"""",""isNewSingleExecution"":false}",5000000,50,"a:1:{i:0;i:500;}",""
+,14,"TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask",0,0,"Overdue and failed task",0,"{}","{""start"":1000,""end"":0,""interval"":3600,""multiple"":false,""cronCmd"":"""",""isNewSingleExecution"":false}",500,50,"","a:2:{s:4:""code"";i:1234;s:7:""message"";s:4:""Boom"";}"
+,15,"TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask",0,0,"Task in hidden group",10,"{}","{""start"":1000,""end"":0,""interval"":3600,""multiple"":false,""cronCmd"":"""",""isNewSingleExecution"":false}",5000000,50,"",""
+,16,"TYPO3\CMS\Scheduler\Task\CachingFrameworkGarbageCollectionTask",0,0,"Failed task without message",0,"{}","{""start"":1000,""end"":0,""interval"":3600,""multiple"":false,""cronCmd"":"""",""isNewSingleExecution"":false}",5000000,50,"","s:4:""oops"";"
