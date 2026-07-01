@@ -283,6 +283,11 @@ class ElementInformationController
                 continue;
             }
 
+            // handled explicitly below with proper byte formatting -> skip
+            if ($this->type === 'file' && $name === 'size') {
+                continue;
+            }
+
             // Field does not exist (e.g. having type=none) -> skip
             if (!array_key_exists($name, $this->row)) {
                 continue;
@@ -329,8 +334,13 @@ class ElementInformationController
                 }
 
                 // file size
+                $fileSizeInBytes = (int)$this->fileObject->getProperty('size');
                 $propertiesForTable['fields']['size'] = [
-                    'fieldValue' => GeneralUtility::formatSize((int)$this->fileObject->getProperty('size'), htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:byteSizeUnits'))),
+                    'fieldValue' => sprintf(
+                        '%s (%s)',
+                        GeneralUtility::formatSize($fileSizeInBytes, htmlspecialchars($this->getLanguageService()->sL('core.common:byteSizeUnits'))),
+                        htmlspecialchars($lang->translate('size_in_bytes', 'core.core', ['numberOfBytes' => GeneralUtility::formatSize($fileSizeInBytes, ' ')])),
+                    ),
                     'fieldLabel' => $lang->sL($schema?->hasField('size') ? $schema->getField('size')->getLabel() : ''),
                 ];
 
@@ -344,6 +354,11 @@ class ElementInformationController
 
                     foreach ($metaData as $name => $value) {
                         if (!in_array($name, $allowedFields, true)) {
+                            continue;
+                        }
+                        if ($name === 'crdate') {
+                            // Is of type=passthrough and already part of
+                            // meta information displayed on top of the table
                             continue;
                         }
                         if (!$fileMetadataSchema->hasField($name)) {

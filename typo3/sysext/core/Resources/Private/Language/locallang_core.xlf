@@ -1548,6 +1548,9 @@
       <trans-unit id="labels.noSelectableItemsAvailable">
         <source>No selectable items available. Check TCA, related records and TSconfig.</source>
       </trans-unit>
+      <trans-unit id="size_in_bytes">
+        <source>{numberOfBytes, plural, one {# byte} other {# bytes}}</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
