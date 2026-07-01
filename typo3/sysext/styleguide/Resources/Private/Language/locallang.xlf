@@ -249,6 +249,12 @@
       <trans-unit id="action.shadows.description">
         <source>Shadow effects and elevation styles used to create depth in the interface.</source>
       </trans-unit>
+      <trans-unit id="action.statusIndicators">
+        <source>Status indicators</source>
+      </trans-unit>
+      <trans-unit id="action.statusIndicators.description">
+        <source>Small colored dots that communicate the state of records, tasks, and interface elements, including animated live and loading variants.</source>
+      </trans-unit>
       <trans-unit id="action.stylesOverview">
         <source>Styles overview</source>
       </trans-unit>
@@ -1163,6 +1169,64 @@
       </trans-unit>
       <trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline">
         <source>Multiple selection with option groups</source>
+      </trans-unit>
+      <!-- Component: Status indicator -->
+      <trans-unit id="component.statusIndicator.headline">
+        <source>Status indicators</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.introtext">
+        <source>Indicators communicate the state of records, tasks, and interface elements with small colored dots, including animated variants for ongoing activity. Toggle the color scheme to preview light and dark.</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.headline">
+        <source>Dots</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.dots.introtext">
+        <source>Small colored dots flag the state of an element without occupying much space, for example on navigation items or list rows. Each state uses a brighter, fill-tuned shade of its hue so the small filled shape stays vibrant across light and dark.</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.headline">
+        <source>Semantic states</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.semantic.introtext">
+        <source>Beside the base colours, a small set of semantic states name a recurring domain concept and map to one of those colours – and, where it fits, to a motion – in the stylesheet. Use them so the same concept looks identical wherever it appears in the backend, instead of each module picking its own colour: active is a plain green, online a pulsing green, running a loading blue, and disabled a red.</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.headline">
+        <source>Animated</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.introtext">
+        <source>Motion adds an activity state on top of the colour. Each animation composes with any state colour; all are shown below so they can be verified in every state.</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.headline">
+        <source>Live</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.live.introtext">
+        <source>Signals that an element is active or live. A halo gently breathes in and out around the dot. Apply it with the live attribute.</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.headline">
+        <source>Loading</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.animated.loading.introtext">
+        <source>Signals that an operation is in progress. A fading trail rotates around the dot like a spinner. Apply it with the loading attribute.</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.headline">
+        <source>Reduced motion</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.reduced.introtext">
+        <source>When the operating system requests reduced motion (prefers-reduced-motion: reduce), the live and loading animations are switched off and the indicators render statically. The examples below force that fallback so it can be previewed regardless of your current system setting.</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.headline">
+        <source>In context</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.introtext">
+        <source>Indicators are inline elements, so they compose naturally next to text inside other components. When the indicator is the only cue, give it a label; when adjacent text already states the status, leave it decorative without a label.</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.badges.headline">
+        <source>Badges</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.lists.headline">
+        <source>Lists</source>
+      </trans-unit>
+      <trans-unit id="component.statusIndicator.section.context.tables.headline">
+        <source>Tables</source>
       </trans-unit>
       <!-- Component: Tabs -->
       <trans-unit id="component.tabs.headline">

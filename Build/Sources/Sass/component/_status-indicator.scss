@@ -1,0 +1,166 @@
+//
+// Status indicator
+//
+// A small dot that flags the state of a record, task or interface element.
+// Add the live modifier to signal an active or live element, or the loading
+// modifier for an operation in progress.
+//
+// Accessibility:
+// The dot conveys its meaning through colour alone, so it needs an accessible
+// name to be perceivable. Give it role="img" and an aria-label describing the
+// state when it carries meaning; mark it aria-hidden="true" when it only
+// repeats an adjacent visible label and is purely decorative.
+//
+// Markup:
+// <typo3-backend-status-indicator state="success" label="Online"></typo3-backend-status-indicator>
+// <typo3-backend-status-indicator state="success" live label="Live"></typo3-backend-status-indicator>
+// <typo3-backend-status-indicator state="info" loading label="Loading"></typo3-backend-status-indicator>
+// <typo3-backend-status-indicator state="success"></typo3-backend-status-indicator>
+//
+
+typo3-backend-status-indicator {
+    // Base settings
+    --typo3-status-indicator-color: var(--typo3-status-indicator-default-color);
+    --typo3-status-indicator-dot-size: 8px;
+    --typo3-status-indicator-ring-offset: 1px;
+    --typo3-status-indicator-ring-width: 2px;
+    // Reserve the dot dimensions before the element is upgraded so the host
+    // does not collapse and shift the surrounding layout while the JavaScript
+    // loads.
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--typo3-status-indicator-dot-size);
+    height: var(--typo3-status-indicator-dot-size);
+    flex-shrink: 0;
+    margin-inline-end: var(--typo3-status-indicator-ring-width);
+
+    .badge & {
+        --typo3-status-indicator-dot-size: 6px;
+        margin-inline-end: 0;
+    }
+
+    // Dot
+    .status-indicator {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--typo3-status-indicator-dot-size);
+        height: var(--typo3-status-indicator-dot-size);
+        flex-shrink: 0;
+        border-radius: 50%;
+        background-color: var(--typo3-status-indicator-color);
+    }
+
+    // Colours
+    .status-indicator-info {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-info-color);
+    }
+
+    .status-indicator-success {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-success-color);
+    }
+
+    .status-indicator-warning {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-warning-color);
+    }
+
+    .status-indicator-danger {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-danger-color);
+    }
+
+    .status-indicator-notice {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-notice-color);
+    }
+
+    .status-indicator-primary {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-primary-color);
+    }
+
+    .status-indicator-secondary {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-secondary-color);
+    }
+
+    .status-indicator-default {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-default-color);
+    }
+
+    // Semantic states
+    // Map a recurring domain concept to one of the base colours above, so the
+    // same concept looks identical wherever it appears in the backend.
+    .status-indicator-active {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-success-color);
+    }
+
+    .status-indicator-online {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-success-color);
+    }
+
+    .status-indicator-running {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-info-color);
+    }
+
+    .status-indicator-disabled {
+        --typo3-status-indicator-color: var(--typo3-status-indicator-danger-color);
+    }
+
+    // Live
+    .status-indicator-live {
+        &:after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            outline: var(--typo3-status-indicator-ring-width) solid var(--typo3-status-indicator-color);
+            opacity: .5;
+            outline-offset: var(--typo3-status-indicator-ring-offset);
+            animation: status-indicator-live 1.8s ease-in-out infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &:after {
+                animation: none;
+            }
+        }
+    }
+
+    // Loading
+    .status-indicator-loading {
+        &:after {
+            content: '';
+            position: absolute;
+            inset: calc(-1 * (var(--typo3-status-indicator-ring-width) + var(--typo3-status-indicator-ring-offset)));
+            border-radius: 50%;
+            background: conic-gradient(from 90deg, transparent, var(--typo3-status-indicator-color));
+            mask: radial-gradient(farthest-side, transparent calc(100% - var(--typo3-status-indicator-ring-width)), #000 calc(100% - var(--typo3-status-indicator-ring-width)));
+            animation: status-indicator-loading .9s linear infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &:after {
+                animation: none;
+            }
+        }
+    }
+}
+
+@keyframes status-indicator-live {
+    0% {
+        opacity: .1;
+    }
+
+    50% {
+        opacity: .5;
+    }
+
+    100% {
+        opacity: .1;
+    }
+}
+
+@keyframes status-indicator-loading {
+    to {
+        transform: rotate(1turn);
+    }
+}

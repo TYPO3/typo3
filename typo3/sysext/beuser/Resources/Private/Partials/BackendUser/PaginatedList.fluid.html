@@ -10,7 +10,7 @@
     <table id="typo3-backend-user-list" class="table table-striped table-hover">
         <thead>
         <tr>
-            <th colspan="2"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:userName" /> / <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:realName" /></th>
+            <th colspan="3"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:userName" /> / <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:realName" /></th>
             <th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.list.table.column.group" /></th>
             <th class="col-datetime"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:lastLogin" /></th>
             <th class="col-control"><span class="visually-hidden"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_" /></span></th>
@@ -19,6 +19,11 @@
         <tbody>
             <f:for each="{paginator.paginatedItems}" as="backendUser">
                 <tr>
+                    <td class="col-indicator">
+                        <f:if condition="{onlineBackendUsers.{backendUser.uid}}">
+                            <typo3-backend-status-indicator state="success" live label="{f:translate(key:'backendUser.list.label.online', domain:'beuser.messages')}"></typo3-backend-status-indicator>
+                        </f:if>
+                    </td>
                     <td class="col-avatar">
                         <button
                             type="button"
@@ -37,17 +42,11 @@
                             <f:if condition="{backendUser.realName}">
                                 <f:then>
                                     {backendUser.realName}
-                                    <f:if condition="{onlineBackendUsers.{backendUser.uid}}">
-                                        <span class="badge badge-success"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.list.label.online" /></span>
-                                    </f:if>
                                     <beuser:mfaStatus userUid="{backendUser.uid}"/><br>
                                     <span class="text-variant">({backendUser.username})</span>
                                 </f:then>
                                 <f:else>
                                     {backendUser.username}
-                                    <f:if condition="{onlineBackendUsers.{backendUser.uid}}">
-                                        <span class="badge badge-success"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.list.label.online" /></span>
-                                    </f:if>
                                     <beuser:mfaStatus userUid="{backendUser.uid}"/>
                                 </f:else>
                             </f:if>
@@ -210,7 +209,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="5">
+                <td colspan="6">
                     <f:if condition="{totalAmountOfBackendUsers} > 1">
                         <f:then>{totalAmountOfBackendUsers} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:users" /></f:then>
                         <f:else>{totalAmountOfBackendUsers} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:user" /></f:else>

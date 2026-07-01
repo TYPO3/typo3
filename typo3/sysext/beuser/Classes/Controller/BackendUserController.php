@@ -124,6 +124,7 @@ class BackendUserController extends ActionController
         // Load JavaScript modules
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/modal.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/status-indicator-element.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/beuser/backend-user-listing.js');
     }
 

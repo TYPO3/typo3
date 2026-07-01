@@ -98,6 +98,12 @@
         box-sizing: content-box;
     }
 
+    .col-indicator {
+        width: 10px;
+        padding-inline-end: 0;
+        white-space: nowrap;
+    }
+
     .col-time {
         width: 8ch;
         white-space: nowrap;
