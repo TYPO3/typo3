@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper which returns the page info icon as known from TYPO3 backend modules.
@@ -35,7 +36,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-pageinfo
  * @todo: Candidate to deprecate? The page info is typically displayed in doc header, done by ModuleTemplate in controllers.
  */
-final class PageInfoViewHelper extends AbstractBackendViewHelper
+final class PageInfoViewHelper extends AbstractViewHelper
 {
     /**
      * This ViewHelper renders HTML, thus output must not be escaped

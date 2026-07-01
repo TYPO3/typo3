@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -49,6 +48,12 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'select';
 
+    public function __construct(
+        private readonly PageRenderer $pageRenderer
+    ) {
+        parent::__construct();
+    }
+
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -68,7 +73,7 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
             'data-action-navigate' => '$value',
         ]);
         $this->tag->setContent($options);
-        $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
         return '<div class="docheader-funcmenu">' . $this->tag->render() . '</div>';
     }
 
@@ -82,10 +87,5 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
         // @todo: replace with a true compiling method to make compilable!
         $compiler->disable();
         return '';
-    }
-
-    private static function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

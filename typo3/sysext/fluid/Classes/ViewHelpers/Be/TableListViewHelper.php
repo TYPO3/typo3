@@ -22,9 +22,11 @@ use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper which renders a record list as known from the TYPO3 records module.
@@ -49,7 +51,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-tablelist
  */
-final class TableListViewHelper extends AbstractBackendViewHelper
+final class TableListViewHelper extends AbstractViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
@@ -60,6 +62,7 @@ final class TableListViewHelper extends AbstractBackendViewHelper
 
     public function __construct(
         private readonly ConfigurationManagerInterface $configurationManager,
+        private readonly PageRenderer $pageRenderer,
     ) {}
 
     public function initializeArguments(): void
@@ -108,14 +111,14 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         }
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
 
-        $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/recordlist.js');
-        $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/record-download-button.js');
-        $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
-        $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/page-wizard/new-page-wizard-button.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/recordlist.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/record-download-button.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/page-wizard/new-page-wizard-button.js');
         if ($enableControlPanels === true) {
-            $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
-            $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/multi-record-selection-delete-action.js');
-            $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/context-menu.js');
+            $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
+            $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection-delete-action.js');
+            $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
         }
 
         $pageId = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);

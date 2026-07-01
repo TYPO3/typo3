@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -42,6 +41,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class PageRendererViewHelper extends AbstractViewHelper
 {
+    public function __construct(
+        private readonly PageRenderer $pageRenderer
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('pageTitle', 'string', 'title tag of the module. Not required by default, as BE modules are shown in a frame', false, '');
@@ -54,7 +57,6 @@ final class PageRendererViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        $pageRenderer = self::getPageRenderer();
         $pageTitle = $this->arguments['pageTitle'];
         $includeCssFiles = $this->arguments['includeCssFiles'];
         $includeJsFiles = $this->arguments['includeJsFiles'];
@@ -62,26 +64,26 @@ final class PageRendererViewHelper extends AbstractViewHelper
         $includeJavaScriptModules = $this->arguments['includeJavaScriptModules'];
         $addInlineSettings = $this->arguments['addInlineSettings'];
         if ($pageTitle) {
-            $pageRenderer->setTitle($pageTitle);
+            $this->pageRenderer->setTitle($pageTitle);
         }
         // Include custom CSS and JS files
         if (is_array($includeCssFiles)) {
             foreach ($includeCssFiles as $addCssFile) {
-                $pageRenderer->addCssFile($addCssFile);
+                $this->pageRenderer->addCssFile($addCssFile);
             }
         }
         if (is_array($includeJsFiles)) {
             foreach ($includeJsFiles as $addJsFile) {
-                $pageRenderer->addJsFile($addJsFile);
+                $this->pageRenderer->addJsFile($addJsFile);
             }
         }
         if (is_array($includeJavaScriptModules)) {
             foreach ($includeJavaScriptModules as $addJavaScriptModule) {
-                $pageRenderer->loadJavaScriptModule($addJavaScriptModule);
+                $this->pageRenderer->loadJavaScriptModule($addJavaScriptModule);
             }
         }
         if (is_array($addInlineSettings)) {
-            $pageRenderer->addInlineSettingArray('', $addInlineSettings);
+            $this->pageRenderer->addInlineSettingArray('', $addInlineSettings);
         }
         // Add inline language labels
         if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
@@ -91,7 +93,7 @@ final class PageRendererViewHelper extends AbstractViewHelper
                 $extensionKey = $this->renderingContext->getAttribute(ServerRequestInterface::class)->getControllerExtensionKey();
                 foreach ($addJsInlineLabels as $key) {
                     $label = LocalizationUtility::translate($key, $extensionKey);
-                    $pageRenderer->addInlineLanguageLabel($key, $label);
+                    $this->pageRenderer->addInlineLanguageLabel($key, $label);
                 }
             } else {
                 // No extbase request, labels should follow "LLL:EXT:some_ext/Resources/Private/someFile.xlf:key"
@@ -99,15 +101,10 @@ final class PageRendererViewHelper extends AbstractViewHelper
                 foreach ($addJsInlineLabels as &$labelKey) {
                     $labelKey = self::getLanguageService()->sL($labelKey);
                 }
-                $pageRenderer->addInlineLanguageLabelArray($addJsInlineLabels);
+                $this->pageRenderer->addInlineLanguageLabelArray($addJsInlineLabels);
             }
         }
         return '';
-    }
-
-    private static function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     private static function getLanguageService(): LanguageService

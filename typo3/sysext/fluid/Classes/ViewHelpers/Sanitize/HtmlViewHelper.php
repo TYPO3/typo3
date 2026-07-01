@@ -51,6 +51,10 @@ final class HtmlViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly SanitizerBuilderFactory $sanitizerBuilderFactory
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('build', 'string', 'preset name or class-like name of sanitization builder', false, 'default');
@@ -60,7 +64,7 @@ final class HtmlViewHelper extends AbstractViewHelper
     {
         $value = $this->renderChildren();
         $build = $this->arguments['build'];
-        return self::createSanitizer($build)->sanitize((string)$value, self::createInitiator());
+        return $this->createSanitizer($build)->sanitize((string)$value, self::createInitiator());
     }
 
     private static function createInitiator(): SanitizerInitiator
@@ -68,13 +72,12 @@ final class HtmlViewHelper extends AbstractViewHelper
         return GeneralUtility::makeInstance(SanitizerInitiator::class, self::class);
     }
 
-    private static function createSanitizer(string $build): Sanitizer
+    private function createSanitizer(string $build): Sanitizer
     {
         if (class_exists($build) && is_a($build, BuilderInterface::class, true)) {
             $builder = GeneralUtility::makeInstance($build);
         } else {
-            $factory = GeneralUtility::makeInstance(SanitizerBuilderFactory::class);
-            $builder = $factory->build($build);
+            $builder = $this->sanitizerBuilderFactory->build($build);
         }
         return $builder->build();
     }

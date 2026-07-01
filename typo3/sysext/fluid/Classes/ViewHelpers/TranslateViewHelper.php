@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface as ExtbaseRequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -65,7 +64,8 @@ final class TranslateViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     public function __construct(
-        private readonly TranslationDomainMapper $translationDomainMapper
+        private readonly TranslationDomainMapper $translationDomainMapper,
+        private readonly Locales $locales,
     ) {}
 
     public function initializeArguments(): void
@@ -126,7 +126,7 @@ final class TranslateViewHelper extends AbstractViewHelper
                 $extensionName = $request->getControllerExtensionName();
             } else {
                 if ($default) {
-                    return self::handleDefaultValue($default, $translateArguments, $request);
+                    return $this->handleDefaultValue($default, $translateArguments, $request);
                 }
             }
         }
@@ -145,14 +145,14 @@ final class TranslateViewHelper extends AbstractViewHelper
         }
 
         try {
-            $locale = self::getUsedLocale($this->arguments['languageKey'], $request);
+            $locale = $this->getUsedLocale($this->arguments['languageKey'], $request);
             $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $locale, $request);
         } catch (\InvalidArgumentException) {
             // @todo: Switch to more specific Exceptions here - for instance those thrown when a package was not found, see #95957
             $value = null;
         }
         if ($value === null) {
-            return self::handleDefaultValue($default, $translateArguments, $request);
+            return $this->handleDefaultValue($default, $translateArguments, $request);
         }
         return $value;
     }
@@ -160,14 +160,14 @@ final class TranslateViewHelper extends AbstractViewHelper
     /**
      * Ensure that a string is returned, if the underlying logic returns null, or cannot handle a translation
      */
-    private static function handleDefaultValue(string $default, ?array $translateArguments, ?ServerRequestInterface $request = null): string
+    private function handleDefaultValue(string $default, ?array $translateArguments, ?ServerRequestInterface $request = null): string
     {
         if (!empty($translateArguments)) {
             // Check for ICU pattern markers
             if (array_is_list($translateArguments)) {
                 return vsprintf($default, $translateArguments);
             }
-            $locale = $request ? GeneralUtility::makeInstance(Locales::class)->createLocaleFromRequest($request)->posixFormatted() : 'en_US';
+            $locale = $request ? $this->locales->createLocaleFromRequest($request)->posixFormatted() : 'en_US';
             $formatted = \MessageFormatter::formatMessage($locale, $default, $translateArguments);
             if ($formatted !== false) {
                 return $formatted;
@@ -176,13 +176,13 @@ final class TranslateViewHelper extends AbstractViewHelper
         return $default;
     }
 
-    private static function getUsedLocale(Locale|string|null $languageKey, ?ServerRequestInterface $request): Locale|string|null
+    private function getUsedLocale(Locale|string|null $languageKey, ?ServerRequestInterface $request): Locale|string|null
     {
         if ($languageKey !== null && $languageKey !== '') {
             return $languageKey;
         }
         if ($request) {
-            return GeneralUtility::makeInstance(Locales::class)->createLocaleFromRequest($request);
+            return $this->locales->createLocaleFromRequest($request);
         }
         return null;
     }

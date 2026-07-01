@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to display a sprite icon for a record (object).
@@ -30,7 +30,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
  *
  * @internal
  */
-final class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
+final class SpriteIconForRecordViewHelper extends AbstractViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.

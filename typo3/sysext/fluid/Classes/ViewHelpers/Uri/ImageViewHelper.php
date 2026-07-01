@@ -60,6 +60,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
  */
 final class ImageViewHelper extends AbstractViewHelper
 {
+    public function __construct(
+        private readonly ImageService $imageService
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('src', 'string', 'src', false, '');
@@ -103,8 +107,7 @@ final class ImageViewHelper extends AbstractViewHelper
             );
         }
         try {
-            $imageService = self::getImageService();
-            $image = $imageService->getImage($src, $image, $treatIdAsReference);
+            $image = $this->imageService->getImage($src, $image, $treatIdAsReference);
 
             if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
                 $cropString = $image->getProperty('crop');
@@ -131,12 +134,12 @@ final class ImageViewHelper extends AbstractViewHelper
                 $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
             }
 
-            $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
+            $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
 
             if ($this->arguments['base64']) {
                 return 'data:' . $processedImage->getMimeType() . ';base64,' . base64_encode($processedImage->getContents());
             }
-            return $imageService->getImageUri($processedImage, $absolute);
+            return $this->imageService->getImageUri($processedImage, $absolute);
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist
             throw new Exception(self::getExceptionMessage($e->getMessage(), $this->renderingContext), 1509741907, $e);
@@ -162,10 +165,5 @@ final class ImageViewHelper extends AbstractViewHelper
             }
         }
         return sprintf('Unable to render image URI: %s', $detailedMessage);
-    }
-
-    private static function getImageService(): ImageService
-    {
-        return GeneralUtility::makeInstance(ImageService::class);
     }
 }

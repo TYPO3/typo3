@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper which returns the current page path as known from TYPO3 backend modules.
@@ -34,7 +35,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-pagepath
  * @todo: Candidate to deprecate? The page info is typically displayed in doc header, done by ModuleTemplate in controllers.
  */
-final class PagePathViewHelper extends AbstractBackendViewHelper
+final class PagePathViewHelper extends AbstractViewHelper
 {
     /**
      * This ViewHelper renders HTML, thus output must not be escaped

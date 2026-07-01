@@ -55,6 +55,11 @@ final class CObjectViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
+    public function __construct(
+        private readonly TimeTracker $timeTracker,
+        private readonly ConfigurationManagerInterface $configurationManager,
+    ) {}
+
     public function initializeArguments(): void
     {
         $this->registerArgument('data', 'mixed', 'the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used');
@@ -97,7 +102,7 @@ final class CObjectViewHelper extends AbstractViewHelper
         }
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
         $lastSegment = (string)array_pop($pathSegments);
-        $setup = self::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $setup = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
             if (!array_key_exists($segment . '.', $setup)) {
                 throw new InvalidArgumentValueException(
@@ -113,31 +118,24 @@ final class CObjectViewHelper extends AbstractViewHelper
                 1540246570
             );
         }
-        return self::renderContentObject($contentObjectRenderer, $setup, $typoscriptObjectPath, $lastSegment);
+        return $this->renderContentObject($contentObjectRenderer, $setup, $typoscriptObjectPath, $lastSegment);
     }
 
     /**
      * Renders single content object and increases time tracker stack pointer
      */
-    private static function renderContentObject(ContentObjectRenderer $contentObjectRenderer, array $setup, string $typoscriptObjectPath, string $lastSegment): string
+    private function renderContentObject(ContentObjectRenderer $contentObjectRenderer, array $setup, string $typoscriptObjectPath, string $lastSegment): string
     {
-        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
-        if ($timeTracker->LR) {
-            $timeTracker->push('/f:cObject/', '<' . $typoscriptObjectPath);
+        if ($this->timeTracker->LR) {
+            $this->timeTracker->push('/f:cObject/', '<' . $typoscriptObjectPath);
         }
-        $timeTracker->incStackPointer();
+        $this->timeTracker->incStackPointer();
         $content = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'] ?? [], $typoscriptObjectPath);
-        $timeTracker->decStackPointer();
-        if ($timeTracker->LR) {
-            $timeTracker->pull($content);
+        $this->timeTracker->decStackPointer();
+        if ($this->timeTracker->LR) {
+            $this->timeTracker->pull($content);
         }
         return $content;
-    }
-
-    private static function getConfigurationManager(): ConfigurationManagerInterface
-    {
-        // @todo: this should be replaced by DI once Fluid can handle DI properly
-        return GeneralUtility::getContainer()->get(ConfigurationManagerInterface::class);
     }
 
     /**

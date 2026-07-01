@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -60,6 +61,7 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\LosslessTokenizer;
 use TYPO3\CMS\Core\ViewHelpers\IconViewHelper;
 use TYPO3\CMS\Core\ViewHelpers\NormalizedUrlViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Sanitize\HtmlViewHelper;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SessionService;
@@ -116,6 +118,7 @@ class ServiceProvider extends AbstractServiceProvider
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
             IconViewHelper::class => self::getIconViewHelper(...),
+            HtmlViewHelper::class => self::getHtmlViewHelper(...),
             InfoboxViewHelper::class => self::getInfoboxViewHelper(...),
             NormalizedUrlViewHelper::class => self::getNormalizedUrlViewHelper(...),
             PasswordGenerator::class => self::getPasswordGenerator(...),
@@ -419,6 +422,13 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, IconViewHelper::class, [
             $container->get(IconFactory::class),
+        ]);
+    }
+
+    public static function getHtmlViewHelper(ContainerInterface $container): HtmlViewHelper
+    {
+        return self::new($container, HtmlViewHelper::class, [
+            new SanitizerBuilderFactory(),
         ]);
     }
 

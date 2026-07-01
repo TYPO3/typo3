@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper for creating URIs to backend modules.
@@ -28,7 +29,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-uri
  */
-final class UriViewHelper extends AbstractBackendViewHelper
+final class UriViewHelper extends AbstractViewHelper
 {
     public function __construct(
         private readonly UriBuilder $uriBuilder
