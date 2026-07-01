@@ -37,7 +37,7 @@ readonly class WidgetConfiguration implements WidgetConfigurationInterface
         if (!in_array($height, $allowedSizes, true)) {
             throw new \InvalidArgumentException('Height of widgets has to be small, medium or large', 1584778196);
         }
-        if (!in_array($height, $allowedSizes, true)) {
+        if (!in_array($width, $allowedSizes, true)) {
             throw new \InvalidArgumentException('Width of widgets has to be small, medium or large', 1585249769);
         }
     }

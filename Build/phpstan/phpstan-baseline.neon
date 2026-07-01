@@ -111,7 +111,7 @@ parameters:
 		-
 			rawMessage: Offset 'address' does not exist on string.
 			identifier: offsetAccess.notFound
-			count: 2
+			count: 3
 			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
 
 		-

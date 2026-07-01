@@ -145,7 +145,7 @@ readonly class DateFormatter
             // This leads to the same instants in time, as expressed in Unix time, having different representations
             //  in formatted strings.
             // To adjust for this, a custom calendar can be supplied with a cutover date arbitrarily far in the past.
-            $calendar = \IntlGregorianCalendar::createInstance();
+            $calendar = new \IntlGregorianCalendar();
             $calendar->setGregorianChange(PHP_INT_MIN);
 
             return (new \IntlDateFormatter($locale, $date_type, $time_type, $tz, $calendar, $pattern))->format($timestamp) ?: '';
