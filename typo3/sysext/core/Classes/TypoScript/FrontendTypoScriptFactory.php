@@ -201,7 +201,7 @@ final readonly class FrontendTypoScriptFactory
         if ($conditionTreeAccumulatorVisitor) {
             // Cache the flat condition include tree for next run.
             $conditionTree = $conditionTreeAccumulatorVisitor->getConditionIncludes();
-            $typoScriptCache?->set(
+            $typoScriptCache->set(
                 $conditionTreeCacheIdentifier,
                 'return unserialize(\'' . addcslashes(serialize($conditionTree), '\'\\') . '\');'
             );
