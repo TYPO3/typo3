@@ -155,6 +155,7 @@ class SlugService implements LoggerAwareInterface
                     'source_path' => $source->getPath(),
                     'target' => $targetLink,
                     'target_statuscode' => $this->httpStatusCode,
+                    'creation_type' => 0,
                 ]
             );
 
