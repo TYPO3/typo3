@@ -16,10 +16,10 @@
     --tree-node-selected-border-color: var(--typo3-component-active-border-color);
     // information
     --tree-node-information: var(--tree-node-color);
-    --tree-node-information-success: var(--typo3-text-color-success);
-    --tree-node-information-warning: var(--typo3-text-color-warning);
-    --tree-node-information-danger: var(--typo3-text-color-danger);
-    --tree-node-information-info: var(--typo3-text-color-info);
+    --tree-node-information-success: var(--typo3-status-indicator-success-color);
+    --tree-node-information-warning: var(--typo3-status-indicator-warning-color);
+    --tree-node-information-danger: var(--typo3-status-indicator-danger-color);
+    --tree-node-information-info: var(--typo3-status-indicator-info-color);
     // special
     --tree-info-bg: var(--typo3-surface-info);
     --tree-info-color: var(--typo3-surface-info-text);

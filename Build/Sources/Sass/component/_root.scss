@@ -102,6 +102,16 @@
     --typo3-text-color-notice: light-dark(var(--token-color-notice-75), var(--token-color-notice-40));
     --typo3-text-color-default: var(--typo3-text-color-base);
 
+    // Status indicators
+    --typo3-status-indicator-primary-color: light-dark(var(--token-color-primary-60), var(--token-color-primary-30));
+    --typo3-status-indicator-secondary-color: light-dark(var(--token-color-secondary-70), var(--token-color-secondary-35));
+    --typo3-status-indicator-info-color: light-dark(var(--token-color-info-60), var(--token-color-info-40));
+    --typo3-status-indicator-success-color: light-dark(var(--token-color-success-60), var(--token-color-success-50));
+    --typo3-status-indicator-warning-color: light-dark(var(--token-color-warning-50), var(--token-color-warning-40));
+    --typo3-status-indicator-danger-color: light-dark(var(--token-color-danger-60), var(--token-color-danger-40));
+    --typo3-status-indicator-notice-color: light-dark(var(--token-color-notice-65), var(--token-color-notice-40));
+    --typo3-status-indicator-default-color: currentColor;
+
     // Surfaces
     --typo3-surface-dim: light-dark(var(--token-color-neutral-13), var(--token-color-neutral-92));
     --typo3-surface-base: light-dark(var(--token-color-neutral-7), var(--token-color-neutral-84));

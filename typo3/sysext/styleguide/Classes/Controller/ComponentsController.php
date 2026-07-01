@@ -73,6 +73,7 @@ final class ComponentsController
         'progressTrackers',
         'radio',
         'select',
+        'statusIndicators',
         'tab',
         'tables',
         'textarea',
@@ -120,6 +121,7 @@ final class ComponentsController
             'progressTrackers' => $this->renderProgressTrackersView($request),
             'radio' => $this->renderRadioView($request),
             'select' => $this->renderSelectView($request),
+            'statusIndicators' => $this->renderStatusIndicatorsView($request),
             'tab' => $this->renderTabView($request),
             'tables' => $this->renderTablesView($request),
             'textarea' => $this->renderTextareaView($request),
@@ -331,6 +333,33 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Form');
+    }
+
+    private function renderStatusIndicatorsView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'statusIndicators');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'statusIndicators',
+            'routeIdentifier' => 'styleguide_components',
+            'states' => [
+                'primary',
+                'secondary',
+                'success',
+                'info',
+                'warning',
+                'danger',
+                'notice',
+                'default',
+            ],
+            'semanticStates' => [
+                'active',
+                'online',
+                'running',
+                'disabled',
+            ],
+        ]);
+        return $view->renderResponse('Backend/Components/StatusIndicators');
     }
 
     private function renderInfoboxView(ServerRequestInterface $request): ResponseInterface

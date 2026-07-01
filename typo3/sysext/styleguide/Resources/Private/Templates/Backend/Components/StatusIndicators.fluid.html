@@ -1,0 +1,265 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/element/status-indicator-element.js',
+        }"
+    />
+</f:section>
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+        <h1><f:translate key="component.statusIndicator.headline" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="component.statusIndicator.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <f:asset.css identifier="styleguide-indicators-grid">
+            .indicators-grid {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: flex-start;
+                gap: 1.5rem 2rem;
+            }
+
+            .indicators-grid-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 3rem;
+                font-family: var(--typo3-font-family-monospace);
+                text-align: center;
+            }
+
+            .indicators-grid-figure {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 1.5rem;
+            }
+
+            /* Force the prefers-reduced-motion fallback so it can be previewed regardless of the system setting. */
+            .indicators-reduced .status-indicator-live::after,
+            .indicators-reduced .status-indicator-loading::after {
+                animation: none;
+            }
+
+            .indicators-inline {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: .5rem;
+            }
+        </f:asset.css>
+
+        <h2><f:translate key="component.statusIndicator.section.dots.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.statusIndicator.section.dots.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="indicatorDotsCode">
+            &lt;typo3-backend-status-indicator state="info"&gt;&lt;/typo3-backend-status-indicator&gt;
+            &lt;typo3-backend-status-indicator state="success" label="Online"&gt;&lt;/typo3-backend-status-indicator&gt;
+            &lt;typo3-backend-status-indicator state="danger" label="Error"&gt;&lt;/typo3-backend-status-indicator&gt;
+        </f:variable>
+        <sg:example colorScheme="true" codePreview="true" codeLanguage="html" customCode="{indicatorDotsCode}" decodeEntities="true">
+            <div class="indicators-grid">
+                <f:for each="{states}" as="state">
+                    <div class="indicators-grid-item">
+                        <span class="indicators-grid-figure">
+                            <typo3-backend-status-indicator state="{state}" label="{state}"></typo3-backend-status-indicator>
+                        </span>
+                        <small aria-hidden="true">{state}</small>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.statusIndicator.section.semantic.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.statusIndicator.section.semantic.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="indicatorSemanticCode">
+            &lt;typo3-backend-status-indicator state="active" label="Active"&gt;&lt;/typo3-backend-status-indicator&gt;
+            &lt;typo3-backend-status-indicator state="online" label="Online"&gt;&lt;/typo3-backend-status-indicator&gt;
+            &lt;typo3-backend-status-indicator state="running" label="Running"&gt;&lt;/typo3-backend-status-indicator&gt;
+            &lt;typo3-backend-status-indicator state="disabled" label="Disabled"&gt;&lt;/typo3-backend-status-indicator&gt;
+        </f:variable>
+        <sg:example colorScheme="true" codePreview="true" codeLanguage="html" customCode="{indicatorSemanticCode}" decodeEntities="true">
+            <div class="indicators-grid">
+                <f:for each="{semanticStates}" as="state">
+                    <div class="indicators-grid-item">
+                        <span class="indicators-grid-figure">
+                            <typo3-backend-status-indicator state="{state}" label="{state}"></typo3-backend-status-indicator>
+                        </span>
+                        <small aria-hidden="true">{state}</small>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.statusIndicator.section.animated.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.statusIndicator.section.animated.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <h3><f:translate key="component.statusIndicator.section.animated.live.headline" domain="styleguide.messages" /></h3>
+        <p>
+            <f:sanitize.html><f:translate key="component.statusIndicator.section.animated.live.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="indicatorLiveCode">
+            &lt;typo3-backend-status-indicator state="success" live label="Live"&gt;&lt;/typo3-backend-status-indicator&gt;
+        </f:variable>
+        <sg:example colorScheme="true" codePreview="true" codeLanguage="html" customCode="{indicatorLiveCode}" decodeEntities="true">
+            <div class="indicators-grid">
+                <f:for each="{states}" as="state">
+                    <div class="indicators-grid-item">
+                        <span class="indicators-grid-figure">
+                            <typo3-backend-status-indicator state="{state}" live label="{state}"></typo3-backend-status-indicator>
+                        </span>
+                        <small aria-hidden="true">{state}</small>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.statusIndicator.section.animated.loading.headline" domain="styleguide.messages" /></h3>
+        <p>
+            <f:sanitize.html><f:translate key="component.statusIndicator.section.animated.loading.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+        <f:variable name="indicatorLoadingCode">
+            &lt;typo3-backend-status-indicator state="info" loading label="Loading"&gt;&lt;/typo3-backend-status-indicator&gt;
+        </f:variable>
+        <sg:example colorScheme="true" codePreview="true" codeLanguage="html" customCode="{indicatorLoadingCode}" decodeEntities="true">
+            <div class="indicators-grid">
+                <f:for each="{states}" as="state">
+                    <div class="indicators-grid-item">
+                        <span class="indicators-grid-figure">
+                            <typo3-backend-status-indicator state="{state}" loading label="{state}"></typo3-backend-status-indicator>
+                        </span>
+                        <small aria-hidden="true">{state}</small>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.statusIndicator.section.reduced.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.statusIndicator.section.reduced.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <h3><f:translate key="component.statusIndicator.section.animated.live.headline" domain="styleguide.messages" /></h3>
+        <sg:example colorScheme="true">
+            <div class="indicators-grid indicators-reduced">
+                <f:for each="{states}" as="state">
+                    <div class="indicators-grid-item">
+                        <span class="indicators-grid-figure">
+                            <typo3-backend-status-indicator state="{state}" live label="{state}"></typo3-backend-status-indicator>
+                        </span>
+                        <small aria-hidden="true">{state}</small>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.statusIndicator.section.animated.loading.headline" domain="styleguide.messages" /></h3>
+        <sg:example colorScheme="true">
+            <div class="indicators-grid indicators-reduced">
+                <f:for each="{states}" as="state">
+                    <div class="indicators-grid-item">
+                        <span class="indicators-grid-figure">
+                            <typo3-backend-status-indicator state="{state}" loading label="{state}"></typo3-backend-status-indicator>
+                        </span>
+                        <small aria-hidden="true">{state}</small>
+                    </div>
+                </f:for>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="component.statusIndicator.section.context.headline" domain="styleguide.messages" /></h2>
+        <p>
+            <f:sanitize.html><f:translate key="component.statusIndicator.section.context.introtext" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <h3><f:translate key="component.statusIndicator.section.context.badges.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="indicatorBadgesCode">
+            &lt;span class="badge badge-default"&gt;
+                &lt;typo3-backend-status-indicator state="success" live&gt;&lt;/typo3-backend-status-indicator&gt; Online
+            &lt;/span&gt;
+        </f:variable>
+        <sg:example colorScheme="true" codePreview="true" codeLanguage="html" customCode="{indicatorBadgesCode}" decodeEntities="true">
+            <div class="indicators-inline">
+                <span class="badge badge-default"><typo3-backend-status-indicator state="success" live></typo3-backend-status-indicator> Online</span>
+                <span class="badge badge-default"><typo3-backend-status-indicator state="danger"></typo3-backend-status-indicator> Failed</span>
+                <span class="badge badge-default"><typo3-backend-status-indicator state="info" loading></typo3-backend-status-indicator> Syncing</span>
+            </div>
+        </sg:example>
+
+        <h3><f:translate key="component.statusIndicator.section.context.lists.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="indicatorListsCode">
+            &lt;ul class="list-group"&gt;
+                &lt;li class="list-group-item"&gt;
+                    &lt;typo3-backend-status-indicator state="success" live label="Online"&gt;&lt;/typo3-backend-status-indicator&gt; Service 1
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        </f:variable>
+        <sg:example colorScheme="true" codePreview="true" codeLanguage="html" customCode="{indicatorListsCode}" decodeEntities="true">
+            <ul class="list-group">
+                <li class="list-group-item"><typo3-backend-status-indicator state="success" live label="Online"></typo3-backend-status-indicator> Service 1</li>
+                <li class="list-group-item"><typo3-backend-status-indicator state="warning" label="Degraded"></typo3-backend-status-indicator> Service 2</li>
+                <li class="list-group-item"><typo3-backend-status-indicator state="danger" label="Offline"></typo3-backend-status-indicator> Service 3</li>
+                <li class="list-group-item"><typo3-backend-status-indicator state="info" loading label="Restarting"></typo3-backend-status-indicator> Service 4</li>
+            </ul>
+        </sg:example>
+
+        <h3><f:translate key="component.statusIndicator.section.context.tables.headline" domain="styleguide.messages" /></h3>
+        <f:variable name="indicatorTablesCode">
+            &lt;td&gt;&lt;typo3-backend-status-indicator state="success" live&gt;&lt;/typo3-backend-status-indicator&gt; Online&lt;/td&gt;
+        </f:variable>
+        <sg:example colorScheme="true" codePreview="true" codeLanguage="html" customCode="{indicatorTablesCode}" decodeEntities="true">
+            <div class="table-fit">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Service 1</td>
+                            <td><typo3-backend-status-indicator state="success" live></typo3-backend-status-indicator> Online</td>
+                        </tr>
+                        <tr>
+                            <td>Service 2</td>
+                            <td><typo3-backend-status-indicator state="warning"></typo3-backend-status-indicator> Degraded</td>
+                        </tr>
+                        <tr>
+                            <td>Service 3</td>
+                            <td><typo3-backend-status-indicator state="info" loading></typo3-backend-status-indicator> Restarting</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </sg:example>
+    </div>
+
+</f:section>
+
+</html>

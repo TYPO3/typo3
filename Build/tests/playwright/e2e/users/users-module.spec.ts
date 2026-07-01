@@ -192,7 +192,7 @@ test.describe('Backend Users module', () => {
     await expect(contentFrame.locator('#typo3-backend-user-list')).toBeVisible();
 
     const username = 'admin';
-    const adminRow = contentFrame.locator('#typo3-backend-user-list tr', { has: contentFrame.getByRole('link', { name: 'Klaus Admin online (admin)' }) });
+    const adminRow = contentFrame.locator('#typo3-backend-user-list tr', { has: contentFrame.getByRole('link', { name: 'Klaus Admin (admin)' }) });
 
     await contentFrame.locator('button[value="reset-filters"]').click();
 
@@ -203,7 +203,7 @@ test.describe('Backend Users module', () => {
 
     await test.step('test the edit link', async () => {
       await contentFrame.getByRole('button', { name: 'Reset' }).click();
-      await adminRow.getByRole('link', { name: 'Klaus Admin online (admin)' }).click();
+      await adminRow.getByRole('link', { name: 'Klaus Admin (admin)' }).click();
       await openAndCloseTheEditForm(contentFrame, username);
     });
   });
@@ -258,7 +258,7 @@ test.describe('Backend Users module', () => {
 
       // locator('#typo3-backend-user-list-compare').getByRole('row').locator('button[name="uid"]')
       await contentFrame.locator('#typo3-backend-user-list-compare').getByTitle('Remove from compare list').nth(1).click();
-      await expect(page.frameLocator('iframe[name="list_frame"]').getByRole('row', { name: 'Open context menu Klaus Admin online (admin)', exact: true }).getByRole('link')).not.toBeVisible();
+      await expect(page.frameLocator('iframe[name="list_frame"]').getByRole('row', { name: 'online Open context menu Klaus Admin (admin)', exact: true }).getByRole('link')).not.toBeVisible();
 
       await contentFrame.locator('#typo3-backend-user-list-compare').getByTitle('Remove from compare list').first().click();
       await expect(contentFrame.locator('#typo3-backend-user-list-compare')).not.toBeVisible();

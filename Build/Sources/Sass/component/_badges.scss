@@ -51,6 +51,8 @@
     --typo3-badge-font-size: calc(1em / 12 * 11);
     background-color: var(--typo3-badge-bg);
     display: inline-flex;
+    gap: .35em;
+    align-items: center;
     padding: var(--typo3-badge-padding-y) var(--typo3-badge-padding-x);
     font-size: var(--typo3-badge-font-size);
     font-weight: 600;

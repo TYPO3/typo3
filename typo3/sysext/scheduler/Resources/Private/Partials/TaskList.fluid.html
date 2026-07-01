@@ -319,7 +319,8 @@
                                     <td class="align-top col-min">
                                         <f:for each="{task.statuses}" as="status">
                                             <f:variable name="statusTitle"><f:if condition="{status.message}"><f:translate key="{status.message}" arguments="{status.messageArguments}" /></f:if></f:variable>
-                                            <span class="badge badge-{status.severity.cssClass}" title="{statusTitle}">
+                                            <span class="badge badge-default" title="{statusTitle}">
+                                                <typo3-backend-status-indicator state="{status.state}"></typo3-backend-status-indicator>
                                                 <f:translate key="{status.label}" />
                                             </span>
                                         </f:for>
