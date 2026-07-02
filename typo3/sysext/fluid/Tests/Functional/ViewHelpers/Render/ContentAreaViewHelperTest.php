@@ -103,6 +103,20 @@ final class ContentAreaViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function contentAreaCanBeUsedWithForViewHelperIteration(): void
+    {
+        $request = $this->createRequest();
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{contentArea}" as="record" iteration="iteration">{iteration.index}:{iteration.cycle}/{iteration.total}:{record.fullType}|</f:for>');
+        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+
+        $view = new TemplateView($context);
+        $view->assign('contentArea', $this->createContentArea());
+
+        self::assertSame('0:1/2:tt_content.text|1:2/2:tt_content.header|', $view->render());
+    }
+
+    #[Test]
     public function renderContentAreaWithEmptyRecordsDispatchesEvent(): void
     {
         $this->registerEventListeners();
