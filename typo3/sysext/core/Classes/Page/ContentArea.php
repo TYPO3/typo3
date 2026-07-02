@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Core\Page;
  *
  * @internal This is not part of TYPO3 Core API.
  */
-final class ContentArea implements \IteratorAggregate
+final class ContentArea implements \IteratorAggregate, \Countable
 {
     public function __construct(
         private readonly string $identifier,
@@ -89,5 +89,10 @@ final class ContentArea implements \IteratorAggregate
     public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->records);
+    }
+
+    public function count(): int
+    {
+        return count($this->records);
     }
 }
