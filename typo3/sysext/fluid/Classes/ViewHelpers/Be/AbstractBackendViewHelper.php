@@ -25,17 +25,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * The abstract base class for all backend ViewHelpers
  * Note: backend ViewHelpers are still experimental!
+ *
+ * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0.
  */
 abstract class AbstractBackendViewHelper extends AbstractViewHelper
 {
     /**
      * Gets instance of template if exists or create a new one.
      * Saves instance in viewHelperVariableContainer
-     *
-     * @todo: deprecate. This should be obsolete with the new ModuleTemplate view strategy.
      */
     public function getModuleTemplate(): ModuleTemplate
     {
+        trigger_error(
+            'AbstractBackendViewHelper::getModuleTemplate() has been deprecated in TYPO3 v15.0 and will be removed in v16.0.',
+            E_USER_DEPRECATED
+        );
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($viewHelperVariableContainer->exists(self::class, 'ModuleTemplate')) {
             $moduleTemplate = $viewHelperVariableContainer->get(self::class, 'ModuleTemplate');
@@ -52,6 +56,10 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper
      */
     public function getPageRenderer(): PageRenderer
     {
+        trigger_error(
+            'AbstractBackendViewHelper::getPageRenderer() has been deprecated in TYPO3 v15.0 and will be removed in v16.0.',
+            E_USER_DEPRECATED
+        );
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($viewHelperVariableContainer->exists(self::class, 'PageRenderer')) {
             $pageRenderer = $viewHelperVariableContainer->get(self::class, 'PageRenderer');

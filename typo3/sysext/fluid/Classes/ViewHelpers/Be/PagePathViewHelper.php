@@ -21,7 +21,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3Fluid\Fluid\Core\Parser\ParsingState;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperNodeInitializedEventInterface;
 
 /**
  * ViewHelper which returns the current page path as known from TYPO3 backend modules.
@@ -33,9 +36,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * **Note:** This ViewHelper is experimental!
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-pagepath
- * @todo: Candidate to deprecate? The page info is typically displayed in doc header, done by ModuleTemplate in controllers.
+ * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0.
  */
-final class PagePathViewHelper extends AbstractViewHelper
+final class PagePathViewHelper extends AbstractViewHelper implements ViewHelperNodeInitializedEventInterface
 {
     /**
      * This ViewHelper renders HTML, thus output must not be escaped
@@ -68,6 +71,14 @@ final class PagePathViewHelper extends AbstractViewHelper
         }
         $pagePath .= '</span>';
         return $pagePath;
+    }
+
+    public static function nodeInitializedEvent(ViewHelperNode $node, array $arguments, ParsingState $parsingState): void
+    {
+        trigger_error(
+            '<f:be.pagePath> has been deprecated in TYPO3 v15.0 and will be removed in v16.0.',
+            E_USER_DEPRECATED
+        );
     }
 
     private static function getLanguageService(): LanguageService

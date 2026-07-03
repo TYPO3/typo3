@@ -85,6 +85,16 @@ return [
             'Deprecation-77732-ExtbaseArrayUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper' => [
+        'restFiles' => [
+            'Deprecation-110148-ExperimentalBackendViewHelpers.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\ViewHelpers\Be\PagePathViewHelper' => [
+        'restFiles' => [
+            'Deprecation-110148-ExperimentalBackendViewHelpers.rst',
+        ],
+    ],
     'TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper' => [
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
