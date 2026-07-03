@@ -22,7 +22,6 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Security\HashScope;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -556,7 +555,7 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
 
     private function enrichArgumentsWithChash($arguments): array
     {
-        $arguments['cHash'] = GeneralUtility::makeInstance(CacheHashCalculator::class)
+        $arguments['cHash'] = $this->get(CacheHashCalculator::class)
             ->generateForParameters(HttpUtility::buildQueryString($arguments));
         return $arguments;
     }

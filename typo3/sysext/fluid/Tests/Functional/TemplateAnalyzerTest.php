@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Fluid\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Service\TemplateFinder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -54,7 +53,7 @@ final class TemplateAnalyzerTest extends FunctionalTestCase
     public function allCoreTemplatesContainNoAnalysableFluidErrors(): void
     {
         $templateFinder = $this->get(TemplateFinder::class);
-        $renderingContextFactory = GeneralUtility::makeInstance(RenderingContextFactory::class);
+        $renderingContextFactory = $this->get(RenderingContextFactory::class);
         $templates = $templateFinder->findTemplatesInAllPackages();
         $results = (new TemplateValidator())->validateTemplateFiles(
             $templates,
@@ -68,7 +67,7 @@ final class TemplateAnalyzerTest extends FunctionalTestCase
     #[Test]
     public function templateFailureWillBeReportedAsError(): void
     {
-        $renderingContextFactory = GeneralUtility::makeInstance(RenderingContextFactory::class);
+        $renderingContextFactory = $this->get(RenderingContextFactory::class);
         $templates = array_values($this->templateFixtures);
         $results = (new TemplateValidator())->validateTemplateFiles(
             $templates,

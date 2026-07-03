@@ -168,7 +168,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
     #[Test]
     public function preparedStatementWorksIfRetrievedThroughRuntimeCacheAndPriorResultSetNotFreedAfterIncompleteDataRetrieval(): void
     {
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
+        $runtimeCache = $this->get(CacheManager::class)->getCache('runtime');
         $cacheIdentifier = 'prepared-statement-through-runtime-cache';
         $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()

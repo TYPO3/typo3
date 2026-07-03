@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendUtilityTest extends FunctionalTestCase
@@ -423,7 +422,7 @@ final class BackendUtilityTest extends FunctionalTestCase
     public function pageTSconfigCacheWorks(): void
     {
         /** @var FrontendInterface $cache */
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
+        $cache = $this->get(CacheManager::class)->getCache('runtime');
 
         BackendUtility::getPagesTSconfig(1);
         $cacheKey1 = $cache->get('pageTsConfig-pid-to-hash-1');

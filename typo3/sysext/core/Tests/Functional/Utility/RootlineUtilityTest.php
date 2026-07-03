@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -1583,7 +1582,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         ];
         $result = (new RootlineUtility(1001, '1001-9010'))->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
-        self::assertSame('second', GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($result[0]['uid'])->getIdentifier());
+        self::assertSame('second', $this->get(SiteFinder::class)->getSiteByRootPageId($result[0]['uid'])->getIdentifier());
     }
 
     #[Test]
@@ -1611,7 +1610,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         ];
         $result = (new RootlineUtility(1010, '1010-9020'))->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
-        self::assertSame('second', GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($result[0]['uid'])->getIdentifier());
+        self::assertSame('second', $this->get(SiteFinder::class)->getSiteByRootPageId($result[0]['uid'])->getIdentifier());
     }
 
     #[Test]

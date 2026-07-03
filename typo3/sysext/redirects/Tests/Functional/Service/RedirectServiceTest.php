@@ -106,7 +106,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         $frontendUserAuthentication = new FrontendUserAuthentication();
         $frontendUserAuthentication->setLogger($logger);
 
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $siteFinder = $this->get(SiteFinder::class);
         $uri = new Uri('https://acme.com/redirect-to-access-restricted-site');
         $request = $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest($uri))
             ->withAttribute('site', $siteFinder->getSiteByRootPageId(1))
@@ -869,7 +869,7 @@ final class RedirectServiceTest extends FunctionalTestCase
 
         $frontendUserAuthentication = new FrontendUserAuthentication();
 
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $siteFinder = $this->get(SiteFinder::class);
         $uri = new Uri('https://acme.com/non-existing-page');
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest($uri))
             ->withAttribute('site', $siteFinder->getSiteByRootPageId(1))

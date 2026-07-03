@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -91,7 +90,7 @@ final class GraphicalFunctionsResizeTest extends FunctionalTestCase
         int $expectedWidth,
         int $expectedHeight
     ): void {
-        $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+        $graphicalFunctions = $this->get(GraphicalFunctions::class);
         if (!$graphicalFunctions->isProcessingEnabled()) {
             self::markTestSkipped('Image processor (ImageMagick/GraphicsMagick) is not enabled.');
         }

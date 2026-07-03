@@ -2241,7 +2241,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     private function setWorkspaceId(int $workspaceId): void
     {
         $GLOBALS['BE_USER']->workspace = $workspaceId;
-        GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
+        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 
     private function getTestRecord(): array

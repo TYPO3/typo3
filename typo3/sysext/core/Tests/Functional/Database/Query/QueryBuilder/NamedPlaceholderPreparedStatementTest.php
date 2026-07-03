@@ -40,7 +40,7 @@ final class NamedPlaceholderPreparedStatementTest extends FunctionalTestCase
             NamedParameterNotSupportedForPreparedStatementException::new('dcValue1')
         );
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->get(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()

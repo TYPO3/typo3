@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -62,7 +61,7 @@ final class FileMetadataOverlayAspectTest extends AbstractTestCase
                 __DIR__ . '/../Fixtures/Images/kasper-skarhoj1.jpg',
                 Environment::getPublicPath() . '/fileadmin/kasper-skarhoj1.jpg'
             );
-            $conn = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file');
+            $conn = $this->get(ConnectionPool::class)->getConnectionForTable('sys_file');
             $conn->insert(
                 'sys_file',
                 [

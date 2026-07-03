@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -62,7 +61,7 @@ final class PreviewModuleTest extends FunctionalTestCase
         $previewModule->enrich($request);
 
         /** @var UserAspect $frontendUserAspect */
-        $frontendUserAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
+        $frontendUserAspect = $this->get(Context::class)->getAspect('frontend.user');
 
         // Check groups inside user object
         $groupUidsInFrontendUser = array_column($frontendUser->userGroups, 'uid');

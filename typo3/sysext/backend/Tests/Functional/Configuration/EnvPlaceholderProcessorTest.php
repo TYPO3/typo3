@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Configuration;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvPlaceholderProcessor;
 use TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvVariableProcessor;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class EnvPlaceholderProcessorTest extends FunctionalTestCase
@@ -31,23 +30,23 @@ final class EnvPlaceholderProcessorTest extends FunctionalTestCase
         $context = getenv('TYPO3_CONTEXT');
         self::assertEquals('Testing', $context);
 
-        $subject = GeneralUtility::makeInstance(EnvVariableProcessor::class);
+        $subject = new EnvVariableProcessor();
         self::assertEquals('Testing', $subject->process('TYPO3_CONTEXT', []));
     }
 
     #[Test]
     public function canProcessEnvs(): void
     {
-        $subject = GeneralUtility::makeInstance(EnvPlaceholderProcessor::class);
+        $subject = $this->get(EnvPlaceholderProcessor::class);
         self::assertEquals('Testing', $subject->process('%env(TYPO3_CONTEXT)%'));
 
-        $subject = GeneralUtility::makeInstance(EnvPlaceholderProcessor::class);
+        $subject = $this->get(EnvPlaceholderProcessor::class);
         self::assertEquals('prefix Testing', $subject->process('prefix %env(TYPO3_CONTEXT)%'));
 
-        $subject = GeneralUtility::makeInstance(EnvPlaceholderProcessor::class);
+        $subject = $this->get(EnvPlaceholderProcessor::class);
         self::assertEquals('Testing suffix', $subject->process('%env(TYPO3_CONTEXT)% suffix'));
 
-        $subject = GeneralUtility::makeInstance(EnvPlaceholderProcessor::class);
+        $subject = $this->get(EnvPlaceholderProcessor::class);
         self::assertEquals('prefix Testing Testing suffix', $subject->process('prefix %env(TYPO3_CONTEXT)% %env(TYPO3_CONTEXT)% suffix'));
     }
 
@@ -55,7 +54,7 @@ final class EnvPlaceholderProcessorTest extends FunctionalTestCase
     public function failsOnInvalidSingleEnv(): void
     {
         $this->expectException(\UnexpectedValueException::class);
-        $subject = GeneralUtility::makeInstance(EnvVariableProcessor::class);
+        $subject = new EnvVariableProcessor();
         $result = $subject->process('MISSING', []);
         self::assertNull($result);
     }
@@ -63,7 +62,7 @@ final class EnvPlaceholderProcessorTest extends FunctionalTestCase
     #[Test]
     public function doesNotPerformStringReplacementOnMissingEnvs(): void
     {
-        $subject = GeneralUtility::makeInstance(EnvPlaceholderProcessor::class);
+        $subject = $this->get(EnvPlaceholderProcessor::class);
         $result = $subject->process('prefix %env(TYPO3_CONTEXT)% %env(TYPO3_missing)% suffix');
         self::assertEquals('prefix Testing %env(TYPO3_missing)% suffix', $result);
     }

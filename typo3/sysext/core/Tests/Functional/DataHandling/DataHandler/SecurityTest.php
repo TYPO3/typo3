@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -49,7 +48,7 @@ final class SecurityTest extends FunctionalTestCase
             ->setAspect('workspace', new WorkspaceAspect(0));
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $this->actionService = GeneralUtility::makeInstance(ActionService::class);
+        $this->actionService = new ActionService();
     }
 
     public static function crossSiteScriptingDataProvider(): array

@@ -212,7 +212,7 @@ final class RecordFactoryTest extends FunctionalTestCase
         $eventListener = $container->get(ListenerProvider::class);
         $eventListener->addListener(RecordCreationEvent::class, 'record-creation-listener');
 
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $pageRepository = $this->get(PageRepository::class);
         $dbRow = $pageRepository->getPage(1);
         self::assertNull($dbRow['customProperty'] ?? null);
 
@@ -255,7 +255,7 @@ final class RecordFactoryTest extends FunctionalTestCase
         $eventListener->addListener(RecordCreationEvent::class, 'record-creation-listener-stop-propagation');
         $eventListener->addListener(RecordCreationEvent::class, 'record-creation-listener-not-executed');
 
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $pageRepository = $this->get(PageRepository::class);
         $dbRow = $pageRepository->getPage(3);
         $subject = $this->get(RecordFactory::class);
         $result = $subject->createFromDatabaseRow('pages', $dbRow);

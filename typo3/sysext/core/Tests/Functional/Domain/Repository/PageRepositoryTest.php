@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -122,7 +121,7 @@ final class PageRepositoryTest extends FunctionalTestCase
     {
         // Restrict the mount point overlay target (page 1001, referenced by mount point page 1003)
         // to a frontend user group ...
-        GeneralUtility::makeInstance(ConnectionPool::class)
+        $this->get(ConnectionPool::class)
             ->getConnectionForTable('pages')
             ->update('pages', ['fe_group' => '1'], ['uid' => 1001]);
         // ... and act as a visitor that is not a member of that group, so the group access

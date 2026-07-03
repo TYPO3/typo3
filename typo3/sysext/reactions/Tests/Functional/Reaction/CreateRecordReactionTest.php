@@ -76,7 +76,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     public function reactFailsOnInvalidTable(): void
     {
         $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('5d37024e-2af4-4323-abcd-494a9ec37927');
-        $reaction = GeneralUtility::makeInstance(CreateRecordReaction::class);
+        $reaction = $this->get(CreateRecordReaction::class);
         $request = new ServerRequest('http://localhost/', 'POST');
         $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
 
@@ -89,7 +89,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     public function reactFailsOnInvalidFields(): void
     {
         $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('9d5167ef-d9f6-4d02-9dd3-b132e50492f1');
-        $reaction = GeneralUtility::makeInstance(CreateRecordReaction::class);
+        $reaction = $this->get(CreateRecordReaction::class);
         $request = new ServerRequest('http://localhost/', 'POST');
         $request = $request->withHeader('x-api-key', $reactionRecord->toArray()['secret']);
 
@@ -301,7 +301,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     #[Test]
     public function replacePlaceHolders(mixed $value, array $payload, string $expected): void
     {
-        $subject = GeneralUtility::makeInstance(CreateRecordReaction::class);
+        $subject = $this->get(CreateRecordReaction::class);
         self::assertSame($expected, $subject->replacePlaceHolders($value, $payload));
     }
 }

@@ -57,7 +57,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
         $argument->setValue($argumentValue);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -87,7 +87,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
         $argument->setValue($argumentValue);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -116,7 +116,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
         $argument->setValue(null);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -145,7 +145,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
         $argument->setValue(null);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -180,7 +180,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['file' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -216,7 +216,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['file' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -253,7 +253,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['file' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -285,7 +285,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument = new Argument('FileReferenceMultiple', FileReferencePropertyMultiple::class);
         $argument->setValue($argumentValue);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -315,7 +315,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument = new Argument('FileReferenceMultiple', FileReferencePropertyMultiple::class);
         $argument->setValue($argumentValue);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -352,7 +352,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -390,7 +390,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -429,7 +429,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -468,7 +468,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -508,7 +508,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -548,7 +548,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -588,7 +588,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -629,7 +629,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -670,7 +670,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => [$uploadedFile1, $uploadedFile2]]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -713,7 +713,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => [$uploadedFile1, $uploadedFile2, $uploadedFile3]]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -757,7 +757,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => [$uploadedFile1, $uploadedFile2]]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -793,7 +793,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['files' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -829,7 +829,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['file' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -869,7 +869,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['file' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -906,7 +906,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['file' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 
@@ -944,7 +944,7 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         $argument->setValue($argumentValue);
         $argument->setUploadedFiles(['file' => $uploadedFile]);
 
-        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validationResolver = $this->get(ValidatorResolver::class);
         $validator = $validationResolver->createValidator(ConjunctionValidator::class);
         $argument->setValidator($validator);
 

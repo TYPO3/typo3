@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Pagination\QueryBuilderPaginator;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class QueryBuilderPaginatorTest extends FunctionalTestCase
@@ -41,7 +40,7 @@ final class QueryBuilderPaginatorTest extends FunctionalTestCase
     #[DataProvider('paginationReturnsCorrectItemsDataProvider')]
     public function paginationReturnsCorrectItems(int $currentPage, int $itemsPerPage, array $expectedUids): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_pagination_item');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_pagination_item');
         $queryBuilder = $queryBuilder
             ->select('*')
             ->from('tx_pagination_item')
@@ -181,7 +180,7 @@ final class QueryBuilderPaginatorTest extends FunctionalTestCase
 
     private function getQueryBuilder()
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_pagination_item');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('tx_pagination_item');
         $queryBuilder = $queryBuilder
             ->select('*')
             ->from('tx_pagination_item')
