@@ -1,0 +1,9 @@
+storages:
+  1:
+    name: fileadmin
+    default: true
+    processingFolder: '_processed_/'
+    configuration:
+      basePath: fileadmin/
+      pathType: relative
+      caseSensitive: true

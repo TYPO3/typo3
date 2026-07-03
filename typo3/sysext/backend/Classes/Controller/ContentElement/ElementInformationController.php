@@ -351,7 +351,7 @@ class ElementInformationController
                 // If there is no metadata record, skip it
                 if ($metaData !== []) {
                     $fileMetadataSchema = $this->tcaSchemaFactory->get('sys_file_metadata');
-                    $allowedFields = $this->getFieldList('sys_file_metadata', $metaData);
+                    $allowedFields = $this->getVisibleFieldList('sys_file_metadata', $metaData, (string)$this->fileObject->getType());
 
                     foreach ($metaData as $name => $value) {
                         if (!in_array($name, $allowedFields, true)) {
@@ -363,6 +363,11 @@ class ElementInformationController
                             continue;
                         }
                         if (!$fileMetadataSchema->hasField($name)) {
+                            continue;
+                        }
+
+                        // already handled explicitly above with proper "px" unit -> skip
+                        if ($this->fileObject->isType(FileType::IMAGE) && in_array($name, ['width', 'height'], true)) {
                             continue;
                         }
 
@@ -386,6 +391,18 @@ class ElementInformationController
      */
     protected function getFieldList(string $table, array $row): array
     {
+        return $this->searchableSchemaFieldsCollector->getUniqueFieldList(
+            $table,
+            $this->getVisibleFieldList($table, $row),
+            false
+        );
+    }
+
+    /**
+     * Get the fields of the record type that are visible to the current user
+     */
+    private function getVisibleFieldList(string $table, array $row, ?string $recordType = null): array
+    {
         $fieldNamesToExclude = [];
         if ($this->tcaSchemaFactory->has($table)) {
             $schema = $this->tcaSchemaFactory->get($table);
@@ -401,11 +418,7 @@ class ElementInformationController
             }
         }
 
-        return $this->searchableSchemaFieldsCollector->getUniqueFieldList(
-            $table,
-            $this->visibleSchemaFieldsCollector->getFieldNames($table, $row, $fieldNamesToExclude),
-            false
-        );
+        return $this->visibleSchemaFieldsCollector->getFieldNames($table, $row, $fieldNamesToExclude, $recordType);
     }
 
     /**

@@ -34,7 +34,11 @@ readonly class VisibleSchemaFieldsCollector
         private RecordFactory $recordFactory,
     ) {}
 
-    public function getFields(string $schemaName, array $row, array $exlcudeFieldNames = []): FieldCollection
+    /**
+     * @param string|null $recordType Record type to use instead of the one resolved from $row, e.g. for
+     *                                schemas whose type is defined by a field of a related record ("file:type")
+     */
+    public function getFields(string $schemaName, array $row, array $exlcudeFieldNames = [], ?string $recordType = null): FieldCollection
     {
         if (!$this->schemaFactory->has($schemaName)) {
             return new FieldCollection();
@@ -44,9 +48,10 @@ readonly class VisibleSchemaFieldsCollector
         $schema = $this->schemaFactory->get($schemaName);
         $fields = $schema->getFields();
         $record = $this->recordFactory->createRawRecord($schemaName, $row);
+        $recordType ??= $record->getRecordType() ?? '';
 
-        if ($schema->hasSubSchema($record->getRecordType() ?? '')) {
-            $fields = $schema->getSubSchema($record->getRecordType())->getFields();
+        if ($schema->hasSubSchema($recordType)) {
+            $fields = $schema->getSubSchema($recordType)->getFields();
         }
 
         // FieldCollection is immutable - to remove fields we transform it to an array
@@ -75,9 +80,9 @@ readonly class VisibleSchemaFieldsCollector
     /**
      * @return string[]
      */
-    public function getFieldNames(string $schemaName, array $row, array $excludeFieldNames = []): array
+    public function getFieldNames(string $schemaName, array $row, array $excludeFieldNames = [], ?string $recordType = null): array
     {
-        return array_map(static fn(FieldTypeInterface $field): string => $field->getName(), iterator_to_array($this->getFields($schemaName, $row, $excludeFieldNames)));
+        return array_map(static fn(FieldTypeInterface $field): string => $field->getName(), iterator_to_array($this->getFields($schemaName, $row, $excludeFieldNames, $recordType)));
     }
 
     protected function getBackendUser(): BackendUserAuthentication

@@ -1,0 +1,8 @@
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","missing"
+,1,0,1,2,"/user_upload/image.svg","4203c3a4ab25586c605bace91dd4516df5b9394f","85b130b44ae1a7dae9348a42b3d4a68e5450fc44","svg","image/svg+xml","image.svg","ab3be860e0f261c7e1b54fa99d58185b8c6d08eb",144,0
+,2,0,1,4,"/user_upload/video.mp4","89550eeb7d119969d2d205c82b987936fb62ef2c","85b130b44ae1a7dae9348a42b3d4a68e5450fc44","mp4","video/mp4","video.mp4","40276cb3be8a6f31ca9c63f205c40f9f18409559",16,0
+"sys_file_metadata"
+,"uid","pid","file","sys_language_uid","l10n_parent","width","height","title","duration"
+,1,0,1,0,0,1200,800,"Orange rectangle",0
+,2,0,2,0,0,0,0,"Some video",42

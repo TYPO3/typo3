@@ -121,11 +121,25 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
             [],
             ['type', 'foo'],
         ];
+        yield 'given record type overrides the type of the record' => [
+            'type,foo',
+            ['type' => 'invalid'],
+            [],
+            ['type', 'foo'],
+            'aType',
+        ];
+        yield 'given unknown record type falls back to all fields' => [
+            'type,foo',
+            [],
+            [],
+            ['type', 'foo', 'bar', 'baz', 'hidediff', 'readonly', 'sys_language_uid', 'l10n_parent'],
+            'invalid',
+        ];
     }
 
     #[DataProvider('expectedFieldCollectionIsReturnedDataProvider')]
     #[Test]
-    public function expectedFieldCollectionIsReturned(string $showitem, array $record, array $excludeFields, array $expectedFields): void
+    public function expectedFieldCollectionIsReturned(string $showitem, array $record, array $excludeFields, array $expectedFields, ?string $recordType = null): void
     {
         $schemaFactory = $this->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
@@ -158,7 +172,7 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
         $fieldsCollector = $this->get(VisibleSchemaFieldsCollector::class);
         $fieldCollection = iterator_to_array($fieldsCollector->getFields('aTable', array_replace_recursive([
             'uid' => 1, 'pid' => 1, 'sys_language_uid' => 0, 'l10n_parent' => 0, 'type' => 'aType', 'foo' => '123', 'bar' => '456', 'baz' => '789',
-        ], $record), $excludeFields));
+        ], $record), $excludeFields, $recordType));
         self::assertEquals($expectedFields, array_keys($fieldCollection));
     }
 }
