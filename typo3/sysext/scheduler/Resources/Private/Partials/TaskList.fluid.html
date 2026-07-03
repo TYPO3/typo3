@@ -342,7 +342,7 @@
                                             <f:then>-</f:then>
                                             <f:else>{task.frequency}</f:else>
                                         </f:if>
-                                        <div><span class="badge badge-secondary">{task.priorityLabel}</span></div>
+                                        <div><span class="badge badge-secondary">{f:translate(key: task.priorityLabel, default: task.priorityLabel)}</span></div>
                                     </td>
                                     <td class="align-top col-min">
                                         <f:if condition="{task.multiple}">

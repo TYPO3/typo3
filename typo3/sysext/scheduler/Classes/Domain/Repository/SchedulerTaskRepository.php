@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -674,15 +673,10 @@ readonly class SchedulerTaskRepository
         if ($field instanceof StaticSelectFieldType) {
             foreach ($field->getItems() as $item) {
                 if ((int)$item->getValue() === $priority) {
-                    return $this->getLanguageService()?->sL($item->getLabel()) ?? (string)$priority;
+                    return $item->getLabel();
                 }
             }
         }
         return (string)$priority;
-    }
-
-    private function getLanguageService(): ?LanguageService
-    {
-        return $GLOBALS['LANG'] ?? null;
     }
 }
