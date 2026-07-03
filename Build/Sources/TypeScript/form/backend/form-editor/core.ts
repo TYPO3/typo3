@@ -55,6 +55,8 @@ export type EditorConfiguration = {
   iconIdentifier?: string,
   isSortable?: boolean,
   label?: string,
+  maxItems?: number,
+  minItems?: number,
   multiSelection?: boolean,
   placeholder?: string,
   propertyPath?: string,
@@ -347,6 +349,35 @@ export class Utility {
   }
 }
 
+/**
+ * Property validators that are added implicitly (not through the form
+ * configuration) and therefore must always be enforced, independent of the
+ * configured "propertyValidatorsMode". Otherwise a passing sibling validator
+ * in "OR" mode would suppress their result.
+ */
+const implicitPropertyValidators: ReadonlyArray<string> = ['ItemCount'];
+
+/**
+ * Returns the property validators configured for an inspector editor and
+ * implicitly adds the "ItemCount" validator whenever the editor defines
+ * "minItems" or "maxItems" constraints. This way the number of selected
+ * items is validated automatically, without requiring an explicit
+ * "propertyValidators" entry in the form configuration.
+ */
+function collectEditorPropertyValidators(editor: EditorConfiguration): ValidatorsConfig {
+  const validators: ValidatorsConfig = Array.isArray(editor.propertyValidators)
+    ? [...editor.propertyValidators]
+    : [];
+
+  const hasItemCountConstraints = !utility.isUndefinedOrNull(editor.minItems)
+    || !utility.isUndefinedOrNull(editor.maxItems);
+  if (hasItemCountConstraints && !validators.includes('ItemCount')) {
+    validators.push('ItemCount');
+  }
+
+  return validators;
+}
+
 export class PropertyValidationService {
   private validators: Validators = {};
 
@@ -474,25 +505,48 @@ export class PropertyValidationService {
       && Array.isArray(propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators)
     ) {
       configuration = propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].configuration;
-      for (let i = 0, len = propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators.length; i < len; ++i) {
-        const validatorIdentifier = propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators[i];
+      const registeredValidators = propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators;
+
+      // Results of validators that participate in the configured
+      // "propertyValidatorsMode" (AND / OR).
+      const modeValidationResults: ValidationResults = [];
+      // Results of validators that are added implicitly (e.g. "ItemCount" for
+      // "minItems" / "maxItems") and must always be enforced, independent of
+      // the configured mode.
+      const enforcedValidationResults: ValidationResults = [];
+      let modeValidatorCount = 0;
+
+      for (let i = 0, len = registeredValidators.length; i < len; ++i) {
+        const validatorIdentifier = registeredValidators[i];
         if (typeof this.validators[validatorIdentifier] !== 'function') {
           continue;
         }
-        const validationResult = this.validators[validatorIdentifier](formElement, propertyPath);
+        const isImplicitValidator = implicitPropertyValidators.includes(validatorIdentifier);
+        if (!isImplicitValidator) {
+          ++modeValidatorCount;
+        }
 
-        if (utility.isNonEmptyString(validationResult)) {
-          validationResults.push(validationResult);
+        const validationResult = this.validators[validatorIdentifier](formElement, propertyPath);
+        if (!utility.isNonEmptyString(validationResult)) {
+          continue;
+        }
+        if (isImplicitValidator) {
+          enforcedValidationResults.push(validationResult);
+        } else {
+          modeValidationResults.push(validationResult);
         }
       }
-    }
 
-    if (
-      validationResults.length > 0
-      && configuration.propertyValidatorsMode === 'OR'
-      && validationResults.length !== propertyValidationServiceRegisteredValidators[formElementIdentifierPath][propertyPath].validators.length
-    ) {
-      return [];
+      // In "OR" mode a single passing mode-based validator marks the property
+      // as valid. Implicit validators are excluded from this and are always
+      // enforced.
+      const orModeSatisfied = configuration.propertyValidatorsMode === 'OR'
+        && modeValidationResults.length > 0
+        && modeValidationResults.length !== modeValidatorCount;
+      if (!orModeSatisfied) {
+        validationResults.push(...modeValidationResults);
+      }
+      validationResults.push(...enforcedValidationResults);
     }
 
     return validationResults;
@@ -598,22 +652,24 @@ export class PropertyValidationService {
             continue;
           }
           for (let j = 0, len2 = formElementTypeDefinition.propertyCollections[collectionName][i].editors.length; j < len2; ++j) {
-            if (!Array.isArray(formElementTypeDefinition.propertyCollections[collectionName][i].editors[j].propertyValidators)) {
+            const editor = formElementTypeDefinition.propertyCollections[collectionName][i].editors[j];
+            const propertyValidators = collectEditorPropertyValidators(editor);
+            if (propertyValidators.length === 0) {
               continue;
             }
             const propertyValidatorConfiguration: PropertyValidatorConfiguration = {
               propertyValidatorsMode: 'AND'
             };
             if (
-              !utility.isUndefinedOrNull(formElementTypeDefinition.propertyCollections[collectionName][i].editors[j].propertyValidatorsMode)
-              && formElementTypeDefinition.propertyCollections[collectionName][i].editors[j].propertyValidatorsMode === 'OR'
+              !utility.isUndefinedOrNull(editor.propertyValidatorsMode)
+              && editor.propertyValidatorsMode === 'OR'
             ) {
               propertyValidatorConfiguration.propertyValidatorsMode = 'OR';
             }
             this.addValidatorIdentifiersToFormElementProperty(
               formElement,
-              formElementTypeDefinition.propertyCollections[collectionName][i].editors[j].propertyValidators,
-              formElementTypeDefinition.propertyCollections[collectionName][i].editors[j].propertyPath,
+              propertyValidators,
+              editor.propertyPath,
               formElementTypeDefinition.propertyCollections[collectionName][i].identifier,
               collectionName,
               propertyValidatorConfiguration
@@ -1071,7 +1127,9 @@ export class Repository {
     if (registerPropertyValidators) {
       if (Array.isArray(formElementTypeDefinition.editors)) {
         for (let i = 0, len1 = formElementTypeDefinition.editors.length; i < len1; ++i) {
-          if (!Array.isArray(formElementTypeDefinition.editors[i].propertyValidators)) {
+          const editor = formElementTypeDefinition.editors[i];
+          const propertyValidators = collectEditorPropertyValidators(editor);
+          if (propertyValidators.length === 0) {
             continue;
           }
 
@@ -1079,16 +1137,16 @@ export class Repository {
             propertyValidatorsMode: 'AND'
           };
           if (
-            !utility.isUndefinedOrNull(formElementTypeDefinition.editors[i].propertyValidatorsMode)
-            && formElementTypeDefinition.editors[i].propertyValidatorsMode === 'OR'
+            !utility.isUndefinedOrNull(editor.propertyValidatorsMode)
+            && editor.propertyValidatorsMode === 'OR'
           ) {
             propertyValidatorConfiguration.propertyValidatorsMode = 'OR';
           }
 
           propertyValidationService.addValidatorIdentifiersToFormElementProperty(
             formElement,
-            formElementTypeDefinition.editors[i].propertyValidators,
-            formElementTypeDefinition.editors[i].propertyPath,
+            propertyValidators,
+            editor.propertyPath,
             undefined,
             undefined,
             propertyValidatorConfiguration
@@ -1732,7 +1790,9 @@ export class Factory {
     if (registerPropertyValidators) {
       if (Array.isArray(formElementTypeDefinition.editors)) {
         for (let i = 0, len1 = formElementTypeDefinition.editors.length; i < len1; ++i) {
-          if (!Array.isArray(formElementTypeDefinition.editors[i].propertyValidators)) {
+          const editor = formElementTypeDefinition.editors[i];
+          const propertyValidators = collectEditorPropertyValidators(editor);
+          if (propertyValidators.length === 0) {
             continue;
           }
 
@@ -1740,16 +1800,16 @@ export class Factory {
             propertyValidatorsMode: 'AND'
           };
           if (
-            !utility.isUndefinedOrNull(formElementTypeDefinition.editors[i].propertyValidatorsMode)
-            && formElementTypeDefinition.editors[i].propertyValidatorsMode === 'OR'
+            !utility.isUndefinedOrNull(editor.propertyValidatorsMode)
+            && editor.propertyValidatorsMode === 'OR'
           ) {
             propertyValidatorConfiguration.propertyValidatorsMode = 'OR';
           }
 
           propertyValidationService.addValidatorIdentifiersToFormElementProperty(
             formElement,
-            formElementTypeDefinition.editors[i].propertyValidators,
-            formElementTypeDefinition.editors[i].propertyPath,
+            propertyValidators,
+            editor.propertyPath,
             undefined,
             undefined,
             propertyValidatorConfiguration

@@ -13,7 +13,7 @@
 Introduction
 ============
 
-Shows a popup window to select a record (e.g. pages or tt_content records) as you know it from within the form engine.
+Shows a popup window to select records (e.g. pages or tt_content records) as you know it from within the form engine.
 
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.typo3winbrowsereditor-properties:
@@ -164,8 +164,13 @@ propertyValidators
      .. code-block:: yaml
 
          propertyValidators:
-           10: 'Integer'
+           10: 'IntegerList'
            20: 'FormElementIdentifierWithinCurlyBracesExclusive'
+
+      When :ref:`minItems<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.minItems-typo3winbrowsereditor>`
+      or :ref:`maxItems<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.maxItems-typo3winbrowsereditor>`
+      is configured, the ``ItemCount`` validator is added automatically and does
+      not need to be listed in ``propertyValidators``.
 
 
 .. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidatorsmode-typo3winbrowsereditor:
@@ -221,3 +226,53 @@ description
 
 :aspect:`Description`
       A text which is shown at the bottom of the ``inspector editor``.
+
+
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.maxItems-typo3winbrowsereditor:
+
+maxItems
+--------------
+
+:aspect:`Data type`
+      integer
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Good to know`
+      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+
+:aspect:`Description`
+      Maximum number of records. Defaults to 1. When set, the number of selected
+      records is validated automatically through the ``ItemCount`` validator.
+
+
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.minItems-typo3winbrowsereditor:
+
+minItems
+--------------
+
+:aspect:`Data type`
+      integer
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Good to know`
+      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+
+:aspect:`Description`
+      Minimum number of records. Defaults to 0. When set, the number of selected
+      records is validated automatically through the ``ItemCount`` validator.

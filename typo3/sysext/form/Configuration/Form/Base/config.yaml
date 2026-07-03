@@ -129,6 +129,10 @@ prototypes:
           errorMessage: formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label
         RegularExpressionPattern:
           errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
+        ItemCount:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.ItemCount.label
+        IntegerList:
+          errorMessage: formEditor.formElementPropertyValidatorsDefinition.IntegerList.label
 
       formElementGroups:
         input:

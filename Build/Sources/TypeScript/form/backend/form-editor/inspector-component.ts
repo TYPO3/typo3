@@ -396,7 +396,24 @@ function listenOnElementBrowser(): void {
         getHelper().getDomElementDataAttribute('contentElementSelectorTarget', 'bracesWithKeyValue', [e.data.fieldName])
       );
       if (targetEl) {
-        targetEl.value = result.pop() ?? '';
+        const newValue: string = result.pop() ?? '';
+        const maxItems: number = Number(targetEl.dataset.maxItems ?? 1);
+
+        if (maxItems === 1) {
+          targetEl.value = newValue;
+        } else {
+          const currentValues: Array<string> = targetEl.value.split(',').filter((str: string) => str !== '');
+
+          // Enforce the configured maximum and avoid duplicate records already
+          // present in the list. Selecting beyond the limit is silently ignored;
+          // the value can still be adjusted manually in the input field.
+          if (newValue !== '' && !currentValues.includes(newValue) && currentValues.length < maxItems) {
+            currentValues.push(newValue);
+          }
+
+          targetEl.value = currentValues.join(',');
+        }
+
         targetEl.dispatchEvent(new Event('paste'));
       }
     }
@@ -2149,7 +2166,14 @@ export function renderTypo3WinBrowserEditor(
   validateCollectionElement(propertyPath, editorHtml);
 
   const inputEl = getHelper().getTemplatePropertyElement('propertyPath', editorHtml) as HTMLInputElement | null;
-  if (inputEl) { inputEl.value = propertyData ?? ''; }
+  if (inputEl) {
+    inputEl.value = propertyData ?? '';
+
+    const maxItems: number = getUtility().isUndefinedOrNull(editorConfiguration.maxItems)
+      ? 1
+      : editorConfiguration.maxItems;
+    inputEl.dataset.maxItems = maxItems.toString();
+  }
 
   inputEl?.addEventListener('keyup', handleInput);
   inputEl?.addEventListener('paste', handleInput);

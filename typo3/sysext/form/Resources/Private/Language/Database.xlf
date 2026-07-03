@@ -324,6 +324,12 @@
       <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label">
         <source>Invalid pattern</source>
       </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.IntegerList.label">
+        <source>Not all items are numbers</source>
+      </trans-unit>
+      <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.ItemCount.label">
+        <source>Invalid number of items. Minimum is {0}, maximum is {1}</source>
+      </trans-unit>
       <trans-unit id="formEditor.formElementGroups.input.label">
         <source>Basic elements</source>
       </trans-unit>

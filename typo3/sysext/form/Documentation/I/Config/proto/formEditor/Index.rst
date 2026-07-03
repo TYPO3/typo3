@@ -520,6 +520,10 @@ formElementPropertyValidatorsDefinition
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label
              RegularExpressionPattern:
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
+             ItemCount:
+               errorMessage: formEditor.formElementPropertyValidatorsDefinition.ItemCount.label
+             IntegerList:
+               errorMessage: formEditor.formElementPropertyValidatorsDefinition.IntegerList.label
 
 :aspect:`Related options`
       - :ref:`"[TextEditor] propertyValidators"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidators-texteditor>`
@@ -577,6 +581,10 @@ formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label
              RegularExpressionPattern:
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
+             ItemCount:
+               errorMessage: formEditor.formElementPropertyValidatorsDefinition.ItemCount.label
+             IntegerList:
+               errorMessage: formEditor.formElementPropertyValidatorsDefinition.IntegerList.label
 
 :aspect:`Related options`
       - :ref:`"[TextEditor] propertyValidators"<prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*.propertyvalidators-texteditor>`
