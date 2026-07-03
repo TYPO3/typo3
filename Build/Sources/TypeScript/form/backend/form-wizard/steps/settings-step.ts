@@ -158,7 +158,6 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
   }
 
   private renderFormNameInput(): TemplateResult {
-    this.focusInput('#new-form-name');
     return html `
       <div class="form-group">
         <label class="form-label" for="new-form-name">${formManagerLabels.get('formManager.form_name')}</label>
@@ -232,15 +231,6 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
     this.setValue({
       prototype: currentPrototype,
       template: (currentTemplates[0]?.value ?? '')
-    });
-  }
-
-  private focusInput(selector: string): void {
-    this.context.wizard.updateComplete.then(() => {
-      const input = this.context.wizard.renderRoot.querySelector<HTMLInputElement>(selector);
-      if (input) {
-        input.focus();
-      }
     });
   }
 }

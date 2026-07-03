@@ -14,6 +14,8 @@
 import { html, LitElement, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref, type Ref } from 'lit/directives/ref.js';
+import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 import Modal from '@typo3/backend/modal';
 import '@typo3/backend/element/alert-element';
 import '@typo3/backend/element/icon-element';
@@ -49,6 +51,8 @@ export class Wizard extends LitElement {
   @state() protected allSteps: WizardStepInterface[] = [];
 
   private progressTracker: ProgressTrackerElement | null = null;
+  private readonly primaryButtonRef: Ref<HTMLButtonElement> = createRef();
+  private focusPendingStep: WizardStepInterface | null = null;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -144,7 +148,7 @@ export class Wizard extends LitElement {
     return html`
       <div class="wizard">
         <div class="wizard-progress">${this.renderProgressTracker()}</div>
-        <div class="wizard-content" aria-live="polite">${this.currentStep?.render()}</div>
+        <div class="wizard-content" aria-live="polite" @keydown=${this.handleContentKeydown}>${this.currentStep?.render()}</div>
         <div class="wizard-actions">${this.renderWizardButtons()}</div>
       </div>
     `;
@@ -188,11 +192,85 @@ export class Wizard extends LitElement {
     }
 
     if (this.currentStep && _changedProperties.has('currentStep')) {
+      // Optional per-step readiness hook (e.g. reinitialising FormEngine).
       if (this.hasAfterRender(this.currentStep)) {
         await this.currentStep.afterRender();
         this.requestUpdate();
       }
+      this.focusPendingStep = this.currentStep;
     }
+
+    await this.moveFocusIntoStep();
+  }
+
+  /**
+   * Move focus into the current step's content once present. Async steps (e.g.
+   * @lit/task) re-render the wizard when their data settles, so retry on every
+   * update until a focus target is found — no per-step focus wiring required.
+   */
+  private async moveFocusIntoStep(): Promise<void> {
+    const step = this.focusPendingStep;
+    if (!step || step !== this.currentStep) {
+      this.focusPendingStep = null; // no request, or navigated on since
+      return;
+    }
+    await this.updateComplete;
+    if (step === this.currentStep && this.focusStepContent()) {
+      this.focusPendingStep = null;
+    }
+  }
+
+  /**
+   * Focus the selected radio, otherwise the first form control. Returns whether
+   * focus settled on the step's own content; the primary-button fall back
+   * returns `false` so async content can still claim focus once it renders.
+   */
+  private focusStepContent(): boolean {
+    const content = this.renderRoot.querySelector('.wizard-content');
+    if (content) {
+      // Don't steal focus if the step already has a focus.
+      if (content.contains(this.ownerDocument.activeElement)) {
+        return true;
+      }
+
+      const target = this.findFocusTarget(content);
+      if (target) {
+        // autofocus makes an opening modal <dialog> pick this over the close
+        // button; focus() covers later step transitions.
+        target.setAttribute('autofocus', '');
+        target.focus();
+        return true;
+      }
+    }
+
+    // No focusable content (yet): fall back to the primary button, but not if
+    // focus already rests on an action button (don't steal it on re-renders).
+    const actions = this.renderRoot.querySelector('.wizard-actions');
+    if (!actions?.contains(this.ownerDocument.activeElement)) {
+      this.primaryButtonRef.value?.focus();
+    }
+
+    return false;
+  }
+
+  /**
+   * Explicit autofocus wins, then the selected radio, then the first control
+   * that is enabled and visible. Shadow roots are not pierced — custom
+   * elements take part by declaring autofocus or tabindex="0" on their host.
+   */
+  private findFocusTarget(content: Element): HTMLElement | null {
+    const firstOperable = (selector: string): HTMLElement | null => {
+      for (const element of content.querySelectorAll<HTMLElement>(selector)) {
+        if (!element.matches(':disabled') && element.checkVisibility()) {
+          return element;
+        }
+      }
+      return null;
+    };
+
+    return firstOperable('[autofocus]')
+      ?? firstOperable('input[type="radio"]:checked')
+      ?? firstOperable('input:not([type="hidden"]):not([type="radio"]):not([readonly]), select, button, textarea:not([readonly]), [contenteditable]:not([contenteditable="false"]), [tabindex]:not([tabindex="-1"])');
   }
 
   private hasAfterRender(step: WizardStepInterface): step is WizardStepInterface & WizardStepAfterRenderInterface {
@@ -209,6 +287,23 @@ export class Wizard extends LitElement {
 
   private readonly handleAutoAdvance = (): void => {
     this.tryAutoAdvance();
+  };
+
+  /**
+   * Enter inside a bare input advances the wizard, emulating a form submit.
+   * Controls with their own Enter behaviour are left alone: inputs inside a
+   * <form>, search inputs, checkboxes and non-input controls.
+   */
+  private readonly handleContentKeydown = (event: KeyboardEvent): void => {
+    if (event.key !== KeyTypesEnum.ENTER) {
+      return;
+    }
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement) || target.form || target.type === 'search' || target.type === 'checkbox') {
+      return;
+    }
+    event.preventDefault();
+    void this.handleNext();
   };
 
   private renderWizardButtons(): TemplateResult {
@@ -261,7 +356,7 @@ export class Wizard extends LitElement {
     return html`
       <div>
         ${resetButtonHtml}
-        <button type="button" class="${classMap({ 'btn': true, 'btn-primary': true, 'disabled': !isComplete })}"
+        <button type="button" ${ref(this.primaryButtonRef)} class="${classMap({ 'btn': true, 'btn-primary': true, 'disabled': !isComplete })}"
           @click="${this.handleNext}"
         >
           ${buttonLabel}

@@ -56,6 +56,21 @@ export class InsertPositionChangeEvent extends CustomEvent<{pageUid: number, pos
     });
   }
 }
+
+export class InsertPositionConfirmEvent extends CustomEvent<{pageUid: number, position: Position}> {
+  static readonly eventName = 'typo3:page-position-select-tree:insert-position-confirm';
+  constructor(pageUid: number, position: Position) {
+    super(InsertPositionConfirmEvent.eventName, {
+      detail: {
+        pageUid: pageUid,
+        position: position,
+      },
+      bubbles: true,
+      composed: true
+    });
+  }
+}
+
 @customElement('typo3-backend-component-page-position-select-tree')
 export class PagePositionSelectTree extends PageTree {
 
@@ -140,6 +155,16 @@ export class PagePositionSelect extends LitElement {
 
   private async handleNodeSelected(event: CustomEvent): Promise<void> {
     const selectedNode: TreeNodeInterface = event.detail.node;
+
+    // Re-selecting the active node confirms it and advances the wizard.
+    if (this.isActivePagePositionNode(selectedNode)) {
+      this.dispatchEvent(new InsertPositionConfirmEvent(
+        this.activePageId,
+        this.insertPosition
+      ));
+      return;
+    }
+
     const [pageUid, insertPosition] = selectedNode.identifier.split('-');
     this.insertPosition = (insertPosition ?? 'inside') as Position;
     this.activePageId = Number(pageUid);

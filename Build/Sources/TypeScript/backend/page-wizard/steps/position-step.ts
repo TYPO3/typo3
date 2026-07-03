@@ -80,6 +80,7 @@ export class PositionStep implements WizardStepInterface, WizardStepValueInterfa
         .activePageId="${currentValue?.pageUid}"
         .insertPosition="${currentValue?.insertPosition}"
         @typo3:page-position-select-tree:insert-position-change=${(event: CustomEvent) => this.handleInsertPositionChange(event)}
+        @typo3:page-position-select-tree:insert-position-confirm=${() => this.handleInsertPositionConfirm()}
       >
       </typo3-backend-component-page-position-select>
     `;
@@ -139,6 +140,10 @@ export class PositionStep implements WizardStepInterface, WizardStepValueInterfa
       pageUid: event.detail.pageUid,
       insertPosition: event.detail.position
     });
+  }
+
+  private handleInsertPositionConfirm(): void {
+    this.context.dispatchAutoAdvance();
   }
 
   private initSummaryTask(): void {
