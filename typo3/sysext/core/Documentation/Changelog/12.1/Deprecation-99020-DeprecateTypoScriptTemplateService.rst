@@ -43,7 +43,7 @@ As example, the full frontend TypoScript can be retrieved like this:
 
 ..  code-block:: php
 
-    $fullTypoScript = $request()->getAttribute('frontend.typoscript')->getSetupArray();
+    $fullTypoScript = $request->getAttribute('frontend.typoscript')->getSetupArray();
 
 
 .. index:: PHP-API, FullyScanned, ext:core
