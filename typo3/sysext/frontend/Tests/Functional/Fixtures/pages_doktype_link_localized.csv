@@ -1,0 +1,6 @@
+"pages"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","doktype","link","title","slug"
+,1000,0,256,0,0,0,1,,"Root","/"
+,1001,1000,256,0,0,0,1,,"Target","/target/"
+,1002,1000,512,0,0,0,3,"t3://page?uid=1001#en-anchor","Link page","/link-page/"
+,1003,1000,512,0,1,1002,3,"t3://page?uid=1001#de-anchor","Link page","/de/link-page/"

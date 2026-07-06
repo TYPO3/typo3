@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
@@ -36,6 +37,7 @@ final class PageLinkBuilderTest extends FunctionalTestCase
 
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+        'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
     ];
 
     protected function setUp(): void
@@ -163,5 +165,39 @@ final class PageLinkBuilderTest extends FunctionalTestCase
             [],
             $request
         );
+    }
+
+    #[Test]
+    public function linkFieldOfLocalizedDoktypeLinkPageIsUsedWhenLinkingInNonDefaultLanguage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages_doktype_link_localized.csv');
+
+        $this->writeSiteConfiguration(
+            'example-doktype-link',
+            $this->buildSiteConfiguration(1000, 'https://example.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', 'https://example.com/'),
+                $this->buildLanguageConfiguration('DE', 'https://example.com/de/', ['EN']),
+            ]
+        );
+
+        $site = $this->get(SiteFinder::class)->getSiteByPageId(1000);
+        $germanLanguage = $site->getLanguageById(1);
+
+        $request = (new ServerRequest('https://example.com/de/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('site', $site)
+            ->withAttribute('language', $germanLanguage);
+
+        $pageLinkBuilder = $this->get(PageLinkBuilder::class);
+        $result = $pageLinkBuilder->buildLink(
+            [
+                'pageuid' => 1002,
+            ],
+            [],
+            $request
+        );
+
+        self::assertStringEndsWith('#de-anchor', $result->getUrl());
     }
 }

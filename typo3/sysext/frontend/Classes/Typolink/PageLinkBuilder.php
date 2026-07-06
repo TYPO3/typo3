@@ -202,6 +202,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
             if (!empty($shortcutPage)) {
                 $resolvedPage = $shortcutPage;
             }
+
+            if ((int)($originalPage['doktype'] ?? 0) === PageRepository::DOKTYPE_LINK) {
+                $originalPage = $pageRepository->getLanguageOverlay('pages', $originalPage);
+            }
         }
         // Check if the target page can be access depending on l18n_cfg
         if (!$pageRepository->isPageSuitableForLanguage($resolvedPage, $languageAspect)) {
