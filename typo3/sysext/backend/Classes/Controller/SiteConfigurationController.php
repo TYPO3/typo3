@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
+use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Backend\Dto\Settings\EditableSetting;
 use TYPO3\CMS\Backend\Exception\SiteValidationErrorException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
@@ -203,7 +205,7 @@ readonly class SiteConfigurationController
 
         $view = $this->moduleTemplateFactory->create($request);
         $this->configureDetailViewDocHeader($view, $siteIdentifier, $request);
-        $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
+        $this->addDocHeaderBreadcrumb($view, $pageRecord, null, null);
         $view->setTitle(
             $this->getLanguageService()->translate('title', 'backend.modules.site_settings')
         );
@@ -285,7 +287,15 @@ readonly class SiteConfigurationController
             'formEngineFooter' => implode(LF, $formResult->hiddenFieldsHtml),
         ]);
         $this->configureEditViewDocHeader($view, $siteIdentifier, $documentTitle);
-        $view->getDocHeaderComponent()->setPageBreadcrumb($pageRecord);
+        $this->addDocHeaderBreadcrumb(
+            $view,
+            $pageRecord,
+            $isNewConfig ? null : $siteIdentifier,
+            $this->getLanguageService()->sL(
+                $isNewConfig ? 'backend.siteconfiguration:edit.createNewSite' : 'backend.siteconfiguration:edit.typeLabel'
+            ),
+            $isNewConfig ? 'actions-plus' : 'actions-open'
+        );
         $view->setTitle($documentTitle);
         $view->setLayout(ModuleLayout::NORMAL);
         return $view->renderResponse('SiteConfiguration/Edit');
@@ -772,6 +782,43 @@ readonly class SiteConfigurationController
         }
         $overviewRoute = $this->uriBuilder->buildUriFromRoute('site_configuration');
         return new RedirectResponse($overviewRoute);
+    }
+
+    /**
+     * Builds the breadcrumb for the views of a single site: the module, the site's root page and
+     * the current step below it.
+     *
+     * The site configuration module is not navigated via the page tree, so the root page is not
+     * part of a rootline here - it stands for the site itself and is the label the detail view
+     * carries as its headline. That makes the detail view the entry point for a single site, and
+     * every step below it links back to it. Passing no site identifier leaves the node unlinked,
+     * which is what the detail view itself and the "create new site" form need.
+     *
+     * The current step carries the same icon as the button leading to it in the site overview.
+     *
+     * @param array<string, mixed> $pageRecord Root page of the site, empty for a new site
+     */
+    protected function addDocHeaderBreadcrumb(ModuleTemplate $view, array $pageRecord, ?string $siteIdentifier, ?string $currentStepLabel, ?string $currentStepIcon = null): void
+    {
+        $nodes = [];
+        if ($pageRecord !== []) {
+            $nodes[] = new BreadcrumbNode(
+                identifier: 'site-root-page-' . ($pageRecord['uid'] ?? 0),
+                label: BackendUtility::getRecordTitle('pages', $pageRecord),
+                icon: $this->iconFactory->getIconForRecord('pages', $pageRecord, IconSize::SMALL)->getIdentifier(),
+                url: $siteIdentifier !== null
+                    ? (string)$this->uriBuilder->buildUriFromRoute('site_configuration.detail', ['site' => $siteIdentifier])
+                    : null,
+            );
+        }
+        if ($currentStepLabel !== null) {
+            $nodes[] = new BreadcrumbNode(
+                identifier: 'site-configuration-step',
+                label: $currentStepLabel,
+                icon: $currentStepIcon,
+            );
+        }
+        $view->getDocHeaderComponent()->setBreadcrumbContext(new BreadcrumbContext(null, $nodes));
     }
 
     /**

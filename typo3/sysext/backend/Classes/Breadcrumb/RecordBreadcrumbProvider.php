@@ -61,7 +61,7 @@ final readonly class RecordBreadcrumbProvider implements BreadcrumbProviderInter
         $currentModule = $this->moduleResolver->resolveModule($request);
         $showRootline = $this->shouldShowRootline($currentModule);
         $targetModule = $currentModule !== null
-            ? $this->extractRouteIdentifier($request, $currentModule)
+            ? $this->extractRouteIdentifier($request, $currentModule, $showRootline)
             : $this->getTargetModule();
 
         // Add module hierarchy (for third-level modules, this includes parent modules)
@@ -220,7 +220,7 @@ final readonly class RecordBreadcrumbProvider implements BreadcrumbProviderInter
             $isLastModule = $index === count($moduleChain) - 1;
             // For the last module (current), use the full route identifier to preserve route/action
             // For parent modules, use base module identifier
-            $routeIdentifier = $isLastModule ? $this->extractRouteIdentifier($request, $module) : $module->getIdentifier();
+            $routeIdentifier = $isLastModule ? $this->extractRouteIdentifier($request, $module, $showRootline) : $module->getIdentifier();
             $modules[] = new BreadcrumbNode(
                 identifier: $module->getIdentifier(),
                 label: $this->getLanguageService()->sL($module->getTitle()),
@@ -246,26 +246,57 @@ final readonly class RecordBreadcrumbProvider implements BreadcrumbProviderInter
     }
 
     /**
-     * Extracts the route identifier from the current request.
+     * Extracts the route identifier to use for a module breadcrumb node.
      *
-     * This returns the full route identifier (e.g., 'manage_search_index.Administration_externalDocuments')
-     * to preserve sub-routes and actions in breadcrumb navigation.
+     * The breadcrumb builds all of its nodes for a single target route and re-uses the parameters
+     * it has at hand.
+     * Re-using the *current* route identifier is therefore only safe when that route can actually
+     * be generated with those parameters.
+     *
+     * Two things have to hold for that:
+     *  1. the current route belongs to the module the breadcrumb node is built for - a generic
+     *     action route such as 'record_edit' carries no module and can never be restored, and
+     *  2. the current request itself carried no parameters beyond the ones the breadcrumb
+     *     supplies - a request that needed more (e.g. the site configuration 'edit' route with
+     *     its 'site', or a sub-route with a required argument) describes a view that can not be
+     *     reconstructed for another page.
+     *
+     * Where either fails, the module's default route ($module->getIdentifier()) is used, which is
+     * always a valid entry point into the module.
      *
      * @return string The route identifier or module identifier as fallback
      */
-    private function extractRouteIdentifier(?ServerRequestInterface $request, ModuleInterface $module): string
+    private function extractRouteIdentifier(?ServerRequestInterface $request, ModuleInterface $module, bool $showRootline): string
     {
-        // Try to get the full route identifier from routing attribute
-        if ($request !== null
-            && ($routeResult = $request->getAttribute('routing')) !== null
-            && ($route = $routeResult->getRoute()) !== null
-            && !empty(($routeIdentifier = $route->getOption('_identifier')))
-        ) {
-            return $routeIdentifier;
+        if ($request === null) {
+            return $module->getIdentifier();
         }
 
-        // Fallback to module identifier
-        return $module->getIdentifier();
+        $route = $request->getAttribute('routing')?->getRoute();
+        if ($route === null) {
+            return $module->getIdentifier();
+        }
+
+        // The current route must belong to the module the breadcrumb node is built for.
+        $routeModule = $route->getOption('module');
+        if (!$routeModule instanceof ModuleInterface || $routeModule->getIdentifier() !== $module->getIdentifier()) {
+            return $module->getIdentifier();
+        }
+
+        // A route the current request needed further parameters for can not be restored from a
+        // breadcrumb node, which only ever supplies the page 'id' and the generated token.
+        $restorableParameters = $showRootline ? ['id' => true, 'token' => true] : ['token' => true];
+        if (array_diff_key($request->getQueryParams(), $restorableParameters) !== []) {
+            return $module->getIdentifier();
+        }
+
+        // Reuse the current route identifier to preserve the active sub-route/action.
+        $routeIdentifier = $route->getOption('_identifier');
+        if (!is_string($routeIdentifier) || $routeIdentifier === '') {
+            return $module->getIdentifier();
+        }
+
+        return $routeIdentifier;
     }
 
     private function getLanguageService(): LanguageService
