@@ -21,6 +21,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
+use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
 use TYPO3\CMS\Backend\Dto\Settings\EditableSetting;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -264,10 +266,29 @@ readonly class SiteSettingsController
         ]);
     }
 
+    /**
+     * The site's root page stands for the site itself and links back to the detail view, which is
+     * the entry point for a single site. See SiteConfigurationController::addDocHeaderBreadcrumb().
+     */
     protected function addDocHeaderBreadcrumb(ModuleTemplate $moduleTemplate, Site $site): void
     {
         $record = BackendUtility::getRecord('pages', $site->getRootPageId());
-        $moduleTemplate->getDocHeaderComponent()->setPageBreadcrumb($record ?? []);
+        $nodes = [];
+        if ($record !== null) {
+            $nodes[] = new BreadcrumbNode(
+                identifier: 'site-root-page-' . $site->getRootPageId(),
+                label: BackendUtility::getRecordTitle('pages', $record),
+                icon: $this->iconFactory->getIconForRecord('pages', $record, IconSize::SMALL)->getIdentifier(),
+                url: (string)$this->uriBuilder->buildUriFromRoute('site_configuration.detail', ['site' => $site->getIdentifier()]),
+            );
+        }
+        // Same icon as the button leading here from the site overview.
+        $nodes[] = new BreadcrumbNode(
+            identifier: 'site-settings-step',
+            label: $this->getLanguageService()->translate('title', 'backend.modules.site_settings'),
+            icon: 'actions-cog',
+        );
+        $moduleTemplate->getDocHeaderComponent()->setBreadcrumbContext(new BreadcrumbContext(null, $nodes));
     }
 
     protected function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate, string $closeUrl, bool $saveEnabled): void

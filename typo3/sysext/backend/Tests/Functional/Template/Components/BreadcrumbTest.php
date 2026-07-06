@@ -21,7 +21,11 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
+use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\RouteResult;
 use TYPO3\CMS\Backend\Template\Components\Breadcrumb;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -29,7 +33,6 @@ use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Routing\Route;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BreadcrumbTest extends FunctionalTestCase
@@ -435,27 +438,26 @@ final class BreadcrumbTest extends FunctionalTestCase
 
         $context = new BreadcrumbContext($pageRecord);
 
-        // Create a request with a custom route identifier (simulating a sub-route scenario)
-        // In real usage, this would be something like 'manage_search_index.Administration_externalDocuments'
-        // For testing, we verify that the routing attribute is properly consulted
-        $customRouteIdentifier = 'web_info_overview';
-        $request = $this->createMockRequestWithSubRoute('web_info_overview', $customRouteIdentifier);
+        // 'pagetsconfig_includes' is navigated via the page tree and has a sub-route 'source'.
+        // The request carries the page id only, so that sub-route can be entered for any other
+        // page as well and is preserved.
+        $request = $this->createMockRequestWithSubRoute('pagetsconfig_includes', 'pagetsconfig_includes.source');
 
         $breadcrumb = $this->get(Breadcrumb::class);
         $nodes = $breadcrumb->getBreadcrumb($request, $context);
 
-        // Should have: content_status (parent) + web_info_overview (current) + page
+        // Should have: pagetsconfig (parent) + pagetsconfig_includes (current) + page
         self::assertGreaterThanOrEqual(3, count($nodes), 'Should have parent module, current module, and page');
 
-        // First node should be the parent module (content_status) - uses base module identifier
-        self::assertSame('content_status', $nodes[0]->identifier, 'First node should be parent module');
+        // First node should be the parent module - uses base module identifier
+        self::assertSame('pagetsconfig', $nodes[0]->identifier, 'First node should be parent module');
         self::assertNotNull($nodes[0]->url, 'Parent module should have URL');
-        self::assertStringContainsString('/module/content/status', $nodes[0]->url);
+        self::assertStringNotContainsString('/includes/source', $nodes[0]->url, 'Parent module must not use the sub-route');
 
-        // Second node should be the current module with its URL
-        self::assertSame('web_info_overview', $nodes[1]->identifier, 'Second node should be current module');
+        // Second node should be the current module, keeping the active sub-route
+        self::assertSame('pagetsconfig_includes', $nodes[1]->identifier, 'Second node should be current module');
         self::assertNotNull($nodes[1]->url, 'Current module should have URL');
-        self::assertStringContainsString('/module/web/info/overview', $nodes[1]->url);
+        self::assertStringContainsString('/module/pagetsconfig/includes/source', $nodes[1]->url, 'Current module should keep the sub-route');
     }
 
     #[Test]
@@ -466,36 +468,107 @@ final class BreadcrumbTest extends FunctionalTestCase
 
         $context = new BreadcrumbContext($pageRecord);
 
-        // Create two requests for comparison:
-        // 1. With routing attribute containing different route identifier (simulates sub-route like 'web_info.action')
-        // 2. Without routing attribute (falls back to module identifier)
-        //
-        // We use web_info_overview and content_status to demonstrate:
-        // - When routing is set to 'web_info_overview', it should be used
-        // - When no routing attribute, it falls back to the module's base identifier
-        $moduleWithSubRoute = 'web_info_overview';
-        $fallbackModule = 'content_status';
-
-        $requestWithRoutingAttr = $this->createMockRequestWithSubRoute($moduleWithSubRoute, $moduleWithSubRoute);
-        $requestWithoutRoutingAttr = $this->createMockRequest($fallbackModule);
+        // Two requests for the same module: one whose routing attribute carries the sub-route,
+        // one without a routing attribute at all, which falls back to the module identifier.
+        $requestWithRoutingAttr = $this->createMockRequestWithSubRoute('pagetsconfig_includes', 'pagetsconfig_includes.source');
+        $requestWithoutRoutingAttr = $this->createMockRequest('pagetsconfig_includes');
 
         $breadcrumb = $this->get(Breadcrumb::class);
 
         $nodesWithRoutingAttr = $breadcrumb->getBreadcrumb($requestWithRoutingAttr, $context);
         $nodesWithoutRoutingAttr = $breadcrumb->getBreadcrumb($requestWithoutRoutingAttr, $context);
 
-        self::assertGreaterThanOrEqual(2, count($nodesWithRoutingAttr), 'Should have module and page nodes with routing attribute');
-        self::assertGreaterThanOrEqual(2, count($nodesWithoutRoutingAttr), 'Should have module and page nodes without routing attribute');
+        self::assertSame('pagetsconfig_includes', $nodesWithRoutingAttr[1]->identifier);
+        self::assertSame('pagetsconfig_includes', $nodesWithoutRoutingAttr[1]->identifier);
 
-        self::assertSame('web_info_overview', $nodesWithRoutingAttr[1]->identifier, 'Second node should be current module');
-        self::assertNotNull($nodesWithRoutingAttr[1]->url, 'Current module with routing attribute should have URL');
+        self::assertStringContainsString('/module/pagetsconfig/includes/source', $nodesWithRoutingAttr[1]->url, 'Should use route from routing attribute');
+        self::assertStringNotContainsString('/includes/source', $nodesWithoutRoutingAttr[1]->url, 'Should use module identifier as fallback');
+    }
 
-        self::assertSame('content_status', $nodesWithoutRoutingAttr[0]->identifier, 'First node should be current module');
-        self::assertNotNull($nodesWithoutRoutingAttr[0]->url, 'Module without routing attribute should have URL');
+    #[Test]
+    public function breadcrumbUsesModuleIdentifierWhenCurrentRouteNeedsFurtherParameters(): void
+    {
+        $recordFactory = $this->get(RecordFactory::class);
+        $pageRecord = $recordFactory->createResolvedRecordFromDatabaseRow('pages', BackendUtility::getRecord('pages', 1));
 
-        self::assertStringContainsString('/module/web/info/overview', $nodesWithRoutingAttr[1]->url, 'Should use route from routing attribute');
-        self::assertStringContainsString('/module/content/status', $nodesWithoutRoutingAttr[0]->url, 'Should use module identifier as fallback');
-        self::assertNotSame($nodesWithRoutingAttr[1]->url, $nodesWithoutRoutingAttr[0]->url, 'URLs should differ based on route identifier used');
+        $context = new BreadcrumbContext($pageRecord);
+
+        // The 'source' sub-route needs 'includeType' and 'identifier' besides the page id. The
+        // breadcrumb only supplies the id, so the sub-route can not be rendered for another page.
+        $request = $this->createMockRequestWithSubRoute(
+            'pagetsconfig_includes',
+            'pagetsconfig_includes.source',
+            ['id' => 1, 'includeType' => 'setup', 'identifier' => 'someInclude']
+        );
+
+        $breadcrumb = $this->get(Breadcrumb::class);
+        $nodes = $breadcrumb->getBreadcrumb($request, $context);
+
+        self::assertSame('pagetsconfig_includes', $nodes[1]->identifier);
+        self::assertNotNull($nodes[1]->url);
+        self::assertStringContainsString('/module/pagetsconfig/includes', $nodes[1]->url);
+        self::assertStringNotContainsString('/includes/source', $nodes[1]->url, 'Sub-route requiring further parameters must not be reused');
+
+        foreach ($nodes as $node) {
+            if ($node->url !== null) {
+                self::assertStringNotContainsString('/includes/source', $node->url, 'No node may link to the unrestorable sub-route');
+            }
+        }
+    }
+
+    #[Test]
+    public function breadcrumbUsesModuleIdentifierForModuleWithoutPageTreeNavigation(): void
+    {
+        $recordFactory = $this->get(RecordFactory::class);
+        $pageRecord = $recordFactory->createResolvedRecordFromDatabaseRow('pages', BackendUtility::getRecord('pages', 1));
+
+        $context = new BreadcrumbContext($pageRecord);
+
+        // 'site_configuration' is not navigated via the page tree, so the breadcrumb supplies no
+        // parameter at all and the 'edit' route, which needs a site identifier, is dropped.
+        $request = $this->createMockRequestWithSubRoute(
+            'site_configuration',
+            'site_configuration.edit',
+            ['site' => 'main']
+        );
+
+        $breadcrumb = $this->get(Breadcrumb::class);
+        $nodes = $breadcrumb->getBreadcrumb($request, $context);
+
+        self::assertSame('site_configuration', $nodes[0]->identifier);
+        self::assertNotNull($nodes[0]->url);
+        self::assertStringContainsString('/module/site/configuration', $nodes[0]->url);
+        self::assertStringNotContainsString('/configuration/edit', $nodes[0]->url, 'Edit route must not be reused');
+    }
+
+    #[Test]
+    public function breadcrumbUsesModuleIdentifierWhenCurrentRouteBelongsToNoModule(): void
+    {
+        $recordFactory = $this->get(RecordFactory::class);
+        $pageRecord = $recordFactory->createResolvedRecordFromDatabaseRow('pages', BackendUtility::getRecord('pages', 1));
+
+        $context = new BreadcrumbContext($pageRecord);
+
+        // Editing a record from within a module: the current route is the generic 'record_edit'
+        // route, which belongs to no module and can not be entered without its 'edit' parameters.
+        // The module itself is only known from the 'module' query parameter.
+        $symfonyRoute = $this->get(Router::class)->getRoute('record_edit');
+        self::assertNotNull($symfonyRoute);
+        $route = Route::fromSymfonyRoute($symfonyRoute, 'record_edit');
+        self::assertNull($route->getOption('module'), 'record_edit is expected to carry no module');
+
+        $request = $this->createMockRequestForRoute($route, null, [
+            'edit' => ['be_users' => [1 => 'edit']],
+            'module' => 'site_configuration',
+        ]);
+
+        $breadcrumb = $this->get(Breadcrumb::class);
+        $nodes = $breadcrumb->getBreadcrumb($request, $context);
+
+        self::assertSame('site_configuration', $nodes[0]->identifier);
+        self::assertNotNull($nodes[0]->url);
+        self::assertStringContainsString('/module/site/configuration', $nodes[0]->url);
+        self::assertStringNotContainsString('/record/edit', $nodes[0]->url, 'Breadcrumb must not link back to the record edit route');
     }
 
     private function createMockRequest(string $moduleIdentifier): ServerRequestInterface
@@ -513,28 +586,37 @@ final class BreadcrumbTest extends FunctionalTestCase
         return $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
     }
 
-    private function createMockRequestWithSubRoute(string $moduleIdentifier, string $routeIdentifier): ServerRequestInterface
+    /**
+     * Builds a request as the backend routing produces it for a (sub-)route of a module: the
+     * matched route carries the module it belongs to in its "module" option, and the route
+     * identifier in "_identifier".
+     *
+     * @param array<string, mixed> $queryParams
+     */
+    private function createMockRequestWithSubRoute(string $moduleIdentifier, string $routeIdentifier, array $queryParams = ['id' => 1]): ServerRequestInterface
     {
         $moduleProvider = $this->get(ModuleProvider::class);
         $module = $moduleProvider->getModule($moduleIdentifier, $GLOBALS['BE_USER']);
 
-        $route = new Route('/module/' . $moduleIdentifier, ['_identifier' => $routeIdentifier]);
+        $route = new Route('/module/' . $moduleIdentifier, [
+            '_identifier' => $routeIdentifier,
+            'module' => $module,
+        ]);
 
-        $request = (new ServerRequest('https://example.com/typo3/module/' . $moduleIdentifier))
+        return $this->createMockRequestForRoute($route, $module, $queryParams);
+    }
+
+    /**
+     * @param array<string, mixed> $queryParams
+     */
+    private function createMockRequestForRoute(Route $route, ?ModuleInterface $module, array $queryParams): ServerRequestInterface
+    {
+        $request = (new ServerRequest('https://example.com/typo3' . $route->getPath()))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('route', $route)
-            ->withAttribute('routing', new class ($route) {
-                private Route $route;
-                public function __construct(Route $route)
-                {
-                    $this->route = $route;
-                }
-                public function getRoute(): Route
-                {
-                    return $this->route;
-                }
-            })
-            ->withAttribute('module', $module);
+            ->withAttribute('routing', new RouteResult($route))
+            ->withAttribute('module', $module)
+            ->withQueryParams($queryParams);
 
         return $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
     }
