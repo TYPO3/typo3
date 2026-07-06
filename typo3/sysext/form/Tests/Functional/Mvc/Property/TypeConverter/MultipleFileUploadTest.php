@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
+use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\CMS\Form\Security\HashScope;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -1139,6 +1140,154 @@ final class MultipleFileUploadTest extends FunctionalTestCase
         self::assertInstanceOf(ObjectStorage::class, $result);
         // Only 1 file should remain after deletion
         self::assertCount(1, $result);
+    }
+
+    #[Test]
+    public function convertFromDoesNotPersistSingleUploadRejectedByFileValidator(): void
+    {
+        $subject = $this->get(UploadedFileReferenceConverter::class);
+
+        // The fixture is a PDF, but only image/jpeg is allowed, so the MimeTypeValidator
+        // must reject the upload before it is written to the storage.
+        $testFilePath = $this->createTestFile('rejected-single.pdf');
+
+        $source = [
+            'error' => \UPLOAD_ERR_OK,
+            'name' => 'rejected-single.pdf',
+            'type' => 'application/pdf',
+            'tmp_name' => $testFilePath,
+            'size' => filesize($testFilePath),
+        ];
+
+        $configuration = new PropertyMappingConfiguration();
+        $configuration->setTypeConverterOptions(
+            UploadedFileReferenceConverter::class,
+            [
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER => '1:/user_upload/',
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED => 'test-seed-rejected-single',
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_CONFLICT_MODE => 'rename',
+                UploadedFileReferenceConverter::CONFIGURATION_PRE_STORAGE_VALIDATORS => [
+                    $this->createMimeTypeValidator(['image/jpeg']),
+                ],
+            ]
+        );
+
+        $result = $subject->convertFrom($source, FileReference::class, [], $configuration);
+
+        self::assertInstanceOf(Error::class, $result);
+        self::assertSame([], $this->collectUploadedFiles(), 'A rejected upload must not be persisted.');
+    }
+
+    #[Test]
+    public function convertFromDoesNotPersistAnyFileWhenOneMultiUploadIsRejectedByFileValidator(): void
+    {
+        $subject = $this->get(UploadedFileReferenceConverter::class);
+
+        $testFilePath1 = $this->createTestFile('rejected-multi-1.pdf');
+        $testFilePath2 = $this->createTestFile('rejected-multi-2.pdf');
+
+        $source = [
+            [
+                'error' => \UPLOAD_ERR_OK,
+                'name' => 'rejected-multi-1.pdf',
+                'type' => 'application/pdf',
+                'tmp_name' => $testFilePath1,
+                'size' => filesize($testFilePath1),
+            ],
+            [
+                'error' => \UPLOAD_ERR_OK,
+                'name' => 'rejected-multi-2.pdf',
+                'type' => 'application/pdf',
+                'tmp_name' => $testFilePath2,
+                'size' => filesize($testFilePath2),
+            ],
+        ];
+
+        $configuration = new PropertyMappingConfiguration();
+        $configuration->setTypeConverterOptions(
+            UploadedFileReferenceConverter::class,
+            [
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER => '1:/user_upload/',
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED => 'test-seed-rejected-multi',
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_CONFLICT_MODE => 'rename',
+                UploadedFileReferenceConverter::CONFIGURATION_PRE_STORAGE_VALIDATORS => [
+                    $this->createMimeTypeValidator(['image/jpeg']),
+                ],
+            ]
+        );
+
+        $result = $subject->convertFrom($source, ObjectStorage::class, [], $configuration);
+
+        self::assertInstanceOf(Error::class, $result);
+        self::assertSame([], $this->collectUploadedFiles(), 'No file must be persisted when the upload is rejected.');
+    }
+
+    #[Test]
+    public function convertFromPersistsSingleUploadAcceptedByFileValidator(): void
+    {
+        $subject = $this->get(UploadedFileReferenceConverter::class);
+
+        $testFilePath = $this->createTestFile('accepted-single.pdf');
+
+        $source = [
+            'error' => \UPLOAD_ERR_OK,
+            'name' => 'accepted-single.pdf',
+            'type' => 'application/pdf',
+            'tmp_name' => $testFilePath,
+            'size' => filesize($testFilePath),
+        ];
+
+        $configuration = new PropertyMappingConfiguration();
+        $configuration->setTypeConverterOptions(
+            UploadedFileReferenceConverter::class,
+            [
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER => '1:/user_upload/',
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED => 'test-seed-accepted-single',
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_CONFLICT_MODE => 'rename',
+                UploadedFileReferenceConverter::CONFIGURATION_PRE_STORAGE_VALIDATORS => [
+                    $this->createMimeTypeValidator(['application/pdf']),
+                ],
+            ]
+        );
+
+        $result = $subject->convertFrom($source, FileReference::class, [], $configuration);
+
+        self::assertInstanceOf(FileReference::class, $result);
+        self::assertSame('accepted-single.pdf', $result->getOriginalResource()->getOriginalFile()->getName());
+        self::assertSame(['accepted-single.pdf'], $this->collectUploadedFiles());
+    }
+
+    private function createMimeTypeValidator(array $allowedMimeTypes): MimeTypeValidator
+    {
+        $validator = new MimeTypeValidator();
+        $validator->setOptions(['allowedMimeTypes' => $allowedMimeTypes]);
+        return $validator;
+    }
+
+    /**
+     * Returns the base names of all files persisted below the upload folder, excluding
+     * the "index.html" protection files created by the framework.
+     *
+     * @return list<string>
+     */
+    private function collectUploadedFiles(): array
+    {
+        $uploadPath = $this->instancePath . '/fileadmin/user_upload/';
+        if (!is_dir($uploadPath)) {
+            return [];
+        }
+
+        $files = [];
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($uploadPath, \FilesystemIterator::SKIP_DOTS)
+        );
+        foreach ($iterator as $fileInfo) {
+            if ($fileInfo->isFile() && $fileInfo->getFilename() !== 'index.html') {
+                $files[] = $fileInfo->getFilename();
+            }
+        }
+        sort($files);
+        return $files;
     }
 
     /**

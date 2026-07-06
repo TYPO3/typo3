@@ -74,6 +74,12 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter implements Lo
      */
     public const CONFIGURATION_ALLOW_REMOVAL = 5;
 
+    /**
+     * Validators implementing ObjectStorageElementValidatorInterface to run on
+     * PseudoFile before the file is written to FAL storage.
+     */
+    public const CONFIGURATION_PRE_STORAGE_VALIDATORS = 6;
+
     protected string $defaultUploadFolder = '1:/user_upload/';
 
     /**
@@ -476,6 +482,15 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter implements Lo
         $uploadFolderId = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_UPLOAD_FOLDER) ?: $this->defaultUploadFolder;
         $conflictMode = DuplicationBehavior::tryFrom($configuration->getConfigurationValue(self::class, self::CONFIGURATION_UPLOAD_CONFLICT_MODE)) ?? $this->defaultConflictMode;
         $pseudoFile = GeneralUtility::makeInstance(PseudoFile::class, $uploadInfo);
+
+        $preStorageValidators = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_PRE_STORAGE_VALIDATORS) ?? [];
+        foreach ($preStorageValidators as $validator) {
+            $validationResult = $validator->validate($pseudoFile);
+            if ($validationResult->hasErrors()) {
+                $firstError = current($validationResult->getErrors());
+                throw TypeConverterException::fromError($firstError);
+            }
+        }
 
         $uploadFolder = $this->provideUploadFolder($uploadFolderId);
         // current folder name, derived from public random seed (`formSession`)
