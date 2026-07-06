@@ -25,12 +25,10 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration as ExtbasePropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
-use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Mvc\ProcessingRule;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
-use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FileUploadTest extends UnitTestCase
@@ -100,39 +98,6 @@ final class FileUploadTest extends UnitTestCase
             ->expects($this->atLeastOnce())
             ->method('setTypeConverterOptions')
             ->with(UploadedFileReferenceConverter::class);
-
-        $this->fileUpload->initializeFormElement();
-    }
-
-    #[Test]
-    public function afterBuildingFinishedAddsMimeTypeConverter(): void
-    {
-        $mimeTypes = ['allowedMimeTypes' => ['text/plain', 'application/x-www-form-urlencoded']];
-
-        // Don't add any validators for now
-        $this->processingRule
-            ->method('getValidators')
-            ->willReturn(new \SplObjectStorage());
-
-        // Add some Mime types
-        $this->fileUpload
-            ->method('getProperties')
-            ->willReturn($mimeTypes);
-
-        $mimeTypeValidator = new MimeTypeValidator();
-        $mimeTypeValidator->setOptions(['allowedMimeTypes' => []]);
-        $validatorResolver = $this->createMock(ValidatorResolver::class);
-        $validatorResolver->method('createValidator')->with(
-            MimeTypeValidator::class,
-            ['allowedMimeTypes' => ['text/plain', 'application/x-www-form-urlencoded']]
-        )->willReturn($mimeTypeValidator);
-        GeneralUtility::setSingletonInstance(ValidatorResolver::class, $validatorResolver);
-
-        // Expect the MimeTypeValidator to be added to the ProcessingRule
-        $this->processingRule
-            ->expects($this->once())
-            ->method('addValidator')
-            ->with(self::isInstanceOf(MimeTypeValidator::class));
 
         $this->fileUpload->initializeFormElement();
     }

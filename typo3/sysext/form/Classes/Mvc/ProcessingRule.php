@@ -160,6 +160,15 @@ class ProcessingRule
             $messages = GeneralUtility::makeInstance(Result::class);
         }
 
+        // PropertyMapper::convert() already records the TypeConverter's Error in
+        // $messages (via doMapping()) and returns null. If errors are present at
+        // this point, running validators on a null value would add spurious errors
+        // that mask the real rejection reason — skip them.
+        if ($messages->hasErrors()) {
+            $this->processingMessages->merge($messages);
+            return $value;
+        }
+
         // For multi-value fields (e.g. multi-file uploads) the converted value
         // is an ObjectStorage. By default, validators receive the whole collection
         // (backwards compatible). Validators implementing ObjectStorageElementValidatorInterface
