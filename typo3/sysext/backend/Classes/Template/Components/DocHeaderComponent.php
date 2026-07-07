@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Template\Components;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbFactory;
@@ -115,6 +116,7 @@ class DocHeaderComponent
         protected readonly RecordFactory $recordFactory,
         protected readonly BreadcrumbFactory $breadcrumbFactory,
         protected readonly ComponentFactory $componentFactory,
+        protected readonly LoggerInterface $logger,
     ) {
         $this->buttonBar = GeneralUtility::makeInstance(ButtonBar::class);
         $this->metaInformation = GeneralUtility::makeInstance(MetaInformation::class);
@@ -451,6 +453,19 @@ class DocHeaderComponent
 
         if ($menus === []) {
             return null;
+        }
+
+        if (count($menus) > 1) {
+            $debugContext = ['context' => '(N/A)'];
+            if (isset($GLOBALS['TYPO3_REQUEST'])) {
+                // To not expose tokens, strip at argument level.
+                $contextData = explode('?', $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')?->getRequestUrl() ?? '(No normalized request data)');
+                $debugContext['context'] = $contextData[0];
+            }
+            $this->logger->warning('The menuRegistry should only contain one menu. '
+                . 'Multiple DocHeaderComponents can not be displayed - prefer to add distinct dropdown '
+                . 'buttons to add more view possibilities, or create actual submodules instead of secondary menus.'
+                . 'Context: {context}', $debugContext);
         }
 
         // Use the first menu (most controllers only register one menu)
