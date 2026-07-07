@@ -74,4 +74,32 @@ final class MenuTest extends UnitTestCase
 
         self::assertEquals($expected, $result);
     }
+
+    #[Test]
+    public function getMenusReturnsMultipleMenuEntries(): void
+    {
+        // @see DocHeaderComponentTest - even though multiple menus are allowed,
+        // the DocHeaderComponent actually only accepts one to render.
+        $menuRegistry = new MenuRegistry();
+
+        $menu1 = new Menu();
+        $menu1->setIdentifier('husel');
+        $menu1->setLabel('Label of an empty Menu');
+        $item = (new MenuItem())->setHref('#')->setTitle('Item1');
+        $menu1->addMenuItem($item);
+        $menuRegistry->addMenu($menu1);
+
+        $menu2 = (new Menu())->setIdentifier('Foo');
+        $item = (new MenuItem())->setHref('#')->setTitle('Item2');
+        $menu2->addMenuItem($item);
+        $menuRegistry->addMenu($menu2);
+
+        $result = $menuRegistry->getMenus();
+        $expected = [
+            'husel' => $menu1,
+            'Foo' => $menu2,
+        ];
+
+        self::assertEquals($expected, $result);
+    }
 }

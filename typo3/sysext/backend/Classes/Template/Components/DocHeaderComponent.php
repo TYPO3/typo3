@@ -389,6 +389,12 @@ class DocHeaderComponent
             return null;
         }
 
+        if (count($menus) > 1) {
+            throw new \RuntimeException('The menuRegistry should only contain one menu. '
+            . 'Multiple DocHeaderComponents can not be displayed - prefer to add distinct dropdown '
+            . 'buttons to add more view possibilities, or create actual submodules instead of secondary menus.', 1783447740);
+        }
+
         // Use the first menu (most controllers only register one menu)
         $menu = reset($menus);
 
