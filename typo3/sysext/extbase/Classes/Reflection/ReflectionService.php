@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Reflection;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -26,13 +27,6 @@ use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
  */
 class ReflectionService implements SingletonInterface
 {
-    private string $cacheIdentifier;
-
-    /**
-     * @var FrontendInterface
-     */
-    protected $dataCache;
-
     /**
      * Indicates whether the Reflection cache needs to be updated.
      *
@@ -50,10 +44,12 @@ class ReflectionService implements SingletonInterface
      */
     protected $classSchemata = [];
 
-    public function __construct(FrontendInterface $cache, string $cacheIdentifier)
-    {
-        $this->dataCache = $cache;
-        $this->cacheIdentifier = $cacheIdentifier;
+    public function __construct(
+        #[Autowire(service: 'cache.extbase')]
+        protected FrontendInterface $dataCache,
+        #[Autowire(expression: 'service("package-dependent-cache-identifier").withPrefix("ClassSchemata").toString()')]
+        private string $cacheIdentifier
+    ) {
         if (($classSchemata = $this->dataCache->get($this->cacheIdentifier)) !== false) {
             $this->classSchemata = $classSchemata;
         }
