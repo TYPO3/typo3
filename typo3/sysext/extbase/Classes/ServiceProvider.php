@@ -19,10 +19,8 @@ namespace TYPO3\CMS\Extbase;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * @internal
@@ -44,7 +42,6 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             Reflection\ReflectionService::class => self::getReflectionService(...),
             Service\ExtensionService::class => self::getExtensionService(...),
-            Service\ImageService::class => self::getImageService(...),
         ];
     }
 
@@ -67,13 +64,5 @@ class ServiceProvider extends AbstractServiceProvider
         // injected a-new, each time it is injected itself.
         $extensionService->injectConfigurationManager($container->get(Configuration\ConfigurationManager::class));
         return $extensionService;
-    }
-
-    public static function getImageService(ContainerInterface $container): Service\ImageService
-    {
-        return self::new($container, Service\ImageService::class, [
-            $container->get(ResourceFactory::class),
-            $container->get(LinkService::class),
-        ]);
     }
 }

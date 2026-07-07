@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Command\Output\MessageRenderer;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
@@ -38,7 +37,6 @@ use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Core\Type\Map;
@@ -117,14 +115,8 @@ class ServiceProvider extends AbstractServiceProvider
             PasswordPolicy\PasswordService::class => self::getPasswordService(...),
             Routing\BackendEntryPointResolver::class => self::getBackendEntryPointResolver(...),
             Routing\RequestContextFactory::class => self::getRequestContextFactory(...),
-            Resource\Index\FileIndexRepository::class => self::getFileIndexRepository(...),
-            Resource\Index\MetaDataRepository::class => self::getMetaDataRepository(...),
-            Resource\Driver\DriverRegistry::class => self::getDriverRegistry(...),
-            Resource\ProcessedFileRepository::class => self::getProcessedFileRepository(...),
-            Resource\ResourceFactory::class => self::getResourceFactory(...),
             Resource\Security\FileNameValidator::class => self::getFileNameValidator(...),
             Resource\Security\SvgSanitizer::class => self::getSvgSanitizer(...),
-            Resource\StorageRepository::class => self::getStorageRepository(...),
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
             Service\OpcodeCacheService::class => self::getOpcodeCacheService(...),
             Service\SilentConfigurationUpgradeService::class => self::getSilentConfigurationUpgradeService(...),
@@ -589,63 +581,9 @@ class ServiceProvider extends AbstractServiceProvider
         return new Package\Cache\PackageDependentCacheIdentifier($container->get(Package\PackageManager::class));
     }
 
-    public static function getFileIndexRepository(ContainerInterface $container): Resource\Index\FileIndexRepository
-    {
-        return self::new($container, Resource\Index\FileIndexRepository::class, [
-            $container->get(EventDispatcherInterface::class),
-            $container->get(Database\ConnectionPool::class),
-        ]);
-    }
-
-    public static function getMetaDataRepository(ContainerInterface $container): Resource\Index\MetaDataRepository
-    {
-        return self::new($container, Resource\Index\MetaDataRepository::class, [
-            $container->get(EventDispatcherInterface::class),
-            $container->get(Database\ConnectionPool::class),
-            $container->get(Context\Context::class),
-        ]);
-    }
-
-    public static function getDriverRegistry(ContainerInterface $container): Resource\Driver\DriverRegistry
-    {
-        return self::new($container, Resource\Driver\DriverRegistry::class);
-    }
-
-    public static function getProcessedFileRepository(ContainerInterface $container): Resource\ProcessedFileRepository
-    {
-        return self::new($container, Resource\ProcessedFileRepository::class, [
-            $container->get(ResourceFactory::class),
-            $container->get(Resource\Processing\TaskTypeRegistry::class),
-            $container->get(Log\LogManager::class)->getLogger(Resource\ProcessedFileRepository::class),
-            $container->get(Database\ConnectionPool::class),
-            $container->get(Context\Context::class),
-            $container->get('cache.runtime'),
-        ]);
-    }
-
-    public static function getResourceFactory(ContainerInterface $container): Resource\ResourceFactory
-    {
-        return self::new($container, Resource\ResourceFactory::class, [
-            $container->get(Resource\StorageRepository::class),
-            $container->get('cache.runtime'),
-            $container->get(Resource\Index\FileIndexRepository::class),
-        ]);
-    }
-
     public static function getFileNameValidator(ContainerInterface $container): Resource\Security\FileNameValidator
     {
         return new FileNameValidator();
-    }
-
-    public static function getStorageRepository(ContainerInterface $container): Resource\StorageRepository
-    {
-        return self::new($container, Resource\StorageRepository::class, [
-            $container->get(EventDispatcherInterface::class),
-            $container->get(Database\ConnectionPool::class),
-            $container->get(Resource\Driver\DriverRegistry::class),
-            $container->get(FlexFormTools::class),
-            $container->get(Log\LogManager::class)->getLogger(Resource\StorageRepository::class),
-        ]);
     }
 
     public static function getDependencyOrderingService(ContainerInterface $container): Service\DependencyOrderingService

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Resource;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Repository for accessing the file storages
  */
+#[Autoconfigure(public: true)]
 class StorageRepository
 {
     /**
