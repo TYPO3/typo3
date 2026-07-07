@@ -7,9 +7,7 @@
                project-contact="https://typo3.slack.com/archives/C025BQLFA"
                project-repository="https://github.com/typo3/typo3"
                project-issues="https://forge.typo3.org/projects/typo3cms-core/issues"
-               edit-on-github-branch="main"
-               edit-on-github="typo3/typo3"
-               edit-on-github-directory="typo3/sysext/rte_ckeditor/Documentation/"
+               how-to-edit="https://docs.typo3.org/permalink/t3contribute:adding-documentation-quickstart"
                typo3-core-preferred="main"
                interlink-shortcode="typo3/cms-rte-ckeditor"
     />
