@@ -278,7 +278,7 @@ export class RecordTableElement extends LitElement {
   private renderElementActions(data: RecordData): TemplateResult[] {
     return [
       this.getAction(
-        data.allowedAction_view,
+        (data.allowedAction_view && data.previewUrl !== ''),
         'preview',
         'actions-version-workspace-preview',
         {
