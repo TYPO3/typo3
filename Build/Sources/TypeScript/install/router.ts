@@ -25,6 +25,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import '@typo3/backend/element/progress-bar-element';
 import { ScaffoldState } from '@typo3/backend/viewport/scaffold-state';
 import '@typo3/backend/element/sidebar-toggle-element';
+import 'bootstrap'; // required for panels in `handleAjaxError()`
 
 class Router {
   private readonly rootSelector: string = '.t3js-body';
