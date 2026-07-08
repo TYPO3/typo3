@@ -71,7 +71,7 @@ class MemorySpool extends AbstractTransport implements DelayedTransportInterface
         $mailer = GeneralUtility::makeInstance(MailerInterface::class);
         try {
             $this->flushQueue($mailer->getRealTransport());
-        } catch (TransportExceptionInterface $exception) {
+        } catch (\Throwable $exception) {
             if ($this->logger instanceof LoggerInterface) {
                 $this->logger->error('An Exception occurred while flushing email queue: {message}', ['exception' => $exception, 'message' => $exception->getMessage()]);
             }
