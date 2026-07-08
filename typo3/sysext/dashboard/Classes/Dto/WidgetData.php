@@ -22,6 +22,9 @@ namespace TYPO3\CMS\Dashboard\Dto;
  */
 final readonly class WidgetData implements \JsonSerializable
 {
+    /**
+     * @param array<string, mixed> $eventdata
+     */
     public function __construct(
         private string $identifier,
         private string $type,
@@ -43,7 +46,7 @@ final readonly class WidgetData implements \JsonSerializable
             'width' => $this->width,
             'label' => $this->label,
             'content' => $this->content,
-            'eventdata' => $this->eventdata,
+            'eventdata' => (object)$this->eventdata,
             'refreshable' => $this->refreshable,
             'configurable' => $this->configurable,
         ];
