@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\EventListener;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Dto\Tree\Status\StatusInformation;
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Workspaces\EventListener\PageTreeItemsHighlighter;
@@ -136,7 +134,8 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
         ];
 
         $afterPageTreeItemsPreparedEvent = new AfterPageTreeItemsPreparedEvent(
-            new ServerRequest(new Uri('https://example.com')),
+            null,
+            null,
             $input
         );
         $this->get(PageTreeItemsHighlighter::class)($afterPageTreeItemsPreparedEvent);

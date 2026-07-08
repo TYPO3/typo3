@@ -38,9 +38,10 @@ final class AfterPageTreeItemsPreparedEventTest extends UnitTestCase
             ],
         ];
 
-        $event = new AfterPageTreeItemsPreparedEvent($request, $items);
+        $event = new AfterPageTreeItemsPreparedEvent($request, 'foo', $items);
 
         self::assertEquals($request, $event->getRequest());
+        self::assertEquals('foo', $event->getSearchQuery());
         self::assertEquals($items, $event->getItems());
 
         $items = $event->getItems();

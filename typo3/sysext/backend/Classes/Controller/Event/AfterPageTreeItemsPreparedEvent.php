@@ -28,13 +28,19 @@ final class AfterPageTreeItemsPreparedEvent
      * @param array<int, array<string, mixed>> $items
      */
     public function __construct(
-        private readonly ServerRequestInterface $request,
+        private readonly ?ServerRequestInterface $request,
+        private readonly ?string $searchQuery,
         private array $items
     ) {}
 
-    public function getRequest(): ServerRequestInterface
+    public function getRequest(): ?ServerRequestInterface
     {
         return $this->request;
+    }
+
+    public function getSearchQuery(): ?string
+    {
+        return $this->searchQuery;
     }
 
     public function getItems(): array

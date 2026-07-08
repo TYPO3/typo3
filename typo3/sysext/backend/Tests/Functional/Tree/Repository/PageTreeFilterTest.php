@@ -23,9 +23,7 @@ use TYPO3\CMS\Backend\Dto\Tree\Label\Label;
 use TYPO3\CMS\Backend\Tree\Repository\BeforePageTreeIsFilteredEvent;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeFilter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -361,10 +359,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withQueryParams(['q' => $searchPhrase]);
-        $event = new AfterPageTreeItemsPreparedEvent($request, $items);
+        $event = new AfterPageTreeItemsPreparedEvent(null, $searchPhrase, $items);
 
         $subject = $this->get(PageTreeFilter::class);
         $subject->attachTranslationInfoLabel($event);
@@ -398,10 +393,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withQueryParams(['q' => $searchPhrase]);
-        $event = new AfterPageTreeItemsPreparedEvent($request, $items);
+        $event = new AfterPageTreeItemsPreparedEvent(null, $searchPhrase, $items);
 
         $subject = $this->get(PageTreeFilter::class);
         $subject->attachTranslationInfoLabel($event);
@@ -435,10 +427,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withQueryParams(['q' => $searchPhrase]);
-        $event = new AfterPageTreeItemsPreparedEvent($request, $items);
+        $event = new AfterPageTreeItemsPreparedEvent(null, $searchPhrase, $items);
 
         $subject = $this->get(PageTreeFilter::class);
         $subject->attachTranslationInfoLabel($event);
@@ -467,10 +456,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withQueryParams(['q' => $searchPhrase]);
-        $event = new AfterPageTreeItemsPreparedEvent($request, $items);
+        $event = new AfterPageTreeItemsPreparedEvent(null, $searchPhrase, $items);
 
         $subject = $this->get(PageTreeFilter::class);
         $subject->attachTranslationInfoLabel($event);
@@ -504,10 +490,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withQueryParams(['q' => $searchPhrase]);
-        $event = new AfterPageTreeItemsPreparedEvent($request, $items);
+        $event = new AfterPageTreeItemsPreparedEvent(null, $searchPhrase, $items);
 
         $subject = $this->get(PageTreeFilter::class);
         $subject->attachTranslationInfoLabel($event);
@@ -541,10 +524,7 @@ final class PageTreeFilterTest extends FunctionalTestCase
             ],
         ];
 
-        $request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withQueryParams(['q' => $searchPhrase]);
-        $event = new AfterPageTreeItemsPreparedEvent($request, $items);
+        $event = new AfterPageTreeItemsPreparedEvent(null, $searchPhrase, $items);
 
         $subject = $this->get(PageTreeFilter::class);
         $subject->attachTranslationInfoLabel($event);

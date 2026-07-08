@@ -338,7 +338,7 @@ class TreeController
         }
         $items = array_merge(...$items);
 
-        return new JsonResponse($this->getPostProcessedPageItems($request, $items));
+        return new JsonResponse($this->getPostProcessedPageItems($request, null, $items));
     }
 
     /**
@@ -389,7 +389,7 @@ class TreeController
         }
         $items = array_merge(...$items);
 
-        return new JsonResponse($this->getPostProcessedPageItems($request, $items));
+        return new JsonResponse($this->getPostProcessedPageItems($request, $searchQuery, $items));
     }
 
     /**
@@ -716,7 +716,7 @@ class TreeController
         return [$mountPoints];
     }
 
-    protected function getPostProcessedPageItems(ServerRequestInterface $request, array $items): array
+    protected function getPostProcessedPageItems(ServerRequestInterface $request, ?string $searchQuery, array $items): array
     {
         return array_map(
             static function (array $item): PageTreeItem {
@@ -751,7 +751,7 @@ class TreeController
                 );
             },
             $this->eventDispatcher->dispatch(
-                new AfterPageTreeItemsPreparedEvent($request, $items)
+                new AfterPageTreeItemsPreparedEvent($request, $searchQuery, $items)
             )->getItems()
         );
     }

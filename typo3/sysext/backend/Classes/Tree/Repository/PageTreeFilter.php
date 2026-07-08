@@ -242,7 +242,7 @@ final readonly class PageTreeFilter
     #[AsEventListener('page-tree-add-search-result-label')]
     public function attachSearchResultLabel(AfterPageTreeItemsPreparedEvent $event): void
     {
-        $searchPhrase = $event->getRequest()->getQueryParams()['q'] ?? '';
+        $searchPhrase = $event->getSearchQuery() ?? '';
         if (trim($searchPhrase) === '') {
             return;
         }
@@ -336,7 +336,7 @@ final readonly class PageTreeFilter
     #[AsEventListener('page-tree-add-translation-status')]
     public function attachTranslationInfoLabel(AfterPageTreeItemsPreparedEvent $event): void
     {
-        $searchPhrase = $event->getRequest()->getQueryParams()['q'] ?? '';
+        $searchPhrase = $event->getSearchQuery() ?? '';
         if (trim($searchPhrase) === '') {
             return;
         }
