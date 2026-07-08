@@ -23,11 +23,11 @@ namespace TYPO3\CMS\Dashboard\Dto;
 final readonly class WidgetPosition implements \JsonSerializable
 {
     public function __construct(
-        private string $identifier,
-        private int $height,
-        private int $width,
-        private int $y,
-        private int $x,
+        public string $identifier,
+        public int $height,
+        public int $width,
+        public int $y,
+        public int $x,
     ) {}
 
     public function jsonSerialize(): array

@@ -31,6 +31,19 @@ readonly class WidgetGroupInitializationService
 
     /**
      * Define the different groups of widgets as shown in the modal when adding a widget to the current dashboard
+     *
+     * @return array<string, array{
+     *   identifier: string,
+     *   label: string,
+     *   items: list<array{
+     *     identifier: string,
+     *     icon: string,
+     *     label: string,
+     *     description: string,
+     *     requestType: string,
+     *     event: string
+     *   }>
+     *  }>
      */
     public function buildWidgetGroupsConfiguration(): array
     {

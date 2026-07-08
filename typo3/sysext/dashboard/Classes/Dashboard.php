@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Settings\Settings;
 use TYPO3\CMS\Dashboard\Dto\Dashboard as TransferDashboard;
 use TYPO3\CMS\Dashboard\Dto\WidgetConfiguration as TransferWidgetConfiguration;
+use TYPO3\CMS\Dashboard\Dto\WidgetPosition as TransferWidgetPosition;
 use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
 use TYPO3\CMS\Dashboard\Widgets\WidgetContext;
 use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
@@ -37,7 +38,10 @@ class Dashboard
      */
     protected array $widgets = [];
 
-    protected ?object $widgetPositions = null;
+    /**
+     * @var ?array<string, list<TransferWidgetPosition>>
+     */
+    protected ?array $widgetPositions = null;
 
     /**
      * @param array<string,array<string,string|array>> $widgetConfig
@@ -79,9 +83,9 @@ class Dashboard
         return $this->widgets[$identifier] ?? null;
     }
 
-    public function getWidgetPositions(): object
+    public function getWidgetPositions(): array
     {
-        return $this->widgetPositions ?? new \stdClass();
+        return $this->widgetPositions ?? [];
     }
 
     /**
@@ -91,7 +95,7 @@ class Dashboard
     public function initializeWidgets(ServerRequestInterface $request): void
     {
         $availableWidgets = $this->widgetRegistry->getAvailableWidgets();
-        $this->widgetPositions = new \stdClass();
+        $this->widgetPositions = [];
         foreach ($this->widgetConfig as $hash => $widgetConfig) {
             $widgetConfigIdentifier = $widgetConfig['identifier'] ?? '';
             if ($widgetConfigIdentifier !== '' && array_key_exists($widgetConfigIdentifier, $availableWidgets)) {
@@ -121,23 +125,23 @@ class Dashboard
                     if (!isset($position['height']) || !isset($position['width']) || !isset($position['x']) || !isset($position['y'])) {
                         continue;
                     }
-                    if (!isset($this->widgetPositions->{$columnCount})) {
-                        $this->widgetPositions->{$columnCount} = [];
+                    if (!isset($this->widgetPositions[$columnCount])) {
+                        $this->widgetPositions[$columnCount] = [];
                     }
-                    $this->widgetPositions->{$columnCount}[] = [
-                        'identifier' => $hash,
-                        'height' => (int)$position['height'],
-                        'width' => (int)$position['width'],
-                        'x' => (int)$position['x'],
-                        'y' => (int)$position['y'],
-                    ];
+                    $this->widgetPositions[$columnCount][] = new TransferWidgetPosition(
+                        identifier: $hash,
+                        height: (int)$position['height'],
+                        width: (int)$position['width'],
+                        x: (int)$position['x'],
+                        y: (int)$position['y'],
+                    );
                 }
             }
         }
-        foreach (array_keys(get_object_vars($this->widgetPositions)) as $columnCount) {
+        foreach (array_keys($this->widgetPositions) as $columnCount) {
             usort(
-                $this->widgetPositions->{$columnCount},
-                static fn(array $a, array $b): int => $a['y'] !== $b['y'] ? $a['y'] - $b['y'] : $a['x'] - $b['x']
+                $this->widgetPositions[$columnCount],
+                static fn(TransferWidgetPosition $a, TransferWidgetPosition $b): int => $a->y !== $b->y ? $a->y - $b->y : $a->x - $b->x
             );
         }
     }
