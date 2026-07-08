@@ -50,7 +50,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
     expect(fetchStub).calledWithMatch(new Request('https://example.com/', { method: 'POST', body: '' }));
   });
 
-  for (const requestMethod of ['POST', 'PUT', 'DELETE']) {
+  for (const requestMethod of ['POST', 'PUT', 'PATCH', 'DELETE']) {
     describe(`send a ${requestMethod} request`, (): void => {
       function* requestDataProvider(): any {
         yield [

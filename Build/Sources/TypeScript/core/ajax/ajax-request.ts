@@ -118,6 +118,24 @@ class AjaxRequest {
   }
 
   /**
+   * Executes a (by default uncached) PATCH request
+   *
+   * @param {string | FormData | GenericKeyValue} data
+   * @param {RequestInit} init
+   * @return {Promise<Response>}
+   */
+  public async patch(data: string | FormData | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
+    const localDefaultOptions: RequestInit = {
+      body: typeof data === 'string' || data instanceof FormData ? data : InputTransformer.byHeader(data, init?.headers),
+      cache: 'no-cache',
+      method: 'PATCH',
+    };
+
+    const response = await this.send({ ...localDefaultOptions, ...init });
+    return new AjaxResponse(response);
+  }
+
+  /**
    * Executes a regular DELETE request
    *
    * @param {string | FormData | GenericKeyValue} data
