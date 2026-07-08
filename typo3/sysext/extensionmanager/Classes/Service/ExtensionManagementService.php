@@ -282,9 +282,9 @@ class ExtensionManagementService
      */
     public function downloadMainExtension(Extension $extension): void
     {
-        // A remote-bound package is one that must be fetched from a remote (it is either
-        // not present in the system yet, or an update of a present extension is triggered).
-        if ($extension->remote !== '') {
+        // The extension object has a uid if the extension is not present in the system
+        // or an update of a present extension is triggered.
+        if ($extension->uid) {
             $this->rawDownload($extension);
         }
     }

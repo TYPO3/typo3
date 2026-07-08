@@ -27,7 +27,6 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
@@ -56,9 +55,9 @@ class DownloadController extends AbstractController
     /**
      * Check extension dependencies
      */
-    public function checkDependenciesAction(PackageIdentifier $identifier): ResponseInterface
+    public function checkDependenciesAction(int $extension): ResponseInterface
     {
-        $extension = $this->extensionRepository->findOneByPackageIdentifier($identifier);
+        $extension = $this->extensionRepository->findByUid($extension);
         $message = '';
         $title = '';
         $hasDependencies = false;
@@ -117,14 +116,7 @@ class DownloadController extends AbstractController
 
         $url = $this->uriBuilder->uriFor(
             $action,
-            [
-                'identifier' => [
-                    'packageKey' => $identifier->packageKey,
-                    'version' => $identifier->version,
-                    'remote' => $identifier->remote,
-                ],
-                'format' => 'json',
-            ],
+            ['extension' => $extension->uid, 'format' => 'json'],
             'Download'
         );
         $this->view->setConfiguration($configuration);
@@ -152,9 +144,9 @@ class DownloadController extends AbstractController
     /**
      * Install an extension from TER action
      */
-    public function installFromTerAction(PackageIdentifier $identifier): ResponseInterface
+    public function installFromTerAction(int $extension): ResponseInterface
     {
-        $extension = $this->extensionRepository->findOneByPackageIdentifier($identifier);
+        $extension = $this->extensionRepository->findByUid($extension);
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         [$result, $errorMessages] = $this->installFromTer($extension);
@@ -172,19 +164,19 @@ class DownloadController extends AbstractController
     /**
      * Check extension dependencies with special dependencies
      */
-    public function installExtensionWithoutSystemDependencyCheckAction(PackageIdentifier $identifier): ResponseInterface
+    public function installExtensionWithoutSystemDependencyCheckAction(int $extension): ResponseInterface
     {
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         $this->managementService->setSkipDependencyCheck(true);
-        return (new ForwardResponse('installFromTer'))->withArguments(['identifier' => ['packageKey' => $identifier->packageKey, 'version' => $identifier->version, 'remote' => $identifier->remote]]);
+        return (new ForwardResponse('installFromTer'))->withArguments(['extension' => $extension]);
     }
 
     /**
      * Check distribution dependencies without changing the installation state.
      * Returns whether there are unresolved dependency errors for activation.
      */
-    public function checkDistributionDependenciesAction(PackageIdentifier $identifier): ResponseInterface
+    public function checkDistributionDependenciesAction(int $extension): ResponseInterface
     {
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
@@ -196,7 +188,7 @@ class DownloadController extends AbstractController
             ], JSON_THROW_ON_ERROR));
         }
 
-        $extension = $this->extensionRepository->findOneByPackageIdentifier($identifier);
+        $extension = $this->extensionRepository->findByUid($extension);
 
         try {
             $dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
@@ -209,7 +201,7 @@ class DownloadController extends AbstractController
                     'dependencies' => $dependencyErrors,
                     'skipDependencyUri' => $this->uriBuilder->reset()->uriFor(
                         'installDistributionWithoutDependencyCheck',
-                        ['identifier' => ['packageKey' => $identifier->packageKey, 'version' => $identifier->version, 'remote' => $identifier->remote]],
+                        ['extension' => $extension->uid],
                         'Download'
                     ),
                 ], JSON_THROW_ON_ERROR));
@@ -231,9 +223,9 @@ class DownloadController extends AbstractController
     /**
      * Install a distribution from TER.
      */
-    public function installDistributionAction(PackageIdentifier $identifier): ResponseInterface
+    public function installDistributionAction(int $extension): ResponseInterface
     {
-        $extension = $this->extensionRepository->findOneByPackageIdentifier($identifier);
+        $extension = $this->extensionRepository->findByUid($extension);
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
@@ -252,7 +244,7 @@ class DownloadController extends AbstractController
                     'dependencies' => $errorMessages,
                     'skipDependencyUri' => $this->uriBuilder->reset()->uriFor(
                         'installDistributionWithoutDependencyCheck',
-                        ['identifier' => ['packageKey' => $identifier->packageKey, 'version' => $identifier->version, 'remote' => $identifier->remote]],
+                        ['extension' => $extension->uid],
                         'Download'
                     ),
                 ], JSON_THROW_ON_ERROR));
@@ -278,12 +270,12 @@ class DownloadController extends AbstractController
     /**
      * Install a distribution and omit dependency checking.
      */
-    public function installDistributionWithoutDependencyCheckAction(PackageIdentifier $identifier): ResponseInterface
+    public function installDistributionWithoutDependencyCheckAction(int $extension): ResponseInterface
     {
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         $this->managementService->setSkipDependencyCheck(true);
-        return (new ForwardResponse('installDistribution'))->withArguments(['identifier' => ['packageKey' => $identifier->packageKey, 'version' => $identifier->version, 'remote' => $identifier->remote]]);
+        return (new ForwardResponse('installDistribution'))->withArguments(['extension' => $extension]);
     }
 
     /**

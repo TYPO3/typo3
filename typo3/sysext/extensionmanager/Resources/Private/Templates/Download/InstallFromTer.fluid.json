@@ -5,5 +5,5 @@ isAutomaticInstallationEnabled: isAutomaticInstallationEnabled,
 errorCount: '{f:count(subject: unresolvedDependencies)}',
 errorTitle: '{f:translate(key: \'downloadExtension.dependencies.errorTitle\')}',
 errorMessage: '{f:render(partial: \'List/UnresolvedDependencies\', arguments: \'{_all}\')}',
-skipDependencyUri: '{f:uri.action(action: \'installExtensionWithoutSystemDependencyCheck\', format: \'json\', arguments: \'{identifier: {packageKey: extension.packageKey, version: extension.version, remote: extension.remote}}\')}'
+skipDependencyUri: '{f:uri.action(action: \'installExtensionWithoutSystemDependencyCheck\', format: \'json\', arguments: \'{extension: extension}\')}'
 }" /></f:format.raw>
