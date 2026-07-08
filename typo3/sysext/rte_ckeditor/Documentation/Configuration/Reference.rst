@@ -185,6 +185,15 @@ editor.config
     or :ref:`How do I create a custom plugin? <config-example-customplugin>`
     for examples.
 
+    The shipped `whitespace` plugin
+    (:js:`@typo3/rte-ckeditor/plugin/whitespace.js`) renders non-breaking spaces
+    and soft hyphens visibly in the backend editor, as described in
+    :ref:`t3editors:rte-whitespace`. It replaces the former `SoftHyphen` plugin
+    (:js:`@typo3/rte-ckeditor/plugin/soft-hyphen.js`), which has been removed.
+    Presets that still import the old module, or reference `SoftHyphen` or
+    `softhyphen` in the toolbar, are migrated automatically and log a console
+    warning.
+
 ..  _config-linkbrowser:
 Link Browser specific options
 -----------------------------
