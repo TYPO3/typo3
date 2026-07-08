@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 
 /**
@@ -41,10 +40,10 @@ class DistributionController extends AbstractController
     /**
      * Shows information about a single distribution. Reachable from 'Get preconfigured distribution'.
      */
-    public function showAction(PackageIdentifier $identifier): ResponseInterface
+    public function showAction(int $extension): ResponseInterface
     {
         // Check if extension/package is installed
-        $extension = $this->extensionRepository->findOneByPackageIdentifier($identifier);
+        $extension = $this->extensionRepository->findByUid($extension);
         $extensionKey = $extension->extensionKey;
         $active = $this->packageManager->isPackageActive($extensionKey);
         $view = $this->initializeModuleTemplate($this->request);

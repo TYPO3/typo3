@@ -51,13 +51,6 @@ services:
     tags:
       - name: reports.status
 
-  TYPO3\CMS\Extensionmanager\Property\TypeConverter\PackageIdentifierTypeConverter:
-    tags:
-      - name: extbase.type_converter
-        priority: 10
-        target: TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier
-        sources: array
-
   extension.remote.ter:
     class: 'TYPO3\CMS\Extensionmanager\Remote\TerExtensionRemote'
     arguments:

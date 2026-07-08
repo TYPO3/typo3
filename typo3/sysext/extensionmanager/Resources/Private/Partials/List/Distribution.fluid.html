@@ -1,7 +1,7 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <div class="card card-size-small">
     <div class="card-image">
-        <f:link.action action="show" controller="Distribution" arguments="{identifier: {packageKey: distribution.packageKey, version: distribution.version, remote: distribution.remote}}" class="distribution-image">
+        <f:link.action action="show" controller="Distribution" arguments="{extension:distribution.uid}" class="distribution-image">
             <typo3-extensionmanager-distribution-image
                 image="{distribution.distributionImage}"
                 fallback="{f:uri.image(src: 'EXT:extensionmanager/Resources/Public/Images/Distribution.svg')}"
@@ -25,7 +25,7 @@
     </div>
     <div class="card-header">
         <h3 class="card-title">
-            <f:link.action action="show" controller="Distribution" arguments="{identifier: {packageKey: distribution.packageKey, version: distribution.version, remote: distribution.remote}}">
+            <f:link.action action="show" controller="Distribution" arguments="{extension:distribution}">
                 {distribution.title}
             </f:link.action>
         </h3>
@@ -40,13 +40,13 @@
     </div>
     <div class="card-footer">
         <typo3-extension-toggle-button
-            check-url="{f:uri.action(action: 'checkDistributionDependencies', controller: 'Download', arguments: '{identifier: {packageKey: distribution.packageKey, version: distribution.version, remote: distribution.remote}}')}"
-            url="{f:uri.action(action: 'installDistribution', controller: 'Download', arguments: '{identifier: {packageKey: distribution.packageKey, version: distribution.version, remote: distribution.remote}}')}"
+            check-url="{f:uri.action(action: 'checkDistributionDependencies', controller: 'Download', arguments: '{extension: distribution.uid}')}"
+            url="{f:uri.action(action: 'installDistribution', controller: 'Download', arguments: '{extension: distribution.uid}')}"
             extension-key="{distribution.extensionKey}"
             label="{f:translate(key: 'extensionList.activate')}"
             show-label
         ></typo3-extension-toggle-button>
-        <f:link.action action="show" controller="Distribution" arguments="{identifier: {packageKey: distribution.packageKey, version: distribution.version, remote: distribution.remote}}" class="btn btn-link">
+        <f:link.action action="show" controller="Distribution" arguments="{extension:distribution.uid}" class="btn btn-link">
             <f:translate key="button.details">Show Details</f:translate>
         </f:link.action>
     </div>

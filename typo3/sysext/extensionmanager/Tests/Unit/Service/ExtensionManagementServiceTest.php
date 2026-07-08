@@ -72,7 +72,8 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $extension = new Extension();
         $extension->extensionKey = 'foobar';
         $extension->version = '1.0.0';
-        // a package bound to a remote means it needs to be downloaded
+        // an extension with a uid means it needs to be downloaded
+        $extension->uid = 123;
         $extension->remote = 'ter';
 
         $this->remoteMock->expects($this->once())->method('downloadExtension')->with(

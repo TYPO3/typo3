@@ -91,20 +91,6 @@ class Extension
         return $state->getStringValue();
     }
 
-    public function getPackageKey(): string
-    {
-        return $this->extensionKey;
-    }
-
-    /**
-     * The remote identity (package key + version + remote) used to address this
-     * package for download / installation instead of the local database uid.
-     */
-    public function getPackageIdentifier(): PackageIdentifier
-    {
-        return new PackageIdentifier($this->extensionKey, $this->version, $this->remote);
-    }
-
     /**
      * @param \SplObjectStorage<Dependency> $dependencies
      */
