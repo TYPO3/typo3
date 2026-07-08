@@ -26,8 +26,8 @@ use TYPO3\CMS\Backend\Dto\Tree\Status\StatusInformation;
 final readonly class TreeItem implements \JsonSerializable
 {
     /**
-     * @param StatusInformation[] $statusInformation
-     * @param Label[] $labels
+     * @param list<StatusInformation> $statusInformation
+     * @param list<Label> $labels
      **/
     public function __construct(
         public string $identifier,
