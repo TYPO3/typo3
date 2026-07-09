@@ -247,6 +247,9 @@ class Recycler {
       startUid: TYPO3.settings.Recycler.startUid,
       depth: depthSelector.value,
       depthSelection: depthSelector.value,
+      // Keep the record counts in sync with the docHeader language filter.
+      // An empty string represents "all languages".
+      language: TYPO3.settings.Recycler.language ?? '',
     }).get().then(async (response: AjaxResponse): Promise<AjaxResponse> => {
       const data = await response.resolve();
       const tables: Array<HTMLOptionElement> = [];
@@ -307,6 +310,9 @@ class Recycler {
       limit: this.paging.itemsPerPage,
       depthSelection: depthSelector.value,
       tableSelection: tableSelector.value,
+      // Keep the language filter in sync with the docHeader dropdown selection.
+      // An empty string represents "all languages".
+      language: TYPO3.settings.Recycler.language ?? '',
     }).get().then(async (response: AjaxResponse): Promise<AjaxResponse> => {
       const tableWrapper = document.querySelector(Identifiers.recyclerTable);
       const tableBody = tableWrapper.querySelector('tbody');

@@ -47,8 +47,11 @@ readonly class RecyclerAjaxController
         $queryParams = $request->getQueryParams();
         $startUid = (int)($queryParams['startUid'] ?? 0);
         $depth = (int)($queryParams['depth'] ?? 0);
+        // An empty string represents "all languages", matching the module controller semantics.
+        $language = (string)($queryParams['language'] ?? '');
+        $languageId = $language === '' ? null : (int)$language;
 
-        return new JsonResponse($this->recyclerService->getAvailableTables($startUid, $depth));
+        return new JsonResponse($this->recyclerService->getAvailableTables($startUid, $depth, $languageId));
     }
 
     public function getDeletedRecordsAction(ServerRequestInterface $request): ResponseInterface
@@ -64,8 +67,11 @@ readonly class RecyclerAjaxController
         $filterTxt = (string)($queryParams['filterTxt'] ?? '');
         $startUid = (int)($queryParams['startUid'] ?? 0);
         $depth = (int)($queryParams['depth'] ?? 0);
+        // An empty string represents "all languages", matching the module controller semantics.
+        $language = (string)($queryParams['language'] ?? '');
+        $languageId = $language === '' ? null : (int)$language;
 
-        $result = $this->recyclerService->getDeletedRecords($startUid, $table, $depth, $filterTxt, $currentPage, $itemsPerPage);
+        $result = $this->recyclerService->getDeletedRecords($startUid, $table, $depth, $filterTxt, $currentPage, $itemsPerPage, $languageId);
 
         $view = $this->backendViewFactory->create($request);
         $view->assign('showTableHeader', empty($table));

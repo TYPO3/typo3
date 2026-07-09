@@ -44,6 +44,7 @@ return [
         'moduleData' => [
             'depthSelection' => 0,
             'tableSelection' => '',
+            'language' => '',
         ],
     ],
 ];

@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
 
@@ -50,6 +52,7 @@ final readonly class RecyclerService
         private ConnectionPool $connectionPool,
         private RecordHistory $recordHistory,
         private TcaSchemaFactory $tcaSchemaFactory,
+        private SiteFinder $siteFinder,
     ) {}
 
     /**
@@ -60,9 +63,10 @@ final readonly class RecyclerService
      *
      * @param int $startUid UID of the selected page
      * @param int $depth How many levels to recurse
+     * @param int|null $languageId Restrict counts to this (site) language. Null yields all records, regardless of language awareness.
      * @return list<array{0: string, 1: int, 2: string}>
      */
-    public function getAvailableTables(int $startUid, int $depth): array
+    public function getAvailableTables(int $startUid, int $depth, ?int $languageId = null): array
     {
         $deletedRecordsTotal = 0;
         $lang = $this->getLanguageService();
@@ -88,7 +92,7 @@ final readonly class RecyclerService
                 continue;
             }
             $deletedDataObject = GeneralUtility::makeInstance(DeletedRecords::class);
-            $deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
+            $deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth, '', $languageId)->getDeletedRows();
             if (isset($deletedData[$tableName]) && $deletedRecordsInTable = count($deletedData[$tableName])) {
                 $deletedRecordsTotal += $deletedRecordsInTable;
                 $tables[] = [
@@ -116,12 +120,13 @@ final readonly class RecyclerService
      * @param string $filterTxt Search filter text
      * @param int $currentPage Current page number (1-based)
      * @param int $itemsPerPage Number of items per page
+     * @param int|null $languageId The (site-specific) language ID of a record. Null yields all.
      * @return array{groupedRecords: array, totalItems: int}
      */
-    public function getDeletedRecords(int $startUid, string $table, int $depth, string $filterTxt, int $currentPage, int $itemsPerPage): array
+    public function getDeletedRecords(int $startUid, string $table, int $depth, string $filterTxt, int $currentPage, int $itemsPerPage, ?int $languageId = null): array
     {
         $model = GeneralUtility::makeInstance(DeletedRecords::class);
-        $model->loadData($startUid, $table, $depth, $filterTxt);
+        $model->loadData($startUid, $table, $depth, $filterTxt, $languageId);
 
         $flatRecords = [];
         foreach ($model->getDeletedRows() as $tableName => $rows) {
@@ -164,6 +169,7 @@ final readonly class RecyclerService
             ];
             foreach ($rows as $row) {
                 $pageTitle = $this->getPageTitle((int)$row['pid']);
+                $language = $this->getLanguageInformation($schema, $row);
                 $ownerInformation = $this->recordHistory->getCreationInformationForRecord($table, $row);
                 $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['usertype'] === 'BE' ? $ownerInformation['userid'] : 0);
                 $deleteUserUid = $this->recordHistory->getUserIdFromDeleteActionForRecord($table, (int)$row['uid']);
@@ -181,6 +187,8 @@ final readonly class RecyclerService
                     'pid' => $row['pid'],
                     'icon' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),
                     'pageTitle' => $pageTitle,
+                    'languageTitle' => $language['title'],
+                    'languageIcon' => $language['icon'],
                     'crdate' => $creationDate,
                     'tstamp' => $lastUpdateDate,
                     'backendUser' => $this->getBackendUserInformation($ownerUid),
@@ -209,6 +217,50 @@ final readonly class RecyclerService
             $this->runtimeCache->set($cacheId, $pageTitle);
         }
         return $pageTitle;
+    }
+
+    /**
+     * Resolves title and flag icon of the language a record is assigned to.
+     *
+     * Since languages are defined per site, the very same language id may resolve to a
+     * different title and flag depending on the page a record is located in. The result
+     * is therefore cached per page and language id combination.
+     *
+     * @param array<string, mixed> $row
+     * @return array{title: string, icon: string} Empty values if the language can not be resolved
+     */
+    private function getLanguageInformation(TcaSchema $schema, array $row): array
+    {
+        if (!$schema->isLanguageAware()) {
+            return ['title' => '', 'icon' => ''];
+        }
+        $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+        $languageId = (int)($row[$languageField] ?? 0);
+        $pageId = (int)$row['pid'];
+
+        $cacheId = 'recycler-language-' . $pageId . '-' . $languageId;
+        $languageInformation = $this->runtimeCache->get($cacheId);
+        if ($languageInformation === false) {
+            $languageInformation = ['title' => '', 'icon' => ''];
+            if ($languageId === -1) {
+                $languageInformation = [
+                    'title' => $this->getLanguageService()->sL('core.general:LGL.allLanguages'),
+                    'icon' => $this->iconFactory->getIcon('flags-multiple', IconSize::SMALL)->render(),
+                ];
+            } else {
+                try {
+                    $siteLanguage = $this->siteFinder->getSiteByPageId($pageId)->getLanguageById($languageId);
+                    $languageInformation = [
+                        'title' => $siteLanguage->getTitle(),
+                        'icon' => $this->iconFactory->getIcon($siteLanguage->getFlagIdentifier(), IconSize::SMALL)->render(),
+                    ];
+                } catch (SiteNotFoundException|\InvalidArgumentException) {
+                    // Neither the site nor the language is configured (anymore), so there is nothing to display.
+                }
+            }
+            $this->runtimeCache->set($cacheId, $languageInformation);
+        }
+        return $languageInformation;
     }
 
     private function getBackendUserInformation(int $userId): array

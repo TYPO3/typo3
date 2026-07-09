@@ -65,17 +65,18 @@ class DeletedRecords
      * @param string $table Tablename
      * @param int $depth How many levels recursive
      * @param string $filter Filter text
+     * @param int|null $languageId Restrict to this (site) language. Null yields all records, regardless of language awareness.
      */
-    public function loadData(int $id, string $table, int $depth, string $filter = ''): self
+    public function loadData(int $id, string $table, int $depth, string $filter = '', ?int $languageId = null): self
     {
         if ($table) {
             $schemata = $this->getRelevantSchemata();
             if (array_key_exists($table, $schemata)) {
-                $this->setData($id, $schemata[$table], $depth, $filter);
+                $this->setData($id, $schemata[$table], $depth, $filter, $languageId);
             }
         } else {
             foreach ($this->getRelevantSchemata() as $schema) {
-                $this->setData($id, $schema, $depth, $filter);
+                $this->setData($id, $schema, $depth, $filter, $languageId);
             }
         }
         return $this;
@@ -87,11 +88,19 @@ class DeletedRecords
      * @param int $id UID from record
      * @param int $depth How many levels recursive
      * @param string $filter Filter text
+     * @param int|null $languageId Restrict to this (site) language. Null yields all records, regardless of language awareness.
      */
-    protected function setData(int $id, TcaSchema $schema, int $depth, string $filter): void
+    protected function setData(int $id, TcaSchema $schema, int $depth, string $filter, ?int $languageId = null): void
     {
         $deletedField = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
         if (!$deletedField) {
+            return;
+        }
+
+        // When a language is requested, only tables that are language aware can contribute records.
+        // Tables without language awareness are skipped entirely, whereas an unset language ($languageId === null)
+        // returns all records, independent of their language or language awareness.
+        if ($languageId !== null && !$schema->isLanguageAware()) {
             return;
         }
 
@@ -104,6 +113,16 @@ class DeletedRecords
                     $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
                 )
             );
+
+        if ($languageId !== null) {
+            $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+            $queryBuilder = $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    $languageField,
+                    $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
+                )
+            );
+        }
 
         if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
             $queryBuilder = $queryBuilder

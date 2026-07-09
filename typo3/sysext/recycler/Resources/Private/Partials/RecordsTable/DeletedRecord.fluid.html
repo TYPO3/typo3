@@ -18,7 +18,12 @@
     </td>
     <td class="col-path">{record.icon -> f:format.raw()} {record.title}</td>
     <td class="col-time">{record.uid}</td>
-    <td class="col-path">{record.pageTitle}</td>
+    <td class="col-path">
+        {record.pageTitle}
+        <f:if condition="{record.languageTitle}">
+            <div class="text-variant">{record.languageIcon -> f:format.raw()} {record.languageTitle}</div>
+        </f:if>
+    </td>
     <td class="col-time">{record.pid}</td>
     <td class="col-datetime">{record.tstamp}</td>
     <td class="col-control">
