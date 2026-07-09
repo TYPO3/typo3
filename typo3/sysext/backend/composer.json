@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-backend",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS backend",
+	"description": "TYPO3 CMS Backend",
 	"homepage": "https://typo3.community/",
 	"funding": [
 		{
