@@ -30,6 +30,7 @@ enum Identifiers {
   workspaceView = '.t3js-workspace-view-workspace',
   sendToStageAction = '[data-action="send-to-stage"]',
   discardAction = '[data-action="discard"]',
+  publishAction = '[data-action="publish"]',
   stageButtonsContainer = '.t3js-stage-buttons',
   previewModeContainer = '.t3js-preview-mode',
   activePreviewMode = '.t3js-active-preview-mode',
@@ -78,6 +79,7 @@ class Preview extends Workspaces {
       this.resizeViews();
     }, 50).bindTo(window);
     new RegularEvent('click', this.renderDiscardWindow.bind(this)).delegateTo(document, Identifiers.discardAction);
+    new RegularEvent('click', this.renderPublishWindow.bind(this)).delegateTo(document, Identifiers.publishAction);
     new RegularEvent('click', this.renderSendPageToStageWindow.bind(this)).delegateTo(document, Identifiers.sendToStageAction);
     new RegularEvent('click', () => {
       window.top.document.querySelectorAll('.t3js-workspace-recipient:not([disabled])').forEach((element: HTMLInputElement) => {
@@ -155,6 +157,43 @@ class Preview extends Workspaces {
       if ((e.target as HTMLButtonElement).name === 'ok') {
         this.sendRemoteRequest([
           this.generateRemotePayloadBody('discardStagesFromPage', [TYPO3.settings.Workspaces.id]),
+          this.generateRemotePayloadBody('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
+        ], Identifiers.topbar).then(async (response: AjaxResponse): Promise<void> => {
+          modal.hideModal();
+          this.renderStageButtons((await response.resolve())[1].result);
+          // Reloading live view IFRAME
+          this.elements.workspaceView.setAttribute('src', this.elements.workspaceView.getAttribute('src'));
+        });
+      }
+    });
+  }
+
+  private renderPublishWindow(): void {
+    const modal = Modal.confirm(
+      labels.get('window.publishAll.title'),
+      labels.get('window.publishAll.message'),
+      SeverityEnum.warning,
+      [
+        {
+          text: labels.get('cancel'),
+          active: true,
+          btnClass: 'btn-default',
+          name: 'cancel',
+          trigger: (): void => {
+            modal.hideModal();
+          },
+        },
+        {
+          text: labels.get('ok'),
+          btnClass: 'btn-warning',
+          name: 'ok',
+        },
+      ],
+    );
+    modal.addEventListener('button.clicked', (e: Event): void => {
+      if ((e.target as HTMLButtonElement).name === 'ok') {
+        this.sendRemoteRequest([
+          this.generateRemotePayloadBody('publishPageDirectly', [TYPO3.settings.Workspaces.id]),
           this.generateRemotePayloadBody('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
         ], Identifiers.topbar).then(async (response: AjaxResponse): Promise<void> => {
           modal.hideModal();

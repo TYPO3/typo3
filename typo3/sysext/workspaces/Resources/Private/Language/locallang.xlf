@@ -228,6 +228,12 @@
       <trans-unit id="window.discardAll.message">
         <source>Do you really want to discard all versions from page?</source>
       </trans-unit>
+      <trans-unit id="window.publishAll.title">
+        <source>Publish all workspace versions of current page.</source>
+      </trans-unit>
+      <trans-unit id="window.publishAll.message">
+        <source>Do you really want to publish all versions from this page directly?</source>
+      </trans-unit>
       <trans-unit id="window.massAction.title">
         <source>Prepare to start mass action</source>
       </trans-unit>
@@ -323,6 +329,9 @@
       </trans-unit>
       <trans-unit id="label_doaction_publish">
         <source>Publish</source>
+      </trans-unit>
+      <trans-unit id="label_doaction_publish_directly">
+        <source>Publish directly</source>
       </trans-unit>
       <trans-unit id="label_doaction_discard">
         <source>Discard</source>
