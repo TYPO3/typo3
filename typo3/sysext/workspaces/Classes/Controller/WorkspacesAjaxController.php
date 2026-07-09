@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 use TYPO3\CMS\Workspaces\Domain\Model\WorkspaceStage;
 use TYPO3\CMS\Workspaces\Domain\Repository\WorkspaceRepository;
@@ -62,6 +63,7 @@ final readonly class WorkspacesAjaxController
         private BackendViewFactory $backendViewFactory,
         private WorkspaceRepository $workspaceRepository,
         private WorkspaceStageRepository $workspaceStageRepository,
+        private WorkspacePublishGate $workspacePublishGate,
         private LoggerInterface $logger,
     ) {}
 
@@ -95,6 +97,7 @@ final readonly class WorkspacesAjaxController
             'sendCollectionToStage' => $this->sendCollectionToStage($call->data[0]),
             'sendPageToNextStage' => $this->sendPageToNextStage((int)$call->data[0]),
             'sendPageToPreviousStage' => $this->sendPageToPreviousStage((int)$call->data[0]),
+            'publishPageDirectly' => $this->publishPageDirectly((int)$call->data[0]),
             'updateStageChangeButtons' => $this->updateStageChangeButtons((int)$call->data[0], $request),
             default => throw new \RuntimeException('Not implemented', 1762777405),
         });
@@ -668,16 +671,56 @@ final readonly class WorkspacesAjaxController
                 $nextStageSendToTitle = $this->getLanguageService()->sL('workspaces.messages:actionSendToStage') . ' "' . $nextStage->title . '"';
             }
         }
+        $workspaceRecordArray = $backendUser->workspaceRec;
+        $enablePublishButton = !empty($workspaceItemsArray)
+            && $this->workspacePublishGate->isGranted($backendUser, $currentWorkspace)
+            && !(($workspaceRecordArray['publish_access'] ?? 0) & WorkspaceService::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE);
         $view->assignMultiple([
             'enablePreviousStageButton' => !is_null($previousStage),
             'enableNextStageButton' => !is_null($nextStage),
             'enableDiscardStageButton' => !is_null($previousStage) || !is_null($nextStage),
+            'enablePublishButton' => $enablePublishButton,
             'nextStage' => $nextStageSendToTitle,
             'nextStageId' => $nextStage->uid ?? 0,
             'prevStage' => $previousStageSendToTitle,
             'prevStageId' => $previousStage->uid ?? 0,
         ]);
         return $view->render('Preview/Ajax/StageButtons');
+    }
+
+    private function publishPageDirectly(int $pageId): array
+    {
+        $backendUser = $this->getBackendUser();
+        $currentWorkspace = $backendUser->workspace;
+        $workspaceRecordArray = $backendUser->workspaceRec;
+        if (!$this->workspacePublishGate->isGranted($backendUser, $currentWorkspace)
+            || (($workspaceRecordArray['publish_access'] ?? 0) & WorkspaceService::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE)
+        ) {
+            return [
+                'success' => false,
+            ];
+        }
+        $cmdMapArray = [];
+        $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, -99, $pageId, 0, 'tables_modify');
+        foreach ($workspaceItemsArray as $tableName => $items) {
+            foreach ($items as $item) {
+                $liveId = $item['t3ver_oid'] ?: $item['uid'];
+                $cmdMapArray[$tableName][$liveId]['version']['action'] = 'publish';
+                $cmdMapArray[$tableName][$liveId]['version']['swapWith'] = $item['uid'];
+            }
+        }
+        $result = ['success' => true];
+        if (empty($cmdMapArray)) {
+            return $result;
+        }
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $cmdMapArray);
+        $dataHandler->process_cmdmap();
+        if ($dataHandler->errorLog) {
+            $result['success'] = false;
+            $result['error'] = implode('<br/>', $dataHandler->errorLog);
+        }
+        return $result;
     }
 
     private function publishEntireWorkspace(\stdClass $parameters): array
