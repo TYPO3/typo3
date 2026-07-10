@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody"
+,1,0,128,"Root",0,31
+,2,1,128,"Page with content",0,31
+tt_content,,,,,,
+,uid,pid,header,sys_language_uid,l18n_parent,CType
+,1,2,"First content",0,0,"header"
+,2,2,"Second content",0,0,"header"
