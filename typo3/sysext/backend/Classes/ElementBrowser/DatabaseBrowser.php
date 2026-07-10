@@ -18,13 +18,23 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\ElementBrowser;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -48,6 +58,28 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
      */
     protected $expandPage;
     protected array $modTSconfig = [];
+
+    public function __construct(
+        IconFactory $iconFactory,
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        ExtensionConfiguration $extensionConfiguration,
+        BackendViewFactory $backendViewFactory,
+        TcaSchemaFactory $tcaSchemaFactory,
+        ComponentFactory $componentFactory,
+        protected readonly SiteMatcher $siteMatcher,
+        protected readonly PageContextFactory $pageContextFactory,
+    ) {
+        parent::__construct(
+            $iconFactory,
+            $pageRenderer,
+            $uriBuilder,
+            $extensionConfiguration,
+            $backendViewFactory,
+            $tcaSchemaFactory,
+            $componentFactory,
+        );
+    }
 
     protected function initialize(ServerRequestInterface $request)
     {
@@ -182,7 +214,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $moduleData = new ModuleData('records', is_array($existingModuleData) ? $existingModuleData : []);
 
         $dbList = GeneralUtility::makeInstance(ElementBrowserRecordList::class);
-        $dbList->setRequest($request);
+        $dbList->setRequest($this->getRequestWithLanguageContext($request, (int)$this->expandPage, $backendUser));
         $dbList->setModuleData($moduleData);
         $dbList->setOverrideUrlParameters($this->getUrlParameters([]), $request);
         $dbList->setIsEditable(false);
@@ -219,6 +251,22 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $out .= $tableList;
 
         return $out;
+    }
+
+    /**
+     * Builds a request carrying a PageContext of its own, scoped to the page being
+     * browsed and populated with all languages available on its site. Without this,
+     * DatabaseRecordList::getSelectedLanguageIds() would fall back to the ModuleData
+     * persisted by the Web > List module (both share the "records" module identifier),
+     * silently reusing whatever language filter was last set there.
+     */
+    private function getRequestWithLanguageContext(ServerRequestInterface $request, int $pageId, BackendUserAuthentication $backendUser): ServerRequestInterface
+    {
+        $site = $this->siteMatcher->matchByPageId($pageId);
+        $languageIds = array_keys($site->getAvailableLanguages($backendUser, false, $pageId));
+        $request = $request->withAttribute('site', $site);
+        $pageContext = $this->pageContextFactory->createWithLanguages($request, $pageId, $languageIds, $backendUser);
+        return $request->withAttribute('pageContext', $pageContext);
     }
 
     protected function renderSearchBox(ServerRequestInterface $request, ElementBrowserRecordList $dblist, string $searchWord, int $searchLevels): string
