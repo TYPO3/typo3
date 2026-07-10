@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -141,6 +142,7 @@ class DataMapProcessor
         array $dataMap,
         BackendUserAuthentication $backendUser,
         ReferenceIndexUpdater $referenceIndexUpdater,
+        ?CorrelationId $correlationId = null,
     ): array {
         $this->allDataMap = $dataMap;
         $this->modifiedDataMap = $dataMap;
@@ -161,7 +163,7 @@ class DataMapProcessor
             if ($iterations++ === 0) {
                 $this->sanitize($this->allItems);
             }
-            $this->enrich($this->nextItems, $backendUser, $referenceIndexUpdater);
+            $this->enrich($this->nextItems, $backendUser, $referenceIndexUpdater, $correlationId);
         }
         $dataMap = $this->purgeDataMap($this->allDataMap);
 
@@ -302,21 +304,21 @@ class DataMapProcessor
      *
      * @param DataMapItem[] $items
      */
-    protected function enrich(array $items, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater): void
+    protected function enrich(array $items, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater, ?CorrelationId $correlationId = null): void
     {
         foreach (['directChild', 'grandChild'] as $type) {
             foreach ($this->filterItemsByType($type, $items) as $item) {
                 foreach ($item->getApplicableScopes() as $scope) {
                     $fromId = $item->getIdForScope($scope);
                     $fieldNames = $this->getFieldNamesForItemScope($item, $scope, !$item->isNew());
-                    $this->synchronizeTranslationItem($item, $fieldNames, $fromId, $backendUser, $referenceIndexUpdater);
+                    $this->synchronizeTranslationItem($item, $fieldNames, $fromId, $backendUser, $referenceIndexUpdater, $correlationId);
                 }
-                $this->populateTranslationItem($item, $backendUser, $referenceIndexUpdater);
+                $this->populateTranslationItem($item, $backendUser, $referenceIndexUpdater, $correlationId);
                 $this->allDataMap = $this->finishTranslationItem($item, $this->allDataMap);
             }
         }
         foreach ($this->filterItemsByType('parent', $items) as $item) {
-            $this->populateTranslationItem($item, $backendUser, $referenceIndexUpdater);
+            $this->populateTranslationItem($item, $backendUser, $referenceIndexUpdater, $correlationId);
         }
     }
 
@@ -347,7 +349,7 @@ class DataMapProcessor
     /**
      * Synchronize a single item
      */
-    protected function synchronizeTranslationItem(DataMapItem $item, array $fieldNames, string|int $fromId, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater): void
+    protected function synchronizeTranslationItem(DataMapItem $item, array $fieldNames, string|int $fromId, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater, ?CorrelationId $correlationId = null): void
     {
         if (empty($fieldNames)) {
             return;
@@ -370,6 +372,7 @@ class DataMapProcessor
                     $forRecord,
                     $backendUser,
                     $referenceIndexUpdater,
+                    $correlationId,
                 );
             }
         }
@@ -379,7 +382,7 @@ class DataMapProcessor
      * Populates values downwards, either from a parent language item or
      * a source language item to an accordant dependent translation item.
      */
-    protected function populateTranslationItem(DataMapItem $item, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater): void
+    protected function populateTranslationItem(DataMapItem $item, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater, ?CorrelationId $correlationId = null): void
     {
         foreach ([DataMapItem::SCOPE_PARENT, DataMapItem::SCOPE_SOURCE] as $scope) {
             foreach ($item->findDependencies($scope) as $dependentItem) {
@@ -396,6 +399,7 @@ class DataMapProcessor
                         $item->getId(),
                         $backendUser,
                         $referenceIndexUpdater,
+                        $correlationId,
                     );
                 }
             }
@@ -417,7 +421,7 @@ class DataMapProcessor
     /**
      * Synchronize simple values like text and similar
      */
-    protected function synchronizeFieldValues(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater): void
+    protected function synchronizeFieldValues(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater, ?CorrelationId $correlationId = null): void
     {
         // skip if this field has been processed already, assumed that proper sanitation happened
         if ($this->isSetInDataMap($item->getTableName(), $item->getId(), $fieldName, $this->allDataMap)) {
@@ -444,7 +448,7 @@ class DataMapProcessor
             $this->synchronizeDirectRelations($item, $fieldName, $fromRecord, $backendUser);
         } else {
             // reference values
-            $this->synchronizeReferences($item, $fieldName, $fromRecord, $forRecord, $backendUser, $referenceIndexUpdater);
+            $this->synchronizeReferences($item, $fieldName, $fromRecord, $forRecord, $backendUser, $referenceIndexUpdater, $correlationId);
         }
     }
 
@@ -506,7 +510,7 @@ class DataMapProcessor
      *
      * @throws \RuntimeException
      */
-    protected function synchronizeReferences(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater): void
+    protected function synchronizeReferences(DataMapItem $item, string $fieldName, array $fromRecord, array $forRecord, BackendUserAuthentication $backendUser, ReferenceIndexUpdater $referenceIndexUpdater, ?CorrelationId $correlationId = null): void
     {
         $configuration = $this->getSchema($item->getTableName())?->getField($fieldName)->getConfiguration() ?? [];
         $isLocalizationModeExclude = ($configuration['l10n_mode'] ?? null) === 'exclude';
@@ -604,7 +608,7 @@ class DataMapProcessor
         // execute copy, localize and delete actions on persisted child records
         if (!empty($localCommandMap)) {
             $localDataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $localDataHandler->start([], $localCommandMap, $backendUser, $referenceIndexUpdater);
+            $localDataHandler->start([], $localCommandMap, $backendUser, $referenceIndexUpdater, $correlationId);
             $localDataHandler->process_cmdmap();
             // update copied or localized ids
             foreach ($createAncestorIds as $createAncestorId) {

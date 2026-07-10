@@ -450,12 +450,14 @@ class DataHandler
      * @param array $dataMap Data to be modified or inserted in the database
      * @param array $commandMap Commands to copy, move, delete, localize, versionize records.
      * @param BackendUserAuthentication|null $backendUser An alternative user, default is $GLOBALS['BE_USER']
+     * @param CorrelationId|null $correlationId Correlation id of the outer instance when this is a sub instance of a DataHandler chain run, default is a newly generated one
      */
     public function start(
         array $dataMap,
         array $commandMap,
         ?BackendUserAuthentication $backendUser = null,
-        ?ReferenceIndexUpdater $referenceIndexUpdater = null
+        ?ReferenceIndexUpdater $referenceIndexUpdater = null,
+        ?CorrelationId $correlationId = null
     ): void {
         // Initializing BE_USER
         $this->BE_USER = $backendUser ?: $GLOBALS['BE_USER'];
@@ -463,8 +465,9 @@ class DataHandler
         // it is a stateful object for *this* DH chain run. If this is the outermost instance, a new one is created.
         $this->referenceIndexUpdater = $referenceIndexUpdater ?? GeneralUtility::makeInstance(ReferenceIndexUpdater::class);
 
-        // set correlation id for each new set of data or commands
-        $this->correlationId = CorrelationId::forScope(
+        // Sub instances receive the correlation id of the outer instance so all record history entries of one
+        // logical operation share the same scope. A new one is set for each new outermost set of data or commands.
+        $this->correlationId = $correlationId ?? CorrelationId::forScope(
             $this->randomGenerator->generateRandomBase64String(32)
         );
 
@@ -675,7 +678,7 @@ class DataHandler
             $hookObjectsArr[] = $hookObject;
         }
 
-        $this->datamap = $this->dataMapProcessor->process($this->datamap, $this->BE_USER, $this->referenceIndexUpdater);
+        $this->datamap = $this->dataMapProcessor->process($this->datamap, $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
         $registerDBList = [];
         $orderOfTables = [];
         if (isset($this->datamap['pages'])) {
@@ -920,7 +923,7 @@ class DataHandler
                                 // Default is to create a version of the individual records
                                 'label' => 'Auto-created for WS #' . $this->BE_USER->workspace,
                             ];
-                            $tce->start([], $cmd, $this->BE_USER, $this->referenceIndexUpdater);
+                            $tce->start([], $cmd, $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
                             $tce->process_cmdmap();
                             $this->errorLog = array_merge($this->errorLog, $tce->errorLog);
                             // If copying was successful, share the new uids (also of related children):
@@ -3330,7 +3333,7 @@ class DataHandler
             }
         }
         $copyTCE = $this->getLocalTCE();
-        $copyTCE->start($pasteDatamap, [], $this->BE_USER, $this->referenceIndexUpdater);
+        $copyTCE->start($pasteDatamap, [], $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
         $copyTCE->process_datamap();
         $this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
         unset($copyTCE);
@@ -3492,7 +3495,7 @@ class DataHandler
         }
         // Do the copy by simply submitting the array through DataHandler:
         $copyTCE = $this->getLocalTCE();
-        $copyTCE->start($data, [], $this->BE_USER, $this->referenceIndexUpdater);
+        $copyTCE->start($data, [], $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
         $copyTCE->process_datamap();
         // Getting the new UID:
         $theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID] ?? null;
@@ -4982,7 +4985,7 @@ class DataHandler
         }
 
         $copyTCE = $this->getLocalTCE();
-        $copyTCE->start($data, [], $this->BE_USER, $this->referenceIndexUpdater);
+        $copyTCE->start($data, [], $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
         $copyTCE->process_datamap();
         $theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID] ?? null;
         if ($theNewSQLID) {
@@ -5032,7 +5035,7 @@ class DataHandler
         }
         $temporaryId = StringUtility::getUniqueId('NEW');
         $copyTCE = $this->getLocalTCE();
-        $copyTCE->start([$table => [$temporaryId => $overrideValues]], [], $this->BE_USER, $this->referenceIndexUpdater);
+        $copyTCE->start([$table => [$temporaryId => $overrideValues]], [], $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
         $copyTCE->process_datamap();
         // Getting the new UID as if it had been copied:
         $theNewSQLID = $copyTCE->substNEWwithIDs[$temporaryId] ?? null;
@@ -5183,7 +5186,7 @@ class DataHandler
             /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(self::class);
             $tce->enableLogging = $this->enableLogging;
-            $tce->start([], $removeArray, $this->BE_USER, $this->referenceIndexUpdater);
+            $tce->start([], $removeArray, $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
             $tce->process_cmdmap();
             unset($tce);
         }

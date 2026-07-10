@@ -58,9 +58,9 @@ class SlugService implements LoggerAwareInterface
      */
     final public const CORRELATION_ID_IDENTIFIER = '5d8e6e70';
 
-    protected CorrelationId|string $correlationIdRedirectCreation = '';
-    protected CorrelationId|string $correlationIdSlugUpdate = '';
-    protected CorrelationId|string $correlationIdPageUpdate = '';
+    protected ?CorrelationId $correlationIdRedirectCreation = null;
+    protected ?CorrelationId $correlationIdSlugUpdate = null;
+    protected ?CorrelationId $correlationIdPageUpdate = null;
     protected bool $autoUpdateSlugs = false;
     protected bool $autoCreateRedirects = false;
     protected int $redirectTTL = 0;
@@ -177,8 +177,7 @@ class SlugService implements LoggerAwareInterface
                     $redirectNewId => $record,
                 ],
             ];
-            $dataHandler->start($data, []);
-            $dataHandler->setCorrelationId($this->correlationIdRedirectCreation);
+            $dataHandler->start($data, [], null, null, $this->correlationIdRedirectCreation);
             $dataHandler->process_datamap();
             if ($addedTableModify) {
                 // Revert temporary permissions
@@ -320,8 +319,7 @@ class SlugService implements LoggerAwareInterface
         $data = [];
         $data['pages'][$uid]['slug'] = $newSlug;
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start($data, []);
-        $dataHandler->setCorrelationId($this->correlationIdSlugUpdate);
+        $dataHandler->start($data, [], null, null, $this->correlationIdSlugUpdate);
         $dataHandler->process_datamap();
         $this->enabledHook();
     }
