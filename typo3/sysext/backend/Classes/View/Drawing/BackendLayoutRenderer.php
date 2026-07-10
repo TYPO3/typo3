@@ -50,6 +50,7 @@ readonly class BackendLayoutRenderer
     public function __construct(
         protected BackendViewFactory $backendViewFactory,
         protected RecordFactory $recordFactory,
+        protected FlashMessageService $flashMessageService,
     ) {}
 
     public function getGridForPageLayoutContext(PageLayoutContext $context): Grid
@@ -152,8 +153,7 @@ readonly class BackendLayoutRenderer
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleUnusedElementsWarningTitle'),
             ContextualFeedbackSeverity::WARNING
         );
-        $service = GeneralUtility::makeInstance(FlashMessageService::class);
-        $queue = $service->getMessageQueueByIdentifier();
+        $queue = $this->flashMessageService->getMessageQueueByIdentifier();
         $queue->addMessage($unusedElementsMessage);
 
         $unusedGrid = GeneralUtility::makeInstance(Grid::class, $pageLayoutContext);

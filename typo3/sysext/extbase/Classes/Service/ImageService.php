@@ -39,6 +39,7 @@ readonly class ImageService
 {
     public function __construct(
         protected ResourceFactory $resourceFactory,
+        protected LinkService $linkService,
     ) {}
 
     /**
@@ -155,8 +156,7 @@ readonly class ImageService
             }
         } elseif (str_starts_with($src, 't3://file')) {
             // We have a t3://file link to a file in FAL
-            $linkService = GeneralUtility::makeInstance(LinkService::class);
-            $data = $linkService->resolveByStringRepresentation($src);
+            $data = $this->linkService->resolveByStringRepresentation($src);
             $image = $data['file'];
         } else {
             // We have a combined identifier or legacy (storage 0) path

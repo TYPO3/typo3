@@ -117,6 +117,7 @@ class SetupModuleController
         protected readonly FormResultHandler $formResultHandler,
         protected readonly UserSettingsSchema $userSettingsSchema,
         protected readonly TcaSchemaBuilder $tcaSchemaBuilder,
+        protected readonly ResourceFactory $resourceFactory,
     ) {
         $passwordPolicy = $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordPolicy'] ?? 'default';
 
@@ -595,7 +596,7 @@ class SetupModuleController
         if ((int)$fileUid > 0) {
             // Get file object
             try {
-                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$fileUid);
+                $file = $this->resourceFactory->getFileObject((int)$fileUid);
             } catch (FileDoesNotExistException $e) {
                 $file = false;
             }

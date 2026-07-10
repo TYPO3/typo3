@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -131,7 +132,8 @@ final class RedirectServiceTest extends FunctionalTestCase
             $this->get(FrontendTypoScriptFactory::class),
             $typoScriptCache,
             $this->get(LogManager::class)->getLogger('Testing'),
-            $this->get(TypoLinkCodecService::class)
+            $this->get(TypoLinkCodecService::class),
+            $this->get(Locales::class),
         );
 
         // Assert correct redirect is matched
@@ -902,7 +904,8 @@ final class RedirectServiceTest extends FunctionalTestCase
             $this->get(FrontendTypoScriptFactory::class),
             $typoScriptCache,
             $this->get(LogManager::class)->getLogger('Testing'),
-            $this->get(TypoLinkCodecService::class)
+            $this->get(TypoLinkCodecService::class),
+            $this->get(Locales::class),
         );
 
         $redirectMatch = $redirectService->matchRedirect($uri->getHost(), $uri->getPath(), $uri->getQuery());

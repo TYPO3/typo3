@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Is not used by FormEngine though (main form rendering script) - that uses the same class (DataHandler) but makes its own initialization (to save the redirect request).
  * For all other cases than FormEngine it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to FormEngine, that will give you easy form-rendering as well.
  */
+#[AsController]
 class SimpleDataHandlerController
 {
     /**
@@ -96,6 +98,10 @@ class SimpleDataHandlerController
      */
     protected $tce;
 
+    public function __construct(
+        protected readonly FlashMessageService $flashMessageService,
+    ) {}
+
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the processRequest() method, it just redirects to the given URL afterwards.
@@ -129,8 +135,6 @@ class SimpleDataHandlerController
         $this->initializeClipboard($request);
         $this->processRequest();
 
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-
         $content = [
             'redirect' => $this->redirect,
             'messages' => [],
@@ -140,7 +144,7 @@ class SimpleDataHandlerController
         // Prints errors (= write them to the message queue)
         $this->tce->printLogErrorMessages();
 
-        $messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
+        $messages = $this->flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
         if (!empty($messages)) {
             foreach ($messages as $message) {
                 $content['messages'][] = [

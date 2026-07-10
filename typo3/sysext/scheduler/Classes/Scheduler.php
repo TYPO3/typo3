@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Event\AfterTaskExecutionEvent;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
@@ -34,10 +33,6 @@ use TYPO3\CMS\Scheduler\Task\TaskSerializer;
  */
 class Scheduler implements SingletonInterface
 {
-    protected LoggerInterface $logger;
-    protected TaskSerializer $taskSerializer;
-    protected SchedulerTaskRepository $schedulerTaskRepository;
-
     /**
      * @var array $extConf Settings from the extension manager
      */
@@ -47,16 +42,16 @@ class Scheduler implements SingletonInterface
      * Constructor, makes sure all derived client classes are included
      */
     public function __construct(
-        LoggerInterface $logger,
-        TaskSerializer $taskSerializer,
-        SchedulerTaskRepository $schedulerTaskRepository,
+        protected readonly LoggerInterface $logger,
+        protected readonly TaskSerializer $taskSerializer,
+        protected readonly SchedulerTaskRepository $schedulerTaskRepository,
         protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly Registry $registry,
+        protected readonly ConnectionPool $connectionPool,
+        ExtensionConfiguration $extensionConfiguration,
     ) {
-        $this->logger = $logger;
-        $this->taskSerializer = $taskSerializer;
-        $this->schedulerTaskRepository = $schedulerTaskRepository;
         // Get configuration from the extension manager
-        $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('scheduler');
+        $this->extConf = $extensionConfiguration->get('scheduler');
         if (empty($this->extConf['maxLifetime'])) {
             $this->extConf['maxLifetime'] = 1440;
         }
@@ -71,8 +66,7 @@ class Scheduler implements SingletonInterface
     protected function cleanExecutionArrays()
     {
         $tstamp = $GLOBALS['EXEC_TIME'];
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_scheduler_task');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_scheduler_task');
 
         // Select all tasks with executions
         // NOTE: this cleanup is done for disabled tasks too,
@@ -122,7 +116,7 @@ class Scheduler implements SingletonInterface
                 } else {
                     $value = serialize($executions);
                 }
-                $connectionPool->getConnectionForTable('tx_scheduler_task')->update(
+                $this->connectionPool->getConnectionForTable('tx_scheduler_task')->update(
                     'tx_scheduler_task',
                     ['serialized_executions' => $value],
                     ['uid' => (int)$row['uid']],
@@ -225,8 +219,7 @@ class Scheduler implements SingletonInterface
         if ($type !== 'manual' && $type !== 'cli-by-id') {
             $type = 'cron';
         }
-        $registry = GeneralUtility::makeInstance(Registry::class);
         $runInformation = ['start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type];
-        $registry->set('tx_scheduler', 'lastRun', $runInformation);
+        $this->registry->set('tx_scheduler', 'lastRun', $runInformation);
     }
 }

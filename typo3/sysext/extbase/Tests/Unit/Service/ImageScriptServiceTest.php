@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -35,7 +36,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     #[Test]
     public function fileIsUnwrappedFromReferenceForProcessing(): void
     {
-        $subject = new ImageService($this->createMock(ResourceFactory::class));
+        $subject = new ImageService($this->createMock(ResourceFactory::class), $this->createMock(LinkService::class));
         $reference = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
         $file = $this->createMock(File::class);
         $processedFile = $this->createMock(ProcessedFile::class);
@@ -60,7 +61,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     #[Test]
     public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected): void
     {
-        $subject = new ImageService($this->createMock(ResourceFactory::class));
+        $subject = new ImageService($this->createMock(ResourceFactory::class), $this->createMock(LinkService::class));
         $file = $this->createMock(File::class);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
@@ -80,7 +81,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     #[Test]
     public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected): void
     {
-        $subject = new ImageService($this->createMock(ResourceFactory::class));
+        $subject = new ImageService($this->createMock(ResourceFactory::class), $this->createMock(LinkService::class));
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'foo.bar', 'SCRIPT_NAME' => '/index.php']);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('normalizedParams', $normalizedParams);
 

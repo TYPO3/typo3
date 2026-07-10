@@ -66,6 +66,7 @@ readonly class RedirectService
         private PhpFrontend $typoScriptCache,
         private LoggerInterface $logger,
         private TypoLinkCodecService $typoLinkCodecService,
+        private Locales $locales,
     ) {}
 
     /**
@@ -405,7 +406,7 @@ readonly class RedirectService
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $language = $originalRequest->getAttribute('language') ?? $originalRequest->getAttribute('site')->getDefaultLanguage();
         if ($language->hasCustomTypo3Language()) {
-            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());
+            $locale = $this->locales->createLocale($language->getTypo3Language());
         } else {
             $locale = $language->getLocale();
         }

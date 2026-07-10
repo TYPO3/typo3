@@ -36,7 +36,10 @@ final readonly class InstallStatusReport implements StatusProviderInterface
     private const WRAP_FLAT = 1;
     private const WRAP_NESTED = 2;
 
-    public function __construct(private UpgradeWizardsService $upgradeWizardsService) {}
+    public function __construct(
+        private UpgradeWizardsService $upgradeWizardsService,
+        private UriBuilder $uriBuilder,
+    ) {}
 
     /**
      * Compiles a collection of system status checks as a status report.
@@ -182,14 +185,13 @@ final readonly class InstallStatusReport implements StatusProviderInterface
         $value = $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateComplete');
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // check if there are update wizards left to perform
         $incompleteWizards = $this->getIncompleteWizards();
         if (count($incompleteWizards)) {
             // At least one incomplete wizard was found
             $value = $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateIncomplete');
             $severity = ContextualFeedbackSeverity::WARNING;
-            $url = (string)$uriBuilder->buildUriFromRoute('system_upgrade');
+            $url = (string)$this->uriBuilder->buildUriFromRoute('system_upgrade');
             $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
         }
 

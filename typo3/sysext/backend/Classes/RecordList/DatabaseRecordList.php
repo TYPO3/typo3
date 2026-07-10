@@ -432,6 +432,7 @@ class DatabaseRecordList
         protected readonly ComponentFactory $componentFactory,
         protected readonly LocalizationRepository $localizationRepository,
         protected readonly BackendLayoutView $backendLayoutView,
+        protected readonly LinkService $linkService,
     ) {
         $this->calcPerms = new Permission();
     }
@@ -2455,9 +2456,8 @@ class DatabaseRecordList
         // If there is a current link to a record, set the current link uid and get the table name from the link handler configuration
         $currentLinkValue = trim($this->overrideUrlParameters['P']['currentValue'] ?? '');
         if ($currentLinkValue) {
-            $linkService = GeneralUtility::makeInstance(LinkService::class);
             try {
-                $currentLinkParts = $linkService->resolve($currentLinkValue);
+                $currentLinkParts = $this->linkService->resolve($currentLinkValue);
                 if ($currentLinkParts['type'] === 'record' && isset($currentLinkParts['identifier'])) {
                     $this->currentLink['tableNames'] = $this->tableList;
                     $this->currentLink['uid'] = (int)$currentLinkParts['uid'];

@@ -34,8 +34,13 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
 /**
  * Performs some checks about the install tool protection status
  */
-class ConfigurationStatus implements StatusProviderInterface
+readonly class ConfigurationStatus implements StatusProviderInterface
 {
+    public function __construct(
+        private UriBuilder $uriBuilder,
+        private Registry $registry,
+    ) {}
+
     /**
      * Determines the Install Tool's status, mainly concerning its protection.
      *
@@ -82,14 +87,12 @@ class ConfigurationStatus implements StatusProviderInterface
             ->executeQuery()
             ->fetchOne();
 
-        $registry = GeneralUtility::makeInstance(Registry::class);
-        $lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
+        $lastRefIndexUpdate = $this->registry->get('core', 'sys_refindex_lastUpdate');
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if (!$count && $lastRefIndexUpdate) {
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_empty');
             $severity = ContextualFeedbackSeverity::WARNING;
-            $url = (string)$uriBuilder->buildUriFromRoute('system_maintenance');
+            $url = (string)$this->uriBuilder->buildUriFromRoute('system_maintenance');
             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::datetime($lastRefIndexUpdate));
         }
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_referenceIndex'), $value, $message, $severity);

@@ -25,7 +25,6 @@ use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Frontend\Cache\CacheInstruction;
@@ -35,6 +34,7 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
 {
     public function __construct(
         private readonly ViewFactoryInterface $viewFactory,
+        private readonly UriBuilder $uriBuilder,
     ) {}
 
     public function getIconIdentifier(): string
@@ -51,7 +51,6 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
         );
         $view = $this->viewFactory->create($viewFactoryData);
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $feCacheClear = $this->getBackendUser()->isAdmin()
             || !empty($this->getBackendUser()->getTSConfig()['options.']['clearCache.']['pages']);
 
@@ -66,8 +65,8 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
                 'isEnabled' => $this->getBackendUser()->uc['AdminPanel']['display_cache'] ?? false,
                 'noCache' => $this->getBackendUser()->uc['AdminPanel']['cache_noCache'] ?? false,
                 'currentId' => $pageId,
-                'clearPageCacheUrl' => $feCacheClear ? (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'pages']) : '',
-                'clearCurrentPageCacheUrl' => (string)$uriBuilder->buildUriFromRoute(
+                'clearPageCacheUrl' => $feCacheClear ? (string)$this->uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'pages']) : '',
+                'clearCurrentPageCacheUrl' => (string)$this->uriBuilder->buildUriFromRoute(
                     'tce_db',
                     [
                         'cacheCmd' => $pageId,

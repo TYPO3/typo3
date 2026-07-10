@@ -84,6 +84,7 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
         private PageInformationFactory $pageInformationFactory,
         // injecting this central stateful singleton. this is usually a smell, but ok in this case as exception.
         private PageRenderer $pageRenderer,
+        private Locales $locales,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -224,10 +225,10 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
         } else {
             // Init FE PageRenderer defaults when this page needs to be generated
             if ($language->hasCustomTypo3Language()) {
-                $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($language->getTypo3Language());
+                $locale = $this->locales->createLocale($language->getTypo3Language());
             } else {
                 // The createLocale() call is needed in order to resolve dependencies from the Locales class
-                $locale = GeneralUtility::makeInstance(Locales::class)->createLocale((string)$language->getLocale());
+                $locale = $this->locales->createLocale((string)$language->getLocale());
             }
             $this->pageRenderer->setLanguage($locale, $request);
             $pageParts->setPageRendererSubstitutionHash(md5(StringUtility::getUniqueId()));

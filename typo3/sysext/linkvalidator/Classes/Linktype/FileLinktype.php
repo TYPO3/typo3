@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
@@ -29,6 +28,10 @@ use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 class FileLinktype extends AbstractLinktype
 {
     protected string $identifier = 'file';
+
+    public function __construct(
+        private readonly ResourceFactory $resourceFactory,
+    ) {}
 
     /**
      * Type fetching method, based on the type that softRefParserObj returns
@@ -56,9 +59,8 @@ class FileLinktype extends AbstractLinktype
      */
     public function checkLink(string $url, array $softRefEntry, LinkAnalyzer $reference): bool
     {
-        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         try {
-            $file = $resourceFactory->retrieveFileOrFolderObject($url);
+            $file = $this->resourceFactory->retrieveFileOrFolderObject($url);
         } catch (FileDoesNotExistException|FolderDoesNotExistException $e) {
             return false;
         }

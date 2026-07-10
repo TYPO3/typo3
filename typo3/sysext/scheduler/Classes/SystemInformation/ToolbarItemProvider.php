@@ -41,9 +41,11 @@ final class ToolbarItemProvider
     /**
      * Gather initial information
      */
-    public function __construct()
-    {
-        $this->lastRunInformation = GeneralUtility::makeInstance(Registry::class)->get('tx_scheduler', 'lastRun', []);
+    public function __construct(
+        private readonly UriBuilder $uriBuilder,
+        Registry $registry,
+    ) {
+        $this->lastRunInformation = $registry->get('tx_scheduler', 'lastRun', []);
     }
 
     #[AsEventListener('scheduler/show-latest-errors')]
@@ -57,13 +59,12 @@ final class ToolbarItemProvider
         $languageService = $this->getLanguageService();
 
         if (!$this->schedulerWasExecuted()) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             // Display system message if the Scheduler has never yet run
             $moduleIdentifier = 'scheduler';
             $systemInformationToolbarItem->addSystemMessage(
                 sprintf(
                     $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systemmessage.noLastRun'),
-                    (string)$uriBuilder->buildUriFromRoute($moduleIdentifier)
+                    (string)$this->uriBuilder->buildUriFromRoute($moduleIdentifier)
                 ),
                 InformationStatus::WARNING,
                 1,

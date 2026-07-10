@@ -536,8 +536,6 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = $this->createMock(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
-
         $subject = new TcaCheckboxItems();
         $subject->injectItemProcessingService(
             $this->getItemProcessingServiceInstance($flashMessageService)
@@ -600,8 +598,6 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = $this->createMock(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
-
         $subject = new TcaCheckboxItems();
         $subject->injectItemProcessingService(
             $this->getItemProcessingServiceInstance($flashMessageService)
@@ -705,7 +701,6 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $flashMessage = $this->createMock(FlashMessage::class);
         GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
-        GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 

@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Scheduler\Tests\Functional;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Event\AfterTaskExecutionEvent;
 use TYPO3\CMS\Scheduler\Scheduler;
@@ -54,6 +57,9 @@ final class SchedulerTest extends FunctionalTestCase
             self::createStub(TaskSerializer::class),
             $taskRepository,
             $recordingDispatcher,
+            $this->get(Registry::class),
+            $this->get(ConnectionPool::class),
+            $this->get(ExtensionConfiguration::class),
         );
     }
 

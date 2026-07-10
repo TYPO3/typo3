@@ -113,6 +113,7 @@ EOF;
     public function __construct(
         protected readonly Features $features,
         private readonly FileNameValidator $fileNameValidator,
+        private readonly ResourceFactory $resourceFactory,
     ) {}
 
     /**
@@ -152,9 +153,9 @@ EOF;
         }
 
         if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
-            $this->file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$fileUid);
+            $this->file = $this->resourceFactory->getFileObject((int)$fileUid);
         } else {
-            $this->file = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($fileUid);
+            $this->file = $this->resourceFactory->retrieveFileOrFolderObject($fileUid);
         }
         if (!($this->file instanceof FileInterface && $this->isFileValid($this->file))) {
             throw new Exception('File processing for local storage is denied', 1594043425);

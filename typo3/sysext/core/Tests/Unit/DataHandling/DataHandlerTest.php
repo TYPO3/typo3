@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\DataHandling\PagePermissionAssembler;
 use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -107,6 +108,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(LocalizationRepository::class),
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
+            $this->createMock(LinkService::class),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
         $this->subject->start([], [], new BackendUserAuthentication(), $this->createMock(ReferenceIndexUpdater::class));
@@ -282,6 +284,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(LocalizationRepository::class),
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
+            $this->createMock(LinkService::class),
         ];
         $subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments, '');
         $inputValue = 'myPassword';
@@ -1130,6 +1133,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(LocalizationRepository::class),
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
+            $this->createMock(LinkService::class),
         );
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
@@ -1166,6 +1170,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(LocalizationRepository::class),
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
+            $this->createMock(LinkService::class),
         );
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
@@ -1599,6 +1604,7 @@ final class DataHandlerTest extends UnitTestCase
             $this->createMock(LocalizationRepository::class),
             $this->createMock(SiteFinder::class),
             $this->createMock(DataMapProcessor::class),
+            $this->createMock(LinkService::class),
         );
         self::assertEquals($expected, $subject->clearPrefixFromValue('testTable', $input));
     }

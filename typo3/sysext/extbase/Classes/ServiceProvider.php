@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -72,6 +73,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Service\ImageService::class, [
             $container->get(ResourceFactory::class),
+            $container->get(LinkService::class),
         ]);
     }
 }

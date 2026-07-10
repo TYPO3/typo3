@@ -42,6 +42,7 @@ readonly class ManualLocalizationHandler implements LocalizationHandlerInterface
     public function __construct(
         protected UriBuilder $uriBuilder,
         protected LocalizationRepository $localizationRepository,
+        protected ResourceFactory $resourceFactory,
     ) {}
 
     public function getIdentifier(): string
@@ -234,7 +235,7 @@ readonly class ManualLocalizationHandler implements LocalizationHandlerInterface
             if ($type === 'sys_file_metadata') {
                 // Get the file from the metadata record and build return URL to filelist module
                 try {
-                    $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$record['file']);
+                    $file = $this->resourceFactory->getFileObject((int)$record['file']);
                     $parentFolder = $file->getParentFolder();
                     $returnUrl = (string)$this->uriBuilder->buildUriFromRoute(
                         'media_management',

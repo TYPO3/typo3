@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Impexp\ContextMenu;
 
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\AbstractProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Context menu item provider adding export and import items
@@ -45,6 +44,12 @@ class ItemProvider extends AbstractProvider
             'callbackAction' => 'importT3d',
         ],
     ];
+
+    public function __construct(
+        private readonly UriBuilder $uriBuilder,
+    ) {
+        parent::__construct();
+    }
 
     /**
      * Export item is added for all database records except files
@@ -104,13 +109,12 @@ class ItemProvider extends AbstractProvider
         ];
 
         // Add action url for items
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         switch ($itemName) {
             case 'exportT3d':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('tx_impexp_export');
+                $attributes['data-action-url'] = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_export');
                 break;
             case 'importT3d':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('tx_impexp_import');
+                $attributes['data-action-url'] = (string)$this->uriBuilder->buildUriFromRoute('tx_impexp_import');
                 break;
         }
 

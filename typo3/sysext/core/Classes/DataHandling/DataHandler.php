@@ -432,6 +432,7 @@ class DataHandler
         private readonly LocalizationRepository $localizationRepository,
         private readonly SiteFinder $siteFinder,
         private readonly DataMapProcessor $dataMapProcessor,
+        private readonly LinkService $linkService,
     ) {}
 
     /**
@@ -1880,7 +1881,7 @@ class DataHandler
             } else {
                 // Try to resolve the actual link type and compare with the allow list
                 try {
-                    $linkData = GeneralUtility::makeInstance(LinkService::class)->resolve($linkParameter);
+                    $linkData = $this->linkService->resolve($linkParameter);
                     $linkType = $linkData['type'] ?? '';
                     $linkIdentifier = $linkData['identifier'] ?? '';
                     if (is_array($tcaFieldConf['allowedTypes'] ?? false)

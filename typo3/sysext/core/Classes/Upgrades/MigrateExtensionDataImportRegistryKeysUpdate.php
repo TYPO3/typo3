@@ -50,7 +50,6 @@ readonly class MigrateExtensionDataImportRegistryKeysUpdate implements CoreUpgra
 
     public function executeUpdate(): bool
     {
-        $registry = GeneralUtility::makeInstance(Registry::class);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('sys_registry');
 
@@ -68,6 +67,7 @@ readonly class MigrateExtensionDataImportRegistryKeysUpdate implements CoreUpgra
             ->orderBy('uid')
             ->executeQuery();
 
+        $registry = GeneralUtility::makeInstance(Registry::class);
         while ($row = $result->fetchAssociative()) {
             $oldKey = $row['entry_key'];
             $value = $row['entry_value'];

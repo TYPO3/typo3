@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
@@ -115,7 +116,8 @@ final class RedirectServiceTest extends UnitTestCase
             ),
             $this->createMock(PhpFrontend::class),
             $this->createMock(LoggerInterface::class),
-            new TypoLinkCodecService(new NoopEventDispatcher())
+            new TypoLinkCodecService(new NoopEventDispatcher()),
+            new Locales(),
         );
 
         $GLOBALS['SIM_ACCESS_TIME'] = 42;
@@ -683,6 +685,7 @@ final class RedirectServiceTest extends UnitTestCase
                 $this->createMock(PhpFrontend::class),
                 $this->createMock(LoggerInterface::class),
                 new TypoLinkCodecService(new NoopEventDispatcher()),
+                new Locales(),
             ],
             '',
         );

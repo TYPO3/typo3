@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
@@ -542,7 +541,7 @@ class TranslationService
         if ($locale) {
             return $this->languageServiceFactory->create($locale);
         }
-        return $this->languageServiceFactory->create(GeneralUtility::makeInstance(Locales::class)->createLocaleFromRequest($request));
+        return $this->languageServiceFactory->create($this->locales->createLocaleFromRequest($request));
     }
 
     /**

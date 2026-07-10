@@ -72,6 +72,7 @@ class AddController
 
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
+        private readonly UriBuilder $uriBuilder,
     ) {}
 
     /**
@@ -181,8 +182,7 @@ class AddController
         // Redirecting to FormEngine with instructions to create a new record
         // AND when closing to return back with information about that records ID etc.
         $normalizedParams = $request->getAttribute('normalizedParams');
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+        $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
             'returnEditConf' => 1,
             'edit[' . $this->P['params']['table'] . '][' . $this->pid . ']' => 'new',
             // @todo add module context to wizard/add routes and set module context here

@@ -138,6 +138,13 @@ class FileProvider extends AbstractProvider
         ],
     ];
 
+    public function __construct(
+        private readonly ResourceFactory $resourceFactory,
+        private readonly UriBuilder $uriBuilder,
+    ) {
+        parent::__construct();
+    }
+
     public function canHandle(): bool
     {
         return $this->table === 'sys_file';
@@ -150,7 +157,7 @@ class FileProvider extends AbstractProvider
     {
         parent::initialize();
         try {
-            $this->record = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->identifier);
+            $this->record = $this->resourceFactory->retrieveFileOrFolderObject($this->identifier);
         } catch (ResourceDoesNotExistException $e) {
             $this->record = null;
         }
@@ -295,7 +302,7 @@ class FileProvider extends AbstractProvider
             return false;
         }
         $selItem = reset($elArr);
-        $fileOrFolderInClipBoard = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($selItem);
+        $fileOrFolderInClipBoard = $this->resourceFactory->retrieveFileOrFolderObject($selItem);
 
         return $this->isFolder()
             && $this->record->checkActionPermission('write')
@@ -452,7 +459,7 @@ class FileProvider extends AbstractProvider
         if ($itemName === 'pasteInto' && $this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
             $elArr = $this->clipboard->elFromTable('_FILE');
             $selItem = reset($elArr);
-            $fileOrFolderInClipBoard = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($selItem);
+            $fileOrFolderInClipBoard = $this->resourceFactory->retrieveFileOrFolderObject($selItem);
 
             $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste');
 
@@ -487,22 +494,21 @@ class FileProvider extends AbstractProvider
         $attributes['data-filecontext-meta-uid'] = $this->record instanceof File ? $this->record->getMetaData()->offsetGet('uid') : '';
 
         // Add action url for file operations
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         switch ($itemName) {
             case 'downloadFolder':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_download');
+                $attributes['data-action-url'] = (string)$this->uriBuilder->buildUriFromRoute('file_download');
                 break;
             case 'edit':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_edit');
+                $attributes['data-action-url'] = (string)$this->uriBuilder->buildUriFromRoute('file_edit');
                 break;
             case 'new':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('wizard_element_browser');
+                $attributes['data-action-url'] = (string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser');
                 break;
             case 'newFile':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('wizard_element_browser');
+                $attributes['data-action-url'] = (string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser');
                 break;
             case 'updateOnlineMedia':
-                $attributes['data-action-url'] = (string)$uriBuilder->buildUriFromRoute('file_update_online_media');
+                $attributes['data-action-url'] = (string)$this->uriBuilder->buildUriFromRoute('file_update_online_media');
                 break;
         }
 

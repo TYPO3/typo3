@@ -36,6 +36,10 @@ use TYPO3\CMS\Form\Domain\Repository\FormDefinitionRepository;
  */
 class DatabaseService
 {
+    public function __construct(
+        private readonly ResourceFactory $resourceFactory,
+    ) {}
+
     /**
      * Returns an array with all sys_refindex database rows which be
      * connected to a formDefinition identified by $persistenceIdentifier
@@ -79,13 +83,11 @@ class DatabaseService
         } else {
             // Anything else would be either a notation like "/fileadmin/something.form.yaml"
             // or a numeric identifier for a sys_file.
-            $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-
             try {
                 // We use this "bulk method" because this is the best-bet from resourceFactory
                 // to resolve both an integer-ish input value or a FAL value. There is no
                 // substitute for an "only get a file, not a directory" lookup.
-                $file = $resourceFactory->retrieveFileOrFolderObject($persistenceIdentifier);
+                $file = $this->resourceFactory->retrieveFileOrFolderObject($persistenceIdentifier);
 
                 if ($file === null) {
                     // The associated identifier could (no longer) be retrieved via FAL.

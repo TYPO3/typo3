@@ -74,7 +74,7 @@ final class DatabaseServiceTest extends FunctionalTestCase
     #[DataProvider('existingFileFormIdentifierDataProvider')]
     public function getReferencesByPersistenceIdentifierAcceptsValidFile(string $yamlFile, string $expectedHash): void
     {
-        $subject = new DatabaseService();
+        $subject = $this->get(DatabaseService::class);
         $data = $subject->getReferencesByPersistenceIdentifier($yamlFile);
         self::assertSame($expectedHash, $data[0]['hash']);
     }
@@ -123,7 +123,7 @@ final class DatabaseServiceTest extends FunctionalTestCase
     #[DataProvider('missingFileFormIdentifierDataProvider')]
     public function getReferencesByPersistenceIdentifierSkipsMissingFile(string $yamlFile): void
     {
-        $subject = new DatabaseService();
+        $subject = $this->get(DatabaseService::class);
         $data = $subject->getReferencesByPersistenceIdentifier($yamlFile);
         // No sys_refindex files must be retrieved.
         self::assertSame([], $data);
@@ -144,7 +144,7 @@ final class DatabaseServiceTest extends FunctionalTestCase
     public function getReferencesByPersistenceIdentifierRejectsInvalidIdentifier(string $yamlFile): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $subject = new DatabaseService();
+        $subject = $this->get(DatabaseService::class);
         $data = $subject->getReferencesByPersistenceIdentifier($yamlFile);
         self::assertSame([], $data);
     }

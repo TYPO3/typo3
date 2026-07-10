@@ -28,7 +28,9 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Lowlevel\Controller\QuerySearchController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -294,6 +296,8 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(FlashMessageRendererResolver::class),
             $this->get(PageDoktypeRegistry::class),
             $this->get(ComponentFactory::class),
+            $this->get(Locales::class),
+            $this->get(FlashMessageService::class),
         ]);
         $subject->_set('table', 'aTable');
         $subject->_call('init', 'queryConfig', 'aTable');
@@ -374,6 +378,8 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(FlashMessageRendererResolver::class),
             $this->get(PageDoktypeRegistry::class),
             $this->get(ComponentFactory::class),
+            $this->get(Locales::class),
+            $this->get(FlashMessageService::class),
         ]);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings, $request);

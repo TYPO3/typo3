@@ -226,6 +226,8 @@ class QuerySearchController
         protected readonly FlashMessageRendererResolver $flashMessageRendererResolver,
         protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
         protected readonly ComponentFactory $componentFactory,
+        protected readonly Locales $locales,
+        protected readonly FlashMessageService $flashMessageService,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -802,7 +804,7 @@ class QuerySearchController
         $fields = [];
         $user = $this->getBackendUserAuthentication();
         if ($user->user['lang'] ?? false) {
-            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($user->user['lang']);
+            $locale = $this->locales->createLocale($user->user['lang']);
         } else {
             $locale = new Locale();
         }
@@ -1136,8 +1138,7 @@ class QuerySearchController
         $languageService = $this->getLanguageService();
         $flashMessageText = $languageService->translate('fullSearch.flashMessage.noResultsFoundMessage', 'lowlevel.messages');
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $flashMessageText, '', ContextualFeedbackSeverity::INFO);
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 

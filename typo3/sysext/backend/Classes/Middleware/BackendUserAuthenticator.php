@@ -72,6 +72,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly RateLimiterFactoryInterface $rateLimiterFactory,
         private readonly LoggerInterface $logger,
+        private readonly UriBuilder $uriBuilder,
     ) {
         parent::__construct($context);
     }
@@ -117,7 +118,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                 if ($isAjaxCall) {
                     return new Response(statusCode: 401);
                 }
-                $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect(
+                $uri = $this->uriBuilder->buildUriWithRedirect(
                     'login',
                     [],
                     RouteRedirect::createFromRoute($route, $request->getQueryParams())
@@ -209,7 +210,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         array $parameters = []
     ): ResponseInterface {
         $response = new RedirectResponse(
-            GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect($endpoint, $parameters, RouteRedirect::createFromRequest($request))
+            $this->uriBuilder->buildUriWithRedirect($endpoint, $parameters, RouteRedirect::createFromRequest($request))
         );
         // Add necessary cookies and headers to the response so
         // the already passed authentication step is not lost.

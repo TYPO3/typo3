@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Form\SoftReference;
 use TYPO3\CMS\Core\DataHandling\SoftReference\AbstractSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserResult;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Form\Domain\Repository\FormDefinitionRepository;
@@ -36,6 +35,10 @@ use TYPO3\CMS\Form\Domain\Repository\FormDefinitionRepository;
  */
 class FormPersistenceIdentifierSoftReferenceParser extends AbstractSoftReferenceParser
 {
+    public function __construct(
+        private readonly ResourceFactory $resourceFactory,
+    ) {}
+
     public function parse(string $table, string $field, int $uid, string $content, string $structurePath = ''): SoftReferenceParserResult
     {
         $this->setTokenIdBasePrefix($table, (string)$uid, $field, $structurePath);
@@ -53,8 +56,7 @@ class FormPersistenceIdentifierSoftReferenceParser extends AbstractSoftReference
 
         // Handle file storage identifiers (storage:/path)
         try {
-            $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-            $file = $resourceFactory->retrieveFileOrFolderObject($content);
+            $file = $this->resourceFactory->retrieveFileOrFolderObject($content);
         } catch (\Exception $e) {
             // Top level catch to ensure useful following exception handling, because FAL throws top level exceptions.
             // TYPO3\CMS\Core\Database\ReferenceIndex::getRelations() will check the return value of this hook with is_array()
