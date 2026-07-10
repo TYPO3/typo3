@@ -67,7 +67,11 @@ final readonly class PageWizardStepBuilder
         if ($requiredFields !== []) {
             $requiredStep = new WizardStep('requiredFields', $this->getLanguageService()->sL('core.wizard:wizard.step.required'), $this->getFieldCollection($requiredFields, $dokTypeSchema));
             $formData = $this->getFormData($serverRequest, $dokType, $pageUid, $requiredStep, $newId);
-            $steps[] = $this->buildStep($requiredStep, $formData);
+
+            $visibleRequiredFields = array_intersect($requiredFields, array_keys($formData['processedTca']['columns'] ?? []));
+            if ($visibleRequiredFields !== []) {
+                $steps[] = $this->buildStep($requiredStep, $formData);
+            }
         }
 
         return $steps;
