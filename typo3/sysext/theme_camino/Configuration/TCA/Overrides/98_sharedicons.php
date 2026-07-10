@@ -74,6 +74,10 @@ $caminoIconList =  [
         'value' => 'search',
     ],
     [
+        'label' => 'theme_camino.backend_fields:tx_camino.icon.social-mastodon',
+        'value' => 'social-mastodon',
+    ],
+    [
         'label' => 'theme_camino.backend_fields:tx_camino.icon.social-facebook',
         'value' => 'social-facebook',
     ],

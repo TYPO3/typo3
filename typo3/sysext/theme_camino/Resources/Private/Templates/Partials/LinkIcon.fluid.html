@@ -5,10 +5,20 @@
 
 <f:argument name="url" type="string" description="URL to match against for icon detection" />
 
-<f:if condition="{f:contains(value: 'linkedin', subject: url)}">
+<f:comment>This is a very simple approach to icon matching. Improvements welcome.</f:comment>
+<f:if condition="{f:startsWith(search: 'mailto:', subject: url)}">
     <f:then>
-        <f:render partial="Icon" arguments="{icon: 'social-linkedin'}" />
+        <f:render partial="Icon" arguments="{icon: 'mail'}" />
     </f:then>
+    <f:else if="{f:startsWith(search: 'tel:', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'phone'}" />
+    </f:else>
+    <f:else if="{f:contains(value: 'linkedin', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'social-linkedin'}" />
+    </f:else>
+    <f:else if="{f:contains(value: 'mastodon', subject: url)}">
+        <f:render partial="Icon" arguments="{icon: 'social-mastodon'}" />
+    </f:else>
     <f:else if="{f:contains(value: 'facebook', subject: url)}">
         <f:render partial="Icon" arguments="{icon: 'social-facebook'}" />
     </f:else>
@@ -26,12 +36,6 @@
     </f:else>
     <f:else if="{f:contains(value: 'xing', subject: url)}">
         <f:render partial="Icon" arguments="{icon: 'social-xing'}" />
-    </f:else>
-    <f:else if="{f:startsWith(search: 'mailto:', subject: url)}">
-        <f:render partial="Icon" arguments="{icon: 'mail'}" />
-    </f:else>
-    <f:else if="{f:startsWith(search: 'tel:', subject: url)}">
-        <f:render partial="Icon" arguments="{icon: 'phone'}" />
     </f:else>
     <f:else>
         <f:render partial="Icon" arguments="{icon: 'globe'}" />

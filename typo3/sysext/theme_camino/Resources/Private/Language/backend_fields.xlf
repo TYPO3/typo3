@@ -210,6 +210,9 @@
       <trans-unit id="tx_camino.icon.search">
         <source>Search</source>
       </trans-unit>
+      <trans-unit id="tx_camino.icon.social-mastodon">
+        <source>Mastodon</source>
+      </trans-unit>
       <trans-unit id="tx_camino.icon.social-facebook">
         <source>Facebook</source>
       </trans-unit>
@@ -290,7 +293,7 @@
         <source>Links</source>
       </trans-unit>
       <trans-unit id="tt_content.tx_themecamino_list_elements.types.camino_sociallinks.description">
-        <source>Icons are automatically set according to the link target. The following platforms are available for the link type "External URL": Facebook, Instagram, LinkedIn, X (Twitter) and YouTube. Links to other platforms are not supported and will use a generic icon.</source>
+        <source>Icons are automatically set according to the link target. The following platforms are available for the link type "External URL": Mastodon, Facebook, Instagram, LinkedIn, X (Twitter) and YouTube. Links to other platforms are not supported and will use a generic icon.</source>
       </trans-unit>
       <!-- CType 'camino_testimonial' -->
       <trans-unit id="tt_content.CType.camino_testimonial.label">

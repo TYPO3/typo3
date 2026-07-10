@@ -30,7 +30,7 @@ Custom content elements
 =======================
 
 Camino comes with new custom content elements that make it easy to add banners
-and share links to third party platforms such as Facebook, YouTube and Instagram.
+and share links to third party platforms such as Mastodon, Facebook, YouTube and Instagram.
 
 As discussed in the `Backend layouts <https://docs.typo3.org/permalink/typo3/theme-camino:backend-layouts>`_
 section, custom content elements can only be used in specific places. This also
@@ -113,7 +113,7 @@ image and contact details.
 Social media icons
 ------------------
 
-Use these to add links to various platforms such as Linkedin, Instagram, Facebook,
+Use these to add links to various platforms such as Mastodon, Linkedin, Instagram, Facebook,
 Twitter and YouTube.
 
 This content element can only be added to the `Footer: Column 1` section of the
