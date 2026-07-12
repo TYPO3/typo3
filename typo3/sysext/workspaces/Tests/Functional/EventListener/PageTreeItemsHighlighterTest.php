@@ -120,6 +120,12 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
                 severity: ContextualFeedbackSeverity::WARNING
             ),
         ];
+        $expected[2]['statusInformation'] = [
+            new StatusInformation(
+                label: $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.contains_changes'),
+                severity: ContextualFeedbackSeverity::WARNING
+            ),
+        ];
         $expected[4]['statusInformation'] = [
             new StatusInformation(
                 label: $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.has_changes'),
