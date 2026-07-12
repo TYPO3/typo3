@@ -1250,5 +1250,10 @@ return [
             'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->bypassAccessCheckForRecords' => [
+        'restFiles' => [
+            'Breaking-110188-DataHandlerDropPropertyBypassAccessCheckForRecords.rst',
+        ],
+    ],
 
 ];

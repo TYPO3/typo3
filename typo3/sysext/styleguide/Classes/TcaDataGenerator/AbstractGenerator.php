@@ -228,7 +228,6 @@ abstract class AbstractGenerator
         if (!empty($data) || !empty($commands)) {
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
             $dataHandler->enableLogging = false;
-            $dataHandler->bypassAccessCheckForRecords = true;
             $dataHandler->start($data, $commands);
             if (Environment::isCli()) {
                 $dataHandler->clear_cacheCmd('all');

@@ -485,8 +485,6 @@ If you want to get more detailed information, use the --verbose option.')
                 // Data Array, now ready to be sent to DataHandler, execute CMD array:
                 $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
                 $dataHandler->dontProcessTransformations = true;
-                // Otherwise this may lead to permission issues if user is not admin
-                $dataHandler->bypassAccessCheckForRecords = true;
                 // Check has been done previously that there is a backend user which is Admin and also in live workspace
                 $dataHandler->start($dataArray, []);
                 $dataHandler->process_datamap();

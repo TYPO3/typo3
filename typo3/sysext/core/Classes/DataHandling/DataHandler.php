@@ -146,12 +146,6 @@ class DataHandler
     protected bool $useTransOrigPointerField = true;
 
     /**
-     * If TRUE, access check, check for deleted etc. for records is bypassed.
-     * YOU MUST KNOW what you are doing if you use this feature!
-     */
-    public bool $bypassAccessCheckForRecords = false;
-
-    /**
      * [table][fields]=value: New records are created with default values and you can set this array on the
      * form $defaultValues[$table][$field] = $value to override the default values fetched from TCA.
      * If ->setDefaultsFromUserTS is called UserTSconfig default values will overrule existing values in this array
@@ -6809,7 +6803,6 @@ class DataHandler
         // make sure the isImporting flag is transferred, so all hooks know if
         // the current process is an import process
         $copyTCE->isImporting = $this->isImporting;
-        $copyTCE->bypassAccessCheckForRecords = $this->bypassAccessCheckForRecords;
         return $copyTCE;
     }
 
@@ -7663,7 +7656,7 @@ class DataHandler
         if (!$perms) {
             throw new \RuntimeException('Invalid $perms bitset: "' . $perms . '"', 1270853920);
         }
-        if ($this->bypassAccessCheckForRecords || $this->BE_USER->isAdmin()) {
+        if ($this->BE_USER->isAdmin()) {
             return true;
         }
         if ($page === VirtualRecord::RootPage) {

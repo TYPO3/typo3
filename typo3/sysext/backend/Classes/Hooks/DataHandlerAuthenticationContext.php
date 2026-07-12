@@ -51,7 +51,7 @@ final readonly class DataHandlerAuthenticationContext
         array $fieldArray,
         DataHandler $dataHandler
     ): void {
-        if ($dataHandler->isImporting || $dataHandler->bypassAccessCheckForRecords) {
+        if ($dataHandler->isImporting) {
             return;
         }
         $request = $this->sudoModeInterceptor->currentRequest;

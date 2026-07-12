@@ -39,7 +39,7 @@ readonly class DataHandlerContentElementRestrictionHook
     public function processCmdmap_beforeStart(DataHandler $dataHandler): void
     {
         $cmdmap = $dataHandler->cmdmap;
-        if (empty($cmdmap['tt_content']) || $dataHandler->bypassAccessCheckForRecords) {
+        if (empty($cmdmap['tt_content'])) {
             return;
         }
         foreach ($cmdmap['tt_content'] as $id => $incomingFieldArray) {
@@ -82,7 +82,7 @@ readonly class DataHandlerContentElementRestrictionHook
     public function processDatamap_beforeStart(DataHandler $dataHandler): void
     {
         $datamap = $dataHandler->datamap;
-        if (empty($datamap['tt_content']) || $dataHandler->bypassAccessCheckForRecords) {
+        if (empty($datamap['tt_content'])) {
             return;
         }
         foreach ($datamap['tt_content'] as $id => $incomingFieldArray) {

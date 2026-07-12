@@ -53,7 +53,7 @@ readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListH
      */
     public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent): void
     {
-        $isInternalProcess = $parent->isImporting || $parent->bypassAccessCheckForRecords;
+        $isInternalProcess = $parent->isImporting;
         if ($table === 'sys_file' && !$isInternalProcess) {
             $accessAllowed = false;
         }
@@ -75,7 +75,7 @@ readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListH
             $incomingFieldArray = null;
             return;
         }
-        $isInternalProcess = $dataHandler->isImporting || $dataHandler->bypassAccessCheckForRecords;
+        $isInternalProcess = $dataHandler->isImporting;
         $isNew = !MathUtility::canBeInterpretedAsInteger($id);
         $logId = $isNew ? 0 : (int)$id;
         if ($table === 'sys_file') {
