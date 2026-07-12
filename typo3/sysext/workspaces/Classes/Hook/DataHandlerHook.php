@@ -772,7 +772,7 @@ class DataHandlerHook
     }
 
     /**
-     * Makes an instance for RecordHistoryStore. This is needed as DataHandler would usually trigger the setHistory()
+     * Makes an instance for RecordHistoryStore. This is needed as DataHandler collects record's history
      * but has no support for tracking "stage change" information.
      *
      * So we have to do this manually. Usually a $dataHandler->updateDB() could do this, but we use raw update statements

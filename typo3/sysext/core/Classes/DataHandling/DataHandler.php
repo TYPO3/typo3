@@ -7816,27 +7816,6 @@ class DataHandler
         return $id;
     }
 
-    /**
-     * Setting sys_history record, based on content previously set in $this->historyRecords[$table . ':' . $id] (by compareFieldArrayWithCurrentAndUnset())
-     *
-     * This functionality is now moved into the RecordHistoryStore and can be used instead.
-     *
-     * @param string $table Table name
-     * @param int $id Record ID
-     * @internal should only be used from within DataHandler
-     */
-    public function setHistory($table, $id): void
-    {
-        if (isset($this->historyRecords[$table . ':' . $id])) {
-            $this->getRecordHistoryStore()->modifyRecord(
-                $table,
-                $id,
-                $this->historyRecords[$table . ':' . $id],
-                $this->correlationId
-            );
-        }
-    }
-
     protected function getRecordHistoryStore(): RecordHistoryStore
     {
         return GeneralUtility::makeInstance(
