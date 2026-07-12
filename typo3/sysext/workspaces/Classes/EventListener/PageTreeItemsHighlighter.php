@@ -101,6 +101,24 @@ final readonly class PageTreeItemsHighlighter
                 $pageUidsWithVersionedRecords[(int)$row['pid']] = true;
             }
         }
+        // Also check for workspace changes in page translations (sys_language_uid > 0).
+        // The page tree only shows default language pages, which do not have t3ver_wsid set
+        // for translated versions. Therefore, we need to look up their l10n_parent to identify
+        // the default language page that should receive the indicator.
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        $result = $queryBuilder
+            ->select('l10n_parent')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceUid, Connection::PARAM_INT)),
+                $queryBuilder->expr()->gt('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+            )
+            ->groupBy('l10n_parent')
+            ->executeQuery();
+        while ($row = $result->fetchAssociative()) {
+            $pageUidsWithVersionedRecords[(int)$row['l10n_parent']] = true;
+        }
         return $pageUidsWithVersionedRecords;
     }
 
