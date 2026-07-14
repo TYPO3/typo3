@@ -121,6 +121,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $dataHandler->deleteAction(self::TABLE_Content, self::VALUE_ContentIdLast, true, true);
     }
 
+    public function deleteParentContentThenUndeleteParentContent(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start(
+            [],
+            [self::TABLE_Content => [self::VALUE_ContentIdLast => ['undelete' => 1]]]
+        );
+        $dataHandler->process_cmdmap();
+    }
+
     public function deleteParentContentWithMultipleChildrenThenHardDeleteParentContent(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
