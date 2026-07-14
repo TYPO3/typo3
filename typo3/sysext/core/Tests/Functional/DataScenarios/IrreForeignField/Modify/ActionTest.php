@@ -92,6 +92,21 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function deleteParentContentThenUndeleteParentContent(): void
+    {
+        parent::deleteParentContentThenUndeleteParentContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContentThenUndeleteParentContent.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Default', 'Extbase:list()');
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
+    }
+
+    #[Test]
     public function deleteParentContentWithMultipleChildrenThenHardDeleteParentContent(): void
     {
         parent::deleteParentContentWithMultipleChildrenThenHardDeleteParentContent();

@@ -6075,7 +6075,6 @@ class DataHandler
      * @param string $table Record table name
      * @param int $uid Record uid
      * @param array $record Record row
-     * @todo: Add functional test undelete coverage to verify details, some details seem to be missing.
      */
     protected function undeleteRecordRelations(string $table, int $uid, array $record): void
     {
@@ -6094,8 +6093,10 @@ class DataHandler
                     continue;
                 }
                 $relationHandler = $this->createRelationHandlerInstance();
-                $relationHandler->start($value, $foreignTable, '', $uid, $table, $fieldConfig);
+                // Must be set before start(): readForeignField() evaluates this flag
+                // to decide whether a DeletedRestriction is applied to the SELECT.
                 $relationHandler->undeleteRecord = true;
+                $relationHandler->start($value, $foreignTable, '', $uid, $table, $fieldConfig);
                 foreach ($relationHandler->itemArray as $reference) {
                     $this->undeleteRecord($reference['table'], (int)$reference['id']);
                 }
