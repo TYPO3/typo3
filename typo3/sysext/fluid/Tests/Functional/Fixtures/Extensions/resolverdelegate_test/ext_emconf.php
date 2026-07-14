@@ -7,10 +7,10 @@ $EM_CONF[$_EXTKEY] = [
     'description' => '',
     'category' => 'Example Extensions',
     'state' => 'stable',
-    'version' => '13.4.33',
+    'version' => '13.4.34',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.33',
+            'typo3' => '13.4.34',
         ],
         'conflicts' => [],
         'suggests' => [],
