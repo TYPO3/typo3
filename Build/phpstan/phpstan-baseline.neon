@@ -97,48 +97,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Html/SimpleParser.php
 
 		-
-			rawMessage: Cannot assign offset 'address' to string.
-			identifier: offsetAssign.dimType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
-
-		-
-			rawMessage: Empty array passed to foreach.
-			identifier: foreach.emptyArray
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
-
-		-
-			rawMessage: Offset 'address' does not exist on string.
-			identifier: offsetAccess.notFound
-			count: 3
-			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
-
-		-
-			rawMessage: Offset 'group' does not exist on string.
-			identifier: offsetAccess.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
-
-		-
-			rawMessage: 'Offset 1 does not exist on array{}.'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
-
-		-
-			rawMessage: 'Parameter &$mailbox by-ref type of method TYPO3\CMS\Core\Mail\Rfc822AddressesParser::validateMailbox() expects string, stdClass given.'
-			identifier: parameterByRef.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
-
-		-
-			rawMessage: Variable $comments on left side of ?? always exists and is not nullable.
-			identifier: nullCoalesce.variable
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Mail/Rfc822AddressesParser.php
-
-		-
 			rawMessage: 'Call to an undefined method TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::require().'
 			identifier: method.notFound
 			count: 1

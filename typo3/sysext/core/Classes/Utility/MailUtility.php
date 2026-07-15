@@ -17,7 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Utility;
 
-use TYPO3\CMS\Core\Mail\Rfc822AddressesParser;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Exception\ExceptionInterface;
 
 /**
  * Class to handle mail specific functionality
@@ -177,29 +178,182 @@ class MailUtility
      * (no display name in the mailbox header) and the value is the email address,
      * or the key is the email address and the value is the display name.
      *
+     * Groups (RFC 5322 section 3.4) are flattened to their members and their display
+     * name is discarded, comments are removed, and invalid addresses are silently skipped.
+     *
      * @param string $rawAddresses Comma separated list of email addresses (optionally with display name)
      * @return array Parsed list of addresses.
      */
     public static function parseAddresses(string $rawAddresses): array
     {
-        $addressParser = GeneralUtility::makeInstance(
-            Rfc822AddressesParser::class,
-            $rawAddresses
-        );
-        $addresses = $addressParser->parseAddressList();
         $addressList = [];
-        foreach ($addresses as $address) {
-            if ($address->mailbox === '') {
+        foreach (self::splitAddressList($rawAddresses) as $rawMailbox) {
+            $address = self::parseMailbox($rawMailbox);
+            if ($address === null) {
                 continue;
             }
-            if ($address->personal) {
+            if ($address->getName() !== '') {
                 // item with name found ( name <email@example.org> )
-                $addressList[$address->mailbox . '@' . $address->host] = $address->personal;
+                $addressList[$address->getAddress()] = $address->getName();
             } else {
                 // item without name found ( email@example.org )
-                $addressList[] = $address->mailbox . '@' . $address->host;
+                $addressList[] = $address->getAddress();
             }
         }
         return $addressList;
+    }
+
+    /**
+     * Splits a raw address-list header value into its individual mailboxes, while
+     * honoring quoted strings ( "last, first" <email@example.org> ), comments
+     * (which are removed), domain literals ( user@[IPv6:2001:db8::1] ) and
+     * angle-addr parts. Group members are flattened into the list, the display
+     * name of a group is discarded.
+     *
+     * @return string[]
+     */
+    private static function splitAddressList(string $rawAddresses): array
+    {
+        $mailboxes = [];
+        $buffer = '';
+        $inQuotes = false;
+        $inAngleAddr = false;
+        $inDomainLiteral = false;
+        $commentDepth = 0;
+        $length = strlen($rawAddresses);
+        for ($i = 0; $i < $length; $i++) {
+            $char = $rawAddresses[$i];
+            if ($commentDepth > 0) {
+                if ($char === '\\') {
+                    $i++;
+                } elseif ($char === '(') {
+                    $commentDepth++;
+                } elseif ($char === ')') {
+                    $commentDepth--;
+                    if ($commentDepth === 0) {
+                        // a comment is equivalent to folding white space (RFC 5322, section 3.2.2)
+                        $buffer .= ' ';
+                    }
+                }
+                continue;
+            }
+            if ($inQuotes) {
+                if ($char === '\\' && $i + 1 < $length) {
+                    $buffer .= $char . $rawAddresses[++$i];
+                    continue;
+                }
+                if ($char === '"') {
+                    $inQuotes = false;
+                }
+                $buffer .= $char;
+                continue;
+            }
+            switch ($char) {
+                case '"':
+                    $inQuotes = true;
+                    $buffer .= $char;
+                    break;
+                case '(':
+                    $commentDepth++;
+                    break;
+                case '[':
+                case ']':
+                    $inDomainLiteral = $char === '[';
+                    $buffer .= $char;
+                    break;
+                case '<':
+                case '>':
+                    $inAngleAddr = $char === '<';
+                    $buffer .= $char;
+                    break;
+                case ',':
+                case ';':
+                    if ($inAngleAddr || $inDomainLiteral) {
+                        $buffer .= $char;
+                        break;
+                    }
+                    $mailboxes[] = $buffer;
+                    $buffer = '';
+                    break;
+                case ':':
+                    if ($inAngleAddr || $inDomainLiteral) {
+                        $buffer .= $char;
+                        break;
+                    }
+                    // a colon ends the display name of a group ( groupname: member@example.org; )
+                    $buffer = '';
+                    break;
+                default:
+                    $buffer .= $char;
+            }
+        }
+        $mailboxes[] = $buffer;
+        return $mailboxes;
+    }
+
+    private static function parseMailbox(string $rawMailbox): ?Address
+    {
+        $rawMailbox = trim($rawMailbox);
+        // NUL is invalid anywhere, even in the obsolete syntax (RFC 5322, section 4.1)
+        if ($rawMailbox === '' || str_contains($rawMailbox, "\0")) {
+            return null;
+        }
+        $displayName = '';
+        $addrSpec = $rawMailbox;
+        $angleStart = self::findAngleAddrStart($rawMailbox);
+        if ($angleStart !== null) {
+            $angleEnd = strrpos($rawMailbox, '>');
+            if ($angleEnd === false || $angleEnd < $angleStart) {
+                return null;
+            }
+            $displayName = self::normalizeDisplayName(substr($rawMailbox, 0, $angleStart));
+            $addrSpec = substr($rawMailbox, $angleStart + 1, $angleEnd - $angleStart - 1);
+            if (str_starts_with($addrSpec, '@')) {
+                // an obsolete route ( <@relay.example.org:user@example.org> ) is ignored (RFC 5322, section 4.4)
+                $routeEnd = strpos($addrSpec, ':');
+                if ($routeEnd !== false) {
+                    $addrSpec = substr($addrSpec, $routeEnd + 1);
+                }
+            }
+        }
+        try {
+            return new Address($addrSpec, $displayName);
+        } catch (ExceptionInterface) {
+            return null;
+        }
+    }
+
+    /**
+     * Finds the position of the '<' starting an angle-addr, ignoring any '<'
+     * inside a quoted display name ( "Contact <va@example.org>" <real@example.org> ).
+     */
+    private static function findAngleAddrStart(string $rawMailbox): ?int
+    {
+        $inQuotes = false;
+        $length = strlen($rawMailbox);
+        for ($i = 0; $i < $length; $i++) {
+            $char = $rawMailbox[$i];
+            if ($inQuotes && $char === '\\') {
+                $i++;
+            } elseif ($char === '"') {
+                $inQuotes = !$inQuotes;
+            } elseif ($char === '<' && !$inQuotes) {
+                return $i;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Resolves a quoted display name ( "last, first" ) and contained
+     * quoted-pairs ( \" ) to the plain text it represents.
+     */
+    private static function normalizeDisplayName(string $displayName): string
+    {
+        $displayName = trim($displayName);
+        if (strlen($displayName) > 1 && str_starts_with($displayName, '"') && str_ends_with($displayName, '"')) {
+            $displayName = stripslashes(substr($displayName, 1, -1));
+        }
+        return $displayName;
     }
 }

@@ -2820,4 +2820,9 @@ return [
             'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Mail\Rfc822AddressesParser' => [
+        'restFiles' => [
+            'Breaking-110196-Rfc822AddressesParserRemoved.rst',
+        ],
+    ],
 ];

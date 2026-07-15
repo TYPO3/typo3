@@ -38,7 +38,6 @@ $finder = PhpCsFixer\Finder::create()
     // CodeSnippets and Examples in Documentation do not need header comments
     ->exclude('Documentation')
     // Third-party inclusion files should not have a changed comment
-    ->notName('Rfc822AddressesParser.php')
     ->notName('ClassMapGenerator.php')
 ;
 
