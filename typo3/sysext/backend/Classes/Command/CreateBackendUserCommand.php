@@ -134,7 +134,7 @@ EOT
         $password = $this->getPassword($questionHelper, $input, $output);
         $email = $this->getEmail($questionHelper, $input, $output) ?: '';
         $maintainer = $this->getMaintainer($questionHelper, $input, $output);
-        $language = $this->getLanguage($questionHelper, $input, $output) ?: 'default';
+        $language = $this->getLanguage($questionHelper, $input, $output) ?: 'en';
 
         // If the user is 'maintainer' it is also required to set the 'admin' flag.
         if ($maintainer) {
@@ -379,7 +379,7 @@ EOT
      * similar to "\TYPO3\CMS\Install\Service\SetupService::createUser()",
      * but accepts admin/maintainer flag and groups
      */
-    private function createUser(string $username, string $password, string $email = '', bool $admin = false, bool $maintainer = false, array $groups = [], string $language = 'default'): void
+    private function createUser(string $username, string $password, string $email = '', bool $admin = false, bool $maintainer = false, array $groups = [], string $language = 'en'): void
     {
         // Initialize backend user authentication to ensure the new backend user can be created with proper permissions
         Bootstrap::initializeBackendAuthentication();
