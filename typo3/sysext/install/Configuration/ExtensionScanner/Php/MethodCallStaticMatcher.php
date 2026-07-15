@@ -1856,4 +1856,11 @@ return [
             'Breaking-110250-RemovedImplicitOutputBufferingFromBootstrap.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\StringUtility::multibyteStringPad' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-110202-StringUtilityMultibyteStringPad.rst',
+        ],
+    ],
 ];

@@ -1400,7 +1400,11 @@ class ContentObjectRenderer
                 $padType = STR_PAD_BOTH;
             }
         }
-        return StringUtility::multibyteStringPad($content, $length, $padWith, $padType);
+        // mb_str_pad() throws a ValueError on an empty pad string, so return the content unchanged in that case.
+        if ($padWith === '') {
+            return $content;
+        }
+        return mb_str_pad($content, $length, $padWith, $padType);
     }
 
     /**

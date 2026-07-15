@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -277,6 +278,7 @@ final class StringUtilityTest extends UnitTestCase
      * for ASCII strings.
      */
     #[DataProvider('multibyteStringPadReturnsSameValueAsStrPadForAsciiStringsDataProvider')]
+    #[IgnoreDeprecations]
     #[Test]
     public function multibyteStringPadReturnsSameValueAsStrPadForAsciiStrings(string $string, int $length, string $pad_string, int $pad_type): void
     {
@@ -304,6 +306,7 @@ final class StringUtilityTest extends UnitTestCase
     }
 
     #[DataProvider('multibyteStringPadReturnsCorrectResultsMultibyteDataProvider')]
+    #[IgnoreDeprecations]
     #[Test]
     public function multibyteStringPadReturnsCorrectResultsMultibyte(string $expectedResult, string $string, int $length, string $pad_string, int $pad_type): void
     {

@@ -129,37 +129,20 @@ class StringUtility
     /**
      * Works the same as str_pad() except that it correctly handles strings with multibyte characters
      * and takes an additional optional argument $encoding.
+     *
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Use the native PHP function mb_str_pad() instead.
      */
     public static function multibyteStringPad(string $string, int $length, string $pad_string = ' ', int $pad_type = STR_PAD_RIGHT, string $encoding = 'UTF-8'): string
     {
-        $len = mb_strlen($string, $encoding);
-        $pad_string_len = mb_strlen($pad_string, $encoding);
-        if ($len >= $length || $pad_string_len === 0) {
+        trigger_error(
+            'StringUtility::multibyteStringPad() will be removed in TYPO3 v16.0. Use the native PHP function mb_str_pad() instead.',
+            E_USER_DEPRECATED
+        );
+        // An empty pad string returns the input unchanged instead of throwing a ValueError like mb_str_pad() does.
+        if ($pad_string === '') {
             return $string;
         }
-
-        switch ($pad_type) {
-            case STR_PAD_RIGHT:
-                $string .= str_repeat($pad_string, (int)(($length - $len) / $pad_string_len));
-                $string .= mb_substr($pad_string, 0, ($length - $len) % $pad_string_len);
-                return $string;
-
-            case STR_PAD_LEFT:
-                $leftPad = str_repeat($pad_string, (int)(($length - $len) / $pad_string_len));
-                $leftPad .= mb_substr($pad_string, 0, ($length - $len) % $pad_string_len);
-                return $leftPad . $string;
-
-            case STR_PAD_BOTH:
-                $leftPadCount = (int)(($length - $len) / 2);
-                $len += $leftPadCount;
-                $padded = ((int)($leftPadCount / $pad_string_len)) * $pad_string_len;
-                $leftPad = str_repeat($pad_string, (int)($leftPadCount / $pad_string_len));
-                $leftPad .= mb_substr($pad_string, 0, $leftPadCount - $padded);
-                $string = $leftPad . $string . str_repeat($pad_string, (int)(($length - $len) / $pad_string_len));
-                $string .= mb_substr($pad_string, 0, ($length - $len) % $pad_string_len);
-                return $string;
-        }
-        return $string;
+        return mb_str_pad($string, $length, $pad_string, $pad_type, $encoding);
     }
 
     /**

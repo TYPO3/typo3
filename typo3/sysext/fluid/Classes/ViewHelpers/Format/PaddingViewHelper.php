@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -62,7 +61,13 @@ final class PaddingViewHelper extends AbstractViewHelper
         if (!isset($padTypes[$padType])) {
             $padType = 'right';
         }
-        return StringUtility::multibyteStringPad((string)$value, (int)$this->arguments['padLength'], (string)$this->arguments['padString'], $padTypes[$padType]);
+        $value = (string)$value;
+        $padString = (string)$this->arguments['padString'];
+        // mb_str_pad() throws a ValueError on an empty pad string, so return the value unchanged in that case.
+        if ($padString === '') {
+            return $value;
+        }
+        return mb_str_pad($value, (int)$this->arguments['padLength'], $padString, $padTypes[$padType]);
     }
 
     /**

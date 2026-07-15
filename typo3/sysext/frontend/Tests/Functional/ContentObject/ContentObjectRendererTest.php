@@ -3209,6 +3209,14 @@ content="benni">',
                     'type' => 'both',
                 ],
             ],
+            'empty padWith returns content unchanged' => [
+                'Alien',
+                'Alien',
+                [
+                    'length' => '10',
+                    'padWith' => '',
+                ],
+            ],
             'pad string with padWith _ and type both and length 12, using stdWrap for length' => [
                 '___Alien____',
                 'Alien',
