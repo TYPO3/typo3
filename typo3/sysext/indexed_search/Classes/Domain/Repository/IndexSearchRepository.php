@@ -1080,11 +1080,10 @@ class IndexSearchRepository
     }
 
     /**
-     * Returns "DESC" or "" depending on the settings of the incoming
+     * Returns "DESC" or "ASC" depending on the settings of the incoming
      * highest/lowest result order (piVars['desc'])
      *
      * @param bool $inverse If TRUE, inverse the order which is defined by piVars['desc']
-     * @return string " DESC" or formerly known as tx_indexedsearch_pi->isDescending
      */
     protected function getDescendingSortOrderFlag(bool $inverse = false): string
     {
@@ -1092,7 +1091,7 @@ class IndexSearchRepository
         if ($inverse) {
             $desc = !$desc;
         }
-        return !$desc ? ' DESC' : '';
+        return $desc ? 'DESC' : 'ASC';
     }
 
     /**
