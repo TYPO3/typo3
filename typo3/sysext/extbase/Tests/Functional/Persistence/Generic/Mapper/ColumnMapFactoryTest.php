@@ -672,6 +672,68 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         ];
     }
 
+    public static function nonDomainObjectClassPropertyIsNotDetectedAsRelationDataProvider(): \Generator
+    {
+        yield 'nullable backed enum property on type number' => [
+            'propertyName' => 'nullableEnum',
+            'columnConfiguration' => ['config' => ['type' => 'number', 'nullable' => true]],
+        ];
+        yield 'non-nullable backed enum property on type number' => [
+            'propertyName' => 'nonNullableEnum',
+            'columnConfiguration' => ['config' => ['type' => 'number']],
+        ];
+        yield 'nullable backed enum property on type select with static items' => [
+            'propertyName' => 'nullableEnum',
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'nullable' => true,
+                    'items' => [
+                        ['label' => '', 'value' => null],
+                        ['label' => 'Baby', 'value' => 0],
+                        ['label' => 'Senior', 'value' => 3],
+                    ],
+                ],
+            ],
+        ];
+        yield 'non-nullable backed enum property on type passthrough' => [
+            'propertyName' => 'nonNullableEnum',
+            'columnConfiguration' => ['config' => ['type' => 'passthrough']],
+        ];
+        yield 'nullable core type property on type json' => [
+            'propertyName' => 'nullableCoreType',
+            'columnConfiguration' => ['config' => ['type' => 'json']],
+        ];
+        yield 'non-nullable core type property on type json' => [
+            'propertyName' => 'nonNullableCoreType',
+            'columnConfiguration' => ['config' => ['type' => 'json']],
+        ];
+        yield 'nullable core type property on type text' => [
+            'propertyName' => 'nullableCoreType',
+            'columnConfiguration' => ['config' => ['type' => 'text', 'nullable' => true]],
+        ];
+        yield 'nullable date time property on type number' => [
+            'propertyName' => 'nullableDateTime',
+            'columnConfiguration' => ['config' => ['type' => 'number', 'nullable' => true]],
+        ];
+    }
+
+    #[DataProvider('nonDomainObjectClassPropertyIsNotDetectedAsRelationDataProvider')]
+    #[Test]
+    public function nonDomainObjectClassPropertyIsNotDetectedAsRelation(string $propertyName, array $columnConfiguration): void
+    {
+        $columnName = GeneralUtility::camelCaseToLowerCaseUnderscored($propertyName);
+        $columnMapFactory = $this->get(ColumnMapFactory::class);
+        $fieldTypeFactory = $this->get(FieldTypeFactory::class);
+        $columnMap = $columnMapFactory->create(
+            $fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()),
+            $propertyName,
+            ColumnMapFactoryEntityFixture::class
+        );
+        self::assertSame(Relation::NONE, $columnMap->typeOfRelation);
+    }
+
     #[Test]
     public function settingOneToOneRelationSetsRelationTableMatchFields(): void
     {

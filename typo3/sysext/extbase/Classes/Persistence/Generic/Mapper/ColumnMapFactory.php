@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
 use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\RelationshipType;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -133,8 +134,11 @@ readonly class ColumnMapFactory
             );
         }
 
-        if ($propertyType !== null && strpbrk($propertyType, '_\\') !== false) {
-            // @todo: Check this. Seems to be a check for Tx_Foo_Bar style class names?!
+        if ($propertyType !== null && is_subclass_of($propertyType, DomainObjectInterface::class)) {
+            // The model property is typed with a domain object and therefore defines a to-one relation,
+            // even if the TCA column type is not a relational one (e.g. type="passthrough").
+            // Any other class type (backed enums, TypeInterface implementations, ...) is a value that is
+            // persisted inline and must not be treated as a relation to another domain object.
             return new ColumnMap(
                 columnName: $columnName,
                 type: $tableColumnType,

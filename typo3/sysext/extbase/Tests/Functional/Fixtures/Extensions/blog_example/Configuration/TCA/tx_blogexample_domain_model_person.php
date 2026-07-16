@@ -63,6 +63,24 @@ return [
                 'type' => 'passthrough',
             ],
         ],
+        'age_group' => [
+            'exclude' => true,
+            'label' => 'Age group',
+            'config' => [
+                'type' => 'number',
+                'nullable' => true,
+                'default' => null,
+            ],
+        ],
+        'age' => [
+            'exclude' => true,
+            'label' => 'Age',
+            'config' => [
+                'type' => 'number',
+                'nullable' => true,
+                'default' => null,
+            ],
+        ],
         'tags' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.tags',
             'config' => [
