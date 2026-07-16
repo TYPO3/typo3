@@ -786,10 +786,12 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $orderBy = $queryBuilder->getOrderBy();
         self::assertCount(1, $orderBy);
-        self::assertStringContainsString('CONCAT(', $orderBy[0]);
-        self::assertStringContainsString('title', $orderBy[0]);
-        self::assertStringContainsString('description', $orderBy[0]);
-        self::assertStringContainsString('ASC', $orderBy[0]);
+        $expectation = 'CONCAT('
+            . $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('title')
+            . ', '
+            . $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('description')
+            . ') ASC';
+        self::assertSame($expectation, $orderBy[0]);
     }
 
     #[Test]
@@ -810,9 +812,10 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $orderBy = $queryBuilder->getOrderBy();
         self::assertCount(1, $orderBy);
-        self::assertStringContainsString('TRIM(', $orderBy[0]);
-        self::assertStringContainsString('title', $orderBy[0]);
-        self::assertStringContainsString('DESC', $orderBy[0]);
+        $expectation = 'TRIM('
+            . $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('title')
+            . ') DESC';
+        self::assertSame($expectation, $orderBy[0]);
     }
 
     #[Test]
@@ -833,10 +836,12 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $orderBy = $queryBuilder->getOrderBy();
         self::assertCount(1, $orderBy);
-        self::assertStringContainsString('COALESCE(', $orderBy[0]);
-        self::assertStringContainsString('subtitle', $orderBy[0]);
-        self::assertStringContainsString('title', $orderBy[0]);
-        self::assertStringContainsString('ASC', $orderBy[0]);
+        $expectation = 'COALESCE('
+            . $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('subtitle')
+            . ', '
+            . $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('title')
+            . ') ASC';
+        self::assertSame($expectation, $orderBy[0]);
     }
 
     #[Test]
@@ -863,10 +868,12 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $orderBy = $queryBuilder->getOrderBy();
         self::assertCount(1, $orderBy);
-        self::assertStringContainsString('CONCAT(TRIM(', $orderBy[0]);
-        self::assertStringContainsString('title', $orderBy[0]);
-        self::assertStringContainsString('description', $orderBy[0]);
-        self::assertStringContainsString('ASC', $orderBy[0]);
+        $expectation = 'CONCAT('
+            . 'TRIM(' . $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('title') . ')'
+            . ', '
+            . 'TRIM(' . $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('description') . ')'
+            . ') ASC';
+        self::assertSame($expectation, $orderBy[0]);
     }
 
     #[Test]
@@ -889,10 +896,11 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $orderBy = $queryBuilder->getOrderBy();
         self::assertCount(2, $orderBy);
-        self::assertStringContainsString('title', $orderBy[0]);
-        self::assertStringContainsString('ASC', $orderBy[0]);
-        self::assertStringContainsString('description', $orderBy[1]);
-        self::assertStringContainsString('DESC', $orderBy[1]);
+        $expectation = [
+            0 => $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('title') . ' ASC',
+            1 => $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('description') . ' DESC',
+        ];
+        self::assertSame($expectation, $orderBy);
     }
 
     #[Test]
@@ -916,8 +924,11 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
 
         $orderBy = $queryBuilder->getOrderBy();
         self::assertCount(2, $orderBy);
-        self::assertMatchesRegularExpression('/title. ASC/', $orderBy[0]);
-        self::assertMatchesRegularExpression('/description. DESC/', $orderBy[1]);
+        $expectation = [
+            0 => $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('title') . ' ASC',
+            1 => $queryBuilder->quoteIdentifier('tx_blogexample_domain_model_blog') . '.' . $queryBuilder->quoteIdentifier('description') . ' DESC',
+        ];
+        self::assertSame($expectation, $orderBy);
     }
 
     #[Test]
