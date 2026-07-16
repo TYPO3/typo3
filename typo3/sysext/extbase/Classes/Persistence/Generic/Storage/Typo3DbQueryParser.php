@@ -215,8 +215,11 @@ class Typo3DbQueryParser
         foreach ($orderings as $propertyName => $order) {
             // New API: OrderingInterface objects
             if ($order instanceof OrderingInterface) {
+                // parseOperand() already returns a fully quoted identifier or SQL expression
+                // (e.g. CONCAT("table"."column", …)), so it must be added to the underlying
+                // concrete query builder directly to avoid quoteIdentifier() being applied twice.
                 $sql = $this->parseOperand($order->getOperand(), $source);
-                $this->queryBuilder->addOrderBy($sql, $order->getOrder());
+                $this->queryBuilder->getConcreteQueryBuilder()->addOrderBy($sql, $order->getOrder());
                 continue;
             }
 
