@@ -1,6 +1,8 @@
 CREATE TABLE tx_blogexample_domain_model_person (
 	# type=passthrough needs manual configuration
 	salutation varchar(4) DEFAULT '' NOT NULL,
+	age_group int(11) DEFAULT NULL,
+	age int(11) DEFAULT NULL,
 );
 
 # @deprecated Can be removed as soon as int / native type is enforced

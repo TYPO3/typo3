@@ -326,6 +326,7 @@
 			"TYPO3Tests\\TestStartingpoint\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_startingpoint/Classes/",
 			"TYPO3Tests\\TestFluidTemplate\\": "typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template/Classes/",
 			"TYPO3Tests\\TestIrreForeignfield\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/",
+			"TYPO3Tests\\TestJsonFields\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_json_fields/Classes/",
 			"TYPO3Tests\\TestLogger\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_logger/Classes/",
 			"TYPO3Tests\\TestMeta\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Classes/",
 			"TYPO3Tests\\TestMessageHandler\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_message_handler/Classes/",

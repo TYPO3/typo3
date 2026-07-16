@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\RelationshipType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoPropertyTypesException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
@@ -93,8 +94,11 @@ readonly class ColumnMapFactory
             return $this->setOneToManyRelation($columnMap, $field);
         }
 
-        if ($type !== null && strpbrk($type, '_\\') !== false) {
-            // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
+        if ($type !== null && is_subclass_of($type, DomainObjectInterface::class)) {
+            // The model property is typed with a domain object and therefore defines a to-one relation,
+            // even if the TCA column type is not a relational one (e.g. type="passthrough").
+            // Any other class type (backed enums, TypeInterface implementations, ...) is a value that is
+            // persisted inline and must not be treated as a relation to another domain object.
             return $this->setOneToOneRelation($columnMap, $field);
         }
 
