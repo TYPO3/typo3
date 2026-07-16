@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
-use TYPO3\CMS\Core\Utility\StringUtility;
-
 /**
  * Contains USER_INT class object.
  */
@@ -30,16 +28,6 @@ class UserInternalContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
-        $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
-        $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
-        $pageParts = $this->request->getAttribute('frontend.page.parts');
-        $pageParts->addNotCachedContentElement([
-            'substKey' => $substKey,
-            'conf' => $conf,
-            'cObjData' => serialize($this->cObj->getState()),
-            'type' => 'FUNC',
-        ]);
-        $this->cObj->setUserObjectType(false);
-        return '<!--' . $substKey . '-->';
+        return $this->generateNotCachedContentPlaceholder($this->request, (array)$conf);
     }
 }

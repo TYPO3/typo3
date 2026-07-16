@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 
 /**
@@ -67,5 +68,20 @@ abstract class AbstractContentObject
     protected function getPageRepository(): PageRepository
     {
         return GeneralUtility::makeInstance(PageRepository::class);
+    }
+
+    protected function generateNotCachedContentPlaceholder(ServerRequestInterface $request, array $conf): string
+    {
+        $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
+        $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
+        $pageParts = $request->getAttribute('frontend.page.parts');
+        $pageParts->addNotCachedContentElement([
+            'substKey' => $substKey,
+            'conf' => $conf,
+            'cObjData' => serialize($this->cObj->getState()),
+            'type' => 'FUNC',
+        ]);
+        $this->cObj->setUserObjectType(false);
+        return '<!--' . $substKey . '-->';
     }
 }

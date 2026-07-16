@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\ContentObject;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -50,17 +49,9 @@ class ExtbasePluginContentObject extends AbstractContentObject
             // @todo: this should be removed in the future when FE chains allows more "uncacheables" than USER_INTs
             // also, the handleFrontendRequest() should return the full response in the future
             $conf['userFunc'] = Bootstrap::class . '->run';
-            $this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
-            $pageParts = $request->getAttribute('frontend.page.parts');
-            $substKey = 'INT_SCRIPT.' . md5(StringUtility::getUniqueId());
-            $content = '<!--' . $substKey . '-->';
-            $pageParts->addNotCachedContentElement([
-                'substKey' => $substKey,
-                'conf' => $conf,
-                'cObjData' => serialize($this->cObj->getState()),
-                'type' => 'FUNC',
-            ]);
-        } elseif (isset($conf['stdWrap.'])) {
+            return $this->generateNotCachedContentPlaceholder($request, (array)$conf);
+        }
+        if (isset($conf['stdWrap.'])) {
             // Only executed when the element is not converted to USER_INT
             $content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
         }
