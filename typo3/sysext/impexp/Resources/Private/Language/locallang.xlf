@@ -279,7 +279,10 @@
 			<trans-unit id="importdata_failureNoFileUploaded">
 				<source>Failure: No file uploaded - was it too big? Check system log.</source>
 			</trans-unit>
-			<trans-unit id="importdata_upload">
+			<trans-unit id="importdata_upload_invalidExtension">
+        <source>Only import files with the extensions "t3d" or "xml" can be uploaded.</source>
+      </trans-unit>
+      <trans-unit id="importdata_upload">
 				<source>Upload</source>
 			</trans-unit>
 			<trans-unit id="importdata_upload_error">

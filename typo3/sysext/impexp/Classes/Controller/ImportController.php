@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Impexp\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -51,6 +53,13 @@ class ImportController
     protected const NO_UPLOAD = 0;
     protected const UPLOAD_DONE = 1;
     protected const UPLOAD_FAILED = 2;
+
+    /**
+     * File extensions accepted by the import upload. Uploading any other file type is rejected
+     * before the file is written to storage.
+     */
+    protected const ALLOWED_UPLOAD_EXTENSIONS = ['t3d', 'xml'];
+    protected const ALLOWED_UPLOAD_EXTENSION_LIST = '.t3d,.xml';
 
     public function __construct(
         protected readonly IconFactory $iconFactory,
@@ -87,6 +96,12 @@ class ImportController
 
         $view = $this->moduleTemplateFactory->create($request);
 
+        $import = GeneralUtility::makeInstance(Import::class);
+        $import->setPid($id);
+        // Resolve the upload destination server-side. The import upload target is pinned to this
+        // folder and must never be taken from the (client-controlled) request body.
+        $importFolder = $import->getOrCreateDefaultImportExportFolder();
+
         $uploadStatus = self::NO_UPLOAD;
         $uploadedFileName = '';
         if ($request->getMethod() === 'POST' && empty($parsedBody)) {
@@ -99,16 +114,15 @@ class ImportController
         }
         if ($request->getMethod() === 'POST' && isset($parsedBody['_upload'])) {
             $uploadStatus = self::UPLOAD_FAILED;
-            $file = $this->handleFileUpload($request);
-            if ($file !== null && in_array($file->getExtension(), ['t3d', 'xml'], true)) {
+            $file = $this->handleFileUpload($request, $importFolder, $view);
+            if ($file !== null) {
                 $inputData['file'] = $file->getCombinedIdentifier();
                 $uploadStatus = self::UPLOAD_DONE;
                 $uploadedFileName = $file->getName();
             }
         }
 
-        $import = $this->configureImportFromFormDataAndImportIfRequested($view, $id, $inputData);
-        $importFolder = $import->getOrCreateDefaultImportExportFolder();
+        $this->configureImportFromFormDataAndImportIfRequested($view, $import, $inputData);
 
         $view->assignMultiple([
             'importFolder' => $importFolder?->getCombinedIdentifier() ?? '',
@@ -121,6 +135,7 @@ class ImportController
             'isAdmin' => $this->getBackendUser()->isAdmin(),
             'uploadedFile' => $uploadedFileName,
             'uploadStatus' => $uploadStatus,
+            'allowedUploadExtensionList' => self::ALLOWED_UPLOAD_EXTENSION_LIST,
         ]);
         $view->setModuleName('');
         $view->getDocHeaderComponent()->setMetaInformation($pageInfo);
@@ -146,20 +161,45 @@ class ImportController
         $buttonBar->addButton($viewButton);
     }
 
-    protected function handleFileUpload(ServerRequestInterface $request): ?File
+    protected function handleFileUpload(ServerRequestInterface $request, ?Folder $importFolder, ModuleTemplate $view): ?File
     {
+        if ($importFolder === null) {
+            return null;
+        }
+        // Reject any file that is not an import file before it is written to storage. The import
+        // upload must never be used to place arbitrary file types in a (potentially public) storage.
+        $uploadedFile = $request->getUploadedFiles()['upload_1'] ?? null;
+        if (!$uploadedFile instanceof UploadedFileInterface) {
+            return null;
+        }
+        $uploadExtension = strtolower(pathinfo((string)$uploadedFile->getClientFilename(), PATHINFO_EXTENSION));
+        if (!in_array($uploadExtension, self::ALLOWED_UPLOAD_EXTENSIONS, true)) {
+            $view->addFlashMessage(
+                $this->getLanguageService()->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload_invalidExtension'),
+                $this->getLanguageService()->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload_error'),
+                ContextualFeedbackSeverity::ERROR
+            );
+            return null;
+        }
         $parsedBody = $request->getParsedBody() ?? [];
-        $file = $parsedBody['file'] ?? [];
         $conflictMode = empty($parsedBody['overwriteExistingFiles']) ? DuplicationBehavior::CANCEL : DuplicationBehavior::REPLACE;
+        // The upload target is pinned to the import/export folder resolved server-side and must
+        // not be taken from the (client-controlled) request body, otherwise an uploaded file
+        // could be redirected to an arbitrary, potentially publicly accessible, storage location.
+        $fileCommands = [
+            'upload' => [
+                1 => [
+                    'target' => $importFolder->getCombinedIdentifier(),
+                    'data' => '1',
+                ],
+            ],
+        ];
         $this->fileProcessor->setActionPermissions();
         $this->fileProcessor->setExistingFilesConflictMode($conflictMode);
-        $this->fileProcessor->start($file);
+        $this->fileProcessor->start($fileCommands);
         $result = $this->fileProcessor->processData();
-        if (isset($result['upload'][0][0])) {
-            // If upload went well, set the new file as the import file.
-            return $result['upload'][0][0];
-        }
-        return null;
+        // If upload went well, set the new file as the import file.
+        return $result['upload'][0][0] ?? null;
     }
 
     /**
@@ -167,10 +207,8 @@ class ImportController
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    protected function configureImportFromFormDataAndImportIfRequested(ModuleTemplate $view, int $id, array $inputData): Import
+    protected function configureImportFromFormDataAndImportIfRequested(ModuleTemplate $view, Import $import, array $inputData): void
     {
-        $import = GeneralUtility::makeInstance(Import::class);
-        $import->setPid($id);
         $import->setUpdate((bool)($inputData['do_update'] ?? false));
         $import->setImportMode((array)($inputData['import_mode'] ?? null));
         $import->setEnableLogging((bool)($inputData['enableLogging'] ?? false));
@@ -195,7 +233,6 @@ class ImportController
                 $view->addFlashMessage($e->getMessage(), '', ContextualFeedbackSeverity::ERROR);
             }
         }
-        return $import;
     }
 
     protected function getFilePathWithinFileMountBoundaries(string $filePath): string
