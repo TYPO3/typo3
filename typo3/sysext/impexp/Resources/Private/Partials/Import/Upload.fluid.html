@@ -14,9 +14,7 @@
         <label class="form-label" for="impexp_upload_1">
             <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_browse" />
         </label>
-        <input class="form-control" id="impexp_upload_1" type="file" name="upload_1" />
-        <input type="hidden" name="file[upload][1][target]" value="{importFolder}" />
-        <input type="hidden" name="file[upload][1][data]" value="1" />
+        <input class="form-control" id="impexp_upload_1" type="file" name="upload_1" accept="{allowedUploadExtensionList}" />
     </div>
 
     <div class="form-group">
