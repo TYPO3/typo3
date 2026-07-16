@@ -17,11 +17,22 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper\Fixtures;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-class ColumnMapFactoryEntityFixture
+class ColumnMapFactoryEntityFixture extends AbstractEntity
 {
     public ColumnMapFactoryEntityFixture $hasOne;
+
+    public ?ColumnMapFactoryEnumFixture $nullableEnum = null;
+
+    public ColumnMapFactoryEnumFixture $nonNullableEnum = ColumnMapFactoryEnumFixture::Baby;
+
+    public ?ColumnMapFactoryTypeFixture $nullableCoreType = null;
+
+    public ColumnMapFactoryTypeFixture $nonNullableCoreType;
+
+    public ?\DateTime $nullableDateTime = null;
 
     public ColumnMapFactoryEntityFixture $hasOneViaIntermediateTable;
 

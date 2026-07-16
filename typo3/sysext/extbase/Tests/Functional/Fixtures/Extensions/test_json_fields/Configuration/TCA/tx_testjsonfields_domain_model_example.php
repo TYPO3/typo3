@@ -54,6 +54,23 @@ return [
                 'default' => '{}',
             ],
         ],
+        // Mapped to a custom TypeInterface value object in the model, see Domain\Type\JsonValue.
+        'typed_json_field' => [
+            'exclude' => true,
+            'label' => 'Typed JSON field',
+            'config' => [
+                'type' => 'json',
+                'default' => '[]',
+            ],
+        ],
+        // Mapped to a nullable custom TypeInterface value object in the model, see Domain\Type\JsonValue.
+        'nullable_typed_json_field' => [
+            'exclude' => true,
+            'label' => 'Nullable typed JSON field',
+            'config' => [
+                'type' => 'json',
+            ],
+        ],
     ],
     'types' => [
         '0' => [

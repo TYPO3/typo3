@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3Tests\TestJsonFields\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3Tests\TestJsonFields\Domain\Type\JsonValue;
 
 class Example extends AbstractEntity
 {
@@ -25,6 +26,13 @@ class Example extends AbstractEntity
     protected string $description = '';
     protected string $tcaJsonField = '{}';
     protected string $nativeJsonAsTextField = '{}';
+    protected JsonValue $typedJsonField;
+    protected ?JsonValue $nullableTypedJsonField = null;
+
+    public function __construct()
+    {
+        $this->typedJsonField = new JsonValue();
+    }
 
     public function getTcaJsonField(): string
     {
@@ -64,5 +72,25 @@ class Example extends AbstractEntity
     public function setNativeJsonAsTextField(string $nativeJsonAsTextField): void
     {
         $this->nativeJsonAsTextField = $nativeJsonAsTextField;
+    }
+
+    public function getTypedJsonField(): JsonValue
+    {
+        return $this->typedJsonField;
+    }
+
+    public function setTypedJsonField(JsonValue $typedJsonField): void
+    {
+        $this->typedJsonField = $typedJsonField;
+    }
+
+    public function getNullableTypedJsonField(): ?JsonValue
+    {
+        return $this->nullableTypedJsonField;
+    }
+
+    public function setNullableTypedJsonField(?JsonValue $nullableTypedJsonField): void
+    {
+        $this->nullableTypedJsonField = $nullableTypedJsonField;
     }
 }

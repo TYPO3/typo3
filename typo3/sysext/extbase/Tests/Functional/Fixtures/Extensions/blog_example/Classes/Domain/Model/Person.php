@@ -36,6 +36,10 @@ class Person extends AbstractEntity
 
     protected Enum\Salutation $salutation = Enum\Salutation::NONE;
 
+    protected ?Enum\AgeGroup $ageGroup = null;
+
+    protected ?int $age = null;
+
     /**
      * @var ObjectStorage<Tag>
      */
@@ -99,6 +103,26 @@ class Person extends AbstractEntity
     public function setSalutation(Enum\Salutation $salutation): void
     {
         $this->salutation = $salutation;
+    }
+
+    public function getAgeGroup(): ?Enum\AgeGroup
+    {
+        return $this->ageGroup;
+    }
+
+    public function setAgeGroup(?Enum\AgeGroup $ageGroup): void
+    {
+        $this->ageGroup = $ageGroup;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(?int $age): void
+    {
+        $this->age = $age;
     }
 
     /**
