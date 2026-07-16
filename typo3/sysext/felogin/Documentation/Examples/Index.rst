@@ -128,12 +128,6 @@ page after successful login.
     and define a constant :php:`PAGE_ID_LOGIN_FORM` for it. In the example
     above, this is set to `656`.
 
-    ..  hint::
-
-        This example code uses PHP 8.1 syntax. Depending on the PHP version you use in
-        your project, you may need to adapt language features like `readonly` to match your
-        used PHP version.
-
 #.  In your EXT:felogin plugin, make sure you selected "Defined by GET/POST
     Parameters" as first redirect mode
 

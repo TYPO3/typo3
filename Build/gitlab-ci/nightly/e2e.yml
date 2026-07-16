@@ -1,4 +1,4 @@
-e2e playwright composer sqlite 8.4:
+e2e playwright composer sqlite 8.5:
   stage: acceptance
   tags:
     - metal2
@@ -12,4 +12,4 @@ e2e playwright composer sqlite 8.4:
       - typo3temp/var/tests/playwright-reports
   parallel: 3
   script:
-    - Build/Scripts/runTests.sh -s e2e -p 8.4 -d sqlite -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s e2e -p 8.5 -d sqlite -c $CI_NODE_INDEX/$CI_NODE_TOTAL

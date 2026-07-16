@@ -90,7 +90,7 @@ final class PhpIntegrityChecker extends Command
 
     protected function configure(): void
     {
-        $this->addOption('php', 'p', InputOption::VALUE_OPTIONAL, 'the php version to use, like 8.2 or 7.4', '8.2');
+        $this->addOption('php', 'p', InputOption::VALUE_OPTIONAL, 'the php version to use, like 8.5', '8.5');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -91,16 +91,13 @@ final class FileUploadControllerTest extends FunctionalTestCase
 
     public static function fileUploadDataProvider(): \Generator
     {
-        // @todo: Remove when core raised to minimum PHP 8.4
-        $exeMimeType = version_compare(PHP_VERSION, '8.4', '>=') ? 'application/vnd.microsoft.portable-executable' : 'application/x-dosexec';
-
         /*
          * The "Unrestricted" extbase upload should allow to upload everything except:
          * - no .php files!
          * - only files with matching/detected MIME types (no "exe" masked as "jpg").
          *
          * NOTES: Yes, uploading files not listed in textfile_ext/mediafile_ext/miscfile_ext is ALLOWED
-         *       (independent from the SYS.feature.enforceAllowedFileExtensions).
+         *       (independent of the SYS.feature.enforceAllowedFileExtensions).
          *       If that is wanted, use the FileExtensionValidator with "useStorageDefaults" option.
          *       Also, yes, the setting SYS.feature.enforceFileExtensionMimeTypeConsistency is ignored, too (always enforced due to security).
          */
@@ -111,7 +108,7 @@ final class FileUploadControllerTest extends FunctionalTestCase
             'expectation' => true,
             'actualMimeType' => 'application/x-msdos-program',
             'expectedErrors' => [
-                'item.fileUnrestrictedSingle.1754045716: The resolved media type &quot;' . $exeMimeType . '&quot; is not allowed for file extension &quot;exe&quot;.',
+                'item.fileUnrestrictedSingle.1754045716: The resolved media type &quot;application/vnd.microsoft.portable-executable&quot; is not allowed for file extension &quot;exe&quot;.',
             ],
         ];
         yield 'fileUnrestrictedSingle: JPG' => [
@@ -157,7 +154,7 @@ final class FileUploadControllerTest extends FunctionalTestCase
             'expectation' => false,
             'actualMimeType' => 'application/x-msdos-program',
             'expectedErrors' => [
-                'item.fileUnrestrictedSingle.1754045716: The resolved media type &quot;' . $exeMimeType . '&quot; is not allowed for file extension &quot;txt&quot;.',
+                'item.fileUnrestrictedSingle.1754045716: The resolved media type &quot;application/vnd.microsoft.portable-executable&quot; is not allowed for file extension &quot;txt&quot;.',
             ],
         ];
         yield 'fileUnrestrictedSingle: JPG masked as EXE' => [
@@ -334,7 +331,7 @@ final class FileUploadControllerTest extends FunctionalTestCase
             'filename' => 'test.exe',
             // Not allowed via any media/misc/textfile_ext.
             'expectation' => false,
-            'actualMimeType' => $exeMimeType,
+            'actualMimeType' => 'application/vnd.microsoft.portable-executable',
             'expectedErrors' => [
                 'item.fileExtensionstorageSingle.1754043401: The file extension &#039;exe&#039; is not allowed.',
             ],

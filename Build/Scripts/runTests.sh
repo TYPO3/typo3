@@ -190,15 +190,6 @@ cleanRenderedDocumentationFiles() {
 
 getPhpImageVersion() {
     case ${1} in
-        8.2)
-            echo -n "1.15"
-            ;;
-        8.3)
-            echo -n "1.16"
-            ;;
-        8.4)
-            echo -n "1.8"
-            ;;
         8.5)
             echo -n "1.8"
             ;;
@@ -730,12 +721,9 @@ Options:
         For -s e2e this maps to Playwright's native --shard=#chunk/#numberOfChunks.
         Example -c 3/13
 
-    -p <8.2|8.3|8.4|8.5>
+    -p <8.5>
         Specifies the PHP minor version to be used
-            - 8.2 (default): use PHP 8.2
-            - 8.3: use PHP 8.3
-            - 8.4: use PHP 8.4
-            - 8.5: use PHP 8.5
+            - 8.5 (default): use PHP 8.5
 
     -x
         Only with -s functional|unit|unitRandom|e2e-install
@@ -759,21 +747,21 @@ Options:
         Show this help.
 
 Examples:
-    # Run all core unit tests using PHP 8.2
+    # Run all core unit tests using PHP 8.5
     ./Build/Scripts/runTests.sh
     ./Build/Scripts/runTests.sh -s unit
 
     # Run all core units tests and enable xdebug (have a PhpStorm listening on port 9003!)
     ./Build/Scripts/runTests.sh -x
 
-    # Run unit tests in phpunit with xdebug on PHP 8.3 and filter for test filterByValueRecursiveCorrectlyFiltersArray
-    ./Build/Scripts/runTests.sh -x -p 8.3 -- --filter filterByValueRecursiveCorrectlyFiltersArray
+    # Run unit tests in phpunit with xdebug on PHP 8.5 and filter for test filterByValueRecursiveCorrectlyFiltersArray
+    ./Build/Scripts/runTests.sh -x -p 8.5 -- --filter filterByValueRecursiveCorrectlyFiltersArray
 
     # Run functional tests in phpunit with a filtered test method name in a specified file
     ./Build/Scripts/runTests.sh -s functional -- --filter aTestName path/to/fileTest.php
 
     # Run functional tests on postgres with xdebug, php 8.3 and execute a restricted set of tests
-    ./Build/Scripts/runTests.sh -x -p 8.3 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
+    ./Build/Scripts/runTests.sh -x -p 8.5 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
 
     # Run functional tests on postgres 11
     ./Build/Scripts/runTests.sh -s functional -d postgres -i 11
@@ -823,7 +811,7 @@ CORE_ROOT="${PWD}"
 TEST_SUITE="unit"
 DBMS="sqlite"
 DBMS_VERSION=""
-PHP_VERSION="8.2"
+PHP_VERSION="8.5"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 CGLCHECK_DRY_RUN=""
@@ -885,7 +873,7 @@ while getopts ":a:b:s:c:d:i:p:xy:nhu" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(8.2|8.3|8.4|8.5)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(8.5)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;

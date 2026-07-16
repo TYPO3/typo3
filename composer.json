@@ -40,7 +40,7 @@
 	"config": {
 		"bin-dir": "bin",
 		"platform": {
-			"php": "8.2.0"
+			"php": "8.5.0"
 		},
 		"sort-packages": true,
 		"allow-plugins": {
@@ -49,7 +49,7 @@
 		}
 	},
 	"require": {
-		"php": "^8.2",
+		"php": "^8.5",
 		"ext-PDO": "*",
 		"ext-dom": "*",
 		"ext-intl": "*",
@@ -129,6 +129,7 @@
 		"phpunit/phpunit": "^11.5.55",
 		"sebastian/recursion-context": "^6.0.3",
 		"sokil/php-isocodes-db-i18n": "^4.0.28",
+		"symfony/cache-contracts": "^3.7",
 		"typo3/testing-framework": "dev-main",
 		"webmozart/assert": "^2.3.0"
 	},

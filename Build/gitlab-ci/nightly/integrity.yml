@@ -6,9 +6,9 @@ cgl:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s cgl -n -p 8.2
-    - Build/Scripts/runTests.sh -s cglHeader -n -p 8.2
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
+    - Build/Scripts/runTests.sh -s cgl -n -p 8.5
+    - Build/Scripts/runTests.sh -s cglHeader -n -p 8.5
 
 integration various php 8.5:
   stage: integrity
@@ -45,8 +45,8 @@ iso database max:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s checkIsoDatabase -p 8.2
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s checkIsoDatabase -p 8.5
 
 lint php:
   stage: integrity
@@ -56,9 +56,6 @@ lint php:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s lintPhp -p 8.2
-    - Build/Scripts/runTests.sh -s lintPhp -p 8.3
-    - Build/Scripts/runTests.sh -s lintPhp -p 8.4
     - Build/Scripts/runTests.sh -s lintPhp -p 8.5
 
 grunt scss ts html:
@@ -88,7 +85,7 @@ documentation:
   script:
     - Build/Scripts/runTests.sh -s checkRstRenderingAll
 
-phpstan php 8.2 locked:
+phpstan php 8.5 locked:
   stage: integrity
   tags:
     - metal2
@@ -96,10 +93,10 @@ phpstan php 8.2 locked:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s phpstan -p 8.2 -- --no-progress
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
+    - Build/Scripts/runTests.sh -s phpstan -p 8.5 -- --no-progress
 
-phpstan php 8.2 max:
+phpstan php 8.5 max:
   stage: integrity
   tags:
     - metal2
@@ -107,5 +104,5 @@ phpstan php 8.2 max:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s phpstan -p 8.2 -- --no-progress
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s phpstan -p 8.5 -- --no-progress

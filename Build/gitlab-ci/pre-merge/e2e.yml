@@ -1,4 +1,4 @@
-e2e playwright composer sqlite 8.2 pre-merge:
+e2e playwright composer sqlite 8.5 pre-merge:
   stage: main
   tags:
     - metal2
@@ -14,4 +14,4 @@ e2e playwright composer sqlite 8.2 pre-merge:
       - typo3temp/var/tests/playwright-reports
   parallel: 4
   script:
-    - Build/Scripts/runTests.sh -s e2e -p 8.2 -d sqlite -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s e2e -p 8.5 -d sqlite -c $CI_NODE_INDEX/$CI_NODE_TOTAL

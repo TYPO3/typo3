@@ -13,7 +13,7 @@ unit javascript pre-merge:
   script:
     - Build/Scripts/runTests.sh -s unitJavascript
 
-unit php 8.2 random pre-merge:
+unit php 8.5 random pre-merge:
   stage: main
   tags:
     - metal2
@@ -22,20 +22,9 @@ unit php 8.2 random pre-merge:
       - schedules
       - main
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.2
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.5
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.5
 
-unit php 8.2 pre-merge:
-  stage: main
-  tags:
-    - metal2
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s unit -p 8.2
 unit php 8.5 pre-merge:
   stage: main
   tags:

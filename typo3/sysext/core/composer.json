@@ -32,7 +32,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"php": "^8.2",
+		"php": "^8.5",
 		"ext-PDO": "*",
 		"ext-dom": "*",
 		"ext-intl": "*",
