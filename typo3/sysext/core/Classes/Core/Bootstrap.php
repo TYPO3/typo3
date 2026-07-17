@@ -87,7 +87,7 @@ readonly class Bootstrap
         }
         static::populateLocalConfiguration($configurationManager);
 
-        $logManager = new LogManager((string)$requestId);
+        $logManager = new LogManager($requestId);
         // LogManager is used by the core ErrorHandler (using GeneralUtility::makeInstance),
         // therefore we have to push the LogManager to GeneralUtility, in case there
         // happen errors before we call GeneralUtility::setContainer().

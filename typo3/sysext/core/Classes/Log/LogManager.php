@@ -17,9 +17,11 @@ namespace TYPO3\CMS\Core\Log;
 
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
 use TYPO3\CMS\Core\Log\Processor\ProcessorInterface;
+use TYPO3\CMS\Core\Log\Processor\RequestIdProcessor;
 use TYPO3\CMS\Core\Log\Writer\WriterInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -54,17 +56,12 @@ class LogManager implements SingletonInterface, LogManagerInterface
     /**
      * Unique ID of the request
      */
-    protected string $requestId = '';
+    protected RequestId $requestId;
 
-    /**
-     * Constructor
-     *
-     * @param string $requestId Unique ID of the request
-     */
-    public function __construct(string $requestId = '')
+    public function __construct(RequestId $requestId = new RequestId())
     {
         $this->requestId = $requestId;
-        $this->rootLogger = GeneralUtility::makeInstance(Logger::class, '', $requestId);
+        $this->rootLogger = GeneralUtility::makeInstance(Logger::class, '');
         $this->loggers[''] = $this->rootLogger;
     }
 
@@ -94,18 +91,35 @@ class LogManager implements SingletonInterface, LogManagerInterface
         $separators = ['_', '\\'];
         $name = str_replace($separators, '.', $name);
 
-        return $this->loggers[$name] ??= $this->makeLogger($name, $this->requestId);
+        return $this->loggers[$name] ??= $this->makeLogger($name);
     }
 
     /**
      * Instantiates a new logger object, with the appropriate attached writers and processors.
      */
-    protected function makeLogger(string $name, string $requestId): Logger
+    protected function makeLogger(string $name): Logger
     {
-        $logger = GeneralUtility::makeInstance(Logger::class, $name, $requestId);
+        $logger = GeneralUtility::makeInstance(Logger::class, $name);
         $this->setWritersForLogger($logger);
+        $this->addRequestIdProcessorToLogger($logger);
         $this->setProcessorsForLogger($logger);
         return $logger;
+    }
+
+    /**
+     * Attaches the request id processor for all severity levels covered by the
+     * configured writers of the given logger. The processor is registered before
+     * any configured processor and on purpose not via $TYPO3_CONF_VARS['LOG'],
+     * so log records are guaranteed to carry the request id, even if the global
+     * processor configuration is overridden. Registering it for exactly the
+     * most verbose writer level avoids raising the minimum log level, which
+     * would create and process log records no writer ever receives.
+     */
+    protected function addRequestIdProcessorToLogger(Logger $logger): void
+    {
+        $writerLevels = array_map(LogLevel::normalizeLevel(...), array_keys($logger->getWriters()));
+        $minimumLevel = $writerLevels === [] ? LogLevel::normalizeLevel(\Psr\Log\LogLevel::EMERGENCY) : max($writerLevels);
+        $logger->addProcessor(LogLevel::getInternalName($minimumLevel), new RequestIdProcessor($this->requestId));
     }
 
     /**
