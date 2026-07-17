@@ -321,7 +321,7 @@ class LogRecord implements \ArrayAccess
     public function offsetSet($offset, $value): void
     {
         if (in_array($offset, $this->settableProperties, true)) {
-            $this->{$offset} = $offset;
+            $this->{$offset} = $value;
         }
     }
 
