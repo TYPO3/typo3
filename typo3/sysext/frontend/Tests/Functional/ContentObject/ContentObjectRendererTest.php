@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\CacheDataCollector;
@@ -51,7 +52,6 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
@@ -4557,7 +4557,7 @@ content="benni">',
     {
         $linkService = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
         $linkService->method('resolve')->with('foo')->willThrowException(new InvalidPathException('', 1666303765));
-        $logger = $this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock();
+        $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->atLeastOnce())->method('warning')->with('The link could not be generated', self::anything());
         $linkFactory = new LinkFactory($linkService, $this->get(EventDispatcherInterface::class), $this->get(TypoLinkCodecService::class), $this->get('cache.runtime'), $this->get(SiteFinder::class), $logger);
         $this->get('service_container')->set(LinkFactory::class, $linkFactory);

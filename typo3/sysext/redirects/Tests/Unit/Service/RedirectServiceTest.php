@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\LinkHandling\PageTypeLinkResolver;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
@@ -90,7 +89,7 @@ final class RedirectServiceTest extends UnitTestCase
             new PageInformationFactory(
                 new Context(),
                 new NoopEventDispatcher(),
-                $this->createMock(Logger::class),
+                $this->createMock(LoggerInterface::class),
                 new RecordAccessVoter(new NoopEventDispatcher(), $this->createMock(TcaSchemaFactory::class)),
                 $this->createMock(ErrorController::class),
                 new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
@@ -658,7 +657,7 @@ final class RedirectServiceTest extends UnitTestCase
                 new PageInformationFactory(
                     new Context(),
                     new NoopEventDispatcher(),
-                    $this->createMock(Logger::class),
+                    $this->createMock(LoggerInterface::class),
                     new RecordAccessVoter(new NoopEventDispatcher(), $this->createMock(TcaSchemaFactory::class)),
                     $this->createMock(ErrorController::class),
                     new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),

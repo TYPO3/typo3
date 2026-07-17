@@ -19,11 +19,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type\File;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Imaging\Svg\SvgDocumentFactory;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,7 +44,7 @@ final class ImageInfoTest extends UnitTestCase
             return true;
         };
 
-        $loggerMock = $this->createMock(Logger::class);
+        $loggerMock = $this->createMock(LoggerInterface::class);
         $loggerMock->expects($this->once())->method('error')->with(self::isString(), self::callback($exceptionIsLogged));
         $loggerMock->expects($this->once())->method('warning')
             ->with('I could not retrieve the image size for file {file}', ['file' => $testFile]);

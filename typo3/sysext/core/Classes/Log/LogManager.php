@@ -61,7 +61,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
     public function __construct(RequestId $requestId = new RequestId())
     {
         $this->requestId = $requestId;
-        $this->rootLogger = GeneralUtility::makeInstance(Logger::class, '');
+        $this->rootLogger = new Logger('');
         $this->loggers[''] = $this->rootLogger;
     }
 
@@ -99,7 +99,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
      */
     protected function makeLogger(string $name): Logger
     {
-        $logger = GeneralUtility::makeInstance(Logger::class, $name);
+        $logger = new Logger($name);
         $this->setWritersForLogger($logger);
         $this->addRequestIdProcessorToLogger($logger);
         $this->setProcessorsForLogger($logger);

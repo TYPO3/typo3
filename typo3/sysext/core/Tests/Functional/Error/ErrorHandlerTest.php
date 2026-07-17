@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Error;
 
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Error\ErrorHandler;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -80,10 +80,7 @@ final class ErrorHandlerTest extends FunctionalTestCase
         $logManagerMock->expects($this->never())->method('getLogger')->with('TYPO3.CMS.deprecations');
         GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
 
-        $logger = $this->getMockBuilder(Logger::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['log'])
-            ->getMock();
+        $logger = $this->createMock(LoggerInterface::class);
 
         // Make sure the assigned logger does not log
         $logger->expects($this->never())->method('log');

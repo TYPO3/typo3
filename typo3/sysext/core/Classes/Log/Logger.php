@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Logger to log events and data for different components.
  */
-class Logger implements LoggerInterface
+final class Logger implements LoggerInterface
 {
     use LoggerTrait;
 
