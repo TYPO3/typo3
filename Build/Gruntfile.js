@@ -245,10 +245,6 @@ module.exports = function (grunt) {
         src: '<%= paths.sass %>dashboard.scss',
         dest: '<%= paths.dashboard %>Public/Css/dashboard.css',
       },
-      dashboard_modal: {
-        src: '<%= paths.sass %>dashboard_modal.scss',
-        dest: '<%= paths.dashboard %>Public/Css/Modal/style.css',
-      },
       form: {
         src: '<%= paths.sass %>form.scss',
         dest: '<%= paths.form %>Public/Css/form.css',
