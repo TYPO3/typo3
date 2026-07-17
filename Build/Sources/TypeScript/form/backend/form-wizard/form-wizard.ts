@@ -107,6 +107,7 @@ export class FormWizard extends LitElement {
       <typo3-backend-wizard .steps="${this.steps}"
                             .submissionService="${this.submissionService}"
                             confirm-button-label="${formManagerLabels.get('formManager.newFormWizard.step1.title')}"
+                            skip-summary
       ></typo3-backend-wizard>
     `;
   }
