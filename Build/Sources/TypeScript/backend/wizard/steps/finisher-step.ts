@@ -33,9 +33,9 @@ export class FinisherStep implements WizardStepInterface {
   readonly autoAdvance = false;
 
   public resetButtonTitle: string = null;
+  public hasError = false;
 
   private finisherInstance: FinisherInterface | null = null;
-  private hasError = false;
   private readonly task: Task<[SubmissionServiceInterface], FinisherResult>;
 
   constructor(private readonly wizard: Wizard, private readonly finisher: SubmissionServiceInterface) {
@@ -55,7 +55,7 @@ export class FinisherStep implements WizardStepInterface {
   public isComplete(): boolean {
     // Finisher step is complete when the task has finished (success or error)
     // This allows the user to close the wizard even when there's an error
-    return this.task.status === TaskStatus.COMPLETE;
+    return this.task.status === TaskStatus.COMPLETE || this.task.status === TaskStatus.ERROR;
   }
 
   public async beforeAdvance(): Promise<void> {
