@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Webhooks\ConfigurationModuleProvider;
 
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use TYPO3\CMS\Core\Messaging\WebhookMessageInterface;
+use TYPO3\CMS\Core\Messenger\TransportLocator;
 use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\AbstractProvider;
 use TYPO3\CMS\Webhooks\Model\WebhookType;
 use TYPO3\CMS\Webhooks\WebhookTypesRegistry;
@@ -33,6 +33,7 @@ class WebhookTypesProvider extends AbstractProvider
     public function __construct(
         private readonly WebhookTypesRegistry $webhookTypesRegistry,
         private readonly ServiceLocator $sendersLocator,
+        private readonly TransportLocator $transportLocator,
     ) {}
 
     public function getConfiguration(): array
@@ -43,29 +44,33 @@ class WebhookTypesProvider extends AbstractProvider
                 'messageName' => $webhookType->getServiceName(),
                 'description' => $webhookType->getDescription(),
                 'connectedEvent' => $webhookType->getConnectedEvent() ?? 'none',
-                'transport' => $this->determineTransportForWebhook($webhookType),
+                'transports' => $this->determineTransportsForWebhook($webhookType),
             ];
         }
         return $configuration;
     }
 
     /**
+     * Resolves the configured transport(s) for a webhook message via the shared
+     * core routing resolution, so the displayed transports match what the
+     * message bus actually uses (honouring the wildcard fallback, list values
+     * and interface/parent/namespace-wildcard routes).
+     *
      * @param WebhookType $webhookType
-     * @return array{identifier: non-empty-string, serviceName: non-empty-string}
+     * @return list<array{identifier: non-empty-string, serviceName: non-empty-string}>
      */
-    private function determineTransportForWebhook(WebhookType $webhookType): array
+    private function determineTransportsForWebhook(WebhookType $webhookType): array
     {
-        $transportName
-            = $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing'][$webhookType->getServiceName()]
-            ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing'][WebhookMessageInterface::class]
-            ?? $GLOBALS['TYPO3_CONF_VARS']['SYS']['messenger']['routing']['*']
-            ?? 'undefined';
+        $transports = [];
+        foreach ($this->transportLocator->getSenderNamesForMessage($webhookType->getServiceName()) as $senderName) {
+            $transports[] = [
+                'identifier' => $senderName,
+                'serviceName' => $this->sendersLocator->has($senderName)
+                    ? get_class($this->sendersLocator->get($senderName))
+                    : 'undefined',
+            ];
+        }
 
-        return [
-            'identifier' => $transportName,
-            'serviceName' => $this->sendersLocator->has($transportName)
-                ? get_class($this->sendersLocator->get($transportName))
-                : 'undefined',
-        ];
+        return $transports !== [] ? $transports : [['identifier' => 'undefined', 'serviceName' => 'undefined']];
     }
 }
