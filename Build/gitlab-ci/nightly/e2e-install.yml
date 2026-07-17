@@ -15,9 +15,9 @@ e2e install playwright php 8.5 max:
       - typo3temp/var/tests/playwright-reports
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
-    - Build/Scripts/runTests.sh -s e2e-install -d mariadb -i 10.10 -p 8.5
-    - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.0 -p 8.5
-    - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 15 -p 8.5
+    - Build/Scripts/runTests.sh -s e2e-install -d mariadb -i 11.8 -p 8.5
+    - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.4 -p 8.5
+    - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 18 -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d sqlite -p 8.5
 
 e2e install playwright php 8.3 max:
@@ -37,9 +37,9 @@ e2e install playwright php 8.3 max:
       - typo3temp/var/tests/playwright-reports
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s e2e-install -d mariadb -i 10.10 -p 8.3
-    - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.0 -p 8.3
-    - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 15 -p 8.3
+    - Build/Scripts/runTests.sh -s e2e-install -d mariadb -i 11.8 -p 8.3
+    - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.4 -p 8.3
+    - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 18 -p 8.3
     - Build/Scripts/runTests.sh -s e2e-install -d sqlite -p 8.3
 
 e2e install playwright 8.2 min:
