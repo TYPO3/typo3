@@ -21,11 +21,7 @@ test('Create custom dashboard and widgets', async ({ backend }) => {
   const contentFrame = backend.contentFrame;
 
   // Create Dashboard
-  const addModal = await open(backend, 'actions-plus');
-
-  await addModal.locator('#dashboard-form-add-title').fill(customDashboardTitle);
-  await addModal.locator('label[for="dashboard-form-add-preset-empty"]').click();
-  await backend.modal.click({ name: 'save' });
+  await createDashboard(backend, customDashboardTitle);
   await expect(contentFrame.locator('.dashboard-tab--active')).toContainText(customDashboardTitle);
 
   // Add widget
@@ -61,14 +57,11 @@ test('Delete dashboard and widgets', async ({ backend }) => {
 });
 
 test('Create, rename and delete dashboard',async ({ backend }) => {
-  const addModal = await open(backend, 'actions-plus');
   const titleBeforeRename = 'Custom Dashboard mistake';
   const titleAfterRename = 'Custom Dashboard correct';
 
   // Add dashboard
-  await addModal.locator('[name="title"]').fill(titleBeforeRename);
-  await addModal.locator('label[for="dashboard-form-add-preset-empty"]').click();
-  await backend.modal.click({ name: 'save' });
+  await createDashboard(backend, titleBeforeRename);
   await expect(backend.contentFrame.locator('.dashboard-tab--active')).toContainText(titleBeforeRename);
 
   // Rename dashboard
@@ -86,6 +79,27 @@ test('Create, rename and delete dashboard',async ({ backend }) => {
 
 function widgetTitle(contentFrame: FrameLocator, key: string): Locator {
   return contentFrame.locator(`[data-widget-key="${key}"] .widget-title`);
+}
+
+/**
+ * Walk through the multi-step dashboard wizard: pick the "empty" preset,
+ * enter a title, confirm, and finish. The forward button is only clicked
+ * once it is no longer disabled, which also waits for the async finisher.
+ */
+async function createDashboard(backend: BackendPage, title: string): Promise<void> {
+  const addModal = await open(backend, 'actions-plus');
+  const forward = () => addModal.locator('.wizard-actions .btn-primary:not(.disabled)');
+
+  // Step: preset
+  await addModal.locator('#preset-empty').check();
+  await forward().click();
+
+  // Step: title
+  await addModal.locator('#dashboard-wizard-title-input').fill(title);
+  await forward().click();
+
+  // Step: finisher — creates the dashboard; "Finish" reloads the module
+  await forward().click();
 }
 
 async function open(backend: BackendPage, identifier: string): Promise<Locator> {

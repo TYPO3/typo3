@@ -84,10 +84,28 @@
       <trans-unit id="dashboard.add">
         <source>Add dashboard</source>
       </trans-unit>
-      <trans-unit id="dashboard.add.button.close">
+      <trans-unit id="dashboard.wizard.preset.title">
+        <source>Preset</source>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.headline">
+        <source>Select a preset</source>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.preset.loadError">
+        <source>The dashboard presets could not be loaded.</source>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.title.title">
+        <source>Title</source>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.success.title">
+        <source>Dashboard created</source>
+      </trans-unit>
+      <trans-unit id="dashboard.wizard.success.message">
+        <source>The dashboard has been created and is now being opened.</source>
+      </trans-unit>
+      <trans-unit id="dashboard.add.button.close" x-unused-since="14.3">
         <source>Close</source>
       </trans-unit>
-      <trans-unit id="dashboard.add.button.ok">
+      <trans-unit id="dashboard.add.button.ok" x-unused-since="14.3">
         <source>Add Dashboard</source>
       </trans-unit>
       <trans-unit id="dashboard.configure">

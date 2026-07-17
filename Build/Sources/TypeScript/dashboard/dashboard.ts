@@ -22,7 +22,7 @@ import '@typo3/backend/element/icon-element';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ClientStorage from '@typo3/backend/storage/client';
 import { delay } from '@typo3/core/lit-helper';
-import Modal, { type ModalElement } from '@typo3/backend/modal';
+import Modal, { type ModalElement, Size } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { Categories, type DataCategoriesInterface, type NewRecordWizardItemSelectedEventInterface } from '@typo3/backend/new-record-wizard';
@@ -49,7 +49,7 @@ interface DashboardInterface {
   widgetPositions: Record<number, DashboardWidgetPosition[]>
 }
 
-interface DashboardPresetInterface {
+export interface DashboardPresetInterface {
   identifier: string;
   title: string;
   description: string;
@@ -154,7 +154,7 @@ class DashboardWidgetRefreshEvent extends Event {
   }
 }
 
-class DashboardAddEvent extends Event {
+export class DashboardAddEvent extends Event {
   static readonly eventName = 'typo3:dashboard:dashboard:add';
 
   constructor(
@@ -446,6 +446,8 @@ export class Dashboard extends LitElement {
     this.mql = window.matchMedia('(prefers-reduced-motion: reduce)');
     this.mqListener(this.mql);
     this.mql.addEventListener('change', this.mqListener);
+
+    document.addEventListener(DashboardAddEvent.eventName, this.relayAddDashboardEvent);
   }
 
   public override disconnectedCallback() {
@@ -456,6 +458,8 @@ export class Dashboard extends LitElement {
 
     this.mql?.removeEventListener('change', this.mqListener);
     this.mql = null;
+
+    document.removeEventListener(DashboardAddEvent.eventName, this.relayAddDashboardEvent);
   }
 
   protected readonly mqListener = (mql: MediaQueryList|MediaQueryListEvent): void => {
@@ -496,6 +500,16 @@ export class Dashboard extends LitElement {
     `;
   }
 
+  /**
+   * Relays the cross-frame add broadcast (dispatched on `document` by the
+   * wizard finisher) onto the element, so it is handled alongside the other
+   * dashboard events. A fresh event is created because an in-flight event
+   * cannot be re-dispatched.
+   */
+  private readonly relayAddDashboardEvent = (event: DashboardAddEvent): void => {
+    this.dispatchEvent(new DashboardAddEvent(event.preset, event.title));
+  };
+
   private async load(): Promise<void> {
     this.loading = true;
     this.dashboards = await this.fetchDashboards();
@@ -512,11 +526,6 @@ export class Dashboard extends LitElement {
       console.error(error);
       return [];
     }
-  }
-
-  private async fetchPresets(): Promise<DashboardPresetInterface[]> {
-    const data = await this.fetchData(TYPO3.settings.ajaxUrls.dashboard_presets_get);
-    return Object.values(data);
   }
 
   private async fetchCategories(): Promise<Categories> {
@@ -538,79 +547,19 @@ export class Dashboard extends LitElement {
   }
 
   private async createDashboard(): Promise<void> {
-    const presets = await this.fetchPresets();
-    const filteredPresets = presets.filter(preset => preset.showInWizard);
-
-    const content = html`
-      <form>
-        <div class="form-group">
-          <label class="form-label" for="dashboard-form-add-title">${labels.get('dashboard.title')}</label>
-          <input class="form-control" id="dashboard-form-add-title" type="text" name="title" required="required">
-        </div>
-        <div class="dashboard-modal-items">
-          ${repeat(filteredPresets, (preset: DashboardPresetInterface) => preset.identifier, (preset: DashboardPresetInterface, index: number) => html`
-            <div class="dashboard-modal-item">
-              <input
-                type="radio"
-                name="preset"
-                value=${preset.identifier}
-                class="dashboard-modal-item-checkbox"
-                id="dashboard-form-add-preset-${preset.identifier}"
-                ?checked=${index === 0}
-              >
-              <label for="dashboard-form-add-preset-${preset.identifier}" class="dashboard-modal-item-block">
-                <span class="dashboard-modal-item-icon">
-                  <typo3-backend-icon identifier=${preset.icon} size="medium"></typo3-backend-icon>
-                </span>
-                <span class="dashboard-modal-item-details">
-                  <span class="dashboard-modal-item-title">${preset.title}</span>
-                  <span class="dashboard-modal-item-description">${preset.description}</span>
-                </span>
-              </label>
-            </div>
-          `)}
-        </div>
-      </form>
-    `;
+    await topLevelModuleImport('@typo3/dashboard/dashboard-wizard.js');
 
     Modal.advanced({
       type: Modal.types.default,
       title: labels.get('dashboard.add'),
-      size: Modal.sizes.medium,
-      severity: SeverityEnum.notice,
-      content,
-      callback: (currentModal: ModalElement): void => {
-
-        currentModal.addEventListener('typo3-modal-shown', (): void => {
-          (currentModal.querySelector('#dashboard-form-add-title') as HTMLInputElement)?.focus();
-        });
-
-        currentModal.querySelector('form').addEventListener('submit', (e: Event): void => {
-          e.preventDefault();
-          const form = e.target as HTMLFormElement;
-          const formData = new FormData(form);
-          this.dispatchEvent(new DashboardAddEvent(
-            formData.get('preset') as string,
-            formData.get('title') as string,
-          ));
-          currentModal.hideModal();
-        });
-
+      size: {
+        width: Size.default,
+        height: Size.small,
       },
-      buttons: [
-        {
-          text: labels.get('dashboard.add.button.close'),
-          btnClass: 'btn-default',
-          name: 'cancel',
-          trigger: (e, modal) => modal.hideModal(),
-        },
-        {
-          text: labels.get('dashboard.add.button.ok'),
-          btnClass: 'btn-primary',
-          name: 'save',
-          trigger: (e, modal) => modal.querySelector('form').requestSubmit(),
-        },
-      ]
+      severity: SeverityEnum.notice,
+      staticBackdrop: true,
+      content: html`<typo3-dashboard-wizard></typo3-dashboard-wizard>`,
+      buttons: [],
     });
   }
 
@@ -1565,6 +1514,9 @@ declare global {
   interface HTMLElementTagNameMap {
     'typo3-dashboard': Dashboard;
     'typo3-dashboard-widget': DashboardWidget;
+  }
+  interface DocumentEventMap {
+    [DashboardAddEvent.eventName]: DashboardAddEvent;
   }
   interface HTMLElementEventMap {
     [DashboardWidgetContentRenderedEvent.eventName]: DashboardWidgetContentRenderedEvent;
