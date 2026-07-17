@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,40 +19,38 @@ namespace TYPO3\CMS\Core\Log;
 
 /**
  * Log record
- *
- * @todo: Consider declaring this DTO final
  */
-class LogRecord implements \ArrayAccess
+final class LogRecord implements \ArrayAccess
 {
     /**
      * Unique ID of the request
      */
-    protected string $requestId = '';
+    private string $requestId = '';
 
     /**
      * Creation timestamp with microseconds
      */
-    protected float $created = 0.0;
+    private float $created = 0.0;
 
     /**
      * The component where the record was created
      */
-    protected string $component = '';
+    private string $component = '';
 
     /**
      * Severity level
      */
-    protected string $level = \Psr\Log\LogLevel::INFO;
+    private string $level = \Psr\Log\LogLevel::INFO;
 
     /**
      * Log message one-liner
      */
-    protected string $message = '';
+    private string $message = '';
 
     /**
      * Additional log data
      */
-    protected array $data = [];
+    private array $data = [];
 
     /**
      * Gettable properties for ArrayAccess
@@ -74,15 +74,13 @@ class LogRecord implements \ArrayAccess
     ];
 
     /**
-     * Constructor.
-     *
      * @param string $component Affected component
-     * @param string $level Severity level (see \TYPO3\CMS\Core\Log\Level)
-     * @param string $message Log message
+     * @param string $level Severity level (see \TYPO3\CMS\Core\Log\LogLevel)
+     * @param string|\Stringable $message Log message
      * @param array $data Additional data
      * @param string $requestId Unique ID of the request
      */
-    public function __construct(string $component, string $level, string $message, array $data = [], string $requestId = '')
+    public function __construct(string $component, string $level, string|\Stringable $message, array $data = [], string $requestId = '')
     {
         $this->setRequestId($requestId)
             ->setCreated(microtime(true))
@@ -92,58 +90,32 @@ class LogRecord implements \ArrayAccess
             ->setData($data);
     }
 
-    /**
-     * Sets the affected component
-     *
-     * @param string $component Component key
-     * @return LogRecord
-     */
-    public function setComponent($component)
+    public function setComponent(string $component): self
     {
         $this->component = $component;
         return $this;
     }
 
-    /**
-     * Returns the component
-     *
-     * @return string Component key
-     */
-    public function getComponent()
+    public function getComponent(): string
     {
         return $this->component;
     }
 
-    /**
-     * Sets the the creation time
-     *
-     * @param float $created Creation time as float
-     * @return LogRecord
-     */
-    public function setCreated($created)
+    public function setCreated(float $created): self
     {
         $this->created = $created;
         return $this;
     }
 
-    /**
-     * Returns the creation time
-     *
-     * @return float Creation time as float
-     */
-    public function getCreated()
+    public function getCreated(): float
     {
         return $this->created;
     }
 
     /**
-     * Sets the severity level
-     *
-     * @param string $level Severity level
-     * @return LogRecord
-     * @see \TYPO3\CMS\Core\Log\Level
+     * @see \TYPO3\CMS\Core\Log\LogLevel
      */
-    public function setLevel(string $level)
+    public function setLevel(string $level): self
     {
         LogLevel::validateLevel(LogLevel::normalizeLevel($level));
         $this->level = $level;
@@ -151,34 +123,20 @@ class LogRecord implements \ArrayAccess
     }
 
     /**
-     * Returns the severity level
-     *
-     * @see \TYPO3\CMS\Core\Log\Level
-     * @return string Severity level
+     * @see \TYPO3\CMS\Core\Log\LogLevel
      */
     public function getLevel(): string
     {
         return $this->level;
     }
 
-    /**
-     * Sets log data array
-     *
-     * @param array $data
-     * @return LogRecord
-     */
-    public function setData($data)
+    public function setData(array $data): self
     {
         $this->data = $data;
         return $this;
     }
 
-    /**
-     * Returns the log data
-     *
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -186,55 +144,31 @@ class LogRecord implements \ArrayAccess
     /**
      * Adds additional log data to already existing data
      * and overwrites previously data using the same array keys.
-     *
-     * @return LogRecord
      */
-    public function addData(array $data)
+    public function addData(array $data): self
     {
         $this->data = array_merge($this->data, $data);
         return $this;
     }
 
-    /**
-     * Sets the log message
-     *
-     * @param string|object $message Log message. Usually a string, or an object that can be casted to string (implements __toString())
-     * @return LogRecord
-     */
-    public function setMessage($message)
+    public function setMessage(string|\Stringable $message): self
     {
         $this->message = (string)$message;
         return $this;
     }
 
-    /**
-     * Returns the log message
-     *
-     * @return string Log message
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
-    /**
-     * Sets the request ID
-     *
-     * @param string $requestId
-     * @return LogRecord
-     */
-    public function setRequestId($requestId)
+    public function setRequestId(string $requestId): self
     {
         $this->requestId = $requestId;
         return $this;
     }
 
-    /**
-     * Returns the request ID
-     *
-     * @return string
-     */
-    public function getRequestId()
+    public function getRequestId(): string
     {
         return $this->requestId;
     }
@@ -268,12 +202,7 @@ class LogRecord implements \ArrayAccess
         return $logRecordString;
     }
 
-    /**
-     * Convert record to array
-     *
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'requestId' => $this->requestId,
@@ -287,10 +216,8 @@ class LogRecord implements \ArrayAccess
 
     /**
      * Checks whether an offset exists, required by ArrayAccess interface
-     *
-     * @param mixed $offset
      */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         $offsetExists = false;
         if (in_array($offset, $this->gettableProperties, true) && isset($this->{$offset})) {
@@ -301,10 +228,8 @@ class LogRecord implements \ArrayAccess
 
     /**
      * Offset to retrieve, required by ArrayAccess interface
-     *
-     * @param mixed $offset
      */
-    public function offsetGet($offset): mixed
+    public function offsetGet(mixed $offset): mixed
     {
         if (!in_array($offset, $this->gettableProperties, true)) {
             return null;
@@ -314,11 +239,8 @@ class LogRecord implements \ArrayAccess
 
     /**
      * Offset to set, required by ArrayAccess interface
-     *
-     * @param mixed $offset
-     * @param mixed $value
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if (in_array($offset, $this->settableProperties, true)) {
             $this->{$offset} = $offset;
@@ -327,10 +249,8 @@ class LogRecord implements \ArrayAccess
 
     /**
      * Offset to unset, required by ArrayAccess interface
-     *
-     * @param mixed $offset
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         if (in_array($offset, $this->settableProperties, true)) {
             unset($this->{$offset});

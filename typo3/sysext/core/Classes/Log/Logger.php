@@ -199,7 +199,7 @@ class Logger implements LoggerInterface
         if ($level > $this->minimumLogLevel) {
             return;
         }
-        $record = GeneralUtility::makeInstance(LogRecord::class, $this->name, LogLevel::getInternalName($level), $message, $data, $this->requestId);
+        $record = new LogRecord($this->name, LogLevel::getInternalName($level), $message, $data, $this->requestId);
         $record = $this->callProcessors($record);
         $this->writeLog($record);
     }
