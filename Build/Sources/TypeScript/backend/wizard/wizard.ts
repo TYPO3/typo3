@@ -43,6 +43,7 @@ type DataStoreKey = keyof DataStore;
 export class Wizard extends LitElement {
   @property({ type: Array, attribute: false }) steps: WizardStepInterface[] = [];
   @property({ type: String, attribute: 'confirm-button-label' }) confirmButtonLabel: string;
+  @property({ type: Boolean, attribute: 'skip-summary' }) skipSummary: boolean = false;
   @property({ type: Object, attribute: false }) submissionService: SubmissionServiceInterface;
 
   @state() protected currentStepIndex: number = 0;
@@ -181,7 +182,7 @@ export class Wizard extends LitElement {
     ) {
       this.allSteps = [
         ...this.steps,
-        new ConfirmStep(this),
+        ...(this.skipSummary ? [] : [new ConfirmStep(this)]),
         new FinisherStep(this, this.submissionService),
       ];
 
