@@ -332,13 +332,20 @@ export class Wizard extends LitElement {
   private renderNextButtons(): TemplateResult {
     const isComplete = this.currentStep?.isComplete();
     let buttonLabel: string;
+    let buttonIcon: string = 'actions-arrow-end-alt';
     let resetButtonHtml: TemplateResult | typeof nothing = nothing;
 
     if (this.currentStep?.key === 'finisher') {
-      buttonLabel = wizardLabels.get('wizard.buttons.finish');
-
       const finisherStep: FinisherStep = this.currentStep as FinisherStep;
-      if (finisherStep?.resetButtonTitle) {
+      if (finisherStep.hasError) {
+        // On failure the primary action only closes the wizard
+        buttonLabel = wizardLabels.get('wizard.buttons.close');
+        buttonIcon = 'actions-close';
+      } else {
+        buttonLabel = wizardLabels.get('wizard.buttons.finish');
+      }
+
+      if (!finisherStep.hasError && finisherStep?.resetButtonTitle) {
         resetButtonHtml = html`
           <button type="button" class="${classMap({ 'btn': true, 'btn-secondary': true })}"
             @click="${this.handleRestart}"
@@ -361,7 +368,7 @@ export class Wizard extends LitElement {
           @click="${this.handleNext}"
         >
           ${buttonLabel}
-          <typo3-backend-icon identifier="actions-arrow-end-alt" bidi size="small"></typo3-backend-icon>
+          <typo3-backend-icon identifier="${buttonIcon}" bidi size="small"></typo3-backend-icon>
         </button>
       </div>
     `;

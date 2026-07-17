@@ -9,6 +9,9 @@
       <trans-unit id="wizard.buttons.cancel">
         <source>Cancel</source>
       </trans-unit>
+      <trans-unit id="wizard.buttons.close">
+        <source>Close</source>
+      </trans-unit>
       <trans-unit id="wizard.buttons.next">
         <source>Next</source>
       </trans-unit>
