@@ -1584,6 +1584,13 @@ class BackendUtility
                         $pageTsConfig = self::getPagesTSconfig($pid);
                         if (isset($pageTsConfig['TCEFORM.'][$table . '.'][$col . '.']) && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'])) {
                             $columnTsConfig = $pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'];
+                            // Merge TCEFORM.[table].[field].types.[type] over TCEFORM.[table].[field]
+                            $typeSpecificTsConfig = $columnTsConfig['types.'] ?? [];
+                            unset($columnTsConfig['types.']);
+                            $recordType = self::getTCAtypeValue($table, $fullRow, true);
+                            if ($recordType !== null && is_array($typeSpecificTsConfig[$recordType . '.'] ?? null)) {
+                                ArrayUtility::mergeRecursiveWithOverrule($columnTsConfig, $typeSpecificTsConfig[$recordType . '.']);
+                            }
                         }
                     }
                     $labels = GeneralUtility::makeInstance(SchemaLabelResolver::class)

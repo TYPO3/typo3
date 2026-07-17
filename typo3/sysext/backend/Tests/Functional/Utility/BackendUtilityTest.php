@@ -942,6 +942,271 @@ final class BackendUtilityTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getProcessedValueResolvesAddedSelectItemFromCTypeSpecificPageTsConfig(): void
+    {
+        $fieldName = 'test_select';
+
+        $GLOBALS['TCA']['tt_content']['columns'][$fieldName] = [
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        'label' => 'Default item',
+                        'value' => 'default',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $this->get(ConnectionPool::class)
+            ->getConnectionForTable('pages')
+            ->update(
+                'pages',
+                [
+                    'TSconfig' => <<<TS
+                    TCEFORM.tt_content.$fieldName.types.textmedia {
+                        addItems.specialValue = Item from CType-specific Page TSconfig
+                    }
+                    TS,
+                ],
+                [
+                    'uid' => 1,
+                ]
+            );
+        $this->get(CacheManager::class)->getCache('runtime')->flush();
+
+        $record = [
+            'uid' => 123,
+            'pid' => 1,
+            'CType' => 'textmedia',
+            $fieldName => 'specialValue',
+        ];
+
+        self::assertSame(
+            'Item from CType-specific Page TSconfig',
+            BackendUtility::getProcessedValue(
+                'tt_content',
+                $fieldName,
+                $record[$fieldName],
+                0,
+                false,
+                false,
+                $record['uid'],
+                true,
+                $record['pid'],
+                $record,
+            )
+        );
+    }
+
+    #[Test]
+    public function getProcessedValueResolvesOverriddenSelectLabelFromTypeSpecificPageTsConfig(): void
+    {
+        $tableName = 'test_table';
+        $typeFieldName = 'record_type';
+        $selectFieldName = 'select_field';
+
+        $GLOBALS['TCA'][$tableName] = [
+            'ctrl' => [
+                'title' => 'Test table',
+                'label' => 'title',
+                'type' => $typeFieldName,
+            ],
+            'columns' => [
+                'title' => [
+                    'config' => [
+                        'type' => 'input',
+                    ],
+                ],
+                $typeFieldName => [
+                    'config' => [
+                        'type' => 'select',
+                        'renderType' => 'selectSingle',
+                        'items' => [
+                            [
+                                'label' => 'Default type',
+                                'value' => 'default',
+                            ],
+                            [
+                                'label' => 'Special type',
+                                'value' => 'special',
+                            ],
+                        ],
+                    ],
+                ],
+                $selectFieldName => [
+                    'config' => [
+                        'type' => 'select',
+                        'renderType' => 'selectSingle',
+                        'items' => [
+                            [
+                                'label' => 'Default label',
+                                'value' => 'foo',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'types' => [
+                'default' => [
+                    'showitem' => 'title,record_type,select_field',
+                ],
+                'special' => [
+                    'showitem' => 'title,record_type,select_field',
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $this->get(ConnectionPool::class)
+            ->getConnectionForTable('pages')
+            ->update(
+                'pages',
+                [
+                    'TSconfig' => <<<TS
+                    TCEFORM.$tableName.$selectFieldName.types.special {
+                        altLabels.foo = Type-specific label
+                    }
+                    TS,
+                ],
+                [
+                    'uid' => 1,
+                ]
+            );
+        $this->get(CacheManager::class)->getCache('runtime')->flush();
+
+        $record = [
+            'uid' => 123,
+            'pid' => 1,
+            'title' => 'Test record',
+            $typeFieldName => 'special',
+            $selectFieldName => 'foo',
+        ];
+
+        self::assertSame(
+            'Type-specific label',
+            BackendUtility::getProcessedValue(
+                $tableName,
+                $selectFieldName,
+                $record[$selectFieldName],
+                0,
+                false,
+                false,
+                $record['uid'],
+                true,
+                $record['pid'],
+                $record,
+            )
+        );
+    }
+
+    #[Test]
+    public function getProcessedValueKeepsFieldLevelPageTsConfigForTypeSpecificRecords(): void
+    {
+        $tableName = 'test_table';
+        $typeFieldName = 'record_type';
+        $selectFieldName = 'select_field';
+
+        $GLOBALS['TCA'][$tableName] = [
+            'ctrl' => [
+                'title' => 'Test table',
+                'label' => 'title',
+                'type' => $typeFieldName,
+            ],
+            'columns' => [
+                'title' => [
+                    'config' => [
+                        'type' => 'input',
+                    ],
+                ],
+                $typeFieldName => [
+                    'config' => [
+                        'type' => 'select',
+                        'renderType' => 'selectSingle',
+                        'items' => [
+                            [
+                                'label' => 'Default type',
+                                'value' => 'default',
+                            ],
+                            [
+                                'label' => 'Special type',
+                                'value' => 'special',
+                            ],
+                        ],
+                    ],
+                ],
+                $selectFieldName => [
+                    'config' => [
+                        'type' => 'select',
+                        'renderType' => 'selectSingle',
+                        'items' => [
+                            [
+                                'label' => 'Default label',
+                                'value' => 'foo',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'types' => [
+                'default' => [
+                    'showitem' => 'title,record_type,select_field',
+                ],
+                'special' => [
+                    'showitem' => 'title,record_type,select_field',
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $this->get(ConnectionPool::class)
+            ->getConnectionForTable('pages')
+            ->update(
+                'pages',
+                [
+                    'TSconfig' => <<<TS
+                    TCEFORM.$tableName.$selectFieldName {
+                        altLabels.foo = Field level label
+                        types.special {
+                            addItems.bar = Type specific item
+                        }
+                    }
+                    TS,
+                ],
+                [
+                    'uid' => 1,
+                ]
+            );
+        $this->get(CacheManager::class)->getCache('runtime')->flush();
+
+        $record = [
+            'uid' => 123,
+            'pid' => 1,
+            'title' => 'Test record',
+            $typeFieldName => 'special',
+            $selectFieldName => 'foo',
+        ];
+
+        self::assertSame(
+            'Field level label',
+            BackendUtility::getProcessedValue(
+                $tableName,
+                $selectFieldName,
+                $record[$selectFieldName],
+                0,
+                false,
+                false,
+                $record['uid'],
+                true,
+                $record['pid'],
+                $record,
+            )
+        );
+    }
+
+    #[Test]
     public function getProcessedValueReturnsLabelsFormItemsProcFuncUsingRow(): void
     {
         $table = 'test_table';
