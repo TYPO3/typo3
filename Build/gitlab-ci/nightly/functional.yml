@@ -1,4 +1,4 @@
-functional mariadb 10.10 php 8.5 max:
+functional mariadb 11.8 php 8.5 max:
   stage: functional
   tags:
     - metal2
@@ -8,7 +8,7 @@ functional mariadb 10.10 php 8.5 max:
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.10 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 11.8 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mariadb 10.4 php 8.2 min:
   stage: functional
   tags:
@@ -21,7 +21,7 @@ functional mariadb 10.4 php 8.2 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.4 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-functional mysql 8.0 php 8.3 max:
+functional mysql 8.4 php 8.3 max:
   stage: functional
   tags:
     - metal2
@@ -31,7 +31,7 @@ functional mysql 8.0 php 8.3 max:
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s functional -d mysql -i 8.0 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d mysql -i 8.4 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mysql 8.0 php 8.2 min:
   stage: functional
   tags:
@@ -44,7 +44,7 @@ functional mysql 8.0 php 8.2 min:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
     - Build/Scripts/runTests.sh -s functional -d mysql -i 8.0 -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
-functional postgres 15 php 8.3 max:
+functional postgres 18 php 8.3 max:
   stage: functional
   tags:
     - metal2
@@ -54,7 +54,7 @@ functional postgres 15 php 8.3 max:
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s functional -d postgres -i 15 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d postgres -i 18 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional postgres 10 php 8.2 min:
   stage: functional
   tags:
