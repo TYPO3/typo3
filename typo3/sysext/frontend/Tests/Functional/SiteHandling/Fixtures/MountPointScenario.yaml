@@ -67,6 +67,9 @@ entities:
                 - self: {id: 1332, title: 'EN: Catan', slug: '/products/board-games/catan'}
                 - self: {id: 1333, title: 'EN: Risk', slug: '/risk'}
             - self: {id: 1340, title: 'Archived Products', slug: '/products/archive', type: *pageMount, mount: 10100 }
+              languageVariants:
+                - self: {id: 1342, title: 'FR: Archived Products', language: 1, slug: '/produits/archives', type: *pageMount }
+                - self: {id: 1343, title: 'FR-CA: Archived Products', language: 2, slug: '/produits/archives', type: *pageMount }
               entities:
                 content:
                   - self: {title: 'Content from MountPoint Page', type: *contentText }
@@ -141,9 +144,15 @@ entities:
             - self: {id: 10102, title: 'FR-CA: Archived Products', language: 2, slug: '/produits'}
           children:
             - self: {id: 10110, title: 'EN: Games of the 1980s', slug: '/products/games-of-the-1980s' }
+              languageVariants:
+                - self: {id: 10111, title: 'FR: Games of the 1980s', language: 1, slug: '/produits/jeux-des-annees-1980' }
+                - self: {id: 10112, title: 'FR-CA: Games of the 1980s', language: 2, slug: '/produits/jeux-des-annees-1980' }
             - self: {id: 10120, title: 'EN: Games of the 1990s', slug: '/products/games-of-the-1990s' }
             # Seems like an important landing page to have /uno so this does not inherit the slug of the parent page
             - self: {id: 10130, title: 'Uno - The famous classic', slug: '/uno' }
+              languageVariants:
+                - self: {id: 10131, title: 'FR: Uno - The famous classic', language: 1, slug: '/le-uno' }
+                - self: {id: 10132, title: 'FR-CA: Uno - The famous classic', language: 2, slug: '/le-uno' }
         - self: {id: 10200, title: 'EN: Archived News', slug: '/news'}
           children:
             - self: {id: 10210, title: 'EN: Whats new in 2020', slug: '/news/latest-releases-2020' }

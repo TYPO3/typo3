@@ -371,8 +371,11 @@ class PageSlugCandidateProvider
             $languageId,
             $excludedPageIds
         );
+        // The rootline is built with page IDs of the default language, so the mount point page ID
+        // of the default language must be used for the connection check below
+        $mountPointPageIdInDefaultLanguage = (int)($languageId > 0 ? $mountPointPage['l10n_parent'] : ($mountPointPage['t3ver_oid'] ?: $mountPointPage['uid']));
         // Depending on the "mount_pid_ol" parameter, the mountedPage or the mounted page is in the rootline
-        $pageWhichMustBeInRootLine = (int)($mountPointPage['mount_pid_ol'] ? $mountedPage['uid'] : $mountPointPage['uid']);
+        $pageWhichMustBeInRootLine = (int)($mountPointPage['mount_pid_ol'] ? $mountedPage['uid'] : $mountPointPageIdInDefaultLanguage);
         foreach ($pageCandidates as $pageCandidate) {
             if (!$pageCandidate['mount_pid_ol']) {
                 $pageCandidate['MPvar'] = !empty($pageCandidate['MPvar'])

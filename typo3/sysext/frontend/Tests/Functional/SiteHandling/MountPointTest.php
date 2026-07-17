@@ -398,6 +398,24 @@ final class MountPointTest extends AbstractTestCase
                 10110,
                 '10000-1400',
             ],
+            'translated mountpoint to a different site on global site' => [
+                'https://acme.com/fr/produits/archives',
+                1000,
+                1340,
+                '10100-1340',
+            ],
+            'translated subpage of translated mountpoint to a different site on global site' => [
+                'https://acme.com/fr/produits/archives/jeux-des-annees-1980',
+                1000,
+                10110,
+                '10100-1340',
+            ],
+            'translated subpage with different slug of translated mountpoint to a different site on global site' => [
+                'https://acme.com/fr/produits/archives/le-uno',
+                1000,
+                10130,
+                '10100-1340',
+            ],
         ];
     }
 
