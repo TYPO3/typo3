@@ -78,7 +78,6 @@ class TreeNode implements ComparableNodeInterface
     public function removeChildNodes()
     {
         if ($this->childNodes !== null) {
-            unset($this->childNodes);
             $this->childNodes = null;
         }
     }

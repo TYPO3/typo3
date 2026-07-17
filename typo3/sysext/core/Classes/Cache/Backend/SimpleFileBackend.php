@@ -63,7 +63,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
         $codeOrData = $cache instanceof PhpFrontend ? 'code' : 'data';
         $finalCacheDirectory = $temporaryCacheDirectory . 'cache/' . $codeOrData . '/' . $this->cacheIdentifier . '/';
         $this->createFinalCacheDirectory($finalCacheDirectory);
-        unset($this->temporaryCacheDirectory);
+        $this->temporaryCacheDirectory = '';
         $this->cacheDirectory = $finalCacheDirectory;
         $this->cacheEntryFileExtension = $cache instanceof PhpFrontend ? '.php' : '';
         if (strlen($this->cacheDirectory) + 23 > PHP_MAXPATHLEN) {
