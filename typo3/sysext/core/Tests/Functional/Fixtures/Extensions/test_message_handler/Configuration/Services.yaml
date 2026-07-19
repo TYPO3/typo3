@@ -6,3 +6,15 @@ services:
 
   TYPO3Tests\TestMessageHandler\:
     resource: '../Classes/*'
+
+  # A second failure transport, used to exercise the per-transport
+  # failure_transport override (queue_name "testfailed" in sys_messenger_messages).
+  testmessagehandler.transport.testfailed:
+    class: Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport
+    factory: ['@TYPO3\CMS\Core\Messenger\DoctrineTransportFactory', 'createTransport']
+    arguments:
+      $options:
+        queue_name: 'testfailed'
+    tags:
+      - { name: 'messenger.sender', identifier: 'testfailed' }
+      - { name: 'messenger.failure_transport', identifier: 'testfailed' }

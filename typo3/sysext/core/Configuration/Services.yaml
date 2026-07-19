@@ -183,6 +183,21 @@ services:
       $authenticators: !service_locator []
       $authenticatorIdsByRealm: []
 
+  # Parks messages a worker rejected for good, in sys_messenger_messages with
+  # queue_name "failed". Not a receiver, so workers never consume it: parked
+  # messages are handled by the messenger:failed:* commands.
+  messenger.transport.failed:
+    class: Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport
+    factory: [ '@TYPO3\CMS\Core\Messenger\DoctrineTransportFactory', 'createTransport' ]
+    arguments:
+      $options:
+        queue_name: 'failed'
+    tags:
+      - name: 'messenger.sender'
+        identifier: 'failed'
+      - name: 'messenger.failure_transport'
+        identifier: 'failed'
+
   # Interface implementations
   Psr\Clock\ClockInterface:
     alias: TYPO3\CMS\Core\Clock\SystemClock

@@ -1712,6 +1712,18 @@ return [
             'routing' => [
                 '*' => 'default',
             ],
+            // Name of the transport failed messages are sent to when a worker
+            // permanently rejects them. Empty disables the failure transport
+            // (default). Set to 'failed' to park failed messages instead of
+            // discarding them.
+            'failure_transport' => '',
+            // Per-transport options, keyed by transport (receiver) name. A
+            // 'retry_strategy' with the keys max_retries, delay (ms), multiplier
+            // and max_delay (ms) retries a failed message before it is discarded
+            // or sent to the failure transport; transports without an entry are
+            // not retried. A 'failure_transport' overrides the global failure
+            // transport for that transport (empty disables it for that transport).
+            'transports' => [],
         ],
     ],
     'EXT' => [ // Options related to the Extension Management
