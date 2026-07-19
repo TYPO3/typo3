@@ -56,6 +56,7 @@ final class MessageHandlerPass implements CompilerPassInterface
                     $message,
                     $handler['service'],
                     $handler['method'] ?? '__invoke',
+                    $handler['fromTransport'] ?? null,
                 ]);
             }
         }
@@ -81,11 +82,23 @@ final class MessageHandlerPass implements CompilerPassInterface
                 if (is_string($messageHandlers)) {
                     $messageHandlers = [$messageHandlers];
                 }
+                // A from_transport binding may be a single transport name, a list
+                // of transport names or null/unset (all transports). The repeatable
+                // AsMessageHandler attribute additionally yields one tag per
+                // occurrence, so several bindings for the same handler are merged
+                // below via the transport-aware identifier.
+                $fromTransports = HandlersLocatorFactory::normalizeTransports($attributes['fromTransport'] ?? null);
+                sort($fromTransports);
                 foreach ($messageHandlers as $messageHandler) {
-                    $messageIdentifier = sprintf('%s->%s', $serviceName, $attributes['method'] ?? '__invoke');
+                    // Include the receiving transports in the identifier so a service
+                    // that registers the same message+method for different transports
+                    // is not collapsed to a single handler, while an identical binding
+                    // (e.g. a duplicate attribute) still de-duplicates.
+                    $messageIdentifier = sprintf('%s->%s@%s', $serviceName, $attributes['method'] ?? '__invoke', implode(',', $fromTransports));
                     $unorderedHandlers[$messageHandler][$messageIdentifier] = [
                         'service' => $serviceName,
                         'method' => $attributes['method'] ?? null,
+                        'fromTransport' => $fromTransports === [] ? null : $fromTransports,
                         'before' => GeneralUtility::trimExplode(',', $attributes['before'] ?? '', true),
                         'after' => GeneralUtility::trimExplode(',', $attributes['after'] ?? '', true),
                     ];
