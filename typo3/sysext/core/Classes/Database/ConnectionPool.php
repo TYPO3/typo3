@@ -375,6 +375,24 @@ class ConnectionPool
     }
 
     /**
+     * Returns the names of all connections that have already been instantiated in
+     * this pool. In contrast to getConnectionNames() this excludes configured but
+     * not yet used connections, so callers - for example the messenger worker
+     * middlewares pinging or closing connections - do not need to open connections
+     * just to act on them.
+     *
+     * @return list<non-empty-string>
+     * @internal
+     */
+    public function getOpenConnectionNames(): array
+    {
+        return array_values(array_filter(
+            array_keys($this->connections),
+            static fn(string $connectionName): bool => $connectionName !== '',
+        ));
+    }
+
+    /**
      * Register custom and override Doctrine data types implemented by TYPO3.
      * This method is needed by Schema parser to register the types as it does
      * not require a database connection and thus the types don't get registered

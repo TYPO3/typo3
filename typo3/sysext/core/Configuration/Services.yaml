@@ -124,6 +124,22 @@ services:
       - name: 'messenger.middleware'
         after: 'Symfony\Component\Messenger\Middleware\SendMessageMiddleware'
 
+  # Wraps the message handling of a worker: close (outermost) around ping around
+  # the handler, so a connection is pinged right before and closed right after
+  # handling. Both act only on asynchronous worker consumption (a
+  # ConsumedByWorkerStamp is present); a synchronous dispatch is passed through.
+  TYPO3\CMS\Core\Messenger\Middleware\DoctrineCloseConnectionMiddleware:
+    tags:
+      - name: 'messenger.middleware'
+        after: 'Symfony\Component\Messenger\Middleware\SendMessageMiddleware'
+        before: 'TYPO3\CMS\Core\Messenger\Middleware\DoctrinePingConnectionMiddleware'
+
+  TYPO3\CMS\Core\Messenger\Middleware\DoctrinePingConnectionMiddleware:
+    tags:
+      - name: 'messenger.middleware'
+        after: 'TYPO3\CMS\Core\Messenger\Middleware\DoctrineCloseConnectionMiddleware'
+        before: 'Symfony\Component\Messenger\Middleware\HandleMessageMiddleware'
+
   messenger.bus.default:
     class: Symfony\Component\Messenger\MessageBusInterface
     factory: [ '@TYPO3\CMS\Core\Messenger\BusFactory', 'createBus' ]
