@@ -1397,6 +1397,42 @@ class ConnectionMigrator
     }
 
     /**
+     * MariaDB 11.4 introduced the UCA-1400 collations along with a new
+     * `FULL_COLLATION_NAME` column in `information_schema.COLLATION_CHARACTER_SET_APPLICABILITY`.
+     * For these collations `COLLATION_NAME` only holds the character-set independent part, for
+     * example `uca1400_ai_ci`, while `FULL_COLLATION_NAME` holds `utf8mb4_uca1400_ai_ci` which is
+     * what `information_schema.TABLES.TABLE_COLLATION` reports. Joining on `COLLATION_NAME` would
+     * therefore not match at all for tables using such a collation.
+     */
+    protected function hasFullCollationNameSupport(): bool
+    {
+        // Low level, concrete Doctrine QueryBuilder is used here intentionally to avoid dependency injection
+        // conflicts with TYPO3 QueryRestrictions. These are not required here.
+        $queryBuilder = new DoctrineQueryBuilder($this->connection);
+        $count = $queryBuilder
+            ->select('COUNT(*)')
+            ->from($this->connection->quoteIdentifier('information_schema.COLUMNS'))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $this->connection->quoteIdentifier('TABLE_SCHEMA'),
+                    $queryBuilder->createNamedParameter('information_schema')
+                ),
+                $queryBuilder->expr()->eq(
+                    $this->connection->quoteIdentifier('TABLE_NAME'),
+                    $queryBuilder->createNamedParameter('COLLATION_CHARACTER_SET_APPLICABILITY')
+                ),
+                $queryBuilder->expr()->eq(
+                    $this->connection->quoteIdentifier('COLUMN_NAME'),
+                    $queryBuilder->createNamedParameter('FULL_COLLATION_NAME')
+                )
+            )
+            ->executeQuery()
+            ->fetchOne();
+
+        return (int)$count > 0;
+    }
+
+    /**
      * Get COLLATION, ROW_FORMAT, COMMENT and ENGINE table options on MySQL connections.
      *
      * @param string[] $tableNames
@@ -1433,7 +1469,9 @@ class ConnectionMigrator
                 $this->connection->quoteIdentifier('information_schema.COLLATION_CHARACTER_SET_APPLICABILITY'),
                 $this->connection->quoteIdentifier('CCSA'),
                 $queryBuilder->expr()->eq(
-                    $this->connection->quoteIdentifier('CCSA.collation_name'),
+                    $this->connection->quoteIdentifier(
+                        $this->hasFullCollationNameSupport() ? 'CCSA.full_collation_name' : 'CCSA.collation_name'
+                    ),
                     $this->connection->quoteIdentifier('tables.table_collation')
                 )
             )
