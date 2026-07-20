@@ -38,6 +38,7 @@ class ConnectionDriverMiddlewaresProvider extends AbstractProvider
                         'port' => '******',
                         'socket' => '******',
                         'username' => '******',
+                        'url' => '******',
                     ],
                 ],
             ],
