@@ -46,6 +46,7 @@ class GlobalVariableProvider extends AbstractProvider
                         'port' => '******',
                         'user' => '******',
                         'unix_socket' => '******',
+                        'url' => '******',
                     ],
                 ],
             ],
