@@ -11,6 +11,7 @@
     --typo3-modal-offset: 1.5rem;
     --typo3-modal-offset-multiplier-y: 2;
     --typo3-modal-offset-multiplier-x: 2;
+    --typo3-modal-slide: -50px;
     --typo3-modal-color: var(--typo3-component-color);
     --typo3-modal-bg: var(--typo3-component-bg);
     --typo3-modal-border-width: var(--typo3-component-border-width);
@@ -143,25 +144,23 @@
     //
     // Opening animation
     opacity: 1;
-    transform: translate(0, 0);
+    inset: 0;
     transition:
         opacity .3s ease-out,
-        transform .3s ease-out,
+        inset .3s ease-out,
         overlay .3s ease-out allow-discrete,
         display .3s ease-out allow-discrete;
 
     @starting-style {
         opacity: 0;
-        transform: translate(0, -50px);
     }
 
     // Closing animation
     &.modal-closing {
         opacity: 0;
-        transform: translate(0, -50px);
         transition:
             opacity .3s ease-out,
-            transform .3s ease-out;
+            inset .3s ease-out;
     }
 
     // Backdrop animation
@@ -186,12 +185,12 @@
 
         @starting-style {
             opacity: 1;
-            transform: translate(0, 0);
+            inset: 0;
         }
 
         &.modal-closing {
             opacity: 1;
-            transform: translate(0, 0);
+            inset: 0;
         }
 
         &::backdrop {
@@ -302,6 +301,18 @@ $modal-heights: (
 /**
  * Positions
  */
+.modal-position-center {
+    --typo3-modal-slide: -100px;
+
+    @starting-style {
+        inset-block-start: var(--typo3-modal-slide);
+    }
+
+    &.modal-closing {
+        inset-block-start: var(--typo3-modal-slide);
+    }
+}
+
 .modal-position-top {
     --typo3-modal-offset-multiplier-y: 1;
     margin-block-start: 0;
@@ -309,6 +320,14 @@ $modal-heights: (
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-block-start: 0;
+
+    @starting-style {
+        inset-block-start: var(--typo3-modal-slide);
+    }
+
+    &.modal-closing {
+        inset-block-start: var(--typo3-modal-slide);
+    }
 }
 
 .modal-position-end {
@@ -320,11 +339,11 @@ $modal-heights: (
     border-inline-end: 0;
 
     @starting-style {
-        transform: translate(50px, 0);
+        inset-inline-end: var(--typo3-modal-slide);
     }
 
     &.modal-closing {
-        transform: translate(50px, 0);
+        inset-inline-end: var(--typo3-modal-slide);
     }
 }
 
@@ -337,11 +356,11 @@ $modal-heights: (
     border-block-end: 0;
 
     @starting-style {
-        transform: translate(0, 50px);
+        inset-block-end: var(--typo3-modal-slide);
     }
 
     &.modal-closing {
-        transform: translate(0, 50px);
+        inset-block-end: var(--typo3-modal-slide);
     }
 }
 
@@ -354,11 +373,11 @@ $modal-heights: (
     border-inline-start: 0;
 
     @starting-style {
-        transform: translate(-50px, 0);
+        inset-inline-start: var(--typo3-modal-slide);
     }
 
     &.modal-closing {
-        transform: translate(-50px, 0);
+        inset-inline-start: var(--typo3-modal-slide);
     }
 }
 
@@ -371,11 +390,11 @@ $modal-heights: (
     border-inline-end: 0;
 
     @starting-style {
-        transform: translate(50px, 0);
+        inset-inline-end: var(--typo3-modal-slide);
     }
 
     &.modal-closing {
-        transform: translate(50px, 0);
+        inset-inline-end: var(--typo3-modal-slide);
     }
 
     // Responsive: bottom sheet on narrow viewports
@@ -393,11 +412,13 @@ $modal-heights: (
         border-block-end: 0;
 
         @starting-style {
-            transform: translate(0, 50px);
+            inset-inline-end: 0;
+            inset-block-end: var(--typo3-modal-slide);
         }
 
         &.modal-closing {
-            transform: translate(0, 50px);
+            inset-inline-end: 0;
+            inset-block-end: var(--typo3-modal-slide);
         }
     }
 }
