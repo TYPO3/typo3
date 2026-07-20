@@ -52,7 +52,7 @@ handleDbmsOptions() {
                 exit 1
             fi
             [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10.4"
-            if ! [[ ${DBMS_VERSION} =~ ^(10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1|11.2|11.3|11.4)$ ]]; then
+            if ! [[ ${DBMS_VERSION} =~ ^(10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1|11.2|11.3|11.4|11.5|11.6|11.7|11.8)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
                 echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
@@ -83,7 +83,7 @@ handleDbmsOptions() {
                 exit 1
             fi
             [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10"
-            if ! [[ ${DBMS_VERSION} =~ ^(10|11|12|13|14|15|16)$ ]]; then
+            if ! [[ ${DBMS_VERSION} =~ ^(10|11|12|13|14|15|16|17|18)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
                 echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
@@ -513,6 +513,10 @@ Options:
             - 11.2   short-term development series, maintained until 2024-11
             - 11.3   short-term development series, rolling release
             - 11.4   long-term, maintained until 2029-05
+            - 11.5   short-term development series, maintained until 2024-11
+            - 11.6   short-term development series, maintained until 2025-02
+            - 11.7   short-term development series, maintained until 2025-05
+            - 11.8   long-term, maintained until 2030-06
         With "-d mysql":
             - 8.0   maintained until 2026-04 (default) LTS
             - 8.1   unmaintained since 2023-10
@@ -527,6 +531,8 @@ Options:
             - 14    maintained until 2026-11-12
             - 15    maintained until 2027-11-11
             - 16    maintained until 2028-11-09
+            - 17    maintained until 2029-11-08
+            - 18    maintained until 2030-11-14
 
     -c <chunk/numberOfChunks>
         Only with -s functional|acceptance
@@ -794,6 +800,14 @@ IMAGE_MEMCACHED="docker.io/memcached:1.5-alpine"
 IMAGE_MARIADB="docker.io/mariadb:${DBMS_VERSION}"
 IMAGE_MYSQL="docker.io/mysql:${DBMS_VERSION}"
 IMAGE_POSTGRES="docker.io/postgres:${DBMS_VERSION}-alpine"
+# PostgreSQL 18 moved `PGDATA` from `/var/lib/postgresql/data` to `/var/lib/postgresql/<major>/docker`
+# and refuses to start when a mount point is placed at the old location. Mounting one level above at
+# `/var/lib/postgresql` is the documented recommendation for that case. Earlier versions expect the
+# mount at the data directory itself, so the mount point is chosen based on the selected version.
+POSTGRES_TMPFS_MOUNT="/var/lib/postgresql/data"
+if [ "${DBMS}" = "postgres" ] && [ "${DBMS_VERSION}" -ge 18 ]; then
+    POSTGRES_TMPFS_MOUNT="/var/lib/postgresql"
+fi
 # Not a bug; render-guides has no "1.x" release yet.
 IMAGE_RSTRENDERING="ghcr.io/typo3-documentation/render-guides:0.37"
 
@@ -1276,7 +1290,7 @@ case ${TEST_SUITE} in
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
-                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-func-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs /var/lib/postgresql/data:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
+                ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-func-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu --tmpfs ${POSTGRES_TMPFS_MOUNT}:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
                 waitFor postgres-func-${SUFFIX} 5432
                 CONTAINERPARAMS="-e typo3DatabaseDriver=pdo_pgsql -e typo3DatabaseName=bamboo -e typo3DatabaseUsername=funcu -e typo3DatabaseHost=postgres-func-${SUFFIX} -e typo3DatabasePassword=funcp"
                 ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name functional-${SUFFIX} ${XDEBUG_MODE} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${CONTAINERPARAMS} ${IMAGE_PHP} "${COMMAND[@]}"
