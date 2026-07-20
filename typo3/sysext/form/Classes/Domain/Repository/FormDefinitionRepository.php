@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\DTO\FormData;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
+use TYPO3\CMS\Form\Storage\JsonObjectKeyOrderPreserver;
 use TYPO3\CMS\Form\Storage\Security\FormDefinitionPersistenceCommand;
 use TYPO3\CMS\Form\Storage\Security\FormDefinitionPersistenceGuard;
 
@@ -39,6 +40,7 @@ readonly class FormDefinitionRepository
     public function __construct(
         private ConnectionPool $connectionPool,
         private FormDefinitionPersistenceGuard $persistenceGuard,
+        private JsonObjectKeyOrderPreserver $jsonObjectKeyOrderPreserver,
     ) {}
 
     /**
@@ -182,7 +184,7 @@ readonly class FormDefinitionRepository
      */
     public function add(string $persistenceIdentifier, int $pid, FormData $formDefinition): ?int
     {
-        $formDefinitionJson = json_encode($formDefinition->toArray(), JSON_THROW_ON_ERROR);
+        $formDefinitionJson = json_encode($this->jsonObjectKeyOrderPreserver->protect($formDefinition->toArray()), JSON_THROW_ON_ERROR);
         $fields = [
             'pid' => $pid,
             'label' => $formDefinition->name,
@@ -225,7 +227,7 @@ readonly class FormDefinitionRepository
             'deleted' => 0,
             'label' => $formDefinition->name,
             'identifier' => $formDefinition->identifier,
-            'configuration' => $formDefinition->toArray(),
+            'configuration' => $this->jsonObjectKeyOrderPreserver->protect($formDefinition->toArray()),
             'crdate' => $GLOBALS['EXEC_TIME'] ?? time(),
             'tstamp' => $GLOBALS['EXEC_TIME'] ?? time(),
         ]);
@@ -267,7 +269,7 @@ readonly class FormDefinitionRepository
             return false;
         }
 
-        $formDefinitionJson = json_encode($formDefinition->toArray(), JSON_THROW_ON_ERROR);
+        $formDefinitionJson = json_encode($this->jsonObjectKeyOrderPreserver->protect($formDefinition->toArray()), JSON_THROW_ON_ERROR);
         $fields = [
             'label' => $formDefinition->name,
             'identifier' => $formDefinition->identifier,

@@ -132,6 +132,49 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function writeAndReadRoundtripPreservesOptionOrder(): void
+    {
+        $subject = $this->getSubject();
+
+        $formData = FormData::fromArray([
+            'identifier' => 'option-order-form',
+            'type' => 'Form',
+            'label' => 'Option Order Form',
+            'prototypeName' => 'standard',
+            'renderingOptions' => [],
+            'finishers' => [],
+            'renderables' => [
+                [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'label' => 'Page 1',
+                    'renderables' => [
+                        [
+                            'identifier' => 'select-1',
+                            'type' => 'SingleSelect',
+                            'label' => 'Select',
+                            'properties' => [
+                                'options' => ['3' => 'Option 3', '5' => 'Option 5', '4' => 'Option 4'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'variants' => [],
+        ]);
+
+        $newIdentifier = $subject->write(new FormIdentifier('NEW54321'), $formData);
+
+        $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $readData = $subject->read($newIdentifier, $request);
+
+        self::assertSame(
+            ['3' => 'Option 3', '5' => 'Option 5', '4' => 'Option 4'],
+            $readData->renderables[0]['renderables'][0]['properties']['options']
+        );
+    }
+
+    #[Test]
     public function readReturnsFormDataFromDatabaseFixture(): void
     {
         $subject = $this->getSubject();

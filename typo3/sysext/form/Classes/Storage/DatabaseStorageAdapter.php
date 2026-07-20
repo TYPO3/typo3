@@ -42,6 +42,7 @@ final readonly class DatabaseStorageAdapter implements StorageAdapterInterface
     public function __construct(
         private FormDefinitionRepository $repository,
         private DatabasePermissionChecker $permissionChecker,
+        private JsonObjectKeyOrderPreserver $jsonObjectKeyOrderPreserver,
     ) {}
 
     public function getTypeIdentifier(): string
@@ -119,6 +120,7 @@ final readonly class DatabaseStorageAdapter implements StorageAdapterInterface
             );
         }
 
+        $formDefinitionArray = $this->jsonObjectKeyOrderPreserver->restore($formDefinitionArray);
         $formDefinitionArray['identifier'] = $record['identifier'];
 
         return FormData::fromArray($formDefinitionArray);
