@@ -23,9 +23,9 @@ use Doctrine\DBAL\Platforms\DateIntervalUnit;
 use Doctrine\DBAL\Platforms\Exception\NotSupported;
 use Doctrine\DBAL\Platforms\Keywords\KeywordList;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use Doctrine\DBAL\Schema\Name\UnquotedIdentifierFolding;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\TransactionIsolationLevel;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockKeywordList;
 
 class MockPlatform extends DoctrineAbstractPlatform
 {
@@ -33,6 +33,16 @@ class MockPlatform extends DoctrineAbstractPlatform
      * @internal Unit test workaround related, see method `quoteStringLiteral()`.
      */
     public string $stringLiteralQuoteChar = '"';
+
+    /**
+     * Doctrine deprecated not passing the unquoted identifier folding. Concrete platforms pass it
+     * themselves, this mock extends the abstract platform directly and therefore has to do it here.
+     * `UPPER` is the standard SQL behaviour and the value Doctrine falls back to.
+     */
+    public function __construct(?UnquotedIdentifierFolding $unquotedIdentifierFolding = null)
+    {
+        parent::__construct($unquotedIdentifierFolding ?? UnquotedIdentifierFolding::UPPER);
+    }
 
     /**
      * Gets the SQL Snippet used to declare a BLOB column type.
@@ -136,17 +146,6 @@ class MockPlatform extends DoctrineAbstractPlatform
     protected function getVarcharTypeDeclarationSQLSnippet($length): string
     {
         return '';
-    }
-
-    /**
-     * Returns the class name of the reserved keywords list.
-     *
-     *
-     * @throws \Doctrine\DBAL\Exception If not supported on this platform.
-     */
-    protected function getReservedKeywordsClass(): string
-    {
-        return MockKeywordList::class;
     }
 
     public function getCurrentDatabaseExpression(): string

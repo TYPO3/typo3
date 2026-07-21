@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 
 use TYPO3\CMS\Core\Database\Platform\MariaDB1052Platform as Typo3MariaDB1052Platform;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockKeywordList;
 
 class MockMariaDBPlatform extends Typo3MariaDB1052Platform
 {
@@ -126,17 +125,6 @@ class MockMariaDBPlatform extends Typo3MariaDB1052Platform
     protected function getVarcharTypeDeclarationSQLSnippet($length): string
     {
         return '';
-    }
-
-    /**
-     * Returns the class name of the reserved keywords list.
-     *
-     *
-     * @throws \Doctrine\DBAL\Exception If not supported on this platform.
-     */
-    protected function getReservedKeywordsClass(): string
-    {
-        return MockKeywordList::class;
     }
 
     public function getCurrentDatabaseExpression(): string
