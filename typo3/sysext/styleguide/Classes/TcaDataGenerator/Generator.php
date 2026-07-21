@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -38,6 +39,7 @@ final class Generator extends AbstractGenerator
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly RecordFinder $recordFinder,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly array $tableHandler,
     ) {}
 
@@ -281,7 +283,7 @@ final class Generator extends AbstractGenerator
             'tx_styleguide_inline_',
         ];
         $result = [];
-        foreach ($GLOBALS['TCA'] as $tablename => $_) {
+        foreach ($this->tcaSchemaFactory->all()->getNames() as $tablename) {
             if ($tablename === 'tx_styleguide_staticdata') {
                 continue;
             }
