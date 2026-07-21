@@ -75,7 +75,7 @@ readonly class ShortcutAndMountPointRedirect implements MiddlewareInterface
             $message =  'TYPO3 Link' . ($exposeInformation ? ' at page with ID ' . $pageArguments->getPageId() : '');
             $status =  $this->pageTypeLinkResolver->getRedirectStatus($pageRecord);
 
-            if ($status !== null) {
+            if ($status !== null && $url !== '') {
                 return new RedirectResponse(
                     $url,
                     $status,

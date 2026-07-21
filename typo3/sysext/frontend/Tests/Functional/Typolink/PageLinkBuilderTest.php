@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Frontend\Page\PageInformation;
 use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
+use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PageLinkBuilderTest extends FunctionalTestCase
@@ -108,5 +109,59 @@ final class PageLinkBuilderTest extends FunctionalTestCase
         $resultWithoutCHash = urldecode($resultWithoutCHash);
 
         self::assertSame('/benni?internal[__argument]=foo', $resultWithoutCHash);
+    }
+
+    #[Test]
+    public function buildLinkThrowsForSelfReferencingDoktypeLinkPage(): void
+    {
+        // Page 8, doktype=3 ("Link"), link='#' — resolves via LinkService to
+        // pageuid "current", which always points back to whatever page is
+        // being rendered (here: page 8 itself), causing infinite recursion
+        // unless guarded against.
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages-doktype-link-self-reference.csv');
+
+        $this->writeSiteConfiguration(
+            'example',
+            [
+                'rootPageId' => 1,
+                'base' => 'https://example.com/',
+            ],
+        );
+
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(8);
+
+        $site = new Site('test', 1, [
+            'base' => 'https://example.com/',
+            'languages' => [
+                ['languageId' => 0, 'title' => 'English', 'locale' => 'en_US.UTF-8', 'base' => 'https://example.com/'],
+            ],
+        ]);
+
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $frontendTypoScript->setSetupArray([]);
+        $frontendTypoScript->setConfigArray([]);
+
+        $request = (new ServerRequest('https://example.com'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('frontend.page.information', $pageInformation)
+            ->withAttribute('frontend.typoscript', $frontendTypoScript)
+            ->withAttribute('routing', new PageArguments(8, '0', []))
+            ->withAttribute('site', $site);
+
+        $pageLinkBuilder = $this->get(PageLinkBuilder::class);
+
+        $this->expectException(UnableToLinkException::class);
+        $this->expectExceptionCode(1784639469);
+
+        $pageLinkBuilder->buildLink(
+            [
+                'type' => 'page',
+                'pageuid' => 'current',
+                'fragment' => '',
+            ],
+            [],
+            $request
+        );
     }
 }

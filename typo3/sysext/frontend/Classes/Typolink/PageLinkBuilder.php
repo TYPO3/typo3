@@ -234,6 +234,20 @@ class PageLinkBuilder extends AbstractTypolinkBuilder implements TypolinkBuilder
                     $fragment = $typolinkTargetLinkParts['fragment'] ?? '';
                 }
                 if ($typolinkTargetLinkParts['pageuid'] === 'current') {
+                    // "current" is always resolved from the immutable frontend.page.information
+                    // request attribute (see the top of this method), so if the page whose link we
+                    // are processing IS the page currently being rendered, resolving "current" is
+                    // guaranteed to reproduce this exact same state forever - fail immediately
+                    // instead of recursing at all.
+                    $currentlyRenderedPageId = $request->getAttribute('frontend.page.information')?->getId();
+                    if ((int)$originalPage['uid'] === $currentlyRenderedPageId) {
+                        throw new UnableToLinkException(
+                            'Page "' . $originalPage['uid'] . '" of type "Link" links to itself ("current page"), so "' . $linkText . '" was not linked.',
+                            1784639469,
+                            null,
+                            $linkText
+                        );
+                    }
                     $configuration['parameter'] = $originalPage['link'] ?? '';
                     unset($configuration['parameter.']);
                     $linkResult = $this->contentObjectRenderer->createLink($linkText, $configuration);
