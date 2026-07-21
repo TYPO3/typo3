@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordData;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordDataAwareInterface;
@@ -47,6 +48,7 @@ final class TypeInlineUsecombinationGroup extends AbstractFieldGenerator impleme
 
     public function __construct(
         private readonly ConnectionPool $connectionPool,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function setRecordData(RecordData $recordData): void
@@ -74,13 +76,17 @@ final class TypeInlineUsecombinationGroup extends AbstractFieldGenerator impleme
         if ($this->recordData === null) {
             throw new \RuntimeException('Not initialized. Call setRecordData() first.', 1726780933);
         }
-        if (!isset($GLOBALS['TCA'][$data['fieldConfig']['config']['foreign_table']]['columns']['group_child']['config']['allowed'])) {
+        $mmTableName = $data['fieldConfig']['config']['foreign_table'];
+        $mmSchema = $this->tcaSchemaFactory->get($mmTableName);
+        $childChildTableName = $mmSchema->hasField('group_child')
+            ? ($mmSchema->getField('group_child')->getConfiguration()['allowed'] ?? null)
+            : null;
+        if (!is_string($childChildTableName)) {
             throw new \RuntimeException(
                 'mm child table name not found',
                 1706633899
             );
         }
-        $childChildTableName = $GLOBALS['TCA'][$data['fieldConfig']['config']['foreign_table']]['columns']['group_child']['config']['allowed'];
         $numberOfChildChildRowsToCreate = 4;
         $uidsOfChildrenToConnect = [];
         for ($i = 0; $i < $numberOfChildChildRowsToCreate; $i++) {

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+
 /**
  * Create data for a specific table and its child tables
  *
@@ -26,6 +28,7 @@ final readonly class RecordData
 {
     public function __construct(
         private FieldGeneratorResolver $fieldGeneratorResolver,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -37,8 +40,8 @@ final readonly class RecordData
      */
     public function generate(string $tableName, array $fieldValues): array
     {
-        $tca = $GLOBALS['TCA'][$tableName];
-        foreach ($tca['columns'] as $fieldName => $fieldConfig) {
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        foreach ($schema->getFields() as $fieldName => $field) {
             // Generate only if there is no value set, yet
             if (isset($fieldValues[$fieldName])) {
                 continue;
@@ -46,7 +49,7 @@ final readonly class RecordData
             $data = [
                 'tableName' => $tableName,
                 'fieldName' => $fieldName,
-                'fieldConfig' => $fieldConfig,
+                'fieldConfig' => ['config' => $field->getConfiguration()],
                 'fieldValues' => $fieldValues,
             ];
             try {
