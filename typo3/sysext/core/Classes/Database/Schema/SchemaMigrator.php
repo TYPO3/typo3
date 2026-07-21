@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\SchemaException;
@@ -336,7 +337,7 @@ readonly class SchemaMigrator
                 $this->mergeColumns(...$currentTableDefinition->getColumns(), ...$table->getColumns()),
                 $this->mergeIndexes(...array_values($currentTableDefinition->getIndexes()), ...array_values($table->getIndexes())),
                 [],
-                array_merge($currentTableDefinition->getForeignKeys(), $table->getForeignKeys()),
+                $this->mergeForeignKeys(...array_values($currentTableDefinition->getForeignKeys()), ...array_values($table->getForeignKeys())),
                 array_merge($currentTableDefinition->getOptions(), $table->getOptions())
             );
         }
@@ -368,6 +369,27 @@ readonly class SchemaMigrator
             $mergedIndexes[$index->getName()] = $index;
         }
         return array_values($mergedIndexes);
+    }
+
+    /**
+     * Unnamed foreign key constraints cannot be identified by name and are therefore kept as they are.
+     * Doctrine generates a name for them, but only as the array key - not on the constraint itself.
+     *
+     * @param ForeignKeyConstraint ...$foreignKeys
+     * @return ForeignKeyConstraint[]
+     */
+    private function mergeForeignKeys(ForeignKeyConstraint ...$foreignKeys): array
+    {
+        $mergedForeignKeys = [];
+        foreach ($foreignKeys as $foreignKey) {
+            $foreignKeyName = $foreignKey->getName();
+            if ($foreignKeyName === '') {
+                $mergedForeignKeys[] = $foreignKey;
+                continue;
+            }
+            $mergedForeignKeys[$foreignKeyName] = $foreignKey;
+        }
+        return array_values($mergedForeignKeys);
     }
 
     /**
