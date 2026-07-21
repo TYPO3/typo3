@@ -256,10 +256,19 @@ class TableBuilder
                 $index->addFlag('spatial');
             }
 
+            // Doctrine keys the indexes by a normalized name of its own. Do not rely on that key
+            // here, but build the list explicitly from the index names, so that re-defining an
+            // index replaces the previously added one - independent of how Doctrine keys them.
+            $indexes = [];
+            foreach ($this->table->getIndexes() as $existingIndex) {
+                $indexes[strtolower($existingIndex->getName())] = $existingIndex;
+            }
+            $indexes[strtolower($index->getName())] = $index;
+
             $this->table = new Table(
                 $this->table->getQuotedName($this->platform),
                 $this->table->getColumns(),
-                array_merge($this->table->getIndexes(), [strtolower($indexName) => $index]),
+                array_values($indexes),
                 [],
                 $this->table->getForeignKeys(),
                 $this->table->getOptions()
