@@ -793,12 +793,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Schema/SchemaDiff.php
 
 		-
-			message: '#^Parameter \#1 \$array \(list\<non\-empty\-string\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/SchemaInformation.php
-
-		-
 			message: '#^Parameter \#1 \$array \(non\-empty\-list\<Doctrine\\DBAL\\Schema\\Column\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 2

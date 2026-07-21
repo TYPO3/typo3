@@ -1210,7 +1210,7 @@ class EnvironmentController extends AbstractController
                 'host' => $connectionParameters['host'] ?? '',
                 'port' => $connectionParameters['port'] ?? '',
                 'socket' => $connectionParameters['unix_socket'] ?? '',
-                'numberOfTables' => count($connection->createSchemaManager()->listTableNames()),
+                'numberOfTables' => count($connection->createSchemaManager()->introspectTableNames()),
                 'numberOfMappedTables' => 0,
             ];
             if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
