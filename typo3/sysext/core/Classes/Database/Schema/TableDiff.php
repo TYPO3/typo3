@@ -19,8 +19,10 @@ namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
+use Doctrine\DBAL\Schema\Exception\InvalidState;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff as DoctrineTableDiff;
 
@@ -140,7 +142,11 @@ class TableDiff extends DoctrineTableDiff
         return $this->addedIndexes;
     }
 
-    /** @return array<string, Index> */
+    /**
+     * @deprecated Use {@see getAddedIndexes()} and {@see getDroppedIndexes()} instead.
+     *
+     * @return array<string, Index>
+     */
     public function getModifiedIndexes(): array
     {
         return $this->modifiedIndexes;
@@ -164,16 +170,44 @@ class TableDiff extends DoctrineTableDiff
         return $this->addedForeignKeys;
     }
 
-    /** @return array<ForeignKeyConstraint> */
+    /**
+     * @deprecated Use {@see getAddedForeignKeys()} and {@see getDroppedForeignKeys()} instead.
+     *
+     * @return array<ForeignKeyConstraint>
+     */
     public function getModifiedForeignKeys(): array
     {
         return $this->modifiedForeignKeys;
     }
 
-    /** @return array<ForeignKeyConstraint> */
+    /**
+     * @deprecated Use {@see getDroppedForeignKeyConstraintNames()}.
+     *
+     * @return array<ForeignKeyConstraint>
+     */
     public function getDroppedForeignKeys(): array
     {
         return $this->droppedForeignKeys;
+    }
+
+    /**
+     * Overridden, because the parent implementation reads the parent property directly. As the parent
+     * constructor is not called by intention, that property is never initialized, making the inherited
+     * method raise an `Error`. Reads the redeclared property here instead, keeping the parent behaviour.
+     *
+     * @return array<UnqualifiedName>
+     */
+    public function getDroppedForeignKeyConstraintNames(): array
+    {
+        $names = [];
+        foreach ($this->droppedForeignKeys as $droppedForeignKey) {
+            $name = $droppedForeignKey->getObjectName();
+            if ($name === null) {
+                throw InvalidState::tableDiffContainsUnnamedDroppedForeignKeyConstraints();
+            }
+            $names[] = $name;
+        }
+        return $names;
     }
 
     public function isEmpty(): bool
