@@ -60,6 +60,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Filelist\Dto\ResourceCollection;
 use TYPO3\CMS\Filelist\Dto\ResourceView;
 use TYPO3\CMS\Filelist\Dto\UserPermissions;
+use TYPO3\CMS\Filelist\Event\AfterFileListRowPreparedEvent;
 use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFileExtensionMatcher;
@@ -608,7 +609,12 @@ class FileList
                         $data[$field] = $this->renderField($resourceView, $field);
                 }
             }
-            $output .= $this->addElement($data, $attributes);
+
+            $event = $this->eventDispatcher->dispatch(
+                new AfterFileListRowPreparedEvent($resourceView->resource, $data, $this, $attributes)
+            );
+
+            $output .= $this->addElement($event->getData(), $event->getAttributes());
         }
 
         return $output;
