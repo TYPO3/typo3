@@ -444,7 +444,7 @@ final readonly class InstallerController
         $existingTables = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
             ->createSchemaManager()
-            ->listTableNames();
+            ->introspectTableNames();
         return new JsonResponse([
             'success' => !empty($existingTables),
         ]);

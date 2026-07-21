@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Name\OptionallyQualifiedName;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Schema\Information\ColumnInfo;
 use TYPO3\CMS\Core\Database\Schema\Information\TableInfo;
@@ -117,7 +118,17 @@ final class SchemaInformation
     private function buildTableNames(): array
     {
         $identifier = $this->connectionIdentifier . '-tablenames';
-        $names = array_values($this->connection->createSchemaManager()->listTableNames());
+        // Doctrine returns name objects here. Convert them to plain strings right away, keeping the
+        // payload of this cache - and the public API of this class - unchanged. `getValue()` is used
+        // instead of `toString()`, as the latter would add identifier quotes to the name.
+        $names = array_map(
+            static function (OptionallyQualifiedName $tableName): string {
+                $qualifier = $tableName->getQualifier();
+                return ($qualifier !== null ? $qualifier->getValue() . '.' : '')
+                    . $tableName->getUnqualifiedName()->getValue();
+            },
+            $this->connection->createSchemaManager()->introspectTableNames()
+        );
         // Level 1 cache
         $this->runtime->set($identifier, $names);
         // Level 2 cache
