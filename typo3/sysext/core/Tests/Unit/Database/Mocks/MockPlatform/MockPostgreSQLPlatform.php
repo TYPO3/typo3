@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 
 use TYPO3\CMS\Core\Database\Platform\PostgreSQLPlatform as Typo3PostgreSQLPlatform;
-use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockKeywordList;
 
 class MockPostgreSQLPlatform extends Typo3PostgreSQLPlatform
 {
@@ -127,17 +126,6 @@ class MockPostgreSQLPlatform extends Typo3PostgreSQLPlatform
     protected function getVarcharTypeDeclarationSQLSnippet($length): string
     {
         return '';
-    }
-
-    /**
-     * Returns the class name of the reserved keywords list.
-     *
-     *
-     * @throws \Doctrine\DBAL\Exception If not supported on this platform.
-     */
-    protected function getReservedKeywordsClass(): string
-    {
-        return MockKeywordList::class;
     }
 
     public function getCurrentDatabaseExpression(): string
