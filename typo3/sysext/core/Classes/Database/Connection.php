@@ -129,6 +129,11 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      *
      * Delimiting style depends on the underlying database platform that is being used.
      *
+     * Note that this does not call the parent implementation, because both
+     * Doctrine DBAL `Connection::quoteIdentifier()` and `AbstractPlatform::quoteIdentifier()`
+     * are deprecated and will be removed with Doctrine DBAL 5.0. The quoting is done
+     * here instead, identical to the removed implementation.
+     *
      * @param string $identifier The name to be quoted.
      * @return string The quoted name.
      */
@@ -137,7 +142,11 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
         if ($identifier === '*') {
             return $identifier;
         }
-        return parent::quoteIdentifier($identifier);
+        $platform = $this->getDatabasePlatform();
+        if (!str_contains($identifier, '.')) {
+            return $platform->quoteSingleIdentifier($identifier);
+        }
+        return implode('.', array_map($platform->quoteSingleIdentifier(...), explode('.', $identifier)));
     }
 
     /**
