@@ -21,6 +21,7 @@ use Doctrine\DBAL\Connection as DoctrineConnection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
@@ -283,7 +284,12 @@ class SetupDatabaseService
         // an invalid database name would lead to exceptions which would prevent
         // changing the currently configured database.
         $connection = DriverManager::getConnection($connectionParams);
-        $databaseArray = $connection->createSchemaManager()->listDatabases();
+        // Doctrine returns name objects here. Convert them to plain strings right away, `getValue()`
+        // is used instead of `toString()`, as the latter would add identifier quotes to the name.
+        $databaseArray = array_map(
+            static fn(UnqualifiedName $databaseName): string => $databaseName->getIdentifier()->getValue(),
+            $connection->createSchemaManager()->introspectDatabaseNames()
+        );
         $connection->close();
 
         // Remove organizational tables from database list
@@ -303,7 +309,7 @@ class SetupDatabaseService
 
                 $databases[] = [
                     'name' => $databaseName,
-                    'tables' => count($connection->createSchemaManager()->listTableNames()),
+                    'tables' => count($connection->createSchemaManager()->introspectTableNames()),
                     'readonly' => false,
                 ];
                 $connection->close();
@@ -479,7 +485,7 @@ class SetupDatabaseService
             $connection = $this->connectionPool
                 ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
-            if (!empty($connection->createSchemaManager()->listTableNames())) {
+            if (!empty($connection->createSchemaManager()->introspectTableNames())) {
                 $result = new FlashMessage(
                     sprintf('Cannot use database "%s"', $dbName)
                     . ', because it already contains tables. Please select a different database or choose to create one!',
