@@ -54,6 +54,7 @@ class DeletedRecords
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
+        private readonly ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -124,7 +125,7 @@ class DeletedRecords
     {
         $table = $schema->getName();
         $pidList = $this->getTreeList($pid, $depth);
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
@@ -277,7 +278,7 @@ class DeletedRecords
      */
     protected function getDeletedParentPages(int $uid, array &$pages = []): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
@@ -333,7 +334,7 @@ class DeletedRecords
         $id = abs($id);
         $theList = [];
         if ($depth > 0) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()
                 ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
             $statement = $queryBuilder->select('uid')
@@ -358,7 +359,7 @@ class DeletedRecords
      */
     protected function getPidOfUid(int $uid, string $table): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
 
         $pid = $queryBuilder

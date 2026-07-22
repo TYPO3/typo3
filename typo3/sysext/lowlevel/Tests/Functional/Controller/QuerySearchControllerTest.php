@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -49,12 +50,28 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
     }
 
+    private function getConstructorArguments(): array
+    {
+        return [
+            $this->get(IconFactory::class),
+            $this->get(UriBuilder::class),
+            $this->get(ModuleTemplateFactory::class),
+            $this->get(TcaSchemaFactory::class),
+            $this->get(FlashMessageRendererResolver::class),
+            $this->get(PageDoktypeRegistry::class),
+            $this->get(ComponentFactory::class),
+            $this->get(Locales::class),
+            $this->get(FlashMessageService::class),
+            $this->get(ConnectionPool::class),
+        ];
+    }
+
     #[Test]
     public function getTreeListReturnsIngoingIdIfDepthIsZero(): void
     {
         $id = 1;
         $depth = 0;
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals($id, $treeList);
     }
@@ -64,7 +81,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
     {
         $id = 0;
         $depth = 1;
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals($id, $treeList);
     }
@@ -74,7 +91,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
     {
         $id = -1;
         $depth = 0;
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals(1, $treeList);
     }
@@ -85,7 +102,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $id = 0;
         $depth = 0;
         $begin = 1;
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth, $begin);
         self::assertSame('', $treeList);
     }
@@ -95,7 +112,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
     {
         $id = 1;
         $depth = 1;
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertEquals($id, $treeList);
     }
@@ -106,7 +123,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
         $id = 1;
         $depth = 99;
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth, 0, 'hidden=0');
         self::assertSame('1,2,3,4,5', $treeList);
     }
@@ -142,7 +159,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
     public function getTreeListReturnsListOfIdsWithBeginSetToZero(int $id, int $depth, string $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertSame($expectation, $treeList);
     }
@@ -178,7 +195,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
     public function getTreeListReturnsListOfIdsWithBeginSetToMinusOne(int $id, int $depth, string $expectation): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeStraightTreeSet.csv');
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth, -1);
         self::assertSame($expectation, $treeList);
     }
@@ -189,7 +206,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $id = 1;
         $depth = 3;
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeBranchedTreeSet.csv');
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth);
         self::assertSame('1,2,3,4,5', $treeList);
     }
@@ -201,7 +218,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $depth = 3;
         $begin = 1;
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeBranchedTreeSet.csv');
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth, $begin);
         self::assertSame('2,3,4,5', $treeList);
     }
@@ -213,7 +230,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $depth = 3;
         $begin = 2;
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TestGetPageTreeBranchedTreeSet.csv');
-        $subject = $this->getAccessibleMock(QuerySearchController::class, null, [], '', false);
+        $subject = $this->getAccessibleMock(QuerySearchController::class, null, $this->getConstructorArguments());
         $treeList = $subject->_call('getTreeList', $id, $depth, $begin);
         self::assertSame('3,5', $treeList);
     }
@@ -298,6 +315,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(ComponentFactory::class),
             $this->get(Locales::class),
             $this->get(FlashMessageService::class),
+            $this->get(ConnectionPool::class),
         ]);
         $subject->_set('table', 'aTable');
         $subject->_call('init', 'queryConfig', 'aTable');
@@ -380,6 +398,7 @@ final class QuerySearchControllerTest extends FunctionalTestCase
             $this->get(ComponentFactory::class),
             $this->get(Locales::class),
             $this->get(FlashMessageService::class),
+            $this->get(ConnectionPool::class),
         ]);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings, $request);

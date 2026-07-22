@@ -52,7 +52,8 @@ final readonly class MovePageController
         private BackendViewFactory $backendViewFactory,
         private UriBuilder $uriBuilder,
         private LanguageServiceFactory $languageServiceFactory,
-        private ExtensionConfiguration $extensionConfiguration
+        private ExtensionConfiguration $extensionConfiguration,
+        private ConnectionPool $connectionPool,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -157,7 +158,7 @@ final readonly class MovePageController
 
     private function getSubpagesForPageId(int $pageId): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
@@ -181,7 +182,7 @@ final readonly class MovePageController
 
     private function pageHasSubpages(int $pageId): bool
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder
             ->getRestrictions()
             ->removeAll()

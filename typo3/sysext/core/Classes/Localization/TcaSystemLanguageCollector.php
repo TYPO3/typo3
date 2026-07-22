@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Provides ItemsProcFunc fields for special population of available TYPO3 system languages
@@ -31,7 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final readonly class TcaSystemLanguageCollector
 {
     public function __construct(
-        private Locales $locales
+        private Locales $locales,
+        private SiteFinder $siteFinder,
     ) {}
 
     /**
@@ -103,7 +103,7 @@ final readonly class TcaSystemLanguageCollector
 
     private function getAllSites(): array
     {
-        return GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
+        return $this->siteFinder->getAllSites();
     }
 
     private function getBackendUser(): BackendUserAuthentication

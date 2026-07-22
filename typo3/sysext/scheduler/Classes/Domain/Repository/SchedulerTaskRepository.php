@@ -56,6 +56,7 @@ readonly class SchedulerTaskRepository
         protected TaskService $taskService,
         protected TcaSchemaFactory $tcaSchemaFactory,
         protected Context $context,
+        protected ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -209,8 +210,7 @@ readonly class SchedulerTaskRepository
     public function findNextExecutableTask(): ?AbstractTask
     {
         // If no uid is given, take any non-disabled task that has a next execution time in the past
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->select(
             't.*'
         )
@@ -256,7 +256,7 @@ readonly class SchedulerTaskRepository
     public function getGroupedTasks(): array
     {
         // Get all registered tasks
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->getRestrictions()->removeAll();
         $result = $queryBuilder->select('t.*')
             ->addSelect(
@@ -386,7 +386,7 @@ readonly class SchedulerTaskRepository
                 // Forcibly set the disabled flag to 1 in the database (if not already set), so that the
                 // task does not come up again and again for execution. Execute a simple update statement
                 // to avoid triggering any DH hook again, which would lead to an infinity loop.
-                GeneralUtility::makeInstance(ConnectionPool::class)
+                $this->connectionPool
                     ->getConnectionForTable(self::TABLE_NAME)
                     ->update(self::TABLE_NAME, [$fieldName => 1], ['uid' => (int)$row['uid']]);
             }
@@ -408,7 +408,7 @@ readonly class SchedulerTaskRepository
      */
     public function findNextExecutableTaskForUid(int $uid): ?AbstractTask
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->getRestrictions()
             ->removeAll()
@@ -481,7 +481,7 @@ readonly class SchedulerTaskRepository
             // (we need to know that number, because it is returned at the end of the method)
             $numExecutions = count($runningExecutions);
             $runningExecutions[$numExecutions] = time();
-            $updateCount = GeneralUtility::makeInstance(ConnectionPool::class)
+            $updateCount = $this->connectionPool
                 ->getConnectionForTable(self::TABLE_NAME)
                 ->update(
                     self::TABLE_NAME,
@@ -539,7 +539,7 @@ readonly class SchedulerTaskRepository
             if ($failureReason !== null) {
                 $fieldUpdates['lastexecution_failure'] = (string)$failureReason;
             }
-            $updateCount = GeneralUtility::makeInstance(ConnectionPool::class)
+            $updateCount = $this->connectionPool
                 ->getConnectionForTable(self::TABLE_NAME)
                 ->update(
                     self::TABLE_NAME,
@@ -566,7 +566,7 @@ readonly class SchedulerTaskRepository
     public function removeAllRegisteredExecutionsForTask(AbstractTask $task): bool
     {
         // Set the serialized executions field to empty
-        $result = GeneralUtility::makeInstance(ConnectionPool::class)
+        $result = $this->connectionPool
             ->getConnectionForTable(self::TABLE_NAME)
             ->update(
                 self::TABLE_NAME,
@@ -582,7 +582,7 @@ readonly class SchedulerTaskRepository
      */
     public function hasTasks(): bool
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));

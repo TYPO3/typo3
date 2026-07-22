@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\UserSettingsSchema;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * FormDataProvider for backend user settings.
@@ -34,7 +33,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 readonly class UserSettingsDatabaseEditRow implements FormDataProviderInterface
 {
-    public function __construct(private UserSettingsSchema $userSettingsSchema) {}
+    public function __construct(
+        private UserSettingsSchema $userSettingsSchema,
+        private ConnectionPool $connectionPool,
+    ) {}
 
     public function addData(array $result): array
     {
@@ -75,7 +77,7 @@ readonly class UserSettingsDatabaseEditRow implements FormDataProviderInterface
 
     protected function getAvatarFileUid(int $beUserId): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_reference');
         $file = $queryBuilder->select('uid_local')
             ->from('sys_file_reference')
             ->where(

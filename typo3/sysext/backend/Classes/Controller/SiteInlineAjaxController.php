@@ -53,6 +53,7 @@ readonly class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         private InlineStackProcessor $inlineStackProcessor,
         private TcaSchemaBuilder $tcaSchemaBuilder,
         private SiteTcaConfiguration $siteTcaConfiguration,
+        private SiteFinder $siteFinder,
     ) {}
 
     /**
@@ -389,7 +390,7 @@ readonly class SiteInlineAjaxController extends AbstractFormEngineAjaxController
      */
     protected function getLanguageById(int $languageId): ?SiteLanguage
     {
-        foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
+        foreach ($this->siteFinder->getAllSites() as $site) {
             foreach ($site->getAllLanguages() as $language) {
                 if ($languageId === $language->getLanguageId()) {
                     return $language;

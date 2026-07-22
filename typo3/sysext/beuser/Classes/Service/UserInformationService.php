@@ -43,6 +43,7 @@ final readonly class UserInformationService
         private TcaSchemaFactory $tcaSchemaFactory,
         private PageDoktypeRegistry $pageDoktypeRegistry,
         private SchemaLabelResolver $schemaLabelResolver,
+        private SiteFinder $siteFinder,
     ) {}
 
     /**
@@ -267,7 +268,7 @@ final readonly class UserInformationService
     private function getAllSiteLanguages(): array
     {
         $siteLanguages = [];
-        foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
+        foreach ($this->siteFinder->getAllSites() as $site) {
             foreach ($site->getAllLanguages() as $languageId => $language) {
                 if (isset($siteLanguages[$languageId])) {
                     // Language already provided by another site, check if values differ

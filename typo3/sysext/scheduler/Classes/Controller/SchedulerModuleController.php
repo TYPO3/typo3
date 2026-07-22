@@ -62,6 +62,7 @@ final readonly class SchedulerModuleController
         private TaskService $taskService,
         private PageRenderer $pageRenderer,
         private Registry $registry,
+        private ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -398,7 +399,7 @@ final readonly class SchedulerModuleController
     private function getGroupsWithoutTasks(array $taskGroupsWithTasks): array
     {
         $uidGroupsWithTasks = array_filter(array_column($taskGroupsWithTasks, 'uid'));
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_scheduler_task_group');
         $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         $resultEmptyGroups = $queryBuilder->select('*')
             ->from('tx_scheduler_task_group')
@@ -414,7 +415,7 @@ final readonly class SchedulerModuleController
 
     private function groupRemove(int $groupId): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_scheduler_task_group');
         return $queryBuilder->update('tx_scheduler_task_group')
             ->where($queryBuilder->expr()->eq('uid', $groupId))
             ->set('deleted', 1)
@@ -423,7 +424,7 @@ final readonly class SchedulerModuleController
 
     private function groupDisable(int $groupId, int $hidden): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task_group');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_scheduler_task_group');
         $queryBuilder->update('tx_scheduler_task_group')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($groupId)))
             ->set('hidden', $hidden)

@@ -54,7 +54,8 @@ class DatabaseIntegrityCheck
     protected array $lRecords = [];
 
     public function __construct(
-        protected readonly TcaSchemaFactory $tcaSchemaFactory
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -66,7 +67,7 @@ class DatabaseIntegrityCheck
      */
     public function genTree(int $theID, bool $versions = false): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->select('uid', 'title', 'doktype', 'deleted', 'hidden', 'sys_language_uid')
             ->from('pages')
@@ -122,7 +123,7 @@ class DatabaseIntegrityCheck
     {
         /** @var TcaSchema $schema */
         foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
             $queryResult = $queryBuilder
                 ->select('*')
@@ -159,7 +160,7 @@ class DatabaseIntegrityCheck
         /** @var TcaSchema $schema */
         foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
             $pageIdsForTable = $pageIds;
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
             $count = $queryBuilder->count('uid')
                 ->from($table)
@@ -176,7 +177,7 @@ class DatabaseIntegrityCheck
             }
 
             // same query excluding all deleted records
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));

@@ -39,6 +39,7 @@ readonly class ConfigurationStatus implements StatusProviderInterface
     public function __construct(
         private UriBuilder $uriBuilder,
         private Registry $registry,
+        private ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -80,7 +81,7 @@ readonly class ConfigurationStatus implements StatusProviderInterface
         $message = '';
         $severity = ContextualFeedbackSeverity::OK;
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
         $count = $queryBuilder
             ->count('*')
             ->from('sys_refindex')
@@ -224,7 +225,7 @@ readonly class ConfigurationStatus implements StatusProviderInterface
      */
     protected function isMysqlUsed(): bool
     {
-        $platform = GeneralUtility::makeInstance(ConnectionPool::class)
+        $platform = $this->connectionPool
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
             ->getDatabasePlatform();
 
@@ -238,7 +239,7 @@ readonly class ConfigurationStatus implements StatusProviderInterface
     {
         $collationConstraint = null;
         $charset = '';
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+        $connection = $this->connectionPool
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         $connectionParams = $connection->getParams();
         $queryBuilder = $connection->createQueryBuilder();

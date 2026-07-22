@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Event\SlugRedirectChangeItemCreatedEvent;
 use TYPO3\CMS\Redirects\RedirectUpdate\PageTypeSource;
 use TYPO3\CMS\Redirects\RedirectUpdate\PlainSlugReplacementRedirectSource;
@@ -44,6 +43,7 @@ final readonly class AddPageTypeZeroSource
 {
     public function __construct(
         private PageDoktypeRegistry $pageDoktypeRegistry,
+        private Context $context,
     ) {}
 
     #[AsEventListener(identifier: 'redirects-add-page-type-zero-source', after: 'redirects-add-plain-slug-replacement-source')]
@@ -130,8 +130,7 @@ final readonly class AddPageTypeZeroSource
             false,
             true,
         );
-        $originalContext = GeneralUtility::makeInstance(Context::class);
-        $context = clone $originalContext;
+        $context = clone $this->context;
         $context->setAspect('visibility', $adjustedVisibility);
         return $context;
     }

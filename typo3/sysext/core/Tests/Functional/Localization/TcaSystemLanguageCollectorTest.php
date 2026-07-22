@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
@@ -73,7 +72,6 @@ final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
                 ],
             ]),
         ]);
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderMock);
         $expectedItems = [
             0 => [
                 'label' => 'English [Site: site-1], English [Site: site-2]',
@@ -87,7 +85,7 @@ final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
             ],
         ];
         $fieldInformation = ['items' => []];
-        (new TcaSystemLanguageCollector(new Locales()))->populateAvailableSiteLanguages($fieldInformation);
+        (new TcaSystemLanguageCollector(new Locales(), $siteFinderMock))->populateAvailableSiteLanguages($fieldInformation);
         self::assertSame($expectedItems, $fieldInformation['items']);
     }
 
@@ -102,7 +100,7 @@ final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
             ],
         ];
         $fieldInformation = ['items' => []];
-        (new TcaSystemLanguageCollector(new Locales()))->populateAvailableSiteLanguages($fieldInformation);
+        (new TcaSystemLanguageCollector(new Locales(), $this->get(SiteFinder::class)))->populateAvailableSiteLanguages($fieldInformation);
         self::assertSame($expectedItems, $fieldInformation['items']);
     }
 }

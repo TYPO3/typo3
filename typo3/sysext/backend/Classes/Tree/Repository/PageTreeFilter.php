@@ -121,6 +121,7 @@ final readonly class PageTreeFilter
         #[Autowire(service: 'cache.runtime')]
         private FrontendInterface $runtimeCache,
         private SiteUrlResolver $siteUrlResolver,
+        private ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -422,7 +423,7 @@ final readonly class PageTreeFilter
 
     private function createPreparedPagesQueryBuilder(): QueryBuilder
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));

@@ -228,6 +228,7 @@ class QuerySearchController
         protected readonly ComponentFactory $componentFactory,
         protected readonly Locales $locales,
         protected readonly FlashMessageService $flashMessageService,
+        protected readonly ConnectionPool $connectionPool,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -335,7 +336,7 @@ class QuerySearchController
         ];
 
         // EXPLAIN is no ANSI SQL, for now this is only executed on mysql
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $connection = $this->connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         $platform = $connection->getDatabasePlatform();
         if (!($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform)) {
             unset($this->MOD_MENU['search_query_makeQuery']['explain']);
@@ -404,7 +405,7 @@ class QuerySearchController
                 $this->enablePrefix = true;
                 $queryString = $this->getQuery($this->queryConfig);
                 $selectQueryString = $this->getSelectQuery($queryString);
-                $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+                $connection = $this->connectionPool->getConnectionForTable($this->table);
                 $platform = $connection->getDatabasePlatform();
 
                 $isConnectionMysql = ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform);
@@ -468,7 +469,7 @@ class QuerySearchController
     protected function getSelectQuery(string $qString = ''): string
     {
         $backendUserAuthentication = $this->getBackendUserAuthentication();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($this->table);
         $queryBuilder->getRestrictions()->removeAll();
         if (empty($this->MOD_SETTINGS['show_deleted'])) {
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -566,7 +567,7 @@ class QuerySearchController
             $theList = '';
         }
         if ($id && $depth > 0) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $queryBuilder->select('uid')
                 ->from('pages')
@@ -979,7 +980,7 @@ class QuerySearchController
                 $from_table_Arr = explode(',', $fieldSetup['allowed']);
                 $useTablePrefix = 1;
                 if (!$fieldSetup['prepend_tname']) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
                     $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                     $statement = $queryBuilder->select($fieldName)->from($table)->executeQuery();
                     while ($row = $statement->fetchAssociative()) {
@@ -1061,7 +1062,7 @@ class QuerySearchController
                 }
 
                 if (empty($this->tableArray[$from_table])) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($from_table);
+                    $queryBuilder = $this->connectionPool->getQueryBuilderForTable($from_table);
                     $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                     $queryBuilder->select(...$selectFields)
                         ->from($from_table)
@@ -1170,7 +1171,7 @@ class QuerySearchController
     {
         $comparison = (int)($conf['comparison'] ?? 0);
         $qs = '';
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+        $queryBuilder = $this->connectionPool->getConnectionForTable($this->table);
         $prefix = $this->enablePrefix ? $this->table . '.' : '';
         if (!$first) {
             // Is it OK to insert the AND operator if none is set?
@@ -1755,7 +1756,7 @@ class QuerySearchController
                 $from_table_Arr = explode(',', $allowedFields);
                 $useTablePrefix = 1;
                 if (!$fieldSetup['prepend_tname']) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
                     $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                     $statement = $queryBuilder->select($fieldName)
                         ->from($table)
@@ -1838,7 +1839,7 @@ class QuerySearchController
                     }
 
                     if (!($this->tableArray[$from_table] ?? false)) {
-                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($from_table);
+                        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($from_table);
                         $queryBuilder->getRestrictions()->removeAll();
                         if (empty($this->MOD_SETTINGS['show_deleted'])) {
                             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));

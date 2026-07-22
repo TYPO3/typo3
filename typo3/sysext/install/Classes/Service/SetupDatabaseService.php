@@ -66,6 +66,7 @@ class SetupDatabaseService
         private readonly ConfigurationManager $configurationManager,
         private readonly PermissionsCheck $databasePermissionsCheck,
         private readonly Registry $registry,
+        private readonly ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -328,7 +329,7 @@ class SetupDatabaseService
             || (string)($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['path'] ?? '') !== ''
         ) {
             try {
-                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                $connection = $this->connectionPool
                     ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
                 if ($connection->getNativeConnection() !== null) {
                     $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
@@ -347,10 +348,10 @@ class SetupDatabaseService
      */
     public function createDatabase(string $name): void
     {
-        $platform = GeneralUtility::makeInstance(ConnectionPool::class)
+        $platform = $this->connectionPool
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
             ->getDatabasePlatform();
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+        $connection = $this->connectionPool
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         $connection->executeStatement(
             PlatformInformation::getDatabaseCreateStatementWithCharset(
@@ -368,7 +369,7 @@ class SetupDatabaseService
     public function isDatabaseConnectSuccessful(): bool
     {
         try {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            $connection = $this->connectionPool
                 ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
             if ($connection->getNativeConnection() !== null) {
                 $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
@@ -475,7 +476,7 @@ class SetupDatabaseService
 
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['dbname'] = $dbName;
         try {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            $connection = $this->connectionPool
                 ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
             if (!empty($connection->createSchemaManager()->listTableNames())) {

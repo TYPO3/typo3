@@ -65,6 +65,7 @@ readonly class LocalizationController
         protected TcaSchemaFactory $schemaFactory,
         protected TranslationConfigurationProvider $translationConfigurationProvider,
         protected BackendLayoutView $backendLayoutView,
+        protected ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -615,7 +616,7 @@ readonly class LocalizationController
         $translationSourceField = $languageCapability->getTranslationSourceField()->getName();
 
         // Get all l10n_source UIDs from translated content
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()
             ->removeAll()
@@ -653,7 +654,7 @@ readonly class LocalizationController
         }
 
         // Get the language of all source records
-        $sourceQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $sourceQueryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('tt_content');
         $sourceQueryBuilder->getRestrictions()
             ->removeAll()
@@ -716,7 +717,7 @@ readonly class LocalizationController
 
         // Check content elements on the page, as pages themselves are always connected
         // but their content determines the actual localization mode being used
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('tt_content');
 
         $queryBuilder->getRestrictions()

@@ -45,6 +45,7 @@ readonly class SortSubPagesController
         protected IconFactory $iconFactory,
         protected ComponentFactory $componentFactory,
         protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -176,7 +177,7 @@ readonly class SortSubPagesController
      */
     protected function getSubPagesOfPage(int $parentPageUid, string $orderBy = 'sorting'): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $queryBuilder->select('*')
             ->from('pages')

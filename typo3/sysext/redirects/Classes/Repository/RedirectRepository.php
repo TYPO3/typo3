@@ -38,6 +38,7 @@ class RedirectRepository
     public function __construct(
         TcaSchemaFactory $schemaFactory,
         private readonly RedirectPermissionGuard $redirectPermissionGuard,
+        private readonly ConnectionPool $connectionPool,
     ) {
         $this->schema = $schemaFactory->get('sys_redirect');
     }
@@ -130,7 +131,7 @@ class RedirectRepository
 
     public function countActiveRedirects(): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
         return (int)$queryBuilder
             ->count('uid')
             ->from('sys_redirect')
@@ -425,7 +426,7 @@ class RedirectRepository
 
     protected function getQueryBuilder(): QueryBuilder
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -434,7 +435,7 @@ class RedirectRepository
 
     public function removeByDemand(Demand $demand): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_redirect');
         $queryBuilder
             ->delete('sys_redirect')
