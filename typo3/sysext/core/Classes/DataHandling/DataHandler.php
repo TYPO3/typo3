@@ -9648,8 +9648,15 @@ class DataHandler
         }
     }
 
+    /**
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Pass the CorrelationId to DataHandler->start() instead.
+     */
     public function setCorrelationId(CorrelationId $correlationId): void
     {
+        trigger_error(
+            'DataHandler->setCorrelationId() is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0. Pass the CorrelationId to DataHandler->start() instead.',
+            E_USER_DEPRECATED
+        );
         $this->correlationId = $correlationId;
     }
 
