@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgSpriteIconProvider;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -205,10 +206,19 @@ class IconRegistry implements SingletonInterface
 
     private string $cacheIdentifier;
 
-    public function __construct(FrontendInterface $assetsCache, string $cacheIdentifier)
+    /**
+     * Optional because the failsafe container (install tool) provides no TcaSchemaFactory. Without
+     * it, no "tcarecords-<table>-default" icons are registered at all. With it, TCA icons are
+     * registered on the first initialize() run that sees a loaded schema: the schema is loaded
+     * after ext_localconf, so this registry may already exist at that point.
+     */
+    private readonly ?TcaSchemaFactory $tcaSchemaFactory;
+
+    public function __construct(FrontendInterface $assetsCache, string $cacheIdentifier, ?TcaSchemaFactory $tcaSchemaFactory = null)
     {
         $this->cache = $assetsCache;
         $this->cacheIdentifier = $cacheIdentifier;
+        $this->tcaSchemaFactory = $tcaSchemaFactory;
         $this->initialize();
     }
 
@@ -222,7 +232,7 @@ class IconRegistry implements SingletonInterface
         if (!$this->backendIconsInitialized) {
             $this->getCachedBackendIcons();
         }
-        if (!$this->tcaInitialized && !empty($GLOBALS['TCA'])) {
+        if (!$this->tcaInitialized) {
             $this->registerTCAIcons();
         }
         if (!$this->flagsInitialized) {
@@ -466,24 +476,25 @@ class IconRegistry implements SingletonInterface
     }
 
     /**
-     * Load icons from TCA for each table and add them as "tcarecords-XX" to $this->icons
+     * Load icons from TCA for each table and add them as "tcarecords-XX" to $this->icons.
+     * Does nothing as long as no schema is available, so initialize() retries on the next call.
      */
     protected function registerTCAIcons()
     {
+        if ($this->tcaSchemaFactory === null || $this->tcaSchemaFactory->all()->count() === 0) {
+            return;
+        }
         $resultArray = [];
 
-        $tcaTables = array_keys($GLOBALS['TCA'] ?? []);
         // check every table in the TCA, if an icon is needed
-        foreach ($tcaTables as $tableName) {
+        foreach ($this->tcaSchemaFactory->all() as $tableName => $schema) {
             // This method is only needed for TCA tables where typeicon_classes are not configured
             $iconIdentifier = 'tcarecords-' . $tableName . '-default';
-            if (
-                isset($this->icons[$iconIdentifier])
-                || !isset($GLOBALS['TCA'][$tableName]['ctrl']['iconfile'])
-            ) {
+            $iconFilePath = $schema->getRawConfiguration()['iconfile'] ?? null;
+            if (isset($this->icons[$iconIdentifier]) || !$iconFilePath) {
                 continue;
             }
-            $resultArray[$iconIdentifier] = $GLOBALS['TCA'][$tableName]['ctrl']['iconfile'];
+            $resultArray[$iconIdentifier] = $iconFilePath;
         }
 
         foreach ($resultArray as $iconIdentifier => $iconFilePath) {

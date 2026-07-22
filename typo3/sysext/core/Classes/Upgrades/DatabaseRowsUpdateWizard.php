@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\RowUpdaterService;
 use TYPO3\CMS\Core\Upgrades\RowUpdater\RowUpdaterInterface;
 
@@ -48,6 +50,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
 {
     public function __construct(
         private readonly RowUpdaterService $rowUpdaterService,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly ConnectionPool $connectionPool,
         private readonly Registry $registry,
     ) {}
@@ -118,7 +121,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
         // Scope of the row updater is to update all rows that have TCA,
         // our list of tables is just the list of loaded TCA tables.
         /** @var string[] $listOfAllTables */
-        $listOfAllTables = array_keys($GLOBALS['TCA']);
+        $listOfAllTables = $this->tcaSchemaFactory->all()->getNames();
 
         // In case the PHP ended for whatever reason, fetch the last position from registry
         // and throw away all tables before that start point.
@@ -273,7 +276,10 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
 
     protected function updateOrDeleteRow(Connection $connectionForTable, Connection $connectionForSysRegistry, string $table, int $uid, array $updatedFields, array $startPosition): void
     {
-        $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? null;
+        $schema = $this->tcaSchemaFactory->get($table);
+        $deleteField = $schema->hasCapability(TcaSchemaCapability::SoftDelete)
+            ? $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName()
+            : null;
         if ($deleteField === null && isset($updatedFields['deleted']) && $updatedFields['deleted'] === 1) {
             $connectionForTable->delete(
                 $table,

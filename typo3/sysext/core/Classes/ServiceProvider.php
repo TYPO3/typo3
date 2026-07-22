@@ -470,7 +470,12 @@ class ServiceProvider extends AbstractServiceProvider
                 1729784545
             );
         }
-        return self::new($container, Imaging\IconRegistry::class, [$container->get('cache.assets'), $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('BackendIcons')->toString()]);
+        return self::new($container, Imaging\IconRegistry::class, [
+            $container->get('cache.assets'),
+            $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('BackendIcons')->toString(),
+            // The failsafe container (install tool) has no TcaSchemaFactory, the registry then skips TCA icons.
+            $container->has(Schema\TcaSchemaFactory::class) ? $container->get(Schema\TcaSchemaFactory::class) : null,
+        ]);
     }
 
     public static function getLanguageServiceFactory(ContainerInterface $container): Localization\LanguageServiceFactory
