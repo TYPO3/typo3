@@ -98,6 +98,11 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
             }
 
             $processedFile = $image->process($this->arguments['context'], $processingInstructions);
+            if ($processedFile->usesOriginalFile() && !$image->isImage()) {
+                // No processor was able to create a thumbnail and the original file is not
+                // an image either, so there is nothing that could be rendered as an image.
+                return '';
+            }
             $imageUri = $processedFile->getPublicUrl();
 
             if (!$this->tag->hasAttribute('data-focus-area')) {

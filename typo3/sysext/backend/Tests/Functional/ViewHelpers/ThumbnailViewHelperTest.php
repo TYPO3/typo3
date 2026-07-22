@@ -61,6 +61,40 @@ final class ThumbnailViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function pdfFileRendersProcessedThumbnail(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ThumbnailViewHelper/fal_pdf.csv');
+        $resourceFactory = $this->get(ResourceFactory::class);
+        $file = $resourceFactory->getFileObject(1);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:thumbnail image="{imageObject}" width="64" />');
+        $context->getVariableProvider()->add('imageObject', $file);
+
+        self::assertMatchesRegularExpression(
+            '#^<img src="fileadmin/_processed_/.+\.png" width="64" height="\d+" />$#',
+            new TemplateView($context)->render()
+        );
+    }
+
+    #[Test]
+    public function nonImageFileRendersThePreviewPlaceholder(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ThumbnailViewHelper/fal_document.csv');
+        $resourceFactory = $this->get(ResourceFactory::class);
+        $file = $resourceFactory->getFileObject(1);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:thumbnail image="{imageObject}" />');
+        $context->getVariableProvider()->add('imageObject', $file);
+
+        self::assertMatchesRegularExpression(
+            '#^<img src="fileadmin/_processed_/.+\.svg" width="\d+" height="\d+" />$#',
+            new TemplateView($context)->render()
+        );
+    }
+
+    #[Test]
     public function missingSysFileReferenceLookupThrowsException(): void
     {
         $this->expectException(ResourceDoesNotExistException::class);

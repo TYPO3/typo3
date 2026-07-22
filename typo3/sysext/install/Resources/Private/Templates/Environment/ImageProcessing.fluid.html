@@ -136,19 +136,12 @@
     <p>
         'niceText' is a concept that tries to improve the antialiasing of the rendered type by actually
         rendering the textstring in double size on a black/white mask, downscaling the mask and masking
-        the text onto the image through this mask. This involves ImageMagick / GraphicsMagick 'combine'/'composite' and 'convert'.
+        the text onto the image through this mask.
     </p>
 </f:be.infobox>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibNiceText"></div>
 
 <h3>Render 'niceText' with a shadow under</h3>
-<f:be.infobox title="Note on 'shadow'" state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::INFO')}">
-    <p>
-        This test makes sense only if the above test had a correct output. But if so, you may not see
-        a soft drop-shadow from the third text string as you should. In that case you are most likely using
-        ImageMagick 5 and should set the flag <code>$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_effects']</code>.
-    </p>
-</f:be.infobox>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibNiceTextShadow"></div>
 
 <div class="panel-group mb-0" id="accordion" role="tablist" aria-multiselectable="true">
@@ -360,13 +353,13 @@
         <div class="row">
             <div class="col-12 col-md-6">
                 <h3>Reference</h3>
-                <div class="bg-transparent-emulation">
+                <div class="example example--slim example--simple example--checkered">
                     <img class="reference"/>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <h3>Your system</h3>
-                <div class="bg-transparent-emulation">
+                <div class="example example--slim example--simple example--checkered">
                     <img class="result"/>
                 </div>
             </div>

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Imaging\GraphicsCanvas;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Mail\TemplatedEmailFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -38,7 +39,6 @@ use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\FolderStructure\DefaultPermissionsCheck;
 use TYPO3\CMS\Install\Service\LateBootService;
@@ -56,6 +56,9 @@ class EnvironmentController extends AbstractController
 {
     private const array IMAGE_FILE_EXT = ['gif', 'jpg', 'png', 'tif', 'ai', 'pdf', 'webp', 'avif'];
     private const string TEST_REFERENCE_PATH = __DIR__ . '/../../Resources/Public/Images/TestReference';
+    private const string TEST_TEXT = 'HELLO WORLD';
+    // 72/96 compensates for FreeType's hard-coded 96 dpi assumption.
+    private const float TEST_FONT_SIZE = 30 * 72 / 96;
 
     public function __construct(
         private readonly LateBootService $lateBootService,
@@ -936,23 +939,15 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibSimpleAction(): ResponseInterface
     {
-        $gifBuilder = $this->initializeGifBuilder();
-        $image = imagecreatetruecolor(300, 225);
-        $backgroundColor = imagecolorallocate($image, 0, 0, 0);
-        imagefilledrectangle($image, 0, 0, 300, 225, $backgroundColor);
-        $workArea = [0, 0, 300, 225];
-        $conf = [
-            'dimensions' => '10,50,280,50',
-            'color' => 'olive',
-        ];
-        $gifBuilder->makeBox($image, $conf, $workArea);
+        $canvas = GraphicsCanvas::create(300, 225, 0, 0, 0);
+        $olive = $canvas->allocateColor(128, 128, 0);
+        $canvas->fillRect(10, 50, 280, 50, $olive);
         $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdSimple') . '.png';
-        $gifBuilder->ImageWrite($image, $outputFile);
+        $canvas->saveToFile($outputFile, 'png');
         $result = [
             'fileExists' => true,
             'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-simple.png',
-            'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
         return $this->getImageTestResponse($result);
     }
@@ -962,25 +957,7 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibFromFileAction(): ResponseInterface
     {
-        $gifBuilder = $this->initializeGifBuilder();
-        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
-        $inputFile = $imageBasePath . 'TestInput/Test.png';
-        $image = $gifBuilder->imageCreateFromFile($inputFile);
-        $workArea = [0, 0, 400, 300];
-        $conf = [
-            'dimensions' => '10,50,380,50',
-            'color' => 'olive',
-        ];
-        $gifBuilder->makeBox($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdBox') . '.png';
-        $gifBuilder->ImageWrite($image, $outputFile);
-        $result = [
-            'fileExists' => true,
-            'outputFile' => $outputFile,
-            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.png',
-            'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
-        ];
-        return $this->getImageTestResponse($result);
+        return $this->getImageTestResponse($this->drawBoxOnTestImage('png'));
     }
 
     /**
@@ -988,25 +965,7 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibFromFileToWebpAction(): ResponseInterface
     {
-        $gifBuilder = $this->initializeGifBuilder();
-        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
-        $inputFile = $imageBasePath . 'TestInput/Test.webp';
-        $image = $gifBuilder->imageCreateFromFile($inputFile);
-        $workArea = [0, 0, 400, 300];
-        $conf = [
-            'dimensions' => '20,100,740,100',
-            'color' => 'olive',
-        ];
-        $gifBuilder->makeBox($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdBox') . '.webp';
-        $gifBuilder->ImageWrite($image, $outputFile);
-        $result = [
-            'fileExists' => true,
-            'outputFile' => $outputFile,
-            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.webp',
-            'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
-        ];
-        return $this->getImageTestResponse($result);
+        return $this->getImageTestResponse($this->drawBoxOnTestImage('webp'));
     }
 
     /**
@@ -1014,32 +973,31 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibFromFileToAvifAction(): ResponseInterface
     {
-        $gifBuilder = $this->initializeGifBuilder();
-        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
-        $inputFile = $imageBasePath . 'TestInput/Test.avif';
-        $image = $gifBuilder->imageCreateFromFile($inputFile);
-        $workArea = [0, 0, 400, 300];
-        $conf = [
-            'dimensions' => '10,50,380,50',
-            'color' => 'olive',
-        ];
-        $gifBuilder->makeBox($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdBox') . '.avif';
-        $success = $gifBuilder->ImageWrite($image, $outputFile);
-        if ($success) {
-            $result = [
-                'fileExists' => true,
-                'outputFile' => $outputFile,
-                'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.avif',
-                'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
-            ];
-        } else {
-            $result = [
-                'status' => [$this->avifImageGenerationFailedMessage()],
-                'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
-            ];
+        return $this->getImageTestResponse($this->drawBoxOnTestImage('avif'));
+    }
+
+    /**
+     * Loads TestInput/Test.<format>, paints an olive box on it and writes it
+     * back in the same format — the same test for all three GD output formats.
+     */
+    private function drawBoxOnTestImage(string $format): array
+    {
+        $inputFile = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/TestInput/Test.' . $format;
+        $canvas = GraphicsCanvas::loadFile($inputFile);
+        if ($canvas === null) {
+            return ['status' => [$this->gdReadFailedMessage($inputFile)]];
         }
-        return $this->getImageTestResponse($result);
+        $canvas->fillRect(10, 50, 380, 50, $canvas->allocateColor(128, 128, 0));
+        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdBox') . '.' . $format;
+        if (!$canvas->saveToFile($outputFile, $format)) {
+            // Only AVIF is expected to be unwritable on a GD build that lacks the encoder.
+            return ['status' => [$this->avifImageGenerationFailedMessage()]];
+        }
+        return [
+            'fileExists' => true,
+            'outputFile' => $outputFile,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.' . $format,
+        ];
     }
 
     /**
@@ -1047,30 +1005,13 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibRenderTextAction(): ResponseInterface
     {
-        $gifBuilder = $this->initializeGifBuilder();
-        $image = imagecreatetruecolor(300, 225);
-        $backgroundColor = imagecolorallocate($image, 128, 128, 150);
-        imagefilledrectangle($image, 0, 0, 300, 225, $backgroundColor);
-        $workArea = [0, 0, 300, 225];
-        $conf = [
-            'iterations' => 1,
-            'angle' => 0,
-            'antiAlias' => 1,
-            'text' => 'HELLO WORLD',
-            'fontColor' => '#003366',
-            'fontSize' => 30,
-            'fontFile' => ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
-            'offset' => '30,80',
-        ];
-        $conf['BBOX'] = $gifBuilder->calcBBox($conf);
-        $gifBuilder->makeText($image, $conf, $workArea);
+        $canvas = $this->createTextTestCanvas();
         $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdText') . '.png';
-        $gifBuilder->ImageWrite($image, $outputFile);
+        $canvas->saveToFile($outputFile, 'png');
         $result = [
             'fileExists' => true,
             'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-text.png',
-            'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
         ];
         return $this->getImageTestResponse($result);
     }
@@ -1080,43 +1021,15 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibNiceTextAction(): ResponseInterface
     {
-        if (!$this->isImageMagickEnabledAndConfigured()) {
-            return new JsonResponse([
-                'success' => true,
-                'status' => [$this->imageMagickDisabledMessage()],
-            ]);
-        }
-        $gifBuilder = $this->initializeGifBuilder();
-        $image = imagecreatetruecolor(300, 225);
-        $backgroundColor = imagecolorallocate($image, 128, 128, 150);
-        imagefilledrectangle($image, 0, 0, 300, 225, $backgroundColor);
-        $workArea = [0, 0, 300, 225];
-        $conf = [
-            'iterations' => 1,
-            'angle' => 0,
-            'antiAlias' => 1,
-            'text' => 'HELLO WORLD',
-            'fontColor' => '#003366',
-            'fontSize' => 30,
-            'fontFile' => ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
-            'offset' => '30,80',
-        ];
-        $conf['BBOX'] = $gifBuilder->calcBBox($conf);
-        $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdText') . '.png';
-        $gifBuilder->ImageWrite($image, $outputFile);
-        $conf['offset'] = '30,120';
-        $conf['niceText'] = 1;
-        $gifBuilder->makeText($image, $conf, $workArea);
+        $canvas = $this->createTextTestCanvas();
+        $this->drawNiceTextLine($canvas, 120);
         $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdNiceText') . '.png';
-        $gifBuilder->ImageWrite($image, $outputFile);
-        $result = [
+        $canvas->saveToFile($outputFile, 'png');
+        return $this->getImageTestResponse([
             'fileExists' => true,
             'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-niceText.png',
-            'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
-        ];
-        return $this->getImageTestResponse($result);
+        ]);
     }
 
     /**
@@ -1124,64 +1037,59 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGdlibNiceTextShadowAction(): ResponseInterface
     {
-        if (!$this->isImageMagickEnabledAndConfigured()) {
-            return new JsonResponse([
-                'success' => true,
-                'status' => [$this->imageMagickDisabledMessage()],
-            ]);
-        }
-        $gifBuilder = $this->initializeGifBuilder();
-        $image = imagecreatetruecolor(300, 225);
-        $backgroundColor = imagecolorallocate($image, 128, 128, 150);
-        imagefilledrectangle($image, 0, 0, 300, 225, $backgroundColor);
-        $workArea = [0, 0, 300, 225];
-        $conf = [
-            'iterations' => 1,
-            'angle' => 0,
-            'antiAlias' => 1,
-            'text' => 'HELLO WORLD',
-            'fontColor' => '#003366',
-            'fontSize' => 30,
-            'fontFile' => ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
-            'offset' => '30,80',
-        ];
-        $conf['BBOX'] = $gifBuilder->calcBBox($conf);
-        $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdText') . '.png';
-        $gifBuilder->ImageWrite($image, $outputFile);
-        $conf['offset'] = '30,120';
-        $conf['niceText'] = 1;
-        $gifBuilder->makeText($image, $conf, $workArea);
-        $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('gdNiceText') . '.png';
-        $gifBuilder->ImageWrite($image, $outputFile);
-        $conf['offset'] = '30,160';
-        $conf['niceText'] = 1;
-        $conf['shadow.'] = [
-            'offset' => '2,2',
-            'blur' => '20',
-            'opacity' => '50',
-            'color' => 'black',
-        ];
-        // Warning: Re-uses $image from above!
-        $gifBuilder->makeShadow($image, $conf['shadow.'], $workArea, $conf);
-        $gifBuilder->makeText($image, $conf, $workArea);
+        $canvas = $this->createTextTestCanvas();
+        $this->drawNiceTextLine($canvas, 120);
+
+        // Drop-shadow for the third line: white text on black, blurred, then
+        // used as the mask for a black layer. The blur border keeps the blur
+        // from clipping at the canvas edge and is cropped away afterwards.
+        $blurBorder = 3;
+        $shadowText = GraphicsCanvas::create(300 + 2 * $blurBorder, 225 + 2 * $blurBorder, 0, 0, 0);
+        $shadowWhite = $shadowText->allocateColor(255, 255, 255);
+        $shadowText->renderText(self::TEST_FONT_SIZE, 0, 32 + $blurBorder, 162 + $blurBorder, $shadowWhite, $this->testFontFile(), self::TEST_TEXT);
+        $shadowMask = $shadowText->blur(6)->crop($blurBorder, $blurBorder, 300, 225);
+        // intensity=40 → clamp range to [0, 153]; opacity=50 → scale output range to [0, 128]
+        $shadowMask->inputLevels(0, 153)->outputLevels(0, 128);
+        $canvas->compositeMasked(GraphicsCanvas::create(300, 225, 0, 0, 0), $shadowMask);
+
+        $this->drawNiceTextLine($canvas, 160);
         $outputFile = $this->getImagesPath() . 'installTool-' . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.png';
-        $gifBuilder->ImageWrite($image, $outputFile);
-        $result = [
+        $canvas->saveToFile($outputFile, 'png');
+        return $this->getImageTestResponse([
             'fileExists' => true,
             'outputFile' => $outputFile,
             'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-shadow.png',
-            'command' => $gifBuilder->getGraphicalFunctions()->IM_commands,
-        ];
-        return $this->getImageTestResponse($result);
+        ]);
+    }
+
+    private function testFontFile(): string
+    {
+        return ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf';
     }
 
     /**
-     * Initialize GifBuilder for image manipulation tests
+     * The grey canvas all text tests start from, with the plain TrueType
+     * reference line already rendered at the top.
      */
-    protected function initializeGifBuilder(): GifBuilder
+    private function createTextTestCanvas(): GraphicsCanvas
     {
-        return GeneralUtility::makeInstance(GifBuilder::class);
+        $canvas = GraphicsCanvas::create(300, 225, 128, 128, 150);
+        $blue = $canvas->allocateColor(0, 0x33, 0x66);
+        $canvas->renderText(self::TEST_FONT_SIZE, 0, 30, 80, $blue, $this->testFontFile(), self::TEST_TEXT);
+        return $canvas;
+    }
+
+    /**
+     * Renders one antialiased text line the way GifBuilder's niceText does:
+     * the glyphs go onto a mask at double size, the mask is downscaled and
+     * inverted, and a solid colour layer is composited through it.
+     */
+    private function drawNiceTextLine(GraphicsCanvas $canvas, int $baseline): void
+    {
+        $mask = GraphicsCanvas::create(600, 450, 255, 255, 255);
+        $mask->renderText(self::TEST_FONT_SIZE * 2, 0, 60, $baseline * 2, $mask->allocateColor(0, 0, 0), $this->testFontFile(), self::TEST_TEXT);
+        $mask->resizeTo(300, 225)->invert();
+        $canvas->compositeMasked(GraphicsCanvas::create(300, 225, 0, 0x33, 0x66), $mask);
     }
 
     /**
@@ -1399,6 +1307,16 @@ class EnvironmentController extends AbstractController
             . ' Also ensure that possible codecs needed for specific image/video formats are available on your system.',
             'Image generation failed',
             ContextualFeedbackSeverity::ERROR
+        );
+    }
+
+    protected function gdReadFailedMessage(string $inputFile): FlashMessage
+    {
+        return new FlashMessage(
+            'GD could not read ' . basename($inputFile) . '. The GD build of this system does not '
+            . 'support that format, or the file cannot be decoded.',
+            'Skipped test',
+            ContextualFeedbackSeverity::INFO
         );
     }
 

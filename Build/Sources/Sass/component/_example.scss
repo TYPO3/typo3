@@ -29,17 +29,35 @@
         color: var(--typo3-component-variant-color);
         font-weight: bold;
         font-size: .9em;
+        text-transform: uppercase;
         margin-bottom: var(--typo3-spacing);
     }
 
-    &--code {
-        &:before {
-            content: 'EXAMPLE CODE';
-        }
+    &[data-label]:before {
+        content: attr(data-label);
+    }
+
+    &--code:not([data-label]):before {
+        content: 'EXAMPLE CODE';
+    }
+
+    &--slim {
+        --typo3-example-border-radius: calc(var(--typo3-component-border-radius) / 2);
+    }
+
+    &--simple:before {
+        display: none;
     }
 
     &--checkered {
         @include background-checkered();
+    }
+
+    > img {
+        display: block;
+        height: auto;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
     pre code {

@@ -19,7 +19,8 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\FileProcessingAspect;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Imaging\GraphicsCanvas;
+use TYPO3\CMS\Core\Imaging\ImageProcessingInstructions;
 use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -49,7 +50,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * $imageCreator = GeneralUtility::makeInstance(GifBuilder::class);
  * $imageCreator->start($fileArray, $this->data);
  * $theImage = $imageCreator->gifBuild();
- * return GeneralUtility::makeInstance(GraphicalFunctions::class)->getImageDimensions($theImage);
  */
 class GifBuilder
 {
@@ -145,25 +145,13 @@ class GifBuilder
      */
     protected array $offset;
 
-    /**
-     * File formats supported by gdlib. This variable gets filled in the constructor
-     *
-     * @var list<non-empty-string>
-     */
-    protected array $gdlibExtensions = [];
-
     protected CharsetConverter $csConvObj;
-    protected GraphicalFunctions $imageService;
-
-    /**
-     * Enable ImageMagick effects, disabled by default as IM5+ effects slow down the image generation
-     */
-    protected bool $processorEffectsEnabled = false;
 
     /**
      * @var int<10, 100>
      */
     protected int $jpegQuality = 85;
+
     /**
      * @var int<10, 101>
      */
@@ -176,10 +164,7 @@ class GifBuilder
 
     public function __construct()
     {
-        $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
-        if ($gfxConf['processor_effects'] ?? false) {
-            $this->processorEffectsEnabled = true;
-        }
+        $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'] ?? [];
         $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, $this->jpegQuality);
         $this->avifQuality = MathUtility::forceIntegerInRange($gfxConf['avif_quality'] ?? 0, -1, 100, $this->avifQuality);
         if (isset($gfxConf['webp_quality'])) {
@@ -190,23 +175,6 @@ class GifBuilder
                 $this->webpQuality = MathUtility::forceIntegerInRange($gfxConf['webp_quality'], 10, 101, $this->webpQuality);
             }
         }
-        if (function_exists('imagecreatefromjpeg') && function_exists('imagejpeg')) {
-            $this->gdlibExtensions[] = 'jpg';
-            $this->gdlibExtensions[] = 'jpeg';
-        }
-        if (function_exists('imagecreatefrompng') && function_exists('imagepng')) {
-            $this->gdlibExtensions[] = 'png';
-        }
-        if (function_exists('imagecreatefromwebp') && function_exists('imagewebp')) {
-            $this->gdlibExtensions[] = 'webp';
-        }
-        if (function_exists('imagecreatefromavif') && function_exists('imageavif')) {
-            $this->gdlibExtensions[] = 'avif';
-        }
-        if (function_exists('imagecreatefromgif') && function_exists('imagegif')) {
-            $this->gdlibExtensions[] = 'gif';
-        }
-        $this->imageService = GeneralUtility::makeInstance(GraphicalFunctions::class);
         $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
     }
 
@@ -243,7 +211,8 @@ class GifBuilder
         $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
         // Setting the background color, passing it through stdWrap
         $this->setup['backColor'] = $this->cObj->stdWrapValue('backColor', $this->setup, 'white');
-        $this->setup['transparentColor_array'] = explode('|', trim((string)$this->cObj->stdWrapValue('transparentColor', $this->setup)));
+        $transparentColor = trim((string)$this->cObj->stdWrapValue('transparentColor', $this->setup));
+        $this->setup['transparentColor_array'] = $transparentColor !== '' ? explode('|', $transparentColor) : [];
         $this->setup['transparentBackground'] = $this->cObj->stdWrapValue('transparentBackground', $this->setup);
         // Set default dimensions
         $this->setup['XY'] = $this->cObj->stdWrapValue('XY', $this->setup);
@@ -445,6 +414,7 @@ class GifBuilder
      * Writing the image pointer, to file based on the extension of the input filename.
      * Uses $this->setup['quality'] for jpg images to reduce size/quality if needed.
      *
+     * @param \GdImage $gdImage The GDlib image resource pointer
      * @param string $file The absolute filename to write to
      * @see gifBuild()
      */
@@ -499,30 +469,20 @@ class GifBuilder
         $XY = $this->XY;
         // Reset internal properties
         $this->saveAlphaLayer = false;
-        // Gif-start
-        $im = imagecreatetruecolor($XY[0], $XY[1]);
-        if (!$im instanceof \GdImage) {
-            throw new \RuntimeException('imagecreatetruecolor returned false', 1598350445);
-        }
         $this->w = $XY[0];
         $this->h = $XY[1];
         // Transparent layer as background if set and requirements are met
         if (($this->setup['backColor'] ?? '') === 'transparent' && (empty($this->setup['format']) || $this->setup['format'] === 'png')) {
-            // Set transparency properties
-            imagesavealpha($im, true);
-            // Fill with a transparent background
-            $transparentColor = imagecolorallocatealpha($im, 0, 0, 0, 127);
-            imagefill($im, 0, 0, $transparentColor);
             // Set internal properties to keep the transparency over the rendering process
             $this->saveAlphaLayer = true;
             // Force PNG in case no format is set
             $this->setup['format'] = 'png';
+            $im = GraphicsCanvas::create($XY[0], $XY[1], 255, 255, 255, 127)->resource();
             $BGcols = [];
         } else {
             // Fill the background with the given color
             $BGcols = $this->convertColor($this->setup['backColor']);
-            $Bcolor = imagecolorallocate($im, $BGcols[0], $BGcols[1], $BGcols[2]);
-            imagefilledrectangle($im, 0, 0, $XY[0], $XY[1], $Bcolor);
+            $im = GraphicsCanvas::create($XY[0], $XY[1], $BGcols[0], $BGcols[1], $BGcols[2])->resource();
         }
         // Traverse the GIFBUILDER objects and render each one:
         $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
@@ -639,15 +599,15 @@ class GifBuilder
         if (!$this->saveAlphaLayer) {
             if ($this->setup['transparentBackground']) {
                 // Auto transparent background is set
-                $Bcolor = imagecolorclosest($im, $BGcols[0], $BGcols[1], $BGcols[2]);
-                imagecolortransparent($im, $Bcolor);
+                $canvas = GraphicsCanvas::load($im);
+                $canvas->setTransparentColor($canvas->findClosestColor($BGcols[0], $BGcols[1], $BGcols[2]));
             } elseif (is_array($this->setup['transparentColor_array'])) {
                 // Multiple transparent colors are set. This is done via the trick that all transparent colors get
                 // converted to one color and then this one gets set as transparent as png/gif can just have one
                 // transparent color.
                 $Tcolor = $this->unifyColors($im, $this->setup['transparentColor_array'], (bool)($this->setup['transparentColor.']['closest'] ?? false));
                 if ($Tcolor >= 0) {
-                    imagecolortransparent($im, $Tcolor);
+                    GraphicsCanvas::load($im)->setTransparentColor($Tcolor);
                 }
             }
         }
@@ -657,7 +617,6 @@ class GifBuilder
     /**
      * Implements the "IMAGE" GIFBUILDER object, when the "mask" property is TRUE.
      * It reads the two images defined by $conf['file'] and $conf['mask'] and copies the $conf['file'] onto the input image pointer image using the $conf['mask'] as a grayscale mask
-     * The operation involves ImageMagick for combining.
      *
      * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
@@ -666,73 +625,33 @@ class GifBuilder
      */
     protected function maskImageOntoImage(\GdImage &$im, array $conf, array $workArea): void
     {
-        if ($conf['file'] && $conf['mask']) {
-            $imgInf = pathinfo($conf['file']);
-            $imgExt = strtolower($imgInf['extension']);
-            if (!in_array($imgExt, $this->gdlibExtensions, true)) {
-                $BBimage = $this->imageService->convert($conf['file'], 'png');
-            } else {
-                $BBimage = $this->imageService->getImageDimensions($conf['file'], true);
-            }
-            $maskInf = pathinfo($conf['mask']);
-            $maskExt = strtolower($maskInf['extension']);
-            if (!in_array($maskExt, $this->gdlibExtensions, true)) {
-                $BBmask = $this->imageService->convert($conf['mask'], 'png');
-            } else {
-                $BBmask = $this->imageService->getImageDimensions($conf['mask'], true);
-            }
-            if ($BBimage && $BBmask) {
-                $w = imagesx($im);
-                $h = imagesy($im);
-                $tmpStr = $this->imageService->randomName();
-                $theImage = $tmpStr . '_img.png';
-                $theDest = $tmpStr . '_dest.png';
-                $theMask = $tmpStr . '_mask.png';
-                // Prepare overlay image
-                $cpImg = $this->imageCreateFromFile($BBimage->getRealPath());
-                $destImg = imagecreatetruecolor($w, $h);
-                // Preserve alpha transparency
-                if ($this->saveAlphaLayer) {
-                    imagesavealpha($destImg, true);
-                    $Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
-                    imagefill($destImg, 0, 0, $Bcolor);
-                } else {
-                    $Bcolor = imagecolorallocate($destImg, 0, 0, 0);
-                    imagefilledrectangle($destImg, 0, 0, $w, $h, $Bcolor);
-                }
-                $this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
-                $this->ImageWrite($destImg, $theImage);
-                // Prepare mask image
-                $cpImg = $this->imageCreateFromFile($BBmask->getRealPath());
-                $destImg = imagecreatetruecolor($w, $h);
-                if ($this->saveAlphaLayer) {
-                    imagesavealpha($destImg, true);
-                    $Bcolor = imagecolorallocatealpha($destImg, 0, 0, 0, 127);
-                    imagefill($destImg, 0, 0, $Bcolor);
-                } else {
-                    $Bcolor = imagecolorallocate($destImg, 0, 0, 0);
-                    imagefilledrectangle($destImg, 0, 0, $w, $h, $Bcolor);
-                }
-                $this->copyGifOntoGif($destImg, $cpImg, $conf, $workArea);
-                $this->ImageWrite($destImg, $theMask);
-                // Mask the images
-                $this->ImageWrite($im, $theDest);
-                // Let combineExec handle maskNegation
-                $this->imageService->combineExec($theDest, $theImage, $theMask, $theDest);
-                // The main image is loaded again...
-                $backIm = $this->imageCreateFromFile($theDest);
-                // ... and if nothing went wrong we load it onto the old one.
-                if ($backIm) {
-                    if (!$this->saveAlphaLayer) {
-                        imagecolortransparent($backIm, -1);
-                    }
-                    $im = $backIm;
-                }
-                // Unlink files from process
-                unlink($theDest);
-                unlink($theImage);
-                unlink($theMask);
-            }
+        if (!$conf['file'] || !$conf['mask']) {
+            return;
+        }
+        $imgExt = strtolower(pathinfo($conf['file'], PATHINFO_EXTENSION));
+        $maskExt = strtolower(pathinfo($conf['mask'], PATHINFO_EXTENSION));
+        if (!GraphicsCanvas::canRead($imgExt) || !GraphicsCanvas::canRead($maskExt)) {
+            return;
+        }
+        $imCanvas = GraphicsCanvas::load($im);
+        $w = $imCanvas->width();
+        $h = $imCanvas->height();
+        // Build the overlay image
+        $cpImg = $this->imageCreateFromFile($conf['file']);
+        $overlayImg = $this->saveAlphaLayer
+            ? GraphicsCanvas::create($w, $h, 255, 255, 255, 127)->resource()
+            : GraphicsCanvas::create($w, $h, 0, 0, 0)->resource();
+        $this->copyGifOntoGif($overlayImg, $cpImg, $conf, $workArea);
+        // Build the mask image
+        $cpImg = $this->imageCreateFromFile($conf['mask']);
+        $maskImg = $this->saveAlphaLayer
+            ? GraphicsCanvas::create($w, $h, 255, 255, 255, 127)->resource()
+            : GraphicsCanvas::create($w, $h, 0, 0, 0)->resource();
+        $this->copyGifOntoGif($maskImg, $cpImg, $conf, $workArea);
+        // Composite in-memory — no temp files
+        $imCanvas->compositeMasked(GraphicsCanvas::load($overlayImg), GraphicsCanvas::load($maskImg));
+        if (!$this->saveAlphaLayer) {
+            $imCanvas->setTransparentColor(-1);
         }
     }
 
@@ -747,14 +666,15 @@ class GifBuilder
      */
     protected function copyImageOntoImage(\GdImage &$im, array $conf, array $workArea): void
     {
-        if ($conf['file']) {
-            if (!in_array($conf['BBOX'][2], $this->gdlibExtensions, true)) {
-                $conf['BBOX'] = $this->imageService->convert($conf['BBOX']->getRealPath(), 'png');
-                $conf['file'] = $conf['BBOX'] ? $conf['BBOX']->getRealPath() : null;
-            }
-            $cpImg = $this->imageCreateFromFile($conf['file']);
-            $this->copyGifOntoGif($im, $cpImg, $conf, $workArea);
+        if (!$conf['file']) {
+            return;
         }
+        $ext = strtolower(pathinfo($conf['file'], PATHINFO_EXTENSION));
+        if (!GraphicsCanvas::canRead($ext)) {
+            return;
+        }
+        $cpImg = $this->imageCreateFromFile($conf['file']);
+        $this->copyGifOntoGif($im, $cpImg, $conf, $workArea);
     }
 
     /**
@@ -777,7 +697,7 @@ class GifBuilder
         $cols = $this->convertColor($conf['fontColor']);
         // NiceText is calculated
         if (!($conf['niceText'] ?? false)) {
-            $Fcolor = imagecolorallocate($im, $cols[0], $cols[1], $cols[2]);
+            $Fcolor = GraphicsCanvas::load($im)->allocateColor($cols[0], $cols[1], $cols[2]);
             // antiAliasing is setup:
             $Fcolor = $conf['antiAlias'] ? $Fcolor : -$Fcolor;
             for ($a = 0; $a < $conf['iterations']; $a++) {
@@ -791,60 +711,34 @@ class GifBuilder
         } else {
             // NICETEXT::
             // options anti_aliased and iterations is NOT available when doing this!!
-            $w = imagesx($im);
-            $h = imagesy($im);
-            $tmpStr = $this->imageService->randomName();
-            $fileMenu = $tmpStr . '_menuNT.png';
-            $fileColor = $tmpStr . '_colorNT.png';
-            $fileMask = $tmpStr . '_maskNT.png';
+            $imCanvas = GraphicsCanvas::load($im);
+            $w = $imCanvas->width();
+            $h = $imCanvas->height();
             // Scalefactor
             $sF = MathUtility::forceIntegerInRange(($conf['niceText.']['scaleFactor'] ?? 2), 2, 5);
-            $newW = (int)ceil($sF * imagesx($im));
-            $newH = (int)ceil($sF * imagesy($im));
-            // Make mask
-            $maskImg = imagecreatetruecolor($newW, $newH);
-            $Bcolor = imagecolorallocate($maskImg, 255, 255, 255);
-            imagefilledrectangle($maskImg, 0, 0, $newW, $newH, $Bcolor);
-            $Fcolor = imagecolorallocate($maskImg, 0, 0, 0);
+            $newW = (int)ceil($sF * $w);
+            $newH = (int)ceil($sF * $h);
+            // Make mask: white background, black foreground for text rendering
+            $maskCanvas = GraphicsCanvas::create($newW, $newH, 255, 255, 255);
+            $maskImg = $maskCanvas->resource();
+            $Fcolor = $maskCanvas->allocateColor(0, 0, 0);
             // If any kind of spacing applies, we use this function:
             if ($spacing || $wordSpacing) {
                 $this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
             } else {
                 $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf, $sF);
             }
-            $this->ImageWrite($maskImg, $fileMask);
-            // Downscales the mask
-            if (!$this->processorEffectsEnabled) {
-                $command = trim($this->imageService->scalecmd . ' ' . $w . 'x' . $h . '! -negate');
-            } else {
-                $command = trim(($conf['niceText.']['before'] ?? '') . ' ' . $this->imageService->scalecmd . ' ' . $w . 'x' . $h . '! ' . ($conf['niceText.']['after'] ?? '') . ' -negate');
-                if (isset($conf['niceText.']['sharpen'])) {
-                    $command .= $this->imageService->v5_sharpen($conf['niceText.']['sharpen']);
-                }
+            // Downscale, negate and optionally sharpen the mask — all in-memory
+            $maskCanvas->resizeTo($w, $h)->invert();
+            if (isset($conf['niceText.']['sharpen'])) {
+                $maskCanvas->sharpen((int)$conf['niceText.']['sharpen']);
             }
-            $this->imageService->imageMagickExec($fileMask, $fileMask, $command);
-            // Make the color-file
-            $colorImg = imagecreatetruecolor($w, $h);
-            $Ccolor = imagecolorallocate($colorImg, $cols[0], $cols[1], $cols[2]);
-            imagefilledrectangle($colorImg, 0, 0, $w, $h, $Ccolor);
-            $this->ImageWrite($colorImg, $fileColor);
-            // The mask is applied
-            // The main pictures is saved temporarily
-            $this->ImageWrite($im, $fileMenu);
-            $this->imageService->combineExec($fileMenu, $fileColor, $fileMask, $fileMenu);
-            // The main image is loaded again...
-            $backIm = $this->imageCreateFromFile($fileMenu);
-            // ... and if nothing went wrong we load it onto the old one.
-            if ($backIm) {
-                if (!$this->saveAlphaLayer) {
-                    imagecolortransparent($backIm, -1);
-                }
-                $im = $backIm;
+            // Build a solid color canvas and composite onto the main image
+            $colorCanvas = GraphicsCanvas::create($w, $h, $cols[0], $cols[1], $cols[2]);
+            $imCanvas->compositeMasked($colorCanvas, $maskCanvas);
+            if (!$this->saveAlphaLayer) {
+                $imCanvas->setTransparentColor(-1);
             }
-            // Deleting temporary files;
-            unlink($fileMenu);
-            unlink($fileColor);
-            unlink($fileMask);
         }
     }
 
@@ -902,7 +796,7 @@ class GifBuilder
 
     /**
      * Implements the "SHADOW" GIFBUILDER object / property for the TEXT object
-     * The operation involves ImageMagick for combining.
+     * The blurred shadow is composited through an in-memory mask.
      *
      * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
@@ -917,77 +811,43 @@ class GifBuilder
     {
         $workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', (string)($conf['offset'])));
         $blurRate = MathUtility::forceIntegerInRange((int)$conf['blur'], 0, 99);
-        // No effects if ImageMagick ver. 5+
-        if (!$blurRate || !$this->processorEffectsEnabled) {
+        if (!$blurRate) {
             $txtConf['fontColor'] = $conf['color'];
             $this->makeText($im, $txtConf, $workArea);
         } else {
-            $w = imagesx($im);
-            $h = imagesy($im);
+            $imCanvas = GraphicsCanvas::load($im);
+            $w = $imCanvas->width();
+            $h = $imCanvas->height();
             // Area around the blur used for cropping something
             $blurBorder = 3;
-            $tmpStr = $this->imageService->randomName();
-            $fileMenu = $tmpStr . '_menu.png';
-            $fileColor = $tmpStr . '_color.png';
-            $fileMask = $tmpStr . '_mask.png';
-            // BlurColor Image laves
-            $blurColImg = imagecreatetruecolor($w, $h);
+            // Solid color canvas for the shadow colour
             $bcols = $this->convertColor($conf['color']);
-            $Bcolor = imagecolorallocate($blurColImg, $bcols[0], $bcols[1], $bcols[2]);
-            imagefilledrectangle($blurColImg, 0, 0, $w, $h, $Bcolor);
-            $this->ImageWrite($blurColImg, $fileColor);
-            // The mask is made: BlurTextImage
-            $blurTextImg = imagecreatetruecolor($w + $blurBorder * 2, $h + $blurBorder * 2);
-            // Black background
-            $Bcolor = imagecolorallocate($blurTextImg, 0, 0, 0);
-            imagefilledrectangle($blurTextImg, 0, 0, $w + $blurBorder * 2, $h + $blurBorder * 2, $Bcolor);
+            $blurColCanvas = GraphicsCanvas::create($w, $h, $bcols[0], $bcols[1], $bcols[2]);
+            // Render text white-on-black into a slightly larger canvas for the blur border
+            $blurTextImg = GraphicsCanvas::create($w + $blurBorder * 2, $h + $blurBorder * 2, 0, 0, 0)->resource();
             $txtConf['fontColor'] = 'white';
             $blurBordArr = [$blurBorder, $blurBorder];
             $this->makeText($blurTextImg, $txtConf, $this->applyOffset($workArea, $blurBordArr));
-            // Dump to temporary file
-            $this->ImageWrite($blurTextImg, $fileMask);
-            $command = $this->imageService->v5_blur($blurRate + 1);
-            $this->imageService->imageMagickExec($fileMask, $fileMask, $command . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'ImageMagick' ? ' -alpha off' : ' +matte'));
-            // The mask is loaded again
-            $blurTextImg_tmp = $this->imageCreateFromFile($fileMask);
-            // If nothing went wrong we continue with the blurred mask
-            if ($blurTextImg_tmp) {
-                // Cropping the border from the mask
-                $blurTextImg = imagecreatetruecolor($w, $h);
-                $blurTextImg = $this->imagecopyresized($blurTextImg, $blurTextImg_tmp, 0, 0, $blurBorder, $blurBorder, $w, $h, $w, $h);
-                // Adjust the mask
-                $intensity = 40;
-                if ($conf['intensity'] ?? false) {
-                    $intensity = MathUtility::forceIntegerInRange($conf['intensity'], 0, 100);
-                }
-                $intensity = (int)ceil(255 - $intensity / 100 * 255);
-                $this->inputLevels($blurTextImg, 0, $intensity);
-                $opacity = MathUtility::forceIntegerInRange((int)$conf['opacity'], 0, 100);
-                if ($opacity && $opacity < 100) {
-                    $high = (int)ceil(255 * $opacity / 100);
-                    // Reducing levels as the opacity demands
-                    $this->outputLevels($blurTextImg, 0, $high);
-                }
-                // Dump the mask again
-                $this->ImageWrite($blurTextImg, $fileMask);
-                // The pictures are combined
-                // The main pictures is saved temporarily
-                $this->ImageWrite($im, $fileMenu);
-                $this->imageService->combineExec($fileMenu, $fileColor, $fileMask, $fileMenu);
-                // The main image is loaded again...
-                $backIm = $this->imageCreateFromFile($fileMenu);
-                // ... and if nothing went wrong we load it onto the old one.
-                if ($backIm) {
-                    if (!$this->saveAlphaLayer) {
-                        imagecolortransparent($backIm, -1);
-                    }
-                    $im = $backIm;
-                }
+            // Blur, crop the border, adjust levels/opacity — all in-memory
+            $maskCanvas = GraphicsCanvas::load($blurTextImg)
+                ->blur(max(1, (int)round($blurRate / 4) + 1))
+                ->crop($blurBorder, $blurBorder, $w, $h);
+            $intensity = 40;
+            if ($conf['intensity'] ?? false) {
+                $intensity = MathUtility::forceIntegerInRange($conf['intensity'], 0, 100);
             }
-            // Deleting temporary files;
-            unlink($fileMenu);
-            unlink($fileColor);
-            unlink($fileMask);
+            $intensity = (int)ceil(255 - $intensity / 100 * 255);
+            $maskCanvas->inputLevels(0, $intensity);
+            $opacity = MathUtility::forceIntegerInRange((int)$conf['opacity'], 0, 100);
+            if ($opacity && $opacity < 100) {
+                $high = (int)ceil(255 * $opacity / 100);
+                $maskCanvas->outputLevels(0, $high);
+            }
+            // Composite onto the main image in-memory
+            $imCanvas->compositeMasked($blurColCanvas, $maskCanvas);
+            if (!$this->saveAlphaLayer) {
+                $imCanvas->setTransparentColor(-1);
+            }
         }
     }
 
@@ -1015,8 +875,9 @@ class GifBuilder
             $opacity = (int)abs($opacity - 100);
             $opacity = (int)round(127 * $opacity / 100);
         }
-        $tmpColor = imagecolorallocatealpha($im, $cols[0], $cols[1], $cols[2], $opacity);
-        imagefilledrectangle($im, $cords[0], $cords[1], $cords[0] + $cords[2] - 1, $cords[1] + $cords[3] - 1, $tmpColor);
+        $canvas = GraphicsCanvas::load($im);
+        $tmpColor = $canvas->allocateColorAlpha($cols[0], $cols[1], $cols[2], $opacity);
+        $canvas->fillRect($cords[0], $cords[1], $cords[2], $cords[3], $tmpColor);
     }
 
     /**
@@ -1047,25 +908,90 @@ class GifBuilder
         // @see objPosition
         $imageCoordinates = $this->objPosition($conf, $workArea, [$ellipseConfiguration[2], $ellipseConfiguration[3]]);
         $color = $this->convertColor($conf['color'] ?? '');
-        $fillingColor = imagecolorallocate($im, $color[0], $color[1], $color[2]);
-        imagefilledellipse($im, $imageCoordinates[0], $imageCoordinates[1], $imageCoordinates[2], $imageCoordinates[3], $fillingColor);
+        $canvas = GraphicsCanvas::load($im);
+        $fillingColor = $canvas->allocateColor($color[0], $color[1], $color[2]);
+        $canvas->fillEllipse($imageCoordinates[0], $imageCoordinates[1], $imageCoordinates[2], $imageCoordinates[3], $fillingColor);
     }
 
     /**
-     * Implements the "EFFECT" GIFBUILDER object
-     * The operation involves ImageMagick for applying effects
+     * Implements the "EFFECT" GIFBUILDER object.
      *
      * @param \GdImage $im GDlib image pointer
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @see make()
-     * @see applyImageMagickToPHPGif()
      */
     protected function makeEffect(\GdImage &$im, array $conf): void
     {
-        $commands = $this->IMparams($conf['value']);
-        if ($commands) {
-            $this->applyImageMagickToPHPGif($im, $commands);
+        $setup = $conf['value'] ?? '';
+        if (!trim($setup)) {
+            return;
         }
+        $canvas = GraphicsCanvas::load($im);
+        $effects = explode('|', $setup);
+        foreach ($effects as $val) {
+            $pairs = explode('=', $val, 2);
+            $value = trim($pairs[1] ?? '');
+            $effect = strtolower(trim($pairs[0]));
+            switch ($effect) {
+                case 'blur':
+                    $canvas->blur(max(1, (int)round(((int)$value + 1) / 4)));
+                    break;
+                case 'charcoal':
+                    $canvas->charcoal(MathUtility::forceIntegerInRange((int)$value, 1, 5));
+                    break;
+                case 'colors':
+                    $canvas->colors(MathUtility::forceIntegerInRange((int)$value, 2, 255));
+                    break;
+                case 'edge':
+                    $canvas->edge();
+                    break;
+                case 'emboss':
+                    $canvas->emboss();
+                    break;
+                case 'sharpen':
+                    $canvas->sharpen((int)$value);
+                    break;
+                case 'gray':
+                    $canvas->grayscale();
+                    break;
+                case 'invert':
+                    $canvas->invert();
+                    break;
+                case 'gamma':
+                    $canvas->gamma(1.0, max(0.1, min(10.0, (float)$value)));
+                    break;
+                case 'solarize':
+                    $canvas->solarize(MathUtility::forceIntegerInRange((int)$value, 0, 99));
+                    break;
+                case 'swirl':
+                    $canvas->swirl(MathUtility::forceIntegerInRange((int)$value, -720, 720));
+                    break;
+                case 'flip':
+                    $canvas->flip();
+                    break;
+                case 'flop':
+                    $canvas->flop();
+                    break;
+                case 'rotate':
+                    $canvas->rotate(-(float)$value);
+                    break;
+                case 'shear':
+                    $canvas->shear((int)$value);
+                    break;
+                case 'wave':
+                    $params = GeneralUtility::intExplode(',', $value);
+                    $canvas->wave(
+                        MathUtility::forceIntegerInRange($params[0] ?? 0, 0, 99),
+                        MathUtility::forceIntegerInRange($params[1] ?? 30, 1, 99),
+                    );
+                    break;
+            }
+        }
+        $im = $canvas->resource();
+        // rotate, shear and wave change the canvas size, so the current dimensions
+        // have to be published for a following WORKAREA reset or CROP object.
+        $this->w = $canvas->width();
+        $this->h = $canvas->height();
     }
 
     /**
@@ -1084,23 +1010,24 @@ class GifBuilder
         if (!trim($setup)) {
             return;
         }
+        $canvas = GraphicsCanvas::load($im);
         $effects = explode('|', $setup);
         foreach ($effects as $val) {
             $pairs = explode('=', $val, 2);
-            $value = trim($pairs[1]);
+            $value = trim($pairs[1] ?? '');
             $effect = strtolower(trim($pairs[0]));
             switch ($effect) {
                 case 'inputlevels':
                     // low,high
                     $params = GeneralUtility::intExplode(',', $value);
-                    $this->inputLevels($im, $params[0], $params[1]);
+                    $canvas->inputLevels($params[0], $params[1]);
                     break;
                 case 'outputlevels':
                     $params = GeneralUtility::intExplode(',', $value);
-                    $this->outputLevels($im, $params[0], $params[1]);
+                    $canvas->outputLevels($params[0], $params[1]);
                     break;
                 case 'autolevels':
-                    $this->autolevels($im);
+                    $canvas->autolevels();
                     break;
             }
         }
@@ -1120,10 +1047,8 @@ class GifBuilder
         $cords = GeneralUtility::intExplode(',', $conf['crop'] . ',,,');
         $conf['offset'] = $cords[0] . ',' . $cords[1];
         $cords = $this->objPosition($conf, $this->workArea, [$cords[2], $cords[3]]);
-        $newIm = imagecreatetruecolor($cords[2], $cords[3]);
         $cols = $this->convertColor(!empty($conf['backColor']) ? $conf['backColor'] : $this->setup['backColor']);
-        $Bcolor = imagecolorallocate($newIm, $cols[0], $cols[1], $cols[2]);
-        imagefilledrectangle($newIm, 0, 0, $cords[2], $cords[3], $Bcolor);
+        $newIm = GraphicsCanvas::create($cords[2], $cords[3], $cols[0], $cols[1], $cols[2])->resource();
         $newConf = [];
         $workArea = [0, 0, $cords[2], $cords[3]];
         if ($cords[0] < 0) {
@@ -1138,8 +1063,8 @@ class GifBuilder
         }
         $this->copyGifOntoGif($newIm, $im, $newConf, $workArea);
         $im = $newIm;
-        $this->w = imagesx($im);
-        $this->h = imagesy($im);
+        $this->w = $cords[2];
+        $this->h = $cords[3];
         // Clears workArea to total image
         $this->setWorkArea('');
     }
@@ -1153,27 +1078,24 @@ class GifBuilder
      */
     protected function scale(\GdImage &$im, array $conf): void
     {
-        // @todo: not covered with tests
-        if (isset($conf['width']) || isset($conf['height']) || isset($conf['params'])) {
-            $tmpStr = $this->imageService->randomName();
-            $theFile = $tmpStr . '.png';
-            $this->ImageWrite($im, $theFile);
-            $theNewFile = $this->imageService->resize($theFile, 'png', $conf['width'] ?? '', $conf['height'] ?? '', $conf['params'] ?? '');
-            if ($theNewFile->isFile()) {
-                $tmpImg = $this->imageCreateFromFile($theNewFile->getRealPath());
-                if ($tmpImg) {
-                    $im = $tmpImg;
-                    $this->w = imagesx($im);
-                    $this->h = imagesy($im);
-                    // Clears workArea to total image
-                    $this->setWorkArea('');
-                }
-                unlink($theFile);
-                if ($theNewFile->getRealPath() !== $theFile) {
-                    unlink($theNewFile->getRealPath());
-                }
-            }
+        if (!isset($conf['width']) && !isset($conf['height'])) {
+            return;
         }
+        $canvas = GraphicsCanvas::load($im);
+        $instructions = ImageProcessingInstructions::fromCropScaleValues(
+            $canvas->width(),
+            $canvas->height(),
+            $conf['width'] ?? '',
+            $conf['height'] ?? '',
+            [],
+        );
+        if ($instructions->width === $canvas->width() && $instructions->height === $canvas->height()) {
+            return;
+        }
+        $im = $canvas->resizeTo($instructions->width, $instructions->height)->resource();
+        $this->w = $instructions->width;
+        $this->h = $instructions->height;
+        $this->setWorkArea('');
     }
 
     /**
@@ -1325,7 +1247,7 @@ class GifBuilder
         $deferProcessing = !$context->hasAspect('fileProcessing') || $context->getPropertyFromAspect('fileProcessing', 'deferProcessing');
         $context->setAspect('fileProcessing', new FileProcessingAspect(false));
         try {
-            if (!in_array($fileArray['ext'] ?? '', $this->imageService->getImageFileExt(), true)) {
+            if (!GraphicsCanvas::canWrite($fileArray['ext'] ?? '')) {
                 $fileArray['ext'] = 'png';
             }
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
@@ -1536,8 +1458,9 @@ class GifBuilder
      */
     protected function copyGifOntoGif(\GdImage &$im, \GdImage &$cpImg, array $conf, array $workArea): void
     {
-        $cpW = imagesx($cpImg);
-        $cpH = imagesy($cpImg);
+        $cpCanvas = GraphicsCanvas::load($cpImg);
+        $cpW = $cpCanvas->width();
+        $cpH = $cpCanvas->height();
         $tile = GeneralUtility::intExplode(',', (string)($conf['tile'] ?? ''));
         $tile[0] = MathUtility::forceIntegerInRange($tile[0], 1, 20);
         $tile[1] = MathUtility::forceIntegerInRange($tile[1] ?? 0, 1, 20);
@@ -1614,16 +1537,15 @@ class GifBuilder
      */
     protected function imagecopyresized(\GdImage $dstImg, \GdImage &$srcImg, int $dstX, int $dstY, int $srcX, int $srcY, int $dstWidth, int $dstHeight, int $srcWidth, int $srcHeight): \GdImage
     {
+        $dst = GraphicsCanvas::load($dstImg);
+        $src = GraphicsCanvas::load($srcImg);
         if (!$this->saveAlphaLayer) {
-            // Make true color image
-            $tmpImg = imagecreatetruecolor(imagesx($dstImg), imagesy($dstImg));
-            // Copy the source image onto that
-            imagecopyresized($tmpImg, $dstImg, 0, 0, 0, 0, imagesx($dstImg), imagesy($dstImg), imagesx($dstImg), imagesy($dstImg));
-            // Then copy the source image onto that (the actual operation!)
-            imagecopyresized($tmpImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
-            return $tmpImg;
+            $tmp = GraphicsCanvas::create($dst->width(), $dst->height(), 0, 0, 0);
+            $tmp->copyResized($dst, 0, 0, 0, 0, $dst->width(), $dst->height(), $dst->width(), $dst->height());
+            $tmp->copyResized($src, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
+            return $tmp->resource();
         }
-        imagecopyresized($dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
+        $dst->copyResized($src, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
         return $dstImg;
     }
 
@@ -1651,83 +1573,6 @@ class GifBuilder
             }
         }
         return $res;
-    }
-
-    /**
-     * Creating ImageMagick parameters from TypoScript property
-     *
-     * @param string $setup A string with effect keywords=value pairs separated by "|
-     * @return string ImageMagick prepared parameters.
-     * @see makeEffect()
-     */
-    protected function IMparams(string $setup): string
-    {
-        if (!trim($setup)) {
-            return '';
-        }
-        $effects = explode('|', $setup);
-        $commands = '';
-        foreach ($effects as $val) {
-            $pairs = explode('=', $val, 2);
-            $value = trim($pairs[1] ?? '');
-            $effect = strtolower(trim($pairs[0]));
-            switch ($effect) {
-                case 'gamma':
-                    $commands .= ' -gamma ' . (float)$value;
-                    break;
-                case 'blur':
-                    if ($this->processorEffectsEnabled) {
-                        $commands .= $this->imageService->v5_blur((int)$value);
-                    }
-                    break;
-                case 'sharpen':
-                    if ($this->processorEffectsEnabled) {
-                        $commands .= $this->imageService->v5_sharpen((int)$value);
-                    }
-                    break;
-                case 'rotate':
-                    $commands .= ' -rotate ' . MathUtility::forceIntegerInRange((int)$value, 0, 360);
-                    break;
-                case 'solarize':
-                    $commands .= ' -solarize ' . MathUtility::forceIntegerInRange((int)$value, 0, 99);
-                    break;
-                case 'swirl':
-                    $commands .= ' -swirl ' . MathUtility::forceIntegerInRange((int)$value, 0, 1000);
-                    break;
-                case 'wave':
-                    $params = GeneralUtility::intExplode(',', $value);
-                    $commands .= ' -wave ' . MathUtility::forceIntegerInRange($params[0], 0, 99) . 'x' . MathUtility::forceIntegerInRange($params[1], 0, 99);
-                    break;
-                case 'charcoal':
-                    $commands .= ' -charcoal ' . MathUtility::forceIntegerInRange((int)$value, 0, 100);
-                    break;
-                case 'gray':
-                    $commands .= ' -colorspace GRAY';
-                    break;
-                case 'edge':
-                    $commands .= ' -edge ' . MathUtility::forceIntegerInRange((int)$value, 0, 99);
-                    break;
-                case 'emboss':
-                    $commands .= ' -emboss';
-                    break;
-                case 'flip':
-                    $commands .= ' -flip';
-                    break;
-                case 'flop':
-                    $commands .= ' -flop';
-                    break;
-                case 'colors':
-                    $commands .= ' -colors ' . MathUtility::forceIntegerInRange((int)$value, 2, 255);
-                    break;
-                case 'shear':
-                    $commands .= ' -shear ' . MathUtility::forceIntegerInRange((int)$value, -90, 90);
-                    break;
-                case 'invert':
-                    $commands .= ' -negate';
-                    break;
-            }
-        }
-        return $commands;
     }
 
     /**
@@ -1762,43 +1607,21 @@ class GifBuilder
      */
     protected function unifyColors(\GdImage &$img, array $colArr, bool $closest): int
     {
-        $retCol = -1;
-        if ($colArr !== [] && function_exists('imagepng') && function_exists('imagecreatefrompng')) {
-            $firstCol = array_shift($colArr);
-            $firstColArr = $this->convertColor($firstCol);
-            $origName = $preName = $this->imageService->randomName() . '.png';
-            $postName = $this->imageService->randomName() . '.png';
-            $tmpImg = null;
-            if (count($colArr) > 1) {
-                $this->ImageWrite($img, $preName);
-                $firstCol = $this->hexColor($firstColArr);
-                foreach ($colArr as $transparentColor) {
-                    $transparentColor = $this->convertColor($transparentColor);
-                    $transparentColor = $this->hexColor($transparentColor);
-                    $cmd = '-fill "' . $firstCol . '" -opaque "' . $transparentColor . '"';
-                    $this->imageService->imageMagickExec($preName, $postName, $cmd);
-                    $preName = $postName;
-                }
-                $this->imageService->imageMagickExec($postName, $origName, '');
-                if (@is_file($origName)) {
-                    $tmpImg = $this->imageCreateFromFile($origName);
-                }
-            } else {
-                $tmpImg = $img;
-            }
-            if ($tmpImg) {
-                $img = $tmpImg;
-                if ($closest) {
-                    $retCol = imagecolorclosest($img, $firstColArr[0], $firstColArr[1], $firstColArr[2]);
-                } else {
-                    $retCol = imagecolorexact($img, $firstColArr[0], $firstColArr[1], $firstColArr[2]);
-                }
-            }
-            // Unlink files from process
-            @unlink($origName);
-            @unlink($postName);
+        if ($colArr === []) {
+            return -1;
         }
-        return $retCol;
+        $canvas = GraphicsCanvas::load($img);
+        $primary = $this->convertColor((string)array_shift($colArr));
+        if (count($colArr) > 1) {
+            $secondaries = [];
+            foreach ($colArr as $colorString) {
+                $secondaries[] = $this->convertColor((string)$colorString);
+            }
+            $canvas->remapColors($secondaries, $primary);
+        }
+        return $closest
+            ? $canvas->findClosestColor($primary[0], $primary[1], $primary[2])
+            : $canvas->findExactColor($primary[0], $primary[1], $primary[2]);
     }
 
     /**
@@ -2084,7 +1907,10 @@ class GifBuilder
             $fontFile = GeneralUtility::getFileAbsFileName($strCfg['fontFile']);
             if (is_readable($fontFile)) {
                 // Calculate Bounding Box for part.
-                $calc = imagettfbbox($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
+                $calc = GraphicsCanvas::measureText($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
+                if ($calc === null) {
+                    continue;
+                }
                 // Calculate offsets:
                 if (empty($offsetInfo)) {
                     // First run, just copy over.
@@ -2129,7 +1955,7 @@ class GifBuilder
             // Set custom color if any (only when niceText is off):
             if (($strCfg['color'] ?? false) && $sF == 1) {
                 $cols = $this->convertColor($strCfg['color']);
-                $colorIndex = imagecolorallocate($im, $cols[0], $cols[1], $cols[2]);
+                $colorIndex = GraphicsCanvas::load($im)->allocateColor($cols[0], $cols[1], $cols[2]);
                 $colorIndex = $color >= 0 ? $colorIndex : -$colorIndex;
             }
             // Setting xSpaceBefore
@@ -2140,11 +1966,13 @@ class GifBuilder
             $fontFile = GeneralUtility::getFileAbsFileName($strCfg['fontFile']);
             if (is_readable($fontFile)) {
                 // Render part:
-                imagettftext($im, $this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
+                GraphicsCanvas::load($im)->renderText($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
                 // Calculate offset to apply:
-                $wordInf = imagettfbbox($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, GeneralUtility::getFileAbsFileName($strCfg['fontFile']), $strCfg['str']);
-                $x += $wordInf[2] - $wordInf[0] + (int)($splitRendering['compX'] ?? 0) + (int)($strCfg['xSpaceAfter'] ?? 0);
-                $y += $wordInf[5] - $wordInf[7] - (int)($splitRendering['compY'] ?? 0) - (int)($strCfg['ySpaceAfter'] ?? 0);
+                $wordInf = GraphicsCanvas::measureText($this->compensateFontSizeiBasedOnFreetypeDpi($sF * $strCfg['fontSize']), $angle, GeneralUtility::getFileAbsFileName($strCfg['fontFile']), $strCfg['str']);
+                if ($wordInf !== null) {
+                    $x += $wordInf[2] - $wordInf[0] + (int)($splitRendering['compX'] ?? 0) + (int)($strCfg['xSpaceAfter'] ?? 0);
+                    $y += $wordInf[5] - $wordInf[7] - (int)($splitRendering['compY'] ?? 0) - (int)($strCfg['ySpaceAfter'] ?? 0);
+                }
             } else {
                 debug('cannot read file: ' . $fontFile, self::class . '::ImageTTFTextWrapper()');
             }
@@ -2433,108 +2261,6 @@ class GifBuilder
         return $fontSize / 96.0 * 72;
     }
 
-    /*************************
-     *
-     * Adjustment functions
-     *
-     ************************/
-    /**
-     * Apply auto-levels to input image pointer
-     *
-     * @param \GdImage $im GDlib Image Pointer
-     */
-    protected function autolevels(\GdImage &$im): void
-    {
-        $totalCols = imagecolorstotal($im);
-        $grayArr = [];
-        for ($c = 0; $c < $totalCols; $c++) {
-            $cols = imagecolorsforindex($im, $c);
-            $grayArr[] = (int)round(($cols['red'] + $cols['green'] + $cols['blue']) / 3);
-        }
-        $min = min($grayArr);
-        $max = max($grayArr);
-        $delta = $max - $min;
-        if ($delta) {
-            for ($c = 0; $c < $totalCols; $c++) {
-                $cols = imagecolorsforindex($im, $c);
-                $cols['red'] = (int)floor(($cols['red'] - $min) / $delta * 255);
-                $cols['green'] = (int)floor(($cols['green'] - $min) / $delta * 255);
-                $cols['blue'] = (int)floor(($cols['blue'] - $min) / $delta * 255);
-                imagecolorset($im, $c, $cols['red'], $cols['green'], $cols['blue']);
-            }
-        }
-    }
-
-    /**
-     * Apply output levels to input image pointer (decreasing contrast)
-     *
-     * @param \GdImage $im GDlib Image Pointer
-     * @param int $low The "low" value (close to 0)
-     * @param int $high The "high" value (close to 255)
-     */
-    protected function outputLevels(\GdImage &$im, int $low, int $high): void
-    {
-        if ($low < $high) {
-            $low = MathUtility::forceIntegerInRange($low, 0, 255);
-            $high = MathUtility::forceIntegerInRange($high, 0, 255);
-            $delta = $high - $low;
-            $totalCols = imagecolorstotal($im);
-            for ($c = 0; $c < $totalCols; $c++) {
-                $cols = imagecolorsforindex($im, $c);
-                $cols['red'] = $low + floor($cols['red'] / 255 * $delta);
-                $cols['green'] = $low + floor($cols['green'] / 255 * $delta);
-                $cols['blue'] = $low + floor($cols['blue'] / 255 * $delta);
-                imagecolorset($im, $c, (int)$cols['red'], (int)$cols['green'], (int)$cols['blue']);
-            }
-        }
-    }
-
-    /**
-     * Apply input levels to input image pointer (increasing contrast)
-     *
-     * @param \GdImage $im GDlib Image Pointer
-     * @param int $low The "low" value (close to 0)
-     * @param int $high The "high" value (close to 255)
-     */
-    protected function inputLevels(\GdImage &$im, int $low, int $high): void
-    {
-        if ($low < $high) {
-            $low = MathUtility::forceIntegerInRange($low, 0, 255);
-            $high = MathUtility::forceIntegerInRange($high, 0, 255);
-            $delta = $high - $low;
-            $totalCols = imagecolorstotal($im);
-            for ($c = 0; $c < $totalCols; $c++) {
-                $cols = imagecolorsforindex($im, $c);
-                $cols['red'] = MathUtility::forceIntegerInRange((int)(($cols['red'] - $low) / $delta * 255), 0, 255);
-                $cols['green'] = MathUtility::forceIntegerInRange((int)(($cols['green'] - $low) / $delta * 255), 0, 255);
-                $cols['blue'] = MathUtility::forceIntegerInRange((int)(($cols['blue'] - $low) / $delta * 255), 0, 255);
-                imagecolorset($im, $c, $cols['red'], $cols['green'], $cols['blue']);
-            }
-        }
-    }
-
-    /**
-     * Applies an ImageMagick parameter to a GDlib image pointer resource by writing the resource to file,
-     * performing an IM operation upon it and reading back the result into the ImagePointer.
-     *
-     * @param \GdImage $im The image pointer (reference)
-     * @param string $command The ImageMagick parameters. Like effects, scaling etc.
-     */
-    protected function applyImageMagickToPHPGif(\GdImage &$im, string $command): void
-    {
-        $tmpStr = $this->imageService->randomName();
-        $theFile = $tmpStr . '.png';
-        $this->ImageWrite($im, $theFile);
-        $this->imageService->imageMagickExec($theFile, $theFile, $command);
-        $tmpImg = $this->imageCreateFromFile($theFile);
-        if ($tmpImg) {
-            $im = $tmpImg;
-            $this->w = imagesx($im);
-            $this->h = imagesy($im);
-        }
-        unlink($theFile);
-    }
-
     /**
      * Writes the input GDlib image pointer to file
      *
@@ -2549,42 +2275,20 @@ class GifBuilder
      */
     public function ImageWrite(\GdImage &$destImg, string $theImage, int $quality = 0, int $speed = -1): bool
     {
-        imageinterlace($destImg, false);
         $ext = strtolower(substr($theImage, (int)strrpos($theImage, '.') + 1));
-        $result = false;
-        switch ($ext) {
-            case 'jpg':
-            case 'jpeg':
-                if (function_exists('imagejpeg')) {
-                    $result = imagejpeg($destImg, $theImage, ($quality ?: $this->jpegQuality));
-                }
-                break;
-            case 'webp':
-                if (function_exists('imagewebp')) {
-                    $result = imagewebp($destImg, $theImage, ($quality ?: $this->webpQuality));
-                }
-                break;
-            case 'avif':
-                if (function_exists('imageavif')) {
-                    $result = imageavif($destImg, $theImage, ($quality ?: $this->avifQuality), $speed);
-                }
-                break;
-            case 'gif':
-                if (function_exists('imagegif')) {
-                    imagetruecolortopalette($destImg, true, 256);
-                    $result = imagegif($destImg, $theImage);
-                }
-                break;
-            case 'png':
-                if (function_exists('imagepng')) {
-                    $result = imagepng($destImg, $theImage);
-                }
-                break;
+        if (!GraphicsCanvas::canWrite($ext)) {
+            return false;
         }
-        if ($result) {
-            GeneralUtility::fixPermissions($theImage);
-        }
-        return $result;
+        $resolvedQuality = match ($ext) {
+            'jpg', 'jpeg' => $quality ?: $this->jpegQuality,
+            'webp' => $quality ?: $this->webpQuality,
+            'avif' => $quality ?: $this->avifQuality,
+            default => $quality,
+        };
+        // saveToFile() fixes the file permissions itself.
+        return GraphicsCanvas::load($destImg)
+            ->setInterlace(false)
+            ->saveToFile($theImage, $ext, $resolvedQuality, $speed);
     }
 
     /**
@@ -2595,53 +2299,19 @@ class GifBuilder
      */
     public function imageCreateFromFile(string $sourceImg): \GdImage|false
     {
-        $imgInf = pathinfo($sourceImg);
-        $ext = strtolower($imgInf['extension']);
-        switch ($ext) {
-            case 'gif':
-                if (function_exists('imagecreatefromgif')) {
-                    return imagecreatefromgif($sourceImg);
-                }
-                break;
-            case 'png':
-                if (function_exists('imagecreatefrompng')) {
-                    $imageHandle = imagecreatefrompng($sourceImg);
-                    if ($this->saveAlphaLayer) {
-                        imagesavealpha($imageHandle, true);
-                    }
-                    return $imageHandle;
-                }
-                break;
-            case 'jpg':
-            case 'jpeg':
-                if (function_exists('imagecreatefromjpeg')) {
-                    return imagecreatefromjpeg($sourceImg);
-                }
-                break;
-            case 'webp':
-                if (function_exists('imagecreatefromwebp')) {
-                    return imagecreatefromwebp($sourceImg);
-                }
-                break;
-            case 'avif':
-                if (function_exists('imagecreatefromavif')) {
-                    return imagecreatefromavif($sourceImg);
-                }
-                break;
-        }
-        // If none of the above:
-        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $sourceImg);
-        $im = imagecreatetruecolor($imageInfo->getWidth(), $imageInfo->getHeight());
-        $Bcolor = imagecolorallocate($im, 128, 128, 128);
-        imagefilledrectangle($im, 0, 0, $imageInfo->getWidth(), $imageInfo->getHeight(), $Bcolor);
-        return $im;
+        $canvas = GraphicsCanvas::loadFile($sourceImg, $this->saveAlphaLayer);
+        return $canvas?->resource() ?? $this->createFallbackImage($sourceImg);
     }
 
     /**
-     * @internal Only used for ext:install, not part of TYPO3 Core API.
+     * Create a blank gray fallback image with the dimensions of the source file.
      */
-    public function getGraphicalFunctions(): GraphicalFunctions
+    private function createFallbackImage(string $sourceImg): \GdImage|false
     {
-        return $this->imageService;
+        $size = @getimagesize($sourceImg);
+        if ($size === false || $size[0] <= 0 || $size[1] <= 0) {
+            return false;
+        }
+        return GraphicsCanvas::create($size[0], $size[1], 128, 128, 128)->resource();
     }
 }

@@ -1,0 +1,86 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:asset.module identifier="@typo3/styleguide/gif-builder-code-modal.js"/>
+
+    <style>
+        .gifbuilder-demo-img {
+            aspect-ratio: 4 / 3;
+            object-fit: contain;
+        }
+    </style>
+
+    <div class="styleguide-content">
+        <h1><f:translate key="action.gifBuilder" domain="styleguide.messages" /></h1>
+        <p>
+            <f:sanitize.html><f:translate key="action.gifBuilder.description" domain="styleguide.messages" /></f:sanitize.html>
+        </p>
+
+        <f:for each="{demoGroups}" as="group" key="groupKey">
+            <h2 class="mt-4">{group.title}</h2>
+            <div class="card-container">
+                <f:for each="{group.demos}" as="demo" key="demoKey">
+                    <f:variable name="codeId" value="gifbuilder-code-{groupKey}-{demoKey}" />
+                    <div class="card card-size-small">
+                        <div class="card-header">
+                            <div class="card-header-body">
+                                <h3 class="card-title">{demo.title}</h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{demo.description}</p>
+                        </div>
+                        <div class="card-footer">
+                            <f:if condition="{demo.error}">
+                                <f:then>
+                                    <f:be.infobox state="{f:constant(name: 'TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING')}" title="Error">
+                                        {demo.error}
+                                    </f:be.infobox>
+                                </f:then>
+                                <f:else>
+                                    <div class="example example--slim example--simple example--checkered">
+                                        <img src="{demo.url}" alt="{demo.title}" class="gifbuilder-demo-img" />
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <small class="text-muted">{demo.info}</small>
+                                        <div class="btn-group btn-group-sm">
+                                            <button
+                                                type="button"
+                                                class="btn btn-default t3js-gif-builder-code-trigger"
+                                                data-code-target="{codeId}-php"
+                                                data-code-title="{demo.title} · PHP"
+                                                data-code-language="php"
+                                            >
+                                                PHP
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-default t3js-gif-builder-code-trigger"
+                                                data-code-target="{codeId}-ts"
+                                                data-code-title="{demo.title} · TypoScript"
+                                                data-code-language="typoscript"
+                                            >
+                                                TypoScript
+                                            </button>
+                                        </div>
+                                    </div>
+                                </f:else>
+                            </f:if>
+                            <template id="{codeId}-php">{demo.phpSnippet}</template>
+                            <template id="{codeId}-ts">{demo.typoScriptSnippet}</template>
+                        </div>
+                    </div>
+                </f:for>
+            </div>
+        </f:for>
+    </div>
+
+</f:section>
+
+</html>

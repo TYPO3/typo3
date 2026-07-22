@@ -1,6 +1,7 @@
 <?php
 
 use TYPO3\CMS\Styleguide\Controller\ComponentsController;
+use TYPO3\CMS\Styleguide\Controller\GraphicalFunctionsController;
 use TYPO3\CMS\Styleguide\Controller\PageTreesController;
 use TYPO3\CMS\Styleguide\Controller\StylesController;
 
@@ -52,6 +53,18 @@ return [
         'routes' => [
             '_default' => [
                 'target' => PageTreesController::class . '::handleRequest',
+            ],
+        ],
+    ],
+    'styleguide_graphical_functions' => [
+        'parent' => 'styleguide',
+        'access' => 'admin',
+        'workspaces' => 'live',
+        'path' => '/module/styleguide/graphical-functions',
+        'labels' => 'styleguide.modules.graphical_functions',
+        'routes' => [
+            '_default' => [
+                'target' => GraphicalFunctionsController::class . '::handleRequest',
             ],
         ],
     ],

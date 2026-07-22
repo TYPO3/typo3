@@ -18,6 +18,12 @@
       <trans-unit id="stylesOverview.link.title">
         <source>Open %1s style</source>
       </trans-unit>
+      <trans-unit id="action.gifBuilder">
+        <source>GifBuilder</source>
+      </trans-unit>
+      <trans-unit id="action.gifBuilder.description">
+        <source>Live demos of every GIFBUILDER object — BOX, ELLIPSE, TEXT (with niceText and shadow variants), OUTLINE, EMBOSS, standalone SHADOW — plus every EFFECT value, the ADJUST tone curves, and the CROP / SCALE / IMAGE composites, all rendered through the real GifBuilder pipeline.</source>
+      </trans-unit>
       <trans-unit id="styleguide">
         <source>Styleguide</source>
       </trans-unit>

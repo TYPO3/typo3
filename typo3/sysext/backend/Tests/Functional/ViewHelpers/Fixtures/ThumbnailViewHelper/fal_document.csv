@@ -1,0 +1,23 @@
+"sys_file_storage"
+,"uid","pid","name","processingfolder","driver","is_browsable","is_public","is_writable","is_online","configuration"
+,1,0,"fileadmin/ (auto-created)","_processed_/","Local",1,1,1,1,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+	<data>
+		<sheet index=""sDEF"">
+			<language index=""lDEF"">
+				<field index=""basePath"">
+					<value index=""vDEF"">fileadmin/</value>
+				</field>
+				<field index=""pathType"">
+					<value index=""vDEF"">relative</value>
+				</field>
+				<field index=""caseSensitive"">
+					<value index=""vDEF"">1</value>
+				</field>
+			</language>
+		</sheet>
+	</data>
+</T3FlexForms>"
+"sys_file"
+,"uid","pid","tstamp","last_indexed","storage","type","metadata","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","creation_date","modification_date","missing"
+,"1","0","1697814707","1697814707","1","1","0","/user_upload/ThumbnailViewHelperFalTest.txt","25da8b65d66b78530c2896a4ea378e3f7e76dd3c","85b130b44ae1a7dae9348a42b3d4a68e5450fc44","txt","text/plain","ThumbnailViewHelperFalTest.txt","aefd0c6ce4606da80f8503640d117cb27fc3335e","14","1697814707","1697814707","0"

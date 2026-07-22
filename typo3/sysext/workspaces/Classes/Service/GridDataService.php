@@ -801,13 +801,16 @@ readonly class GridDataService
             return null;
         }
         foreach ($candidates as $identifierWithRandomValue => $fileReference) {
-            if ($useThumbnails) {
-                $thumbnailFile = $fileReference->getOriginalFile()->process(
-                    ProcessedFile::CONTEXT_IMAGEPREVIEW,
-                    ['width' => 40, 'height' => 40]
-                );
-                $thumbnailMarkup = '<img src="' . htmlspecialchars($thumbnailFile->getPublicUrl() ?? '') . '" />';
-                $substitutes[$identifierWithRandomValue] = $thumbnailMarkup;
+            $originalFile = $fileReference->getOriginalFile();
+            $thumbnailFile = $useThumbnails ? $originalFile->process(
+                ProcessedFile::CONTEXT_IMAGEPREVIEW,
+                ['width' => 40, 'height' => 40]
+            ) : null;
+            // A processed file falling back to a non-image original means no processor was
+            // able to create a thumbnail, so link the file instead of rendering a broken image.
+            $hasThumbnail = $thumbnailFile !== null && (!$thumbnailFile->usesOriginalFile() || $originalFile->isImage());
+            if ($hasThumbnail) {
+                $substitutes[$identifierWithRandomValue] = '<img src="' . htmlspecialchars($thumbnailFile->getPublicUrl() ?? '') . '" />';
             } else {
                 $substitutes[$identifierWithRandomValue] = $fileReference->getPublicUrl();
             }
