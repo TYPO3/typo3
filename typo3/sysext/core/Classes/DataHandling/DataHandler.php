@@ -7696,10 +7696,6 @@ class DataHandler
         if (!$perms) {
             throw new \RuntimeException('Invalid $perms bitset: "' . $perms . '"', 1270853920);
         }
-        $beUserUid = $this->BE_USER->getUserId();
-        if (!$beUserUid) {
-            return false;
-        }
         if ($this->bypassAccessCheckForRecords || $this->admin) {
             return true;
         }
@@ -7709,6 +7705,10 @@ class DataHandler
         }
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
         if (!$pagesSchema->hasCapability(TcaSchemaCapability::RestrictionWebMount) && !$this->BE_USER->isInWebMount($page, '', $useDeleteClause)) {
+            return false;
+        }
+        $beUserUid = $this->BE_USER->getUserId();
+        if (!$beUserUid) {
             return false;
         }
         $permission = new Permission($perms);
