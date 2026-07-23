@@ -56,17 +56,16 @@ final class SiteConfigurationTest extends UnitTestCase
             GeneralUtility::mkdir_deep($this->fixturePath);
         }
         $this->testFilesToDelete[] = $basePath;
-        $setRegistry = $this->createMock(SetRegistry::class);
-        $packageDependentCacheIdentifier = $this->createMock(PackageDependentCacheIdentifier::class);
-        $settingsTypeRegistry = new SettingsTypeRegistry($this->createMock(ServiceLocator::class));
+        $setRegistry = self::createStub(SetRegistry::class);
+        $settingsTypeRegistry = new SettingsTypeRegistry(self::createStub(ServiceLocator::class));
         $settingsFactory = new SettingsFactory($settingsTypeRegistry);
         $this->siteConfiguration = new SiteConfiguration(
             $this->fixturePath,
-            new SiteSettingsFactory($this->fixturePath, $setRegistry, $settingsTypeRegistry, $settingsFactory, $this->createMock(YamlFileLoader::class), new NullFrontend('test'), $packageDependentCacheIdentifier),
+            new SiteSettingsFactory($this->fixturePath, $setRegistry, $settingsTypeRegistry, $settingsFactory, self::createStub(YamlFileLoader::class), new NullFrontend('test'), self::createStub(PackageDependentCacheIdentifier::class)),
             $setRegistry,
             new NoopEventDispatcher(),
             new NullFrontend('test'),
-            new YamlFileLoader($this->createMock(LoggerInterface::class)),
+            new YamlFileLoader(self::createStub(LoggerInterface::class)),
             new NullFrontend('test')
         );
     }

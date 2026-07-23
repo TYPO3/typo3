@@ -52,9 +52,9 @@ final class QueryFactoryTest extends UnitTestCase
         );
         $dataMapFactoryMock = $this->createMock(DataMapFactory::class);
         $dataMapFactoryMock->method('buildDataMap')->willReturn($dataMap);
-        $subject = new QueryFactory($this->createMock(ConfigurationManagerInterface::class), $dataMapFactoryMock);
+        $subject = new QueryFactory(self::createStub(ConfigurationManagerInterface::class), $dataMapFactoryMock);
         $query = $this->createMock(QueryInterface::class);
-        $querySettings = new Typo3QuerySettings(new Context(), $this->createMock(ConfigurationManagerInterface::class));
+        $querySettings = new Typo3QuerySettings(new Context(), self::createStub(ConfigurationManagerInterface::class));
         GeneralUtility::addInstance(QuerySettingsInterface::class, $querySettings);
         GeneralUtility::addInstance(QueryInterface::class, $query);
         $query->expects($this->once())->method('setQuerySettings')->with($querySettings);

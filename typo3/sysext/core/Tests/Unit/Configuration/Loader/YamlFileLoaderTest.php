@@ -103,7 +103,7 @@ final class YamlFileLoaderTest extends UnitTestCase
         $subject = $this->getAccessibleMock(
             YamlFileLoader::class,
             ['getFileContents', 'getStreamlinedFileName'],
-            [$this->createMock(LoggerInterface::class)]
+            [self::createStub(LoggerInterface::class)]
         );
         $subject->expects($this->once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
         $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
@@ -146,7 +146,7 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
         $subject = $this->getAccessibleMock(
             YamlFileLoader::class,
             ['getFileContents', 'getStreamlinedFileName'],
-            [$this->createMock(LoggerInterface::class)]
+            [self::createStub(LoggerInterface::class)]
         );
         $subject->expects($this->once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
         $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
@@ -210,7 +210,7 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
         $subject = $this->getAccessibleMock(
             YamlFileLoader::class,
             null,
-            [$this->createMock(LoggerInterface::class)]
+            [self::createStub(LoggerInterface::class)]
         );
         $output = $subject->_call('containsPlaceholder', $placeholderValue);
         self::assertSame($expected, $output);

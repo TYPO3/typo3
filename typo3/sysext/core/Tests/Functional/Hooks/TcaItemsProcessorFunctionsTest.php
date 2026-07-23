@@ -40,11 +40,10 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
     {
         parent::setUp();
         // Default LANG mock just returns incoming value as label if calling ->sL()
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
-        $iconRegistryMock = $this->createMock(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconRegistryMock);
+        $languageServiceStub = self::createStub(LanguageService::class);
+        $languageServiceStub->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceStub;
+        GeneralUtility::setSingletonInstance(IconRegistry::class, self::createStub(IconRegistry::class));
     }
 
     #[Test]
@@ -128,9 +127,9 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
     #[Test]
     public function populateAvailableUserModulesTest(): void
     {
-        $moduleProviderMock = $this->createMock(ModuleProvider::class);
-        $moduleFactory = new ModuleFactory($this->createMock(IconRegistry::class), new NoopEventDispatcher());
-        $moduleProviderMock->method('getUserModules')->willReturn([
+        $moduleProviderStub = self::createStub(ModuleProvider::class);
+        $moduleFactory = new ModuleFactory(self::createStub(IconRegistry::class), new NoopEventDispatcher());
+        $moduleProviderStub->method('getUserModules')->willReturn([
             // Short-form language domain variant
             'aModule' => $moduleFactory->createModule('aModule', [
                 'iconIdentifier' => 'a-module',
@@ -170,7 +169,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
         $subject = new TcaItemsProcessorFunctions(
             $this->get(IconFactory::class),
             $this->get(IconRegistry::class),
-            $moduleProviderMock,
+            $moduleProviderStub,
             $this->get(FlexFormTools::class),
             $this->get(TcaSchemaFactory::class),
             $this->get(PageDoktypeRegistry::class),

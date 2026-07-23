@@ -83,8 +83,8 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
         $options = ['allowedMimeTypes' => ['image/jpeg']];
         $validator = new MimeTypeValidator();
         $validator->setOptions($options);
-        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
-        $file = new File(['name' => 'foo', 'identifier' => '/foo', 'mime_type' => 'image/png'], $mockedStorage);
+        $storageStub = self::createStub(ResourceStorage::class);
+        $file = new File(['name' => 'foo', 'identifier' => '/foo', 'mime_type' => 'image/png'], $storageStub);
         self::assertTrue($validator->validate($file)->hasErrors());
     }
 
@@ -125,12 +125,12 @@ final class MimeTypeValidatorTest extends FunctionalTestCase
         $options = ['allowedMimeTypes' => $allowedMimeTypes];
         $validator = new MimeTypeValidator();
         $validator->setOptions($options);
-        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
+        $storageStub = self::createStub(ResourceStorage::class);
         $file = new File([
             'name' => $fileName,
             'identifier' => '/folder/' . $fileName,
             'mime_type' => $fileMimeType,
-        ], $mockedStorage);
+        ], $storageStub);
         $result = $validator->validate($file);
         self::assertSame($isValid, !$result->hasErrors());
     }

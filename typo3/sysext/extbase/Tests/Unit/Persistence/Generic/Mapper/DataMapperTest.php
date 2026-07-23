@@ -44,26 +44,26 @@ final class DataMapperTest extends UnitTestCase
     {
         parent::setUp();
         $columnMapFactory = new ColumnMapFactory(
-            $this->createMock(ReflectionService::class)
+            self::createStub(ReflectionService::class)
         );
         $dataMapFactory = new DataMapFactory(
-            $this->createMock(ClassesConfiguration::class),
+            self::createStub(ClassesConfiguration::class),
             $columnMapFactory,
-            $this->createMock(TcaSchemaFactory::class),
+            self::createStub(TcaSchemaFactory::class),
             'foo',
-            $this->createMock(FrontendInterface::class),
-            $this->createMock(FrontendInterface::class),
+            self::createStub(FrontendInterface::class),
+            self::createStub(FrontendInterface::class),
         );
         $this->subject = new DataMapper(
-            $this->createMock(ReflectionService::class),
-            $this->createMock(QueryObjectModelFactory::class),
-            $this->createMock(Session::class),
+            self::createStub(ReflectionService::class),
+            self::createStub(QueryObjectModelFactory::class),
+            self::createStub(Session::class),
             $dataMapFactory,
-            $this->createMock(QueryFactory::class),
-            $this->createMock(EventDispatcherInterface::class),
-            $this->createMock(InstantiatorInterface::class),
-            $this->createMock(TcaSchemaFactory::class),
-            $this->createMock(CountryProvider::class),
+            self::createStub(QueryFactory::class),
+            self::createStub(EventDispatcherInterface::class),
+            self::createStub(InstantiatorInterface::class),
+            self::createStub(TcaSchemaFactory::class),
+            self::createStub(CountryProvider::class),
         );
     }
 

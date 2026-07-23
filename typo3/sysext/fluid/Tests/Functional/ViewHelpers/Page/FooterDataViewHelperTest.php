@@ -55,7 +55,7 @@ final class FooterDataViewHelperTest extends FunctionalTestCase
 
     private function createRequest(): ServerRequest
     {
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         return (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)

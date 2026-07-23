@@ -55,29 +55,29 @@ final class FormEditorControllerTest extends FunctionalTestCase
     #[Test]
     public function getInsertRenderablesPanelConfigurationReturnsGroupedAndSortedConfiguration(): void
     {
-        $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
-        $formEditorEnrichmentServiceMock = $this->createMock(FormEditorEnrichmentService::class);
-        $formEditorEnrichmentServiceMock->method('enrichFormEditorDefinitions')->willReturnArgument(0);
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateValuesRecursive')->willReturnArgument(0);
+        $formEditorEnrichmentServiceStub = self::createStub(FormEditorEnrichmentService::class);
+        $formEditorEnrichmentServiceStub->method('enrichFormEditorDefinitions')->willReturnArgument(0);
         $subjectMock = $this->getAccessibleMock(
             FormEditorController::class,
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(FormDefinitionConversionService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $translationServiceMock,
-                $this->createMock(ConfigurationService::class),
-                $this->createMock(UriBuilder::class),
-                $this->createMock(ArrayFormFactory::class),
-                $this->createMock(ViewFactoryInterface::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(CacheManager::class),
-                $this->createMock(ComponentFactory::class),
-                $formEditorEnrichmentServiceMock,
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(FormDefinitionConversionService::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                $translationServiceStub,
+                self::createStub(ConfigurationService::class),
+                self::createStub(UriBuilder::class),
+                self::createStub(ArrayFormFactory::class),
+                self::createStub(ViewFactoryInterface::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(CacheManager::class),
+                self::createStub(ComponentFactory::class),
+                $formEditorEnrichmentServiceStub,
             ],
         );
         $prototypeConfiguration = [
@@ -163,29 +163,29 @@ final class FormEditorControllerTest extends FunctionalTestCase
     #[Test]
     public function getFormEditorDefinitionsReturnReducedConfiguration(): void
     {
-        $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
-        $formEditorEnrichmentServiceMock = $this->createMock(FormEditorEnrichmentService::class);
-        $formEditorEnrichmentServiceMock->method('enrichFormEditorDefinitions')->willReturnArgument(0);
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateValuesRecursive')->willReturnArgument(0);
+        $formEditorEnrichmentServiceStub = self::createStub(FormEditorEnrichmentService::class);
+        $formEditorEnrichmentServiceStub->method('enrichFormEditorDefinitions')->willReturnArgument(0);
         $subjectMock = $this->getAccessibleMock(
             FormEditorController::class,
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(FormDefinitionConversionService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $translationServiceMock,
-                $this->createMock(ConfigurationService::class),
-                $this->createMock(UriBuilder::class),
-                $this->createMock(ArrayFormFactory::class),
-                $this->createMock(ViewFactoryInterface::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(CacheManager::class),
-                $this->createMock(ComponentFactory::class),
-                $formEditorEnrichmentServiceMock,
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(FormDefinitionConversionService::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                $translationServiceStub,
+                self::createStub(ConfigurationService::class),
+                self::createStub(UriBuilder::class),
+                self::createStub(ArrayFormFactory::class),
+                self::createStub(ViewFactoryInterface::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(CacheManager::class),
+                self::createStub(ComponentFactory::class),
+                $formEditorEnrichmentServiceStub,
             ],
         );
         $prototypeConfiguration = [
@@ -558,27 +558,27 @@ final class FormEditorControllerTest extends FunctionalTestCase
         $GLOBALS['LANG'] = $this->get(\TYPO3\CMS\Core\Localization\LanguageServiceFactory::class)
             ->createFromUserPreferences($GLOBALS['BE_USER']);
 
-        $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateValuesRecursive')->willReturnArgument(0);
 
         $subject = $this->getAccessibleMock(
             FormEditorController::class,
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
                 $this->get(FormDefinitionConversionService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $translationServiceMock,
-                $this->createMock(ConfigurationService::class),
-                $this->createMock(UriBuilder::class),
-                $this->createMock(ArrayFormFactory::class),
-                $this->createMock(ViewFactoryInterface::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(CacheManager::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                $translationServiceStub,
+                self::createStub(ConfigurationService::class),
+                self::createStub(UriBuilder::class),
+                self::createStub(ArrayFormFactory::class),
+                self::createStub(ViewFactoryInterface::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(CacheManager::class),
+                self::createStub(ComponentFactory::class),
                 $this->get(FormEditorEnrichmentService::class),
             ],
         );

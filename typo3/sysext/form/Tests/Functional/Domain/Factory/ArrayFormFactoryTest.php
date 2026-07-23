@@ -54,10 +54,10 @@ final class ArrayFormFactoryTest extends FunctionalTestCase
         $configurationService = new ConfigurationService(
             $extbaseConfigurationManager,
             $extFormConfigurationManager,
-            $this->createMock(TranslationService::class),
-            $this->createMock(FrontendInterface::class),
-            $this->createMock(FrontendInterface::class),
-            $this->createMock(EventDispatcherInterface::class),
+            self::createStub(TranslationService::class),
+            self::createStub(FrontendInterface::class),
+            self::createStub(FrontendInterface::class),
+            self::createStub(EventDispatcherInterface::class),
         );
         $prototypeConfiguration = $configurationService->getPrototypeConfiguration('standard');
 

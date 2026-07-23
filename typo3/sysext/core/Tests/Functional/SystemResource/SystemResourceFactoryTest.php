@@ -327,7 +327,7 @@ final class SystemResourceFactoryTest extends FunctionalTestCase
         $resource = $resourceFactory->createResource($resourceString);
         $expectedIdentifier ??= $expectedUri ?? $resourceString;
         self::assertInstanceOf(UriResource::class, $resource);
-        self::assertSame($expectedUri ?? $resourceString, (string)$resource->getPublicUri($this->createMock(SystemResourceUriGeneratorInterface::class)));
+        self::assertSame($expectedUri ?? $resourceString, (string)$resource->getPublicUri(self::createStub(SystemResourceUriGeneratorInterface::class)));
         self::assertSame($expectedIdentifier, (string)$resource);
         self::assertSame($expectedIdentifier, $resource->getResourceIdentifier());
     }

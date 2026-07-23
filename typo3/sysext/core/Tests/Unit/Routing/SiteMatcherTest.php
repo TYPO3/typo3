@@ -291,6 +291,6 @@ final class SiteMatcherTest extends UnitTestCase
             $sites
         );
         $siteConfigurationMock->method('getAllExistingSites')->willReturn($sitesArray);
-        return new SiteFinder($siteConfigurationMock, $this->createMock(FrontendInterface::class));
+        return new SiteFinder($siteConfigurationMock, self::createStub(FrontendInterface::class));
     }
 }

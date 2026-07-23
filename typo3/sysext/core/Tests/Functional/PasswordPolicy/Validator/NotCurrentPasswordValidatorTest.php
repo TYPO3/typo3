@@ -34,10 +34,7 @@ final class NotCurrentPasswordValidatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = $this->getMockBuilder(LanguageService::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['sL'])
-            ->getMock();
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
     }
 
     #[Test]

@@ -29,11 +29,11 @@ final class FormEditorEnrichmentServiceTest extends UnitTestCase
     #[Test]
     public function shouldEnrichEditorWithRichTextReturnsTrueForTextareaEditorWithEnableRichtext(): void
     {
-        $richTextServiceMock = $this->createMock(RichTextConfigurationService::class);
+        $richTextServiceStub = self::createStub(RichTextConfigurationService::class);
         $subject = $this->getAccessibleMock(
             FormEditorEnrichmentService::class,
             null,
-            [$richTextServiceMock]
+            [$richTextServiceStub]
         );
 
         $editor = [
@@ -49,11 +49,11 @@ final class FormEditorEnrichmentServiceTest extends UnitTestCase
     #[Test]
     public function shouldEnrichEditorWithRichTextReturnsFalseForOtherTemplateName(): void
     {
-        $richTextServiceMock = $this->createMock(RichTextConfigurationService::class);
+        $richTextServiceStub = self::createStub(RichTextConfigurationService::class);
         $subject = $this->getAccessibleMock(
             FormEditorEnrichmentService::class,
             null,
-            [$richTextServiceMock]
+            [$richTextServiceStub]
         );
 
         $editor = [
@@ -69,11 +69,11 @@ final class FormEditorEnrichmentServiceTest extends UnitTestCase
     #[Test]
     public function shouldEnrichEditorWithRichTextReturnsFalseForEnableRichtextFalse(): void
     {
-        $richTextServiceMock = $this->createMock(RichTextConfigurationService::class);
+        $richTextServiceStub = self::createStub(RichTextConfigurationService::class);
         $subject = $this->getAccessibleMock(
             FormEditorEnrichmentService::class,
             null,
-            [$richTextServiceMock]
+            [$richTextServiceStub]
         );
 
         $editor = [
@@ -89,11 +89,11 @@ final class FormEditorEnrichmentServiceTest extends UnitTestCase
     #[Test]
     public function shouldEnrichEditorWithRichTextReturnsFalseIfEnableRichtextMissing(): void
     {
-        $richTextServiceMock = $this->createMock(RichTextConfigurationService::class);
+        $richTextServiceStub = self::createStub(RichTextConfigurationService::class);
         $subject = $this->getAccessibleMock(
             FormEditorEnrichmentService::class,
             null,
-            [$richTextServiceMock]
+            [$richTextServiceStub]
         );
 
         $editor = [

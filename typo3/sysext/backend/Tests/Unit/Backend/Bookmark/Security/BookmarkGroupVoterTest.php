@@ -333,7 +333,7 @@ final class BookmarkGroupVoterTest extends UnitTestCase
 
     private function createBackendUser(int $uid, bool $admin): BackendUserAuthentication
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->user = ['uid' => $uid, 'admin' => $admin ? 1 : 0];
         $backendUser->method('isAdmin')->willReturn($admin);
         return $backendUser;

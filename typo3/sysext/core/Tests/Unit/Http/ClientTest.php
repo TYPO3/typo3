@@ -80,7 +80,7 @@ final class ClientTest extends UnitTestCase
     public function requestException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
-        $exception = $this->createMock(GuzzleRequestException::class);
+        $exception = self::createStub(GuzzleRequestException::class);
         $exception->method('getRequest')->willReturn($request);
         $mock = new GuzzleMockHandler([$exception]);
         $handler = GuzzleHandlerStack::create($mock);
@@ -94,7 +94,7 @@ final class ClientTest extends UnitTestCase
     public function networkException(): void
     {
         $request = new Request('https://example.com', 'GET', 'php://temp');
-        $exception = $this->createMock(GuzzleConnectException::class);
+        $exception = self::createStub(GuzzleConnectException::class);
         $exception->method('getRequest')->willReturn($request);
         $mock = new GuzzleMockHandler([$exception]);
         $handler = GuzzleHandlerStack::create($mock);

@@ -33,11 +33,11 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $backendUserAuthentication = $this->createMock(BackendUserAuthentication::class);
-        $backendUserAuthentication->method('checkLanguageAccess')->with(self::anything())->willReturn(true);
+        $backendUserAuthentication = self::createStub(BackendUserAuthentication::class);
+        $backendUserAuthentication->method('checkLanguageAccess')->willReturn(true);
         $GLOBALS['BE_USER'] = $backendUserAuthentication;
-        $languageService = $this->createMock(LanguageService::class);
-        $languageService->method('translate')->with(self::anything(), self::anything())->willReturnCallback(
+        $languageService = self::createStub(LanguageService::class);
+        $languageService->method('translate')->willReturnCallback(
             static fn(string $key, string $domain): string => match ($domain . ':' . $key) {
                 'core.general:LGL.defaultLanguage' => 'Default',
                 default => $key,
@@ -54,10 +54,10 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
         $siteFinderMock = $this->createMock(SiteFinder::class);
         $siteFinderMock->method('getSiteByPageId')->with($pageId)->willReturn($site);
         $subject = new TranslationConfigurationProvider(
-            $this->createMock(FrontendInterface::class),
+            self::createStub(FrontendInterface::class),
             $siteFinderMock,
-            $this->createMock(ConnectionPool::class),
-            $this->createMock(TcaSchemaFactory::class),
+            self::createStub(ConnectionPool::class),
+            self::createStub(TcaSchemaFactory::class),
         );
         $languages = $subject->getSystemLanguages($pageId);
         self::assertArrayHasKey(0, $languages);
@@ -66,8 +66,8 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
     #[Test]
     public function getSystemLanguagesConsolidatesLanguagesForRootLevel(): void
     {
-        $siteFinderMock = $this->createMock(SiteFinder::class);
-        $siteFinderMock->method('getAllSites')->willReturn([
+        $siteFinderStub = self::createStub(SiteFinder::class);
+        $siteFinderStub->method('getAllSites')->willReturn([
             new Site(
                 'dummy1',
                 1,
@@ -118,10 +118,10 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
             ),
         ]);
         $subject = new TranslationConfigurationProvider(
-            $this->createMock(FrontendInterface::class),
-            $siteFinderMock,
-            $this->createMock(ConnectionPool::class),
-            $this->createMock(TcaSchemaFactory::class),
+            self::createStub(FrontendInterface::class),
+            $siteFinderStub,
+            self::createStub(ConnectionPool::class),
+            self::createStub(TcaSchemaFactory::class),
         );
         $languages = $subject->getSystemLanguages(0);
         self::assertCount(3, $languages);
@@ -139,8 +139,8 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
     #[Test]
     public function getSystemLanguagesShowsDefaultLabelForLanguageZeroWhenTitlesDiffer(): void
     {
-        $siteFinderMock = $this->createMock(SiteFinder::class);
-        $siteFinderMock->method('getAllSites')->willReturn([
+        $siteFinderStub = self::createStub(SiteFinder::class);
+        $siteFinderStub->method('getAllSites')->willReturn([
             new Site(
                 'dummy1',
                 1,
@@ -173,10 +173,10 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
             ),
         ]);
         $subject = new TranslationConfigurationProvider(
-            $this->createMock(FrontendInterface::class),
-            $siteFinderMock,
-            $this->createMock(ConnectionPool::class),
-            $this->createMock(TcaSchemaFactory::class),
+            self::createStub(FrontendInterface::class),
+            $siteFinderStub,
+            self::createStub(ConnectionPool::class),
+            self::createStub(TcaSchemaFactory::class),
         );
         $languages = $subject->getSystemLanguages(0);
         self::assertSame('Default [0]', $languages[0]['title']);
@@ -186,8 +186,8 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
     #[Test]
     public function getSystemLanguagesShowsFlagsMultipleWhenFlagsDifferForRootLevel(): void
     {
-        $siteFinderMock = $this->createMock(SiteFinder::class);
-        $siteFinderMock->method('getAllSites')->willReturn([
+        $siteFinderStub = self::createStub(SiteFinder::class);
+        $siteFinderStub->method('getAllSites')->willReturn([
             new Site(
                 'dummy1',
                 1,
@@ -232,10 +232,10 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
             ),
         ]);
         $subject = new TranslationConfigurationProvider(
-            $this->createMock(FrontendInterface::class),
-            $siteFinderMock,
-            $this->createMock(ConnectionPool::class),
-            $this->createMock(TcaSchemaFactory::class),
+            self::createStub(FrontendInterface::class),
+            $siteFinderStub,
+            self::createStub(ConnectionPool::class),
+            self::createStub(TcaSchemaFactory::class),
         );
         $languages = $subject->getSystemLanguages(0);
         // Same title but different flags on a non-default language: flags-multiple icon

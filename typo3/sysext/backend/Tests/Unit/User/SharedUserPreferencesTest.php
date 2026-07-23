@@ -146,7 +146,7 @@ final class SharedUserPreferencesTest extends UnitTestCase
 
     private function createBackendUserWithUc(array $uc = []): BackendUserAuthentication
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->uc = $uc;
         $backendUser->method('writeUC')->willReturnCallback(function (): void {
             // Simulate UC write (no-op for tests)

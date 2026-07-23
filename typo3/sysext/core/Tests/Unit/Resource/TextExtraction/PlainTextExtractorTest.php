@@ -29,10 +29,10 @@ final class PlainTextExtractorTest extends UnitTestCase
     {
         $plainTextExtractor = new PlainTextExtractor();
 
-        $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->method('getMimeType')->willReturn('text/plain');
+        $fileResourceStub = self::createStub(File::class);
+        $fileResourceStub->method('getMimeType')->willReturn('text/plain');
 
-        self::assertTrue($plainTextExtractor->canExtractText($fileResourceMock));
+        self::assertTrue($plainTextExtractor->canExtractText($fileResourceStub));
     }
 
     #[Test]
@@ -40,9 +40,9 @@ final class PlainTextExtractorTest extends UnitTestCase
     {
         $plainTextExtractor = new PlainTextExtractor();
 
-        $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->method('getMimeType')->willReturn('video/mp4');
+        $fileResourceStub = self::createStub(File::class);
+        $fileResourceStub->method('getMimeType')->willReturn('video/mp4');
 
-        self::assertFalse($plainTextExtractor->canExtractText($fileResourceMock));
+        self::assertFalse($plainTextExtractor->canExtractText($fileResourceStub));
     }
 }

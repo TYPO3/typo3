@@ -39,7 +39,7 @@ final class YamlSourceTest extends UnitTestCase
         $mockYamlSource = $this->getAccessibleMock(
             YamlSource::class,
             null,
-            [new FilePersistenceSlot(new HashService()), new YamlFileLoader($this->createMock(LoggerInterface::class))]
+            [new FilePersistenceSlot(new HashService()), new YamlFileLoader(self::createStub(LoggerInterface::class))]
         );
         $input = [
             'EXT:form/Resources/Forms/_example.yaml',
@@ -55,7 +55,7 @@ final class YamlSourceTest extends UnitTestCase
         $mockYamlSource = $this->getAccessibleMock(
             YamlSource::class,
             null,
-            [new FilePersistenceSlot(new HashService()), new YamlFileLoader($this->createMock(LoggerInterface::class))]
+            [new FilePersistenceSlot(new HashService()), new YamlFileLoader(self::createStub(LoggerInterface::class))]
         );
         $input = [
             'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml',
@@ -69,7 +69,7 @@ final class YamlSourceTest extends UnitTestCase
         $mockYamlSource = $this->getAccessibleMock(
             YamlSource::class,
             null,
-            [new FilePersistenceSlot(new HashService()), new YamlFileLoader($this->createMock(LoggerInterface::class))],
+            [new FilePersistenceSlot(new HashService()), new YamlFileLoader(self::createStub(LoggerInterface::class))],
         );
         $input = GeneralUtility::getFileAbsFileName('EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Header.yaml');
         $expected
@@ -85,7 +85,7 @@ final class YamlSourceTest extends UnitTestCase
         $mockYamlSource = $this->getAccessibleMock(
             YamlSource::class,
             null,
-            [new FilePersistenceSlot(new HashService()), new YamlFileLoader($this->createMock(LoggerInterface::class))],
+            [new FilePersistenceSlot(new HashService()), new YamlFileLoader(self::createStub(LoggerInterface::class))],
         );
         $input = [
             'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues1.yaml',
@@ -106,7 +106,7 @@ final class YamlSourceTest extends UnitTestCase
         $mockYamlSource = $this->getAccessibleMock(
             YamlSource::class,
             null,
-            [new FilePersistenceSlot(new HashService()), new YamlFileLoader($this->createMock(LoggerInterface::class))],
+            [new FilePersistenceSlot(new HashService()), new YamlFileLoader(self::createStub(LoggerInterface::class))],
         );
         $input = [
             'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/ConfigurationWithVendorNamespacePrefix1.yaml',

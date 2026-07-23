@@ -31,7 +31,7 @@ final class SqlReaderTest extends UnitTestCase
     #[Test]
     public function getStatementArraySplitsStatements(): void
     {
-        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
+        $subject = new SqlReader(new NoopEventDispatcher(), self::createStub(PackageManager::class));
         $result = $subject->getStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');'
             . LF
@@ -45,7 +45,7 @@ final class SqlReaderTest extends UnitTestCase
     #[Test]
     public function getStatementArrayFiltersStatements(): void
     {
-        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
+        $subject = new SqlReader(new NoopEventDispatcher(), self::createStub(PackageManager::class));
         $result = $subject->getStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');'
             . LF
@@ -59,7 +59,7 @@ final class SqlReaderTest extends UnitTestCase
     #[Test]
     public function getInsertStatementArrayResult(): void
     {
-        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
+        $subject = new SqlReader(new NoopEventDispatcher(), self::createStub(PackageManager::class));
         $result = $subject->getInsertStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');'
             . LF
@@ -73,7 +73,7 @@ final class SqlReaderTest extends UnitTestCase
     #[Test]
     public function getInsertStatementArrayResultWithNewline(): void
     {
-        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
+        $subject = new SqlReader(new NoopEventDispatcher(), self::createStub(PackageManager::class));
         $result = $subject->getInsertStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');'
             . LF
@@ -89,7 +89,7 @@ final class SqlReaderTest extends UnitTestCase
     #[Test]
     public function getCreateTableStatementArrayResult(): void
     {
-        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
+        $subject = new SqlReader(new NoopEventDispatcher(), self::createStub(PackageManager::class));
         $result = $subject->getCreateTableStatementArray(
             'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');'
             . LF
@@ -103,7 +103,7 @@ final class SqlReaderTest extends UnitTestCase
     #[Test]
     public function getCreateTableStatementArrayResultWithComment(string $comment): void
     {
-        $subject = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
+        $subject = new SqlReader(new NoopEventDispatcher(), self::createStub(PackageManager::class));
         $result = $subject->getCreateTableStatementArray(
             $comment . LF . 'CREATE TABLE aTestTable(' . LF . '  aTestField INT(11)' . LF . ');'
             . LF

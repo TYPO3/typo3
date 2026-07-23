@@ -75,7 +75,7 @@ final class RawRecordTest extends UnitTestCase
     #[Test]
     public function getTypeReturnsExpectedParts(string $type, string $fullType, string $mainType, ?string $recordType): void
     {
-        $record = new RawRecord(123, 456, [], $this->createMock(ComputedProperties::class), $type);
+        $record = new RawRecord(123, 456, [], self::createStub(ComputedProperties::class), $type);
 
         self::assertSame($fullType, $record->getFullType());
         self::assertSame($mainType, $record->getMainType());

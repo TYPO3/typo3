@@ -68,7 +68,7 @@ final class FluidFormRendererTest extends FunctionalTestCase
         $definition = $this->buildFormDefinition();
         $runtime = $definition->bind($this->buildExtbaseRequest());
 
-        $subject = new FluidFormRenderer($this->createMock(ViewFactoryInterface::class), $this->get(EventDispatcherInterface::class));
+        $subject = new FluidFormRenderer(self::createStub(ViewFactoryInterface::class), $this->get(EventDispatcherInterface::class));
         $subject->setFormRuntime($runtime);
         $subject->render();
 

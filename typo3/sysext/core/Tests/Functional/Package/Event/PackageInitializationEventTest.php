@@ -41,7 +41,7 @@ final class PackageInitializationEventTest extends FunctionalTestCase
     public function gettersReturnInitializedObjects(): void
     {
         $extensionKey = 'my_ext';
-        $package = $this->createMock(Package::class);
+        $package = self::createStub(Package::class);
         $container = new Container();
         $emitter = $this;
 
@@ -66,7 +66,7 @@ final class PackageInitializationEventTest extends FunctionalTestCase
     public function setterOverwritesResult(): void
     {
         $extensionKey = 'my_ext';
-        $package = $this->createMock(Package::class);
+        $package = self::createStub(Package::class);
         $container = new Container();
         $emitter = $this;
 

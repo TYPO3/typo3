@@ -112,11 +112,11 @@ final class FileHandlingUtilityTest extends UnitTestCase
         touch($absoluteFilePath);
         symlink($absoluteFilePath, $absoluteSymlinkPath);
         $subject = new FileHandlingUtility(
-            $this->createMock(PackageManager::class),
-            $this->createMock(EmConfUtility::class),
-            $this->createMock(OpcodeCacheService::class),
-            $this->createMock(ZipService::class),
-            $this->createMock(LanguageServiceFactory::class),
+            self::createStub(PackageManager::class),
+            self::createStub(EmConfUtility::class),
+            self::createStub(OpcodeCacheService::class),
+            self::createStub(ZipService::class),
+            self::createStub(LanguageServiceFactory::class),
             new NullLogger(),
         );
         $subject->removeDirectory($absoluteSymlinkPath);
@@ -133,11 +133,11 @@ final class FileHandlingUtilityTest extends UnitTestCase
         touch($absoluteDirectoryPath . $relativeFilePath);
         symlink($absoluteDirectoryPath, $absoluteSymlinkPath);
         $subject = new FileHandlingUtility(
-            $this->createMock(PackageManager::class),
-            $this->createMock(EmConfUtility::class),
-            $this->createMock(OpcodeCacheService::class),
-            $this->createMock(ZipService::class),
-            $this->createMock(LanguageServiceFactory::class),
+            self::createStub(PackageManager::class),
+            self::createStub(EmConfUtility::class),
+            self::createStub(OpcodeCacheService::class),
+            self::createStub(ZipService::class),
+            self::createStub(LanguageServiceFactory::class),
             new NullLogger(),
         );
         $subject->removeDirectory($absoluteSymlinkPath);
@@ -343,11 +343,11 @@ final class FileHandlingUtilityTest extends UnitTestCase
             FileHandlingUtility::class,
             ['makeAndClearExtensionDir'],
             [
-                $this->createMock(PackageManager::class),
+                self::createStub(PackageManager::class),
                 new EmConfUtility(),
-                $this->createMock(OpcodeCacheService::class),
-                $this->createMock(ZipService::class),
-                $this->createMock(LanguageServiceFactory::class),
+                self::createStub(OpcodeCacheService::class),
+                self::createStub(ZipService::class),
+                self::createStub(LanguageServiceFactory::class),
                 new NullLogger(),
             ]
         );

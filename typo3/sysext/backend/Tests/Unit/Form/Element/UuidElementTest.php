@@ -34,7 +34,7 @@ final class UuidElementTest extends UnitTestCase
     {
         parent::setUp();
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
     }
 
     #[Test]
@@ -59,7 +59,7 @@ final class UuidElementTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1678895476);
 
-        $subject = new UuidElement($this->createMock(IconFactory::class));
+        $subject = new UuidElement(self::createStub(IconFactory::class));
         $subject->setData($data);
         $subject->render();
     }
@@ -86,7 +86,7 @@ final class UuidElementTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1678895476);
 
-        $subject = new UuidElement($this->createMock(IconFactory::class));
+        $subject = new UuidElement(self::createStub(IconFactory::class));
         $subject->setData($data);
         $subject->render();
     }
@@ -110,13 +110,13 @@ final class UuidElementTest extends UnitTestCase
             ],
         ];
 
-        $nodeFactoryMock = $this->createMock(NodeFactory::class);
-        $fieldInformationMock = $this->createMock(FieldInformation::class);
-        $fieldInformationMock->method('render')->willReturn(['html' => '']);
-        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
+        $nodeFactoryStub = self::createStub(NodeFactory::class);
+        $fieldInformationStub = self::createStub(FieldInformation::class);
+        $fieldInformationStub->method('render')->willReturn(['html' => '']);
+        $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
 
-        $subject = new UuidElement($this->createMock(IconFactory::class));
-        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject = new UuidElement(self::createStub(IconFactory::class));
+        $subject->injectNodeFactory($nodeFactoryStub);
         $subject->setData($data);
         $subject->render();
         $result = $subject->render();
@@ -146,13 +146,13 @@ final class UuidElementTest extends UnitTestCase
             ],
         ];
 
-        $nodeFactoryMock = $this->createMock(NodeFactory::class);
-        $fieldInformationMock = $this->createMock(FieldInformation::class);
-        $fieldInformationMock->method('render')->willReturn(['html' => '']);
-        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
+        $nodeFactoryStub = self::createStub(NodeFactory::class);
+        $fieldInformationStub = self::createStub(FieldInformation::class);
+        $fieldInformationStub->method('render')->willReturn(['html' => '']);
+        $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
 
-        $subject = new UuidElement($this->createMock(IconFactory::class));
-        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject = new UuidElement(self::createStub(IconFactory::class));
+        $subject->injectNodeFactory($nodeFactoryStub);
         $subject->setData($data);
         $subject->render();
         $result = $subject->render();

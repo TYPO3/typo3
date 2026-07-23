@@ -43,11 +43,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function getReturnsPreviouslySetEntry(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $subject->set('myIdentifier', 'myData');
         self::assertSame('myData', $subject->get('myIdentifier'));
@@ -56,11 +56,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function getReturnsPreviouslySetEntryWithNewContentIfSetWasCalledMultipleTimes(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $subject->set('myIdentifier', 'myData');
         $subject->set('myIdentifier', 'myNewData');
@@ -70,11 +70,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function setInsertsDataWithTagsIntoCacheTable(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $subject->set('myIdentifier', 'myData', ['aTag', 'anotherTag']);
 
@@ -88,12 +88,12 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function setStoresCompressedContent(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         // Have backend with compression enabled
         $subject = new Typo3DatabaseBackend(['compression' => true]);
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $subject->set('myIdentifier', 'myCachedContent');
 
@@ -113,11 +113,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function getReturnsFalseIfNoCacheEntryExists(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         self::assertFalse($subject->get('myIdentifier'));
     }
@@ -125,8 +125,8 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function getReturnsFalseForExpiredCacheEntry(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         // Push an expired row into db
         $this->get(ConnectionPool::class)->getConnectionForTable('cache_pages')->insert(
@@ -142,7 +142,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         self::assertFalse($subject->get('myIdentifier'));
     }
@@ -150,8 +150,8 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function getReturnsNotExpiredCacheEntry(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         // Push a row into db
         $this->get(ConnectionPool::class)->getConnectionForTable('cache_pages')->insert(
@@ -167,7 +167,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         self::assertSame('myCachedContent', $subject->get('myIdentifier'));
     }
@@ -175,8 +175,8 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function getReturnsUnzipsNotExpiredCacheEntry(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         // Push a compressed row into db
         $this->get(ConnectionPool::class)->getConnectionForTable('cache_pages')->insert(
@@ -193,7 +193,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Have backend with compression enabled
         $subject = new Typo3DatabaseBackend(['compression' => true]);
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         // Content comes back uncompressed
         self::assertSame('myCachedContent', $subject->get('myIdentifier'));
@@ -202,8 +202,8 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function getReturnsEmptyStringUnzipped(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         // Push a compressed row into db
         $this->get(ConnectionPool::class)->getConnectionForTable('cache_pages')->insert(
@@ -220,7 +220,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
 
         // Have backend with compression enabled
         $subject = new Typo3DatabaseBackend(['compression' => true]);
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         // Content comes back uncompressed
         self::assertSame('', $subject->get('myIdentifier'));
@@ -229,11 +229,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function hasReturnsFalseIfNoCacheEntryExists(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         self::assertFalse($subject->has('myIdentifier'));
     }
@@ -241,8 +241,8 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function hasReturnsFalseForExpiredCacheEntry(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         // Push an expired row into db
         $this->get(ConnectionPool::class)->getConnectionForTable('cache_pages')->insert(
@@ -258,7 +258,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         self::assertFalse($subject->has('myIdentifier'));
     }
@@ -266,8 +266,8 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function hasReturnsNotExpiredCacheEntry(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         // Push a row into db
         $this->get(ConnectionPool::class)->getConnectionForTable('cache_pages')->insert(
@@ -283,7 +283,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         self::assertTrue($subject->has('myIdentifier'));
     }
@@ -291,11 +291,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function removeReturnsFalseIfNoEntryHasBeenRemoved(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         self::assertFalse($subject->remove('myIdentifier'));
     }
@@ -303,8 +303,8 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function removeReturnsTrueIfAnEntryHasBeenRemoved(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         // Push a row into db
         $this->get(ConnectionPool::class)->getConnectionForTable('cache_pages')->insert(
@@ -320,7 +320,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
         );
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         self::assertTrue($subject->remove('myIdentifier'));
     }
@@ -328,8 +328,8 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function removeRemovesCorrectEntriesFromDatabase(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         // Add one cache row to remove and another one that shouldn't be removed
         $cacheTableConnection = $this->get(ConnectionPool::class)->getConnectionForTable('cache_pages');
@@ -347,7 +347,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
             ]
         );
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         // Add a couple of tags
         $tagsTableConnection = $this->get(ConnectionPool::class)->getConnectionForTable('cache_pages_tags');
@@ -446,11 +446,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function collectGarbageRemovesCacheEntryWithExpiredLifetime(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         // idA should be expired after EXEC_TIME manipulation, idB should stay
         $subject->set('idA', 'dataA', [], 60);
@@ -468,11 +468,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetime(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         // tag rows tagA and tagB should be removed by garbage collector after EXEC_TIME manipulation
         $subject->set('idA', 'dataA', ['tagA', 'tagB'], 60);
@@ -490,11 +490,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function collectGarbageRemovesOrphanedTagEntriesFromTagsTable(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         // tag rows tagA and tagB should be removed by garbage collector after EXEC_TIME manipulation
         $subject->set('idA', 'dataA', ['tagA', 'tagB'], 60);
@@ -530,11 +530,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     #[Test]
     public function flushLeavesCacheAndTagsTableEmpty(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $subject->set('idA', 'dataA', ['tagA', 'tagB']);
 
@@ -548,11 +548,11 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
 
     private function getSubjectObject(): Typo3DatabaseBackend
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = new Typo3DatabaseBackend();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $subject->set('idA', 'dataA', ['tagA', 'tagB']);
         $subject->set('idB', 'dataB', ['tagB', 'tagC']);

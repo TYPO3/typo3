@@ -43,7 +43,7 @@ final class TcaFolderTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        self::assertSame($expected, (new TcaFolder($this->createMock(ResourceFactory::class)))->addData($input));
+        self::assertSame($expected, (new TcaFolder(self::createStub(ResourceFactory::class)))->addData($input));
     }
 
     #[Test]
@@ -65,11 +65,11 @@ final class TcaFolderTest extends UnitTestCase
             ],
         ];
 
-        $folderMock = $this->createMock(Folder::class);
+        $folderStub = self::createStub(Folder::class);
 
         $resourceFactoryMock = $this->createMock(ResourceFactory::class);
         $resourceFactoryMock->expects($this->atLeastOnce())->method('retrieveFileOrFolderObject')
-            ->with('1:/aFolder/anotherFolder/')->willReturn($folderMock);
+            ->with('1:/aFolder/anotherFolder/')->willReturn($folderStub);
 
         $expected = $input;
         $expected['databaseRow']['aField'] = [

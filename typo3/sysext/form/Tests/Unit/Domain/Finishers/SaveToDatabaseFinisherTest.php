@@ -57,7 +57,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
                 'two',
             ],
         ]);
-        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn(self::createStub(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         self::assertSame('one,two', $databaseData['bar']);
@@ -129,7 +129,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
             'foo' => $value,
         ]);
-        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn(self::createStub(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         self::assertSame($expectedEmpty, empty($databaseData));
@@ -149,7 +149,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
             'password' => 'rawValue',
         ]);
-        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn(self::createStub(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         $passwordHash = (new PasswordHashFactory())->getDefaultHashInstance('FE');
@@ -191,7 +191,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
             'date' => new \DateTime(),
         ]);
-        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn(self::createStub(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         $expected = '#^([0-9]{10})$#';
@@ -212,7 +212,7 @@ final class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
             'date' => new \DateTime('2018-06-12'),
         ]);
-        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->createMock(FormElementInterface::class));
+        $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn(self::createStub(FormElementInterface::class));
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         self::assertSame('2018.06.12', $databaseData['date']);

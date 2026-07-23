@@ -33,7 +33,7 @@ class AbstractRestrictionTestCase extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $connection = $this->createMock(Connection::class);
+        $connection = self::createStub(Connection::class);
         $connection->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             return '"' . implode('"."', explode('.', $identifier)) . '"';
         });

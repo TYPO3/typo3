@@ -71,13 +71,13 @@ final class PreviewProcessingTest extends FunctionalTestCase
             $container->get(EventDispatcherInterface::class),
         );
 
-        $file = new File(['name' => 'MyVideo'], $this->createMock(ResourceStorage::class), []);
-        $taskMock = $this->createMock(AbstractTask::class);
-        $taskMock->method('getSourceFile')->willReturn($file);
-        $taskMock->method('getName')->willReturn('Preview');
-        $taskMock->method('getConfiguration')->willReturn(['width' => 150, 'height' => 150]);
+        $file = new File(['name' => 'MyVideo'], self::createStub(ResourceStorage::class), []);
+        $taskStub = self::createStub(AbstractTask::class);
+        $taskStub->method('getSourceFile')->willReturn($file);
+        $taskStub->method('getName')->willReturn('Preview');
+        $taskStub->method('getConfiguration')->willReturn(['width' => 150, 'height' => 150]);
 
-        $subject->processTask($taskMock);
+        $subject->processTask($taskStub);
 
         self::assertInstanceOf(AfterVideoPreviewFetchedEvent::class, $afterVideoPreviewFetchedEvent);
         self::assertEquals($initialPreviewImageFilename, $oldPreviewImageFilename);

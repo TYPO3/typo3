@@ -160,7 +160,7 @@ final class PageWizardControllerTest extends FunctionalTestCase
     #[Test]
     public function getPageDetailActionReturnsPageDetailsIfPageExists(): void
     {
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getQueryParams')->willReturn([
             'pageUid' => '1',
         ]);
@@ -182,7 +182,7 @@ final class PageWizardControllerTest extends FunctionalTestCase
     #[Test]
     public function getPageDetailActionReturnsStaticRootOnPageUidZero(): void
     {
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getQueryParams')->willReturn([
             'pageUid' => '0',
         ]);

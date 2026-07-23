@@ -87,7 +87,7 @@ final class ResourceViewHelperTest extends FunctionalTestCase
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('Core');
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $serverRequest = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
@@ -124,7 +124,7 @@ final class ResourceViewHelperTest extends FunctionalTestCase
     public function renderWithBackendRequest(string $template, string $expected): void
     {
         $urlPrefix = '/prefix/';
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn($urlPrefix);
         $serverRequest = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
@@ -143,7 +143,7 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         $frontendTypoScript->setConfigArray([
             'absRefPrefix' => $urlPrefix,
         ]);
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $serverRequest = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)

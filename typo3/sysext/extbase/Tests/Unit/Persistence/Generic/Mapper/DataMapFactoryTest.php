@@ -51,12 +51,12 @@ final class DataMapFactoryTest extends UnitTestCase
     public function buildDataMapInternalCanWorkWithoutSchema(): void
     {
         $subject = $this->getAccessibleMock(DataMapFactory::class, null, [
-            $this->createMock(ClassesConfiguration::class),
-            $this->createMock(ColumnMapFactory::class),
-            $this->createMock(TcaSchemaFactory::class),
+            self::createStub(ClassesConfiguration::class),
+            self::createStub(ColumnMapFactory::class),
+            self::createStub(TcaSchemaFactory::class),
             'baseCacheIdentifier',
-            $this->createMock(FrontendInterface::class),
-            $this->createMock(FrontendInterface::class),
+            self::createStub(FrontendInterface::class),
+            self::createStub(FrontendInterface::class),
         ]);
         $result = $subject->_call('buildDataMapInternal', LogEntry::class);
         self::assertFalse($result->rootLevel);

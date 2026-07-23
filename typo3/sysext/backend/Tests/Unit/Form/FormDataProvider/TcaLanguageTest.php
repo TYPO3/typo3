@@ -33,9 +33,9 @@ final class TcaLanguageTest extends UnitTestCase
     {
         parent::setUp();
         // Default LANG mock just returns incoming value as label if calling ->sL()
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
+        $languageServiceStub = self::createStub(LanguageService::class);
+        $languageServiceStub->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceStub;
     }
 
     protected function tearDown(): void
@@ -48,7 +48,7 @@ final class TcaLanguageTest extends UnitTestCase
     public function addDataIgnoresEmptyOrWrongTcaType(): void
     {
         $input = $this->getDefaultResultArray(['config' => ['type' => 'none']]);
-        self::assertEquals($input, (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input));
+        self::assertEquals($input, (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input));
     }
 
     #[Test]
@@ -58,7 +58,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             'customRenderType',
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['renderType']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['renderType']
         );
     }
 
@@ -70,7 +70,7 @@ final class TcaLanguageTest extends UnitTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1439288036);
 
-        (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input);
+        (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input);
     }
 
     #[Test]
@@ -89,7 +89,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -106,7 +106,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -123,7 +123,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -151,7 +151,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -184,7 +184,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -206,7 +206,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -238,7 +238,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -265,7 +265,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -289,7 +289,7 @@ final class TcaLanguageTest extends UnitTestCase
             ]
         );
 
-        self::assertEmpty((new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']);
+        self::assertEmpty((new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']);
     }
 
     #[Test]
@@ -319,7 +319,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -355,7 +355,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -386,7 +386,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -408,7 +408,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
     #[Test]
@@ -432,12 +432,12 @@ final class TcaLanguageTest extends UnitTestCase
         );
 
         // Adding invalid value is disabled in TSconfig
-        self::assertEmpty((new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']);
+        self::assertEmpty((new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']);
 
         $input = $this->getDefaultResultArray(['config' => ['disableNoMatchingValueElement' => true]], [], ['aField' => 5]);
 
         // Adding invalid value is disabled in columns config
-        self::assertEmpty((new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']);
+        self::assertEmpty((new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']);
 
         $input = $this->getDefaultResultArray(
             [
@@ -473,7 +473,7 @@ final class TcaLanguageTest extends UnitTestCase
         // Custom label is respected
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -511,7 +511,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -549,7 +549,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -582,7 +582,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 
@@ -590,7 +590,7 @@ final class TcaLanguageTest extends UnitTestCase
     #[Test]
     public function addDataAddsAllSiteLanguagesOnRootPage(array $config): void
     {
-        $siteFinder = $this->createMock(SiteFinder::class);
+        $siteFinder = self::createStub(SiteFinder::class);
         $siteFinder->method('getAllSites')->willReturn([
             new Site('site-1', 1, [
                 'base' => '/',
@@ -679,7 +679,7 @@ final class TcaLanguageTest extends UnitTestCase
 
         self::assertEquals(
             $expected,
-            (new TcaLanguage($this->createMock(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
+            (new TcaLanguage(self::createStub(SiteFinder::class)))->addData($input)['processedTca']['columns']['aField']['config']['items']
         );
     }
 

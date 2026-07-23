@@ -44,7 +44,7 @@ final class DatabaseEditRowTest extends UnitTestCase
     #[Test]
     public function addDataRetrievesRecordInformationFromDatabase(): void
     {
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+        GeneralUtility::addInstance(TcaSchemaFactory::class, self::createStub(TcaSchemaFactory::class));
         $input = [
             'tableName' => 'tt_content',
             'command' => 'edit',
@@ -64,7 +64,7 @@ final class DatabaseEditRowTest extends UnitTestCase
     #[Test]
     public function addDataThrowsExceptionIfRetrievedRowHasNoPid(): void
     {
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+        GeneralUtility::addInstance(TcaSchemaFactory::class, self::createStub(TcaSchemaFactory::class));
         $input = [
             'tableName' => 'tt_content',
             'command' => 'edit',
@@ -147,7 +147,7 @@ final class DatabaseEditRowTest extends UnitTestCase
             ->setConstructorArgs([$tcaSchemaFactoryMock])
             ->onlyMethods(['getDatabaseRow'])
             ->getMock();
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+        GeneralUtility::addInstance(TcaSchemaFactory::class, self::createStub(TcaSchemaFactory::class));
         $input = [
             'tableName' => 'tt_content',
             'command' => 'edit',

@@ -55,8 +55,8 @@ final class AfterPageContentPreviewRenderedTest extends FunctionalTestCase
         $standardPreviewResolver->expects($this->once())->method('resolveRendererFor')->willReturn($standardPreviewRenderer);
         GeneralUtility::addInstance(StandardPreviewRendererResolver::class, $standardPreviewResolver);
 
-        $mockedContext = $this->createMock(PageLayoutContext::class);
-        $mockedColumn = $this->createMock(GridColumn::class);
+        $contextStub = self::createStub(PageLayoutContext::class);
+        $columnStub = self::createStub(GridColumn::class);
 
         $rawRecord = new RawRecord(1, 1, [
             'CType' => 'text',
@@ -64,7 +64,7 @@ final class AfterPageContentPreviewRenderedTest extends FunctionalTestCase
         $mockedRecord = new Record($rawRecord, [], null);
 
         $mockedGridColumnItem = $this->getMockBuilder(GridColumnItem::class)
-            ->setConstructorArgs([$mockedContext, $mockedColumn, $mockedRecord, 'tt_content'])
+            ->setConstructorArgs([$contextStub, $columnStub, $mockedRecord, 'tt_content'])
             ->onlyMethods(['getRecordType'])
             ->getMock();
 

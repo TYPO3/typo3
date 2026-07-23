@@ -2816,7 +2816,7 @@ final class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288967479);
 
-        $instance = $this->createMock(SingletonInterface::class);
+        $instance = self::createStub(SingletonInterface::class);
         // @phpstan-ignore-next-line We are explicitly testing with a contract violation here.
         GeneralUtility::setSingletonInstance('', $instance);
     }
@@ -2834,7 +2834,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function setSingletonInstanceMakesMakeInstanceReturnThatInstance(): void
     {
-        $instance = $this->createMock(SingletonInterface::class);
+        $instance = self::createStub(SingletonInterface::class);
         $singletonClassName = get_class($instance);
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
         self::assertSame($instance, GeneralUtility::makeInstance($singletonClassName));
@@ -2843,7 +2843,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function setSingletonInstanceCalledTwoTimesMakesMakeInstanceReturnLastSetInstance(): void
     {
-        $instance1 = $this->createMock(SingletonInterface::class);
+        $instance1 = self::createStub(SingletonInterface::class);
         $singletonClassName = get_class($instance1);
         $instance2 = new $singletonClassName();
         GeneralUtility::setSingletonInstance($singletonClassName, $instance1);
@@ -2854,7 +2854,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function getSingletonInstancesContainsPreviouslySetSingletonInstance(): void
     {
-        $instance = $this->createMock(SingletonInterface::class);
+        $instance = self::createStub(SingletonInterface::class);
         $instanceClassName = get_class($instance);
         GeneralUtility::setSingletonInstance($instanceClassName, $instance);
         $registeredSingletonInstances = GeneralUtility::getSingletonInstances();
@@ -2877,7 +2877,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function resetSingletonInstancesResetsPreviouslySetInstance(): void
     {
-        $instance = $this->createMock(SingletonInterface::class);
+        $instance = self::createStub(SingletonInterface::class);
         $instanceClassName = get_class($instance);
         GeneralUtility::setSingletonInstance($instanceClassName, $instance);
         GeneralUtility::resetSingletonInstances([]);
@@ -2888,7 +2888,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function resetSingletonInstancesSetsGivenInstance(): void
     {
-        $instance = $this->createMock(SingletonInterface::class);
+        $instance = self::createStub(SingletonInterface::class);
         $instanceClassName = get_class($instance);
         GeneralUtility::resetSingletonInstances(
             [$instanceClassName => $instance]
@@ -2924,14 +2924,14 @@ final class GeneralUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1288969325);
 
-        $instance = $this->createMock(SingletonInterface::class);
+        $instance = self::createStub(SingletonInterface::class);
         GeneralUtility::addInstance(get_class($instance), $instance);
     }
 
     #[Test]
     public function addInstanceMakesMakeInstanceReturnThatInstance(): void
     {
-        $instance = $this->createMock(\stdClass::class);
+        $instance = self::createStub(\stdClass::class);
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         self::assertSame($instance, GeneralUtility::makeInstance($className));
@@ -2940,7 +2940,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function makeInstanceCalledTwoTimesAfterAddInstanceReturnTwoDifferentInstances(): void
     {
-        $instance = $this->createMock(\stdClass::class);
+        $instance = self::createStub(\stdClass::class);
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         self::assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
@@ -2949,7 +2949,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function addInstanceCalledTwoTimesMakesMakeInstanceReturnBothInstancesInAddingOrder(): void
     {
-        $instance1 = $this->createMock(\stdClass::class);
+        $instance1 = self::createStub(\stdClass::class);
         $className = get_class($instance1);
         GeneralUtility::addInstance($className, $instance1);
         $instance2 = new $className();
@@ -2961,7 +2961,7 @@ final class GeneralUtilityTest extends UnitTestCase
     #[Test]
     public function purgeInstancesDropsAddedInstance(): void
     {
-        $instance = $this->createMock(\stdClass::class);
+        $instance = self::createStub(\stdClass::class);
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         GeneralUtility::purgeInstances();

@@ -36,7 +36,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         $this->resourceFactoryMock = $this->createMock(ResourceFactory::class);
         $this->subject = new CleanupFormUploadsService(
             $this->resourceFactoryMock,
-            $this->createMock(LoggerInterface::class),
+            self::createStub(LoggerInterface::class),
         );
     }
 

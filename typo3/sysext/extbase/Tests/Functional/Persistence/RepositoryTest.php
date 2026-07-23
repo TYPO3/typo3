@@ -81,13 +81,13 @@ final class RepositoryTest extends FunctionalTestCase
     #[Test]
     public function createQueryReturnsQueryWithUnmodifiedDefaultQuerySettings(): void
     {
-        $mockDefaultQuerySettings = $this->createMock(QuerySettingsInterface::class);
+        $defaultQuerySettingsStub = self::createStub(QuerySettingsInterface::class);
         $subject = $this->get(PostRepository::class);
-        $subject->setDefaultQuerySettings($mockDefaultQuerySettings);
+        $subject->setDefaultQuerySettings($defaultQuerySettingsStub);
         $query = $subject->createQuery();
         $instanceQuerySettings = $query->getQuerySettings();
-        self::assertEquals($mockDefaultQuerySettings, $instanceQuerySettings);
-        self::assertNotSame($mockDefaultQuerySettings, $instanceQuerySettings);
+        self::assertEquals($defaultQuerySettingsStub, $instanceQuerySettings);
+        self::assertNotSame($defaultQuerySettingsStub, $instanceQuerySettings);
     }
 
     #[Test]

@@ -65,7 +65,7 @@ final class TcaInlineTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['children'] = [];
-        $subject = new TcaInline($this->createMock(FlashMessageService::class), $this->createMock(InlineStackProcessor::class), new NullLogger());
+        $subject = new TcaInline(self::createStub(FlashMessageService::class), self::createStub(InlineStackProcessor::class), new NullLogger());
         self::assertEquals($expected, $subject->addData($input));
     }
 
@@ -96,7 +96,7 @@ final class TcaInlineTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['type'] = 'input';
-        $subject = new TcaInline($this->createMock(FlashMessageService::class), $this->createMock(InlineStackProcessor::class), new NullLogger());
+        $subject = new TcaInline(self::createStub(FlashMessageService::class), self::createStub(InlineStackProcessor::class), new NullLogger());
         self::assertEquals($expected, $subject->addData($input));
     }
 
@@ -129,7 +129,7 @@ final class TcaInlineTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['children'] = [];
-        $subject = new TcaInline($this->createMock(FlashMessageService::class), $this->createMock(InlineStackProcessor::class), new NullLogger());
+        $subject = new TcaInline(self::createStub(FlashMessageService::class), self::createStub(InlineStackProcessor::class), new NullLogger());
         self::assertEquals($expected, $subject->addData($input));
     }
 }

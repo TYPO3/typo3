@@ -39,7 +39,7 @@ final class IconTest extends FunctionalTestCase
     #[Test]
     public function renderAndCastToStringReturnsTheSameCode(): void
     {
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), self::createStub(ContainerInterface::class), self::createStub(FrontendInterface::class));
         $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
         self::assertEquals($subject->render(), (string)$subject);
     }
@@ -47,7 +47,7 @@ final class IconTest extends FunctionalTestCase
     #[Test]
     public function getIdentifierReturnsCorrectIdentifier(): void
     {
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), self::createStub(ContainerInterface::class), self::createStub(FrontendInterface::class));
         $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
         self::assertEquals(self::iconIdentifier, $subject->getIdentifier());
     }
@@ -55,7 +55,7 @@ final class IconTest extends FunctionalTestCase
     #[Test]
     public function getOverlayIdentifierReturnsCorrectIdentifier(): void
     {
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), self::createStub(ContainerInterface::class), self::createStub(FrontendInterface::class));
         $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
         self::assertEquals(self::overlayIdentifier, $subject->getOverlayIcon()->getIdentifier());
     }
@@ -63,7 +63,7 @@ final class IconTest extends FunctionalTestCase
     #[Test]
     public function getSizeIdentifierReturnsCorrectIdentifier(): void
     {
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), self::createStub(ContainerInterface::class), self::createStub(FrontendInterface::class));
         $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
         self::assertEquals(IconSize::SMALL->value, $subject->getSize());
     }
@@ -71,7 +71,7 @@ final class IconTest extends FunctionalTestCase
     #[Test]
     public function getStateReturnsCorrectIdentifier(): void
     {
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), self::createStub(ContainerInterface::class), self::createStub(FrontendInterface::class));
         $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, IconState::STATE_DISABLED);
         self::assertSame($subject->getState(), IconState::STATE_DISABLED);
     }
@@ -120,7 +120,7 @@ final class IconTest extends FunctionalTestCase
     #[Test]
     public function bidiIconHasBidiClass(): void
     {
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), self::createStub(ContainerInterface::class), self::createStub(FrontendInterface::class));
         // actions-arrow-end has bidi: true in icons.json
         $subject = $iconFactory->getIcon('actions-arrow-end', IconSize::SMALL);
         self::assertTrue($subject->isBidi());
@@ -130,7 +130,7 @@ final class IconTest extends FunctionalTestCase
     #[Test]
     public function nonBidiIconDoesNotHaveBidiClass(): void
     {
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), self::createStub(ContainerInterface::class), self::createStub(FrontendInterface::class));
         // actions-close has bidi: false in icons.json
         $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL);
         self::assertFalse($subject->isBidi());
@@ -140,7 +140,7 @@ final class IconTest extends FunctionalTestCase
     #[Test]
     public function bidiIconAliasInheritsBidiProperty(): void
     {
-        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), $this->createMock(ContainerInterface::class), $this->createMock(FrontendInterface::class));
+        $iconFactory = new IconFactory(new NoopEventDispatcher(), new IconRegistry(new NullFrontend('test'), 'BackendIcons'), self::createStub(ContainerInterface::class), self::createStub(FrontendInterface::class));
         // actions-arrow-forward is an alias for actions-arrow-end which has bidi: true
         $subject = $iconFactory->getIcon('actions-arrow-forward', IconSize::SMALL);
         self::assertTrue($subject->isBidi());

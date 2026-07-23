@@ -62,7 +62,7 @@ final class QueryTest extends UnitTestCase
     #[Test]
     public function executeReturnsQueryResultInstanceAndInjectsItself(): void
     {
-        $queryResult = $this->createMock(QueryResult::class);
+        $queryResult = self::createStub(QueryResult::class);
         $this->container->expects($this->once())->method('get')->with(QueryResultInterface::class)->willReturn($queryResult);
         $actualResult = $this->query->execute();
         self::assertSame($queryResult, $actualResult);
@@ -164,10 +164,10 @@ final class QueryTest extends UnitTestCase
     public function logicalAndSupportsMultipleConstraintsAsMethodArguments(): void
     {
         $subject = new Query(
-            $this->createMock(DataMapFactory::class),
-            $this->createMock(PersistenceManagerInterface::class),
+            self::createStub(DataMapFactory::class),
+            self::createStub(PersistenceManagerInterface::class),
             new QueryObjectModelFactory(),
-            $this->createMock(ContainerInterface::class)
+            self::createStub(ContainerInterface::class)
         );
 
         $constraint1 = new Comparison(new PropertyValue('propertyName1'), QueryInterface::OPERATOR_EQUAL_TO, 'value1');
@@ -185,10 +185,10 @@ final class QueryTest extends UnitTestCase
     public function logicalOrSupportsMultipleConstraintsAsMethodArguments(): void
     {
         $subject = new Query(
-            $this->createMock(DataMapFactory::class),
-            $this->createMock(PersistenceManagerInterface::class),
+            self::createStub(DataMapFactory::class),
+            self::createStub(PersistenceManagerInterface::class),
             new QueryObjectModelFactory(),
-            $this->createMock(ContainerInterface::class)
+            self::createStub(ContainerInterface::class)
         );
 
         $constraint1 = new Comparison(new PropertyValue('propertyName1'), QueryInterface::OPERATOR_EQUAL_TO, 'value1');

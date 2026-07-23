@@ -38,8 +38,8 @@ final class ModifyAutoCreateRedirectRecordBeforePersistingEventTest extends Unit
         $changeItem = new SlugRedirectChangeItem(
             defaultLanguagePageId: 1,
             pageId: 1,
-            site: $this->createMock(Site::class),
-            siteLanguage: $this->createMock(SiteLanguage::class),
+            site: self::createStub(Site::class),
+            siteLanguage: self::createStub(SiteLanguage::class),
             original: ['original'],
             sourcesCollection: new RedirectSourceCollection($source),
             changed: ['changed'],
@@ -68,8 +68,8 @@ final class ModifyAutoCreateRedirectRecordBeforePersistingEventTest extends Unit
         $changeItem = new SlugRedirectChangeItem(
             defaultLanguagePageId: 1,
             pageId: 1,
-            site: $this->createMock(Site::class),
-            siteLanguage: $this->createMock(SiteLanguage::class),
+            site: self::createStub(Site::class),
+            siteLanguage: self::createStub(SiteLanguage::class),
             original: ['original'],
             sourcesCollection: new RedirectSourceCollection($source),
             changed: ['changed'],

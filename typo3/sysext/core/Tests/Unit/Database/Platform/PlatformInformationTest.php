@@ -49,8 +49,8 @@ final class PlatformInformationTest extends UnitTestCase
     #[Test]
     public function maxBindParameters(string $platform): void
     {
-        $platformMock = $this->createMock($platform);
-        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platformMock));
+        $platformStub = self::createStub($platform);
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platformStub));
     }
 
     /**
@@ -60,8 +60,8 @@ final class PlatformInformationTest extends UnitTestCase
     #[Test]
     public function maxIdentifierLength(string $platform): void
     {
-        $platformMock = $this->createMock($platform);
-        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platformMock));
+        $platformStub = self::createStub($platform);
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platformStub));
     }
 
     #[Test]
@@ -69,8 +69,8 @@ final class PlatformInformationTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
-        $platformMock = $this->createMock(DoctrineAbstractPlatform::class);
-        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platformMock));
+        $platformStub = self::createStub(DoctrineAbstractPlatform::class);
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platformStub));
     }
 
     #[Test]
@@ -78,7 +78,7 @@ final class PlatformInformationTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
-        $platformMock = $this->createMock(DoctrineAbstractPlatform::class);
-        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platformMock));
+        $platformStub = self::createStub(DoctrineAbstractPlatform::class);
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platformStub));
     }
 }

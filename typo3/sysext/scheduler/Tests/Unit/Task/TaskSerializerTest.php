@@ -64,7 +64,7 @@ final class TaskSerializerTest extends UnitTestCase
     #[Test]
     public function dataIsReconstituted(array $data, TestTask $expectation): void
     {
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TestTask::class] = [
             'extension' => 'scheduler',
         ];
@@ -73,8 +73,8 @@ final class TaskSerializerTest extends UnitTestCase
         $subject = new TaskSerializer(
             $container,
             new TaskService(
-                $this->createMock(CommandRegistry::class),
-                $this->createMock(TcaSchemaFactory::class),
+                self::createStub(CommandRegistry::class),
+                self::createStub(TcaSchemaFactory::class),
             ),
         );
         $result = $subject->deserialize($data);
@@ -106,8 +106,8 @@ final class TaskSerializerTest extends UnitTestCase
     public function classNameIsExtracted(string $serializedTask, ?string $expectation): void
     {
         $taskSerializer = new TaskSerializer(
-            $this->createMock(ContainerInterface::class),
-            $this->createMock(TaskService::class),
+            self::createStub(ContainerInterface::class),
+            self::createStub(TaskService::class),
         );
         self::assertSame($expectation, $taskSerializer->extractClassName($serializedTask));
     }

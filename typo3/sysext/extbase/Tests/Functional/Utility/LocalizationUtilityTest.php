@@ -118,12 +118,9 @@ final class LocalizationUtilityTest extends FunctionalTestCase
     public function translateTestWithBackendUserLanguage(string $key, ?string $extensionName, string $languageKey, string $expected, ?array $arguments = null): void
     {
         // No TypoScript overrides
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock
-            ->method('getConfiguration')
-            ->with('Framework', 'label_test', null)
-            ->willReturn([]);
-        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
+        $configurationManagerInterfaceStub = self::createStub(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceStub->method('getConfiguration')->willReturn([]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceStub);
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->user = ['lang' => $languageKey];
@@ -140,12 +137,9 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         ?array $arguments = null
     ): void {
         // No TypoScript overrides
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock
-            ->method('getConfiguration')
-            ->with('Framework', 'label_test', null)
-            ->willReturn([]);
-        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
+        $configurationManagerInterfaceStub = self::createStub(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceStub->method('getConfiguration')->willReturn([]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceStub);
 
         self::assertSame($expected, LocalizationUtility::translate($key, $extensionName, $arguments, $languageKey));
     }

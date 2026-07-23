@@ -446,8 +446,8 @@ final class QueryHelperTest extends UnitTestCase
     #[Test]
     public function quoteDatabaseIdentifiers(string $input, string $expected): void
     {
-        $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
+        $connectionStub = self::createStub(Connection::class);
+        $connectionStub->method('quoteIdentifier')->willReturnCallback(static function (string $identifier): string {
             $parts = array_map(
                 static function (string $identifier): string {
                     return '"' . $identifier . '"';
@@ -458,6 +458,6 @@ final class QueryHelperTest extends UnitTestCase
             return implode('.', $parts);
         });
 
-        self::assertSame($expected, QueryHelper::quoteDatabaseIdentifiers($connectionMock, $input));
+        self::assertSame($expected, QueryHelper::quoteDatabaseIdentifiers($connectionStub, $input));
     }
 }

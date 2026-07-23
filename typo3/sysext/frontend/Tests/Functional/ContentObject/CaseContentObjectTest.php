@@ -38,7 +38,7 @@ final class CaseContentObjectTest extends FunctionalTestCase
         $request = new ServerRequest();
         $contentObjectRenderer = $this->get(ContentObjectRenderer::class);
         $contentObjectRenderer->setRequest($request);
-        $cObjectFactoryMock = $this->getMockBuilder(ContentObjectFactory::class)->disableOriginalConstructor()->getMock();
+        $cObjectFactoryStub = self::createStub(ContentObjectFactory::class);
 
         $caseContentObject = new CaseContentObject();
         $caseContentObject->setRequest($request);
@@ -48,12 +48,12 @@ final class CaseContentObjectTest extends FunctionalTestCase
         $textContentObject->setRequest($request);
         $textContentObject->setContentObjectRenderer($contentObjectRenderer);
 
-        $cObjectFactoryMock->method('getContentObject')->willReturnMap([
+        $cObjectFactoryStub->method('getContentObject')->willReturnMap([
             ['CASE', $request, $contentObjectRenderer, $caseContentObject],
             ['TEXT', $request, $contentObjectRenderer, $textContentObject],
         ]);
         $container = new Container();
-        $container->set(ContentObjectFactory::class, $cObjectFactoryMock);
+        $container->set(ContentObjectFactory::class, $cObjectFactoryStub);
         GeneralUtility::setContainer($container);
 
         $this->subject = new CaseContentObject();

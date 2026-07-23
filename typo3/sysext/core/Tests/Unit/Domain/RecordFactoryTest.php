@@ -43,7 +43,7 @@ final class RecordFactoryTest extends UnitTestCase
         $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
-                new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+                new RelationMapBuilder(self::createStub(FlexFormTools::class)),
                 new FieldTypeFactory(),
             ),
             '',
@@ -52,8 +52,8 @@ final class RecordFactoryTest extends UnitTestCase
         $schemaFactory->load(['existing_schema' => ['ctrl' => [], 'columns' => []]]);
         $subject = new RecordFactory(
             $schemaFactory,
-            $this->createMock(RecordFieldTransformer::class),
-            $this->createMock(EventDispatcherInterface::class),
+            self::createStub(RecordFieldTransformer::class),
+            self::createStub(EventDispatcherInterface::class),
         );
         $subject->createFromDatabaseRow('foo', ['foo' => 1]);
     }
@@ -65,7 +65,7 @@ final class RecordFactoryTest extends UnitTestCase
         $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
-                new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+                new RelationMapBuilder(self::createStub(FlexFormTools::class)),
                 new FieldTypeFactory(),
             ),
             '',
@@ -80,8 +80,8 @@ final class RecordFactoryTest extends UnitTestCase
         ]);
         $subject = new RecordFactory(
             $schemaFactory,
-            $this->createMock(RecordFieldTransformer::class),
-            $this->createMock(EventDispatcherInterface::class),
+            self::createStub(RecordFieldTransformer::class),
+            self::createStub(EventDispatcherInterface::class),
         );
         $time = time();
         /** @var Record $recordObject */
@@ -98,7 +98,7 @@ final class RecordFactoryTest extends UnitTestCase
         $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
-                new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+                new RelationMapBuilder(self::createStub(FlexFormTools::class)),
                 new FieldTypeFactory(),
             ),
             '',
@@ -113,8 +113,8 @@ final class RecordFactoryTest extends UnitTestCase
         ]);
         $subject = new RecordFactory(
             $schemaFactory,
-            $this->createMock(RecordFieldTransformer::class),
-            $this->createMock(EventDispatcherInterface::class),
+            self::createStub(RecordFieldTransformer::class),
+            self::createStub(EventDispatcherInterface::class),
         );
         /** @var Record $recordObject */
         $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'foo', 'foo' => 'fooValue', 'bar' => 'barValue']);
@@ -132,7 +132,7 @@ final class RecordFactoryTest extends UnitTestCase
         $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
-                new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+                new RelationMapBuilder(self::createStub(FlexFormTools::class)),
                 new FieldTypeFactory(),
             ),
             '',
@@ -158,8 +158,8 @@ final class RecordFactoryTest extends UnitTestCase
         );
         $subject = new RecordFactory(
             $schemaFactory,
-            $this->createMock(RecordFieldTransformer::class),
-            $this->createMock(EventDispatcherInterface::class),
+            self::createStub(RecordFieldTransformer::class),
+            self::createStub(EventDispatcherInterface::class),
         );
         $rawRecord = $subject->createRawRecord(
             'foo',

@@ -69,7 +69,7 @@ final class ProductionExceptionHandlerTest extends FunctionalTestCase
     public function echoExceptionWebEscapesExceptionTitle(): void
     {
         $title = '<b>b</b><script>alert(1);</script>';
-        $exception = $this->createMock(StatusException::class);
+        $exception = self::createStub(StatusException::class);
         $exception->method('getTitle')->willReturn($title);
         ob_start();
         $this->subject->echoExceptionWeb($exception);

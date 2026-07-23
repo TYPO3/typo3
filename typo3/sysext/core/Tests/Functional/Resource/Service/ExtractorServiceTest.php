@@ -31,36 +31,36 @@ final class ExtractorServiceTest extends FunctionalTestCase
     #[Test]
     public function isFileTypeSupportedByExtractorReturnsEmptyArrayForFileTypeWithNoMatchingExtractor(): void
     {
-        $fileMock = $this->createMock(File::class);
-        $fileMock->method('getType')->willReturn(FileType::AUDIO->value);
-        $fileMock->method('getNameWithoutExtension')->willReturn('aNameWithoutExtension');
-        $fileMock->method('getExtension')->willReturn('anExtension');
-        self::assertEmpty($this->get(ExtractorService::class)->extractMetaData($fileMock));
+        $fileStub = self::createStub(File::class);
+        $fileStub->method('getType')->willReturn(FileType::AUDIO->value);
+        $fileStub->method('getNameWithoutExtension')->willReturn('aNameWithoutExtension');
+        $fileStub->method('getExtension')->willReturn('anExtension');
+        self::assertEmpty($this->get(ExtractorService::class)->extractMetaData($fileStub));
     }
 
     #[Test]
     public function isFileTypeSupportedByExtractorReturnsExtraction(): void
     {
-        $fileMock = $this->createMock(File::class);
-        $fileMock->method('getType')->willReturn(FileType::TEXT->value);
-        $fileMock->method('getNameWithoutExtension')->willReturn('aNameWithoutExtension');
-        $fileMock->method('getExtension')->willReturn('anExtension');
-        $result = $this->get(ExtractorService::class)->extractMetaData($fileMock);
+        $fileStub = self::createStub(File::class);
+        $fileStub->method('getType')->willReturn(FileType::TEXT->value);
+        $fileStub->method('getNameWithoutExtension')->willReturn('aNameWithoutExtension');
+        $fileStub->method('getExtension')->willReturn('anExtension');
+        $result = $this->get(ExtractorService::class)->extractMetaData($fileStub);
         self::assertSame(['title' => 'aStaticTitle'], $result);
     }
 
     #[Test]
     public function extractMetaDataComposesDataByAvailableExtractorsAndPrefersHigherPriority(): void
     {
-        $fileMock = $this->createMock(File::class);
-        $fileMock->method('getType')->willReturn(FileType::TEXT->value);
-        $fileMock->method('getNameWithoutExtension')->willReturn('aNameWithoutExtension');
-        $fileMock->method('getExtension')->willReturn('anExtension');
+        $fileStub = self::createStub(File::class);
+        $fileStub->method('getType')->willReturn(FileType::TEXT->value);
+        $fileStub->method('getNameWithoutExtension')->willReturn('aNameWithoutExtension');
+        $fileStub->method('getExtension')->willReturn('anExtension');
         // Activate TextFileExtractor2
-        $resourceStorageMock = $this->createMock(ResourceStorage::class);
-        $resourceStorageMock->method('getDriverType')->willReturn('aDriverRestriction');
-        $fileMock->method('getStorage')->willReturn($resourceStorageMock);
-        $result = $this->get(ExtractorService::class)->extractMetaData($fileMock);
+        $resourceStorageStub = self::createStub(ResourceStorage::class);
+        $resourceStorageStub->method('getDriverType')->willReturn('aDriverRestriction');
+        $fileStub->method('getStorage')->willReturn($resourceStorageStub);
+        $result = $this->get(ExtractorService::class)->extractMetaData($fileStub);
         self::assertSame(
             [
                 'title' => 'aNameWithoutExtension',

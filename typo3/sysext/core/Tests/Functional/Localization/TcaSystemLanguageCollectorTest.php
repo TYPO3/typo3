@@ -38,8 +38,8 @@ final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
     #[Test]
     public function populateAvailableSiteLanguagesTest(): void
     {
-        $siteFinderMock = $this->createMock(SiteFinder::class);
-        $siteFinderMock->method('getAllSites')->willReturn([
+        $siteFinderStub = self::createStub(SiteFinder::class);
+        $siteFinderStub->method('getAllSites')->willReturn([
             new Site('site-1', 1, [
                 'base' => '/',
                 'languages' => [
@@ -85,7 +85,7 @@ final class TcaSystemLanguageCollectorTest extends FunctionalTestCase
             ],
         ];
         $fieldInformation = ['items' => []];
-        (new TcaSystemLanguageCollector(new Locales(), $siteFinderMock))->populateAvailableSiteLanguages($fieldInformation);
+        (new TcaSystemLanguageCollector(new Locales(), $siteFinderStub))->populateAvailableSiteLanguages($fieldInformation);
         self::assertSame($expectedItems, $fieldInformation['items']);
     }
 

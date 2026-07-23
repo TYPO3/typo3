@@ -70,10 +70,10 @@ final class ActionControllerTest extends UnitTestCase
             null,
             [
                 $installUtility,
-                $this->createMock(ExtensionManagementService::class),
-                $this->createMock(Registry::class),
-                $this->createMock(PackageManager::class),
-                $this->createMock(PackageSetup::class),
+                self::createStub(ExtensionManagementService::class),
+                self::createStub(Registry::class),
+                self::createStub(PackageManager::class),
+                self::createStub(PackageSetup::class),
             ]
         );
 

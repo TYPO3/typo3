@@ -64,10 +64,10 @@ final class DataProviderCollectionTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1381269811);
 
-        $dataProviderMock = $this->createMock(\stdClass::class);
+        $dataProviderStub = self::createStub(\stdClass::class);
 
         /* @phpstan-ignore argument.type */
-        new DataProviderCollection([$dataProviderMock]);
+        new DataProviderCollection([$dataProviderStub]);
     }
 
     #[Test]

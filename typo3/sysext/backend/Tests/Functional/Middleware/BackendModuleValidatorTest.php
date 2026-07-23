@@ -58,7 +58,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
             $this->get(FlashMessageService::class),
             $this->get(TcaSchemaFactory::class),
         );
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')
             ->willReturn('/');
         $this->request = (new ServerRequest('/some/uri'))

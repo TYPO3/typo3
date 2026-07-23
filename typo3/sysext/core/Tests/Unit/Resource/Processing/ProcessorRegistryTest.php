@@ -39,11 +39,11 @@ final class ProcessorRegistryTest extends UnitTestCase
         $subject = new ProcessorRegistry(
             new DependencyOrderingService()
         );
-        $taskMock = $this->createMock(AbstractTask::class);
-        $taskMock->method('getType')->willReturn('Image');
-        $taskMock->method('getName')->willReturn('CropScaleMask');
+        $taskStub = self::createStub(AbstractTask::class);
+        $taskStub->method('getType')->willReturn('Image');
+        $taskStub->method('getName')->willReturn('CropScaleMask');
 
-        $processor = $subject->getProcessorByTask($taskMock);
+        $processor = $subject->getProcessorByTask($taskStub);
 
         self::assertInstanceOf(LocalImageProcessor::class, $processor);
     }
@@ -57,8 +57,8 @@ final class ProcessorRegistryTest extends UnitTestCase
         $subject = new ProcessorRegistry(
             new DependencyOrderingService()
         );
-        $taskMock = $this->createMock(AbstractTask::class);
-        $subject->getProcessorByTask($taskMock);
+        $taskStub = self::createStub(AbstractTask::class);
+        $subject->getProcessorByTask($taskStub);
     }
 
     #[Test]
@@ -76,11 +76,11 @@ final class ProcessorRegistryTest extends UnitTestCase
         $subject = new ProcessorRegistry(
             new DependencyOrderingService()
         );
-        $taskMock = $this->createMock(AbstractTask::class);
-        $taskMock->method('getType')->willReturn('Image');
-        $taskMock->method('getName')->willReturn('CropScaleMask');
+        $taskStub = self::createStub(AbstractTask::class);
+        $taskStub->method('getType')->willReturn('Image');
+        $taskStub->method('getName')->willReturn('CropScaleMask');
 
-        $processor = $subject->getProcessorByTask($taskMock);
+        $processor = $subject->getProcessorByTask($taskStub);
 
         self::assertInstanceOf(LocalImageProcessor::class, $processor);
     }

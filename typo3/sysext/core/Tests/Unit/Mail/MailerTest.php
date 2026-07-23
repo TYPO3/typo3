@@ -75,7 +75,7 @@ final class MailerTest extends UnitTestCase
         ];
         $transportFactory = $this->createMock(TransportFactory::class);
         $transportFactory->expects($this->atLeastOnce())->method('get')->with($settings)
-            ->willReturn($this->createMock(SendmailTransport::class));
+            ->willReturn(self::createStub(SendmailTransport::class));
         GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
@@ -90,7 +90,7 @@ final class MailerTest extends UnitTestCase
         ]);
         $transportFactory = $this->createMock(TransportFactory::class);
         $transportFactory->expects($this->atLeastOnce())->method('get')->with($settings)
-            ->willReturn($this->createMock(SendmailTransport::class));
+            ->willReturn(self::createStub(SendmailTransport::class));
         GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();

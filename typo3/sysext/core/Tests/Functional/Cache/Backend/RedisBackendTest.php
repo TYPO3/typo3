@@ -48,13 +48,13 @@ final class RedisBackendTest extends FunctionalTestCase
         // If typo3TestingRedisPort env is set, use it, otherwise fall back to standard port
         $backendOptions['port'] = (int)(getenv('typo3TestingRedisPort') ?: 6379);
 
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $GLOBALS['TYPO3_CONF_VARS']['LOG'] = 'only needed for logger initialisation';
         $subject = new RedisBackend($backendOptions);
-        $subject->setLogger($this->createMock(LoggerInterface::class));
-        $subject->setCache($frontendMock);
+        $subject->setLogger(self::createStub(LoggerInterface::class));
+        $subject->setCache($frontendStub);
         $subject->initializeObject();
         $subject->flush();
         return $subject;

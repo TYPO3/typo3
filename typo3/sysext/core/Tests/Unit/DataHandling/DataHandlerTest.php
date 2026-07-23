@@ -77,7 +77,7 @@ final class DataHandlerTest extends UnitTestCase
         $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $this->tcaSchemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
-                new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+                new RelationMapBuilder(self::createStub(FlexFormTools::class)),
                 new FieldTypeFactory(),
             ),
             '',
@@ -90,25 +90,25 @@ final class DataHandlerTest extends UnitTestCase
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
         $constructorArguments = [
             new NoopEventDispatcher(),
-            $this->createMock(CacheManager::class),
-            $this->createMock(FrontendInterface::class),
+            self::createStub(CacheManager::class),
+            self::createStub(FrontendInterface::class),
             $connectionPoolMock,
-            $this->createMock(LoggerInterface::class),
+            self::createStub(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
-            $this->createMock(FlexFormTools::class),
-            $this->createMock(Richtext::class),
+            self::createStub(FlexFormTools::class),
+            self::createStub(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
-            $this->createMock(FlashMessageService::class),
+            self::createStub(FlashMessageService::class),
             new LogEntryRepository($connectionPoolMock),
-            $this->createMock(LocalizationRepository::class),
-            $this->createMock(SiteFinder::class),
-            $this->createMock(DataMapProcessor::class),
-            $this->createMock(LinkService::class),
+            self::createStub(LocalizationRepository::class),
+            self::createStub(SiteFinder::class),
+            self::createStub(DataMapProcessor::class),
+            self::createStub(LinkService::class),
         ];
         $this->subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments);
         $this->subject->start([], [], new BackendUserAuthentication(), $this->createMock(ReferenceIndexUpdater::class));
@@ -263,28 +263,28 @@ final class DataHandlerTest extends UnitTestCase
         $event = new EnrichPasswordValidationContextDataEvent(new ContextData(), [], '');
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects($this->once())->method('dispatch')->willReturn($event);
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolStub = self::createStub(ConnectionPool::class);
         $constructorArguments = [
             $eventDispatcher,
-            $this->createMock(CacheManager::class),
-            $this->createMock(FrontendInterface::class),
-            $connectionPoolMock,
-            $this->createMock(LoggerInterface::class),
+            self::createStub(CacheManager::class),
+            self::createStub(FrontendInterface::class),
+            $connectionPoolStub,
+            self::createStub(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
-            $this->createMock(FlexFormTools::class),
-            $this->createMock(Richtext::class),
+            self::createStub(FlexFormTools::class),
+            self::createStub(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
-            $this->createMock(FlashMessageService::class),
-            new LogEntryRepository($connectionPoolMock),
-            $this->createMock(LocalizationRepository::class),
-            $this->createMock(SiteFinder::class),
-            $this->createMock(DataMapProcessor::class),
-            $this->createMock(LinkService::class),
+            self::createStub(FlashMessageService::class),
+            new LogEntryRepository($connectionPoolStub),
+            self::createStub(LocalizationRepository::class),
+            self::createStub(SiteFinder::class),
+            self::createStub(DataMapProcessor::class),
+            self::createStub(LinkService::class),
         ];
         $subject = $this->getAccessibleMock(DataHandler::class, null, $constructorArguments, '');
         $inputValue = 'myPassword';
@@ -1059,7 +1059,7 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function checkFlexFormData(array $data, array $dataStructure, array $expected): void
     {
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
         $result = (new \ReflectionMethod($this->subject, 'checkFlexFormData'))
             ->invoke($this->subject, $data, [], $dataStructure, 'tt_content', 777, 'update', 1, 'tt_content:777:pi_flexform', 0);
         self::assertSame($expected, $result);
@@ -1112,34 +1112,34 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray(): void
     {
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolStub = self::createStub(ConnectionPool::class);
         $subject = new DataHandler(
             new NoopEventDispatcher(),
-            $this->createMock(CacheManager::class),
-            $this->createMock(FrontendInterface::class),
-            $connectionPoolMock,
-            $this->createMock(LoggerInterface::class),
+            self::createStub(CacheManager::class),
+            self::createStub(FrontendInterface::class),
+            $connectionPoolStub,
+            self::createStub(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
-            $this->createMock(FlexFormTools::class),
-            $this->createMock(Richtext::class),
+            self::createStub(FlexFormTools::class),
+            self::createStub(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
-            $this->createMock(FlashMessageService::class),
-            new LogEntryRepository($connectionPoolMock),
-            $this->createMock(LocalizationRepository::class),
-            $this->createMock(SiteFinder::class),
-            $this->createMock(DataMapProcessor::class),
-            $this->createMock(LinkService::class),
+            self::createStub(FlashMessageService::class),
+            new LogEntryRepository($connectionPoolStub),
+            self::createStub(LocalizationRepository::class),
+            self::createStub(SiteFinder::class),
+            self::createStub(DataMapProcessor::class),
+            self::createStub(LinkService::class),
         );
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
         $backendUser->method('getUserId')->willReturn(1);
         $backendUser->workspace = 0;
-        $subject->start([], [], $backendUser, $this->createMock(ReferenceIndexUpdater::class));
+        $subject->start([], [], $backendUser, self::createStub(ReferenceIndexUpdater::class));
         $logDetails = StringUtility::getUniqueId('details');
         $subject->log('', 23, Action::UNDEFINED, null, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', null, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
@@ -1149,34 +1149,34 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function logFormatsDetailMessageWithPlaceholders(): void
     {
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolStub = self::createStub(ConnectionPool::class);
         $subject = new DataHandler(
             new NoopEventDispatcher(),
-            $this->createMock(CacheManager::class),
-            $this->createMock(FrontendInterface::class),
-            $connectionPoolMock,
-            $this->createMock(LoggerInterface::class),
+            self::createStub(CacheManager::class),
+            self::createStub(FrontendInterface::class),
+            $connectionPoolStub,
+            self::createStub(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
-            $this->createMock(FlexFormTools::class),
-            $this->createMock(Richtext::class),
+            self::createStub(FlexFormTools::class),
+            self::createStub(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
-            $this->createMock(FlashMessageService::class),
-            new LogEntryRepository($connectionPoolMock),
-            $this->createMock(LocalizationRepository::class),
-            $this->createMock(SiteFinder::class),
-            $this->createMock(DataMapProcessor::class),
-            $this->createMock(LinkService::class),
+            self::createStub(FlashMessageService::class),
+            new LogEntryRepository($connectionPoolStub),
+            self::createStub(LocalizationRepository::class),
+            self::createStub(SiteFinder::class),
+            self::createStub(DataMapProcessor::class),
+            self::createStub(LinkService::class),
         );
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->method('getRole')->willReturn(PrincipalRole::USER);
         $backendUser->method('getUserId')->willReturn(1);
         $backendUser->workspace = 0;
-        $subject->start([], [], $backendUser, $this->createMock(ReferenceIndexUpdater::class));
+        $subject->start([], [], $backendUser, self::createStub(ReferenceIndexUpdater::class));
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
         $subject->log('', 23, Action::UNDEFINED, null, Error::USER_ERROR, $logDetails, null, ['table' => 'tx_sometable', 0 => 'some random value']);
         // UID is kept as non-replaced, and other properties are not replaced.
@@ -1583,28 +1583,28 @@ final class DataHandlerTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceMock;
         $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolStub = self::createStub(ConnectionPool::class);
         $subject = new DataHandler(
             new NoopEventDispatcher(),
-            $this->createMock(CacheManager::class),
-            $this->createMock(FrontendInterface::class),
-            $connectionPoolMock,
-            $this->createMock(LoggerInterface::class),
+            self::createStub(CacheManager::class),
+            self::createStub(FrontendInterface::class),
+            $connectionPoolStub,
+            self::createStub(LoggerInterface::class),
             new PagePermissionAssembler(),
             $this->tcaSchemaFactory,
             new PageDoktypeRegistry($this->tcaSchemaFactory),
-            $this->createMock(FlexFormTools::class),
-            $this->createMock(Richtext::class),
+            self::createStub(FlexFormTools::class),
+            self::createStub(Richtext::class),
             new PasswordHashFactory(),
             new Random(),
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new OpcodeCacheService(),
-            $this->createMock(FlashMessageService::class),
-            new LogEntryRepository($connectionPoolMock),
-            $this->createMock(LocalizationRepository::class),
-            $this->createMock(SiteFinder::class),
-            $this->createMock(DataMapProcessor::class),
-            $this->createMock(LinkService::class),
+            self::createStub(FlashMessageService::class),
+            new LogEntryRepository($connectionPoolStub),
+            self::createStub(LocalizationRepository::class),
+            self::createStub(SiteFinder::class),
+            self::createStub(DataMapProcessor::class),
+            self::createStub(LinkService::class),
         );
         self::assertEquals($expected, $subject->clearPrefixFromValue('testTable', $input));
     }

@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
@@ -32,13 +32,13 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TcaFlexProcessTest extends FunctionalTestCase
 {
-    private BackendUserAuthentication&MockObject $backendUserMock;
+    private BackendUserAuthentication&Stub $backendUserStub;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->backendUserMock = $this->createMock(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $this->backendUserMock;
+        $this->backendUserStub = self::createStub(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $this->backendUserStub;
         $GLOBALS['BE_USER']->groupData['non_exclude_fields'] = '';
 
         // Some tests call FormDataCompiler for sub elements. Those tests have functional test characteristics.
@@ -511,7 +511,8 @@ final class TcaFlexProcessTest extends FunctionalTestCase
         ];
         $input = $this->addTcaSchemata($input);
 
-        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(false);
+        $GLOBALS['BE_USER'] = $this->backendUserStub = $backendUserMock = $this->createMock(BackendUserAuthentication::class);
+        $backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(false);
         $GLOBALS['BE_USER']->groupData['non_exclude_fields'] = '';
 
         $expected = $input;
@@ -577,7 +578,8 @@ final class TcaFlexProcessTest extends FunctionalTestCase
         ];
         $input = $this->addTcaSchemata($input);
 
-        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(false);
+        $GLOBALS['BE_USER'] = $this->backendUserStub = $backendUserMock = $this->createMock(BackendUserAuthentication::class);
+        $backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(false);
         $GLOBALS['BE_USER']->groupData['non_exclude_fields'] = 'aTable:aField;aFlex;sDEF;aFlexField';
 
         $expected = $input;
@@ -651,7 +653,8 @@ final class TcaFlexProcessTest extends FunctionalTestCase
         ];
         $input = $this->addTcaSchemata($input);
 
-        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(true);
+        $GLOBALS['BE_USER'] = $this->backendUserStub = $backendUserMock = $this->createMock(BackendUserAuthentication::class);
+        $backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(true);
         $GLOBALS['BE_USER']->groupData['non_exclude_fields'] = '';
 
         $expected = $input;
@@ -825,12 +828,13 @@ final class TcaFlexProcessTest extends FunctionalTestCase
             TcaRadioItems::class => [],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->method('sL')->willReturnArgument(0);
 
-        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(true);
-        $this->backendUserMock->method('checkLanguageAccess')->with(self::anything())->willReturn(true);
+        $GLOBALS['BE_USER'] = $this->backendUserStub = $backendUserMock = $this->createMock(BackendUserAuthentication::class);
+        $backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(true);
+        $backendUserMock->method('checkLanguageAccess')->willReturn(true);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['ds'] = [
@@ -908,12 +912,13 @@ final class TcaFlexProcessTest extends FunctionalTestCase
             DatabaseRowDefaultValues::class => [],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->method('sL')->willReturnArgument(0);
 
-        $this->backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(true);
-        $this->backendUserMock->method('checkLanguageAccess')->with(self::anything())->willReturn(true);
+        $GLOBALS['BE_USER'] = $this->backendUserStub = $backendUserMock = $this->createMock(BackendUserAuthentication::class);
+        $backendUserMock->expects($this->atLeastOnce())->method('isAdmin')->willReturn(true);
+        $backendUserMock->method('checkLanguageAccess')->willReturn(true);
 
         $expected = $input;
         $expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vDEF'] = 'defaultValue';
@@ -1009,12 +1014,12 @@ final class TcaFlexProcessTest extends FunctionalTestCase
             DatabaseRowDefaultValues::class => [],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->method('sL')->willReturnArgument(0);
 
-        $this->backendUserMock->method('isAdmin')->willReturn(true);
-        $this->backendUserMock->method('checkLanguageAccess')->with(self::anything())->willReturn(true);
+        $this->backendUserStub->method('isAdmin')->willReturn(true);
+        $this->backendUserStub->method('checkLanguageAccess')->willReturn(true);
 
         $expected = $input;
 

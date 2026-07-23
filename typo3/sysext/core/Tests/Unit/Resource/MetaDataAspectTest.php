@@ -104,7 +104,7 @@ final class MetaDataAspectTest extends UnitTestCase
         $this->expectException(InvalidUidException::class);
         $this->expectExceptionCode(1381590731);
 
-        $metaDataRepository = new MetaDataRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context());
+        $metaDataRepository = new MetaDataRepository(new NoopEventDispatcher(), self::createStub(ConnectionPool::class), new Context());
         GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepository);
         $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->method('getUid')->willReturn(12);

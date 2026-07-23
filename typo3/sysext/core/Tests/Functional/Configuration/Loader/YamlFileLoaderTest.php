@@ -41,7 +41,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
             ],
             'betterthanbefore' => 1,
         ];
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
         self::assertSame($expected, $output);
     }
 
@@ -54,7 +54,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
         $this->expectException(YamlParseException::class);
         $this->expectExceptionCode(1497332874);
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/InvalidYamlFiles/LoadEmptyYaml.yaml';
-        (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
     }
 
     /**
@@ -66,7 +66,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
         $this->expectException(YamlParseException::class);
         $this->expectExceptionCode(1740817000);
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/InvalidYamlFiles/LoadInvalidYaml.yaml';
-        (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
     }
 
     /**
@@ -84,7 +84,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
             ],
             'betterthanbefore' => 1,
         ];
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
         self::assertSame($expected, $output);
     }
 
@@ -104,7 +104,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
             ],
             'betterthanbefore' => 1,
         ];
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
         self::assertSame($expected, $output);
     }
 
@@ -115,7 +115,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     public function loadWithImportAndRelativePaths(): void
     {
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithImportAndRelativeFiles.yaml';
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
         self::assertSame(
             [
                 'enable' => [
@@ -136,7 +136,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     public function loadWithPlaceholders(): void
     {
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithPlaceholders.yaml';
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
         $expected = [
             'firstset' => [
                 'myinitialversion' => 13,
@@ -176,7 +176,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
         ];
         putenv('env=bestVersion');
         putenv('bar=foo');
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
         putenv('env');
         putenv('bar');
         self::assertSame($expected, $output);
@@ -193,7 +193,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
         $this->expectException(\UnexpectedValueException::class);
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWihPlaceholdersInKeysResolvedKeyAlreadyExisting.yaml';
         putenv('bar=foo');
-        (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
         putenv('bar');
     }
 
@@ -209,7 +209,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
         $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithUnresolvablePlaceholdersInKeys.yaml';
         putenv('env=bestVersion');
         putenv('bar=foo');
-        (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
         putenv('env');
         putenv('bar');
     }
@@ -232,7 +232,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
             'betterthanbefore' => 13,
         ];
         putenv('foo=%firstset.myinitialversion%');
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))->load($fileName);
         putenv('foo');
         self::assertSame($expected, $output);
     }
@@ -243,7 +243,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     #[Test]
     public function loadWithImportAndEnvVars(): void
     {
-        $loader = new YamlFileLoader($this->createMock(LoggerInterface::class));
+        $loader = new YamlFileLoader(self::createStub(LoggerInterface::class));
         putenv('foo=barbaz');
         $output = $loader->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/Env/Berta.yaml');
         putenv('foo');
@@ -264,7 +264,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     #[Test]
     public function loadWithEnvVarsSetToFalsyValuesReturnsTheseValues(): void
     {
-        $loader = new YamlFileLoader($this->createMock(LoggerInterface::class));
+        $loader = new YamlFileLoader(self::createStub(LoggerInterface::class));
         putenv('optionFalse=false');
         putenv('optionNull1=0');
         putenv('optionNull2="0"');
@@ -301,7 +301,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     #[Test]
     public function loadWithImportAndPlaceholderInFileName(): void
     {
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))
             ->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/Placeholder/Berta.yaml');
         $expected = [
             'loadedWithPlaceholder' => 1,
@@ -318,7 +318,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     #[Test]
     public function loadWithGlobbedImports(): void
     {
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))
             ->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/LoadWithGlobbedImports.yaml');
         $expected = [
             'options' => [
@@ -338,7 +338,7 @@ final class YamlFileLoaderTest extends FunctionalTestCase
     #[Test]
     public function loadImportsWithNumericKeys(): void
     {
-        $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))
+        $output = (new YamlFileLoader(self::createStub(LoggerInterface::class)))
             ->load('EXT:core/Tests/Functional/Configuration/Loader/Fixtures/NumericKeys/Base.yaml');
         $expected = [
             'TYPO3' => [

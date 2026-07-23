@@ -63,9 +63,9 @@ final class AssetRendererTest extends UnitTestCase
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->method('dispatch')->willReturnArgument(0);
         $assetCollector = new AssetCollector();
-        $resourceFactory = $this->createMock(SystemResourceFactory::class);
-        $resourcePublisher = $this->createMock(SystemResourcePublisherInterface::class);
-        $resourceHashCollection = new ResourceHashCollection(new NullLogger(), $resourceFactory, $this->createMock(FrontendInterface::class));
+        $resourceFactory = self::createStub(SystemResourceFactory::class);
+        $resourcePublisher = self::createStub(SystemResourcePublisherInterface::class);
+        $resourceHashCollection = new ResourceHashCollection(new NullLogger(), $resourceFactory, self::createStub(FrontendInterface::class));
         $assetRenderer = new AssetRenderer($assetCollector, $eventDispatcher, $resourcePublisher, $resourceFactory, $resourceHashCollection, new DirectiveHashCollection($resourceHashCollection));
 
         $event = new $eventClassName(

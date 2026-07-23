@@ -35,10 +35,10 @@ final class AbstractFileTest extends UnitTestCase
         $parentIdentifier = '/parent/';
         $currentIdentifier = '/parent/current/';
 
-        $mockedStorageForParent = $this->createMock(ResourceStorage::class);
+        $storageForParentStub = self::createStub(ResourceStorage::class);
 
         $parentFolderFixture = $this->createMock(Folder::class);
-        $parentFolderFixture->method('getStorage')->willReturn($mockedStorageForParent);
+        $parentFolderFixture->method('getStorage')->willReturn($storageForParentStub);
 
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)
             ->onlyMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])

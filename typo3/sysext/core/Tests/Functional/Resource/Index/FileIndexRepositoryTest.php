@@ -29,10 +29,10 @@ final class FileIndexRepositoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/FilesForIndexOutstanding.csv');
 
-        $storageMock = $this->createMock(ResourceStorage::class);
-        $storageMock->method('getUid')->willReturn(1);
+        $storageStub = self::createStub(ResourceStorage::class);
+        $storageStub->method('getUid')->willReturn(1);
 
-        $result = $this->get(FileIndexRepository::class)->findInStorageWithIndexOutstanding($storageMock);
+        $result = $this->get(FileIndexRepository::class)->findInStorageWithIndexOutstanding($storageStub);
 
         self::assertCount(1, $result);
         self::assertSame(1, $result[0]['uid']);
@@ -43,10 +43,10 @@ final class FileIndexRepositoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/FilesForIndexOutstanding.csv');
 
-        $storageMock = $this->createMock(ResourceStorage::class);
-        $storageMock->method('getUid')->willReturn(2);
+        $storageStub = self::createStub(ResourceStorage::class);
+        $storageStub->method('getUid')->willReturn(2);
 
-        $result = $this->get(FileIndexRepository::class)->findInStorageWithIndexOutstanding($storageMock);
+        $result = $this->get(FileIndexRepository::class)->findInStorageWithIndexOutstanding($storageStub);
 
         self::assertCount(1, $result);
         self::assertSame(3, $result[0]['uid']);

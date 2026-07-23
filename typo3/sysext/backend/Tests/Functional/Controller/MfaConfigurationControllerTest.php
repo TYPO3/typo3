@@ -68,7 +68,7 @@ final class MfaConfigurationControllerTest extends FunctionalTestCase
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
         $this->hashService = new HashService();
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')
             ->willReturn('/');
         $normalizedParams->method('getRequestUri')

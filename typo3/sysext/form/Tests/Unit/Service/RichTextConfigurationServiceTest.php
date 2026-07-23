@@ -52,23 +52,23 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
         $richtextMock = $this->createMock(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
-        $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);
-        $publisherMock = $this->createMock(SystemResourcePublisherInterface::class);
-        $factoryMock = $this->createMock(SystemResourceFactory::class);
-        $uriBuilderMock = $this->createMock(UriBuilder::class);
+        $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
+        $publisherStub = self::createStub(SystemResourcePublisherInterface::class);
+        $factoryStub = self::createStub(SystemResourceFactory::class);
+        $uriBuilderStub = self::createStub(UriBuilder::class);
 
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->user = ['lang' => 'en'];
         $GLOBALS['BE_USER'] = $backendUser;
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
         $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] = false;
 
         $subject = new RichTextConfigurationService(
             $richtextMock,
-            $rteHtmlParserMock,
-            $publisherMock,
-            $factoryMock,
-            $uriBuilderMock
+            $rteHtmlParserStub,
+            $publisherStub,
+            $factoryStub,
+            $uriBuilderStub
         );
 
         $result = $subject->resolveCkEditorConfiguration();
@@ -91,23 +91,23 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
         $richtextMock = $this->createMock(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
-        $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);
-        $publisherMock = $this->createMock(SystemResourcePublisherInterface::class);
-        $factoryMock = $this->createMock(SystemResourceFactory::class);
-        $uriBuilderMock = $this->createMock(UriBuilder::class);
+        $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
+        $publisherStub = self::createStub(SystemResourcePublisherInterface::class);
+        $factoryStub = self::createStub(SystemResourceFactory::class);
+        $uriBuilderStub = self::createStub(UriBuilder::class);
 
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->user = ['lang' => 'de'];
         $GLOBALS['BE_USER'] = $backendUser;
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
         $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] = false;
 
         $subject = new RichTextConfigurationService(
             $richtextMock,
-            $rteHtmlParserMock,
-            $publisherMock,
-            $factoryMock,
-            $uriBuilderMock
+            $rteHtmlParserStub,
+            $publisherStub,
+            $factoryStub,
+            $uriBuilderStub
         );
 
         $result = $subject->resolveCkEditorConfiguration();
@@ -133,10 +133,10 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
         $richtextMock = $this->createMock(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
-        $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);
-        $publisherMock = $this->createMock(SystemResourcePublisherInterface::class);
-        $factoryMock = $this->createMock(SystemResourceFactory::class);
-        $uriBuilderMock = $this->createMock(UriBuilder::class);
+        $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
+        $publisherStub = self::createStub(SystemResourcePublisherInterface::class);
+        $factoryStub = self::createStub(SystemResourceFactory::class);
+        $uriBuilderStub = self::createStub(UriBuilder::class);
 
         $languageService = $this->createMock(LanguageService::class);
         $languageService->method('sL')->willReturnCallback(function ($input) {
@@ -146,7 +146,7 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             return $input;
         });
 
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->user = ['lang' => 'en'];
         $GLOBALS['BE_USER'] = $backendUser;
         $GLOBALS['LANG'] = $languageService;
@@ -154,10 +154,10 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
 
         $subject = new RichTextConfigurationService(
             $richtextMock,
-            $rteHtmlParserMock,
-            $publisherMock,
-            $factoryMock,
-            $uriBuilderMock
+            $rteHtmlParserStub,
+            $publisherStub,
+            $factoryStub,
+            $uriBuilderStub
         );
 
         $result = $subject->resolveCkEditorConfiguration();
@@ -186,24 +186,24 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
         $richtextMock = $this->createMock(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
-        $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);
-        $publisherMock = $this->createMock(SystemResourcePublisherInterface::class);
-        $factoryMock = $this->createMock(SystemResourceFactory::class);
+        $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
+        $publisherStub = self::createStub(SystemResourcePublisherInterface::class);
+        $factoryStub = self::createStub(SystemResourceFactory::class);
 
         $uriBuilderMock = $this->createMock(UriBuilder::class);
         $uriBuilderMock->method('buildUriFromRoute')->willReturn('https://example.com/wizard');
 
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->user = ['lang' => 'en'];
         $GLOBALS['BE_USER'] = $backendUser;
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
         $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] = false;
 
         $subject = new RichTextConfigurationService(
             $richtextMock,
-            $rteHtmlParserMock,
-            $publisherMock,
-            $factoryMock,
+            $rteHtmlParserStub,
+            $publisherStub,
+            $factoryStub,
             $uriBuilderMock
         );
 
@@ -229,23 +229,23 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
         $richtextMock = $this->createMock(Richtext::class);
         $richtextMock->method('getConfiguration')->willReturn($testConfiguration);
 
-        $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);
-        $publisherMock = $this->createMock(SystemResourcePublisherInterface::class);
-        $factoryMock = $this->createMock(SystemResourceFactory::class);
-        $uriBuilderMock = $this->createMock(UriBuilder::class);
+        $rteHtmlParserStub = self::createStub(RteHtmlParser::class);
+        $publisherStub = self::createStub(SystemResourcePublisherInterface::class);
+        $factoryStub = self::createStub(SystemResourceFactory::class);
+        $uriBuilderStub = self::createStub(UriBuilder::class);
 
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->user = ['lang' => 'en'];
         $GLOBALS['BE_USER'] = $backendUser;
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
         $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] = false;
 
         $subject = new RichTextConfigurationService(
             $richtextMock,
-            $rteHtmlParserMock,
-            $publisherMock,
-            $factoryMock,
-            $uriBuilderMock
+            $rteHtmlParserStub,
+            $publisherStub,
+            $factoryStub,
+            $uriBuilderStub
         );
 
         $result = $subject->resolveCkEditorConfiguration();
@@ -272,16 +272,16 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             ->with('<p>Test content</p>', ['overruleMode' => 'default'])
             ->willReturn('<p>Transformed content</p>');
 
-        $publisherMock = $this->createMock(SystemResourcePublisherInterface::class);
-        $factoryMock = $this->createMock(SystemResourceFactory::class);
-        $uriBuilderMock = $this->createMock(UriBuilder::class);
+        $publisherStub = self::createStub(SystemResourcePublisherInterface::class);
+        $factoryStub = self::createStub(SystemResourceFactory::class);
+        $uriBuilderStub = self::createStub(UriBuilder::class);
 
         $subject = new RichTextConfigurationService(
             $richtextMock,
             $rteHtmlParserMock,
-            $publisherMock,
-            $factoryMock,
-            $uriBuilderMock
+            $publisherStub,
+            $factoryStub,
+            $uriBuilderStub
         );
 
         $result = $subject->transformTextForPersistence('<p>Test content</p>');
@@ -307,16 +307,16 @@ final class RichTextConfigurationServiceTest extends UnitTestCase
             ->with('<p>DB content</p>', ['overruleMode' => 'default'])
             ->willReturn('<p>RTE content</p>');
 
-        $publisherMock = $this->createMock(SystemResourcePublisherInterface::class);
-        $factoryMock = $this->createMock(SystemResourceFactory::class);
-        $uriBuilderMock = $this->createMock(UriBuilder::class);
+        $publisherStub = self::createStub(SystemResourcePublisherInterface::class);
+        $factoryStub = self::createStub(SystemResourceFactory::class);
+        $uriBuilderStub = self::createStub(UriBuilder::class);
 
         $subject = new RichTextConfigurationService(
             $richtextMock,
             $rteHtmlParserMock,
-            $publisherMock,
-            $factoryMock,
-            $uriBuilderMock
+            $publisherStub,
+            $factoryStub,
+            $uriBuilderStub
         );
 
         $result = $subject->transformTextForRichTextEditor('<p>DB content</p>');

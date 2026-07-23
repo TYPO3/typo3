@@ -234,7 +234,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
         $dir = $host . rtrim(dirname($requestUriInstance->getPath()), '/') . '/';
         parse_str($requestUriInstance->getQuery(), $queryParams);
 
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getRequestHost')->willReturn($host);
         $normalizedParams->method('getRequestDir')->willReturn($dir);
         $request = new ServerRequest(

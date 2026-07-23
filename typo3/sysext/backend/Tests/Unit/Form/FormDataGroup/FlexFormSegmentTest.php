@@ -32,7 +32,7 @@ final class FlexFormSegmentTest extends UnitTestCase
     public function compileReturnsIncomingData(): void
     {
         $subject = new FlexFormSegment(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [];
         $input = ['foo'];
@@ -55,7 +55,7 @@ final class FlexFormSegmentTest extends UnitTestCase
             }
         );
         $subject = new FlexFormSegment(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         self::assertEquals(['foo'], $subject->compile([]));
     }
@@ -69,7 +69,7 @@ final class FlexFormSegmentTest extends UnitTestCase
             \stdClass::class => [],
         ];
         $subject = new FlexFormSegment(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         $subject->compile([]);
     }

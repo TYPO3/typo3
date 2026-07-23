@@ -32,7 +32,7 @@ final class AfterRecordListRowPreparedEventTest extends UnitTestCase
         $table = 'tt_content';
         $record = new RawRecord(1, 1, ['CType' => 'text'], new ComputedProperties(), $table);
         $data = ['header' => 'Test Header', '__label' => 'Test Label'];
-        $recordList = $this->createMock(DatabaseRecordList::class);
+        $recordList = self::createStub(DatabaseRecordList::class);
         $recTitle = 'Record Title';
         $lockInfo = false;
         $tagAttributes = ['class' => 'my-class', 'data-table' => 'tt_content'];
@@ -62,7 +62,7 @@ final class AfterRecordListRowPreparedEventTest extends UnitTestCase
         $table = 'tt_content';
         $record = new RawRecord(1, 1, ['CType' => 'text'], new ComputedProperties(), $table);
         $data = ['header' => 'Test Header'];
-        $recordList = $this->createMock(DatabaseRecordList::class);
+        $recordList = self::createStub(DatabaseRecordList::class);
 
         $event = new AfterRecordListRowPreparedEvent(
             $table,
@@ -86,7 +86,7 @@ final class AfterRecordListRowPreparedEventTest extends UnitTestCase
         $table = 'tt_content';
         $record = new RawRecord(1, 1, ['CType' => 'text'], new ComputedProperties(), $table);
         $tagAttributes = ['class' => 'original'];
-        $recordList = $this->createMock(DatabaseRecordList::class);
+        $recordList = self::createStub(DatabaseRecordList::class);
 
         $event = new AfterRecordListRowPreparedEvent(
             $table,
@@ -110,7 +110,7 @@ final class AfterRecordListRowPreparedEventTest extends UnitTestCase
         $table = 'tt_content';
         $record = new RawRecord(1, 1, ['CType' => 'text'], new ComputedProperties(), $table);
         $lockInfo = ['msg' => 'Locked by admin', 'user' => 'admin'];
-        $recordList = $this->createMock(DatabaseRecordList::class);
+        $recordList = self::createStub(DatabaseRecordList::class);
 
         $event = new AfterRecordListRowPreparedEvent(
             $table,

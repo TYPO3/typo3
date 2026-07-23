@@ -83,7 +83,7 @@ final class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
     #[Test]
     public function addDataDoesApplyToATranslatedPagesTable(): void
     {
-        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+        GeneralUtility::addInstance(TcaSchemaFactory::class, self::createStub(TcaSchemaFactory::class));
 
         $input = [
             'tableName' => 'pages',
@@ -115,7 +115,7 @@ final class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
     private function getSchemaCollection(array $tca): SchemaCollection
     {
         $tcaSchemaFactory = new TcaSchemaBuilder(
-            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new RelationMapBuilder(self::createStub(FlexFormTools::class)),
             new FieldTypeFactory()
         );
         return $tcaSchemaFactory->buildFromStructure($tca);

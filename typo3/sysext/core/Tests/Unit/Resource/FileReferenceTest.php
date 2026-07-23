@@ -31,12 +31,12 @@ final class FileReferenceTest extends UnitTestCase
     private function prepareFixture(array $fileReferenceProperties, array $originalFileProperties): FileReference&MockObject&AccessibleObjectInterface
     {
         $fixture = $this->getAccessibleMock(FileReference::class, null, [], '', false);
-        $originalFileMock = $this->createMock(File::class);
-        $originalFileMock->method('getProperties')
+        $originalFileStub = self::createStub(File::class);
+        $originalFileStub->method('getProperties')
             ->willReturn(
                 $originalFileProperties
             );
-        $fixture->_set('originalFile', $originalFileMock);
+        $fixture->_set('originalFile', $originalFileStub);
         $fixture->_set('propertiesOfFileReference', $fileReferenceProperties);
 
         return $fixture;

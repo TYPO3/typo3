@@ -84,7 +84,7 @@ final class PageRendererTest extends FunctionalTestCase
 
     private function createRequest(int $requestType = SystemEnvironmentBuilder::REQUESTTYPE_FE): ServerRequest
     {
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         return (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', $requestType)

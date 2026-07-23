@@ -58,7 +58,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
             new DateTimeAspect(DateTimeFactory::createFromTimestamp(1893456000))
         );
 
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('route', new Route('/record/importexport/export', []))

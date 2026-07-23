@@ -44,9 +44,9 @@ final class PersistenceManagerTest extends UnitTestCase
         $mockBackend->expects($this->once())->method('setAggregateRootObjects')->with($objectStorage);
 
         $manager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
         $manager->add($entity2);
 
@@ -63,9 +63,9 @@ final class PersistenceManagerTest extends UnitTestCase
         $mockBackend->expects($this->once())->method('setDeletedEntities')->with($objectStorage);
 
         $manager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
         $manager->remove($entity2);
 
@@ -82,9 +82,9 @@ final class PersistenceManagerTest extends UnitTestCase
         $mockBackend->expects($this->once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
 
         $manager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
 
         self::assertEquals($manager->getIdentifierByObject($object), $fakeUuid);
@@ -103,9 +103,9 @@ final class PersistenceManagerTest extends UnitTestCase
         )->willReturn($object);
 
         $manager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
 
         self::assertSame($object, $manager->getObjectByIdentifier($fakeUuid, $object::class));
@@ -124,9 +124,9 @@ final class PersistenceManagerTest extends UnitTestCase
         )->willReturn(null);
 
         $manager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
 
         self::assertNull($manager->getObjectByIdentifier($fakeUuid, $fakeEntityType));
@@ -138,9 +138,9 @@ final class PersistenceManagerTest extends UnitTestCase
         $someObject = new \stdClass();
         $backend = $this->createMock(BackendInterface::class);
         $persistenceManager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $backend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
         $persistenceManager->add($someObject);
 
@@ -165,9 +165,9 @@ final class PersistenceManagerTest extends UnitTestCase
 
         $backend = $this->createMock(BackendInterface::class);
         $persistenceManager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $backend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
         $persistenceManager->add($object1);
         $persistenceManager->add($object2);
@@ -200,9 +200,9 @@ final class PersistenceManagerTest extends UnitTestCase
 
         $backend = $this->createMock(BackendInterface::class);
         $persistenceManager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $backend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
         $persistenceManager->add($object1);
         $persistenceManager->add($object2);
@@ -239,9 +239,9 @@ final class PersistenceManagerTest extends UnitTestCase
         $object = new \ArrayObject(['val' => '1']);
         $backend = $this->createMock(BackendInterface::class);
         $persistenceManager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $backend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
         $persistenceManager->remove($object);
 
@@ -296,7 +296,7 @@ final class PersistenceManagerTest extends UnitTestCase
             ->with(self::equalTo($changedEntities));
 
         $persistenceManager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $mockBackend,
             $session
         );
@@ -314,9 +314,9 @@ final class PersistenceManagerTest extends UnitTestCase
         $mockBackend = $this->createMock(TearDownableBackendInterface::class);
         $mockBackend->expects($this->once())->method('tearDown');
         $persistenceManager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
         $persistenceManager->tearDown();
     }
@@ -347,9 +347,9 @@ final class PersistenceManagerTest extends UnitTestCase
             ->with(self::equalTo($aggregateRootObjects));
 
         $persistenceManager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
+            self::createStub(QueryFactoryInterface::class),
             $mockBackend,
-            $this->createMock(Session::class)
+            self::createStub(Session::class)
         );
 
         $persistenceManager->add($entity1);

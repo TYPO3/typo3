@@ -48,7 +48,7 @@ final class FileControllerTest extends UnitTestCase
         $this->fileResourceMock->method('toArray')->willReturn(['id' => 'foo']);
         $this->fileResourceMock->method('getModificationTime')->willReturn(123456789);
         $this->fileResourceMock->method('getExtension')->willReturn('html');
-        $this->fileResourceMock->method('getParentFolder')->willReturn($this->createMock(Folder::class));
+        $this->fileResourceMock->method('getParentFolder')->willReturn(self::createStub(Folder::class));
     }
 
     #[Test]
@@ -70,10 +70,10 @@ final class FileControllerTest extends UnitTestCase
             FileController::class,
             ['init', 'main'],
             [
-                $this->createMock(ResourceFactory::class),
+                self::createStub(ResourceFactory::class),
                 new ExtendedFileUtility(),
                 $iconFactoryMock,
-                $this->createMock(UriBuilder::class),
+                self::createStub(UriBuilder::class),
                 new FlashMessageService(),
             ],
         );
@@ -98,10 +98,10 @@ final class FileControllerTest extends UnitTestCase
             FileController::class,
             ['init', 'main'],
             [
-                $this->createMock(ResourceFactory::class),
+                self::createStub(ResourceFactory::class),
                 new ExtendedFileUtility(),
-                $this->createMock(IconFactory::class),
-                $this->createMock(UriBuilder::class),
+                self::createStub(IconFactory::class),
+                self::createStub(UriBuilder::class),
                 new FlashMessageService(),
             ],
         );
@@ -118,10 +118,10 @@ final class FileControllerTest extends UnitTestCase
             FileController::class,
             ['init', 'main'],
             [
-                $this->createMock(ResourceFactory::class),
+                self::createStub(ResourceFactory::class),
                 new ExtendedFileUtility(),
-                $this->createMock(IconFactory::class),
-                $this->createMock(UriBuilder::class),
+                self::createStub(IconFactory::class),
+                self::createStub(UriBuilder::class),
                 new FlashMessageService(),
             ],
         );
@@ -138,10 +138,10 @@ final class FileControllerTest extends UnitTestCase
             FileController::class,
             ['init', 'main'],
             [
-                $this->createMock(ResourceFactory::class),
+                self::createStub(ResourceFactory::class),
                 new ExtendedFileUtility(),
-                $this->createMock(IconFactory::class),
-                $this->createMock(UriBuilder::class),
+                self::createStub(IconFactory::class),
+                self::createStub(UriBuilder::class),
                 new FlashMessageService(),
             ],
         );
@@ -161,10 +161,10 @@ final class FileControllerTest extends UnitTestCase
             FileController::class,
             ['init', 'main'],
             [
-                $this->createMock(ResourceFactory::class),
+                self::createStub(ResourceFactory::class),
                 new ExtendedFileUtility(),
-                $this->createMock(IconFactory::class),
-                $this->createMock(UriBuilder::class),
+                self::createStub(IconFactory::class),
+                self::createStub(UriBuilder::class),
                 $flashMessageService,
             ],
         );

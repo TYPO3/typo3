@@ -117,11 +117,11 @@ final class FileBackendTest extends FunctionalTestCase
     #[Test]
     public function aDedicatedCacheDirectoryIsUsedForCodeCaches(): void
     {
-        $mockCache = $this->createMock(PhpFrontend::class);
-        $mockCache->method('getIdentifier')->willReturn('SomeCache');
+        $cacheStub = self::createStub(PhpFrontend::class);
+        $cacheStub->method('getIdentifier')->willReturn('SomeCache');
         $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
-        $subject->setCache($mockCache);
+        $subject->setCache($cacheStub);
         self::assertEquals($this->instancePath . '/Foo/cache/code/SomeCache/', $subject->getCacheDirectory());
     }
 
@@ -379,11 +379,11 @@ final class FileBackendTest extends FunctionalTestCase
     #[Test]
     public function requireCanLoadSameEntryMultipleTimes(): void
     {
-        $frontendMock = $this->getMockBuilder(AbstractFrontend::class)->disableOriginalConstructor()->getMock();
-        $frontendMock->method('getIdentifier')->willReturn('UnitTestCache');
+        $frontendStub = self::createStub(AbstractFrontend::class);
+        $frontendStub->method('getIdentifier')->willReturn('UnitTestCache');
         $subject = new FileBackend();
         $subject->setCacheDirectory($this->instancePath . '/Foo/');
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
         $subject->set('BarEntry', '<?php return "foo"; ?>');
         $loadedData = $subject->require('BarEntry');
         self::assertEquals('foo', $loadedData);

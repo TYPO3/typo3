@@ -60,7 +60,7 @@ final class AbstractNodeTest extends AbstractFolderStructureTestCase
     public function getParentReturnsSetParent(): void
     {
         $node = $this->getAccessibleMock(AbstractNode::class, null, [], '', false);
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $node->_set('parent', $parent);
         self::assertSame($parent, $node->_call('getParent'));
     }

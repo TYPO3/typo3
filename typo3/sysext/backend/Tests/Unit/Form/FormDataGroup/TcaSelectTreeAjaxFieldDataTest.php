@@ -34,7 +34,7 @@ final class TcaSelectTreeAjaxFieldDataTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaSelectTreeAjaxFieldData'] = [];
         $input = ['foo'];
         $subject = new TcaSelectTreeAjaxFieldData(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         self::assertEquals($input, $subject->compile($input));
     }
@@ -55,7 +55,7 @@ final class TcaSelectTreeAjaxFieldDataTest extends UnitTestCase
             }
         );
         $subject = new TcaSelectTreeAjaxFieldData(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         self::assertEquals(['foo'], $subject->compile([]));
     }
@@ -69,7 +69,7 @@ final class TcaSelectTreeAjaxFieldDataTest extends UnitTestCase
             \stdClass::class => [],
         ];
         $subject = new TcaSelectTreeAjaxFieldData(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         $subject->compile([]);
     }

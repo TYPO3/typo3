@@ -127,7 +127,7 @@ final class SessionTest extends UnitTestCase
     public function objectCanBeRegisteredAsReconstituted(): void
     {
         $persistenceSession = new Session();
-        $entity = $this->createMock(AbstractEntity::class);
+        $entity = self::createStub(AbstractEntity::class);
         $persistenceSession->registerReconstitutedEntity($entity);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
         self::assertTrue($reconstitutedObjects->contains($entity), 'The object was not registered as reconstituted.');
@@ -137,7 +137,7 @@ final class SessionTest extends UnitTestCase
     public function objectCanBeUnregisteredAsReconstituted(): void
     {
         $persistenceSession = new Session();
-        $entity = $this->createMock(AbstractEntity::class);
+        $entity = self::createStub(AbstractEntity::class);
         $persistenceSession->registerReconstitutedEntity($entity);
         $persistenceSession->unregisterReconstitutedEntity($entity);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();

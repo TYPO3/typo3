@@ -72,7 +72,7 @@ final class MfaControllerTest extends FunctionalTestCase
             $this->get(EventDispatcherInterface::class)
         );
         $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $this->request = (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)

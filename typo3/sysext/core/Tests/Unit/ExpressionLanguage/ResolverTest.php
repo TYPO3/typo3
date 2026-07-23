@@ -93,16 +93,16 @@ final class ResolverTest extends UnitTestCase
     #[Test]
     public function basicExpressionHandlingWithCustomVariablesWorksAsExpected(string $expression, mixed $expectedResult): void
     {
-        $contextMock = $this->createMock(DefaultProvider::class);
-        $contextMock->method('getExpressionLanguageProviders')->willReturn([]);
-        $contextMock->method('getExpressionLanguageVariables')->willReturn([
+        $contextStub = self::createStub(DefaultProvider::class);
+        $contextStub->method('getExpressionLanguageProviders')->willReturn([]);
+        $contextStub->method('getExpressionLanguageVariables')->willReturn([
             'var1' => '1',
             'var2' => '2',
             'varTrue' => true,
             'varFalse' => false,
             'varArray' => ['foo' => 'bar'],
         ]);
-        GeneralUtility::addInstance(DefaultProvider::class, $contextMock);
+        GeneralUtility::addInstance(DefaultProvider::class, $contextStub);
         $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression, ['contextVar' => 42]));
     }
@@ -119,15 +119,15 @@ final class ResolverTest extends UnitTestCase
     #[Test]
     public function basicExpressionHandlingWithContextVariablesWorksAsExpected(string $expression, array $contextVariables, mixed $expectedResult): void
     {
-        $contextMock = $this->createMock(DefaultProvider::class);
-        $contextMock->method('getExpressionLanguageProviders')->willReturn([]);
-        $contextMock->method('getExpressionLanguageVariables')->willReturn([
+        $contextStub = self::createStub(DefaultProvider::class);
+        $contextStub->method('getExpressionLanguageProviders')->willReturn([]);
+        $contextStub->method('getExpressionLanguageVariables')->willReturn([
             'var1' => '1',
             'var2' => '2',
             'varTrue' => true,
             'varFalse' => false,
         ]);
-        GeneralUtility::addInstance(DefaultProvider::class, $contextMock);
+        GeneralUtility::addInstance(DefaultProvider::class, $contextStub);
         $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression, $contextVariables));
     }
@@ -149,22 +149,22 @@ final class ResolverTest extends UnitTestCase
     #[Test]
     public function basicExpressionHandlingWithCustomVariablesAndExpressionLanguageProviderWorksAsExpected(string $expression, mixed $expectedResult): void
     {
-        $expressionProviderMock = $this->createMock(DefaultFunctionsProvider::class);
-        $expressionProviderMock->method('getFunctions')->willReturn([
+        $expressionProviderStub = self::createStub(DefaultFunctionsProvider::class);
+        $expressionProviderStub->method('getFunctions')->willReturn([
             new ExpressionFunction('testMeLowercase', static function ($str) {
                 return sprintf('(is_string(%1$s) ? strtolower(%1$s) : %1$s)', $str);
             }, static function ($arguments, $str) {
                 return is_string($str) ? strtolower($str) : $str;
             }),
         ]);
-        $contextMock = $this->createMock(DefaultProvider::class);
-        $contextMock->method('getExpressionLanguageProviders')->willReturn([DefaultFunctionsProvider::class]);
-        $contextMock->method('getExpressionLanguageVariables')->willReturn([
+        $contextStub = self::createStub(DefaultProvider::class);
+        $contextStub->method('getExpressionLanguageProviders')->willReturn([DefaultFunctionsProvider::class]);
+        $contextStub->method('getExpressionLanguageVariables')->willReturn([
             'var1' => 'FOO',
             'var2' => 'foo',
         ]);
-        GeneralUtility::addInstance(DefaultProvider::class, $contextMock);
-        GeneralUtility::addInstance(DefaultFunctionsProvider::class, $expressionProviderMock);
+        GeneralUtility::addInstance(DefaultProvider::class, $contextStub);
+        GeneralUtility::addInstance(DefaultFunctionsProvider::class, $expressionProviderStub);
         $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }

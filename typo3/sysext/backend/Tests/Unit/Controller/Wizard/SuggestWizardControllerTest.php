@@ -125,7 +125,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
         array $tableConfig,
         bool $isAdmin
     ): void {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('isAdmin')->willReturn($isAdmin);
         $schema = new TcaSchema('irrelevant', new FieldCollection(), $tableConfig);
 

@@ -39,8 +39,8 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     #[Test]
     public function getPrototypeConfigurationReturnsPrototypeConfiguration(): void
     {
-        $configurationManagerMock = $this->createMock(ExtFormConfigurationManagerInterface::class);
-        $configurationManagerMock->method('getYamlConfiguration')
+        $configurationManagerStub = self::createStub(ExtFormConfigurationManagerInterface::class);
+        $configurationManagerStub->method('getYamlConfiguration')
             ->willReturn([
                 'prototypes' => [
                     'standard' => [
@@ -49,12 +49,12 @@ final class ConfigurationServiceTest extends FunctionalTestCase
                 ],
             ]);
         $subject = new ConfigurationService(
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
-            $configurationManagerMock,
-            $this->createMock(TranslationService::class),
-            $this->createMock(PhpFrontend::class),
-            $this->createMock(PhpFrontend::class),
-            $this->createMock(EventDispatcherInterface::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            $configurationManagerStub,
+            self::createStub(TranslationService::class),
+            self::createStub(PhpFrontend::class),
+            self::createStub(PhpFrontend::class),
+            self::createStub(EventDispatcherInterface::class),
         );
         $expected = [
             'key' => 'value',
@@ -65,20 +65,20 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     #[Test]
     public function getPrototypeConfigurationThrowsExceptionIfNoPrototypeFound(): void
     {
-        $configurationManagerMock = $this->createMock(ExtFormConfigurationManagerInterface::class);
-        $configurationManagerMock->method('getYamlConfiguration')
+        $configurationManagerStub = self::createStub(ExtFormConfigurationManagerInterface::class);
+        $configurationManagerStub->method('getYamlConfiguration')
             ->willReturn([
                 'prototypes' => [
                     'noStandard' => [],
                 ],
             ]);
         $subject = new ConfigurationService(
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
-            $configurationManagerMock,
-            $this->createMock(TranslationService::class),
-            $this->createMock(PhpFrontend::class),
-            $this->createMock(PhpFrontend::class),
-            $this->createMock(EventDispatcherInterface::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            $configurationManagerStub,
+            self::createStub(TranslationService::class),
+            self::createStub(PhpFrontend::class),
+            self::createStub(PhpFrontend::class),
+            self::createStub(EventDispatcherInterface::class),
         );
         $this->expectException(PrototypeNotFoundException::class);
         $this->expectExceptionCode(1475924277);
@@ -88,8 +88,8 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     #[Test]
     public function getSelectablePrototypeNamesDefinedInFormEditorSetupReturnsPrototypes(): void
     {
-        $configurationManagerMock = $this->createMock(ExtFormConfigurationManagerInterface::class);
-        $configurationManagerMock->method('getYamlConfiguration')
+        $configurationManagerStub = self::createStub(ExtFormConfigurationManagerInterface::class);
+        $configurationManagerStub->method('getYamlConfiguration')
             ->willReturn([
                 'formManager' => [
                     'selectablePrototypesConfiguration' => [
@@ -106,12 +106,12 @@ final class ConfigurationServiceTest extends FunctionalTestCase
                 ],
             ]);
         $subject = new ConfigurationService(
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
-            $configurationManagerMock,
-            $this->createMock(TranslationService::class),
-            $this->createMock(PhpFrontend::class),
-            $this->createMock(PhpFrontend::class),
-            $this->createMock(EventDispatcherInterface::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            $configurationManagerStub,
+            self::createStub(TranslationService::class),
+            self::createStub(PhpFrontend::class),
+            self::createStub(PhpFrontend::class),
+            self::createStub(EventDispatcherInterface::class),
         );
         $expected = [
             'standard',
@@ -1116,20 +1116,20 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     #[Test]
     public function buildFormDefinitionValidationConfigurationFromFormEditorSetup(array $configuration, array $expected): void
     {
-        $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcherMock->method('dispatch')->willReturnArgument(0);
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateValuesRecursive')->willReturnArgument(0);
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $eventDispatcherStub->method('dispatch')->willReturnArgument(0);
         $subjectMock = $this->getAccessibleMock(
             ConfigurationService::class,
             ['getPrototypeConfiguration'],
             [
-                $this->createMock(ExtbaseConfigurationManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $translationServiceMock,
-                $this->createMock(FrontendInterface::class),
-                $this->createMock(FrontendInterface::class),
-                $eventDispatcherMock,
+                self::createStub(ExtbaseConfigurationManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                $translationServiceStub,
+                self::createStub(FrontendInterface::class),
+                self::createStub(FrontendInterface::class),
+                $eventDispatcherStub,
             ],
         );
         $subjectMock->method('getPrototypeConfiguration')->willReturn($configuration);
@@ -1139,11 +1139,11 @@ final class ConfigurationServiceTest extends FunctionalTestCase
     #[Test]
     public function afterFormDefinitionValidationConfigurationIsBuiltEventIsDispatched(): void
     {
-        $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateValuesRecursive')->willReturnArgument(0);
         $dispatchedEvent = null;
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcherMock->method('dispatch')->willReturnCallback(
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $eventDispatcherStub->method('dispatch')->willReturnCallback(
             static function (object $event) use (&$dispatchedEvent): object {
                 $dispatchedEvent = $event;
                 return $event;
@@ -1153,12 +1153,12 @@ final class ConfigurationServiceTest extends FunctionalTestCase
             ConfigurationService::class,
             ['getPrototypeConfiguration'],
             [
-                $this->createMock(ExtbaseConfigurationManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $translationServiceMock,
-                $this->createMock(FrontendInterface::class),
-                $this->createMock(FrontendInterface::class),
-                $eventDispatcherMock,
+                self::createStub(ExtbaseConfigurationManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                $translationServiceStub,
+                self::createStub(FrontendInterface::class),
+                self::createStub(FrontendInterface::class),
+                $eventDispatcherStub,
             ],
         );
         $subjectMock->method('getPrototypeConfiguration')->willReturn([]);

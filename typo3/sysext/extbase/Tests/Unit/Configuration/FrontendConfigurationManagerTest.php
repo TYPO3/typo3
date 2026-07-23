@@ -96,8 +96,8 @@ final class FrontendConfigurationManagerTest extends UnitTestCase
         ];
         $subject = new FrontendConfigurationManager(
             new TypoScriptService(),
-            $this->createMock(FlexFormTools::class),
-            $this->createMock(PageRepository::class),
+            self::createStub(FlexFormTools::class),
+            self::createStub(PageRepository::class),
             new NoopEventDispatcher()
         );
         $actualResult = $subject->getConfiguration($request, ['extensionName' => 'CurrentExtensionName', 'pluginName' => 'CurrentPluginName']);

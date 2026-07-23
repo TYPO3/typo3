@@ -34,7 +34,7 @@ final class Typo3QuerySettingsTest extends UnitTestCase
         parent::setUp();
         $this->subject = new Typo3QuerySettings(
             new Context(),
-            $this->createMock(ConfigurationManagerInterface::class)
+            self::createStub(ConfigurationManagerInterface::class)
         );
     }
 

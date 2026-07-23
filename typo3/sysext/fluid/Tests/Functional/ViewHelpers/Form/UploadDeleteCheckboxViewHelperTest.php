@@ -41,12 +41,12 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
             ->withPluginName('MyPlugin')
             ->withControllerObjectName('VENDOR\\MyExtension\\Controller\\UploadController');
 
-        $fileReferenceMock = $this->createMock(FileReference::class);
+        $fileReferenceStub = self::createStub(FileReference::class);
 
         $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form.uploadDeleteCheckbox id="file" property="file" fileReference="{fileReference}" />');
         $view = new TemplateView($context);
-        $view->assign('fileReference', $fileReferenceMock);
+        $view->assign('fileReference', $fileReferenceStub);
 
         $this->expectExceptionCode(1719655880);
 
@@ -61,12 +61,12 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = new Request($psr7Request);
 
-        $fileReferenceMock = $this->createMock(FileReference::class);
+        $fileReferenceStub = self::createStub(FileReference::class);
 
         $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form.uploadDeleteCheckbox id="file" property="file" fileReference="{fileReference}" />');
         $view = new TemplateView($context);
-        $view->assign('fileReference', $fileReferenceMock);
+        $view->assign('fileReference', $fileReferenceStub);
 
         $this->expectExceptionCode(1719660837);
 
@@ -81,12 +81,12 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $extbaseRequest = (new Request($psr7Request))->withControllerExtensionName('MyExtension');
 
-        $fileReferenceMock = $this->createMock(FileReference::class);
+        $fileReferenceStub = self::createStub(FileReference::class);
 
         $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form.uploadDeleteCheckbox id="file" property="file" fileReference="{fileReference}" />');
         $view = new TemplateView($context);
-        $view->assign('fileReference', $fileReferenceMock);
+        $view->assign('fileReference', $fileReferenceStub);
 
         $this->expectExceptionCode(1719660837);
 
@@ -106,15 +106,15 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
             ->withPluginName('MyPlugin')
             ->withControllerExtensionName('MyExtension');
 
-        $fileReferenceMock = $this->createMock(FileReference::class);
-        $fileReferenceMock->method('getUid')->willReturn(1);
+        $fileReferenceStub = self::createStub(FileReference::class);
+        $fileReferenceStub->method('getUid')->willReturn(1);
 
         $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource(
             '<f:form name="myForm"><f:form.uploadDeleteCheckbox id="file" property="file" fileReference="{fileReference}" /></f:form>'
         );
         $view = new TemplateView($context);
-        $view->assign('fileReference', $fileReferenceMock);
+        $view->assign('fileReference', $fileReferenceStub);
 
         $renderResult = $view->render();
         self::assertStringContainsString('input type="checkbox" id="file" name="tx_myextension_myplugin[@delete][myForm][c7671aeb4c76fb2359285ea74057b6c22a0a6842]"', $renderResult);
@@ -153,15 +153,15 @@ final class UploadDeleteCheckboxViewHelperTest extends FunctionalTestCase
             ->withPluginName('MyPlugin')
             ->withControllerExtensionName('MyExtension');
 
-        $fileReferenceMock = $this->createMock(FileReference::class);
-        $fileReferenceMock->method('getUid')->willReturn(1);
+        $fileReferenceStub = self::createStub(FileReference::class);
+        $fileReferenceStub->method('getUid')->willReturn(1);
 
         $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource(
             '<f:form name="myForm"><f:form.uploadDeleteCheckbox id="file" property="file" fileReference="{fileReference}" /></f:form>'
         );
         $view = new TemplateView($context);
-        $view->assign('fileReference', $fileReferenceMock);
+        $view->assign('fileReference', $fileReferenceStub);
 
         $renderResult = $view->render();
         self::assertStringContainsString('checked="checked"', $renderResult);

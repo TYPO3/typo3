@@ -105,7 +105,7 @@ final class FileUploadTest extends UnitTestCase
     #[Test]
     public function afterBuildingFinishedSetsUpStoragePathToPropertySaveToFileMountIfItExists(): void
     {
-        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory = self::createStub(ResourceFactory::class);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
         // Don't add any validators for now
@@ -137,7 +137,7 @@ final class FileUploadTest extends UnitTestCase
     #[Test]
     public function afterBuildingFinishedSetsUpStoragePathToToFormDefinitionPathIfSaveToFileMountIsNotDefinedAndFormWasNotAddedProgrammatically(): void
     {
-        $resourceFactory = $this->createMock(ResourceFactory::class);
+        $resourceFactory = self::createStub(ResourceFactory::class);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
 
         // Don't add any validators for now

@@ -313,7 +313,7 @@ final class DefaultResourcePublisherTest extends FunctionalTestCase
 
         self::assertSame($url, (string)$resourcePublisher->generateUri($resource, null));
 
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $request = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
@@ -350,7 +350,7 @@ final class DefaultResourcePublisherTest extends FunctionalTestCase
         $class = new \ReflectionClass(File::class);
         $allMethods = array_map(static fn($method) => $method->name, $class->getMethods());
         $methodsToMock = array_diff($allMethods, ['isPublished']);
-        $storage = $this->createMock(ResourceStorage::class);
+        $storage = self::createStub(ResourceStorage::class);
         $storage->method('isPublic')
             ->willReturn(false);
         return $this->getMockBuilder(File::class)

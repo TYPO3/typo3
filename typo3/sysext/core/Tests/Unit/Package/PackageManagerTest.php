@@ -50,12 +50,12 @@ final class PackageManagerTest extends UnitTestCase
         $this->testRoot = Environment::getVarPath() . '/tests/PackageManager/';
         $this->testFilesToDelete[] = $this->testRoot;
 
-        $mockCache = $this->createMock(PhpFrontend::class);
-        $mockCacheBackend = $this->createMock(SimpleFileBackend::class);
-        $mockCache->method('has')->willReturn(false);
-        $mockCache->method('set');
-        $mockCache->method('getBackend')->willReturn($mockCacheBackend);
-        $mockCacheBackend->method('getCacheDirectory')->willReturn($this->testRoot . 'Cache');
+        $cacheStub = self::createStub(PhpFrontend::class);
+        $cacheBackendStub = self::createStub(SimpleFileBackend::class);
+        $cacheStub->method('has')->willReturn(false);
+        $cacheStub->method('set');
+        $cacheStub->method('getBackend')->willReturn($cacheBackendStub);
+        $cacheBackendStub->method('getCacheDirectory')->willReturn($this->testRoot . 'Cache');
         $this->packageManager = $this->getAccessibleMock(
             PackageManager::class,
             ['sortAndSavePackageStates', 'sortActivePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'],
@@ -74,7 +74,7 @@ final class PackageManagerTest extends UnitTestCase
             'typo3/flow' => 'TYPO3.Flow',
         ];
 
-        $this->packageManager->setPackageCache(new PackageStatesPackageCache($this->testRoot . 'Configuration/PackageStates.php', $mockCache));
+        $this->packageManager->setPackageCache(new PackageStatesPackageCache($this->testRoot . 'Configuration/PackageStates.php', $cacheStub));
         $this->packageManager->_set('composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
         $this->packageManager->_set('packagesBasePath', $this->testRoot . 'Packages/');
         $this->packageManager->_set('packageStatesPathAndFilename', $this->testRoot . 'Configuration/PackageStates.php');

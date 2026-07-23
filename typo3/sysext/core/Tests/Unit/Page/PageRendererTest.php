@@ -39,9 +39,9 @@ final class PageRendererTest extends UnitTestCase
         $importMapMock->method('render')
             ->with(self::isString(), self::isInstanceOf(ConsumableNonce::class))
             ->willReturn('');
-        $importMapFactoryMock = $this->createMock(ImportMapFactory::class);
-        $importMapFactoryMock->method('create')->willReturn($importMapMock);
-        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryMock);
+        $importMapFactoryStub = self::createStub(ImportMapFactory::class);
+        $importMapFactoryStub->method('create')->willReturn($importMapMock);
+        GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryStub);
     }
 
     #[Test]

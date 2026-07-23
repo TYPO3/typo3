@@ -37,9 +37,9 @@ final class SystemMaintainerGateTest extends UnitTestCase
     #[Test]
     public function abstainForNonSystemMaintainerAccess(): void
     {
-        $module = $this->createMock(ModuleInterface::class);
+        $module = self::createStub(ModuleInterface::class);
         $module->method('getAccess')->willReturn('admin');
-        $user = $this->createMock(BackendUserAuthentication::class);
+        $user = self::createStub(BackendUserAuthentication::class);
 
         self::assertSame(ModuleAccessResult::Abstain, $this->subject->decide($module, $user));
     }
@@ -47,9 +47,9 @@ final class SystemMaintainerGateTest extends UnitTestCase
     #[Test]
     public function grantedForSystemMaintainer(): void
     {
-        $module = $this->createMock(ModuleInterface::class);
+        $module = self::createStub(ModuleInterface::class);
         $module->method('getAccess')->willReturn('systemMaintainer');
-        $user = $this->createMock(BackendUserAuthentication::class);
+        $user = self::createStub(BackendUserAuthentication::class);
         $user->method('isSystemMaintainer')->willReturn(true);
 
         self::assertSame(ModuleAccessResult::Granted, $this->subject->decide($module, $user));
@@ -58,9 +58,9 @@ final class SystemMaintainerGateTest extends UnitTestCase
     #[Test]
     public function deniedForNonSystemMaintainer(): void
     {
-        $module = $this->createMock(ModuleInterface::class);
+        $module = self::createStub(ModuleInterface::class);
         $module->method('getAccess')->willReturn('systemMaintainer');
-        $user = $this->createMock(BackendUserAuthentication::class);
+        $user = self::createStub(BackendUserAuthentication::class);
         $user->method('isSystemMaintainer')->willReturn(false);
 
         self::assertSame(ModuleAccessResult::Denied, $this->subject->decide($module, $user));

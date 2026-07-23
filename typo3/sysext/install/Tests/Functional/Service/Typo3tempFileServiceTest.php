@@ -51,8 +51,8 @@ final class Typo3tempFileServiceTest extends FunctionalTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781454);
 
-        $processedFileRepository = $this->getMockBuilder(ProcessedFileRepository::class)->disableOriginalConstructor()->getMock();
-        $storageRepository = $this->getMockBuilder(StorageRepository::class)->disableOriginalConstructor()->getMock();
+        $processedFileRepository = self::createStub(ProcessedFileRepository::class);
+        $storageRepository = self::createStub(StorageRepository::class);
         $subject = new Typo3tempFileService($processedFileRepository, $storageRepository);
         $subject->clearAssetsFolder('/typo3temp/assets/' . $this->directoryName);
     }
@@ -65,8 +65,8 @@ final class Typo3tempFileServiceTest extends FunctionalTestCase
         file_put_contents($this->directoryPath . '/a/b/c.css', '/* test */');
         file_put_contents($this->directoryPath . '/a/b/d.css', '/* test */');
 
-        $processedFileRepository = $this->getMockBuilder(ProcessedFileRepository::class)->disableOriginalConstructor()->getMock();
-        $storageRepository = $this->getMockBuilder(StorageRepository::class)->disableOriginalConstructor()->getMock();
+        $processedFileRepository = self::createStub(ProcessedFileRepository::class);
+        $storageRepository = self::createStub(StorageRepository::class);
         $subject = new Typo3tempFileService($processedFileRepository, $storageRepository);
         $subject->clearAssetsFolder('/typo3temp/assets/' . $this->directoryName);
 

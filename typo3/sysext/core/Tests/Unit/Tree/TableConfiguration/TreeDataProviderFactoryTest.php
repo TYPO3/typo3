@@ -89,11 +89,11 @@ final class TreeDataProviderFactoryTest extends UnitTestCase
     public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration, int $expectedExceptionCode): void
     {
         if (isset($tcaConfiguration['type']) && $tcaConfiguration['type'] !== 'folder' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
-            $treeDataProvider = $this->createMock(DatabaseTreeDataProvider::class);
+            $treeDataProvider = self::createStub(DatabaseTreeDataProvider::class);
             GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProvider);
         }
         if ($expectedExceptionCode === 1288215889) {
-            GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+            GeneralUtility::addInstance(TcaSchemaFactory::class, self::createStub(TcaSchemaFactory::class));
         }
 
         $this->expectException(\InvalidArgumentException::class);

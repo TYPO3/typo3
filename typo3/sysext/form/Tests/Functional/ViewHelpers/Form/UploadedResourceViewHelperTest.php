@@ -93,9 +93,9 @@ final class UploadedResourceViewHelperTest extends FunctionalTestCase
     {
         $extbaseRequest = $this->buildExtbaseRequest();
 
-        $fileRef1 = $this->createMock(FileReference::class);
+        $fileRef1 = self::createStub(FileReference::class);
         $fileRef1->method('getUid')->willReturn(1);
-        $fileRef2 = $this->createMock(FileReference::class);
+        $fileRef2 = self::createStub(FileReference::class);
         $fileRef2->method('getUid')->willReturn(2);
 
         /** @var ObjectStorage<FileReference> $storage */

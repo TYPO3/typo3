@@ -81,7 +81,7 @@ final class FileUploadMimeTypeValidatorRegistrationTest extends FunctionalTestCa
 
     private function runtimeAllowingSubmission(FormDefinition $formDefinition): FormRuntime
     {
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $formRuntime->method('getFormDefinition')->willReturn($formDefinition);
         $formRuntime->method('getFormSession')->willReturn(new FormSession());
         $formRuntime->method('canProcessFormSubmission')->willReturn(true);

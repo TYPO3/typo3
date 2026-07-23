@@ -34,7 +34,7 @@ final class ModuleAccessGateRegistryTest extends UnitTestCase
     #[Test]
     public function hasReturnsTrueForRegisteredGate(): void
     {
-        $gate = $this->createMock(ModuleAccessGateInterface::class);
+        $gate = self::createStub(ModuleAccessGateInterface::class);
         $registry = new ModuleAccessGateRegistry(['myGate' => $gate]);
         self::assertTrue($registry->has('myGate'));
     }
@@ -42,7 +42,7 @@ final class ModuleAccessGateRegistryTest extends UnitTestCase
     #[Test]
     public function getReturnsRegisteredGate(): void
     {
-        $gate = $this->createMock(ModuleAccessGateInterface::class);
+        $gate = self::createStub(ModuleAccessGateInterface::class);
         $registry = new ModuleAccessGateRegistry(['myGate' => $gate]);
         self::assertSame($gate, $registry->get('myGate'));
     }
@@ -59,8 +59,8 @@ final class ModuleAccessGateRegistryTest extends UnitTestCase
     #[Test]
     public function getAllReturnsAllGates(): void
     {
-        $gate1 = $this->createMock(ModuleAccessGateInterface::class);
-        $gate2 = $this->createMock(ModuleAccessGateInterface::class);
+        $gate1 = self::createStub(ModuleAccessGateInterface::class);
+        $gate2 = self::createStub(ModuleAccessGateInterface::class);
         $registry = new ModuleAccessGateRegistry(['gate1' => $gate1, 'gate2' => $gate2]);
         self::assertSame(['gate1' => $gate1, 'gate2' => $gate2], $registry->getAll());
     }

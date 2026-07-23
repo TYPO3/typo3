@@ -214,12 +214,12 @@ final class VerifyHostHeaderTest extends UnitTestCase
         $serverParams['HTTP_HOST'] = $httpHost;
         $subject = new VerifyHostHeader($hostNamePattern);
         $request = new ServerRequest(serverParams: $serverParams);
-        $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
+        $requestHandlerStub = self::createStub(RequestHandlerInterface::class);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1396795884);
 
-        $subject->process($request, $requestHandlerMock);
+        $subject->process($request, $requestHandlerStub);
     }
 
     #[DataProvider('hostnamesNotMatchingTrustedHostsConfigurationDataProvider')]

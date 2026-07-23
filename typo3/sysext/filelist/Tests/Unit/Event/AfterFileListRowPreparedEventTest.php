@@ -29,10 +29,10 @@ final class AfterFileListRowPreparedEventTest extends UnitTestCase
     #[Test]
     public function gettersReturnInitializedObjects(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
-        $resource = new File(['identifier' => '/foo.jpg', 'name' => 'foo.jpg'], $storageMock);
+        $storageStub = self::createStub(ResourceStorage::class);
+        $resource = new File(['identifier' => '/foo.jpg', 'name' => 'foo.jpg'], $storageStub);
         $data = ['name' => 'foo.jpg', 'alternative' => 'Alt text'];
-        $fileList = $this->createMock(FileList::class);
+        $fileList = self::createStub(FileList::class);
         $attributes = ['class' => 'my-class', 'data-filelist-identifier' => '1:/foo.jpg'];
 
         $event = new AfterFileListRowPreparedEvent($resource, $data, $fileList, $attributes);
@@ -46,9 +46,9 @@ final class AfterFileListRowPreparedEventTest extends UnitTestCase
     #[Test]
     public function setDataModifiesData(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
-        $resource = new File(['identifier' => '/foo.jpg', 'name' => 'foo.jpg'], $storageMock);
-        $fileList = $this->createMock(FileList::class);
+        $storageStub = self::createStub(ResourceStorage::class);
+        $resource = new File(['identifier' => '/foo.jpg', 'name' => 'foo.jpg'], $storageStub);
+        $fileList = self::createStub(FileList::class);
 
         $event = new AfterFileListRowPreparedEvent($resource, ['alternative' => 'Old text'], $fileList, []);
 
@@ -61,9 +61,9 @@ final class AfterFileListRowPreparedEventTest extends UnitTestCase
     #[Test]
     public function setAttributesModifiesAttributes(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
-        $resource = new File(['identifier' => '/foo.jpg', 'name' => 'foo.jpg'], $storageMock);
-        $fileList = $this->createMock(FileList::class);
+        $storageStub = self::createStub(ResourceStorage::class);
+        $resource = new File(['identifier' => '/foo.jpg', 'name' => 'foo.jpg'], $storageStub);
+        $fileList = self::createStub(FileList::class);
 
         $event = new AfterFileListRowPreparedEvent($resource, [], $fileList, ['class' => 'original']);
 

@@ -49,9 +49,9 @@ final class PackageTest extends UnitTestCase
         $this->expectException(InvalidPackagePathException::class);
         $this->expectExceptionCode(1166631890);
 
-        $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->method('isPackageKeyValid')->willReturn(true);
-        new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
+        $packageManagerStub = self::createStub(PackageManager::class);
+        $packageManagerStub->method('isPackageKeyValid')->willReturn(true);
+        new Package($packageManagerStub, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
     }
 
     public static function validPackageKeys(): array
@@ -73,9 +73,9 @@ final class PackageTest extends UnitTestCase
         mkdir($packagePath, 0777, true);
         file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "flow-test"}');
 
-        $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->method('isPackageKeyValid')->willReturn(true);
-        $package = new Package($packageManagerMock, $packageKey, $packagePath);
+        $packageManagerStub = self::createStub(PackageManager::class);
+        $packageManagerStub->method('isPackageKeyValid')->willReturn(true);
+        $package = new Package($packageManagerStub, $packageKey, $packagePath);
         self::assertEquals($packageKey, $package->getPackageKey());
     }
 
@@ -98,8 +98,8 @@ final class PackageTest extends UnitTestCase
         $packagePath = $this->testRoot . str_replace('\\', '/', $packageKey) . '/';
         mkdir($packagePath, 0777, true);
 
-        $packageManagerMock = $this->createMock(PackageManager::class);
-        new Package($packageManagerMock, $packageKey, $packagePath);
+        $packageManagerStub = self::createStub(PackageManager::class);
+        new Package($packageManagerStub, $packageKey, $packagePath);
     }
 
     #[Test]
@@ -109,9 +109,9 @@ final class PackageTest extends UnitTestCase
         mkdir($packagePath, 0700, true);
         file_put_contents($packagePath . 'composer.json', '{"name": "vendor/dummy", "type": "flow-test"}');
 
-        $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->method('isPackageKeyValid')->willReturn(true);
-        $package = new Package($packageManagerMock, 'Vendor.Dummy', $packagePath);
+        $packageManagerStub = self::createStub(PackageManager::class);
+        $packageManagerStub->method('isPackageKeyValid')->willReturn(true);
+        $package = new Package($packageManagerStub, 'Vendor.Dummy', $packagePath);
 
         self::assertFalse($package->isProtected());
         $package->setProtected(true);

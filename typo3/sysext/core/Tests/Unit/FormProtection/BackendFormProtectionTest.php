@@ -41,7 +41,7 @@ final class BackendFormProtectionTest extends UnitTestCase
         $this->backendUserMock->user['uid'] = 1;
         $this->subject = new BackendFormProtection(
             $this->backendUserMock,
-            $this->createMock(Registry::class),
+            self::createStub(Registry::class),
             static function () {
                 throw new \Exception('Closure called', 1442592030);
             }

@@ -70,7 +70,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->concreteQueryBuilder = $this->createMock(ConcreteQueryBuilder::class);
         $this->connection = $this->createMock(Connection::class);
         $this->container = new Container();
-        $this->container->set(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+        $this->container->set(TcaSchemaFactory::class, self::createStub(TcaSchemaFactory::class));
         $this->subject = new QueryBuilder(
             $this->connection,
             null,
@@ -688,7 +688,7 @@ final class QueryBuilderTest extends UnitTestCase
 
         $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
         $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with($expectedSQL, self::anything(), self::anything(), self::anything())
-            ->willReturn($this->createMock(Result::class));
+            ->willReturn(self::createStub(Result::class));
 
         $subject->executeQuery();
     }
@@ -726,7 +726,7 @@ final class QueryBuilderTest extends UnitTestCase
 
         $expectedSQL = 'SELECT COUNT(uid) FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
         $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with($expectedSQL, self::anything())
-            ->willReturn($this->createMock(Result::class));
+            ->willReturn(self::createStub(Result::class));
 
         $subject->executeQuery();
     }
@@ -827,11 +827,11 @@ final class QueryBuilderTest extends UnitTestCase
         $expectedSQLForResetRestrictions = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
 
         $series = [
-            [$expectedSQLForQuery, $this->createMock(Result::class)],
-            [$expectedSQLForResetRestrictions, $this->createMock(Result::class)],
+            [$expectedSQLForQuery, self::createStub(Result::class)],
+            [$expectedSQLForResetRestrictions, self::createStub(Result::class)],
         ];
         $this->connection->expects($this->exactly(2))->method('executeQuery')
-            ->willReturnCallback(function (string $sql) use (&$series): Result&MockObject {
+            ->willReturnCallback(function (string $sql) use (&$series): Result {
                 $arguments = array_shift($series);
                 self::assertSame($arguments[0], $sql);
                 return $arguments[1];
@@ -1214,7 +1214,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             self::anything()
-        )->willReturn($this->createMock(Result::class));
+        )->willReturn(self::createStub(Result::class));
 
         $subject->executeQuery();
     }
@@ -1272,7 +1272,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (pages.hidden = 0)',
             self::anything()
-        )->willReturn($this->createMock(Result::class));
+        )->willReturn(self::createStub(Result::class));
 
         $subject->executeQuery();
     }
@@ -1327,7 +1327,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM pages LEFT JOIN tt_content content ON ((pages.uid = content.pid) AND (((content.deleted = 0) AND (content.hidden = 0)))) WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             self::anything()
-        )->willReturn($this->createMock(Result::class));
+        )->willReturn(self::createStub(Result::class));
 
         $subject->executeQuery();
     }
@@ -1382,7 +1382,7 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->expects($this->atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM tt_content RIGHT JOIN pages pages ON ((pages.uid = tt_content.pid) AND (((tt_content.deleted = 0) AND (tt_content.hidden = 0)))) WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             self::anything()
-        )->willReturn($this->createMock(Result::class));
+        )->willReturn(self::createStub(Result::class));
 
         $subject->executeQuery();
     }
@@ -1517,7 +1517,7 @@ final class QueryBuilderTest extends UnitTestCase
         $cacheMock->method('has')->with(self::isString())->willReturn(false);
         return new TcaSchemaFactory(
             new TcaSchemaBuilder(
-                new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+                new RelationMapBuilder(self::createStub(FlexFormTools::class)),
                 new FieldTypeFactory(),
             ),
             '',

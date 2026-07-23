@@ -55,7 +55,7 @@ final class LinkNodeTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380546061);
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $node = $this->getAccessibleMock(LinkNode::class, null, [], '', false);
         $structure = [
             'name' => 'foo/bar',
@@ -66,7 +66,7 @@ final class LinkNodeTest extends UnitTestCase
     #[Test]
     public function constructorSetsParent(): void
     {
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $node = $this->getAccessibleMock(LinkNode::class, null, [], '', false);
         $structure = [
             'name' => 'foo',
@@ -79,7 +79,7 @@ final class LinkNodeTest extends UnitTestCase
     public function constructorSetsName(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, null, [], '', false);
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $name = StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name], $parent);
         self::assertSame($name, $node->getName());
@@ -89,7 +89,7 @@ final class LinkNodeTest extends UnitTestCase
     public function constructorSetsNameAndTarget(): void
     {
         $node = $this->getAccessibleMock(LinkNode::class, null, [], '', false);
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $name = StringUtility::getUniqueId('test_');
         $target = '../' . StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name, 'target' => $target], $parent);

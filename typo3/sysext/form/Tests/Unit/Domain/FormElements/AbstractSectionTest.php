@@ -51,7 +51,7 @@ final class AbstractSectionTest extends UnitTestCase
     #[Test]
     public function createElementThrowsExceptionIfTypeDefinitionNotFoundAndSkipUnknownElementsIsFalse(): void
     {
-        $rootForm = $this->createMock(FormDefinition::class);
+        $rootForm = self::createStub(FormDefinition::class);
         $this->expectException(TypeDefinitionNotFoundException::class);
         $this->expectExceptionCode(1382364019);
         $subject = new AbstractSectionFixture('identifier', '');

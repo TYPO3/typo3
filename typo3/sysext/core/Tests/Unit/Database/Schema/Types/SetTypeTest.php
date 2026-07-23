@@ -47,8 +47,8 @@ final class SetTypeTest extends UnitTestCase
             'values' => ['aValue', 'anotherValue'],
         ];
 
-        $databaseMock = $this->createMock(AbstractPlatform::class);
-        $databaseMock->method('quoteStringLiteral')->willReturnCallback(
+        $databaseStub = self::createStub(AbstractPlatform::class);
+        $databaseStub->method('quoteStringLiteral')->willReturnCallback(
             static function (string $str): string {
                 return "'" . $str . "'";
             }
@@ -57,7 +57,7 @@ final class SetTypeTest extends UnitTestCase
         $subject = Type::getType(SetType::TYPE);
         self::assertSame(
             "SET('aValue', 'anotherValue')",
-            $subject->getSQLDeclaration($fieldDeclaration, $databaseMock)
+            $subject->getSQLDeclaration($fieldDeclaration, $databaseStub)
         );
     }
 }

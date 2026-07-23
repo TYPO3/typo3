@@ -43,23 +43,23 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
         $formDefinitionValidationServiceMock->expects($this->atLeastOnce())->method('validateFormDefinitionProperties')->with(self::anything());
         $formDefinitionValidationServiceMock->method('isPropertyValueEqualToHistoricalValue')->with(self::anything())->willReturn(true);
 
-        $formDefinitionConversionServiceMock = $this->createMock(FormDefinitionConversionService::class);
-        $formDefinitionConversionServiceMock->method('extractRtePropertyPaths')->willReturn([]);
-        $formDefinitionConversionServiceMock->method('sanitizeHtml')->willReturnArgument(0);
-        $formDefinitionConversionServiceMock->method('removeHmacData')->willReturnCallback(
+        $formDefinitionConversionServiceStub = self::createStub(FormDefinitionConversionService::class);
+        $formDefinitionConversionServiceStub->method('extractRtePropertyPaths')->willReturn([]);
+        $formDefinitionConversionServiceStub->method('sanitizeHtml')->willReturnArgument(0);
+        $formDefinitionConversionServiceStub->method('removeHmacData')->willReturnCallback(
             static function (array $formDefinition): array {
                 unset($formDefinition['_orig_prototypeName'], $formDefinition['_orig_identifier']);
                 return $formDefinition;
             }
         );
-        $formDefinitionConversionServiceMock->method('retrieveSessionToken')->willReturn('123');
+        $formDefinitionConversionServiceStub->method('retrieveSessionToken')->willReturn('123');
 
-        $configurationServiceMock = $this->createMock(ConfigurationService::class);
+        $configurationServiceStub = self::createStub(ConfigurationService::class);
 
         $subject = new FormDefinitionArrayConverter(
             $formDefinitionValidationServiceMock,
-            $formDefinitionConversionServiceMock,
-            $configurationServiceMock
+            $formDefinitionConversionServiceStub,
+            $configurationServiceStub
         );
 
         $expected = [

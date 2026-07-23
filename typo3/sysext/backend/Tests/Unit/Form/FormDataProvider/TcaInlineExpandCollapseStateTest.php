@@ -51,7 +51,7 @@ final class TcaInlineExpandCollapseStateTest extends UnitTestCase
                 ],
             ],
         ];
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = self::createStub(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->uc = [
             'inlineView' => json_encode($inlineState),
         ];
@@ -93,7 +93,7 @@ final class TcaInlineExpandCollapseStateTest extends UnitTestCase
                 ],
             ],
         ];
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = self::createStub(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->uc = [
             'inlineView' => json_encode($inlineState),
         ];
@@ -319,7 +319,7 @@ final class TcaInlineExpandCollapseStateTest extends UnitTestCase
     #[Test]
     public function addDataAddsCorrectIsInlineChildExpanded(array $input, bool $expectedIsInlineChildExpanded): void
     {
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = self::createStub(BackendUserAuthentication::class);
 
         $expected = $input;
         $expected['isInlineChildExpanded'] = $expectedIsInlineChildExpanded;

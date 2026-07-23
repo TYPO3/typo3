@@ -35,7 +35,7 @@ final class YouTubeRendererTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getRequestHost')->willReturn('http://test.server.org');
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
@@ -52,71 +52,71 @@ final class YouTubeRendererTest extends UnitTestCase
     #[Test]
     public function canRenderReturnsTrueOnCorrectFile(): void
     {
-        $fileResourceMock1 = $this->createMock(File::class);
-        $fileResourceMock1->method('getMimeType')->willReturn('video/youtube');
+        $fileResourceStub1 = self::createStub(File::class);
+        $fileResourceStub1->method('getMimeType')->willReturn('video/youtube');
 
-        $fileResourceMock2 = $this->createMock(File::class);
-        $fileResourceMock2->method('getMimeType')->willReturn('video/unknown');
-        $fileResourceMock2->method('getExtension')->willReturn('youtube');
+        $fileResourceStub2 = self::createStub(File::class);
+        $fileResourceStub2->method('getMimeType')->willReturn('video/unknown');
+        $fileResourceStub2->method('getExtension')->willReturn('youtube');
 
-        self::assertTrue($this->subject->canRender($fileResourceMock1));
-        self::assertTrue($this->subject->canRender($fileResourceMock2));
+        self::assertTrue($this->subject->canRender($fileResourceStub1));
+        self::assertTrue($this->subject->canRender($fileResourceStub2));
     }
 
     #[Test]
     public function canRenderReturnsFalseOnCorrectFile(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->method('getMimeType')->willReturn('video/vimeo');
+        $fileResourceStub = self::createStub(File::class);
+        $fileResourceStub->method('getMimeType')->willReturn('video/vimeo');
 
-        self::assertFalse($this->subject->canRender($fileResourceMock));
+        self::assertFalse($this->subject->canRender($fileResourceStub));
     }
 
     #[Test]
     public function renderOutputWithLoopIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;loop=1&amp;playlist=7331&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 1, 'loop' => 1])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 1, 'loop' => 1])
         );
     }
 
     #[Test]
     public function renderOutputWithAutoplayIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;autoplay=1&amp;mute=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 1, 'autoplay' => 1])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 1, 'autoplay' => 1])
         );
     }
 
     #[Test]
     public function renderOutputWithAutoplayFromFileReferenceIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
-        $fileReferenceMock = $this->createMock(FileReference::class);
-        $fileReferenceMock->method('getProperty')->willReturn(1);
-        $fileReferenceMock->method('getOriginalFile')->willReturn($fileResourceMock);
+        $fileReferenceStub = self::createStub(FileReference::class);
+        $fileReferenceStub->method('getProperty')->willReturn(1);
+        $fileReferenceStub->method('getOriginalFile')->willReturn($fileResourceStub);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;autoplay=1&amp;mute=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
-            $this->subject->render($fileReferenceMock, '300m', '200', ['controls' => 1])
+            $this->subject->render($fileReferenceStub, '300m', '200', ['controls' => 1])
         );
     }
 
     #[Test]
     public function renderOutputWithAutoplayAndWithoutControlsIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;autoplay=1&amp;mute=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 0, 'autoplay' => 1])
         );
     }
 
@@ -194,99 +194,99 @@ final class YouTubeRendererTest extends UnitTestCase
     #[Test]
     public function renderOutputWithDefaultControlsIsCorrect($expected, $options): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             $expected,
-            $this->subject->render($fileResourceMock, '300m', '200', $options)
+            $this->subject->render($fileResourceStub, '300m', '200', $options)
         );
     }
 
     #[Test]
     public function renderOutputWithRelatedVideosTurnedOffIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;rel=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 1, 'relatedVideos' => 0])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 1, 'relatedVideos' => 0])
         );
     }
 
     #[Test]
     public function renderOutputWithAdditionalAttributes(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen foo="bar" custom-play="preload" sanitizetest="&lt;&gt;&quot;&apos;test" width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload', '<"\'>sanitize^&test' => '<>"\'test']])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 0, 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload', '<"\'>sanitize^&test' => '<>"\'test']])
         );
     }
 
     #[Test]
     public function renderOutputWithDataAttributesForCustomization(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen data-player-handler="youTube" data-custom-playerId="player-123" width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'data' => ['player-handler' => 'youTube', 'custom-playerId' => 'player-123']])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 0, 'data' => ['player-handler' => 'youTube', 'custom-playerId' => 'player-123']])
         );
     }
 
     #[Test]
     public function renderOutputWithCombinationOfDataAndAdditionalAttributes(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen foo="bar" custom-play="preload" data-player-handler="youTube" data-custom-playerId="player-123" width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'data' => ['player-handler' => 'youTube', 'custom-playerId' => 'player-123'], 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 0, 'data' => ['player-handler' => 'youTube', 'custom-playerId' => 'player-123'], 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
         );
     }
 
     #[Test]
     public function renderOutputWithDisabledNoCookieIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'no-cookie' => 0])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 0, 'no-cookie' => 0])
         );
     }
 
     #[Test]
     public function renderOutputWithModestbrandingIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;modestbranding=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 1, 'modestbranding' => 1])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 1, 'modestbranding' => 1])
         );
     }
 
     #[Test]
     public function renderOutputWithCustomAllowIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'allow' => 'foo; bar'])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 0, 'allow' => 'foo; bar'])
         );
     }
 
     #[Test]
     public function renderOutputWithCustomAllowAndAutoplayIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;autoplay=1&amp;mute=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['controls' => 0, 'autoplay' => 1, 'allow' => 'foo; bar'])
+            $this->subject->render($fileResourceStub, '300m', '200', ['controls' => 0, 'autoplay' => 1, 'allow' => 'foo; bar'])
         );
     }
 
@@ -300,22 +300,22 @@ final class YouTubeRendererTest extends UnitTestCase
         $subject->method('shouldIncludeFrameBorderAttribute')->willReturn(false);
         $subject->method('getOnlineMediaHelper')->willReturn($youtubeHelper);
 
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331%3Cscript%3Edanger%3C%2Fscript%3E%27%22random%22quotes%3B?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $subject->render($fileResourceMock, '300m', '200')
+            $subject->render($fileResourceStub, '300m', '200')
         );
     }
 
     #[Test]
     public function renderOutputWithAlternativeSrcAttributeIsCorrect(): void
     {
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         self::assertSame(
             '<iframe data-src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-            $this->subject->render($fileResourceMock, '300m', '200', ['srcAttribute' => 'data-src'])
+            $this->subject->render($fileResourceStub, '300m', '200', ['srcAttribute' => 'data-src'])
         );
     }
 }

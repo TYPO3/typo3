@@ -164,7 +164,7 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
     public function invalidIdentifierThrowsException(string $potentialIdentifier, string $expectedException = InvalidSystemResourceIdentifierException::class): void
     {
         $this->expectException($expectedException);
-        $packageManager = $this->createMock(PackageManager::class);
+        $packageManager = self::createStub(PackageManager::class);
         $subject = new SystemResourceIdentifierFactory($packageManager);
         $subject->create($potentialIdentifier);
     }

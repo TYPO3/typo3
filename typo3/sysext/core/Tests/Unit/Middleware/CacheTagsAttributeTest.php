@@ -44,7 +44,7 @@ final class CacheTagsAttributeTest extends UnitTestCase
             ->expects($this->once())
             ->method('handle')
             ->with(self::isInstanceOf(ServerRequestInterface::class))
-            ->willReturn($this->createMock(ResponseInterface::class));
+            ->willReturn(self::createStub(ResponseInterface::class));
         $middleware = new CacheDataCollectorAttribute();
         $middleware->process($requestMock, $requestHandlerMock);
     }

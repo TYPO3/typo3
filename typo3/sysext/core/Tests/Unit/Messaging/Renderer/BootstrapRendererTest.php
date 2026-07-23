@@ -29,7 +29,7 @@ final class BootstrapRendererTest extends UnitTestCase
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessage(): void
     {
-        $subject = new BootstrapRenderer($this->createMock(IconFactory::class));
+        $subject = new BootstrapRenderer(self::createStub(IconFactory::class));
         $flashMessage = new FlashMessage(
             'messageBody',
             'messageTitle',
@@ -46,7 +46,7 @@ final class BootstrapRendererTest extends UnitTestCase
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessageWithoutTitle(): void
     {
-        $subject = new BootstrapRenderer($this->createMock(IconFactory::class));
+        $subject = new BootstrapRenderer(self::createStub(IconFactory::class));
         $flashMessage = new FlashMessage(
             'messageBody',
             '',

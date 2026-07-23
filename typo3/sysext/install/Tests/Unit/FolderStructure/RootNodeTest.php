@@ -39,7 +39,7 @@ final class RootNodeTest extends UnitTestCase
         $this->expectException(RootNodeException::class);
         $this->expectExceptionCode(1366140117);
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
-        $falseParent = $this->createMock(RootNodeInterface::class);
+        $falseParent = self::createStub(RootNodeInterface::class);
         $node->__construct([], $falseParent);
     }
 

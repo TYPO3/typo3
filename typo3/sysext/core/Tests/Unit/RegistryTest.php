@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -29,16 +29,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RegistryTest extends UnitTestCase
 {
-    private MockObject&ConnectionPool $connectionPool;
+    private Stub&ConnectionPool $connectionPool;
     private DenyListDeserializer $deserializer;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->willReturn(false);
-        $this->connectionPool = $this->createMock(ConnectionPool::class);
-        $this->deserializer = new DenyListDeserializer($cacheMock, new HashService(), new DeserializationService());
+        $cacheStub = self::createStub(PhpFrontend::class);
+        $cacheStub->method('has')->willReturn(false);
+        $this->connectionPool = self::createStub(ConnectionPool::class);
+        $this->deserializer = new DenyListDeserializer($cacheStub, new HashService(), new DeserializationService());
     }
 
     #[Test]

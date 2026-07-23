@@ -33,27 +33,27 @@ final class FileListTest extends UnitTestCase
     #[Test]
     public function sortResourcesByNameSortsCorrectly(): void
     {
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('getLocale')->willReturn(new Locale('pl'));
+        $languageServiceStub = self::createStub(LanguageService::class);
+        $languageServiceStub->method('getLocale')->willReturn(new Locale('pl'));
 
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageStub = self::createStub(ResourceStorage::class);
 
-        $file1 = new File(['name' => 'file1.jpg'], $storageMock);
-        $file2 = new File(['name' => 'fileA.png'], $storageMock);
+        $file1 = new File(['name' => 'file1.jpg'], $storageStub);
+        $file2 = new File(['name' => 'fileA.png'], $storageStub);
         // this file has an accented letter Ą, so it should be sorted between fileA and fileB
-        $file3 = new File(['name' => 'fileĄ.png'], $storageMock);
-        $file4 = new File(['name' => 'fileB.aif'], $storageMock);
-        $folder1 = new Folder($storageMock, '/folder1', 'folder1');
-        $folder2 = new Folder($storageMock, '/folder2', 'folder2');
-        $folder1WithSuffix1 = new Folder($storageMock, '/folder1_abc', 'folder1_abc');
-        $folder1WithSuffix2 = new Folder($storageMock, '/folder1_def', 'folder1_def');
+        $file3 = new File(['name' => 'fileĄ.png'], $storageStub);
+        $file4 = new File(['name' => 'fileB.aif'], $storageStub);
+        $folder1 = new Folder($storageStub, '/folder1', 'folder1');
+        $folder2 = new Folder($storageStub, '/folder2', 'folder2');
+        $folder1WithSuffix1 = new Folder($storageStub, '/folder1_abc', 'folder1_abc');
+        $folder1WithSuffix2 = new Folder($storageStub, '/folder1_def', 'folder1_def');
 
         $resources = [$file2, $folder1, $folder2, $file1, $folder1WithSuffix2, $folder1WithSuffix1, $file3, $file4];
         $expected = [$folder1, $folder1WithSuffix1, $folder1WithSuffix2, $folder2, $file1, $file2, $file3, $file4];
 
         $fileList = $this->getAccessibleMock(FileList::class, ['getLanguageService'], [], '', false);
         $fileList->sortDirection = SortDirection::ASCENDING;
-        $fileList->method('getLanguageService')->willReturn($languageServiceMock);
+        $fileList->method('getLanguageService')->willReturn($languageServiceStub);
 
         $sortedResources = $fileList->_call('sortResources', $resources, 'name');
 
@@ -71,24 +71,24 @@ final class FileListTest extends UnitTestCase
     #[Test]
     public function sortResourcesByFileextNameSortsCorrectly(): void
     {
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('getLocale')->willReturn(new Locale('pl'));
+        $languageServiceStub = self::createStub(LanguageService::class);
+        $languageServiceStub->method('getLocale')->willReturn(new Locale('pl'));
 
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageStub = self::createStub(ResourceStorage::class);
 
-        $file1 = new File(['name' => 'file1.jpg'], $storageMock);
-        $file2 = new File(['name' => 'fileA.png'], $storageMock);
+        $file1 = new File(['name' => 'file1.jpg'], $storageStub);
+        $file2 = new File(['name' => 'fileA.png'], $storageStub);
         // this file has an accented letter Ą, so it should be sorted between fileA and fileB
-        $file3 = new File(['name' => 'fileĄ.png'], $storageMock);
-        $file4 = new File(['name' => 'fileB.aif'], $storageMock);
-        $folder1 = new Folder($storageMock, '/folder1', 'folder1');
-        $folder2 = new Folder($storageMock, '/folder2', 'folder2');
+        $file3 = new File(['name' => 'fileĄ.png'], $storageStub);
+        $file4 = new File(['name' => 'fileB.aif'], $storageStub);
+        $folder1 = new Folder($storageStub, '/folder1', 'folder1');
+        $folder2 = new Folder($storageStub, '/folder2', 'folder2');
 
         $resources = [$file2, $folder1, $folder2, $file1, $file3, $file4];
         $expected = [$file3, $file2, $file1, $file4, $folder2, $folder1];
 
         $fileList = $this->getAccessibleMock(FileList::class, ['getLanguageService'], [], '', false);
-        $fileList->method('getLanguageService')->willReturn($languageServiceMock);
+        $fileList->method('getLanguageService')->willReturn($languageServiceStub);
 
         $sortedResources = $fileList->_call('sortResources', $resources, 'fileext');
 
@@ -144,22 +144,22 @@ final class FileListTest extends UnitTestCase
         SortDirection $sortDirection,
         array $expectedOrder
     ): void {
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('getLocale')->willReturn(new Locale('en'));
+        $languageServiceStub = self::createStub(LanguageService::class);
+        $languageServiceStub->method('getLocale')->willReturn(new Locale('en'));
 
-        $storageMock = $this->createMock(ResourceStorage::class);
+        $storageStub = self::createStub(ResourceStorage::class);
 
         $resources = [];
         foreach ($resourceNames['file'] as $fileName) {
-            $resources[] = new File(['name' => $fileName], $storageMock);
+            $resources[] = new File(['name' => $fileName], $storageStub);
         }
         foreach ($resourceNames['folder'] as $folderName) {
-            $resources[] = new Folder($storageMock, '/' . $folderName, $folderName);
+            $resources[] = new Folder($storageStub, '/' . $folderName, $folderName);
         }
 
         $fileList = $this->getAccessibleMock(FileList::class, ['getLanguageService'], [], '', false);
         $fileList->sortDirection = $sortDirection;
-        $fileList->method('getLanguageService')->willReturn($languageServiceMock);
+        $fileList->method('getLanguageService')->willReturn($languageServiceStub);
 
         $sortedResources = $fileList->_call('sortResources', $resources, $sortField);
 

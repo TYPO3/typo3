@@ -38,15 +38,15 @@ final class SaveToDatabaseFinisherTest extends FunctionalTestCase
         // sys_category_record_mm has no auto-increment UID column; lastInsertId()
         // throws in that case. The finisher must handle this gracefully and still
         // write the row to the database.
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $formRuntime->method('getFormState')->willReturn(new FormState());
         $formRuntime->method('getFormDefinition')->willReturn(
-            $this->createMock(FormDefinition::class)
+            self::createStub(FormDefinition::class)
         );
         $formRuntime->method('getRenderingOptions')->willReturn([
             'translation' => ['translationFiles' => ['EXT:form/Resources/Private/Language/locallang.xlf']],
         ]);
-        $finisherContext = new FinisherContext($formRuntime, $this->createMock(Request::class));
+        $finisherContext = new FinisherContext($formRuntime, self::createStub(Request::class));
 
         $subject = new SaveToDatabaseFinisher();
         $subject->setFinisherIdentifier('SaveToDatabase');

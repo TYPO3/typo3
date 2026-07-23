@@ -62,10 +62,10 @@ final class FormManagerControllerTest extends FunctionalTestCase
     #[Test]
     public function getFormManagerAppInitialDataReturnsProcessedArray(): void
     {
-        $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateValuesRecursive')->willReturnArgument(0);
-        $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
-        $formPersistenceManagerMock->method('getAccessibleStorageAdapters')->willReturn([
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateValuesRecursive')->willReturnArgument(0);
+        $formPersistenceManagerStub = self::createStub(FormPersistenceManagerInterface::class);
+        $formPersistenceManagerStub->method('getAccessibleStorageAdapters')->willReturn([
             [
                 'typeIdentifier' => 'database',
                 'label' => 'Database Storage',
@@ -79,22 +79,22 @@ final class FormManagerControllerTest extends FunctionalTestCase
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(DatabaseService::class),
-                $formPersistenceManagerMock,
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $translationServiceMock,
-                $this->createMock(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-                $this->createMock(YamlSource::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(DatabaseService::class),
+                $formPersistenceManagerStub,
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                $translationServiceStub,
+                self::createStub(CharsetConverter::class),
+                self::createStub(CoreUriBuilder::class),
+                self::createStub(YamlSource::class),
+                self::createStub(ComponentFactory::class),
             ],
         );
 
-        $mockUriBuilder = $this->createMock(ExtbaseUriBuilder::class);
-        $mockUriBuilder->method('uriFor')->willReturn('/typo3/index.php?some=param');
-        $subjectMock->_set('uriBuilder', $mockUriBuilder);
+        $uriBuilderStub = self::createStub(ExtbaseUriBuilder::class);
+        $uriBuilderStub->method('uriFor')->willReturn('/typo3/index.php?some=param');
+        $subjectMock->_set('uriBuilder', $uriBuilderStub);
 
         $expected = [
             'selectablePrototypesConfiguration' => [],
@@ -128,22 +128,22 @@ final class FormManagerControllerTest extends FunctionalTestCase
     #[Test]
     public function getAvailableFormDefinitionsReturnsProcessedArray(): void
     {
-        $formPersistenceManagerMock = $this->createMock(FormPersistenceManagerInterface::class);
+        $formPersistenceManagerStub = self::createStub(FormPersistenceManagerInterface::class);
         $subjectMock = $this->getAccessibleMock(
             FormManagerController::class,
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(DatabaseService::class),
-                $formPersistenceManagerMock,
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $this->createMock(TranslationService::class),
-                $this->createMock(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-                $this->createMock(YamlSource::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(DatabaseService::class),
+                $formPersistenceManagerStub,
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                self::createStub(TranslationService::class),
+                self::createStub(CharsetConverter::class),
+                self::createStub(CoreUriBuilder::class),
+                self::createStub(YamlSource::class),
+                self::createStub(ComponentFactory::class),
             ],
         );
         $formMetadata = new FormMetadata(
@@ -159,7 +159,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
         );
         // Reference count enrichment now happens inside FormPersistenceManager::listForms().
         // The mock therefore returns already-enriched metadata.
-        $formPersistenceManagerMock->method('listForms')->willReturn([
+        $formPersistenceManagerStub->method('listForms')->willReturn([
             0 => $formMetadata->withReferenceCount(2),
         ]);
 
@@ -183,16 +183,16 @@ final class FormManagerControllerTest extends FunctionalTestCase
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $this->createMock(TranslationService::class),
-                $this->createMock(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-                $this->createMock(YamlSource::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                self::createStub(TranslationService::class),
+                self::createStub(CharsetConverter::class),
+                self::createStub(CoreUriBuilder::class),
+                self::createStub(YamlSource::class),
+                self::createStub(ComponentFactory::class),
             ],
         );
         self::assertTrue($subjectMock->_call(
@@ -230,16 +230,16 @@ final class FormManagerControllerTest extends FunctionalTestCase
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $this->createMock(TranslationService::class),
-                $this->createMock(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-                $this->createMock(YamlSource::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                self::createStub(TranslationService::class),
+                self::createStub(CharsetConverter::class),
+                self::createStub(CoreUriBuilder::class),
+                self::createStub(YamlSource::class),
+                self::createStub(ComponentFactory::class),
             ],
         );
         self::assertFalse(
@@ -279,16 +279,16 @@ final class FormManagerControllerTest extends FunctionalTestCase
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $this->createMock(TranslationService::class),
-                $this->createMock(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-                $this->createMock(YamlSource::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                self::createStub(TranslationService::class),
+                self::createStub(CharsetConverter::class),
+                self::createStub(CoreUriBuilder::class),
+                self::createStub(YamlSource::class),
+                self::createStub(ComponentFactory::class),
             ],
         );
         self::assertFalse(
@@ -338,16 +338,16 @@ final class FormManagerControllerTest extends FunctionalTestCase
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $this->createMock(TranslationService::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                self::createStub(TranslationService::class),
                 $this->get(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-                $this->createMock(YamlSource::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(CoreUriBuilder::class),
+                self::createStub(YamlSource::class),
+                self::createStub(ComponentFactory::class),
             ],
         );
         $input = 'test form';
@@ -363,16 +363,16 @@ final class FormManagerControllerTest extends FunctionalTestCase
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $this->createMock(TranslationService::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                self::createStub(TranslationService::class),
                 $this->get(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-                $this->createMock(YamlSource::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(CoreUriBuilder::class),
+                self::createStub(YamlSource::class),
+                self::createStub(ComponentFactory::class),
             ],
         );
         $input = 'téstform';
@@ -388,16 +388,16 @@ final class FormManagerControllerTest extends FunctionalTestCase
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $this->createMock(TranslationService::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                self::createStub(TranslationService::class),
                 $this->get(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-                $this->createMock(YamlSource::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(CoreUriBuilder::class),
+                self::createStub(YamlSource::class),
+                self::createStub(ComponentFactory::class),
             ],
         );
         $input = 'test form ' . hex2bin('667275cc88686e65757a6569746c696368656e');
@@ -413,16 +413,16 @@ final class FormManagerControllerTest extends FunctionalTestCase
             null,
             [
                 $this->get(ModuleTemplateFactory::class),
-                $this->createMock(PageRenderer::class),
-                $this->createMock(IconFactory::class),
-                $this->createMock(DatabaseService::class),
-                $this->createMock(FormPersistenceManagerInterface::class),
-                $this->createMock(ExtFormConfigurationManagerInterface::class),
-                $this->createMock(TranslationService::class),
+                self::createStub(PageRenderer::class),
+                self::createStub(IconFactory::class),
+                self::createStub(DatabaseService::class),
+                self::createStub(FormPersistenceManagerInterface::class),
+                self::createStub(ExtFormConfigurationManagerInterface::class),
+                self::createStub(TranslationService::class),
                 $this->get(CharsetConverter::class),
-                $this->createMock(CoreUriBuilder::class),
-                $this->createMock(YamlSource::class),
-                $this->createMock(ComponentFactory::class),
+                self::createStub(CoreUriBuilder::class),
+                self::createStub(YamlSource::class),
+                self::createStub(ComponentFactory::class),
             ],
         );
         $input = 'test form ä#!_-01';

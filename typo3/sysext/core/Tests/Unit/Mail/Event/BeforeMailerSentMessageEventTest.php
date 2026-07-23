@@ -33,8 +33,8 @@ final class BeforeMailerSentMessageEventTest extends UnitTestCase
     #[Test]
     public function gettersReturnInitializedObjects(): void
     {
-        $transportFactory = $this->createMock(TransportFactory::class);
-        $transportFactory->method('get')->with(self::anything())->willReturn($this->createMock(SendmailTransport::class));
+        $transportFactory = self::createStub(TransportFactory::class);
+        $transportFactory->method('get')->willReturn(self::createStub(SendmailTransport::class));
         GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
 
         $mailer = (new Mailer());
@@ -50,8 +50,8 @@ final class BeforeMailerSentMessageEventTest extends UnitTestCase
     #[Test]
     public function modifyingInitializedObjects(): void
     {
-        $transportFactory = $this->createMock(TransportFactory::class);
-        $transportFactory->method('get')->with(self::anything())->willReturn($this->createMock(SendmailTransport::class));
+        $transportFactory = self::createStub(TransportFactory::class);
+        $transportFactory->method('get')->willReturn(self::createStub(SendmailTransport::class));
         GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
 
         $mailer = (new Mailer());

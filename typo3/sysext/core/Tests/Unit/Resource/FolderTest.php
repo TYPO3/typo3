@@ -43,9 +43,9 @@ final class FolderTest extends UnitTestCase
     {
         $path = StringUtility::getUniqueId('path_');
         $name = StringUtility::getUniqueId('name_');
-        $mockedStorage = $this->createMock(ResourceStorage::class);
-        $fixture = $this->createFolderFixture($path, $name, $mockedStorage);
-        self::assertSame($mockedStorage, $fixture->getStorage());
+        $storageStub = self::createStub(ResourceStorage::class);
+        $fixture = $this->createFolderFixture($path, $name, $storageStub);
+        self::assertSame($storageStub, $fixture->getStorage());
         self::assertStringStartsWith($path, $fixture->getIdentifier());
         self::assertSame($name, $fixture->getName());
     }
@@ -122,7 +122,7 @@ final class FolderTest extends UnitTestCase
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage->expects($this->once())->method('hasFolderInFolder')->with(self::equalTo('someSubfolder'))->willReturn(true);
 
-        $mockedFactory = $this->createMock(ResourceFactory::class);
+        $factoryStub = self::createStub(ResourceFactory::class);
         $folderFixture = $this->createFolderFixture(
             '/somePath/someFolder/',
             'someFolder',
@@ -136,7 +136,7 @@ final class FolderTest extends UnitTestCase
         $mockedStorage->expects($this->once())->method('getFolderInFolder')->willReturn($subfolderFixture);
         GeneralUtility::setSingletonInstance(
             ResourceFactory::class,
-            $mockedFactory
+            $factoryStub
         );
         self::assertEquals($subfolderFixture, $folderFixture->getSubfolder('someSubfolder'));
     }

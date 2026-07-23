@@ -30,9 +30,9 @@ final class UserGateTest extends UnitTestCase
     #[Test]
     public function abstainForNonUserAccess(): void
     {
-        $module = $this->createMock(ModuleInterface::class);
+        $module = self::createStub(ModuleInterface::class);
         $module->method('getAccess')->willReturn('admin');
-        $user = $this->createMock(BackendUserAuthentication::class);
+        $user = self::createStub(BackendUserAuthentication::class);
 
         $subject = new UserGate(new ModuleRegistry([]));
         self::assertSame(ModuleAccessResult::Abstain, $subject->decide($module, $user));
@@ -41,10 +41,10 @@ final class UserGateTest extends UnitTestCase
     #[Test]
     public function grantedForAdmin(): void
     {
-        $module = $this->createMock(ModuleInterface::class);
+        $module = self::createStub(ModuleInterface::class);
         $module->method('getAccess')->willReturn('user');
         $module->method('getIdentifier')->willReturn('some_module');
-        $user = $this->createMock(BackendUserAuthentication::class);
+        $user = self::createStub(BackendUserAuthentication::class);
         $user->method('isAdmin')->willReturn(true);
 
         $subject = new UserGate(new ModuleRegistry([]));
@@ -54,7 +54,7 @@ final class UserGateTest extends UnitTestCase
     #[Test]
     public function grantedWhenUserHasModulePermission(): void
     {
-        $module = $this->createMock(ModuleInterface::class);
+        $module = self::createStub(ModuleInterface::class);
         $module->method('getAccess')->willReturn('user');
         $module->method('getIdentifier')->willReturn('some_module');
         $user = $this->createMock(BackendUserAuthentication::class);
@@ -68,10 +68,10 @@ final class UserGateTest extends UnitTestCase
     #[Test]
     public function deniedWhenUserLacksModulePermission(): void
     {
-        $module = $this->createMock(ModuleInterface::class);
+        $module = self::createStub(ModuleInterface::class);
         $module->method('getAccess')->willReturn('user');
         $module->method('getIdentifier')->willReturn('some_module');
-        $user = $this->createMock(BackendUserAuthentication::class);
+        $user = self::createStub(BackendUserAuthentication::class);
         $user->method('isAdmin')->willReturn(false);
         $user->method('check')->willReturn(false);
 

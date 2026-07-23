@@ -125,9 +125,9 @@ abstract class AbstractSchemaBasedTestCase extends FunctionalTestCase
     protected function createSqlReader(): SqlReader
     {
         // Ensure SqlReader is not taking any extension into account to retrieve extension table structure files.
-        $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->method('getActivePackages')->willReturn([]);
-        return new SqlReader(new NoopEventDispatcher(), $packageManagerMock);
+        $packageManagerStub = self::createStub(PackageManager::class);
+        $packageManagerStub->method('getActivePackages')->willReturn([]);
+        return new SqlReader(new NoopEventDispatcher(), $packageManagerStub);
     }
 
     protected function createSchemaMigrator(): SchemaMigrator
@@ -138,12 +138,12 @@ abstract class AbstractSchemaBasedTestCase extends FunctionalTestCase
             new NullFrontend('test-core')
         );
         $tcaSchemaFactory->load([], true);
-        $defaultTcaSchemaMock = $this->createMock(DefaultTcaSchema::class);
-        $defaultTcaSchemaMock->method('enrich')->willReturnArgument(0);
+        $defaultTcaSchemaStub = self::createStub(DefaultTcaSchema::class);
+        $defaultTcaSchemaStub->method('enrich')->willReturnArgument(0);
         return new SchemaMigrator(
             $this->get(ConnectionPool::class),
             $this->get(Parser::class),
-            $defaultTcaSchemaMock,
+            $defaultTcaSchemaStub,
             $tcaSchemaFactory,
             $this->get('cache.runtime'),
         );

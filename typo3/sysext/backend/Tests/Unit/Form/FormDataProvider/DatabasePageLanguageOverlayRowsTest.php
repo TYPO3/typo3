@@ -43,7 +43,7 @@ final class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
     public function addDataSetsPageLanguageOverlayRows(): void
     {
         $tcaSchemaFactory = new TcaSchemaBuilder(
-            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new RelationMapBuilder(self::createStub(FlexFormTools::class)),
             new FieldTypeFactory()
         );
 

@@ -36,7 +36,7 @@ final class CacheServiceTest extends UnitTestCase
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $configurationManager->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn([]);
         $this->cacheManagerMock = $this->createMock(CacheManager::class);
-        $this->subject = new CacheService($configurationManager, $this->cacheManagerMock, $this->createMock(ConnectionPool::class));
+        $this->subject = new CacheService($configurationManager, $this->cacheManagerMock, self::createStub(ConnectionPool::class));
     }
 
     #[Test]

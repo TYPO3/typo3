@@ -133,9 +133,9 @@ final class RichTextElementTest extends FunctionalTestCase
             RichTextElement::class,
             ['getExtraPlugins'],
             [
-                $this->createMock(EventDispatcherInterface::class),
-                $this->createMock(UriBuilder::class),
-                $this->createMock(Locales::class),
+                self::createStub(EventDispatcherInterface::class),
+                self::createStub(UriBuilder::class),
+                self::createStub(Locales::class),
                 $this->get(SystemResourcePublisherInterface::class),
                 $this->get(SystemResourceFactory::class),
             ],

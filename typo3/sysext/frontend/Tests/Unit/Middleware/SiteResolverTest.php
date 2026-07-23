@@ -110,8 +110,8 @@ final class SiteResolverTest extends UnitTestCase
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
         $subject = new SiteResolver(
             new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory),
-            $this->createMock(LoggerInterface::class),
-            $this->createMock(ErrorController::class),
+            self::createStub(LoggerInterface::class),
+            self::createStub(ErrorController::class),
         );
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -168,8 +168,8 @@ final class SiteResolverTest extends UnitTestCase
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
         $subject = new SiteResolver(
             new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory),
-            $this->createMock(LoggerInterface::class),
-            $this->createMock(ErrorController::class),
+            self::createStub(LoggerInterface::class),
+            self::createStub(ErrorController::class),
         );
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -263,8 +263,8 @@ final class SiteResolverTest extends UnitTestCase
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
         $subject = new SiteResolver(
             new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory),
-            $this->createMock(LoggerInterface::class),
-            $this->createMock(ErrorController::class),
+            self::createStub(LoggerInterface::class),
+            self::createStub(ErrorController::class),
         );
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -378,8 +378,8 @@ final class SiteResolverTest extends UnitTestCase
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
         $subject = new SiteResolver(
             new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory),
-            $this->createMock(LoggerInterface::class),
-            $this->createMock(ErrorController::class),
+            self::createStub(LoggerInterface::class),
+            self::createStub(ErrorController::class),
         );
 
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -419,6 +419,6 @@ final class SiteResolverTest extends UnitTestCase
             $sites
         );
         $siteConfigurationMock->method('getAllExistingSites')->willReturn($sitesArray);
-        return new SiteFinder($siteConfigurationMock, $this->createMock(FrontendInterface::class));
+        return new SiteFinder($siteConfigurationMock, self::createStub(FrontendInterface::class));
     }
 }

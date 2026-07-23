@@ -57,10 +57,10 @@ trait PageRendererFactoryTrait
         $cacheManagerMock = $this->createMock(CacheManager::class);
         $cacheManagerMock->method('getCache')->with('l10n')->willReturn(new NullFrontend('l10n'));
         $cacheManager ??= $cacheManagerMock;
-        $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
-        $labelMapperMock->method('mapDomainToFileName')->willReturnArgument(0);
-        $resourceFactory = $this->createMock(SystemResourceFactory::class);
-        $resourcePublisher = $this->createMock(SystemResourcePublisherInterface::class);
+        $labelMapperStub = self::createStub(TranslationDomainMapper::class);
+        $labelMapperStub->method('mapDomainToFileName')->willReturnArgument(0);
+        $resourceFactory = self::createStub(SystemResourceFactory::class);
+        $resourcePublisher = self::createStub(SystemResourcePublisherInterface::class);
         return [
             new Context(),
             new NullFrontend('assets'),
@@ -69,7 +69,7 @@ trait PageRendererFactoryTrait
                 new NullFrontend('runtime'),
             ),
             new MetaTagManagerRegistry(),
-            new AssetRenderer(new AssetCollector(), new NoopEventDispatcher(), $resourcePublisher, $resourceFactory, $this->createMock(ResourceHashCollection::class), new DirectiveHashCollection($this->createMock(ResourceHashCollection::class))),
+            new AssetRenderer(new AssetCollector(), new NoopEventDispatcher(), $resourcePublisher, $resourceFactory, self::createStub(ResourceHashCollection::class), new DirectiveHashCollection(self::createStub(ResourceHashCollection::class))),
             new AssetCollector(),
             new RelativeCssPathFixer($resourceFactory, $resourcePublisher),
             new LanguageServiceFactory(
@@ -78,7 +78,7 @@ trait PageRendererFactoryTrait
                     new Translator('en'),
                     $cacheManager->getCache('l10n'),
                     new NullFrontend('runtime'),
-                    $labelMapperMock,
+                    $labelMapperStub,
                     new LabelFileResolver($packageManager, new TranslationDomainResolver()),
                     new TranslationDomainResolver(),
                 ),
@@ -93,7 +93,7 @@ trait PageRendererFactoryTrait
             $resourcePublisher,
             $resourceFactory,
             new ResourceHashCollection(new NullLogger(), $resourceFactory, new NullFrontend('assets')),
-            new DirectiveHashCollection($this->createMock(ResourceHashCollection::class)),
+            new DirectiveHashCollection(self::createStub(ResourceHashCollection::class)),
         ];
     }
 }

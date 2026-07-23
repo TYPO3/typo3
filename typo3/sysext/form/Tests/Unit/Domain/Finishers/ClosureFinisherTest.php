@@ -37,11 +37,11 @@ final class ClosureFinisherTest extends UnitTestCase
             'closure' => $closure,
         ]);
 
-        $finisherContextMock = $this->createMock(FinisherContext::class);
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
+        $finisherContextStub = self::createStub(FinisherContext::class);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $finisherContextStub->method('getFormRuntime')->willReturn($formRuntimeStub);
 
-        $revealedFinisherContext = $finisherContextMock;
+        $revealedFinisherContext = $finisherContextStub;
 
         $mockClosureFinisher->_set('finisherContext', $revealedFinisherContext);
         $closure = $mockClosureFinisher->_call('parseOption', 'closure');

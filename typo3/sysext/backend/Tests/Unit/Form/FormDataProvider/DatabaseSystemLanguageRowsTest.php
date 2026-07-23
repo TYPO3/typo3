@@ -34,16 +34,16 @@ final class DatabaseSystemLanguageRowsTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1534952559);
-        (new DatabaseSystemLanguageRows($this->createMock(FlashMessageService::class)))->addData([]);
+        (new DatabaseSystemLanguageRows(self::createStub(FlashMessageService::class)))->addData([]);
     }
 
     #[Test]
     public function addDataSetsDefaultLanguageAndAllEntries(): void
     {
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->withAnyParameters()->willReturnArgument(0);
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
+        $languageService->method('sL')->willReturnArgument(0);
+        $GLOBALS['BE_USER'] = self::createStub(BackendUserAuthentication::class);
 
         $siteLanguageMinusOne = new SiteLanguage(
             -1,
@@ -68,11 +68,11 @@ final class DatabaseSystemLanguageRowsTest extends UnitTestCase
             $siteLanguageZero,
             $siteLanguageOne,
         ];
-        $siteMock = $this->createMock(Site::class);
-        $siteMock->method('getAvailableLanguages')->withAnyParameters()->willReturn($siteLanguages);
+        $siteStub = self::createStub(Site::class);
+        $siteStub->method('getAvailableLanguages')->willReturn($siteLanguages);
         $input = [
             'effectivePid' => 42,
-            'site' => $siteMock,
+            'site' => $siteStub,
         ];
         $expected = [
             'systemLanguageRows' => [
@@ -96,6 +96,6 @@ final class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame(array_merge($input, $expected), (new DatabaseSystemLanguageRows($this->createMock(FlashMessageService::class)))->addData($input));
+        self::assertSame(array_merge($input, $expected), (new DatabaseSystemLanguageRows(self::createStub(FlashMessageService::class)))->addData($input));
     }
 }

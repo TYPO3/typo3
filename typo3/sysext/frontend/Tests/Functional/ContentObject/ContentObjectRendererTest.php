@@ -3708,8 +3708,8 @@ content="benni">',
     #[Test]
     public function setCurrentFile_getCurrentFile(): void
     {
-        $storageMock = $this->createMock(ResourceStorage::class);
-        $file = new File(['testfile'], $storageMock);
+        $storageStub = self::createStub(ResourceStorage::class);
+        $file = new File(['testfile'], $storageStub);
         $subject = $this->get(ContentObjectRenderer::class);
         $subject->setCurrentFile($file);
         self::assertSame($file, $subject->getCurrentFile());
@@ -4211,7 +4211,7 @@ content="benni">',
     #[Test]
     public function http_makeLinksReturnsLink(string $data, array $configuration, string $expectedResult, LinkResult $linkResult): void
     {
-        $linkFactory = $this->createMock(LinkFactory::class);
+        $linkFactory = self::createStub(LinkFactory::class);
         $linkFactory->method('create')->willReturn($linkResult);
         $this->get('service_container')->set(LinkFactory::class, $linkFactory);
         $subject = $this->get(ContentObjectRenderer::class);
@@ -4313,7 +4313,7 @@ content="benni">',
     #[Test]
     public function mailto_makelinksReturnsMailToLink(string $data, array $configuration, string $expectedResult, LinkResult $linkResult): void
     {
-        $linkFactory = $this->createMock(LinkFactory::class);
+        $linkFactory = self::createStub(LinkFactory::class);
         $linkFactory->method('create')->willReturn($linkResult);
         $this->get('service_container')->set(LinkFactory::class, $linkFactory);
         $subject = $this->get(ContentObjectRenderer::class);
@@ -6023,7 +6023,7 @@ content="benni">',
     public function getDataWithTypeLll(): void
     {
         $request = new ServerRequest('https://example.com');
-        $language = $this->createMock(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
         $request = $request->withAttribute('language', $language);
         $key = StringUtility::getUniqueId('someKey');
         $value = StringUtility::getUniqueId('someValue');
@@ -6263,7 +6263,7 @@ content="benni">',
     public function getDataWithTypeAssetReturnsVersionedUri(): void
     {
         $subject = $this->get(ContentObjectRenderer::class);
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray([
@@ -6286,7 +6286,7 @@ content="benni">',
     public function getDataWithTypePath(): void
     {
         $subject = $this->get(ContentObjectRenderer::class);
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray([

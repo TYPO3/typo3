@@ -105,10 +105,10 @@ final class FormRuntimeTest extends FunctionalTestCase
         $container = $this->get('service_container');
         $subject = $this->getAccessibleMock(FormRuntime::class, null, [
             $container,
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
             new HashService(),
-            $this->createMock(ValidatorResolver::class),
-            $this->createMock(Context::class),
+            self::createStub(ValidatorResolver::class),
+            self::createStub(Context::class),
             $this->get(EventDispatcherInterface::class),
         ]);
 
@@ -132,10 +132,10 @@ final class FormRuntimeTest extends FunctionalTestCase
         $container = $this->get('service_container');
         $subject = $this->getAccessibleMock(FormRuntime::class, null, [
             $container,
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
             new HashService(),
-            $this->createMock(ValidatorResolver::class),
-            $this->createMock(Context::class),
+            self::createStub(ValidatorResolver::class),
+            self::createStub(Context::class),
             $this->get(EventDispatcherInterface::class),
         ]);
 
@@ -159,10 +159,10 @@ final class FormRuntimeTest extends FunctionalTestCase
         $container = $this->get('service_container');
         $subject = $this->getAccessibleMock(FormRuntime::class, null, [
             $container,
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
             new HashService(),
-            $this->createMock(ValidatorResolver::class),
-            $this->createMock(Context::class),
+            self::createStub(ValidatorResolver::class),
+            self::createStub(Context::class),
             $this->get(EventDispatcherInterface::class),
         ]);
 
@@ -256,10 +256,10 @@ final class FormRuntimeTest extends FunctionalTestCase
 
         $subject = $this->getAccessibleMock(FormRuntime::class, null, [
             $container,
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
             new HashService(),
-            $this->createMock(ValidatorResolver::class),
-            $this->createMock(Context::class),
+            self::createStub(ValidatorResolver::class),
+            self::createStub(Context::class),
             $this->get(EventDispatcherInterface::class),
         ]);
         $page = new Page('page-1');

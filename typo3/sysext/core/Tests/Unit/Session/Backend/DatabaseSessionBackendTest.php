@@ -27,7 +27,7 @@ final class DatabaseSessionBackendTest extends UnitTestCase
     #[Test]
     public function validateConfigurationThrowsExceptionIfTableNameIsMissingInConfiguration(): void
     {
-        $subject = new DatabaseSessionBackend($this->createMock(ConnectionPool::class));
+        $subject = new DatabaseSessionBackend(self::createStub(ConnectionPool::class));
         $subject->initialize('default', []);
 
         $this->expectException(\InvalidArgumentException::class);

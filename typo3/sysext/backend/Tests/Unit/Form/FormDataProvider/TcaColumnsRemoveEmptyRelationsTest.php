@@ -35,7 +35,7 @@ final class TcaColumnsRemoveEmptyRelationsTest extends UnitTestCase
 
     private function setUpBackendUser(bool $showDebugInfo): void
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $backendUser->method('shallDisplayDebugInformation')->willReturn($showDebugInfo);
         $GLOBALS['BE_USER'] = $backendUser;
     }

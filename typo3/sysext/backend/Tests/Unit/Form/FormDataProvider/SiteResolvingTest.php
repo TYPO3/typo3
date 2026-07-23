@@ -31,17 +31,17 @@ final class SiteResolvingTest extends UnitTestCase
     public function addDataAddsSiteObjectOfDefaultLanguageRow(): void
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
-        $siteMock = $this->createMock(Site::class);
-        $siteFinderMock->method('getSiteByPageId')->with(23)->willReturn($siteMock);
+        $siteStub = self::createStub(Site::class);
+        $siteFinderMock->method('getSiteByPageId')->with(23)->willReturn($siteStub);
         $input = [
             'defaultLanguagePageRow' => [
                 'uid' => 23,
             ],
             'effectivePid' => 42,
-            'site' => $siteMock,
+            'site' => $siteStub,
         ];
         $expected = $input;
-        $expected['site'] = $siteMock;
+        $expected['site'] = $siteStub;
         self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
     }
 
@@ -49,14 +49,14 @@ final class SiteResolvingTest extends UnitTestCase
     public function addDataAddsSiteObjectOfEffectivePid(): void
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
-        $siteMock = $this->createMock(Site::class);
-        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteMock);
+        $siteStub = self::createStub(Site::class);
+        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteStub);
         $input = [
             'effectivePid' => 42,
-            'site' => $siteMock,
+            'site' => $siteStub,
         ];
         $expected = $input;
-        $expected['site'] = $siteMock;
+        $expected['site'] = $siteStub;
         self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
     }
 
@@ -64,18 +64,18 @@ final class SiteResolvingTest extends UnitTestCase
     public function addDataAddsSiteObjectOfEffectivePidForNewPage(): void
     {
         $siteFinderMock = $this->createMock(SiteFinder::class);
-        $siteMock = $this->createMock(Site::class);
-        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteMock);
+        $siteStub = self::createStub(Site::class);
+        $siteFinderMock->method('getSiteByPageId')->with(42)->willReturn($siteStub);
         $input = [
             'databaseRow' => [
                 'uid' => 'NEW12345678BACDEF',
             ],
             'effectivePid' => 42,
-            'site' => $siteMock,
+            'site' => $siteStub,
             'tableName' => 'pages',
         ];
         $expected = $input;
-        $expected['site'] = $siteMock;
+        $expected['site'] = $siteStub;
         self::assertSame($expected, (new SiteResolving($siteFinderMock))->addData($input));
     }
 }

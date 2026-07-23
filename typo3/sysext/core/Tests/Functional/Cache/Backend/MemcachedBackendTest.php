@@ -73,11 +73,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function itIsPossibleToSetAndCheckExistenceInCache(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $identifier = StringUtility::getUniqueId('MyIdentifier');
         $subject->set($identifier, 'Some data');
@@ -87,11 +87,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function itIsPossibleToSetAndGetEntry(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = 'Some data';
         $identifier = StringUtility::getUniqueId('MyIdentifier');
@@ -102,11 +102,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function getReturnsPreviouslySetDataWithVariousTypes(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = [
             'string' => 'Serialize a string',
@@ -130,11 +130,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function largeDataIsStored(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = str_repeat('abcde', 1024 * 1024);
         $subject->set('tooLargeData', $data);
@@ -145,11 +145,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function itIsPossibleToRemoveEntryFromCache(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = 'Some data';
         $identifier = StringUtility::getUniqueId('MyIdentifier');
@@ -161,11 +161,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function itIsPossibleToOverwriteAnEntryInTheCache(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = 'Some data';
         $identifier = StringUtility::getUniqueId('MyIdentifier');
@@ -178,11 +178,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = 'Some data';
         $identifier = StringUtility::getUniqueId('MyIdentifier');
@@ -196,11 +196,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function setRemovesTagsFromPreviousSet(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = 'Some data';
         $identifier = StringUtility::getUniqueId('MyIdentifier');
@@ -212,11 +212,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function hasReturnsFalseIfTheEntryDoesntExist(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $identifier = StringUtility::getUniqueId('NonExistingIdentifier');
         self::assertFalse($subject->has($identifier));
@@ -225,11 +225,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function removeReturnsFalseIfTheEntryDoesntExist(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $identifier = StringUtility::getUniqueId('NonExistingIdentifier');
         self::assertFalse($subject->remove($identifier));
@@ -238,11 +238,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function flushByTagRemovesCacheEntriesWithSpecifiedTag(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = 'some data' . microtime();
         $subject->set('BackendMemcacheTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
@@ -257,11 +257,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function flushByTagsRemovesCacheEntriesWithSpecifiedTags(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = 'some data' . microtime();
         $subject->set('BackendMemcacheTest1', $data, ['UnitTestTag%test', 'UnitTestTag%boring']);
@@ -276,11 +276,11 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function flushRemovesAllCacheEntries(): void
     {
-        $frontendMock = $this->createMock(FrontendInterface::class);
-        $frontendMock->method('getIdentifier')->willReturn('pages');
+        $frontendStub = self::createStub(FrontendInterface::class);
+        $frontendStub->method('getIdentifier')->willReturn('pages');
 
         $subject = $this->initializeSubject();
-        $subject->setCache($frontendMock);
+        $subject->setCache($frontendStub);
 
         $data = 'some data' . microtime();
         $subject->set('BackendMemcacheTest1', $data);
@@ -295,15 +295,15 @@ final class MemcachedBackendTest extends FunctionalTestCase
     #[Test]
     public function flushRemovesOnlyOwnEntries(): void
     {
-        $thisFrontendMock = $this->createMock(FrontendInterface::class);
-        $thisFrontendMock->method('getIdentifier')->willReturn('thisCache');
+        $thisFrontendStub = self::createStub(FrontendInterface::class);
+        $thisFrontendStub->method('getIdentifier')->willReturn('thisCache');
         $thisBackend = $this->initializeSubject();
-        $thisBackend->setCache($thisFrontendMock);
+        $thisBackend->setCache($thisFrontendStub);
 
-        $thatFrontendMock = $this->createMock(FrontendInterface::class);
-        $thatFrontendMock->method('getIdentifier')->willReturn('thatCache');
+        $thatFrontendStub = self::createStub(FrontendInterface::class);
+        $thatFrontendStub->method('getIdentifier')->willReturn('thatCache');
         $thatBackend = $this->initializeSubject();
-        $thatBackend->setCache($thatFrontendMock);
+        $thatBackend->setCache($thatFrontendStub);
 
         $thisBackend->set('thisEntry', 'Hello');
         $thatBackend->set('thatEntry', 'World!');

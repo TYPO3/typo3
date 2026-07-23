@@ -53,7 +53,7 @@ final class BackendUserAuthenticationTest extends UnitTestCase
     #[Test]
     public function logoffCleansFormProtectionIfBackendUserIsLoggedIn(): void
     {
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
         $connectionMock = $this->createMock(Connection::class);
         $connectionMock->method('delete')->with('sys_lockedrecords', self::anything())->willReturn(1);
 
@@ -65,21 +65,21 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         $formProtectionMock = $this->createMock(BackendFormProtection::class);
         $formProtectionMock->expects($this->once())->method('clean');
 
-        $registryMock = $this->createMock(Registry::class);
+        $registryStub = self::createStub(Registry::class);
 
         $container = new Container();
-        $container->set(Registry::class, $registryMock);
+        $container->set(Registry::class, $registryStub);
 
         $runtimeCache = new VariableFrontend('null', new TransientMemoryBackend(['logger' => new NullLogger()]));
         $formProtectionFactory = new FormProtectionFactory(
-            $this->createMock(FlashMessageService::class),
-            $this->createMock(LanguageServiceFactory::class),
+            self::createStub(FlashMessageService::class),
+            self::createStub(LanguageServiceFactory::class),
             $runtimeCache,
             $container
         );
         GeneralUtility::addInstance(FormProtectionFactory::class, $formProtectionFactory);
         GeneralUtility::addInstance(BackendFormProtection::class, $formProtectionMock);
-        GeneralUtility::setSingletonInstance(EventDispatcherInterface::class, new EventDispatcher($this->createMock(ListenerProviderInterface::class)));
+        GeneralUtility::setSingletonInstance(EventDispatcherInterface::class, new EventDispatcher(self::createStub(ListenerProviderInterface::class)));
 
         $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
         $sessionBackendMock->method('remove')->with(self::anything())->willReturn(true);
@@ -493,11 +493,11 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         $connectionMock->method('quoteIdentifier')
             ->willReturnCallback(fn(string $identifier): string => '`' . str_replace('.', '`.`', $identifier) . '`');
 
-        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerStub = self::createStub(ContainerInterface::class);
 
         $queryBuilderMock = $this->createMock(QueryBuilder::class);
         $queryBuilderMock->method('expr')->willReturn(
-            new ExpressionBuilder($connectionMock, $containerMock)
+            new ExpressionBuilder($connectionMock, $containerStub)
         );
 
         $connectionPoolMock = $this->createMock(ConnectionPool::class);

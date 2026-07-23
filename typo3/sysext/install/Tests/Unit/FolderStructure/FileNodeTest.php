@@ -45,7 +45,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222207);
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $structure = [
             'name' => 'foo/bar',
@@ -56,7 +56,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     #[Test]
     public function constructorSetsParent(): void
     {
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $structure = [
             'name' => 'foo',
@@ -68,7 +68,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     #[Test]
     public function constructorSetsTargetPermission(): void
     {
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
         $targetPermission = '0660';
         $structure = [
@@ -83,7 +83,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     public function constructorSetsName(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $name = StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name], $parent);
         self::assertSame($name, $node->getName());
@@ -95,7 +95,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380364361);
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $structure = [
             'name' => 'foo',
             'targetContent' => 'foo',
@@ -108,7 +108,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     public function constructorSetsTargetContent(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $targetContent = StringUtility::getUniqueId('content_');
         $structure = [
             'name' => 'foo',
@@ -122,7 +122,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     public function constructorSetsTargetContentToContentOfTargetContentFile(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $targetFile = $this->getTestFilePath('test_');
         $targetContent = StringUtility::getUniqueId('content_');
         file_put_contents($targetFile, $targetContent);
@@ -140,7 +140,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380364362);
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $targetFile = $this->getTestFilePath('test_');
         $structure = [
             'name' => 'foo',
@@ -153,7 +153,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     public function targetContentIsNullIfNotGiven(): void
     {
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $structure = [
             'name' => 'foo',
         ];
@@ -530,7 +530,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
     #[Test]
     public function isPermissionCorrectReturnsTrueIfTargetPermissionAndCurrentPermissionAreIdentical(): void
     {
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $node = $this->getAccessibleMock(FileNode::class, ['getCurrentPermission', 'isWindowsOs'], [], '', false);
         $node->method('isWindowsOs')->willReturn(false);
         $node->method('getCurrentPermission')->willReturn('0664');

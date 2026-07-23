@@ -271,11 +271,11 @@ final class DependencyUtilityTest extends UnitTestCase
     public function isExtensionDownloadableFromRemoteReturnsTrueIfOneVersionExists(): void
     {
         $extensionRepositoryMock = $this->createMock(ExtensionRepository::class);
-        $mockExtension = $this->createMock(Extension::class);
+        $extensionStub = self::createStub(Extension::class);
         $extensionRepositoryMock->expects($this->once())
             ->method('findByExtensionKeyOrderedByVersion')
             ->with('test123')
-            ->willReturn([$mockExtension]);
+            ->willReturn([$extensionStub]);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, null);
         $dependencyUtility->injectExtensionRepository($extensionRepositoryMock);
         $count = $dependencyUtility->_call('isExtensionDownloadableFromRemote', 'test123');

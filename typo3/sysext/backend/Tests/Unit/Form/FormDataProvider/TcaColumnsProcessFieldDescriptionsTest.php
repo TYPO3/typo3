@@ -51,8 +51,8 @@ final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
 
         $GLOBALS['LANG'] = new LanguageService(
             new Locales(),
-            $this->createMock(LocalizationFactory::class),
-            $this->createMock(FrontendInterface::class)
+            self::createStub(LocalizationFactory::class),
+            self::createStub(FrontendInterface::class)
         );
 
         $expected = $input;
@@ -81,8 +81,8 @@ final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
         ];
         $GLOBALS['LANG'] = new LanguageService(
             new Locales(),
-            $this->createMock(LocalizationFactory::class),
-            $this->createMock(FrontendInterface::class)
+            self::createStub(LocalizationFactory::class),
+            self::createStub(FrontendInterface::class)
         );
 
         $expected = $input;
@@ -114,8 +114,8 @@ final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
         ];
         $GLOBALS['LANG'] = new LanguageService(
             new Locales(),
-            $this->createMock(LocalizationFactory::class),
-            $this->createMock(FrontendInterface::class)
+            self::createStub(LocalizationFactory::class),
+            self::createStub(FrontendInterface::class)
         );
 
         $expected = $input;
@@ -149,8 +149,8 @@ final class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
         ];
         $GLOBALS['LANG'] = new LanguageService(
             new Locales(),
-            $this->createMock(LocalizationFactory::class),
-            $this->createMock(FrontendInterface::class)
+            self::createStub(LocalizationFactory::class),
+            self::createStub(FrontendInterface::class)
         );
         $GLOBALS['LANG']->init('fr');
 

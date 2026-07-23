@@ -59,7 +59,7 @@ final class VariableFrontendTest extends UnitTestCase
     #[DoesNotPerformAssertions]
     public function constructAcceptsValidIdentifiers(string $identifier): void
     {
-        new VariableFrontend($identifier, $this->createMock(BackendInterface::class));
+        new VariableFrontend($identifier, self::createStub(BackendInterface::class));
     }
 
     public static function constructRejectsInvalidIdentifiersDataProvider(): array
@@ -86,7 +86,7 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1203584729);
-        new VariableFrontend($identifier, $this->createMock(BackendInterface::class));
+        new VariableFrontend($identifier, self::createStub(BackendInterface::class));
     }
 
     #[Test]
@@ -160,7 +160,7 @@ final class VariableFrontendTest extends UnitTestCase
     #[DataProvider('isValidEntryIdentifierReturnsFalseWithValidIdentifierDataProvider')]
     public function isValidEntryIdentifierReturnsFalseWithValidIdentifier(string $identifier): void
     {
-        $backend = $this->createMock(BackendInterface::class);
+        $backend = self::createStub(BackendInterface::class);
         $cache = new VariableFrontend('someCacheIdentifier', $backend);
         self::assertFalse($cache->isValidEntryIdentifier($identifier));
     }
@@ -184,7 +184,7 @@ final class VariableFrontendTest extends UnitTestCase
     #[DataProvider('isValidEntryIdentifierReturnsTrueWithValidIdentifierDataProvider')]
     public function isValidEntryIdentifierReturnsTrueWithValidIdentifier(string $identifier): void
     {
-        $backend = $this->createMock(BackendInterface::class);
+        $backend = self::createStub(BackendInterface::class);
         $cache = new VariableFrontend('someCacheIdentifier', $backend);
         self::assertTrue($cache->isValidEntryIdentifier($identifier));
     }
@@ -211,7 +211,7 @@ final class VariableFrontendTest extends UnitTestCase
     #[DataProvider('isValidTagReturnsFalseWithInvalidTagDataProvider')]
     public function isValidTagReturnsFalseWithInvalidTag(string $tag): void
     {
-        $backend = $this->createMock(BackendInterface::class);
+        $backend = self::createStub(BackendInterface::class);
         $cache = new VariableFrontend('someCacheIdentifier', $backend);
         self::assertFalse($cache->isValidTag($tag));
     }
@@ -235,7 +235,7 @@ final class VariableFrontendTest extends UnitTestCase
     #[DataProvider('isValidTagReturnsTrueWithValidTagDataProvider')]
     public function isValidTagReturnsTrueWithValidTag(string $tag): void
     {
-        $backend = $this->createMock(BackendInterface::class);
+        $backend = self::createStub(BackendInterface::class);
         $cache = new VariableFrontend('someCacheIdentifier', $backend);
         self::assertTrue($cache->isValidTag($tag));
     }
@@ -245,7 +245,7 @@ final class VariableFrontendTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1233058264);
-        $cache = new VariableFrontend('someCacheIdentifier', $this->createMock(BackendInterface::class));
+        $cache = new VariableFrontend('someCacheIdentifier', self::createStub(BackendInterface::class));
         $cache->set('invalid identifier', 'bar');
     }
 

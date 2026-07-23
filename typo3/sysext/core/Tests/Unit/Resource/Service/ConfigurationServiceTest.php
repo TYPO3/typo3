@@ -27,25 +27,25 @@ final class ConfigurationServiceTest extends UnitTestCase
     #[Test]
     public function serializeSubstitutesFileObject(): void
     {
-        $fileMock = $this->createMock(ProcessedFile::class);
-        $fileMock->method('toArray')->willReturn(['id' => '1:test.jpg']);
+        $fileStub = self::createStub(ProcessedFile::class);
+        $fileStub->method('toArray')->willReturn(['id' => '1:test.jpg']);
         $configuration = [
             'width' => '2000c',
             'height' => '300c-60',
-            'foo' => $fileMock,
+            'foo' => $fileStub,
             'maskImages' => [
-                'maskImage' => $fileMock,
-                'backgroundImage' => $fileMock,
+                'maskImage' => $fileStub,
+                'backgroundImage' => $fileStub,
                 'bar' => 'bar1',
             ],
         ];
         $expected = [
             'width' => '2000c',
             'height' => '300c-60',
-            'foo' => $fileMock->toArray(),
+            'foo' => $fileStub->toArray(),
             'maskImages' => [
-                'maskImage' => $fileMock->toArray(),
-                'backgroundImage' => $fileMock->toArray(),
+                'maskImage' => $fileStub->toArray(),
+                'backgroundImage' => $fileStub->toArray(),
                 'bar' => 'bar1',
             ],
         ];

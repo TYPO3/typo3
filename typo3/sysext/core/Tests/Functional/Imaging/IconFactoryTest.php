@@ -231,14 +231,14 @@ final class IconFactoryTest extends FunctionalTestCase
     #[Test]
     public function getIconForResourceReturnsCorrectMarkupForFileResources(): void
     {
-        $resourceMock = $this->createMock(File::class);
-        $resourceMock->method('isMissing')->willReturn(false);
-        $resourceMock->method('getExtension')->willReturn('pdf');
-        $resourceMock->method('getMimeType')->willReturn('');
+        $resourceStub = self::createStub(File::class);
+        $resourceStub->method('isMissing')->willReturn(false);
+        $resourceStub->method('getExtension')->willReturn('pdf');
+        $resourceStub->method('getMimeType')->willReturn('');
 
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-medium icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf" aria-hidden="true">',
-            $this->subject->getIconForResource($resourceMock)->render()
+            $this->subject->getIconForResource($resourceStub)->render()
         );
     }
 
@@ -547,9 +547,9 @@ final class IconFactoryTest extends FunctionalTestCase
      */
     private function getTestSubjectFileObject(string $extension, string $mimeType = ''): File
     {
-        $mockedStorage = $this->createMock(ResourceStorage::class);
+        $storageStub = self::createStub(ResourceStorage::class);
         $mockedFile = $this->getMockBuilder(File::class)
-            ->setConstructorArgs([['identifier' => '', 'name' => ''], $mockedStorage])
+            ->setConstructorArgs([['identifier' => '', 'name' => ''], $storageStub])
             ->getMock();
         $mockedFile->expects($this->atMost(1))->method('getExtension')->willReturn($extension);
         $mockedFile->expects($this->atLeastOnce())->method('getMimeType')->willReturn($mimeType);
@@ -561,12 +561,12 @@ final class IconFactoryTest extends FunctionalTestCase
      */
     private function getTestSubjectFolderObject(string $identifier): Folder
     {
-        $mockedStorage = $this->createMock(ResourceStorage::class);
-        $mockedStorage->method('getRootLevelFolder')->willReturn(
-            new Folder($mockedStorage, '/', '/')
+        $storageStub = self::createStub(ResourceStorage::class);
+        $storageStub->method('getRootLevelFolder')->willReturn(
+            new Folder($storageStub, '/', '/')
         );
-        $mockedStorage->method('checkFolderActionPermission')->willReturn(true);
-        $mockedStorage->method('isBrowsable')->willReturn(true);
-        return new Folder($mockedStorage, $identifier, $identifier);
+        $storageStub->method('checkFolderActionPermission')->willReturn(true);
+        $storageStub->method('isBrowsable')->willReturn(true);
+        return new Folder($storageStub, $identifier, $identifier);
     }
 }

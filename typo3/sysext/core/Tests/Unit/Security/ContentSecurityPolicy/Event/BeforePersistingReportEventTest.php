@@ -38,7 +38,7 @@ final class BeforePersistingReportEventTest extends UnitTestCase
             [],
             new ReportDetails(['document-uri' => 'https://example.org/', 'effective-directive' => 'script-src']),
         );
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
 
         $event = new BeforePersistingReportEvent($report, $request);
 
@@ -57,7 +57,7 @@ final class BeforePersistingReportEventTest extends UnitTestCase
             [],
             new ReportDetails(['document-uri' => 'https://example.org/', 'effective-directive' => 'script-src']),
         );
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
 
         $event = new BeforePersistingReportEvent($report, $request);
         $event->report = null;
@@ -83,7 +83,7 @@ final class BeforePersistingReportEventTest extends UnitTestCase
             [],
             new ReportDetails(['document-uri' => 'https://example.com/', 'effective-directive' => 'style-src']),
         );
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
 
         $event = new BeforePersistingReportEvent($originalReport, $request);
         $event->report = $alternativeReport;

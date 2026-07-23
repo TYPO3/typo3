@@ -87,7 +87,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
         $renderable->method('getType')->willReturn('Text');
         $renderable->expects($this->never())->method('getProperties');
 
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
 
         (new FormatDateRenderableBeforeRendering())($event);

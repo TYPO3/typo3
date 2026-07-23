@@ -36,7 +36,7 @@ final class ProcessingRuleTest extends UnitTestCase
         $conjunctionValidator->setOptions([]);
         $validatorResolver = $this->createMock(ValidatorResolver::class);
         $validatorResolver->method('createValidator')->with(ConjunctionValidator::class)->willReturn($conjunctionValidator);
-        $subject = new ProcessingRule($this->createMock(PropertyMapper::class), $validatorResolver);
+        $subject = new ProcessingRule(self::createStub(PropertyMapper::class), $validatorResolver);
         $testValidator = new TestValidator();
         $testValidator->setOptions([]);
         $subject->addValidator($testValidator);
@@ -52,7 +52,7 @@ final class ProcessingRuleTest extends UnitTestCase
         $conjunctionValidator->setOptions([]);
         $validatorResolver = $this->createMock(ValidatorResolver::class);
         $validatorResolver->method('createValidator')->with(ConjunctionValidator::class)->willReturn($conjunctionValidator);
-        $subject = new ProcessingRule($this->createMock(PropertyMapper::class), $validatorResolver);
+        $subject = new ProcessingRule(self::createStub(PropertyMapper::class), $validatorResolver);
         $subject->addValidator(new TestValidator());
         $subject->addValidator(new AnotherTestValidator());
         $subject->addValidator(new TestValidator());
@@ -67,7 +67,7 @@ final class ProcessingRuleTest extends UnitTestCase
         $conjunctionValidator->setOptions([]);
         $validatorResolver = $this->createMock(ValidatorResolver::class);
         $validatorResolver->method('createValidator')->with(ConjunctionValidator::class)->willReturn($conjunctionValidator);
-        $subject = new ProcessingRule($this->createMock(PropertyMapper::class), $validatorResolver);
+        $subject = new ProcessingRule(self::createStub(PropertyMapper::class), $validatorResolver);
         $subject->addValidator(new TestValidator());
         $subject->addValidator(new AnotherTestValidator());
         $subject->addValidator(new TestValidator());
@@ -86,7 +86,7 @@ final class ProcessingRuleTest extends UnitTestCase
         $conjunctionValidator->setOptions([]);
         $validatorResolver = $this->createMock(ValidatorResolver::class);
         $validatorResolver->method('createValidator')->with(ConjunctionValidator::class)->willReturn($conjunctionValidator);
-        $subject = new ProcessingRule($this->createMock(PropertyMapper::class), $validatorResolver);
+        $subject = new ProcessingRule(self::createStub(PropertyMapper::class), $validatorResolver);
         $input = 'someValue';
         self::assertSame($input, $subject->process($input));
     }
@@ -98,7 +98,7 @@ final class ProcessingRuleTest extends UnitTestCase
         $conjunctionValidator->setOptions([]);
         $validatorResolver = $this->createMock(ValidatorResolver::class);
         $validatorResolver->method('createValidator')->with(ConjunctionValidator::class)->willReturn($conjunctionValidator);
-        $subject = new ProcessingRule($this->createMock(PropertyMapper::class), $validatorResolver);
+        $subject = new ProcessingRule(self::createStub(PropertyMapper::class), $validatorResolver);
         $subject->addValidator(new TestValidator());
         $input = 'addError';
         $subject->process($input);

@@ -35,12 +35,8 @@ final class BookmarkVoterTest extends UnitTestCase
     {
         parent::setUp();
 
-        $moduleProvider = $this->createMock(ModuleProvider::class);
-        $router = $this->createMock(Router::class);
         $logger = new NullLogger();
-
-        $storageRepository = $this->createMock(StorageRepository::class);
-        $this->subject = new BookmarkVoter($moduleProvider, $router, $logger, $storageRepository);
+        $this->subject = new BookmarkVoter(self::createStub(ModuleProvider::class), self::createStub(Router::class), $logger, self::createStub(StorageRepository::class));
     }
 
     /**
@@ -383,7 +379,7 @@ final class BookmarkVoterTest extends UnitTestCase
 
     private function createBackendUser(?int $uid, bool $admin): BackendUserAuthentication
     {
-        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $backendUser = self::createStub(BackendUserAuthentication::class);
         $userData = ['admin' => $admin ? 1 : 0];
         if ($uid !== null) {
             $userData['uid'] = $uid;

@@ -33,7 +33,7 @@ final class CountryConverterTest extends UnitTestCase
     {
         parent::setUp();
         $this->converter = new CountryConverter();
-        $this->converter->injectCountryProvider(new CountryProvider($this->createMock(EventDispatcherInterface::class)));
+        $this->converter->injectCountryProvider(new CountryProvider(self::createStub(EventDispatcherInterface::class)));
     }
 
     #[Test]

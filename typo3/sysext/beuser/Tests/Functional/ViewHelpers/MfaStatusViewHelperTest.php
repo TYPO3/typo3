@@ -37,9 +37,9 @@ final class MfaStatusViewHelperTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_mfa.csv');
 
-        $mockLanguageService = $this->getMockBuilder(LanguageService::class)->disableOriginalConstructor()->getMock();
-        $mockLanguageService->expects($this->any())->method('sL')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $mockLanguageService;
+        $languageServiceStub = self::createStub(LanguageService::class);
+        $languageServiceStub->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceStub;
 
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('bu', 'TYPO3\\CMS\\Beuser\\ViewHelpers');

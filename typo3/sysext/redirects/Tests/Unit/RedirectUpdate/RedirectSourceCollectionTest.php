@@ -34,7 +34,7 @@ final class RedirectSourceCollectionTest extends UnitTestCase
     #[Test]
     public function countReturnsCorrectCountOfItemsAdded(): void
     {
-        $item = $this->createMock(RedirectSourceInterface::class);
+        $item = self::createStub(RedirectSourceInterface::class);
         $subject = new RedirectSourceCollection($item, $item, $item);
         self::assertCount(3, $subject);
     }
@@ -42,9 +42,9 @@ final class RedirectSourceCollectionTest extends UnitTestCase
     #[Test]
     public function allReturnsItemsInTheSameOrderTheyHaveBeenAdded(): void
     {
-        $item1 = $this->createMock(RedirectSourceInterface::class);
-        $item2 = $this->createMock(RedirectSourceInterface::class);
-        $item3 = $this->createMock(RedirectSourceInterface::class);
+        $item1 = self::createStub(RedirectSourceInterface::class);
+        $item2 = self::createStub(RedirectSourceInterface::class);
+        $item3 = self::createStub(RedirectSourceInterface::class);
         $subject = new RedirectSourceCollection($item3, $item1, $item2);
         self::assertSame([$item3, $item1, $item2], $subject->all());
     }

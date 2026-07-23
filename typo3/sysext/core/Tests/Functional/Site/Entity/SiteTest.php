@@ -52,7 +52,7 @@ final class SiteTest extends FunctionalTestCase
             ],
         ]);
 
-        GeneralUtility::addInstance(FluidPageErrorHandler::class, $this->createMock(FluidPageErrorHandler::class));
+        GeneralUtility::addInstance(FluidPageErrorHandler::class, self::createStub(FluidPageErrorHandler::class));
 
         self::assertInstanceOf(FluidPageErrorHandler::class, $subject->getErrorHandler(123));
         self::assertInstanceOf(PageContentErrorHandler::class, $subject->getErrorHandler(124));

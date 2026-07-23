@@ -323,7 +323,7 @@ final class ConnectionTest extends UnitTestCase
     public function selectQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
         $container = $this->createContainerWithTcaSchemaFactoryInstance();
-        $resultStatement = $this->createMock(Result::class);
+        $resultStatement = self::createStub(Result::class);
         $connectionMock = $this->createConnectionMock(null, [], $container);
         $connectionMock->expects($this->once())
             ->method('executeQuery')
@@ -453,7 +453,7 @@ final class ConnectionTest extends UnitTestCase
                     'getServerVersion',
                 ]
             )
-            ->setConstructorArgs([$params, $this->createMock(AbstractMySQLDriver::class), $configuration, null])
+            ->setConstructorArgs([$params, self::createStub(AbstractMySQLDriver::class), $configuration, null])
             ->getMock();
         $connectionMock
             ->method('getExpressionBuilder')
@@ -469,7 +469,7 @@ final class ConnectionTest extends UnitTestCase
     private function createContainerWithTcaSchemaFactoryInstance(?TcaSchemaFactory $tcaSchemaFactory = null): ContainerInterface
     {
         $container = new Container();
-        $container->set(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+        $container->set(TcaSchemaFactory::class, self::createStub(TcaSchemaFactory::class));
         return $container;
     }
 }

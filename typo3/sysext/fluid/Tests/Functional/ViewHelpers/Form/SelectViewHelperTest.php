@@ -379,9 +379,9 @@ EOT;
         ];
 
         // Mock persistence manager for our domain objects and set into container
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
+        $persistenceManagerStub = self::createStub(PersistenceManagerInterface::class);
 
-        $mockPersistenceManager->method('getIdentifierByObject')->willReturnCallback(
+        $persistenceManagerStub->method('getIdentifierByObject')->willReturnCallback(
             static function (UserDomainClass $object): string {
                 // Note: In reality, getIdentifierByObject only returns strings (or null) as this what the used backend
                 // does. So the cast here makes the test more in line with the real-world types.
@@ -389,7 +389,7 @@ EOT;
             }
         );
         $container = $this->get('service_container');
-        $container->set(PersistenceManager::class, $mockPersistenceManager);
+        $container->set(PersistenceManager::class, $persistenceManagerStub);
 
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
@@ -415,10 +415,10 @@ EOT;
         ];
 
         // Mock persistence manager for our domain objects and set into container
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->method('getIdentifierByObject')->willReturn('fakeUid');
+        $persistenceManagerStub = self::createStub(PersistenceManagerInterface::class);
+        $persistenceManagerStub->method('getIdentifierByObject')->willReturn('fakeUid');
         $container = $this->get('service_container');
-        $container->set(PersistenceManager::class, $mockPersistenceManager);
+        $container->set(PersistenceManager::class, $persistenceManagerStub);
 
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
@@ -441,10 +441,10 @@ EOT;
         ];
 
         // Mock persistence manager for our domain objects and set into container
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->method('getIdentifierByObject')->willReturn('fakeUid');
+        $persistenceManagerStub = self::createStub(PersistenceManagerInterface::class);
+        $persistenceManagerStub->method('getIdentifierByObject')->willReturn('fakeUid');
         $container = $this->get('service_container');
-        $container->set(PersistenceManager::class, $mockPersistenceManager);
+        $container->set(PersistenceManager::class, $persistenceManagerStub);
 
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
@@ -467,10 +467,10 @@ EOT;
         ];
 
         // Mock persistence manager for our domain objects and set into container
-        $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->method('isNewObject')->willReturn(true);
+        $persistenceManagerStub = self::createStub(PersistenceManagerInterface::class);
+        $persistenceManagerStub->method('isNewObject')->willReturn(true);
         $container = $this->get('service_container');
-        $container->set(PersistenceManager::class, $mockPersistenceManager);
+        $container->set(PersistenceManager::class, $persistenceManagerStub);
 
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));

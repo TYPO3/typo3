@@ -172,7 +172,7 @@ final class PasswordResetTest extends FunctionalTestCase
             $this->get(SessionManager::class),
             $this->createRateLimiterFactory(),
         );
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $request = (new ServerRequest('https://localhost/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
@@ -216,7 +216,7 @@ final class PasswordResetTest extends FunctionalTestCase
             $this->get(SessionManager::class),
             $this->createRateLimiterFactory(),
         );
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $request = (new ServerRequest('https://localhost/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
@@ -300,7 +300,7 @@ final class PasswordResetTest extends FunctionalTestCase
             $this->get(SessionManager::class),
             $this->createRateLimiterFactory(),
         );
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $request = (new ServerRequest('https://localhost/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)

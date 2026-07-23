@@ -31,7 +31,7 @@ final class ModuleFactoryTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = new ModuleFactory(
-            $this->createMock(IconRegistry::class),
+            self::createStub(IconRegistry::class),
             new NoopEventDispatcher()
         );
     }

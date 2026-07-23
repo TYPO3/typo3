@@ -39,13 +39,13 @@ final class FormFrontendControllerTest extends FunctionalTestCase
     #[Test]
     public function overrideByFlexFormSettingsReturnsNoOverriddenConfigurationIfFlexformOverridesDisabled(): void
     {
-        $configurationServiceMock = $this->createMock(ConfigurationService::class);
+        $configurationServiceStub = self::createStub(ConfigurationService::class);
         $subjectMock = $this->getAccessibleMock(
             FormFrontendController::class,
             null,
             [
-                $configurationServiceMock,
-                $this->createMock(FormPersistenceManagerInterface::class),
+                $configurationServiceStub,
+                self::createStub(FormPersistenceManagerInterface::class),
                 $this->get(FlexFormTools::class),
             ],
         );
@@ -95,7 +95,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ]),
         ];
-        $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
+        $configurationServiceStub->method('getPrototypeConfiguration')->willReturn([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
                     'FormEngine' => [
@@ -160,13 +160,13 @@ final class FormFrontendControllerTest extends FunctionalTestCase
     #[Test]
     public function overrideByFlexFormSettingsReturnsOverriddenConfigurationIfFlexformOverridesEnabled(): void
     {
-        $configurationServiceMock = $this->createMock(ConfigurationService::class);
+        $configurationServiceStub = self::createStub(ConfigurationService::class);
         $subjectMock = $this->getAccessibleMock(
             FormFrontendController::class,
             null,
             [
-                $configurationServiceMock,
-                $this->createMock(FormPersistenceManagerInterface::class),
+                $configurationServiceStub,
+                self::createStub(FormPersistenceManagerInterface::class),
                 $this->get(FlexFormTools::class),
             ],
         );
@@ -216,7 +216,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ]),
         ];
-        $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
+        $configurationServiceStub->method('getPrototypeConfiguration')->willReturn([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
                     'FormEngine' => [
@@ -304,13 +304,13 @@ final class FormFrontendControllerTest extends FunctionalTestCase
     #[Test]
     public function overrideByFlexFormSettingsReturnsNotOverriddenConfigurationKeyIfFlexformOverridesAreNotRepresentedInFormEngineConfiguration(): void
     {
-        $configurationServiceMock = $this->createMock(ConfigurationService::class);
+        $configurationServiceStub = self::createStub(ConfigurationService::class);
         $mockController = $this->getAccessibleMock(
             FormFrontendController::class,
             null,
             [
-                $configurationServiceMock,
-                $this->createMock(FormPersistenceManagerInterface::class),
+                $configurationServiceStub,
+                self::createStub(FormPersistenceManagerInterface::class),
                 $this->get(FlexFormTools::class),
             ],
         );
@@ -361,7 +361,7 @@ final class FormFrontendControllerTest extends FunctionalTestCase
                 ],
             ]),
         ];
-        $configurationServiceMock->method('getPrototypeConfiguration')->with(self::anything())->willReturn([
+        $configurationServiceStub->method('getPrototypeConfiguration')->willReturn([
             'finishersDefinition' => [
                 'EmailToReceiver' => [
                     'FormEngine' => [

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Wizard;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use TYPO3\CMS\Backend\Wizard\WizardProviderInterface;
 use TYPO3\CMS\Backend\Wizard\WizardProviderRegistry;
@@ -28,19 +27,22 @@ final class WizardProviderRegistryTest extends UnitTestCase
 {
     private WizardProviderRegistry $subject;
 
-    private MockObject|WizardProviderInterface $wizardProviderMock;
+    /**
+     * @var \PHPUnit\Framework\MockObject\Stub&\TYPO3\CMS\Backend\Wizard\WizardProviderInterface
+     */
+    private \PHPUnit\Framework\MockObject\Stub $wizardProviderStub;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->wizardProviderMock = $this->createMock(WizardProviderInterface::class);
-        $this->subject = new WizardProviderRegistry(new ServiceLocator(['foo' => fn() => $this->wizardProviderMock]));
+        $this->wizardProviderStub = self::createStub(WizardProviderInterface::class);
+        $this->subject = new WizardProviderRegistry(new ServiceLocator(['foo' => fn() => $this->wizardProviderStub]));
     }
 
     #[Test]
     public function returnsRequestsWizardProvider(): void
     {
-        self::assertEquals($this->wizardProviderMock, $this->subject->getProvider('foo'));
+        self::assertEquals($this->wizardProviderStub, $this->subject->getProvider('foo'));
     }
 
     #[Test]

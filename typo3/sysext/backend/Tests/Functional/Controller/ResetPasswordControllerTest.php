@@ -57,10 +57,10 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $passwordResetMock = $this->createMock(PasswordReset::class);
-        $passwordResetMock->method('isEnabled')->willReturn(true);
-        $passwordResetMock->method('isValidResetTokenFromRequest')->with(self::anything())->willReturn(true);
-        $passwordResetMock->method('resetPassword')->with(self::anything(), self::anything())->willReturn(true);
+        $passwordResetStub = self::createStub(PasswordReset::class);
+        $passwordResetStub->method('isEnabled')->willReturn(true);
+        $passwordResetStub->method('isValidResetTokenFromRequest')->willReturn(true);
+        $passwordResetStub->method('resetPassword')->willReturn(true);
 
         $this->subject = new ResetPasswordController(
             $this->get(Context::class),
@@ -68,14 +68,14 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
             $this->get(Features::class),
             $this->get(UriBuilder::class),
             $this->get(PageRenderer::class),
-            $passwordResetMock,
+            $passwordResetStub,
             $this->get(Typo3Information::class),
             $this->get(AuthenticationStyleInformation::class),
             new ExtensionConfiguration(),
             $this->get(BackendViewFactory::class),
         );
 
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $this->request = (new ServerRequest('https://example.com/typo3/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
@@ -89,8 +89,8 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
 
     private function createSubjectWithDisabledPasswordReset(): ResetPasswordController
     {
-        $passwordResetMock = $this->createMock(PasswordReset::class);
-        $passwordResetMock->method('isEnabled')->willReturn(false);
+        $passwordResetStub = self::createStub(PasswordReset::class);
+        $passwordResetStub->method('isEnabled')->willReturn(false);
 
         return new ResetPasswordController(
             $this->get(Context::class),
@@ -98,7 +98,7 @@ final class ResetPasswordControllerTest extends FunctionalTestCase
             $this->get(Features::class),
             $this->get(UriBuilder::class),
             $this->get(PageRenderer::class),
-            $passwordResetMock,
+            $passwordResetStub,
             $this->get(Typo3Information::class),
             $this->get(AuthenticationStyleInformation::class),
             new ExtensionConfiguration(),

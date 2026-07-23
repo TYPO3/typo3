@@ -50,18 +50,18 @@ final class FormProtectionFactoryTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->runtimeCacheMock = new VariableFrontend('null', new TransientMemoryBackend());
-        $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->willReturn(false);
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
-        $deserializer = new DenyListDeserializer($cacheMock, new HashService(), new DeserializationService());
-        $registry = new Registry($connectionPoolMock, $deserializer);
+        $cacheStub = self::createStub(PhpFrontend::class);
+        $cacheStub->method('has')->willReturn(false);
+        $connectionPoolStub = self::createStub(ConnectionPool::class);
+        $deserializer = new DenyListDeserializer($cacheStub, new HashService(), new DeserializationService());
+        $registry = new Registry(self::createStub(ConnectionPool::class), $deserializer);
         $container = new Container();
         $container->set(Registry::class, $registry);
         $this->subject = new FormProtectionFactory(
             new FlashMessageService(),
             new LanguageServiceFactory(
                 new Locales(),
-                $this->createMock(LocalizationFactory::class),
+                self::createStub(LocalizationFactory::class),
                 new NullFrontend('null')
             ),
             $this->runtimeCacheMock,

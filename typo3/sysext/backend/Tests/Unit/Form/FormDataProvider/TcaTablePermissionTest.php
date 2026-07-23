@@ -213,7 +213,7 @@ final class TcaTablePermissionTest extends UnitTestCase
     private function getSchemaCollection(array $tca): SchemaCollection
     {
         $tcaSchemaFactory = new TcaSchemaBuilder(
-            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new RelationMapBuilder(self::createStub(FlexFormTools::class)),
             new FieldTypeFactory()
         );
         return $tcaSchemaFactory->buildFromStructure($tca);

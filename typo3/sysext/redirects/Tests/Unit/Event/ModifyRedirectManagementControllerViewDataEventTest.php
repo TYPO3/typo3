@@ -29,7 +29,7 @@ final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTest
     #[Test]
     public function gettersReturnsSetValues(): void
     {
-        $demand = $this->createMock(Demand::class);
+        $demand = self::createStub(Demand::class);
         $redirects = [
             ['dummy' => 'value1'],
         ];
@@ -46,7 +46,7 @@ final class ModifyRedirectManagementControllerViewDataEventTest extends UnitTest
             ['dummy' => 'value1'],
         ];
         $showHitCounter = true;
-        $view = $this->createMock(ViewInterface::class);
+        $view = self::createStub(ViewInterface::class);
         $event = new ModifyRedirectManagementControllerViewDataEvent(
             $demand,
             $redirects,

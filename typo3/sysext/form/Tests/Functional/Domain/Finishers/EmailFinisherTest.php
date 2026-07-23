@@ -44,11 +44,11 @@ final class EmailFinisherTest extends FunctionalTestCase
 
         // Define a TranslationService mock which skips all the translation but simply returns the $optionValue
         // without any further processing.
-        $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateFinisherOption')->willReturnCallback(static function () {
+        $translationServiceStub = self::createStub(TranslationService::class);
+        $translationServiceStub->method('translateFinisherOption')->willReturnCallback(static function () {
             return func_get_arg(3);
         });
-        $container->set(TranslationService::class, $translationServiceMock);
+        $container->set(TranslationService::class, $translationServiceStub);
 
         // Define the MailerInterface implementation to be able to test the correct subject in the final mail.
         // The method ->send() must be called exactly once and the subject of the passed FluidMail object must match
@@ -78,14 +78,14 @@ final class EmailFinisherTest extends FunctionalTestCase
             $this->get(TemplatedEmailFactory::class),
             $this->get(MailerInterface::class),
         );
-        $subject->injectTranslationService($translationServiceMock);
+        $subject->injectTranslationService($translationServiceStub);
         $subject->setOptions([
             'senderAddress' => 'sender@example.org',
             'templateName' => 'template',
             'recipients' => ['user@example.org' => 'John Doe'],
             'subject' => 'default subject',
         ]);
-        $subject->execute(new FinisherContext($this->createMock(FormRuntime::class), $this->createMock(Request::class)));
+        $subject->execute(new FinisherContext(self::createStub(FormRuntime::class), self::createStub(Request::class)));
 
         self::assertInstanceOf(BeforeEmailFinisherInitializedEvent::class, $beforeEmailFinisherInitializedEvent);
         self::assertEquals([

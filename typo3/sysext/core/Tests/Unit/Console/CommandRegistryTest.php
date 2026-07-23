@@ -28,23 +28,23 @@ final class CommandRegistryTest extends UnitTestCase
     #[Test]
     public function iteratesLazyCommandsOfActivePackages(): void
     {
-        $command1Mock = $this->createMock(Command::class);
-        $command2Mock = $this->createMock(Command::class);
+        $command1Stub = self::createStub(Command::class);
+        $command2Stub = self::createStub(Command::class);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('get')->willReturnMap([
-            ['command1', $command1Mock],
-            ['command2', $command2Mock],
+        $containerStub = self::createStub(ContainerInterface::class);
+        $containerStub->method('get')->willReturnMap([
+            ['command1', $command1Stub],
+            ['command2', $command2Stub],
         ]);
 
-        $commandRegistry = new CommandRegistry($containerMock);
+        $commandRegistry = new CommandRegistry($containerStub);
         $commandRegistry->addLazyCommand('test:command', 'command1');
         $commandRegistry->addLazyCommand('test:command2', 'command2');
 
         $commandNames = $commandRegistry->getNames();
 
         self::assertCount(2, $commandNames);
-        self::assertInstanceOf(get_class($command1Mock), $commandRegistry->get('test:command'));
-        self::assertInstanceOf(get_class($command2Mock), $commandRegistry->get('test:command2'));
+        self::assertInstanceOf(get_class($command1Stub), $commandRegistry->get('test:command'));
+        self::assertInstanceOf(get_class($command2Stub), $commandRegistry->get('test:command2'));
     }
 }

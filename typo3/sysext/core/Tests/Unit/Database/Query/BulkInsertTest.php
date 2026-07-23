@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BulkInsertTest extends UnitTestCase
 {
-    private Connection&MockObject $connection;
+    private Connection&Stub $connection;
     private string $testTable = 'testTable';
 
     /**
@@ -36,7 +36,7 @@ final class BulkInsertTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->connection = $this->createMock(Connection::class);
+        $this->connection = self::createStub(Connection::class);
 
         $this->connection
             ->method('quoteIdentifier')

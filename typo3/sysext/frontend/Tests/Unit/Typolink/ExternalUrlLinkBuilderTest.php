@@ -96,7 +96,7 @@ final class ExternalUrlLinkBuilderTest extends UnitTestCase
                 ];
             }
         });
-        $contentObject = $this->createMock(ContentObjectRenderer::class);
+        $contentObject = self::createStub(ContentObjectRenderer::class);
         $contentObject->method('getRequest')->willReturn($request);
         $contentObject->method('stdWrap')->willReturnArgument(0);
         return $request->withAttribute('currentContentObject', $contentObject);

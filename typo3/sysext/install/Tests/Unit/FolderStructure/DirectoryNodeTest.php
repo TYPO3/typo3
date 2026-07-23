@@ -44,7 +44,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366226639);
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $structure = [
             'name' => 'foo/bar',
         ];
@@ -54,7 +54,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     #[Test]
     public function constructorCallsCreateChildrenIfChildrenAreSet(): void
     {
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $node = $this->getMockBuilder(DirectoryNode::class)
             ->onlyMethods(['createChildren'])
             ->disableOriginalConstructor()
@@ -73,7 +73,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     #[Test]
     public function constructorSetsParent(): void
     {
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
         $structure = [
             'name' => 'foo',
@@ -85,7 +85,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     #[Test]
     public function constructorSetsTargetPermission(): void
     {
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
         $targetPermission = '2550';
         $structure = [
@@ -99,7 +99,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     #[Test]
     public function constructorSetsName(): void
     {
-        $parent = $this->createMock(RootNodeInterface::class);
+        $parent = self::createStub(RootNodeInterface::class);
         $name = StringUtility::getUniqueId('test_');
         $node = new DirectoryNode(['name' => $name], $parent);
         self::assertSame($name, $node->getName());
@@ -431,7 +431,7 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     public function getChildrenReturnsCreatedChild(): void
     {
         $node = $this->getAccessibleMock(DirectoryNode::class, null, [], '', false);
-        $parent = $this->createMock(NodeInterface::class);
+        $parent = self::createStub(NodeInterface::class);
         $childName = StringUtility::getUniqueId('test_');
         $structure = [
             'name' => 'foo',

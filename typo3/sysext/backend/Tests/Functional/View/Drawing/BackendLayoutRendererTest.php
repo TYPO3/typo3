@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\View\Drawing;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
@@ -66,10 +66,10 @@ final class BackendLayoutRendererTest extends FunctionalTestCase
         );
     }
 
-    private function getPageLayoutContext(int $pageId, array $configuration): PageLayoutContext&MockObject
+    private function getPageLayoutContext(int $pageId, array $configuration): PageLayoutContext&Stub
     {
         $backendLayout = new BackendLayout('layout1', 'Layout 1', $configuration);
-        return $this->createConfiguredMock(
+        return self::createConfiguredStub(
             PageLayoutContext::class,
             [
                 'getBackendLayout' => $backendLayout,

@@ -36,7 +36,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     #[Test]
     public function fileIsUnwrappedFromReferenceForProcessing(): void
     {
-        $subject = new ImageService($this->createMock(ResourceFactory::class), $this->createMock(LinkService::class));
+        $subject = new ImageService(self::createStub(ResourceFactory::class), self::createStub(LinkService::class));
         $reference = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
         $file = $this->createMock(File::class);
         $processedFile = $this->createMock(ProcessedFile::class);
@@ -61,7 +61,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     #[Test]
     public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected): void
     {
-        $subject = new ImageService($this->createMock(ResourceFactory::class), $this->createMock(LinkService::class));
+        $subject = new ImageService(self::createStub(ResourceFactory::class), self::createStub(LinkService::class));
         $file = $this->createMock(File::class);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
@@ -81,7 +81,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     #[Test]
     public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected): void
     {
-        $subject = new ImageService($this->createMock(ResourceFactory::class), $this->createMock(LinkService::class));
+        $subject = new ImageService(self::createStub(ResourceFactory::class), self::createStub(LinkService::class));
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'foo.bar', 'SCRIPT_NAME' => '/index.php']);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('normalizedParams', $normalizedParams);
 

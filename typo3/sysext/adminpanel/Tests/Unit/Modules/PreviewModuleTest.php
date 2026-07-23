@@ -68,10 +68,10 @@ final class PreviewModuleTest extends UnitTestCase
         $configurationService->method('getConfigurationOption')->withAnyParameters()->willReturnMap($valueMap);
 
         $previewModule = new PreviewModule(
-            $this->createMock(CacheManager::class),
-            $this->createMock(ViewFactoryInterface::class),
-            $this->createMock(LoggerInterface::class),
-            $this->createMock(GroupResolver::class),
+            self::createStub(CacheManager::class),
+            self::createStub(ViewFactoryInterface::class),
+            self::createStub(LoggerInterface::class),
+            self::createStub(GroupResolver::class),
         );
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich(new ServerRequest());
@@ -110,10 +110,10 @@ final class PreviewModuleTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
         $previewModule = new PreviewModule(
-            $this->createMock(CacheManager::class),
-            $this->createMock(ViewFactoryInterface::class),
-            $this->createMock(LoggerInterface::class),
-            $this->createMock(GroupResolver::class),
+            self::createStub(CacheManager::class),
+            self::createStub(ViewFactoryInterface::class),
+            self::createStub(LoggerInterface::class),
+            self::createStub(GroupResolver::class),
         );
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich($request);

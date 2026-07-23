@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -28,12 +28,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class FormDataCompilerTest extends UnitTestCase
 {
     private FormDataCompiler $subject;
-    private FormDataGroupInterface&MockObject $formDataGroupMock;
+    private FormDataGroupInterface&Stub $formDataGroupStub;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->formDataGroupMock = $this->createMock(FormDataGroupInterface::class);
+        $this->formDataGroupStub = self::createStub(FormDataGroupInterface::class);
         $this->subject = new FormDataCompiler();
     }
 
@@ -45,7 +45,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1440601540);
-        $this->subject->compile($input, $this->formDataGroupMock);
+        $this->subject->compile($input, $this->formDataGroupStub);
     }
 
     #[Test]
@@ -56,7 +56,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437653136);
-        $this->subject->compile($input, $this->formDataGroupMock);
+        $this->subject->compile($input, $this->formDataGroupStub);
     }
 
     #[Test]
@@ -67,7 +67,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437654409);
-        $this->subject->compile($input, $this->formDataGroupMock);
+        $this->subject->compile($input, $this->formDataGroupStub);
     }
 
     public static function compileAcceptsValidVanillaUidDataProvider(): array
@@ -88,8 +88,8 @@ final class FormDataCompilerTest extends UnitTestCase
             'vanillaUid' => $vanillaUid,
         ];
 
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnArgument(0);
-        $result = $this->subject->compile($input, $this->formDataGroupMock);
+        $this->formDataGroupStub->method('compile')->willReturnArgument(0);
+        $result = $this->subject->compile($input, $this->formDataGroupStub);
 
         self::assertSame($vanillaUid, $result['vanillaUid']);
     }
@@ -113,7 +113,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437654247);
-        $this->subject->compile($input, $this->formDataGroupMock);
+        $this->subject->compile($input, $this->formDataGroupStub);
     }
 
     #[Test]
@@ -125,7 +125,7 @@ final class FormDataCompilerTest extends UnitTestCase
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1437654332);
-        $this->subject->compile($input, $this->formDataGroupMock);
+        $this->subject->compile($input, $this->formDataGroupStub);
     }
 
     #[Test]
@@ -137,7 +137,7 @@ final class FormDataCompilerTest extends UnitTestCase
 
         $this->subject->compile(
             [],
-            $this->formDataGroupMock
+            $this->formDataGroupStub
         );
     }
 
@@ -150,8 +150,8 @@ final class FormDataCompilerTest extends UnitTestCase
             'vanillaUid' => 123,
             'command' => 'edit',
         ];
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnArgument(0);
-        $result = $this->subject->compile($input, $this->formDataGroupMock);
+        $this->formDataGroupStub->method('compile')->willReturnArgument(0);
+        $result = $this->subject->compile($input, $this->formDataGroupStub);
         self::assertEquals('pages', $result['tableName']);
         self::assertEquals(123, $result['vanillaUid']);
         self::assertEquals('edit', $result['command']);
@@ -160,7 +160,7 @@ final class FormDataCompilerTest extends UnitTestCase
     #[Test]
     public function compileReturnsResultArrayWithAdditionalDataFormFormDataGroup(): void
     {
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function (array $arguments): array {
+        $this->formDataGroupStub->method('compile')->willReturnCallback(static function (array $arguments): array {
             $result = $arguments;
             $result['databaseRow'] = 'newData';
             return $result;
@@ -169,7 +169,7 @@ final class FormDataCompilerTest extends UnitTestCase
             [
                 'request' => new ServerRequest(),
             ],
-            $this->formDataGroupMock
+            $this->formDataGroupStub
         );
         self::assertEquals('newData', $result['databaseRow']);
     }
@@ -177,21 +177,21 @@ final class FormDataCompilerTest extends UnitTestCase
     #[Test]
     public function compileThrowsExceptionIfFormDataGroupDoesNotReturnArray(): void
     {
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturn(null);
+        $this->formDataGroupStub->method('compile')->willReturn(null);
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1446664764);
         $this->subject->compile(
             [
                 'request' => new ServerRequest(),
             ],
-            $this->formDataGroupMock
+            $this->formDataGroupStub
         );
     }
 
     #[Test]
     public function compileThrowsExceptionIfRenderDataIsNotEmpty(): void
     {
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturn([
+        $this->formDataGroupStub->method('compile')->willReturn([
             'renderData' => [ 'foo' ],
         ]);
         $this->expectException(\RuntimeException::class);
@@ -200,14 +200,14 @@ final class FormDataCompilerTest extends UnitTestCase
             [
                 'request' => new ServerRequest(),
             ],
-            $this->formDataGroupMock
+            $this->formDataGroupStub
         );
     }
 
     #[Test]
     public function compileThrowsExceptionIfFormDataGroupRemovedKeysFromResultArray(): void
     {
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function (array $arguments): array {
+        $this->formDataGroupStub->method('compile')->willReturnCallback(static function (array $arguments): array {
             $result = $arguments;
             unset($result['tableName']);
             return $result;
@@ -218,14 +218,14 @@ final class FormDataCompilerTest extends UnitTestCase
             [
                 'request' => new ServerRequest(),
             ],
-            $this->formDataGroupMock
+            $this->formDataGroupStub
         );
     }
 
     #[Test]
     public function compileThrowsExceptionIfFormDataGroupAddedKeysToResultArray(): void
     {
-        $this->formDataGroupMock->method('compile')->with(self::anything())->willReturnCallback(static function (array $arguments): array {
+        $this->formDataGroupStub->method('compile')->willReturnCallback(static function (array $arguments): array {
             $result = $arguments;
             $result['newKey'] = 'newData';
             return $result;
@@ -236,7 +236,7 @@ final class FormDataCompilerTest extends UnitTestCase
             [
                 'request' => new ServerRequest(),
             ],
-            $this->formDataGroupMock
+            $this->formDataGroupStub
         );
     }
 }

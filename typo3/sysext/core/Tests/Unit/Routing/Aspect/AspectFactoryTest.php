@@ -32,8 +32,8 @@ final class AspectFactoryTest extends UnitTestCase
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects'] = [
-            'Persisted' => get_class($this->createMock(PersistedMappableAspectInterface::class)),
-            'Aspect' => get_class($this->createMock(AspectInterface::class)),
+            'Persisted' => get_class(self::createStub(PersistedMappableAspectInterface::class)),
+            'Aspect' => get_class(self::createStub(AspectInterface::class)),
         ];
     }
 
@@ -45,8 +45,8 @@ final class AspectFactoryTest extends UnitTestCase
         $this->expectExceptionCode(1538079481);
         $aspectFactory->createAspects(
             ['a' => []],
-            $this->createMock(SiteLanguage::class),
-            $this->createMock(Site::class)
+            self::createStub(SiteLanguage::class),
+            self::createStub(Site::class)
         );
     }
 
@@ -58,8 +58,8 @@ final class AspectFactoryTest extends UnitTestCase
         $this->expectExceptionCode(1538079482);
         $aspectFactory->createAspects(
             ['a' => ['type' => 'Undefined']],
-            $this->createMock(SiteLanguage::class),
-            $this->createMock(Site::class)
+            self::createStub(SiteLanguage::class),
+            self::createStub(Site::class)
         );
     }
 
@@ -133,8 +133,8 @@ final class AspectFactoryTest extends UnitTestCase
         $aspectFactory = new AspectFactory();
         $aspects = $aspectFactory->createAspects(
             $settings,
-            $this->createMock(SiteLanguage::class),
-            $this->createMock(Site::class)
+            self::createStub(SiteLanguage::class),
+            self::createStub(Site::class)
         );
         self::assertSame(array_keys($aspects), array_keys($expectation));
         array_walk($aspects, static function ($aspect, $key) use ($expectation) {

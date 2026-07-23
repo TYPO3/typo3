@@ -45,18 +45,18 @@ final class VimeoHelperTest extends UnitTestCase
     #[Test]
     public function transformUrlToFileReturnsExpectedResult(?string $url, ?string $videoId, bool $expectsMock): void
     {
-        $mockedFolder = $this->createMock(Folder::class);
+        $folderStub = self::createStub(Folder::class);
         $expectedResult = null;
         if ($expectsMock) {
-            $expectedResult = $this->createMock(File::class);
+            $expectedResult = self::createStub(File::class);
         }
 
         $subject = $this->getAccessibleMock(VimeoHelper::class, ['transformMediaIdToFile'], ['video/vimeo']);
         $subject->method('transformMediaIdToFile')
-            ->with($videoId, $mockedFolder, 'video/vimeo')
+            ->with($videoId, $folderStub, 'video/vimeo')
             ->willReturn($expectedResult);
 
-        $result = $subject->transformUrlToFile($url . $videoId, $mockedFolder);
+        $result = $subject->transformUrlToFile($url . $videoId, $folderStub);
 
         self::assertSame($expectedResult, $result);
     }

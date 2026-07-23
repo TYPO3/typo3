@@ -3143,7 +3143,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     {
         $tcaSchemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
-                new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+                new RelationMapBuilder(self::createStub(FlexFormTools::class)),
                 new FieldTypeFactory(),
             ),
             'null',

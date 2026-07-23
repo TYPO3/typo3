@@ -55,8 +55,8 @@ final class TcaInputPlaceholdersTest extends FunctionalTestCase
     #[Test]
     public function addDataReturnsUnmodifiedSimpleStringPlaceholder(): void
     {
-        $languageService = $this->createMock(LanguageService::class);
-        $languageService->method('sL')->withAnyParameters()->willReturnArgument(0);
+        $languageService = self::createStub(LanguageService::class);
+        $languageService->method('sL')->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageService;
         $input = [
             'tableName' => 'aTable',

@@ -35,7 +35,7 @@ final class AfterVideoPreviewFetchedEventTest extends UnitTestCase
 
         $oldPreviewImageFilename = '/var/www/previewOld.png';
         $newPreviewImageFilename = '/var/www/previewNew.png';
-        $file = new File(['name' => 'MyVideo'], $this->createMock(ResourceStorage::class), []);
+        $file = new File(['name' => 'MyVideo'], self::createStub(ResourceStorage::class), []);
 
         $event = new AfterVideoPreviewFetchedEvent(
             $file,

@@ -119,7 +119,7 @@ final class TcaTextTest extends UnitTestCase
 
         // No processing should be performed
         $expected = $input;
-        self::assertSame($expected, (new TcaText($this->createMock(Richtext::class), $this->createMock(RteHtmlParser::class)))->addData($input));
+        self::assertSame($expected, (new TcaText(self::createStub(Richtext::class), self::createStub(RteHtmlParser::class)))->addData($input));
     }
 
     #[Test]
@@ -161,6 +161,6 @@ final class TcaTextTest extends UnitTestCase
 
         // No processing should be performed
         $expected = $input;
-        self::assertSame($expected, (new TcaText($richtextConfigurationMock, $this->createMock(RteHtmlParser::class)))->addData($input));
+        self::assertSame($expected, (new TcaText($richtextConfigurationMock, self::createStub(RteHtmlParser::class)))->addData($input));
     }
 }

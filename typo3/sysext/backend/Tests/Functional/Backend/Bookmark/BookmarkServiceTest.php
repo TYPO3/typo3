@@ -41,7 +41,7 @@ final class BookmarkServiceTest extends FunctionalTestCase
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')
             ->willReturn('/');
         $request = (new ServerRequest('https://localhost/typo3/'))

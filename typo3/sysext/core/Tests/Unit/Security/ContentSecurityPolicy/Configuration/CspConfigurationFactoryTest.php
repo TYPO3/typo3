@@ -278,10 +278,10 @@ final class CspConfigurationFactoryTest extends UnitTestCase
     private function createFeaturesMock(?array $features = null): Features
     {
         $features ??= ['security.frontend.enforceContentSecurityPolicy' => true];
-        $featuresMock = $this->createMock(Features::class);
-        $featuresMock->method('isFeatureEnabled')->willReturnCallback(
+        $featuresStub = self::createStub(Features::class);
+        $featuresStub->method('isFeatureEnabled')->willReturnCallback(
             static fn(string $featureName) => !empty($features[$featureName])
         );
-        return $featuresMock;
+        return $featuresStub;
     }
 }

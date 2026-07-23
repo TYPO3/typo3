@@ -42,7 +42,7 @@ final class TableBuilderTest extends UnitTestCase
     {
         parent::setUp();
         $sqlFile = file_get_contents(__DIR__ . '/../Fixtures/tablebuilder.sql');
-        $sqlReader = new SqlReader(new NoopEventDispatcher(), $this->createMock(PackageManager::class));
+        $sqlReader = new SqlReader(new NoopEventDispatcher(), self::createStub(PackageManager::class));
         $statements = $sqlReader->getCreateTableStatementArray($sqlFile);
         $parser = new Parser(new Lexer());
         $this->table = $parser->parse($statements[0])[0];

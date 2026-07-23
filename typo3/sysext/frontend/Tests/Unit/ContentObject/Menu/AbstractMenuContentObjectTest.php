@@ -48,9 +48,8 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     private function prepareSectionIndexTest(): void
     {
         $connectionMock = $this->createMock(Connection::class);
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $connectionMock->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connectionMock, $containerMock));
-        $connectionMock->method('quoteIdentifier')->willReturnArgument(0)->withAnyParameters();
+        $connectionMock->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connectionMock, self::createStub(ContainerInterface::class)));
+        $connectionMock->method('quoteIdentifier')->willReturnArgument(0);
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->with('tt_content')->willReturn($connectionMock);
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolMock);
@@ -94,9 +93,9 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
         $context = new Context();
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
         GeneralUtility::setSingletonInstance(Context::class, $context);
-        $tcaFactoryMocked = $this->createMock(TcaSchemaFactory::class);
-        $pageTypeLinkResolverMocked = $this->createMock(PageTypeLinkResolver::class);
-        $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context, $tcaFactoryMocked, $pageTypeLinkResolverMocked])->onlyMethods(['getPage', 'getLanguageOverlay'])->getMock();
+        $tcaFactoryStubed = self::createStub(TcaSchemaFactory::class);
+        $pageTypeLinkResolverStubed = self::createStub(PageTypeLinkResolver::class);
+        $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context, $tcaFactoryStubed, $pageTypeLinkResolverStubed])->onlyMethods(['getPage', 'getLanguageOverlay'])->getMock();
         $pageRepository->expects($this->once())->method('getPage')->willReturn(['sys_language_uid' => 1]);
         $pageRepository->expects($this->once())->method('getLanguageOverlay')->willReturn(['uid' => 0, 'header' => 'OVERLAID']);
         $subject->sys_page = $pageRepository;

@@ -48,16 +48,16 @@ final class RouteDispatcherTest extends UnitTestCase
     #[Test]
     public function dispatchThrowsExceptionIfTargetIsNotCallable(): void
     {
-        $formProtectionMock = $this->createMock(AbstractFormProtection::class);
-        $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
-        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $accessFactoryMock = $this->createMock(AccessFactory::class);
-        $accessStorageMock = $this->createMock(AccessStorage::class);
+        $formProtectionStub = self::createStub(AbstractFormProtection::class);
+        $formProtectionStub->method('validateToken')->willReturn(true);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionStub);
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $accessFactoryStub = self::createStub(AccessFactory::class);
+        $accessStorageStub = self::createStub(AccessStorage::class);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with(self::anything())->willReturn(false);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $containerStub->method('has')->willReturn(false);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1425381442);
@@ -67,12 +67,12 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
-            $eventDispatcherMock,
-            $accessFactoryMock,
-            $accessStorageMock,
+            $eventDispatcherStub,
+            $accessFactoryStub,
+            $accessStorageStub,
             new Features(),
             new ReferrerEnforcer(),
-            $containerMock
+            $containerStub
         );
         $subject->dispatch($request);
     }
@@ -80,16 +80,16 @@ final class RouteDispatcherTest extends UnitTestCase
     #[Test]
     public function dispatchCallsTargetIfTargetIsArray(): void
     {
-        $formProtectionMock = $this->createMock(AbstractFormProtection::class);
-        $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
-        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $accessFactoryMock = $this->createMock(AccessFactory::class);
-        $accessStorageMock = $this->createMock(AccessStorage::class);
+        $formProtectionStub = self::createStub(AbstractFormProtection::class);
+        $formProtectionStub->method('validateToken')->willReturn(true);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionStub);
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $accessFactoryStub = self::createStub(AccessFactory::class);
+        $accessStorageStub = self::createStub(AccessStorage::class);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with(self::anything())->willReturn(false);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $containerStub->method('has')->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756142);
@@ -103,12 +103,12 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
-            $eventDispatcherMock,
-            $accessFactoryMock,
-            $accessStorageMock,
+            $eventDispatcherStub,
+            $accessFactoryStub,
+            $accessStorageStub,
             new Features(),
             new ReferrerEnforcer(),
-            $containerMock
+            $containerStub
         );
         $subject->dispatch($request);
     }
@@ -116,16 +116,16 @@ final class RouteDispatcherTest extends UnitTestCase
     #[Test]
     public function dispatchCallsTargetIfTargetIsClosure(): void
     {
-        $formProtectionMock = $this->createMock(AbstractFormProtection::class);
-        $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
-        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $accessFactoryMock = $this->createMock(AccessFactory::class);
-        $accessStorageMock = $this->createMock(AccessStorage::class);
+        $formProtectionStub = self::createStub(AbstractFormProtection::class);
+        $formProtectionStub->method('validateToken')->willReturn(true);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionStub);
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $accessFactoryStub = self::createStub(AccessFactory::class);
+        $accessStorageStub = self::createStub(AccessStorage::class);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with(self::anything())->willReturn(false);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $containerStub->method('has')->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756466);
@@ -138,12 +138,12 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
-            $eventDispatcherMock,
-            $accessFactoryMock,
-            $accessStorageMock,
+            $eventDispatcherStub,
+            $accessFactoryStub,
+            $accessStorageStub,
             new Features(),
             new ReferrerEnforcer(),
-            $containerMock
+            $containerStub
         );
         $subject->dispatch($request);
     }
@@ -151,16 +151,16 @@ final class RouteDispatcherTest extends UnitTestCase
     #[Test]
     public function dispatchCallsTargetIfTargetIsClassImplementingInvoke(): void
     {
-        $formProtectionMock = $this->createMock(AbstractFormProtection::class);
-        $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
-        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $accessFactoryMock = $this->createMock(AccessFactory::class);
-        $accessStorageMock = $this->createMock(AccessStorage::class);
+        $formProtectionStub = self::createStub(AbstractFormProtection::class);
+        $formProtectionStub->method('validateToken')->willReturn(true);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionStub);
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $accessFactoryStub = self::createStub(AccessFactory::class);
+        $accessStorageStub = self::createStub(AccessStorage::class);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with(self::anything())->willReturn(false);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $containerStub->method('has')->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756623);
@@ -171,12 +171,12 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
-            $eventDispatcherMock,
-            $accessFactoryMock,
-            $accessStorageMock,
+            $eventDispatcherStub,
+            $accessFactoryStub,
+            $accessStorageStub,
             new Features(),
             new ReferrerEnforcer(),
-            $containerMock
+            $containerStub
         );
         $subject->dispatch($request);
     }
@@ -184,13 +184,13 @@ final class RouteDispatcherTest extends UnitTestCase
     #[Test]
     public function dispatchCallsTargetIfTargetIsInContainer(): void
     {
-        $formProtectionMock = $this->createMock(AbstractFormProtection::class);
-        $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
-        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $accessFactoryMock = $this->createMock(AccessFactory::class);
-        $accessStorageMock = $this->createMock(AccessStorage::class);
+        $formProtectionStub = self::createStub(AbstractFormProtection::class);
+        $formProtectionStub->method('validateToken')->willReturn(true);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionStub);
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $accessFactoryStub = self::createStub(AccessFactory::class);
+        $accessStorageStub = self::createStub(AccessStorage::class);
 
         $target = 'routedispatcher.classinvokefixture';
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
@@ -205,9 +205,9 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
-            $eventDispatcherMock,
-            $accessFactoryMock,
-            $accessStorageMock,
+            $eventDispatcherStub,
+            $accessFactoryStub,
+            $accessStorageStub,
             new Features(),
             new ReferrerEnforcer(),
             $containerMock
@@ -218,16 +218,16 @@ final class RouteDispatcherTest extends UnitTestCase
     #[Test]
     public function dispatchThrowsExceptionIfTargetWithClassNameOnlyDoesNotImplementInvoke(): void
     {
-        $formProtectionMock = $this->createMock(AbstractFormProtection::class);
-        $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
-        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $accessFactoryMock = $this->createMock(AccessFactory::class);
-        $accessStorageMock = $this->createMock(AccessStorage::class);
+        $formProtectionStub = self::createStub(AbstractFormProtection::class);
+        $formProtectionStub->method('validateToken')->willReturn(true);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionStub);
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $accessFactoryStub = self::createStub(AccessFactory::class);
+        $accessStorageStub = self::createStub(AccessStorage::class);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with(self::anything())->willReturn(false);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $containerStub->method('has')->willReturn(false);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1442431631);
@@ -238,12 +238,12 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
-            $eventDispatcherMock,
-            $accessFactoryMock,
-            $accessStorageMock,
+            $eventDispatcherStub,
+            $accessFactoryStub,
+            $accessStorageStub,
             new Features(),
             new ReferrerEnforcer(),
-            $containerMock
+            $containerStub
         );
         $subject->dispatch($request);
     }
@@ -251,16 +251,16 @@ final class RouteDispatcherTest extends UnitTestCase
     #[Test]
     public function dispatchCallsClassMethodCombinationGivenAsString(): void
     {
-        $formProtectionMock = $this->createMock(AbstractFormProtection::class);
-        $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
-        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $accessFactoryMock = $this->createMock(AccessFactory::class);
-        $accessStorageMock = $this->createMock(AccessStorage::class);
+        $formProtectionStub = self::createStub(AbstractFormProtection::class);
+        $formProtectionStub->method('validateToken')->willReturn(true);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionStub);
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $accessFactoryStub = self::createStub(AccessFactory::class);
+        $accessStorageStub = self::createStub(AccessStorage::class);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with(self::anything())->willReturn(false);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $containerStub->method('has')->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756142);
@@ -271,12 +271,12 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
-            $eventDispatcherMock,
-            $accessFactoryMock,
-            $accessStorageMock,
+            $eventDispatcherStub,
+            $accessFactoryStub,
+            $accessStorageStub,
             new Features(),
             new ReferrerEnforcer(),
-            $containerMock
+            $containerStub
         );
         $subject->dispatch($request);
     }
@@ -284,16 +284,16 @@ final class RouteDispatcherTest extends UnitTestCase
     #[Test]
     public function dispatchCallsStaticClassMethodCombinationGivenAsString(): void
     {
-        $formProtectionMock = $this->createMock(AbstractFormProtection::class);
-        $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
-        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
-        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
-        $accessFactoryMock = $this->createMock(AccessFactory::class);
-        $accessStorageMock = $this->createMock(AccessStorage::class);
+        $formProtectionStub = self::createStub(AbstractFormProtection::class);
+        $formProtectionStub->method('validateToken')->willReturn(true);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
+        $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionStub);
+        $eventDispatcherStub = self::createStub(EventDispatcherInterface::class);
+        $accessFactoryStub = self::createStub(AccessFactory::class);
+        $accessStorageStub = self::createStub(AccessStorage::class);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with(self::anything())->willReturn(false);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $containerStub->method('has')->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520757000);
@@ -304,12 +304,12 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
-            $eventDispatcherMock,
-            $accessFactoryMock,
-            $accessStorageMock,
+            $eventDispatcherStub,
+            $accessFactoryStub,
+            $accessStorageStub,
             new Features(),
             new ReferrerEnforcer(),
-            $containerMock
+            $containerStub
         );
         $subject->dispatch($request);
     }

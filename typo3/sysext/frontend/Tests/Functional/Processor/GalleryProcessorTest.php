@@ -220,7 +220,7 @@ final class GalleryProcessorTest extends FunctionalTestCase
     {
         $files = [];
         for ($i = 0; $i < $numberOfFiles; $i++) {
-            $files[] = $this->createMock(FileReference::class);
+            $files[] = self::createStub(FileReference::class);
         }
         $cObj = $this->get(ContentObjectRenderer::class);
         $cObj->data = $data;
@@ -401,7 +401,7 @@ final class GalleryProcessorTest extends FunctionalTestCase
     {
         $files = [];
         foreach ($testFiles as $fileConfig) {
-            $fileReference = $this->createMock(FileReference::class);
+            $fileReference = self::createStub(FileReference::class);
             $fileReference
                 ->method('getProperty')
                 ->willReturnMap([

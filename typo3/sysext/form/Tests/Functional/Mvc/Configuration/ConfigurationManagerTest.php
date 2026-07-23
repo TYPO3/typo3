@@ -68,13 +68,13 @@ final class ConfigurationManagerTest extends FunctionalTestCase
         ];
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
-        $cacheMock = $this->createMock(FrontendInterface::class);
-        $cacheMock->method('has')->willReturn(true);
-        $cacheMock->method('get')->willReturn($yamlSettings);
+        $cacheStub = self::createStub(FrontendInterface::class);
+        $cacheStub->method('has')->willReturn(true);
+        $cacheStub->method('get')->willReturn($yamlSettings);
         $configurationManagerMock = new ConfigurationManager(
-            $this->createMock(YamlSource::class),
-            $cacheMock,
-            $this->createMock(TypoScriptService::class),
+            self::createStub(YamlSource::class),
+            $cacheStub,
+            self::createStub(TypoScriptService::class),
             new FormYamlCollector(),
         );
         $result = $configurationManagerMock->getYamlConfiguration([], true);

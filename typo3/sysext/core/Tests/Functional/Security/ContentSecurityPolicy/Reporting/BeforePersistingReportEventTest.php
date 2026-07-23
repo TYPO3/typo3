@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Security\ContentSecurityPolicy\Reporting;
 
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\Stub;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -146,7 +147,7 @@ final class BeforePersistingReportEventTest extends FunctionalTestCase
 
     private function executeMiddlewareStack(): ResponseInterface
     {
-        $cspConfigurationFactory = new CspConfigurationFactory($this->createFeaturesMock());
+        $cspConfigurationFactory = new CspConfigurationFactory($this->createFeaturesStub());
         $reporterMiddleware = new class (
             $this->get(EventDispatcher::class),
             $this->get(PolicyProvider::class),
@@ -187,10 +188,10 @@ final class BeforePersistingReportEventTest extends FunctionalTestCase
         return $dispatcher->handle($request);
     }
 
-    private function createFeaturesMock(): Features
+    private function createFeaturesStub(): Features&Stub
     {
-        $featuresMock = $this->createMock(Features::class);
-        $featuresMock->method('isFeatureEnabled')->willReturn(true);
-        return $featuresMock;
+        $featuresStub = self::createStub(Features::class);
+        $featuresStub->method('isFeatureEnabled')->willReturn(true);
+        return $featuresStub;
     }
 }

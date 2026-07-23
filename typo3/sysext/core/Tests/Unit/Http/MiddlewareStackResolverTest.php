@@ -36,12 +36,12 @@ final class MiddlewareStackResolverTest extends UnitTestCase
         ));
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
-        $dependencyOrderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        $dependencyOrderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
+        $dependencyOrderingServiceStub = self::createStub(DependencyOrderingService::class);
+        $dependencyOrderingServiceStub->method('orderByDependencies')->willReturnArgument(0);
 
         $subject = new MiddlewareStackResolver(
             $containerMock,
-            $dependencyOrderingServiceMock,
+            $dependencyOrderingServiceStub,
             new NullFrontend('test'),
             ''
         );
@@ -58,12 +58,12 @@ final class MiddlewareStackResolverTest extends UnitTestCase
         $middlewares = new \ArrayObject();
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
-        $dependencyOrderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        $dependencyOrderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
+        $dependencyOrderingServiceStub = self::createStub(DependencyOrderingService::class);
+        $dependencyOrderingServiceStub->method('orderByDependencies')->willReturnArgument(0);
 
         $subject = new MiddlewareStackResolver(
             $containerMock,
-            $dependencyOrderingServiceMock,
+            $dependencyOrderingServiceStub,
             new NullFrontend('test'),
             'PackageDependentCacheIdentifier'
         );
@@ -82,12 +82,12 @@ final class MiddlewareStackResolverTest extends UnitTestCase
         ));
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
-        $dependencyOrderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        $dependencyOrderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
+        $dependencyOrderingServiceStub = self::createStub(DependencyOrderingService::class);
+        $dependencyOrderingServiceStub->method('orderByDependencies')->willReturnArgument(0);
 
         $subject = new MiddlewareStackResolver(
             $containerMock,
-            $dependencyOrderingServiceMock,
+            $dependencyOrderingServiceStub,
             new NullFrontend('test'),
             'PackageDependentCacheIdentifier'
         );
@@ -108,12 +108,12 @@ final class MiddlewareStackResolverTest extends UnitTestCase
         ));
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->method('get')->with('middlewares')->willReturn($middlewares);
-        $dependencyOrderingServiceMock = $this->createMock(DependencyOrderingService::class);
-        $dependencyOrderingServiceMock->method('orderByDependencies')->with(self::anything())->willReturnArgument(0);
+        $dependencyOrderingServiceStub = self::createStub(DependencyOrderingService::class);
+        $dependencyOrderingServiceStub->method('orderByDependencies')->willReturnArgument(0);
 
         $subject = new MiddlewareStackResolver(
             $containerMock,
-            $dependencyOrderingServiceMock,
+            $dependencyOrderingServiceStub,
             new NullFrontend('test'),
             'PackageDependentCacheIdentifier'
         );

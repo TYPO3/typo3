@@ -86,12 +86,12 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
 
-        $query = $this->createMock(QueryInterface::class);
-        $query->method('getSource')->willReturn($this->createMock(SourceInterface::class));
+        $query = self::createStub(QueryInterface::class);
+        $query->method('getSource')->willReturn(self::createStub(SourceInterface::class));
         $query->method('getOrderings')->willReturn([]);
         $query->method('getStatement')->willReturn(null);
         // Test part: getConstraint returns not implemented object
-        $query->method('getConstraint')->willReturn($this->createMock(ConstraintInterface::class));
+        $query->method('getConstraint')->willReturn(self::createStub(ConstraintInterface::class));
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1476199898);

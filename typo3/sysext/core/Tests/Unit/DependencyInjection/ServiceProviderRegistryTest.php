@@ -40,7 +40,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
     private function mockPackage(string $packageKey, string $serviceProvider): Package
     {
         $this->packageManagerMock->method('isPackageActive')->with($packageKey)->willReturn(true);
-        $package = $this->createMock(Package::class);
+        $package = self::createStub(Package::class);
         $package->method('getPackageKey')->willReturn($packageKey);
         $package->method('getServiceProvider')->willReturn($serviceProvider);
         $this->packageManagerMock->method('getPackage')->with($packageKey)->willReturn($package);
@@ -109,8 +109,8 @@ final class ServiceProviderRegistryTest extends UnitTestCase
     {
         $this->mockPackage('core', TestRegistryServiceProvider::class);
         $registry = new ServiceProviderRegistry($this->packageManagerMock);
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $subject = $registry->createService('core', 'param', $containerMock);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $subject = $registry->createService('core', 'param', $containerStub);
         self::assertEquals(42, $subject);
     }
 
@@ -119,8 +119,8 @@ final class ServiceProviderRegistryTest extends UnitTestCase
     {
         $this->mockPackage('core', TestRegistryServiceProvider::class);
         $subject = new ServiceProviderRegistry($this->packageManagerMock);
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $service = $subject->extendService('core', 'serviceB', $containerMock);
+        $containerStub = self::createStub(ContainerInterface::class);
+        $service = $subject->extendService('core', 'serviceB', $containerStub);
         self::assertInstanceOf(\stdClass::class, $service);
     }
 
@@ -132,11 +132,11 @@ final class ServiceProviderRegistryTest extends UnitTestCase
             'backend' => TestRegistryServiceProvider::class,
         ];
 
-        $packageCore = $this->createMock(Package::class);
+        $packageCore = self::createStub(Package::class);
         $packageCore->method('getPackageKey')->willReturn('core');
         $packageCore->method('getServiceProvider')->willReturn(TestRegistryServiceProvider::class);
 
-        $packageBackend = $this->createMock(Package::class);
+        $packageBackend = self::createStub(Package::class);
         $packageBackend->method('getPackageKey')->willReturn('backend');
         $packageBackend->method('getServiceProvider')->willReturn(TestRegistryServiceProvider::class);
 

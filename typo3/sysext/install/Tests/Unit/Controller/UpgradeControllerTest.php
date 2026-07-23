@@ -61,10 +61,10 @@ final class UpgradeControllerTest extends UnitTestCase
             'readFiles' => [],
             'notAffectedFiles' => [],
         ]);
-        $viewMock = $this->getMockBuilder(ViewInterface::class)->getMock();
-        $viewMock->expects($this->any())->method('assignMultiple')->willReturn($viewMock);
-        $viewMock->expects($this->any())->method('render')->willReturn('');
-        $subject->method('initializeView')->willReturn($viewMock);
+        $viewStub = self::createStub(ViewInterface::class);
+        $viewStub->method('assignMultiple')->willReturn($viewStub);
+        $viewStub->method('render')->willReturn('');
+        $subject->method('initializeView')->willReturn($viewStub);
         $subject->upgradeDocsGetChangelogForVersionAction($request);
     }
     public static function versionDataProvider(): array
@@ -100,10 +100,10 @@ final class UpgradeControllerTest extends UnitTestCase
             'readFiles' => [],
             'notAffectedFiles' => [],
         ]);
-        $viewMock = $this->getMockBuilder(ViewInterface::class)->getMock();
-        $viewMock->expects($this->any())->method('assignMultiple')->willReturn($viewMock);
-        $viewMock->expects($this->any())->method('render')->willReturn('');
-        $subject->method('initializeView')->willReturn($viewMock);
+        $viewStub = self::createStub(ViewInterface::class);
+        $viewStub->method('assignMultiple')->willReturn($viewStub);
+        $viewStub->method('render')->willReturn('');
+        $subject->method('initializeView')->willReturn($viewStub);
         $subject->upgradeDocsGetChangelogForVersionAction($request);
     }
 }

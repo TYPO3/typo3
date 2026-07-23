@@ -170,7 +170,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528588037);
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(
@@ -188,7 +188,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528538222);
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(
@@ -207,7 +207,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528538252);
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(
@@ -228,7 +228,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528538252);
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(
@@ -248,7 +248,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     #[DoesNotPerformAssertions]
     public function validateAllPropertyValuesFromCreatableFormElementOkWithValidHmac(): void
     {
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(
@@ -270,7 +270,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528591585);
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(
@@ -288,7 +288,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528538222);
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(
@@ -307,7 +307,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528538252);
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(
@@ -328,7 +328,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528591586);
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(
@@ -349,7 +349,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     #[DoesNotPerformAssertions]
     public function validateAllPropertyValuesFromCreatablePropertyCollectionElementOkWithValidHmac(): void
     {
-        $configurationService = $this->createMock(ConfigurationService::class);
+        $configurationService = self::createStub(ConfigurationService::class);
         $this->getContainer()->set(ConfigurationService::class, $configurationService); // @phpstan-ignore-line
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
         $subjectMock->_call(

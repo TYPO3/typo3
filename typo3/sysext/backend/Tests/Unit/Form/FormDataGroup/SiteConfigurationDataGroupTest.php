@@ -34,7 +34,7 @@ final class SiteConfigurationDataGroupTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['siteConfiguration'] = [];
         $input = ['foo'];
         $subject = new SiteConfigurationDataGroup(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         self::assertEquals($input, $subject->compile($input));
     }
@@ -55,7 +55,7 @@ final class SiteConfigurationDataGroupTest extends UnitTestCase
             }
         );
         $subject = new SiteConfigurationDataGroup(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         self::assertEquals(['foo'], $subject->compile([]));
     }
@@ -69,7 +69,7 @@ final class SiteConfigurationDataGroupTest extends UnitTestCase
             \stdClass::class => [],
         ];
         $subject = new SiteConfigurationDataGroup(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         $subject->compile([]);
     }

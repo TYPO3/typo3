@@ -30,10 +30,10 @@ final class ExtensionServiceTest extends FunctionalTestCase
     #[Test]
     public function getPluginNameByActionDetectsPluginNameFromGlobalExtensionConfigurationArray(): void
     {
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock->method('getConfiguration')->willReturn([]);
+        $configurationManagerInterfaceStub = self::createStub(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceStub->method('getConfiguration')->willReturn([]);
         $subject = new ExtensionService();
-        $subject->injectConfigurationManager($configurationManagerInterfaceMock);
+        $subject->injectConfigurationManager($configurationManagerInterfaceStub);
         self::assertSame('Blogs', $subject->getPluginNameByAction('BlogExample', 'Blog', 'testForm'));
     }
 
@@ -41,20 +41,20 @@ final class ExtensionServiceTest extends FunctionalTestCase
     public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/tt_content_with_single_plugin.csv');
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 'auto']]);
+        $configurationManagerInterfaceStub = self::createStub(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceStub->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 'auto']]);
         $subject = new ExtensionService();
-        $subject->injectConfigurationManager($configurationManagerInterfaceMock);
+        $subject->injectConfigurationManager($configurationManagerInterfaceStub);
         self::assertEquals(321, $subject->getTargetPidByPlugin('ExtensionName', 'SomePlugin'));
     }
 
     #[Test]
     public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined(): void
     {
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 'auto']]);
+        $configurationManagerInterfaceStub = self::createStub(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceStub->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 'auto']]);
         $subject = new ExtensionService();
-        $subject->injectConfigurationManager($configurationManagerInterfaceMock);
+        $subject->injectConfigurationManager($configurationManagerInterfaceStub);
         self::assertNull($subject->getTargetPidByPlugin('ExtensionName', 'SomePlugin'));
     }
 
@@ -64,10 +64,10 @@ final class ExtensionServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/tt_content_with_two_plugins.csv');
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1280773643);
-        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
-        $configurationManagerInterfaceMock->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 'auto']]);
+        $configurationManagerInterfaceStub = self::createStub(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceStub->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 'auto']]);
         $subject = new ExtensionService();
-        $subject->injectConfigurationManager($configurationManagerInterfaceMock);
+        $subject->injectConfigurationManager($configurationManagerInterfaceStub);
         $subject->getTargetPidByPlugin('ExtensionName', 'SomePlugin');
     }
 }

@@ -42,9 +42,9 @@ final class DownloadControllerTest extends UnitTestCase
         $extensionManagementServiceMock->method('installExtension')->willThrowException($dummyException);
 
         $subject = new DownloadController(
-            $this->createMock(ExtensionRepository::class),
+            self::createStub(ExtensionRepository::class),
             $extensionManagementServiceMock,
-            $this->createMock(ExtensionConfiguration::class)
+            self::createStub(ExtensionConfiguration::class)
         );
 
         $reflectionClass = new \ReflectionClass($subject);

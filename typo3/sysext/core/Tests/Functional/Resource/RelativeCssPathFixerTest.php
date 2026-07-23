@@ -86,7 +86,7 @@ final class RelativeCssPathFixerTest extends FunctionalTestCase
     public function fixRelativeUrlPaths(string $css, string $newDir, string $expected): void
     {
         $subject = new RelativeCssPathFixer($this->get(SystemResourceFactory::class), $this->get(SystemResourcePublisherInterface::class));
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getSitePath')->willReturn('/');
         $request = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)

@@ -105,7 +105,7 @@ final class ImportMapTest extends FunctionalTestCase
         self::assertStringStartsWith('/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Contrib/lit/index.js?bust=', $url);
         self::assertStringContainsString('"lit/":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Contrib/lit/"', $output);
         self::assertStringContainsString('"@typo3/core/Module1.js":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Module1.js?bust=', $output);
-        ExtensionManagementUtility::setPackageManager($this->createMock(PackageManager::class));
+        ExtensionManagementUtility::setPackageManager(self::createStub(PackageManager::class));
     }
 
     #[Test]
@@ -132,7 +132,7 @@ final class ImportMapTest extends FunctionalTestCase
 
         self::assertStringContainsString('"@typo3/core/":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/', $output);
         self::assertStringContainsString('"@typo3/core/Module1.js":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Module1.js?bust=', $output);
-        ExtensionManagementUtility::setPackageManager($this->createMock(PackageManager::class));
+        ExtensionManagementUtility::setPackageManager(self::createStub(PackageManager::class));
     }
 
     #[Test]

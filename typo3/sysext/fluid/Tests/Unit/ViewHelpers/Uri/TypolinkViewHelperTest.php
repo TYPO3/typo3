@@ -87,7 +87,7 @@ final class TypolinkViewHelperTest extends UnitTestCase
         $mock = \Closure::bind(static function (TypolinkViewHelper $typolinkViewHelper) use ($decodedConfiguration, &$result) {
             $result = $typolinkViewHelper->mergeTypoLinkConfiguration($decodedConfiguration, []);
         }, null, TypolinkViewHelper::class);
-        $mock(new TypolinkViewHelper(new TypoLinkCodecService($this->createMock(EventDispatcherInterface::class))));
+        $mock(new TypolinkViewHelper(new TypoLinkCodecService(self::createStub(EventDispatcherInterface::class))));
         self::assertSame($decodedConfiguration, $result);
     }
 
@@ -185,7 +185,7 @@ final class TypolinkViewHelperTest extends UnitTestCase
         $mock = \Closure::bind(static function (TypolinkViewHelper $typolinkViewHelper) use ($decodedConfiguration, $viewHelperArguments, &$result) {
             $result = $typolinkViewHelper->mergeTypoLinkConfiguration($decodedConfiguration, $viewHelperArguments);
         }, null, TypolinkViewHelper::class);
-        $mock(new TypolinkViewHelper(new TypoLinkCodecService($this->createMock(EventDispatcherInterface::class))));
+        $mock(new TypolinkViewHelper(new TypoLinkCodecService(self::createStub(EventDispatcherInterface::class))));
         self::assertSame($expectation, $result);
     }
 }

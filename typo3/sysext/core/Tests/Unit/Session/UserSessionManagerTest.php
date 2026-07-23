@@ -59,9 +59,9 @@ final class UserSessionManagerTest extends UnitTestCase
     #[Test]
     public function willExpireWillExpire(int $sessionLifetime, int $gracePeriod, bool $expectedResult): void
     {
-        $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
+        $sessionBackendStub = self::createStub(SessionBackendInterface::class);
         $subject = new UserSessionManager(
-            $sessionBackendMock,
+            $sessionBackendStub,
             $sessionLifetime,
             new IpLocker(0, 0),
             'FE'
@@ -73,9 +73,9 @@ final class UserSessionManagerTest extends UnitTestCase
     public function hasExpiredIsCalculatedCorrectly(): void
     {
         $GLOBALS['EXEC_TIME'] = time();
-        $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
+        $sessionBackendStub = self::createStub(SessionBackendInterface::class);
         $subject = new UserSessionManager(
-            $sessionBackendMock,
+            self::createStub(SessionBackendInterface::class),
             60,
             new IpLocker(0, 0),
             'FE'
@@ -118,10 +118,10 @@ final class UserSessionManagerTest extends UnitTestCase
             self::createSigningKeyFromEncryptionKey(UserSession::class)
         );
 
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getRequestHostOnly')->willReturn($cookieDomain);
         $normalizedParams->method('getSitePath')->willReturn('/');
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnCallback(static fn(string $name): mixed => match ($name) {
             'normalizedParams' => $normalizedParams,
             default => null,
@@ -153,9 +153,9 @@ final class UserSessionManagerTest extends UnitTestCase
         $subject->setLogger(new NullLogger());
 
         $cookieDomain = 'example.org';
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         $normalizedParams->method('getRequestHostOnly')->willReturn($cookieDomain);
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnCallback(static fn(string $name): mixed => match ($name) {
             'normalizedParams' => $normalizedParams,
             default => null,
@@ -173,8 +173,8 @@ final class UserSessionManagerTest extends UnitTestCase
     #[Test]
     public function updateSessionWillSetLastUpdated(): void
     {
-        $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
-        $sessionBackendMock->method('update')->with(self::anything(), self::anything())->willReturn([
+        $sessionBackendStub = self::createStub(SessionBackendInterface::class);
+        $sessionBackendStub->method('update')->willReturn([
             'ses_id' => 'valid-session',
             'ses_userid' => 13,
             'ses_data' => serialize(['propertyA' => 42, 'propertyB' => 'great']),
@@ -182,7 +182,7 @@ final class UserSessionManagerTest extends UnitTestCase
             'ses_iplock' => '[DISABLED]',
         ]);
         $subject = new UserSessionManager(
-            $sessionBackendMock,
+            $sessionBackendStub,
             60,
             new IpLocker(0, 0),
             'FE'
@@ -195,8 +195,8 @@ final class UserSessionManagerTest extends UnitTestCase
     #[Test]
     public function fixateAnonymousSessionWillUpdateSessionObject(): void
     {
-        $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
-        $sessionBackendMock->method('set')->with(self::anything(), self::anything())->willReturn([
+        $sessionBackendStub = self::createStub(SessionBackendInterface::class);
+        $sessionBackendStub->method('set')->willReturn([
             'ses_id' => 'valid-session',
             'ses_userid' => 0,
             'ses_data' => serialize(['propertyA' => 42, 'propertyB' => 'great']),
@@ -204,7 +204,7 @@ final class UserSessionManagerTest extends UnitTestCase
             'ses_iplock' => IpLocker::DISABLED_LOCK_VALUE,
         ]);
         $subject = new UserSessionManager(
-            $sessionBackendMock,
+            $sessionBackendStub,
             60,
             new IpLocker(0, 0),
             'FE'

@@ -108,8 +108,8 @@ final class ResourceStorageTest extends FunctionalTestCase
             ->onlyMethods(['getPermissions'])
             ->getMock();
         $localDriver->method('getPermissions')->willReturn($permissionsFromDriver);
-        $mockedResourceFactory = $this->createMock(ResourceFactory::class);
-        $mockedFolder = $this->createMock(Folder::class);
+        $resourceFactoryStub = self::createStub(ResourceFactory::class);
+        $folderStub = self::createStub(Folder::class);
 
         // Let all other checks pass
         $subject = $this->getMockBuilder(ResourceStorage::class)
@@ -119,9 +119,9 @@ final class ResourceStorageTest extends FunctionalTestCase
         $subject->method('isWritable')->willReturn(true);
         $subject->method('isBrowsable')->willReturn(true);
         $subject->method('checkUserActionPermission')->willReturn(true);
-        $subject->method('getResourceFactoryInstance')->willReturn($mockedResourceFactory);
+        $subject->method('getResourceFactoryInstance')->willReturn($resourceFactoryStub);
         $subject->setDriver($localDriver);
-        self::assertSame($expectedResult, $subject->checkFolderActionPermission($action, $mockedFolder));
+        self::assertSame($expectedResult, $subject->checkFolderActionPermission($action, $folderStub));
     }
 
     #[Test]
@@ -227,13 +227,13 @@ final class ResourceStorageTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1325952534);
-        $folderMock = $this->createMock(Folder::class);
+        $folderStub = self::createStub(Folder::class);
         $mockedDriver = $this->createMock(DriverInterface::class);
         $mockedDriver->expects($this->once())->method('isFolderEmpty')->willReturn(false);
         $subject = $this->getAccessibleMock(ResourceStorage::class, ['checkFolderActionPermission'], [], '', false);
         $subject->method('checkFolderActionPermission')->willReturn(true);
         $subject->_set('driver', $mockedDriver);
-        $subject->deleteFolder($folderMock);
+        $subject->deleteFolder($folderStub);
     }
 
     #[Test]

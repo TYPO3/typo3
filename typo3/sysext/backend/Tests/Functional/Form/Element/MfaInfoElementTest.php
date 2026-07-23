@@ -41,9 +41,9 @@ final class MfaInfoElementTest extends FunctionalTestCase
         $GLOBALS['BE_USER']->initializeUserSessionManager();
 
         // Default LANG mock just returns incoming value as label if calling ->sL()
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('sL')->with(self::anything())->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
+        $languageServiceStub = self::createStub(LanguageService::class);
+        $languageServiceStub->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceStub;
     }
 
     #[Test]

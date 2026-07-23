@@ -34,8 +34,8 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
         $translationService = $this->createMock(TranslationService::class);
         $translationService->expects($this->never())->method('translateFormElementValue');
 
-        $renderable = $this->createMock(RootRenderableInterface::class);
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $renderable = self::createStub(RootRenderableInterface::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
 
         (new TranslateDefaultValueBeforeRendering($translationService))($event);
@@ -49,7 +49,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
 
         $renderable = $this->createMock(FormElementInterface::class);
         $renderable->method('getDefaultValue')->willReturn(null);
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
 
         (new TranslateDefaultValueBeforeRendering($translationService))($event);
@@ -65,7 +65,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
 
         $renderable = $this->createMock(FormElementInterface::class);
         $renderable->method('getDefaultValue')->willReturn(['foo' => 'bar']);
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
 
         (new TranslateDefaultValueBeforeRendering($translationService))($event);
@@ -80,7 +80,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
         $renderable = $this->createMock(FormElementInterface::class);
         $renderable->method('getDefaultValue')->willReturn('original');
         $renderable->expects($this->never())->method('setDefaultValue');
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
 
         // Must not throw
@@ -96,7 +96,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
         $renderable = $this->createMock(FormElementInterface::class);
         $renderable->method('getDefaultValue')->willReturn('original');
         $renderable->expects($this->never())->method('setDefaultValue');
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
 
         (new TranslateDefaultValueBeforeRendering($translationService))($event);
@@ -111,7 +111,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
         $renderable = $this->createMock(FormElementInterface::class);
         $renderable->method('getDefaultValue')->willReturn('original');
         $renderable->expects($this->never())->method('setDefaultValue');
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
 
         (new TranslateDefaultValueBeforeRendering($translationService))($event);
@@ -131,7 +131,7 @@ final class TranslateDefaultValueBeforeRenderingTest extends TestCase
                 $capturedValue = $value;
             }
         );
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);
 
         (new TranslateDefaultValueBeforeRendering($translationService))($event);

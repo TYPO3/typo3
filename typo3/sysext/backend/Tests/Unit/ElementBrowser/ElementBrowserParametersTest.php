@@ -55,7 +55,7 @@ final class ElementBrowserParametersTest extends UnitTestCase
     #[Test]
     public function fromRequestReadsSeparateParameters(): void
     {
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getQueryParams')->willReturn([
             'fieldReference' => 'data[tt_content][123][image]',
             'allowedTypes' => 'gif,jpg',

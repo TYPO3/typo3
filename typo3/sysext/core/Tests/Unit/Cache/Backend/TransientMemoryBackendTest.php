@@ -29,7 +29,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function itIsPossibleToSetAndCheckExistenceInCache(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $data = 'Some data';
@@ -42,7 +42,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function itIsPossibleToSetAndGetEntry(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $data = 'Some data';
@@ -55,7 +55,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function itIsPossibleToRemoveEntryFromCache(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $data = 'Some data';
@@ -69,7 +69,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function itIsPossibleToOverwriteAnEntryInTheCache(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $data = 'Some data';
@@ -84,7 +84,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $data = 'Some data';
@@ -99,7 +99,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function hasReturnsFalseIfTheEntryDoesntExist(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $identifier = 'NonExistingIdentifier';
@@ -110,7 +110,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function removeReturnsFalseIfTheEntryDoesntExist(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $identifier = 'NonExistingIdentifier';
@@ -121,7 +121,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function flushByTagRemovesCacheEntriesWithSpecifiedTag(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $data = 'some data' . microtime();
@@ -137,7 +137,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function flushByTagsRemovesCacheEntriesWithSpecifiedTags(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $data = 'some data' . microtime();
@@ -153,7 +153,7 @@ final class TransientMemoryBackendTest extends UnitTestCase
     #[Test]
     public function flushRemovesAllCacheEntries(): void
     {
-        $cache = $this->createMock(FrontendInterface::class);
+        $cache = self::createStub(FrontendInterface::class);
         $backend = new TransientMemoryBackend();
         $backend->setCache($cache);
         $data = 'some data' . microtime();

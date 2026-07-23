@@ -42,7 +42,7 @@ final class WorkspaceDependencyReferenceListenerTest extends UnitTestCase
         $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $this->tcaSchemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
-                new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+                new RelationMapBuilder(self::createStub(FlexFormTools::class)),
                 new FieldTypeFactory(),
             ),
             '',

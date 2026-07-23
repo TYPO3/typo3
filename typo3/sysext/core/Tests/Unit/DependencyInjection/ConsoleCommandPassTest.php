@@ -32,19 +32,19 @@ final class ConsoleCommandPassTest extends UnitTestCase
 {
     private function buildContainer(string $uniqid, array $packages = []): ContainerInterface
     {
-        $packageManagerMock = $this->createMock(PackageManager::class);
+        $packageManagerStub = self::createStub(PackageManager::class);
         $activePackages = [];
         foreach ($packages as $packageKey => $config) {
-            $packageMock = $this->createMock(Package::class);
-            $packageMock->method('getPackageKey')->willReturn($packageKey);
-            $packageMock->method('getPackagePath')->willReturn($config['path']);
-            $packageMock->method('isPartOfMinimalUsableSystem')->willReturn(false);
-            $packageMock->method('getServiceProvider')->willReturn($config['serviceProvider'] ?? NullServiceProvider::class);
-            $activePackages[$packageKey] = $packageMock;
+            $packageStub = self::createStub(Package::class);
+            $packageStub->method('getPackageKey')->willReturn($packageKey);
+            $packageStub->method('getPackagePath')->willReturn($config['path']);
+            $packageStub->method('isPartOfMinimalUsableSystem')->willReturn(false);
+            $packageStub->method('getServiceProvider')->willReturn($config['serviceProvider'] ?? NullServiceProvider::class);
+            $activePackages[$packageKey] = $packageStub;
         }
 
-        $packageManagerMock->method('getCacheIdentifier')->willReturn('PackageManager.' . $uniqid);
-        $packageManagerMock->method('getActivePackages')->willReturn($activePackages);
+        $packageManagerStub->method('getCacheIdentifier')->willReturn('PackageManager.' . $uniqid);
+        $packageManagerStub->method('getActivePackages')->willReturn($activePackages);
 
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('requireOnce')->with(self::isString())->willReturn(false);
@@ -52,7 +52,7 @@ final class ConsoleCommandPassTest extends UnitTestCase
             eval($sourceCode);
         });
 
-        return (new ContainerBuilder([]))->createDependencyInjectionContainer($packageManagerMock, $cacheMock);
+        return (new ContainerBuilder([]))->createDependencyInjectionContainer($packageManagerStub, $cacheMock);
     }
 
     #[Test]

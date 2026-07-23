@@ -30,7 +30,7 @@ final class AfterGetDataResolvedEventTest extends UnitTestCase
         $parameterString = 'field:title';
         $alternativeFieldArray = ['title' => 'my title'];
         $result = 'my title';
-        $contentObjectRenderer = $this->createMock(ContentObjectRenderer::class);
+        $contentObjectRenderer = self::createStub(ContentObjectRenderer::class);
 
         $event = new AfterGetDataResolvedEvent($parameterString, $alternativeFieldArray, $result, $contentObjectRenderer);
 
@@ -43,7 +43,7 @@ final class AfterGetDataResolvedEventTest extends UnitTestCase
     #[Test]
     public function setReturnOverwritesResolvedData(): void
     {
-        $event = new AfterGetDataResolvedEvent('', [], 'my result', $this->createMock(ContentObjectRenderer::class));
+        $event = new AfterGetDataResolvedEvent('', [], 'my result', self::createStub(ContentObjectRenderer::class));
         self::assertEquals('my result', $event->getResult());
         $event->setResult('modified result');
         self::assertEquals('modified result', $event->getResult());

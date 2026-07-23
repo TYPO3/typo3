@@ -109,8 +109,8 @@ final class UriBuilderTest extends UnitTestCase
         $expectedArguments = ['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'route' => 'SomePlugin'];
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $mockExtensionService = $this->createMock(ExtensionService::class);
-        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
+        $extensionServiceStub = self::createStub(ExtensionService::class);
+        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
         $subject->uriFor(null, ['foo' => 'bar', 'baz' => ['extbase' => 'fluid']], 'SomeController', 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $subject->getArguments());
@@ -124,8 +124,8 @@ final class UriBuilderTest extends UnitTestCase
         $expectedArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'additionalParam' => 'additionalValue', 'route' => 'SomePlugin'];
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $mockExtensionService = $this->createMock(ExtensionService::class);
-        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
+        $extensionServiceStub = self::createStub(ExtensionService::class);
+        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
         $subject->setArguments($arguments);
         $subject->uriFor(null, $controllerArguments, 'SomeController', 'SomeExtension', 'SomePlugin');
@@ -138,8 +138,8 @@ final class UriBuilderTest extends UnitTestCase
         $expectedArguments = ['controller' => 'SomeController', 'route' => 'SomePlugin'];
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $mockExtensionService = $this->createMock(ExtensionService::class);
-        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
+        $extensionServiceStub = self::createStub(ExtensionService::class);
+        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
         $subject->uriFor(null, [], 'SomeController', 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $subject->getArguments());
@@ -152,8 +152,8 @@ final class UriBuilderTest extends UnitTestCase
         $mockRequest->expects($this->once())->method('getControllerName')->willReturn('SomeControllerFromRequest');
         $expectedArguments = ['controller' => 'SomeControllerFromRequest', 'route' => 'SomePlugin'];
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $mockExtensionService = $this->createMock(ExtensionService::class);
-        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
+        $extensionServiceStub = self::createStub(ExtensionService::class);
+        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
         $subject->uriFor(null, [], null, 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $subject->getArguments());
@@ -166,8 +166,8 @@ final class UriBuilderTest extends UnitTestCase
         $mockRequest->expects($this->once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
         $expectedArguments = ['controller' => 'SomeController', 'route' => 'SomePlugin'];
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $mockExtensionService = $this->createMock(ExtensionService::class);
-        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
+        $extensionServiceStub = self::createStub(ExtensionService::class);
+        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
         $subject->uriFor(null, [], 'SomeController', null, 'SomePlugin');
         self::assertEquals($expectedArguments, $subject->getArguments());
@@ -194,8 +194,8 @@ final class UriBuilderTest extends UnitTestCase
         $mockRequest->expects($this->once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
         $expectedArguments = ['controller' => 'SomeController', 'route' => 'SomePluginNameFromRequest'];
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $mockExtensionService = $this->createMock(ExtensionService::class);
-        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
+        $extensionServiceStub = self::createStub(ExtensionService::class);
+        $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$extensionServiceStub]);
         $subject->setRequest($mockRequest);
         $subject->uriFor(null, [], 'SomeController', 'SomeExtension');
         self::assertEquals($expectedArguments, $subject->getArguments());
@@ -705,8 +705,8 @@ final class UriBuilderTest extends UnitTestCase
         $subject = $this->getAccessibleMock(UriBuilder::class, null, [$mockExtensionService]);
         $subject->setTargetPageUid(123);
         $subject->setFormat('txt');
-        $mockRequest = $this->createMock(Request::class);
-        $subject->setRequest($mockRequest);
+        $requestStub = self::createStub(Request::class);
+        $subject->setRequest($requestStub);
         $expectedConfiguration = ['parameter' => '123,0'];
         self::assertEquals($expectedConfiguration, $subject->_call('buildTypolinkConfiguration'));
     }

@@ -35,11 +35,11 @@ final class RendererRegistryTest extends UnitTestCase
         $rendererObject3 = $this->createMock(FileRendererInterface::class);
         $rendererObject3->expects($this->never())->method('canRender');
 
-        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceStub = self::createStub(File::class);
 
         $rendererRegistry = new RendererRegistry([$rendererObject1, $rendererObject2, $rendererObject3]);
 
-        self::assertSame($rendererObject2, $rendererRegistry->getRenderer($fileResourceMock));
+        self::assertSame($rendererObject2, $rendererRegistry->getRenderer($fileResourceStub));
     }
 
     #[Test]

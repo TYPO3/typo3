@@ -167,14 +167,14 @@ final class TableListTest extends UnitTestCase
     public function renderResolvesEntryPoint(array $config, array $expected): void
     {
         $GLOBALS['TCA'] = [];
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
 
-        $iconMock = $this->createMock(Icon::class);
-        $iconMock->method('render')->with(self::anything())->willReturn('icon html');
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        $iconFactoryMock->method('getIconForRecord')->with(self::anything())->willReturn($iconMock);
+        $iconStub = self::createStub(Icon::class);
+        $iconStub->method('render')->willReturn('icon html');
+        $iconFactoryStub = self::createStub(IconFactory::class);
+        $iconFactoryStub->method('getIconForRecord')->willReturn($iconStub);
 
-        $tableList = new TableList($iconFactoryMock);
+        $tableList = new TableList($iconFactoryStub);
         $tableList->setData([
             'fieldName' => 'somefield',
             'isInlineChild' => false,

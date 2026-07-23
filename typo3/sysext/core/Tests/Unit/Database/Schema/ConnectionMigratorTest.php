@@ -41,18 +41,18 @@ final class ConnectionMigratorTest extends UnitTestCase
     {
         parent::setUp();
 
-        $platformMock = $this->createMock(MySQLPlatform::class);
-        $platformMock->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
+        $platformStub = self::createStub(MySQLPlatform::class);
+        $platformStub->method('quoteIdentifier')->willReturnArgument(0);
 
-        $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->method('getDatabasePlatform')->willReturn($platformMock);
-        $connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
+        $connectionStub = self::createStub(Connection::class);
+        $connectionStub->method('getDatabasePlatform')->willReturn($platformStub);
+        $connectionStub->method('quoteIdentifier')->willReturnArgument(0);
 
-        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+        $connectionPoolStub = self::createStub(ConnectionPool::class);
 
-        $this->maxIdentifierLength = PlatformInformation::getMaxIdentifierLength($platformMock);
+        $this->maxIdentifierLength = PlatformInformation::getMaxIdentifierLength($platformStub);
 
-        $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, ['Default', $connectionMock, $connectionPoolMock, []]);
+        $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, ['Default', $connectionStub, $connectionPoolStub, []]);
     }
 
     #[Test]

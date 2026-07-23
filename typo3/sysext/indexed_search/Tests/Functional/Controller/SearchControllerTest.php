@@ -79,18 +79,18 @@ final class SearchControllerTest extends FunctionalTestCase
             'modify-search-result-sets-listener'
         );
 
-        $view = $this->createMock(ViewInterface::class);
+        $view = self::createStub(ViewInterface::class);
         $serverRequest = (new ServerRequest('https://example.com/', 'GET'))
             ->withAttribute('extbase', new ExtbaseRequestParameters());
         $extbaseRequest = new Request($serverRequest);
 
         $controller = new class (
-            $this->createMock(Context::class),
-            $this->createMock(IndexSearchRepository::class),
-            $this->createMock(TypoScriptService::class),
-            $this->createMock(Lexer::class),
-            $this->createMock(LinkFactory::class),
-            $this->createMock(PageRepository::class),
+            $this->createStub(Context::class),
+            $this->createStub(IndexSearchRepository::class),
+            $this->createStub(TypoScriptService::class),
+            $this->createStub(Lexer::class),
+            $this->createStub(LinkFactory::class),
+            $this->createStub(PageRepository::class),
         ) extends SearchController {
             public function initializeForTest(ViewInterface $view, Request $request): void
             {
@@ -144,12 +144,12 @@ final class SearchControllerTest extends FunctionalTestCase
     public function paginationSettingSwitchesBetweenSimpleAndSlidingWindowPagination(): void
     {
         $controller = new class (
-            $this->createMock(Context::class),
-            $this->createMock(IndexSearchRepository::class),
-            $this->createMock(TypoScriptService::class),
-            $this->createMock(Lexer::class),
-            $this->createMock(LinkFactory::class),
-            $this->createMock(PageRepository::class),
+            $this->createStub(Context::class),
+            $this->createStub(IndexSearchRepository::class),
+            $this->createStub(TypoScriptService::class),
+            $this->createStub(Lexer::class),
+            $this->createStub(LinkFactory::class),
+            $this->createStub(PageRepository::class),
         ) extends SearchController {
             public function callBuildPagination(array $searchData, array $rows, int $count): PaginationInterface
             {

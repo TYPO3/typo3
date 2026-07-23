@@ -105,18 +105,18 @@ final class DatetimeElementTest extends UnitTestCase
                 'itemFormElValue' => DateTimeFactory::createFromDatabaseValueAndTCAConfig($input, $config),
             ],
         ];
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        $iconMock = $this->createMock(Icon::class);
-        $iconMock->method('render')->willReturn('');
-        $iconFactoryMock->method('getIcon')->with(self::anything())->willReturn($iconMock);
-        $nodeFactoryMock = $this->createMock(NodeFactory::class);
-        $fieldInformationMock = $this->createMock(FieldInformation::class);
-        $fieldInformationMock->method('render')->willReturn(['html' => '']);
-        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $iconFactoryStub = self::createStub(IconFactory::class);
+        $iconStub = self::createStub(Icon::class);
+        $iconStub->method('render')->willReturn('');
+        $iconFactoryStub->method('getIcon')->willReturn($iconStub);
+        $nodeFactoryStub = self::createStub(NodeFactory::class);
+        $fieldInformationStub = self::createStub(FieldInformation::class);
+        $fieldInformationStub->method('render')->willReturn(['html' => '']);
+        $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
 
-        $subject = new DatetimeElement($iconFactoryMock);
-        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject = new DatetimeElement($iconFactoryStub);
+        $subject->injectNodeFactory($nodeFactoryStub);
         $subject->setData($data);
         $result = $subject->render();
 
@@ -185,18 +185,18 @@ final class DatetimeElementTest extends UnitTestCase
                 'itemFormElValue' => DateTimeFactory::createFromDatabaseValueAndTCAConfig($input, $config),
             ],
         ];
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        $iconMock = $this->createMock(Icon::class);
-        $iconMock->method('render')->willReturn('');
-        $iconFactoryMock->method('getIcon')->with(self::anything())->willReturn($iconMock);
-        $nodeFactoryMock = $this->createMock(NodeFactory::class);
-        $fieldInformationMock = $this->createMock(FieldInformation::class);
-        $fieldInformationMock->method('render')->willReturn(['html' => '']);
-        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $iconFactoryStub = self::createStub(IconFactory::class);
+        $iconStub = self::createStub(Icon::class);
+        $iconStub->method('render')->willReturn('');
+        $iconFactoryStub->method('getIcon')->willReturn($iconStub);
+        $nodeFactoryStub = self::createStub(NodeFactory::class);
+        $fieldInformationStub = self::createStub(FieldInformation::class);
+        $fieldInformationStub->method('render')->willReturn(['html' => '']);
+        $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
 
-        $subject = new DatetimeElement($iconFactoryMock);
-        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject = new DatetimeElement($iconFactoryStub);
+        $subject->injectNodeFactory($nodeFactoryStub);
         $subject->setData($data);
         $result = $subject->render();
 
@@ -264,18 +264,18 @@ final class DatetimeElementTest extends UnitTestCase
                 'itemFormElValue' => DateTimeFactory::createFromDatabaseValueAndTCAConfig($input, $config),
             ],
         ];
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        $iconMock = $this->createMock(Icon::class);
-        $iconMock->method('render')->willReturn('');
-        $iconFactoryMock->method('getIcon')->with(self::anything())->willReturn($iconMock);
-        $nodeFactoryMock = $this->createMock(NodeFactory::class);
-        $fieldInformationMock = $this->createMock(FieldInformation::class);
-        $fieldInformationMock->method('render')->willReturn(['html' => '']);
-        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
-        $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
+        $iconFactoryStub = self::createStub(IconFactory::class);
+        $iconStub = self::createStub(Icon::class);
+        $iconStub->method('render')->willReturn('');
+        $iconFactoryStub->method('getIcon')->willReturn($iconStub);
+        $nodeFactoryStub = self::createStub(NodeFactory::class);
+        $fieldInformationStub = self::createStub(FieldInformation::class);
+        $fieldInformationStub->method('render')->willReturn(['html' => '']);
+        $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
+        $GLOBALS['LANG'] = self::createStub(LanguageService::class);
 
-        $subject = new DatetimeElement($iconFactoryMock);
-        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject = new DatetimeElement($iconFactoryStub);
+        $subject->injectNodeFactory($nodeFactoryStub);
         $subject->setData($data);
         $result = $subject->render();
 

@@ -139,16 +139,16 @@ final class FileTest extends UnitTestCase
             ->onlyMethods([])
             ->setConstructorArgs([$fileProperties, $storageMock])
             ->getMock();
-        $mockedNewStorage = $this->createMock(ResourceStorage::class);
+        $newStorageStub = self::createStub(ResourceStorage::class);
         $mockedStorageRepository = $this->createMock(StorageRepository::class);
         $mockedStorageRepository
             ->expects($this->once())
             ->method('findByUid')
-            ->willReturn($mockedNewStorage);
+            ->willReturn($newStorageStub);
         GeneralUtility::addInstance(StorageRepository::class, $mockedStorageRepository);
 
         $subject->updateProperties(['storage' => 'different']);
-        self::assertSame($mockedNewStorage, $subject->getStorage());
+        self::assertSame($newStorageStub, $subject->getStorage());
     }
 
     #[Test]

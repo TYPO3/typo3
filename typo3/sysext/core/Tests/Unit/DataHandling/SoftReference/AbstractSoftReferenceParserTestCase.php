@@ -36,9 +36,7 @@ abstract class AbstractSoftReferenceParserTestCase extends UnitTestCase
 
     protected function getParserByKey($softrefKey): SoftReferenceParserInterface
     {
-        $runtimeCache = $this->createMock(FrontendInterface::class);
-
-        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache, new NullLogger());
+        $softReferenceParserFactory = new SoftReferenceParserFactory(self::createStub(FrontendInterface::class), new NullLogger());
         $softReferenceParserFactory->addParser(new SubstituteSoftReferenceParser(), 'substitute');
         $softReferenceParserFactory->addParser(new TypolinkSoftReferenceParser(new NoopEventDispatcher()), 'typolink');
         $softReferenceParserFactory->addParser(new TypolinkTagSoftReferenceParser(new NoopEventDispatcher()), 'typolink_tag');

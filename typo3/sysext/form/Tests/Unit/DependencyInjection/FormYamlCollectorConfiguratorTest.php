@@ -93,7 +93,7 @@ final class FormYamlCollectorConfiguratorTest extends UnitTestCase
 
         return new FormYamlCollectorConfigurator(
             $packageManager,
-            $logger ?? $this->createMock(LoggerInterface::class),
+            $logger ?? self::createStub(LoggerInterface::class),
         );
     }
 

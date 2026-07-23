@@ -90,7 +90,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function setTypeConverterOptionsCanBeRetrievedAgain(): void
     {
-        $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
+        $mockTypeConverterClass = get_class(self::createStub(TypeConverterInterface::class));
         $subject = new PropertyMappingConfiguration();
         $subject->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
         self::assertEquals('v1', $subject->getConfigurationValue($mockTypeConverterClass, 'k1'));
@@ -106,7 +106,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function setTypeConverterOptionsShouldOverrideAlreadySetOptions(): void
     {
-        $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
+        $mockTypeConverterClass = get_class(self::createStub(TypeConverterInterface::class));
         $subject = new PropertyMappingConfiguration();
         $subject->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
         $subject->setTypeConverterOptions($mockTypeConverterClass, ['k3' => 'v3']);
@@ -117,7 +117,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function setTypeConverterOptionShouldOverrideAlreadySetOptions(): void
     {
-        $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
+        $mockTypeConverterClass = get_class(self::createStub(TypeConverterInterface::class));
         $subject = new PropertyMappingConfiguration();
         $subject->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
         $subject->setTypeConverterOption($mockTypeConverterClass, 'k1', 'v3');
@@ -134,10 +134,10 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function getTypeConverterReturnsTypeConverterIfItHasBeenSet(): void
     {
-        $mockTypeConverter = $this->createMock(TypeConverterInterface::class);
+        $typeConverterStub = self::createStub(TypeConverterInterface::class);
         $subject = new PropertyMappingConfiguration();
-        $subject->setTypeConverter($mockTypeConverter);
-        self::assertSame($mockTypeConverter, $subject->getTypeConverter());
+        $subject->setTypeConverter($typeConverterStub);
+        self::assertSame($typeConverterStub, $subject->getTypeConverter());
     }
 
     #[Test]
@@ -170,8 +170,8 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function setTypeConverterOptionReturnsThis(): void
     {
-        $mockTypeConverter = $this->createMock(TypeConverterInterface::class);
-        $mockTypeConverterClass = get_class($mockTypeConverter);
+        $typeConverterStub = self::createStub(TypeConverterInterface::class);
+        $mockTypeConverterClass = get_class($typeConverterStub);
         $subject = new PropertyMappingConfiguration();
         self::assertSame($subject, $subject->setTypeConverterOption($mockTypeConverterClass, 'key', 'value'));
     }
@@ -179,8 +179,8 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function setTypeConverterOptionsReturnsThis(): void
     {
-        $mockTypeConverter = $this->createMock(TypeConverterInterface::class);
-        $mockTypeConverterClass = get_class($mockTypeConverter);
+        $typeConverterStub = self::createStub(TypeConverterInterface::class);
+        $mockTypeConverterClass = get_class($typeConverterStub);
         $subject = new PropertyMappingConfiguration();
         self::assertSame($subject, $subject->setTypeConverterOptions($mockTypeConverterClass, []));
     }
@@ -188,9 +188,9 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function setTypeConverterReturnsThis(): void
     {
-        $mockTypeConverter = $this->createMock(TypeConverterInterface::class);
+        $typeConverterStub = self::createStub(TypeConverterInterface::class);
         $subject = new PropertyMappingConfiguration();
-        self::assertSame($subject, $subject->setTypeConverter($mockTypeConverter));
+        self::assertSame($subject, $subject->setTypeConverter($typeConverterStub));
     }
 
     #[Test]

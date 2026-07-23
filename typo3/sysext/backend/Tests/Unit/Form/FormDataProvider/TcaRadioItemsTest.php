@@ -259,7 +259,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = $this->createMock(FlashMessageService::class);
-        $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
+        $flashMessageQueue = self::createStub(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $subject = new TcaRadioItems();
@@ -325,7 +325,7 @@ final class TcaRadioItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
         $flashMessageService = $this->createMock(FlashMessageService::class);
-        $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
+        $flashMessageQueue = self::createStub(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         $subject = new TcaRadioItems();
@@ -632,8 +632,8 @@ final class TcaRadioItemsTest extends UnitTestCase
     private function getItemProcessingServiceInstance(FlashMessageService $flashMessageService): ItemProcessingService
     {
         return new ItemProcessingService(
-            $this->createMock(SiteFinder::class),
-            $this->createMock(TcaSchemaFactory::class),
+            self::createStub(SiteFinder::class),
+            self::createStub(TcaSchemaFactory::class),
             $flashMessageService,
         );
     }

@@ -35,11 +35,11 @@ final class AbstractServiceProviderTest extends UnitTestCase
     #[Test]
     public function configureMiddlewaresReturnsMergedMiddlewares(): void
     {
-        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerStub = self::createStub(ContainerInterface::class);
 
         $middlewares = new \ArrayObject();
-        $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
-        $middlewares = Package2ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
+        $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerStub, $middlewares);
+        $middlewares = Package2ServiceProviderMock::configureMiddlewares($containerStub, $middlewares);
 
         $expected = new \ArrayObject([
             'testStack' => [
@@ -57,7 +57,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
     #[Test]
     public function configureMiddlewaresReturnsMergedMiddlewaresWithPseudoServiceProvider(): void
     {
-        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerStub = self::createStub(ContainerInterface::class);
 
         $package2 = $this->createMock(Package::class);
         $package2->method('getPackagePath')->willReturn(__DIR__ . '/../Http/Fixtures/Package2/');
@@ -65,8 +65,8 @@ final class AbstractServiceProviderTest extends UnitTestCase
         $package2ServiceProvider = new PseudoServiceProvider($package2);
 
         $middlewares = new \ArrayObject();
-        $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
-        $middlewares = $package2ServiceProvider->getExtensions()['middlewares']($containerMock, $middlewares);
+        $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerStub, $middlewares);
+        $middlewares = $package2ServiceProvider->getExtensions()['middlewares']($containerStub, $middlewares);
 
         $expected = new \ArrayObject([
             'testStack' => [
@@ -84,7 +84,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
     #[Test]
     public function configureMiddlewaresReturnsMergedMiddlewaresWithOverrides(): void
     {
-        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerStub = self::createStub(ContainerInterface::class);
 
         $package2 = $this->createMock(Package::class);
         $package2->method('getPackagePath')->willReturn(__DIR__ . '/../Http/Fixtures/Package2Disables1/');
@@ -92,8 +92,8 @@ final class AbstractServiceProviderTest extends UnitTestCase
         $package2ServiceProvider = new PseudoServiceProvider($package2);
 
         $middlewares = new \ArrayObject();
-        $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
-        $middlewares = $package2ServiceProvider->getExtensions()['middlewares']($containerMock, $middlewares);
+        $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerStub, $middlewares);
+        $middlewares = $package2ServiceProvider->getExtensions()['middlewares']($containerStub, $middlewares);
 
         $expected = new \ArrayObject([
             'testStack' => [
@@ -112,7 +112,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
     #[Test]
     public function configureMiddlewaresReturnsMergedMiddlewaresWithReplacements(): void
     {
-        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerStub = self::createStub(ContainerInterface::class);
 
         $package2 = $this->createMock(Package::class);
         $package2->method('getPackagePath')->willReturn(__DIR__ . '/../Http/Fixtures/Package2Replaces1/');
@@ -120,8 +120,8 @@ final class AbstractServiceProviderTest extends UnitTestCase
         $package2ServiceProvider = new PseudoServiceProvider($package2);
 
         $middlewares = new \ArrayObject();
-        $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerMock, $middlewares);
-        $middlewares = $package2ServiceProvider->getExtensions()['middlewares']($containerMock, $middlewares);
+        $middlewares = Package1ServiceProviderMock::configureMiddlewares($containerStub, $middlewares);
+        $middlewares = $package2ServiceProvider->getExtensions()['middlewares']($containerStub, $middlewares);
 
         $expected = new \ArrayObject([
             'testStack' => [
@@ -140,7 +140,7 @@ final class AbstractServiceProviderTest extends UnitTestCase
     public function newReturnsClassInstance(): void
     {
         $newClosure = $this->getClosureForNew();
-        $instance = $newClosure($this->createMock(ContainerInterface::class), \stdClass::class);
+        $instance = $newClosure(self::createStub(ContainerInterface::class), \stdClass::class);
         self::assertInstanceOf(\stdClass::class, $instance);
     }
 

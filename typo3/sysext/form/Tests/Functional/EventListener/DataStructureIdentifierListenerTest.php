@@ -51,12 +51,12 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             $givenIdentifier,
         );
         $subject = new DataStructureIdentifierListener(
-            $this->createMock(FormPersistenceManagerInterface::class),
-            $this->createMock(ConfigurationService::class),
-            $this->createMock(TranslationService::class),
-            $this->createMock(FlashMessageService::class),
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
-            $this->createMock(ExtFormConfigurationManagerInterface::class),
+            self::createStub(FormPersistenceManagerInterface::class),
+            self::createStub(ConfigurationService::class),
+            self::createStub(TranslationService::class),
+            self::createStub(FlashMessageService::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtFormConfigurationManagerInterface::class),
         );
         $subject->modifyDataStructureIdentifier($event);
         self::assertSame($givenIdentifier, $event->getIdentifier());
@@ -73,12 +73,12 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             [],
         );
         $subject = new DataStructureIdentifierListener(
-            $this->createMock(FormPersistenceManagerInterface::class),
-            $this->createMock(ConfigurationService::class),
-            $this->createMock(TranslationService::class),
-            $this->createMock(FlashMessageService::class),
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
-            $this->createMock(ExtFormConfigurationManagerInterface::class),
+            self::createStub(FormPersistenceManagerInterface::class),
+            self::createStub(ConfigurationService::class),
+            self::createStub(TranslationService::class),
+            self::createStub(FlashMessageService::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtFormConfigurationManagerInterface::class),
         );
         $subject->modifyDataStructureIdentifier($event);
         self::assertEquals(
@@ -122,12 +122,12 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             $incomingIdentifier,
         );
         $subject = new DataStructureIdentifierListener(
-            $this->createMock(FormPersistenceManagerInterface::class),
-            $this->createMock(ConfigurationService::class),
-            $this->createMock(TranslationService::class),
-            $this->createMock(FlashMessageService::class),
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
-            $this->createMock(ExtFormConfigurationManagerInterface::class),
+            self::createStub(FormPersistenceManagerInterface::class),
+            self::createStub(ConfigurationService::class),
+            self::createStub(TranslationService::class),
+            self::createStub(FlashMessageService::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtFormConfigurationManagerInterface::class),
         );
         $subject->modifyDataStructureIdentifier($event);
         self::assertEquals($expected, $event->getIdentifier());
@@ -164,12 +164,12 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             [],
         );
         $subject = new DataStructureIdentifierListener(
-            $this->createMock(FormPersistenceManagerInterface::class),
-            $this->createMock(ConfigurationService::class),
-            $this->createMock(TranslationService::class),
-            $this->createMock(FlashMessageService::class),
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
-            $this->createMock(ExtFormConfigurationManagerInterface::class),
+            self::createStub(FormPersistenceManagerInterface::class),
+            self::createStub(ConfigurationService::class),
+            self::createStub(TranslationService::class),
+            self::createStub(FlashMessageService::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtFormConfigurationManagerInterface::class),
         );
         $subject->modifyDataStructureIdentifier($event);
         self::assertEquals($expected, $event->getIdentifier());
@@ -185,12 +185,12 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
             [],
         );
         $subject = new DataStructureIdentifierListener(
-            $this->createMock(FormPersistenceManagerInterface::class),
-            $this->createMock(ConfigurationService::class),
-            $this->createMock(TranslationService::class),
-            $this->createMock(FlashMessageService::class),
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
-            $this->createMock(ExtFormConfigurationManagerInterface::class),
+            self::createStub(FormPersistenceManagerInterface::class),
+            self::createStub(ConfigurationService::class),
+            self::createStub(TranslationService::class),
+            self::createStub(FlashMessageService::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtFormConfigurationManagerInterface::class),
         );
         $subject->modifyDataStructure($event);
         self::assertEquals($expected, $event->getDataStructure());
@@ -286,11 +286,11 @@ final class DataStructureIdentifierListenerTest extends FunctionalTestCase
         $formPersistenceManagerMock->expects($this->atLeastOnce())->method('listForms')->willReturn([$formMetadata]);
         $subject = new DataStructureIdentifierListener(
             $formPersistenceManagerMock,
-            $this->createMock(ConfigurationService::class),
-            $this->createMock(TranslationService::class),
-            $this->createMock(FlashMessageService::class),
-            $this->createMock(ExtbaseConfigurationManagerInterface::class),
-            $this->createMock(ExtFormConfigurationManagerInterface::class),
+            self::createStub(ConfigurationService::class),
+            self::createStub(TranslationService::class),
+            self::createStub(FlashMessageService::class),
+            self::createStub(ExtbaseConfigurationManagerInterface::class),
+            self::createStub(ExtFormConfigurationManagerInterface::class),
         );
         $subject->modifyDataStructure($event);
         self::assertEquals($expected, $event->getDataStructure());

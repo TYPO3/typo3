@@ -261,10 +261,10 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         $storageObject->method('getUid')->willReturn(1);
         $fileObject = $this->createMock(File::class);
         $fileObject->expects($this->once())->method('getUid')->willReturn(42);
-        $fileObject->expects($this->any())->method('getName')->willReturn('download.jpg');
-        $fileObject->expects($this->any())->method('getIdentifier')->willReturn('fileadmin/download.jpg');
+        $fileObject->method('getName')->willReturn('download.jpg');
+        $fileObject->method('getIdentifier')->willReturn('fileadmin/download.jpg');
 
-        $fileObject->expects($this->any())->method('getStorage')->willReturn($storageObject);
+        $fileObject->method('getStorage')->willReturn($storageObject);
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $resourceFactory->method('getFileObject')->with('42')->willReturn($fileObject);
@@ -313,7 +313,7 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
     #[Test]
     public function findRefReturnsNullWithFolder(array $softrefConfiguration): void
     {
-        $folderObject = $this->createMock(Folder::class);
+        $folderObject = self::createStub(Folder::class);
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $resourceFactory->expects($this->once())->method('getFolderObjectFromCombinedIdentifier')

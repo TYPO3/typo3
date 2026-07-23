@@ -34,7 +34,7 @@ final class TcaInputPlaceholderRecordTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaInputPlaceholderRecord'] = [];
         $input = ['foo'];
         $subject = new TcaInputPlaceholderRecord(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         self::assertEquals($input, $subject->compile($input));
     }
@@ -55,7 +55,7 @@ final class TcaInputPlaceholderRecordTest extends UnitTestCase
             }
         );
         $subject = new TcaInputPlaceholderRecord(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         self::assertEquals(['foo'], $subject->compile([]));
     }
@@ -69,7 +69,7 @@ final class TcaInputPlaceholderRecordTest extends UnitTestCase
             \stdClass::class => [],
         ];
         $subject = new TcaInputPlaceholderRecord(
-            new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService())
+            new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService())
         );
         $subject->compile([]);
     }

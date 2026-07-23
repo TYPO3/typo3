@@ -59,13 +59,13 @@ final class JsonElementTest extends UnitTestCase
             ],
         ];
 
-        $nodeFactoryMock = $this->createMock(NodeFactory::class);
-        $fieldInformationMock = $this->createMock(FieldInformation::class);
-        $fieldInformationMock->method('render')->willReturn(['html' => '']);
-        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
+        $nodeFactoryStub = self::createStub(NodeFactory::class);
+        $fieldInformationStub = self::createStub(FieldInformation::class);
+        $fieldInformationStub->method('render')->willReturn(['html' => '']);
+        $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
 
         $subject = new JsonElement();
-        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->injectNodeFactory($nodeFactoryStub);
         $subject->setData($data);
         $result = $subject->render();
 
@@ -94,25 +94,25 @@ final class JsonElementTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::setSingletonInstance(PackageManager::class, $this->createMock(PackageManager::class));
+        GeneralUtility::setSingletonInstance(PackageManager::class, self::createStub(PackageManager::class));
 
         $cacheManagerMock = $this->createMock(CacheManager::class);
-        $cacheMock = $this->createMock(FrontendInterface::class);
-        $cacheManagerMock->method('getCache')->with('assets')->willReturn($cacheMock);
-        $cacheMock->method('get')->withAnyParameters()->willReturn([]);
+        $cacheStub = self::createStub(FrontendInterface::class);
+        $cacheManagerMock->method('getCache')->with('assets')->willReturn($cacheStub);
+        $cacheStub->method('get')->willReturn([]);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
-        $modeRegistryMock = $this->createMock(ModeRegistry::class);
-        $modeRegistryMock->method('getDefaultMode')->willReturn(new Mode(JavaScriptModuleInstruction::create('foo')));
-        GeneralUtility::setSingletonInstance(ModeRegistry::class, $modeRegistryMock);
+        $modeRegistryStub = self::createStub(ModeRegistry::class);
+        $modeRegistryStub->method('getDefaultMode')->willReturn(new Mode(JavaScriptModuleInstruction::create('foo')));
+        GeneralUtility::setSingletonInstance(ModeRegistry::class, $modeRegistryStub);
 
-        $nodeFactoryMock = $this->createMock(NodeFactory::class);
-        $fieldInformationMock = $this->createMock(FieldInformation::class);
-        $fieldInformationMock->method('render')->willReturn(['html' => '']);
-        $nodeFactoryMock->method('create')->with(self::anything())->willReturn($fieldInformationMock);
+        $nodeFactoryStub = self::createStub(NodeFactory::class);
+        $fieldInformationStub = self::createStub(FieldInformation::class);
+        $fieldInformationStub->method('render')->willReturn(['html' => '']);
+        $nodeFactoryStub->method('create')->willReturn($fieldInformationStub);
 
         $subject = new JsonElement();
-        $subject->injectNodeFactory($nodeFactoryMock);
+        $subject->injectNodeFactory($nodeFactoryStub);
         $subject->setData($data);
         $result = $subject->render();
 

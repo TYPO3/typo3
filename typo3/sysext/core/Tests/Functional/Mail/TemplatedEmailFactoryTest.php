@@ -389,18 +389,18 @@ final class TemplatedEmailFactoryTest extends FunctionalTestCase
 
     private function createRequestWithoutSite(): ServerRequest
     {
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         return (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('normalizedParams', $normalizedParams);
+            ->withAttribute('normalizedParams', self::createStub(NormalizedParams::class));
     }
 
     private function createRequestWithSite(Site $site): ServerRequest
     {
-        $normalizedParams = $this->createMock(NormalizedParams::class);
+        $normalizedParams = self::createStub(NormalizedParams::class);
         return (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('site', $site)
-            ->withAttribute('normalizedParams', $normalizedParams);
+            ->withAttribute('normalizedParams', self::createStub(NormalizedParams::class));
     }
 }

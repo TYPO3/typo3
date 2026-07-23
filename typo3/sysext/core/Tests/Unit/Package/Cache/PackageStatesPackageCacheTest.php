@@ -44,7 +44,7 @@ final class PackageStatesPackageCacheTest extends UnitTestCase
     #[Test]
     public function getIdentifierThrowsWhenPackageStatesFileIsMissing(): void
     {
-        $subject = new PackageStatesPackageCache($this->packageStatesFile, $this->createMock(PhpFrontend::class));
+        $subject = new PackageStatesPackageCache($this->packageStatesFile, self::createStub(PhpFrontend::class));
 
         $this->expectException(PackageManagerCacheUnavailableException::class);
         $this->expectExceptionCode(1629817141);
@@ -59,7 +59,7 @@ final class PackageStatesPackageCacheTest extends UnitTestCase
         // This fakes the last file modification to have happened in the past.
         touch($this->packageStatesFile, time() - 3600);
 
-        $subject = new PackageStatesPackageCache($this->packageStatesFile, $this->createMock(PhpFrontend::class));
+        $subject = new PackageStatesPackageCache($this->packageStatesFile, self::createStub(PhpFrontend::class));
         $beforeIdentifier = $subject->getIdentifier();
         $subject->invalidate();
         file_put_contents($this->packageStatesFile, '<?php return ["packages" => ["core" => 1, "container" => 1]];');
@@ -71,7 +71,7 @@ final class PackageStatesPackageCacheTest extends UnitTestCase
     public function getIdentifierDiffersWhenPackageStatesFileModifiedWithinOneSecondResolution(): void
     {
         file_put_contents($this->packageStatesFile, '<?php return ["packages" => ["core" => 1]];');
-        $subject = new PackageStatesPackageCache($this->packageStatesFile, $this->createMock(PhpFrontend::class));
+        $subject = new PackageStatesPackageCache($this->packageStatesFile, self::createStub(PhpFrontend::class));
         // This test assumes, that it will never take more than one second
         // to get from this execution point in this test...
         $beforeIdentifier = $subject->getIdentifier();

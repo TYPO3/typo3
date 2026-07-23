@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -39,7 +40,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
     private InstallUtility&MockObject $installUtilityMock;
     private DownloadQueue $downloadQueue;
     private ExtensionDownloaderRemoteInterface&MockObject $remoteMock;
-    private FileHandlingUtility&MockObject $fileHandlingUtilityMock;
+    private FileHandlingUtility&Stub $fileHandlingUtilityStub;
 
     public function setUp(): void
     {
@@ -49,12 +50,12 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $remoteRegistryMock = $this->createMock(RemoteRegistry::class);
         $remoteRegistryMock->method('hasRemote')->with(self::anything())->willReturn(true);
         $remoteRegistryMock->method('getRemote')->with(self::anything())->willReturn($this->remoteMock);
-        $this->fileHandlingUtilityMock = $this->createMock(FileHandlingUtility::class);
+        $this->fileHandlingUtilityStub = self::createStub(FileHandlingUtility::class);
 
         $this->downloadQueue = new DownloadQueue();
         $this->managementService = new ExtensionManagementService(
             $remoteRegistryMock,
-            $this->fileHandlingUtilityMock,
+            $this->fileHandlingUtilityStub,
             $this->downloadQueue,
             new NoopEventDispatcher()
         );
@@ -79,7 +80,7 @@ final class ExtensionManagementServiceTest extends UnitTestCase
         $this->remoteMock->expects($this->once())->method('downloadExtension')->with(
             $extension->extensionKey,
             $extension->version,
-            $this->fileHandlingUtilityMock,
+            $this->fileHandlingUtilityStub,
             $extension->md5hash,
             'Local'
         );

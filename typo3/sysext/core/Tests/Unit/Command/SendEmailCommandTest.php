@@ -30,13 +30,13 @@ final class SendEmailCommandTest extends UnitTestCase
     #[Test]
     public function executeWillFlushTheQueue(): void
     {
-        $delayedTransportMock = $this->createMock(DelayedTransportInterface::class);
-        $delayedTransportMock->method('flushQueue')->with(self::anything())->willReturn(5);
-        $realTransportMock = $this->createMock(TransportInterface::class);
+        $delayedTransportStub = self::createStub(DelayedTransportInterface::class);
+        $delayedTransportStub->method('flushQueue')->willReturn(5);
+        $realTransportStub = self::createStub(TransportInterface::class);
 
-        $mailer = $this->createMock(MailerInterface::class);
-        $mailer->method('getTransport')->willReturn($delayedTransportMock);
-        $mailer->method('getRealTransport')->willReturn($realTransportMock);
+        $mailer = self::createStub(MailerInterface::class);
+        $mailer->method('getTransport')->willReturn($delayedTransportStub);
+        $mailer->method('getRealTransport')->willReturn($realTransportStub);
 
         $command = new SendEmailCommand($mailer);
         $tester = new CommandTester($command);

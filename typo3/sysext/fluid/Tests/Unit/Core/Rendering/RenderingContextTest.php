@@ -29,7 +29,7 @@ final class RenderingContextTest extends UnitTestCase
     #[Test]
     public function templateVariableContainerCanBeReadCorrectly(): void
     {
-        $templateVariableContainer = $this->createMock(StandardVariableProvider::class);
+        $templateVariableContainer = self::createStub(StandardVariableProvider::class);
         $subject = $this->getMockBuilder(RenderingContext::class)->onlyMethods([])->disableOriginalConstructor()->getMock();
         $subject->setVariableProvider($templateVariableContainer);
         self::assertSame($subject->getVariableProvider(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
@@ -38,7 +38,7 @@ final class RenderingContextTest extends UnitTestCase
     #[Test]
     public function viewHelperVariableContainerCanBeReadCorrectly(): void
     {
-        $viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
+        $viewHelperVariableContainer = self::createStub(ViewHelperVariableContainer::class);
         $subject = $this->getMockBuilder(RenderingContext::class)->onlyMethods([])->disableOriginalConstructor()->getMock();
         $subject->setViewHelperVariableContainer($viewHelperVariableContainer);
         self::assertSame($viewHelperVariableContainer, $subject->getViewHelperVariableContainer());

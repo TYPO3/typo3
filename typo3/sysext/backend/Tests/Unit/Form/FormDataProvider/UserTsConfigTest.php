@@ -36,9 +36,9 @@ final class UserTsConfigTest extends UnitTestCase
     public function addDataSetsUserTypoScriptInResult(): void
     {
         $expected = ['foo'];
-        $backendUserAuthenticationMock = $this->createMock(BackendUserAuthentication::class);
-        $backendUserAuthenticationMock->method('getTSConfig')->willReturn($expected);
-        $GLOBALS['BE_USER'] = $backendUserAuthenticationMock;
+        $backendUserAuthenticationStub = self::createStub(BackendUserAuthentication::class);
+        $backendUserAuthenticationStub->method('getTSConfig')->willReturn($expected);
+        $GLOBALS['BE_USER'] = $backendUserAuthenticationStub;
         $result = $this->subject->addData([]);
         self::assertEquals($expected, $result['userTsConfig']);
     }

@@ -67,7 +67,7 @@ final class ExtensionStatusTest extends UnitTestCase
     {
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())
-            ->willReturn($this->createMock(LanguageService::class));
+            ->willReturn(self::createStub(LanguageService::class));
 
         $listUtilityMock = $this->setUpRegistryStatusTests();
         $remoteRegistryMock = $this->setUpRemoteRegistryMock();
@@ -87,7 +87,7 @@ final class ExtensionStatusTest extends UnitTestCase
     {
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())
-            ->willReturn($this->createMock(LanguageService::class));
+            ->willReturn(self::createStub(LanguageService::class));
 
         $listUtilityMock = $this->setUpRegistryStatusTests(0, true);
         $remoteRegistryMock = $this->setUpRemoteRegistryMock(false);
@@ -108,7 +108,7 @@ final class ExtensionStatusTest extends UnitTestCase
     {
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())
-            ->willReturn($this->createMock(LanguageService::class));
+            ->willReturn(self::createStub(LanguageService::class));
 
         $remote = new class extends TerExtensionRemote {
             public function __construct() {}
@@ -143,7 +143,7 @@ final class ExtensionStatusTest extends UnitTestCase
     {
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
         $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())
-            ->willReturn($this->createMock(LanguageService::class));
+            ->willReturn(self::createStub(LanguageService::class));
 
         $listUtilityMock = $this->setUpRegistryStatusTests();
         $remoteRegistryMock = $this->setUpRemoteRegistryMock();
@@ -162,9 +162,9 @@ final class ExtensionStatusTest extends UnitTestCase
     #[Test]
     public function getStatusReturnsErrorForLoadedExtensionIfInsecureExtensionIsLoaded(): void
     {
-        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceStub = self::createStub(LanguageService::class);
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
+        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceStub);
 
         $listUtilityMock = $this->setUpRegistryStatusTests(-1);
         $remoteRegistryMock = $this->setUpRemoteRegistryMock();
@@ -183,9 +183,9 @@ final class ExtensionStatusTest extends UnitTestCase
     #[Test]
     public function getStatusReturnsOkForExistingExtensionIfNoInsecureExtensionExists(): void
     {
-        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceStub = self::createStub(LanguageService::class);
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
+        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceStub);
 
         $listUtilityMock = $this->setUpRegistryStatusTests(0, false);
         $remoteRegistryMock = $this->setUpRemoteRegistryMock();
@@ -205,9 +205,9 @@ final class ExtensionStatusTest extends UnitTestCase
     #[Test]
     public function getStatusReturnsWarningForExistingExtensionIfInsecureExtensionExistsButIsNotLoaded(): void
     {
-        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceStub = self::createStub(LanguageService::class);
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
+        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceStub);
 
         $listUtilityMock = $this->setUpRegistryStatusTests(-1, false);
         $remoteRegistryMock = $this->setUpRemoteRegistryMock();
@@ -226,9 +226,9 @@ final class ExtensionStatusTest extends UnitTestCase
     #[Test]
     public function getStatusReturnsWarningForLoadedExtensionIfOutdatedExtensionIsLoaded(): void
     {
-        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceStub = self::createStub(LanguageService::class);
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
+        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceStub);
 
         $listUtilityMock = $this->setUpRegistryStatusTests(-2, true);
         $remoteRegistryMock = $this->setUpRemoteRegistryMock();
@@ -247,9 +247,9 @@ final class ExtensionStatusTest extends UnitTestCase
     #[Test]
     public function getStatusReturnsErrorForExistingExtensionIfOutdatedExtensionExists(): void
     {
-        $languageServiceMock = $this->createMock(LanguageService::class);
+        $languageServiceStub = self::createStub(LanguageService::class);
         $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
+        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceStub);
 
         $listUtilityMock = $this->setUpRegistryStatusTests(-2, false);
         $remoteRegistryMock = $this->setUpRemoteRegistryMock();

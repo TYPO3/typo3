@@ -83,10 +83,10 @@ final class StorageRepositoryTest extends UnitTestCase
     {
         $subject = new StorageRepository(
             new NoopEventDispatcher(),
-            $this->createMock(ConnectionPool::class),
-            $this->createMock(DriverRegistry::class),
-            $this->createMock(FlexFormTools::class),
-            $this->createMock(LoggerInterface::class),
+            self::createStub(ConnectionPool::class),
+            self::createStub(DriverRegistry::class),
+            self::createStub(FlexFormTools::class),
+            self::createStub(LoggerInterface::class),
         );
         $mock = \Closure::bind(static function (StorageRepository $storageRepository) use (&$path, $storageConfiguration) {
             $storageRepository->localDriverStorageCache = $storageConfiguration;

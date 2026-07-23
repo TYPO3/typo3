@@ -35,8 +35,8 @@ final class MarkerBasedTemplateServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $cacheFrontendMock = $this->createMock(FrontendInterface::class);
-        $this->templateService = new MarkerBasedTemplateService($cacheFrontendMock, $cacheFrontendMock);
+        $cacheFrontendStub = self::createStub(FrontendInterface::class);
+        $this->templateService = new MarkerBasedTemplateService($cacheFrontendStub, $cacheFrontendStub);
     }
 
     /**

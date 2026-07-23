@@ -27,7 +27,7 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUserRecordExtractsJsonFieldSettings(): void
     {
-        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema = self::createStub(UserSettingsSchema::class);
         $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
         $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
@@ -47,7 +47,7 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUserRecordExtractsDbColumnSettings(): void
     {
-        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema = self::createStub(UserSettingsSchema::class);
         $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
         $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
@@ -69,7 +69,7 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUserRecordFallsBackToUcForMissingJsonFieldSettings(): void
     {
-        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema = self::createStub(UserSettingsSchema::class);
         $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
         $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
@@ -95,7 +95,7 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUserRecordJsonFieldSettingsTakePrecedenceOverUc(): void
     {
-        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema = self::createStub(UserSettingsSchema::class);
         $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
         $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
@@ -115,7 +115,7 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUcExtractsOnlyJsonFieldSettings(): void
     {
-        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema = self::createStub(UserSettingsSchema::class);
         $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
         $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
@@ -138,7 +138,7 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUcIgnoresDbColumnFields(): void
     {
-        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema = self::createStub(UserSettingsSchema::class);
         $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
         $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);
@@ -157,7 +157,7 @@ final class UserSettingsFactoryTest extends UnitTestCase
     #[Test]
     public function createFromUserRecordMergesDbColumnAndJsonFieldSettings(): void
     {
-        $schema = $this->createMock(UserSettingsSchema::class);
+        $schema = self::createStub(UserSettingsSchema::class);
         $schema->method('getJsonFieldSettingKeys')->willReturn(['colorScheme', 'titleLen', 'emailMeAtLogin']);
         $schema->method('getDbColumnSettingKeys')->willReturn(['lang', 'email', 'realName']);
         $factory = new UserSettingsFactory($schema);

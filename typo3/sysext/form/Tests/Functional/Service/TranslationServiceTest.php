@@ -895,7 +895,7 @@ final class TranslationServiceTest extends FunctionalTestCase
     {
         $formRuntimeXlfPaths = ['EXT:form_labels/Resources/Private/Language/locallang_form.xlf'];
 
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $formRuntime->method('getIdentifier')->willReturn('my-form-runtime-identifier');
         $formRuntime->method('getRenderingOptions')->willReturn([
             'translation' => [
@@ -904,7 +904,7 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ]);
 
-        $element = $this->createMock(RootRenderableInterface::class);
+        $element = self::createStub(RootRenderableInterface::class);
         $element->method('getIdentifier')->willReturn('my-form-element-with-translation-arguments');
         $element->method('getType')->willReturn(RootRenderableInterface::class);
         $element->method('getLabel')->willReturn('See %s or %s');
@@ -955,11 +955,11 @@ final class TranslationServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $mockFormRuntime = $this->createMock(FormRuntime::class);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
 
         self::assertSame(
             'subject value',
-            $this->subject->translateFinisherOption($mockFormRuntime, 'SaveToDatabaseFinisher', 'subject', 'subject value', $finisherRenderingOptions)
+            $this->subject->translateFinisherOption($formRuntimeStub, 'SaveToDatabaseFinisher', 'subject', 'subject value', $finisherRenderingOptions)
         );
     }
 
@@ -968,7 +968,7 @@ final class TranslationServiceTest extends FunctionalTestCase
     {
         $formRuntimeXlfPaths = ['EXT:form_labels/Resources/Private/Language/locallang_form.xlf'];
 
-        $formRuntime = $this->createMock(FormRuntime::class);
+        $formRuntime = self::createStub(FormRuntime::class);
         $formRuntime->method('getIdentifier')->willReturn('my-form-runtime-identifier');
         $formRuntime->method('getRenderingOptions')->willReturn([
             'translation' => [

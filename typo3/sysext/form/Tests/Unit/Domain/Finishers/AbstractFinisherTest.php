@@ -47,30 +47,30 @@ final class AbstractFinisherTest extends UnitTestCase
     #[Test]
     public function parseOptionReturnsDefaultOptionValueIfOptionNameNotExistsWithinOptionsButWithinDefaultOptions(): void
     {
-        $finisherContextMock = $this->createMock(FinisherContext::class);
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with(self::anything())->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with(self::anything())->willReturn(null);
-        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
-        $finisherContextMock->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
+        $finisherContextStub = self::createStub(FinisherContext::class);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('offsetExists')->willReturn(true);
+        $formRuntimeStub->method('offsetGet')->willReturn(null);
+        $finisherContextStub->method('getFormRuntime')->willReturn($formRuntimeStub);
+        $finisherContextStub->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
 
         $subject = new AbstractFinisherFixture();
         $subject->options = [];
         $subject->defaultOptions = [
             'subject' => 'defaultValue',
         ];
-        $subject->finisherContext = $finisherContextMock;
+        $subject->finisherContext = $finisherContextStub;
         self::assertSame('defaultValue', $subject->parseOption('subject'));
     }
 
     #[Test]
     public function parseOptionReturnsDefaultOptionValueIfOptionValueIsAFormElementReferenceAndTheFormElementValueIsEmpty(): void
     {
-        $finisherContextMock = $this->createMock(FinisherContext::class);
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->with(self::anything())->willReturn(true);
-        $formRuntimeMock->method('offsetGet')->with(self::anything())->willReturn('');
-        $finisherContextMock->method('getFormRuntime')->willReturn($formRuntimeMock);
+        $finisherContextStub = self::createStub(FinisherContext::class);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('offsetExists')->willReturn(true);
+        $formRuntimeStub->method('offsetGet')->willReturn('');
+        $finisherContextStub->method('getFormRuntime')->willReturn($formRuntimeStub);
 
         $subject = new AbstractFinisherFixture();
         $subject->options = [
@@ -79,28 +79,28 @@ final class AbstractFinisherTest extends UnitTestCase
         $subject->defaultOptions = [
             'subject' => 'defaultValue',
         ];
-        $subject->finisherContext = $finisherContextMock;
+        $subject->finisherContext = $finisherContextStub;
         self::assertSame('defaultValue', $subject->parseOption('subject'));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsArrayIfInputIsArray(): void
     {
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
         $input = ['bar', 'foobar', ['x', 'y']];
         $expected = ['bar', 'foobar', ['x', 'y']];
         $subject = new AbstractFinisherFixture();
-        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeStub));
     }
 
     #[Test]
     public function substituteRuntimeReferencesReturnsStringIfInputIsString(): void
     {
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
         $input = 'foobar';
         $expected = 'foobar';
         $subject = new AbstractFinisherFixture();
-        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeStub));
     }
 
     #[Test]
@@ -125,17 +125,17 @@ final class AbstractFinisherTest extends UnitTestCase
         $elementValue2 = 'element-value-2';
         $input = '{' . $elementIdentifier1 . '},{' . $elementIdentifier2 . '}';
         $expected = $elementValue1 . ',' . $elementValue2;
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->willReturnMap([
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('offsetExists')->willReturnMap([
             [$elementIdentifier1, true],
             [$elementIdentifier2, true],
         ]);
-        $formRuntimeMock->method('offsetGet')->willReturnMap([
+        $formRuntimeStub->method('offsetGet')->willReturnMap([
             [$elementIdentifier1, $elementValue1],
             [$elementIdentifier2, $elementValue2],
         ]);
         $subject = new AbstractFinisherFixture();
-        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeStub));
     }
 
     #[Test]
@@ -176,17 +176,17 @@ final class AbstractFinisherTest extends UnitTestCase
                 ['stan', 'steve'],
             ],
         ];
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->willReturnMap([
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('offsetExists')->willReturnMap([
             [$elementIdentifier1, true],
             [$elementIdentifier2, true],
         ]);
-        $formRuntimeMock->method('offsetGet')->willReturnMap([
+        $formRuntimeStub->method('offsetGet')->willReturnMap([
             [$elementIdentifier1, $elementValue1],
             [$elementIdentifier2, $elementValue2],
         ]);
         $subject = new AbstractFinisherFixture();
-        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeStub));
     }
 
     #[Test]
@@ -198,10 +198,10 @@ final class AbstractFinisherTest extends UnitTestCase
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with($elementIdentifier)->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with($elementIdentifier)->willReturn($expected);
-        $finisherContextMock = $this->createMock(FinisherContext::class);
-        $finisherContextMock->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
+        $finisherContextStub = self::createStub(FinisherContext::class);
+        $finisherContextStub->method('getFinisherVariableProvider')->willReturn(new FinisherVariableProvider());
         $subject = new AbstractFinisherFixture();
-        $subject->finisherContext = $finisherContextMock;
+        $subject->finisherContext = $finisherContextStub;
         self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
     }
 
@@ -210,9 +210,9 @@ final class AbstractFinisherTest extends UnitTestCase
     {
         $input = '{__currentTimestamp}';
         $expected = '#^([0-9]{10})$#';
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
+        $formRuntimeStub = self::createStub(FormRuntime::class);
         $subject = new AbstractFinisherFixture();
-        self::assertMatchesRegularExpression($expected, (string)$subject->substituteRuntimeReferences($input, $formRuntimeMock));
+        self::assertMatchesRegularExpression($expected, (string)$subject->substituteRuntimeReferences($input, $formRuntimeStub));
     }
 
     #[Test]
@@ -234,17 +234,17 @@ final class AbstractFinisherTest extends UnitTestCase
                 ['stan', 'steve'],
             ],
         ];
-        $formRuntimeMock = $this->createMock(FormRuntime::class);
-        $formRuntimeMock->method('offsetExists')->willReturnMap([
+        $formRuntimeStub = self::createStub(FormRuntime::class);
+        $formRuntimeStub->method('offsetExists')->willReturnMap([
             [$elementIdentifier1, true],
             [$elementIdentifier2, true],
         ]);
-        $formRuntimeMock->method('offsetGet')->willReturnMap([
+        $formRuntimeStub->method('offsetGet')->willReturnMap([
             [$elementIdentifier1, $elementValue1],
             [$elementIdentifier2, $elementValue2],
         ]);
         $subject = new AbstractFinisherFixture();
-        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeMock));
+        self::assertSame($expected, $subject->substituteRuntimeReferences($input, $formRuntimeStub));
     }
 
     #[Test]
@@ -276,8 +276,8 @@ final class AbstractFinisherTest extends UnitTestCase
         $formRuntimeMock = $this->createMock(FormRuntime::class);
         $formRuntimeMock->method('offsetExists')->with('date-1')->willReturn(true);
         $formRuntimeMock->method('offsetGet')->with('date-1')->willReturn(new \DateTime());
-        $formDefinitionMock = $this->createMock(FormDefinition::class);
-        $formRuntimeMock->method('getFormDefinition')->willReturn($formDefinitionMock);
+        $formDefinitionStub = self::createStub(FormDefinition::class);
+        $formRuntimeMock->method('getFormDefinition')->willReturn($formDefinitionStub);
         $this->expectException(FinisherException::class);
         $this->expectExceptionCode(1574362327);
         $subject = new AbstractFinisherFixture();

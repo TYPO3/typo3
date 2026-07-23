@@ -53,7 +53,7 @@ final class ContentDataProcessorTest extends UnitTestCase
             ],
         ];
         $variables = [];
-        $this->contentDataProcessor->process($this->createMock(ContentObjectRenderer::class), $config, $variables);
+        $this->contentDataProcessor->process(self::createStub(ContentObjectRenderer::class), $config, $variables);
     }
 
     #[Test]
@@ -67,7 +67,7 @@ final class ContentDataProcessorTest extends UnitTestCase
             ],
         ];
         $variables = [];
-        $this->contentDataProcessor->process($this->createMock(ContentObjectRenderer::class), $config, $variables);
+        $this->contentDataProcessor->process(self::createStub(ContentObjectRenderer::class), $config, $variables);
     }
 
     #[Test]
@@ -82,7 +82,7 @@ final class ContentDataProcessorTest extends UnitTestCase
         $variables = [];
         self::assertSame(
             ['foo' => 'bar'],
-            $this->contentDataProcessor->process($this->createMock(ContentObjectRenderer::class), $config, $variables)
+            $this->contentDataProcessor->process(self::createStub(ContentObjectRenderer::class), $config, $variables)
         );
     }
 
@@ -98,7 +98,7 @@ final class ContentDataProcessorTest extends UnitTestCase
             ],
         ];
         $variables = [];
-        $this->contentDataProcessor->process($this->createMock(ContentObjectRenderer::class), $config, $variables);
+        $this->contentDataProcessor->process(self::createStub(ContentObjectRenderer::class), $config, $variables);
     }
 
     #[Test]
@@ -114,7 +114,7 @@ final class ContentDataProcessorTest extends UnitTestCase
         $variables = [];
         self::assertSame(
             ['foo' => 'bar'],
-            $this->contentDataProcessor->process($this->createMock(ContentObjectRenderer::class), $config, $variables)
+            $this->contentDataProcessor->process(self::createStub(ContentObjectRenderer::class), $config, $variables)
         );
     }
 }

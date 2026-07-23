@@ -904,11 +904,11 @@ final class SelectItemProcessorTest extends UnitTestCase
     public function dividersAreAddedForEachGroupWithLanguageServiceFactoryFallback(array $items, array $groups, array $sortOrders, array $expected): void
     {
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('sL')->willReturnArgument(0);
-        $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturn($languageServiceMock);
-        $selectItemProcessor = new SelectItemProcessor($languageServiceFactoryMock);
+        $languageServiceStub = self::createStub(LanguageService::class);
+        $languageServiceStub->method('sL')->willReturnArgument(0);
+        $languageServiceFactoryStub = self::createStub(LanguageServiceFactory::class);
+        $languageServiceFactoryStub->method('createFromUserPreferences')->willReturn($languageServiceStub);
+        $selectItemProcessor = new SelectItemProcessor($languageServiceFactoryStub);
         $result = $selectItemProcessor->groupAndSortItems($items, $groups, $sortOrders);
 
         self::assertSame($expected, $result);
@@ -919,17 +919,17 @@ final class SelectItemProcessorTest extends UnitTestCase
     public function dividersAreAddedForEachGroupWithGlobalLang(array $items, array $groups, array $sortOrders, array $expected): void
     {
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('sL')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
-        $languageServiceFactoryMock = $this->createMock(LanguageServiceFactory::class);
-        $languageServiceFactoryMock->method('createFromUserPreferences')->with(self::anything())->willReturnCallback(static function () {
+        $languageServiceStub = self::createStub(LanguageService::class);
+        $languageServiceStub->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageServiceStub;
+        $languageServiceFactoryStub = self::createStub(LanguageServiceFactory::class);
+        $languageServiceFactoryStub->method('createFromUserPreferences')->willReturnCallback(static function () {
             throw new \RuntimeException(
                 'LanguageServiceFactory->createFromUserPreferences() should not be called in ' . __METHOD__,
                 1689946260
             );
         });
-        $selectItemProcessor = new SelectItemProcessor($languageServiceFactoryMock);
+        $selectItemProcessor = new SelectItemProcessor($languageServiceFactoryStub);
         $result = $selectItemProcessor->groupAndSortItems($items, $groups, $sortOrders);
 
         self::assertSame($expected, $result);

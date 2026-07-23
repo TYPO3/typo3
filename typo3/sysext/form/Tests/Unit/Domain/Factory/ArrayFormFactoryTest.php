@@ -46,8 +46,8 @@ final class ArrayFormFactoryTest extends UnitTestCase
     public function addNestedRenderableSkipChildElementRenderingIfCompositeElementIsUnknown(): void
     {
         $unknownElement = new UnknownFormElement('test-2', 'test');
-        $section = $this->createMock(Section::class);
-        $section->method('createElement')->with(self::anything())->willReturn($unknownElement);
+        $section = self::createStub(Section::class);
+        $section->method('createElement')->willReturn($unknownElement);
         $configuration = [
             'identifier' => 'test-3',
             'type' => 'Foo',

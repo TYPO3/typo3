@@ -57,7 +57,7 @@ final class PageLinkBuilderTest extends UnitTestCase
         $request = new ServerRequest('https://example.com');
         $request = $request->withQueryParams($queryParameters);
         $request = $request->withAttribute('routing', new PageArguments(1, '', $queryParameters, [], []));
-        $cObj = $this->createMock(ContentObjectRenderer::class);
+        $cObj = self::createStub(ContentObjectRenderer::class);
         $cObj->method('getRequest')->willReturn($request);
         $subject = $this->getAccessibleMock(PageLinkBuilder::class, null, [], '', false);
         $subject->_set('contentObjectRenderer', $cObj);
@@ -118,7 +118,7 @@ final class PageLinkBuilderTest extends UnitTestCase
         $conf['queryParameters'] = (array)($conf['queryParameters'] ?? []);
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('routing', new PageArguments(1, '', [], [], []));
-        $cObj = $this->createMock(ContentObjectRenderer::class);
+        $cObj = self::createStub(ContentObjectRenderer::class);
         $cObj->method('getRequest')->willReturn($request);
         $cObj->method('stdWrapValue')->willReturnCallback(
             static fn(string $key, array $config) => $config[$key] ?? ''

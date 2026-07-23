@@ -98,7 +98,7 @@ final class NewContentElementControllerTest extends UnitTestCase
 
         $result = (new \ReflectionClass(NewContentElementController::class))
             ->getMethod('migrateCommonGroupToDefault')
-            ->invokeArgs($this->createMock(NewContentElementController::class), [$input]);
+            ->invokeArgs(self::createStub(NewContentElementController::class), [$input]);
 
         self::assertSame($expected, $result);
     }
@@ -166,7 +166,7 @@ final class NewContentElementControllerTest extends UnitTestCase
 
         $result = (new \ReflectionClass(NewContentElementController::class))
             ->getMethod('removeWizardsByPageTs')
-            ->invokeArgs($this->createMock(NewContentElementController::class), [$wizards, $wizardsTsConfig]);
+            ->invokeArgs(self::createStub(NewContentElementController::class), [$wizards, $wizardsTsConfig]);
 
         self::assertSame($expected, $result);
     }
@@ -276,7 +276,7 @@ final class NewContentElementControllerTest extends UnitTestCase
         $result = (new \ReflectionClass(NewContentElementController::class))
             ->getMethod('mergeContentElementWizardsWithPageTSConfigWizards')
             ->invokeArgs(
-                $this->createMock(
+                self::createStub(
                     NewContentElementController::class
                 ),
                 [$contentElementWizardItems, $pageTsConfigWizardItems]

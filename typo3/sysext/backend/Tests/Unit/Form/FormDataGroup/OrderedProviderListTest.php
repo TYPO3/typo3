@@ -31,7 +31,7 @@ final class OrderedProviderListTest extends UnitTestCase
     public function compileReturnsIncomingData(): void
     {
         $input = ['foo'];
-        $subject = new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService());
+        $subject = new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService());
         $subject->setProviderList([]);
         self::assertEquals($input, $subject->compile($input));
     }
@@ -46,7 +46,7 @@ final class OrderedProviderListTest extends UnitTestCase
             }
         };
         GeneralUtility::addInstance(\stdClass::class, $formDataProvider);
-        $subject = new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService());
+        $subject = new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService());
         $subject->setProviderList([
             \stdClass::class => [],
         ]);
@@ -56,7 +56,7 @@ final class OrderedProviderListTest extends UnitTestCase
     #[Test]
     public function compileDoesNotCallDisabledDataProvider(): void
     {
-        $subject = new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService());
+        $subject = new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService());
         $subject->setProviderList([
             FormDataProviderInterface::class => [
                 'disabled' => true,
@@ -71,7 +71,7 @@ final class OrderedProviderListTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1685542507);
-        $subject = new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService());
+        $subject = new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService());
         $subject->setProviderList([
             '\\Invalid\\Class\\String' => [],
         ]);
@@ -83,7 +83,7 @@ final class OrderedProviderListTest extends UnitTestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1485299408);
-        $subject = new OrderedProviderList($this->createMock(FrontendInterface::class), new DependencyOrderingService());
+        $subject = new OrderedProviderList(self::createStub(FrontendInterface::class), new DependencyOrderingService());
         $subject->setProviderList([
             \stdClass::class => [],
         ]);

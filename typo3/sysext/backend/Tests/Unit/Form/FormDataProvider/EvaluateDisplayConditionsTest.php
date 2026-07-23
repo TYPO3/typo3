@@ -3721,7 +3721,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
             ],
         ];
 
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = self::createStub(BackendUserAuthentication::class);
 
         $expected = $input;
         if ($expectedResult) {
@@ -3763,7 +3763,7 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
             ];
         }
 
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = self::createStub(BackendUserAuthentication::class);
 
         $expected = $input;
         if ($expectedResult) {

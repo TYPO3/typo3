@@ -88,7 +88,7 @@ final class UriBuilderTest extends UnitTestCase
         foreach ($routes as $nameRoute => $route) {
             $router->addRoute($nameRoute, $route);
         }
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
         $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
         $subject = new UriBuilder($router, $formProtectionFactory, $requestContextFactory);
         $uri = $subject->buildUriFromRoute(
@@ -102,7 +102,7 @@ final class UriBuilderTest extends UnitTestCase
     #[Test]
     public function nonExistingRouteThrowsException(): void
     {
-        $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
+        $formProtectionFactory = self::createStub(FormProtectionFactory::class);
         $formProtectionFactory->method('createForType')->willReturn(new DisabledFormProtection());
 
         $this->expectException(RouteNotFoundException::class);

@@ -27,7 +27,7 @@ final class AfterContentObjectRendererInitializedEventTest extends UnitTestCase
     #[Test]
     public function gettersReturnInitializedObjects(): void
     {
-        $contentObjectRenderer = $this->createMock(ContentObjectRenderer::class);
+        $contentObjectRenderer = self::createStub(ContentObjectRenderer::class);
         $event = new AfterContentObjectRendererInitializedEvent($contentObjectRenderer);
         self::assertEquals($contentObjectRenderer, $event->getContentObjectRenderer());
     }

@@ -33,8 +33,8 @@ final class SlugRedirectChangeItemCreatedEventTest extends UnitTestCase
         $changeItem = new SlugRedirectChangeItem(
             defaultLanguagePageId: 0,
             pageId: 0,
-            site: $this->createMock(Site::class),
-            siteLanguage: $this->createMock(SiteLanguage::class),
+            site: self::createStub(Site::class),
+            siteLanguage: self::createStub(SiteLanguage::class),
             original: ['slug' => '/origianl'],
             sourcesCollection: new RedirectSourceCollection(),
             changed: ['slug' => '/changed'],
@@ -51,8 +51,8 @@ final class SlugRedirectChangeItemCreatedEventTest extends UnitTestCase
         $changeItem = new SlugRedirectChangeItem(
             defaultLanguagePageId: 0,
             pageId: 0,
-            site: $this->createMock(Site::class),
-            siteLanguage: $this->createMock(SiteLanguage::class),
+            site: self::createStub(Site::class),
+            siteLanguage: self::createStub(SiteLanguage::class),
             original: ['slug' => '/origianl'],
             sourcesCollection: new RedirectSourceCollection(),
             changed: ['slug' => '/changed'],
@@ -60,8 +60,8 @@ final class SlugRedirectChangeItemCreatedEventTest extends UnitTestCase
         $changeItemChanged = new SlugRedirectChangeItem(
             defaultLanguagePageId: 0,
             pageId: 0,
-            site: $this->createMock(Site::class),
-            siteLanguage: $this->createMock(SiteLanguage::class),
+            site: self::createStub(Site::class),
+            siteLanguage: self::createStub(SiteLanguage::class),
             original: ['slug' => '/origianl'],
             sourcesCollection: new RedirectSourceCollection(),
             changed: ['slug' => '/override'],

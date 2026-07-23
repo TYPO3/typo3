@@ -38,7 +38,7 @@ final class AbstractLinkBrowserControllerTest extends UnitTestCase
     #[Test]
     public function getLinkAttributeFieldDefinitionsContainsRelField(): void
     {
-        $languageService = $this->createMock(LanguageService::class);
+        $languageService = self::createStub(LanguageService::class);
         $languageService->method('sL')->willReturnCallback(static fn(string $key): string => $key);
         $this->subject->method('getLanguageService')->willReturn($languageService);
         $this->subject->_set('linkAttributeValues', ['rel' => 'noopener']);
@@ -53,7 +53,7 @@ final class AbstractLinkBrowserControllerTest extends UnitTestCase
     #[Test]
     public function getAllowedLinkAttributesDoesNotContainRelWhenNotAllowed(): void
     {
-        $linkHandler = $this->createMock(LinkHandlerInterface::class);
+        $linkHandler = self::createStub(LinkHandlerInterface::class);
         $linkHandler->method('getLinkAttributes')->willReturn(['target', 'title', 'class', 'params', 'rel']);
         $this->subject->_set('displayedLinkHandler', $linkHandler);
         $this->subject->_set('parameters', ['params' => ['allowedOptions' => 'target,title,class,params']]);

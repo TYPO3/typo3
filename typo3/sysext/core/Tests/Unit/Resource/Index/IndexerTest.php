@@ -31,10 +31,10 @@ final class IndexerTest extends UnitTestCase
     #[Test]
     public function extractMetaDataCallsSubsequentMethodsWithCorrectArguments(): void
     {
-        $mockStorage = $this->createMock(ResourceStorage::class);
+        $storageStub = self::createStub(ResourceStorage::class);
 
         $subject = $this->getMockBuilder(Indexer::class)
-            ->setConstructorArgs([$mockStorage])
+            ->setConstructorArgs([$storageStub])
             ->onlyMethods(['getFileIndexRepository', 'extractRequiredMetaData', 'getExtractorService'])
             ->getMock();
 
@@ -44,7 +44,7 @@ final class IndexerTest extends UnitTestCase
         $fileMock = $this->createMock(File::class);
         $fileMock->method('getUid')->willReturn(42);
         $fileMock->method('getType')->willReturn(FileType::TEXT->value);
-        $fileMock->method('getStorage')->willReturn($mockStorage);
+        $fileMock->method('getStorage')->willReturn($storageStub);
 
         $extractorServiceMock = $this->createMock(ExtractorService::class);
         $extractorServiceMock->expects($this->once())->method('extractMetaData')->with($fileMock);

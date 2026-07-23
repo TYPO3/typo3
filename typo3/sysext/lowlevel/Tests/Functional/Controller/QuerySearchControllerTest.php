@@ -378,18 +378,18 @@ final class QuerySearchControllerTest extends FunctionalTestCase
         $settings = $this->prepareSettings($settings, $replacements);
         $settings['queryConfig'] = serialize($settings['queryConfig']);
 
-        $iconMock = $this->getMockBuilder(Icon::class)->getMock();
-        $iconMock->method('render')->willReturn('');
+        $iconStub = self::createStub(Icon::class);
+        $iconStub->method('render')->willReturn('');
 
-        $iconFactoryMock = $this->getMockBuilder(IconFactory::class)->disableOriginalConstructor()->getMock();
-        $iconFactoryMock->method('getIcon')->willReturn($iconMock);
+        $iconFactoryStub = self::createStub(IconFactory::class);
+        $iconFactoryStub->method('getIcon')->willReturn($iconStub);
 
         $route = $this->get(Router::class)->getRoute('system_database');
         $route->setOption('_identifier', 'system_database');
         $request = (new ServerRequest())->withAttribute('route', $route);
 
         $subject = $this->getAccessibleMock(QuerySearchController::class, null, [
-            $iconFactoryMock,
+            $iconFactoryStub,
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
             $this->get(TcaSchemaFactory::class),
