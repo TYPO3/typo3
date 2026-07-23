@@ -146,7 +146,11 @@ EOF;
         foreach ($activeExtensionPackages as $package) {
             $classLoadingInformation = $this->buildClassLoadingInformationForPackage($package, true, $isDevMode, $installationRoot);
             $classMap = array_merge($classMap, $classLoadingInformation['classMap']);
-            $psr4 = array_merge($psr4, $classLoadingInformation['psr-4']);
+            // Accumulate per prefix: more than one package can use the same PSR-4 prefix,
+            // array_merge() would drop all directories but the ones of the last package.
+            foreach ($classLoadingInformation['psr-4'] as $namespacePrefix => $namespacePaths) {
+                $psr4[$namespacePrefix] = array_merge($psr4[$namespacePrefix] ?? [], $namespacePaths);
+            }
         }
         ksort($classMap);
         ksort($psr4);
