@@ -135,9 +135,7 @@ class ClassLoadingInformation
         if (file_exists($dynamicPsr4File)) {
             $psr4 = require $dynamicPsr4File;
             if (is_array($psr4)) {
-                foreach ($psr4 as $prefix => $paths) {
-                    $composerClassLoader->setPsr4($prefix, $paths);
-                }
+                self::registerPsr4Prefixes($composerClassLoader, $psr4);
             }
         }
 
@@ -163,15 +161,39 @@ class ClassLoadingInformation
         $generator = new ClassLoadingInformationGenerator();
         $classInformation = $generator->buildClassLoadingInformationForPackage($package, false, self::isTestingContext(), Environment::getPublicPath() . '/');
         $composerClassLoader->addClassMap($classInformation['classMap']);
-        foreach ($classInformation['psr-4'] as $prefix => $paths) {
-            $composerClassLoader->setPsr4($prefix, $paths);
-        }
+        self::registerPsr4Prefixes($composerClassLoader, $classInformation['psr-4']);
         foreach ($classInformation['files'] as $fileIdentifier => $file) {
             self::requireFile($fileIdentifier, $file);
         }
         $classAliasMap = $generator->buildClassAliasMapForPackage($package);
         if (!empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
             ClassAliasMap::addAliasMap($classAliasMap);
+        }
+    }
+
+    /**
+     * Registers PSR-4 prefixes on the Composer class loader, keeping the directories
+     * that are already registered for the very same prefix.
+     *
+     * ClassLoader::setPsr4() replaces all directories of a prefix. A prefix can be used
+     * by more than one package, for instance when an extension ships a library of the
+     * same namespace as a dedicated Composer package. Extension directories take
+     * precedence, all other directories are kept as fallback.
+     *
+     * De-duplication keeps repeated registration idempotent: functional tests bootstrap
+     * TYPO3 more than once per process and would otherwise grow the directory list of a
+     * prefix with every single bootstrap.
+     *
+     * @param array<string, string|list<string>> $psr4
+     */
+    private static function registerPsr4Prefixes(ClassLoader $composerClassLoader, array $psr4): void
+    {
+        $registeredPrefixes = $composerClassLoader->getPrefixesPsr4();
+        foreach ($psr4 as $prefix => $paths) {
+            $composerClassLoader->setPsr4(
+                $prefix,
+                array_values(array_unique(array_merge((array)$paths, $registeredPrefixes[$prefix] ?? [])))
+            );
         }
     }
 
