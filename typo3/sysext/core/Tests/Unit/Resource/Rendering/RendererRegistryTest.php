@@ -18,190 +18,40 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
-use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RendererRegistryTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    /**
-     * Initialize a RendererRegistry and mock createRendererInstance()
-     */
-    private function getTestRendererRegistry(array $createsRendererInstances = []): RendererRegistry&MockObject
-    {
-        $rendererRegistry = $this->getMockBuilder(RendererRegistry::class)
-            ->onlyMethods(['createRendererInstance'])
-            ->getMock();
-
-        if (!empty($createsRendererInstances)) {
-            $rendererRegistry
-                ->method('createRendererInstance')
-                ->willReturnMap($createsRendererInstances);
-        }
-
-        return $rendererRegistry;
-    }
-
     #[Test]
-    public function registeredFileRenderClassCanBeRetrieved(): void
+    public function getRendererReturnsFirstMatchingFileRenderer(): void
     {
-        $rendererClass = StringUtility::getUniqueId('myRenderer');
-        $rendererObject = $this->getMockBuilder(FileRendererInterface::class)
-            ->setMockClassName($rendererClass)
-            ->getMock();
-
-        $rendererRegistry = $this->getTestRendererRegistry([[$rendererClass, $rendererObject]]);
-
-        $rendererRegistry->registerRendererClass($rendererClass);
-        self::assertContains($rendererObject, $rendererRegistry->getRendererInstances());
-    }
-
-    #[Test]
-    public function registerRendererClassThrowsExceptionIfClassDoesNotExist(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1411840171);
-
-        $rendererRegistry = $this->getTestRendererRegistry();
-        $rendererRegistry->registerRendererClass(StringUtility::getUniqueId());
-    }
-
-    #[Test]
-    public function registerRendererClassThrowsExceptionIfClassDoesNotImplementRightInterface(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1411840172);
-
-        $className = __CLASS__;
-        $rendererRegistry = $this->getTestRendererRegistry();
-        $rendererRegistry->registerRendererClass($className);
-    }
-
-    #[Test]
-    public function registerRendererClassWithHighestPriorityIsFirstInResult(): void
-    {
-        $rendererClass1 = StringUtility::getUniqueId('myRenderer1');
-        $rendererObject1 = $this->getMockBuilder(FileRendererInterface::class)
-            ->setMockClassName($rendererClass1)
-            ->getMock();
-        $rendererObject1->method('getPriority')->willReturn(1);
-
-        $rendererClass2 = StringUtility::getUniqueId('myRenderer2');
-        $rendererObject2 = $this->getMockBuilder(FileRendererInterface::class)
-            ->setMockClassName($rendererClass2)
-            ->getMock();
-        $rendererObject2->method('getPriority')->willReturn(10);
-
-        $rendererClass3 = StringUtility::getUniqueId('myRenderer3');
-        $rendererObject3 = $this->getMockBuilder(FileRendererInterface::class)
-            ->setMockClassName($rendererClass3)
-            ->getMock();
-        $rendererObject3->method('getPriority')->willReturn(2);
-
-        $createdRendererInstances = [
-            [$rendererClass1, $rendererObject1],
-            [$rendererClass2, $rendererObject2],
-            [$rendererClass3, $rendererObject3],
-        ];
-
-        $rendererRegistry = $this->getTestRendererRegistry($createdRendererInstances);
-        $rendererRegistry->registerRendererClass($rendererClass1);
-        $rendererRegistry->registerRendererClass($rendererClass2);
-        $rendererRegistry->registerRendererClass($rendererClass3);
-
-        $rendererInstances = $rendererRegistry->getRendererInstances();
-        self::assertInstanceOf($rendererClass2, $rendererInstances[0]);
-        self::assertInstanceOf($rendererClass3, $rendererInstances[1]);
-        self::assertInstanceOf($rendererClass1, $rendererInstances[2]);
-    }
-
-    #[Test]
-    public function registeredFileRendererClassWithSamePriorityAreAllReturned(): void
-    {
-        $rendererClass1 = StringUtility::getUniqueId('myRenderer1');
-        $rendererObject1 = $this->getMockBuilder(FileRendererInterface::class)
-            ->setMockClassName($rendererClass1)
-            ->getMock();
-        $rendererObject1->method('getPriority')->willReturn(1);
-
-        $rendererClass2 = StringUtility::getUniqueId('myRenderer2');
-        $rendererObject2 = $this->getMockBuilder(FileRendererInterface::class)
-            ->setMockClassName($rendererClass2)
-            ->getMock();
-        $rendererObject2->method('getPriority')->willReturn(1);
-
-        $createdRendererInstances = [
-            [$rendererClass1, $rendererObject1],
-            [$rendererClass2, $rendererObject2],
-        ];
-
-        $rendererRegistry = $this->getTestRendererRegistry($createdRendererInstances);
-        $rendererRegistry->registerRendererClass($rendererClass1);
-        $rendererRegistry->registerRendererClass($rendererClass2);
-
-        $rendererInstances = $rendererRegistry->getRendererInstances();
-        self::assertContains($rendererObject1, $rendererInstances);
-        self::assertContains($rendererObject2, $rendererInstances);
-    }
-
-    #[Test]
-    public function getRendererReturnsCorrectInstance(): void
-    {
-        $rendererClass1 = StringUtility::getUniqueId('myVideoRenderer');
-        $rendererObject1 = $this->getMockBuilder(FileRendererInterface::class)
-            ->onlyMethods(['getPriority', 'canRender', 'render'])
-            ->setMockClassName($rendererClass1)
-            ->getMock();
-        $rendererObject1->method('getPriority')->willReturn(1);
-        $rendererObject1->expects($this->once())->method('canRender')->willReturn(true);
-
-        $rendererClass2 = StringUtility::getUniqueId('myAudioRenderer');
-        $rendererObject2 = $this->getMockBuilder(FileRendererInterface::class)
-            ->onlyMethods(['getPriority', 'canRender', 'render'])
-            ->setMockClassName($rendererClass2)
-            ->getMock();
-        $rendererObject2->method('getPriority')->willReturn(10);
-        $rendererObject2->expects($this->once())->method('canRender')->willReturn(false);
+        $rendererObject1 = $this->createMock(FileRendererInterface::class);
+        $rendererObject1->expects($this->once())->method('canRender')->willReturn(false);
+        $rendererObject2 = $this->createMock(FileRendererInterface::class);
+        $rendererObject2->expects($this->once())->method('canRender')->willReturn(true);
+        $rendererObject3 = $this->createMock(FileRendererInterface::class);
+        $rendererObject3->expects($this->never())->method('canRender');
 
         $fileResourceMock = $this->createMock(File::class);
 
-        $createdRendererInstances = [
-            [$rendererClass1, $rendererObject1],
-            [$rendererClass2, $rendererObject2],
-        ];
+        $rendererRegistry = new RendererRegistry([$rendererObject1, $rendererObject2, $rendererObject3]);
 
-        $rendererRegistry = $this->getTestRendererRegistry($createdRendererInstances);
-        $rendererRegistry->registerRendererClass($rendererClass1);
-        $rendererRegistry->registerRendererClass($rendererClass2);
-
-        $rendererRegistry->getRendererInstances();
-
-        $renderer = $rendererRegistry->getRenderer($fileResourceMock);
-
-        self::assertInstanceOf($rendererClass1, $renderer);
+        self::assertSame($rendererObject2, $rendererRegistry->getRenderer($fileResourceMock));
     }
 
     #[Test]
-    public function getRendererReturnsCorrectInstance2(): void
+    public function getRendererReturnsNullIfNoFileRendererMatches(): void
     {
-        $rendererRegistry = new RendererRegistry();
-        $rendererRegistry->registerRendererClass(AudioTagRenderer::class);
-        $rendererRegistry->registerRendererClass(VideoTagRenderer::class);
+        $rendererObject = $this->createMock(FileRendererInterface::class);
+        $rendererObject->method('canRender')->willReturn(false);
 
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->method('getMimeType')->willReturn('video/mp4');
 
-        $rendererRegistry->getRendererInstances();
+        $rendererRegistry = new RendererRegistry([$rendererObject]);
 
-        $renderer = $rendererRegistry->getRenderer($fileResourceMock);
-
-        self::assertInstanceOf(VideoTagRenderer::class, $renderer);
+        self::assertNull($rendererRegistry->getRenderer($fileResourceMock));
     }
 }

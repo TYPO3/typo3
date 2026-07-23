@@ -26,14 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class AudioTagRendererTest extends UnitTestCase
 {
     #[Test]
-    public function getPriorityReturnsCorrectValue(): void
-    {
-        $audioTagRenderer = new AudioTagRenderer();
-
-        self::assertSame(1, $audioTagRenderer->getPriority());
-    }
-
-    #[Test]
     public function canRenderReturnsTrueOnCorrectFile(): void
     {
         $audioTagRenderer = new AudioTagRenderer();

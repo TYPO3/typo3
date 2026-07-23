@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Attribute\AsFileRenderer;
 use TYPO3\CMS\Core\Attribute\AsModuleAccessGate;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
@@ -130,6 +131,13 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     );
 
     $containerBuilder->registerAttributeForAutoconfiguration(
+        AsFileRenderer::class,
+        static function (ChildDefinition $definition, AsFileRenderer $attribute): void {
+            $definition->addTag(AsFileRenderer::TAG_NAME, ['priority' => $attribute->priority]);
+        },
+    );
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
         AsModuleAccessGate::class,
         static function (ChildDefinition $definition, AsModuleAccessGate $attribute): void {
             $definition->addTag(AsModuleAccessGate::TAG_NAME, [
@@ -144,6 +152,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->addCompilerPass(new DependencyInjection\LoggerAwarePass('psr.logger_aware'));
     $containerBuilder->addCompilerPass(new DependencyInjection\LoggerInterfacePass());
     $containerBuilder->addCompilerPass(new DependencyInjection\MfaProviderPass('mfa.provider'));
+    $containerBuilder->addCompilerPass(new DependencyInjection\FileRendererPass(AsFileRenderer::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\SoftReferenceParserPass('softreference.parser'));
     $containerBuilder->addCompilerPass(new DependencyInjection\ListenerProviderPass('event.listener'));
     $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('typo3.middleware'));

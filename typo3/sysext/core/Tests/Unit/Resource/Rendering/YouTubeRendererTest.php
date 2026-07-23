@@ -50,12 +50,6 @@ final class YouTubeRendererTest extends UnitTestCase
     }
 
     #[Test]
-    public function getPriorityReturnsCorrectValue(): void
-    {
-        self::assertSame(1, $this->subject->getPriority());
-    }
-
-    #[Test]
     public function canRenderReturnsTrueOnCorrectFile(): void
     {
         $fileResourceMock1 = $this->createMock(File::class);

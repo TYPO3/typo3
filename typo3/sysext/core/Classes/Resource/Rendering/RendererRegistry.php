@@ -17,39 +17,39 @@ namespace TYPO3\CMS\Core\Resource\Rendering;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * Registry for file renderers, which are registered as tagged services
+ * via the #[AsFileRenderer] attribute or the 'fal.file_renderer' service
+ * tag. Renderers are ordered by their tag priority, a renderer with a
+ * higher priority is asked first whether it can render a file.
+ *
+ * @internal not part of TYPO3's Core API. Register file renderers via the #[AsFileRenderer] attribute instead.
+ */
 class RendererRegistry implements SingletonInterface
 {
     /**
-     * Registered class names
-     *
-     * @var array
-     */
-    protected $classNames = [];
-
-    /**
      * Instance cache for renderer classes
      *
-     * @var FileRendererInterface[]
+     * @var FileRendererInterface[]|null
      */
-    protected $instances;
+    protected ?array $instances = null;
 
     /**
-     * Allows to register a Renderer class
-     *
-     * @param string $className
-     * @throws \InvalidArgumentException
+     * @param iterable<FileRendererInterface> $renderers
      */
-    public function registerRendererClass($className)
+    public function __construct(protected readonly iterable $renderers = []) {}
+
+    /**
+     * @deprecated since TYPO3 v15.0, this method is a no-op and will be removed in TYPO3 v16.0. Register the renderer as a tagged service using the #[AsFileRenderer] attribute instead.
+     */
+    public function registerRendererClass(string $className): void
     {
-        if (!class_exists($className)) {
-            throw new \InvalidArgumentException('The class "' . $className . '" you are trying to register is not available', 1411840171);
-        }
-        if (!in_array(FileRendererInterface::class, class_implements($className) ?: [], true)) {
-            throw new \InvalidArgumentException('The renderer needs to implement the FileRendererInterface', 1411840172);
-        }
-        $this->classNames[] = $className;
+        trigger_error(
+            'RendererRegistry->registerRendererClass() is a no-op since TYPO3 v15.0 and will be removed in TYPO3 v16.0.'
+            . ' Register "' . $className . '" as a tagged service using the #[AsFileRenderer] attribute instead.',
+            E_USER_DEPRECATED
+        );
     }
 
     /**
@@ -57,66 +57,27 @@ class RendererRegistry implements SingletonInterface
      *
      * @return FileRendererInterface[]
      */
-    public function getRendererInstances()
+    protected function getRendererInstances(): array
     {
         if ($this->instances === null) {
             $this->instances = [];
-
-            // As the result is in reverse order we need to reverse
-            // the array before processing to keep the items with same
-            // priority in the same order as they were added to the registry.
-            $classNames = array_reverse($this->classNames);
-            foreach ($classNames as $className) {
-                $object = $this->createRendererInstance($className);
-                $this->instances[] = $object;
-            }
-
-            if (count($this->instances) > 1) {
-                usort($this->instances, [$this, 'compareRendererPriority']);
+            foreach ($this->renderers as $renderer) {
+                $this->instances[] = $renderer;
             }
         }
         return $this->instances;
     }
 
     /**
-     * Create an instance of a certain renderer class
-     *
-     * @param string $className
-     * @return FileRendererInterface
-     */
-    protected function createRendererInstance($className)
-    {
-        return GeneralUtility::makeInstance($className);
-    }
-
-    /**
-     * Compare the priority of two renderer classes
-     * Is used for sorting array of Renderer instances by priority
-     * We want the result to be ordered from high to low so a higher
-     * priority comes before a lower.
-     *
-     * @return int -1 a > b, 0 a == b, 1 a < b
-     */
-    protected function compareRendererPriority(FileRendererInterface $rendererA, FileRendererInterface $rendererB)
-    {
-        return $rendererB->getPriority() - $rendererA->getPriority();
-    }
-
-    /**
      * Get matching renderer with highest priority
-     *
-     * @return FileRendererInterface|null
      */
-    public function getRenderer(FileInterface $file)
+    public function getRenderer(FileInterface $file): ?FileRendererInterface
     {
-        $matchingFileRenderer = null;
-
         foreach ($this->getRendererInstances() as $fileRenderer) {
             if ($fileRenderer->canRender($file)) {
-                $matchingFileRenderer = $fileRenderer;
-                break;
+                return $fileRenderer;
             }
         }
-        return $matchingFileRenderer;
+        return null;
     }
 }

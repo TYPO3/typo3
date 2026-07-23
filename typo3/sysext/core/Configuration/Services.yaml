@@ -21,6 +21,10 @@ services:
   TYPO3\CMS\Core\Http\MiddlewareDispatcher:
     autoconfigure: false
 
+  TYPO3\CMS\Core\Resource\Rendering\RendererRegistry:
+    arguments:
+      $renderers: !tagged_iterator fal.file_renderer
+
   TYPO3\CMS\Core\Authentication\Mfa\Provider\TotpProvider:
     tags:
       - name: mfa.provider

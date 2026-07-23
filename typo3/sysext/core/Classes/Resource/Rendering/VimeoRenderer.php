@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Rendering;
 
+use TYPO3\CMS\Core\Attribute\AsFileRenderer;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Vimeo renderer class
  */
+#[AsFileRenderer]
 class VimeoRenderer implements FileRendererInterface
 {
     /**
@@ -34,26 +36,11 @@ class VimeoRenderer implements FileRendererInterface
     protected $onlineMediaHelper;
 
     /**
-     * Returns the priority of the renderer
-     * This way it is possible to define/overrule a renderer
-     * for a specific file type/context.
-     * For example create a video renderer for a certain storage/driver type.
-     * Should be between 1 and 100, 100 is more important than 1
-     *
-     * @return int
-     */
-    public function getPriority()
-    {
-        return 1;
-    }
-
-    /**
      * Check if given File(Reference) can be rendered
      *
      * @param FileInterface $file File of FileReference to render
-     * @return bool
      */
-    public function canRender(FileInterface $file)
+    public function canRender(FileInterface $file): bool
     {
         return ($file->getMimeType() === 'video/vimeo' || $file->getExtension() === 'vimeo') && $this->getOnlineMediaHelper($file) !== false;
     }
@@ -84,9 +71,8 @@ class VimeoRenderer implements FileRendererInterface
      *
      * @param int|string $width TYPO3 known format; examples: 220, 200m or 200c
      * @param int|string $height TYPO3 known format; examples: 220, 200m or 200c
-     * @return string
      */
-    public function render(FileInterface $file, $width, $height, array $options = [])
+    public function render(FileInterface $file, int|string $width, int|string $height, array $options = []): string
     {
         $options = $this->collectOptions($options, $file);
         $src = $this->createVimeoUrl($options, $file);

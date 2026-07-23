@@ -26,14 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class VideoTagRendererTest extends UnitTestCase
 {
     #[Test]
-    public function getPriorityReturnsCorrectValue(): void
-    {
-        $VideoTagRenderer = new VideoTagRenderer();
-
-        self::assertSame(1, $VideoTagRenderer->getPriority());
-    }
-
-    #[Test]
     public function canRenderReturnsTrueOnCorrectFile(): void
     {
         $VideoTagRenderer = new VideoTagRenderer();
