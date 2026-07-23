@@ -1,0 +1,5 @@
+"pages"
+,"uid","pid","sorting","title","sys_language_uid","l10n_parent","l10n_source","deleted","perms_groupid","perms_group","perms_everybody"
+,900,1,128,"Localization default",0,0,0,0,9,27,15
+,901,1,128,"[DA] Localization with translation source",1,900,900,0,9,27,15
+,902,1,128,"[DE] Localization without translation source",2,900,0,0,9,27,15

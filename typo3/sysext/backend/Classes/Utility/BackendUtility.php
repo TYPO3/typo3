@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -308,10 +309,7 @@ class BackendUtility
             $queryBuilder->select('*')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq(
-                        $languageCapability->hasTranslationSourceField() ? $languageCapability->getTranslationSourceField()->getName() : $languageCapability->getTranslationOriginPointerField()->getName(),
-                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                    ),
+                    self::createTranslationParentConstraint($queryBuilder, $languageCapability, (int)$uid),
                     $queryBuilder->expr()->eq(
                         $languageCapability->getLanguageField()->getName(),
                         $queryBuilder->createNamedParameter((int)$language, Connection::PARAM_INT)
@@ -327,6 +325,43 @@ class BackendUtility
         }
 
         return $recordLocalization;
+    }
+
+    /**
+     * Constraint matching all translations of the given record.
+     *
+     * `translationSource` (l10n_source) is preferred, since it is the more precise information for
+     * translation chains. It is however not maintained by all writes - a DataHandler datamap which
+     * creates a translation by only setting the language field and the transOrigPointerField leaves
+     * it empty - so such records are matched by their transOrigPointerField (l10n_parent) instead.
+     * Without that, valid translations would be invisible for callers like
+     * `DataHandler::localize()`, which uses this lookup to prevent duplicate translations.
+     */
+    protected static function createTranslationParentConstraint(
+        QueryBuilder $queryBuilder,
+        LanguageAwareSchemaCapability $languageCapability,
+        int $uid
+    ): CompositeExpression|string {
+        $uidParameter = $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT);
+        $translationOriginPointerConstraint = $queryBuilder->expr()->eq(
+            $languageCapability->getTranslationOriginPointerField()->getName(),
+            $uidParameter
+        );
+        if (!$languageCapability->hasTranslationSourceField()) {
+            return $translationOriginPointerConstraint;
+        }
+        $translationSourceFieldName = $languageCapability->getTranslationSourceField()->getName();
+
+        return $queryBuilder->expr()->or(
+            $queryBuilder->expr()->eq($translationSourceFieldName, $uidParameter),
+            $queryBuilder->expr()->and(
+                $queryBuilder->expr()->eq(
+                    $translationSourceFieldName,
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                ),
+                $translationOriginPointerConstraint
+            )
+        );
     }
 
     /*******************************************

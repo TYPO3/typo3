@@ -66,6 +66,32 @@ final class BackendUtilityTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[IgnoreDeprecations] // BackendUtility::getRecordLocalization() is deprecated since TYPO3 v14
+    public function getRecordLocalizationReturnsTranslationWithTranslationSource(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordLocalization.csv');
+
+        $rows = BackendUtility::getRecordLocalization('pages', 900, 1);
+
+        self::assertIsArray($rows);
+        self::assertCount(1, $rows);
+        self::assertSame(901, (int)$rows[0]['uid']);
+    }
+
+    #[Test]
+    #[IgnoreDeprecations] // BackendUtility::getRecordLocalization() is deprecated since TYPO3 v14
+    public function getRecordLocalizationReturnsTranslationWithEmptyTranslationSource(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordLocalization.csv');
+
+        $rows = BackendUtility::getRecordLocalization('pages', 900, 2);
+
+        self::assertIsArray($rows);
+        self::assertCount(1, $rows);
+        self::assertSame(902, (int)$rows[0]['uid']);
+    }
+
+    #[Test]
     public function getProcessedValueForLanguage(): void
     {
         self::assertEquals(

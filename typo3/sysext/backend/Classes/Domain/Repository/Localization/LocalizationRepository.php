@@ -23,11 +23,14 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -174,19 +177,11 @@ readonly class LocalizationRepository
         }
         $queryBuilder->getRestrictions()->add(new WorkspaceRestriction($workspaceId));
 
-        // Prefer translationSourceField (l10n_source) over transOrigPointerField (l10n_parent)
-        $parentPointerField = $languageCapability->hasTranslationSourceField()
-            ? $languageCapability->getTranslationSourceField()->getName()
-            : $languageCapability->getTranslationOriginPointerField()->getName();
-
         $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq(
-                    $parentPointerField,
-                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                ),
+                $this->createTranslationParentConstraint($queryBuilder, $languageCapability, $uid),
                 $queryBuilder->expr()->eq(
                     $languageCapability->getLanguageField()->getName(),
                     $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
@@ -268,11 +263,6 @@ readonly class LocalizationRepository
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
         $languageFieldName = $languageCapability->getLanguageField()->getName();
 
-        // Prefer translationSourceField (l10n_source) over transOrigPointerField (l10n_parent)
-        $parentPointerField = $languageCapability->hasTranslationSourceField()
-            ? $languageCapability->getTranslationSourceField()->getName()
-            : $languageCapability->getTranslationOriginPointerField()->getName();
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
 
@@ -285,10 +275,7 @@ readonly class LocalizationRepository
             ->select('*')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq(
-                    $parentPointerField,
-                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                ),
+                $this->createTranslationParentConstraint($queryBuilder, $languageCapability, $uid),
                 $queryBuilder->expr()->gt(
                     $languageFieldName,
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
@@ -393,4 +380,42 @@ readonly class LocalizationRepository
 
         return $records;
     }
+
+    /**
+     * Constraint matching all translations of the given record.
+     *
+     * `translationSource` (l10n_source) is preferred, since it is the more precise information for
+     * translation chains. It is however not maintained by all writes - a DataHandler datamap which
+     * creates a translation by only setting the language field and the transOrigPointerField leaves
+     * it empty - so such records are matched by their transOrigPointerField (l10n_parent) instead.
+     * Without that, valid translations would be invisible for callers like
+     * `DataHandler::localize()`, which uses this lookup to prevent duplicate translations.
+     */
+    protected function createTranslationParentConstraint(
+        QueryBuilder $queryBuilder,
+        LanguageAwareSchemaCapability $languageCapability,
+        int $uid
+    ): CompositeExpression|string {
+        $uidParameter = $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT);
+        $translationOriginPointerConstraint = $queryBuilder->expr()->eq(
+            $languageCapability->getTranslationOriginPointerField()->getName(),
+            $uidParameter
+        );
+        if (!$languageCapability->hasTranslationSourceField()) {
+            return $translationOriginPointerConstraint;
+        }
+        $translationSourceFieldName = $languageCapability->getTranslationSourceField()->getName();
+
+        return $queryBuilder->expr()->or(
+            $queryBuilder->expr()->eq($translationSourceFieldName, $uidParameter),
+            $queryBuilder->expr()->and(
+                $queryBuilder->expr()->eq(
+                    $translationSourceFieldName,
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                ),
+                $translationOriginPointerConstraint
+            )
+        );
+    }
+
 }
