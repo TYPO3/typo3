@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -293,10 +294,7 @@ class BackendUtility
             $queryBuilder->select('*')
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq(
-                        $tcaCtrl['translationSource'] ?? $tcaCtrl['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                    ),
+                    self::createTranslationParentConstraint($queryBuilder, $tcaCtrl, (int)$uid),
                     $queryBuilder->expr()->eq(
                         $tcaCtrl['languageField'],
                         $queryBuilder->createNamedParameter((int)$language, Connection::PARAM_INT)
@@ -312,6 +310,44 @@ class BackendUtility
         }
 
         return $recordLocalization;
+    }
+
+    /**
+     * Constraint matching all translations of the given record.
+     *
+     * `translationSource` (l10n_source) is preferred, since it is the more precise information for
+     * translation chains. It is however not maintained by all writes - a DataHandler datamap which
+     * creates a translation by only setting the language field and the transOrigPointerField leaves
+     * it empty - so such records are matched by their transOrigPointerField (l10n_parent) instead.
+     * Without that, valid translations would be invisible for callers like
+     * `DataHandler::localize()`, which uses this lookup to prevent duplicate translations.
+     *
+     * @param array $tcaCtrl The `ctrl` section of the table
+     */
+    protected static function createTranslationParentConstraint(
+        QueryBuilder $queryBuilder,
+        array $tcaCtrl,
+        int $uid
+    ): CompositeExpression|string {
+        $uidParameter = $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT);
+        $translationOriginPointerConstraint = $queryBuilder->expr()->eq(
+            $tcaCtrl['transOrigPointerField'],
+            $uidParameter
+        );
+        if (!isset($tcaCtrl['translationSource'])) {
+            return $translationOriginPointerConstraint;
+        }
+
+        return $queryBuilder->expr()->or(
+            $queryBuilder->expr()->eq($tcaCtrl['translationSource'], $uidParameter),
+            $queryBuilder->expr()->and(
+                $queryBuilder->expr()->eq(
+                    $tcaCtrl['translationSource'],
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                ),
+                $translationOriginPointerConstraint
+            )
+        );
     }
 
     /*******************************************

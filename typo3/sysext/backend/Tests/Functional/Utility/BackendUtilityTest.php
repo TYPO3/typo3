@@ -64,6 +64,30 @@ final class BackendUtilityTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getRecordLocalizationReturnsTranslationWithTranslationSource(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordLocalization.csv');
+
+        $rows = BackendUtility::getRecordLocalization('pages', 100, 1);
+
+        self::assertIsArray($rows);
+        self::assertCount(1, $rows);
+        self::assertSame(101, (int)$rows[0]['uid']);
+    }
+
+    #[Test]
+    public function getRecordLocalizationReturnsTranslationWithEmptyTranslationSource(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RecordLocalization.csv');
+
+        $rows = BackendUtility::getRecordLocalization('pages', 100, 2);
+
+        self::assertIsArray($rows);
+        self::assertCount(1, $rows);
+        self::assertSame(102, (int)$rows[0]['uid']);
+    }
+
+    #[Test]
     public function givenPageIdCanBeExpanded(): void
     {
         $this->backendUser->groupData['webmounts'] = '1';
