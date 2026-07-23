@@ -30,7 +30,7 @@ final class MethodAnnotationMatcherTest extends UnitTestCase
     #[Test]
     public function hitsFromFixtureAreFound(): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $fixtureFile = __DIR__ . '/Fixtures/MethodAnnotationMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 

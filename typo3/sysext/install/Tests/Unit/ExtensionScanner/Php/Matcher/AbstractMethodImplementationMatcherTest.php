@@ -30,7 +30,7 @@ final class AbstractMethodImplementationMatcherTest extends UnitTestCase
     #[Test]
     public function hitsFromFixtureAreFound(): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $fixtureFile = __DIR__ . '/Fixtures/AbstractMethodImplementationMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 
@@ -67,7 +67,7 @@ final class AbstractMethodImplementationMatcherTest extends UnitTestCase
     #[Test]
     public function matchIsIgnoredIfIgnoreFileIsSet(): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $fixtureFile = __DIR__ . '/Fixtures/AbstractMethodImplementationMatcherFixture.php';
         $statements = $parser->parse(str_replace('§extensionScannerIgnoreFile', '@extensionScannerIgnoreFile', file_get_contents($fixtureFile)));
 

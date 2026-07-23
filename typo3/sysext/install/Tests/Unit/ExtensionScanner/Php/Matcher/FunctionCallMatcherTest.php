@@ -30,7 +30,7 @@ final class FunctionCallMatcherTest extends UnitTestCase
     #[Test]
     public function hitsFromFixtureAreFound(): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $fixtureFile = __DIR__ . '/Fixtures/FunctionCallMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 
@@ -79,7 +79,7 @@ class foo
 }
 EOC;
 
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $statements = $parser->parse($phpCode);
 
         $traverser = new NodeTraverser();

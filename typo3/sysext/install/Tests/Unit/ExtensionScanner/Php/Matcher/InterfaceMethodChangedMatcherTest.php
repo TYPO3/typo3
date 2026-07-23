@@ -30,7 +30,7 @@ final class InterfaceMethodChangedMatcherTest extends UnitTestCase
     #[Test]
     public function hitsFromFixtureAreFound(): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $fixtureFile = __DIR__ . '/Fixtures/InterfaceMethodChangedMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 
@@ -84,7 +84,7 @@ final class InterfaceMethodChangedMatcherTest extends UnitTestCase
     #[Test]
     public function dynamicMethodCallDoesNotCrash(): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $phpCode = '<?php
             class TestClass {
                 public function test() {

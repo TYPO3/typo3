@@ -39,7 +39,7 @@ final class GeneratorClassesResolverTest extends UnitTestCase
 <?php
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Does\\Not\\Exist');
 EOC;
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $statements = $parser->parse($phpCode);
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new GeneratorClassesResolver());
@@ -60,7 +60,7 @@ EOC;
 <?php
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Does\\Not\\' . $foo);
 EOC;
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $statements = $parser->parse($phpCode);
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new GeneratorClassesResolver());

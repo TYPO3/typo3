@@ -58,7 +58,7 @@ final class PropertyExistsStaticMatcherTest extends UnitTestCase
     #[Test]
     public function hitsFromFixturesAreFound(string $fixtureFile, array $expectedHitLineNumbers): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $statements = $parser->parse(file_get_contents($fixtureFile));
 
         $traverser = new NodeTraverser();

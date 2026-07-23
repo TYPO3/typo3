@@ -86,7 +86,7 @@ class SplitFunctionalTests
             ->sortByName()
         ;
 
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $testStats = [];
         foreach ($testFiles as $file) {
             /** @var $file SplFileInfo */

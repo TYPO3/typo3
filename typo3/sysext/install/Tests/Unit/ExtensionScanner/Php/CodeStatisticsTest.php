@@ -29,7 +29,7 @@ final class CodeStatisticsTest extends UnitTestCase
     #[Test]
     public function enterNodeSumsStatistics(): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $fixtureFile = __DIR__ . '/Fixtures/CodeStatisticsFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 

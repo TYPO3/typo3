@@ -32,7 +32,7 @@ final class ConstantMatcherTest extends UnitTestCase
     #[Test]
     public function hitsFromFixtureAreFound(): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $fixtureFile = __DIR__ . '/Fixtures/ConstantMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 
@@ -91,7 +91,7 @@ final class ConstantMatcherTest extends UnitTestCase
     #[Test]
     public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected): void
     {
-        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 2));
+        $parser = (new ParserFactory())->createForVersion(PhpVersion::fromComponents(8, 5));
         $statements = $parser->parse($phpCode);
 
         $subject = new ConstantMatcher($configuration);
