@@ -169,8 +169,7 @@ readonly class ItemProcessingService
                 $fieldLabel,
                 $exception->getMessage()
             );
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $flashMessage = new FlashMessage(
                 $message,
                 '',
                 ContextualFeedbackSeverity::ERROR,

@@ -510,7 +510,7 @@ class PermissionController
      */
     protected function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {
-        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true);
+        $flashMessage = new FlashMessage($message, $title, $severity, true);
         $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }

@@ -96,16 +96,14 @@ readonly class OnlineMediaController
                 try {
                     $file = $this->addMediaFromUrl($media['url'], $media['target'], $allowed);
                     if ($file !== null) {
-                        $flashMessage = GeneralUtility::makeInstance(
-                            FlashMessage::class,
+                        $flashMessage = new FlashMessage(
                             $file->getName(),
                             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.added'),
                             ContextualFeedbackSeverity::OK,
                             true
                         );
                     } else {
-                        $flashMessage = GeneralUtility::makeInstance(
-                            FlashMessage::class,
+                        $flashMessage = new FlashMessage(
                             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.invalid_url'),
                             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.new_media.failed'),
                             ContextualFeedbackSeverity::ERROR,
@@ -113,8 +111,7 @@ readonly class OnlineMediaController
                         );
                     }
                 } catch (OnlineMediaAlreadyExistsException $e) {
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $flashMessage = new FlashMessage(
                         sprintf(
                             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.error.already_exists'),
                             $e->getOnlineMedia()->getName()

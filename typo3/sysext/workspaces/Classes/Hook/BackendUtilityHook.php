@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
@@ -97,7 +96,7 @@ readonly class BackendUtilityHook
         $this->flashMessageService
             ->getMessageQueueByIdentifier()
             ->enqueue(
-                GeneralUtility::makeInstance(FlashMessage::class, sprintf($message, $stageName, $editingName), '', ContextualFeedbackSeverity::INFO, true)
+                new FlashMessage(sprintf($message, $stageName, $editingName), '', ContextualFeedbackSeverity::INFO, true)
             );
     }
 

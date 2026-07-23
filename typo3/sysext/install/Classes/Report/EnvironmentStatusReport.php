@@ -124,8 +124,7 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
                     $message = $this->getLanguageService()->sL($pathToXliff . ':environment.status.message.' . $type);
                 }
                 $severity = constant('\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::' . strtoupper($type));
-                $statusArray[] = GeneralUtility::makeInstance(
-                    Status::class,
+                $statusArray[] = new Status(
                     $this->getLanguageService()->sL($pathToXliff . ':environment.status.title'),
                     sprintf($this->getLanguageService()->sL($pathToXliff . ':environment.status.value'), $value),
                     $message,

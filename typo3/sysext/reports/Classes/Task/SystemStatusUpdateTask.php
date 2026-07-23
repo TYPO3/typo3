@@ -155,7 +155,7 @@ class SystemStatusUpdateTask extends AbstractTask
         }
         if (!$validInput || empty($parameters['tx_reports_notification_email'] ?? '')) {
             GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->addMessage(
-                GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->sL('reports.reports:status_updateTaskField_notificationEmails_invalid'), '', ContextualFeedbackSeverity::ERROR)
+                new FlashMessage($this->getLanguageService()->sL('reports.reports:status_updateTaskField_notificationEmails_invalid'), '', ContextualFeedbackSeverity::ERROR)
             );
             $validInput = false;
         }

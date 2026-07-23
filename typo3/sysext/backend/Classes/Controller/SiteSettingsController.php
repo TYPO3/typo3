@@ -220,7 +220,7 @@ readonly class SiteSettingsController
 
             $languageService = $this->getLanguageService();
             $message = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:save.message.updated');
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', ContextualFeedbackSeverity::OK, true);
+            $flashMessage = new FlashMessage($message, '', ContextualFeedbackSeverity::OK, true);
             $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }

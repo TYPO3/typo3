@@ -85,8 +85,7 @@ readonly class ExtensionComposerStatus implements RequestAwareStatusProviderInte
                     . '<br /><button ' . $attributes . '>' . htmlspecialchars($title) . '</button>';
             }
 
-            $status[] = GeneralUtility::makeInstance(
-                ReportStatus::class,
+            $status[] = new ReportStatus(
                 $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.composerManifest.' . $deficit),
                 $this->getLanguageService()->sL($extensionsToReport ? 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_checkFailed' : 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_none'),
                 $message,

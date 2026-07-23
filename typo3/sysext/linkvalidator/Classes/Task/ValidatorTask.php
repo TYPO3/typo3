@@ -356,7 +356,7 @@ class ValidatorTask extends AbstractTask
                 if (!GeneralUtility::validEmail($emailAdd)) {
                     $isValid = false;
                     GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->addMessage(
-                        GeneralUtility::makeInstance(FlashMessage::class, $lang?->sL($this->languageFile . ':tasks.validate.invalidEmail'), '', ContextualFeedbackSeverity::ERROR)
+                        new FlashMessage($lang?->sL($this->languageFile . ':tasks.validate.invalidEmail'), '', ContextualFeedbackSeverity::ERROR)
                     );
                 }
             }
@@ -366,13 +366,13 @@ class ValidatorTask extends AbstractTask
         if ($row === null) {
             $isValid = false;
             GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->addMessage(
-                GeneralUtility::makeInstance(FlashMessage::class, $lang?->sL($this->languageFile . ':tasks.validate.invalidPage'), '', ContextualFeedbackSeverity::ERROR)
+                new FlashMessage($lang?->sL($this->languageFile . ':tasks.validate.invalidPage'), '', ContextualFeedbackSeverity::ERROR)
             );
         }
         if ((int)($parameters['depth'] ?? 0) < 0) {
             $isValid = false;
             GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->addMessage(
-                GeneralUtility::makeInstance(FlashMessage::class, $lang?->sL($this->languageFile . ':tasks.validate.invalidDepth'), '', ContextualFeedbackSeverity::ERROR)
+                new FlashMessage($lang?->sL($this->languageFile . ':tasks.validate.invalidDepth'), '', ContextualFeedbackSeverity::ERROR)
             );
         }
         return $isValid;

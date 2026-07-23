@@ -91,8 +91,7 @@ final class SecurityStatusReport implements RequestAwareStatusProviderInterface
                 }
             }
         }
-        return GeneralUtility::makeInstance(
-            Status::class,
+        return new Status(
             $this->getLanguageService()->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_installTool'),
             $value,
             $message,

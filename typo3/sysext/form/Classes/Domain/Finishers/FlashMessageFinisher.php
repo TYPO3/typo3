@@ -110,8 +110,7 @@ class FlashMessageFinisher extends AbstractFinisher
         };
         /** @var Message|Notice|Warning|Error $message */
         $message = GeneralUtility::makeInstance($messageClass, $messageBody, $messageCode, $messageArguments, $messageTitle);
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $flashMessage = new FlashMessage(
             $message->render(),
             $message->getTitle(),
             $severity,

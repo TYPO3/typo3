@@ -351,7 +351,7 @@ final readonly class RecoveryCodesProvider implements MfaProviderInterface
     private function addFlashMessage(string $message, string $title = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::INFO): void
     {
         $this->flashMessageService->getMessageQueueByIdentifier()->enqueue(
-            GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true)
+            new FlashMessage($message, $title, $severity, true)
         );
     }
 

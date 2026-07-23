@@ -365,8 +365,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             case 'addChild':
                 $childName = str_replace('\\', '', $parsedBody['childName'] ?? '');
                 if (empty($childName) || preg_replace('/[^a-zA-Z0-9_\.]*/', '', $childName) != $childName) {
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $flashMessage = new FlashMessage(
                         $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:updateAction.noSpaces'),
                         $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:updateAction.lineNotAdded'),
                         ContextualFeedbackSeverity::WARNING,
@@ -396,8 +395,7 @@ final class ActiveTypoScriptController extends AbstractTemplateModuleController
             $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
             $dataHandler->start($recordData, []);
             $dataHandler->process_datamap();
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $flashMessage = new FlashMessage(
                 $newLine,
                 $languageService->sL('LLL:EXT:tstemplate/Resources/Private/Language/locallang_active.xlf:updateAction.lineAdded'),
                 ContextualFeedbackSeverity::OK,

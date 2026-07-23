@@ -85,7 +85,7 @@ class SystemStatus implements StatusProviderInterface
             $message = '';
             $severity = ContextualFeedbackSeverity::OK;
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_phpModules'), $value, $message, $severity);
+        return new ReportStatus($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_phpModules'), $value, $message, $severity);
     }
 
     protected function getLanguageService(): LanguageService

@@ -153,7 +153,7 @@ final readonly class InstallStatusReport implements StatusProviderInterface
                 }
             }
         }
-        return GeneralUtility::makeInstance(Status::class, $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_fileSystem'), $value, $message, $severity);
+        return new Status($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_fileSystem'), $value, $message, $severity);
     }
 
     /**
@@ -195,7 +195,7 @@ final readonly class InstallStatusReport implements StatusProviderInterface
             $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
         }
 
-        return GeneralUtility::makeInstance(Status::class, $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remainingUpdates'), $value, $message, $severity);
+        return new Status($languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remainingUpdates'), $value, $message, $severity);
     }
 
     /**
@@ -211,14 +211,13 @@ final readonly class InstallStatusReport implements StatusProviderInterface
 
         // No updates for development versions
         if (!$coreVersionService->isInstalledVersionAReleasedVersion()) {
-            return GeneralUtility::makeInstance(Status::class, 'TYPO3', $typoVersion->getVersion(), $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_isDevelopmentVersion'), ContextualFeedbackSeverity::NOTICE);
+            return new Status('TYPO3', $typoVersion->getVersion(), $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_isDevelopmentVersion'), ContextualFeedbackSeverity::NOTICE);
         }
 
         try {
             $versionMaintenanceWindow = $coreVersionService->getMaintenanceWindow();
         } catch (RemoteFetchException $remoteFetchException) {
-            return GeneralUtility::makeInstance(
-                Status::class,
+            return new Status(
                 'TYPO3',
                 $typoVersion->getVersion(),
                 $languageService->sL(
@@ -300,7 +299,7 @@ final readonly class InstallStatusReport implements StatusProviderInterface
             }
         }
 
-        return GeneralUtility::makeInstance(Status::class, 'TYPO3', $typoVersion->getVersion(), $message, $status);
+        return new Status('TYPO3', $typoVersion->getVersion(), $message, $status);
     }
 
     private function wrapList(array $items, int $style): string

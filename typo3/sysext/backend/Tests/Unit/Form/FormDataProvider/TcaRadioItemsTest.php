@@ -30,20 +30,10 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaRadioItemsTest extends UnitTestCase
 {
-    /**
-     * Tear down
-     */
-    protected function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
-    }
-
     #[Test]
     public function addDataThrowsExceptionIfRadioItemsNotDefined(): void
     {
@@ -268,8 +258,6 @@ final class TcaRadioItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
-        $flashMessage = $this->createMock(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
@@ -336,8 +324,6 @@ final class TcaRadioItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
-        $flashMessage = $this->createMock(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
@@ -437,14 +423,12 @@ final class TcaRadioItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
-        $flashMessage = $this->createMock(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
         // itemsProcFunc must NOT have raised an exception
-        $flashMessageQueue->expects($this->never())->method('enqueue')->with($flashMessage);
+        $flashMessageQueue->expects($this->never())->method('enqueue')->with(self::isInstanceOf(FlashMessage::class));
 
         $subject = new TcaRadioItems();
         $subject->injectItemProcessingService(
@@ -506,13 +490,11 @@ final class TcaRadioItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $languageService->method('sL')->with(self::anything())->willReturn('');
         $GLOBALS['LANG'] = $languageService;
-        $flashMessage = $this->createMock(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
-        $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue')->with($flashMessage);
+        $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue')->with(self::isInstanceOf(FlashMessage::class));
 
         $subject = new TcaRadioItems();
         $subject->injectItemProcessingService(
@@ -581,13 +563,11 @@ final class TcaRadioItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $languageService->method('sL')->with(self::anything())->willReturn('');
         $GLOBALS['LANG'] = $languageService;
-        $flashMessage = $this->createMock(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
 
-        $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue')->with($flashMessage);
+        $flashMessageQueue->expects($this->atLeastOnce())->method('enqueue')->with(self::isInstanceOf(FlashMessage::class));
 
         $subject = new TcaRadioItems();
         $subject->injectItemProcessingService(

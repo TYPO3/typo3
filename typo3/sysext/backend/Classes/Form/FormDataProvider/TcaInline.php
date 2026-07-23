@@ -391,8 +391,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                     $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:formEngine.databaseRecordErrorInlineChildChild'),
                     [$e->getTableName(), $e->getUid(), $childTableName, (int)$childUid]
                 );
-                $flashMessage = GeneralUtility::makeInstance(
-                    FlashMessage::class,
+                $flashMessage = new FlashMessage(
                     $message,
                     '',
                     ContextualFeedbackSeverity::ERROR

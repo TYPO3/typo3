@@ -317,8 +317,7 @@ readonly class DataStructureIdentifierListener
         $this->flashMessageService
             ->getMessageQueueByIdentifier('core.template.flashMessages')
             ->enqueue(
-                GeneralUtility::makeInstance(
-                    FlashMessage::class,
+                new FlashMessage(
                     sprintf(
                         $languageService->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.preview.invalidFrameworkConfiguration.text'),
                         $identifier,

@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Fill the "systemLanguageRows" part of the result array
@@ -80,8 +79,7 @@ readonly class DatabaseSystemLanguageRows implements FormDataProviderInterface
                     $language->getLocale()->getLanguageCode(),
                     $languageId
                 );
-                $flashMessage = GeneralUtility::makeInstance(
-                    FlashMessage::class,
+                $flashMessage = new FlashMessage(
                     $message,
                     '',
                     ContextualFeedbackSeverity::ERROR

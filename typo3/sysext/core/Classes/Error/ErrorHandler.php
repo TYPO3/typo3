@@ -202,8 +202,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
             default:
                 $flashMessageSeverity = ContextualFeedbackSeverity::NOTICE;
         }
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $flashMessage = new FlashMessage(
             $message,
             self::ERROR_LEVEL_LABELS[$errorLevel],
             $flashMessageSeverity

@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\Status as ReportStatus;
@@ -96,7 +95,7 @@ readonly class ConfigurationStatus implements StatusProviderInterface
             $url = (string)$this->uriBuilder->buildUriFromRoute('system_maintenance');
             $message = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . htmlspecialchars($url) . '">', '</a>', BackendUtility::datetime($lastRefIndexUpdate));
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_referenceIndex'), $value, $message, $severity);
+        return new ReportStatus($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_referenceIndex'), $value, $message, $severity);
     }
 
     /**
@@ -181,7 +180,7 @@ readonly class ConfigurationStatus implements StatusProviderInterface
             $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br /><ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_memcachedConfiguration'), $value, $message, $severity);
+        return new ReportStatus($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_memcachedConfiguration'), $value, $message, $severity);
     }
 
     /**
@@ -199,7 +198,7 @@ readonly class ConfigurationStatus implements StatusProviderInterface
             $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedFilePermissions.writable');
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedFilePermissions'), $value, $message, $severity);
+        return new ReportStatus($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedFilePermissions'), $value, $message, $severity);
     }
 
     /**
@@ -217,7 +216,7 @@ readonly class ConfigurationStatus implements StatusProviderInterface
             $severity = ContextualFeedbackSeverity::WARNING;
             $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedDirectoryPermissions.writable');
         }
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedDirectoryPermissions'), $value, $message, $severity);
+        return new ReportStatus($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_CreatedDirectoryPermissions'), $value, $message, $severity);
     }
 
     /**
@@ -342,8 +341,7 @@ readonly class ConfigurationStatus implements StatusProviderInterface
             $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_MysqlDatabaseCharacterSet_Ok');
         }
 
-        return GeneralUtility::makeInstance(
-            ReportStatus::class,
+        return new ReportStatus(
             $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_MysqlDatabaseCharacterSet'),
             $statusValue,
             $message,

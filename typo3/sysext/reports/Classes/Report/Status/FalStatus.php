@@ -130,7 +130,7 @@ readonly class FalStatus implements StatusProviderInterface
             }
         }
 
-        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_missingFiles'), $value, $message, $severity);
+        return new ReportStatus($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_missingFiles'), $value, $message, $severity);
     }
 
     protected function getConsistencyCheckStatus(): ReportStatus
@@ -154,8 +154,7 @@ readonly class FalStatus implements StatusProviderInterface
             }
         }
         if ($inconsistenciesMessage === '') {
-            return GeneralUtility::makeInstance(
-                ReportStatus::class,
+            return new ReportStatus(
                 'Consistency check',
                 'No inconsistencies found in these storages',
                 // make sure we have a list of strings (0… index) with `array_values` to ensure correct rendering
@@ -170,8 +169,7 @@ readonly class FalStatus implements StatusProviderInterface
                 ContextualFeedbackSeverity::OK,
             );
         }
-        return GeneralUtility::makeInstance(
-            ReportStatus::class,
+        return new ReportStatus(
             'Consistency Status',
             'Inconsistent files have been found',
             $inconsistenciesMessage,

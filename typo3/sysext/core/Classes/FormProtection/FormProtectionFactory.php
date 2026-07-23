@@ -183,8 +183,7 @@ readonly class FormProtectionFactory
     protected function getMessageClosure(LanguageService $languageService, FlashMessageQueue $messageQueue, bool $isAjaxCall): \Closure
     {
         return static function () use ($languageService, $messageQueue, $isAjaxCall) {
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $flashMessage = new FlashMessage(
                 $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.formProtection.tokenInvalid'),
                 '',
                 ContextualFeedbackSeverity::ERROR,

@@ -264,7 +264,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
      */
     public function addFlashMessage(string $messageBody, string $messageTitle = '', ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK, bool $storeInSession = true): self
     {
-        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $messageBody, $messageTitle, $severity, $storeInSession);
+        $flashMessage = new FlashMessage($messageBody, $messageTitle, $severity, $storeInSession);
         $this->flashMessageQueue->enqueue($flashMessage);
         return $this;
     }

@@ -145,7 +145,7 @@ readonly class SynchronizeFolderRelations
 
         $this->flashMessageService
             ->getMessageQueueByIdentifier()
-            ->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $message, '', ContextualFeedbackSeverity::OK, true));
+            ->enqueue(new FlashMessage($message, '', ContextualFeedbackSeverity::OK, true));
     }
 
     protected function getPreparedQueryBuilder(string $table): QueryBuilder

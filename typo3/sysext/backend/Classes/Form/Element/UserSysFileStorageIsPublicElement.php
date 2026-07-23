@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -61,8 +60,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
 
                 // Display a warning to the BE User in case settings is not inline with storage capability.
                 if ($storageRecord['is_public'] && !$storage->isPublic()) {
-                    $message = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $message = new FlashMessage(
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.message.storage_is_no_public'),
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header.storage_is_no_public'),
                         ContextualFeedbackSeverity::WARNING
@@ -70,8 +68,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
                     $defaultFlashMessageQueue->enqueue($message);
                 }
             } catch (InvalidPathException $e) {
-                $message = GeneralUtility::makeInstance(
-                    FlashMessage::class,
+                $message = new FlashMessage(
                     $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:filestorage.invalidpathexception.message'),
                     $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:filestorage.invalidpathexception.title'),
                     ContextualFeedbackSeverity::ERROR

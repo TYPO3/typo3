@@ -147,8 +147,7 @@ readonly class BackendLayoutRenderer
         if (empty($unusedRecords)) {
             return '';
         }
-        $unusedElementsMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $unusedElementsMessage = new FlashMessage(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleUnusedElementsWarning'),
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:staleUnusedElementsWarningTitle'),
             ContextualFeedbackSeverity::WARNING

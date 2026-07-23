@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Command\CheckIntegrityCommand;
 use TYPO3\CMS\Redirects\Configuration\CheckIntegrityConfiguration;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
@@ -90,8 +89,7 @@ readonly class RedirectStatus implements StatusProviderInterface, RequestAwareSt
             'reportedConflicts' => [],
         ]);
 
-        return GeneralUtility::makeInstance(
-            Status::class,
+        return new Status(
             $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.conflictingRedirects'),
             $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.conflictingRedirects.none'),
             $view->render('Report/RedirectStatus'),
@@ -117,8 +115,7 @@ readonly class RedirectStatus implements StatusProviderInterface, RequestAwareSt
             'reportedConflicts' => $reportedConflicts,
         ]);
 
-        return GeneralUtility::makeInstance(
-            Status::class,
+        return new Status(
             $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.conflictingRedirects'),
             $value,
             $view->render('Report/RedirectStatus'),
@@ -136,8 +133,7 @@ readonly class RedirectStatus implements StatusProviderInterface, RequestAwareSt
         $checkPoint = time() - $this->checkIntegrityConfiguration->seconds;
         $lastCheckIsWithinCheckPeriod = $lastCheck >= $checkPoint;
         if (!$hasCheckedBefore || !$lastCheckIsWithinCheckPeriod) {
-            return GeneralUtility::makeInstance(
-                Status::class,
+            return new Status(
                 $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.checkIntegrityResultState'),
                 $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.checkIntegrityResultState.title'),
                 $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.checkIntegrityResultState.message'),

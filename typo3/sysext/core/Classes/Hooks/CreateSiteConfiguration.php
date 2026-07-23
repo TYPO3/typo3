@@ -99,7 +99,7 @@ class CreateSiteConfiguration
                 $backendUser->writelog(Type::SITE, SiteAction::CREATE, SystemLogErrorClassification::MESSAGE, null, 'Site configuration \'%s\' was automatically created for new root page (%s).', [$siteIdentifier, $pageId], 'site');
                 $this->updateSlugForPage($pageId);
             } catch (SiteConfigurationWriteException $e) {
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);
+                $flashMessage = new FlashMessage($e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
                 $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);

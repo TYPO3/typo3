@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Reports\Report\Status;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
@@ -80,8 +79,7 @@ class Typo3Status implements StatusProviderInterface
             $severity = ContextualFeedbackSeverity::NOTICE;
         }
 
-        return GeneralUtility::makeInstance(
-            ReportStatus::class,
+        return new ReportStatus(
             $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_xclassUsage'),
             $value,
             $message,

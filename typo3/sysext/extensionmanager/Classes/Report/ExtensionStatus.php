@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
@@ -95,8 +94,7 @@ class ExtensionStatus implements StatusProviderInterface
             $severity = ContextualFeedbackSeverity::OK;
         }
 
-        $status = GeneralUtility::makeInstance(
-            Status::class,
+        $status = new Status(
             $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.mainRepository.title'),
             $value,
             $message,
@@ -184,8 +182,7 @@ class ExtensionStatus implements StatusProviderInterface
             );
             $severity = ContextualFeedbackSeverity::ERROR;
         }
-        $result->loaded = GeneralUtility::makeInstance(
-            Status::class,
+        $result->loaded = new Status(
             $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedExtensions.title'),
             $value,
             $message,
@@ -215,8 +212,7 @@ class ExtensionStatus implements StatusProviderInterface
             );
             $severity = ContextualFeedbackSeverity::WARNING;
         }
-        $result->existing = GeneralUtility::makeInstance(
-            Status::class,
+        $result->existing = new Status(
             $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingExtensions.title'),
             $value,
             $message,
@@ -246,8 +242,7 @@ class ExtensionStatus implements StatusProviderInterface
             );
             $severity = ContextualFeedbackSeverity::WARNING;
         }
-        $result->loadedoutdated = GeneralUtility::makeInstance(
-            Status::class,
+        $result->loadedoutdated = new Status(
             $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.title'),
             $value,
             $message,
@@ -277,8 +272,7 @@ class ExtensionStatus implements StatusProviderInterface
             );
             $severity = ContextualFeedbackSeverity::WARNING;
         }
-        $result->existingoutdated = GeneralUtility::makeInstance(
-            Status::class,
+        $result->existingoutdated = new Status(
             $this->languageService->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.title'),
             $value,
             $message,

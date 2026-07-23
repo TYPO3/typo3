@@ -305,21 +305,21 @@ final class ComponentsController
         // Normal modules wouldn't usually do this and would let ModuleTemplate layout take care of rendering
         // at some appropriate position.
         $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.default');
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Title', ContextualFeedbackSeverity::NOTICE, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Title', ContextualFeedbackSeverity::NOTICE, true));
 
         $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.color');
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Notice', ContextualFeedbackSeverity::NOTICE, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Info', ContextualFeedbackSeverity::INFO, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Ok', ContextualFeedbackSeverity::OK, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Warning', ContextualFeedbackSeverity::WARNING, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Error', ContextualFeedbackSeverity::ERROR, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Notice', ContextualFeedbackSeverity::NOTICE, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Info', ContextualFeedbackSeverity::INFO, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Ok', ContextualFeedbackSeverity::OK, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Warning', ContextualFeedbackSeverity::WARNING, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Error', ContextualFeedbackSeverity::ERROR, true));
 
         $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.colorscheme');
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Notice', ContextualFeedbackSeverity::NOTICE, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Info', ContextualFeedbackSeverity::INFO, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Ok', ContextualFeedbackSeverity::OK, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Warning', ContextualFeedbackSeverity::WARNING, true));
-        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Error', ContextualFeedbackSeverity::ERROR, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Notice', ContextualFeedbackSeverity::NOTICE, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Info', ContextualFeedbackSeverity::INFO, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Ok', ContextualFeedbackSeverity::OK, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Warning', ContextualFeedbackSeverity::WARNING, true));
+        $flashMessageQueue->enqueue(new FlashMessage($loremIpsum, 'Error', ContextualFeedbackSeverity::ERROR, true));
 
         return $view->renderResponse('Backend/Components/FlashMessages');
     }

@@ -682,8 +682,7 @@ class EditDocumentController
                     $messages = [sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:notification.mass_saving.message'), count($messages))];
                 }
                 $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE);
-                $flashMessage = GeneralUtility::makeInstance(
-                    FlashMessage::class,
+                $flashMessage = new FlashMessage(
                     implode(LF, $messages),
                     $label,
                     ContextualFeedbackSeverity::OK,

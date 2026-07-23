@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Redirects\Service\ShortUrlService;
 
@@ -69,8 +68,7 @@ final readonly class HandleNewShortUrlRecord
         if (!$this->shortUrlService->isUniqueShortUrl($incomingFieldArray['source_host'], $incomingFieldArray['source_path'])) {
             $incomingFieldArray = null;
             $message = $this->getLanguageService()->sL('redirects.modules.short_urls:validation.duplicate_short_url');
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $flashMessage = new FlashMessage(
                 $message,
                 '',
                 ContextualFeedbackSeverity::ERROR,

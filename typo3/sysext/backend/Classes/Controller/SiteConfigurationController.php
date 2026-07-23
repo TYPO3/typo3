@@ -521,7 +521,7 @@ readonly class SiteConfigurationController
                     $this->getBackendUser()->writelog(Type::SITE, SiteAction::UPDATE, SystemLogErrorClassification::MESSAGE, null, 'Site configuration \'%s\' was updated.', [$siteIdentifier], 'site');
                 }
             } catch (SiteConfigurationWriteException $e) {
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);
+                $flashMessage = new FlashMessage($e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);
                 $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
@@ -568,7 +568,7 @@ readonly class SiteConfigurationController
                     $identifier
                 );
                 $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierRenamed.title');
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
+                $flashMessage = new FlashMessage($message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
                 $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
@@ -591,7 +591,7 @@ readonly class SiteConfigurationController
                     $identifier
                 );
                 $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierExists.title');
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
+                $flashMessage = new FlashMessage($message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
                 $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
@@ -626,7 +626,7 @@ readonly class SiteConfigurationController
                 $fieldName
             );
             $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.required.title');
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
+            $flashMessage = new FlashMessage($message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
             $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
             throw new SiteValidationErrorException(
@@ -697,7 +697,7 @@ readonly class SiteConfigurationController
                         $child['errorCode']
                     );
                     $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.duplicateErrorCode.title');
-                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
+                    $flashMessage = new FlashMessage($message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
                     $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
                     $defaultFlashMessageQueue->enqueue($flashMessage);
                 }
@@ -728,7 +728,7 @@ readonly class SiteConfigurationController
                     $child['languageId']
                 );
                 $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.duplicateLanguageId.title');
-                $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
+                $flashMessage = new FlashMessage($message, $messageTitle, ContextualFeedbackSeverity::WARNING, true);
                 $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
                 $defaultFlashMessageQueue->enqueue($flashMessage);
             }
@@ -764,7 +764,7 @@ readonly class SiteConfigurationController
             $this->siteWriter->delete($siteIdentifier);
             $this->getBackendUser()->writelog(Type::SITE, SiteAction::DELETE, SystemLogErrorClassification::MESSAGE, null, 'Site configuration \'%s\' was deleted.', [$siteIdentifier], 'site');
         } catch (SiteConfigurationWriteException $e) {
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);
+            $flashMessage = new FlashMessage($e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);
             $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }

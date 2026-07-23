@@ -1138,7 +1138,7 @@ class QuerySearchController
     {
         $languageService = $this->getLanguageService();
         $flashMessageText = $languageService->translate('fullSearch.flashMessage.noResultsFoundMessage', 'lowlevel.messages');
-        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $flashMessageText, '', ContextualFeedbackSeverity::INFO);
+        $flashMessage = new FlashMessage($flashMessageText, '', ContextualFeedbackSeverity::INFO);
         $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }
@@ -2477,8 +2477,7 @@ class QuerySearchController
                 if ($storeIndex > 0) {
                     $writeArray = $this->loadStoreQueryConfigs($storeQueryConfigs, $storeIndex, $writeArray);
                     $saveStoreArray = 1;
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $flashMessage = new FlashMessage(
                         sprintf($languageService->translate('query_loaded', 'lowlevel.modules.database_integrity'), $storeArray[$storeIndex])
                     );
                 }
@@ -2493,15 +2492,13 @@ class QuerySearchController
                     }
                     $storeQueryConfigs = $this->addToStoreQueryConfigs($storeQueryConfigs, (int)$storeIndex);
                     $saveStoreArray = 1;
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $flashMessage = new FlashMessage(
                         $languageService->translate('query_saved', 'lowlevel.modules.database_integrity')
                     );
                 }
             } elseif ($storeControl['REMOVE'] ?? false) {
                 if ($storeIndex > 0) {
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $flashMessage = new FlashMessage(
                         sprintf($languageService->translate('query_removed', 'lowlevel.modules.database_integrity'), $storeArray[$storeControl['STORE']])
                     );
                     // Removing

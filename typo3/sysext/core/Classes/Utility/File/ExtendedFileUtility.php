@@ -283,8 +283,7 @@ class ExtendedFileUtility extends BasicFileUtility
         if ($this->isBackendScope()) {
             $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:' . $localizationKey);
             $message = vsprintf($label, $replaceMarkers);
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $flashMessage = new FlashMessage(
                 $message,
                 '',
                 $severity,
@@ -303,8 +302,7 @@ class ExtendedFileUtility extends BasicFileUtility
         }
         foreach ($exception->messages as $messageItem) {
             $message = $messageItem->labelBag?->compile($this->getLanguageService()) ?? $messageItem->message;
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $flashMessage = new FlashMessage(
                 $message,
                 '',
                 $severity,
@@ -333,8 +331,7 @@ class ExtendedFileUtility extends BasicFileUtility
         try {
             $fileObject = $this->getFileObject($cmds['data']);
         } catch (ResourceDoesNotExistException $e) {
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $flashMessage = new FlashMessage(
                 sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.fileNotFound'),
                     $cmds['data']
@@ -396,8 +393,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 }
                 if (!empty($brokenReferences)) {
                     // render a message that the file has broken references
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $flashMessage = new FlashMessage(
                         sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.fileHasBrokenReferences'), count($brokenReferences)),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.fileHasBrokenReferences'),
                         ContextualFeedbackSeverity::INFO,
@@ -407,8 +403,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 }
                 if (!empty($shortcutContent)) {
                     // render a message that the file could not be deleted
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $flashMessage = new FlashMessage(
                         sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . ' ' . implode(', ', $shortcutContent),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
                         ContextualFeedbackSeverity::WARNING,
@@ -424,8 +419,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     $result = $fileObject->delete();
 
                     // show the user that the file was deleted
-                    $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
+                    $flashMessage = new FlashMessage(
                         sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.fileDeleted'), $fileObject->getName()),
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.fileDeleted'),
                         ContextualFeedbackSeverity::OK,
@@ -451,8 +445,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     $result = $fileObject->delete(true);
                     if ($result) {
                         // notify the user that the folder was deleted
-                        $flashMessage = GeneralUtility::makeInstance(
-                            FlashMessage::class,
+                        $flashMessage = new FlashMessage(
                             sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderDeleted'), $fileObject->getName()),
                             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.folderDeleted'),
                             ContextualFeedbackSeverity::OK,
@@ -523,8 +516,7 @@ class ExtendedFileUtility extends BasicFileUtility
 
         $hasReferences = $numberOfReferences > 0;
         if ($hasReferences) {
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
+            $flashMessage = new FlashMessage(
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderNotDeletedHasFilesWithReferences'),
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.folderNotDeletedHasFilesWithReferences'),
                 ContextualFeedbackSeverity::WARNING,

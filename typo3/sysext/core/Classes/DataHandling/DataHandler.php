@@ -9261,7 +9261,7 @@ class DataHandler
             $message = $this->formatLogDetails($row['details'], $row['log_data'] ?? '');
             $message = $row['error'] . ': ' . $message;
             $message = $this->getLanguageService()->translate('error_during_saving', 'core.data_handler', [$message]) ?? $message;
-            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, '', $row['error'] === SystemLogErrorClassification::WARNING ? ContextualFeedbackSeverity::WARNING : ContextualFeedbackSeverity::ERROR, true);
+            $flashMessage = new FlashMessage($message, '', $row['error'] === SystemLogErrorClassification::WARNING ? ContextualFeedbackSeverity::WARNING : ContextualFeedbackSeverity::ERROR, true);
             $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }

@@ -25,23 +25,15 @@ use TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider\Fixtures\ItemsProcessor2;
 use TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider\Fixtures\ItemsProcessorForTestingExceptionsForCheckboxItems;
 use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TcaCheckboxItemsTest extends UnitTestCase
 {
-    protected function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
-    }
-
     public static function checkboxConfigurationDataProvider(): array
     {
         return [
@@ -698,8 +690,6 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
         $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
-        $flashMessage = $this->createMock(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
@@ -766,8 +756,6 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $languageService->method('sL')->with(self::anything())->willReturn('');
         $GLOBALS['LANG'] = $languageService;
-        $flashMessage = $this->createMock(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);
@@ -842,8 +830,6 @@ final class TcaCheckboxItemsTest extends UnitTestCase
         $languageService = $this->createMock(LanguageService::class);
         $languageService->method('sL')->with(self::anything())->willReturn('');
         $GLOBALS['LANG'] = $languageService;
-        $flashMessage = $this->createMock(FlashMessage::class);
-        GeneralUtility::addInstance(FlashMessage::class, $flashMessage);
         $flashMessageService = $this->createMock(FlashMessageService::class);
         $flashMessageQueue = $this->createMock(FlashMessageQueue::class);
         $flashMessageService->method('getMessageQueueByIdentifier')->with(self::anything())->willReturn($flashMessageQueue);

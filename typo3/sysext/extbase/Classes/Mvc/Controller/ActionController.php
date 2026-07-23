@@ -666,9 +666,7 @@ abstract class ActionController implements ControllerInterface
         ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::OK,
         bool $storeInSession = true
     ): void {
-        /* @var FlashMessage $flashMessage */
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
+        $flashMessage = new FlashMessage(
             $messageBody,
             $messageTitle,
             $severity,

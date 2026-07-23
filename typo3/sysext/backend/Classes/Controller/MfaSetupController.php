@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
@@ -247,8 +246,7 @@ class MfaSetupController extends AbstractMfaController
     {
         $lang = $this->getLanguageService();
         $this->flashMessageService->getMessageQueueByIdentifier()->enqueue(
-            GeneralUtility::makeInstance(
-                FlashMessage::class,
+            new FlashMessage(
                 sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.success.message'), $lang->sL($mfaProviderTitle)),
                 $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.success.title'),
                 ContextualFeedbackSeverity::OK,

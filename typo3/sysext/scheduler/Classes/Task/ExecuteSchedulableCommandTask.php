@@ -213,7 +213,7 @@ class ExecuteSchedulableCommandTask extends AbstractTask
                     }
                     if ($argument->isRequired() && trim($argumentValue) === '') {
                         $flashMessageQueue->addMessage(
-                            GeneralUtility::makeInstance(FlashMessage::class, sprintf(
+                            new FlashMessage(sprintf(
                                 $this->getLanguageService()?->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.mandatoryArgumentMissing'),
                                 $argumentName
                             ), '', ContextualFeedbackSeverity::ERROR)
@@ -235,7 +235,7 @@ class ExecuteSchedulableCommandTask extends AbstractTask
                         if ($testValue === null || trim($testValue) === '') {
                             // An option that requires a value is used with an empty value
                             $flashMessageQueue->addMessage(
-                                GeneralUtility::makeInstance(FlashMessage::class, sprintf(
+                                new FlashMessage(sprintf(
                                     $this->getLanguageService()?->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.mandatoryArgumentMissing'),
                                     $optionDefinition->getName()
                                 ), '', ContextualFeedbackSeverity::ERROR)
