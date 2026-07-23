@@ -112,6 +112,15 @@ final class LocalizationRepositoryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function getRecordTranslationReturnsTranslationWithEmptyTranslationSource(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/TranslationTestData.csv');
+        $result = $this->subject->getRecordTranslation('pages', 1001, 1);
+        self::assertNotNull($result);
+        self::assertSame(1002, $result->getUid());
+    }
+
+    #[Test]
     public function getRecordTranslationReturnsNullForNonExistentTranslation(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TranslationTestData.csv');
