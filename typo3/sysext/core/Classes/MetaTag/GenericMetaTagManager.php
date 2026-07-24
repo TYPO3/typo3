@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\MetaTag;
 
+use TYPO3\CMS\Core\Attribute\AsMetaTagManager;
 use TYPO3\CMS\Core\Type\DocType;
 
 /**
  * Handles typical meta tags (non-grouped). Use AbstractMetaTagManager
  * to create your own MetaTags, this class is final by design
  */
+#[AsMetaTagManager(identifier: 'generic')]
 final class GenericMetaTagManager implements MetaTagManagerInterface
 {
     /**
@@ -42,7 +44,7 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
     /**
      * Add a property (including subProperties)
      */
-    public function addProperty(string $property, string $content, array $subProperties = [], bool $replace = false, string $type = 'name')
+    public function addProperty(string $property, string $content, array $subProperties = [], bool $replace = false, string $type = 'name'): void
     {
         $property = strtolower($property);
         $type = strtolower($type) ?: 'name';
@@ -124,7 +126,7 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
      * Remove one property from the MetaTagManager
      * If there are multiple occurrences of a property, they all will be removed
      */
-    public function removeProperty(string $property, string $type = '')
+    public function removeProperty(string $property, string $type = ''): void
     {
         $property = strtolower($property);
         $type = strtolower($type);
@@ -139,7 +141,7 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
     /**
      * Unset all properties
      */
-    public function removeAllProperties()
+    public function removeAllProperties(): void
     {
         $this->properties = [];
     }

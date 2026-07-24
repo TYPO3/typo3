@@ -334,6 +334,7 @@
 			"TYPO3Tests\\TestLogger\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_logger/Classes/",
 			"TYPO3Tests\\TestLabelAlias\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_label_alias/Classes/",
 			"TYPO3Tests\\TestMeta\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Classes/",
+			"TYPO3Tests\\TestMetaTagManager\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta_tag_manager/Classes/",
 			"TYPO3Tests\\TestMetadataExtraction\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_metadata_extraction/Classes/",
 			"TYPO3Tests\\TestSchedulableCommand\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_schedulable_command/Classes/",
 			"TYPO3Tests\\TestMessageHandler\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_message_handler/Classes/",

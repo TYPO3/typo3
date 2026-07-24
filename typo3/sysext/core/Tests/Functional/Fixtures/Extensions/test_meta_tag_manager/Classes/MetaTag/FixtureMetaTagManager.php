@@ -15,17 +15,15 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\MetaTag;
+namespace TYPO3Tests\TestMetaTagManager\MetaTag;
 
 use TYPO3\CMS\Core\Attribute\AsMetaTagManager;
+use TYPO3\CMS\Core\MetaTag\AbstractMetaTagManager;
 
-#[AsMetaTagManager(identifier: 'edge')]
-class EdgeMetaTagManager extends AbstractMetaTagManager
+#[AsMetaTagManager(identifier: 'fixture', after: ['html5'])]
+final class FixtureMetaTagManager extends AbstractMetaTagManager
 {
-    /**
-     * @var string[][]
-     */
     protected $handledProperties = [
-        'x-ua-compatible' => ['nameAttribute' => 'http-equiv'],
+        'x-fixture' => [],
     ];
 }

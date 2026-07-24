@@ -104,7 +104,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
      *
      * @throws \UnexpectedValueException
      */
-    public function addProperty(string $property, string $content, array $subProperties = [], bool $replace = false, string $type = '')
+    public function addProperty(string $property, string $content, array $subProperties = [], bool $replace = false, string $type = ''): void
     {
         $property = strtolower($property);
 
@@ -262,7 +262,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
      * Remove one property from the MetaTagManager
      * If there are multiple occurrences of a property, they all will be removed
      */
-    public function removeProperty(string $property, string $type = '')
+    public function removeProperty(string $property, string $type = ''): void
     {
         $property = strtolower($property);
 
@@ -272,7 +272,7 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
     /**
      * Unset all properties of this MetaTagManager
      */
-    public function removeAllProperties()
+    public function removeAllProperties(): void
     {
         $this->properties = [];
     }

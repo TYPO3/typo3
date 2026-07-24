@@ -17,199 +17,55 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
 
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\MetaTag\GenericMetaTagManager;
 use TYPO3\CMS\Core\MetaTag\Html5MetaTagManager;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
-use TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager;
-use TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class MetaTagManagerRegistryTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     #[Test]
-    #[DoesNotPerformAssertions]
-    public function checkRegisterNonExistingManagerDoesntThrowErrorWhenFetchingManagers(): void
+    public function getManagerForPropertyReturnsFirstManagerHandlingTheProperty(): void
     {
-        $metaTagManagerRegistry = new MetaTagManagerRegistry();
-        $metaTagManagerRegistry->registerManager('name', 'fake//class//name');
-        $metaTagManagerRegistry->getAllManagers();
-    }
+        $html5Manager = new Html5MetaTagManager();
+        $genericManager = new GenericMetaTagManager();
 
-    public static function registerMetaTagManagersProvider(): array
-    {
-        return [
-            [
-                [
-                    [
-                        'name' => 'opengraph',
-                        'className' => OpenGraphMetaTagManager::class,
-                        'before' => [],
-                        'after' => [],
-                    ],
-                ],
-                [
-                    'opengraph' => new OpenGraphMetaTagManager(),
-                    'generic' => new GenericMetaTagManager(),
-                ],
-            ],
-            [
-                [
-                    [
-                        'name' => 'opengraph',
-                        'className' => OpenGraphMetaTagManager::class,
-                        'before' => [],
-                        'after' => [],
-                    ],
-                    [
-                        'name' => 'opengraph',
-                        'className' => OpenGraphMetaTagManager::class,
-                        'before' => [],
-                        'after' => [],
-                    ],
-                ],
-                [
-                    'opengraph' => new OpenGraphMetaTagManager(),
-                    'generic' => new GenericMetaTagManager(),
-                ],
-            ],
-            [
-                [
-                    [
-                        'name' => 'opengraph',
-                        'className' => OpenGraphMetaTagManager::class,
-                        'before' => [],
-                        'after' => [],
-                    ],
-                    [
-                        'name' => 'html5',
-                        'className' => Html5MetaTagManager::class,
-                        'before' => [],
-                        'after' => [],
-                    ],
-                ],
-                [
-                    'html5' => new Html5MetaTagManager(),
-                    'opengraph' => new OpenGraphMetaTagManager(),
-                    'generic' => new GenericMetaTagManager(),
-                ],
-            ],
-            [
-                [
-                    [
-                        'name' => 'opengraph',
-                        'className' => OpenGraphMetaTagManager::class,
-                        'before' => ['html5'],
-                        'after' => [],
-                    ],
-                    [
-                        'name' => 'html5',
-                        'className' => Html5MetaTagManager::class,
-                        'before' => [],
-                        'after' => [],
-                    ],
-                ],
-                [
-                    'opengraph' => new OpenGraphMetaTagManager(),
-                    'html5' => new Html5MetaTagManager(),
-                    'generic' => new GenericMetaTagManager(),
-                ],
-            ],
-            [
-                [
-                    [
-                        'name' => 'opengraph',
-                        'className' => OpenGraphMetaTagManager::class,
-                        'before' => [],
-                        'after' => [],
-                    ],
-                    [
-                        'name' => 'html5',
-                        'className' => Html5MetaTagManager::class,
-                        'before' => [],
-                        'after' => ['opengraph'],
-                    ],
-                ],
-                [
-                    'opengraph' => new OpenGraphMetaTagManager(),
-                    'html5' => new Html5MetaTagManager(),
-                    'generic' => new GenericMetaTagManager(),
-                ],
-            ],
-            [
-                [
-                    [
-                        'name' => 'opengraph',
-                        'className' => OpenGraphMetaTagManager::class,
-                        'before' => [],
-                        'after' => [],
-                    ],
-                    [
-                        'name' => 'html5',
-                        'className' => Html5MetaTagManager::class,
-                        'before' => [],
-                        'after' => ['twitter'],
-                    ],
-                    [
-                        'name' => 'twitter',
-                        'className' => TwitterCardMetaTagManager::class,
-                        'before' => [],
-                        'after' => ['opengraph'],
-                    ],
-                ],
-                [
-                    'opengraph' => new OpenGraphMetaTagManager(),
-                    'twitter' => new TwitterCardMetaTagManager(),
-                    'html5' => new Html5MetaTagManager(),
-                    'generic' => new GenericMetaTagManager(),
-                ],
-            ],
-            [
-                [],
-                [
-                    'generic' => new GenericMetaTagManager(),
-                ],
-            ],
-        ];
-    }
+        $registry = new MetaTagManagerRegistry(['html5' => $html5Manager, 'generic' => $genericManager]);
 
-    #[DataProvider('registerMetaTagManagersProvider')]
-    #[Test]
-    public function checkRegisterExistingManagerDoRegister(array $managersToRegister, array $expected): void
-    {
-        $metaTagManagerRegistry = new MetaTagManagerRegistry();
-        foreach ($managersToRegister as $managerToRegister) {
-            $metaTagManagerRegistry->registerManager(
-                $managerToRegister['name'],
-                $managerToRegister['className'],
-                (array)$managerToRegister['before'],
-                (array)$managerToRegister['after']
-            );
-        }
-        // Remove all properties from the manager if it was set by a previous unittest
-        foreach ($metaTagManagerRegistry->getAllManagers() as $manager) {
-            $manager->removeAllProperties();
-        }
-        $managers = $metaTagManagerRegistry->getAllManagers();
-        self::assertEquals($expected, $managers);
+        self::assertSame($html5Manager, $registry->getManagerForProperty('description'));
+        self::assertSame($genericManager, $registry->getManagerForProperty('unknown-property'));
     }
 
     #[Test]
-    public function checkConditionRaceResultsIntoException(): void
+    public function getAllManagersReturnsManagersKeyedByIdentifierInGivenOrder(): void
     {
-        $input = [
-            'name' => 'opengraph',
-            'className' => OpenGraphMetaTagManager::class,
-            'before' => ['opengraph'],
-            'after' => [],
-        ];
-        $this->expectException(\UnexpectedValueException::class);
-        $metaTagManagerRegistry = new MetaTagManagerRegistry();
-        $metaTagManagerRegistry->registerManager($input['name'], $input['className'], (array)$input['before'], (array)$input['after']);
-        $metaTagManagerRegistry->getAllManagers();
+        $html5Manager = new Html5MetaTagManager();
+        $genericManager = new GenericMetaTagManager();
+
+        $registry = new MetaTagManagerRegistry(['html5' => $html5Manager, 'generic' => $genericManager]);
+
+        self::assertSame(['html5' => $html5Manager, 'generic' => $genericManager], $registry->getAllManagers());
+    }
+
+    #[Test]
+    public function stateIsAppliedToRegisteredManagerInstances(): void
+    {
+        $html5Manager = new Html5MetaTagManager();
+        $genericManager = new GenericMetaTagManager();
+        $registry = new MetaTagManagerRegistry(['html5' => $html5Manager, 'generic' => $genericManager]);
+
+        $html5Manager->addProperty('description', 'foo');
+        $state = $registry->getState();
+        self::assertSame(
+            [['content' => 'foo', 'subProperties' => []]],
+            $state['instances'][Html5MetaTagManager::class]['properties']['description'],
+        );
+
+        $registry->updateState(['instances' => []]);
+        self::assertSame([], $html5Manager->getProperty('description'));
+
+        $registry->updateState($state);
+        self::assertSame($state, $registry->getState());
     }
 }

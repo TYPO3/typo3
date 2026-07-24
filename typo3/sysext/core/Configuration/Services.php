@@ -15,6 +15,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Attribute\AsFileRenderer;
+use TYPO3\CMS\Core\Attribute\AsMetaTagManager;
 use TYPO3\CMS\Core\Attribute\AsModuleAccessGate;
 use TYPO3\CMS\Core\Attribute\AsTextExtractor;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
@@ -156,12 +157,24 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
         },
     );
 
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        AsMetaTagManager::class,
+        static function (ChildDefinition $definition, AsMetaTagManager $attribute): void {
+            $definition->addTag(AsMetaTagManager::TAG_NAME, [
+                'identifier' => $attribute->identifier,
+                'before' => implode(',', $attribute->before),
+                'after' => implode(',', $attribute->after),
+            ]);
+        },
+    );
+
     $containerBuilder->addCompilerPass(new DependencyInjection\SingletonPass('typo3.singleton'));
     $containerBuilder->addCompilerPass(new DependencyInjection\LoggerAwarePass('psr.logger_aware'));
     $containerBuilder->addCompilerPass(new DependencyInjection\LoggerInterfacePass());
     $containerBuilder->addCompilerPass(new DependencyInjection\MfaProviderPass('mfa.provider'));
     $containerBuilder->addCompilerPass(new DependencyInjection\FileRendererPass(AsFileRenderer::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\TextExtractorPass(AsTextExtractor::TAG_NAME));
+    $containerBuilder->addCompilerPass(new DependencyInjection\MetaTagManagerPass(AsMetaTagManager::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\SoftReferenceParserPass('softreference.parser'));
     $containerBuilder->addCompilerPass(new DependencyInjection\ListenerProviderPass('event.listener'));
     $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('typo3.middleware'));

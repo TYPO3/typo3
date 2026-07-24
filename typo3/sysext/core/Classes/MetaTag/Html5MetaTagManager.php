@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\MetaTag;
 
+use TYPO3\CMS\Core\Attribute\AsMetaTagManager;
+
+#[AsMetaTagManager(identifier: 'html5')]
 class Html5MetaTagManager extends AbstractMetaTagManager
 {
     /**

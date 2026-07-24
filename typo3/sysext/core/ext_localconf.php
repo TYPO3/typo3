@@ -10,9 +10,6 @@ use TYPO3\CMS\Core\Hooks\DestroySessionHook;
 use TYPO3\CMS\Core\Hooks\PagesTsConfigGuard;
 use TYPO3\CMS\Core\Hooks\SystemMaintainerAllowanceCheck;
 use TYPO3\CMS\Core\Hooks\UpdateFileIndexEntry;
-use TYPO3\CMS\Core\MetaTag\EdgeMetaTagManager;
-use TYPO3\CMS\Core\MetaTag\Html5MetaTagManager;
-use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Resource\MimeTypeCompatibilityTypeGuesser;
 use TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect;
 use TYPO3\CMS\Core\Resource\Security\FilePermissionAspect;
@@ -54,17 +51,6 @@ ExtensionManagementUtility::addService(
         'className' => TYPO3\CMS\Core\Authentication\AuthenticationService::class,
     ]
 );
-
-$metaTagManagerRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
-$metaTagManagerRegistry->registerManager(
-    'html5',
-    Html5MetaTagManager::class
-);
-$metaTagManagerRegistry->registerManager(
-    'edge',
-    EdgeMetaTagManager::class
-);
-unset($metaTagManagerRegistry);
 
 // Add module configuration
 ExtensionManagementUtility::addTypoScriptSetup('

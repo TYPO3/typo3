@@ -17,46 +17,30 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\MetaTag;
 
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Holds all available meta tag managers
+ * Holds all available meta tag managers, which are registered as tagged
+ * services via the #[AsMetaTagManager] attribute or the 'metatag.manager'
+ * service tag. Managers are ordered by their "before" and "after"
+ * constraints at container compile time.
  */
 class MetaTagManagerRegistry implements SingletonInterface
 {
-    protected array $registry = [
-        'generic' => [
-            'module' => GenericMetaTagManager::class,
-        ],
-    ];
-
     /**
-     * @var MetaTagManagerInterface[]
-     */
-    private array $instances = [];
-
-    /**
-     * @var MetaTagManagerInterface[]|null
+     * @var MetaTagManagerInterface[]|null keyed by manager identifier
      */
     private ?array $managers = null;
 
     /**
-     * Add a MetaTagManager to the registry
+     * @param iterable<string, MetaTagManagerInterface> $registeredManagers keyed by manager identifier
      */
-    public function registerManager(string $name, string $className, array $before = ['generic'], array $after = []): void
-    {
-        if (!count($before)) {
-            $before[] = 'generic';
-        }
-        $this->registry[$name] = [
-            'module' => $className,
-            'before' => $before,
-            'after' => $after,
-        ];
-        $this->managers = null;
-    }
+    public function __construct(protected readonly iterable $registeredManagers = []) {}
+
+    /**
+     * @deprecated since TYPO3 v15.0, this method is a no-op and will be removed in TYPO3 v16.0. Register the meta tag manager as a tagged service using the #[AsMetaTagManager] attribute instead.
+     */
+    public function registerManager(string $name, string $className, array $before = ['generic'], array $after = []): void {}
 
     /**
      * Get the MetaTagManager for a specific property
@@ -70,43 +54,23 @@ class MetaTagManagerRegistry implements SingletonInterface
             }
         }
         // Just a fallback because the GenericMetaTagManager is also registered in the list of MetaTagManagers
-        return GeneralUtility::makeInstance(GenericMetaTagManager::class);
+        return new GenericMetaTagManager();
     }
 
     /**
-     * Get an array of all registered MetaTagManagers
+     * Get an array of all registered MetaTagManagers, keyed by their identifier
      *
      * @return MetaTagManagerInterface[]
      */
     public function getAllManagers(): array
     {
-        if ($this->managers !== null) {
-            return $this->managers;
-        }
-
-        $orderedManagers = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies(
-            $this->registry
-        );
-
-        $this->managers = [];
-        foreach ($orderedManagers as $manager => $managerConfiguration) {
-            $module = $managerConfiguration['module'];
-            if (class_exists($module)) {
-                $this->instances[$module] = $this->instances[$module] ?? GeneralUtility::makeInstance($module);
-                $this->managers[$manager] = $this->instances[$module];
+        if ($this->managers === null) {
+            $this->managers = [];
+            foreach ($this->registeredManagers as $identifier => $manager) {
+                $this->managers[$identifier] = $manager;
             }
         }
-
         return $this->managers;
-    }
-
-    /**
-     * Remove all registered MetaTagManagers
-     */
-    public function removeAllManagers(): void
-    {
-        $this->registry = [];
-        $this->managers = null;
     }
 
     /**
@@ -114,13 +78,9 @@ class MetaTagManagerRegistry implements SingletonInterface
      */
     public function updateState(array $state): void
     {
-        $this->instances = [];
-        foreach ($state['instances'] ?? [] as $module => $instanceState) {
-            $instance = GeneralUtility::makeInstance($module);
-            $instance->updateState($instanceState);
-            $this->instances[$module] = $instance;
+        foreach ($this->getInstancesPerClass() as $className => $instance) {
+            $instance->updateState($state['instances'][$className] ?? []);
         }
-        $this->managers = null;
     }
 
     /**
@@ -131,8 +91,21 @@ class MetaTagManagerRegistry implements SingletonInterface
         return [
             'instances' => array_map(
                 static fn(MetaTagManagerInterface $instance): array => $instance->getState(),
-                $this->instances,
+                $this->getInstancesPerClass(),
             ),
         ];
+    }
+
+    /**
+     * @return MetaTagManagerInterface[] keyed by class name, as the same instance
+     *                                   may be registered under multiple identifiers
+     */
+    private function getInstancesPerClass(): array
+    {
+        $instances = [];
+        foreach ($this->getAllManagers() as $manager) {
+            $instances[$manager::class] = $manager;
+        }
+        return $instances;
     }
 }
