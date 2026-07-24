@@ -57,7 +57,7 @@ class DownloadController extends AbstractController
      */
     public function checkDependenciesAction(int $extension): ResponseInterface
     {
-        $extension = $this->extensionRepository->findByUid($extension);
+        $extension = $this->extensionRepository->getByUid($extension);
         $message = '';
         $title = '';
         $hasDependencies = false;
@@ -146,7 +146,7 @@ class DownloadController extends AbstractController
      */
     public function installFromTerAction(int $extension): ResponseInterface
     {
-        $extension = $this->extensionRepository->findByUid($extension);
+        $extension = $this->extensionRepository->getByUid($extension);
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         [$result, $errorMessages] = $this->installFromTer($extension);
@@ -188,7 +188,7 @@ class DownloadController extends AbstractController
             ], JSON_THROW_ON_ERROR));
         }
 
-        $extension = $this->extensionRepository->findByUid($extension);
+        $extension = $this->extensionRepository->getByUid($extension);
 
         try {
             $dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
@@ -225,7 +225,7 @@ class DownloadController extends AbstractController
      */
     public function installDistributionAction(int $extension): ResponseInterface
     {
-        $extension = $this->extensionRepository->findByUid($extension);
+        $extension = $this->extensionRepository->getByUid($extension);
         $this->assertAllowedHttpMethod($this->request, 'POST');
 
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
