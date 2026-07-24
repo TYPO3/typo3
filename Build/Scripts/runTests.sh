@@ -1274,7 +1274,7 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     lintHtml)
-        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt exec:lintspaces"
+        COMMAND="cd Build; [ -e node_modules/grunt/bin/grunt ] || npm ci || exit 1; node_modules/grunt/bin/grunt exec:lintspaces"
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name lint-html-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_NODEJS} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
         ;;
@@ -1284,7 +1284,7 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     lintScss)
-        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt stylelint"
+        COMMAND="cd Build; [ -e node_modules/grunt/bin/grunt ] || npm ci || exit 1; node_modules/grunt/bin/grunt stylelint"
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name lint-css-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_NODEJS} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
         ;;
@@ -1294,7 +1294,7 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     lintTypescript)
-        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt eslint $@"
+        COMMAND="cd Build; [ -e node_modules/grunt/bin/grunt ] || npm ci || exit 1; node_modules/grunt/bin/grunt eslint $@"
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name lint-typescript-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_NODEJS} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
         ;;
