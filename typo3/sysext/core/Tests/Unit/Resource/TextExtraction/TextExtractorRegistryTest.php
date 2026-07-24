@@ -18,66 +18,40 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test cases for TextExtractorRegistry
- */
 final class TextExtractorRegistryTest extends UnitTestCase
 {
-    /**
-     * Initialize a TextExtractorRegistry and mock createTextExtractorInstance()
-     */
-    private function getTextExtractorRegistry(array $createsTextExtractorInstances = []): TextExtractorRegistry&MockObject
+    #[Test]
+    public function getTextExtractorReturnsFirstMatchingTextExtractor(): void
     {
-        $textExtractorRegistry = $this->getMockBuilder(TextExtractorRegistry::class)
-            ->onlyMethods(['createTextExtractorInstance'])
-            ->getMock();
+        $textExtractor1 = $this->createMock(TextExtractorInterface::class);
+        $textExtractor1->expects($this->once())->method('canExtractText')->willReturn(false);
+        $textExtractor2 = $this->createMock(TextExtractorInterface::class);
+        $textExtractor2->expects($this->once())->method('canExtractText')->willReturn(true);
+        $textExtractor3 = $this->createMock(TextExtractorInterface::class);
+        $textExtractor3->expects($this->never())->method('canExtractText');
 
-        if (!empty($createsTextExtractorInstances)) {
-            $textExtractorRegistry
-                ->method('createTextExtractorInstance')
-                ->willReturnMap($createsTextExtractorInstances);
-        }
+        $fileResourceMock = $this->createMock(File::class);
 
-        return $textExtractorRegistry;
+        $textExtractorRegistry = new TextExtractorRegistry([$textExtractor1, $textExtractor2, $textExtractor3]);
+
+        self::assertSame($textExtractor2, $textExtractorRegistry->getTextExtractor($fileResourceMock));
     }
 
     #[Test]
-    public function registeredTextExtractorClassCanBeRetrieved(): void
+    public function getTextExtractorReturnsNullIfNoTextExtractorMatches(): void
     {
-        $textExtractorClass = StringUtility::getUniqueId('myTextExtractor');
-        $textExtractorInstance = $this->getMockBuilder(TextExtractorInterface::class)
-            ->setMockClassName($textExtractorClass)
-            ->getMock();
+        $textExtractor = $this->createMock(TextExtractorInterface::class);
+        $textExtractor->method('canExtractText')->willReturn(false);
 
-        $textExtractorRegistry = $this->getTextExtractorRegistry([[$textExtractorClass, $textExtractorInstance]]);
+        $fileResourceMock = $this->createMock(File::class);
 
-        $textExtractorRegistry->registerTextExtractor($textExtractorClass);
-        self::assertContains($textExtractorInstance, $textExtractorRegistry->getTextExtractorInstances());
-    }
+        $textExtractorRegistry = new TextExtractorRegistry([$textExtractor]);
 
-    #[Test]
-    public function registerTextExtractorThrowsExceptionIfClassDoesNotExist(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1422906893);
-
-        $textExtractorRegistry = $this->getTextExtractorRegistry();
-        $textExtractorRegistry->registerTextExtractor(StringUtility::getUniqueId());
-    }
-
-    #[Test]
-    public function registerTextExtractorThrowsExceptionIfClassDoesNotImplementRightInterface(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1422771427);
-
-        $textExtractorRegistry = $this->getTextExtractorRegistry();
-        $textExtractorRegistry->registerTextExtractor(__CLASS__);
+        self::assertNull($textExtractorRegistry->getTextExtractor($fileResourceMock));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,85 +19,60 @@ namespace TYPO3\CMS\Core\Resource\TextExtraction;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * Registry for text extractors, which are registered as tagged services
+ * via the #[AsTextExtractor] attribute or the 'fal.text_extractor'
+ * service tag. Extractors are ordered by their tag priority, an
+ * extractor with a higher priority is asked first whether it can
+ * extract text from a file.
+ */
 class TextExtractorRegistry implements SingletonInterface
 {
     /**
-     * Registered text extractor class names
-     *
-     * @var array
-     */
-    protected $textExtractorClasses = [];
-
-    /**
      * Instance cache for text extractor classes
      *
-     * @var TextExtractorInterface[]
+     * @var TextExtractorInterface[]|null
      */
-    protected $instances = [];
+    protected ?array $instances = null;
 
     /**
-     * Allows to register a text extractor class
-     *
-     * @param string $className
-     * @throws \InvalidArgumentException
+     * @param iterable<TextExtractorInterface> $textExtractors
      */
-    public function registerTextExtractor($className)
-    {
-        if (!class_exists($className)) {
-            throw new \InvalidArgumentException('The class "' . $className . '" you are trying to register is not available', 1422906893);
-        }
+    public function __construct(protected readonly iterable $textExtractors = []) {}
 
-        if (!in_array(TextExtractorInterface::class, class_implements($className) ?: [], true)) {
-            throw new \InvalidArgumentException($className . ' must implement interface' . TextExtractorInterface::class, 1422771427);
-        }
-
-        $this->textExtractorClasses[] = $className;
-    }
+    /**
+     * @deprecated since TYPO3 v15.0, this method is a no-op and will be removed in TYPO3 v16.0. Register the text extractor as a tagged service using the #[AsTextExtractor] attribute instead.
+     */
+    public function registerTextExtractor(string $className): void {}
 
     /**
      * Get all registered text extractor instances
      *
      * @return TextExtractorInterface[]
      */
-    public function getTextExtractorInstances()
+    protected function getTextExtractorInstances(): array
     {
-        if (empty($this->instances) && !empty($this->textExtractorClasses)) {
-            foreach ($this->textExtractorClasses as $className) {
-                $object = $this->createTextExtractorInstance($className);
-                $this->instances[] = $object;
+        if ($this->instances === null) {
+            $this->instances = [];
+            foreach ($this->textExtractors as $textExtractor) {
+                $this->instances[] = $textExtractor;
             }
         }
-
         return $this->instances;
-    }
-
-    /**
-     * Create an instance of a certain text extractor class
-     *
-     * @param string $className
-     * @return TextExtractorInterface
-     */
-    protected function createTextExtractorInstance($className)
-    {
-        return GeneralUtility::makeInstance($className);
     }
 
     /**
      * Checks whether any registered text extractor can deal with a given file
      * and returns it.
-     *
-     * @return TextExtractorInterface|null
      */
-    public function getTextExtractor(FileInterface $file)
+    public function getTextExtractor(FileInterface $file): ?TextExtractorInterface
     {
         foreach ($this->getTextExtractorInstances() as $textExtractor) {
             if ($textExtractor->canExtractText($file)) {
                 return $textExtractor;
             }
         }
-
         return null;
     }
 }

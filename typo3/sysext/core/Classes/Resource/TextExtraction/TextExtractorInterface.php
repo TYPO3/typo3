@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,24 +20,19 @@ namespace TYPO3\CMS\Core\Resource\TextExtraction;
 use TYPO3\CMS\Core\Resource\FileInterface;
 
 /**
- * An interface for text extractors
+ * Interface for text extractors, which are registered as tagged services
+ * via the #[AsTextExtractor] attribute or the 'fal.text_extractor'
+ * service tag.
  */
 interface TextExtractorInterface
 {
     /**
      * Checks if the given file can be read by this extractor
-     *
-     * @return bool
      */
-    public function canExtractText(FileInterface $file);
+    public function canExtractText(FileInterface $file): bool;
 
     /**
-     * The actual text extraction.
-     *
-     * Should return a string of the file's content
-     *
-     * @param FileInterface $file
-     * @return string
+     * The actual text extraction, returning a string of the file's content
      */
-    public function extractText(FileInterface $file);
+    public function extractText(FileInterface $file): string;
 }

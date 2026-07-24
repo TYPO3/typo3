@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,36 +17,28 @@
 
 namespace TYPO3\CMS\Core\Resource\TextExtraction;
 
+use TYPO3\CMS\Core\Attribute\AsTextExtractor;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * A simple text extractor to extract text from plain text files.
  */
+#[AsTextExtractor]
 class PlainTextExtractor implements TextExtractorInterface
 {
     /**
      * Checks if the given file can be read by this extractor
-     *
-     * @return bool
      */
-    public function canExtractText(FileInterface $file)
+    public function canExtractText(FileInterface $file): bool
     {
-        $canExtract = false;
-
-        if ($file->getMimeType() === 'text/plain') {
-            $canExtract = true;
-        }
-
-        return $canExtract;
+        return $file->getMimeType() === 'text/plain';
     }
 
     /**
      * The actual text extraction.
-     *
-     * @return string
      */
-    public function extractText(FileInterface $file)
+    public function extractText(FileInterface $file): string
     {
         $localTempFile = $file->getForLocalProcessing(false);
 

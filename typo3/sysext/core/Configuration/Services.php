@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Attribute\AsFileRenderer;
 use TYPO3\CMS\Core\Attribute\AsModuleAccessGate;
+use TYPO3\CMS\Core\Attribute\AsTextExtractor;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
 use TYPO3\CMS\Core\SystemResource\Publishing\FileSystem\FileSystemPublisherInterface;
@@ -138,6 +139,13 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     );
 
     $containerBuilder->registerAttributeForAutoconfiguration(
+        AsTextExtractor::class,
+        static function (ChildDefinition $definition, AsTextExtractor $attribute): void {
+            $definition->addTag(AsTextExtractor::TAG_NAME, ['priority' => $attribute->priority]);
+        },
+    );
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
         AsModuleAccessGate::class,
         static function (ChildDefinition $definition, AsModuleAccessGate $attribute): void {
             $definition->addTag(AsModuleAccessGate::TAG_NAME, [
@@ -153,6 +161,7 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     $containerBuilder->addCompilerPass(new DependencyInjection\LoggerInterfacePass());
     $containerBuilder->addCompilerPass(new DependencyInjection\MfaProviderPass('mfa.provider'));
     $containerBuilder->addCompilerPass(new DependencyInjection\FileRendererPass(AsFileRenderer::TAG_NAME));
+    $containerBuilder->addCompilerPass(new DependencyInjection\TextExtractorPass(AsTextExtractor::TAG_NAME));
     $containerBuilder->addCompilerPass(new DependencyInjection\SoftReferenceParserPass('softreference.parser'));
     $containerBuilder->addCompilerPass(new DependencyInjection\ListenerProviderPass('event.listener'));
     $containerBuilder->addCompilerPass(new DependencyInjection\PublicServicePass('typo3.middleware'));

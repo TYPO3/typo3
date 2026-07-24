@@ -1,0 +1,23 @@
+{
+	"name": "typo3tests/test-text-extractor",
+	"type": "typo3-cms-extension",
+	"description": "This extension contains text extractor DI fixtures.",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_text_extractor",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestTextExtractor\\": "Classes/"
+		}
+	}
+}
