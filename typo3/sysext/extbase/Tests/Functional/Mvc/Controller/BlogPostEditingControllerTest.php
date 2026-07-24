@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -119,16 +121,50 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
             ->withAddedHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         $response = $this->executeFrontendSubRequest($request, $requestContext);
+        $this->resetLeakedFrontendContextWorkaround();
         self::assertSame(303, $response->getStatusCode());
 
+        // The submission above updates the DE translation (uid 2) of blog 1. Fetch blog 1 with an
+        // explicit DE language aspect, so the language overlay resolves to the translated record.
+        // Before the workaround reset above, this aspect leaked in implicitly from the frontend
+        // sub-request - including its exact fallback chain [0, 'pageNotFound']. Since the Extbase
+        // persistence session identifier contains the fallback chain, the DataMapper previously
+        // reused the in-memory object graph of the frontend request instead of re-fetching from
+        // the database, so the assertions below never verified persisted data at all.
+        GeneralUtility::makeInstance(Context::class)->setAspect(
+            'language',
+            new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING, [0])
+        );
         $blogRepository = $this->get(BlogRepository::class);
         $blog = $blogRepository->findByUid(1);
+        // The title has been correctly persisted to the translated record (uid 2)
         self::assertSame('Blog 1 EN UPDATED', $blog->getTitle());
         $categoryUids = [];
         foreach ($blog->getCategories() as $category) {
             $categoryUids[] = $category->getUid();
         }
-        self::assertSame([1, 5], $categoryUids);
+        // @todo The following assertions document current - inconsistent - persistence behavior
+        //       (see #90430 and the MM handling epic #108986): scalar properties of a translated
+        //       aggregate root are persisted to the localized record (uid 2, see title assertion
+        //       above), while the MM relation change (removal of category 7) is written against
+        //       the default language record (uid 1). Reading, in turn, resolves MM relations via
+        //       the localized uid (2), which still holds all three categories, so the category
+        //       removal submitted above is not visible here. Once write and read side agree on
+        //       which uid owns the MM rows of a translated record, the object assertion must
+        //       become [1, 5] and the database assertion must be adapted to the chosen storage
+        //       semantics.
+        self::assertSame([1, 5, 7], $categoryUids);
+        $categoryUidsInDatabase = $this->getConnectionPool()
+            ->getConnectionForTable('sys_category_record_mm')
+            ->select(
+                ['uid_local'],
+                'sys_category_record_mm',
+                ['uid_foreign' => 1, 'tablenames' => 'tx_blogexample_domain_model_blog', 'fieldname' => 'categories'],
+                [],
+                ['uid_local' => 'ASC']
+            )
+            ->fetchFirstColumn();
+        self::assertEquals([1, 5], $categoryUidsInDatabase);
     }
 
     /**
@@ -478,6 +514,7 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
             ->withAddedHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         $response = $this->executeFrontendSubRequest($request, $requestContext);
+        $this->resetLeakedFrontendContextWorkaround();
         self::assertSame(303, $response->getStatusCode());
 
         $blogRepository = $this->get(BlogRepository::class);
@@ -541,6 +578,7 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
             ->withAddedHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         $response = $this->executeFrontendSubRequest($request, $requestContext);
+        $this->resetLeakedFrontendContextWorkaround();
         self::assertSame(200, $response->getStatusCode());
 
         // Evaluate new view, expect validation failures
@@ -552,6 +590,25 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
         $blogRepository = $this->get(BlogRepository::class);
         $blog = $blogRepository->findByUid(5);
         self::assertNull($blog);
+    }
+
+    /**
+     * @todo Remove this workaround once typo3/testing-framework properly restores global state
+     *       after executeFrontendSubRequest(): Bootstrap::init() - called for every frontend
+     *       sub-request - builds a fresh DI container and registers it globally via
+     *       GeneralUtility::setContainer(), but FrameworkState::pop() never restores the previous
+     *       container afterwards. As a consequence, everything resolved through
+     *       GeneralUtility::makeInstance() in test scope after the sub-request - such as Extbase
+     *       Typo3QuerySettings and with it the language aspect used by Repository::findByUid() -
+     *       operates on the Context of the *frontend request* (here: language DE with
+     *       fallbackType=strict) instead of the pristine default Context of the test scope. With
+     *       a strict language aspect, untranslated records would be hidden by the language
+     *       overlay and findByUid() would return null. Resetting the language aspect ensures the
+     *       persistence assertions run in default language context.
+     */
+    private function resetLeakedFrontendContextWorkaround(): void
+    {
+        GeneralUtility::makeInstance(Context::class)->setAspect('language', new LanguageAspect());
     }
 
     private function enrichArgumentsWithChash($arguments): array
