@@ -24,6 +24,8 @@ use TYPO3\CMS\Lowlevel\Event\ModifyBlindedConfigurationOptionsEvent;
 
 class ConnectionDriverMiddlewaresProvider extends AbstractProvider
 {
+    use BlindedConnectionOptionsTrait;
+
     /**
      * Blind configurations which should not be visible to mortal admins
      */
@@ -32,12 +34,12 @@ class ConnectionDriverMiddlewaresProvider extends AbstractProvider
             'Raw' => [
                 'Connections' => [
                     'Default' => [
-                        'database' => '******',
+                        'dbname' => '******',
                         'host' => '******',
                         'password' => '******',
                         'port' => '******',
-                        'socket' => '******',
-                        'username' => '******',
+                        'user' => '******',
+                        'unix_socket' => '******',
                         'url' => '******',
                     ],
                 ],
@@ -56,21 +58,25 @@ class ConnectionDriverMiddlewaresProvider extends AbstractProvider
         $blindedConfigurationOptions = $this->eventDispatcher->dispatch(
             new ModifyBlindedConfigurationOptionsEvent($this->blindedConfigurationOptions, 'doctrine-dbal-driver-middlewares')
         )->getBlindedConfigurationOptions();
-        foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
-            foreach ($configurationArray['Connections'][$connectionName] as &$middleware) {
+        foreach ($configurationArray['Connections'] ?? [] as &$middlewares) {
+            foreach ($middlewares as &$middleware) {
                 $middlewareTarget = $middleware['target'] ?? '';
                 $middleware['targetImplementedInterfaces'] = ($middlewareTarget !== '' && class_exists($middlewareTarget))
                     ? (class_implements($middlewareTarget) ?: [])
                     : [];
             }
-            if ($connectionName !== 'Default') {
-                $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections'][$connectionName]
-                    = $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections']['Default'];
-            }
+            unset($middleware);
+        }
+        unset($middlewares);
+        if (is_array($blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections'] ?? null)) {
+            $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections'] = $this->applyBlindedConnectionOptionsToAllConnections(
+                $blindedConfigurationOptions['doctrine-dbal-driver-middlewares']['Raw']['Connections'],
+                $configurationArray['Raw']['Connections'] ?? []
+            );
         }
         ArrayUtility::mergeRecursiveWithOverrule(
             $configurationArray,
-            ArrayUtility::intersectRecursive($blindedConfigurationOptions['doctrine-dbal-driver-middlewares'], $configurationArray)
+            ArrayUtility::intersectRecursive($blindedConfigurationOptions['doctrine-dbal-driver-middlewares'] ?? [], $configurationArray)
         );
         ArrayUtility::naturalKeySortRecursive($configurationArray);
         return $configurationArray;

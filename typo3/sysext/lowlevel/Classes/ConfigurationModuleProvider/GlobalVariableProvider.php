@@ -23,6 +23,8 @@ use TYPO3\CMS\Lowlevel\Event\ModifyBlindedConfigurationOptionsEvent;
 
 class GlobalVariableProvider extends AbstractProvider
 {
+    use BlindedConnectionOptionsTrait;
+
     /**
      * Blind configurations which should not be visible to mortal admins
      */
@@ -94,12 +96,12 @@ class GlobalVariableProvider extends AbstractProvider
         )->getBlindedConfigurationOptions();
 
         if (isset($blindedConfigurationOptions[$this->globalVariableKey])) {
-            // Prepare blinding for all database connection types
-            foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']) as $connectionName) {
-                if ($connectionName !== 'Default') {
-                    $blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections'][$connectionName]
-                        = $blindedConfigurationOptions['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
-                }
+            // Prepare blinding for all database connections
+            if (is_array($blindedConfigurationOptions[$this->globalVariableKey]['DB']['Connections'] ?? null)) {
+                $blindedConfigurationOptions[$this->globalVariableKey]['DB']['Connections'] = $this->applyBlindedConnectionOptionsToAllConnections(
+                    $blindedConfigurationOptions[$this->globalVariableKey]['DB']['Connections'],
+                    $configurationArray['DB']['Connections'] ?? []
+                );
             }
             ArrayUtility::mergeRecursiveWithOverrule(
                 $configurationArray,
