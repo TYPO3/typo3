@@ -1,4 +1,4 @@
-e2e install playwright php 8.5 max:
+e2e install mariadb 11.8 playwright php 8.5 max:
   stage: acceptance
   tags:
     - metal2
@@ -16,11 +16,65 @@ e2e install playwright php 8.5 max:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mariadb -i 11.8 -p 8.5
+
+e2e install mysql 8.4 playwright php 8.5 max:
+  stage: acceptance
+  tags:
+    - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-install-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.4 -p 8.5
+
+e2e install postgres 18 playwright php 8.5 max:
+  stage: acceptance
+  tags:
+    - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-install-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 18 -p 8.5
+
+e2e install sqlite playwright php 8.5 max:
+  stage: acceptance
+  tags:
+    - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-install-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d sqlite -p 8.5
 
-e2e install playwright 8.5 min:
+e2e install mariadb 10.4 playwright php 8.5 min:
   stage: acceptance
   tags:
     - metal2
@@ -38,6 +92,60 @@ e2e install playwright 8.5 min:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mariadb -i 10.4 -p 8.5
+
+e2e install mysql 8.0 playwright php 8.5 min:
+  stage: acceptance
+  tags:
+    - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-install-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.0 -p 8.5
+
+e2e install postgres 10 playwright php 8.5 min:
+  stage: acceptance
+  tags:
+    - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-install-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d postgres -i 10 -p 8.5
+
+e2e install sqlite playwright php 8.5 min:
+  stage: acceptance
+  tags:
+    - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-install-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d sqlite -p 8.5
