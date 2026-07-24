@@ -93,7 +93,7 @@ class DownloadController extends AbstractController
                             $extensions .= $this->translate(
                                 'downloadExtension.dependencies.extensionWithVersion',
                                 [
-                                    $extensionKey, $dependency->getVersion(),
+                                    $extensionKey, $dependency->version,
                                 ]
                             ) . '<br />';
                         }
