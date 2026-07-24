@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DownloadControllerTest extends FunctionalTestCase
@@ -62,6 +63,23 @@ final class DownloadControllerTest extends FunctionalTestCase
         self::assertFalse($result['hasErrors']);
         self::assertStringContainsString('ext_dependency (new version 1.0.0)', $result['message']);
         self::assertSame('1.0.0', $result['dependencies']['download']['ext_dependency']['version']);
+    }
+
+    #[Test]
+    public function checkDependenciesActionThrowsSpeakingExceptionForOutdatedExtensionUid(): void
+    {
+        $extensionUid = $this->createRemoteExtensionRecord('ext_dependency', '1.0.0');
+        // Simulates an extension list update, which drops and recreates all records of a remote.
+        $this->getConnectionPool()
+            ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
+            ->delete('tx_extensionmanager_domain_model_extension', ['uid' => $extensionUid]);
+
+        $request = $this->createCheckDependenciesRequest($extensionUid);
+
+        $this->expectException(ExtensionNotFoundException::class);
+        $this->expectExceptionCode(1784926081);
+
+        $this->get(DownloadController::class)->processRequest(new Request($request));
     }
 
     /**

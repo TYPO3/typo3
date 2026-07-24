@@ -43,7 +43,7 @@ class DistributionController extends AbstractController
     public function showAction(int $extension): ResponseInterface
     {
         // Check if extension/package is installed
-        $extension = $this->extensionRepository->findByUid($extension);
+        $extension = $this->extensionRepository->getByUid($extension);
         $extensionKey = $extension->extensionKey;
         $active = $this->packageManager->isPackageActive($extensionKey);
         $view = $this->initializeModuleTemplate($this->request);

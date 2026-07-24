@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
 
 /**
  * A repository for extensions.
@@ -111,6 +112,26 @@ readonly class ExtensionRepository
             return null;
         }
         return Extension::createObjectFromRow($row);
+    }
+
+    /**
+     * Same as findByUid(), but for callers which can not deal with a missing
+     * record. Records are dropped and recreated whenever an extension list is
+     * updated, so identifiers taken from an outdated view may not resolve.
+     *
+     * @throws ExtensionNotFoundException
+     */
+    public function getByUid(int $uid): Extension
+    {
+        $extension = $this->findByUid($uid);
+        if ($extension === null) {
+            throw new ExtensionNotFoundException(
+                'No extension found for uid "' . $uid . '". The extension list may have been'
+                    . ' updated in the meantime, please update it again and retry.',
+                1784926081
+            );
+        }
+        return $extension;
     }
 
     public function findOneByCurrentVersionByExtensionKey(string $extensionKey): ?Extension
