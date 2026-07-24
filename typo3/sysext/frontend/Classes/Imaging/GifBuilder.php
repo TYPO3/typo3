@@ -665,7 +665,7 @@ class GifBuilder
      * @param array $workArea The current working area coordinates.
      * @see make()
      */
-    protected function maskImageOntoImage(\GdImage $im, array $conf, array $workArea): void
+    protected function maskImageOntoImage(\GdImage &$im, array $conf, array $workArea): void
     {
         if ($conf['file'] && $conf['mask']) {
             $imgInf = pathinfo($conf['file']);
@@ -746,7 +746,7 @@ class GifBuilder
      * @see make()
      * @see maskImageOntoImage()
      */
-    protected function copyImageOntoImage(\GdImage $im, array $conf, array $workArea): void
+    protected function copyImageOntoImage(\GdImage &$im, array $conf, array $workArea): void
     {
         if ($conf['file']) {
             if (!in_array($conf['BBOX'][2], $this->gdlibExtensions, true)) {
@@ -767,7 +767,7 @@ class GifBuilder
      * @see make()
      * @internal
      */
-    public function makeText(\GdImage $im, array $conf, array $workArea): void
+    public function makeText(\GdImage &$im, array $conf, array $workArea): void
     {
         // Spacing
         [$spacing, $wordSpacing] = $this->calcWordSpacing($conf);
@@ -859,7 +859,7 @@ class GifBuilder
      * @see make()
      * @see makeText()
      */
-    protected function makeOutline(\GdImage $im, array $conf, array $workArea, array $txtConf): void
+    protected function makeOutline(\GdImage &$im, array $conf, array $workArea, array $txtConf): void
     {
         $thickness = (int)$conf['thickness'];
         if ($thickness) {
@@ -889,7 +889,7 @@ class GifBuilder
      * @see make()
      * @see makeShadow()
      */
-    protected function makeEmboss(\GdImage $im, array $conf, array $workArea, array $txtConf): void
+    protected function makeEmboss(\GdImage &$im, array $conf, array $workArea, array $txtConf): void
     {
         $conf['color'] = $conf['highColor'];
         $this->makeShadow($im, $conf, $workArea, $txtConf);
@@ -914,7 +914,7 @@ class GifBuilder
      * @see makeEmboss()
      * @internal
      */
-    public function makeShadow(\GdImage $im, array $conf, array $workArea, array $txtConf): void
+    public function makeShadow(\GdImage &$im, array $conf, array $workArea, array $txtConf): void
     {
         $workArea = $this->applyOffset($workArea, GeneralUtility::intExplode(',', (string)($conf['offset'])));
         $blurRate = MathUtility::forceIntegerInRange((int)$conf['blur'], 0, 99);
@@ -1001,7 +1001,7 @@ class GifBuilder
      * @see make()
      * @internal
      */
-    public function makeBox(\GdImage $im, array $conf, array $workArea): void
+    public function makeBox(\GdImage &$im, array $conf, array $workArea): void
     {
         $cords = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
         $conf['offset'] = $cords[0] . ',' . $cords[1];
@@ -1040,7 +1040,7 @@ class GifBuilder
      * @param array $workArea The current working area coordinates.
      * @see make()
      */
-    public function makeEllipse(\GdImage $im, array $conf, array $workArea): void
+    public function makeEllipse(\GdImage &$im, array $conf, array $workArea): void
     {
         $ellipseConfiguration = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
         // Ellipse offset inside workArea (x/y)
@@ -1061,7 +1061,7 @@ class GifBuilder
      * @see make()
      * @see applyImageMagickToPHPGif()
      */
-    protected function makeEffect(\GdImage $im, array $conf): void
+    protected function makeEffect(\GdImage &$im, array $conf): void
     {
         $commands = $this->IMparams($conf['value']);
         if ($commands) {
@@ -1079,7 +1079,7 @@ class GifBuilder
      * @see outputLevels()
      * @see inputLevels()
      */
-    protected function adjust(\GdImage $im, array $conf): void
+    protected function adjust(\GdImage &$im, array $conf): void
     {
         $setup = $conf['value'];
         if (!trim($setup)) {
@@ -1114,7 +1114,7 @@ class GifBuilder
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @see make()
      */
-    protected function crop(\GdImage $im, array $conf): void
+    protected function crop(\GdImage &$im, array $conf): void
     {
         // Clears workArea to total image
         $this->setWorkArea('');
@@ -1152,7 +1152,7 @@ class GifBuilder
      * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
      * @see make()
      */
-    protected function scale(\GdImage $im, array $conf): void
+    protected function scale(\GdImage &$im, array $conf): void
     {
         // @todo: not covered with tests
         if (isset($conf['width']) || isset($conf['height']) || isset($conf['params'])) {
@@ -1535,7 +1535,7 @@ class GifBuilder
      * @param array $conf TypoScript array with the properties for the IMAGE GIFBUILDER object. Only used for the "tile" property value.
      * @param array $workArea Work area
      */
-    protected function copyGifOntoGif(\GdImage $im, \GdImage $cpImg, array $conf, array $workArea): void
+    protected function copyGifOntoGif(\GdImage &$im, \GdImage &$cpImg, array $conf, array $workArea): void
     {
         $cpW = imagesx($cpImg);
         $cpH = imagesy($cpImg);
@@ -1613,7 +1613,7 @@ class GifBuilder
      * @param int $srcWidth Source width
      * @param int $srcHeight Source height
      */
-    protected function imagecopyresized(\GdImage $dstImg, \GdImage $srcImg, int $dstX, int $dstY, int $srcX, int $srcY, int $dstWidth, int $dstHeight, int $srcWidth, int $srcHeight): \GdImage
+    protected function imagecopyresized(\GdImage $dstImg, \GdImage &$srcImg, int $dstX, int $dstY, int $srcX, int $srcY, int $dstWidth, int $dstHeight, int $srcWidth, int $srcHeight): \GdImage
     {
         if (!$this->saveAlphaLayer) {
             // Make true color image
@@ -1761,7 +1761,7 @@ class GifBuilder
      * @param array $colArr Array containing RGB color arrays
      * @return int The index of the unified color
      */
-    protected function unifyColors(\GdImage $img, array $colArr, bool $closest): int
+    protected function unifyColors(\GdImage &$img, array $colArr, bool $closest): int
     {
         $retCol = -1;
         if ($colArr !== [] && function_exists('imagepng') && function_exists('imagecreatefrompng')) {
@@ -2002,7 +2002,7 @@ class GifBuilder
      * @param array $splitRenderingConf Array
      * @param int $sF Scale factor
      */
-    protected function SpacedImageTTFText(\GdImage $im, int $fontSize, int $angle, int $x, int $y, int $Fcolor, string $fontFile, string $text, int $spacing, int $wordSpacing, array $splitRenderingConf, int $sF = 1): void
+    protected function SpacedImageTTFText(\GdImage &$im, int $fontSize, int $angle, int $x, int $y, int $Fcolor, string $fontFile, string $text, int $spacing, int $wordSpacing, array $splitRenderingConf, int $sF = 1): void
     {
         $spacing *= $sF;
         $wordSpacing *= $sF;
@@ -2117,7 +2117,7 @@ class GifBuilder
      * @param array $splitRendering Split-rendering configuration
      * @param int $sF Scale factor
      */
-    protected function ImageTTFTextWrapper(\GdImage $im, int $fontSize, int $angle, int $x, int $y, int $color, string $fontFile, string $string, array $splitRendering, int $sF = 1): void
+    protected function ImageTTFTextWrapper(\GdImage &$im, int $fontSize, int $angle, int $x, int $y, int $color, string $fontFile, string $string, array $splitRendering, int $sF = 1): void
     {
         // Initialize:
         $stringParts = $this->splitString($string, $splitRendering, $fontSize, $fontFile);
@@ -2337,7 +2337,7 @@ class GifBuilder
      * @param array $conf The configuration
      * @param int $sF Scale factor
      */
-    protected function renderTTFText(\GdImage $im, int $fontSize, int $angle, int $x, int $y, int $color, string $fontFile, string $string, array $splitRendering, array $conf, int $sF = 1): void
+    protected function renderTTFText(\GdImage &$im, int $fontSize, int $angle, int $x, int $y, int $color, string $fontFile, string $string, array $splitRendering, array $conf, int $sF = 1): void
     {
         if (isset($conf['breakWidth']) && $conf['breakWidth'] && $this->getRenderedTextWidth($string, $conf) > $conf['breakWidth']) {
             $phrase = '';
@@ -2444,7 +2444,7 @@ class GifBuilder
      *
      * @param \GdImage $im GDlib Image Pointer
      */
-    protected function autolevels(\GdImage $im): void
+    protected function autolevels(\GdImage &$im): void
     {
         $totalCols = imagecolorstotal($im);
         $grayArr = [];
@@ -2473,7 +2473,7 @@ class GifBuilder
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
      */
-    protected function outputLevels(\GdImage $im, int $low, int $high): void
+    protected function outputLevels(\GdImage &$im, int $low, int $high): void
     {
         if ($low < $high) {
             $low = MathUtility::forceIntegerInRange($low, 0, 255);
@@ -2497,7 +2497,7 @@ class GifBuilder
      * @param int $low The "low" value (close to 0)
      * @param int $high The "high" value (close to 255)
      */
-    protected function inputLevels(\GdImage $im, int $low, int $high): void
+    protected function inputLevels(\GdImage &$im, int $low, int $high): void
     {
         if ($low < $high) {
             $low = MathUtility::forceIntegerInRange($low, 0, 255);
@@ -2521,7 +2521,7 @@ class GifBuilder
      * @param \GdImage $im The image pointer (reference)
      * @param string $command The ImageMagick parameters. Like effects, scaling etc.
      */
-    protected function applyImageMagickToPHPGif(\GdImage $im, string $command): void
+    protected function applyImageMagickToPHPGif(\GdImage &$im, string $command): void
     {
         $tmpStr = $this->imageService->randomName();
         $theFile = $tmpStr . '.png';
@@ -2548,7 +2548,7 @@ class GifBuilder
      * @see scale()
      * @see output()
      */
-    public function ImageWrite(\GdImage $destImg, string $theImage, int $quality = 0, int $speed = -1): bool
+    public function ImageWrite(\GdImage &$destImg, string $theImage, int $quality = 0, int $speed = -1): bool
     {
         imageinterlace($destImg, false);
         $ext = strtolower(substr($theImage, (int)strrpos($theImage, '.') + 1));
