@@ -131,7 +131,7 @@ final readonly class DateTimeFactory
                 // The field value is something like "2016-01-01" or "2016-01-01 10:11:12.
                 default => new \DateTimeImmutable($value),
             };
-        } catch (\Exception|\DateMalformedStringException $e) { // @todo drop catch(\Exception) once php 8.3 is minimum
+        } catch (\DateMalformedStringException $e) {
             throw new \InvalidArgumentException('Invalid date provided', 1743159490, $e);
         }
 

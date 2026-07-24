@@ -41,11 +41,8 @@ class TreeNodeCollection extends \ArrayObject
      * Sorts the internal nodes array
      *
      * @param int $flags Optional parameter, ignored. Added to be compatible with asort method signature in PHP 8.
-     *
-     * @todo Use return type "true" instead of bool if PHP8.3+ is minimum supported and remove #[\ReturnTypeWillChange].
      */
-    #[\ReturnTypeWillChange]
-    public function asort(int $flags = SORT_REGULAR): bool
+    public function asort(int $flags = SORT_REGULAR): true
     {
         $this->uasort($this->nodeCompare(...));
         return true;

@@ -453,7 +453,7 @@ class RootlineUtility
             // Behaves similar to array_shift(), but preserves the array keys.
             $rootline = array_slice($rootline, 1, null, true);
             if ($rootline !== []) {
-                $cacheIdentifier = $this->getCacheIdentifier($rootline[array_key_first($rootline)]['uid']);
+                $cacheIdentifier = $this->getCacheIdentifier(array_first($rootline)['uid']);
                 $this->runtimeCache->set('rootline-localcache-' . $cacheIdentifier, $rootline, [self::RUNTIME_CACHE_TAG]);
             }
         }

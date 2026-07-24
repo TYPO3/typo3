@@ -58,7 +58,7 @@ final class RegisterStack
      */
     public function current(): Register
     {
-        return $this->registerStack[array_key_last($this->registerStack)];
+        return array_last($this->registerStack);
     }
 
     /**

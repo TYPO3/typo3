@@ -135,7 +135,7 @@ final readonly class SysTemplateRepository
     {
         // Site-root node first!
         $rootLinePageIds = array_reverse(array_column($rootline, 'uid'));
-        $templatePidOnDeepestRootline = $rootline[array_key_first($rootline)]['uid'];
+        $templatePidOnDeepestRootline = array_first($rootline)['uid'];
         $sysTemplateRows = [];
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
         $queryBuilder->setRestrictions($this->getSysTemplateQueryRestrictionContainer($visibility));

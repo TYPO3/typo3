@@ -212,7 +212,7 @@ final readonly class BackendConfigurationManager
         $expressionMatcherVariables = [
             'request' => $request,
             'pageId' => $currentPageId,
-            'page' => !empty($rootLine) ? $rootLine[array_key_first($rootLine)] : [],
+            'page' => !empty($rootLine) ? array_first($rootLine) : [],
             'fullRootLine' => $rootLine,
             'site' => $site,
         ];

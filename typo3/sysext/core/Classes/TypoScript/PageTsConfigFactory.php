@@ -118,7 +118,7 @@ final readonly class PageTsConfigFactory
         $lastPageFullRecord = [];
         $pageId = 0;
         if (!empty($fullRootLine)) {
-            $lastPage = $fullRootLine[array_key_last($fullRootLine)];
+            $lastPage = array_last($fullRootLine);
             $pageId = $lastPage['uid'];
             $lastPageFullRecord = BackendUtility::getRecord('pages', $pageId) ?: [];
         }
@@ -127,7 +127,7 @@ final readonly class PageTsConfigFactory
             'site' => $site,
             // @todo We're using the full page row here to provide all necessary fields (e.g. "backend_layout"),
             //       which are currently not included in the rows, RootlineUtility provides by default. We might
-            //       want to switch to $fullRootLine[array_key_last($fullRootLine)] as soon as it contains all fields.
+            //       want to switch to array_last($fullRootLine) as soon as it contains all fields.
             'page' => $lastPageFullRecord,
             'pageId' => $pageId,
         ];

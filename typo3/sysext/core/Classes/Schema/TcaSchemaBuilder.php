@@ -146,7 +146,7 @@ final readonly class TcaSchemaBuilder
             // Merge parts from the "types" section into the ctrl section of the main schema
             $schemaConfiguration = array_replace_recursive(
                 $schemaConfiguration,
-                $schemaDefinition['types'][array_key_first($schemaDefinition['types'])]
+                array_first($schemaDefinition['types'])
             );
         }
         return new TcaSchema(

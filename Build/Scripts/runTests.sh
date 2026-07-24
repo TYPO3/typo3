@@ -760,7 +760,7 @@ Examples:
     # Run functional tests in phpunit with a filtered test method name in a specified file
     ./Build/Scripts/runTests.sh -s functional -- --filter aTestName path/to/fileTest.php
 
-    # Run functional tests on postgres with xdebug, php 8.3 and execute a restricted set of tests
+    # Run functional tests on postgres with xdebug, php 8.5 and execute a restricted set of tests
     ./Build/Scripts/runTests.sh -x -p 8.5 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
 
     # Run functional tests on postgres 11

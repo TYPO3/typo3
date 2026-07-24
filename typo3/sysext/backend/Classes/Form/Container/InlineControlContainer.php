@@ -131,11 +131,11 @@ class InlineControlContainer extends AbstractContainer
 
         $config['inline']['first'] = $config['inline']['last'] = false;
         if (is_array($inlineChildren) && $inlineChildren !== []) {
-            $firstChild = $inlineChildren[array_key_first($inlineChildren)] ?? null;
+            $firstChild = array_first($inlineChildren);
             if (isset($firstChild['databaseRow']['uid'])) {
                 $config['inline']['first'] = $firstChild['databaseRow']['uid'];
             }
-            $lastChild = $inlineChildren[array_key_last($inlineChildren)] ?? null;
+            $lastChild = array_last($inlineChildren);
             if (isset($lastChild['databaseRow']['uid'])) {
                 $config['inline']['last'] = $lastChild['databaseRow']['uid'];
             }

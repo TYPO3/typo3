@@ -84,7 +84,7 @@ final class CurrentObjectPath
 
     public function getLast(): NodeInterface
     {
-        return $this->path[array_key_last($this->path)];
+        return array_last($this->path);
     }
 
     public function getSecondLast(): NodeInterface

@@ -53,7 +53,7 @@ final class CurrentObjectPathStack
 
     public function getCurrent(): CurrentObjectPath
     {
-        return $this->stack[array_key_last($this->stack)];
+        return array_last($this->stack);
     }
 
     public function getFirst(): CurrentObjectPath
