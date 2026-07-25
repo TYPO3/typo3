@@ -197,6 +197,7 @@ final class FlexFormProcessorTest extends UnitTestCase
             ],
         ];
         $contentDataProcessorMock
+            ->expects($this->atMost(PHP_INT_MAX))
             ->method('process')
             ->with($contentObjectRendererMock, $processorConfiguration, $convertedFlexFormData)
             ->willReturn($renderedDataFromProcessors);
@@ -205,7 +206,7 @@ final class FlexFormProcessorTest extends UnitTestCase
         GeneralUtility::addInstance(ContentDataProcessor::class, $contentDataProcessorMock);
 
         $flexFormTools = $this->createMock(FlexFormTools::class);
-        $flexFormTools->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
+        $flexFormTools->expects($this->atMost(PHP_INT_MAX))->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
         $subject = new FlexFormProcessor($flexFormTools);
         $actual = $subject->process(
             $contentObjectRendererMock,
@@ -261,7 +262,7 @@ final class FlexFormProcessorTest extends UnitTestCase
             ],
         ];
         $flexFormToolsMock = $this->createMock(FlexFormTools::class);
-        $flexFormToolsMock->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
+        $flexFormToolsMock->expects($this->atMost(PHP_INT_MAX))->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
         $subject = new FlexFormProcessor($flexFormToolsMock);
         $actual = $subject->process(
             $contentObjectRendererMock,
@@ -299,7 +300,7 @@ final class FlexFormProcessorTest extends UnitTestCase
             ],
         ];
         $flexFormTools = $this->createMock(FlexFormTools::class);
-        $flexFormTools->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
+        $flexFormTools->expects($this->atMost(PHP_INT_MAX))->method('convertFlexFormContentToArray')->with($this->getFlexFormStructure())->willReturn($convertedFlexFormData);
         return $flexFormTools;
     }
 }

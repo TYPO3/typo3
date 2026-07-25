@@ -149,7 +149,7 @@ final class GenericObjectValidatorTest extends UnitTestCase
         $mockUuidValidator = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
-        $mockUuidValidator->method('validate')->with(15)->willReturn($result);
+        $mockUuidValidator->expects($this->atLeastOnce())->method('validate')->with(15)->willReturn($result);
         $bValidator->addPropertyValidator('uuid', $mockUuidValidator);
 
         self::assertSame(['b.uuid' => [$error]], $aValidator->validate($A)->getFlattenedErrors());
@@ -182,7 +182,7 @@ final class GenericObjectValidatorTest extends UnitTestCase
         $mockUuidValidator = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
-        $mockUuidValidator->method('validate')->with(15)->willReturn($result1);
+        $mockUuidValidator->expects($this->atLeastOnce())->method('validate')->with(15)->willReturn($result1);
         $aValidator->addPropertyValidator('uuid', $mockUuidValidator);
         $bValidator->addPropertyValidator('uuid', $mockUuidValidator);
 
@@ -216,6 +216,7 @@ final class GenericObjectValidatorTest extends UnitTestCase
             ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $mockValidatorUuidNot0xF
+            ->expects($this->atLeastOnce())
             ->method('validate')->with(0xF)->willReturn($result1);
 
         $aValidator->addPropertyValidator('uuid', $mockValidatorUuidNot0xF);

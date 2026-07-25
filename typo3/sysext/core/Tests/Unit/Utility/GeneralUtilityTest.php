@@ -1226,7 +1226,7 @@ final class GeneralUtilityTest extends UnitTestCase
         $normalizedParams = $this->createMock(NormalizedParams::class);
         $normalizedParams->method('getRequestHost')->willReturn('http://example.org');
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
+        $request->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
         self::assertTrue(GeneralUtility::isOnCurrentHost('http://example.org/some/path', $request));
     }
 
@@ -1254,7 +1254,7 @@ final class GeneralUtilityTest extends UnitTestCase
         $normalizedParams = $this->createMock(NormalizedParams::class);
         $normalizedParams->method('getRequestHost')->willReturn('http://example.org');
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
+        $request->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('normalizedParams')->willReturn($normalizedParams);
         self::assertFalse(GeneralUtility::isOnCurrentHost($hostCandidate, $request));
     }
 
@@ -1262,7 +1262,7 @@ final class GeneralUtilityTest extends UnitTestCase
     public function isOnCurrentHostThrowsWithMissingNormalizedParams(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->with('normalizedParams')->willReturn(null);
+        $request->expects($this->atMost(PHP_INT_MAX))->method('getAttribute')->with('normalizedParams')->willReturn(null);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1775679512);
         GeneralUtility::isOnCurrentHost('http://example.org/some/path', $request);
@@ -3041,10 +3041,12 @@ final class GeneralUtilityTest extends UnitTestCase
             ->method('getActivePackages')
             ->willReturn(['foo' => $package]);
         $packageManager
+            ->expects($this->atMost(PHP_INT_MAX))
             ->method('isPackageActive')
             ->with(self::equalTo('foo'))
             ->willReturn(true);
         $packageManager
+            ->expects($this->atMost(PHP_INT_MAX))
             ->method('getPackage')
             ->with('foo')
             ->willReturn($package);

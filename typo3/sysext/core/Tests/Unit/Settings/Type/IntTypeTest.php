@@ -42,7 +42,7 @@ final class IntTypeTest extends UnitTestCase
 
     #[DataProvider('allowedValuesDataProvider')]
     #[Test]
-    public function allowedValuesAreVerified(mixed $value): void
+    public function allowedValuesAreVerified(mixed $value, mixed $_): void
     {
         $intType = new IntType(new NullLogger());
 

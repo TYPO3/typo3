@@ -47,7 +47,7 @@ final class ConsoleCommandPassTest extends UnitTestCase
         $packageManagerStub->method('getActivePackages')->willReturn($activePackages);
 
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('requireOnce')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('requireOnce')->with(self::isString())->willReturn(false);
         $cacheMock->method('set')->willReturnCallback(function (string $entryIdentifier, string $sourceCode): void {
             eval($sourceCode);
         });

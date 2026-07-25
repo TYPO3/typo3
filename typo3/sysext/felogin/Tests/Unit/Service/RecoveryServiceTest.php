@@ -189,7 +189,7 @@ final class RecoveryServiceTest extends UnitTestCase
 
         $configurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()
             ->getMock();
-        $configurationManager->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)
+        $configurationManager->expects($this->atMost(PHP_INT_MAX))->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)
             ->willReturn($settings);
 
         $uriBuilder = $this->getMockBuilder(UriBuilder::class)->disableOriginalConstructor()->getMock();
@@ -239,7 +239,7 @@ final class RecoveryServiceTest extends UnitTestCase
         $this->recoveryConfiguration->method('getMailTemplateName')->willReturn($recoveryConfiguration['mailTemplateName']);
         $this->recoveryConfiguration->method('getReplyTo')->willReturn($recoveryConfiguration['replyTo']);
 
-        $this->userRepository->method('findUserByUsernameOrEmailOnPages')->with($uid, [])->willReturn($userInformation);
+        $this->userRepository->expects($this->atMost(PHP_INT_MAX))->method('findUserByUsernameOrEmailOnPages')->with($uid, [])->willReturn($userInformation);
     }
 
     private function setupFluidEmailMock(
@@ -249,15 +249,15 @@ final class RecoveryServiceTest extends UnitTestCase
     ): MockObject&FluidEmail {
         $fluidEmailMock = $this->getMockBuilder(FluidEmail::class)->disableOriginalConstructor()->getMock();
         $this->templatedEmailFactory->method('createWithOverrides')->willReturn($fluidEmailMock);
-        $fluidEmailMock->method('subject')->with('translation')->willReturn($fluidEmailMock);
-        $fluidEmailMock->method('from')->with($recoveryConfiguration['sender'])->willReturn($fluidEmailMock);
-        $fluidEmailMock->method('to')->with($receiver)->willReturn($fluidEmailMock);
-        $fluidEmailMock->method('assignMultiple')->with($expectedViewVariables)->willReturn($fluidEmailMock);
-        $fluidEmailMock->method('setTemplate')->with($recoveryConfiguration['mailTemplateName'])
+        $fluidEmailMock->expects($this->atMost(PHP_INT_MAX))->method('subject')->with('translation')->willReturn($fluidEmailMock);
+        $fluidEmailMock->expects($this->atMost(PHP_INT_MAX))->method('from')->with($recoveryConfiguration['sender'])->willReturn($fluidEmailMock);
+        $fluidEmailMock->expects($this->atMost(PHP_INT_MAX))->method('to')->with($receiver)->willReturn($fluidEmailMock);
+        $fluidEmailMock->expects($this->atMost(PHP_INT_MAX))->method('assignMultiple')->with($expectedViewVariables)->willReturn($fluidEmailMock);
+        $fluidEmailMock->expects($this->atMost(PHP_INT_MAX))->method('setTemplate')->with($recoveryConfiguration['mailTemplateName'])
             ->willReturn($fluidEmailMock);
 
         if (!empty($recoveryConfiguration['replyTo'])) {
-            $fluidEmailMock->method('addReplyTo')->with($recoveryConfiguration['replyTo'])->willReturn($fluidEmailMock);
+            $fluidEmailMock->expects($this->atMost(PHP_INT_MAX))->method('addReplyTo')->with($recoveryConfiguration['replyTo'])->willReturn($fluidEmailMock);
         }
 
         return $fluidEmailMock;

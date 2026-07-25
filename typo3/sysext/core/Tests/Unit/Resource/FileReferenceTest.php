@@ -98,7 +98,7 @@ final class FileReferenceTest extends UnitTestCase
 
     #[DataProvider('propertiesDataProvider')]
     #[Test]
-    public function getPropertyThrowsExceptionForNotAvailableProperty(array $fileReferenceProperties, array $originalFileProperties): void
+    public function getPropertyThrowsExceptionForNotAvailableProperty(array $fileReferenceProperties, array $originalFileProperties, array $_): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314226805);
@@ -111,7 +111,8 @@ final class FileReferenceTest extends UnitTestCase
     #[Test]
     public function getPropertyDoesNotThrowExceptionForPropertyOnlyAvailableInOriginalFile(
         array $fileReferenceProperties,
-        array $originalFileProperties
+        array $originalFileProperties,
+        array $_,
     ): void {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         self::assertSame($originalFileProperties['file_only_property'], $fixture->getProperty('file_only_property'));
@@ -121,7 +122,8 @@ final class FileReferenceTest extends UnitTestCase
     #[Test]
     public function getReferencePropertyThrowsExceptionForPropertyOnlyAvailableInOriginalFile(
         array $fileReferenceProperties,
-        array $originalFileProperties
+        array $originalFileProperties,
+        array $_,
     ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1360684914);

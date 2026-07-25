@@ -129,10 +129,10 @@ final class MetaDataAspectTest extends UnitTestCase
         $file = new File(['uid' => 12], $storageMock);
 
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->method('insert')->with(self::anything())->willReturn(1);
+        $connectionMock->method('insert')->willReturn(1);
         $connectionMock->method('lastInsertId')->willReturn('5');
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
-        $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
+        $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
             ->onlyMethods(['findByFileUid', 'getTableFields', 'update'])
@@ -171,12 +171,12 @@ final class MetaDataAspectTest extends UnitTestCase
         $file = new File(['uid' => 12], $storageMock);
 
         $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $eventDispatcherMock->expects($this->atLeastOnce())->method('dispatch')->with(self::anything())->willReturnArgument(0);
+        $eventDispatcherMock->expects($this->atLeastOnce())->method('dispatch')->willReturnArgument(0);
 
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->method('update')->with('sys_file_metadata', self::anything())->willReturn(1);
+        $connectionMock->expects($this->atLeastOnce())->method('update')->with('sys_file_metadata', self::anything())->willReturn(1);
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
-        $connectionPoolMock->method('getConnectionForTable')->with(self::anything())->willReturn($connectionMock);
+        $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
             ->onlyMethods(['createMetaDataRecord', 'getTableFields'])

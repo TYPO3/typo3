@@ -8216,7 +8216,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
 
     #[DataProvider('tokenizeStringDataProvider')]
     #[Test]
-    public function tokenize(string $source, LineStream $expected): void
+    public function tokenize(string $source, LineStream $expected, LineStream $_): void
     {
         $tokens = (new LosslessTokenizer())->tokenize($source);
         self::assertEquals($expected, $tokens);
@@ -8232,7 +8232,7 @@ final class TokenizerInterfaceTest extends UnitTestCase
 
     #[DataProvider('tokenizeStringDataProvider')]
     #[Test]
-    public function untokenize(string $source): void
+    public function untokenize(string $source, LineStream $_, LineStream $_expected): void
     {
         $tokenizer = new LosslessTokenizer();
         $tokenLines =  $tokenizer->tokenize($source);

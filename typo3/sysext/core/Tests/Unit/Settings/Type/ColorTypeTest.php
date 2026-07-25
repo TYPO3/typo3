@@ -44,7 +44,7 @@ final class ColorTypeTest extends UnitTestCase
 
     #[DataProvider('allowedValuesDataProvider')]
     #[Test]
-    public function allowedValuesAreVerified(mixed $value): void
+    public function allowedValuesAreVerified(mixed $value, mixed $_): void
     {
         $colorType = new ColorType(new NullLogger());
 

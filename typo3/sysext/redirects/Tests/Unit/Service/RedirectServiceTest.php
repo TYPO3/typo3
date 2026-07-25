@@ -517,7 +517,7 @@ final class RedirectServiceTest extends UnitTestCase
     #[Test]
     public function getTargetUrlReturnsNullIfUrlCouldNotBeResolved(): void
     {
-        $this->linkServiceMock->method('resolve')->with(self::anything())->willThrowException(new InvalidPathException('', 1516531195));
+        $this->linkServiceMock->method('resolve')->willThrowException(new InvalidPathException('', 1516531195));
         $result = $this->redirectService->getTargetUrl(['target' => 'invalid'], new ServerRequest(new Uri()));
         self::assertNull($result);
     }
@@ -534,7 +534,7 @@ final class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => 'https://example.com/',
         ];
-        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com');
         $request = new ServerRequest($source);
@@ -559,7 +559,7 @@ final class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_FILE,
             'file' => $fileMock,
         ];
-        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com');
         $request = new ServerRequest($source);
@@ -585,7 +585,7 @@ final class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_FOLDER,
             'folder' => $folder,
         ];
-        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com/');
         $request = new ServerRequest($source);
@@ -608,7 +608,7 @@ final class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => 'http://example.com',
         ];
-        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com');
         $request = new ServerRequest($source);
@@ -631,7 +631,7 @@ final class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => 'https://example.com/?foo=1&bar=2',
         ];
-        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com/?bar=2&baz=4&foo=1');
         $request = new ServerRequest($source);
@@ -701,7 +701,7 @@ final class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_PAGE,
             'typoLinkParameter' => $pageRecord,
         ];
-        $this->linkServiceMock->method('resolve')->with($pageRecord)->willReturn($linkDetails);
+        $this->linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with($pageRecord)->willReturn($linkDetails);
 
         $queryParams = [];
         $queryParams['foo'] = 'bar';
@@ -713,7 +713,7 @@ final class RedirectServiceTest extends UnitTestCase
         $request = $request->withQueryParams($queryParams);
         $request = $request->withAttribute('site', $site);
         $request = $request->withAttribute('frontend.user', $frontendUserAuthentication);
-        $redirectService->method('getUriFromCustomLinkDetails')
+        $redirectService->expects($this->atLeastOnce())->method('getUriFromCustomLinkDetails')
             ->with($redirectTargetMatch, $site, $linkDetails, $queryParams, $request)
             ->willReturn($uri);
         $result = $redirectService->getTargetUrl($redirectTargetMatch, $request);
@@ -735,7 +735,7 @@ final class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => 'https://anotherdomain.com/$1',
         ];
-        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri('https://example.com/foo/bar');
         $request = new ServerRequest($source);
@@ -811,7 +811,7 @@ final class RedirectServiceTest extends UnitTestCase
             'url' => $redirectTarget,
             'query' => '',
         ];
-        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri($requestUri);
         $queryParams = [];
@@ -889,7 +889,7 @@ final class RedirectServiceTest extends UnitTestCase
             'type' => LinkService::TYPE_URL,
             'url' => $redirectTarget,
         ];
-        $this->linkServiceMock->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
+        $this->linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with($redirectTargetMatch['target'])->willReturn($linkDetails);
 
         $source = new Uri($requestUri);
         $queryParams = [];

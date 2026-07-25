@@ -44,7 +44,7 @@ final class NumberTypeTest extends UnitTestCase
 
     #[DataProvider('allowedValuesDataProvider')]
     #[Test]
-    public function allowedValuesAreVerified(mixed $value): void
+    public function allowedValuesAreVerified(mixed $value, mixed $_): void
     {
         $intType = new NumberType(new NullLogger());
 

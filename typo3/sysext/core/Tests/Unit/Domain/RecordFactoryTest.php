@@ -40,7 +40,7 @@ final class RecordFactoryTest extends UnitTestCase
     {
         $this->expectExceptionCode(1715266929);
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -62,7 +62,7 @@ final class RecordFactoryTest extends UnitTestCase
     public function createFromDatabaseRowAddsTypeField(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -95,7 +95,7 @@ final class RecordFactoryTest extends UnitTestCase
     public function resolvedRecordOnlyContainsFieldsInSubSchema(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -129,7 +129,7 @@ final class RecordFactoryTest extends UnitTestCase
     public function createRawRecordCanBeCalledOnArrayRepresentationOfRawRecord(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $schemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),

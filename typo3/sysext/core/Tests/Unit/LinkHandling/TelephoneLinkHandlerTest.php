@@ -80,7 +80,7 @@ final class TelephoneLinkHandlerTest extends UnitTestCase
 
     #[DataProvider('resolveParametersForNonFilesDataProvider')]
     #[Test]
-    public function resolveReturnsSplitParameters(array $input, array $expected): void
+    public function resolveReturnsSplitParameters(array $input, array $expected, string $_): void
     {
         $subject = new TelephoneLinkHandler();
         self::assertEquals($expected, $subject->resolveHandlerData($input));

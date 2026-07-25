@@ -75,6 +75,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                     [$packageKey, true],
                 ]);
         $packageManager
+                ->expects($this->atMost(PHP_INT_MAX))
                 ->method('getPackage')
                 ->with(self::equalTo($packageKey))
                 ->willReturn($package);
@@ -1118,6 +1119,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         /** @var Package&MockObject $package */
         $package = $packageManager->getPackage($extensionKey);
         $package
+                ->expects($this->atMost(PHP_INT_MAX))
                 ->method('getPackageMetaData')
                 ->willReturn($packageMetaData);
         ExtensionManagementUtility::setPackageManager($packageManager);

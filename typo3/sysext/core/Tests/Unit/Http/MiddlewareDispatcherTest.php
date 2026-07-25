@@ -215,8 +215,8 @@ final class MiddlewareDispatcherTest extends UnitTestCase
         };
 
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->with('somemiddlewarename')->willReturn(true);
-        $containerMock->method('get')->with('somemiddlewarename')->willReturn($middleware);
+        $containerMock->expects($this->atLeastOnce())->method('has')->with('somemiddlewarename')->willReturn(true);
+        $containerMock->expects($this->atLeastOnce())->method('get')->with('somemiddlewarename')->willReturn($middleware);
 
         $dispatcher = new MiddlewareDispatcher($kernel, ['somemiddlewarename'], $containerMock);
         $response = $dispatcher->handle(new ServerRequest());

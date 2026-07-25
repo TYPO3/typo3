@@ -56,7 +56,7 @@ final class RedirectFinisherTest extends UnitTestCase
         $finisherContextMock->expects($this->once())->method('cancel');
 
         $translationServiceMock = $this->createMock(TranslationService::class);
-        $translationServiceMock->method('translateFinisherOption')->with(self::anything())->willReturnArgument(3);
+        $translationServiceMock->method('translateFinisherOption')->willReturnArgument(3);
 
         $redirectFinisherMock = $this->getAccessibleMock(RedirectFinisher::class, null, [], '', false);
         $redirectFinisherMock->_set('options', [

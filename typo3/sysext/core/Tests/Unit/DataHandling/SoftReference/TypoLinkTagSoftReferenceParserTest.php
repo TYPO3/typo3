@@ -235,11 +235,11 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
         $fileObject->method('getIdentifier')->willReturn('fileadmin/download.jpg');
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $resourceFactory->method('getFileObject')->with('42')->willReturn($fileObject);
+        $resourceFactory->expects($this->atMost(PHP_INT_MAX))->method('getFileObject')->with('42')->willReturn($fileObject);
         // For `t3://file?identifier=42` handling
-        $resourceFactory->method('getFileObjectFromCombinedIdentifier')->with('42')->willReturn($fileObject);
+        $resourceFactory->expects($this->atMost(PHP_INT_MAX))->method('getFileObjectFromCombinedIdentifier')->with('42')->willReturn($fileObject);
         // For `file:42` handling
-        $resourceFactory->method('retrieveFileOrFolderObject')->with('42')->willReturn($fileObject);
+        $resourceFactory->expects($this->atMost(PHP_INT_MAX))->method('retrieveFileOrFolderObject')->with('42')->willReturn($fileObject);
 
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory);
         $linkService = new LinkService(new NoopEventDispatcher());

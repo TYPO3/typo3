@@ -115,7 +115,7 @@ final class RedirectServiceTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
         $linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
-        $linkServiceMock->method('resolve')->with('t3://page?uid=2')->willReturn(
+        $linkServiceMock->expects($this->once())->method('resolve')->with('t3://page?uid=2')->willReturn(
             [
                 'pageuid' => 2,
                 'type' => LinkService::TYPE_PAGE,

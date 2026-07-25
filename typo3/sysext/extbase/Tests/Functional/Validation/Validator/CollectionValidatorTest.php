@@ -111,10 +111,6 @@ final class CollectionValidatorTest extends FunctionalTestCase
             ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'],
             [$this->get(ReflectionService::class)]
         );
-        $mockValidatorResolver
-            ->method('createValidator')
-            ->with('Integer')
-            ->willReturn($integerValidator);
         // Add validators to properties
         $aValidator->addPropertyValidator('b', $subject);
         $aValidator->addPropertyValidator('integer', $integerValidator);

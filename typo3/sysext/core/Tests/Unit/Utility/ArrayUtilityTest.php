@@ -298,7 +298,7 @@ final class ArrayUtilityTest extends UnitTestCase
 
     #[DataProvider('getValueByPathInvalidPathDataProvider')]
     #[Test]
-    public function getValueByPathThrowsExceptionIfPathNotExists(array $array, string $path): void
+    public function getValueByPathThrowsExceptionIfPathNotExists(array $array, string $path, bool|int $_): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1341397869);
@@ -307,7 +307,7 @@ final class ArrayUtilityTest extends UnitTestCase
 
     #[DataProvider('getValueByPathInvalidPathDataProvider')]
     #[Test]
-    public function getValueByPathThrowsSpecificExceptionIfPathNotExists(array $array, string $path): void
+    public function getValueByPathThrowsSpecificExceptionIfPathNotExists(array $array, string $path, bool|int $_): void
     {
         $this->expectException(MissingArrayPathException::class);
         $this->expectExceptionCode(1341397869);

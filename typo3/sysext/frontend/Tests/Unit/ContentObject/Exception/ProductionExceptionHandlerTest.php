@@ -70,7 +70,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $random = '029cca07';
 
         $randomMock = $this->createMock(Random::class);
-        $randomMock->method('generateRandomHexString')->with(8)->willReturn($random);
+        $randomMock->expects($this->atLeastOnce())->method('generateRandomHexString')->with(8)->willReturn($random);
 
         $context = new Context();
         $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp)));
@@ -92,7 +92,7 @@ final class ProductionExceptionHandlerTest extends UnitTestCase
         $random = '029cca07';
 
         $randomMock = $this->createMock(Random::class);
-        $randomMock->method('generateRandomHexString')->with(8)->willReturn($random);
+        $randomMock->expects($this->atLeastOnce())->method('generateRandomHexString')->with(8)->willReturn($random);
 
         $context = new Context();
         $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $currentTimestamp)));

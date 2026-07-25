@@ -64,7 +64,7 @@ final class RedirectHandlerTest extends UnitTestCase
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $request = new Request($serverRequest);
 
-        $this->redirectModeHandler->method('redirectModeLogout')->with($request, 0)->willReturn('');
+        $this->redirectModeHandler->expects($this->atMost(PHP_INT_MAX))->method('redirectModeLogout')->with($request, 0)->willReturn('');
 
         $result = $this->subject->processRedirect($request, 'logout', new RedirectConfiguration($redirectMode, '', 0, '', 0, 0), '');
         self::assertEquals($expect, $result);

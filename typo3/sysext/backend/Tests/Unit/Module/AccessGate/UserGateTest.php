@@ -59,7 +59,7 @@ final class UserGateTest extends UnitTestCase
         $module->method('getIdentifier')->willReturn('some_module');
         $user = $this->createMock(BackendUserAuthentication::class);
         $user->method('isAdmin')->willReturn(false);
-        $user->method('check')->with('modules', 'some_module')->willReturn(true);
+        $user->expects($this->atLeastOnce())->method('check')->with('modules', 'some_module')->willReturn(true);
 
         $subject = new UserGate(new ModuleRegistry([]));
         self::assertSame(ModuleAccessResult::Granted, $subject->decide($module, $user));

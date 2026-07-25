@@ -83,11 +83,13 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
     {
         $packageManager = $this->createMock(PackageManager::class);
         $packageManager
+            ->expects($this->atMost(PHP_INT_MAX))
             ->method('extractPackageKeyFromPackagePath')
             ->with($potentialIdentifier)
             ->willReturn($packageKey);
         $package = $this->createMock(PackageInterface::class);
         $package
+            ->expects($this->atMost(PHP_INT_MAX))
             ->method('getValueFromComposerManifest')
             ->with('name')
             ->willReturn('typo3/cms-' . $packageKey);
@@ -175,6 +177,7 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
         $packageManager = $this->createMock(PackageManager::class);
         $package = $this->createMock(PackageInterface::class);
         $package
+            ->expects($this->atMost(PHP_INT_MAX))
             ->method('getValueFromComposerManifest')
             ->with('name')
             ->willReturn('typo3/cms-core');
@@ -182,6 +185,7 @@ final class SystemResourceIdentifierFactoryTest extends UnitTestCase
             ->method('getResources')
             ->willReturn(new ResourceCollection());
         $packageManager
+            ->expects($this->atMost(PHP_INT_MAX))
             ->method('getPackage')
             ->with('core')
             ->willReturn($package);

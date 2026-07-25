@@ -267,9 +267,9 @@ final class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserT
         $fileObject->method('getStorage')->willReturn($storageObject);
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $resourceFactory->method('getFileObject')->with('42')->willReturn($fileObject);
+        $resourceFactory->expects($this->atMost(PHP_INT_MAX))->method('getFileObject')->with('42')->willReturn($fileObject);
         // For `t3://file?identifier=42` handling
-        $resourceFactory->method('getFileObjectFromCombinedIdentifier')->with('42')->willReturn($fileObject);
+        $resourceFactory->expects($this->atMost(PHP_INT_MAX))->method('getFileObjectFromCombinedIdentifier')->with('42')->willReturn($fileObject);
         // For `file:42` and `fileadmin/download.jpg` handling
         $resourceFactory->method('retrieveFileOrFolderObject')->willReturnMap([
             ['42', $fileObject],

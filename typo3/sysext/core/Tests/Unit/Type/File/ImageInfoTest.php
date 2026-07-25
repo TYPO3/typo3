@@ -103,7 +103,7 @@ final class ImageInfoTest extends UnitTestCase
         ];
 
         $graphicalFunctionsMock = $this->createMock(GraphicalFunctions::class);
-        $graphicalFunctionsMock->method('imageMagickIdentify')->with($testFile)->willReturn(null);
+        $graphicalFunctionsMock->expects($this->atMost(PHP_INT_MAX))->method('imageMagickIdentify')->with($testFile)->willReturn(null);
         GeneralUtility::addInstance(GraphicalFunctions::class, $graphicalFunctionsMock);
         GeneralUtility::addInstance(SvgDocumentFactory::class, new SvgDocumentFactory(new SvgSanitizer()));
 

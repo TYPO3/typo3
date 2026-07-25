@@ -140,7 +140,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
 
     #[DataProvider('resolveParametersForNonFilesDataProvider')]
     #[Test]
-    public function resolveReturnsSplitParameters(string $input, array $expected): void
+    public function resolveReturnsSplitParameters(string $input, array $expected, string $_): void
     {
         $subject = new LegacyLinkNotationConverter();
         ksort($expected);
@@ -249,7 +249,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
      */
     #[DataProvider('resolveParametersForFilesDataProvider')]
     #[Test]
-    public function resolveFileReferencesToSplitParameters(string $input, array $expected): void
+    public function resolveFileReferencesToSplitParameters(string $input, array $expected, string $_): void
     {
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
@@ -262,11 +262,13 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
         // fake methods to return proper objects
         if ($expected['type'] === LinkService::TYPE_FILE) {
             $fileObject = new File(['identifier' => $expected['file']], $storage);
-            $factory->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])
-                ->willReturn($fileObject);
-            $factory->method('retrieveFileOrFolderObject')->with($expected['file'])
-                ->willReturn($fileObject);
-            $factory->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
+            $returnFileObject = static function (string $file) use ($expected, $fileObject): File {
+                self::assertSame($expected['file'], $file);
+                return $fileObject;
+            };
+            $factory->method('getFileObjectFromCombinedIdentifier')->willReturnCallback($returnFileObject);
+            $factory->method('retrieveFileOrFolderObject')->willReturnCallback($returnFileObject);
+            $factory->method('getFileObject')->willReturnCallback($returnFileObject);
             $expected['file'] = $fileObject;
         }
         // fake methods to return proper objects
@@ -275,10 +277,12 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 $expected['folder'] = substr($expected['folder'], 5);
             }
             $folderObject = new Folder($storage, $expected['folder'], $expected['folder']);
-            $factory->method('retrieveFileOrFolderObject')->with($expected['folder'])
-                ->willReturn($folderObject);
-            $factory->method('getFolderObjectFromCombinedIdentifier')->with($expected['folder'])
-                ->willReturn($folderObject);
+            $returnFolderObject = static function (string $folder) use ($expected, $folderObject): Folder {
+                self::assertSame($expected['folder'], $folder);
+                return $folderObject;
+            };
+            $factory->method('retrieveFileOrFolderObject')->willReturnCallback($returnFolderObject);
+            $factory->method('getFolderObjectFromCombinedIdentifier')->willReturnCallback($returnFolderObject);
             $expected['folder'] = $folderObject;
         }
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $factory);

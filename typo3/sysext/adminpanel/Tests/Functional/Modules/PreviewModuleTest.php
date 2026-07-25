@@ -54,7 +54,7 @@ final class PreviewModuleTest extends FunctionalTestCase
             ['preview', 'showHiddenRecords', '0'],
             ['preview', 'showFluidDebug', '0'],
         ];
-        $configurationService->method('getConfigurationOption')->withAnyParameters()->willReturnMap($valueMap);
+        $configurationService->method('getConfigurationOption')->willReturnMap($valueMap);
 
         $previewModule = $this->get(PreviewModule::class);
         $previewModule->injectConfigurationService($configurationService);

@@ -141,8 +141,8 @@ final class DatabaseEditRowTest extends UnitTestCase
         $this->expectExceptionCode(1608658396);
         $schema = new TcaSchema('tt_content', new FieldCollection([]), ['versioningWS' => true]);
         $tcaSchemaFactoryMock = $this->createMock(TcaSchemaFactory::class);
-        $tcaSchemaFactoryMock->method('has')->with('tt_content')->willReturn(true);
-        $tcaSchemaFactoryMock->method('get')->with('tt_content')->willReturn($schema);
+        $tcaSchemaFactoryMock->expects($this->atMost(PHP_INT_MAX))->method('has')->with('tt_content')->willReturn(true);
+        $tcaSchemaFactoryMock->expects($this->atMost(PHP_INT_MAX))->method('get')->with('tt_content')->willReturn($schema);
         $this->subject = $this->getMockBuilder(DatabaseEditRow::class)
             ->setConstructorArgs([$tcaSchemaFactoryMock])
             ->onlyMethods(['getDatabaseRow'])

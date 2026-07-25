@@ -39,7 +39,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
             'inlineData' => [],
             'html' => 'aFieldRenderedHtml',
         ];
-        $singleFieldContainerMock->expects($this->atLeastOnce())->method('render')->withAnyParameters()->willReturn($singleFieldContainerReturn);
+        $singleFieldContainerMock->expects($this->atLeastOnce())->method('render')->willReturn($singleFieldContainerReturn);
 
         $labelReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $input = [
@@ -80,7 +80,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         $expectedChildDataArray['renderType'] = 'singleFieldContainer';
         $expectedChildDataArray['fieldName'] = 'aField';
 
-        $nodeFactoryMock->method('create')->with($expectedChildDataArray)->willReturn($singleFieldContainerMock);
+        $nodeFactoryMock->expects($this->atLeastOnce())->method('create')->with($expectedChildDataArray)->willReturn($singleFieldContainerMock);
 
         $subject = new PaletteAndSingleContainer();
         $subject->injectNodeFactory($nodeFactoryMock);
@@ -103,7 +103,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
             'inlineData' => [],
             'html' => 'aFieldRenderedHtml',
         ];
-        $singleFieldContainerMock->expects($this->atLeastOnce())->method('render')->withAnyParameters()->willReturn($singleFieldContainerReturn);
+        $singleFieldContainerMock->expects($this->atLeastOnce())->method('render')->willReturn($singleFieldContainerReturn);
 
         $labelReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $descriptionReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aDescription';
@@ -147,7 +147,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         $expectedChildDataArray['renderType'] = 'singleFieldContainer';
         $expectedChildDataArray['fieldName'] = 'aField';
 
-        $nodeFactoryMock->method('create')->with($expectedChildDataArray)->willReturn($singleFieldContainerMock);
+        $nodeFactoryMock->expects($this->atLeastOnce())->method('create')->with($expectedChildDataArray)->willReturn($singleFieldContainerMock);
 
         $subject = new PaletteAndSingleContainer();
         $subject->injectNodeFactory($nodeFactoryMock);
@@ -171,7 +171,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
             'inlineData' => [],
             'html' => 'aFieldRenderedHtml',
         ];
-        $singleFieldContainerMock->expects($this->atLeastOnce())->method('render')->withAnyParameters()->willReturn($singleFieldContainerReturn);
+        $singleFieldContainerMock->expects($this->atLeastOnce())->method('render')->willReturn($singleFieldContainerReturn);
 
         $labelReferenceFieldArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
         $labelReferencePaletteArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabelPalette';
@@ -216,7 +216,7 @@ final class PaletteAndSingleContainerTest extends UnitTestCase
         $expectedChildDataArray['renderType'] = 'singleFieldContainer';
         $expectedChildDataArray['fieldName'] = 'aField';
 
-        $nodeFactoryMock->method('create')->with($expectedChildDataArray)->willReturn($singleFieldContainerMock);
+        $nodeFactoryMock->expects($this->atLeastOnce())->method('create')->with($expectedChildDataArray)->willReturn($singleFieldContainerMock);
 
         $subject = new PaletteAndSingleContainer();
         $subject->injectNodeFactory($nodeFactoryMock);

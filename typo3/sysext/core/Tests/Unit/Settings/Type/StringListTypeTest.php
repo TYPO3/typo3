@@ -52,7 +52,7 @@ final class StringListTypeTest extends UnitTestCase
 
     #[DataProvider('allowedValuesDataProvider')]
     #[Test]
-    public function allowedValuesAreVerified(mixed $value): void
+    public function allowedValuesAreVerified(mixed $value, mixed $_): void
     {
         $stringListType = new StringListType(new NullLogger());
 

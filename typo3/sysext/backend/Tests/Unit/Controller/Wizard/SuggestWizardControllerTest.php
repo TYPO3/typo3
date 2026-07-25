@@ -66,9 +66,9 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $schema = new TcaSchema('aTable', new FieldCollection(), []);
         $flexFormToolsMock = $this->createMock(FlexFormTools::class);
-        $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier, $schema)->willReturn($dataStructure);
+        $flexFormToolsMock->expects($this->atLeastOnce())->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier, $schema)->willReturn($dataStructure);
         $tcaSchemaFactoryMock = $this->createMock(TcaSchemaFactory::class);
-        $tcaSchemaFactoryMock->method('get')->with('aTable')->willReturn($schema);
+        $tcaSchemaFactoryMock->expects($this->atLeastOnce())->method('get')->with('aTable')->willReturn($schema);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
@@ -110,9 +110,9 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $schema = new TcaSchema('aTable', new FieldCollection(), []);
         $flexFormToolsMock = $this->createMock(FlexFormTools::class);
-        $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier, $schema)->willReturn($dataStructure);
+        $flexFormToolsMock->expects($this->atLeastOnce())->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier, $schema)->willReturn($dataStructure);
         $tcaSchemaFactoryMock = $this->createMock(TcaSchemaFactory::class);
-        $tcaSchemaFactoryMock->method('get')->with('aTable')->willReturn($schema);
+        $tcaSchemaFactoryMock->expects($this->atLeastOnce())->method('get')->with('aTable')->willReturn($schema);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);

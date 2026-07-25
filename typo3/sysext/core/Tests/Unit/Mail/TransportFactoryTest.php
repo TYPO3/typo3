@@ -50,7 +50,8 @@ final class TransportFactoryTest extends UnitTestCase
         $logger = new NullLogger();
         $logManager = $this->createMock(LogManagerInterface::class);
         $logManager->method('getLogger')->willReturn($logger);
-        return new TransportFactory($eventDispatcher, $logManager, $logger, new FileNameValidator());
+        $dispatcher = $eventDispatcher;
+        return new TransportFactory($dispatcher, $logManager, $logger, new FileNameValidator());
     }
 
     /**
@@ -248,7 +249,7 @@ final class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch')->with(self::anything());
+        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch');
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
@@ -306,7 +307,7 @@ final class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch')->with(self::anything());
+        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch');
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
@@ -340,7 +341,7 @@ final class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch')->with(self::anything());
+        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch');
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])
@@ -374,7 +375,7 @@ final class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch')->with(self::anything());
+        $eventDispatcher->expects($this->atLeastOnce())->method('dispatch');
 
         $message = new MailMessage();
         $message->setTo(['foo@bar.com'])

@@ -230,7 +230,7 @@ final class CronCommandTest extends UnitTestCase
      */
     #[DataProvider('expectedTimestampDataProvider')]
     #[Test]
-    public function calculateNextValueDeterminesCorrectNextTimestamp(string $cronCommand, int $startTimestamp, int $expectedTimestamp): void
+    public function calculateNextValueDeterminesCorrectNextTimestamp(string $cronCommand, int $startTimestamp, int $expectedTimestamp, int $_): void
     {
         $instance = new CronCommand($cronCommand, $startTimestamp);
         $instance->calculateNextValue();
@@ -244,7 +244,7 @@ final class CronCommandTest extends UnitTestCase
      */
     #[DataProvider('expectedCalculatedTimestampDataProvider')]
     #[Test]
-    public function calculateNextValueDeterminesCorrectNextCalculatedTimestamp(string $cronCommand, int $startTimestamp, string $expectedTimestamp): void
+    public function calculateNextValueDeterminesCorrectNextCalculatedTimestamp(string $cronCommand, int $startTimestamp, string $expectedTimestamp, string $_): void
     {
         $instance = new CronCommand($cronCommand, $startTimestamp);
         $instance->calculateNextValue();

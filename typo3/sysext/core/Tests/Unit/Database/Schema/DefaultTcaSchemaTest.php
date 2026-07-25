@@ -3135,8 +3135,8 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     {
         $mariaDbConnection = $this->getMockBuilder($databasePlatformClass)->getMock();
         $connection = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
-        $connection->expects($this->any())->method('getDatabasePlatform')->willReturn($mariaDbConnection);
-        $this->connectionPool->expects($this->any())->method('getConnectionForTable')->willReturn($connection);
+        $connection->expects($this->atLeastOnce())->method('getDatabasePlatform')->willReturn($mariaDbConnection);
+        $this->connectionPool->expects($this->atLeastOnce())->method('getConnectionForTable')->willReturn($connection);
     }
 
     private function getPreparedTcaSchemaFactory(array $tca): TcaSchemaFactory

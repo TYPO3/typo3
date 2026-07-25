@@ -55,7 +55,7 @@ trait PageRendererFactoryTrait
     ): array {
         $packageManager ??= new PackageManager(new DependencyOrderingService());
         $cacheManagerMock = $this->createMock(CacheManager::class);
-        $cacheManagerMock->method('getCache')->with('l10n')->willReturn(new NullFrontend('l10n'));
+        $cacheManagerMock->expects($this->atLeastOnce())->method('getCache')->with('l10n')->willReturn(new NullFrontend('l10n'));
         $cacheManager ??= $cacheManagerMock;
         $labelMapperStub = self::createStub(TranslationDomainMapper::class);
         $labelMapperStub->method('mapDomainToFileName')->willReturnArgument(0);

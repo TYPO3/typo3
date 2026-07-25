@@ -274,7 +274,7 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
     private function getTcaSchemaFactory(): TcaSchemaFactory
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atMost(PHP_INT_MAX))->method('has')->with(self::isString())->willReturn(false);
         return new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),

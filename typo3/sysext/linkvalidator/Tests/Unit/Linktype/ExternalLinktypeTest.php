@@ -49,18 +49,21 @@ final class ExternalLinktypeTest extends UnitTestCase
     {
         $response = new Response(404);
         $clientExceptionMock = $this->getMockBuilder(ClientException::class)->disableOriginalConstructor()->getMock();
-        $clientExceptionMock->expects($this->once())->method('hasResponse')->willReturn(true);
-        $clientExceptionMock->expects($this->once())->method('getResponse')->willReturn($response);
+        $clientExceptionMock->expects($this->exactly(2))->method('hasResponse')->willReturn(true);
+        $clientExceptionMock->expects($this->exactly(2))->method('getResponse')->willReturn($response);
 
         $url = 'https://example.org/~not-existing-url';
         $options = $this->getRequestHeaderOptions();
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->method('request')->with($url, 'HEAD', $options)
-            ->willThrowException($clientExceptionMock);
-
         $optionsSecondTryWithGET = array_merge_recursive($options, ['headers' => ['Range' => 'bytes=0-4048']]);
-        $requestFactoryMock->method('request')->with($url, 'GET', $optionsSecondTryWithGET)
-            ->willThrowException($clientExceptionMock);
+        $requestFactoryMock->method('request')->willReturnCallback(
+            static function (string $actualUrl, string $method, array $actualOptions) use ($url, $options, $optionsSecondTryWithGET, $clientExceptionMock): never {
+                self::assertSame($url, $actualUrl);
+                self::assertContains($method, ['HEAD', 'GET']);
+                self::assertEquals($method === 'HEAD' ? $options : $optionsSecondTryWithGET, $actualOptions);
+                throw $clientExceptionMock;
+            }
+        );
         $subject = new ExternalLinktype($requestFactoryMock);
 
         $result = $subject->checkLink($url, [], $this->getMockBuilder(LinkAnalyzer::class)->disableOriginalConstructor()->getMock());
@@ -73,18 +76,22 @@ final class ExternalLinktypeTest extends UnitTestCase
     {
         $response = new Response(404);
         $clientExceptionMock = $this->getMockBuilder(ClientException::class)->disableOriginalConstructor()->getMock();
-        $clientExceptionMock->expects($this->once())->method('hasResponse')->willReturn(true);
-        $clientExceptionMock->expects($this->once())->method('getResponse')->willReturn($response);
+        $clientExceptionMock->expects($this->exactly(2))->method('hasResponse')->willReturn(true);
+        $clientExceptionMock->expects($this->exactly(2))->method('getResponse')->willReturn($response);
 
         $options = $this->getRequestHeaderOptions();
 
         $url = 'https://example.org/~not-existing-url';
         $requestFactoryMock = $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock();
-        $requestFactoryMock->method('request')->with($url, 'HEAD', $options)
-            ->willThrowException($clientExceptionMock);
         $optionsSecondTryWithGET = array_merge_recursive($options, ['headers' => ['Range' => 'bytes=0-4048']]);
-        $requestFactoryMock->method('request')->with($url, 'GET', $optionsSecondTryWithGET)
-            ->willThrowException($clientExceptionMock);
+        $requestFactoryMock->method('request')->willReturnCallback(
+            static function (string $actualUrl, string $method, array $actualOptions) use ($url, $options, $optionsSecondTryWithGET, $clientExceptionMock): never {
+                self::assertSame($url, $actualUrl);
+                self::assertContains($method, ['HEAD', 'GET']);
+                self::assertEquals($method === 'HEAD' ? $options : $optionsSecondTryWithGET, $actualOptions);
+                throw $clientExceptionMock;
+            }
+        );
 
         $subject = new ExternalLinktype($requestFactoryMock);
 

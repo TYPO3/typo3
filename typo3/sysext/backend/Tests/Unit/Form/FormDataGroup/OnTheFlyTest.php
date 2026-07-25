@@ -46,7 +46,7 @@ final class OnTheFlyTest extends UnitTestCase
     {
         $formDataProviderMock = $this->createMock(FormDataProviderInterface::class);
         GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderMock);
-        $formDataProviderMock->method('addData')->withAnyParameters()->willReturnArgument(0);
+        $formDataProviderMock->method('addData')->willReturnArgument(0);
         $providerList = [
             FormDataProviderInterface::class,
         ];
@@ -70,7 +70,7 @@ final class OnTheFlyTest extends UnitTestCase
         ];
         $this->subject->setProviderList($providerList);
         $providerResult = ['foo'];
-        $formDataProviderMock->expects($this->atLeastOnce())->method('addData')->with(self::anything())
+        $formDataProviderMock->expects($this->atLeastOnce())->method('addData')
             ->willReturn($providerResult);
 
         self::assertEquals($providerResult, $this->subject->compile([]));

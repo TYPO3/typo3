@@ -65,7 +65,7 @@ final class PreviewModuleTest extends UnitTestCase
             ['preview', 'showHiddenRecords', ''],
             ['preview', 'showFluidDebug', ''],
         ];
-        $configurationService->method('getConfigurationOption')->withAnyParameters()->willReturnMap($valueMap);
+        $configurationService->method('getConfigurationOption')->willReturnMap($valueMap);
 
         $previewModule = new PreviewModule(
             self::createStub(CacheManager::class),
@@ -95,11 +95,11 @@ final class PreviewModuleTest extends UnitTestCase
             ['preview', 'showHiddenRecords', '0'],
             ['preview', 'showFluidDebug', '0'],
         ];
-        $configurationService->method('getConfigurationOption')->withAnyParameters()->willReturnMap($valueMap);
+        $configurationService->method('getConfigurationOption')->willReturnMap($valueMap);
 
         $context = $this->getMockBuilder(Context::class)->getMock();
-        $context->method('hasAspect')->with('frontend.preview')->willReturn(false);
-        $context->expects($this->any())->method('setAspect')
+        $context->expects($this->atLeastOnce())->method('hasAspect')->with('frontend.preview')->willReturn(false);
+        $context->expects($this->atLeastOnce())->method('setAspect')
             ->willReturnCallback(fn(string $name): bool => match (true) {
                 $name === 'date',
                 $name === 'visibility',

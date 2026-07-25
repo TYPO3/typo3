@@ -28,7 +28,7 @@ class AbstractRestrictionTestCase extends FunctionalTestCase
     protected ExpressionBuilder $expressionBuilder;
 
     /**
-     * Create a new database connection mock object for every test.
+     * Create a new database connection stub for every test.
      */
     protected function setUp(): void
     {

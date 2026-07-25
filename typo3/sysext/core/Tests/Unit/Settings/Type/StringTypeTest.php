@@ -55,7 +55,7 @@ final class StringTypeTest extends UnitTestCase
 
     #[DataProvider('allowedValuesDataProvider')]
     #[Test]
-    public function allowedValuesAreVerified(mixed $value): void
+    public function allowedValuesAreVerified(mixed $value, mixed $_): void
     {
         $stringType = new StringType(new NullLogger());
 

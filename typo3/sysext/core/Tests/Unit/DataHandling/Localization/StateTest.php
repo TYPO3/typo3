@@ -40,7 +40,10 @@ final class StateTest extends UnitTestCase
     {
         parent::setUp();
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->method('has')->willReturnCallback(static function (string $entryIdentifier): bool {
+            self::assertNotSame('', $entryIdentifier);
+            return false;
+        });
         $this->tcaSchemaFactory = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),

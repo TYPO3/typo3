@@ -1463,7 +1463,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildDataProvider')]
     #[Test]
-    public function build(string $source, RootNode $expectedAst): void
+    public function build(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
@@ -1473,7 +1473,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildDataProvider')]
     #[Test]
-    public function buildCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst): void
+    public function buildCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
@@ -1483,7 +1483,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildDataProvider')]
     #[Test]
-    public function buildCommentAware(string $source, RootNode $expectedAst): void
+    public function buildCommentAware(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
@@ -1678,7 +1678,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildWithPreviousValueDataProvider')]
     #[Test]
-    public function buildWithPreviousValue(string $source, RootNode $expectedAst): void
+    public function buildWithPreviousValue(string $source, RootNode $expectedAst, RootNode $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
@@ -1688,7 +1688,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildWithPreviousValueDataProvider')]
     #[Test]
-    public function buildWithPreviousValueCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst): void
+    public function buildWithPreviousValueCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst, RootNode $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
@@ -2012,7 +2012,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildReferenceDataProvider')]
     #[Test]
-    public function buildReference(string $source, RootNode $expectedAst): void
+    public function buildReference(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
@@ -2022,7 +2022,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildReferenceDataProvider')]
     #[Test]
-    public function buildReferenceCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst): void
+    public function buildReferenceCreatesSameAstWhenUnserialized(string $source, RootNode $expectedAst, array $_): void
     {
         $this->registerComparator(new IdentifierTokenWithoutLineAndColumnComparator());
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -2033,7 +2033,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildReferenceDataProvider')]
     #[Test]
-    public function buildReferenceCommentAware(string $source, RootNode $expectedAst): void
+    public function buildReferenceCommentAware(string $source, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);
@@ -2460,7 +2460,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildConstantDataProvider')]
     #[Test]
-    public function buildConstant(string $source, array $constants, RootNode $expectedAst): void
+    public function buildConstant(string $source, array $constants, RootNode $expectedAst, array $_): void
     {
         $this->registerComparator(new AbstractNodeWithoutOriginalValueTokenStreamIdentifierComparator());
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -2471,7 +2471,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildConstantDataProvider')]
     #[Test]
-    public function buildConstantCreatesSameAstWhenUnserialized(string $source, array $constants, RootNode $expectedAst): void
+    public function buildConstantCreatesSameAstWhenUnserialized(string $source, array $constants, RootNode $expectedAst, array $_): void
     {
         $this->registerComparator(new AbstractNodeWithoutOriginalValueTokenStreamIdentifierComparator());
         $noopEventDispatcher = new NoopEventDispatcher();
@@ -2482,7 +2482,7 @@ final class AstBuilderInterfaceTest extends UnitTestCase
 
     #[DataProvider('buildConstantDataProvider')]
     #[Test]
-    public function buildConstantCommentAware(string $source, array $constants, RootNode $expectedAst): void
+    public function buildConstantCommentAware(string $source, array $constants, RootNode $expectedAst, array $_): void
     {
         $noopEventDispatcher = new NoopEventDispatcher();
         $tokens = (new LosslessTokenizer())->tokenize($source);

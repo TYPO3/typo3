@@ -190,7 +190,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function findRelevantFieldsForSubSchemaFindsRelevantFields(array $tableTca, ?string $subSchemaName, array $expected): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -237,7 +237,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
         ];
         $this->expectExceptionCode(1661617062);
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -254,7 +254,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function recordTypesInfoIsMergedWithMainSchemaInformation(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -294,7 +294,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function typeSpecificTitleOverridesCtrlTitle(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -341,7 +341,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function recordTypesWithForeignField(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -426,7 +426,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function subSchemaWithWizardSteps(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -475,7 +475,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function throwsExceptionForTypelessSchema(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -501,7 +501,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function throwsExceptionForNonExistingTypeFieldSchema(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -531,7 +531,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function throwsExceptionForNonExistingTypeFieldForForeignTypeSchema(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -561,7 +561,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function throwsExceptionForNonRelationalForeignTypeField(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -598,7 +598,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function throwsExceptionForWizardStepFieldNotInSchema(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -638,7 +638,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function throwsExceptionForWizardStepFieldNotInShowitem(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),
@@ -681,7 +681,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function throwsExceptionForWizardStepFieldsNotConfigured(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $cacheMock->expects($this->atLeastOnce())->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new TcaSchemaBuilder(
                 new RelationMapBuilder(self::createStub(FlexFormTools::class)),

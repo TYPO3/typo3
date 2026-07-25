@@ -39,8 +39,8 @@ final class LocalizationFactoryTest extends UnitTestCase
         $translatorMock->method('addResource')->willThrowException(new FileNotFoundException('testing', 1476049512));
 
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
-        $cacheFrontendMock->method('get')->with(self::anything())->willReturn(false);
-        $cacheFrontendMock->expects($this->atLeastOnce())->method('set')->with(self::anything());
+        $cacheFrontendMock->method('get')->willReturn(false);
+        $cacheFrontendMock->expects($this->atLeastOnce())->method('set');
 
         $labelMapperMock = $this->createMock(TranslationDomainMapper::class);
         $labelMapperMock->method('mapDomainToFileName')->willReturnArgument(0);
@@ -69,7 +69,7 @@ final class LocalizationFactoryTest extends UnitTestCase
     {
         $packageManagerMock = $this->createMock(PackageManager::class);
         $packageManagerMock->method('getActivePackages')->willReturn([]);
-        $packageManagerMock->method('extractPackageKeyFromPackagePath')->with('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
+        $packageManagerMock->expects($this->atLeastOnce())->method('extractPackageKeyFromPackagePath')->with('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
 
         $catalogue = $this->createMock(MessageCatalogue::class);
         $catalogue->method('getLocale')->willReturn('en');

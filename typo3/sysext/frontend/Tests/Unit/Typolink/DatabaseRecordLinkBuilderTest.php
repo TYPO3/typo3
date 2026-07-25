@@ -164,6 +164,7 @@ final class DatabaseRecordLinkBuilderTest extends UnitTestCase
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
 
         $pageRepositoryMock
+            ->expects($this->atLeastOnce())
             ->method('checkRecord')
             ->with('tx_news_domain_model_news', 1)
             ->willReturn(

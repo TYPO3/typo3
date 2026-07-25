@@ -63,7 +63,7 @@ final class ActionControllerTest extends UnitTestCase
         $extKey = $fakeExtension['extensionKey'];
         $extensionRoot = $fakeExtension['packagePath'];
         $installUtility = $this->createMock(InstallUtility::class);
-        $installUtility->method('enrichExtensionWithDetails')->with($extKey)->willReturn($fakeExtension);
+        $installUtility->expects($this->atMost(PHP_INT_MAX))->method('enrichExtensionWithDetails')->with($extKey)->willReturn($fakeExtension);
         // Build mocked fileHandlingUtility:
         $subject = $this->getAccessibleMock(
             ActionController::class,

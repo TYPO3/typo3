@@ -73,7 +73,7 @@ final class ListenerProviderTest extends UnitTestCase
         $event = new \stdClass();
         $event->invoked = 0;
 
-        $this->containerMock->method('get')->with('listener')->willReturn($listener);
+        $this->containerMock->expects($this->atLeastOnce())->method('get')->with('listener')->willReturn($listener);
         $this->listenerProvider->addListener(\stdClass::class, 'listener', $method);
 
         foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
@@ -91,7 +91,7 @@ final class ListenerProviderTest extends UnitTestCase
             public int $invoked = 0;
         };
 
-        $this->containerMock->method('get')->with('listener')->willReturn($listener);
+        $this->containerMock->expects($this->atLeastOnce())->method('get')->with('listener')->willReturn($listener);
         $this->listenerProvider->addListener(\stdClass::class, 'listener', $method);
         foreach ($this->listenerProvider->getListenersForEvent($extendedEvent) as $listener) {
             $listener($extendedEvent);
@@ -113,7 +113,7 @@ final class ListenerProviderTest extends UnitTestCase
             }
         };
 
-        $this->containerMock->method('get')->with('listener')->willReturn($listener);
+        $this->containerMock->expects($this->atLeastOnce())->method('get')->with('listener')->willReturn($listener);
         $this->listenerProvider->addListener(\IteratorAggregate::class, 'listener', $method);
         foreach ($this->listenerProvider->getListenersForEvent($eventImplementation) as $listener) {
             $listener($eventImplementation);
@@ -152,7 +152,7 @@ final class ListenerProviderTest extends UnitTestCase
         $this->expectExceptionCode(1549988537);
 
         $event = new \stdClass();
-        $this->containerMock->method('get')->with('listener')->willReturn(new \stdClass());
+        $this->containerMock->expects($this->atLeastOnce())->method('get')->with('listener')->willReturn(new \stdClass());
         $this->listenerProvider->addListener(\stdClass::class, 'listener');
         foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
             $listener($event);

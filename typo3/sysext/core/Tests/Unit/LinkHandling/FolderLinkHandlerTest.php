@@ -66,7 +66,7 @@ final class FolderLinkHandlerTest extends UnitTestCase
      */
     #[DataProvider('resolveParametersForFilesDataProvider')]
     #[Test]
-    public function resolveFileReferencesToSplitParameters(array $input, array $expected): void
+    public function resolveFileReferencesToSplitParameters(array $input, array $expected, string $_): void
     {
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()

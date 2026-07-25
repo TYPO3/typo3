@@ -36,7 +36,7 @@ final class PageRendererTest extends UnitTestCase
     {
         parent::setUp();
         $importMapMock = $this->createMock(ImportMap::class);
-        $importMapMock->method('render')
+        $importMapMock->expects($this->atMost(PHP_INT_MAX))->method('render')
             ->with(self::isString(), self::isInstanceOf(ConsumableNonce::class))
             ->willReturn('');
         $importMapFactoryStub = self::createStub(ImportMapFactory::class);

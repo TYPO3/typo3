@@ -61,7 +61,7 @@ final class RecoveryConfigurationTest extends UnitTestCase
 
         $context ??= new Context();
 
-        $this->configurationManager->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)
+        $this->configurationManager->expects($this->atLeastOnce())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS)
             ->willReturn($this->settings);
 
         $this->subject = new RecoveryConfiguration(

@@ -106,7 +106,7 @@ final class SessionManagerTest extends FunctionalTestCase
             'backend'  => $backendClassName,
             'options' => [],
         ];
-        $backendMock->expects($this->atLeastOnce())->method('initialize')->with(self::anything());
+        $backendMock->expects($this->atLeastOnce())->method('initialize');
         $backendMock->expects($this->atLeastOnce())->method('validateConfiguration');
         GeneralUtility::addInstance($backendClassName, $backendMock);
         self::assertInstanceOf($backendClassName, $this->subject->getSessionBackend('myidentifier'));

@@ -47,6 +47,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         $parentFolder->method('getSubfolders')->willReturn([]);
 
         $this->resourceFactoryMock
+            ->expects($this->atLeastOnce())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/user_upload/')
             ->willReturn($parentFolder);
@@ -67,6 +68,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         $parentFolder->method('getSubfolders')->willReturn([$regularFolder]);
 
         $this->resourceFactoryMock
+            ->expects($this->atLeastOnce())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/user_upload/')
             ->willReturn($parentFolder);
@@ -88,6 +90,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         $parentFolder->method('getSubfolders')->willReturn([$shortHashFolder]);
 
         $this->resourceFactoryMock
+            ->expects($this->atLeastOnce())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/user_upload/')
             ->willReturn($parentFolder);
@@ -109,6 +112,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         $parentFolder->method('getSubfolders')->willReturn([$recentFolder]);
 
         $this->resourceFactoryMock
+            ->expects($this->atLeastOnce())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/user_upload/')
             ->willReturn($parentFolder);
@@ -131,6 +135,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         $parentFolder->method('getSubfolders')->willReturn([$oldFolder]);
 
         $this->resourceFactoryMock
+            ->expects($this->atLeastOnce())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/user_upload/')
             ->willReturn($parentFolder);
@@ -168,6 +173,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         ]);
 
         $this->resourceFactoryMock
+            ->expects($this->atLeastOnce())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/user_upload/')
             ->willReturn($parentFolder);
@@ -189,6 +195,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         $parentFolder->method('getSubfolders')->willReturn([$oldFormFolder]);
 
         $this->resourceFactoryMock
+            ->expects($this->atLeastOnce())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/user_upload/')
             ->willReturn($parentFolder);
@@ -217,6 +224,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         $parentFolder2->method('getSubfolders')->willReturn([$folder2]);
 
         $this->resourceFactoryMock
+            ->expects($this->atLeastOnce())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->willReturnCallback(function (string $id) use ($parentFolder1, $parentFolder2) {
                 return match ($id) {
@@ -311,6 +319,7 @@ final class CleanupFormUploadsServiceTest extends UnitTestCase
         ]);
 
         $this->resourceFactoryMock
+            ->expects($this->atLeastOnce())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('1:/user_upload/')
             ->willReturn($parentFolder);

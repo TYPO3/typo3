@@ -254,7 +254,7 @@ final class ExtensionServiceTest extends UnitTestCase
     public function getTargetPageTypeByFormatReturnsZeroIfNoMappingIsSet(): void
     {
         $configurationManagerMock = $this->createMock(ConfigurationManager::class);
-        $configurationManagerMock->method('getConfiguration')->with(
+        $configurationManagerMock->expects($this->atLeastOnce())->method('getConfiguration')->with(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
             'extension'
         )->willReturn([]);
@@ -269,7 +269,7 @@ final class ExtensionServiceTest extends UnitTestCase
     public function getTargetPageTypeByFormatReturnsMappedPageTypeFromConfiguration(): void
     {
         $configurationManagerMock = $this->createMock(ConfigurationManager::class);
-        $configurationManagerMock->method('getConfiguration')->with(
+        $configurationManagerMock->expects($this->atLeastOnce())->method('getConfiguration')->with(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
             'extension'
         )->willReturn([

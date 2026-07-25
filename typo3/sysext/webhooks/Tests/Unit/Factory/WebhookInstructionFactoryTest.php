@@ -109,6 +109,7 @@ final class WebhookInstructionFactoryTest extends UnitTestCase
     {
         $webhookTypesRegistryMock = $this->createMock(WebhookTypesRegistry::class);
         $webhookTypesRegistryMock
+            ->expects($this->atLeastOnce())
             ->method('getWebhookByType')
             ->with($this->webhookType->getIdentifier())
             ->willReturn($this->webhookType);

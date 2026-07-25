@@ -113,7 +113,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
         $renderable->method('getProperties')->willReturn([]);
 
         $formRuntime = $this->createMock(FormRuntime::class);
-        $formRuntime->method('offsetGet')->with('date-1')->willReturn('today');
+        $formRuntime->expects($this->atLeastOnce())->method('offsetGet')->with('date-1')->willReturn('today');
 
         $capturedIdentifier = null;
         $capturedValue = null;
@@ -141,7 +141,7 @@ final class FormatDateRenderableBeforeRenderingTest extends TestCase
         $renderable->method('getProperties')->willReturn([]);
 
         $formRuntime = $this->createMock(FormRuntime::class);
-        $formRuntime->method('offsetGet')->with('date-1')->willReturn('2025-06-15');
+        $formRuntime->expects($this->atLeastOnce())->method('offsetGet')->with('date-1')->willReturn('2025-06-15');
         $formRuntime->expects($this->never())->method('offsetSet');
 
         $event = new BeforeRenderableIsRenderedEvent($renderable, $formRuntime);

@@ -150,8 +150,8 @@ final class PersistenceManagerTest extends UnitTestCase
         // this is the actual assertion
         $backend->expects($this->atLeastOnce())->method('setAggregateRootObjects')->with($expectedAddedObjects);
 
-        $backend->expects($this->atLeastOnce())->method('setChangedEntities')->with(self::anything());
-        $backend->expects($this->atLeastOnce())->method('setDeletedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('setChangedEntities');
+        $backend->expects($this->atLeastOnce())->method('setDeletedEntities');
         $backend->expects($this->atLeastOnce())->method('commit');
         $persistenceManager->persistAll();
     }
@@ -184,8 +184,8 @@ final class PersistenceManagerTest extends UnitTestCase
         // this is the actual assertion
         $backend->expects($this->atLeastOnce())->method('setAggregateRootObjects')->with($expectedAddedObjects);
 
-        $backend->expects($this->atLeastOnce())->method('setChangedEntities')->with(self::anything());
-        $backend->expects($this->atLeastOnce())->method('setDeletedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('setChangedEntities');
+        $backend->expects($this->atLeastOnce())->method('setDeletedEntities');
         $backend->expects($this->atLeastOnce())->method('commit');
 
         $persistenceManager->persistAll();
@@ -223,8 +223,8 @@ final class PersistenceManagerTest extends UnitTestCase
         // this is the actual assertion
         $backend->expects($this->atLeastOnce())->method('setAggregateRootObjects')->with($expectedAddedObjects);
 
-        $backend->expects($this->atLeastOnce())->method('setChangedEntities')->with(self::anything());
-        $backend->expects($this->atLeastOnce())->method('setDeletedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('setChangedEntities');
+        $backend->expects($this->atLeastOnce())->method('setDeletedEntities');
         $backend->expects($this->atLeastOnce())->method('commit');
         $persistenceManager->persistAll();
     }
@@ -248,7 +248,7 @@ final class PersistenceManagerTest extends UnitTestCase
         $expectedDeletedObjects = new ObjectStorage();
         $expectedDeletedObjects->attach($object);
         $backend->expects($this->atLeastOnce())->method('setAggregateRootObjects');
-        $backend->expects($this->atLeastOnce())->method('setChangedEntities')->with(self::anything());
+        $backend->expects($this->atLeastOnce())->method('setChangedEntities');
 
         // this is the actual assertion
         $backend->expects($this->atLeastOnce())->method('setDeletedEntities')->with($expectedDeletedObjects);

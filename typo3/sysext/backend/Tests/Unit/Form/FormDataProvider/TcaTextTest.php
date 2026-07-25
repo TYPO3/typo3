@@ -73,6 +73,7 @@ final class TcaTextTest extends UnitTestCase
         $rteHtmlParserMock = $this->createMock(RteHtmlParser::class);
 
         $richtextConfigurationMock
+            ->expects($this->atLeastOnce())
             ->method('getConfiguration')
             ->with(
                 'aTable',
@@ -86,6 +87,7 @@ final class TcaTextTest extends UnitTestCase
             )
             ->willReturn([ 'aConfig' => 'option']);
         $rteHtmlParserMock
+            ->expects($this->atLeastOnce())
             ->method('transformTextForRichTextEditor')
             ->with(
                 'notProcessedContent',
@@ -146,6 +148,7 @@ final class TcaTextTest extends UnitTestCase
 
         $richtextConfigurationMock = $this->createMock(Richtext::class);
         $richtextConfigurationMock
+            ->expects($this->atLeastOnce())
             ->method('getConfiguration')
             ->with(
                 'aTable',

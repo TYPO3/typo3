@@ -760,7 +760,7 @@ final class RteHtmlParserTest extends UnitTestCase
     public function emptyAttributesAreKeptOnAnchorTags(): void
     {
         $linkServiceMock = $this->getMockBuilder(LinkService::class)->disableOriginalConstructor()->getMock();
-        $linkServiceMock->method('resolve')->with('t3://file?uid=123')->willReturn(
+        $linkServiceMock->expects($this->atLeastOnce())->method('resolve')->with('t3://file?uid=123')->willReturn(
             [
                 'type' => LinkService::TYPE_FILE,
                 'file' => '123',

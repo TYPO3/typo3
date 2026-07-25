@@ -229,7 +229,7 @@ final class TcaRecordTitleTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->method('sL')->willReturnArgument(0);
 
         $expected = $input;
         $expected['recordTitle'] = 'NEW56017ee37d10e587251374';
@@ -416,7 +416,7 @@ final class TcaRecordTitleTest extends UnitTestCase
 
             $languageService = $this->createMock(LanguageService::class);
             $GLOBALS['LANG'] = $languageService;
-            $languageService->method('sL')->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+            $languageService->expects($this->atMost(PHP_INT_MAX))->method('sL')->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                 ->willReturn(' min| hrs| days| yrs| min| hour| day| year');
             $GLOBALS['EXEC_TIME'] = 978912061;
 
@@ -801,7 +801,7 @@ final class TcaRecordTitleTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->method('sL')->willReturnArgument(0);
 
         $expected = $input;
         $expected['recordTitle'] = $expectedTitle;
@@ -874,7 +874,7 @@ final class TcaRecordTitleTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->expects($this->atLeastOnce())->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->method('sL')->willReturnArgument(0);
 
         $expected = $input;
         $expected['recordTitle'] = 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes';
@@ -911,7 +911,7 @@ final class TcaRecordTitleTest extends UnitTestCase
 
         $languageService = $this->createMock(LanguageService::class);
         $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with(self::anything())->willReturnArgument(0);
+        $languageService->method('sL')->willReturnArgument(0);
 
         $expected = $input;
         $expected['recordTitle'] = 'foo, baz';
