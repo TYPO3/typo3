@@ -42,6 +42,7 @@ use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
 use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageViewMode;
+use TYPO3\CMS\Backend\View\RecordIdentityRenderer;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -90,6 +91,7 @@ class PageLayoutController
         protected readonly LanguageSelectorBuilder $languageSelectorBuilder,
         protected readonly PageLinkMessageProvider $pageLinkMessageProvider,
         private readonly SchemaLabelResolver $schemaLabelResolver,
+        private readonly RecordIdentityRenderer $recordIdentityRenderer,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -135,6 +137,7 @@ class PageLayoutController
         $view->assignMultiple([
             'pageId' => $this->pageContext->pageId,
             'localizedPageId' => $pageLocalizationRecord['uid'] ?? 0,
+            'recordIdentity' => $this->recordIdentityRenderer->render('pages', $pageLocalizationRecord ?: $this->pageContext->pageRecord),
             'pageLayoutContext' => $pageLayoutContext,
             'infoBoxes' => $this->generateMessagesForCurrentPage($request),
             'isPageEditable' => $this->isPageEditable($primaryLanguageId),

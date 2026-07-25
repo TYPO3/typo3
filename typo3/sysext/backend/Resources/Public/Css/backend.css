@@ -3109,6 +3109,8 @@ typo3-backend-wizard .wizard-actions{border-top:var(--wizard-border-width) solid
 .modal-body typo3-backend-wizard{--wizard-padding:var(--typo3-modal-padding);--wizard-progress-bg:var(--typo3-modal-header-bg);--wizard-progress-color:var(--typo3-modal-header-color);--wizard-border-radius:0;--wizard-box-shadow:none;bottom:0;left:0;position:absolute;right:0;top:0}
 .modal-body typo3-backend-wizard .wizard{border:none;bottom:0;left:0;position:absolute;right:0;top:0}
 .modal-body typo3-backend-wizard .wizard-progress{padding-top:0}
+.recordidentity{margin-bottom:var(--typo3-spacing)}
+.t3-page-column-lang-name .recordidentity{margin-bottom:0}
 .recordidentity,.recordidentity-type{align-items:center;display:inline-flex;gap:.25rem}
 @keyframes record-pulse{
 0%,to{opacity:1}

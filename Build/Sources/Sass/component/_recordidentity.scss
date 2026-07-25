@@ -10,6 +10,12 @@
 //
 
 .recordidentity {
+    margin-bottom: var(--typo3-spacing);
+
+    .t3-page-column-lang-name & {
+        margin-bottom: 0;
+    }
+
     &,
     &-type {
         display: inline-flex;
