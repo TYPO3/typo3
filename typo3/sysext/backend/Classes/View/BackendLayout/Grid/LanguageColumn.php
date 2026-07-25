@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Backend\View\RecordIdentityRenderer;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -108,6 +109,11 @@ class LanguageColumn
     public function getPageRecord(): array
     {
         return $this->context->getLocalizedPageRecord() ?: $this->context->getPageRecord();
+    }
+
+    public function getRecordIdentity(): string
+    {
+        return GeneralUtility::makeInstance(RecordIdentityRenderer::class)->render('pages', $this->getPageRecord());
     }
 
     public function getPageEditUrl(): string

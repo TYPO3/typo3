@@ -25,6 +25,7 @@
                         >
                             {languageColumn.context.localizedPageTitle}
                         </typo3-backend-editable-page-title>
+                        <f:format.raw>{languageColumn.recordIdentity}</f:format.raw>
                         <typo3-backend-page-layout-sticky-language-header>
                             <f:render section="languageInfo" arguments="{languageColumn: languageColumn}" />
                             <f:if condition="{languageColumn.translationData.hasElementsWithWorkspaceDeletePlaceholders}">
@@ -184,7 +185,6 @@
 </div>
 
 <f:section name="languageInfo">
-    <core:iconForRecord table="pages" row="{languageColumn.pageRecord}" />
     <core:icon identifier="{languageColumn.context.siteLanguage.flagIdentifier}" />
     {languageColumn.context.siteLanguage.title}
     <f:if condition="{languageColumn.context.languageMode}">

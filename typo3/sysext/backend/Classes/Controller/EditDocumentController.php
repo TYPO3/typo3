@@ -52,6 +52,8 @@ use TYPO3\CMS\Backend\Template\Enum\ModuleLayout;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\RecordIdentity\RecordTypeLabelResolver;
+use TYPO3\CMS\Backend\View\RecordIdentityRenderer;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -76,7 +78,6 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\SchemaLabelResolver;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -199,9 +200,10 @@ class EditDocumentController
         private readonly FormResultHandler $formResultHandler,
         protected TcaSchemaFactory $tcaSchemaFactory,
         protected readonly LocalizationRepository $localizationRepository,
-        private readonly SchemaLabelResolver $schemaLabelResolver,
         protected readonly ResourceFactory $resourceFactory,
         protected readonly FlashMessageService $flashMessageService,
+        private readonly RecordIdentityRenderer $recordIdentityRenderer,
+        private readonly RecordTypeLabelResolver $recordTypeLabelResolver,
     ) {}
 
     /**
@@ -891,7 +893,7 @@ class EditDocumentController
                     $formResult = $this->nodeFactory->create($formData)->render();
 
                     if ($command === 'new') {
-                        $tableTitle = htmlspecialchars($this->resolveTypeLabel($table, $formData['databaseRow']));
+                        $tableTitle = htmlspecialchars($this->recordTypeLabelResolver->resolve($table, $formData['databaseRow']));
                         $formHeading = $this->getLanguageService()->sL('core.core:labels.createNew') . ' ' . $tableTitle;
                         $formResult['html'] = '<h1>' . $formHeading . '</h1>' . $formResult['html'];
                     } else {
@@ -899,7 +901,7 @@ class EditDocumentController
                             ? $formData['recordTitle']
                             : '[' . $this->getLanguageService()->sL('core.core:labels.no_title') . ']';
                         $recordTitle = BackendUtility::cropToTitleLength($recordTitle);
-                        $recordIdentity = $this->getRecordIdentityHtml($table, $formData['databaseRow']);
+                        $recordIdentity = $this->recordIdentityRenderer->render($table, $formData['databaseRow']);
                         $formResult['html'] = '<h1>' . htmlspecialchars($recordTitle) . '</h1>' . $recordIdentity . $formResult['html'];
                     }
 
@@ -2005,7 +2007,7 @@ class EditDocumentController
             return $languageService->sL('backend.alt_doc:noEditForm');
         }
 
-        $typeLabel = htmlspecialchars($this->resolveTypeLabel($firstEl->table, $firstEl->record));
+        $typeLabel = htmlspecialchars($this->recordTypeLabelResolver->resolve($firstEl->table, $firstEl->record));
 
         if ($firstEl->command === 'new') {
             return $languageService->sL('core.core:labels.createNew') . ' ' . $typeLabel;
@@ -2027,59 +2029,6 @@ class EditDocumentController
         $recordTitle = htmlspecialchars($recordTitle);
 
         return implode(' · ', array_filter([$recordTitle, $typeLabel, '#' . $firstEl->uid]));
-    }
-
-    /**
-     * Returns an HTML snippet showing the record type icon, table title and uid.
-     */
-    protected function getRecordIdentityHtml(string $table, array $row): string
-    {
-        $icon = $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render();
-        $tableTitle = $this->resolveTypeLabel($table, $row);
-        $uid = (string)($row['uid'] ?? '');
-
-        $recordType = '<span class="recordidentity-type">' . $icon . htmlspecialchars($tableTitle) . '</span>';
-
-        $debugInfo = $this->getBackendUser()->shallDisplayDebugInformation() ? $table . ':' : '';
-        $recordIdentity = sprintf(
-            '<small class="recordidentity-id" title="%s">[%s%s]</small>',
-            htmlspecialchars($this->getLanguageService()->sL('core.core:labels.uid') . ' ' . $uid),
-            htmlspecialchars($debugInfo),
-            htmlspecialchars($uid),
-        );
-
-        return '<div class="recordidentity mb-3">' . $recordType . $recordIdentity . '</div>';
-    }
-
-    /**
-     * Resolves a human-readable type label for a given table and record.
-     */
-    protected function resolveTypeLabel(string $table, array $record): string
-    {
-        $languageService = $this->getLanguageService();
-        $schema = $this->tcaSchemaFactory->has($table)
-            ? $this->tcaSchemaFactory->get($table)
-            : null;
-        $typeLabel = $schema !== null
-            ? $schema->getTitle($languageService->sL(...))
-            : $table;
-
-        if ($schema !== null && $schema->supportsSubSchema()) {
-            $fieldName = $schema->getSubSchemaTypeInformation()->getFieldName();
-            $rawTypeValue = $record[$fieldName] ?? '';
-            $typeValue = is_array($rawTypeValue) ? (string)($rawTypeValue[0] ?? '') : (string)$rawTypeValue;
-            if ($typeValue !== '') {
-                $label = $languageService->sL($this->schemaLabelResolver->getLabelForFieldValue($table, $fieldName, $typeValue, $record));
-                if ($label === '' && $schema->hasSubSchema($typeValue)) {
-                    $label = $schema->getSubSchema($typeValue)->getTitle($languageService->sL(...));
-                }
-                if ($label !== '') {
-                    $typeLabel = $label;
-                }
-            }
-        }
-
-        return $typeLabel;
     }
 
     protected function resolveDefaultReturnUrl(): string

@@ -38,6 +38,7 @@ use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\RecordIdentityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -84,6 +85,7 @@ class RecordListController
         protected readonly FlashMessageService $flashMessageService,
         protected readonly PageContextFactory $pageContextFactory,
         protected readonly LanguageSelectorBuilder $languageSelectorBuilder,
+        protected readonly RecordIdentityRenderer $recordIdentityRenderer,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -226,6 +228,9 @@ class RecordListController
         $view->assignMultiple([
             'pageId' => $this->pageContext->pageId,
             'pageTitle' => $title,
+            'recordIdentity' => $this->pageContext->pageRecord
+                ? $this->recordIdentityRenderer->render('pages', $this->pageContext->pageRecord)
+                : '',
             'isPageEditable' => $this->isPageEditable(),
             'additionalContentTop' => $additionalRecordListEvent->getAdditionalContentAbove(),
             'pageTranslationsHtml' => $pageTranslationsHtml,
