@@ -26,8 +26,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DeleteActionTest extends FunctionalTestCase
 {
-    private const LOG_TEMPLATE_TABLE = 'Cannot delete "%s:%d" without permission';
-    private const LOG_TEMPLATE_WEBMOUNT = 'Attempt to delete page without permissions';
+    private const string LOG_TEMPLATE_TABLE = 'Cannot delete "%s:%d" without permission';
+    private const string LOG_TEMPLATE_WEBMOUNT = 'Attempt to delete page without permissions';
 
     protected array $coreExtensionsToLoad = ['workspaces'];
     private BackendUserAuthentication $backendUser;

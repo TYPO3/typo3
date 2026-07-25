@@ -36,10 +36,7 @@ use TYPO3\CMS\Extensionmanager\Parser\ExtensionXmlParser;
 #[Autoconfigure(public: true)]
 class BulkExtensionRepositoryWriter implements \SplObserver
 {
-    /**
-     * @var string
-     */
-    private const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
+    private const string TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
 
     protected ExtensionXmlParser $parser;
 

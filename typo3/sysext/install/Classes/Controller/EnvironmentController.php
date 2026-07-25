@@ -54,8 +54,8 @@ use TYPO3\CMS\Install\WebserverType;
  */
 class EnvironmentController extends AbstractController
 {
-    private const IMAGE_FILE_EXT = ['gif', 'jpg', 'png', 'tif', 'ai', 'pdf', 'webp', 'avif'];
-    private const TEST_REFERENCE_PATH = __DIR__ . '/../../Resources/Public/Images/TestReference';
+    private const array IMAGE_FILE_EXT = ['gif', 'jpg', 'png', 'tif', 'ai', 'pdf', 'webp', 'avif'];
+    private const string TEST_REFERENCE_PATH = __DIR__ . '/../../Resources/Public/Images/TestReference';
 
     public function __construct(
         private readonly LateBootService $lateBootService,

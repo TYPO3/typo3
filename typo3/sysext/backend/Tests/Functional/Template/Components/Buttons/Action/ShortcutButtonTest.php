@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShortcutButtonTest extends FunctionalTestCase
 {
-    private const FIXTURES_PATH_PATTERN = __DIR__ . '/../../../Fixtures/%s.php';
+    private const string FIXTURES_PATH_PATTERN = __DIR__ . '/../../../Fixtures/%s.php';
 
     #[Test]
     public function isButtonValid(): void

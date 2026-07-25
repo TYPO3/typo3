@@ -42,7 +42,7 @@ class RootlineUtility
 {
     // Note that having a nesting depth of 100 is quite high, but defined to be more on a "safe" side here. Main goal
     // is to mitigate unforeseen recursion which are not covered by the ancestor guard (checking page uid in path).
-    private const MAX_CTE_TRAVERSAL_LEVELS = 100;
+    private const int MAX_CTE_TRAVERSAL_LEVELS = 100;
 
     /** @internal */
     public const RUNTIME_CACHE_TAG = 'rootline-utility';

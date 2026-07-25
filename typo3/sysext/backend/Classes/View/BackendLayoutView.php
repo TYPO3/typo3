@@ -42,8 +42,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[Autoconfigure(public: true)]
 readonly class BackendLayoutView
 {
-    private const SELECTED_COMBINED_CACHE_IDENTIFIER = 'backend-layout-view-selected-combined-identifiers';
-    private const SELECTED_BACKEND_LAYOUTS_CACHE_IDENTIFIER = 'backend-layout-view-selected-backend-layouts';
+    private const string SELECTED_COMBINED_CACHE_IDENTIFIER = 'backend-layout-view-selected-combined-identifiers';
+    private const string SELECTED_BACKEND_LAYOUTS_CACHE_IDENTIFIER = 'backend-layout-view-selected-backend-layouts';
 
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,

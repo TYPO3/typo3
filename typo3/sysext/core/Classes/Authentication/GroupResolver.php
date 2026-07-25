@@ -36,8 +36,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[Autoconfigure(public: true)]
 readonly class GroupResolver
 {
-    private const SOURCE_FIELD = 'usergroup';
-    private const RECURSIVE_SOURCE_FIELD = 'subgroup';
+    private const string SOURCE_FIELD = 'usergroup';
+    private const string RECURSIVE_SOURCE_FIELD = 'subgroup';
 
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,

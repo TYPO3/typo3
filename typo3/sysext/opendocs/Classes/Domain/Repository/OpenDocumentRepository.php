@@ -27,8 +27,8 @@ use TYPO3\CMS\Opendocs\Domain\Model\OpenDocument;
  */
 final readonly class OpenDocumentRepository
 {
-    private const MODULE_DATA_KEY_RECENT = 'opendocs::recent';
-    private const MAX_RECENT_DOCUMENTS = 8;
+    private const string MODULE_DATA_KEY_RECENT = 'opendocs::recent';
+    private const int MAX_RECENT_DOCUMENTS = 8;
 
     /**
      * Find all recent documents for a user.

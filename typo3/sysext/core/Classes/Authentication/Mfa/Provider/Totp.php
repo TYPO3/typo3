@@ -28,9 +28,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Totp
 {
-    private const ALLOWED_ALGOS = ['sha1', 'sha256', 'sha512'];
-    private const MIN_LENGTH = 6;
-    private const MAX_LENGTH = 8;
+    private const array ALLOWED_ALGOS = ['sha1', 'sha256', 'sha512'];
+    private const int MIN_LENGTH = 6;
+    private const int MAX_LENGTH = 8;
 
     public function __construct(
         protected readonly string $secret,

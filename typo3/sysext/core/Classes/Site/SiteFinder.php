@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  */
 readonly class SiteFinder
 {
-    private const CACHE_IDENTIFIER_ROOT_ID_TO_IDENTIFIER = 'sites-root-id-to-identifier';
+    private const string CACHE_IDENTIFIER_ROOT_ID_TO_IDENTIFIER = 'sites-root-id-to-identifier';
 
     public function __construct(
         private SiteConfiguration $siteConfiguration,

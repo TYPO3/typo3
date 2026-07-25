@@ -26,10 +26,10 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final readonly class FormAction
 {
-    private const DOCUMENT_CLOSE_MODE_DEFAULT = 0;
+    private const int DOCUMENT_CLOSE_MODE_DEFAULT = 0;
     // works like DOCUMENT_CLOSE_MODE_DEFAULT
-    private const DOCUMENT_CLOSE_MODE_REDIRECT = 1;
-    public const DOCUMENT_CLOSE_MODE_CLEAR_ALL = 3;
+    private const int DOCUMENT_CLOSE_MODE_REDIRECT = 1;
+    public const int DOCUMENT_CLOSE_MODE_CLEAR_ALL = 3;
 
     private function __construct(
         private array $parsedBody,

@@ -52,7 +52,7 @@ class ReferenceIndex
      *
      * @var positive-int
      */
-    private const HASH_VERSION = 1;
+    private const int HASH_VERSION = 1;
 
     /**
      * Key list of tables to exclude from ReferenceIndex. Only $GLOBALS['TCA'] need to be listed here, if at all.

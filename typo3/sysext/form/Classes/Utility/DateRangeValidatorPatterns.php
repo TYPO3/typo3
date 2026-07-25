@@ -24,9 +24,9 @@ namespace TYPO3\CMS\Form\Utility;
  */
 final class DateRangeValidatorPatterns
 {
-    public const RFC3339_FULL_DATE = '\d{4}-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01])';
+    public const string RFC3339_FULL_DATE = '\d{4}-(0[1-9]|1[012])-(0[1-9]|[12]\d|3[01])';
 
-    public const RFC3339_FULL_DATE_PCRE = '/^' . self::RFC3339_FULL_DATE . '$/';
+    public const string RFC3339_FULL_DATE_PCRE = '/^' . self::RFC3339_FULL_DATE . '$/';
 
     /**
      * Check whether a string is a relative date expression.

@@ -47,7 +47,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GeneralUtilityTest extends UnitTestCase
 {
-    public const NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
+    public const string NO_FIX_PERMISSIONS_ON_WINDOWS = 'fixPermissions() not available on Windows (method does nothing)';
 
     protected bool $resetSingletonInstances = true;
 

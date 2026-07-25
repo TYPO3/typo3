@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CategoryElement extends AbstractFormElement
 {
-    private const MIN_ITEMS_COUNT = 5;
-    private const DEFAULT_ITEMS_COUNT = 15;
-    private const ITEM_HEIGHT_BASE = 20;
+    private const int MIN_ITEMS_COUNT = 5;
+    private const int DEFAULT_ITEMS_COUNT = 15;
+    private const int ITEM_HEIGHT_BASE = 20;
 
     /**
      * @var array

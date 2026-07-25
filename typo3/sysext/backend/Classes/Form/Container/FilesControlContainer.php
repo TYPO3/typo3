@@ -48,7 +48,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class FilesControlContainer extends AbstractContainer
 {
-    private const FILE_REFERENCE_TABLE = 'sys_file_reference';
+    private const string FILE_REFERENCE_TABLE = 'sys_file_reference';
 
     /**
      * Inline data array used in JS, returned as JSON object to frontend

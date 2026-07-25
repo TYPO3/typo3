@@ -39,12 +39,12 @@ readonly class SiteWriter
     /**
      * Config yaml file name.
      */
-    private const CONFIG_FILE_NAME = 'config.yaml';
+    private const string CONFIG_FILE_NAME = 'config.yaml';
 
     /**
      * YAML file name with all settings.
      */
-    private const SETTINGS_FILE_NAME = 'settings.yaml';
+    private const string SETTINGS_FILE_NAME = 'settings.yaml';
 
     public function __construct(
         protected readonly string $configPath,

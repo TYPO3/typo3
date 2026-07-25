@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LoginProviderResolverTest extends UnitTestCase
 {
-    private const LOGIN_PROVIDERS = [
+    private const array LOGIN_PROVIDERS = [
         '123456789' => [
             'provider' => UsernamePasswordLoginProvider::class,
             'sorting' => 20,

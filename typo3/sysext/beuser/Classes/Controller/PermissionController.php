@@ -50,9 +50,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[AsController]
 class PermissionController
 {
-    private const SESSION_PREFIX = 'tx_Beuser_';
-    private const DEPTH_LEVELS = [1, 2, 3, 4, 10];
-    private const RECURSIVE_LEVELS = 10;
+    private const string SESSION_PREFIX = 'tx_Beuser_';
+    private const array DEPTH_LEVELS = [1, 2, 3, 4, 10];
+    private const int RECURSIVE_LEVELS = 10;
 
     protected int $id = 0;
     protected string $returnUrl = '';

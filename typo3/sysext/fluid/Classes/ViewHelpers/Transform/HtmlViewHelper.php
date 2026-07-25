@@ -33,7 +33,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class HtmlViewHelper extends AbstractViewHelper
 {
-    protected const MAP_ON_FAILURE = [
+    protected const array MAP_ON_FAILURE = [
         '' => 0,
         'null' => 0,
         'removeTag' => HtmlWorker::REMOVE_TAG_ON_FAILURE,

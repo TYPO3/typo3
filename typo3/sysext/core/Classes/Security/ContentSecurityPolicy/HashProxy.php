@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class HashProxy implements \JsonSerializable, SourceValueInterface
 {
     // one week
-    private const CACHE_LIFETIME = 604800;
+    private const int CACHE_LIFETIME = 604800;
     private HashType $type = HashType::sha256;
     private ?string $glob = null;
     /**

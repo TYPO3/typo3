@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 final class FrameworkPackageWriter implements InstallerScript
 {
-    private const CORE_RESOURCE_PATH = '/typo3/sysext/core/Resources/Private/Php/framework-packages.php';
+    private const string CORE_RESOURCE_PATH = '/typo3/sysext/core/Resources/Private/Php/framework-packages.php';
 
     public function run(Event $event): bool
     {

@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ParserTest extends UnitTestCase
 {
-    private const TYPES = [
+    private const array TYPES = [
         SimpleNode::TYPE_ELEMENT => 'ELEMENT',
         SimpleNode::TYPE_TEXT => 'TEXT',
         SimpleNode::TYPE_CDATA => 'CDATA',

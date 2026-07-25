@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Package\Resource\ResourceCollectionInterface;
  */
 class Package implements PackageInterface
 {
-    private const NO_VERSION_SET = '1.0.0+no-version-set';
+    private const string NO_VERSION_SET = '1.0.0+no-version-set';
 
     /**
      * If this package is part of factory default, it will be activated

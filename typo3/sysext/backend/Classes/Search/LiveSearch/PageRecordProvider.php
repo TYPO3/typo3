@@ -58,7 +58,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 final class PageRecordProvider implements SearchProviderInterface
 {
-    private const RECURSIVE_PAGE_LEVEL = 99;
+    private const int RECURSIVE_PAGE_LEVEL = 99;
 
     private LanguageService $languageService;
     private string $userPermissions;

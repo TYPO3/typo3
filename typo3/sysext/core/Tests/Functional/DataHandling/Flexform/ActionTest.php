@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ActionTest extends FunctionalTestCase
 {
-    private const VALUE_ContentId = 100;
+    private const int VALUE_ContentId = 100;
 
     protected function setUp(): void
     {

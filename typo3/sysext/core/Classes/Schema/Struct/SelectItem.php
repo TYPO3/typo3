@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Schema\Struct;
 
 final class SelectItem implements \ArrayAccess
 {
-    private const LEGACY_INDEXED_KEYS_MAPPING_TABLE = [
+    private const array LEGACY_INDEXED_KEYS_MAPPING_TABLE = [
         0 => 'label',
         1 => 'value',
         2 => 'icon',

@@ -58,7 +58,7 @@ final class WorkspacePreview implements MiddlewareInterface
     /**
      * The GET parameter to be used (also the cookie name)
      */
-    private const PREVIEW_KEY = 'ADMCMD_prev';
+    private const string PREVIEW_KEY = 'ADMCMD_prev';
 
     private bool $previewNotificationEnabled = false;
     private ?string $previewMessage = null;

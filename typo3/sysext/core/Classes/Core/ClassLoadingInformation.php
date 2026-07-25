@@ -56,7 +56,7 @@ class ClassLoadingInformation
     /**
      * Name of file that contains all package provides, fetched from the composer.json files of extensions
      */
-    private const AUTOLOAD_INCLUDE_FILENAME = 'autoload_files.php';
+    private const string AUTOLOAD_INCLUDE_FILENAME = 'autoload_files.php';
 
     /**
      * Name of file that contains all class alias mappings

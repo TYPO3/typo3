@@ -27,10 +27,10 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected const LANGUAGE_PRESETS = [
+    protected const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
-    protected const ROOT_PAGE_ID = 1;
+    protected const int ROOT_PAGE_ID = 1;
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluid_template',

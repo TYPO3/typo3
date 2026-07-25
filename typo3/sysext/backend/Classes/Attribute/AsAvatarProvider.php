@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Backend\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 final readonly class AsAvatarProvider
 {
-    public const TAG_NAME = 'backend.avatar_provider';
+    public const string TAG_NAME = 'backend.avatar_provider';
 
     /**
      * @param non-empty-string $identifier

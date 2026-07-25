@@ -23,9 +23,9 @@ namespace TYPO3\CMS\Core\Schema\Capability;
  */
 final readonly class RootLevelCapability implements SchemaCapabilityInterface
 {
-    public const TYPE_ONLY_ON_PAGES = 0; // must be on a page (not pid=0)
-    public const TYPE_ONLY_ON_ROOTLEVEL = 1; // only allowed on pid=0
-    public const TYPE_BOTH = -1; // does not matter
+    public const int TYPE_ONLY_ON_PAGES = 0; // must be on a page (not pid=0)
+    public const int TYPE_ONLY_ON_ROOTLEVEL = 1; // only allowed on pid=0
+    public const int TYPE_BOTH = -1; // does not matter
 
     public function __construct(
         private int $rootLevelType,

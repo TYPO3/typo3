@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 #[Autoconfigure(public: true)]
 final readonly class SvgDocumentService
 {
-    private const DEFAULT_DIMENSION = 64;
+    private const int DEFAULT_DIMENSION = 64;
 
     /**
      * Resolve pixel dimensions of the SVG.

@@ -32,8 +32,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class IconTest extends FunctionalTestCase
 {
-    private const iconIdentifier = 'actions-close';
-    private const overlayIdentifier = 'overlay-readonly';
+    private const string iconIdentifier = 'actions-close';
+    private const string overlayIdentifier = 'overlay-readonly';
     protected bool $initializeDatabase = false;
 
     #[Test]

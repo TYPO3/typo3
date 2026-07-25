@@ -43,7 +43,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[Autoconfigure(public: true)]
 readonly class LanguagePackService
 {
-    private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/xliff/';
+    private const string LANGUAGE_PACK_URL = 'https://localize.typo3.org/xliff/';
 
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,

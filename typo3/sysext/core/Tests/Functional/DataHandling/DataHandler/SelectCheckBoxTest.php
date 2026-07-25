@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SelectCheckBoxTest extends FunctionalTestCase
 {
-    protected const PAGE_ID = 0;
+    protected const int PAGE_ID = 0;
 
     protected function setUp(): void
     {

@@ -33,7 +33,7 @@ final class LocalizeRecordTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const LANGUAGE_PRESETS = [
+    private const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
     ];

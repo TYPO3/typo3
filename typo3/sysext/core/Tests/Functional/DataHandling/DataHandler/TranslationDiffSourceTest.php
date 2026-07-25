@@ -30,8 +30,8 @@ final class TranslationDiffSourceTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const PAGE_DATAHANDLER = 88;
-    private const LANGUAGE_PRESETS = [
+    private const int PAGE_DATAHANDLER = 88;
+    private const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'DA' => ['id' => 1, 'title' => 'Dansk', 'locale' => 'da_DK.UTF8'],
     ];

@@ -29,8 +29,8 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 
 final class FileMetadataOverlayAspectTest extends AbstractTestCase
 {
-    private const VALUE_BackendUserId = 1;
-    private const VALUE_WorkspaceId = 1;
+    private const int VALUE_BackendUserId = 1;
+    private const int VALUE_WorkspaceId = 1;
 
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],

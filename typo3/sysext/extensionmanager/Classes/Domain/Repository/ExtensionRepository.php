@@ -34,7 +34,7 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
  */
 readonly class ExtensionRepository
 {
-    private const TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
+    private const string TABLE_NAME = 'tx_extensionmanager_domain_model_extension';
 
     public function __construct(
         private ConnectionPool $connectionPool,

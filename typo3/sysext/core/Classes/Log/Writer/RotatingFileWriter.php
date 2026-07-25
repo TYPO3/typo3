@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RotatingFileWriter extends FileWriter
 {
-    private const ROTATION_DATE_FORMAT = 'YmdHis';
+    private const string ROTATION_DATE_FORMAT = 'YmdHis';
 
     private Interval $interval = Interval::DAILY;
     private int $maxFiles = 5;

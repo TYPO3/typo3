@@ -26,11 +26,11 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 readonly class Random
 {
-    private const DEFAULT_PASSWORD_LENGTH = 16;
-    private const LOWERCASE_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz';
-    private const UPPERCASE_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    private const SPECIAL_CHARACTERS = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~';
-    private const DIGIT_CHARACTERS = '1234567890';
+    private const int DEFAULT_PASSWORD_LENGTH = 16;
+    private const string LOWERCASE_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz';
+    private const string UPPERCASE_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    private const string SPECIAL_CHARACTERS = '!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~';
+    private const string DIGIT_CHARACTERS = '1234567890';
 
     /**
      * Generates cryptographic secure pseudo-random bytes

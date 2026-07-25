@@ -30,9 +30,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 readonly class ReferrerEnforcer
 {
-    private const TYPE_REFERRER_EMPTY = 1;
-    private const TYPE_REFERRER_SAME_SITE = 2;
-    private const TYPE_REFERRER_SAME_ORIGIN = 4;
+    private const int TYPE_REFERRER_EMPTY = 1;
+    private const int TYPE_REFERRER_SAME_SITE = 2;
+    private const int TYPE_REFERRER_SAME_ORIGIN = 4;
 
     public function handle(ServerRequestInterface $request, array $options): ?ResponseInterface
     {

@@ -32,8 +32,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class GraphicalFunctionsResizeTest extends FunctionalTestCase
 {
     // Dimensions of the PNG fixture image used by all tests in this class.
-    private const FIXTURE_IMAGE_WIDTH = 640;
-    private const FIXTURE_IMAGE_HEIGHT = 480;
+    private const int FIXTURE_IMAGE_WIDTH = 640;
+    private const int FIXTURE_IMAGE_HEIGHT = 480;
 
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Imaging/Fixtures/GraphicalFunctionsResize.png' => 'fileadmin/user_upload/GraphicalFunctionsResize.png',

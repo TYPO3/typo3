@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ServiceProvider extends AbstractServiceProvider
 {
-    private const CACHE_IDENTIFIER_PREFIX = 'Dashboard_';
+    private const string CACHE_IDENTIFIER_PREFIX = 'Dashboard_';
 
     protected static function getPackagePath(): string
     {

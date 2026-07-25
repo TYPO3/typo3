@@ -32,7 +32,7 @@ use TYPO3\CMS\Impexp\Exception\PresetNotFoundException;
  */
 final readonly class PresetRepository
 {
-    private const PRESET_TABLE = 'tx_impexp_presets';
+    private const string PRESET_TABLE = 'tx_impexp_presets';
 
     public function __construct(
         private ConnectionPool $connectionPool,

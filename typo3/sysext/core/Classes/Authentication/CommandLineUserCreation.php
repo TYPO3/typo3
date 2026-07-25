@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[Autoconfigure(public: true)]
 final readonly class CommandLineUserCreation
 {
-    public const CLI_USERNAME = '_cli_';
+    public const string CLI_USERNAME = '_cli_';
 
     public function __construct(
         private ConnectionPool $connectionPool,

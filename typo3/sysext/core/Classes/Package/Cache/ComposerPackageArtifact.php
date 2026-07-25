@@ -33,7 +33,7 @@ class ComposerPackageArtifact implements PackageCacheInterface
     /**
      * Location of the file inside the var folder
      */
-    private const ARTIFACTS_FILE = '/PackageArtifact.php';
+    private const string ARTIFACTS_FILE = '/PackageArtifact.php';
 
     /**
      * Full filesystem path to the file

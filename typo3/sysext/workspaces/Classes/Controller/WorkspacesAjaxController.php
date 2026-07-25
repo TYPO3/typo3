@@ -49,7 +49,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 #[AsController]
 final readonly class WorkspacesAjaxController
 {
-    private const MAX_RECORDS_TO_PROCESS = 30;
+    private const int MAX_RECORDS_TO_PROCESS = 30;
 
     public function __construct(
         private WorkspaceService $workspaceService,

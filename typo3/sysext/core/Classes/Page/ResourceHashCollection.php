@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 final readonly class ResourceHashCollection
 {
-    public const AUTO = 'auto';
+    public const string AUTO = 'auto';
 
     public function __construct(
         private LoggerInterface $logger,

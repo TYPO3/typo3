@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Package\Resource\ResourceCollectionInterface;
  */
 final class VirtualAppPackage extends Package
 {
-    public const APP_PACKAGE_KEY = 'typo3/app';
+    public const string APP_PACKAGE_KEY = 'typo3/app';
 
     public function __construct(
         PackageManager $packageManager,

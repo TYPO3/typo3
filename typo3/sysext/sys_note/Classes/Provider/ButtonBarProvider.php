@@ -40,8 +40,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final readonly class ButtonBarProvider
 {
-    private const TABLE_NAME = 'sys_note';
-    private const ALLOWED_MODULES = [
+    private const string TABLE_NAME = 'sys_note';
+    private const array ALLOWED_MODULES = [
         'web_layout',
         'records',
         'web_info_overview',

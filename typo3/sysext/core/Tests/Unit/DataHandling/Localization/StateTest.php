@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StateTest extends UnitTestCase
 {
-    private const TABLE_NAME = 'tx_test_table';
+    private const string TABLE_NAME = 'tx_test_table';
 
     private TcaSchemaFactory $tcaSchemaFactory;
 

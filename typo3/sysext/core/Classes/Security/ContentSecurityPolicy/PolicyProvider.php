@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 #[Autoconfigure(public: true)]
 final readonly class PolicyProvider
 {
-    private const REPORTING_URI = '@http-reporting';
+    private const string REPORTING_URI = '@http-reporting';
 
     public function __construct(
         private RequestId $requestId,

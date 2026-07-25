@@ -39,7 +39,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 #[AsController]
 class MfaAjaxController
 {
-    private const ALLOWED_ACTIONS = ['deactivate'];
+    private const array ALLOWED_ACTIONS = ['deactivate'];
 
     protected MfaProviderRegistry $mfaProviderRegistry;
 

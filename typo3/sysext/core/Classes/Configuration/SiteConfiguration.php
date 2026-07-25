@@ -52,32 +52,32 @@ readonly class SiteConfiguration
     /**
      * Config yaml file name.
      */
-    private const CONFIG_FILE_NAME = 'config.yaml';
+    private const string CONFIG_FILE_NAME = 'config.yaml';
 
     /**
      * File naming containing TypoScript Setup.
      */
-    private const TYPOSCRIPT_SETUP_FILE_NAME = 'setup.typoscript';
+    private const string TYPOSCRIPT_SETUP_FILE_NAME = 'setup.typoscript';
 
     /**
      * File naming containing TypoScript Constants.
      */
-    private const TYPOSCRIPT_CONSTANTS_FILE_NAME = 'constants.typoscript';
+    private const string TYPOSCRIPT_CONSTANTS_FILE_NAME = 'constants.typoscript';
 
     /**
      * File naming containing page TSconfig definitions
      */
-    private const PAGE_TSCONFIG_FILE_NAME = 'page.tsconfig';
+    private const string PAGE_TSCONFIG_FILE_NAME = 'page.tsconfig';
 
     /**
      * YAML file name with all settings related to Content-Security-Policies.
      */
-    private const CONTENT_SECURITY_FILE_NAME = 'csp.yaml';
+    private const string CONTENT_SECURITY_FILE_NAME = 'csp.yaml';
 
     /**
      * Identifier to store all configuration data in the core cache.
      */
-    private const CACHE_IDENTIFIER = 'sites-configuration';
+    private const string CACHE_IDENTIFIER = 'sites-configuration';
 
     public function __construct(
         #[Autowire('%env(TYPO3:configPath)%/sites')]

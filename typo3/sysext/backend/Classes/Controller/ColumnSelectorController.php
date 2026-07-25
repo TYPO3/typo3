@@ -37,8 +37,8 @@ use TYPO3\CMS\Core\View\ViewInterface;
 #[AsController]
 readonly class ColumnSelectorController
 {
-    private const PSEUDO_FIELDS = ['_REF_', '_PATH_'];
-    private const EXCLUDE_FILE_FIELDS = [
+    private const array PSEUDO_FIELDS = ['_REF_', '_PATH_'];
+    private const array EXCLUDE_FILE_FIELDS = [
         'pid', // Not relevant as all records are on pid=0
         'identifier', // Handled manually in listing
         'name', // Handled manually in listing

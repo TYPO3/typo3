@@ -33,8 +33,8 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  */
 final readonly class InstallStatusReport implements StatusProviderInterface
 {
-    private const WRAP_FLAT = 1;
-    private const WRAP_NESTED = 2;
+    private const int WRAP_FLAT = 1;
+    private const int WRAP_NESTED = 2;
 
     public function __construct(
         private UpgradeWizardsService $upgradeWizardsService,

@@ -24,7 +24,7 @@ use TYPO3\CMS\Install\WebserverType;
  */
 final readonly class DefaultFactory
 {
-    private const TEMPLATE_PATH = __DIR__ . '/../../Resources/Private/FolderStructureTemplateFiles';
+    private const string TEMPLATE_PATH = __DIR__ . '/../../Resources/Private/FolderStructureTemplateFiles';
 
     /**
      * Get default structure object hierarchy

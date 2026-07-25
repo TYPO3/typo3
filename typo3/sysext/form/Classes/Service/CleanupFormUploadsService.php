@@ -45,7 +45,7 @@ readonly class CleanupFormUploadsService
      * UploadedFileReferenceConverter::importUploadedResource():
      * `form_` followed by exactly 40 hex characters (HMAC output).
      */
-    private const FORM_UPLOAD_FOLDER_PATTERN = '/^form_[a-f0-9]{40}$/';
+    private const string FORM_UPLOAD_FOLDER_PATTERN = '/^form_[a-f0-9]{40}$/';
 
     public function __construct(
         private ResourceFactory $resourceFactory,

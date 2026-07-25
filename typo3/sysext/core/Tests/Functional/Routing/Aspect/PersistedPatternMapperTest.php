@@ -37,7 +37,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PersistedPatternMapperTest extends FunctionalTestCase
 {
-    private const ASPECT_CONFIGURATION = [
+    private const array ASPECT_CONFIGURATION = [
         'tableName' => 'tt_content',
         'routeFieldName' => 'header',
         // `layout` does not really much sense here since it's always `0`
@@ -46,7 +46,7 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
         'routeFieldResult' => '{header}-{layout}',
     ];
 
-    private const SLUG_CONFIGURATION = [
+    private const array SLUG_CONFIGURATION = [
         'type' => 'slug',
         'generatorOptions' => [
             'prefixParentPageSlug' => false,
@@ -57,14 +57,14 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
         'default' => '',
     ];
 
-    private const LANGUAGE_MAP = [
+    private const array LANGUAGE_MAP = [
         'es-es' => 3,
         'fr-ca' => 2,
         'fr-fr' => 1,
         'default' => 0,
     ];
 
-    private const SITE_ADDITION = [
+    private const array SITE_ADDITION = [
         'acme' => 0,
         'other' => 4000,
     ];

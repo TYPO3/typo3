@@ -31,12 +31,12 @@ final readonly class TypoLinkCodecService
     /**
      * Delimiter for TypoLink string parts
      */
-    private const DELIMITER = ' ';
+    private const string DELIMITER = ' ';
 
     /**
      * Symbol for TypoLink parts not specified
      */
-    private const EMPTY_VALUE_SYMBOL = '-';
+    private const string EMPTY_VALUE_SYMBOL = '-';
 
     public function __construct(private EventDispatcherInterface $eventDispatcher) {}
 

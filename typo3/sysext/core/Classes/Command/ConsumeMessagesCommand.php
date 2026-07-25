@@ -53,7 +53,7 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 #[AsCommand(name: 'messenger:consume', description: 'Consume messages')]
 class ConsumeMessagesCommand extends Command
 {
-    private const DEFAULT_KEEPALIVE_INTERVAL = 5;
+    private const int DEFAULT_KEEPALIVE_INTERVAL = 5;
 
     private ?Worker $worker = null;
     private ?LoggerInterface $logger = null;

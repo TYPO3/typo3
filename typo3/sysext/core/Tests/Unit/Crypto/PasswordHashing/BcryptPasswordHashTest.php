@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BcryptPasswordHashTest extends UnitTestCase
 {
-    private const DEFAULT_OPTIONS = [
+    private const array DEFAULT_OPTIONS = [
         // Set low cost to speed up tests
         'cost' => 10,
     ];

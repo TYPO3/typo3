@@ -23,38 +23,38 @@ namespace TYPO3\CMS\Frontend\Page;
 final class PageAccessFailureReasons
 {
     // Page resolving issues
-    public const NO_PAGES_FOUND = 'page.database.empty';
-    public const PAGE_NOT_FOUND = 'page';
-    public const ROOTLINE_BROKEN = 'page.rootline';
-    public const INVALID_LINK_PAGE = 'page.invalid_external_url';
+    public const string NO_PAGES_FOUND = 'page.database.empty';
+    public const string PAGE_NOT_FOUND = 'page';
+    public const string ROOTLINE_BROKEN = 'page.rootline';
+    public const string INVALID_LINK_PAGE = 'page.invalid_external_url';
 
     // Site configuration issues
-    public const INVALID_SITE_SETS = 'site.sets.invalid';
+    public const string INVALID_SITE_SETS = 'site.sets.invalid';
 
     // Page configuration issues
-    public const RENDERING_INSTRUCTIONS_NOT_FOUND = 'rendering_instructions';
-    public const RENDERING_INSTRUCTIONS_NOT_CONFIGURED = 'rendering_instructions.type';
+    public const string RENDERING_INSTRUCTIONS_NOT_FOUND = 'rendering_instructions';
+    public const string RENDERING_INSTRUCTIONS_NOT_CONFIGURED = 'rendering_instructions.type';
 
     // Validation errors
-    public const INVALID_PAGE_ARGUMENTS = 'page.invalid_arguments';
-    public const CACHEHASH_COMPARISON_FAILED = 'cache_hash.comparison';
-    public const CACHEHASH_EMPTY = 'cache_hash.empty';
+    public const string INVALID_PAGE_ARGUMENTS = 'page.invalid_arguments';
+    public const string CACHEHASH_COMPARISON_FAILED = 'cache_hash.comparison';
+    public const string CACHEHASH_EMPTY = 'cache_hash.empty';
 
     // Language-related issues
-    public const LANGUAGE_NOT_AVAILABLE = 'language';
-    public const LANGUAGE_NOT_AVAILABLE_STRICT_MODE = 'language.strict';
-    public const LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE = 'language.fallbacks';
-    public const LANGUAGE_DEFAULT_NOT_AVAILABLE = 'language.default';
+    public const string LANGUAGE_NOT_AVAILABLE = 'language';
+    public const string LANGUAGE_NOT_AVAILABLE_STRICT_MODE = 'language.strict';
+    public const string LANGUAGE_AND_FALLBACKS_NOT_AVAILABLE = 'language.fallbacks';
+    public const string LANGUAGE_DEFAULT_NOT_AVAILABLE = 'language.default';
 
     // Access restrictions
-    public const ACCESS_DENIED_GENERAL = 'access';
-    public const ACCESS_DENIED_PAGE_NOT_RESOLVED = 'access.page';
-    public const ACCESS_DENIED_SUBSECTION_NOT_RESOLVED = 'access.subsection';
-    public const ACCESS_DENIED_HOST_PAGE_MISMATCH = 'access.host_mismatch';
-    public const ACCESS_DENIED_INVALID_PAGETYPE = 'access.pagetype';
+    public const string ACCESS_DENIED_GENERAL = 'access';
+    public const string ACCESS_DENIED_PAGE_NOT_RESOLVED = 'access.page';
+    public const string ACCESS_DENIED_SUBSECTION_NOT_RESOLVED = 'access.subsection';
+    public const string ACCESS_DENIED_HOST_PAGE_MISMATCH = 'access.host_mismatch';
+    public const string ACCESS_DENIED_INVALID_PAGETYPE = 'access.pagetype';
 
     // System errors
-    public const DATABASE_CONNECTION_FAILED = 'system.database';
+    public const string DATABASE_CONNECTION_FAILED = 'system.database';
 
     /**
      * Labels for the status codes

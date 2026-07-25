@@ -14,7 +14,7 @@ use TYPO3\CMS\Reactions\Reaction\ReactionInterface;
 
 readonly class ExampleReactionType implements ReactionInterface
 {
-    private const REGISTRY_KEY = 'changed_ids';
+    private const string REGISTRY_KEY = 'changed_ids';
 
     public function __construct(
         private readonly Registry $registry,

@@ -41,7 +41,7 @@ final class RecordListControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected const LANGUAGE_PRESETS = [
+    protected const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8'],
         'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8'],

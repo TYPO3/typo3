@@ -27,7 +27,7 @@ final readonly class CharsetProvider
      *
      * @var array<string, array<string, string>>
      */
-    private const RAW_DATA = [
+    private const array RAW_DATA = [
         'utf-8' => [
             ' ' => ' ',
             'ª' => 'a',

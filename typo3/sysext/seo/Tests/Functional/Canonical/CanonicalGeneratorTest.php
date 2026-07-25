@@ -37,7 +37,7 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected const LANGUAGE_PRESETS = [
+    protected const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 

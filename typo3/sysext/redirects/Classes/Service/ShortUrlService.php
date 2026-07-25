@@ -27,10 +27,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 readonly class ShortUrlService
 {
-    private const TABLE = 'sys_redirect';
-    private const CHARACTER_SET = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-    private const PATH_LENGTH = 8;
-    private const MAX_RETRIES = 10;
+    private const string TABLE = 'sys_redirect';
+    private const string CHARACTER_SET = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+    private const int PATH_LENGTH = 8;
+    private const int MAX_RETRIES = 10;
 
     public function __construct(
         private ConnectionPool $connectionPool,

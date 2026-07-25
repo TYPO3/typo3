@@ -26,9 +26,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ClassLoadingInformationTest extends UnitTestCase
 {
-    private const EXTENSION_PATH = '/fixture/typo3conf/ext/test_extension/Classes';
-    private const LIBRARY_PATH = '/fixture/vendor/typo3/test-library/src';
-    private const PREFIX = 'TYPO3\\CMS\\TestExtension\\';
+    private const string EXTENSION_PATH = '/fixture/typo3conf/ext/test_extension/Classes';
+    private const string LIBRARY_PATH = '/fixture/vendor/typo3/test-library/src';
+    private const string PREFIX = 'TYPO3\\CMS\\TestExtension\\';
     protected bool $backupEnvironment = true;
 
     private ?ClassLoader $backedUpClassLoader = null;

@@ -34,7 +34,7 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
  */
 class DashboardRepository
 {
-    private const TABLE = 'be_dashboards';
+    private const string TABLE = 'be_dashboards';
 
     /**
      * @var string[]

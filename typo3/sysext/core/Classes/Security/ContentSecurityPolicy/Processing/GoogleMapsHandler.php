@@ -36,7 +36,7 @@ class GoogleMapsHandler
 {
     use HandlerTrait;
 
-    private const DOMAIN_NAMES = [
+    private const array DOMAIN_NAMES = [
         'fonts.googleapis.com',
         'maps.googleapis.com',
         'fonts.gstatic.com',

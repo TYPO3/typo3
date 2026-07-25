@@ -36,7 +36,7 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
  */
 final class RedirectLoginErrorHandler implements PageErrorHandlerInterface
 {
-    private const PAGE_ID_LOGIN_FORM = 656;
+    private const int PAGE_ID_LOGIN_FORM = 656;
 
     private readonly int $loginRedirectPid;
     private readonly string $loginRedirectParameter;

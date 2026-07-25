@@ -43,8 +43,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[Autoconfigure(public: true), AsAlias(SystemResourcePublisherInterface::class, public: true)]
 final readonly class DefaultSystemResourcePublisher implements SystemResourcePublisherInterface
 {
-    private const PUBLISHING_DIRECTORY = '_assets/';
-    private const PUBLISHING_DIRECTORY_INSTALL = '_assets_install/';
+    private const string PUBLISHING_DIRECTORY = '_assets/';
+    private const string PUBLISHING_DIRECTORY_INSTALL = '_assets_install/';
 
     /**
      * @var FileSystemPublisherInterface[]

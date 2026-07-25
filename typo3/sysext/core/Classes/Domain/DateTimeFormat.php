@@ -28,5 +28,5 @@ final readonly class DateTimeFormat
     // * https://en.wikipedia.org/wiki/ISO_8601#Local_time_(unqualified)
     // * https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#local-dates-and-times
     // * https://html.spec.whatwg.org/multipage/input.html#local-date-and-time-state-(type=datetime-local)
-    public const ISO8601_LOCALTIME = 'Y-m-d\\TH:i:s';
+    public const string ISO8601_LOCALTIME = 'Y-m-d\\TH:i:s';
 }

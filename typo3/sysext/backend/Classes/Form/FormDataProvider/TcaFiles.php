@@ -38,8 +38,8 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  */
 class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProviderInterface
 {
-    private const FILE_REFERENCE_TABLE = 'sys_file_reference';
-    private const FOREIGN_SELECTOR = 'uid_local';
+    private const string FILE_REFERENCE_TABLE = 'sys_file_reference';
+    private const string FOREIGN_SELECTOR = 'uid_local';
 
     public function __construct(
         private readonly InlineStackProcessor $inlineStackProcessor,

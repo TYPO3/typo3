@@ -48,7 +48,7 @@ use TYPO3\CMS\Install\Service\EnableFileService;
  */
 final readonly class PlaywrightHelperMiddleware implements MiddlewareInterface
 {
-    private const PATH_PREFIX = '/typo3/playwright-helper/';
+    private const string PATH_PREFIX = '/typo3/playwright-helper/';
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

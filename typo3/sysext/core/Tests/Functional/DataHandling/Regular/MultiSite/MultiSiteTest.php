@@ -34,10 +34,10 @@ final class MultiSiteTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const VALUE_PageIdWebsite = 1;
-    private const VALUE_PageIdSecondSite = 50;
-    private const TABLE_Page = 'pages';
-    private const LANGUAGE_PRESETS = [
+    private const int VALUE_PageIdWebsite = 1;
+    private const int VALUE_PageIdSecondSite = 50;
+    private const string TABLE_Page = 'pages';
+    private const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 

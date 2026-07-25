@@ -49,7 +49,7 @@ use TYPO3\CMS\Form\Service\CleanupFormUploadsService;
 #[AsCommand('form:cleanup:uploads', 'Remove old form file upload folders based on retention period.')]
 class CleanupFormUploadsCommand extends Command
 {
-    private const DEFAULT_RETENTION_PERIOD_HOURS = 336;
+    private const int DEFAULT_RETENTION_PERIOD_HOURS = 336;
 
     public function __construct(
         private readonly CleanupFormUploadsService $cleanupService,

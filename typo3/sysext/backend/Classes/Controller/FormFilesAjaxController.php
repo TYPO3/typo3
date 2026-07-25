@@ -43,7 +43,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 #[AsController]
 readonly class FormFilesAjaxController extends AbstractFormEngineAjaxController
 {
-    private const FILE_REFERENCE_TABLE = 'sys_file_reference';
+    private const string FILE_REFERENCE_TABLE = 'sys_file_reference';
 
     public function __construct(
         private ResponseFactoryInterface $responseFactory,

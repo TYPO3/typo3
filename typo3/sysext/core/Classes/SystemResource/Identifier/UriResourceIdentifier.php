@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Http\Uri;
  */
 final class UriResourceIdentifier extends SystemResourceIdentifier
 {
-    public const TYPE = 'URI';
+    public const string TYPE = 'URI';
     private readonly UriInterface $uri;
 
     public function __construct(string $givenIdentifier)

@@ -37,7 +37,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 class MfaInfoElement extends AbstractFormElement
 {
-    private const ALLOWED_TABLES = ['be_users', 'fe_users', 'be_users_settings'];
+    private const array ALLOWED_TABLES = ['be_users', 'fe_users', 'be_users_settings'];
 
     public function __construct(
         private readonly IconFactory $iconFactory,

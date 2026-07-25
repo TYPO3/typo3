@@ -37,12 +37,12 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  */
 final class FilePersistenceSlot implements SingletonInterface
 {
-    public const COMMAND_FILE_ADD = 'fileAdd';
-    public const COMMAND_FILE_CREATE = 'fileCreate';
-    public const COMMAND_FILE_MOVE = 'fileMove';
-    public const COMMAND_FILE_RENAME = 'fileRename';
-    public const COMMAND_FILE_REPLACE = 'fileReplace';
-    public const COMMAND_FILE_SET_CONTENTS = 'fileSetContents';
+    public const string COMMAND_FILE_ADD = 'fileAdd';
+    public const string COMMAND_FILE_CREATE = 'fileCreate';
+    public const string COMMAND_FILE_MOVE = 'fileMove';
+    public const string COMMAND_FILE_RENAME = 'fileRename';
+    public const string COMMAND_FILE_REPLACE = 'fileReplace';
+    public const string COMMAND_FILE_SET_CONTENTS = 'fileSetContents';
 
     private array $allowedInvocations = [];
 

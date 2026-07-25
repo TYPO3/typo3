@@ -34,8 +34,8 @@ final class DatabaseStoredFormTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const ROOT_PAGE_BASE_URI = 'http://localhost';
-    private const LANGUAGE_PRESETS = [
+    private const string ROOT_PAGE_BASE_URI = 'http://localhost';
+    private const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_GB.UTF8'],
     ];
 

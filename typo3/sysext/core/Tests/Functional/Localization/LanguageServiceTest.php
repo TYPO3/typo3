@@ -28,18 +28,18 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class LanguageServiceTest extends FunctionalTestCase
 {
     // Constants to access the various language files
-    private const LANGUAGE_FILE = 'EXT:test_localization/Resources/Private/Language/locallang.xlf';
-    private const LANGUAGE_FILE__DEFAULT_IS_NON_ENGLISH_WITH_TARGETS = 'EXT:test_localization/Resources/Private/Language/default-with-targets/locallang.xlf';
-    private const LANGUAGE_FILE_XLIFF_2 = 'EXT:test_localization/Resources/Private/Language/messages_2.xlf';
-    private const LANGUAGE_FILE_ICU = 'EXT:test_localization/Resources/Private/Language/locallang_icu.xlf';
-    private const LANGUAGE_FILE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_override.xlf';
-    private const LANGUAGE_FILE_OVERRIDE__DEFAULT_WITHOUT_TARGETS = 'EXT:test_localization/Resources/Private/Language/override-without-targets/locallang_override.xlf';
-    private const LANGUAGE_FILE_OVERRIDE_DE = 'EXT:test_localization/Resources/Private/Language/de.locallang_override.xlf';
-    private const LANGUAGE_FILE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_override.xlf';
-    private const LANGUAGE_FILE_CORE = 'EXT:core/Resources/Private/Language/locallang_common.xlf';
-    private const LANGUAGE_FILE_CORE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_common_override.xlf';
-    private const LANGUAGE_FILE_CORE_OVERRIDE__DEFAULT_WITHOUT_TARGETS = 'EXT:test_localization/Resources/Private/Language/override-without-targets/locallang_common_override.xlf';
-    private const LANGUAGE_FILE_CORE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_common_override.xlf';
+    private const string LANGUAGE_FILE = 'EXT:test_localization/Resources/Private/Language/locallang.xlf';
+    private const string LANGUAGE_FILE__DEFAULT_IS_NON_ENGLISH_WITH_TARGETS = 'EXT:test_localization/Resources/Private/Language/default-with-targets/locallang.xlf';
+    private const string LANGUAGE_FILE_XLIFF_2 = 'EXT:test_localization/Resources/Private/Language/messages_2.xlf';
+    private const string LANGUAGE_FILE_ICU = 'EXT:test_localization/Resources/Private/Language/locallang_icu.xlf';
+    private const string LANGUAGE_FILE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_override.xlf';
+    private const string LANGUAGE_FILE_OVERRIDE__DEFAULT_WITHOUT_TARGETS = 'EXT:test_localization/Resources/Private/Language/override-without-targets/locallang_override.xlf';
+    private const string LANGUAGE_FILE_OVERRIDE_DE = 'EXT:test_localization/Resources/Private/Language/de.locallang_override.xlf';
+    private const string LANGUAGE_FILE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_override.xlf';
+    private const string LANGUAGE_FILE_CORE = 'EXT:core/Resources/Private/Language/locallang_common.xlf';
+    private const string LANGUAGE_FILE_CORE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_common_override.xlf';
+    private const string LANGUAGE_FILE_CORE_OVERRIDE__DEFAULT_WITHOUT_TARGETS = 'EXT:test_localization/Resources/Private/Language/override-without-targets/locallang_common_override.xlf';
+    private const string LANGUAGE_FILE_CORE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_common_override.xlf';
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_localization',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_translation_domain',

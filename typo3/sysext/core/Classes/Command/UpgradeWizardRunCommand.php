@@ -49,7 +49,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class UpgradeWizardRunCommand extends Command
 {
-    private const MAX_SILENT_UPGRADE_TRIES = 100;
+    private const int MAX_SILENT_UPGRADE_TRIES = 100;
     private UpgradeWizardsService $upgradeWizardsService;
     private DatabaseUpgradeWizardsService $databaseUpgradeWizardsService;
 

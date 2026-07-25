@@ -37,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[Autoconfigure(public: true)]
 readonly class SvgImageProcessor implements ProcessorInterface
 {
-    private const DEFAULT_SVG_DIMENSION = 64;
+    private const int DEFAULT_SVG_DIMENSION = 64;
 
     public function __construct(
         private SvgDocumentFactory $svgDocumentFactory,

@@ -25,8 +25,8 @@ use TYPO3\CMS\Core\Type\BitSet;
  */
 final class BackendGroupMountOption extends BitSet
 {
-    private const INCLUDE_PAGE_MOUNTS = 1;
-    private const INCLUDE_FILE_MOUNTS = 2;
+    private const int INCLUDE_PAGE_MOUNTS = 1;
+    private const int INCLUDE_FILE_MOUNTS = 2;
 
     public function shouldUserIncludePageMountsFromAssociatedGroups(): bool
     {

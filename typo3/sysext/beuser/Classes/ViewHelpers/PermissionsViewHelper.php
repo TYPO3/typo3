@@ -37,7 +37,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class PermissionsViewHelper extends AbstractViewHelper
 {
-    private const MASKS = [1, 16, 2, 4, 8];
+    private const array MASKS = [1, 16, 2, 4, 8];
 
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.

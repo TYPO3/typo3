@@ -30,10 +30,7 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    /**
-     * @var array
-     */
-    protected const LANGUAGE_PRESETS = [
+    protected const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
         'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8'],
         'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8'],

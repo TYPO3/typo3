@@ -32,10 +32,10 @@ use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 #[AsCommand('redirects:checkintegrity', 'Check integrity of redirects')]
 class CheckIntegrityCommand extends Command
 {
-    private const REGISTRY_NAMESPACE = 'tx_redirects';
+    private const string REGISTRY_NAMESPACE = 'tx_redirects';
     public const REGISTRY_KEY_CONFLICTING_REDIRECTS = 'conflicting_redirects';
     public const REGISTRY_KEY_LAST_TIMESTAMP_CHECK_INTEGRITY = 'redirects_check_integrity_last_check';
-    private const LANGUAGE_FILE_PATH = 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf';
+    private const string LANGUAGE_FILE_PATH = 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf';
 
     public function __construct(
         private readonly Registry $registry,

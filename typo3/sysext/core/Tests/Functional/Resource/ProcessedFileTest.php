@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ProcessedFileTest extends FunctionalTestCase
 {
-    private const TEST_IMAGE = 'fileadmin/ProcessedFileTest.jpg';
+    private const string TEST_IMAGE = 'fileadmin/ProcessedFileTest.jpg';
 
     /**
      * @var array<string, non-empty-string>

@@ -31,9 +31,9 @@ final class SecureHtmlRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const TYPE_PLAIN = 'plain';
-    private const TYPE_DISABLE_HTML_SANITIZE = 'disable-htmlSanitize';
-    protected const LANGUAGE_PRESETS = [
+    private const string TYPE_PLAIN = 'plain';
+    private const string TYPE_DISABLE_HTML_SANITIZE = 'disable-htmlSanitize';
+    protected const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 

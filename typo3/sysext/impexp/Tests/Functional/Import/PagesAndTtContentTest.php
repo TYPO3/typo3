@@ -26,8 +26,8 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
 final class PagesAndTtContentTest extends AbstractImportExportTestCase
 {
-    private const FIXTURE_WITHOUT_SITE_CONFIG = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml';
-    private const FIXTURE_WITH_SITE_CONFIG = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-site-config.xml';
+    private const string FIXTURE_WITHOUT_SITE_CONFIG = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml';
+    private const string FIXTURE_WITH_SITE_CONFIG = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-site-config.xml';
 
     protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',

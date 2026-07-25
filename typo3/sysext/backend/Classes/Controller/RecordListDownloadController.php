@@ -46,7 +46,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[AsController]
 class RecordListDownloadController
 {
-    private const DOWNLOAD_FORMATS = [
+    private const array DOWNLOAD_FORMATS = [
         'csv' => [
             'options' => [
                 'delimiter' => [

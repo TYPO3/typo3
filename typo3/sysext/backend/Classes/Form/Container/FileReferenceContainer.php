@@ -47,8 +47,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class FileReferenceContainer extends AbstractContainer
 {
-    private const FILE_REFERENCE_TABLE = 'sys_file_reference';
-    private const FOREIGN_SELECTOR = 'uid_local';
+    private const string FILE_REFERENCE_TABLE = 'sys_file_reference';
+    private const string FOREIGN_SELECTOR = 'uid_local';
 
     /**
      * File reference data used for JSON output

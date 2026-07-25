@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[AsController]
 class ClipboardController
 {
-    private const ALLOWED_ACTIONS = ['getClipboardData'];
+    private const array ALLOWED_ACTIONS = ['getClipboardData'];
 
     protected ResponseFactoryInterface $responseFactory;
     protected StreamFactoryInterface $streamFactory;

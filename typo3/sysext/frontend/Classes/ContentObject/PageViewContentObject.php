@@ -45,7 +45,7 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
  */
 final class PageViewContentObject extends AbstractContentObject
 {
-    private const reservedVariables = ['site', 'language', 'page'];
+    private const array reservedVariables = ['site', 'language', 'page'];
 
     public function __construct(
         private readonly ContentDataProcessor $contentDataProcessor,

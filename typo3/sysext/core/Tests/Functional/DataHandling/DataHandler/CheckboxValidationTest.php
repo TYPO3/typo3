@@ -46,8 +46,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class CheckboxValidationTest extends FunctionalTestCase
 {
-    protected const PAGE_ID = 200;
-    protected const PAGE_ID_OTHER = 300;
+    protected const int PAGE_ID = 200;
+    protected const int PAGE_ID_OTHER = 300;
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',

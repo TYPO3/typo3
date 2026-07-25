@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CropVariantCollectionTest extends UnitTestCase
 {
-    private const TCA = [
+    private const array TCA = [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
         'cropArea' => [
             'x' => 0.0,

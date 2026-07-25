@@ -27,7 +27,7 @@ use TYPO3\HtmlSanitizer\Visitor\VisitorInterface;
  */
 final class UnwrapTagVisitor implements VisitorInterface
 {
-    private const UNWRAP_TAGS = [
+    private const array UNWRAP_TAGS = [
         'a',
         'h1',
         'h2',

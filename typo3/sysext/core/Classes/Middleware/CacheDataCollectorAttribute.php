@@ -39,7 +39,7 @@ class CacheDataCollectorAttribute implements MiddlewareInterface
      * Some web servers (e.g. nginx or apache2) have a default
      * limit of 8kB for the size of a single header.
      */
-    private const MAX_CACHE_TAGS_HEADER_LENGTH = 8000;
+    private const int MAX_CACHE_TAGS_HEADER_LENGTH = 8000;
 
     private ?CacheDataCollector $cacheDataCollector = null;
 

@@ -33,9 +33,9 @@ if (!class_exists('Normalizer')) {
 
 final readonly class XliffNormalizer
 {
-    private const EXIT_OK = 0;
-    private const EXIT_NEEDS_FIX = 1;
-    private const EXIT_ERROR = 2;
+    private const int EXIT_OK = 0;
+    private const int EXIT_NEEDS_FIX = 1;
+    private const int EXIT_ERROR = 2;
     public function execute(array $argv): int
     {
         $script  = $argv[0] ?? 'xliffNormalizer.php';

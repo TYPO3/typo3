@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 readonly class DefaultDataProvider implements DataProviderInterface
 {
-    private const DEFAULT_COLUMNS_LAYOUT = '
+    private const string DEFAULT_COLUMNS_LAYOUT = '
 		backend_layout {
 			colCount = 1
 			rowCount = 1

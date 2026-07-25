@@ -30,7 +30,7 @@ final readonly class CharsetUpdater
     /**
      * @see http://www.unicode.org/Public/UNIDATA/
      */
-    private const CHARSET_DIRECTORY = '../Sources/Charsets/';
+    private const string CHARSET_DIRECTORY = '../Sources/Charsets/';
 
     public function generate(): void
     {

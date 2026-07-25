@@ -71,7 +71,7 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
         "''" => "'",
     ];
 
-    private const MYSQL_ESCAPE_SEQUENCES = [
+    private const array MYSQL_ESCAPE_SEQUENCES = [
         '\\0' => "\0",
         "\\'" => "'",
         '\\"' => '"',
@@ -88,7 +88,7 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
         "''" => "'",
     ];
 
-    private const MYSQL_UNQUOTE_SEQUENCES = [
+    private const array MYSQL_UNQUOTE_SEQUENCES = [
         "\\'" => "'",
         '\\"' => '"',
     ];

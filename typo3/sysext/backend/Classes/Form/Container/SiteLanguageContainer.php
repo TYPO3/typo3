@@ -30,8 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SiteLanguageContainer extends AbstractContainer
 {
-    private const FOREIGN_TABLE = 'site_language';
-    private const FOREIGN_FIELD = 'languageId';
+    private const string FOREIGN_TABLE = 'site_language';
+    private const string FOREIGN_FIELD = 'languageId';
 
     protected array $inlineData;
 

@@ -24,12 +24,12 @@ namespace TYPO3\CMS\FrontendLogin\Redirect;
  */
 final class RedirectMode
 {
-    public const LOGIN = 'login';
-    public const LOGOUT = 'logout';
-    public const LOGIN_ERROR = 'loginError';
-    public const GETPOST = 'getpost';
-    public const USER_LOGIN = 'userLogin';
-    public const GROUP_LOGIN = 'groupLogin';
-    public const REFERRER = 'referer';
-    public const REFERRER_DOMAINS = 'refererDomains';
+    public const string LOGIN = 'login';
+    public const string LOGOUT = 'logout';
+    public const string LOGIN_ERROR = 'loginError';
+    public const string GETPOST = 'getpost';
+    public const string USER_LOGIN = 'userLogin';
+    public const string GROUP_LOGIN = 'groupLogin';
+    public const string REFERRER = 'referer';
+    public const string REFERRER_DOMAINS = 'refererDomains';
 }

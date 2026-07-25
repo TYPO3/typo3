@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class UserSettingsController
 {
-    private const ALLOWED_ACTIONS = [
+    private const array ALLOWED_ACTIONS = [
         'GET' => ['get', 'getAll'],
         'POST' => ['set', 'addToList', 'removeFromList', 'unset', 'clear'],
     ];

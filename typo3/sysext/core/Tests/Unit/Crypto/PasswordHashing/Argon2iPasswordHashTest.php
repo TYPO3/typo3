@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class Argon2iPasswordHashTest extends UnitTestCase
 {
-    private const DEFAULT_OPTIONS = [
+    private const array DEFAULT_OPTIONS = [
         'memory_cost' => 65536,
         'time_cost' => 4,
         'threads' => 1,

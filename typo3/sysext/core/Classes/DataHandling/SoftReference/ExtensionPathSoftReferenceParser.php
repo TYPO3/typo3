@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Core\DataHandling\SoftReference;
  */
 class ExtensionPathSoftReferenceParser implements SoftReferenceParserInterface
 {
-    private const REGEXP = '/([^[:alnum:]]+)(EXT:[[:alnum:]_]+\\/[^[:space:]"\',]*)/';
+    private const string REGEXP = '/([^[:alnum:]]+)(EXT:[[:alnum:]_]+\\/[^[:space:]"\',]*)/';
     protected string $parserKey = '';
     protected array $parameters = [];
 

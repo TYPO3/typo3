@@ -53,7 +53,7 @@ class SlugService
     /**
      * `dechex(1569615472)` (similar to timestamps used with exceptions, but in hex)
      */
-    final public const CORRELATION_ID_IDENTIFIER = '5d8e6e70';
+    final public const string CORRELATION_ID_IDENTIFIER = '5d8e6e70';
 
     protected ?CorrelationId $correlationIdRedirectCreation = null;
     protected ?CorrelationId $correlationIdSlugUpdate = null;

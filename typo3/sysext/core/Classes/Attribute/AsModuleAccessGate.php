@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Core\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 final readonly class AsModuleAccessGate
 {
-    public const TAG_NAME = 'backend.module_access_gate';
+    public const string TAG_NAME = 'backend.module_access_gate';
 
     /**
      * @param non-empty-string $identifier

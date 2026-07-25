@@ -29,8 +29,8 @@ final class EnableFieldsTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const TABLE_Blog = 'tx_blogexample_domain_model_blog';
-    private const LANGUAGE_PRESETS = [
+    private const string TABLE_Blog = 'tx_blogexample_domain_model_blog';
+    private const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 

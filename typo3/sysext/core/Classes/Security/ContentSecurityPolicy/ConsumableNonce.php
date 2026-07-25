@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 final class ConsumableNonce implements \Countable, \Stringable
 {
-    private const MIN_BYTES = 40;
+    private const int MIN_BYTES = 40;
 
     /**
      * @internal use the more specific methods `consumeInline()` or `consumeStatic()` instead

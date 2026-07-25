@@ -23,5 +23,5 @@ namespace TYPO3\CMS\Core\Attribute;
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_FUNCTION)]
 final readonly class AsAllowedCallable
 {
-    public const TAG_NAME = 'security.allowed-callable';
+    public const string TAG_NAME = 'security.allowed-callable';
 }

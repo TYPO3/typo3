@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 final class FalResourceIdentifier extends SystemResourceIdentifier
 {
-    public const TYPE = 'FAL';
+    public const string TYPE = 'FAL';
 
     public function __construct(private readonly string $storageId, private readonly string $falIdentifier, string $givenIdentifier)
     {

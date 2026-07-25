@@ -50,10 +50,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[AsController]
 final readonly class SudoModeController
 {
-    private const ROUTE_PATH_MODULE = '/sudo-mode/module';
-    private const ROUTE_PATH_APPLY = '/sudo-mode/apply';
-    private const ROUTE_PATH_ERROR = '/sudo-mode/error';
-    private const ROUTE_PATH_VERIFY = '/ajax/sudo-mode/verify';
+    private const string ROUTE_PATH_MODULE = '/sudo-mode/module';
+    private const string ROUTE_PATH_APPLY = '/sudo-mode/apply';
+    private const string ROUTE_PATH_ERROR = '/sudo-mode/error';
+    private const string ROUTE_PATH_VERIFY = '/ajax/sudo-mode/verify';
 
     public function __construct(
         private PageRenderer $pageRenderer,

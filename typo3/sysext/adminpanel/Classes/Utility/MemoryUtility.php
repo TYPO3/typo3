@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MemoryUtility
 {
-    private const MINIMAL_PERCENT_OF_FREE_MEMORY = 0.30;
+    private const float MINIMAL_PERCENT_OF_FREE_MEMORY = 0.30;
 
     /**
      * Checks memory usage used in current process - this is no guarantee for not running out of memory

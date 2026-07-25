@@ -31,7 +31,7 @@ class Typo3Information
     public const URL_EXCEPTION = 'https://typo3.org/go/exception/CMS/';
     public const URL_DONATE = 'https://typo3.org/community/contribute/donate/';
     public const URL_TRADEMARK = 'https://typo3.org/trademark';
-    private const URL_DOCS = 'https://docs.typo3.org/permalink/%s@%s';
+    private const string URL_DOCS = 'https://docs.typo3.org/permalink/%s@%s';
 
     protected LanguageService $languageService;
 

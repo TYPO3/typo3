@@ -26,11 +26,11 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 #[Autoconfigure(public: true)]
 final readonly class BookmarkGroupVoter
 {
-    public const READ = 'read';
-    public const CREATE = 'create';
-    public const EDIT = 'edit';
-    public const DELETE = 'delete';
-    public const SELECT = 'select';
+    public const string READ = 'read';
+    public const string CREATE = 'create';
+    public const string EDIT = 'edit';
+    public const string DELETE = 'delete';
+    public const string SELECT = 'select';
 
     public function vote(string $attribute, array $group, BackendUserAuthentication $user): bool
     {

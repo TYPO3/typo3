@@ -59,7 +59,7 @@ namespace TYPO3\CMS\Form\Storage;
  */
 final readonly class JsonObjectKeyOrderPreserver
 {
-    private const MARKER = '__jsonKeyOrderProtected';
+    private const string MARKER = '__jsonKeyOrderProtected';
 
     public function protect(array $formDefinition): array
     {

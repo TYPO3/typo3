@@ -32,7 +32,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ResourceViewHelperTest extends FunctionalTestCase
 {
-    private const pathToCoreIcon = __DIR__ . '/../../../../../core/Resources/Public/Icons/Extension.svg';
+    private const string pathToCoreIcon = __DIR__ . '/../../../../../core/Resources/Public/Icons/Extension.svg';
     protected bool $initializeDatabase = false;
 
     #[Test]

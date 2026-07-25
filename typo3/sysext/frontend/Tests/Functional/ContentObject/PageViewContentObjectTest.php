@@ -28,12 +28,12 @@ final class PageViewContentObjectTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const LANGUAGE_PRESETS = [
+    private const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en-US'],
         'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr-FR'],
     ];
-    private const ROOT_PAGE_ID = 1;
-    private const SPECIAL_PAGE_ID = 3;
+    private const int ROOT_PAGE_ID = 1;
+    private const int SPECIAL_PAGE_ID = 3;
 
     protected array $testExtensionsToLoad = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_fluidpagerendering',

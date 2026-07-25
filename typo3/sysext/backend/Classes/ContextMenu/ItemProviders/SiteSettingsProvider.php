@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
  */
 final class SiteSettingsProvider extends AbstractProvider
 {
-    private const ITEMS_CONFIGURATION = [
+    private const array ITEMS_CONFIGURATION = [
         'editSiteConfiguration' => [
             'label' => 'backend.siteconfiguration:contextMenu.editSiteConfiguration',
             'iconIdentifier' => 'actions-window',

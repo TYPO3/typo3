@@ -26,13 +26,13 @@ use TYPO3\CMS\Core\Type\BitSet;
  */
 final class JsConfirmation extends BitSet
 {
-    public const TYPE_CHANGE = 0b00000001;
-    public const COPY_MOVE_PASTE = 0b00000010;
-    public const DELETE = 0b00000100;
-    public const FE_EDIT = 0b00001000;
-    private const UNUSED_16 = 0b00010000;
-    private const UNUSED_32 = 0b00100000;
-    private const UNUSED_64 = 0b01000000;
-    public const OTHER = 0b10000000;
+    public const int TYPE_CHANGE = 0b00000001;
+    public const int COPY_MOVE_PASTE = 0b00000010;
+    public const int DELETE = 0b00000100;
+    public const int FE_EDIT = 0b00001000;
+    private const int UNUSED_16 = 0b00010000;
+    private const int UNUSED_32 = 0b00100000;
+    private const int UNUSED_64 = 0b01000000;
+    public const int OTHER = 0b10000000;
     public const ALL = self::TYPE_CHANGE | self::COPY_MOVE_PASTE | self::DELETE | self::FE_EDIT | self::UNUSED_16 | self::UNUSED_32 | self::UNUSED_64 | self::OTHER;
 }

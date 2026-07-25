@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BrokenLinkRepositoryTest extends FunctionalTestCase
 {
-    private const beusers = [
+    private const array beusers = [
         'admin' => [
             'fixture' => __DIR__ . '/Fixtures/BrokenLinkRepositoryTest/be_users.csv',
             'uid' => 1,

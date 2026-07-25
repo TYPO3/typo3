@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BackendLayoutViewTest extends FunctionalTestCase
 {
-    private const RUNTIME_CACHE_ENTRY = 'backendUtilityBeGetRootLine';
+    private const string RUNTIME_CACHE_ENTRY = 'backendUtilityBeGetRootLine';
 
     private FrontendInterface $runtimeCache;
 

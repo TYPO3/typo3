@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\AfterTemplatesHaveBeenDetermined
 final class AddTypoScriptFromSiteExtensionEventListener
 {
     // 2024-04-07T13:58:03+00:00 (UTC/GMT)
-    private const SIMULATED_TIME = 1712498283;
+    private const int SIMULATED_TIME = 1712498283;
     private ?TcaSchema $schema;
 
     public function __construct(TcaSchemaFactory $tcaSchemaFactory)

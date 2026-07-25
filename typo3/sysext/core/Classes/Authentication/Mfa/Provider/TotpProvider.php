@@ -41,7 +41,7 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
  */
 final readonly class TotpProvider implements MfaProviderInterface
 {
-    private const MAX_ATTEMPTS = 3;
+    private const int MAX_ATTEMPTS = 3;
 
     public function __construct(
         private Context $context,

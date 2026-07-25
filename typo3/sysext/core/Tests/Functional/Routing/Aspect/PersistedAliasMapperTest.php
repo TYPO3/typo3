@@ -37,12 +37,12 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PersistedAliasMapperTest extends FunctionalTestCase
 {
-    private const ASPECT_CONFIGURATION = [
+    private const array ASPECT_CONFIGURATION = [
         'tableName' => 'tt_content',
         'routeFieldName' => 'header',
     ];
 
-    private const SLUG_CONFIGURATION = [
+    private const array SLUG_CONFIGURATION = [
         'type' => 'slug',
         'generatorOptions' => [
             'prefixParentPageSlug' => false,
@@ -53,14 +53,14 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
         'default' => '',
     ];
 
-    private const LANGUAGE_MAP = [
+    private const array LANGUAGE_MAP = [
         'es-es' => 3,
         'fr-ca' => 2,
         'fr-fr' => 1,
         'default' => 0,
     ];
 
-    private const SITE_ADDITION = [
+    private const array SITE_ADDITION = [
         'acme' => 0,
         'other' => 4000,
     ];

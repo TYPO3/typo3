@@ -32,18 +32,18 @@ if (PHP_SAPI !== 'cli') {
 
 final readonly class CheckIntegrityXliff
 {
-    private const expectedXliffDeprecations = [
+    private const array expectedXliffDeprecations = [
         'mlang_labels_tablabel',
         'mlang_labels_tabdescr',
         'mlang_tabs_tab',
     ];
-    private const xliffModuleRegularExpression = '@Language/(module\.xlf|Modules/.+\.xlf)$@i';
-    private const xliffModuleRequiredKeys = [
+    private const string xliffModuleRegularExpression = '@Language/(module\.xlf|Modules/.+\.xlf)$@i';
+    private const array xliffModuleRequiredKeys = [
         'title',
         'description',
         'short_description',
     ];
-    private const XliffDeprecationKey = 'x-unused-since';
+    private const string XliffDeprecationKey = 'x-unused-since';
     public function execute(array $argv = []): int
     {
         $isVerbose = in_array('-v', $argv, true) || in_array('--verbose', $argv, true);

@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 final class TablePermissionElement extends AbstractFormElement
 {
-    private const Permissions = [
+    private const array Permissions = [
         'none' => 'none',
         'select' => 'select',
         'modify' => 'modify',

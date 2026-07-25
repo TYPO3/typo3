@@ -26,11 +26,11 @@ final class ErrorControllerCspTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const ROOT_PAGE_ID = 1;
-    private const ACCESS_PROTECTED_PAGE = 2;
-    private const NON_EXISTING_PAGE_ID = 999;
+    private const int ROOT_PAGE_ID = 1;
+    private const int ACCESS_PROTECTED_PAGE = 2;
+    private const int NON_EXISTING_PAGE_ID = 999;
 
-    private const LANGUAGE_PRESETS = [
+    private const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 

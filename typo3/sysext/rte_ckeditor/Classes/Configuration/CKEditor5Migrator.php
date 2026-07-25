@@ -28,7 +28,7 @@ class CKEditor5Migrator
      * Main groups in CKEditor 4 contain subgroups.
      * These groups are expanded during migration.
      */
-    private const TOOLBAR_MAIN_GROUPS_MAP = [
+    private const array TOOLBAR_MAIN_GROUPS_MAP = [
         'document' => ['mode', 'document', 'doctools'],
         'clipboard' => ['clipboard', 'undo'],
         'editing' => ['find', 'selection', 'spellchecker', 'editing'],
@@ -50,7 +50,7 @@ class CKEditor5Migrator
     /**
      * Groups in CKEditor 4 contain buttons.
      */
-    private const TOOLBAR_GROUPS_MAP = [
+    private const array TOOLBAR_GROUPS_MAP = [
         'mode' => ['Source'],
         'document' => ['Save', 'NewPage', 'Preview', 'Print'],
         'doctools' => ['Templates'],
@@ -80,7 +80,7 @@ class CKEditor5Migrator
     ];
 
     // List of "old" button names vs the replacement(s)
-    private const BUTTON_MAP = [
+    private const array BUTTON_MAP = [
         // mode
         'Source' => 'sourceEditing',
         // document
@@ -177,7 +177,7 @@ class CKEditor5Migrator
     /**
      * Mapping of plugins
      */
-    private const PLUGIN_MAP = [
+    private const array PLUGIN_MAP = [
         'image' => [
             'module' => '@ckeditor/ckeditor5-image',
             'exports' => [ 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'PictureEditing' ],

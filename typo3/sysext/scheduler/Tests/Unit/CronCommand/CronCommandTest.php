@@ -27,7 +27,7 @@ final class CronCommandTest extends UnitTestCase
     /**
      * @var int timestamp of 1.1.2010 0:00 (Friday), timezone UTC/GMT
      */
-    private const TIMESTAMP = 1262304000;
+    private const int TIMESTAMP = 1262304000;
 
     /**
      * Selected timezone backup

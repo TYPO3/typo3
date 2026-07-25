@@ -24,40 +24,19 @@ use TYPO3\CMS\Core\Type\BitSet;
  */
 final class Permission extends BitSet
 {
-    /**
-     * @var int
-     */
-    public const NOTHING = 0;
+    public const int NOTHING = 0;
 
-    /**
-     * @var int
-     */
-    public const PAGE_SHOW = 1;
+    public const int PAGE_SHOW = 1;
 
-    /**
-     * @var int
-     */
-    public const PAGE_EDIT = 2;
+    public const int PAGE_EDIT = 2;
 
-    /**
-     * @var int
-     */
-    public const PAGE_DELETE = 4;
+    public const int PAGE_DELETE = 4;
 
-    /**
-     * @var int
-     */
-    public const PAGE_NEW = 8;
+    public const int PAGE_NEW = 8;
 
-    /**
-     * @var int
-     */
-    public const CONTENT_EDIT = 16;
+    public const int CONTENT_EDIT = 16;
 
-    /**
-     * @var int
-     */
-    public const ALL = 31;
+    public const int ALL = 31;
 
     /**
      * Permission mapping

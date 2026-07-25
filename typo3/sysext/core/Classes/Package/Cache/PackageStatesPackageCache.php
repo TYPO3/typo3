@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
  */
 class PackageStatesPackageCache implements PackageCacheInterface
 {
-    private const CACHE_IDENTIFIER_PREFIX = 'PackageManager_';
+    private const string CACHE_IDENTIFIER_PREFIX = 'PackageManager_';
     private ?string $cacheIdentifier;
     private string $packageStatesFile;
     private FrontendInterface $coreCache;

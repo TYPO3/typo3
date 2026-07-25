@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RecoveryCodes
 {
-    private const MIN_LENGTH = 8;
+    private const int MIN_LENGTH = 8;
 
     protected PasswordHashFactory $passwordHashFactory;
 

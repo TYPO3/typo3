@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SidebarComponentsPassTest extends UnitTestCase
 {
-    private const TAG_NAME = 'backend.sidebar.component';
+    private const string TAG_NAME = 'backend.sidebar.component';
 
     #[Test]
     public function componentsAreOrderedByBeforeDependency(): void

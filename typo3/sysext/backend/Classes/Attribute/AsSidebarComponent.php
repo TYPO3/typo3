@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Backend\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 final readonly class AsSidebarComponent
 {
-    public const TAG_NAME = 'backend.sidebar.component';
+    public const string TAG_NAME = 'backend.sidebar.component';
 
     /**
      * @param non-empty-string $identifier Unique identifier for the sidebar component

@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 #[UpgradeWizard('backendUserLanguageMigration')]
 final readonly class BackendUserLanguageMigration implements UpgradeWizardInterface
 {
-    private const TABLE_NAME = 'be_users';
+    private const string TABLE_NAME = 'be_users';
 
     public function __construct(
         private ConnectionPool $connectionPool

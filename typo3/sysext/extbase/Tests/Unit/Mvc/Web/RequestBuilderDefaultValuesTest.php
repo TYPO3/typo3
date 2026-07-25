@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class RequestBuilderDefaultValuesTest extends UnitTestCase
 {
-    private const MINIMAL_WORKING_CONFIGURATION = [
+    private const array MINIMAL_WORKING_CONFIGURATION = [
         'extensionName' => 'news',
         'pluginName' => 'list',
         'controllerConfiguration' => [

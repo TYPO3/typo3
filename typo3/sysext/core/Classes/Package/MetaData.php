@@ -26,7 +26,7 @@ class MetaData
     public const CONSTRAINT_TYPE_DEPENDS = 'depends';
     public const CONSTRAINT_TYPE_CONFLICTS = 'conflicts';
     public const CONSTRAINT_TYPE_SUGGESTS = 'suggests';
-    private const FRAMEWORK_TYPE = 'typo3-cms-framework';
+    private const string FRAMEWORK_TYPE = 'typo3-cms-framework';
 
     /**
      * @var array

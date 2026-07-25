@@ -37,11 +37,11 @@ final readonly class BookmarkVoter
 {
     use RouteParserTrait;
 
-    public const READ = 'read';
-    public const CREATE = 'create';
-    public const EDIT = 'edit';
-    public const DELETE = 'delete';
-    public const NAVIGATE = 'navigate';
+    public const string READ = 'read';
+    public const string CREATE = 'create';
+    public const string EDIT = 'edit';
+    public const string DELETE = 'delete';
+    public const string NAVIGATE = 'navigate';
 
     public function __construct(
         protected ModuleProvider $moduleProvider,

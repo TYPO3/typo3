@@ -38,9 +38,9 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class FileSearchQuery
 {
-    private const FILES_TABLE = 'sys_file';
+    private const string FILES_TABLE = 'sys_file';
 
-    private const FILES_META_TABLE = 'sys_file_metadata';
+    private const string FILES_META_TABLE = 'sys_file_metadata';
 
     private QueryBuilder $queryBuilder;
 

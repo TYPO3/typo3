@@ -104,17 +104,17 @@ final readonly class PageTreeFilter
     /**
      * Color for "Search result" labels on directly matched pages
      */
-    private const SEARCH_RESULT_LABEL_COLOR = '#F5A770';
+    private const string SEARCH_RESULT_LABEL_COLOR = '#F5A770';
 
     /**
      * Runtime cache identifier for storing translation match information
      */
-    private const CACHE_IDENTIFIER_TRANSLATION = 'pageTree_translationMatches';
+    private const string CACHE_IDENTIFIER_TRANSLATION = 'pageTree_translationMatches';
 
     /**
      * Runtime cache identifier for storing URI match information
      */
-    private const CACHE_IDENTIFIER_URI = 'pageTree_uriMatches';
+    private const string CACHE_IDENTIFIER_URI = 'pageTree_uriMatches';
 
     public function __construct(
         private SiteFinder $siteFinder,

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
  */
 readonly class ModelService
 {
-    private const SOURCE_PARSING_PRIORITIES = [
+    private const array SOURCE_PARSING_PRIORITIES = [
         HashProxy::class => 50,
         HashValue::class => 50,
     ];

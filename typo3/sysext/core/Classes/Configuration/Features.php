@@ -62,7 +62,7 @@ readonly class Features
      * "turned on" to enforce a behaviour, but still valid for extension authors to ensure the feature switch
      * returns "enabled" for future versions.
      */
-    private const ALWAYS_ACTIVE_FEATURES = [
+    private const array ALWAYS_ACTIVE_FEATURES = [
         // Enabled since v15.0 at any time.
         'extbase.consistentDateTimeHandling',
         // Enabled since v13.0 at any time.

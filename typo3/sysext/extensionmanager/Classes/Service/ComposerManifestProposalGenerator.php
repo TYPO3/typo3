@@ -28,7 +28,7 @@ use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
  */
 class ComposerManifestProposalGenerator
 {
-    private const TER_COMPOSER_ENDPOINT = 'https://extensions.typo3.org/composerize';
+    private const string TER_COMPOSER_ENDPOINT = 'https://extensions.typo3.org/composerize';
 
     /**
      * @var RequestFactory

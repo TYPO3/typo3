@@ -43,11 +43,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class RequestHandlingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
-    private const ROOT_PAGE_BASE_URI = 'http://localhost';
-    private const LANGUAGE_PRESETS = [
+    private const string ROOT_PAGE_BASE_URI = 'http://localhost';
+    private const array LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_GB.UTF8'],
     ];
-    private const MAIL_SPOOL_FOLDER = 'typo3temp/var/transient/spool/';
+    private const string MAIL_SPOOL_FOLDER = 'typo3temp/var/transient/spool/';
 
     protected array $coreExtensionsToLoad = ['form', 'fluid_styled_content'];
     protected array $testExtensionsToLoad = [

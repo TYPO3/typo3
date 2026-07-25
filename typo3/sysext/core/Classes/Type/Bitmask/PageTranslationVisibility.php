@@ -28,8 +28,8 @@ use TYPO3\CMS\Core\Type\BitSet;
  */
 final class PageTranslationVisibility extends BitSet
 {
-    private const HIDE_DEFAULT_LANGUAGE = 1;
-    private const HIDE_TRANSLATION_IF_NO_TRANSLATED_RECORD_EXISTS = 2;
+    private const int HIDE_DEFAULT_LANGUAGE = 1;
+    private const int HIDE_TRANSLATION_IF_NO_TRANSLATED_RECORD_EXISTS = 2;
 
     /**
      * Due to the nature of the pages table, where you always have to have a page in the default
