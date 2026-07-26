@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
+use TYPO3\CMS\Form\Domain\DTO\PersistenceManagerConfiguration;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 
 /**
@@ -64,12 +65,12 @@ final readonly class PersistenceConfigurationService
     }
 
     /**
-     * Get persistence manager settings
+     * Get persistence manager settings as a typed DTO
      */
-    public function getPersistenceManagerSettings(): array
+    public function getPersistenceManagerConfiguration(): PersistenceManagerConfiguration
     {
         $formSettings = $this->getFormSettings();
-        return $formSettings['persistenceManager'] ?? [];
+        return PersistenceManagerConfiguration::fromArray($formSettings['persistenceManager'] ?? []);
     }
 
     /**
@@ -79,10 +80,7 @@ final readonly class PersistenceConfigurationService
      */
     public function getAllowedExtensionPaths(): array
     {
-        $persistenceSettings = $this->getPersistenceManagerSettings();
-        $allowedExtensionPaths = $persistenceSettings['allowedExtensionPaths'] ?? [];
-
-        return is_array($allowedExtensionPaths) ? $allowedExtensionPaths : [];
+        return $this->getPersistenceManagerConfiguration()->allowedExtensionPaths;
     }
 
     /**
@@ -107,8 +105,7 @@ final readonly class PersistenceConfigurationService
      */
     public function isAllowedToSaveToExtensionPaths(): bool
     {
-        $persistenceSettings = $this->getPersistenceManagerSettings();
-        return (bool)($persistenceSettings['allowSaveToExtensionPaths'] ?? false);
+        return $this->getPersistenceManagerConfiguration()->allowSaveToExtensionPaths;
     }
 
     /**
@@ -116,8 +113,7 @@ final readonly class PersistenceConfigurationService
      */
     public function isAllowedToDeleteFromExtensionPaths(): bool
     {
-        $persistenceSettings = $this->getPersistenceManagerSettings();
-        return (bool)($persistenceSettings['allowDeleteFromExtensionPaths'] ?? false);
+        return $this->getPersistenceManagerConfiguration()->allowDeleteFromExtensionPaths;
     }
 
     /**
@@ -127,11 +123,11 @@ final readonly class PersistenceConfigurationService
      */
     public function getSortConfiguration(): array
     {
-        $persistenceSettings = $this->getPersistenceManagerSettings();
+        $configuration = $this->getPersistenceManagerConfiguration();
 
         return [
-            'sortByKeys' => $persistenceSettings['sortByKeys'] ?? ['name', 'fileUid'],
-            'sortAscending' => (bool)($persistenceSettings['sortAscending'] ?? true),
+            'sortByKeys' => $configuration->sortByKeys,
+            'sortAscending' => $configuration->sortAscending,
         ];
     }
 

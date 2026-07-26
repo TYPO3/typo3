@@ -456,7 +456,7 @@ final readonly class FileFormsToDatabaseUpgradeWizard implements UpgradeWizardIn
     private function getAccessibleFormStorageFolders(): array
     {
         $storageFolders = [];
-        $allowedFileMounts = $this->storageConfiguration->getPersistenceManagerSettings()['allowedFileMounts'];
+        $allowedFileMounts = $this->storageConfiguration->getPersistenceManagerConfiguration()->allowedFileMounts;
 
         if (empty($allowedFileMounts)) {
             return $storageFolders;

@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Form\Domain\DTO\FormData;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
+use TYPO3\CMS\Form\Domain\DTO\PersistenceManagerConfiguration;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Domain\DTO\StorageContext;
 use TYPO3\CMS\Form\Domain\ValueObject\FormIdentifier;
@@ -343,13 +344,14 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
 
     protected function sortForms(array $forms, array $formSettings, string $orderField = '', ?string $orderDirection = null): array
     {
+        $persistenceConfiguration = PersistenceManagerConfiguration::fromArray($formSettings['persistenceManager'] ?? []);
         if ($orderDirection) {
             $ascending = $orderDirection === 'asc';
         } else {
-            $ascending = $formSettings['persistenceManager']['sortAscending'] ?? true;
+            $ascending = $persistenceConfiguration->sortAscending;
         }
         $sortMultiplier = $ascending ? 1 : -1;
-        $keys = $orderField ? [$orderField] : $formSettings['persistenceManager']['sortByKeys'] ?? ['name', 'fileUid'];
+        $keys = $orderField ? [$orderField] : $persistenceConfiguration->sortByKeys;
 
         usort($forms, static function (FormMetadata $a, FormMetadata $b) use ($keys, $sortMultiplier) {
             foreach ($keys as $key) {
