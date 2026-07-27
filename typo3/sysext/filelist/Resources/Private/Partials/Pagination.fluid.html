@@ -24,7 +24,7 @@
                 </f:else>
             </f:if>
             <f:variable name="pageInput">
-                <input type="number" autocomplete="off" name="currentPage" min="1" max="{totalPages}" value="{currentPage}" size="3" class="t3js-filelist-paging form-control form-control-sm paginator-input" />
+                <input type="number" autocomplete="off" name="currentPage" min="1" max="{totalPages}" value="{currentPage}" size="3" data-currentpage="{currentPage}" data-paging-url="{currentUrl}" class="t3js-filelist-paging form-control form-control-sm paginator-input" />
                 <span aria-hidden="true">
             </f:variable>
             <li class="page-item">
