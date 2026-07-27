@@ -47,6 +47,7 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\PersistenceManagerConfiguration;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\Prototype\PrototypeConfiguration;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Event\BeforeFormIsSavedEvent;
@@ -122,11 +123,12 @@ class FormEditorController extends ActionController
         }
         $formDefinition['prototypeName'] = $prototypeName;
         $prototypeConfiguration = $this->configurationService->getPrototypeConfiguration($prototypeName);
+        $formEditorConfiguration = PrototypeConfiguration::fromArray($prototypeConfiguration)->formEditor;
         $formDefinition = $this->transformFormDefinitionForFormEditor($prototypeConfiguration, $formDefinition, $formPersistenceIdentifier);
         $formEditorDefinitions = $this->getFormEditorDefinitions($prototypeConfiguration);
         $additionalViewModelJavaScriptModules = array_map(
             static fn(string $name) => JavaScriptModuleInstruction::create($name),
-            $prototypeConfiguration['formEditor']['dynamicJavaScriptModules']['additionalViewModelModules'] ?? []
+            $formEditorConfiguration->getAdditionalViewModelModules()
         );
         array_map($this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $additionalViewModelJavaScriptModules);
         $formEditorAppInitialData = [
@@ -139,7 +141,7 @@ class FormEditorController extends ActionController
                 'saveForm' => $this->uriBuilder->uriFor('saveForm'),
             ],
             'additionalViewModelModules' => $additionalViewModelJavaScriptModules,
-            'maximumUndoSteps' => $prototypeConfiguration['formEditor']['maximumUndoSteps'],
+            'maximumUndoSteps' => $formEditorConfiguration->maximumUndoSteps,
         ];
         $moduleTemplate = $this->initializeModuleTemplate($this->request, $returnUrl);
         $moduleTemplate->assign('formEditorTemplates', $this->renderFormEditorTemplates($prototypeConfiguration, $formEditorDefinitions));
@@ -158,18 +160,14 @@ class FormEditorController extends ActionController
         ];
         $addInlineSettings = array_replace_recursive(
             $addInlineSettings,
-            $prototypeConfiguration['formEditor']['addInlineSettings']
+            $formEditorConfiguration->addInlineSettings
         );
         if (json_encode($formEditorAppInitialData) === false) {
             throw new Exception('The form editor app data could not be encoded', 1628677079);
         }
         $javaScriptModules = array_map(
             static fn(string $name) => JavaScriptModuleInstruction::create($name),
-            array_filter(
-                $prototypeConfiguration['formEditor']['dynamicJavaScriptModules'] ?? [],
-                fn(string $name) => in_array($name, self::JS_MODULE_NAMES, true),
-                ARRAY_FILTER_USE_KEY
-            )
+            $formEditorConfiguration->getJavaScriptModulesForRoles(self::JS_MODULE_NAMES)
         );
         $pageRenderer = $this->pageRenderer;
         $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
@@ -178,7 +176,7 @@ class FormEditorController extends ActionController
         );
         array_map($pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $javaScriptModules);
         $pageRenderer->addInlineSettingArray('', $addInlineSettings);
-        $stylesheets = $prototypeConfiguration['formEditor']['stylesheets'];
+        $stylesheets = $formEditorConfiguration->stylesheets;
         foreach ($stylesheets as $stylesheet) {
             $pageRenderer->addCssFile($stylesheet);
         }
