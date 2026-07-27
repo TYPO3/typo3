@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Filelist;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -34,7 +33,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\JsConfirmation;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -53,7 +51,6 @@ use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -390,7 +387,7 @@ class FileList
         }
 
         $view->assignMultiple([
-            'currentUrl' => $this->getListURL(),
+            'currentUrl' => $this->createPaginationUri(),
             'paginator' => $paginator,
             'pagination' => $pagination,
             'currentPage' => $currentPage,
@@ -404,17 +401,6 @@ class FileList
         }
 
         return $this->renderList($resourceViews, $view);
-    }
-
-    protected function getListURL(): UriInterface
-    {
-        $uri = new Uri($this->request->getAttribute('normalizedParams')->getRequestUri());
-        parse_str($uri->getQuery(), $queryParameters);
-        unset($queryParameters['contentOnly'], $queryParameters['currentPage']);
-        if ($this->searchDemand) {
-            $queryParameters['searchTerm'] = $this->searchDemand->getSearchTerm() ?? '';
-        }
-        return $uri->withQuery(HttpUtility::buildQueryString($queryParameters, '&'));
     }
 
     /**
@@ -1515,9 +1501,9 @@ class FileList
     }
 
     /**
-     * Returns list URL; This is the URL of the current script with id and imagemode parameters, that's all.
+     * Returns list URL, base params and priority params may be added
      */
-    public function createModuleUri(array $params = []): ?string
+    protected function createListUri(array $priorityParams = [], $baseParams = []): ?string
     {
         $request = $this->request;
         $queryParams = $request->getQueryParams();
@@ -1527,12 +1513,6 @@ class FileList
         if (!$route instanceof Route) {
             return null;
         }
-
-        $baseParams = [
-            'currentPage' => $this->currentPage,
-            'id' => $this->folderObject->getCombinedIdentifier(),
-            'searchTerm' => $this->searchDemand ? $this->searchDemand->getSearchTerm() : '',
-        ];
 
         // Keep ElementBrowser Settings
         if ($mode = $parsedBody['mode'] ?? $queryParams['mode'] ?? null) {
@@ -1552,7 +1532,7 @@ class FileList
             $baseParams['P'] = $linkHandlerParams;
         }
 
-        $params = array_replace_recursive($baseParams, $params);
+        $params = array_replace_recursive($baseParams, $priorityParams);
 
         // Expanded folder is used in the element browser.
         // We always map it to the id here.
@@ -1562,6 +1542,47 @@ class FileList
         });
 
         return (string)$this->uriBuilder->buildUriFromRequest($request, $params);
+    }
+
+    /**
+     * Returns the list URL of the current view: the current folder, the current page
+     * and an active search term.
+     */
+    public function createModuleUri(array $params = []): ?string
+    {
+        return $this->createListUri($params, $this->createBaseParams());
+    }
+
+    /**
+     * Returns the list URL used as action of the search form. The search term is sent
+     * with the form itself, keeping it in the action would restore a cleared term from
+     * the URL of the next request.
+     */
+    public function createSearchFormUri(array $params = []): ?string
+    {
+        return $this->createListUri($params, $this->createBaseParams(['searchTerm']));
+    }
+
+    /**
+     * Returns the list URL used by the pagination, which appends the page to navigate to.
+     */
+    public function createPaginationUri(array $params = []): ?string
+    {
+        return $this->createListUri($params, $this->createBaseParams(['currentPage']));
+    }
+
+    /**
+     * @param string[] $excludeList Parameters to leave out, e.g. "searchTerm" or "currentPage"
+     */
+    protected function createBaseParams(array $excludeList = []): array
+    {
+        $baseParams = [
+            'id' => $this->folderObject->getCombinedIdentifier(),
+            'currentPage' => $this->currentPage,
+            'searchTerm' => $this->searchDemand?->getSearchTerm() ?? '',
+        ];
+
+        return array_diff_key($baseParams, array_flip($excludeList));
     }
 
     protected function createEditDataUriForResource(ResourceInterface $resource): ?string

@@ -422,10 +422,9 @@ export default class Filelist {
         }
         trigger.value = value.toString(10);
         if (e.key === 'Enter' && value !== Number(trigger.dataset.currentpage)) {
-          const form = trigger.closest('form[name="fileListForm"]') as HTMLFormElement;
-          const submitUrl = new URL(form.action, window.origin);
-          submitUrl.searchParams.set('currentPage', value.toString());
-          window.location.href = submitUrl.toString();
+          const pagingUrl = new URL(trigger.dataset.pagingUrl, window.origin);
+          pagingUrl.searchParams.set('currentPage', value.toString());
+          window.location.href = pagingUrl.toString();
         }
       });
     });

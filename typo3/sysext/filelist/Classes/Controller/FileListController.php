@@ -401,6 +401,7 @@ class FileListController implements LoggerAwareInterface
             $this->view->assignMultiple([
                 'listHtml' => $this->filelist->render($searchDemand, $fileListView),
                 'listUrl' => $this->filelist->createModuleUri(),
+                'formUrl' => $this->filelist->createSearchFormUri(),
                 'totalItems' => $this->filelist->totalItems,
             ]);
 
