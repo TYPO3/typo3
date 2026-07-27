@@ -1,0 +1,12 @@
+"be_users"
+,"uid","pid","username","usergroup","deleted","admin","db_mountpoints"
+,2,0,"editor",1,0,0,1
+"be_groups"
+,"uid","pid","title","deleted","db_mountpoints","tables_select","tables_modify","non_exclude_fields"
+,1,0,"editors",0,1,"pages,index_config","pages,index_config",""
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody"
+,1,0,128,"Root 1",0,31
+"index_config"
+,"uid","pid","title","hidden"
+,1,1,"Indexing configuration",1
