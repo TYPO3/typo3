@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -48,14 +49,16 @@ final class DownloadControllerTest extends FunctionalTestCase
     #[Test]
     public function checkDependenciesActionRendersVersionOfDependencyToBeDownloadedFromRemote(): void
     {
-        $extensionUid = $this->createRemoteExtensionRecord(
+        $this->createRemoteExtensionRecord(
             'ext_with_dependency',
             '2.0.0',
             ['depends' => ['ext_dependency' => '1.0.0-1.99.99']]
         );
         $this->createRemoteExtensionRecord('ext_dependency', '1.0.0');
 
-        $request = $this->createCheckDependenciesRequest($extensionUid);
+        $request = $this->createCheckDependenciesRequest(
+            ['packageKey' => 'ext_with_dependency', 'version' => '2.0.0', 'remote' => 'ter']
+        );
         $response = $this->get(DownloadController::class)->processRequest(new Request($request));
 
         $result = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
@@ -63,18 +66,50 @@ final class DownloadControllerTest extends FunctionalTestCase
         self::assertFalse($result['hasErrors']);
         self::assertStringContainsString('ext_dependency (new version 1.0.0)', $result['message']);
         self::assertSame('1.0.0', $result['dependencies']['download']['ext_dependency']['version']);
+        // The follow-up action is addressed by the full package identity, not by a record uid.
+        parse_str((string)parse_url($result['url'], PHP_URL_QUERY), $queryParameters);
+        self::assertSame(
+            ['packageKey' => 'ext_with_dependency', 'version' => '2.0.0', 'remote' => 'ter'],
+            $queryParameters['identifier']
+        );
+    }
+
+    public static function incompleteIdentifierProvider(): array
+    {
+        return [
+            'empty packageKey' => [['packageKey' => '', 'version' => '1.0.0', 'remote' => 'ter']],
+            'empty version' => [['packageKey' => 'ext_dependency', 'version' => '', 'remote' => 'ter']],
+            'empty remote' => [['packageKey' => 'ext_dependency', 'version' => '1.0.0', 'remote' => '']],
+            'missing packageKey' => [['version' => '1.0.0', 'remote' => 'ter']],
+            'missing version' => [['packageKey' => 'ext_dependency', 'remote' => 'ter']],
+            'missing remote' => [['packageKey' => 'ext_dependency', 'version' => '1.0.0']],
+        ];
     }
 
     #[Test]
-    public function checkDependenciesActionThrowsSpeakingExceptionForOutdatedExtensionUid(): void
+    #[DataProvider('incompleteIdentifierProvider')]
+    public function checkDependenciesActionRejectsIncompleteIdentifier(array $identifier): void
     {
-        $extensionUid = $this->createRemoteExtensionRecord('ext_dependency', '1.0.0');
+        $this->createRemoteExtensionRecord('ext_dependency', '1.0.0');
+
+        $request = $this->createCheckDependenciesRequest($identifier);
+        $response = $this->get(DownloadController::class)->processRequest(new Request($request));
+
+        self::assertSame(400, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function checkDependenciesActionThrowsSpeakingExceptionForOutdatedIdentifier(): void
+    {
+        $this->createRemoteExtensionRecord('ext_dependency', '1.0.0');
         // Simulates an extension list update, which drops and recreates all records of a remote.
         $this->getConnectionPool()
             ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
-            ->delete('tx_extensionmanager_domain_model_extension', ['uid' => $extensionUid]);
+            ->delete('tx_extensionmanager_domain_model_extension', ['extension_key' => 'ext_dependency']);
 
-        $request = $this->createCheckDependenciesRequest($extensionUid);
+        $request = $this->createCheckDependenciesRequest(
+            ['packageKey' => 'ext_dependency', 'version' => '1.0.0', 'remote' => 'ter']
+        );
 
         $this->expectException(ExtensionNotFoundException::class);
         $this->expectExceptionCode(1784926081);
@@ -85,26 +120,29 @@ final class DownloadControllerTest extends FunctionalTestCase
     /**
      * Creates a record in the local mirror of the remote (TER) extension list.
      */
-    private function createRemoteExtensionRecord(string $extensionKey, string $version, array $constraints = []): int
+    private function createRemoteExtensionRecord(string $extensionKey, string $version, array $constraints = []): void
     {
-        $connection = $this->getConnectionPool()->getConnectionForTable('tx_extensionmanager_domain_model_extension');
-        $connection->insert(
-            'tx_extensionmanager_domain_model_extension',
-            [
-                'extension_key' => $extensionKey,
-                'remote' => 'ter',
-                'version' => $version,
-                'integer_version' => VersionNumberUtility::convertVersionNumberToInteger($version),
-                'title' => $extensionKey,
-                'serialized_dependencies' => $constraints === [] ? '' : serialize($constraints),
-                'current_version' => 1,
-                'review_state' => 0,
-            ]
-        );
-        return (int)$connection->lastInsertId();
+        $this->getConnectionPool()
+            ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
+            ->insert(
+                'tx_extensionmanager_domain_model_extension',
+                [
+                    'extension_key' => $extensionKey,
+                    'remote' => 'ter',
+                    'version' => $version,
+                    'integer_version' => VersionNumberUtility::convertVersionNumberToInteger($version),
+                    'title' => $extensionKey,
+                    'serialized_dependencies' => $constraints === [] ? '' : serialize($constraints),
+                    'current_version' => 1,
+                    'review_state' => 0,
+                ]
+            );
     }
 
-    private function createCheckDependenciesRequest(int $extensionUid): ServerRequest
+    /**
+     * @param array{packageKey: string, version: string, remote: string} $identifier
+     */
+    private function createCheckDependenciesRequest(array $identifier): ServerRequest
     {
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setPluginName('extensionmanager');
@@ -112,7 +150,7 @@ final class DownloadControllerTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerName('Download');
         $extbaseRequestParameters->setControllerActionName('checkDependencies');
         $extbaseRequestParameters->setFormat('json');
-        $extbaseRequestParameters->setArgument('extension', $extensionUid);
+        $extbaseRequestParameters->setArgument('identifier', $identifier);
         $request = (new ServerRequest('https://example.com/typo3/module/extensions'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('extbase', $extbaseRequestParameters)

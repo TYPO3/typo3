@@ -29,8 +29,8 @@
                     <f:else>
                         <li>
                             <typo3-extension-toggle-button
-                                check-url="{f:uri.action(action: 'checkDistributionDependencies', controller: 'Download', arguments: '{extension: extension.uid}')}"
-                                url="{f:uri.action(action: 'installDistribution', controller: 'Download', arguments: '{extension: extension.uid}')}"
+                                check-url="{f:uri.action(action: 'checkDistributionDependencies', controller: 'Download', arguments: '{identifier: extension.identifier}')}"
+                                url="{f:uri.action(action: 'installDistribution', controller: 'Download', arguments: '{identifier: extension.identifier}')}"
                                 extension-key="{extension.extensionKey}"
                                 label="{f:translate(key: 'extensionList.activate')}"
                                 show-label

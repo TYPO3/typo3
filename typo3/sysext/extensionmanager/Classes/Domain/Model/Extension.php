@@ -92,6 +92,27 @@ class Extension
     }
 
     /**
+     * The remote identity (package key + version + remote) used to address this
+     * package for download / installation instead of the local database uid.
+     */
+    public function getPackageIdentifier(): PackageIdentifier
+    {
+        return new PackageIdentifier($this->extensionKey, $this->version, $this->remote);
+    }
+
+    /**
+     * The remote identity as request arguments. Allows Fluid templates to hand
+     * over a package to the download and distribution actions in one go:
+     * `arguments="{identifier: extension.identifier}"`.
+     *
+     * @return array{packageKey: string, version: string, remote: string}
+     */
+    public function getIdentifier(): array
+    {
+        return $this->getPackageIdentifier()->toArray();
+    }
+
+    /**
      * @param \SplObjectStorage<Dependency> $dependencies
      */
     public function setDependencies(\SplObjectStorage $dependencies)
