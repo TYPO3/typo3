@@ -38,6 +38,7 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExtbaseUriBuilder;
 use TYPO3\CMS\Form\Controller\FormManagerController;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\FormManagerConfiguration;
 use TYPO3\CMS\Form\Domain\DTO\FormMetadata;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
@@ -119,11 +120,9 @@ final class FormManagerControllerTest extends FunctionalTestCase
         ];
         $result = $subjectMock->_call(
             'getFormManagerAppInitialData',
-            [
-                'formManager' => [
-                    'selectablePrototypesConfiguration' => [],
-                ],
-            ]
+            FormManagerConfiguration::fromArray([
+                'selectablePrototypesConfiguration' => [],
+            ])
         );
         self::assertSame($expected, $result);
     }

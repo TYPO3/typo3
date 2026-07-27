@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Domain\DTO;
+namespace TYPO3\CMS\Form\Domain\DTO\FormConfiguration;
 
 /**
  * Typed representation of the "persistenceManager" section of the form
@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Form\Domain\DTO;
  */
 final readonly class PersistenceManagerConfiguration
 {
+    use ConfigurationValueNormalizationTrait;
+
     /**
      * @var list<string>
      */
@@ -59,23 +61,5 @@ final readonly class PersistenceManagerConfiguration
             allowedExtensionPaths: self::normalizeStringList($configuration['allowedExtensionPaths'] ?? null, []),
             allowedFileMounts: self::normalizeStringList($configuration['allowedFileMounts'] ?? null, []),
         );
-    }
-
-    /**
-     * Normalize a configuration value into a numerically indexed list of strings.
-     *
-     * The YAML configuration may use associative keys (e.g. `10:`, `20:`) to
-     * define ordering, so values are cast to strings and re-indexed.
-     *
-     * @param list<string> $default
-     * @return list<string>
-     */
-    private static function normalizeStringList(mixed $value, array $default): array
-    {
-        if (!is_array($value)) {
-            return $default;
-        }
-
-        return array_values(array_map(strval(...), $value));
     }
 }

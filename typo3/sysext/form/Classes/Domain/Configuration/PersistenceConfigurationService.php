@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface as ExtbaseConfigurationManagerInterface;
-use TYPO3\CMS\Form\Domain\DTO\PersistenceManagerConfiguration;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\PersistenceManagerConfiguration;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 
 /**

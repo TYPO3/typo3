@@ -46,7 +46,7 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
-use TYPO3\CMS\Form\Domain\DTO\PersistenceManagerConfiguration;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\PersistenceManagerConfiguration;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Event\BeforeFormIsSavedEvent;

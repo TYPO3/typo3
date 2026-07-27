@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\FormManagerConfiguration;
 use TYPO3\CMS\Form\Domain\DTO\SearchCriteria;
 use TYPO3\CMS\Form\Domain\Repository\FormDefinitionRepository;
 use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
@@ -86,6 +87,7 @@ class FormManagerController extends ActionController
     protected function indexAction(int $page = 1, string $searchTerm = '', string $orderField = '', ?string $orderDirection = null): ResponseInterface
     {
         $formSettings = $this->getFormSettings();
+        $formManagerConfiguration = FormManagerConfiguration::fromArray($formSettings['formManager']);
         $hasForms = $this->formPersistenceManager->hasForms([]);
         $searchCriteria = new SearchCriteria(searchTerm: trim($searchTerm), orderField: $orderField, orderDirection: $orderDirection);
         $returnUrl = $this->request->getAttribute('normalizedParams')->getRequestUri();
@@ -93,6 +95,7 @@ class FormManagerController extends ActionController
         $arrayPaginator = new ArrayPaginator($forms, $page, self::PAGINATION_MAX);
         $pagination = new SimplePagination($arrayPaginator);
         $moduleTemplate = $this->initializeModuleTemplate($this->request, $page, $searchTerm);
+        $formManagerAppInitialData = $this->getFormManagerAppInitialData($formManagerConfiguration);
         $moduleTemplate->assignMultiple([
             'paginator' => $arrayPaginator,
             'pagination' => $pagination,
@@ -100,20 +103,20 @@ class FormManagerController extends ActionController
             'orderField' => $searchCriteria->orderField,
             'orderDirection' => $searchCriteria->orderDirection,
             'hasForms' => $hasForms,
-            'stylesheets' => $formSettings['formManager']['stylesheets'],
-            'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData($formSettings)),
+            'stylesheets' => $formManagerConfiguration->stylesheets,
+            'formManagerAppInitialData' => json_encode($formManagerAppInitialData),
         ]);
         $javaScriptModules = array_map(
             static fn(string $name) => JavaScriptModuleInstruction::create($name),
             array_filter(
-                $formSettings['formManager']['dynamicJavaScriptModules'] ?? [],
+                $formManagerConfiguration->dynamicJavaScriptModules,
                 fn(string $name) => in_array($name, self::JS_MODULE_NAMES, true),
                 ARRAY_FILTER_USE_KEY
             )
         );
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('@typo3/form/backend/helper.js', 'Helper')
-                ->invoke('dispatchFormManager', $javaScriptModules, $this->getFormManagerAppInitialData($formSettings))
+                ->invoke('dispatchFormManager', $javaScriptModules, $formManagerAppInitialData)
         );
         array_map($this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(...), $javaScriptModules);
         $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
@@ -332,9 +335,15 @@ class FormManagerController extends ActionController
 
     protected function getErrorResponseForDeleteAction(array $formSettings, string $formPersistenceIdentifier): array
     {
+        $formManagerConfiguration = FormManagerConfiguration::fromArray($formSettings['formManager']);
         $controllerConfiguration = $this->translationService->translateValuesRecursive(
-            $formSettings['formManager']['controller'],
-            $formSettings['formManager']['translationFiles'] ?? []
+            [
+                'deleteAction' => [
+                    'errorTitle' => $formManagerConfiguration->deleteActionErrorTitle,
+                    'errorMessage' => $formManagerConfiguration->deleteActionErrorMessage,
+                ],
+            ],
+            $formManagerConfiguration->translationFiles
         );
         return [
             'status' => 'error',
@@ -359,10 +368,10 @@ class FormManagerController extends ActionController
      * Returns the json encoded data which is used by the form editor
      * JavaScript app.
      */
-    protected function getFormManagerAppInitialData(array $formSettings): array
+    protected function getFormManagerAppInitialData(FormManagerConfiguration $formManagerConfiguration): array
     {
         $formManagerAppInitialData = [
-            'selectablePrototypesConfiguration' => $formSettings['formManager']['selectablePrototypesConfiguration'],
+            'selectablePrototypesConfiguration' => $formManagerConfiguration->getSelectablePrototypesConfigurationAsArray(),
             'endpoints' => [
                 'create' => $this->uriBuilder->uriFor('create'),
                 'duplicate' => $this->uriBuilder->uriFor('duplicate'),
@@ -374,7 +383,7 @@ class FormManagerController extends ActionController
         $formManagerAppInitialData = ArrayUtility::reIndexNumericArrayKeysRecursive($formManagerAppInitialData);
         return $this->translationService->translateValuesRecursive(
             $formManagerAppInitialData,
-            $formSettings['formManager']['translationFiles'] ?? []
+            $formManagerConfiguration->translationFiles
         );
     }
 
@@ -464,21 +473,10 @@ class FormManagerController extends ActionController
      */
     protected function isValidTemplatePath(array $formSettings, string $prototypeName, string $templatePath): bool
     {
-        $isValid = false;
-        foreach ($formSettings['formManager']['selectablePrototypesConfiguration'] as $prototypesConfiguration) {
-            if ($prototypesConfiguration['identifier'] !== $prototypeName) {
-                continue;
-            }
-            foreach ($prototypesConfiguration['newFormTemplates'] as $templatesConfiguration) {
-                if ($templatesConfiguration['templatePath'] !== $templatePath) {
-                    continue;
-                }
-                $isValid = true;
-                break;
-            }
-        }
-        $templatePath = GeneralUtility::getFileAbsFileName($templatePath);
-        if (!is_file($templatePath)) {
+        $formManagerConfiguration = FormManagerConfiguration::fromArray($formSettings['formManager']);
+        $isValid = $formManagerConfiguration->hasTemplatePath($prototypeName, $templatePath);
+        $absoluteTemplatePath = GeneralUtility::getFileAbsFileName($templatePath);
+        if (!is_file($absoluteTemplatePath)) {
             $isValid = false;
         }
         return $isValid;

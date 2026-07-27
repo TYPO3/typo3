@@ -43,6 +43,7 @@ use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\Proper
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PredefinedDefaultsExtractor as CollectionPredefinedDefaultsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\PropertyPathsExtractor as CollectionPropertyPathsExtractor;
 use TYPO3\CMS\Form\Domain\Configuration\FrameworkConfiguration\Extractors\PropertyCollectionElement\SelectOptionsExtractor as CollectionSelectOptionsExtractor;
+use TYPO3\CMS\Form\Domain\DTO\FormConfiguration\FormManagerConfiguration;
 use TYPO3\CMS\Form\Event\AfterFormDefinitionValidationConfigurationIsBuiltEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -94,20 +95,8 @@ class ConfigurationService
     public function getSelectablePrototypeNamesDefinedInFormEditorSetup(): array
     {
         $formSettings = $this->getFormSettings();
-        $returnValue = GeneralUtility::makeInstance(
-            ArrayProcessor::class,
-            $formSettings['formManager']['selectablePrototypesConfiguration'] ?? []
-        )->forEach(
-            GeneralUtility::makeInstance(
-                ArrayProcessing::class,
-                'selectablePrototypeNames',
-                '^([\d]+)\.identifier$',
-                static function ($_, $value) {
-                    return $value;
-                }
-            )
-        );
-        return array_values($returnValue['selectablePrototypeNames'] ?? []);
+        return FormManagerConfiguration::fromArray($formSettings['formManager'] ?? [])
+            ->getSelectablePrototypeIdentifiers();
     }
 
     /**
