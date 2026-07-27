@@ -18,6 +18,8 @@ File Removed
     Triggers when a file is removed
 Login Error Occurred
     Triggers when a login error occurred
+MFA Verification Error Occurred
+    Triggers when a multi-factor authentication verification attempt fails
 
 These triggers are meant as a first set of triggers that can be used to send
 webhooks. In most projects however, it is likely
@@ -50,7 +52,11 @@ The following example shows how to create a simple webhook message for the
     *   `identifier`: The identifier of the webhook message.
     *   `description`: The description of the webhook message. This description
         is used to describe the trigger in the TYPO3 backend.
-#.  Add a static method `createFromEvent()` that creates a new instance of the message from the event you want to use as a trigger.
+    *   `method` (optional): The name of the static factory method that creates
+        the message from the triggering event. Defaults to `createFromEvent`.
+#.  Add a static method `createFromEvent()` (or the method name given via `method`)
+    that creates a new instance of the message from the event you want to use as
+    a trigger.
 #.  Add a method `jsonSerialize()` that returns an array with the data that should be send with the webhook.
 
 ..  _custom-triggers-events-services.yaml:
