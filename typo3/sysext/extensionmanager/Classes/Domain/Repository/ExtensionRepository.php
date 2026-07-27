@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Enum\ExtensionCategory;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
 
@@ -97,37 +98,45 @@ readonly class ExtensionRepository
         return $extensions;
     }
 
-    public function findByUid(int $uid): ?Extension
+    /**
+     * Resolve a single package by its full remote identity (package key + version + remote).
+     * All three fields are applied as constraints, which addresses exactly one record due to
+     * the unique key over these fields. Use {@see findOneByExtensionKeyAndVersion} when the
+     * remote is not known.
+     */
+    public function findOneByPackageIdentifier(PackageIdentifier $packageIdentifier): ?Extension
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
-        $row = $queryBuilder
-            ->select('*')
+        $row = $queryBuilder->select('*')
             ->from(self::TABLE_NAME)
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
+                $queryBuilder->expr()->eq('extension_key', $queryBuilder->createNamedParameter($packageIdentifier->packageKey, Connection::PARAM_STR)),
+                $queryBuilder->expr()->eq('version', $queryBuilder->createNamedParameter($packageIdentifier->version, Connection::PARAM_STR)),
+                $queryBuilder->expr()->eq('remote', $queryBuilder->createNamedParameter($packageIdentifier->remote, Connection::PARAM_STR)),
             )
             ->executeQuery()
             ->fetchAssociative();
-        if (!$row) {
-            return null;
+        if (is_array($row)) {
+            return Extension::createObjectFromRow($row);
         }
-        return Extension::createObjectFromRow($row);
+        return null;
     }
 
     /**
-     * Same as findByUid(), but for callers which can not deal with a missing
-     * record. Records are dropped and recreated whenever an extension list is
-     * updated, so identifiers taken from an outdated view may not resolve.
+     * Same as findOneByPackageIdentifier(), but for callers which can not deal with a
+     * missing record. Records are dropped and recreated whenever an extension list is
+     * updated, so a package taken from an outdated view may not resolve anymore.
      *
      * @throws ExtensionNotFoundException
      */
-    public function getByUid(int $uid): Extension
+    public function getByPackageIdentifier(PackageIdentifier $packageIdentifier): Extension
     {
-        $extension = $this->findByUid($uid);
+        $extension = $this->findOneByPackageIdentifier($packageIdentifier);
         if ($extension === null) {
             throw new ExtensionNotFoundException(
-                'No extension found for uid "' . $uid . '". The extension list may have been'
-                    . ' updated in the meantime, please update it again and retry.',
+                'No extension found for package key "' . $packageIdentifier->packageKey . '" in version "'
+                    . $packageIdentifier->version . '" of remote "' . $packageIdentifier->remote . '". The extension'
+                    . ' list may have been updated in the meantime, please update it again and retry.',
                 1784926081
             );
         }
@@ -153,6 +162,14 @@ readonly class ExtensionRepository
     }
 
     /**
+     * Find a single extension by key and version when the remote is not known.
+     * Callers that do know the remote should use {@see findOneByPackageIdentifier} instead.
+     *
+     * Note: if the same key/version exists for more than one remote the returned record is
+     * arbitrary. This is intentional for the two use-cases that require it: looking up TER
+     * data for a locally installed extension (no remote stored on disk) and the update flow,
+     * where the frontend currently only submits key and version.
+     *
      * @param string $version (example: 4.3.10)
      */
     public function findOneByExtensionKeyAndVersion(string $extensionKey, string $version): ?Extension

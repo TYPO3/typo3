@@ -65,7 +65,7 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
         $this->uriBuilder->reset();
         $this->uriBuilder->setFormat('json');
         $uri = $this->uriBuilder->uriFor($action, [
-            'extension' => (int)$extension->uid,
+            'identifier' => $extension->getIdentifier(),
         ], 'Download');
         $this->tag->addAttribute('data-href', $uri);
 

@@ -132,6 +132,34 @@ final class ExtensionTest extends UnitTestCase
     }
 
     #[Test]
+    public function derivesPackageIdentifierFromItsProperties(): void
+    {
+        $extension = new Extension();
+        $extension->extensionKey = 'my_package';
+        $extension->version = '1.2.3';
+        $extension->remote = 'ter';
+
+        $identifier = $extension->getPackageIdentifier();
+        self::assertSame('my_package', $identifier->packageKey);
+        self::assertSame('1.2.3', $identifier->version);
+        self::assertSame('ter', $identifier->remote);
+    }
+
+    #[Test]
+    public function exposesIdentifierAsRequestArgumentsForFluid(): void
+    {
+        $extension = new Extension();
+        $extension->extensionKey = 'my_package';
+        $extension->version = '1.2.3';
+        $extension->remote = 'ter';
+
+        self::assertSame(
+            ['packageKey' => 'my_package', 'version' => '1.2.3', 'remote' => 'ter'],
+            $extension->getIdentifier()
+        );
+    }
+
+    #[Test]
     public function getDistributionImageTest(): void
     {
         $imageUrl = 'https://example.org/path/to/image.png';

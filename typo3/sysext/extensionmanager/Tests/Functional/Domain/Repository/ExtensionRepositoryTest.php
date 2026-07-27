@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Functional\Domain\Repository;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Extensionmanager\Domain\Model\PackageIdentifier;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionNotFoundException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -29,45 +30,54 @@ final class ExtensionRepositoryTest extends FunctionalTestCase
     ];
 
     #[Test]
-    public function getByUidReturnsExtensionForExistingRecord(): void
+    public function getByPackageIdentifierReturnsExtensionForExistingRecord(): void
     {
-        $uid = $this->createRemoteExtensionRecord('ext_dependency', '1.0.0');
+        $this->createRemoteExtensionRecord('ext_dependency', '1.0.0');
 
-        $extension = $this->get(ExtensionRepository::class)->getByUid($uid);
+        $extension = $this->get(ExtensionRepository::class)
+            ->getByPackageIdentifier(new PackageIdentifier('ext_dependency', '1.0.0', 'ter'));
 
         self::assertSame('ext_dependency', $extension->extensionKey);
         self::assertSame('1.0.0', $extension->version);
+        self::assertSame('ter', $extension->remote);
     }
 
     #[Test]
-    public function getByUidThrowsExceptionForUnknownRecord(): void
+    public function getByPackageIdentifierThrowsExceptionForUnknownRecord(): void
     {
         $this->expectException(ExtensionNotFoundException::class);
         $this->expectExceptionCode(1784926081);
 
-        $this->get(ExtensionRepository::class)->getByUid(4711);
+        $this->get(ExtensionRepository::class)
+            ->getByPackageIdentifier(new PackageIdentifier('ext_dependency', '1.0.0', 'ter'));
     }
 
     #[Test]
-    public function findByUidReturnsNullForUnknownRecord(): void
+    public function findOneByPackageIdentifierAppliesAllThreeConstraints(): void
     {
-        self::assertNull($this->get(ExtensionRepository::class)->findByUid(4711));
+        $this->createRemoteExtensionRecord('ext_dependency', '1.0.0');
+        $repository = $this->get(ExtensionRepository::class);
+
+        self::assertNotNull($repository->findOneByPackageIdentifier(new PackageIdentifier('ext_dependency', '1.0.0', 'ter')));
+        self::assertNull($repository->findOneByPackageIdentifier(new PackageIdentifier('other_ext', '1.0.0', 'ter')));
+        self::assertNull($repository->findOneByPackageIdentifier(new PackageIdentifier('ext_dependency', '2.0.0', 'ter')));
+        self::assertNull($repository->findOneByPackageIdentifier(new PackageIdentifier('ext_dependency', '1.0.0', 'unknown-remote')));
     }
 
-    private function createRemoteExtensionRecord(string $extensionKey, string $version): int
+    private function createRemoteExtensionRecord(string $extensionKey, string $version): void
     {
-        $connection = $this->getConnectionPool()->getConnectionForTable('tx_extensionmanager_domain_model_extension');
-        $connection->insert(
-            'tx_extensionmanager_domain_model_extension',
-            [
-                'extension_key' => $extensionKey,
-                'remote' => 'ter',
-                'version' => $version,
-                'title' => $extensionKey,
-                'current_version' => 1,
-                'review_state' => 0,
-            ]
-        );
-        return (int)$connection->lastInsertId();
+        $this->getConnectionPool()
+            ->getConnectionForTable('tx_extensionmanager_domain_model_extension')
+            ->insert(
+                'tx_extensionmanager_domain_model_extension',
+                [
+                    'extension_key' => $extensionKey,
+                    'remote' => 'ter',
+                    'version' => $version,
+                    'title' => $extensionKey,
+                    'current_version' => 1,
+                    'review_state' => 0,
+                ]
+            );
     }
 }
