@@ -1254,7 +1254,6 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         ];
         $item = ['label' => 'mylabel', 'value' => 'examplekey', 'icon' => 'apps-pagetree-folder-contains'];
         ExtensionManagementUtility::addRecordType($item, 'aField', [], '', $table);
-        /** @phpstan-ignore-next-line PHPStan does not understand that the items array gets updated.. */
         self::assertEquals('default', $GLOBALS['TCA'][$table]['columns']['aTypeField']['config']['items'][0]['group']);
     }
 
