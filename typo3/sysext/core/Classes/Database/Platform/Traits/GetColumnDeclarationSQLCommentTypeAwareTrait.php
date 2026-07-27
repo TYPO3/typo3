@@ -121,6 +121,7 @@ trait GetColumnDeclarationSQLCommentTypeAwareTrait
             AbstractPlatform::class => [],
         ];
         foreach ($map as $platformClass => $platformTypes) {
+            /** @phpstan-ignore instanceof.alwaysTrue */
             if (!$platform instanceof $platformClass) {
                 continue;
             }

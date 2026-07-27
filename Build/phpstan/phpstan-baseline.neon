@@ -745,12 +745,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/ConnectionPool.php
 
 		-
-			message: '#^Instanceof between Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MariaDBPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\MySQLPlatform''\|''Doctrine\\\\DBAL\\\\Platforms\\\\SQLitePlatform'' will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Platform/MariaDBPlatform.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 4
@@ -3017,18 +3011,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Service/CacheServiceTest.php
-
-		-
-			message: '#^Offset ''defaultContentRendering'' does not exist on array\{\}\.$#'
-			identifier: offsetAccess.notFound
-			count: 5
-			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php
-
-		-
-			message: '#^Offset 0 does not exist on array\{\}\.$#'
-			identifier: offsetAccess.notFound
-			count: 5
-			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php
 
 		-
 			message: '#^Parameter \#2 \$messageTitle of method TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController\:\:addFlashMessage\(\) expects string, int given\.$#'
