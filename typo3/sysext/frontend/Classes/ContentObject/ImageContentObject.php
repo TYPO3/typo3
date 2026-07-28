@@ -16,10 +16,13 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +36,8 @@ class ImageContentObject extends AbstractContentObject
 {
     public function __construct(
         protected readonly MarkerBasedTemplateService $markerTemplateService,
+        protected readonly TimeTracker $timeTracker,
+        protected readonly LoggerInterface $logger,
     ) {}
 
     /**
@@ -75,6 +80,20 @@ class ImageContentObject extends AbstractContentObject
             $source = $absRefPrefix . str_replace('%2F', '/', rawurlencode($imageResource->getPublicUrl()));
         } else {
             $source = $imageResource->getPublicUrl();
+        }
+        // A file whose physical resource is gone (sys_file.missing=1) resolves to
+        // an image resource without public URL. Render nothing in this case, just
+        // like for an image resource that could not be resolved at all.
+        if ($source === null) {
+            $identifier = $imageResource->getOriginalFile()?->getIdentifier() ?: $imageResource->getFullPath();
+            $this->logger->warning('The image "{file}" has no public URL, the file is probably missing, and won\'t be included in frontend output', [
+                'file' => $identifier,
+            ]);
+            $this->timeTracker->setTSlogMessage(
+                'The image "' . $identifier . '" has no public URL, the file is probably missing. It is not rendered.',
+                LogLevel::WARNING
+            );
+            return '';
         }
         GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
             $source,
