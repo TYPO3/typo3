@@ -22,10 +22,10 @@ use TYPO3\CMS\Core\Schema\Field\CountryFieldType;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\FolderFieldType;
+use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
 use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\RelationshipType;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -73,13 +73,12 @@ readonly class ColumnMapFactory
         $columnName = $field->getName();
         $tableColumnType = TableColumnType::tryFrom($field->getType());
         $childTableName = null;
-        if ($field->isType(TableColumnType::GROUP)) {
+        if ($field instanceof GroupFieldType) {
             // TCA type="group" has no TCA property "foreign_table" and can only deal with single-table
             // relations in extbase (no support for union types). That means `allowed` should only
             // contain ONE table entry, as Extbase can only evaluate the first one, if multiple
             // are defined.
-            $allowed = GeneralUtility::trimExplode(',', $columnConfiguration['allowed'] ?? '', true);
-            $childTableName = $allowed[0] ?? $columnConfiguration['foreign_table'] ?? null;
+            $childTableName = $field->getAllowedSchemaNames()[0] ?? $columnConfiguration['foreign_table'] ?? null;
         } elseif ($field instanceof RelationalFieldTypeInterface) {
             $childTableName = $columnConfiguration['foreign_table'] ?? null;
         }

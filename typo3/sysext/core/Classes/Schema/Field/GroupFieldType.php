@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Schema\Field;
 
 use TYPO3\CMS\Core\Schema\RelationshipType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final readonly class GroupFieldType extends AbstractFieldType implements RelationalFieldTypeInterface
 {
@@ -30,6 +31,24 @@ final readonly class GroupFieldType extends AbstractFieldType implements Relatio
     public function getType(): string
     {
         return 'group';
+    }
+
+    /**
+     * Names of the schemata this field is allowed to point to, based on TCA "allowed".
+     *
+     * The wildcard "*" is part of the returned list and denotes that all schemata are
+     * allowed, see allowsAllSchemata().
+     *
+     * @return list<string>
+     */
+    public function getAllowedSchemaNames(): array
+    {
+        return GeneralUtility::trimExplode(',', (string)($this->configuration['allowed'] ?? ''), true);
+    }
+
+    public function allowsAllSchemata(): bool
+    {
+        return in_array('*', $this->getAllowedSchemaNames(), true);
     }
 
     public function isNullable(): false
