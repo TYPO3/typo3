@@ -1,0 +1,12 @@
+sys_file,,,,,,,,,,,,,,
+,uid,pid,storage,type,identifier,identifier_hash,folder_hash,extension,mime_type,name,sha1,size,creation_date,modification_date
+,1,0,1,2,/user_upload/harmless.jpg,b5d74b3b4fe10ebbd0c0a418d3e8d9a5abe33a0f,85b130b44ae1a7dae9348a42b3d4a68e5450fc44,jpg,image/jpeg,harmless.jpg,da39a3ee5e6b4b0d3255bfef95601890afd80709,0,1389878273,1389878273
+,2,0,1,2,/user_upload/secret.jpg,7ad7bcf65fc717fb759bf1d1865bd481c6afd206,85b130b44ae1a7dae9348a42b3d4a68e5450fc44,jpg,image/jpeg,secret.jpg,da39a3ee5e6b4b0d3255bfef95601890afd80709,0,1389878273,1389878273
+sys_file_reference,,,,,,,,,,,,,,
+,uid,uid_local,uid_foreign,tablenames,fieldname,,,,,,,,
+,1,2,1,tt_content,image,,,,,,,,
+,2,1,1,tt_content,image,,,,,,,,
+sys_file_processedfile,,,,,,,,,,,,,,
+,uid,storage,original,identifier,name,configuration,width,height,task_type,,,,,
+,1,1,2,/_processed_/secret_processed.jpg,secret_processed.jpg,a:0:{},300,225,Image.Preview,,,,,
+,3,1,1,/_processed_/harmless_processed.jpg,harmless_processed.jpg,a:0:{},300,225,Image.Preview,,,,,

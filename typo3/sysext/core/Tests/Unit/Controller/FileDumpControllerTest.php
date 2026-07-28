@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Resource\Service\FileDumpService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[BackupGlobals(true)]
@@ -64,7 +65,7 @@ final class FileDumpControllerTest extends UnitTestCase
             self::createStub(EventDispatcherInterface::class),
             self::createStub(ResourceFactory::class),
             new ResponseFactory(),
-            new HashService(),
+            new FileDumpService(new HashService()),
             self::createStub(FileNameValidator::class),
             self::createStub(ProcessedFileRepository::class),
         );
@@ -108,7 +109,7 @@ final class FileDumpControllerTest extends UnitTestCase
             $eventDispatcher,
             $resourceFactory,
             $responseFactory,
-            $hashService,
+            new FileDumpService($hashService),
             $fileNameValidator,
             self::createStub(ProcessedFileRepository::class),
         );
