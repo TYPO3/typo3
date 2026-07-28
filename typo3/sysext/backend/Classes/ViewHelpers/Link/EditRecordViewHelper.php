@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\ViewHelpers\Link;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
@@ -60,6 +61,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
  *        Edit record
  *    </a>
  *
+ * Open the record in the contextual editing overlay::
+ *
+ *    <be:link.editRecord uid="42" table="pages" fields="title,subtitle" contextual="true">
+ *        Edit page properties
+ *    </be:link.editRecord>
+ *
+ * Output::
+ *
+ *    <typo3-backend-contextual-record-edit-trigger
+ *        url="/typo3/record/edit/contextual?edit[pages][42]=edit&columnsOnly[pages][0]=title&columnsOnly[pages][1]=subtitle"
+ *        edit-url="/typo3/record/edit?edit[pages][42]=edit&columnsOnly[pages][0]=title&columnsOnly[pages][1]=subtitle"
+ *    >
+ *        Edit page properties
+ *    </typo3-backend-contextual-record-edit-trigger>
+ *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-link-editrecord
  */
 final class EditRecordViewHelper extends AbstractTagBasedViewHelper
@@ -70,7 +86,8 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
     protected $tagName = 'a';
 
     public function __construct(
-        private readonly UriBuilder $uriBuilder
+        private readonly UriBuilder $uriBuilder,
+        private readonly PageRenderer $pageRenderer,
     ) {
         parent::__construct();
     }
@@ -83,6 +100,7 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('fields', 'string', 'Edit only these fields (comma separated list)');
         $this->registerArgument('module', 'string', 'Set module identifier for context - marking as active when editing the record', false, '');
         $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the edit dialog', false, '');
+        $this->registerArgument('contextual', 'bool', 'Render a contextual edit trigger instead of a classic edit link', false, false);
     }
 
     /**
@@ -112,8 +130,17 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
                 $this->arguments['table'] => GeneralUtility::trimExplode(',', $this->arguments['fields'], true),
             ];
         }
-        $uri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
-        $this->tag->addAttribute('href', $uri);
+
+        if ($this->arguments['contextual'] ?? false) {
+            $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/contextual-record-edit-trigger.js');
+            $this->tag->setTagName('typo3-backend-contextual-record-edit-trigger');
+            $this->tag->addAttribute('url', (string)$this->uriBuilder->buildUriFromRoute('record_edit_contextual', $params));
+            $this->tag->addAttribute('edit-url', (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params));
+        } else {
+            $uri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
+            $this->tag->addAttribute('href', $uri);
+        }
+
         $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);
         return $this->tag->render();
