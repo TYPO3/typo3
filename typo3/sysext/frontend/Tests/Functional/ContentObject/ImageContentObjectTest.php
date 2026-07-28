@@ -19,10 +19,15 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\ImageResource;
+use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -33,6 +38,37 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ImageContentObjectTest extends FunctionalTestCase
 {
+    #[Test]
+    public function cImageRendersNothingForImageResourceWithoutPublicUrl(): void
+    {
+        $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->onlyMethods(['getImgResource'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        // A file whose physical resource is gone (sys_file.missing=1) resolves to
+        // an image resource of the processed file without a public URL.
+        $cObj->method('getImgResource')->willReturn(
+            new ImageResource(100, 100, 'jpg', 'missing-file.jpg', null, $this->createMock(File::class))
+        );
+        $timeTracker = $this->get(TimeTracker::class);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning')->with(
+            'The image "{file}" has no public URL, the file is probably missing, and won\'t be included in frontend output',
+            ['file' => 'missing-file.jpg']
+        );
+        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $timeTracker, $logger]);
+        $subject->setRequest(new ServerRequest());
+        $subject->setContentObjectRenderer($cObj);
+
+        self::assertSame('', $subject->_call('cImage', 'missing-file.jpg', []));
+        self::assertSame([], $this->get(AssetCollector::class)->getMedia());
+        $logMessages = array_merge(...array_column($timeTracker->getTypoScriptLogStack(), 'message'));
+        self::assertStringContainsString(
+            'The image &quot;missing-file.jpg&quot; has no public URL, the file is probably missing. It is not rendered.',
+            implode(LF, $logMessages)
+        );
+    }
+
     public static function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFoundDataProvider(): array
     {
         return [
@@ -48,7 +84,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
     public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound(?string $key, ?array $configuration): void
     {
         $defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###SELFCLOSINGTAGSLASH###>';
-        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class)]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $this->get(TimeTracker::class), new NullLogger()]);
         $subject->setRequest(new ServerRequest());
         $subject->setContentObjectRenderer($this->get(ContentObjectRenderer::class));
         $result = $subject->_call('getImageTagTemplate', $key, $configuration);
@@ -65,7 +101,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
                 ],
             ],
         ];
-        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class)]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $this->get(TimeTracker::class), new NullLogger()]);
         $subject->setRequest(new ServerRequest());
         $subject->setContentObjectRenderer($this->get(ContentObjectRenderer::class));
         $result = $subject->_call('getImageTagTemplate', 'foo', $configuration);
@@ -84,7 +120,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
     #[Test]
     public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefined(string $layoutKey, array $configuration, ?string $file): void
     {
-        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class)]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $this->get(TimeTracker::class), new NullLogger()]);
         $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
         self::assertSame('', $result);
     }
@@ -115,7 +151,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
             ->method('getImgResource')
             ->with(self::equalTo('testImageName'))
             ->willReturn(new ImageResource(100, 100, '', 'bar', 'bar'));
-        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class)]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $this->get(TimeTracker::class), new NullLogger()]);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setConfigArray([]);
         $request = (new ServerRequest())->withAttribute('frontend.typoscript', $frontendTypoScript);
@@ -154,7 +190,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
             ],
         ];
         $cObj = $this->get(ContentObjectRenderer::class);
-        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class)]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $this->get(TimeTracker::class), new NullLogger()]);
         $subject->setRequest(new ServerRequest());
         $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', 'default', $configuration, 'testImageName');
@@ -263,7 +299,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class)]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $this->get(TimeTracker::class), new NullLogger()]);
         $subject->setRequest($request);
         $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, 'testImageName');
@@ -320,7 +356,7 @@ final class ImageContentObjectTest extends FunctionalTestCase
         $pageInformation = new PageInformation();
         $pageInformation->setLocalRootLine([3 => ['uid' => 55]]);
         $request = (new ServerRequest())->withAttribute('frontend.page.information', $pageInformation);
-        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class)]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, null, [$this->get(MarkerBasedTemplateService::class), $this->get(TimeTracker::class), new NullLogger()]);
         $subject->setRequest($request);
         $result = $subject->_call('linkWrap', $content, $wrap);
         self::assertEquals($expected, $result);
