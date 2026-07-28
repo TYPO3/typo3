@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\DocType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -64,6 +66,8 @@ final class ImageContentObjectTest extends UnitTestCase
                 new NullFrontend('hash'),
                 new NullFrontend('runtime'),
             ),
+            new TimeTracker(),
+            new NullLogger(),
         ]);
         $this->subject->setRequest(new ServerRequest());
         $this->subject->setContentObjectRenderer($contentObjectRenderer);
@@ -388,6 +392,8 @@ final class ImageContentObjectTest extends UnitTestCase
                 new NullFrontend('hash'),
                 new NullFrontend('runtime'),
             ),
+            new TimeTracker(),
+            new NullLogger(),
         ]);
         $subject->_set('pageRenderer', $pageRenderer);
         $subject->setRequest(new ServerRequest());
