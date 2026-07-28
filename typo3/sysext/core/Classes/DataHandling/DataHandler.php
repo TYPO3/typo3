@@ -71,6 +71,7 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\Field\FieldTranslationBehaviour;
 use TYPO3\CMS\Core\Schema\Field\FileFieldType;
+use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
 use TYPO3\CMS\Core\Schema\Field\InlineFieldType;
 use TYPO3\CMS\Core\Schema\Struct\SelectItemCollection;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -6777,9 +6778,11 @@ class DataHandler
             return false;
         }
         $localSideField = $this->tcaSchemaFactory->get($localSideTableName)->getField($localSideFieldName);
-        $localSideAllowed = $localSideField->getConfiguration()['allowed'] ?? '';
+        if (!$localSideField instanceof GroupFieldType) {
+            return false;
+        }
         // Local side with 'allowed' = '*' or multiple tables forces 'tablenames' column
-        return $localSideAllowed === '*' || str_contains($localSideAllowed, ',');
+        return $localSideField->allowsAllSchemata() || count($localSideField->getAllowedSchemaNames()) > 1;
     }
 
     /**

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -70,7 +71,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
             }
 
             $childField = $fileReferenceSchema->getField(self::FOREIGN_SELECTOR);
-            if ($childField->getType() !== 'group' || !($childField->getConfiguration()['allowed'] ?? false)) {
+            if (!$childField instanceof GroupFieldType || $childField->getAllowedSchemaNames() === []) {
                 throw new \UnexpectedValueException(
                     'Table ' . $result['tableName'] . ' field ' . $fieldName . ' points to field '
                     . self::FOREIGN_SELECTOR . ' of table ' . self::FILE_REFERENCE_TABLE . ', but this field '

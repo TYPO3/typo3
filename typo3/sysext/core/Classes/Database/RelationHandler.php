@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
+use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -267,10 +268,10 @@ class RelationHandler
             // the "columns" part of TCA for a table.
             if ($this->tcaSchemaFactory->has($mmOppositeTable)) {
                 $oppositeSchema = $this->tcaSchemaFactory->get($mmOppositeTable);
-                $mmOppositeAllowed = $oppositeSchema->hasField($conf['MM_opposite_field']) ? ($oppositeSchema->getField($conf['MM_opposite_field'])->getConfiguration()['allowed'] ?? '') : '';
-                if ($mmOppositeAllowed !== '') {
-                    $mmOppositeAllowedTables = explode(',', $mmOppositeAllowed);
-                    if ($mmOppositeAllowed === '*' || count($mmOppositeAllowedTables) > 1) {
+                $mmOppositeField = $oppositeSchema->hasField($conf['MM_opposite_field']) ? $oppositeSchema->getField($conf['MM_opposite_field']) : null;
+                if ($mmOppositeField instanceof GroupFieldType) {
+                    $mmOppositeAllowedTables = $mmOppositeField->getAllowedSchemaNames();
+                    if ($mmOppositeField->allowsAllSchemata() || count($mmOppositeAllowedTables) > 1) {
                         $this->MM_isMultiTableRelationship = $mmOppositeAllowedTables[0];
                     }
                 }
