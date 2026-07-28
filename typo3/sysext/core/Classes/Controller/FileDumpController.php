@@ -22,8 +22,6 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Crypto\HashAlgo;
-use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Event\ModifyFileDumpEvent;
 use TYPO3\CMS\Core\Resource\File;
@@ -34,6 +32,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Resource\Service\FileDumpService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -44,7 +43,7 @@ readonly class FileDumpController
         protected EventDispatcherInterface $eventDispatcher,
         protected ResourceFactory $resourceFactory,
         protected ResponseFactoryInterface $responseFactory,
-        protected HashService $hashService,
+        private FileDumpService $fileDumpService,
         private FileNameValidator $fileNameValidator,
         private ProcessedFileRepository $processedFileRepository,
     ) {}
@@ -59,8 +58,8 @@ readonly class FileDumpController
     public function dumpAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = $this->buildParametersFromRequest($request);
-
-        if (!$this->isTokenValid($parameters, $request)) {
+        $token = $request->getQueryParams()['token'] ?? null;
+        if (!is_string($token) || !$this->fileDumpService->isTokenValid($parameters, $token)) {
             return $this->responseFactory->createResponse(403);
         }
         $file = $this->createFileObjectByParameters($parameters);
@@ -173,18 +172,6 @@ readonly class FileDumpController
         }
 
         return $parameters;
-    }
-
-    protected function isTokenValid(array $parameters, ServerRequestInterface $request): bool
-    {
-        $token = $request->getQueryParams()['token'] ?? '';
-        if (!is_string($token)) {
-            return false;
-        }
-        return hash_equals(
-            $this->hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile', HashAlgo::SHA3_256),
-            $token
-        );
     }
 
     /**
