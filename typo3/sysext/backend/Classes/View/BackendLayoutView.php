@@ -52,6 +52,7 @@ readonly class BackendLayoutView
         private DataProviderCollection $dataProviderCollection,
         private TypoScriptStringFactory $typoScriptStringFactory,
         private PageLayoutResolver $pageLayoutResolver,
+        private ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -285,7 +286,7 @@ readonly class BackendLayoutView
             // has been inserted after an existing element so there is no pid to get
             // the backendLayout for, and we have to get that first.
             if ($data['pid'] < 0) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                $queryBuilder = $this->connectionPool
                     ->getQueryBuilderForTable($tableName);
                 $queryBuilder->getRestrictions()
                     ->removeAll();

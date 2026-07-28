@@ -87,6 +87,11 @@ readonly class RequestHandler implements RequestHandlerInterface
         private FrontendInterface $pageCache,
         private ConnectionPool $connectionPool,
         private CacheLifetimeCalculator $cacheLifetimeCalculator,
+        private LanguageServiceFactory $languageServiceFactory,
+        private PageTitleProviderManager $pageTitleProviderManager,
+        private Typo3Information $typo3Information,
+        private AssetCollector $assetCollector,
+        private MetaDataState $metaDataState,
     ) {}
 
     /**
@@ -197,10 +202,10 @@ readonly class RequestHandler implements RequestHandlerInterface
                     'INTincScript' => $pageParts->getNotCachedContentElementRegistry(),
                     'pageRendererSubstitutionHash' => $pageParts->getPageRendererSubstitutionHash(),
                     'pageRendererState' => serialize($this->pageRenderer->getState()),
-                    'assetCollectorState' => serialize(GeneralUtility::makeInstance(AssetCollector::class)->getState()),
+                    'assetCollectorState' => serialize($this->assetCollector->getState()),
                     'pageTitleCache' => $pageParts->getPageTitle(),
                     'pageCacheGeneratedTimestamp' => $GLOBALS['EXEC_TIME'],
-                    'metaDataState' => GeneralUtility::makeInstance(MetaDataState::class)->getState(),
+                    'metaDataState' => $this->metaDataState->getState(),
                 ];
 
                 $cacheDataCollector->enqueueCacheEntry(
@@ -404,7 +409,7 @@ readonly class RequestHandler implements RequestHandlerInterface
         }
         $this->pageRenderer->setHeadTag($headTag);
 
-        $this->pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
+        $this->pageRenderer->addInlineComment($this->typo3Information->getInlineHeaderComment());
 
         if ($typoScriptPageArray['shortcutIcon'] ?? false) {
             try {
@@ -1023,7 +1028,7 @@ readonly class RequestHandler implements RequestHandlerInterface
             $pageTitleSeparator .= ' ';
         }
 
-        $titleProvider = GeneralUtility::makeInstance(PageTitleProviderManager::class);
+        $titleProvider = $this->pageTitleProviderManager;
         $titleProvider->setPageTitleCache($pageParts->getPageTitle());
         $pageTitle = $titleProvider->getTitle($request);
         $pageParts->setPageTitle($titleProvider->getPageTitleCache());
@@ -1313,6 +1318,6 @@ readonly class RequestHandler implements RequestHandlerInterface
 
     protected function getLanguageService(): LanguageService
     {
-        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
+        return $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
     }
 }

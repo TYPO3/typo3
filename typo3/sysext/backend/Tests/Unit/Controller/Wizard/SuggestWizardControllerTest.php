@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -71,7 +72,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
-        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock))->searchAction($request);
+        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock, self::createStub(ConnectionPool::class)))->searchAction($request);
     }
 
     #[Test]
@@ -115,7 +116,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
-        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock))->searchAction($request);
+        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock, self::createStub(ConnectionPool::class)))->searchAction($request);
     }
 
     #[DataProvider('currentBackendUserMayAccessTableIsEvaluatedCorrectlyDataProvider')]

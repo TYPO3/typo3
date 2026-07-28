@@ -17,7 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Service;
 
-use TYPO3\CMS\Core\Cache\CacheManager;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -30,18 +31,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class RedirectCacheService
 {
-    /**
-     * @var FrontendInterface
-     */
-    protected $cache;
-
-    public function __construct(?CacheManager $cacheManager = null)
-    {
-        $cacheManager = $cacheManager ?? GeneralUtility::makeInstance(CacheManager::class);
-        $this->cache = $cacheManager->getCache('pages');
-    }
+    public function __construct(
+        #[Autowire(service: 'cache.pages')]
+        protected readonly FrontendInterface $cache,
+        protected readonly ConnectionPool $connectionPool,
+    ) {}
 
     /**
      * Fetches all redirects available to the system, grouped by domain and regexp/nonregexp
@@ -63,7 +60,7 @@ class RedirectCacheService
     public function rebuildForHost(string $sourceHost): array
     {
         $redirects = [];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(HiddenRestriction::class))
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -113,7 +110,7 @@ class RedirectCacheService
      */
     public function rebuildAll(): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
         // remove all restriction, as we need to retrieve the source host even for hidden or deleted redirects.
         $queryBuilder->getRestrictions()->removeAll();
         $resultSet = $queryBuilder

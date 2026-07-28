@@ -45,6 +45,7 @@ readonly class SuggestWizardController
     public function __construct(
         private FlexFormTools $flexFormTools,
         private TcaSchemaFactory $tcaSchemaFactory,
+        private ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -147,7 +148,6 @@ readonly class SuggestWizardController
                 $config['addWhere'] = $whereClause;
             }
             if (isset($config['addWhere'])) {
-                $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
                 $replacement = [
                     '###THIS_UID###' => (int)$uid,
                     '###CURRENT_PID###' => (int)$pid,
@@ -161,13 +161,13 @@ readonly class SuggestWizardController
                         $replacement['###PAGE_TSCONFIG_IDLIST###'] = implode(',', GeneralUtility::intExplode(',', (string)$fieldTSconfig['PAGE_TSCONFIG_IDLIST']));
                     }
                     if (isset($fieldTSconfig['PAGE_TSCONFIG_STR'])) {
-                        $connection = $connectionPool->getConnectionForTable($fieldConfig['foreign_table']);
+                        $connection = $this->connectionPool->getConnectionForTable($fieldConfig['foreign_table']);
                         // nasty hack, but it's currently not possible to just quote anything "inside" the value but not escaping
                         // the whole field as it is not known where it is used in the WHERE clause
                         $replacement['###PAGE_TSCONFIG_STR###'] = trim($connection->quote($fieldTSconfig['PAGE_TSCONFIG_STR']), '\'');
                     }
                 }
-                $config['addWhere'] = QueryHelper::quoteDatabaseIdentifiers($connectionPool->getConnectionForTable($queryTable), strtr(' ' . $config['addWhere'], $replacement));
+                $config['addWhere'] = QueryHelper::quoteDatabaseIdentifiers($this->connectionPool->getConnectionForTable($queryTable), strtr(' ' . $config['addWhere'], $replacement));
             }
 
             // instantiate the class that should fetch the records for this $queryTable

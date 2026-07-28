@@ -73,6 +73,8 @@ class ElementInformationController
         protected readonly VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
         private readonly SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
         private readonly MetaDataRepository $metaDataRepository,
+        private readonly ConnectionPool $connectionPool,
+        private readonly RendererRegistry $rendererRegistry,
     ) {}
 
     /**
@@ -214,8 +216,7 @@ class ElementInformationController
         if ($this->fileObject->isMissing()) {
             $preview['missingFile'] = $this->fileObject->getName();
         } else {
-            $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
-            $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
+            $fileRenderer = $this->rendererRegistry->getRenderer($this->fileObject);
             $preview['url'] = $this->fileObject->getPublicUrl() ?? '';
 
             // Add "edit metadata" button
@@ -580,7 +581,7 @@ class ElementInformationController
             $selectTable = $table;
             $selectUid = $ref;
         }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_refindex');
 
         $predicates = [
@@ -674,7 +675,7 @@ class ElementInformationController
         $refFromLines = [];
         $lang = $this->getLanguageService();
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_refindex');
 
         $predicates = [
@@ -749,7 +750,7 @@ class ElementInformationController
      */
     protected function transformFileReferenceToRecordReference(array $referenceRecord): ?array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('sys_file_reference');
         $queryBuilder->getRestrictions()->removeAll();
         $fileReference = $queryBuilder

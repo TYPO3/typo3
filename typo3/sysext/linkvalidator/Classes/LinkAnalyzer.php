@@ -76,6 +76,7 @@ class LinkAnalyzer
         protected readonly SoftReferenceParserFactory $softReferenceParserFactory,
         protected readonly LinktypeRegistry $linktypeRegistry,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -147,7 +148,7 @@ class LinkAnalyzer
                 $selectFields[] = $schema->getSubSchemaTypeInformation()->getFieldName();
             }
 
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            $queryBuilder = $this->connectionPool
                 ->getQueryBuilderForTable($table);
 
             if ($considerHidden) {
@@ -161,7 +162,7 @@ class LinkAnalyzer
             // or other limit depending on the used dbms - and we also avoid placeholder usage
             // as they are hard to calculate beforehand because of some magic handling of dbal.
             $maxChunk = PlatformInformation::getMaxBindParameters(
-                GeneralUtility::makeInstance(ConnectionPool::class)
+                $this->connectionPool
                     ->getConnectionForTable($table)
                     ->getDatabasePlatform()
             );

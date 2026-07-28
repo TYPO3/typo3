@@ -44,6 +44,8 @@ readonly class ShortcutAndMountPointRedirect implements MiddlewareInterface
     public function __construct(
         protected PageTypeLinkResolver $pageTypeLinkResolver,
         protected LoggerInterface $logger,
+        protected SiteFinder $siteFinder,
+        protected ErrorController $errorController,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -89,7 +91,7 @@ readonly class ShortcutAndMountPointRedirect implements MiddlewareInterface
                     'page' => $pageRecord,
                 ]
             );
-            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+            return $this->errorController->pageNotFoundAction(
                 $request,
                 'Page of type "Link" could not be resolved properly',
                 ['code' => PageAccessFailureReasons::INVALID_LINK_PAGE]
@@ -125,14 +127,13 @@ readonly class ShortcutAndMountPointRedirect implements MiddlewareInterface
             // because the request was www.mydomain.com/?id=23 where page ID 23 (which is a shortcut) is on another domain/site.
             if ((int)($request->getQueryParams()['id'] ?? 0) > 0) {
                 try {
-                    $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-                    $targetSite = $siteFinder->getSiteByPageId($originalShortcutPageRecord['l10n_parent'] ?: $originalShortcutPageRecord['uid']);
+                    $targetSite = $this->siteFinder->getSiteByPageId($originalShortcutPageRecord['l10n_parent'] ?: $originalShortcutPageRecord['uid']);
                 } catch (SiteNotFoundException) {
                     $targetSite = null;
                 }
                 $site = $request->getAttribute('site');
                 if ($targetSite !== $site) {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                    $response = $this->errorController->pageNotFoundAction(
                         $request,
                         'ID was outside the domain',
                         ['code' => PageAccessFailureReasons::ACCESS_DENIED_HOST_PAGE_MISMATCH]

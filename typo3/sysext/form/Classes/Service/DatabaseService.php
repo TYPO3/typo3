@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Form\Domain\Repository\FormDefinitionRepository;
@@ -38,6 +37,7 @@ class DatabaseService
 {
     public function __construct(
         private readonly ResourceFactory $resourceFactory,
+        private readonly ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -61,7 +61,7 @@ class DatabaseService
             throw new \InvalidArgumentException('$persistenceIdentifier must not be empty.', 1472238493);
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
         $constraints = [$queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier'))];
 
         // Indicator whether the string-based lookup in sys_refindex shall be performed (true; non FAL-based) or not (false; FAL-based)
@@ -167,7 +167,7 @@ class DatabaseService
      */
     public function getAllReferencesForFormDefinitionUid(): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
 
         $rows = $queryBuilder
             ->select('ref_uid AS identifier')
@@ -195,7 +195,7 @@ class DatabaseService
             throw new \InvalidArgumentException('$column must be "ref_string" or "ref_uid".', 1535406600);
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_refindex');
 
         $constraints = [
             $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier')),

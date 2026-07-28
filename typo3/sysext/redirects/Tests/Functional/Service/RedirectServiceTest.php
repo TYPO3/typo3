@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -124,7 +125,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         /** @var PhpFrontend $typoScriptCache */
         $typoScriptCache = $this->get(CacheManager::class)->getCache('typoscript');
         $redirectService = new RedirectService(
-            new RedirectCacheService(),
+            new RedirectCacheService($this->get(CacheManager::class)->getCache('pages'), $this->get(ConnectionPool::class)),
             $linkServiceMock,
             $siteFinder,
             new NoopEventDispatcher(),
@@ -896,7 +897,7 @@ final class RedirectServiceTest extends FunctionalTestCase
         /** @var PhpFrontend $typoScriptCache */
         $typoScriptCache = $this->get(CacheManager::class)->getCache('typoscript');
         $redirectService = new RedirectService(
-            new RedirectCacheService(),
+            new RedirectCacheService($this->get(CacheManager::class)->getCache('pages'), $this->get(ConnectionPool::class)),
             $this->get(LinkService::class),
             $siteFinder,
             $this->get(EventDispatcherInterface::class),
