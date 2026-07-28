@@ -75,3 +75,8 @@ Documentation-GENERATED-temp/
 # Ignore AI tool-generated files
 /CLAUDE.local.md
 /.claude/settings.local.json
+
+# AGENTS.md and CLAUDE.md are tracked project files. Some contributors ignore these
+# globally, so make sure a personal ignore rule does not hide them here.
+!/AGENTS.md
+!/CLAUDE.md
