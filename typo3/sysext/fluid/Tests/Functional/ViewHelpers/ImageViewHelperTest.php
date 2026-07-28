@@ -556,4 +556,26 @@ final class ImageViewHelperTest extends FunctionalTestCase
             (new TemplateView($context))->render(),
         );
     }
+
+    public static function missingFileDataProvider(): \Generator
+    {
+        yield 'file object' => ['<f:image image="{file}" />'];
+        yield 'file object, scaled' => ['<f:image image="{file}" width="200" />'];
+        yield 'file reference object' => ['<f:image image="{fileReference}" />'];
+        yield 'file uid' => ['<f:image src="2" />'];
+        yield 'file reference uid' => ['<f:image src="2" treatIdAsReference="1" />'];
+        yield 'base64' => ['<f:image image="{file}" base64="1" />'];
+    }
+
+    #[DataProvider('missingFileDataProvider')]
+    #[Test]
+    public function renderReturnsEmptyStringForFileMarkedAsMissing(string $template): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/ViewHelpers/ImageViewHelper/missing_file.csv');
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $context->getVariableProvider()->add('file', $this->get(ResourceFactory::class)->getFileObject(2));
+        $context->getVariableProvider()->add('fileReference', $this->get(ResourceFactory::class)->getFileReferenceObject(2));
+        self::assertSame('', (new TemplateView($context))->render());
+    }
 }

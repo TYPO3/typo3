@@ -21,6 +21,9 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -105,6 +108,9 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
 
         try {
             $image = $this->imageService->getImage($src, $this->arguments['image'], (bool)$this->arguments['treatIdAsReference']);
+            if ($this->isUnavailable($image)) {
+                return '';
+            }
             $cropString = $this->arguments['crop'];
             if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
                 $cropString = $image->getProperty('crop');
@@ -136,6 +142,11 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
                 $imageSrc = 'data:' . $processedImage->getMimeType() . ';base64,' . base64_encode($processedImage->getContents());
             } else {
                 $imageSrc = $this->imageService->getImageUri($processedImage, $this->arguments['absolute']);
+                if ($imageSrc === '') {
+                    // No public URL could be determined, for instance because the file resides in a
+                    // non-public storage and no request is available to create a file dump URL from.
+                    return '';
+                }
             }
 
             if (!$this->tag->hasAttribute('data-focus-area')) {
@@ -178,6 +189,20 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
             throw new Exception($this->getExceptionMessage($e->getMessage()), 1509741914, $e);
         }
         return $this->tag->render();
+    }
+
+    /**
+     * A file that has been flagged as missing by the file indexer, that has been deleted, or that
+     * resides in an offline storage can not be processed and has no public URL. Rendering an "img"
+     * tag for it would result in an empty "src" attribute, so nothing is rendered instead.
+     */
+    private function isUnavailable(FileInterface $image): bool
+    {
+        $file = $image instanceof FileReference ? $image->getOriginalFile() : $image;
+        if (!$file instanceof File) {
+            return false;
+        }
+        return $file->isMissing() || $file->isDeleted() || !$file->getStorage()->isOnline();
     }
 
     protected function getExceptionMessage(string $detailedMessage): string
