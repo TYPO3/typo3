@@ -118,7 +118,11 @@ final class RelationMap
 
     private function makeActiveRelation(array $relation): ActiveRelation
     {
-        return new ActiveRelation($relation['mm'] ?? $relation['target'], $relation['mmOppositeField'] ?? $relation['targetField'] ?? null);
+        return new ActiveRelation(
+            $relation['target'],
+            $relation['mmOppositeField'] ?? $relation['targetField'] ?? null,
+            $relation['mm'] ?? null
+        );
     }
 
     /**

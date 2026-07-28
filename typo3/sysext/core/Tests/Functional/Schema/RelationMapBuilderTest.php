@@ -279,6 +279,32 @@ final class RelationMapBuilderTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function relationMapBuilderResolvesManyToManyRelationToForeignTable(): void
+    {
+        $subject = $this->get(RelationMapBuilder::class);
+        $relationMap = $subject->buildFromStructure($GLOBALS['TCA']);
+
+        $result = $relationMap->getActiveRelations('tt_content', 'categories');
+        self::assertCount(1, $result);
+        self::assertEquals('sys_category', $result[0]->toTable());
+        self::assertEquals('items', $result[0]->toField());
+        self::assertTrue($result[0]->isManyToMany());
+        self::assertEquals('sys_category_record_mm', $result[0]->manyToManyTable());
+    }
+
+    #[Test]
+    public function relationMapBuilderReportsNoManyToManyTableForForeignFieldRelation(): void
+    {
+        $subject = $this->get(RelationMapBuilder::class);
+        $relationMap = $subject->buildFromStructure($GLOBALS['TCA']);
+
+        $result = $relationMap->getActiveRelations('tt_content', 'assets');
+        self::assertCount(1, $result);
+        self::assertFalse($result[0]->isManyToMany());
+        self::assertNull($result[0]->manyToManyTable());
+    }
+
+    #[Test]
     public function relationMapBuilderHandlesFlexFormWithMMRelations(): void
     {
         $tca = [
@@ -316,9 +342,17 @@ final class RelationMapBuilderTest extends FunctionalTestCase
         $result = $relationMap->getActiveRelations('test_table', 'flex_field');
         self::assertCount(1, $result);
 
-        // MM relations use the MM table as the target
-        self::assertEquals('test_table_category_mm', $result[0]->toTable());
+        // MM relations point to the foreign table, the intermediate table is kept separately
+        self::assertEquals('sys_category', $result[0]->toTable());
         self::assertNull($result[0]->toField());
+        self::assertTrue($result[0]->isManyToMany());
+        self::assertEquals('test_table_category_mm', $result[0]->manyToManyTable());
+
+        $passiveRelations = $relationMap->getPassiveRelations('sys_category');
+        self::assertCount(1, $passiveRelations);
+        self::assertEquals('test_table', $passiveRelations[0]->fromTable());
+        self::assertEquals('flex_field', $passiveRelations[0]->fromField());
+        self::assertEquals('sDEF/mm_categories', $passiveRelations[0]->flexPointer());
     }
 
     #[Test]
