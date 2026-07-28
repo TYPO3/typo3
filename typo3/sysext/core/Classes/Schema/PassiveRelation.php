@@ -43,6 +43,15 @@ final readonly class PassiveRelation
         return $this->fromField;
     }
 
+    /**
+     * Sheet and field identifier ("<sheet>/<field>") if the relation originates from within a FlexForm
+     * data structure, null otherwise.
+     */
+    public function flexPointer(): ?string
+    {
+        return $this->flexPointer;
+    }
+
     public static function __set_state(array $state): self
     {
         return new self(...$state);

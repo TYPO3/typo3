@@ -175,12 +175,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Routing/PageRouter.php
 
 		-
-			rawMessage: 'Property TYPO3\CMS\Core\Schema\PassiveRelation::$flexPointer is never read, only written.'
-			identifier: property.onlyWritten
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Schema/PassiveRelation.php
-
-		-
 			rawMessage: 'Property TYPO3\CMS\Core\Schema\Struct\FlexSectionContainer::$description is never read, only written.'
 			identifier: property.onlyWritten
 			count: 1

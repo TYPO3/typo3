@@ -23,12 +23,16 @@ namespace TYPO3\CMS\Core\Schema;
  * An example:
  * - A field "authors" in table "books" has an active relation to the field "written_books" in table "tx_myextension_author"
  * - A field "assets" in table "tt_content" has an active relation TO "sys_file_reference.uid".
+ *
+ * For relations stored in an intermediate table (TCA "MM"), toTable() is the schema the relation
+ * finally points to, while manyToManyTable() is the intermediate table holding the relation rows.
  */
 final readonly class ActiveRelation
 {
     public function __construct(
         private string $toTable,
-        private ?string $toField
+        private ?string $toField,
+        private ?string $manyToManyTable = null,
     ) {}
 
     public function toTable(): string
@@ -39,6 +43,16 @@ final readonly class ActiveRelation
     public function toField(): ?string
     {
         return $this->toField;
+    }
+
+    public function manyToManyTable(): ?string
+    {
+        return $this->manyToManyTable;
+    }
+
+    public function isManyToMany(): bool
+    {
+        return $this->manyToManyTable !== null;
     }
 
     public static function __set_state(array $state): self
