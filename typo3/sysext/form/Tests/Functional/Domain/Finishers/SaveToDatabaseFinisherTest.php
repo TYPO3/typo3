@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Finishers;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Platform\SQLitePlatform;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -41,7 +44,111 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SaveToDatabaseFinisherTest extends FunctionalTestCase
 {
-    protected array $coreExtensionsToLoad = ['form'];
+    protected array $coreExtensionsToLoad = ['form', 'sys_note'];
+
+    #[Test]
+    public function insertSetsCrdateAndTstampBasedOnTca(): void
+    {
+        $this->get(Context::class)->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@1710000000')));
+
+        $formRuntime = self::createStub(FormRuntime::class);
+        $formRuntime->method('getFormState')->willReturn(new FormState());
+        $formRuntime->method('getFormDefinition')->willReturn(new FormDefinition('form'));
+        $formRuntime->method('getRenderingOptions')->willReturn([
+            'translation' => ['translationFiles' => ['EXT:form/Resources/Private/Language/locallang.xlf']],
+        ]);
+        $finisherContext = new FinisherContext($formRuntime, self::createStub(Request::class));
+
+        $subject = new SaveToDatabaseFinisher();
+        $subject->setFinisherIdentifier('SaveToDatabase');
+        $subject->injectTranslationService($this->get(TranslationService::class));
+        $subject->setOptions([
+            'table' => 'sys_note',
+            'mode' => 'insert',
+            'databaseColumnMappings' => [
+                'pid' => ['value' => 1],
+                'subject' => ['value' => 'Form submission'],
+            ],
+        ]);
+
+        $subject->execute($finisherContext);
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_note');
+        $row = $queryBuilder
+            ->select('crdate', 'tstamp')
+            ->from('sys_note')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'subject',
+                    $queryBuilder->createNamedParameter('Form submission')
+                )
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertSame(1710000000, (int)$row['crdate']);
+        self::assertSame(1710000000, (int)$row['tstamp']);
+    }
+
+    #[Test]
+    public function updateSetsTstampButNotCrdate(): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('sys_note')->insert(
+            'sys_note',
+            [
+                'pid' => 1,
+                'subject' => 'Original subject',
+                'crdate' => 1700000000,
+                'tstamp' => 1700000000,
+            ]
+        );
+        $uid = (int)$this->getConnectionPool()->getConnectionForTable('sys_note')->lastInsertId();
+
+        $this->get(Context::class)->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@1720000000')));
+
+        $formRuntime = self::createStub(FormRuntime::class);
+        $formRuntime->method('getFormState')->willReturn(new FormState());
+        $formRuntime->method('getFormDefinition')->willReturn(new FormDefinition('form'));
+        $formRuntime->method('getRenderingOptions')->willReturn([
+            'translation' => ['translationFiles' => ['EXT:form/Resources/Private/Language/locallang.xlf']],
+        ]);
+        $finisherContext = new FinisherContext($formRuntime, self::createStub(Request::class));
+
+        $subject = new SaveToDatabaseFinisher();
+        $subject->setFinisherIdentifier('SaveToDatabase');
+        $subject->injectTranslationService($this->get(TranslationService::class));
+        $subject->setOptions([
+            'table' => 'sys_note',
+            'mode' => 'update',
+            'whereClause' => [
+                'uid' => $uid,
+            ],
+            'databaseColumnMappings' => [
+                'subject' => ['value' => 'Updated subject'],
+            ],
+        ]);
+
+        $subject->execute($finisherContext);
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_note');
+        $row = $queryBuilder
+            ->select('crdate', 'tstamp', 'subject')
+            ->from('sys_note')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                )
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+
+        self::assertIsArray($row);
+        self::assertSame('Updated subject', $row['subject']);
+        self::assertSame(1700000000, (int)$row['crdate']);
+        self::assertSame(1720000000, (int)$row['tstamp']);
+    }
 
     #[Test]
     public function insertIntoTableWithoutUidColumnCreatesRow(): void
