@@ -120,7 +120,7 @@
 	"require-dev": {
 		"bnf/phpstan-psr-container": "^1.1.0",
 		"composer/composer": "^2.9.8",
-		"friendsofphp/php-cs-fixer": "^3.95",
+		"friendsofphp/php-cs-fixer": "^3.95.17",
 		"phpstan/phpstan": "^2.2.6",
 		"phpstan/phpstan-phpunit": "^2.0.16",
 		"phpunit/phpunit": "^11.5.55",
