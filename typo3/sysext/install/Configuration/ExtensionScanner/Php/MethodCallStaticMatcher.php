@@ -1849,4 +1849,11 @@ return [
             'Breaking-109783-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Core\Bootstrap::startOutputBuffering' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-110250-RemovedImplicitOutputBufferingFromBootstrap.rst',
+        ],
+    ],
 ];

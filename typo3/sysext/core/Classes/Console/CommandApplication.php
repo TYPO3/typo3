@@ -103,12 +103,17 @@ class CommandApplication implements ApplicationInterface
             }
         }
 
+        // Make sure output is not buffered, so command-line output and interaction can take place.
+        // Bootstrap does not open a buffer anymore, but third-party extension code may have done
+        // so while ext_localconf.php files were loaded.
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+
         $this->initializeContext();
         // create the BE_USER object (not logged in yet)
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
-        // Make sure output is not buffered, so command-line output and interaction can take place
-        ob_end_clean();
 
         $exitCode = $this->application->run($input, $output);
         // exit codes > 255 are not handled in UNIX

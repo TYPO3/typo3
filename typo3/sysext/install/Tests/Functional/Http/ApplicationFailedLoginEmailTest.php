@@ -92,6 +92,7 @@ final class ApplicationFailedLoginEmailTest extends FunctionalTestCase
                 ],
             ]);
 
+        $outputBufferingLevel = ob_get_level();
         try {
             $container = Bootstrap::init(ClassLoadingInformation::getClassLoader(), true);
             $response = $container->get(Application::class)->handle($request);
@@ -106,8 +107,9 @@ final class ApplicationFailedLoginEmailTest extends FunctionalTestCase
             if (session_status() === PHP_SESSION_ACTIVE) {
                 session_abort();
             }
-            if (ob_get_level() > 0) {
-                @ob_end_clean();
+            // Drop output buffers opened by the application, but never phpunit's own one.
+            while (ob_get_level() > $outputBufferingLevel) {
+                ob_end_clean();
             }
         }
     }

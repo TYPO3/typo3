@@ -78,9 +78,6 @@ readonly class Bootstrap
             ClassLoadingInformation::registerClassLoadingInformation();
         }
 
-        // @todo Remove output buffering in TYPO3 v14
-        static::startOutputBuffering();
-
         $configurationManager = static::createConfigurationManager();
         if (!static::checkIfEssentialConfigurationExists($configurationManager)) {
             $failsafe = true;
@@ -155,17 +152,6 @@ readonly class Bootstrap
         $eventDispatcher->dispatch(new BootCompletedEvent(true));
 
         return $container;
-    }
-
-    /**
-     * Prevent any unwanted output that may corrupt AJAX/compression.
-     * This does not interfere with "die()" or "echo"+"exit()" messages!
-     *
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public static function startOutputBuffering()
-    {
-        ob_start();
     }
 
     /**
