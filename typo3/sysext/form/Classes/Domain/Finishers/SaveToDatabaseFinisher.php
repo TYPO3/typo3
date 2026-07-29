@@ -18,8 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use Doctrine\DBAL\Exception;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -304,6 +307,11 @@ class SaveToDatabaseFinisher extends AbstractFinisher
         }
 
         $databaseData = $this->prepareData($elementsConfiguration, $databaseData);
+        $databaseData = $this->addSystemFieldsToDatabaseData(
+            $databaseData,
+            $table,
+            $this->parseOption('mode') === 'update'
+        );
 
         try {
             $this->saveToDatabase($databaseData, $table, $iterationCount);
@@ -314,6 +322,37 @@ class SaveToDatabaseFinisher extends AbstractFinisher
                 $e
             );
         }
+    }
+
+    /**
+     * Adds system fields like crdate and tstamp to the database data array
+     * based on the TCA schema of the target table.
+     */
+    protected function addSystemFieldsToDatabaseData(array $databaseData, string $table, bool $isUpdate): array
+    {
+        $tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        if (!$tcaSchemaFactory->has($table)) {
+            return $databaseData;
+        }
+
+        $schema = $tcaSchemaFactory->get($table);
+        $timestamp = (int)GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
+
+        if (!$isUpdate && $schema->hasCapability(TcaSchemaCapability::CreatedAt)) {
+            $fieldName = $schema->getCapability(TcaSchemaCapability::CreatedAt)->getFieldName();
+            if (!isset($databaseData[$fieldName])) {
+                $databaseData[$fieldName] = $timestamp;
+            }
+        }
+
+        if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
+            $fieldName = $schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName();
+            if (!isset($databaseData[$fieldName])) {
+                $databaseData[$fieldName] = $timestamp;
+            }
+        }
+
+        return $databaseData;
     }
 
     /**
