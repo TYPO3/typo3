@@ -136,6 +136,55 @@ is part of the minimal TYPO3 Core, the meta tag providers for the description
 meta tag commonly used for search engine optimazation, and the social preview
 meta tags of Open Graph and Twitter / X are part of :composer:`typo3/cms-seo`.
 
+..  _seo-meta-tag-precedence:
+
+Precedence of page properties over TypoScript
+---------------------------------------------
+
+Meta tags are set from three different places, in this order:
+
+#.  Plugins rendered within the page content, for example a news detail plugin
+#.  The page properties provided by :composer:`typo3/cms-seo`, such as
+    :guilabel:`Description`, :guilabel:`Title` (Open Graph) or
+    :guilabel:`Card type` (X / Twitter)
+#.  The TypoScript setting :typoscript:`page.meta`
+
+A meta tag that has been set already is *not* overwritten by a later one. Since
+:typoscript:`page.meta` is evaluated last, a filled page property always wins
+over TypoScript. With the page property :guilabel:`Description` filled, the
+following setup has no effect:
+
+..  code-block:: typoscript
+
+    page.meta.description = Description from TypoScript
+
+This makes :typoscript:`page.meta` a fallback that is applied on all pages where
+the corresponding page property is empty. A typical use case is inheriting a
+value from a parent page:
+
+..  code-block:: typoscript
+
+    page.meta.og:title.data = levelfield:-1, og_title, slide
+
+To let TypoScript win over the page property, use :typoscript:`replace`:
+
+..  code-block:: typoscript
+
+    page.meta.description = Description from TypoScript
+    page.meta.description.replace = 1
+
+An empty value never removes an already generated meta tag, so
+:typoscript:`replace` in combination with
+`stdWrap <https://docs.typo3.org/permalink/t3tsref:stdwrap>`_ overrides the page
+property only if TypoScript actually resolves to a value. The following setup
+uses the page property :guilabel:`Abstract` if it is filled, and keeps the value
+of the page property :guilabel:`Description` otherwise:
+
+..  code-block:: typoscript
+
+    page.meta.description.data = page:abstract
+    page.meta.description.replace = 1
+
 ..  _seo-hreflang:
 
 Hreflang tags
