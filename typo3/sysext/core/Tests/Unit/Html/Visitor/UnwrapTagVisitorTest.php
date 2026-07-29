@@ -87,7 +87,7 @@ final class UnwrapTagVisitorTest extends UnitTestCase
 
     #[DataProvider('unwrapTagsDataProvider')]
     #[Test]
-    public function enterNodeUnwrapsSpecifiedTags(string $tagName, string $html, string $expectedContent): void
+    public function leaveNodeUnwrapsSpecifiedTags(string $tagName, string $html, string $expectedContent): void
     {
         $visitor = new UnwrapTagVisitor();
         $doc = new \DOMDocument();
@@ -97,32 +97,32 @@ final class UnwrapTagVisitorTest extends UnitTestCase
         $tag = $doc->getElementsByTagName(strtolower($tagName))->item(0);
         self::assertNotNull($tag, "Tag {$tagName} should exist in test HTML");
 
-        // Call enterNode to unwrap the tag
-        $result = $visitor->enterNode($tag);
+        // Call leaveNode to unwrap the tag (unwrapping happens post-order,
+        // after children have already been traversed by other visitors)
+        $result = $visitor->leaveNode($tag);
 
         // Visitor should return null to indicate the node should be removed
-        self::assertNull($result, 'enterNode should return null for unwrapped tags');
+        self::assertNull($result, 'leaveNode should return null for unwrapped tags');
 
         // Check that the content was preserved
         self::assertStringContainsString($expectedContent, $doc->saveHTML($doc->getElementsByTagName('div')->item(0)));
     }
 
     #[Test]
-    public function enterNodePreservesNonUnwrapTags(): void
+    public function enterNodeAlwaysReturnsNodeUnchanged(): void
     {
         $visitor = new UnwrapTagVisitor();
         $doc = new \DOMDocument();
-        $html = '<div><span class="test">content</span></div>';
+        $html = '<div><a href="#">link</a><span class="test">content</span></div>';
         $doc->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
+        // enterNode no longer unwraps anything - unwrapping is deferred to
+        // leaveNode so that children are sanitized before being reparented
+        $anchor = $doc->getElementsByTagName('a')->item(0);
+        self::assertSame($anchor, $visitor->enterNode($anchor));
+
         $span = $doc->getElementsByTagName('span')->item(0);
-        self::assertNotNull($span);
-
-        // Call enterNode - should return the node unchanged
-        $result = $visitor->enterNode($span);
-
-        // Should return the original node since span is not in UNWRAP_TAGS
-        self::assertSame($span, $result);
+        self::assertSame($span, $visitor->enterNode($span));
     }
 
     #[Test]
@@ -138,7 +138,7 @@ final class UnwrapTagVisitorTest extends UnitTestCase
     }
 
     #[Test]
-    public function enterNodeReturnsNullForTagWithoutParent(): void
+    public function leaveNodeReturnsNullForTagWithoutParent(): void
     {
         $visitor = new UnwrapTagVisitor();
         $doc = new \DOMDocument();
@@ -148,19 +148,19 @@ final class UnwrapTagVisitorTest extends UnitTestCase
         $anchor->textContent = 'test';
 
         // Should return null when parent is null
-        $result = $visitor->enterNode($anchor);
-        self::assertNull($result, 'enterNode should return null when tag has no parent');
+        $result = $visitor->leaveNode($anchor);
+        self::assertNull($result, 'leaveNode should return null when tag has no parent');
     }
 
     #[Test]
-    public function leaveNodeReturnsNodeUnchanged(): void
+    public function leaveNodeReturnsNodeUnchangedForNonUnwrapTags(): void
     {
         $visitor = new UnwrapTagVisitor();
         $doc = new \DOMDocument();
         $node = $doc->createElement('div');
 
         $result = $visitor->leaveNode($node);
-        self::assertSame($node, $result, 'leaveNode should return the node unchanged');
+        self::assertSame($node, $result, 'leaveNode should return the node unchanged for non-unwrap tags');
     }
 
     #[Test]
@@ -179,8 +179,33 @@ final class UnwrapTagVisitorTest extends UnitTestCase
             $tag = $doc->getElementsByTagName($tagName)->item(0);
             self::assertNotNull($tag, "Tag {$tagName} should exist");
 
-            $result = $visitor->enterNode($tag);
+            $result = $visitor->leaveNode($tag);
             self::assertNull($result, "Tag {$tagName} should be unwrapped (return null)");
         }
+    }
+
+    #[Test]
+    public function leaveNodeUnwrapsAlreadySanitizedChildren(): void
+    {
+        // Regression test: children must be reparented only in leaveNode,
+        // after other visitors have had a chance to sanitize them. Simulate
+        // an already-sanitized child (e.g. a disallowed <script> tag that a
+        // prior visitor has converted to escaped text) nested in an anchor.
+        $visitor = new UnwrapTagVisitor();
+        $doc = new \DOMDocument();
+        $html = '<div><a href="#"></a></div>';
+        $doc->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        $anchor = $doc->getElementsByTagName('a')->item(0);
+        self::assertNotNull($anchor);
+        $sanitizedText = $doc->createTextNode('&lt;script&gt;alert(1)&lt;/script&gt;');
+        $anchor->appendChild($sanitizedText);
+
+        $result = $visitor->leaveNode($anchor);
+        self::assertNull($result);
+        self::assertStringContainsString(
+            '&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;',
+            $doc->saveHTML($doc->getElementsByTagName('div')->item(0))
+        );
     }
 }

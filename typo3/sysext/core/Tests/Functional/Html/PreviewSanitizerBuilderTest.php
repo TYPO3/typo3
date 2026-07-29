@@ -116,17 +116,19 @@ final class PreviewSanitizerBuilderTest extends FunctionalTestCase
                 '<a HREF="https://example.com">Link</a>',
                 'Link',
             ],
+            // Nested unwrap tags (a inside h1-h6, or vice versa) are unwrapped
+            // recursively, since each nested tag is itself an unwrap target
             '#060' => [
                 '<h1><a href="https://example.com">Nested</a></h1>',
-                '<a href="https://example.com">Nested</a>',
+                'Nested',
             ],
             '#061' => [
                 '<a href="https://example.com"><h2>Reverse nested</h2></a>',
-                '<h2>Reverse nested</h2>',
+                'Reverse nested',
             ],
             '#062' => [
                 '<h1><a href="https://example.com">Text <strong>bold</strong></a></h1>',
-                '<a href="https://example.com">Text <strong>bold</strong></a>',
+                'Text <strong>bold</strong>',
             ],
             '#070' => [
                 '<p>Normal paragraph</p>',
@@ -154,7 +156,7 @@ final class PreviewSanitizerBuilderTest extends FunctionalTestCase
             ],
             '#082' => [
                 '<h3><script>alert(1)</script></h3>',
-                '<script>alert(1)</script>',
+                '&lt;script&gt;alert(1)&lt;/script&gt;',
             ],
             '#090' => [
                 '<div><h1>Title</h1><p>Content with <a href="https://example.com">link</a></p></div>',
@@ -204,7 +206,22 @@ final class PreviewSanitizerBuilderTest extends FunctionalTestCase
             ],
             '#131' => [
                 '<h1><unknown>nested</unknown></h1>',
-                '<unknown>nested</unknown>',
+                '&lt;unknown&gt;nested&lt;/unknown&gt;',
+            ],
+            // Regression: nested disallowed/dangerous markup inside unwrap tags
+            // must be sanitized, not passed through verbatim (previously bypassed
+            // because UnwrapTagVisitor reparented raw children before sanitization)
+            '#140' => [
+                '<a href="/"><img src=x onerror=alert(1)></a>',
+                '<img src="x">',
+            ],
+            '#141' => [
+                '<a href="/"><script>alert(1)</script></a>',
+                '&lt;script&gt;alert(1)&lt;/script&gt;',
+            ],
+            '#142' => [
+                '<h2><svg onload=alert(1)></svg></h2>',
+                '&lt;svg onload="alert(1)" /&gt;',
             ],
             '#200' => [
                 '<h1>Article Title</h1><p>This is a preview with <a href="/full-article">read more</a></p>',
