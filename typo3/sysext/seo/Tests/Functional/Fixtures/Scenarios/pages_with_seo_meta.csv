@@ -1,5 +1,4 @@
-"pages",,,,,
-,"uid","pid","title","twitter_card","deleted"
-,1,0,"Page with twitter_card","summary",0
-,2,1,"Page with twitter_card and typoscript","summary",0
-,3,1,"Page with twitter_card and typoscript with replace","summary",0
+"pages",,,,,,
+,"uid","pid","title","twitter_card","description","og_title","deleted"
+,1,0,"Page with SEO fields","summary","Description from page record","OG title from page record",0
+,2,1,"Page without SEO fields","","","",0

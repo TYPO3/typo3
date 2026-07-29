@@ -1,6 +1,0 @@
-page = PAGE
-page {
-  meta {
-    twitter:card = summary_large_image
-  }
-}

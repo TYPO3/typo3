@@ -23,7 +23,11 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 /**
- * Functional test for the DataHandler
+ * Pins the interaction between meta tags generated from the page record by EXT:seo
+ * and meta tags defined via "page.meta" TypoScript.
+ *
+ * Meta tags of the page record are added before TypoScript is evaluated, so a value
+ * from the page record wins, unless TypoScript uses "replace = 1".
  */
 final class MetaTagTest extends AbstractTestCase
 {
@@ -46,43 +50,103 @@ final class MetaTagTest extends AbstractTestCase
     public static function ensureMetaDataAreCorrectDataProvider(): array
     {
         return [
-            'page with twitter_card in page properties' => [
+            'page record wins over TypoScript for description' => [
                 1,
                 [
-                    ['type' => 'name' , 'tag' => 'twitter:card', 'content' => 'summary'],
+                    'page.meta.description = Description from TypoScript',
                 ],
+                ['<meta name="description" content="Description from page record">'],
+                ['<meta name="description" content="Description from TypoScript">'],
             ],
-            'page with twitter_card in page properties and in typoscript' => [
+            'TypoScript with replace wins over page record for description' => [
+                1,
+                [
+                    'page.meta.description = Description from TypoScript',
+                    'page.meta.description.replace = 1',
+                ],
+                ['<meta name="description" content="Description from TypoScript">'],
+                ['<meta name="description" content="Description from page record">'],
+            ],
+            'page record wins over TypoScript for og:title' => [
+                1,
+                [
+                    'page.meta.og:title = OG title from TypoScript',
+                ],
+                ['<meta property="og:title" content="OG title from page record">'],
+                ['<meta property="og:title" content="OG title from TypoScript">'],
+            ],
+            'TypoScript with replace wins over page record for og:title' => [
+                1,
+                [
+                    'page.meta.og:title = OG title from TypoScript',
+                    'page.meta.og:title.replace = 1',
+                ],
+                ['<meta property="og:title" content="OG title from TypoScript">'],
+                ['<meta property="og:title" content="OG title from page record">'],
+            ],
+            'page record wins over TypoScript for twitter:card' => [
+                1,
+                [
+                    'page.meta.twitter:card = summary_large_image',
+                ],
+                ['<meta name="twitter:card" content="summary">'],
+                ['<meta name="twitter:card" content="summary_large_image">'],
+            ],
+            'TypoScript with replace wins over page record for twitter:card' => [
+                1,
+                [
+                    'page.meta.twitter:card = summary_large_image',
+                    'page.meta.twitter:card.replace = 1',
+                ],
+                ['<meta name="twitter:card" content="summary_large_image">'],
+                ['<meta name="twitter:card" content="summary">'],
+            ],
+            'TypoScript with replace but empty value keeps the page record value' => [
+                1,
+                [
+                    'page.meta.description =',
+                    'page.meta.description.replace = 1',
+                ],
+                ['<meta name="description" content="Description from page record">'],
+                [],
+            ],
+            'TypoScript is used if the page record field is empty' => [
                 2,
                 [
-                    ['type' => 'name' , 'tag' => 'twitter:card', 'content' => 'summary'],
+                    'page.meta.description = Description from TypoScript',
                 ],
+                ['<meta name="description" content="Description from TypoScript">'],
+                [],
             ],
-            'page with twitter_card in page properties and in typoscript with replace' => [
-                3,
+            'TypoScript stdWrap is used if the page record field is empty' => [
+                2,
                 [
-                    ['type' => 'name' , 'tag' => 'twitter:card', 'content' => 'summary_large_image'],
+                    'page.meta.og:title.data = levelfield:-1, og_title, slide',
                 ],
+                ['<meta property="og:title" content="OG title from page record">'],
+                [],
             ],
         ];
     }
 
     #[DataProvider('ensureMetaDataAreCorrectDataProvider')]
     #[Test]
-    public function ensureMetaDataAreCorrect(int $pageId, array $expectedMetaTags): void
+    public function ensureMetaDataAreCorrect(int $pageId, array $typoScriptSetup, array $expectedMetaTags, array $notExpectedMetaTags): void
     {
-        $this->setUpFrontendRootPage(1, ['EXT:seo/Tests/Functional/Fixtures/page' . $pageId . '.typoscript']);
+        $this->setUpFrontendRootPage(1, [], ['config' => implode(LF, array_merge(['page = PAGE'], $typoScriptSetup))]);
 
-        // First hit to create a cached version
-        $uncachedResponse = $this->executeFrontendSubRequest(
+        $response = $this->executeFrontendSubRequest(
             (new InternalRequest('http://localhost/'))->withQueryParameters([
                 'id' => $pageId,
             ])
         );
-        $body = (string)$uncachedResponse->getBody();
+        $body = (string)$response->getBody();
 
         foreach ($expectedMetaTags as $expectedMetaTag) {
-            self::assertStringContainsString('<meta ' . $expectedMetaTag['type'] . '="' . $expectedMetaTag['tag'] . '" content="' . $expectedMetaTag['content'] . '">', $body);
+            self::assertStringContainsString($expectedMetaTag, $body);
+        }
+        foreach ($notExpectedMetaTags as $notExpectedMetaTag) {
+            self::assertStringNotContainsString($notExpectedMetaTag, $body);
         }
     }
 }
