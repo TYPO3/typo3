@@ -32,6 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 #[AllowMockObjectsWithoutExpectations]
 final class FileTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     #[Test]
     public function commonPropertiesAreAvailableWithOwnGetters(): void
     {

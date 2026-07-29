@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -31,6 +32,12 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
      * This flag is used to treat a possible recursion between $this->get() and $this->file->getUid()
      */
     private bool $loaded = false;
+
+    /**
+     * Identifies the context the metadata was fetched from the database for. Stays NULL for
+     * metadata that was handed in via add() or offsetSet(), so such data is never dropped.
+     */
+    private ?string $resolvedForContext = null;
 
     private int $indexPosition = 0;
 
@@ -61,11 +68,49 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
      */
     public function get(): array
     {
-        if (!$this->loaded) {
+        $currentContext = $this->getContextIdentifier();
+        if (!$this->loaded || ($this->resolvedForContext !== null && $this->resolvedForContext !== $currentContext)) {
             $this->loaded = true;
+            $this->resolvedForContext = $currentContext;
             $this->metaData = $this->loadFromRepository();
         }
         return $this->metaData;
+    }
+
+    /**
+     * The metadata record is resolved for the language and workspace of the current context, so a
+     * loaded record must not be reused once that context changed within the same request. This is
+     * relevant whenever more than one language is rendered in a single process, for instance a
+     * command controller, a cache warmup or an Extbase query for a specific language.
+     *
+     * @todo This is a workaround for the language not being part of the metadata resolution chain:
+     *       MetaDataRepository::findByFileUid() always reads the default language record, and the
+     *       translation is applied afterwards by the frontend-only event listener
+     *       FileMetadataOverlayAspect, which asks the global Context for the language. Two things
+     *       therefore remain broken and cannot be solved here:
+     *       - In backend and CLI context no overlay happens at all, so translated metadata is
+     *         never used, no matter which language a record belongs to.
+     *       - An explicitly requested language is ignored, since only the ambient context counts.
+     *         This affects Extbase query settings and every cloned Context, as used by
+     *         PageLinkBuilder, HrefLangGenerator or language menus.
+     *       The language has to become an explicit argument instead: findByFileUid() should take a
+     *       LanguageAspect and resolve the translation - including its fallback chain - within its
+     *       own query, File::getMetaData() should pass such an aspect through, and this cache
+     *       should be keyed by that aspect rather than by the current context.
+     *       FileReference::getProperties() memoizes the merged metadata and uses this identifier
+     *       for the very same reason, which is why it is exposed at all.
+     *
+     * @internal
+     */
+    public function getContextIdentifier(): string
+    {
+        $context = GeneralUtility::makeInstance(Context::class);
+        return implode('-', [
+            $context->getPropertyFromAspect('language', 'contentId', 0),
+            $context->getPropertyFromAspect('language', 'overlayType', ''),
+            implode(',', $context->getPropertyFromAspect('language', 'fallbackChain', [])),
+            $context->getPropertyFromAspect('workspace', 'id', 0),
+        ]);
     }
 
     public function offsetExists(mixed $offset): bool
