@@ -23,7 +23,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand;
 use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\FileSpool;
 use TYPO3\CMS\Core\Mail\MailerInterface;
@@ -36,7 +35,6 @@ use TYPO3\CMS\Core\Mail\MailerInterface;
  * @link https://github.com/symfony/swiftmailer-bundle/blob/master/Command/SendEmailCommand.php
  */
 #[AsCommand('mailer:spool:send', 'Sends emails from the spool.', ['swiftmailer:spool:send'])]
-#[AsNonSchedulableCommand]
 class SendEmailCommand extends Command
 {
     public function __construct(protected readonly MailerInterface $mailer)
