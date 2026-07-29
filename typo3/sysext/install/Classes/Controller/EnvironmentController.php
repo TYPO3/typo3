@@ -683,7 +683,7 @@ class EnvironmentController extends AbstractController
         $imageService = $this->initializeGraphicalFunctions();
         $inputFile = $imageBasePath . 'TestInput/Transparent.svg';
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('transparent-svg-webp');
-        $imResult = $imageService->resize($inputFile, 'webp', '300', '', '-flatten', [], true);
+        $imResult = $imageService->resize($inputFile, 'webp', '300', '', '', [], true);
         if ($imResult !== null && $imResult->isFile()) {
             $result = [
                 'fileExists' => true,
@@ -715,7 +715,7 @@ class EnvironmentController extends AbstractController
         $imageService = $this->initializeGraphicalFunctions();
         $inputFile = $imageBasePath . 'TestInput/Transparent.svg';
         $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('transparent-svg-webp');
-        $imResult = $imageService->resize($inputFile, 'png', '300', '', '-flatten', [], true);
+        $imResult = $imageService->resize($inputFile, 'png', '300', '', '', [], true);
         if ($imResult !== null && $imResult->isFile()) {
             $result = [
                 'fileExists' => true,
