@@ -39,8 +39,17 @@ final class UnwrapTagVisitor implements VisitorInterface
 
     public function beforeTraverse(Context $context) {}
 
-    public function enterNode(\DOMNode $domNode): ?\DOMNode
+    public function enterNode(\DOMNode $domNode): \DOMNode
     {
+        return $domNode;
+    }
+
+    public function leaveNode(\DOMNode $domNode): ?\DOMNode
+    {
+        // Unwrapping is done in `leaveNode()` (post-order), after children
+        // have already been traversed and sanitized by other visitors.
+        // Doing this in `enterNode()` would move still-unsanitized children
+        // out of this node before the sanitizer ever visits them.
         if (
             !$domNode instanceof \DOMElement
             || !in_array(strtolower($domNode->tagName), self::UNWRAP_TAGS, true)
@@ -53,18 +62,13 @@ final class UnwrapTagVisitor implements VisitorInterface
             return null;
         }
 
-        // Move all children before the current node
+        // Move all (already sanitized) children before the current node
         while ($domNode->firstChild !== null) {
             $parent->insertBefore($domNode->firstChild, $domNode);
         }
 
         // Remove the wrapping element
         return null;
-    }
-
-    public function leaveNode(\DOMNode $domNode): \DOMNode
-    {
-        return $domNode;
     }
 
     public function afterTraverse(Context $context) {}
