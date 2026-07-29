@@ -36,6 +36,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 #[BackupGlobals(true)]
 final class MetaDataAspectTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     #[Test]
     public function knownMetaDataIsAdded(): void
     {

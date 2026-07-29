@@ -27,6 +27,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AreaTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     #[Test]
     public function makeRelativeToFileReducesSizes(): void
     {
