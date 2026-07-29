@@ -84,27 +84,12 @@ class MiddlewareDispatcher implements RequestHandlerInterface
      * Middlewares are organized as a stack. That means middlewares
      * that have been added before will be executed after the newly
      * added one (last in, first out).
-     *
-     * @param MiddlewareInterface $middleware
      */
-    public function add(MiddlewareInterface $middleware)
+    public function add(MiddlewareInterface $middleware): void
     {
         $next = $this->tip;
         $this->tip = new class ($middleware, $next) implements RequestHandlerInterface {
-            /**
-             * @var MiddlewareInterface
-             */
-            private $middleware;
-            /**
-             * @var RequestHandlerInterface
-             */
-            private $next;
-
-            public function __construct(MiddlewareInterface $middleware, RequestHandlerInterface $next)
-            {
-                $this->middleware = $middleware;
-                $this->next = $next;
-            }
+            public function __construct(private readonly MiddlewareInterface $middleware, private readonly RequestHandlerInterface $next) {}
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -126,27 +111,11 @@ class MiddlewareDispatcher implements RequestHandlerInterface
     {
         $next = $this->tip;
         $this->tip = new class ($middleware, $next, $this->container) implements RequestHandlerInterface {
-            /**
-             * @var string
-             */
-            private $middleware;
-
-            /**
-             * @var RequestHandlerInterface
-             */
-            private $next;
-
-            /**
-             * @var ContainerInterface|null
-             */
-            private $container;
-
-            public function __construct(string $middleware, RequestHandlerInterface $next, ?ContainerInterface $container = null)
-            {
-                $this->middleware = $middleware;
-                $this->next = $next;
-                $this->container = $container;
-            }
+            public function __construct(
+                private readonly string $middleware,
+                private readonly RequestHandlerInterface $next,
+                private readonly ?ContainerInterface $container = null
+            ) {}
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {

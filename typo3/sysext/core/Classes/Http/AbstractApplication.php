@@ -31,15 +31,12 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var RequestHandlerInterface|null
-     */
-    protected $requestHandler;
+    protected ?RequestHandlerInterface $requestHandler;
 
     /**
      * Outputs content
      */
-    protected function sendResponse(ResponseInterface $response)
+    protected function sendResponse(ResponseInterface $response): void
     {
         if ($response instanceof NullResponse) {
             return;

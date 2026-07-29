@@ -746,6 +746,7 @@ return [
         'restFiles' => [
             'Deprecation-85821-BootstrapMethods.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
+            'Breaking-110319-RemovedUnusedInternalBootstrapMethods.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\Bootstrap::disableCoreCache' => [
@@ -1861,6 +1862,20 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-110202-StringUtilityMultibyteStringPad.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Bootstrap::baseSetup' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-110319-RemovedUnusedInternalBootstrapMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Core\Bootstrap::createConfigurationManager' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-110319-RemovedUnusedInternalBootstrapMethods.rst',
         ],
     ],
 ];

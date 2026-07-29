@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -78,11 +80,14 @@ readonly class Bootstrap
             ClassLoadingInformation::registerClassLoadingInformation();
         }
 
-        $configurationManager = static::createConfigurationManager();
+        // We need an early instance of the configuration manager.
+        // Since makeInstance relies on the object configuration, we create it here with new instead.
+        $configurationManager = new ConfigurationManager();
         if (!static::checkIfEssentialConfigurationExists($configurationManager)) {
             $failsafe = true;
         }
-        static::populateLocalConfiguration($configurationManager);
+        // TYPO3_CONF_VARS is now loaded by settings.php and additional.php
+        $configurationManager->exportConfiguration();
 
         $logManager = new LogManager($requestId);
         // LogManager is used by the core ErrorHandler (using GeneralUtility::makeInstance),
@@ -142,31 +147,21 @@ readonly class Bootstrap
             return $container;
         }
 
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $tcaFactory = $container->get(TcaFactory::class);
-        $container->get(ExtLocalconfFactory::class)->load();
-        $GLOBALS['TCA'] = $tcaFactory->get();
+        // The encryption key is part of the system configuration and must be set up
+        // before any extension code is executed.
         static::checkEncryptionKey();
+
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
+        $container->get(ExtLocalconfFactory::class)->load();
+        $tca = $container->get(TcaFactory::class)->get();
         $bootState->complete = true;
-        $container->get(TcaSchemaFactory::class)->load($GLOBALS['TCA']);
+        // $GLOBALS['TCA'] is only published once the schema is built, so consumers
+        // triggered by the schema factory can not work with a half-initialized state.
+        $container->get(TcaSchemaFactory::class)->load($tca);
+        $GLOBALS['TCA'] = $tca;
         $eventDispatcher->dispatch(new BootCompletedEvent(true));
 
         return $container;
-    }
-
-    /**
-     * Run the base setup that checks server environment, determines paths,
-     * populates base files and sets common configuration.
-     *
-     * Script execution will be aborted if something fails here.
-     *
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public static function baseSetup()
-    {
-        if (!Environment::isComposerMode() && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
-            ClassLoadingInformation::registerClassLoadingInformation();
-        }
     }
 
     /**
@@ -239,34 +234,12 @@ readonly class Bootstrap
     }
 
     /**
-     * We need an early instance of the configuration manager.
-     * Since makeInstance relies on the object configuration, we create it here with new instead.
-     */
-    public static function createConfigurationManager(): ConfigurationManager
-    {
-        return new ConfigurationManager();
-    }
-
-    /**
-     * We need an early instance of the configuration manager.
-     * Since makeInstance relies on the object configuration, we create it here with new instead.
-     *
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    protected static function populateLocalConfiguration(ConfigurationManager $configurationManager)
-    {
-        $configurationManager->exportConfiguration();
-    }
-
-    /**
      * Instantiates an early cache instance
      *
-     * Creates a cache instances independently from the CacheManager.
+     * Creates a cache instances independently of the CacheManager.
      * The is used to create the core cache during early bootstrap when the CacheManager
      * is not yet available (i.e. configuration is not yet loaded).
      *
-     * @param string $identifier
-     * @param bool $disableCaching
      * @param class-string<BackendInterface>|null $enforcedCacheBackend
      * @internal
      */
@@ -312,7 +285,7 @@ readonly class Bootstrap
     /**
      * Set default timezone
      */
-    protected static function setDefaultTimezone()
+    protected static function setDefaultTimezone(): void
     {
         $timeZone = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'];
         if (empty($timeZone)) {
@@ -388,7 +361,7 @@ readonly class Bootstrap
      * Set PHP memory limit depending on value of
      * $GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit']
      */
-    protected static function setMemoryLimit()
+    protected static function setMemoryLimit(): void
     {
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] > 16) {
             @ini_set('memory_limit', (string)((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit'] . 'm'));
@@ -398,7 +371,7 @@ readonly class Bootstrap
     /**
      * Check if a configuration key has been configured
      */
-    protected static function checkEncryptionKey()
+    protected static function checkEncryptionKey(): void
     {
         if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
             throw new \RuntimeException(
@@ -427,7 +400,7 @@ readonly class Bootstrap
     /**
      * Initializes and ensures authenticated access
      */
-    public static function initializeBackendAuthentication()
+    public static function initializeBackendAuthentication(): void
     {
         $GLOBALS['BE_USER']->backendCheckLogin();
     }
