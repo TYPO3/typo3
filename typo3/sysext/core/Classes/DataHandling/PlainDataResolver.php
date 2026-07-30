@@ -24,11 +24,35 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
- * Plain data resolving.
+ * Resolves a given set of record IDs to the IDs that are relevant in a target workspace.
  *
- * This component resolves data constraints for given IDs of a
- * particular table on a plain/raw database level. Thus, workspaces
- * placeholders and overlay related resorting is applied automatically.
+ * Callers hand over a flat list of live record IDs and receive a flat list of IDs back.
+ * Everything happens on a plain/raw database level: no records are instantiated and no
+ * TCA-based processing takes place, fetching the actual rows is left to the caller.
+ *
+ * get() applies the following steps, in this order:
+ *
+ * - move pointers and version overlays are substituted for the target workspace,
+ *   delete placeholders are dropped unless setKeepDeletePlaceholder() says otherwise
+ * - the result is re-sorted, if a sorting statement was given to the constructor
+ * - resolved version IDs are mapped back to their live counterparts,
+ *   if setKeepLiveIds() is enabled
+ *
+ * This class resolves the *workspace* context only. It deliberately does not deal with
+ * languages: language overlays and fallback chains are applied in a separate, later step
+ * by PageRepository->getLanguageOverlay(), which for the record API is orchestrated by
+ * GreedyDatabaseBackend. Language handling must not be added here, it would duplicate
+ * that layer and risk overlaying records twice.
+ *
+ * Typical use cases:
+ *
+ * - RelationHandler resolves the children of a relational field to their workspace versions
+ * - DataHandler->copySpecificPage() and ->int_pageTreeInfo() traverse pages in a workspace
+ * - PageTreeRepository renders the backend page tree in a workspace
+ * - VersionToLiveIdMap builds a version-to-live ID map, calling applyLiveIds() directly
+ *
+ * get() is the regular entry point. The single processing steps are marked @internal and
+ * are only meant for callers that need one specific aspect, such as the mapping above.
  */
 class PlainDataResolver
 {
