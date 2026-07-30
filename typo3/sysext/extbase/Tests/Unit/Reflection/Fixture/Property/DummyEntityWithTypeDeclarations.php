@@ -51,6 +51,9 @@ class DummyEntityWithTypeDeclarations extends AbstractEntity
     /** @var array<int,string> */
     public array $listWithArraySyntaxWithKeyValueType;
 
+    /** @var list<string> */
+    public array $listWithListSyntax;
+
     /** @var ObjectStorage<DummyEntityWithTypeDeclarations> */
     public ObjectStorage $objectStorageWithArraySyntaxWithoutKeyValueType;
 
