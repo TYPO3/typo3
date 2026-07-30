@@ -97,7 +97,7 @@
 		"symfony/polyfill-php85": "^1.38",
 		"symfony/process": "^7.4",
 		"symfony/property-access": "^7.4",
-		"symfony/property-info": "^7.4",
+		"symfony/property-info": "^7.4.15",
 		"symfony/rate-limiter": "^7.4",
 		"symfony/routing": "^7.4.13",
 		"symfony/uid": "^7.4",

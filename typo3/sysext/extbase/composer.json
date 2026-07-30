@@ -24,7 +24,7 @@
 		"phpdocumentor/type-resolver": "^1.8.2",
 		"symfony/dependency-injection": "^7.4",
 		"symfony/property-access": "^7.4",
-		"symfony/property-info": "^7.4",
+		"symfony/property-info": "^7.4.15",
 		"typo3/cms-core": "13.4.*@dev"
 	},
 	"suggest": {
