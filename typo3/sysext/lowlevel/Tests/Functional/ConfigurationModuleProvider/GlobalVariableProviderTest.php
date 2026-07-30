@@ -107,4 +107,48 @@ final class GlobalVariableProviderTest extends FunctionalTestCase
             $connections['Secondary']
         );
     }
+
+    #[Test]
+    public function mailOptionsAreBlindedForMailProfiles(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['profiles']['newsletter'] = [
+            'transport' => 'smtp',
+            'transport_smtp_server' => 'bulk.example.com:587',
+            'transport_smtp_encrypt' => true,
+            'transport_smtp_username' => 'bulk-user',
+            'transport_smtp_password' => 'bulk-password',
+            'defaultMailFromAddress' => 'newsletter@example.com',
+        ];
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['profiles']['provider'] = [
+            'dsn' => 'smtp://user:password@provider.example.com:25',
+        ];
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $subject = new GlobalVariableProvider($container->get(EventDispatcherInterface::class));
+        $subject([
+            'identifier' => 'confVars',
+            'label' => 'confVars',
+            'globalVariableKey' => 'TYPO3_CONF_VARS',
+        ]);
+
+        $profiles = $subject->getConfiguration()['MAIL']['profiles'];
+
+        self::assertSame(
+            [
+                'newsletter' => [
+                    'defaultMailFromAddress' => 'newsletter@example.com',
+                    'transport' => 'smtp',
+                    'transport_smtp_encrypt' => '******',
+                    'transport_smtp_password' => '******',
+                    'transport_smtp_server' => '******',
+                    'transport_smtp_username' => '******',
+                ],
+                'provider' => [
+                    'dsn' => '******',
+                ],
+            ],
+            $profiles
+        );
+    }
 }

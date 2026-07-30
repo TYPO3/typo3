@@ -211,10 +211,13 @@ readonly class TransportFactory
                 );
                 break;
             case self::SPOOL_MEMORY:
+                $realTransportSettings = $mailSettings;
+                unset($realTransportSettings['transport_spool_type']);
                 $spool = GeneralUtility::makeInstance(
                     MemorySpool::class,
                     $this->dispatcher,
-                    $this->logManager->getLogger(MemorySpool::class)
+                    $this->logManager->getLogger(MemorySpool::class),
+                    fn(): TransportInterface => $this->get($realTransportSettings)
                 );
                 break;
             default:

@@ -51,11 +51,12 @@ class MemorySpool extends AbstractTransport implements DelayedTransportInterface
     protected int $retries = 3;
 
     /**
-     * Create a new MemorySpool
+     * @param (\Closure(): TransportInterface)|null $realTransportFactory creates the transport the queue is flushed through, defaults to the one of the global mailer
      */
     public function __construct(
         ?EventDispatcherInterface $dispatcher = null,
-        protected readonly ?LoggerInterface $logger = null
+        protected readonly ?LoggerInterface $logger = null,
+        private readonly ?\Closure $realTransportFactory = null,
     ) {
         parent::__construct($dispatcher, $logger);
 
@@ -71,9 +72,10 @@ class MemorySpool extends AbstractTransport implements DelayedTransportInterface
             return;
         }
         try {
-            // TODO: DI should be used to inject the MailerInterface
-            $mailer = GeneralUtility::makeInstance(MailerInterface::class);
-            $this->flushQueue($mailer->getRealTransport());
+            $realTransport = $this->realTransportFactory !== null
+                ? ($this->realTransportFactory)()
+                : GeneralUtility::makeInstance(MailerInterface::class)->getRealTransport();
+            $this->flushQueue($realTransport);
         } catch (\Throwable $exception) {
             if ($this->logger instanceof LoggerInterface) {
                 $this->logger->error('An Exception occurred while flushing email queue: {message}', ['exception' => $exception, 'message' => $exception->getMessage()]);

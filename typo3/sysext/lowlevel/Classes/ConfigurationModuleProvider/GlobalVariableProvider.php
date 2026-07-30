@@ -103,6 +103,12 @@ class GlobalVariableProvider extends AbstractProvider
                     $configurationArray['DB']['Connections'] ?? []
                 );
             }
+            if (is_array($blindedConfigurationOptions[$this->globalVariableKey]['MAIL'] ?? null)) {
+                $blindedConfigurationOptions[$this->globalVariableKey]['MAIL'] = $this->applyBlindedMailOptionsToAllProfiles(
+                    $blindedConfigurationOptions[$this->globalVariableKey]['MAIL'],
+                    $configurationArray['MAIL']['profiles'] ?? []
+                );
+            }
             ArrayUtility::mergeRecursiveWithOverrule(
                 $configurationArray,
                 ArrayUtility::intersectRecursive($blindedConfigurationOptions[$this->globalVariableKey], $configurationArray)
@@ -110,5 +116,32 @@ class GlobalVariableProvider extends AbstractProvider
         }
         ArrayUtility::naturalKeySortRecursive($configurationArray);
         return $configurationArray;
+    }
+
+    /**
+     * Mail profiles use the same keys as the global MAIL configuration, so its blinded
+     * options apply to every configured profile as well.
+     *
+     * @param array<string, mixed> $blindedMailOptions
+     * @param mixed $profiles configured mail profiles, keyed by profile name
+     * @return array<string, mixed>
+     */
+    private function applyBlindedMailOptionsToAllProfiles(array $blindedMailOptions, mixed $profiles): array
+    {
+        $defaultOptions = $blindedMailOptions;
+        unset($defaultOptions['profiles']);
+        if (!is_array($profiles) || $defaultOptions === []) {
+            return $blindedMailOptions;
+        }
+        $blindedProfiles = is_array($blindedMailOptions['profiles'] ?? null) ? $blindedMailOptions['profiles'] : [];
+        foreach (array_keys($profiles) as $profileName) {
+            $profileOptions = $blindedProfiles[$profileName] ?? [];
+            // Options already declared for a specific profile take precedence
+            $blindedProfiles[$profileName] = is_array($profileOptions)
+                ? array_replace_recursive($defaultOptions, $profileOptions)
+                : $defaultOptions;
+        }
+        $blindedMailOptions['profiles'] = $blindedProfiles;
+        return $blindedMailOptions;
     }
 }

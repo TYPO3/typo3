@@ -1928,6 +1928,7 @@ return [
         'transport_spool_type' => '',
         'transport_spool_filepath' => '',
         'dsn' => '',
+        'profiles' => [],
         'validators' => [
             \Egulias\EmailValidator\Validation\RFCValidation::class,
         ],

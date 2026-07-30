@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Utility;
 
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\ExceptionInterface;
+use TYPO3\CMS\Core\Mail\SenderDefaults;
 
 /**
  * Class to handle mail specific functionality
@@ -79,17 +80,7 @@ class MailUtility
      */
     public static function getSystemFromAddress(): string
     {
-        $address = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ?? null;
-
-        if (!is_string($address) || !GeneralUtility::validEmail($address)) {
-            // still nothing, get host name from server
-            $address = 'no-reply@' . php_uname('n');
-            if (!GeneralUtility::validEmail($address)) {
-                // if everything fails use a dummy address
-                $address = 'no-reply@example.com';
-            }
-        }
-        return $address;
+        return SenderDefaults::fromMailSettings((array)($GLOBALS['TYPO3_CONF_VARS']['MAIL'] ?? []))->from->getAddress();
     }
 
     /**

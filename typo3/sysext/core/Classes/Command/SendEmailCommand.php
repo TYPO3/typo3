@@ -25,7 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\FileSpool;
-use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\MailerFactory;
 
 /**
  * Command for sending spooled messages.
@@ -37,7 +37,7 @@ use TYPO3\CMS\Core\Mail\MailerInterface;
 #[AsCommand('mailer:spool:send', 'Sends emails from the spool.', ['swiftmailer:spool:send'])]
 class SendEmailCommand extends Command
 {
-    public function __construct(protected readonly MailerInterface $mailer)
+    public function __construct(protected readonly MailerFactory $mailerFactory)
     {
         parent::__construct('mailer:spool:send');
     }
@@ -50,7 +50,8 @@ class SendEmailCommand extends Command
         $this
             ->addOption('message-limit', null, InputOption::VALUE_REQUIRED, 'The maximum number of messages to send.')
             ->addOption('time-limit', null, InputOption::VALUE_REQUIRED, 'The time limit for sending messages (in seconds).')
-            ->addOption('recover-timeout', null, InputOption::VALUE_REQUIRED, 'The timeout for recovering messages that have taken too long to send (in seconds).');
+            ->addOption('recover-timeout', null, InputOption::VALUE_REQUIRED, 'The timeout for recovering messages that have taken too long to send (in seconds).')
+            ->addOption('profile', null, InputOption::VALUE_REQUIRED, 'The name of the mail profile whose spool should be sent.');
     }
 
     /**
@@ -60,7 +61,15 @@ class SendEmailCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $transport = $this->mailer->getTransport();
+        $profile = $input->getOption('profile');
+        try {
+            $mailer = $this->mailerFactory->getMailer($profile === null ? null : (string)$profile);
+        } catch (\InvalidArgumentException $e) {
+            $io->error($e->getMessage());
+            return Command::INVALID;
+        }
+
+        $transport = $mailer->getTransport();
         if ($transport instanceof DelayedTransportInterface) {
             if ($transport instanceof FileSpool) {
                 $transport->setMessageLimit((int)$input->getOption('message-limit'));
@@ -72,7 +81,7 @@ class SendEmailCommand extends Command
                     $transport->recover();
                 }
             }
-            $sent = $transport->flushQueue($this->mailer->getRealTransport());
+            $sent = $transport->flushQueue($mailer->getRealTransport());
             $io->comment($sent . ' emails sent');
             return Command::SUCCESS;
         }

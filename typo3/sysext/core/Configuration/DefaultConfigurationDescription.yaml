@@ -653,6 +653,9 @@ MAIL:
         dsn:
           type: text
           description: '<em>only with transport=dsn</em>: The DSN configuration of the Symfony mailer (eg. smtp://user:pass@smtp.example.com:25). For 3rd party transports you have to add additional dependencies. See https://symfony.com/doc/current/mailer.html for more details.'
+        profiles:
+            type: array
+            description: 'Named mail profiles, keyed by profile name. Each profile contains the same keys as this MAIL section and is merged on top of it, so only differing keys have to be defined. A profile with its own <code>transport</code>, <code>transport_smtp_server</code> or <code>dsn</code> does not inherit the credentials <code>transport_smtp_username</code>, <code>transport_smtp_password</code> and <code>dsn</code>, and the spool settings are never inherited. A profile is selected explicitly via <code>\TYPO3\CMS\Core\Mail\MailerFactory</code>, which allows to deliver emails through more than one provider within the same installation.'
         defaultMailFromAddress:
             type: text
             description: 'This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (eg. info@example.org).'

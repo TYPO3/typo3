@@ -29,6 +29,7 @@ use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\Smtp\Stream\SocketStream;
+use Symfony\Component\Mime\Email;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManagerInterface;
@@ -42,6 +43,7 @@ use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeFileSpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeInvalidSpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeMemorySpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeValidSpoolFixture;
+use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\RecordingTransportFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -187,6 +189,24 @@ final class TransportFactoryTest extends UnitTestCase
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
         self::assertInstanceOf(DelayedTransportInterface::class, $transport);
         self::assertInstanceOf(MemorySpool::class, $transport);
+    }
+
+    #[Test]
+    public function memorySpoolIsFlushedThroughTransportOfItsOwnSettings(): void
+    {
+        RecordingTransportFixture::$sentMessages = [];
+        $mailSettings = [
+            'transport' => RecordingTransportFixture::class,
+            'transport_spool_type' => 'memory',
+        ];
+        $email = new Email()->from('sender@example.com')->to('recipient@example.com')->text('hello');
+
+        $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
+        $transport->send($email);
+        unset($transport);
+
+        self::assertCount(1, RecordingTransportFixture::$sentMessages);
+        self::assertStringContainsString('To: recipient@example.com', RecordingTransportFixture::$sentMessages[0]->toString());
     }
 
     #[Test]

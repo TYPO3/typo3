@@ -21,14 +21,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\TransportInterface;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent;
 use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MailUtility;
 
 /**
  * Adapter for Symfony/Mailer to be used by TYPO3 extensions.
@@ -52,14 +50,16 @@ class Mailer implements MailerInterface
      * When constructing, also initializes the Symfony Transport like configured
      *
      * @param TransportInterface|null $transport optionally pass a transport to the constructor.
+     * @param array|null $mailSettings optionally pass mail settings, defaults to the global MAIL configuration.
      * @throws CoreException
      */
     public function __construct(
         protected ?TransportInterface $transport = null,
         protected readonly ?EventDispatcherInterface $eventDispatcher = null,
+        ?array $mailSettings = null,
     ) {
-        if (empty($this->mailSettings)) {
-            $this->injectMailSettings();
+        if ($mailSettings !== null || $this->mailSettings === []) {
+            $this->injectMailSettings($mailSettings);
         }
 
         try {
@@ -72,30 +72,12 @@ class Mailer implements MailerInterface
     public function send(RawMessage $message, ?Envelope $envelope = null): void
     {
         if ($message instanceof Email) {
-            // Ensure to always have a From: header set
+            $senderDefaults = SenderDefaults::fromMailSettings($this->mailSettings);
             if (empty($message->getFrom())) {
-                $address = MailUtility::getSystemFromAddress();
-                if ($address) {
-                    $name = MailUtility::getSystemFromName();
-                    if ($name) {
-                        $from = new Address($address, $name);
-                    } else {
-                        $from = new Address($address);
-                    }
-                    $message->from($from);
-                }
+                $message->from($senderDefaults->from);
             }
-            if (empty($message->getReplyTo())) {
-                $replyTo = MailUtility::getSystemReplyTo();
-                if (!empty($replyTo)) {
-                    $address = key($replyTo);
-                    if ($address === 0) {
-                        $replyTo = new Address($replyTo[$address]);
-                    } else {
-                        $replyTo = new Address((string)$address, reset($replyTo));
-                    }
-                    $message->replyTo($replyTo);
-                }
+            if (empty($message->getReplyTo()) && $senderDefaults->replyTo !== null) {
+                $message->replyTo($senderDefaults->replyTo);
             }
             // Only set X-Mailer header once, if message is re-used
             if (!$message->getHeaders()->has('X-Mailer')) {
@@ -146,7 +128,7 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * This method is only used in unit tests
+     * Falls back to the global MAIL configuration when no settings are given.
      *
      * @internal
      */
@@ -160,7 +142,7 @@ class Mailer implements MailerInterface
      */
     public function getRealTransport(): TransportInterface
     {
-        $mailSettings = !empty($this->mailSettings) ? $this->mailSettings : (array)$GLOBALS['TYPO3_CONF_VARS']['MAIL'];
+        $mailSettings = $this->mailSettings;
         unset($mailSettings['transport_spool_type']);
         return $this->getTransportFactory()->get($mailSettings);
     }
