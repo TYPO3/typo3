@@ -141,10 +141,11 @@ final class MetaDataAspectTest extends UnitTestCase
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
-            ->onlyMethods(['findByFileUid', 'getTableFields', 'update'])
+            ->onlyMethods(['findByFileUid', 'findDefaultLanguageRecordByFileUid', 'getTableFields', 'update'])
             ->setConstructorArgs([new NoopEventDispatcher(), $connectionPoolMock, new Context()])
             ->getMock();
         $metaDataRepositoryMock->method('findByFileUid')->willReturn([]);
+        $metaDataRepositoryMock->method('findDefaultLanguageRecordByFileUid')->willReturn([]);
         $metaDataRepositoryMock->method('getTableFields')->willReturn(['title' => 'sometype']);
         $metaDataRepositoryMock->expects($this->never())->method('update');
         GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepositoryMock);
@@ -185,11 +186,12 @@ final class MetaDataAspectTest extends UnitTestCase
         $connectionPoolMock->method('getConnectionForTable')->willReturn($connectionMock);
 
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
-            ->onlyMethods(['createMetaDataRecord', 'getTableFields'])
+            ->onlyMethods(['createMetaDataRecord', 'findDefaultLanguageRecordByFileUid', 'getTableFields'])
             ->setConstructorArgs([$eventDispatcherMock, $connectionPoolMock, new Context()])
             ->getMock();
 
         $metaDataRepositoryMock->method('createMetaDataRecord')->willReturn($metaData);
+        $metaDataRepositoryMock->method('findDefaultLanguageRecordByFileUid')->willReturn([]);
         $metaDataRepositoryMock->method('getTableFields')->willReturn(array_flip(['foo', 'testproperty']));
         GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepositoryMock);
         GeneralUtility::addInstance(MetaDataRepository::class, $metaDataRepositoryMock);

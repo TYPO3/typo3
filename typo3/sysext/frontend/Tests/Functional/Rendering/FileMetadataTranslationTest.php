@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Functional\Aspect;
+namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataH
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
-final class FileMetadataOverlayAspectTest extends AbstractTestCase
+final class FileMetadataTranslationTest extends AbstractTestCase
 {
     private const int VALUE_BackendUserId = 1;
     private const int VALUE_WorkspaceId = 1;
@@ -75,7 +75,7 @@ final class FileMetadataOverlayAspectTest extends AbstractTestCase
             $backendUser = $this->setUpBackendUser(1);
             $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('en');
 
-            $scenarioFile = __DIR__ . '/Fixtures/MetadataScenario.yaml';
+            $scenarioFile = __DIR__ . '/Fixtures/FileMetadataTranslationScenario.yaml';
             $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
             $writer = DataHandlerWriter::withBackendUser($backendUser);
             $writer->invokeFactory($factory);
@@ -88,7 +88,7 @@ final class FileMetadataOverlayAspectTest extends AbstractTestCase
                 [
                     'EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
                     'EXT:frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
-                    'EXT:frontend/Tests/Functional/Aspect/Fixtures/JsonRenderer.typoscript',
+                    'EXT:frontend/Tests/Functional/Rendering/Fixtures/FileMetadataTranslationTest.typoscript',
                 ],
                 ['title' => 'ACME Root']
             );

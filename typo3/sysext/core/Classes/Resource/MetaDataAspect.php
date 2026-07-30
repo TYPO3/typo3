@@ -83,22 +83,13 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
      * relevant whenever more than one language is rendered in a single process, for instance a
      * command controller, a cache warmup or an Extbase query for a specific language.
      *
-     * @todo This is a workaround for the language not being part of the metadata resolution chain:
-     *       MetaDataRepository::findByFileUid() always reads the default language record, and the
-     *       translation is applied afterwards by the frontend-only event listener
-     *       FileMetadataOverlayAspect, which asks the global Context for the language. Two things
-     *       therefore remain broken and cannot be solved here:
-     *       - In backend and CLI context no overlay happens at all, so translated metadata is
-     *         never used, no matter which language a record belongs to.
-     *       - An explicitly requested language is ignored, since only the ambient context counts.
-     *         This affects Extbase query settings and every cloned Context, as used by
-     *         PageLinkBuilder, HrefLangGenerator or language menus.
-     *       The language has to become an explicit argument instead: findByFileUid() should take a
-     *       LanguageAspect and resolve the translation - including its fallback chain - within its
-     *       own query, File::getMetaData() should pass such an aspect through, and this cache
-     *       should be keyed by that aspect rather than by the current context.
-     *       FileReference::getProperties() memoizes the merged metadata and uses this identifier
-     *       for the very same reason, which is why it is exposed at all.
+     * @todo The language is still not an input of the resolution: MetaDataRepository::findByFileUid()
+     *       resolves for whatever the current context happens to be, so an explicitly requested
+     *       language - Extbase query settings or a cloned Context as used by PageLinkBuilder,
+     *       HrefLangGenerator or language menus - is ignored. It should become an explicit argument
+     *       instead, and this cache should be keyed by it rather than by the current context.
+     *       FileReference::getProperties() memoizes the merged metadata and uses this identifier for
+     *       the very same reason, which is why it is exposed at all.
      *
      * @internal
      */
@@ -185,11 +176,16 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
      */
     public function save(): void
     {
+        $metaDataRepository = $this->getMetaDataRepository();
         $metaDataInDatabase = $this->loadFromRepository();
         if ($metaDataInDatabase === []) {
-            $this->metaData = $this->getMetaDataRepository()->createMetaDataRecord($this->file->getUid(), $this->metaData);
+            // The record may be deleted in the current workspace only, it is updated live then
+            $metaDataInDatabase = $metaDataRepository->findDefaultLanguageRecordByFileUid($this->file->getUid());
+        }
+        if ($metaDataInDatabase === []) {
+            $this->metaData = $metaDataRepository->createMetaDataRecord($this->file->getUid(), $this->metaData);
         } else {
-            $this->metaData = $this->getMetaDataRepository()->update($this->file->getUid(), $this->metaData, $metaDataInDatabase);
+            $this->metaData = $metaDataRepository->update($this->file->getUid(), $this->metaData, $metaDataInDatabase);
         }
     }
 

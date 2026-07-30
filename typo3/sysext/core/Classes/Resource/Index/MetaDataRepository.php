@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Schema\Information\ColumnInfo;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataCreatedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataDeletedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent;
@@ -37,7 +38,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Repository Class as an abstraction layer to sys_file_metadata
  *
  * Every access to table sys_file_metadata which is not handled by DataHandler
- * has to use this Repository class
+ * has to use this Repository class. It resolves the workspace and the language
+ * version of a metadata record for the current context.
  */
 #[Autoconfigure(public: true)]
 readonly class MetaDataRepository
@@ -89,6 +91,37 @@ readonly class MetaDataRepository
      */
     public function findByFileUid(int $uid): array
     {
+        $record = $this->findDefaultLanguageRecordByFileUid($uid);
+        if ($record === []) {
+            return [];
+        }
+
+        // The default language record is the basis for resolving both the workspace and the
+        // language version of the metadata.
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $pageRepository->versionOL('sys_file_metadata', $record);
+        if (!is_array($record)) {
+            // Deleted in the current workspace
+            return [];
+        }
+        // getLanguageOverlay() also calls versionOL() on the language overlaid record
+        $record = $pageRepository->getLanguageOverlay('sys_file_metadata', $record) ?? $record;
+
+        return $this->eventDispatcher->dispatch(new EnrichFileMetaDataEvent($uid, (int)$record['uid'], $record))->getRecord();
+    }
+
+    /**
+     * Retrieves the stored metadata record of a file in the default language, without resolving
+     * its workspace or language version. This is the record that is written to, which still
+     * exists if findByFileUid() returns nothing because the record is deleted in the current
+     * workspace.
+     *
+     * @return array<string, string>
+     * @throws InvalidUidException
+     * @internal
+     */
+    public function findDefaultLanguageRecordByFileUid(int $uid): array
+    {
         if ($uid <= 0) {
             throw new InvalidUidException('Metadata can only be retrieved for indexed files. UID: "' . $uid . '"', 1381590731);
         }
@@ -111,11 +144,7 @@ readonly class MetaDataRepository
             ->executeQuery()
             ->fetchAssociative();
 
-        if (empty($record)) {
-            return [];
-        }
-
-        return $this->eventDispatcher->dispatch(new EnrichFileMetaDataEvent($uid, (int)$record['uid'], $record))->getRecord();
+        return $record ?: [];
     }
 
     /**
