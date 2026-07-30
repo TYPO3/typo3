@@ -107,8 +107,10 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
         self::assertTrue($propertyTypes[0]->isCollection());
         self::assertSame('array', $propertyTypes[0]->getBuiltinType());
 
-        self::assertCount(1, $propertyTypes[0]->getCollectionKeyTypes());
+        // "string[]" does not promise integer keys, only "list<string>" does
+        self::assertCount(2, $propertyTypes[0]->getCollectionKeyTypes());
         self::assertSame('int', $propertyTypes[0]->getCollectionKeyTypes()[0]->getBuiltinType());
+        self::assertSame('string', $propertyTypes[0]->getCollectionKeyTypes()[1]->getBuiltinType());
 
         self::assertCount(1, $propertyTypes[0]->getCollectionValueTypes());
         self::assertSame('string', $propertyTypes[0]->getCollectionValueTypes()[0]->getBuiltinType());
@@ -124,8 +126,10 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
         self::assertTrue($propertyTypes[0]->isCollection());
         self::assertSame('array', $propertyTypes[0]->getBuiltinType());
 
-        self::assertCount(1, $propertyTypes[0]->getCollectionKeyTypes());
+        // "array<string>" does not promise integer keys, only "list<string>" does
+        self::assertCount(2, $propertyTypes[0]->getCollectionKeyTypes());
         self::assertSame('int', $propertyTypes[0]->getCollectionKeyTypes()[0]->getBuiltinType());
+        self::assertSame('string', $propertyTypes[0]->getCollectionKeyTypes()[1]->getBuiltinType());
 
         self::assertCount(1, $propertyTypes[0]->getCollectionValueTypes());
         self::assertSame('string', $propertyTypes[0]->getCollectionValueTypes()[0]->getBuiltinType());
@@ -141,6 +145,24 @@ final class PropertyWithTypeDeclarationsTest extends UnitTestCase
         self::assertTrue($propertyTypes[0]->isCollection());
         self::assertSame('array', $propertyTypes[0]->getBuiltinType());
 
+        self::assertCount(1, $propertyTypes[0]->getCollectionKeyTypes());
+        self::assertSame('int', $propertyTypes[0]->getCollectionKeyTypes()[0]->getBuiltinType());
+
+        self::assertCount(1, $propertyTypes[0]->getCollectionValueTypes());
+        self::assertSame('string', $propertyTypes[0]->getCollectionValueTypes()[0]->getBuiltinType());
+    }
+
+    #[Test]
+    public function listWithListSyntaxProperty(): void
+    {
+        $propertyTypes = (new ClassSchema(DummyEntityWithTypeDeclarations::class))
+            ->getProperty('listWithListSyntax')->getTypes();
+
+        self::assertCount(1, $propertyTypes);
+        self::assertTrue($propertyTypes[0]->isCollection());
+        self::assertSame('array', $propertyTypes[0]->getBuiltinType());
+
+        // "list<string>" is the only notation promising integer keys
         self::assertCount(1, $propertyTypes[0]->getCollectionKeyTypes());
         self::assertSame('int', $propertyTypes[0]->getCollectionKeyTypes()[0]->getBuiltinType());
 
