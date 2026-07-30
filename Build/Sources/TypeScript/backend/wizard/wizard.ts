@@ -150,7 +150,7 @@ export class Wizard extends LitElement {
       <div class="wizard">
         <div class="wizard-progress">${this.renderProgressTracker()}</div>
         <div class="wizard-content" aria-live="polite" @keydown=${this.handleContentKeydown}>${this.currentStep?.render()}</div>
-        <div class="wizard-actions">${this.renderWizardButtons()}</div>
+        ${this.currentStep?.hideActions ? nothing : html`<div class="wizard-actions">${this.renderWizardButtons()}</div>`}
       </div>
     `;
   }

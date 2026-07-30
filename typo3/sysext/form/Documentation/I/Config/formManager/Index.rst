@@ -162,16 +162,20 @@ selectablePrototypesConfiguration
                100:
                  templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
                  label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
+                 description: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.description
+                 iconIdentifier: 'apps-pagetree-page-default'
                200:
                  templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
                  label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
+                 description: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.description
+                 iconIdentifier: 'form-page'
 
 :aspect:`Good to know`
       - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
       - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      Array with numerical Keys. Configure the ``Start template`` selection list within the ``form manager`` "Advanced settings" step.
+      Array with numerical Keys. Configure the ``Start template`` selection list within the ``form manager`` "Create new form" wizard.
 
 
 .. _formmanager.selectableprototypesconfiguration.*.identifier:
@@ -256,16 +260,20 @@ selectablePrototypesConfiguration.*.newFormTemplates
                100:
                  templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
                  label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
+                 description: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.description
+                 iconIdentifier: 'apps-pagetree-page-default'
                200:
                  templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
                  label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
+                 description: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.description
+                 iconIdentifier: 'form-page'
 
 :aspect:`Good to know`
       - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
       - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      Array with numerical Keys. Configure the ``Start templates`` selectlist for this ``prototype`` within the ``form manager`` "Advanced settings" step.
+      Array with numerical keys. Configure the ``Start templates`` for this ``prototype`` within the ``form manager`` "Create new form" wizard.
 
       The "Create new form" wizard offers this list in its ``Predefined`` mode. Its ``Blank`` mode picks no entry at all: it sends no start template and the blank form shipped by EXT:form is used, so the order of this list does not decide what a blank form contains. Use the ``BeforeFormIsCreatedEvent`` to change what a newly created form starts from.
 
@@ -317,7 +325,63 @@ selectablePrototypesConfiguration.*.newFormTemplates.*.label
       - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
 
 :aspect:`Description`
-      The ``Start template`` selectlist label for this ``Start template`` within the ``form manager`` "Advanced settings" step.
+      The label for this ``Start template`` displayed in the ``form manager`` "Create new form" wizard.
+
+
+.. _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.description:
+
+selectablePrototypesConfiguration.*.newFormTemplates.*.description
+------------------------------------------------------------------
+
+:aspect:`Option path`
+      formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.description
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Backend (form manager)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Good to know`
+      - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
+      - :ref:`Translate "Start template" options<concepts-formmanager-translation-starttemplate>`
+
+:aspect:`Description`
+      An optional short description displayed below the template label on the
+      template picker card in the ``form manager`` "Create new form" wizard.
+      Supports translation keys resolved against the configured
+      :ref:`translationFiles<formmanager.translationfiles>`.
+
+
+.. _formmanager.selectableprototypesconfiguration.*.newformtemplates.*.iconidentifier:
+
+selectablePrototypesConfiguration.*.newFormTemplates.*.iconIdentifier
+---------------------------------------------------------------------
+
+:aspect:`Option path`
+      formManager.selectablePrototypesConfiguration.*.newFormTemplates.*.iconIdentifier
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Backend (form manager)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      :yaml:`form-page`
+
+:aspect:`Good to know`
+      - :ref:`"Start templates"<concepts-formmanager-starttemplate>`
+
+:aspect:`Description`
+      A TYPO3 icon identifier shown on the template card in the ``form manager``
+      "Create new form" wizard. Falls back to :yaml:`form-page` when omitted.
 
 
 .. _formmanager.controller:

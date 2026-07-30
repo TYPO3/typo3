@@ -240,8 +240,14 @@
       <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label">
         <source>Blank form</source>
       </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.description">
+        <source>Create a new form from scratch</source>
+      </trans-unit>
       <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label">
         <source>Simple contact form (ext:form example)</source>
+      </trans-unit>
+      <trans-unit id="formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.description">
+        <source>A basic contact form with name, email, subject and message fields</source>
       </trans-unit>
       <trans-unit id="formManager.showHistory">
         <source>Show History</source>

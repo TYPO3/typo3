@@ -12,103 +12,83 @@
  */
 
 import { html, type TemplateResult } from 'lit';
-import { live } from 'lit/directives/live.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { WizardStepInterface } from '@typo3/backend/wizard/steps/wizard-step-interface';
 import type { WizardStepValueInterface } from '@typo3/backend/wizard/steps/wizard-step-value-interface';
 import type { WizardStepSummaryInterface } from '@typo3/backend/wizard/steps/wizard-step-summary-interface';
 import type { SummaryItem } from '@typo3/backend/wizard/steps/summary-item-interface';
 import formManagerLabels from '~labels/form.form_manager_javascript';
 import type { FormWizardContext } from '@typo3/form/backend/form-wizard/form-wizard';
-
-export enum MODE {
-  Blank = 'blank',
-  Predefined = 'predefined',
-}
-
-export type FormMode = {
-  key: MODE;
-  label: string;
-  description: string;
-  iconIdentifier: string;
-};
+import type { TemplateOption, PrototypeTemplateGroup } from '@typo3/form/backend/form-manager';
+import { Categories, type DataCategoriesInterface, type DataItemInterface } from '@typo3/backend/new-record-wizard';
+import '@typo3/backend/new-record-wizard';
 
 export class ModeStep implements WizardStepInterface, WizardStepValueInterface, WizardStepSummaryInterface {
-  readonly key = 'mode';
+  readonly key = 'template';
   readonly title = formManagerLabels.get('formManager.newFormWizard.step1.progressLabel');
   readonly autoAdvance = true;
+  readonly hideActions = true;
 
-  private selectedMode: MODE | null = null;
-
-  private readonly modes: FormMode[] = [
-    {
-      key: MODE.Blank,
-      label: formManagerLabels.get('formManager.blankForm.label'),
-      description: formManagerLabels.get('formManager.blankForm.description'),
-      iconIdentifier: 'apps-pagetree-page-default',
-    },
-    {
-      key: MODE.Predefined,
-      label: formManagerLabels.get('formManager.predefinedForm.label'),
-      description: formManagerLabels.get('formManager.predefinedForm.description'),
-      iconIdentifier: 'form-page',
-    }
-  ];
+  private selected: TemplateOption | null = null;
+  private readonly groups: PrototypeTemplateGroup[] = [];
+  private readonly wizardCategories: Categories;
+  private readonly templateMap = new Map<string, TemplateOption>();
 
   constructor(private readonly context: FormWizardContext) {
+    this.groups = this.context.formManager.getTemplatesGroupedByPrototype();
+
+    const categoriesData: DataCategoriesInterface = {};
+    this.groups.forEach((group, groupIndex) => {
+      categoriesData[String(groupIndex)] = {
+        identifier: group.identifier,
+        label: group.label,
+        items: group.templates.map((tpl) => {
+          const id = `${tpl.prototypeIdentifier}::${tpl.templatePath}`;
+          this.templateMap.set(id, tpl);
+          const item: DataItemInterface = {
+            identifier: id,
+            label: tpl.label,
+            description: tpl.description ?? '',
+            icon: tpl.iconIdentifier,
+            iconOverlay: null,
+            url: null,
+            requestType: 'event',
+            defaultValues: undefined,
+            saveAndClose: undefined,
+            event: 'form-template-selected',
+          };
+          return item;
+        }),
+      };
+    });
+    this.wizardCategories = Categories.fromData(categoriesData);
   }
 
   public isComplete(): boolean {
-    return this.getValue() !== null;
+    return this.selected !== null;
   }
 
   public render(): TemplateResult {
-    // Auto-select first mode if none selected
-    if (this.getValue() == null && this.modes.length > 0) {
-      this.setValue(this.modes[0].key);
-    }
-
     return html`
-      <div class="form-mode-selection">
-        <div class="form-check-card-container">
-          ${this.modes.map((mode: FormMode) => html`
-            <div class="form-check form-check-type-card">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="${this.key}"
-                id="mode-${mode.key}"
-                value=${mode.key}
-                .checked=${live(this.getValue() === mode.key)}
-                @change=${() => this.setValue(mode.key)}
-              >
-              <label class="form-check-label" for="mode-${mode.key}">
-                <span class="form-check-label-header">
-                  <typo3-backend-icon identifier="${mode.iconIdentifier}" size="medium"></typo3-backend-icon>
-                  ${mode.label}
-                </span>
-                <span class="form-check-label-body">
-                  ${unsafeHTML(mode.description)}
-                </span>
-              </label>
-            </div>
-          `)}
-        </div>
-      </div>
+      <typo3-backend-new-record-wizard
+        .categories=${this.wizardCategories}
+        displaymenu="false"
+        displayfilter="false"
+        @form-template-selected=${(e: CustomEvent) => { e.preventDefault(); this.handleSelection(e.detail.item.identifier); }}
+      ></typo3-backend-new-record-wizard>
     `;
   }
 
   public reset(): void {
-    this.setValue(null as any);
+    this.selected = null;
     this.context.clearStoreData(this.key);
   }
 
-  public getValue(): MODE | null {
-    return this.selectedMode;
+  public getValue(): TemplateOption | null {
+    return this.selected;
   }
 
-  public setValue(value: MODE): void {
-    this.selectedMode = value;
+  public setValue(value: TemplateOption | null): void {
+    this.selected = value;
     this.context.wizard.requestUpdate();
   }
 
@@ -117,23 +97,24 @@ export class ModeStep implements WizardStepInterface, WizardStepValueInterface, 
   }
 
   public getSummaryData(): SummaryItem[] {
-    const selectedMode = this.context.getStoreData(this.key);
-    if (!selectedMode) {
-      return [];
-    }
-
-    const mode = this.modes.find((m: FormMode) => m.key === selectedMode);
-    if (!mode) {
+    const selected = this.context.getStoreData(this.key) as TemplateOption | undefined;
+    if (!selected) {
       return [];
     }
 
     return [{
-      label: formManagerLabels.get('formManager.newFormWizard.step.modes.summary.title'),
-      value: html `
-        <typo3-backend-icon identifier="${mode.iconIdentifier}" size="small" class="me-1"></typo3-backend-icon>
-        ${mode.label}
+      label: formManagerLabels.get('formManager.form_template'),
+      value: html`
+        <typo3-backend-icon identifier="${selected.iconIdentifier}" size="small" class="me-1"></typo3-backend-icon>
+        ${selected.label}
       `
     }];
+  }
+
+  private handleSelection(identifier: string): void {
+    this.selected = this.templateMap.get(identifier) ?? null;
+    this.context.setStoreData(this.key, this.getValue());
+    this.context.dispatchAutoAdvance();
   }
 }
 

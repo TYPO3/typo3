@@ -17,6 +17,7 @@ export interface WizardStepInterface {
   readonly key: string;
   readonly title: string;
   readonly autoAdvance: boolean;
+  readonly hideActions?: boolean;
 
   isComplete(): boolean;
 

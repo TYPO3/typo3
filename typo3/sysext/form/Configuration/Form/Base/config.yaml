@@ -168,9 +168,13 @@ formManager:
         100:
           templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
           label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
+          description: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.description
+          iconIdentifier: 'apps-pagetree-page-default'
         200:
           templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
           label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
+          description: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.description
+          iconIdentifier: 'form-page'
   controller:
     deleteAction:
       errorTitle: formManagerController.deleteAction.error.title

@@ -131,7 +131,7 @@ export class Categories {
   }
 }
 
-interface DataItemInterface {
+export interface DataItemInterface {
   identifier: string;
   label: string;
   description: string;
@@ -708,12 +708,15 @@ export class NewRecordWizard extends LitElement {
 
     if (item.requestType === 'event') {
       const event = new CustomEvent(item.event, {
-        detail: {
-          item: item
-        }
+        detail: { item: item },
+        cancelable: true,
+        bubbles: true,
+        composed: true,
       });
       this.dispatchEvent(event);
-      Modal.dismiss();
+      if (!event.defaultPrevented) {
+        Modal.dismiss();
+      }
       return;
     }
 

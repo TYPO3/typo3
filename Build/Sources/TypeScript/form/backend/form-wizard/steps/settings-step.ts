@@ -12,7 +12,6 @@
  */
 
 import { html, nothing, type TemplateResult } from 'lit';
-import { MODE } from '@typo3/form/backend/form-wizard/steps/mode-step';
 import type { WizardStepInterface } from '@typo3/backend/wizard/steps/wizard-step-interface';
 import type { WizardStepValueInterface } from '@typo3/backend/wizard/steps/wizard-step-value-interface';
 import type { WizardStepSummaryInterface } from '@typo3/backend/wizard/steps/wizard-step-summary-interface';
@@ -23,8 +22,6 @@ import type { FormWizardContext } from '@typo3/form/backend/form-wizard/form-wiz
 export interface FormSettings {
   formName?: string,
   storageLocation?: string,
-  prototype?: string,
-  template?: string,
 }
 
 export class SettingsStep implements WizardStepInterface, WizardStepValueInterface, WizardStepSummaryInterface {
@@ -35,8 +32,6 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
   private data: FormSettings = {
     formName: '',
     storageLocation: '',
-    prototype: '',
-    template: '',
   };
 
   constructor(private readonly context: FormWizardContext) {
@@ -49,7 +44,6 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
 
   public render(): TemplateResult {
     return html`
-      ${this.renderPredefinedFormFields()}
       ${this.renderSavePath()}
       ${this.renderFormNameInput()}
     `;
@@ -60,7 +54,6 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
       formName: '',
       storageLocation: '',
     });
-    this.setPrototype(this.context.formManager.getPrototypes()[0]?.value ?? '');
     this.context.clearStoreData(this.key);
   }
 
@@ -84,15 +77,6 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
   getSummaryData(): SummaryItem[] {
     const config = this.context.getStoreData(this.key);
 
-    const prototypeLabel = this.context.formManager.getPrototypes()
-      .find(p => p.value === config.prototype)?.label;
-
-    const templateLabel = this.context.formManager.getTemplatesForPrototype(config.prototype)
-      .find(t => t.value === config.template)
-      ?.label;
-
-    const isPredefined = this.context.getStoreData('mode') === MODE.Predefined;
-
     // Resolve storage location value to its human-readable label
     const storageAdapter = this.context.getStoreData('storage');
     const storageLocations = storageAdapter
@@ -102,18 +86,6 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
       ?? config.storageLocation;
 
     return [
-      ...(isPredefined
-        ? [
-          {
-            value: prototypeLabel,
-            label: formManagerLabels.get('formManager.form_prototype')
-          },
-          {
-            value: templateLabel,
-            label: formManagerLabels.get('formManager.form_template')
-          }
-        ]
-        : []),
       {
         value: config.formName,
         label: formManagerLabels.get('formManager.form_name')
@@ -172,70 +144,6 @@ export class SettingsStep implements WizardStepInterface, WizardStepValueInterfa
       </div>`;
   }
 
-  private renderPredefinedFormFields(): TemplateResult | typeof nothing {
-    const prototypes = this.context.formManager.getPrototypes() ?? [];
-
-    if (this.context.getStoreData('mode') !== MODE.Predefined || prototypes.length < 1) {
-      return nothing;
-    }
-    const currentPrototype = this.data.prototype;
-
-    const templates = this.context.formManager.getTemplatesForPrototype(currentPrototype);
-
-    let templatesFormGroup: TemplateResult | typeof nothing = nothing;
-    if (templates.length > 0) {
-      // Auto-select first template if none selected yet
-      if (!this.data.template) {
-        this.setValue({ template: templates[0].value });
-      }
-
-      templatesFormGroup = html `
-        <div class="form-group">
-          <label class="form-label" for="new-form-template">${formManagerLabels.get('formManager.form_template')}</label>
-          <select class="new-form-template form-select"
-                  id="new-form-template"
-                  data-identifier="newFormTemplate"
-                  @change=${(e: Event) => this.setValue({ template: (e.target as HTMLSelectElement).value })}
-          >
-            ${templates.map(option => html`
-              <option
-                ?selected=${option.value === this.data.template}
-                value=${option.value}
-              >
-                ${option.label}
-              </option>
-            `)}
-          </select>
-        </div>`;
-    }
-
-    return html `
-      <div class="form-group">
-        <label class="form-label" for="new-form-prototype-name">${formManagerLabels.get('formManager.form_prototype')}</label>
-        <select class="new-form-prototype-name form-select"
-                id="new-form-prototype-name"
-                data-identifier="newFormPrototype"
-                @change=${(e: Event) => this.setPrototype((e.currentTarget as HTMLSelectElement).value)}
-        >
-          ${prototypes.map(option => html`
-            <option
-              value=${option.value}
-              ?selected=${option.value === this.data.prototype}
-            >
-              ${option.label}
-            </option>
-          `)}
-        </select>
-      </div>
-      ${templatesFormGroup}`;
-  }
-
-  private setPrototype(currentPrototype: string ): void {
-    this.setValue({
-      prototype: currentPrototype,
-      template: ''
-    });
-  }
 }
 
 export default SettingsStep;

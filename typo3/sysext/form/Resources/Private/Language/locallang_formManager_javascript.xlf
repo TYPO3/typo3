@@ -132,22 +132,22 @@
       <trans-unit id="formManager.references.headline">
         <source>References to this item</source>
       </trans-unit>
-      <trans-unit id="formManager.blankForm.label">
+      <trans-unit id="formManager.blankForm.label" x-unused-since="15.0">
         <source>Blank form</source>
       </trans-unit>
-      <trans-unit id="formManager.blankForm.subtitle">
+      <trans-unit id="formManager.blankForm.subtitle" x-unused-since="15.0">
         <source>Start fresh</source>
       </trans-unit>
-      <trans-unit id="formManager.blankForm.description">
+      <trans-unit id="formManager.blankForm.description" x-unused-since="15.0">
         <source>Create a new form from scratch.</source>
       </trans-unit>
-      <trans-unit id="formManager.predefinedForm.label">
+      <trans-unit id="formManager.predefinedForm.label" x-unused-since="15.0">
         <source>Predefined form</source>
       </trans-unit>
-      <trans-unit id="formManager.predefinedForm.subtitle">
+      <trans-unit id="formManager.predefinedForm.subtitle" x-unused-since="15.0">
         <source>Use a form template</source>
       </trans-unit>
-      <trans-unit id="formManager.predefinedForm.description">
+      <trans-unit id="formManager.predefinedForm.description" x-unused-since="15.0">
         <source>Create a new form and use an existing form template for it.</source>
       </trans-unit>
       <trans-unit id="formManager.finisher.redirect.success.title">

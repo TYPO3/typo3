@@ -24,12 +24,16 @@ export class CreateFormSubmissionService implements SubmissionServiceInterface {
 
   async execute(): Promise<FinisherResult> {
     const dataStore = this.context.getDataStore();
+    const selectedTemplate = dataStore.template;
+    if (!selectedTemplate) {
+      throw new Error('No form template selected');
+    }
     const requestUrl = this.context.formManager.getAjaxEndpoint('create');
     const response = await new AjaxRequest(requestUrl)
       .post({
         formName: dataStore.settings.formName,
-        templatePath: dataStore.settings.template,
-        prototypeName: dataStore.settings.prototype,
+        templatePath: selectedTemplate.templatePath,
+        prototypeName: selectedTemplate.prototypeIdentifier,
         storage: dataStore.storage.typeIdentifier,
         storageLocation: dataStore.settings.storageLocation
       });
