@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\XmlSitemap;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -28,47 +27,53 @@ use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Seo\XmlSitemap\Exception\MissingConfigurationException;
 
 /**
  * XmlSiteDataProvider will provide information for the XML sitemap for a specific database table
  * @internal this class is not part of TYPO3's Core API.
  */
-class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
+class RecordsXmlSitemapDataProvider implements XmlSitemapDataProviderInterface
 {
-    private TcaSchemaFactory $tcaSchemaFactory;
+    public function __construct(
+        protected readonly Context $context,
+        protected readonly ConnectionPool $connectionPool,
+        protected readonly PageRepository $pageRepository,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+    ) {}
 
-    public function __construct(ServerRequestInterface $request, string $key, array $config = [], ?ContentObjectRenderer $cObj = null)
+    public function getSitemap(XmlSitemapRequest $sitemapRequest): XmlSitemap
     {
-        parent::__construct($request, $key, $config, $cObj);
-        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
-        $this->generateItems();
+        return XmlSitemap::forPage(
+            $this->generateItems($sitemapRequest),
+            $sitemapRequest->page,
+            fn(array $item): array => $this->defineUrl($item, $sitemapRequest),
+        );
     }
 
     /**
      * @throws MissingConfigurationException
      */
-    public function generateItems(): void
+    protected function generateItems(XmlSitemapRequest $sitemapRequest): array
     {
-        $table = $this->config['table'];
+        $configuration = $sitemapRequest->configuration;
+        $table = $configuration['table'];
         if (!$this->tcaSchemaFactory->has($table)) {
             throw new MissingConfigurationException(
-                'No configuration found for sitemap ' . $this->getKey(),
+                'No configuration found for sitemap ' . $sitemapRequest->name,
                 1535576053
             );
         }
         $schema = $this->tcaSchemaFactory->get($table);
 
-        $pids = !empty($this->config['pid']) ? GeneralUtility::intExplode(',', (string)$this->config['pid']) : [];
-        $lastModifiedField = $this->config['lastModifiedField'] ?? 'tstamp';
-        $sortField = $this->config['sortField'] ?? 'sorting';
+        $pids = !empty($configuration['pid']) ? GeneralUtility::intExplode(',', (string)$configuration['pid']) : [];
+        $lastModifiedField = $configuration['lastModifiedField'] ?? 'tstamp';
+        $sortField = $configuration['sortField'] ?? 'sorting';
 
-        $changeFreqField = $schema->hasField($this->config['changeFreqField'] ?? '') ? $this->config['changeFreqField'] : '';
-        $priorityField = $schema->hasField($this->config['priorityField'] ?? '') ? $this->config['priorityField'] : '';
+        $changeFreqField = $schema->hasField($configuration['changeFreqField'] ?? '') ? $configuration['changeFreqField'] : '';
+        $priorityField = $schema->hasField($configuration['priorityField'] ?? '') ? $configuration['priorityField'] : '';
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($table);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
 
         $constraints = [];
 
@@ -85,17 +90,17 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         }
 
         if (!empty($pids)) {
-            $recursiveLevel = isset($this->config['recursive']) ? (int)$this->config['recursive'] : 0;
-            $pids = GeneralUtility::makeInstance(PageRepository::class)->getPageIdsRecursive($pids, $recursiveLevel);
+            $recursiveLevel = isset($configuration['recursive']) ? (int)$configuration['recursive'] : 0;
+            $pids = $this->pageRepository->getPageIdsRecursive($pids, $recursiveLevel);
             $constraints[] = $queryBuilder->expr()->in('pid', $pids);
         }
 
-        if (!empty($this->config['additionalWhere'])) {
-            $constraints[] = QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($this->config['additionalWhere']));
+        if (!empty($configuration['additionalWhere'])) {
+            $constraints[] = QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($configuration['additionalWhere']));
         }
 
         $queryBuilder->getRestrictions()->add(
-            GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getCurrentWorkspaceAspect()->getId())
+            new WorkspaceRestriction($this->getCurrentWorkspaceAspect()->getId())
         );
 
         $queryBuilder->select('*')
@@ -111,6 +116,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             ->executeQuery()
             ->fetchAllAssociative();
 
+        $items = [];
         foreach ($rows as $row) {
             $item = [
                 'data' => $row,
@@ -120,17 +126,19 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
                 $item['changefreq'] = $row[$changeFreqField];
             }
             $item['priority'] = !empty($priorityField) ? $row[$priorityField] : 0.5;
-            $this->items[] = $item;
+            $items[] = $item;
         }
+        return $items;
     }
 
-    protected function defineUrl(array $data): array
+    protected function defineUrl(array $data, XmlSitemapRequest $sitemapRequest): array
     {
-        $pageId = $this->request->getAttribute('frontend.page.information')->getId();
-        $pageId = $this->config['url']['pageId'] ?? $pageId;
-        $additionalParams = $this->getUrlFieldParameterMap($data['data']);
-        $additionalParams = $this->getUrlAdditionalParams($additionalParams);
-        $data['loc'] = $this->cObj->createUrl([
+        $configuration = $sitemapRequest->configuration;
+        $pageId = $sitemapRequest->request->getAttribute('frontend.page.information')->getId();
+        $pageId = $configuration['url']['pageId'] ?? $pageId;
+        $additionalParams = $this->getUrlFieldParameterMap($data['data'], $configuration);
+        $additionalParams = $this->getUrlAdditionalParams($additionalParams, $configuration);
+        $data['loc'] = $sitemapRequest->contentObjectRenderer->createUrl([
             'parameter' => $pageId,
             'queryParameters' => $additionalParams,
             'forceAbsoluteUrl' => 1,
@@ -139,12 +147,12 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         return $data;
     }
 
-    protected function getUrlFieldParameterMap(array $data): array
+    protected function getUrlFieldParameterMap(array $data, array $configuration): array
     {
         $additionalParams = [];
-        if (!empty($this->config['url']['fieldToParameterMap'])
-            && is_array($this->config['url']['fieldToParameterMap'])) {
-            foreach ($this->config['url']['fieldToParameterMap'] as $field => $urlPart) {
+        if (!empty($configuration['url']['fieldToParameterMap'])
+            && is_array($configuration['url']['fieldToParameterMap'])) {
+            foreach ($configuration['url']['fieldToParameterMap'] as $field => $urlPart) {
                 $paramValue = $data[$field];
                 parse_str($urlPart . '=' . urlencode((string)$paramValue), $nested);
                 $additionalParams = array_replace_recursive($additionalParams, $nested);
@@ -153,23 +161,22 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         return $additionalParams;
     }
 
-    protected function getUrlAdditionalParams(array $additionalParams): array
+    protected function getUrlAdditionalParams(array $additionalParams, array $configuration): array
     {
-        if (!empty($this->config['url']['additionalGetParameters'])
-            && is_array($this->config['url']['additionalGetParameters'])) {
-            $additionalParams = array_replace_recursive($additionalParams, $this->config['url']['additionalGetParameters']);
+        if (!empty($configuration['url']['additionalGetParameters'])
+            && is_array($configuration['url']['additionalGetParameters'])) {
+            $additionalParams = array_replace_recursive($additionalParams, $configuration['url']['additionalGetParameters']);
         }
         return $additionalParams;
     }
 
     protected function getLanguageId(): int
     {
-        $context = GeneralUtility::makeInstance(Context::class);
-        return (int)$context->getPropertyFromAspect('language', 'id');
+        return (int)$this->context->getPropertyFromAspect('language', 'id');
     }
 
     protected function getCurrentWorkspaceAspect(): WorkspaceAspect
     {
-        return GeneralUtility::makeInstance(Context::class)->getAspect('workspace');
+        return $this->context->getAspect('workspace');
     }
 }

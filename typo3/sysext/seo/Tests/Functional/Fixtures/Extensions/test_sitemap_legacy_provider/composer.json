@@ -1,0 +1,24 @@
+{
+	"name": "typo3tests/test-sitemap-legacy-provider",
+	"type": "typo3-cms-extension",
+	"description": "This extension provides XmlSitemap data providers as implemented in TYPO3 v14 and below.",
+	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "15.0.*@dev",
+		"typo3/cms-seo": "15.0.*@dev"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "test_sitemap_legacy_provider",
+			"Package": {
+				"providesPackages": []
+			}
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3Tests\\TestSitemapLegacyProvider\\": "Classes/"
+		}
+	}
+}

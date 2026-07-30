@@ -176,25 +176,48 @@ Create a custom XML sitemap provider
 ====================================
 
 If you need more logic in your sitemap, you can also write your own
-sitemap provider. You can do this by extending the
-:php:`\TYPO3\CMS\Seo\XmlSitemap\AbstractXmlSitemapDataProvider` class or
-implementing :php:`\TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider`.
+sitemap provider by implementing
+:php:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemapDataProviderInterface`. Data providers
+are stateless services: They are registered in the dependency injection
+container automatically and can therefore use constructor injection for their
+own dependencies.
 
-The main methods of interest are :php:`getLastModified()` and :php:`getItems()`.
-
-The :php:`getLastModified()` method is used in the sitemap index and has to
-return the date of the last modified item in the sitemap.
-
-The :php:`getItems()` method has to return an array with the items for the
-sitemap:
+The single method :php:`getSitemap()` receives a
+:php:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemapRequest` containing all runtime
+information - the name of the requested sitemap, its configuration, the number
+of the requested page, the current request and a content object renderer to
+generate URLs with. It returns a :php:`\TYPO3\CMS\Seo\XmlSitemap\XmlSitemap`,
+which is best created via :php:`XmlSitemap::forPage()`: It takes all items of
+the sitemap, extracts the items of the requested page and calculates the total
+number of pages and the last modification date needed for the sitemap index.
 
 ..  code-block:: php
     :caption: EXT:my_extension/Classes/XmlSitemap/MyXmlSitemapProvider.php
 
-    $this->items[] = [
-        'loc' => 'https://example.org/page1.html',
-        'lastMod' => '1536003609'
-    ];
+    namespace MyVendor\MyExtension\XmlSitemap;
+
+    use TYPO3\CMS\Seo\XmlSitemap\XmlSitemap;
+    use TYPO3\CMS\Seo\XmlSitemap\XmlSitemapDataProviderInterface;
+    use TYPO3\CMS\Seo\XmlSitemap\XmlSitemapRequest;
+
+    final readonly class MyXmlSitemapProvider implements XmlSitemapDataProviderInterface
+    {
+        public function __construct(
+            private MyItemRepository $itemRepository,
+        ) {}
+
+        public function getSitemap(XmlSitemapRequest $sitemapRequest): XmlSitemap
+        {
+            $items = [];
+            foreach ($this->itemRepository->findAll() as $item) {
+                $items[] = [
+                    'loc' => 'https://example.org/page1.html',
+                    'lastMod' => 1536003609,
+                ];
+            }
+            return XmlSitemap::forPage($items, $sitemapRequest->page);
+        }
+    }
 
 The :php:`loc` element is the URL of the page to be crawled by a search engine.
 The :php:`lastMod` element contains the date of the last update of the

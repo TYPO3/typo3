@@ -2830,4 +2830,10 @@ return [
             'Breaking-110196-Rfc822AddressesParserRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Seo\XmlSitemap\AbstractXmlSitemapDataProvider' => [
+        'restFiles' => [
+            'Deprecation-110334-AbstractXmlSitemapDataProvider.rst',
+            'Breaking-110334-XmlSitemapDataProviderInterfaceChanged.rst',
+        ],
+    ],
 ];

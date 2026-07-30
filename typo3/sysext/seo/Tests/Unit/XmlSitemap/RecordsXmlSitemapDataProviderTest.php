@@ -56,12 +56,11 @@ final class RecordsXmlSitemapDataProviderTest extends UnitTestCase
             '',
             false
         );
-        $subject->_set('config', [
+        $result = $subject->_call('getUrlFieldParameterMap', $data, [
             'url' => [
                 'fieldToParameterMap' => $fieldToParameterMap,
             ],
         ]);
-        $result = $subject->_call('getUrlFieldParameterMap', $data);
         self::assertEquals($expected, $result);
     }
 
@@ -98,12 +97,11 @@ final class RecordsXmlSitemapDataProviderTest extends UnitTestCase
             '',
             false
         );
-        $subject->_set('config', [
+        $result = $subject->_call('getUrlAdditionalParams', [], [
             'url' => [
                 'additionalGetParameters' => $additionalGetParameters,
             ],
         ]);
-        $result = $subject->_call('getUrlAdditionalParams', []);
         self::assertSame($expected, $result);
     }
 }

@@ -1,0 +1,26 @@
+plugin.tx_seo {
+  config {
+    xmlSitemap {
+      sitemaps {
+        legacy {
+          provider = TYPO3Tests\TestSitemapLegacyProvider\XmlSitemap\LegacyDataProvider
+          config {
+            pageId = 1
+          }
+        }
+        legacy_declaring_interface {
+          provider = TYPO3Tests\TestSitemapLegacyProvider\XmlSitemap\LegacyDataProviderDeclaringInterface
+          config {
+            pageId = 1
+          }
+        }
+        modern {
+          provider = TYPO3Tests\TestSitemapLegacyProvider\XmlSitemap\ModernDataProvider
+          config {
+            pageId = 1
+          }
+        }
+      }
+    }
+  }
+}

@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\XmlSitemap;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -25,67 +24,75 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class to generate a XML sitemap for pages
  * @internal this class is not part of TYPO3's Core API.
  */
-class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
+class PagesXmlSitemapDataProvider implements XmlSitemapDataProviderInterface
 {
-    public function __construct(ServerRequestInterface $request, string $key, array $config = [], ?ContentObjectRenderer $cObj = null)
-    {
-        parent::__construct($request, $key, $config, $cObj);
+    public function __construct(
+        protected readonly Context $context,
+        protected readonly ConnectionPool $connectionPool,
+        protected readonly PageRepository $pageRepository,
+        protected readonly RecordFactory $recordFactory,
+    ) {}
 
-        $this->generateItems();
+    public function getSitemap(XmlSitemapRequest $sitemapRequest): XmlSitemap
+    {
+        return XmlSitemap::forPage(
+            $this->generateItems($sitemapRequest),
+            $sitemapRequest->page,
+            fn(array $item): array => $this->defineUrl($item, $sitemapRequest),
+        );
     }
 
-    protected function generateItems(): void
+    protected function generateItems(XmlSitemapRequest $sitemapRequest): array
     {
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $pages = $pageRepository->getPagesOverlay($this->getPages());
+        $items = [];
+        $pages = $this->pageRepository->getPagesOverlay($this->getPages($sitemapRequest));
         $languageAspect = $this->getCurrentLanguageAspect();
         foreach ($pages as $page) {
-            if (!$pageRepository->isPageSuitableForLanguage($page, $languageAspect)) {
+            if (!$this->pageRepository->isPageSuitableForLanguage($page, $languageAspect)) {
                 continue;
             }
 
-            $this->items[] = $page + [
+            $items[] = $page + [
                 'lastMod' => (int)($page['SYS_LASTCHANGED'] ?: $page['tstamp']),
                 'changefreq' => $page['sitemap_changefreq'],
                 'priority' => (float)$page['sitemap_priority'],
             ];
         }
+        return $items;
     }
 
-    protected function getPages(): array
+    protected function getPages(XmlSitemapRequest $sitemapRequest): array
     {
-        if (!empty($this->config['rootPage'])) {
-            $rootPageId = (int)$this->config['rootPage'];
+        $configuration = $sitemapRequest->configuration;
+        if (!empty($configuration['rootPage'])) {
+            $rootPageId = (int)$configuration['rootPage'];
         } else {
-            $site = $this->request->getAttribute('site');
+            $site = $sitemapRequest->request->getAttribute('site');
             $rootPageId = $site->getRootPageId();
         }
 
-        $excludePagesRecursive = GeneralUtility::intExplode(',', (string)($this->config['excludePagesRecursive'] ?? ''), true);
+        $excludePagesRecursive = GeneralUtility::intExplode(',', (string)($configuration['excludePagesRecursive'] ?? ''), true);
 
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $pageIds = $pageRepository->getDescendantPageIdsRecursive($rootPageId, 99, 0, $excludePagesRecursive);
+        $pageIds = $this->pageRepository->getDescendantPageIdsRecursive($rootPageId, 99, 0, $excludePagesRecursive);
         $pageIds = array_merge([$rootPageId], $pageIds);
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
 
         $constraints = [
             $queryBuilder->expr()->in('uid', $pageIds),
         ];
 
-        if (!empty($this->config['additionalWhere'])) {
-            $constraints[] = QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($this->config['additionalWhere']));
+        if (!empty($configuration['additionalWhere'])) {
+            $constraints[] = QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($configuration['additionalWhere']));
         }
 
-        if (!empty($this->config['excludedDoktypes'])) {
-            $excludedDoktypes = GeneralUtility::intExplode(',', (string)$this->config['excludedDoktypes']);
+        if (!empty($configuration['excludedDoktypes'])) {
+            $excludedDoktypes = GeneralUtility::intExplode(',', (string)$configuration['excludedDoktypes']);
             if (!empty($excludedDoktypes)) {
                 $constraints[] = $queryBuilder->expr()->notIn('doktype', implode(',', $excludedDoktypes));
             }
@@ -102,18 +109,18 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 
     protected function getCurrentLanguageAspect(): LanguageAspect
     {
-        return GeneralUtility::makeInstance(Context::class)->getAspect('language');
+        return $this->context->getAspect('language');
     }
 
-    protected function defineUrl(array $data): array
+    protected function defineUrl(array $data, XmlSitemapRequest $sitemapRequest): array
     {
         $typoLinkConfig = [
-            'page' => GeneralUtility::makeInstance(RecordFactory::class)->createFromDatabaseRow('pages', $data),
+            'page' => $this->recordFactory->createFromDatabaseRow('pages', $data),
             'parameter' => $data['uid'],
             'forceAbsoluteUrl' => 1,
         ];
 
-        $data['loc'] = $this->cObj->createUrl($typoLinkConfig);
+        $data['loc'] = $sitemapRequest->contentObjectRenderer->createUrl($typoLinkConfig);
         return $data;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo;
 
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
@@ -14,6 +15,15 @@ use TYPO3\CMS\Seo\Widgets\Provider\PagesWithoutDescriptionDataProvider;
 
 return function (ContainerConfigurator $configurator, ContainerBuilder $containerBuilder) {
     $services = $configurator->services();
+
+    // @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0 together with AbstractXmlSitemapDataProvider.
+    $containerBuilder->addCompilerPass(
+        new DependencyInjection\XmlSitemapDataProviderPass('seo.xmlsitemap.provider'),
+        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+        // Must run after ResolveInstanceofConditionalsPass (priority 100), which applies the tag
+        // of the AutoconfigureTag attribute to the single service definitions.
+        0
+    );
 
     /**
      * Check if WidgetRegistry is defined, which means that EXT:dashboard is available.

@@ -17,17 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\XmlSitemap;
 
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 /**
- * Interface for XmlSitemapDataProviders containing the methods that are called by the XmlSitemapRenderer
+ * Interface for XmlSitemapDataProviders, which are called by the XmlSitemapRenderer.
+ *
+ * Implementations are stateless services receiving all runtime information via XmlSitemapRequest,
+ * which allows them to use dependency injection for their own dependencies.
  */
+#[AutoconfigureTag('seo.xmlsitemap.provider')]
 interface XmlSitemapDataProviderInterface
 {
-    public function __construct(ServerRequestInterface $request, string $name, array $config = [], ?ContentObjectRenderer $cObj = null);
-    public function getKey(): string;
-    public function getItems(): array;
-    public function getLastModified(): int;
-    public function getNumberOfPages(): int;
+    public function getSitemap(XmlSitemapRequest $sitemapRequest): XmlSitemap;
 }

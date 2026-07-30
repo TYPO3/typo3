@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Seo\XmlSitemap\Exception\InvalidConfigurationException;
 
@@ -57,6 +58,7 @@ final readonly class XmlSitemapRenderer
         private PolicyRegistry $policyRegistry,
         private SystemResourceFactory $resourceFactory,
         private SystemResourcePublisherInterface $resourcePublisher,
+        private XmlSitemapFactory $xmlSitemapFactory,
     ) {}
 
     /**
@@ -98,22 +100,21 @@ final readonly class XmlSitemapRenderer
     {
         $sitemaps = [];
         foreach ($configConfiguration[$sitemapType]['sitemaps'] as $sitemapName => $sitemapConfig) {
-            $sitemapProvider = $sitemapConfig['provider'] ?? null;
-            if (is_string($sitemapName)
-                && is_string($sitemapProvider)
-                && class_exists($sitemapProvider)
-                && is_subclass_of($sitemapProvider, XmlSitemapDataProviderInterface::class)
-            ) {
-                /** @var XmlSitemapDataProviderInterface $provider */
-                $provider = GeneralUtility::makeInstance($sitemapProvider, $request, $sitemapName, $sitemapConfig['config'] ?? []);
-                $pages = $provider->getNumberOfPages();
-                for ($page = 0; $page < $pages; $page++) {
-                    $sitemaps[] = [
-                        'key' => $sitemapName,
-                        'page' => $page,
-                        'lastMod' => $provider->getLastModified(),
-                    ];
-                }
+            if (!is_string($sitemapName) || !is_string($sitemapConfig['provider'] ?? null)) {
+                continue;
+            }
+            try {
+                $sitemap = $this->createSitemap($request, $sitemapName, $sitemapConfig);
+            } catch (InvalidConfigurationException) {
+                // A single misconfigured sitemap must not break the whole index
+                continue;
+            }
+            for ($page = 0; $page < $sitemap->getNumberOfPages(); $page++) {
+                $sitemaps[] = [
+                    'key' => $sitemapName,
+                    'page' => $page,
+                    'lastMod' => $sitemap->getLastModified(),
+                ];
             }
         }
         $view->assign('sitemaps', $sitemaps);
@@ -123,28 +124,50 @@ final readonly class XmlSitemapRenderer
     private function renderSitemap(ServerRequestInterface $request, ViewInterface $view, array $configConfiguration, string $sitemapType, string $sitemapName): string
     {
         $sitemapConfig = $configConfiguration[$sitemapType]['sitemaps'][$sitemapName] ?? null;
-        if ($sitemapConfig) {
-            $sitemapProvider = $sitemapConfig['provider'] ?? null;
-            if (is_string($sitemapProvider)
-                && class_exists($sitemapProvider)
-                && is_subclass_of($sitemapProvider, XmlSitemapDataProviderInterface::class)
-            ) {
-                /** @var XmlSitemapDataProviderInterface $provider */
-                $provider = GeneralUtility::makeInstance($sitemapProvider, $request, $sitemapName, $sitemapConfig['config'] ?? []);
-                $items = $provider->getItems();
-                $view->assign('items', $items);
-                $template = $sitemapConfig['config']['template'] ?? $sitemapConfig['template'] ?? 'Sitemap';
-                return $view->render($template);
-            }
+        if (!$sitemapConfig) {
+            throw new PropagateResponseException(
+                $this->errorController->pageNotFoundAction(
+                    $request,
+                    'No valid configuration found for sitemap ' . $sitemapName
+                ),
+                1535578569
+            );
+        }
+        $sitemap = $this->createSitemap($request, $sitemapName, $sitemapConfig);
+        $view->assign('items', $sitemap->getItems());
+        $template = $sitemapConfig['config']['template'] ?? $sitemapConfig['template'] ?? 'Sitemap';
+        return $view->render($template);
+    }
+
+    /**
+     * @throws InvalidConfigurationException
+     */
+    private function createSitemap(ServerRequestInterface $request, string $sitemapName, array $sitemapConfig): XmlSitemap
+    {
+        $dataProviderClassName = $sitemapConfig['provider'] ?? null;
+        if (!is_string($dataProviderClassName) || !class_exists($dataProviderClassName)) {
             throw new InvalidConfigurationException('No valid provider set for ' . $sitemapName, 1535578522);
         }
-        throw new PropagateResponseException(
-            $this->errorController->pageNotFoundAction(
-                $request,
-                'No valid configuration found for sitemap ' . $sitemapName
-            ),
-            1535578569
+        $page = (int)($request->getQueryParams()['tx_seo']['page'] ?? 0);
+        $sitemapRequest = new XmlSitemapRequest(
+            name: $sitemapName,
+            configuration: $sitemapConfig['config'] ?? [],
+            page: max(0, $page),
+            request: $request,
+            contentObjectRenderer: $this->resolveContentObjectRenderer($request),
         );
+        return $this->xmlSitemapFactory->create($dataProviderClassName, $sitemapRequest);
+    }
+
+    private function resolveContentObjectRenderer(ServerRequestInterface $request): ContentObjectRenderer
+    {
+        $contentObjectRenderer = $request->getAttribute('currentContentObject');
+        if ($contentObjectRenderer instanceof ContentObjectRenderer) {
+            return $contentObjectRenderer;
+        }
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer->setRequest($request);
+        return $contentObjectRenderer;
     }
 
     /**
