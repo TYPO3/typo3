@@ -31,10 +31,13 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  */
 final class MetaTagTest extends AbstractTestCase
 {
+    protected array $coreExtensionsToLoad = [
+        'workspaces',
+        'seo',
+    ];
+
     protected function setUp(): void
     {
-        $this->coreExtensionsToLoad[] = 'seo';
-
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/Scenarios/pages_with_seo_meta.csv');
 

@@ -28,12 +28,12 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ShowImageControllerTest extends FunctionalTestCase
 {
+    protected array $pathsToProvideInTestInstance = [
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Images/' => 'fileadmin/',
+    ];
+
     protected function setUp(): void
     {
-        $this->pathsToProvideInTestInstance = [
-            ...$this->pathsToProvideInTestInstance,
-            'typo3/sysext/frontend/Tests/Functional/Fixtures/Images/' => 'fileadmin/',
-        ];
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/fileadmin_images.csv');

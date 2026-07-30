@@ -36,6 +36,8 @@ use TYPO3\TestingFramework\Core\Testbase;
 
 abstract class AbstractSchemaBasedTestCase extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     /**
      * @var array<string, mixed>
      */
@@ -48,7 +50,6 @@ abstract class AbstractSchemaBasedTestCase extends FunctionalTestCase
 
     protected function setUp(): void
     {
-        $this->initializeDatabase = false;
         parent::setUp();
         $providedData = $this->providedData();
         if (($providedData['emptyDefaultTableOptions'] ?? null) === true) {
