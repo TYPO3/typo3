@@ -40,28 +40,28 @@ final class DatetimeLegacyTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler_datetime_legacy',
     ];
 
-    protected function setUp(): void
-    {
-        $this->configurationToUseInTestInstance = [
-            'DB' => [
-                'Connections' => [
-                    'Default' => [
-                        // Overwrite sql_mode to disable NO_ZERO_DATE
-                        'initCommands' => 'SET SESSION sql_mode = \'' . implode(',', [
-                            'STRICT_ALL_TABLES',
-                            'ERROR_FOR_DIVISION_BY_ZERO',
-                            'NO_AUTO_VALUE_ON_ZERO',
-                            'NO_ENGINE_SUBSTITUTION',
-                            // Disabled to allow "0000-00-00" values for DATE and DATETIME fields with legacy non-nullable config
-                            //'NO_ZERO_DATE',
-                            'NO_ZERO_IN_DATE',
-                            'ONLY_FULL_GROUP_BY',
-                        ]) . '\';',
-                    ],
+    protected array $configurationToUseInTestInstance = [
+        'DB' => [
+            'Connections' => [
+                'Default' => [
+                    // Same sql_mode the testing framework sets up for MySQL/MariaDB, except that
+                    // `NO_ZERO_DATE` is left out to allow "0000-00-00" values for DATE and DATETIME
+                    // fields with legacy non-nullable config.
+                    'initCommands' => 'SET SESSION sql_mode = \''
+                        . 'STRICT_ALL_TABLES'
+                        . ',ERROR_FOR_DIVISION_BY_ZERO'
+                        . ',NO_AUTO_VALUE_ON_ZERO'
+                        . ',NO_ENGINE_SUBSTITUTION'
+                        . ',NO_ZERO_IN_DATE'
+                        . ',ONLY_FULL_GROUP_BY'
+                        . '\';',
                 ],
             ],
-        ];
+        ],
+    ];
 
+    protected function setUp(): void
+    {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_admin.csv');
         $this->writeSiteConfiguration(

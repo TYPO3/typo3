@@ -34,6 +34,9 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 final class RequestHandlerTest extends AbstractTestCase
 {
     protected array $configurationToUseInTestInstance = [
+        'FE' => [
+            'debug' => true,
+        ],
         'SYS' => [
             'caching' => [
                 // `typo3/testing-framework` uses `NullBackend` per default
@@ -56,7 +59,6 @@ final class RequestHandlerTest extends AbstractTestCase
 
     protected function setUp(): void
     {
-        $this->configurationToUseInTestInstance['FE']['debug'] = true;
         parent::setUp();
 
         $this->withDatabaseSnapshot(function () {

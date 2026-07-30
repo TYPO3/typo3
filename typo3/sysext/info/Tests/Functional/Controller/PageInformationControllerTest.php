@@ -24,9 +24,12 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PageInformationControllerTest extends FunctionalTestCase
 {
+    protected array $coreExtensionsToLoad = [
+        'info',
+    ];
+
     protected function setUp(): void
     {
-        $this->coreExtensionsToLoad[] = 'info';
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSets/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataSets/pages.csv');
