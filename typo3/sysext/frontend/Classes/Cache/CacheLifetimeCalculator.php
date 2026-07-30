@@ -194,8 +194,10 @@ class CacheLifetimeCalculator
     protected function getFirstTimeValueForRecord(string $tableDef, int $currentTimestamp): int
     {
         $result = PHP_INT_MAX;
-        [$tableName, $pid] = GeneralUtility::trimExplode(':', $tableDef);
-        if (empty($tableName) || !isset($pid)) {
+        $tableDefParts = GeneralUtility::trimExplode(':', $tableDef);
+        $tableName = $tableDefParts[0] ?? '';
+        $pid = $tableDefParts[1] ?? null;
+        if ($tableName === '' || $pid === null) {
             throw new \InvalidArgumentException('Unexpected value for parameter $tableDef. Expected <tablename>:<pid>, got \'' . htmlspecialchars($tableDef) . '\'.', 1307190365);
         }
 
