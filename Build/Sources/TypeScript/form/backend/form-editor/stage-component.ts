@@ -273,8 +273,8 @@ function renderNestedSortableListItem(formElement: FormElement): HTMLElement {
     const childFormElements = formElement.get('renderables');
     const hasChildren = Array.isArray(childFormElements) && childFormElements.length > 0;
 
-    // Show "Create new element" placeholder when the container (page or composite) is empty.
-    if (!hasChildren) {
+    // Show "Create new element" placeholder only for composite containers (not SummaryPage).
+    if (!hasChildren && isCompositeFormElement) {
       childList.append(createNewElementPlaceholder(formElement, 'inside'));
     }
 
