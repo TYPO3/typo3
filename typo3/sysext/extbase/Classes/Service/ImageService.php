@@ -20,9 +20,7 @@ namespace TYPO3\CMS\Extbase\Service;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Imaging\ImageResource;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -47,10 +45,7 @@ readonly class ImageService
      */
     public function applyProcessingInstructions(File|FileReference $image, array $processingInstructions): ProcessedFile
     {
-        $processedImage = $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
-        $this->setCompatibilityValues($processedImage);
-
-        return $processedImage;
+        return $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
     }
 
     /**
@@ -153,20 +148,5 @@ readonly class ImageService
 
         // Check the resolved image as this could also be a FolderInterface
         return $image instanceof FileInterface ? $image : null;
-    }
-
-    /**
-     * Set compatibility values in case we are in frontend environment.
-     */
-    protected function setCompatibilityValues(ProcessedFile $processedImage): void
-    {
-        $imageResource = ImageResource::createFromProcessedFile($processedImage);
-        if ($imageResource->getPublicUrl() !== null) {
-            // only add the processed image to AssetCollector if the public url is not NULL
-            GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
-                $imageResource->getPublicUrl(),
-                $imageResource->getLegacyImageResourceInformation()
-            );
-        }
     }
 }

@@ -40,8 +40,6 @@ final class ImageScriptServiceTest extends UnitTestCase
         $reference = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
         $processedFile = $this->createMock(ProcessedFile::class);
         $reference->expects($this->once())->method('process')->willReturn($processedFile);
-        $processedFile->expects($this->once())->method('getOriginalFile')->willReturn($this->createMock(File::class));
-        $processedFile->expects($this->atLeastOnce())->method('getPublicUrl')->willReturn('https://example.com/foo.png');
 
         self::assertSame($processedFile, $subject->applyProcessingInstructions($reference, []));
     }

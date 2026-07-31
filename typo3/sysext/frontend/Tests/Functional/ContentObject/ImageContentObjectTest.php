@@ -24,7 +24,6 @@ use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\ImageResource;
-use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -61,7 +60,6 @@ final class ImageContentObjectTest extends FunctionalTestCase
         $subject->setContentObjectRenderer($cObj);
 
         self::assertSame('', $subject->_call('cImage', 'missing-file.jpg', []));
-        self::assertSame([], $this->get(AssetCollector::class)->getMedia());
         $logMessages = array_merge(...array_column($timeTracker->getTypoScriptLogStack(), 'message'));
         self::assertStringContainsString(
             'The image &quot;missing-file.jpg&quot; has no public URL, the file is probably missing. It is not rendered.',

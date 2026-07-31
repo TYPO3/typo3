@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -95,11 +94,6 @@ class ImageContentObject extends AbstractContentObject
             );
             return '';
         }
-        GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
-            $source,
-            $imageResource->getLegacyImageResourceInformation()
-        );
-
         $layoutKey = (string)$this->cObj->stdWrapValue('layoutKey', $conf);
         $imageTagTemplate = $this->getImageTagTemplate($layoutKey, $conf);
         $sourceCollection = $this->getImageSourceCollection($layoutKey, $conf, $file);

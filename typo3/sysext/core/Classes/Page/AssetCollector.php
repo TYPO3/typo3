@@ -134,9 +134,15 @@ class AssetCollector implements SingletonInterface
 
     /**
      * @param array $additionalInformation One dimensional hash map (array with non-numerical keys) with scalar values
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Listen to the PSR-14 AfterFileProcessingEvent instead.
      */
     public function addMedia(string $fileName, array $additionalInformation): self
     {
+        trigger_error(
+            'AssetCollector->addMedia() is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0.'
+            . ' Listen to the PSR-14 AfterFileProcessingEvent instead.',
+            E_USER_DEPRECATED
+        );
         $existingAdditionalInformation = $this->media[$fileName] ?? [];
         ArrayUtility::mergeRecursiveWithOverrule($existingAdditionalInformation, $this->ensureAllValuesAreSerializable($additionalInformation));
         $this->media[$fileName] = $existingAdditionalInformation;
@@ -173,14 +179,30 @@ class AssetCollector implements SingletonInterface
         return $this;
     }
 
+    /**
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Listen to the PSR-14 AfterFileProcessingEvent instead.
+     */
     public function removeMedia(string $identifier): self
     {
+        trigger_error(
+            'AssetCollector->removeMedia() is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0.'
+            . ' Listen to the PSR-14 AfterFileProcessingEvent instead.',
+            E_USER_DEPRECATED
+        );
         unset($this->media[$identifier]);
         return $this;
     }
 
+    /**
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Listen to the PSR-14 AfterFileProcessingEvent instead.
+     */
     public function getMedia(): array
     {
+        trigger_error(
+            'AssetCollector->getMedia() is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0.'
+            . ' Listen to the PSR-14 AfterFileProcessingEvent instead.',
+            E_USER_DEPRECATED
+        );
         return $this->media;
     }
 
@@ -229,8 +251,16 @@ class AssetCollector implements SingletonInterface
         return isset($this->inlineStyleSheets[$identifier]);
     }
 
+    /**
+     * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Listen to the PSR-14 AfterFileProcessingEvent instead.
+     */
     public function hasMedia(string $fileName): bool
     {
+        trigger_error(
+            'AssetCollector->hasMedia() is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0.'
+            . ' Listen to the PSR-14 AfterFileProcessingEvent instead.',
+            E_USER_DEPRECATED
+        );
         return isset($this->media[$fileName]);
     }
 

@@ -33,7 +33,7 @@
                                 <f:variable name="typeClass" value="string" />
                                 <f:if condition="{file.sizeHuman as integer} === {file.sizeHuman}"><f:variable name="typeClass" value="integer" /></f:if>
                                 <f:if condition="{file.sizeHuman as float} === {file.sizeHuman}"><f:variable name="typeClass" value="float" /></f:if>
-                                <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}">{file.sizeHuman}</pre>
+                                <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}">{file.sizeHuman}<f:if condition="{file.width}"> ({file.width}&times;{file.height})</f:if></pre>
                             </td>
                         </tr>
                     </f:for>

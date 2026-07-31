@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Page;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -225,13 +226,11 @@ final class AssetCollectorTest extends UnitTestCase
             self::assertFalse($assetCollector->hasInlineStyleSheet($identifier));
             self::assertFalse($assetCollector->hasInlineJavaScript($identifier));
             self::assertFalse($assetCollector->hasJavaScript($identifier));
-            self::assertFalse($assetCollector->hasMedia($identifier));
         }
         self::assertSame($expectedResult, $assetCollector->getStyleSheets());
         self::assertSame([], $assetCollector->getInlineStyleSheets());
         self::assertSame([], $assetCollector->getInlineJavaScripts());
         self::assertSame([], $assetCollector->getJavaScripts());
-        self::assertSame([], $assetCollector->getMedia());
         foreach ($files as $file) {
             [$identifier] = $file;
             $assetCollector->removeStyleSheet($identifier);
@@ -240,7 +239,6 @@ final class AssetCollectorTest extends UnitTestCase
         self::assertSame([], $assetCollector->getInlineStyleSheets());
         self::assertSame([], $assetCollector->getInlineJavaScripts());
         self::assertSame([], $assetCollector->getJavaScripts());
-        self::assertSame([], $assetCollector->getMedia());
     }
 
     #[DataProvider('filesDataProvider')]
@@ -255,13 +253,11 @@ final class AssetCollectorTest extends UnitTestCase
             self::assertFalse($assetCollector->hasInlineStyleSheet($identifier));
             self::assertFalse($assetCollector->hasInlineJavaScript($identifier));
             self::assertFalse($assetCollector->hasStyleSheet($identifier));
-            self::assertFalse($assetCollector->hasMedia($identifier));
         }
         self::assertSame($expectedResult, $assetCollector->getJavaScripts());
         self::assertSame([], $assetCollector->getInlineStyleSheets());
         self::assertSame([], $assetCollector->getInlineJavaScripts());
         self::assertSame([], $assetCollector->getStyleSheets());
-        self::assertSame([], $assetCollector->getMedia());
         foreach ($files as $file) {
             [$identifier] = $file;
             $assetCollector->removeJavaScript($identifier);
@@ -270,7 +266,6 @@ final class AssetCollectorTest extends UnitTestCase
         self::assertSame([], $assetCollector->getInlineStyleSheets());
         self::assertSame([], $assetCollector->getInlineJavaScripts());
         self::assertSame([], $assetCollector->getStyleSheets());
-        self::assertSame([], $assetCollector->getMedia());
     }
 
     public static function inlineDataProvider(): array
@@ -400,13 +395,11 @@ final class AssetCollectorTest extends UnitTestCase
             self::assertFalse($assetCollector->hasInlineStyleSheet($identifier));
             self::assertFalse($assetCollector->hasJavaScript($identifier));
             self::assertFalse($assetCollector->hasStyleSheet($identifier));
-            self::assertFalse($assetCollector->hasMedia($identifier));
         }
         self::assertSame($expectedResult, $assetCollector->getInlineJavaScripts());
         self::assertSame([], $assetCollector->getInlineStyleSheets());
         self::assertSame([], $assetCollector->getJavaScripts());
         self::assertSame([], $assetCollector->getStyleSheets());
-        self::assertSame([], $assetCollector->getMedia());
         foreach ($sources as $source) {
             [$identifier] = $source;
             $assetCollector->removeInlineJavaScript($identifier);
@@ -415,7 +408,6 @@ final class AssetCollectorTest extends UnitTestCase
         self::assertSame([], $assetCollector->getInlineStyleSheets());
         self::assertSame([], $assetCollector->getJavaScripts());
         self::assertSame([], $assetCollector->getStyleSheets());
-        self::assertSame([], $assetCollector->getMedia());
     }
 
     #[DataProvider('inlineDataProvider')]
@@ -430,13 +422,11 @@ final class AssetCollectorTest extends UnitTestCase
             self::assertFalse($assetCollector->hasInlineJavaScript($identifier));
             self::assertFalse($assetCollector->hasJavaScript($identifier));
             self::assertFalse($assetCollector->hasStyleSheet($identifier));
-            self::assertFalse($assetCollector->hasMedia($identifier));
         }
         self::assertSame($expectedResult, $assetCollector->getInlineStyleSheets());
         self::assertSame([], $assetCollector->getInlineJavaScripts());
         self::assertSame([], $assetCollector->getJavaScripts());
         self::assertSame([], $assetCollector->getStyleSheets());
-        self::assertSame([], $assetCollector->getMedia());
         foreach ($sources as $source) {
             [$identifier] = $source;
             $assetCollector->removeInlineStyleSheet($identifier);
@@ -445,7 +435,6 @@ final class AssetCollectorTest extends UnitTestCase
         self::assertSame([], $assetCollector->getInlineJavaScripts());
         self::assertSame([], $assetCollector->getJavaScripts());
         self::assertSame([], $assetCollector->getStyleSheets());
-        self::assertSame([], $assetCollector->getMedia());
     }
 
     public static function mediaDataProvider(): array
@@ -513,6 +502,7 @@ final class AssetCollectorTest extends UnitTestCase
     }
 
     #[DataProvider('mediaDataProvider')]
+    #[IgnoreDeprecations]
     #[Test]
     public function media(array $images, array $expectedResult): void
     {
@@ -521,24 +511,12 @@ final class AssetCollectorTest extends UnitTestCase
             [$fileName, $additionalInformation] = $image;
             $assetCollector->addMedia($fileName, $additionalInformation);
             self::assertTrue($assetCollector->hasMedia($fileName));
-            self::assertFalse($assetCollector->hasInlineStyleSheet($fileName));
-            self::assertFalse($assetCollector->hasInlineJavaScript($fileName));
-            self::assertFalse($assetCollector->hasJavaScript($fileName));
-            self::assertFalse($assetCollector->hasStyleSheet($fileName));
         }
         self::assertSame($expectedResult, $assetCollector->getMedia());
-        self::assertSame([], $assetCollector->getInlineStyleSheets());
-        self::assertSame([], $assetCollector->getInlineJavaScripts());
-        self::assertSame([], $assetCollector->getJavaScripts());
-        self::assertSame([], $assetCollector->getStyleSheets());
         foreach ($images as $image) {
             [$fileName] = $image;
             $assetCollector->removeMedia($fileName);
         }
         self::assertSame([], $assetCollector->getMedia());
-        self::assertSame([], $assetCollector->getInlineStyleSheets());
-        self::assertSame([], $assetCollector->getInlineJavaScripts());
-        self::assertSame([], $assetCollector->getJavaScripts());
-        self::assertSame([], $assetCollector->getStyleSheets());
     }
 }
