@@ -470,9 +470,14 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
             $requestTokenScopeMatches = ($requestToken->scope ?? null) === 'core/user-auth/' . strtolower($this->loginType);
             if (!$requestTokenScopeMatches) {
-                $this->logger->debug('Missing or invalid request token during login', ['requestToken' => $requestToken]);
+                $this->logger->warning('Missing or invalid request token during login', ['requestToken' => $requestToken]);
                 // important: disable `$activeLogin` state
                 $activeLogin = false;
+                // Announce the failed login attempt, since the credentials are never
+                // evaluated when the request token is missing or invalid
+                GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+                    new LoginAttemptFailedEvent($this, $request, $this->removeSensitiveLoginDataForLoggingInfo($loginData))
+                );
             } elseif ($requestToken instanceof RequestToken && $requestToken->getSigningSecretIdentifier() !== null) {
                 $securityAspect->getSigningSecretResolver()->revokeIdentifier(
                     $requestToken->getSigningSecretIdentifier()

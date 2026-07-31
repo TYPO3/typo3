@@ -22,12 +22,14 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Event\LoginAttemptFailedEvent;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Security\RequestToken;
@@ -166,25 +168,29 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function missingRequestTokenAbortsActiveLogin(): void
+    public function missingRequestTokenAbortsActiveLoginAndAnnouncesFailedAttempt(): void
     {
         // No request token provided in the security aspect: correct credentials are ignored.
+        $loginAttemptFailedEvent = $this->captureLoginAttemptFailedEvent();
         $subject = $this->createSubject();
         $subject->start($this->buildLoginRequest('testadmin', self::PASSWORD));
 
         self::assertNull($subject->getUserId());
         self::assertSame(0, $this->countSessionsOfUser(100));
+        self::assertInstanceOf(LoginAttemptFailedEvent::class, $loginAttemptFailedEvent->event);
     }
 
     #[Test]
-    public function requestTokenWithForeignScopeAbortsActiveLogin(): void
+    public function requestTokenWithForeignScopeAbortsActiveLoginAndAnnouncesFailedAttempt(): void
     {
         $securityAspect = SecurityAspect::provideIn($this->get(Context::class));
         $securityAspect->setReceivedRequestToken(RequestToken::create('core/user-auth/fe'));
+        $loginAttemptFailedEvent = $this->captureLoginAttemptFailedEvent();
         $subject = $this->createSubject();
         $subject->start($this->buildLoginRequest('testadmin', self::PASSWORD));
 
         self::assertNull($subject->getUserId());
+        self::assertInstanceOf(LoginAttemptFailedEvent::class, $loginAttemptFailedEvent->event);
     }
 
     #[Test]
@@ -367,6 +373,27 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
     {
         $securityAspect = SecurityAspect::provideIn($this->get(Context::class));
         $securityAspect->setReceivedRequestToken(RequestToken::create('core/user-auth/be'));
+    }
+
+    /**
+     * Registers a listener for LoginAttemptFailedEvent and returns a state
+     * object whose "event" property is set once the event is dispatched.
+     */
+    private function captureLoginAttemptFailedEvent(): object
+    {
+        $state = new class {
+            public ?LoginAttemptFailedEvent $event = null;
+        };
+        $container = $this->get('service_container');
+        $container->set(
+            'login-attempt-failed-listener',
+            static function (LoginAttemptFailedEvent $event) use ($state): void {
+                $state->event = $event;
+            }
+        );
+        $container->get(ListenerProvider::class)
+            ->addListener(LoginAttemptFailedEvent::class, 'login-attempt-failed-listener');
+        return $state;
     }
 
     private function registerFixtureAuthService(string $serviceKey, string $subTypes, int $priority): void
