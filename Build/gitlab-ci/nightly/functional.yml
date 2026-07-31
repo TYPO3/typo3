@@ -5,10 +5,17 @@ functional mariadb 11.8 php 8.5 max:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d mariadb -i 11.8 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 11.8 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 functional mariadb 10.4 php 8.5 min:
   stage: functional
   tags:
@@ -16,10 +23,17 @@ functional mariadb 10.4 php 8.5 min:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.4 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.4 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 
 functional mysql 8.4 php 8.5 max:
   stage: functional
@@ -28,10 +42,17 @@ functional mysql 8.4 php 8.5 max:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d mysql -i 8.4 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d mysql -i 8.4 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 functional mysql 8.0 php 8.5 min:
   stage: functional
   tags:
@@ -39,10 +60,17 @@ functional mysql 8.0 php 8.5 min:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d mysql -i 8.0 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d mysql -i 8.0 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 
 functional postgres 18 php 8.5 max:
   stage: functional
@@ -51,10 +79,17 @@ functional postgres 18 php 8.5 max:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d postgres -i 18 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d postgres -i 18 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 functional postgres 10 php 8.5 min:
   stage: functional
   tags:
@@ -62,10 +97,17 @@ functional postgres 10 php 8.5 min:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d postgres -i 10 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d postgres -i 10 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 
 functional sqlite php 8.5 max:
   stage: functional
@@ -74,10 +116,17 @@ functional sqlite php 8.5 max:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 4
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 functional sqlite php 8.5 min:
   stage: functional
   tags:
@@ -85,7 +134,14 @@ functional sqlite php 8.5 min:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 4
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
