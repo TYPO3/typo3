@@ -109,10 +109,6 @@ readonly class FileDumpController
         }
 
         if (!empty($processingInstructions) && !($file instanceof ProcessedFile)) {
-            if (is_callable([$file, 'getOriginalFile'])) {
-                // Get the original file from the file reference
-                $file = $file->getOriginalFile();
-            }
             $file = $file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
         }
 

@@ -92,7 +92,8 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
             }
 
             if (is_callable([$image, 'getOriginalFile'])) {
-                // Get the original file from the file reference
+                // Get the original file from the file reference. Note this also switches the
+                // metadata source of the alt/title attributes read below to the original file.
                 $image = $image->getOriginalFile();
             }
 

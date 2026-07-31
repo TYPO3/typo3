@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -151,5 +152,24 @@ final class FileReferenceTest extends UnitTestCase
     {
         $fixture = $this->prepareFixture(['description' => null], []);
         self::assertSame('', $fixture->getDescription());
+    }
+
+    #[Test]
+    public function processIsDelegatedToTheOriginalFile(): void
+    {
+        $processedFile = $this->createMock(ProcessedFile::class);
+        $originalFile = $this->createMock(File::class);
+        $originalFile->expects($this->once())
+            ->method('process')
+            ->with(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, ['width' => 100])
+            ->willReturn($processedFile);
+
+        $fixture = $this->getAccessibleMock(FileReference::class, null, [], '', false);
+        $fixture->_set('originalFile', $originalFile);
+
+        self::assertSame(
+            $processedFile,
+            $fixture->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, ['width' => 100])
+        );
     }
 }

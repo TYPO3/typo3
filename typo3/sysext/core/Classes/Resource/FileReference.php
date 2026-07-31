@@ -472,6 +472,14 @@ class FileReference implements FileInterface
     }
 
     /**
+     * Processing always works on the original file, a file reference only adds metadata on top of it.
+     */
+    public function process(string $taskType, array $configuration): ProcessedFile
+    {
+        return $this->originalFile->process($taskType, $configuration);
+    }
+
+    /**
      * @return non-empty-string
      */
     public function getHashedIdentifier(): string

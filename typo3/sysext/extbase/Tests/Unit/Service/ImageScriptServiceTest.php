@@ -34,18 +34,16 @@ final class ImageScriptServiceTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
 
     #[Test]
-    public function fileIsUnwrappedFromReferenceForProcessing(): void
+    public function processingIsDelegatedToTheGivenFileReference(): void
     {
         $subject = new ImageService(self::createStub(ResourceFactory::class), self::createStub(LinkService::class));
         $reference = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
-        $file = $this->createMock(File::class);
         $processedFile = $this->createMock(ProcessedFile::class);
-        $file->expects($this->once())->method('process')->willReturn($processedFile);
-        $reference->expects($this->once())->method('getOriginalFile')->willReturn($file);
-        $processedFile->expects($this->once())->method('getOriginalFile')->willReturn($file);
+        $reference->expects($this->once())->method('process')->willReturn($processedFile);
+        $processedFile->expects($this->once())->method('getOriginalFile')->willReturn($this->createMock(File::class));
         $processedFile->expects($this->atLeastOnce())->method('getPublicUrl')->willReturn('https://example.com/foo.png');
 
-        $subject->applyProcessingInstructions($reference, []);
+        self::assertSame($processedFile, $subject->applyProcessingInstructions($reference, []));
     }
 
     public static function prefixIsCorrectlyAppliedToGetImageUriDataProvider(): array

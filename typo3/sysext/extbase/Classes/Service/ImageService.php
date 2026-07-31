@@ -44,21 +44,9 @@ readonly class ImageService
 
     /**
      * Create a processed file
-     *
-     * @param FileInterface|FileReference $image
      */
-    public function applyProcessingInstructions($image, array $processingInstructions): ProcessedFile
+    public function applyProcessingInstructions(File|FileReference $image, array $processingInstructions): ProcessedFile
     {
-        /*
-         * todo: this method should be split to be able to have a proper method signature.
-         * todo: actually, this method only really works with objects of type \TYPO3\CMS\Core\Resource\File, as this
-         * todo: is the only implementation that supports the support method.
-         */
-        if (is_callable([$image, 'getOriginalFile'])) {
-            // Get the original file from the file reference
-            $image = $image->getOriginalFile();
-        }
-
         $processedImage = $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
         $this->setCompatibilityValues($processedImage);
 
@@ -94,7 +82,7 @@ readonly class ImageService
      * @throws \UnexpectedValueException
      * @internal
      */
-    public function getImage(string $src, $image, bool $treatIdAsReference): FileInterface
+    public function getImage(string $src, $image, bool $treatIdAsReference): File|FileReference
     {
         if ($image instanceof File || $image instanceof FileReference) {
             // We already received a valid file and therefore just return it

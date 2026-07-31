@@ -21,7 +21,9 @@ use TYPO3\CMS\Core\Html\Srcset\SrcsetAttribute;
 use TYPO3\CMS\Core\Html\Srcset\WidthSrcsetCandidate;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -96,7 +98,7 @@ final class SrcsetViewHelper extends AbstractViewHelper
     public function render(): SrcsetAttribute
     {
         $image = $this->arguments['image'] ?? $this->renderChildren();
-        if (!$image instanceof FileInterface) {
+        if (!$image instanceof File && !$image instanceof FileReference) {
             throw new InvalidArgumentValueException('A valid file object must be specified.', 1697797783);
         }
 
