@@ -221,7 +221,7 @@ final class SrcsetViewHelperTest extends FunctionalTestCase
      */
     protected function assertImageSize(int $expectedWidth, int $expectedHeight, string $imageFile)
     {
-        [$detectedWidth, $detectedHeight] = getimagesize(static::getInstancePath() . '/' . $imageFile);
+        [$detectedWidth, $detectedHeight] = getimagesize($this->getInstancePath() . '/' . $imageFile);
         self::assertEquals($expectedWidth, $detectedWidth, "Image width $detectedWidth does not match expected width $expectedWidth: $imageFile");
         self::assertEquals($expectedHeight, $detectedHeight, "Image height $detectedHeight does not match expected height $expectedHeight: $imageFile");
     }
