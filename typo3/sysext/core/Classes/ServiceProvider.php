@@ -321,7 +321,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new Command\UpdateLanguagePackCommand(
             'language:update',
-            $container->get(Core\BootService::class)
+            $container->get(Core\BootService::class),
+            $container
         );
     }
 
