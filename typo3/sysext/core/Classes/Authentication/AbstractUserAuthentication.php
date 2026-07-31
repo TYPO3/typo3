@@ -405,7 +405,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // Active logout (eg. with "logout" button)
         if ($type === LoginType::LOGOUT) {
             if ($this->writeStdLog) {
-                $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, null, 'User %s logged out', [$this->user['username']], '', 0);
+                $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, null, 'User %s logged out', [$this->user['username'] ?? ''], '', 0);
             }
             $this->logger->info('User logged out. Id: {session}', ['session' => sha1($this->userSession->getIdentifier())]);
             $this->logoff();

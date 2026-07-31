@@ -292,6 +292,24 @@ final class AbstractUserAuthenticationTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function logoutDestroysUserSession(): void
+    {
+        $this->provideValidRequestToken();
+        $subject = $this->createSubject();
+        $subject->start($this->buildLoginRequest('testadmin', self::PASSWORD));
+        $sessionJwt = $subject->getSession()->getJwt();
+        self::assertSame(1, $this->countSessionsOfUser(100));
+
+        $request = $this->buildSessionRequest($sessionJwt);
+        $request = $request->withParsedBody(['login_status' => 'logout']);
+        $logoutSubject = $this->createSubject();
+        $logoutSubject->start($request);
+
+        self::assertNull($logoutSubject->getUserId());
+        self::assertSame(0, $this->countSessionsOfUser(100));
+    }
+
+    #[Test]
     public function mfaRequiredExceptionIsThrownForUserWithActiveProvider(): void
     {
         $this->expectException(MfaRequiredException::class);
