@@ -53,6 +53,9 @@ final class CollectionValidator extends AbstractGenericObjectValidator
             if ($value instanceof LazyObjectStorage && !$value->isInitialized()) {
                 return $this->result;
             }
+            if (is_object($value) && new \ReflectionClass($value)->isUninitializedLazyObject($value)) {
+                return $this->result;
+            }
             if (is_object($value)) {
                 if ($this->isValidatedAlready($value)) {
                     return $this->result;

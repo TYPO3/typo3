@@ -64,6 +64,9 @@ class Blog extends AbstractEntity
     #[Cascade('remove')]
     protected ObjectStorage $posts;
 
+    #[Lazy]
+    protected ?Post $featuredPost = null;
+
     /**
      * @var ObjectStorage<Category>
      */
@@ -149,6 +152,16 @@ class Blog extends AbstractEntity
     public function getPosts(): ObjectStorage
     {
         return $this->posts;
+    }
+
+    public function getFeaturedPost(): ?Post
+    {
+        return $this->featuredPost;
+    }
+
+    public function setFeaturedPost(?Post $featuredPost): void
+    {
+        $this->featuredPost = $featuredPost;
     }
 
     public function addCategory(Category $category): void

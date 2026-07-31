@@ -17,5 +17,9 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 /**
  * An interface for the lazy loading strategies.
+ *
+ * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Lazy relations are created as
+ *             native PHP lazy objects, check for uninitialized lazy objects via
+ *             ReflectionClass::isUninitializedLazyObject() instead.
  */
 interface LoadingStrategyInterface {}

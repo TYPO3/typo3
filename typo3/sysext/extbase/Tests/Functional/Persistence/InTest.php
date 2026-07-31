@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
@@ -147,7 +146,7 @@ final class InTest extends FunctionalTestCase
     public function inConditionWorksWithLazyObjectStorage(): void
     {
         $blog = $this->blogRepository->findByUid(1);
-        self::assertInstanceOf(LazyObjectStorage::class, $blog->getPosts());
+        self::assertTrue(new \ReflectionClass(ObjectStorage::class)->isUninitializedLazyObject($blog->getPosts())); // precondition
         $inQuery = $this->postRepository->createQuery();
         $inQuery->matching(
             $inQuery->in('uid', $blog->getPosts())
@@ -159,7 +158,7 @@ final class InTest extends FunctionalTestCase
     public function inConditionWorksWithLazyObjectStorageOnSecondCall(): void
     {
         $blog = $this->blogRepository->findByUid(1);
-        self::assertInstanceOf(LazyObjectStorage::class, $blog->getPosts());
+        self::assertTrue(new \ReflectionClass(ObjectStorage::class)->isUninitializedLazyObject($blog->getPosts())); // precondition
         $inQuery = $this->postRepository->createQuery();
         $inQuery->matching(
             $inQuery->in('uid', $blog->getPosts())

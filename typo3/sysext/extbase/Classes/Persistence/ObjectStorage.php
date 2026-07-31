@@ -348,4 +348,73 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
         return $this->addedObjectsPositions[spl_object_hash($object)];
     }
+
+    /**
+     * A lazy storage is explicitly initialized before its state is collected: The engine's
+     * serializer must never trigger the initialization of a lazy object during its traversal,
+     * as that corrupts back references within the serialized payload.
+     *
+     * The contained objects are stored as a plain list, since the spl_object_hash() based keys
+     * of the internal arrays are only valid for the current process.
+     */
+    public function __serialize(): array
+    {
+        $reflection = new \ReflectionClass(self::class);
+        if ($reflection->isUninitializedLazyObject($this)) {
+            $reflection->initializeLazyObject($this);
+        }
+        $items = [];
+        $addedObjectsPositions = [];
+        $removedObjectsPositions = [];
+        foreach (array_values($this->storage) as $position => $item) {
+            $items[$position] = $item;
+            $objectHash = spl_object_hash($item['obj']);
+            if (isset($this->addedObjectsPositions[$objectHash])) {
+                $addedObjectsPositions[$position] = $this->addedObjectsPositions[$objectHash];
+            }
+            if (isset($this->removedObjectsPositions[$objectHash])) {
+                $removedObjectsPositions[$position] = $this->removedObjectsPositions[$objectHash];
+            }
+        }
+        return [
+            'items' => $items,
+            'addedObjectsPositions' => $addedObjectsPositions,
+            'removedObjectsPositions' => $removedObjectsPositions,
+            'isModified' => $this->isModified,
+            'positionCounter' => $this->positionCounter,
+        ];
+    }
+
+    /**
+     * The internal state is rebuilt from the plain object list, so all spl_object_hash() based
+     * keys refer to the objects created by the current unserialize() call. This keeps detach(),
+     * contains() and offsetGet() working on an unserialized storage.
+     */
+    public function __unserialize(array $data): void
+    {
+        if (!isset($data['items'])) {
+            // Payload created by a TYPO3 < v15 default serialization: restore known properties as-is
+            foreach ($data as $propertyName => $propertyValue) {
+                if (property_exists($this, $propertyName) && $propertyName !== 'warning') {
+                    $this->{$propertyName} = $propertyValue;
+                }
+            }
+            return;
+        }
+        foreach ($data['items'] as $position => $item) {
+            if (!is_object($item['obj'] ?? null)) {
+                continue;
+            }
+            $objectHash = spl_object_hash($item['obj']);
+            $this->storage[$objectHash] = $item;
+            if (isset($data['addedObjectsPositions'][$position])) {
+                $this->addedObjectsPositions[$objectHash] = $data['addedObjectsPositions'][$position];
+            }
+            if (isset($data['removedObjectsPositions'][$position])) {
+                $this->removedObjectsPositions[$objectHash] = $data['removedObjectsPositions'][$position];
+            }
+        }
+        $this->isModified = (bool)($data['isModified'] ?? false);
+        $this->positionCounter = (int)($data['positionCounter'] ?? count($this->storage));
+    }
 }

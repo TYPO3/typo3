@@ -74,6 +74,17 @@ return [
                 ],
             ],
         ],
+        'featured_post' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_blog.featured_post',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_blogexample_domain_model_post',
+                'foreign_field' => 'featured_blog',
+                'relationship' => 'oneToOne',
+                'default' => 0,
+            ],
+        ],
         'administrator' => [
             'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_blog.administrator',
@@ -101,7 +112,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, hidden, fe_group, title, description, logo, posts, administrator, categories'],
+        '1' => ['showitem' => 'sys_language_uid, hidden, fe_group, title, description, logo, posts, featured_post, administrator, categories'],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],

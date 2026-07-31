@@ -200,7 +200,19 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     public function _memorizePropertyCleanState(string $propertyName): void
     {
         $propertyValue = $this->_getProperty($propertyName);
-        if (is_object($propertyValue) && !($propertyValue instanceof \UnitEnum)) {
+        if (is_object($propertyValue) && new \ReflectionClass($propertyValue)->isUninitializedLazyObject($propertyValue)) {
+            // Cloning an uninitialized lazy object would trigger its initialization, so it cannot
+            // be memorized as clone. A lazy entity proxy is memorized as-is: Its uid is available
+            // without initialization, which is all the dirty state comparison needs. A lazy
+            // ObjectStorage is not memorized at all, its clean state is memorized once it gets
+            // initialized. Keeping a reference to the storage here would corrupt serialize(),
+            // which initializes the storage mid-traversal and thereby replaces this very entry.
+            if ($propertyValue instanceof DomainObjectInterface) {
+                $this->_cleanProperties[$propertyName] = $propertyValue;
+            } else {
+                unset($this->_cleanProperties[$propertyName]);
+            }
+        } elseif (is_object($propertyValue) && !($propertyValue instanceof \UnitEnum)) {
             $propertyValueClone = clone $propertyValue;
             // We need to make sure the clone and the original object
             // are identical when compared with == (see _isDirty()).
@@ -282,6 +294,8 @@ abstract class AbstractDomainObject implements DomainObjectInterface
             if ($currentValue instanceof LazyLoadingProxy) {
                 $currentTypeString = $currentValue->_getTypeAndUidString();
             } elseif ($currentValue instanceof DomainObjectInterface) {
+                // Note: For an uninitialized native lazy proxy, getUid() reads the eagerly set
+                // uid of the related record without triggering its initialization.
                 $currentTypeString = $currentValue::class . ':' . $currentValue->getUid();
             }
 
@@ -294,6 +308,11 @@ abstract class AbstractDomainObject implements DomainObjectInterface
                 }
 
                 $result = $currentTypeString !== $previousTypeString;
+            } elseif (new \ReflectionClass($currentValue)->isUninitializedLazyObject($currentValue)) {
+                // An uninitialized lazy ObjectStorage cannot have been modified since its creation,
+                // as any modifying access would have initialized it. Calling _isDirty() on it or
+                // comparing it with == would trigger the initialization, so short-circuit here.
+                $result = false;
             } elseif ($currentValue instanceof ObjectMonitoringInterface) {
                 $result = !is_object($previousValue) || $currentValue->_isDirty() || $previousValue::class !== $currentValue::class;
             } else {
@@ -335,5 +354,38 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     public function __toString(): string
     {
         return static::class . ':' . $this->uid;
+    }
+
+    /**
+     * A lazy entity is explicitly initialized before its state is collected: The engine's
+     * serializer must never trigger the initialization of a lazy object during its traversal,
+     * as that corrupts back references within the serialized payload.
+     */
+    public function __serialize(): array
+    {
+        $reflection = new \ReflectionClass($this);
+        if ($reflection->isUninitializedLazyObject($this)) {
+            $reflection->initializeLazyObject($this);
+        }
+        return (array)$this;
+    }
+
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $key => $value) {
+            if (str_starts_with($key, "\0")) {
+                // Mangled key of a protected ("\0*\0name") or private ("\0Class\0name") property
+                $nulPosition = strrpos($key, "\0");
+                $scope = substr($key, 1, $nulPosition - 1);
+                $name = substr($key, $nulPosition + 1);
+                if ($scope === '*' || $scope === self::class) {
+                    $this->{$name} = $value;
+                } elseif (property_exists($scope, $name)) {
+                    new \ReflectionProperty($scope, $name)->setValue($this, $value);
+                }
+            } else {
+                $this->{$key} = $value;
+            }
+        }
     }
 }

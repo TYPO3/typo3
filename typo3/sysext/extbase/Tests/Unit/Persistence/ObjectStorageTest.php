@@ -524,4 +524,23 @@ final class ObjectStorageTest extends UnitTestCase
         self::assertTrue($objectStorage->isRelationDirty($object1));
         self::assertTrue($objectStorage->isRelationDirty($object2));
     }
+
+    #[Test]
+    public function relationRemainsDirtyAfterSerialization(): void
+    {
+        /** @var ObjectStorage<Entity> $objectStorage */
+        $objectStorage = new ObjectStorage();
+        $object1 = new Entity();
+        $objectStorage->attach($object1);
+        $objectStorage->attach(new Entity());
+        $objectStorage->detach($object1);
+        $objectStorage->attach($object1);
+        self::assertTrue($objectStorage->isRelationDirty($object1));
+
+        /* @phpstan-ignore unserialize.allowedClasses.insecure (Serialization within testing context does no harm) */
+        $unserializedObjectStorage = unserialize(serialize($objectStorage), ['allowed_classes' => true]);
+        $unserializedObject = $unserializedObjectStorage->toArray()[1];
+
+        self::assertTrue($unserializedObjectStorage->isRelationDirty($unserializedObject), 'Relation should remain dirty after serialization');
+    }
 }

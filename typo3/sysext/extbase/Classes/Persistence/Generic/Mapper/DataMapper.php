@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent;
@@ -38,7 +39,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
-use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\NonExistentPropertyException;
@@ -401,23 +401,73 @@ class DataMapper
      * @param string $propertyName The name of the proxied property in it's parent
      * @param mixed $fieldValue The raw field value.
      * @param bool $enableLazyLoading A flag indication if the related objects should be lazy loaded
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage|Persistence\QueryResultInterface The result
+     * @return ObjectStorage|Persistence\QueryResultInterface|DomainObjectInterface|array|null The result
      */
     public function fetchRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = true)
     {
         $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
         if ($enableLazyLoading && $property->isLazy()) {
             if ($property->isObjectStorageType()) {
-                $result = GeneralUtility::makeInstance(LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
+                $result = $this->createLazyObjectStorage($parentObject, $propertyName, $fieldValue);
             } elseif (empty($fieldValue)) {
                 $result = null;
             } else {
-                $result = GeneralUtility::makeInstance(LazyLoadingProxy::class, $parentObject, $propertyName, $fieldValue, $this);
+                $result = $this->createLazyEntityProxy($parentObject, $propertyName, $fieldValue);
             }
         } else {
             $result = $this->fetchRelatedEager($parentObject, $propertyName, $fieldValue);
         }
         return $result;
+    }
+
+    /**
+     * Creates an ObjectStorage as native PHP lazy ghost object: The storage is a regular
+     * ObjectStorage instance whose content is fetched from the persistence layer on first access.
+     */
+    protected function createLazyObjectStorage(DomainObjectInterface $parentObject, string $propertyName, mixed $fieldValue): ObjectStorage
+    {
+        return new \ReflectionClass(ObjectStorage::class)->newLazyGhost(
+            function (ObjectStorage $objectStorage) use ($parentObject, $propertyName, $fieldValue): void {
+                foreach ($this->fetchRelated($parentObject, $propertyName, $fieldValue, false) as $object) {
+                    $objectStorage->attach($object);
+                }
+                $objectStorage->_memorizeCleanState();
+                $parentObject->_memorizeCleanState($propertyName);
+            }
+        );
+    }
+
+    /**
+     * Creates a native PHP lazy proxy object for a 1:1 or n:1 relation: The proxy is an instance
+     * of the actual target entity class, resolving to the mapped entity on first access. For
+     * direct UID-backed relations, the uid is available without database access.
+     */
+    protected function createLazyEntityProxy(DomainObjectInterface $parentObject, string $propertyName, mixed $fieldValue): DomainObjectInterface
+    {
+        $childClassName = $this->getType(get_class($parentObject), $propertyName);
+        $reflection = new \ReflectionClass($childClassName);
+        $proxy = null;
+        $proxy = $reflection->newLazyProxy(
+            function () use ($parentObject, $propertyName, $fieldValue, $reflection, &$proxy): object {
+                $result = $this->fetchRelated($parentObject, $propertyName, $fieldValue, false);
+                $realInstance = $this->mapResultToPropertyValue($parentObject, $propertyName, $result);
+                if (!is_object($realInstance)) {
+                    // The related record cannot be resolved anymore (deleted or inaccessible):
+                    // Reset the parent property to null (previous behavior of LazyLoadingProxy)
+                    // and expose an empty instance to callers still holding the proxy.
+                    $realInstance = $reflection->newInstanceWithoutConstructor();
+                }
+                if ($parentObject->_getProperty($propertyName) === $proxy) {
+                    $parentObject->_setProperty($propertyName, $realInstance instanceof DomainObjectInterface && $realInstance->getUid() !== null ? $realInstance : null);
+                    $parentObject->_memorizeCleanState($propertyName);
+                }
+                return $realInstance;
+            }
+        );
+        if (MathUtility::canBeInterpretedAsInteger($fieldValue) && !$this->propertyMapsByForeignKey($parentObject, $propertyName)) {
+            $reflection->getProperty('uid')->setRawValueWithoutLazyInitialization($proxy, (int)$fieldValue);
+        }
+        return $proxy;
     }
 
     /**
@@ -778,6 +828,9 @@ class DataMapper
     public function mapResultToPropertyValue(DomainObjectInterface $parentObject, $propertyName, $result)
     {
         $propertyValue = null;
+        if (is_object($result) && new \ReflectionClass($result)->isUninitializedLazyObject($result)) {
+            return $result;
+        }
         if ($result instanceof LoadingStrategyInterface) {
             $propertyValue = $result;
         } else {

@@ -18,6 +18,9 @@
       <trans-unit id="tx_blogexample_domain_model_blog.posts">
         <source>Posts</source>
       </trans-unit>
+      <trans-unit id="tx_blogexample_domain_model_blog.featured_post">
+        <source>Featured post</source>
+      </trans-unit>
       <trans-unit id="tx_blogexample_domain_model_blog.administrator">
         <source>Administrator</source>
       </trans-unit>

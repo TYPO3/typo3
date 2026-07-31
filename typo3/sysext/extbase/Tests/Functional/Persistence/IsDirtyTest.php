@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
 use TYPO3Tests\BlogExample\Domain\Repository\AdministratorRepository;
@@ -52,7 +51,7 @@ final class IsDirtyTest extends FunctionalTestCase
     public function lazyLoadingProxyReplacedByRealInstanceIsNotDirty(): void
     {
         $blog = $this->get(BlogRepository::class)->findByUid(3);
-        self::assertInstanceOf(LazyLoadingProxy::class, $blog->getAdministrator()); // precondition
+        self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blog->getAdministrator())); // precondition
         $admin = $this->get(AdministratorRepository::class)->findByUid(3);
         self::assertInstanceOf(Administrator::class, $admin); // precondition
         $blog->setAdministrator($admin);
@@ -63,7 +62,7 @@ final class IsDirtyTest extends FunctionalTestCase
     public function lazyLoadingProxyReplacedByWrongInstanceIsDirty(): void
     {
         $blog = $this->get(BlogRepository::class)->findByUid(3);
-        self::assertInstanceOf(LazyLoadingProxy::class, $blog->getAdministrator()); //precondition
+        self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blog->getAdministrator())); //precondition
         $blog->setAdministrator(new Administrator());
         self::assertTrue($blog->_isDirty());
     }
@@ -73,7 +72,7 @@ final class IsDirtyTest extends FunctionalTestCase
     {
         $blog = $this->get(BlogRepository::class)->findByUid(3);
         $lazyLoadingProxy = $blog->getAdministrator();
-        self::assertInstanceOf(LazyLoadingProxy::class, $lazyLoadingProxy); //precondition
+        self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($lazyLoadingProxy)); //precondition
         $admin = $this->get(AdministratorRepository::class)->findByUid(3);
         self::assertInstanceOf(Administrator::class, $admin); // precondition
         $blog->setAdministrator($admin);
@@ -87,9 +86,9 @@ final class IsDirtyTest extends FunctionalTestCase
     {
         $blogRepository = $this->get(BlogRepository::class);
         $blogOne = $blogRepository->findByUid(3);
-        self::assertInstanceOf(LazyLoadingProxy::class, $blogOne->getAdministrator()); //precondition
+        self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blogOne->getAdministrator())); //precondition
         $blogTwo = $blogRepository->findByUid(2);
-        self::assertInstanceOf(LazyLoadingProxy::class, $blogTwo->getAdministrator()); //precondition
+        self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blogTwo->getAdministrator())); //precondition
         $blogOne->_setProperty('administrator', $blogTwo->getAdministrator());
         self::assertTrue($blogOne->_isDirty());
         $blogRepository->update($blogOne);

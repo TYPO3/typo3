@@ -39,6 +39,11 @@ return [
                 'foreign_table' => 'tx_blogexample_domain_model_blog',
             ],
         ],
+        'featured_blog' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
         'title' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.title',
             'config' => [

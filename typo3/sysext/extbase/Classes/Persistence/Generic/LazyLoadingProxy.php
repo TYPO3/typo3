@@ -25,6 +25,8 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
+ * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Lazy 1:1 and n:1 relations are
+ *             created as native PHP lazy proxy instances of the target entity class by the DataMapper instead.
  */
 class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 {
@@ -60,6 +62,11 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
      */
     public function __construct($parentObject, $propertyName, $fieldValue, ?DataMapper $dataMapper = null)
     {
+        trigger_error(
+            'Class ' . self::class . ' is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0.'
+            . ' Lazy 1:1 and n:1 relations are created as native PHP lazy proxy instances of the target entity class instead.',
+            E_USER_DEPRECATED
+        );
         $this->parentObject = $parentObject;
         $this->propertyName = $propertyName;
         $this->fieldValue = $fieldValue;

@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
@@ -43,21 +45,42 @@ final class LazyObjectStorageTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function lazyRelationIsANativeLazyGhostObjectStorage(): void
+    {
+        $blog = new Blog();
+        $blog->_setProperty('uid', 1);
+        $blog->_setProperty('posts', $this->get(DataMapper::class)->fetchRelated($blog, 'posts', 10));
+
+        $posts = $blog->getPosts();
+        $reflection = new \ReflectionClass(ObjectStorage::class);
+        self::assertSame(ObjectStorage::class, get_class($posts));
+        self::assertTrue($reflection->isUninitializedLazyObject($posts));
+
+        // Accessing the storage initializes it with the related objects
+        $postObjects = $posts->toArray();
+        self::assertFalse($reflection->isUninitializedLazyObject($posts));
+        self::assertInstanceOf(Post::class, $postObjects[0]);
+        self::assertSame('Post1', $postObjects[0]->getTitle());
+    }
+
+    #[Test]
     public function serializeAndUnserialize(): void
     {
         $blog = new Blog();
         $blog->_setProperty('uid', 1);
-        $blog->_setProperty('posts', new LazyObjectStorage($blog, 'posts', 10));
+        $blog->_setProperty('posts', $this->get(DataMapper::class)->fetchRelated($blog, 'posts', 10));
 
+        // Serializing an uninitialized lazy storage initializes it and serializes the actual objects
         $serialized = serialize($blog->getPosts());
 
         self::assertFalse(str_contains($serialized, 'dataMapper'), 'Assert that serialized object string does not contain dataMapper');
+        self::assertFalse(str_contains($serialized, 'fieldValue'), 'Assert that serialized object string does not contain fieldValue');
 
         /* @phpstan-ignore unserialize.allowedClasses.insecure (Serialization within testing context does no harm) */
-        $postsProxy = unserialize($serialized, ['allowed_classes' => true]);
-        self::assertInstanceOf(LazyObjectStorage::class, $postsProxy, 'Assert that $postsProxy is an instance of LazyObjectStorage');
+        $postsStorage = unserialize($serialized, ['allowed_classes' => true]);
+        self::assertInstanceOf(ObjectStorage::class, $postsStorage, 'Assert that $postsStorage is an instance of ObjectStorage');
 
-        $posts = $postsProxy->toArray();
+        $posts = $postsStorage->toArray();
 
         self::assertInstanceOf(Post::class, $posts[0], 'Assert that $posts[0] is an instance of Post');
         self::assertInstanceOf(Post::class, $posts[1], 'Assert that $posts[1] is an instance of Post');

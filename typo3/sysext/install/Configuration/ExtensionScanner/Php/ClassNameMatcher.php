@@ -323,6 +323,21 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy' => [
+        'restFiles' => [
+            'Deprecation-110347-LazyLoadingProxyAndLazyObjectStorage.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage' => [
+        'restFiles' => [
+            'Deprecation-110347-LazyLoadingProxyAndLazyObjectStorage.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface' => [
+        'restFiles' => [
+            'Deprecation-110347-LazyLoadingProxyAndLazyObjectStorage.rst',
+        ],
+    ],
     'TYPO3\CMS\Extbase\Property\Exception\FormatNotSupportedException' => [
         'restFiles' => [
             'Deprecation-81600-UnusedExtbaseExceptions.rst',

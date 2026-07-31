@@ -28,6 +28,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * (`call`, `get`, `set`, `isset`, `unset`).
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
+ * @deprecated since TYPO3 v15.0, will be removed in TYPO3 v16.0. Lazy-loading object storages are
+ *             created as native PHP lazy ghost instances of ObjectStorage by the DataMapper instead.
  *
  * @template TEntity of object
  * @extends ObjectStorage<TEntity>
@@ -75,6 +77,11 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      */
     public function __construct(object $parentObject, string $propertyName, mixed $fieldValue, ?DataMapper $dataMapper = null)
     {
+        trigger_error(
+            'Class ' . self::class . ' is deprecated since TYPO3 v15.0 and will be removed in TYPO3 v16.0.'
+            . ' Lazy-loading object storages are created as native PHP lazy ghost instances of ObjectStorage instead.',
+            E_USER_DEPRECATED
+        );
         $this->parentObject = $parentObject;
         $this->propertyName = $propertyName;
         $this->fieldValue = $fieldValue;
