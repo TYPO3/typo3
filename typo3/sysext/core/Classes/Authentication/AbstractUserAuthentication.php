@@ -300,31 +300,26 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Used to apply a cookie to a PSR-7 Response.
+     * The cookie behavior (send, remove or none) as evaluated during
+     * authentication, to be applied to the response by a middleware
+     * via SetCookieService::applyCookieToResponse().
      *
-     * @todo: should go into a middleware?
      * @internal
      */
-    public function appendCookieToResponse(ResponseInterface $response, ?NormalizedParams $normalizedParams = null): ResponseInterface
+    public function getCookieBehavior(): SetCookieBehavior
     {
-        if ($this->setCookie === SetCookieBehavior::None) {
-            return $response;
-        }
-        if ($normalizedParams === null) {
-            $normalizedParams = NormalizedParams::createFromRequest($GLOBALS['TYPO3_REQUEST']);
-        }
-        $setCookieService = SetCookieService::create($this->name, $this->loginType);
-        if ($this->setCookie === SetCookieBehavior::Send) {
-            $cookieObject = $setCookieService->setSessionCookie($this->userSession, $normalizedParams);
-            if ($cookieObject) {
-                $response = $response->withAddedHeader('Set-Cookie', $cookieObject->__toString());
-            }
-        }
-        if ($this->setCookie === SetCookieBehavior::Remove) {
-            $cookieObject = $setCookieService->removeCookie($normalizedParams);
-            $response = $response->withAddedHeader('Set-Cookie', $cookieObject->__toString());
-        }
-        return $response;
+        return $this->setCookie;
+    }
+
+    /**
+     * Used to apply a cookie to a PSR-7 Response.
+     *
+     * @internal use SetCookieService::applyCookieToResponse() instead
+     */
+    public function appendCookieToResponse(ResponseInterface $response, NormalizedParams $normalizedParams): ResponseInterface
+    {
+        return SetCookieService::create($this->name, $this->loginType)
+            ->applyCookieToResponse($response, $this->userSession, $this->setCookie, $normalizedParams);
     }
 
     /**
