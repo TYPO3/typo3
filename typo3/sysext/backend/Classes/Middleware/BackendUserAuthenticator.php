@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\SetCookieService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactoryInterface;
 use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
@@ -190,7 +191,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                 $userAuthentication->removeCookie();
             }
             // Ensure to always apply a cookie
-            $response = $userAuthentication->appendCookieToResponse($response, $request->getAttribute('normalizedParams'));
+            $response = $this->applyCookieToResponse($response, $request, $userAuthentication);
         }
         // Additional headers to never cache any PHP request should be sent at any time when
         // accessing the TYPO3 Backend
@@ -220,9 +221,26 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         );
         // Add necessary cookies and headers to the response so
         // the already passed authentication step is not lost.
-        $response = $user->appendCookieToResponse($response, $request->getAttribute('normalizedParams'));
+        $response = $this->applyCookieToResponse($response, $request, $user);
         $response = $this->applyHeadersToResponse($response);
         return $response;
+    }
+
+    /**
+     * Applies the session cookie as evaluated by the authentication process
+     * to the response.
+     */
+    protected function applyCookieToResponse(
+        ResponseInterface $response,
+        ServerRequestInterface $request,
+        BackendUserAuthentication $userAuthentication
+    ): ResponseInterface {
+        return SetCookieService::create($userAuthentication->name, $userAuthentication->loginType)->applyCookieToResponse(
+            $response,
+            $userAuthentication->getSession(),
+            $userAuthentication->getCookieBehavior(),
+            $request->getAttribute('normalizedParams')
+        );
     }
 
     /**

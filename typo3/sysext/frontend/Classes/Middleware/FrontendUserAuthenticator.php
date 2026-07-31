@@ -27,6 +27,7 @@ use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\RateLimiter\LimiterInterface;
 use TYPO3\CMS\Core\Authentication\Event\AfterUserLoggedInEvent;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\SetCookieService;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactoryInterface;
 use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -77,7 +78,12 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
 
         // Store session data for fe_users
         $frontendUser->storeSessionData();
-        $response = $frontendUser->appendCookieToResponse($response, $request->getAttribute('normalizedParams'));
+        $response = SetCookieService::create($frontendUser->name, $frontendUser->loginType)->applyCookieToResponse(
+            $response,
+            $frontendUser->getSession(),
+            $frontendUser->getCookieBehavior(),
+            $request->getAttribute('normalizedParams')
+        );
         // Collect garbage in Frontend requests, which aren't fully cacheable (e.g. with cookies)
         if ($response->hasHeader('Set-Cookie')) {
             $this->sessionGarbageCollection();

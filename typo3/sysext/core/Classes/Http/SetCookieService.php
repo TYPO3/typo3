@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Http;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -55,6 +56,28 @@ class SetCookieService
         protected readonly int $lifetime
     ) {
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+    }
+
+    /**
+     * Applies the evaluated cookie (creation, update or removal) for the given
+     * user session and cookie behavior to a PSR-7 response.
+     */
+    public function applyCookieToResponse(
+        ResponseInterface $response,
+        UserSession $userSession,
+        SetCookieBehavior $behavior,
+        NormalizedParams $normalizedParams
+    ): ResponseInterface {
+        if ($behavior === SetCookieBehavior::Send) {
+            $cookie = $this->setSessionCookie($userSession, $normalizedParams);
+            if ($cookie !== null) {
+                $response = $response->withAddedHeader('Set-Cookie', $cookie->__toString());
+            }
+        }
+        if ($behavior === SetCookieBehavior::Remove) {
+            $response = $response->withAddedHeader('Set-Cookie', $this->removeCookie($normalizedParams)->__toString());
+        }
+        return $response;
     }
 
     /**
