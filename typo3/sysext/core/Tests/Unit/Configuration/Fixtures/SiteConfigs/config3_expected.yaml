@@ -1,6 +1,5 @@
 languages:
-  -
-    title: Danish
+  - title: Danish
     enabled: false
     languageId: '1'
     base: /da
@@ -9,5 +8,4 @@ languages:
     navigationTitle: Dansk
 rootPageId: 1
 imports:
-  -
-    resource: 'EXT:core/Tests/Unit/Configuration/Fixtures/SiteConfigs/include2.yaml'
+  - resource: 'EXT:core/Tests/Unit/Configuration/Fixtures/SiteConfigs/include2.yaml'

@@ -229,6 +229,6 @@ final class PhpIntegrityChecker extends Command
 
 $application = new Application('Integrity Check');
 $name = 'integrity_checker';
-$application->add(new PhpIntegrityChecker($name));
+$application->addCommand(new PhpIntegrityChecker($name));
 $application->setDefaultCommand($name, true);
 $application->run();

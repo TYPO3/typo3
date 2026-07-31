@@ -32,8 +32,8 @@
 		"sort-packages": true
 	},
 	"require": {
-		"symfony/dependency-injection": "^7.4.8",
-		"symfony/finder": "^7.4.8",
+		"symfony/dependency-injection": "~8.1.0",
+		"symfony/finder": "~8.1.0",
 		"typo3/cms-core": "15.0.*@dev",
 		"typo3/cms-extbase": "15.0.*@dev",
 		"typo3fluid/fluid": "^5.3.1"
