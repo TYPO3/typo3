@@ -6,10 +6,17 @@ functional mariadb 10.4 php 8.3 pdo_mysql pre-merge:
     refs:
       - schedules
       - "13.4"
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s functional -d mariadb -a pdo_mysql -i 10.4 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d mariadb -a pdo_mysql -i 10.4 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 
 functional postgres 10 php 8.5 pre-merge:
   stage: main
@@ -19,10 +26,17 @@ functional postgres 10 php 8.5 pre-merge:
     refs:
       - schedules
       - "13.4"
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 10
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.5
-    - Build/Scripts/runTests.sh -s functional -d postgres -i 10 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d postgres -i 10 -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
 
 functional sqlite php 8.2 pre-merge:
   stage: main
@@ -32,7 +46,14 @@ functional sqlite php 8.2 pre-merge:
     refs:
       - schedules
       - "13.4"
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/functional-*.xml
   parallel: 3
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
-    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml

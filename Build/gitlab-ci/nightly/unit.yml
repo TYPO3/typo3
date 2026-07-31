@@ -20,9 +20,16 @@ unit php 8.3 locked:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s unit -p 8.3
+    - Build/Scripts/runTests.sh -s unit -p 8.3 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
 unit php 8.4 locked:
   stage: unit
   tags:
@@ -30,9 +37,16 @@ unit php 8.4 locked:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.4
-    - Build/Scripts/runTests.sh -s unit -p 8.4
+    - Build/Scripts/runTests.sh -s unit -p 8.4 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
 
 unit php 8.2 max:
   stage: unit
@@ -41,9 +55,16 @@ unit php 8.2 max:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s unit -p 8.2
+    - Build/Scripts/runTests.sh -s unit -p 8.2 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
 unit php 8.2 max random:
   stage: unit
   tags:
@@ -51,9 +72,16 @@ unit php 8.2 max random:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.2
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.2
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.2 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
 
 unit php 8.3 max:
   stage: unit
@@ -62,9 +90,16 @@ unit php 8.3 max:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s unit -p 8.3
+    - Build/Scripts/runTests.sh -s unit -p 8.3 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
 unit php 8.3 max random:
   stage: unit
   tags:
@@ -72,9 +107,16 @@ unit php 8.3 max random:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.3
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.3 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
 
 unit php 8.4 max:
   stage: unit
@@ -83,9 +125,16 @@ unit php 8.4 max:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
-    - Build/Scripts/runTests.sh -s unit -p 8.4
+    - Build/Scripts/runTests.sh -s unit -p 8.4 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
 unit php 8.4 max random:
   stage: unit
   tags:
@@ -93,9 +142,16 @@ unit php 8.4 max random:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.4 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
 
 unit php 8.5 max:
   stage: unit
@@ -104,9 +160,16 @@ unit php 8.5 max:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
-    - Build/Scripts/runTests.sh -s unit -p 8.5
+    - Build/Scripts/runTests.sh -s unit -p 8.5 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
 unit php 8.5 max random:
   stage: unit
   tags:
@@ -114,9 +177,16 @@ unit php 8.5 max random:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.5
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.5 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
 
 unit php 8.2 min:
   stage: unit
@@ -125,9 +195,16 @@ unit php 8.2 min:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s unit -p 8.2
+    - Build/Scripts/runTests.sh -s unit -p 8.2 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
 unit php 8.2 min random:
   stage: unit
   tags:
@@ -135,9 +212,16 @@ unit php 8.2 min random:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.2
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.2
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.2 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
 
 # 8.4 "min" is left out since some transitive dependencies like symfony/string
 # are not 8.4 compatible with their "min" versions.
@@ -148,9 +232,16 @@ unit php 8.3 min:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.3
-    - Build/Scripts/runTests.sh -s unit -p 8.3
+    - Build/Scripts/runTests.sh -s unit -p 8.3 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
 unit php 8.3 min random:
   stage: unit
   tags:
@@ -158,6 +249,13 @@ unit php 8.3 min random:
   needs: []
   only:
     - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.3
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.3
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.3 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
