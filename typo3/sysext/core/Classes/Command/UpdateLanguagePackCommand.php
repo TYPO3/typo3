@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Command;
 
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,6 +27,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\BootService;
+use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Core\Localization\LanguagePackService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -37,7 +39,8 @@ class UpdateLanguagePackCommand extends Command
 {
     public function __construct(
         string $name,
-        private readonly BootService $bootService
+        private readonly BootService $bootService,
+        private readonly ContainerInterface $container,
     ) {
         parent::__construct($name);
     }
@@ -87,7 +90,11 @@ class UpdateLanguagePackCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->bootService->loadExtLocalconfDatabase();
+        if ($this->container instanceof FailsafeContainer) {
+            $container = $this->bootService->loadExtLocalconfDatabase();
+        } else {
+            $container = $this->container;
+        }
         $languagePackService = $container->get(LanguagePackService::class);
         $noProgress = $input->getOption('no-progress') || $output->isVerbose();
         $isos = (array)$input->getArgument('locales');
