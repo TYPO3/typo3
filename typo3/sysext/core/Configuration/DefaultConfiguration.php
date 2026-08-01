@@ -1494,6 +1494,22 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserSettingsDatabaseEditRow::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\UserSettingsDisabledFields::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
+                        ],
+                        'before' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\UserSettingsOverrideFields::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
+                        ],
+                        'before' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
