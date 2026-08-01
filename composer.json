@@ -104,7 +104,7 @@
 		"symfony/options-resolver": "~8.1.0",
 		"symfony/process": "~8.1.0",
 		"symfony/property-access": "~8.1.0",
-		"symfony/property-info": "~8.1.0",
+		"symfony/property-info": "~8.1.2",
 		"symfony/rate-limiter": "~8.1.0",
 		"symfony/routing": "~8.1.0",
 		"symfony/translation": "~8.1.0",

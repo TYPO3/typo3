@@ -38,7 +38,7 @@
 		"phpstan/phpdoc-parser": "^2.1",
 		"symfony/dependency-injection": "~8.1.0",
 		"symfony/property-access": "~8.1.0",
-		"symfony/property-info": "~8.1.0",
+		"symfony/property-info": "~8.1.2",
 		"symfony/validator": "~8.1.0",
 		"typo3/cms-core": "15.0.*@dev"
 	},
