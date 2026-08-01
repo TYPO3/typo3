@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource\OnlineMedia\Processing;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Resource\File;
@@ -70,6 +71,7 @@ final class PreviewProcessingTest extends FunctionalTestCase
             $onlineMediaHelperRegistry,
             $container->get(EventDispatcherInterface::class),
         );
+        $subject->setLogger(new NullLogger());
 
         $file = new File(['name' => 'MyVideo'], self::createStub(ResourceStorage::class), []);
         $taskStub = self::createStub(AbstractTask::class);

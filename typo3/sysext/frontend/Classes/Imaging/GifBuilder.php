@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -2636,48 +2635,6 @@ class GifBuilder
         $Bcolor = imagecolorallocate($im, 128, 128, 128);
         imagefilledrectangle($im, 0, 0, $imageInfo->getWidth(), $imageInfo->getHeight(), $Bcolor);
         return $im;
-    }
-
-    /**
-     * Creates error image based on gfx/notfound_thumb.png
-     * Requires GD lib enabled, otherwise it will exit with the three
-     * textstrings outputted as text. Outputs the image stream to browser and exits!
-     *
-     * @param string $filename Name of the file
-     * @param string $textline1 Text line 1
-     * @param string $textline2 Text line 2
-     * @param string $textline3 Text line 3
-     * @throws \RuntimeException
-     * @internal will soon be renamed
-     */
-    public function getTemporaryImageWithText(string $filename, string $textline1, string $textline2 = '', string $textline3 = ''): void
-    {
-        if (!class_exists(\GdImage::class)) {
-            throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $textline1 . ' ' . $textline2 . ' ' . $textline3, 1270853952);
-        }
-        // Creates the basis for the error image
-        $basePath = ExtensionManagementUtility::extPath('core') . 'Resources/Public/Images/';
-        $im = imagecreatefrompng($basePath . 'NotFound.png');
-        // Sets background color and print color.
-        $white = imagecolorallocate($im, 255, 255, 255);
-        $black = imagecolorallocate($im, 0, 0, 0);
-        // Prints the text strings with the build-in font functions of GD
-        $x = 0;
-        $font = 0;
-        if ($textline1) {
-            imagefilledrectangle($im, $x, 9, 56, 16, $white);
-            imagestring($im, $font, $x, 9, $textline1, $black);
-        }
-        if ($textline2) {
-            imagefilledrectangle($im, $x, 19, 56, 26, $white);
-            imagestring($im, $font, $x, 19, $textline2, $black);
-        }
-        if ($textline3) {
-            imagefilledrectangle($im, $x, 29, 56, 36, $white);
-            imagestring($im, $font, $x, 29, substr($textline3, -14), $black);
-        }
-        // Outputting the image stream and exit
-        imagepng($im, $filename);
     }
 
     /**

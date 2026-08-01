@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Processes Local Images files
@@ -355,7 +354,7 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
             return null;
         }
 
-        return $this->generatePreviewFromFile($sourceFile, $configuration, $this->getTemporaryFilePathForPreview($task));
+        return $this->generatePreviewFromFile($sourceFile, $configuration);
     }
 
     /**
@@ -364,17 +363,7 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
      */
     protected function processPreviewWithLocalFile(TaskInterface $task, string $localFile): ?array
     {
-        return $this->generatePreviewFromLocalFile($localFile, $task->getConfiguration(), $this->getTemporaryFilePathForPreview($task));
-    }
-
-    /**
-     * Returns the path to a temporary file for processing
-     *
-     * @return non-empty-string
-     */
-    protected function getTemporaryFilePathForPreview(TaskInterface $task): string
-    {
-        return GeneralUtility::tempnam('preview_', '.' . $task->getTargetFileExtension());
+        return $this->generatePreviewFromLocalFile($localFile, $task->getConfiguration());
     }
 
     /**
@@ -382,55 +371,51 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
      *
      * @param File $file The source file
      * @param array $configuration Processing configuration
-     * @param string $targetFilePath Output file path
      */
-    protected function generatePreviewFromFile(File $file, array $configuration, string $targetFilePath): array
+    protected function generatePreviewFromFile(File $file, array $configuration): array
     {
-        // Check file extension
         if (!$file->isType(FileType::IMAGE) && !$file->isImage()) {
-            // Create a default image
-            $graphicalFunctions = GeneralUtility::makeInstance(GifBuilder::class);
-            $graphicalFunctions->getTemporaryImageWithText(
-                $targetFilePath,
-                'Not imagefile!',
-                'No ext!',
-                $file->getName()
-            );
-            return [
-                'filePath' => $targetFilePath,
-            ];
+            $this->logger->error('Cannot generate a preview of non-image file "{identifier}", a placeholder is used instead', ['identifier' => $file->getIdentifier()]);
+            return $this->createPreviewPlaceholder();
         }
 
-        return $this->generatePreviewFromLocalFile($file->getForLocalProcessing(false), $configuration, $targetFilePath);
+        return $this->generatePreviewFromLocalFile($file->getForLocalProcessing(false), $configuration);
     }
 
     /**
      * Generates a preview for a local file
      *
-     * @param string $originalFileName Optional input file path
+     * @param string $originalFileName Input file path
      * @param array $configuration Processing configuration
-     * @param string $targetFilePath Output file path
      */
-    protected function generatePreviewFromLocalFile(string $originalFileName, array $configuration, string $targetFilePath): array
+    protected function generatePreviewFromLocalFile(string $originalFileName, array $configuration): array
     {
-        // Create the temporary file
         $imageService = GeneralUtility::makeInstance(GraphicalFunctions::class);
         $result = $imageService->resize($originalFileName, 'WEB', $configuration['width'] . 'm', $configuration['height'] . 'm', '', ['sample' => true]);
-        if ($result) {
-            $targetFilePath = $result->getRealPath();
-        }
-        if (!file_exists($targetFilePath)) {
-            // Create an error gif
-            $graphicalFunctions = GeneralUtility::makeInstance(GifBuilder::class);
-            $graphicalFunctions->getTemporaryImageWithText(
-                $targetFilePath,
-                'No thumb',
-                'generated!'
-            );
+        if ($result === null || !file_exists($result->getRealPath())) {
+            $this->logger->error('Preview of file "{file}" could not be generated, a placeholder is used instead', ['file' => $originalFileName]);
+            return $this->createPreviewPlaceholder();
         }
 
         return [
-            'filePath' => $targetFilePath,
+            'filePath' => $result->getRealPath(),
+        ];
+    }
+
+    /**
+     * Delivers a static SVG placeholder as processing result in case no preview
+     * can be generated, so any thumbnail consumer still receives a valid image URL.
+     */
+    protected function createPreviewPlaceholder(): array
+    {
+        $temporaryFilePath = GeneralUtility::tempnam('preview_placeholder_', '.svg');
+        GeneralUtility::upload_copy_move(
+            GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Images/PreviewNotAvailable.svg'),
+            $temporaryFilePath
+        );
+        return [
+            'filePath' => $temporaryFilePath,
+            'remapProcessedTargetFileExtension' => 'svg',
         ];
     }
 }

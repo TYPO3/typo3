@@ -20,8 +20,10 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ProcessedFileTest extends FunctionalTestCase
@@ -33,6 +35,7 @@ final class ProcessedFileTest extends FunctionalTestCase
      */
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Resource/Fixtures/ProcessedFileTest.jpg' => 'fileadmin/ProcessedFileTest.jpg',
+        'typo3/sysext/core/Tests/Functional/Resource/Fixtures/ProcessedFileTest.txt' => 'fileadmin/ProcessedFileTest.txt',
     ];
 
     public function setUp(): void
@@ -67,5 +70,22 @@ final class ProcessedFileTest extends FunctionalTestCase
             ],
         );
         serialize($processedFile->toArray());
+    }
+
+    #[Test]
+    public function previewOfNonImageFileUsesStaticSvgPlaceholder(): void
+    {
+        $resourceFactory = $this->get(ResourceFactory::class);
+        $originalFile = $resourceFactory->retrieveFileOrFolderObject('fileadmin/ProcessedFileTest.txt');
+        self::assertInstanceOf(File::class, $originalFile);
+        $processedFile = $originalFile->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 64, 'height' => 64]);
+        self::assertTrue($processedFile->isProcessed());
+        self::assertSame('svg', $processedFile->getExtension());
+        self::assertFileEquals(
+            GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Images/PreviewNotAvailable.svg'),
+            $processedFile->getForLocalProcessing(false)
+        );
+        self::assertSame(64, (int)$processedFile->getProperty('width'));
+        self::assertSame(64, (int)$processedFile->getProperty('height'));
     }
 }
