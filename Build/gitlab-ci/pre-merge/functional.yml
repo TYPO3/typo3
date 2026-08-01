@@ -53,7 +53,7 @@ functional sqlite php 8.5 pre-merge:
       - typo3temp/var/tests/junit-reports
     reports:
       junit: typo3temp/var/tests/junit-reports/functional-*.xml
-  parallel: 3
+  parallel: 4
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.5
     - Build/Scripts/runTests.sh -s functional -d sqlite -p 8.5 -c $CI_NODE_INDEX/$CI_NODE_TOTAL -- --log-junit typo3temp/var/tests/junit-reports/functional-$CI_NODE_INDEX.xml
