@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -35,10 +37,7 @@ class QueryResult implements QueryResultInterface
     protected DataMapper $dataMapper;
     protected PersistenceManagerInterface $persistenceManager;
 
-    /**
-     * @var int|null
-     */
-    protected $numberOfResults;
+    protected ?int $numberOfResults = null;
 
     /**
      * @var QueryInterface<TValue>|null
@@ -48,7 +47,7 @@ class QueryResult implements QueryResultInterface
     /**
      * @var list<TValue>|null
      */
-    protected $queryResult;
+    protected ?array $queryResult = null;
 
     public function __construct(
         DataMapper $dataMapper,
@@ -70,7 +69,7 @@ class QueryResult implements QueryResultInterface
     /**
      * Loads the objects this QueryResult is supposed to hold
      */
-    protected function initialize()
+    protected function initialize(): void
     {
         if (!is_array($this->queryResult)) {
             $this->queryResult = $this->dataMapper->map($this->query->getType(), $this->persistenceManager->getObjectDataByQuery($this->query));
@@ -82,7 +81,7 @@ class QueryResult implements QueryResultInterface
      *
      * @return QueryInterface<TValue>
      */
-    public function getQuery()
+    public function getQuery(): QueryInterface
     {
         return clone $this->query;
     }
@@ -92,7 +91,7 @@ class QueryResult implements QueryResultInterface
      *
      * @return TValue|null
      */
-    public function getFirst()
+    public function getFirst(): ?object
     {
         if (is_array($this->queryResult)) {
             $queryResult = $this->queryResult;
@@ -111,8 +110,6 @@ class QueryResult implements QueryResultInterface
 
     /**
      * Returns the number of objects in the result
-     *
-     * @return int The number of matching objects
      */
     public function count(): int
     {
@@ -131,7 +128,7 @@ class QueryResult implements QueryResultInterface
      *
      * @return list<TValue>
      */
-    public function toArray()
+    public function toArray(): array
     {
         $this->initialize();
         return iterator_to_array($this);
@@ -141,19 +138,19 @@ class QueryResult implements QueryResultInterface
      * This method is needed to implement the ArrayAccess interface,
      * but it isn't very useful as the offset has to be an integer
      *
-     * @param mixed $offset
+     * @param array-key $offset
      */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         $this->initialize();
         return isset($this->queryResult[$offset]);
     }
 
     /**
-     * @param mixed $offset
+     * @param array-key $offset
      * @return TValue|null
      */
-    public function offsetGet($offset): mixed
+    public function offsetGet(mixed $offset): ?object
     {
         $this->initialize();
         return $this->queryResult[$offset] ?? null;
@@ -162,10 +159,10 @@ class QueryResult implements QueryResultInterface
     /**
      * This method has no effect on the persisted objects but only on the result set
      *
-     * @param mixed $offset
+     * @param array-key $offset
      * @param TValue $value
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->initialize();
         $this->numberOfResults = null;
@@ -175,9 +172,9 @@ class QueryResult implements QueryResultInterface
     /**
      * This method has no effect on the persisted objects but only on the result set
      *
-     * @param mixed $offset
+     * @param array-key $offset
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         $this->initialize();
         $this->numberOfResults = null;
@@ -185,22 +182,19 @@ class QueryResult implements QueryResultInterface
     }
 
     /**
-     * @return mixed
      * @see Iterator::current()
      * @return TValue|false
      */
-    public function current(): mixed
+    public function current(): object|false
     {
         $this->initialize();
         return current($this->queryResult);
     }
 
     /**
-     * @return mixed
      * @see Iterator::key()
-     * @return int|null
      */
-    public function key(): mixed
+    public function key(): ?int
     {
         $this->initialize();
         return key($this->queryResult);
@@ -238,7 +232,7 @@ class QueryResult implements QueryResultInterface
      * from the cache
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function __wakeup()
+    public function __wakeup(): void
     {
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManagerInterface::class);
         $this->dataMapper = GeneralUtility::makeInstance(DataMapper::class);
@@ -250,10 +244,10 @@ class QueryResult implements QueryResultInterface
     }
 
     /**
-     * @return array
+     * @return array{0: non-empty-string}
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function __sleep()
+    public function __sleep(): array
     {
         return ['query'];
     }

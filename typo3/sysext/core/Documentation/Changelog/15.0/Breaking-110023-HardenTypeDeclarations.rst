@@ -7,11 +7,12 @@ Breaking: #110023 - Harden type declarations
 ============================================
 
 See :issue:`110023`
+See :issue:`110356`
 
 Description
 ===========
 
-The following PHP methods now use strict type declarations
+The following PHP classes and methods now use strict type declarations
 instead of loose type hints (PHPdoc annotations).
 
 This is considered a breaking change in case consumers are
@@ -19,16 +20,18 @@ not adjusted for strict types.
 
 - :php:`\TYPO3\CMS\Backend\Utility::daysUntil` - Parameter `$tstamp` can now only be of type `integer` or `DateTimeInterface` - cast to `(int)` if strings were passed to this argument before.
 - :php:`\TYPO3\CMS\Backend\Form\FormDataGroupInterface::compile` - Return type now specifies `array`, implementations of this interface need to declare this as well.
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult`
+- :php:`\TYPO3\CMS\Extbase\Persistence\QueryResultInterface`
 
 Impact
 ======
 
-Using the mentioned methods with wrong types will now result in a PHP exception, fatal error or warning,
+Using the mentioned classes or methods with wrong types will now result in a PHP exception, fatal error or warning,
 depending on configured error reporting.
 
 Migration
 =========
 
-Ensure proper PHP type declarations are used when calling these methods.
+Ensure proper PHP type declarations are used when using these classes and methods.
 
 .. index:: PHP-API, NotScanned, Backend

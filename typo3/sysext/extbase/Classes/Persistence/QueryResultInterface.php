@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -34,19 +36,19 @@ interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
      *
      * @return QueryInterface<TValue>
      */
-    public function getQuery();
+    public function getQuery(): QueryInterface;
 
     /**
      * Returns the first object in the result set
      *
      * @return TValue|null
      */
-    public function getFirst();
+    public function getFirst(): ?object;
 
     /**
      * Returns an array with the objects in the result set
      *
      * @return list<TValue>
      */
-    public function toArray();
+    public function toArray(): array;
 }
