@@ -37,8 +37,6 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     protected Session $persistenceSession;
 
     /**
-     * Create new instance
-     *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function __construct(
@@ -58,7 +56,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     /**
      * Registers a repository
      *
-     * @param string $className The class name of the repository to be registered
+     * @param class-string $className The class name of the repository to be registered
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function registerRepositoryClassName(string $className): void {}
@@ -72,7 +70,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     }
 
     /**
-     * Returns the object data matching the $query.
+     * Returns the object data matching the `$query`.
      * @return list<array<string,mixed>>
      */
     public function getObjectDataByQuery(QueryInterface $query): array
@@ -82,13 +80,11 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
 
     /**
      * Returns the (internal) identifier for the object, if it is known to the
-     * backend. Otherwise NULL is returned.
+     * backend. Otherwise, `null` is returned.
      *
      * Note: this returns an identifier even if the object has not been
-     * persisted in case of AOP-managed entities. Use isNewObject() if you need
+     * persisted in case of AOP-managed entities. Use `isNewObject()` if you need
      * to distinguish those cases.
-     *
-     * @return string|null The identifier for the object if it is known, or NULL
      */
     public function getIdentifierByObject(object $object): ?string
     {
@@ -96,11 +92,8 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     }
 
     /**
-     * Returns the object with the (internal) identifier, if it is known to the
-     * backend. Otherwise NULL is returned.
-     *
-     * @param bool $useLazyLoading Set to TRUE if you want to use lazy loading for this object
-     * @return object|null The object for the identifier if it is known, or NULL
+     * Returns the object with the (internal) identifier if it is known to the
+     * backend. Otherwise, `null` is returned.
      */
     public function getObjectByIdentifier(string|int $identifier, ?string $objectType = null, bool $useLazyLoading = false): ?object
     {
@@ -147,8 +140,6 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
 
     /**
      * Adds an object to the persistence.
-     *
-     * @param object $object The object to add
      */
     public function add(object $object): void
     {
@@ -158,8 +149,6 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
 
     /**
      * Removes an object to the persistence.
-     *
-     * @param object $object The object to remove
      */
     public function remove(object $object): void
     {
@@ -173,8 +162,7 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     /**
      * Update an object in the persistence.
      *
-     * @param object $object The modified object
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     * @throws UnknownObjectException
      */
     public function update(object $object): void
     {
@@ -199,7 +187,6 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
      * Managed instances become detached, any fetches will
      * return data directly from the persistence "backend".
      *
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function clearState(): void
