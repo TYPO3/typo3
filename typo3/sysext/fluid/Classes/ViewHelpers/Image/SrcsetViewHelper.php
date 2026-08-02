@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Image;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Html\Srcset\SrcsetAttribute;
 use TYPO3\CMS\Core\Html\Srcset\WidthSrcsetCandidate;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
@@ -24,8 +25,8 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
@@ -79,8 +80,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
  */
 final class SrcsetViewHelper extends AbstractViewHelper
 {
-    public function __construct(private readonly ImageService $imageService) {}
-
     public function initializeArguments(): void
     {
         $this->registerArgument('image', FileInterface::class, 'A FAL object (\\TYPO3\\CMS\\Core\\Resource\\File or \\TYPO3\\CMS\\Core\\Resource\\FileReference); if not specified, ViewHelper children will be used as a fallback.');
@@ -112,8 +111,11 @@ final class SrcsetViewHelper extends AbstractViewHelper
         } catch (\Exception $e) {
             throw new InvalidArgumentValueException('Invalid srcset configuration provided: ' . $e->getMessage(), 1774530722, $e);
         }
+        $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class)
+            ? $this->renderingContext->getAttribute(ServerRequestInterface::class)
+            : ($GLOBALS['TYPO3_REQUEST'] ?? null);
         foreach ($srcset->getCandidates() as $candidate) {
-            $processedImage = $this->imageService->applyProcessingInstructions($image, [
+            $processedImage = $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, [
                 'width' => $candidate->getCalculatedWidth(),
                 'crop' => $cropArea,
                 ...($fileExtension ? ['fileExtension' => $fileExtension] : []),
@@ -128,7 +130,11 @@ final class SrcsetViewHelper extends AbstractViewHelper
                 $candidate->setWidth($processedImage->getProperty('width'));
             }
 
-            $candidate->setUri($this->imageService->getImageUri($processedImage, $this->arguments['absolute']));
+            $imageUri = (string)$processedImage->getPublicUrl();
+            if ($imageUri !== '' && $this->arguments['absolute'] && $request instanceof ServerRequestInterface) {
+                $imageUri = GeneralUtility::locationHeaderUrl($imageUri, $request);
+            }
+            $candidate->setUri($imageUri);
         }
 
         return $srcset;

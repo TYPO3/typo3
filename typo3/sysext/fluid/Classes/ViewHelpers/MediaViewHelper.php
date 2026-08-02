@@ -21,9 +21,9 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 
@@ -51,7 +51,6 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
 
     public function __construct(
         private readonly RendererRegistry $rendererRegistry,
-        private readonly ImageService $imageService
     ) {
         parent::__construct();
     }
@@ -138,8 +137,8 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         if (!empty($fileExtension)) {
             $processingInstructions['fileExtension'] = $fileExtension;
         }
-        $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
-        $imageUri = $this->imageService->getImageUri($processedImage);
+        $processedImage = $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
+        $imageUri = (string)$processedImage->getPublicUrl();
 
         if (!$this->tag->hasAttribute('data-focus-area')) {
             $focusArea = $cropVariantCollection->getFocusArea($cropVariant);

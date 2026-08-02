@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -133,16 +134,22 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
             if (!empty($this->arguments['fileExtension'] ?? '')) {
                 $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
             }
-            $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
+            $processedImage = $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
 
             if ($this->arguments['base64']) {
                 $imageSrc = 'data:' . $processedImage->getMimeType() . ';base64,' . base64_encode($processedImage->getContents());
             } else {
-                $imageSrc = $this->imageService->getImageUri($processedImage, $this->arguments['absolute']);
+                $imageSrc = (string)$processedImage->getPublicUrl();
                 if ($imageSrc === '') {
                     // No public URL could be determined, for instance because the file resides in a
                     // non-public storage and no request is available to create a file dump URL from.
                     return '';
+                }
+                $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class)
+                    ? $this->renderingContext->getAttribute(ServerRequestInterface::class)
+                    : ($GLOBALS['TYPO3_REQUEST'] ?? null);
+                if ($this->arguments['absolute'] && $request instanceof ServerRequestInterface) {
+                    $imageSrc = GeneralUtility::locationHeaderUrl($imageSrc, $request);
                 }
             }
 

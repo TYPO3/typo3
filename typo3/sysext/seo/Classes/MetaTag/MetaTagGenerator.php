@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
@@ -38,7 +37,6 @@ readonly class MetaTagGenerator
 {
     public function __construct(
         protected MetaTagManagerRegistry $metaTagManagerRegistry,
-        protected ImageService $imageService
     ) {}
 
     /**
@@ -73,7 +71,7 @@ readonly class MetaTagGenerator
             $fileCollector->addFilesFromRelation('pages', 'og_image', $pageRecord);
             $manager = $this->metaTagManagerRegistry->getManagerForProperty('og:image');
 
-            $ogImages = $this->generateSocialImages($fileCollector->getFiles());
+            $ogImages = $this->generateSocialImages($fileCollector->getFiles(), $request);
             foreach ($ogImages as $ogImage) {
                 $twitterCardTagRequired = true;
                 $subProperties = [];
@@ -110,7 +108,7 @@ readonly class MetaTagGenerator
             $fileCollector->addFilesFromRelation('pages', 'twitter_image', $pageRecord);
             $manager = $this->metaTagManagerRegistry->getManagerForProperty('twitter:image');
 
-            $twitterImages = $this->generateSocialImages($fileCollector->getFiles());
+            $twitterImages = $this->generateSocialImages($fileCollector->getFiles(), $request);
             foreach ($twitterImages as $twitterImage) {
                 $twitterCardTagRequired = true;
                 $subProperties = [];
@@ -145,7 +143,7 @@ readonly class MetaTagGenerator
     /**
      * @param list<FileReference> $fileReferences
      */
-    protected function generateSocialImages(array $fileReferences): array
+    protected function generateSocialImages(array $fileReferences, ServerRequestInterface $request): array
     {
         $socialImages = [];
 
@@ -153,7 +151,7 @@ readonly class MetaTagGenerator
             $arguments = $fileReference->getProperties();
             $image = $this->processSocialImage($fileReference);
             $socialImages[] = [
-                'url' => $this->imageService->getImageUri($image, true),
+                'url' => $this->generateAbsoluteImageUri($image, $request),
                 'width' => floor((float)$image->getProperty('width')),
                 'height' => floor((float)$image->getProperty('height')),
                 'alternative' => $arguments['alternative'],
@@ -161,6 +159,15 @@ readonly class MetaTagGenerator
         }
 
         return $socialImages;
+    }
+
+    protected function generateAbsoluteImageUri(FileInterface $image, ServerRequestInterface $request): string
+    {
+        $publicUrl = $image->getPublicUrl();
+        if ($publicUrl === null) {
+            return '';
+        }
+        return GeneralUtility::locationHeaderUrl($publicUrl, $request);
     }
 
     protected function processSocialImage(FileReference $fileReference): FileInterface

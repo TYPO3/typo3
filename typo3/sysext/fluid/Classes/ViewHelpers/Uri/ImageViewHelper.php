@@ -21,6 +21,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -134,12 +135,19 @@ final class ImageViewHelper extends AbstractViewHelper
                 $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
             }
 
-            $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
+            $processedImage = $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
 
             if ($this->arguments['base64']) {
                 return 'data:' . $processedImage->getMimeType() . ';base64,' . base64_encode($processedImage->getContents());
             }
-            return $this->imageService->getImageUri($processedImage, $absolute);
+            $imageUri = (string)$processedImage->getPublicUrl();
+            $request = $this->renderingContext->hasAttribute(ServerRequestInterface::class)
+                ? $this->renderingContext->getAttribute(ServerRequestInterface::class)
+                : ($GLOBALS['TYPO3_REQUEST'] ?? null);
+            if ($imageUri !== '' && $absolute && $request instanceof ServerRequestInterface) {
+                $imageUri = GeneralUtility::locationHeaderUrl($imageUri, $request);
+            }
+            return $imageUri;
         } catch (ResourceDoesNotExistException $e) {
             // thrown if file does not exist
             throw new Exception(self::getExceptionMessage($e->getMessage(), $this->renderingContext), 1509741907, $e);
