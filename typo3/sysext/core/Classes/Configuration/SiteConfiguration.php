@@ -113,29 +113,64 @@ readonly class SiteConfiguration
     public function resolveAllExistingSites(bool $useCache = true): array
     {
         $sites = [];
+        foreach ($this->getAllResolvedSiteData($useCache) as $identifier => $data) {
+            // The Site object is always created at runtime, as the constructor evaluates
+            // base variant expressions, which must not be cached persistently.
+            $site = new Site(
+                $identifier,
+                $data['rootPageId'],
+                $data['configuration'],
+                $data['settings'],
+                $data['typoscript'],
+                $data['tsConfig'],
+            );
+            $site->invalidSets = $data['invalidSets'];
+            $sites[$identifier] = $site;
+        }
+        $this->runtimeCache->set(self::CACHE_IDENTIFIER, $sites);
+        return $sites;
+    }
+
+    /**
+     * Assemble all data needed to create Site objects: the site configuration enriched
+     * with route enhancers and settings from site sets, settings objects, TypoScript
+     * and TSconfig read from the file system. This data is cached in the core cache,
+     * to avoid set resolution, settings composition and file system access per request.
+     */
+    protected function getAllResolvedSiteData(bool $useCache): array
+    {
+        if ($useCache) {
+            $cacheEntry = $this->cache->require(self::CACHE_IDENTIFIER);
+            if (is_array($cacheEntry['resolvedData'] ?? null)) {
+                return $cacheEntry['resolvedData'];
+            }
+        }
+        $resolvedData = [];
         $siteConfiguration = $this->getAllSiteConfigurationFromFiles($useCache);
         foreach ($siteConfiguration as $identifier => $configuration) {
             // cast $identifier to string, as the identifier can potentially only consist of (int) digit numbers
             $identifier = (string)$identifier;
+            $rootPageId = (int)($configuration['rootPageId'] ?? 0);
+            if ($rootPageId <= 0) {
+                continue;
+            }
             $siteSettings = $this->siteSettingsFactory->getSettings($identifier, $configuration);
-            $siteTypoScript = $this->getSiteTypoScript($identifier);
-            $siteTSconfig = $this->getSiteTSconfig($identifier);
             $configuration['contentSecurityPolicies'] = $this->getContentSecurityPolicies($identifier);
             $configuration['routeEnhancers'] = ArrayUtility::replaceAndAppendScalarValuesRecursive(
                 $this->getRouteEnhancersFromSets($configuration['dependencies'] ?? []),
                 $configuration['routeEnhancers'] ?? []
             );
-
-            $rootPageId = (int)($configuration['rootPageId'] ?? 0);
-            if ($rootPageId > 0) {
-                $site = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript, $siteTSconfig);
-                $this->determineInvalidSets($site);
-                $sites[$identifier] = $site;
-
-            }
+            $resolvedData[$identifier] = [
+                'rootPageId' => $rootPageId,
+                'configuration' => $configuration,
+                'settings' => $siteSettings,
+                'typoscript' => $this->getSiteTypoScript($identifier),
+                'tsConfig' => $this->getSiteTSconfig($identifier),
+                'invalidSets' => $this->determineInvalidSets($identifier, $configuration['dependencies'] ?? []),
+            ];
         }
-        $this->runtimeCache->set(self::CACHE_IDENTIFIER, $sites);
-        return $sites;
+        $this->writeCache($siteConfiguration, $resolvedData);
+        return $resolvedData;
     }
 
     /**
@@ -159,7 +194,7 @@ readonly class SiteConfiguration
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
                 $site = new Site($identifier, $rootPageId, $configuration, $siteSettings, $siteTypoScript);
-                $this->determineInvalidSets($site);
+                $site->invalidSets = $this->determineInvalidSets($identifier, $configuration['dependencies'] ?? []);
                 $sites[$identifier] = $site;
             }
         }
@@ -196,9 +231,11 @@ readonly class SiteConfiguration
     protected function getAllSiteConfigurationFromFiles(bool $useCache = true): array
     {
         // Check if the data is already cached
-        $siteConfiguration = $useCache ? $this->cache->require(self::CACHE_IDENTIFIER) : false;
-        if ($siteConfiguration !== false) {
-            return $siteConfiguration;
+        if ($useCache) {
+            $cacheEntry = $this->cache->require(self::CACHE_IDENTIFIER);
+            if (is_array($cacheEntry['siteConfiguration'] ?? null)) {
+                return $cacheEntry['siteConfiguration'];
+            }
         }
         $finder = new Finder();
         try {
@@ -214,9 +251,24 @@ readonly class SiteConfiguration
             $event = $this->eventDispatcher->dispatch(new SiteConfigurationLoadedEvent($identifier, $configuration));
             $siteConfiguration[$identifier] = $event->getConfiguration();
         }
-        $this->cache->set(self::CACHE_IDENTIFIER, 'return ' . var_export($siteConfiguration, true) . ';');
+        $this->writeCache($siteConfiguration, null);
 
         return $siteConfiguration;
+    }
+
+    /**
+     * Persist the raw site configuration and - if available - the resolved site data
+     * in one core cache entry, to keep both in sync at all times.
+     */
+    protected function writeCache(array $siteConfiguration, ?array $resolvedData): void
+    {
+        $this->cache->set(
+            self::CACHE_IDENTIFIER,
+            'return ['
+            . '\'siteConfiguration\' => ' . var_export($siteConfiguration, true) . ', '
+            . '\'resolvedData\' => ' . var_export($resolvedData, true)
+            . '];'
+        );
     }
 
     /**
@@ -301,22 +353,23 @@ readonly class SiteConfiguration
         return $routeEnhancers;
     }
 
-    protected function determineInvalidSets(Site $site): void
+    protected function determineInvalidSets(string $siteIdentifier, array $sets): array
     {
-        $site->invalidSets = array_filter(
+        $invalidSets = array_filter(
             $this->setRegistry->getInvalidSets(),
-            static fn($setName) => in_array($setName, $site->getSets(), true),
+            static fn($setName) => in_array($setName, $sets, true),
             ARRAY_FILTER_USE_KEY
         );
-        foreach ($site->getSets() as $set) {
-            if (!$this->setRegistry->hasSet($set) && !isset($site->invalidSets[$set])) {
-                $site->invalidSets[$set] = [
+        foreach ($sets as $set) {
+            if (!$this->setRegistry->hasSet($set) && !isset($invalidSets[$set])) {
+                $invalidSets[$set] = [
                     'name' => $set,
                     'error' => SetError::notFound,
-                    'context' => 'site:' . $site->getIdentifier(),
+                    'context' => 'site:' . $siteIdentifier,
                 ];
             }
         }
+        return $invalidSets;
     }
 
     #[AsEventListener(event: SiteConfigurationChangedEvent::class)]
