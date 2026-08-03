@@ -104,7 +104,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                 ->withHeader('content-type', $subResponse->getHeader('content-type'))
                 ->withBody($subResponse->getBody());
 
-            foreach (['Content-Security-Policy', 'Content-Security-Policy-Report-Only'] as $header) {
+            foreach (['Content-Security-Policy', 'Content-Security-Policy-Report-Only', 'Content-Encoding'] as $header) {
                 if ($subResponse->hasHeader($header)) {
                     $response = $response->withHeader($header, $subResponse->getHeader($header));
                 }
