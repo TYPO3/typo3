@@ -120,6 +120,12 @@ final class FileRepositoryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function findByRelationOmitsReferencesToFilesOfTheRemovedFallbackStorage(): void
+    {
+        self::assertSame([], $this->get(FileRepository::class)->findByRelation('tt_content', 'image', 13));
+    }
+
+    #[Test]
     public function findByRelationKeepsHiddenReferencesInBackend(): void
     {
         $this->setUpBackendUser(1);

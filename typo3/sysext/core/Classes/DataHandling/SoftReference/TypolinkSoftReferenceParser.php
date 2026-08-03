@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * TypoLink value processing.
@@ -110,6 +111,13 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                     }
                     if (isset($linkData['fragment'])) {
                         $finalTagParts['anchor'] = $linkData['fragment'];
+                    }
+                    break;
+                case LinkService::TYPE_URL:
+                    // A system resource is referenced by its identifier, its resolved URL depends on the installation
+                    $resourceIdentifier = str_starts_with($link_param, 'file:') ? substr($link_param, 5) : $link_param;
+                    if (PathUtility::isExtensionPath($resourceIdentifier, true)) {
+                        $linkData['url'] = $link_param;
                     }
                     break;
                 case LinkService::TYPE_FILE:

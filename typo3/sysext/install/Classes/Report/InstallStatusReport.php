@@ -82,13 +82,11 @@ final readonly class InstallStatusReport implements StatusProviderInterface
         $checkWritable = [
             $sitePath . '/typo3temp/' => 2,
             $sitePath . '/typo3temp/assets/' => 2,
-            // only needed when GraphicalFunctions is used
+            // only needed when images are processed by GraphicalFunctions or as system resources
             $sitePath . '/typo3temp/assets/images/' => 0,
             // used in PageGenerator (inlineStyle2Temp) and Backend + Language JS files
             $sitePath . '/typo3temp/assets/css/' => 2,
             $sitePath . '/typo3temp/assets/js/' => 2,
-            // fallback storage of FAL
-            $sitePath . '/typo3temp/assets/_processed_/' => 0,
             $varPath => 2,
             $varPath . '/transient/' => 2,
             $varPath . '/lock/' => 2,

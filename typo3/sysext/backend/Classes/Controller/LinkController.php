@@ -55,9 +55,6 @@ final readonly class LinkController
             if (!$resource instanceof File && !$resource instanceof Folder) {
                 throw new \InvalidArgumentException('Resource must be a file or a folder', 1679039649);
             }
-            if ($resource->getStorage()->isFallbackStorage()) {
-                throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1679039650);
-            }
             if ($resource instanceof File) {
                 if (!$resource->checkActionPermission('read')) {
                     throw new InsufficientFileAccessPermissionsException('You are not allowed to access this file', 1779001351);
@@ -77,11 +74,8 @@ final readonly class LinkController
                 ];
             }
             $link = $this->linkService->asString($parameters);
-        } catch (InsufficientFileAccessPermissionsException|InsufficientFolderAccessPermissionsException $exception) {
-            $message = match ($exception->getCode()) {
-                1679039650 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceOutsideOfStorages'),
-                default => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNoPermissionRead'),
-            };
+        } catch (InsufficientFileAccessPermissionsException|InsufficientFolderAccessPermissionsException) {
+            $message = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNoPermissionRead');
 
             return new JsonResponse($this->getResponseData(false, $message));
         } catch (\Exception $exception) {

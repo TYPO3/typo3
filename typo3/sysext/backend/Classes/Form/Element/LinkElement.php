@@ -370,7 +370,7 @@ class LinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_FILE:
                 $file = $linkData['file'] ?? null;
-                if ($file instanceof File && $file->checkActionPermission('read') && !$file->getStorage()->isFallbackStorage()) {
+                if ($file instanceof File && $file->checkActionPermission('read')) {
                     $data = [
                         'text' => $file->getPublicUrl(),
                         'icon' => $this->iconFactory->getIconForFileExtension($file->getExtension(), IconSize::SMALL)->render(),
@@ -379,7 +379,7 @@ class LinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_FOLDER:
                 $folder = $linkData['folder'] ?? null;
-                if ($folder instanceof Folder && $folder->checkActionPermission('read') && !$folder->getStorage()->isFallbackStorage()) {
+                if ($folder instanceof Folder && $folder->checkActionPermission('read')) {
                     $data = [
                         'text' => $folder->getPublicUrl(),
                         'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', IconSize::SMALL)->render(),

@@ -52,13 +52,14 @@ final class StorageRepositoryTest extends FunctionalTestCase
         // `{public}` will be replaced by public project path (not having trailing slash)
         // double slashes `//` are used on purpose for given file identifiers
 
-        // legacy storage
+        // paths outside all storages resolve to 0 ("no storage")
         yield ['/favicon.ico', '0:/favicon.ico'];
         yield ['/favicon.ico', '0:/favicon.ico'];
 
         yield ['favicon.ico', '0:/favicon.ico'];
-        yield ['{public}//favicon.ico', '0:/favicon.ico'];
-        yield ['{public}/favicon.ico', '0:/favicon.ico'];
+        // absolute paths outside all storages are kept as-is (normalized)
+        yield ['{public}//favicon.ico', '0:{public}/favicon.ico'];
+        yield ['{public}/favicon.ico', '0:{public}/favicon.ico'];
 
         // using storages with relative path
         yield ['/fileadmin/img.png', '1:/img.png'];
@@ -131,13 +132,30 @@ final class StorageRepositoryTest extends FunctionalTestCase
         $this->get(FileStorageConfigurationWriter::class)->writeAll($storages);
         $subject = $this->get(StorageRepository::class);
         $sourceIdentifier = str_replace('{public}', Environment::getPublicPath(), $sourceIdentifier);
-        $storage = $subject->getStorageObject(0, [], $sourceIdentifier);
-        $combinedIdentifier = sprintf('%d:%s', $storage->getUid(), $sourceIdentifier);
+        $expectedCombinedIdentifier = str_replace('{public}', Environment::getPublicPath(), $expectedCombinedIdentifier);
+        $storageUid = $subject->findBestMatchingStorageByLocalPath($sourceIdentifier);
+        $combinedIdentifier = sprintf('%d:%s', $storageUid, $sourceIdentifier);
         self::assertSame(
             $expectedCombinedIdentifier,
             $combinedIdentifier,
             sprintf('Given identifier "%s"', $sourceIdentifier)
         );
+    }
+
+    #[Test]
+    public function getStorageObjectThrowsExceptionForFormerFallbackStorageUid(): void
+    {
+        $subject = $this->get(StorageRepository::class);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1785715203);
+        $subject->getStorageObject(0);
+    }
+
+    #[Test]
+    public function findByUidReturnsNullForFormerFallbackStorageUid(): void
+    {
+        $subject = $this->get(StorageRepository::class);
+        self::assertNull($subject->findByUid(0));
     }
 
     #[Test]

@@ -22,9 +22,11 @@ use TYPO3\CMS\Core\Resource\Exception as ResourceException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
+use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class to resolve and convert the "old" link information (email, external url, file, page etc)
@@ -216,13 +218,28 @@ class LegacyLinkNotationConverter
             if (str_contains($fileIdentifier, '#')) {
                 [$fileIdentifier, $fragment] = explode('#', $fileIdentifier, 2);
             }
+            if (PathUtility::isExtensionPath($fileIdentifier, true)) {
+                // A resource shipped with a package is not part of any file storage, link to its published location
+                try {
+                    return [
+                        'type' => LinkService::TYPE_URL,
+                        'url' => (string)PathUtility::getSystemResourceUri($fileIdentifier, null, new UriGenerationOptions(cacheBusting: false)) . ($fragment !== null ? '#' . $fragment : ''),
+                    ];
+                } catch (SystemResourceException) {
+                    return [
+                        'type' => LinkService::TYPE_UNKNOWN,
+                        'file' => $mixedIdentifier,
+                    ];
+                }
+            }
             try {
                 $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($fileIdentifier);
             } catch (ResourceException $e) {
                 $fileOrFolderObject = null;
             }
-            // Links to a file/folder in the main TYPO3 directory should not be considered as file links, but an external link
-            if ($fileOrFolderObject instanceof ResourceInterface && $fileOrFolderObject->getStorage()->isFallbackStorage()) {
+            // Links to a file or folder within the public web path, but outside any file storage,
+            // should not be considered as file links, but an external link
+            if ($fileOrFolderObject === null && $this->isExistingPathInPublicPath($fileIdentifier)) {
                 return [
                     'type' => LinkService::TYPE_URL,
                     'url' => $mixedIdentifier,
@@ -255,6 +272,17 @@ class LegacyLinkNotationConverter
         }
 
         return $result;
+    }
+
+    /**
+     * Checks whether the given relative path points to an existing file or folder below the public web path
+     */
+    protected function isExistingPathInPublicPath(string $path): bool
+    {
+        $absoluteFilePath = PathUtility::getCanonicalPath(Environment::getPublicPath() . '/' . ltrim($path, '/'));
+        return str_starts_with($absoluteFilePath, Environment::getPublicPath() . '/')
+            && GeneralUtility::isAllowedAbsPath($absoluteFilePath)
+            && file_exists($absoluteFilePath);
     }
 
     /**

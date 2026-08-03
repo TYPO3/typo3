@@ -304,7 +304,7 @@ class LocalImageProcessor implements ResourceAwareProcessorInterface, LoggerAwar
         // check if the processing really generated a new file (scaled and/or cropped)
         if ($result !== null) {
             // The file processing yielded a different file extension than we anticipated. Most likely because
-            // the processing service found out a file type needed to use fallback storage. In this case, we
+            // the processing service had to fall back to a different file format. In this case, we
             // append the actually received file extension to our file to be stored, which will also hint at
             // a failed conversion, like some-file.avif.jpg. Otherwise use the same file extension. This is
             // evaluated for persistence in @see LocalImageProcessor->processTaskWithLocalFile().

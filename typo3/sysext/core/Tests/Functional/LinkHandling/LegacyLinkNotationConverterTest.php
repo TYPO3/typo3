@@ -81,6 +81,13 @@ final class LegacyLinkNotationConverterTest extends FunctionalTestCase
                 'url' => '/fileadmin/some/path/typo3-logo.png',
             ],
         ];
+        yield '#6 linkParameter for existing folder outside of all file storages resolves to type URL' => [
+            'linkParameter' => 'typo3temp/assets/',
+            'expected' => [
+                'type' => LinkService::TYPE_URL,
+                'url' => 'typo3temp/assets/',
+            ],
+        ];
     }
 
     #[DataProvider('resolveReturnExpectedResultDataProvider')]

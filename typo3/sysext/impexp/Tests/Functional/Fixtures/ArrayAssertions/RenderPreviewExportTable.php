@@ -114,17 +114,17 @@ return [
 	</span>
 	
 </span>',
-            'title' => '<em>header_link, "typolink"</em>: <span title="file:4">file:4</span>',
+            'title' => '<em>header_link, "typolink"</em>: <span title="file:PKG:typo3/cms-core:Resources/Public/Icons/Extension.svg">file:PKG:typo3/cms-core:Resources/Public/Icons/Extension.svg</span>',
             '_softRefInfo'
             => [
                 'field' => 'header_link',
                 'spKey' => 'typolink',
-                'matchString' => 'file:4',
+                'matchString' => 'file:PKG:typo3/cms-core:Resources/Public/Icons/Extension.svg',
                 'subst'
                 => [
                     'type' => 'external',
                     'tokenID' => '81b8b33df54ef433f1cbc7c3e513e6c4',
-                    'tokenValue' => '4',
+                    'tokenValue' => 'file:PKG:typo3/cms-core:Resources/Public/Icons/Extension.svg',
                 ],
             ],
             'controls' => '<select class="form-select form-select-sm" name="tx_impexp[softrefCfg][81b8b33df54ef433f1cbc7c3e513e6c4][mode]" style="width: 100px"><option value="" selected="selected"></option><option value="editable">Editable</option><option value="exclude">Exclude</option></select>',

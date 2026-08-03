@@ -58,7 +58,23 @@ final class PagesAndTtContentTest extends AbstractImportExportTestCase
         $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importPagesAndRelatedTtContent.csv');
 
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image3.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image3.jpg');
-        self::assertFileEquals(__DIR__ . '/../Fixtures/Extensions/template_extension/Resources/Public/Templates/Empty.html', Environment::getPublicPath() . '/typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html');
+        // Files of the removed fallback storage (uid 0) are imported into the default storage
+        self::assertFileEquals(__DIR__ . '/../Fixtures/Extensions/template_extension/Resources/Public/Templates/Empty.html', Environment::getPublicPath() . '/fileadmin/typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html');
+    }
+
+    #[Test]
+    public function importKeepsLinksToSystemResourcesAsIdentifier(): void
+    {
+        $subject = $this->get(Import::class);
+        $subject->setPid(0);
+
+        $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlExports/pages-and-ttcontent.xml');
+        $subject->importData();
+
+        $headerLink = $this->getConnectionPool()->getConnectionForTable('tt_content')
+            ->select(['header_link'], 'tt_content', ['header' => 'Test content 2'])
+            ->fetchOne();
+        self::assertSame('file:PKG:typo3/cms-core:Resources/Public/Icons/Extension.svg', $headerLink);
     }
 
     #[Test]

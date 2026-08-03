@@ -199,7 +199,7 @@ readonly class SystemResourceFactory
      */
     private function ensureValidFalResource(ProcessedFile|File|Folder|null $falResource, string $resourceUri): void
     {
-        if (!$falResource instanceof File || $falResource->getStorage()->getUid() === 0) {
+        if (!$falResource instanceof File) {
             throw new CanNotResolveSystemResourceException(sprintf('Can not resolve file with URI "%s"', $resourceUri), 1758700078);
         }
     }

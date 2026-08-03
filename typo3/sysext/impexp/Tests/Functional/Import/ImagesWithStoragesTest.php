@@ -118,7 +118,7 @@ final class ImagesWithStoragesTest extends AbstractImportExportTestCase
     }
 
     #[Test]
-    public function importImagesWithStaticAndFallbackStorages(): void
+    public function importImagesWithStaticStoragesMovesLegacyFallbackStorageFilesToDefaultStorage(): void
     {
         GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin_invalid_path');
         $this->get(FileStorageConfigurationWriter::class)->writeAll([
@@ -134,6 +134,7 @@ final class ImagesWithStoragesTest extends AbstractImportExportTestCase
         self::assertFileExists(Environment::getPublicPath() . '/fileadmin_invalid_path/user_upload/typo3_image2.jpg');
         self::assertFileExists(Environment::getPublicPath() . '/fileadmin_invalid_path/user_upload/typo3_image3.jpg');
         self::assertFileExists(Environment::getPublicPath() . '/fileadmin_invalid_path/user_upload/typo3_image5.jpg');
-        self::assertFileExists(Environment::getPublicPath() . '/typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html');
+        // The file of the removed fallback storage (uid 0) is imported into the default storage
+        self::assertFileExists(Environment::getPublicPath() . '/fileadmin_invalid_path/typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html');
     }
 }

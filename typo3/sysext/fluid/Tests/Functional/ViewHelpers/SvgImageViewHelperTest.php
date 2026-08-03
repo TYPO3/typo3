@@ -112,7 +112,6 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
         $maximum = count($dimensionMap);
 
-        $storageDirTemp     = 'typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]';
         $storageDirFal      = 'fileadmin/user_upload';
         $storageDirFalTemp  = 'fileadmin/_processed_/[0-9a-f]/[0-9a-f]';
         // A system resource outside the File Abstraction Layer is cached under its own

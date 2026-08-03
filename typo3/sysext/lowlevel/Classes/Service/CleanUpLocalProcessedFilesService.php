@@ -113,7 +113,7 @@ final readonly class CleanUpLocalProcessedFilesService
             $this->storageRepository->findByStorageType('Local')
         );
         if ($fullReset) {
-            // When removing all records, also the fallback storage needs to be cleared.
+            // Records of the removed fallback storage (uid 0) are orphaned and removed as well
             $storageUids[] = 0;
         }
         if ($storageUids === []) {

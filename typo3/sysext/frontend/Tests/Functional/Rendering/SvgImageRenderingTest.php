@@ -36,10 +36,10 @@ final class SvgImageRenderingTest extends FunctionalTestCase
      * @var string[]
      */
     private array $definedResources = [
-        'localImage1' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest1.svg',
-        'localImage2' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest2.svg',
-        'localImage3' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest3.svg',
-        'localImage4' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest4.svg',
+        'localImage1' => 'EXT:svg_image_test/Resources/Public/Images/ImageViewHelperTest1.svg',
+        'localImage2' => 'EXT:svg_image_test/Resources/Public/Images/ImageViewHelperTest2.svg',
+        'localImage3' => 'EXT:svg_image_test/Resources/Public/Images/ImageViewHelperTest3.svg',
+        'localImage4' => 'EXT:svg_image_test/Resources/Public/Images/ImageViewHelperTest4.svg',
 
         'localImage1Uid' => '1',
         'localImage2Uid' => '2',
@@ -50,6 +50,10 @@ final class SvgImageRenderingTest extends FunctionalTestCase
         'localImage2UidUncrop' => '7',
         'localImage3UidUncrop' => '8',
         'localImage4UidUncrop' => '9',
+    ];
+
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/svg_image_test',
     ];
 
     protected array $pathsToProvideInTestInstance = [
@@ -96,16 +100,16 @@ final class SvgImageRenderingTest extends FunctionalTestCase
         return [
             'rendered svg assets contains' => [
                 [
-                    '@<img src="/typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]/csm_ImageViewHelperTest1_.*\.svg" width="500" height="500"\s+alt=""\s+/?>@U',
-                    '@<img src="/typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]/csm_ImageViewHelperTest2_.*\.svg" width="500" height="500"\s+alt=""\s+/?>@U',
-                    '@<img src="/typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]/csm_ImageViewHelperTest3_.*\.svg" width="500" height="500"\s+alt=""\s+/?>@U',
-                    '@<img src="/typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]/csm_ImageViewHelperTest4_.*\.svg" width="500" height="500"\s+alt=""\s+/?>@U',
+                    '@<img src="/typo3temp/assets/images/system/[0-9a-f]{32}/[0-9a-f]{10}-[0-9a-f]{32}\.svg" width="500" height="500"\s+alt=""\s+/?>@U',
+                    '@<img src="/typo3temp/assets/images/system/[0-9a-f]{32}/[0-9a-f]{10}-[0-9a-f]{32}\.svg" width="500" height="500"\s+alt=""\s+/?>@U',
+                    '@<img src="/typo3temp/assets/images/system/[0-9a-f]{32}/[0-9a-f]{10}-[0-9a-f]{32}\.svg" width="500" height="500"\s+alt=""\s+/?>@U',
+                    '@<img src="/typo3temp/assets/images/system/[0-9a-f]{32}/[0-9a-f]{10}-[0-9a-f]{32}\.svg" width="500" height="500"\s+alt=""\s+/?>@U',
 
-                    '@<img src="/typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]/csm_ImageViewHelperTest1_.*\.png" width="500" height="500"\s+alt=""\s+/?>@U',
+                    '@<img src="/typo3temp/assets/images/system/[0-9a-f]{32}/[0-9a-f]{10}-[0-9a-f]{32}\.png" width="500" height="500"\s+alt=""\s+/?>@U',
                     // @todo should be 273x273 (or 274x274)
-                    '@<img src="/typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]/csm_ImageViewHelperTest2_.*\.png" width="500" height="500"\s+alt=""\s+/?>@U',
-                    '@<img src="/typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]/csm_ImageViewHelperTest3_.*\.png" width="500" height="500"\s+alt=""\s+/?>@U',
-                    '@<img src="/typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]/csm_ImageViewHelperTest4_.*\.png" width="500" height="500"\s+alt=""\s+/?>@U',
+                    '@<img src="/typo3temp/assets/images/system/[0-9a-f]{32}/[0-9a-f]{10}-[0-9a-f]{32}\.png" width="500" height="500"\s+alt=""\s+/?>@U',
+                    '@<img src="/typo3temp/assets/images/system/[0-9a-f]{32}/[0-9a-f]{10}-[0-9a-f]{32}\.png" width="500" height="500"\s+alt=""\s+/?>@U',
+                    '@<img src="/typo3temp/assets/images/system/[0-9a-f]{32}/[0-9a-f]{10}-[0-9a-f]{32}\.png" width="500" height="500"\s+alt=""\s+/?>@U',
 
                     '@<img src="/fileadmin/_processed_/[0-9a-f]/[0-9a-f]/csm_FALImageViewHelperTest1_.*\.svg" width="231" height="238"\s+alt=""\s+/?>@U',
                     '@<img src="/fileadmin/_processed_/[0-9a-f]/[0-9a-f]/csm_FALImageViewHelperTest2_.*\.svg" width="241" height="60"\s+alt=""\s+/?>@U',

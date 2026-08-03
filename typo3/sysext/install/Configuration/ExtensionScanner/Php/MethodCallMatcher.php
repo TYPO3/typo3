@@ -4165,6 +4165,20 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\ResourceStorage->isFallbackStorage' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-110361-RemoveFalFallbackStorage.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Security\FilePermissionAspect->usesLegacyStorage' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-110361-RemoveFalFallbackStorage.rst',
+        ],
+    ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->processOutput' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,

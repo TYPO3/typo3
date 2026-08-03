@@ -750,8 +750,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     public function addFile(string $localFilePath, string $targetFolderIdentifier, string $newFileName = '', bool $removeOriginal = true): string
     {
         $localFilePath = $this->canonicalizeAndCheckFilePath($localFilePath);
-        // as for the "virtual storage" for backwards-compatibility, this check always fails, as the file probably lies under public web path
-        // thus, it is not checked here
         // @todo is check in storage
         if (str_starts_with($localFilePath, $this->absoluteBasePath) && $this->storageUid > 0) {
             throw new \InvalidArgumentException('Cannot add a file that is already part of this storage.', 1314778269);

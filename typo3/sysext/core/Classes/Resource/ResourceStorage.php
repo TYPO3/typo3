@@ -353,17 +353,6 @@ class ResourceStorage implements ResourceStorageInterface
         return true;
     }
 
-    /**
-     * Returns true if this storage is a virtual storage that provides
-     * access to all files in the project root.
-     *
-     * @internal
-     */
-    public function isFallbackStorage(): bool
-    {
-        return $this->getUid() === 0;
-    }
-
     /*********************************
      * Capabilities
      ********************************/
@@ -457,9 +446,6 @@ class ResourceStorage implements ResourceStorageInterface
     public function isOnline(): bool
     {
         if ($this->isOnline === null) {
-            if ($this->getUid() === 0) {
-                $this->isOnline = true;
-            }
             // the storage is taken offline by configuration
             if (($this->storageRecord['online'] ?? true) === false) {
                 $this->isOnline = false;
@@ -494,9 +480,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function markAsPermanentlyOffline(): void
     {
-        if ($this->getUid() > 0) {
-            $this->getOfflineStateCache()->set($this->getOfflineStateCacheIdentifier(), true, [], 0);
-        }
+        $this->getOfflineStateCache()->set($this->getOfflineStateCacheIdentifier(), true, [], 0);
         $this->storageRecord['online'] = false;
         $this->isOnline = false;
     }

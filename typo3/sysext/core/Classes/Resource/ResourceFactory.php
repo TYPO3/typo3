@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Core\Resource;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -31,13 +30,10 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\SystemResource\Exception\SystemResourceException;
-use TYPO3\CMS\Core\SystemResource\Publishing\DefaultSystemResourcePublisher;
-use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
-use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -137,6 +133,7 @@ readonly class ResourceFactory implements SingletonInterface
      * Gets a file object from an identifier [storage]:[fileId]
      *
      * @throws \InvalidArgumentException
+     * @throws FileDoesNotExistException if the file is not part of any file storage
      */
     public function getFileObjectFromCombinedIdentifier(string $identifier): File|ProcessedFile|null
     {
@@ -148,10 +145,15 @@ readonly class ResourceFactory implements SingletonInterface
             $storageUid = (int)$parts[0];
             $fileIdentifier = $parts[1];
         } else {
-            // We only got a path: Go into backwards compatibility mode and
-            // use virtual Storage (uid=0)
-            $storageUid = 0;
+            // We only got a path: Find the storage the path belongs to
             $fileIdentifier = $parts[0];
+            $storageUid = $this->storageRepository->findBestMatchingStorageByLocalPath($fileIdentifier);
+        }
+        if ($storageUid <= 0) {
+            throw new FileDoesNotExistException(
+                sprintf('The file "%s" is not part of any file storage.', $identifier),
+                1785715204
+            );
         }
         return $this->storageRepository->getStorageObject($storageUid, [], $fileIdentifier)
             ->getFileByIdentifier($fileIdentifier);
@@ -228,16 +230,12 @@ readonly class ResourceFactory implements SingletonInterface
      *
      * 1. It's a UID
      * 2. It's a combined identifier
-     * 3. It's just a path/filename (coming from the oldstyle/backwards compatibility)
-     *
-     * Files, previously laid on fileadmin/ or something, will be "mapped" to the storage the file is
-     * in now. Files like typo3temp/ or typo3conf/ will be moved to the first writable storage
-     * in its processing folder
+     * 3. It's just a path/filename within a configured file storage
      *
      * $input could be
      * - "2:myfolder/myfile.jpg" (combined identifier)
      * - "23" (file UID)
-     * - "uploads/myfile.png" (backwards-compatibility, storage "0")
+     * - "fileadmin/myfile.png" (a path resolved to its storage)
      * - "file:23"
      */
     public function retrieveFileOrFolderObject(string|int $input): ProcessedFile|File|Folder|null
@@ -260,44 +258,29 @@ readonly class ResourceFactory implements SingletonInterface
                 return $this->getObjectFromCombinedIdentifier($input);
             }
             if ($prefix === 'EXT') {
-                try {
-                    // @todo: We make an "URL" relative to public dir because the fallback storage root
-                    //        is the public dir and in this case file identifier === url
-                    //        this will be resolved once fallback storage is deprecated
-                    //        This should be done asap, because other implementations of SystemResourcePublisherInterface
-                    //        might not evaluate the uriPrefix options
-                    $potentialPathRelativeToPublicDir = (string)$this->getSystemResourceUri($input, null, new UriGenerationOptions(uriPrefix: '/', cacheBusting: false));
-                    if (!file_exists(Environment::getPublicPath() . $potentialPathRelativeToPublicDir)) {
-                        throw new ResourceDoesNotExistException(sprintf('File "%s" does not exist in fallback compatibility storage.', $input), 1760532790);
-                    }
-                    return $this->getFileObjectFromCombinedIdentifier($potentialPathRelativeToPublicDir);
-                } catch (SystemResourceException $e) {
-                    throw new ResourceDoesNotExistException(sprintf('Tried to access a private resource file "%s" from fallback compatibility storage. This storage only handles public files.', $input), 1633777536, $e);
-                }
+                throw new ResourceDoesNotExistException(
+                    sprintf('The resource "%s" can not be resolved through the File Abstraction Layer, as it is not part of any file storage. Use the System Resource API (SystemResourceFactory) instead.', $input),
+                    1785715205
+                );
             }
             return null;
         }
-        // this is a backwards-compatible way to access "0-storage" files or folders
-        // @todo: this needs to be removed once we remove support for fallback storage
+        // A plain path within a configured file storage
         // eliminate double slashes, /./ and /../
         $input = PathUtility::getCanonicalPath(ltrim($input, '/'));
-        if (@is_file(Environment::getPublicPath() . '/' . $input)) {
-            // only the local file
-            return $this->getFileObjectFromCombinedIdentifier($input);
-        }
-        if (@is_dir(Environment::getPublicPath() . '/' . ltrim($input, '/'))) {
-            // only the local path
-            return $this->getFolderObjectFromCombinedIdentifier(ltrim($input, '/'));
+        try {
+            if (@is_file(Environment::getPublicPath() . '/' . $input)) {
+                // only the local file
+                return $this->getFileObjectFromCombinedIdentifier($input);
+            }
+            if (@is_dir(Environment::getPublicPath() . '/' . ltrim($input, '/'))) {
+                // only the local path
+                return $this->getFolderObjectFromCombinedIdentifier(ltrim($input, '/'));
+            }
+        } catch (ResourceDoesNotExistException) {
+            // The file or folder exists in the public path, but outside of all file storages
         }
         return null;
-    }
-
-    private function getSystemResourceUri(string $resourceIdentifier, ?ServerRequestInterface $request = null, ?UriGenerationOptions $options = null): UriInterface
-    {
-        $resourceFactory = GeneralUtility::makeInstance(SystemResourceFactory::class);
-        $resource = $resourceFactory->createPublicResource($resourceIdentifier);
-        $resourcePublisher = GeneralUtility::makeInstance(DefaultSystemResourcePublisher::class);
-        return $resourcePublisher->generateUri($resource, $request, $options);
     }
 
     /**
@@ -310,17 +293,19 @@ readonly class ResourceFactory implements SingletonInterface
             $storageUid = (int)$parts[0];
             $folderIdentifier = $parts[1];
         } else {
-            // We only got a path: Go into backwards compatibility mode and
-            // use virtual Storage (uid=0)
-            $storageUid = 0;
-
-            // please note that getStorageObject() might modify $folderIdentifier when
-            // auto-detecting the best-matching storage to use
+            // We only got a path: Find the storage the path belongs to
             $folderIdentifier = $parts[0];
             // make sure to not use an absolute path, and remove Environment::getPublicPath if it is prepended
             if (str_starts_with($folderIdentifier, Environment::getPublicPath() . '/')) {
                 $folderIdentifier = PathUtility::stripPathSitePrefix($parts[0]);
             }
+            $storageUid = $this->storageRepository->findBestMatchingStorageByLocalPath($folderIdentifier);
+        }
+        if ($storageUid <= 0) {
+            throw new FolderDoesNotExistException(
+                sprintf('The folder "%s" is not part of any file storage.', $identifier),
+                1785715206
+            );
         }
         return $this->storageRepository->getStorageObject($storageUid, [], $folderIdentifier)->getFolder($folderIdentifier);
     }
@@ -335,7 +320,7 @@ readonly class ResourceFactory implements SingletonInterface
         [$storageId, $objectIdentifier] = array_pad(GeneralUtility::trimExplode(':', $identifier), 2, null);
         if (!MathUtility::canBeInterpretedAsInteger($storageId) && $objectIdentifier === null) {
             $objectIdentifier = $storageId;
-            $storageId = 0;
+            $storageId = $this->storageRepository->findBestMatchingStorageByLocalPath($objectIdentifier);
         }
         if (MathUtility::canBeInterpretedAsInteger($storageId)) {
             $storage = $this->storageRepository->findByUid($storageId);
@@ -355,11 +340,19 @@ readonly class ResourceFactory implements SingletonInterface
     /**
      * Creates a file object from an array of file data. Requires a database
      * row to be fetched.
+     *
+     * @throws FileDoesNotExistException if the storage of the file is not configured
      */
     public function createFileObject(array $fileData, ?ResourceStorage $storage = null): File
     {
         if (array_key_exists('storage', $fileData) && MathUtility::canBeInterpretedAsInteger($fileData['storage'])) {
             $storageObject = $this->storageRepository->findByUid((int)$fileData['storage']);
+            if ($storageObject === null) {
+                throw new FileDoesNotExistException(
+                    sprintf('The file with uid "%d" resides in storage "%d", which is not configured.', (int)($fileData['uid'] ?? 0), (int)$fileData['storage']),
+                    1792157266
+                );
+            }
         } else {
             $storageObject = $storage;
         }

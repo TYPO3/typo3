@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\SoftReference;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
@@ -112,5 +113,33 @@ final class TypolinkSoftReferenceParserTest extends FunctionalTestCase
 
         self::assertNotNull($errorElement);
         self::assertEquals('Couldn\'t decide typolink mode.', $errorElement['error']);
+    }
+
+    public static function systemResourceLinksAreReferencedByTheirIdentifierDataProvider(): iterable
+    {
+        yield 'EXT: identifier' => [
+            'file:EXT:core/Resources/Public/Icons/Extension.svg',
+            'file:EXT:core/Resources/Public/Icons/Extension.svg',
+        ];
+        yield 'PKG: identifier' => [
+            'file:PKG:typo3/cms-core:Resources/Public/Icons/Extension.svg',
+            'file:PKG:typo3/cms-core:Resources/Public/Icons/Extension.svg',
+        ];
+        yield 'EXT: identifier with target' => [
+            'file:EXT:core/Resources/Public/Icons/Extension.svg _blank',
+            'file:EXT:core/Resources/Public/Icons/Extension.svg',
+        ];
+    }
+
+    #[DataProvider('systemResourceLinksAreReferencedByTheirIdentifierDataProvider')]
+    #[Test]
+    public function systemResourceLinksAreReferencedByTheirIdentifier(string $content, string $expectedTokenValue): void
+    {
+        $result = $this->get(TypolinkSoftReferenceParser::class)->parse('tt_content', 'header_link', 1, $content);
+
+        self::assertTrue($result->hasMatched());
+        $element = array_values($result->getMatchedElements())[0];
+        self::assertSame('external', $element['subst']['type']);
+        self::assertSame($expectedTokenValue, $element['subst']['tokenValue']);
     }
 }

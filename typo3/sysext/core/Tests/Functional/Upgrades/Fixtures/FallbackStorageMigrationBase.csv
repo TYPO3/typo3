@@ -1,0 +1,21 @@
+"sys_file"
+,"uid","pid","storage","identifier","identifier_hash","folder_hash","name","missing"
+,10,0,0,"/fileadmin/legacy/file-one.txt","9ec4fa9336754d5b04e23a799528d894f040d143","c1d0f9f6f7bd1656a4ffee441fad89b6b6212bf4","file-one.txt",0
+,11,0,0,"/fileadmin/existing/duplicate.txt","8bb526f4cc2e4d84486261d3d26c81d3ca47cbfb","f1b753a4507e9eb2ba89bf278c6b2df3f2148cf4","duplicate.txt",0
+,12,0,0,"/outside/nothing.txt","9eb4ea772c6a57c55cf7de656eef5c328ace6bd5","8a8092102633bee258780802f6d995960174a7c8","nothing.txt",0
+,13,0,0,"/fileadmin/legacy/gone.txt","515164593f7c35d52f5f1d7b73ece02127793da4","c1d0f9f6f7bd1656a4ffee441fad89b6b6212bf4","gone.txt",1
+,14,0,0,"/outside/gone.txt","76bf52032d573e9ae532d0172df5334f1c93036a","8a8092102633bee258780802f6d995960174a7c8","gone.txt",1
+,20,0,1,"/existing/duplicate.txt","348aec93ef659207bad2d377dd88ca5a4802c7f8","178ac0b40fe0eef0deda86a78f6b1c6a1832628c","duplicate.txt",0
+"sys_file_metadata"
+,"uid","pid","file","title"
+,1,0,11,"Metadata of fallback storage duplicate"
+,2,0,20,"Metadata of already indexed file"
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname"
+,1,0,11,100,"tt_content","image"
+,2,0,20,101,"tt_content","image"
+"sys_file_processedfile"
+,"uid","storage","original","identifier","name","task_type"
+,1,0,10,"/typo3temp/assets/_processed_/1/2/csm_file-one_abc.png","csm_file-one_abc.png","Image.CropScaleMask"
+,2,1,20,"/_processed_/1/2/csm_duplicate_def.png","csm_duplicate_def.png","Image.CropScaleMask"
+,3,1,11,"/_processed_/a/b/csm_duplicate_old.png","csm_duplicate_old.png","Image.CropScaleMask"

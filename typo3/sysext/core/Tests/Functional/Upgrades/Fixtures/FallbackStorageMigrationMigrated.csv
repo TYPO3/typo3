@@ -1,0 +1,17 @@
+"sys_file"
+,"uid","pid","storage","identifier","identifier_hash","folder_hash","name","missing"
+,10,0,1,"/legacy/file-one.txt","4bdec75c9bc79c69b7524e48fe36c816347baaee","eba81aa4881fb7f53e52cb708f698e802b73025b","file-one.txt",0
+,12,0,1,"/outside/nothing.txt","9eb4ea772c6a57c55cf7de656eef5c328ace6bd5","8a8092102633bee258780802f6d995960174a7c8","nothing.txt",1
+,13,0,1,"/legacy/gone.txt","a5f25465d5a1aabdd49a26cbc86fdef92dcb2fdc","eba81aa4881fb7f53e52cb708f698e802b73025b","gone.txt",1
+,14,0,1,"/outside/gone.txt","76bf52032d573e9ae532d0172df5334f1c93036a","8a8092102633bee258780802f6d995960174a7c8","gone.txt",1
+,20,0,1,"/existing/duplicate.txt","348aec93ef659207bad2d377dd88ca5a4802c7f8","178ac0b40fe0eef0deda86a78f6b1c6a1832628c","duplicate.txt",0
+"sys_file_metadata"
+,"uid","pid","file","title"
+,2,0,20,"Metadata of already indexed file"
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname"
+,1,0,20,100,"tt_content","image"
+,2,0,20,101,"tt_content","image"
+"sys_file_processedfile"
+,"uid","storage","original","identifier","name","task_type"
+,2,1,20,"/_processed_/1/2/csm_duplicate_def.png","csm_duplicate_def.png","Image.CropScaleMask"

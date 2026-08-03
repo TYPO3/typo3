@@ -395,11 +395,6 @@ final readonly class DefaultFactory
                     'type' => DirectoryNode::class,
                     'targetPermission' => $directoryPermission,
                 ],
-                [
-                    'name' => '_processed_',
-                    'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission,
-                ],
             ],
         ];
     }

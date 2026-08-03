@@ -626,15 +626,11 @@ class Import extends ImportExport
             }
 
             $sourceStorageUid = (int)$fileRecord['storage'];
-            if ($sourceStorageUid === 0) {
-                $storage = $this->storageRepository->findByUid(0);
-            } else {
-                $this->mapUnknownSysFileStorage($sourceStorageUid);
-                $storageUid = $this->importMapId['sys_file_storage'][$sourceStorageUid];
-                $storage = $storageUid !== null
-                    ? $this->storagesAvailableForImport[$storageUid] ?? $this->defaultStorage
-                    : null;
-            }
+            $this->mapUnknownSysFileStorage($sourceStorageUid);
+            $storageUid = $this->importMapId['sys_file_storage'][$sourceStorageUid];
+            $storage = $storageUid !== null
+                ? $this->storagesAvailableForImport[$storageUid] ?? $this->defaultStorage
+                : null;
             if ($storage === null) {
                 $this->addError(sprintf(
                     'Error: No storage available for the file "%s" with storage uid "%s"',

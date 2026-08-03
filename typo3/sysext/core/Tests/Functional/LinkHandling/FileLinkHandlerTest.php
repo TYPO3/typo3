@@ -64,4 +64,19 @@ final class FileLinkHandlerTest extends FunctionalTestCase
         $subject = new FileLinkHandler();
         self::assertSame(['file' => null], $subject->resolveHandlerData($input));
     }
+
+    #[Test]
+    public function resolveReturnsNullFileForFileRecordOfRemovedFallbackStorage(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/FallbackStorageFile.csv');
+        $subject = new FileLinkHandler();
+        self::assertSame(['file' => null], $subject->resolveHandlerData(['uid' => 1]));
+    }
+
+    #[Test]
+    public function resolveReturnsNullFileForIdentifierOfRemovedFallbackStorage(): void
+    {
+        $subject = new FileLinkHandler();
+        self::assertSame(['file' => null], $subject->resolveHandlerData(['identifier' => '0:/typo3conf/outside.txt']));
+    }
 }

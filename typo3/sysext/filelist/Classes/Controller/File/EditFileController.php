@@ -33,7 +33,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -125,9 +124,6 @@ class EditFileController
 
         if (!$file instanceof FileInterface) {
             throw new InvalidFileException('Referenced target "' . $combinedIdentifier . '" could not be resolved to a valid file', 1294586841);
-        }
-        if ($file->getStorage()->isFallbackStorage()) {
-            throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1375889832);
         }
 
         /** @var Folder $parentFolder */

@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
@@ -142,7 +143,13 @@ readonly class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAc
             // The file relation could be written as sys_file_[uid], strip this off before checking access rights
             $file = substr($file, strlen('sys_file_'));
         }
-        $fileObject = $this->resourceFactory->getFileObject((int)$file);
+        try {
+            $fileObject = $this->resourceFactory->getFileObject((int)$file);
+        } catch (ResourceDoesNotExistException) {
+            // The file record does not exist or refers to a storage that is not configured, e.g. the former
+            // fallback storage. There is no file whose metadata could be edited.
+            return false;
+        }
         return $fileObject->checkActionPermission('editMeta');
     }
 }

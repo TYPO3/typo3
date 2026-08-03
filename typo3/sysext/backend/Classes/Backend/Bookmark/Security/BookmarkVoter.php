@@ -182,7 +182,7 @@ final readonly class BookmarkVoter
         }
 
         $storage = $this->storageRepository->findByCombinedIdentifier($combinedIdentifier);
-        if ($storage === null || $storage->isFallbackStorage()) {
+        if ($storage === null) {
             return false;
         }
 

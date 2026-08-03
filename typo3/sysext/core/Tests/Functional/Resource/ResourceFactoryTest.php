@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileCarrierInterface;
@@ -131,42 +131,16 @@ final class ResourceFactoryTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function retrieveFileOrFolderObjectReturnsFileFromPublicExtensionResourceWhenExtensionIsNotPublic(): void
+    public function retrieveFileOrFolderObjectThrowsForAnExtensionResource(): void
     {
-        // Emulate public dir and private app dir
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            true,
-            Environment::getProjectPath(),
-            Environment::getPublicPath() . '/typo3temp/public',
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getCurrentScript(),
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-
-        // Emulate publishing
-        // The published asset directory is named after the package path relative to the
-        // project root, which differs between installation modes. Mirrors DefaultPublicPrefix.
-        $corePackagePath = $this->get(PackageManager::class)->getPackage('core')->getPackagePath();
-        $publicFile = '/_assets/' . md5(substr($corePackagePath, strlen(Environment::getProjectPath()))) . '/Icons/Extension.svg';
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . dirname($publicFile));
-        copy(GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Icons/Extension.svg'), Environment::getPublicPath() . $publicFile);
-
-        $subject = $this->getMockBuilder(ResourceFactory::class)
-            ->onlyMethods(['getFileObjectFromCombinedIdentifier'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $subject->expects($this->once())
-            ->method('getFileObjectFromCombinedIdentifier')
-            ->with($publicFile);
-        // Create and prepare test file
+        $subject = $this->get(ResourceFactory::class);
+        $this->expectException(ResourceDoesNotExistException::class);
+        $this->expectExceptionCode(1785715205);
         $subject->retrieveFileOrFolderObject('EXT:core/Resources/Public/Icons/Extension.svg');
     }
 
     #[Test]
-    public function retrieveFileOrFolderObjectThrowsExceptionFromPrivateExtensionResourceWhenExtensionIsNotPublic(): void
+    public function retrieveFileOrFolderObjectResolvesBarePathInsideStorageToThatStorage(): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -318,5 +292,14 @@ final class ResourceFactoryTest extends FunctionalTestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1382687163);
         $subject->resolveFileObject('1:/processed.jpg');
+    }
+
+    #[Test]
+    public function getFileObjectFromCombinedIdentifierThrowsExceptionForPathOutsideAllStorages(): void
+    {
+        $subject = $this->get(ResourceFactory::class);
+        $this->expectException(FileDoesNotExistException::class);
+        $this->expectExceptionCode(1785715204);
+        $subject->getFileObjectFromCombinedIdentifier('does/not/exist.png');
     }
 }

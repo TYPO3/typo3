@@ -48,17 +48,15 @@ readonly class Typo3tempFileService
 
     public function getStatsFromStorageByUid(int $storageUid): array
     {
-        if ($storageUid === 0) {
-            return $this->statsFromTypo3tempProcessed();
-        }
-
         $storage = $this->storageRepository->findByUid($storageUid);
+        if ($storage === null) {
+            throw new \RuntimeException('Storage with uid ' . $storageUid . ' does not exist', 1785715300);
+        }
         return $this->getStatsFromStorage($storage);
     }
 
     /**
-     * Directory statistics for typo3temp/assets folders with some
-     * special handling for legacy processed file storage _processed_
+     * Directory statistics for typo3temp/assets folders
      */
     protected function statsFromTypo3temp(): array
     {
@@ -72,42 +70,12 @@ readonly class Typo3tempFileService
                 /** @var SplFileInfo $dirInAssets */
                 $fileFinder = new Finder();
                 $fileCount = $fileFinder->files()->ignoreUnreadableDirs()->in($dirInAssets->getPathname())->count();
-                $folderName = $dirInAssets->getFilename();
-                $stat = [
-                    'directory' => $typo3TempAssetsPath . $folderName,
+                $stats[] = [
+                    'directory' => $typo3TempAssetsPath . $dirInAssets->getFilename(),
                     'numberOfFiles' => $fileCount,
                 ];
-                if ($folderName === '_processed_') {
-                    // The processed file storage for legacy files (eg. TCA type=group internal_type=file)
-                    // gets the storageUid set, so this one can be removed via FAL functionality
-                    $stat['storageUid'] = 0;
-                }
-                $stats[] = $stat;
             }
         }
-        return $stats;
-    }
-
-    /**
-     * Directory statistics for typo3temp/assets/_processed_ folder
-     */
-    protected function statsFromTypo3tempProcessed(): array
-    {
-        $typo3TempProcessedAssetsPath = '/typo3temp/assets/_processed_/';
-
-        $stats = [
-            'storageUid' => 0,
-            'directory' => $typo3TempProcessedAssetsPath,
-        ];
-
-        $basePath = Environment::getPublicPath() . $typo3TempProcessedAssetsPath;
-        if (is_dir($basePath)) {
-            $fileFinder = new Finder();
-            $stats['numberOfFiles'] = $fileFinder->files()->in($basePath)->count();
-        } else {
-            $stats['numberOfFiles'] = 0;
-        }
-
         return $stats;
     }
 
@@ -152,7 +120,7 @@ readonly class Typo3tempFileService
     }
 
     /**
-     * Clears files and folders in a typo3temp/assets/ folder (not _processed_!)
+     * Clears files and folders in a typo3temp/assets/ folder
      *
      * @return bool TRUE if all went well
      * @throws \RuntimeException If folder path is not valid

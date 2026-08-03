@@ -112,9 +112,6 @@ final readonly class ResourceController
             if (!$origin instanceof File && !$origin instanceof Folder) {
                 throw new \InvalidArgumentException('Resource must be a file or a folder', 1676979120);
             }
-            if ($origin->getStorage()->isFallbackStorage()) {
-                throw new InsufficientFileAccessPermissionsException('You are not allowed to access files outside your storages', 1676299579);
-            }
             if (!$origin->checkActionPermission('rename')) {
                 throw new InsufficientFileAccessPermissionsException('You are not allowed to rename the resource', 1676979130);
             }
@@ -139,7 +136,6 @@ final readonly class ResourceController
         } catch (\Exception $exception) {
             $message = match ($exception->getCode()) {
                 1676979120 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNotFileOrFolder'),
-                1676299579 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceOutsideOfStorages'),
                 1676979130 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNoPermissionRename'),
                 1676978732 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNameCannotBeEmpty'),
                 default => $exception->getMessage(),

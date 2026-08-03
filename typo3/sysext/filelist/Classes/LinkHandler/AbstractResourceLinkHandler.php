@@ -101,9 +101,6 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         if (!$resource->checkActionPermission('read')) {
             return '';
         }
-        if ($resource->getStorage()->isFallbackStorage()) {
-            return '';
-        }
         return $this->linkParts['url'][$this->type->value]->getName();
     }
 
@@ -189,7 +186,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         if ($this->expandFolder) {
             try {
                 $selectedFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($this->expandFolder);
-                if ($selectedFolder->checkActionPermission('read') && !$selectedFolder->getStorage()->isFallbackStorage()) {
+                if ($selectedFolder->checkActionPermission('read')) {
                     $this->selectedFolder = $selectedFolder;
                 }
             } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException) {
@@ -211,13 +208,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
     public function isUpdateSupported(): bool
     {
         $resource = $this->linkParts['url'][$this->type->value];
-        if (!$resource->checkActionPermission('read')) {
-            return false;
-        }
-        if ($resource->getStorage()->isFallbackStorage()) {
-            return false;
-        }
-        return true;
+        return $resource->checkActionPermission('read');
     }
 
     /**
@@ -230,9 +221,6 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
             return [];
         }
         if (!$resource->checkActionPermission('read')) {
-            return [];
-        }
-        if ($resource->getStorage()->isFallbackStorage()) {
             return [];
         }
         return [

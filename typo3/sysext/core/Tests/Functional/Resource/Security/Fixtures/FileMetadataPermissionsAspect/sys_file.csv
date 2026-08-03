@@ -1,0 +1,7 @@
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","missing"
+,1,0,0,2,"/typo3conf/outside.txt","e35cf5b4f5f845b653c3c716ca14083e47857e30","fbd6714e8a0ab708e885ba5befd0ae86c5ab8d45","txt","text/plain","outside.txt","45e18dad51fd9e8869897fba48fa93d118e5e404",7,0
+"sys_file_metadata"
+,"uid","pid","file","title"
+,1,0,1,"outside"
+,2,0,999,"metadata of a non-existing file"

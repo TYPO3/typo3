@@ -54,7 +54,8 @@ class FolderLinkHandler implements LinkHandlingInterface
      */
     public function resolveHandlerData(array $data): array
     {
-        $combinedIdentifier = ($data['storage'] ?? '0') . ':' . $data['identifier'];
+        // Without a storage, the path is matched to the storage containing it
+        $combinedIdentifier = isset($data['storage']) ? $data['storage'] . ':' . $data['identifier'] : (string)$data['identifier'];
         try {
             $folder = $this->getResourceFactory()->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
         } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {

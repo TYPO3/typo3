@@ -32,11 +32,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * `DataHandler` hook handling to avoid direct access to `sys_file` related entities:
  *
  * + denies any write access to `sys_file` (in datamap and cmdmap, unless it is an internal process)
- * + denies any write access to `sys_file` that is on legacy storage
- * + denies any write access to `sys_file_reference`, referencing a file on legacy storage,
- *   or not part of the file-mounts of the corresponding user
- * + denies any write access to `sys_file_metadata`, referencing a file on legacy storage,
- *   or not part of the file-mounts of the corresponding user
+ * + denies any write access to `sys_file` that does not reference a valid storage
+ * + denies any write access to `sys_file_reference`, referencing an invalid file,
+ *   or a file not part of the file-mounts of the corresponding user
+ * + denies any write access to `sys_file_metadata`, referencing a file
+ *   not part of the file-mounts of the corresponding user
  */
 #[Autoconfigure(public: true)]
 readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListHookInterface
@@ -79,12 +79,9 @@ readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListH
         $isNew = !MathUtility::canBeInterpretedAsInteger($id);
         $logId = $isNew ? 0 : (int)$id;
         if ($table === 'sys_file') {
-            $file = $this->resolveFile((int)$id);
-            if (!$this->isValidStorageData($incomingFieldArray)
-                || (!$isNew && $file !== null && $this->usesLegacyStorage($file))
-            ) {
+            if (!$this->isValidStorageData($incomingFieldArray)) {
                 $incomingFieldArray = null;
-                $this->logError($table, $logId, 'Attempt to set legacy storage directly is disallowed', $dataHandler);
+                $this->logError($table, $logId, 'Attempt to set invalid storage is disallowed', $dataHandler);
             }
         } elseif ($table === 'sys_file_reference') {
             $files = $this->resolveReferencedFiles($incomingFieldArray, 'uid_local');
@@ -92,9 +89,6 @@ readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListH
                 if ($file === null) {
                     $incomingFieldArray = null;
                     $this->logError($table, $logId, 'Attempt to reference invalid file is disallowed', $dataHandler);
-                } elseif ($this->usesLegacyStorage($file)) {
-                    $incomingFieldArray = null;
-                    $this->logError($table, $logId, sprintf('Attempt to reference file "%d" in legacy storage is disallowed', $file->getUid()), $dataHandler);
                 } elseif (!$isInternalProcess && $this->usesDisallowedFileMount($file, 'read', $dataHandler->BE_USER)) {
                     $incomingFieldArray = null;
                     $this->logError($table, $logId, sprintf('Attempt to reference file "%d" without permission is disallowed', $file->getUid()), $dataHandler);
@@ -102,10 +96,7 @@ readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListH
             }
         } elseif ($table === 'sys_file_metadata') {
             $file = $this->resolveReferencedFile($incomingFieldArray, 'file');
-            if ($file !== null && $this->usesLegacyStorage($file)) {
-                $incomingFieldArray = null;
-                $this->logError($table, $logId, sprintf('Attempt to alter metadata of file "%d" in legacy storage is disallowed', $file->getUid()), $dataHandler);
-            } elseif (!$isInternalProcess && $file !== null && $this->usesDisallowedFileMount($file, 'editMeta', $dataHandler->BE_USER)) {
+            if (!$isInternalProcess && $file !== null && $this->usesDisallowedFileMount($file, 'editMeta', $dataHandler->BE_USER)) {
                 $incomingFieldArray = null;
                 $this->logError($table, $logId, sprintf('Attempt to alter metadata of file "%d" without permission is disallowed', $file->getUid()), $dataHandler);
             }
@@ -124,11 +115,6 @@ readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListH
             null,
             [$table]
         );
-    }
-
-    protected function usesLegacyStorage(File $file): bool
-    {
-        return $file->getStorage()->getUid() === 0;
     }
 
     /**

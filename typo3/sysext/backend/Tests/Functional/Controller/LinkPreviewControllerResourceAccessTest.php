@@ -26,7 +26,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Covers the resource related access checks of the "link_preview" AJAX route:
- * the file mount / file permission evaluation and the fallback storage guard.
+ * the file mount / file permission evaluation, and references to the removed
+ * fallback storage (uid 0).
  */
 final class LinkPreviewControllerResourceAccessTest extends FunctionalTestCase
 {
@@ -78,18 +79,16 @@ final class LinkPreviewControllerResourceAccessTest extends FunctionalTestCase
     }
 
     /**
-     * The fallback storage (uid 0) is rooted at the public path and is exempt from
-     * permission evaluation, so an admin passes every FAL check here. Only the
-     * explicit isFallbackStorage() guard keeps the file out of the response.
+     * The fallback storage (uid 0) was rooted at the public path and exempt from
+     * permission evaluation. A file record still pointing to it can not be resolved.
      */
     #[Test]
-    public function fileInFallbackStorageIsNotDisclosedToAdmin(): void
+    public function fileOfRemovedFallbackStorageIsNotDisclosedToAdmin(): void
     {
         $this->setUpBackendRequestAndUser(1);
 
         $result = $this->resolve('t3://file?uid=3');
 
-        self::assertSame('file', $result['type']);
         self::assertNull($result['title']);
         self::assertNull($result['path']);
         self::assertNull($result['url']);
@@ -120,13 +119,12 @@ final class LinkPreviewControllerResourceAccessTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function folderInFallbackStorageIsNotDisclosedToAdmin(): void
+    public function folderOfRemovedFallbackStorageIsNotDisclosedToAdmin(): void
     {
         $this->setUpBackendRequestAndUser(1);
 
         $result = $this->resolve('t3://folder?storage=0&identifier=/typo3conf/');
 
-        self::assertSame('folder', $result['type']);
         self::assertNull($result['title']);
         self::assertNull($result['path']);
     }

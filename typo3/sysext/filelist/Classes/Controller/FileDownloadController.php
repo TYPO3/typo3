@@ -136,10 +136,6 @@ class FileDownloadController
             if ($fileOrFolderObject === null) {
                 continue;
             }
-            // Files from fallback storage must be skipped in general
-            if ($fileOrFolderObject->getStorage()->isFallbackStorage()) {
-                continue;
-            }
             $baseIdentifier = dirname($fileOrFolderObject->getIdentifier());
             if ($fileOrFolderObject instanceof Folder) {
                 // handle file / folder structure

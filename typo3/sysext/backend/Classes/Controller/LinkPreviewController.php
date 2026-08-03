@@ -121,7 +121,7 @@ final readonly class LinkPreviewController
     private function resolveFile(array $linkDetails, array $result): array
     {
         $file = $linkDetails['file'] ?? null;
-        if (!$file instanceof File || !$file->checkActionPermission('read') || $file->getStorage()->isFallbackStorage()) {
+        if (!$file instanceof File || !$file->checkActionPermission('read')) {
             return $result;
         }
         $result['title'] = $file->getName();
@@ -134,7 +134,7 @@ final readonly class LinkPreviewController
     private function resolveFolder(array $linkDetails, array $result): array
     {
         $folder = $linkDetails['folder'] ?? null;
-        if (!$folder instanceof Folder || !$folder->checkActionPermission('read') || $folder->getStorage()->isFallbackStorage()) {
+        if (!$folder instanceof Folder || !$folder->checkActionPermission('read')) {
             return $result;
         }
         $result['title'] = $folder->getName();

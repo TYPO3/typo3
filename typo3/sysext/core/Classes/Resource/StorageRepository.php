@@ -106,8 +106,8 @@ class StorageRepository
     public function findByUid(int $uid): ?ResourceStorage
     {
         $this->initializeLocalCache();
-        if (isset($this->storageRowCache[$uid]) || $uid === 0) {
-            return $this->getStorageObject($uid, $this->storageRowCache[$uid] ?? []);
+        if (isset($this->storageRowCache[$uid])) {
+            return $this->getStorageObject($uid, $this->storageRowCache[$uid]);
         }
         return null;
     }
@@ -334,42 +334,27 @@ class StorageRepository
      * Creates an instance of the storage from given UID. The $recordData can
      * be supplied to increase performance.
      *
-     * @param int<0, max>|string $uid The uid of the storage to instantiate.
+     * @param int|string $uid The uid of the storage to instantiate, must be a positive integer.
      * @param array<string, mixed> $recordData The normalized storage definition from the configuration.
-     * @param non-empty-string|null $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
+     * @param non-empty-string|null $fileIdentifier Identifier for a file, listeners of BeforeResourceStorageInitializationEvent may use it to determine the storage
      * @param-out string $fileIdentifier
+     * @throws \InvalidArgumentException if the storage uid is not a positive integer
      */
     public function getStorageObject(int|string $uid, array $recordData = [], ?string &$fileIdentifier = null): ResourceStorage
     {
         $uid = (int)$uid;
-        if ($uid === 0 && $fileIdentifier !== null) {
-            $uid = $this->findBestMatchingStorageByLocalPath($fileIdentifier);
-        }
         if (!isset($this->storageInstances[$uid])) {
             $event = $this->eventDispatcher->dispatch(new BeforeResourceStorageInitializationEvent($uid, $recordData, $fileIdentifier));
             $recordData = $this->migrateLegacyRecordKeys($event->getRecord());
             $uid = $event->getStorageUid();
             $fileIdentifier = $event->getFileIdentifier();
-            // If the built-in storage with UID=0 is requested:
-            if ($uid === 0) {
-                $recordData = [
-                    'identifier' => 0,
-                    'name' => 'Fallback Storage',
-                    'driver' => 'Local',
-                    'default' => false,
-                    'browsable' => true,
-                    'public' => true,
-                    'writable' => true,
-                    'online' => true,
-                    'autoExtractMetadata' => false,
-                    'processingFolder' => 'typo3temp/assets/_processed_/',
-                    'configuration' => [
-                        'basePath' => Environment::getPublicPath(),
-                        // Identifiers of this storage were never case-folded, independent of the file system
-                        'caseSensitive' => true,
-                    ],
-                ];
-            } elseif ($recordData === [] || (int)($recordData['identifier'] ?? -1) !== $uid) {
+            if ($uid <= 0) {
+                throw new \InvalidArgumentException(
+                    'The fallback storage (uid 0) is not available anymore. Files must be part of a configured file storage.',
+                    1785715203
+                );
+            }
+            if ($recordData === [] || (int)($recordData['identifier'] ?? -1) !== $uid) {
                 $recordData = $this->fetchRecordDataByUid($uid);
             }
             $storageObject = $this->createStorageObject($recordData);
@@ -383,10 +368,10 @@ class StorageRepository
 
     /**
      * Checks whether a file resides within a real storage in local file system.
-     * If no match is found, uid 0 is returned which is a fallback storage pointing to fileadmin in public web path.
+     * If no match is found, 0 is returned, meaning the path is not part of any storage.
      *
      * The file identifier is adapted accordingly to match the new storage's base path.
-     * @internal absolutely do not call this method publicly, not even in TYPO3 core. It must only be used for legacy resource resolving
+     * @internal Only to be used by the File Abstraction Layer to resolve paths without a storage prefix.
      * @param non-empty-string $localPath
      * @param-out string $localPath
      * @return int<0, max>
@@ -438,10 +423,7 @@ class StorageRepository
      */
     protected function initializeLocalStorageCache(): void
     {
-        $this->localDriverStorageCache = [
-            // implicit legacy storage in project's public path
-            0 => new LocalPath(Environment::getPublicPath(), LocalPath::TYPE_ABSOLUTE),
-        ];
+        $this->localDriverStorageCache = [];
         $storageObjects = $this->findByStorageType('Local');
         foreach ($storageObjects as $localStorage) {
             $localPath = LocalPath::fromDriverConfiguration($localStorage->getConfiguration());
