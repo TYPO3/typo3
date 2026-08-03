@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Extbase\Service\ImageService;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
@@ -42,7 +42,7 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
     protected $tagName = 'img';
 
     public function __construct(
-        private readonly ImageService $imageService
+        private readonly ResourceFactory $resourceFactory
     ) {
         parent::__construct();
     }
@@ -72,7 +72,7 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
         }
 
         try {
-            $image = $this->imageService->getImage((string)$this->arguments['src'], $this->arguments['image'], (bool)$this->arguments['treatIdAsReference']);
+            $image = $this->resourceFactory->resolveFileObject($this->arguments['image'] ?? (string)$this->arguments['src'], (bool)$this->arguments['treatIdAsReference']);
 
             $cropString = $this->arguments['crop'];
             if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {

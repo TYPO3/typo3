@@ -21,7 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -36,7 +35,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     #[Test]
     public function processingIsDelegatedToTheGivenFileReference(): void
     {
-        $subject = new ImageService(self::createStub(ResourceFactory::class), self::createStub(LinkService::class));
+        $subject = new ImageService(self::createStub(ResourceFactory::class));
         $reference = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
         $processedFile = $this->createMock(ProcessedFile::class);
         $reference->expects($this->once())->method('process')->willReturn($processedFile);
@@ -57,7 +56,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     #[Test]
     public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected): void
     {
-        $subject = new ImageService(self::createStub(ResourceFactory::class), self::createStub(LinkService::class));
+        $subject = new ImageService(self::createStub(ResourceFactory::class));
         $file = $this->createMock(File::class);
         $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
@@ -77,7 +76,7 @@ final class ImageScriptServiceTest extends UnitTestCase
     #[Test]
     public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected): void
     {
-        $subject = new ImageService(self::createStub(ResourceFactory::class), self::createStub(LinkService::class));
+        $subject = new ImageService(self::createStub(ResourceFactory::class));
         $normalizedParams = NormalizedParams::createFromServerParams(['HTTP_HOST' => 'foo.bar', 'SCRIPT_NAME' => '/index.php']);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('normalizedParams', $normalizedParams);
 

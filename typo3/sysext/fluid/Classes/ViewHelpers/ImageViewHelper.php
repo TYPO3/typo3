@@ -24,8 +24,8 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -57,7 +57,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
     protected $tagName = 'img';
 
     public function __construct(
-        private readonly ImageService $imageService
+        private readonly ResourceFactory $resourceFactory
     ) {
         parent::__construct();
     }
@@ -105,7 +105,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
         }
 
         try {
-            $image = $this->imageService->getImage($src, $this->arguments['image'], (bool)$this->arguments['treatIdAsReference']);
+            $image = $this->resourceFactory->resolveFileObject($this->arguments['image'] ?? $src, (bool)$this->arguments['treatIdAsReference']);
             if ($this->isUnavailable($image)) {
                 return '';
             }

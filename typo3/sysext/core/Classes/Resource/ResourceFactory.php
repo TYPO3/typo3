@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Collection\FileCollectionRegistry;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -51,6 +52,7 @@ readonly class ResourceFactory implements SingletonInterface
         #[Autowire(service: 'cache.runtime')]
         protected FrontendInterface $runtimeCache,
         private FileIndexRepository $fileIndexRepository,
+        private LinkService $linkService,
     ) {}
 
     /**
@@ -152,6 +154,79 @@ readonly class ResourceFactory implements SingletonInterface
         }
         return $this->storageRepository->getStorageObject($storageUid, [], $fileIdentifier)
             ->getFileByIdentifier($fileIdentifier);
+    }
+
+    /**
+     * Resolves a loosely typed file source - as it is typically supplied by a template or by user
+     * input - to a File or FileReference.
+     *
+     * In contrast to retrieveFileOrFolderObject() this never returns a folder, and it throws
+     * instead of returning null if the source cannot be resolved.
+     *
+     * $source may be
+     * - a File or FileReference, which is passed through unchanged
+     * - a domain object exposing the resource via getOriginalResource(), e.g. an Extbase FileReference
+     * - a sys_file UID, or a sys_file_reference UID if $treatIdAsReference is set
+     * - a combined identifier, an "EXT:" path or a legacy storage-0 path
+     * - a "t3://file" URN
+     *
+     * @throws \UnexpectedValueException if the source cannot be resolved to a File or FileReference
+     */
+    public function resolveFileObject(string|int|object|null $source, bool $treatIdAsReference = false): File|FileReference
+    {
+        if ($source instanceof File || $source instanceof FileReference) {
+            return $source;
+        }
+        if (is_object($source)) {
+            if (!is_callable([$source, 'getOriginalResource'])) {
+                throw new \UnexpectedValueException(
+                    'Supplied file must be File or FileReference, ' . get_debug_type($source) . ' given.',
+                    1625585157
+                );
+            }
+            // A domain object, so the FAL resource object needs to be fetched from it
+            $originalResource = $source->getOriginalResource();
+            if (!($originalResource instanceof File || $originalResource instanceof FileReference)) {
+                throw new \UnexpectedValueException(
+                    'No original resource could be resolved for supplied file ' . get_class($source),
+                    1625838481
+                );
+            }
+            return $originalResource;
+        }
+
+        $source = (string)$source;
+        $resolvedFile = $this->resolveFileObjectFromString($source, $treatIdAsReference);
+        if ($resolvedFile instanceof File || $resolvedFile instanceof FileReference) {
+            return $resolvedFile;
+        }
+        if ($resolvedFile === null) {
+            throw new \UnexpectedValueException(
+                'Supplied ' . $source . ' could not be resolved to a File or FileReference.',
+                1625585158
+            );
+        }
+        // A FileInterface was found, however only File and FileReference are valid
+        throw new \UnexpectedValueException(
+            'Resolved file object type ' . get_class($resolvedFile) . ' for ' . $source . ' must be File or FileReference.',
+            1382687163
+        );
+    }
+
+    private function resolveFileObjectFromString(string $source, bool $treatIdAsReference): ?FileInterface
+    {
+        if (str_starts_with($source, 't3://file')) {
+            // A t3://file URN is link syntax, so it is resolved by the LinkService
+            $file = $this->linkService->resolveByStringRepresentation($source)['file'] ?? null;
+            return $file instanceof FileInterface ? $file : null;
+        }
+        if (MathUtility::canBeInterpretedAsInteger($source)) {
+            return $treatIdAsReference
+                ? $this->getFileReferenceObject($source)
+                : $this->getFileObject($source);
+        }
+        $resource = $this->retrieveFileOrFolderObject($source);
+        return $resource instanceof FileInterface ? $resource : null;
     }
 
     /**

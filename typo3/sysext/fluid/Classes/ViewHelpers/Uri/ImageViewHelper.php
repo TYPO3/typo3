@@ -22,8 +22,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -62,7 +62,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
 final class ImageViewHelper extends AbstractViewHelper
 {
     public function __construct(
-        private readonly ImageService $imageService
+        private readonly ResourceFactory $resourceFactory
     ) {}
 
     public function initializeArguments(): void
@@ -108,7 +108,7 @@ final class ImageViewHelper extends AbstractViewHelper
             );
         }
         try {
-            $image = $this->imageService->getImage($src, $image, $treatIdAsReference);
+            $image = $this->resourceFactory->resolveFileObject($image ?? $src, $treatIdAsReference);
 
             if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
                 $cropString = $image->getProperty('crop');

@@ -17,17 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Service;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Service for processing images
@@ -37,7 +33,6 @@ readonly class ImageService
 {
     public function __construct(
         protected ResourceFactory $resourceFactory,
-        protected LinkService $linkService,
     ) {}
 
     /**
@@ -67,10 +62,6 @@ readonly class ImageService
     /**
      * Get File or FileReference object
      *
-     * This method is a factory and compatibility method that does not belong to
-     * this service, but is put here for pragmatic reasons for the time being.
-     * It should be removed once we do not support string sources for images anymore.
-     *
      * @param string $src
      * @param FileInterface|\TYPO3\CMS\Extbase\Domain\Model\FileReference|null $image
      * @param bool $treatIdAsReference
@@ -79,74 +70,6 @@ readonly class ImageService
      */
     public function getImage(string $src, $image, bool $treatIdAsReference): File|FileReference
     {
-        if ($image instanceof File || $image instanceof FileReference) {
-            // We already received a valid file and therefore just return it
-            return $image;
-        }
-
-        if (is_callable([$image, 'getOriginalResource'])) {
-            // We have a domain model, so we need to fetch the FAL resource object from there
-            $originalResource = $image->getOriginalResource();
-            if (!($originalResource instanceof File || $originalResource instanceof FileReference)) {
-                throw new \UnexpectedValueException('No original resource could be resolved for supplied file ' . get_class($image), 1625838481);
-            }
-            return $originalResource;
-        }
-
-        if ($image !== null) {
-            // Some value is given for $image, but it's not a valid type
-            throw new \UnexpectedValueException(
-                'Supplied file must be File or FileReference, ' . get_debug_type($image) . ' given.',
-                1625585157
-            );
-        }
-
-        // Since image is not given, try to resolve an image from the source string
-        $resolvedImage = $this->getImageFromSourceString($src, $treatIdAsReference);
-
-        if ($resolvedImage instanceof File || $resolvedImage instanceof FileReference) {
-            return $resolvedImage;
-        }
-
-        if ($resolvedImage === null) {
-            // No image could be resolved using the given source string
-            throw new \UnexpectedValueException('Supplied ' . $src . ' could not be resolved to a File or FileReference.', 1625585158);
-        }
-
-        // A FileInterface was found, however only File and FileReference are valid
-        throw new \UnexpectedValueException(
-            'Resolved file object type ' . get_class($resolvedImage) . ' for ' . $src . ' must be File or FileReference.',
-            1382687163
-        );
-    }
-
-    /**
-     * Get File or FileReference object by src
-     */
-    protected function getImageFromSourceString(string $src, bool $treatIdAsReference): ?FileInterface
-    {
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-            && str_starts_with($src, '../')
-        ) {
-            $src = substr($src, 3);
-        }
-        if (MathUtility::canBeInterpretedAsInteger($src)) {
-            if ($treatIdAsReference) {
-                $image = $this->resourceFactory->getFileReferenceObject((int)$src);
-            } else {
-                $image = $this->resourceFactory->getFileObject($src);
-            }
-        } elseif (str_starts_with($src, 't3://file')) {
-            // We have a t3://file link to a file in FAL
-            $data = $this->linkService->resolveByStringRepresentation($src);
-            $image = $data['file'];
-        } else {
-            // We have a combined identifier or legacy (storage 0) path
-            $image = $this->resourceFactory->retrieveFileOrFolderObject($src);
-        }
-
-        // Check the resolved image as this could also be a FolderInterface
-        return $image instanceof FileInterface ? $image : null;
+        return $this->resourceFactory->resolveFileObject($image ?? $src, $treatIdAsReference);
     }
 }
