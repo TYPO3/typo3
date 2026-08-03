@@ -191,12 +191,15 @@ class DataHandler
      * When new elements are created, this array contains a map between their "NEW..." string IDs
      * and the final uid they got when stored in database. This public array is rather important
      * since it is used by many DH consumers to further work with records after creation.
+     *
+     * @var array<string, int>
      */
     public array $substNEWwithIDs = [];
 
     /**
      * Like $substNEWwithIDs, but where each old "NEW..." id is mapped to the table it was from.
      *
+     * @var array<string, string>
      * @internal should only be used from within TYPO3 Core
      */
     public array $substNEWwithIDs_table = [];
