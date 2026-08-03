@@ -236,6 +236,9 @@ class ProcessedFile extends AbstractFile
         // @todo this is a *weird* hack that will fail if the storage is non-hierarchical!
         $this->identifier = $this->storage->getProcessingFolder($this->originalFile)->getIdentifier() . $this->name;
 
+        // The object now points to a new target file about to be (re-)created, so a
+        // previous removal of an outdated file must not mark the object as deleted anymore
+        $this->deleted = false;
         $this->updated = true;
     }
 
@@ -383,6 +386,9 @@ class ProcessedFile extends AbstractFile
         // @todo check if some of these properties can/should be set in a generic update method
         $this->identifier = $this->originalFile->getIdentifier();
         $this->updated = true;
+        // The object now delegates to the (existing) original file, so a previous
+        // removal of an outdated file must not mark the object as deleted anymore
+        $this->deleted = false;
         $this->processingUrl = '';
         $this->originalFileSha1 = $this->originalFile->getSha1();
     }
