@@ -24,7 +24,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\Event\ResolveVirtualJavaScriptImportEvent;
 
 /**

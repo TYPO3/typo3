@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema;
 
-use TYPO3\CMS\Core\Schema\Field\FieldCollection;
-
 /**
  * A generic interface for any kind of schema
  * @internal this will be made public once FormEngine is using Schema API.

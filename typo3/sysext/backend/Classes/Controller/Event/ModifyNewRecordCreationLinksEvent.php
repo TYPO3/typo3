@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Controller\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Imaging\Icon;
 
 /**
  * Event to modify the grouped links as result of NewRecordController

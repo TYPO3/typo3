@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\TranslationDomainMapper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class LanguageServiceTest extends FunctionalTestCase
