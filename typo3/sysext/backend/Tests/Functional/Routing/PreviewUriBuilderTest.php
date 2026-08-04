@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -171,5 +172,81 @@ final class PreviewUriBuilderTest extends FunctionalTestCase
         $pageRecord = ['uid' => 8, 'doktype' => 4];
         $subject = PreviewUriBuilder::create($pageRecord);
         self::assertTrue($subject->isPreviewable());
+    }
+
+    public static function simulatedTimeIsRoundedUpToFullMinutesDataProvider(): array
+    {
+        return [
+            'starttime with seconds within the current minute simulates the next full minute' => [
+                mktime(9, 13, 45, 8, 4, 2026),
+                mktime(9, 13, 21, 8, 4, 2026),
+                mktime(9, 14, 0, 8, 4, 2026),
+            ],
+            'starttime with seconds in the future simulates the next full minute' => [
+                mktime(9, 12, 0, 8, 4, 2026),
+                mktime(9, 13, 21, 8, 4, 2026),
+                mktime(9, 14, 0, 8, 4, 2026),
+            ],
+            'starttime on a full minute in the future is simulated unchanged' => [
+                mktime(9, 13, 45, 8, 4, 2026),
+                mktime(9, 14, 0, 8, 4, 2026),
+                mktime(9, 14, 0, 8, 4, 2026),
+            ],
+            'starttime on a full minute in the past is not simulated' => [
+                mktime(9, 13, 45, 8, 4, 2026),
+                mktime(9, 13, 0, 8, 4, 2026),
+                null,
+            ],
+            'starttime with seconds covered by the current access time is not simulated' => [
+                mktime(9, 14, 10, 8, 4, 2026),
+                mktime(9, 13, 21, 8, 4, 2026),
+                null,
+            ],
+            'unset starttime is not simulated' => [
+                mktime(9, 13, 45, 8, 4, 2026),
+                0,
+                null,
+            ],
+        ];
+    }
+
+    #[DataProvider('simulatedTimeIsRoundedUpToFullMinutesDataProvider')]
+    #[Test]
+    public function simulatedTimeIsRoundedUpToFullMinutes(int $currentTime, int $startTime, ?int $expectedSimulatedTime): void
+    {
+        $GLOBALS['EXEC_TIME'] = $currentTime;
+        $pageInfo = ['uid' => 1, 'starttime' => $startTime, 'endtime' => 0];
+
+        $parameters = PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages($pageInfo, new Context(), [$pageInfo]);
+
+        self::assertSame($expectedSimulatedTime, $parameters['ADMCMD_simTime'] ?? null);
+    }
+
+    #[Test]
+    public function simulatedTimeIsAppliedToDateAspectWithinPageRepositoryPrecision(): void
+    {
+        $GLOBALS['EXEC_TIME'] = mktime(9, 13, 45, 8, 4, 2026);
+        $startTime = mktime(9, 13, 21, 8, 4, 2026);
+        $context = new Context();
+        $pageInfo = ['uid' => 1, 'starttime' => $startTime, 'endtime' => 0];
+
+        PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages($pageInfo, $context, [$pageInfo]);
+
+        // PageRepository builds its 'starttime' constraint from this very property, which is floored to 60 seconds
+        self::assertGreaterThanOrEqual($startTime, $context->getPropertyFromAspect('date', 'accessTime'));
+    }
+
+    #[Test]
+    public function simulatedTimeForEndTimeStaysOneSecondBeforeExpiration(): void
+    {
+        $GLOBALS['EXEC_TIME'] = mktime(9, 13, 45, 8, 4, 2026);
+        $endTime = mktime(9, 12, 30, 8, 4, 2026);
+        $context = new Context();
+        $pageInfo = ['uid' => 1, 'starttime' => 0, 'endtime' => $endTime];
+
+        $parameters = PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages($pageInfo, $context, [$pageInfo]);
+
+        self::assertSame($endTime - 1, $parameters['ADMCMD_simTime']);
+        self::assertLessThan($endTime, $context->getPropertyFromAspect('date', 'accessTime'));
     }
 }
