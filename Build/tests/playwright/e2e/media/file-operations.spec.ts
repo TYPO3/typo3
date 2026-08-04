@@ -103,7 +103,12 @@ test.describe('File Operations', () => {
     // verifies that the upload flow works, not the file's content, so create
     // an empty placeholder rather than shipping a fixture binary.
     const randomUploadFileName = 'blue_mountains' + Date.now() + '.jpg';
-    const randomUploadFile = path.join(__dirname, '../../../../../typo3temp/var/tests/playwright-composer/public/fileadmin/_temp_', randomUploadFileName);
+    // The instance differs per installation mode - a composer instance keeps fileadmin
+    // below public/, a classic instance is its own document root - so runTests.sh passes
+    // the document root in rather than the spec assuming one.
+    const documentRoot = process.env.PLAYWRIGHT_DOCUMENT_ROOT
+      || path.join(__dirname, '../../../../../typo3temp/var/tests/playwright-composer/public');
+    const randomUploadFile = path.join(documentRoot, 'fileadmin/_temp_', randomUploadFileName);
     fs.writeFileSync(randomUploadFile, '');
 
     const alertContainer = '#alert-container';

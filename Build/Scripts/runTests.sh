@@ -225,9 +225,24 @@ runPlaywright() {
     PREPAREPARAMS="-e TYPO3_DB_DRIVER=sqlite"
     TESTPARAMS="-e typo3DatabaseDriver=pdo_sqlite"
 
+    # The e2e specs are the same in both installation modes; only the instance they run
+    # against differs. A composer instance keeps everything web accessible below public/,
+    # a classic instance is its own document root.
+    if [ "${INSTANCE_MODE}" = "classic" ]; then
+        PLAYWRIGHT_INSTANCE="typo3temp/var/tests/playwright-classic"
+        PLAYWRIGHT_DOCROOT="${CORE_ROOT}/${PLAYWRIGHT_INSTANCE}"
+        PLAYWRIGHT_SETUP="${CORE_ROOT}/Build/Scripts/setupAcceptanceClassic.sh"
+        PLAYWRIGHT_HELPER_SECRET_FILE="${PLAYWRIGHT_DOCROOT}/typo3temp/var/transient/playwright-helper.secret"
+    else
+        PLAYWRIGHT_INSTANCE="typo3temp/var/tests/playwright-composer"
+        PLAYWRIGHT_DOCROOT="${CORE_ROOT}/${PLAYWRIGHT_INSTANCE}/public"
+        PLAYWRIGHT_SETUP="${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh"
+        PLAYWRIGHT_HELPER_SECRET_FILE="${CORE_ROOT}/${PLAYWRIGHT_INSTANCE}/var/transient/playwright-helper.secret"
+    fi
+
     if [ "${PLAYWRIGHT_USE_EXISTING_INSTANCE}x" = "x" ]; then
-        rm -rf "${CORE_ROOT}/typo3temp/var/tests/playwright-composer" "${CORE_ROOT}/typo3temp/var/tests/playwright-reports" "${CORE_ROOT}/typo3temp/var/tests/playwright-results"
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${CORE_ROOT}/Build/Scripts/setupAcceptanceComposer.sh" "typo3temp/var/tests/playwright-composer"
+        rm -rf "${CORE_ROOT}/${PLAYWRIGHT_INSTANCE}" "${CORE_ROOT}/typo3temp/var/tests/playwright-reports" "${CORE_ROOT}/typo3temp/var/tests/playwright-results"
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-prepare ${XDEBUG_MODE} -e COMPOSER_CACHE_DIR=${CORE_ROOT}/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} -e XDEBUG_CONFIG="${XDEBUG_CONFIG}" ${PREPAREPARAMS} ${IMAGE_PHP} "${PLAYWRIGHT_SETUP}" "${PLAYWRIGHT_INSTANCE}"
         if [[ $? -gt 0 ]]; then
             kill -SIGINT -$$
         fi
@@ -241,7 +256,7 @@ runPlaywright() {
             kill -SIGINT -$$
         fi
 
-    APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${CORE_ROOT}/typo3temp/var/tests/playwright-composer/public -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
+    APACHE_OPTIONS="-e APACHE_RUN_USER=#${HOST_UID} -e APACHE_RUN_SERVERNAME=web -e APACHE_RUN_GROUP=#${HOST_PID} -e APACHE_RUN_DOCROOT=${PLAYWRIGHT_DOCROOT} -e PHPFPM_HOST=phpfpm -e PHPFPM_PORT=9000"
     if [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 1 || ${PLAYWRIGHT_BROWSER} -eq 1 ]]; then
         APACHE_OPTIONS="${APACHE_OPTIONS} -p 127.0.0.1::80"
     fi
@@ -295,7 +310,7 @@ runPlaywright() {
         fi
         done </dev/tty
     elif [[ ${PLAYWRIGHT_PREPARE_ONLY} -eq 0 ]]; then
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 -e PLAYWRIGHT_HELPER_SECRET_FILE=${PLAYWRIGHT_HELPER_SECRET_FILE} -e PLAYWRIGHT_DOCUMENT_ROOT=${PLAYWRIGHT_DOCROOT} ${IMAGE_PLAYWRIGHT} ${COMMAND}
         SUITE_EXIT_CODE=$?
         if [[ ${SUITE_EXIT_CODE} -ne 0 ]]; then
             dumpWebContainerLogs "${CORE_ROOT}/typo3temp/var/tests/playwright-composer/var/log"
@@ -317,7 +332,7 @@ runPlaywright() {
         echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to run tests in container)"
         # maybe use https://stackoverflow.com/a/58508884/4223467
         while read -r _; do
-            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 ${IMAGE_PLAYWRIGHT} ${COMMAND}
+            ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name playwright-${SUFFIX} -e CHROME_SANDBOX=false -e CI=1 -e PLAYWRIGHT_HELPER_SECRET_FILE=${PLAYWRIGHT_HELPER_SECRET_FILE} -e PLAYWRIGHT_DOCUMENT_ROOT=${PLAYWRIGHT_DOCROOT} ${IMAGE_PLAYWRIGHT} ${COMMAND}
             SUITE_EXIT_CODE=$?
             echo
             echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to re-run tests in container)"
@@ -745,6 +760,13 @@ Options:
             - 17    maintained until 2029-11-08
             - 18    maintained until 2030-11-14
 
+    -M <classic|composer>
+        Only with -s e2e|e2e-prepare|e2e-browser
+        Installation mode the test instance is provisioned in. TYPO3 supports both,
+        and both need coverage, so the suite can be run either way:
+            - classic: typo3conf/ and typo3temp/var/, the instance is its own document root
+            - composer: config/ and var/ beside a public/ document root
+        Unset, the playwright instance stays a composer installation, as before.
     -c <chunk/numberOfChunks>
         Only with -s functional|e2e
         Hack functional tests into #numberOfChunks pieces and run tests of #chunk.
@@ -849,6 +871,8 @@ CGLCHECK_DRY_RUN=""
 DATABASE_DRIVER=""
 CHUNKS=0
 THISCHUNK=0
+# Empty means "whatever this suite does today"; resolved per suite below.
+INSTANCE_MODE=""
 CONTAINER_BIN=""
 COMPOSER_ROOT_VERSION="15.0.x-dev"
 PHPSTAN_CONFIG_FILE="phpstan.local.neon"
@@ -873,7 +897,7 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=()
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":a:b:s:c:d:i:p:xy:nhu" OPT; do
+while getopts ":a:b:s:c:d:i:p:M:xy:nhu" OPT; do
     case ${OPT} in
         s)
             TEST_SUITE=${OPTARG}
@@ -886,6 +910,12 @@ while getopts ":a:b:s:c:d:i:p:xy:nhu" OPT; do
             ;;
         a)
             DATABASE_DRIVER=${OPTARG}
+            ;;
+        M)
+            INSTANCE_MODE=${OPTARG}
+            if ! [[ ${INSTANCE_MODE} =~ ^(classic|composer)$ ]]; then
+                INVALID_OPTIONS+=("Invalid -M option ${OPTARG}, must be 'classic' or 'composer'")
+            fi
             ;;
         c)
             if ! [[ ${OPTARG} =~ ^([0-9]+\/[0-9]+)$ ]]; then
@@ -1043,6 +1073,21 @@ else
     XDEBUG_MODE="-e XDEBUG_MODE=debug -e XDEBUG_TRIGGER=foo"
     XDEBUG_CONFIG="client_port=${PHP_XDEBUG_PORT} client_host=${CONTAINER_HOST}"
     PHP_FPM_OPTIONS="-d xdebug.mode=debug -d xdebug.start_with_request=yes -d xdebug.client_host=${CONTAINER_HOST} -d xdebug.client_port=${PHP_XDEBUG_PORT} -d memory_limit=256M"
+fi
+
+# Both installation modes are supported, and -M selects between them. Left unset it
+# resolves to whatever the suite has always done, so no existing invocation changes
+# meaning: functional tests have always provisioned classic instances, the playwright
+# instance has always been a composer installation.
+if [ -z "${INSTANCE_MODE}" ]; then
+    case ${TEST_SUITE} in
+        e2e|e2e-browser|e2e-prepare)
+            INSTANCE_MODE="composer"
+            ;;
+        *)
+            INSTANCE_MODE="classic"
+            ;;
+    esac
 fi
 
 # Suite execution

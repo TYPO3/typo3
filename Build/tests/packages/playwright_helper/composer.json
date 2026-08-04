@@ -3,13 +3,17 @@
 	"type": "typo3-cms-extension",
 	"description": "Support extension providing HTTP endpoints for Playwright e2e tests",
 	"license": "GPL-2.0-or-later",
+	"version": "1.0.0",
 	"require": {
 		"typo3/cms-core": "15.0.*@dev",
 		"typo3/cms-install": "15.0.*@dev"
 	},
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "playwright_helper"
+			"extension-key": "playwright_helper",
+			"Package": {
+				"providesPackages": []
+			}
 		}
 	},
 	"autoload": {

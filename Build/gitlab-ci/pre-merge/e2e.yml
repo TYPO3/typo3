@@ -15,4 +15,23 @@ e2e playwright composer sqlite 8.5 pre-merge:
       - typo3temp/var/tests/playwright-results
   parallel: 4
   script:
-    - Build/Scripts/runTests.sh -s e2e -p 8.5 -d sqlite -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s e2e -M composer -p 8.5 -d sqlite -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+
+e2e playwright classic sqlite 8.5 pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - main
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/playwright-classic/typo3temp/var/log
+      - typo3temp/var/tests/playwright-reports
+  parallel: 4
+  script:
+  - Build/Scripts/runTests.sh -s composerInstall -p 8.5
+  - Build/Scripts/runTests.sh -s e2e -M classic -p 8.5 -d sqlite -c $CI_NODE_INDEX/$CI_NODE_TOTAL
