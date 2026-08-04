@@ -108,7 +108,6 @@ readonly class AuthenticationService
         if (!$warningEmailAddress) {
             return;
         }
-        $formValues = $request->getParsedBody()['install'] ?? $request->getQueryParams()['install'] ?? null;
         $email = $this->emailFactory->createWithOverrides(
             [20 => 'EXT:install/Resources/Private/Templates/Email/'],
             [],
