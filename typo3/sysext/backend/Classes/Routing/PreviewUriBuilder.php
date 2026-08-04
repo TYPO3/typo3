@@ -558,12 +558,19 @@ class PreviewUriBuilder
         } elseif (!empty($access['fe_group'])) {
             $additionalQueryParameters['ADMCMD_simUser'] = $access['fe_group'];
         }
-        if ($access['starttime'] > $GLOBALS['EXEC_TIME']) {
+        // PageRepository evaluates 'starttime' against the 'accessTime' of the date aspect, which has a
+        // precision of 60 seconds. A 'starttime' carrying seconds is therefore never reached by a simulated
+        // access time of that very value, so round up to the first full minute the record is live at.
+        $startTime = $access['starttime'];
+        if ($startTime % 60 !== 0) {
+            $startTime = intdiv($startTime, 60) * 60 + 60;
+        }
+        if ($startTime > $GLOBALS['EXEC_TIME']) {
             // simulate access time to ensure PageRepository will find the page and in turn PageRouter will generate
             // a URL for it
-            $dateAspect = new DateTimeAspect(DateTimeFactory::createFromTimestamp($access['starttime']));
+            $dateAspect = new DateTimeAspect(DateTimeFactory::createFromTimestamp($startTime));
             $context->setAspect('date', $dateAspect);
-            $additionalQueryParameters['ADMCMD_simTime'] = $access['starttime'];
+            $additionalQueryParameters['ADMCMD_simTime'] = $startTime;
         }
         if ($access['endtime'] < $GLOBALS['EXEC_TIME'] && $access['endtime'] !== 0) {
             // Set access time to page's endtime subtracted one second to ensure PageRepository will find the page and
