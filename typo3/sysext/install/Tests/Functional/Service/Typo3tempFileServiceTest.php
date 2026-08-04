@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,7 +36,7 @@ final class Typo3tempFileServiceTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->directoryName = StringUtility::getUniqueId('test');
-        $this->directoryPath = $this->instancePath . '/typo3temp/assets/' . $this->directoryName;
+        $this->directoryPath = Environment::getPublicPath() . '/typo3temp/assets/' . $this->directoryName;
     }
 
     protected function tearDown(): void

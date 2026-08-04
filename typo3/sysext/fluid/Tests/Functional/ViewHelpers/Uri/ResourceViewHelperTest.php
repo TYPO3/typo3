@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -32,7 +33,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 final class ResourceViewHelperTest extends FunctionalTestCase
 {
-    private const string pathToCoreIcon = __DIR__ . '/../../../../../core/Resources/Public/Icons/Extension.svg';
     protected bool $initializeDatabase = false;
 
     #[Test]
@@ -58,26 +58,25 @@ final class ResourceViewHelperTest extends FunctionalTestCase
 
     public static function renderWithExtbaseRequestDataProvider(): \Generator
     {
-        $iconFileMtime = filemtime(self::pathToCoreIcon);
         yield 'render returns URI using extensionName from Extbase Request' => [
             '<f:uri.resource path="Icons/Extension.svg" />',
-            '/typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime,
+            '{{EXT:core/Resources/Public/Icons/Extension.svg}}',
         ];
         yield 'render gracefully trims leading slashes from path' => [
             '<f:uri.resource path="/Icons/Extension.svg" />',
-            '/typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime,
+            '{{EXT:core/Resources/Public/Icons/Extension.svg}}',
         ];
         yield 'render returns URI using UpperCamelCase extensionName' => [
             '<f:uri.resource path="Icons/Extension.svg" extensionName="Core" />',
-            '/typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime,
+            '{{EXT:core/Resources/Public/Icons/Extension.svg}}',
         ];
         yield 'render returns URI using extension key as extensionName' => [
             '<f:uri.resource path="Icons/Extension.svg" extensionName="core" />',
-            '/typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime,
+            '{{EXT:core/Resources/Public/Icons/Extension.svg}}',
         ];
         yield 'render returns URI using EXT: syntax' => [
             '<f:uri.resource path="EXT:core/Resources/Public/Icons/Extension.svg" />',
-            '/typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime,
+            '{{EXT:core/Resources/Public/Icons/Extension.svg}}',
         ];
     }
 
@@ -95,27 +94,26 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         $extbaseRequest = (new Request($serverRequest));
         $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertEquals($expected, (new TemplateView($context))->render());
+        self::assertEquals($this->resolveResourcePlaceholders($expected), (new TemplateView($context))->render());
     }
 
     public static function renderWithAndWithoutRequestDataProvider(): \Generator
     {
-        $iconFileMtime = filemtime(self::pathToCoreIcon);
         yield 'render gracefully trims leading slashes from path' => [
             '<f:uri.resource path="/Icons/Extension.svg" extensionName="Core" />',
-            'typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime,
+            '{{EXT-RELATIVE:core/Resources/Public/Icons/Extension.svg}}',
         ];
         yield 'render returns URI using UpperCamelCase extensionName' => [
             '<f:uri.resource path="Icons/Extension.svg" extensionName="Core" />',
-            'typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime,
+            '{{EXT-RELATIVE:core/Resources/Public/Icons/Extension.svg}}',
         ];
         yield 'render returns URI using extension key as extensionName' => [
             '<f:uri.resource path="Icons/Extension.svg" extensionName="core" />',
-            'typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime,
+            '{{EXT-RELATIVE:core/Resources/Public/Icons/Extension.svg}}',
         ];
         yield 'render returns URI using EXT: syntax' => [
             '<f:uri.resource path="EXT:core/Resources/Public/Icons/Extension.svg" />',
-            'typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime,
+            '{{EXT-RELATIVE:core/Resources/Public/Icons/Extension.svg}}',
         ];
     }
 
@@ -131,7 +129,7 @@ final class ResourceViewHelperTest extends FunctionalTestCase
             ->withAttribute('normalizedParams', $normalizedParams);
         $context = $this->get(RenderingContextFactory::class)->create([], $serverRequest);
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertEquals($urlPrefix . $expected, (new TemplateView($context))->render());
+        self::assertEquals($urlPrefix . $this->resolveResourcePlaceholders($expected), (new TemplateView($context))->render());
     }
 
     #[DataProvider('renderWithAndWithoutRequestDataProvider')]
@@ -151,7 +149,7 @@ final class ResourceViewHelperTest extends FunctionalTestCase
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $context = $this->get(RenderingContextFactory::class)->create([], $serverRequest);
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertEquals($urlPrefix . $expected, (new TemplateView($context))->render());
+        self::assertEquals($urlPrefix . $this->resolveResourcePlaceholders($expected), (new TemplateView($context))->render());
     }
 
     #[DataProvider('renderWithAndWithoutRequestDataProvider')]
@@ -162,17 +160,36 @@ final class ResourceViewHelperTest extends FunctionalTestCase
         $urlPrefix = '/';
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
-        self::assertEquals($urlPrefix . $expected, (new TemplateView($context))->render());
+        self::assertEquals($urlPrefix . $this->resolveResourcePlaceholders($expected), (new TemplateView($context))->render());
     }
 
     #[Test]
     public function renderWithGivenResourceObject(): void
     {
-        $iconFileMtime = filemtime(self::pathToCoreIcon);
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('{resourceString -> f:resource() -> f:uri.resource()}');
         $template = new TemplateView($context);
         $template->assign('resourceString', 'EXT:core/Resources/Public/Icons/Extension.svg');
-        self::assertEquals('/typo3/sysext/core/Resources/Public/Icons/Extension.svg?' . $iconFileMtime, $template->render());
+        self::assertEquals($this->resolveResourcePlaceholders('{{EXT:core/Resources/Public/Icons/Extension.svg}}'), $template->render());
+    }
+
+    /**
+     * Replaces {{EXT:…}} and {{EXT-RELATIVE:…}} placeholders with the web path the
+     * resource actually gets, absolute or without its leading slash respectively.
+     *
+     * A public extension resource is served from the extension directory in classic
+     * mode and from the published _assets directory in composer mode. Data providers
+     * cannot resolve that - they run before the instance is bootstrapped.
+     */
+    private function resolveResourcePlaceholders(string $expected): string
+    {
+        return preg_replace_callback(
+            '/{{(EXT-RELATIVE|EXT):([^}]+)}}/',
+            static function (array $matches): string {
+                $uri = (string)PathUtility::getSystemResourceUri('EXT:' . $matches[2]);
+                return $matches[1] === 'EXT-RELATIVE' ? ltrim($uri, '/') : $uri;
+            },
+            $expected
+        );
     }
 }

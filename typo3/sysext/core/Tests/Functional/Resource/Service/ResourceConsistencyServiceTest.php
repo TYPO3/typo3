@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource\Service;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Stub;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Service\ResourceConsistencyService;
 use TYPO3\CMS\Core\Validation\ResultException;
@@ -91,7 +92,7 @@ final class ResourceConsistencyServiceTest extends FunctionalTestCase
 
         $this->subject->validate(
             $this->storages[1],
-            $this->instancePath . '/fileadmin/ProcessedFileTest.jpg',
+            Environment::getPublicPath() . '/fileadmin/ProcessedFileTest.jpg',
             'ProcessedFileTest.exe'
         );
     }

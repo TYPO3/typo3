@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
@@ -146,7 +147,7 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         ]);
         // Write setup.typoscript to make Site::isTypoScriptRoot() return true for Site B.
         file_put_contents(
-            $this->instancePath . '/typo3conf/sites/site-b/setup.typoscript',
+            Environment::getConfigPath() . '/sites/site-b/setup.typoscript',
             '# Site B TypoScript root'
         );
 

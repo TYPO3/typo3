@@ -14,13 +14,15 @@
  */
 
 $fileMtimeActions = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/actions.svg');
+// Where EXT:core serves its public resources from differs by installation mode.
+$coreAssetPath = (string)\TYPO3\CMS\Core\Utility\PathUtility::getSystemResourceUri('EXT:core/Resources/Public/');
 return <<<EOF
 <div class="btn-group">
     <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share" title="Share">
         <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-share-alt" data-identifier="actions-share-alt" aria-hidden="true">
             <span class="icon-markup">
                 <svg class="icon-color">
-                    <use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-share-alt" />
+                    <use xlink:href="{$coreAssetPath}Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-share-alt" />
                 </svg>
             </span>
         </span>
@@ -39,7 +41,7 @@ return <<<EOF
                     data-identifier="actions-link" aria-hidden="true">
                     <span class="icon-markup">
                         <svg class="icon-color">
-                            <use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-link" />
+                            <use xlink:href="{$coreAssetPath}Icons/T3Icons/sprites/actions.svg?{$fileMtimeActions}#actions-link" />
                         </svg>
                     </span>
                 </span>Copy URL of this record

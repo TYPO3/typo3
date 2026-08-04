@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -98,26 +99,27 @@ final class ScriptAndLinkTagRenderingTest extends FunctionalTestCase
         // remove cache busting `?1774699233` from markup
         $content = preg_replace('/\?\d{10,}(?=")/', '', $content);
 
+        $assetPath = (string)PathUtility::getSystemResourceUri('EXT:test_resource_rendering/Resources/Public/');
         $expectations = [
-            'forceOnTopCSS'         => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTop.css" media="all">',
-            'forceOnTopCSSLib'      => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTopLib.css" media="all">',
-            'forceOnTopJS'          => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTop.js"></script>',
-            'forceOnTopJSLib'       => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTopLib.js"></script>',
-            'forceOnTopJSLibFooter' => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/forceOnTopLibFooter.js"></script>',
+            'forceOnTopCSS'         => '<link rel="stylesheet" href="' . $assetPath . 'forceOnTop.css" media="all">',
+            'forceOnTopCSSLib'      => '<link rel="stylesheet" href="' . $assetPath . 'forceOnTopLib.css" media="all">',
+            'forceOnTopJS'          => '<script src="' . $assetPath . 'forceOnTop.js"></script>',
+            'forceOnTopJSLib'       => '<script src="' . $assetPath . 'forceOnTopLib.js"></script>',
+            'forceOnTopJSLibFooter' => '<script src="' . $assetPath . 'forceOnTopLibFooter.js"></script>',
 
-            'alternateCSS'          => '<link rel="alternate stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/alternate.css" media="print" title="Dummy" integrity="sha256-7Op3Y+qrb1U9n1iebx5IvOIeBikAsR+QEoEuKerZDUU=" crossorigin="anonymous">',
-            'alternateCSSLib'       => '<link rel="alternate stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/alternateLib.css" media="print" title="Dummy" integrity="4711" crossorigin="example.com">',
-            'alternateJS'           => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/alternate.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="sha256-lXecaELOga5RF43SGiSETJfbXRDMJs4VepZRfLWFD2c=" crossorigin="anonymous"></script>',
-            'alternateJSLib'        => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/alternateLib.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
-            'alternateJSLibFooter'  => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/alternateLibFooter.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
+            'alternateCSS'          => '<link rel="alternate stylesheet" href="' . $assetPath . 'alternate.css" media="print" title="Dummy" integrity="sha256-7Op3Y+qrb1U9n1iebx5IvOIeBikAsR+QEoEuKerZDUU=" crossorigin="anonymous">',
+            'alternateCSSLib'       => '<link rel="alternate stylesheet" href="' . $assetPath . 'alternateLib.css" media="print" title="Dummy" integrity="4711" crossorigin="example.com">',
+            'alternateJS'           => '<script src="' . $assetPath . 'alternate.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="sha256-lXecaELOga5RF43SGiSETJfbXRDMJs4VepZRfLWFD2c=" crossorigin="anonymous"></script>',
+            'alternateJSLib'        => '<script src="' . $assetPath . 'alternateLib.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
+            'alternateJSLibFooter'  => '<script src="' . $assetPath . 'alternateLibFooter.js" type="text/plain" defer="defer" nomodule="nomodule" integrity="4711" crossorigin="example.com"></script>',
 
-            'dataCSS'                 => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/data.css" media="all" somethingcustom="someValue" data-attribute="value">',
+            'dataCSS'                 => '<link rel="stylesheet" href="' . $assetPath . 'data.css" media="all" somethingcustom="someValue" data-attribute="value">',
             'absoluteUrlCSS'          => '<link rel="stylesheet" href="https://www.example.com/styles/absoluteUrlCSS.css" media="all">',
             'relativeUriCSS'          => '<link rel="stylesheet" href="/styles/relativeUriCSS.css" media="all">',
-            'dataCSSLib'              => '<link rel="stylesheet" href="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLib.css" media="all" somethingcustom="someValue" data-attribute="value">',
-            'dataJS'                  => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/data.js" data-attribute="value"></script>',
-            'dataJSLib'               => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLib.js" somethingcustom="someValue" data-attribute="value"></script>',
-            'dataJSLibFooter'         => '<script src="/typo3conf/ext/test_resource_rendering/Resources/Public/dataLibFooter.js" somethingcustom="someValue" data-attribute="value"></script>',
+            'dataCSSLib'              => '<link rel="stylesheet" href="' . $assetPath . 'dataLib.css" media="all" somethingcustom="someValue" data-attribute="value">',
+            'dataJS'                  => '<script src="' . $assetPath . 'data.js" data-attribute="value"></script>',
+            'dataJSLib'               => '<script src="' . $assetPath . 'dataLib.js" somethingcustom="someValue" data-attribute="value"></script>',
+            'dataJSLibFooter'         => '<script src="' . $assetPath . 'dataLibFooter.js" somethingcustom="someValue" data-attribute="value"></script>',
         ];
 
         foreach ($expectations as $expectationHtml) {

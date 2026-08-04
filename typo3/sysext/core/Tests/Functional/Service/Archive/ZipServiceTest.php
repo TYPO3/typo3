@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Service\Archive;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception\Archive\ExtractException;
 use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,16 +30,16 @@ final class ZipServiceTest extends FunctionalTestCase
 
     protected function tearDown(): void
     {
-        GeneralUtility::rmdir($this->instancePath . '/typo3conf/ext/malicious', true);
-        GeneralUtility::rmdir($this->instancePath . '/typo3conf/ext/my_extension', true);
+        GeneralUtility::rmdir(Environment::getExtensionsPath() . '/malicious', true);
+        GeneralUtility::rmdir(Environment::getExtensionsPath() . '/my_extension', true);
         parent::tearDown();
     }
 
     #[Test]
     public function filesCanNotGetExtractedOutsideTargetDirectory(): void
     {
-        $extensionDirectory = $this->instancePath . '/typo3conf/ext/malicious';
-        GeneralUtility::mkdir($extensionDirectory);
+        $extensionDirectory = Environment::getExtensionsPath() . '/malicious';
+        GeneralUtility::mkdir_deep($extensionDirectory);
         (new ZipService())->extract(
             __DIR__ . '/Fixtures/malicious.zip',
             $extensionDirectory
@@ -53,8 +54,8 @@ final class ZipServiceTest extends FunctionalTestCase
     #[Test]
     public function fileContentIsExtractedAsExpected(): void
     {
-        $extensionDirectory = $this->instancePath . '/typo3conf/ext/my_extension';
-        GeneralUtility::mkdir($extensionDirectory);
+        $extensionDirectory = Environment::getExtensionsPath() . '/my_extension';
+        GeneralUtility::mkdir_deep($extensionDirectory);
         (new ZipService())->extract(
             __DIR__ . '/Fixtures/my_extension.zip',
             $extensionDirectory
@@ -69,8 +70,8 @@ final class ZipServiceTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
-        $extensionDirectory = $this->instancePath . '/typo3conf/ext/my_extension';
-        GeneralUtility::mkdir($extensionDirectory);
+        $extensionDirectory = Environment::getExtensionsPath() . '/my_extension';
+        GeneralUtility::mkdir_deep($extensionDirectory);
         (new ZipService())->extract(
             __DIR__ . '/Fixtures/my_extension.zip',
             $extensionDirectory
@@ -89,11 +90,11 @@ final class ZipServiceTest extends FunctionalTestCase
     {
         $this->expectException(ExtractException::class);
         $this->expectExceptionCode(1565709712);
-        $extensionDirectory = $this->instancePath . '/typo3conf/ext/my_extension';
-        GeneralUtility::mkdir($extensionDirectory);
+        $extensionDirectory = Environment::getExtensionsPath() . '/my_extension';
+        GeneralUtility::mkdir_deep($extensionDirectory);
         (new ZipService())->extract(
             'foobar.zip',
-            $this->instancePath . '/typo3conf/ext/my_extension'
+            Environment::getExtensionsPath() . '/my_extension'
         );
     }
 
@@ -104,7 +105,7 @@ final class ZipServiceTest extends FunctionalTestCase
         $this->expectExceptionCode(1565773005);
         (new ZipService())->extract(
             __DIR__ . '/Fixtures/my_extension.zip',
-            $this->instancePath . '/typo3conf/foo/my_extension'
+            Environment::getLegacyConfigPath() . '/foo/my_extension'
         );
     }
 

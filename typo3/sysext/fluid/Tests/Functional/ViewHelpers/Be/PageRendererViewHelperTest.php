@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -41,11 +42,11 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
             ],
             'renderIncludesCssFile' => [
                 '<f:be.pageRenderer includeCssFiles="{0: \'EXT:backend/Resources/Public/Css/backend.css\'}" />',
-                'rel="stylesheet" href="/typo3/sysext/backend/Resources/Public/Css/backend.css',
+                'rel="stylesheet" href="{{BACKEND_PUBLIC}}Css/backend.css',
             ],
             'renderIncludesJsFile' => [
                 '<f:be.pageRenderer includeJsFiles="{0: \'EXT:backend/Resources/Public/JavaScript/backend.js\'}" />',
-                '<script src="/typo3/sysext/backend/Resources/Public/JavaScript/backend.js',
+                '<script src="{{BACKEND_PUBLIC}}JavaScript/backend.js',
             ],
             'renderIncludesInlineSettings' => [
                 '<f:be.pageRenderer addInlineSettings="{\'foo\': \'bar\'}" />',
@@ -69,6 +70,7 @@ final class PageRendererViewHelperTest extends FunctionalTestCase
         $view->render();
         $pageRenderer = $this->get(PageRenderer::class);
         // PageRenderer depends on request to determine FE vs. BE
+        $expected = str_replace('{{BACKEND_PUBLIC}}', (string)PathUtility::getSystemResourceUri('EXT:backend/Resources/Public/'), $expected);
         self::assertStringContainsString($expected, $pageRenderer->renderResponse($this->createRequest())->getBody()->__toString());
     }
 

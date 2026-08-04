@@ -29,6 +29,7 @@ use Symfony\Component\Mime\Part\File;
 use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Serializer\PolymorphicDeserializer;
@@ -115,7 +116,7 @@ final class RequestHandlingTest extends FunctionalTestCase
     private function getMailSpoolMessages(): array
     {
         $messages = [];
-        foreach (array_filter(glob($this->instancePath . '/' . self::MAIL_SPOOL_FOLDER . '*'), 'is_file') as $path) {
+        foreach (array_filter(glob(Environment::getPublicPath() . '/' . self::MAIL_SPOOL_FOLDER . '*'), 'is_file') as $path) {
             $serializedMessage = file_get_contents($path);
             $deserializer = new PolymorphicDeserializer();
             $sentMessage = $deserializer->deserialize($serializedMessage, [
@@ -174,7 +175,7 @@ final class RequestHandlingTest extends FunctionalTestCase
 
     private function purgeMailSpool(): void
     {
-        foreach (glob($this->instancePath . '/' . self::MAIL_SPOOL_FOLDER . '*') as $path) {
+        foreach (glob(Environment::getPublicPath() . '/' . self::MAIL_SPOOL_FOLDER . '*') as $path) {
             unlink($path);
         }
     }

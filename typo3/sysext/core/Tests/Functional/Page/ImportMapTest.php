@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class ImportMapTest extends FunctionalTestCase
@@ -69,7 +70,7 @@ final class ImportMapTest extends FunctionalTestCase
         $importMap = new ImportMap(new HashService(), $this->getPackages($packages));
         $url = $importMap->resolveImport('lit');
 
-        self::assertStringStartsWith('/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Contrib/lit/index.js?bust=', $url);
+        self::assertStringStartsWith('' . $this->assetPath('test_importmap_core') . 'JavaScript/Contrib/lit/index.js?bust=', $url);
     }
 
     #[Test]
@@ -79,7 +80,7 @@ final class ImportMapTest extends FunctionalTestCase
         $importMap = new ImportMap(new HashService(), $this->getPackages($packages));
         $nestedUrl = $importMap->resolveImport('@typo3/core/nested/module.js');
 
-        self::assertStringStartsWith('/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/nested/module.js?bust=', $nestedUrl);
+        self::assertStringStartsWith($this->assetPath('test_importmap_core') . 'JavaScript/nested/module.js?bust=', $nestedUrl);
     }
 
     #[Test]
@@ -90,7 +91,7 @@ final class ImportMapTest extends FunctionalTestCase
         $importMap = new ImportMap(new HashService(), $this->getPackages($packages), null, null, '', null, false);
         $nestedUrl = $importMap->resolveImport('@typo3/core/nested/module.js');
 
-        self::assertEquals('/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/nested/module.js', $nestedUrl);
+        self::assertEquals($this->assetPath('test_importmap_core') . 'JavaScript/nested/module.js', $nestedUrl);
     }
 
     #[Test]
@@ -102,9 +103,10 @@ final class ImportMapTest extends FunctionalTestCase
         $url = $importMap->resolveImport('lit');
         $output = $importMap->render('/', new ConsumableNonce());
 
-        self::assertStringStartsWith('/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Contrib/lit/index.js?bust=', $url);
-        self::assertStringContainsString('"lit/":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Contrib/lit/"', $output);
-        self::assertStringContainsString('"@typo3/core/Module1.js":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Module1.js?bust=', $output);
+        $assetPath = $this->assetPath('test_importmap_core');
+        self::assertStringStartsWith($assetPath . 'JavaScript/Contrib/lit/index.js?bust=', $url);
+        self::assertStringContainsString('"lit/":"' . $assetPath . 'JavaScript/Contrib/lit/"', $output);
+        self::assertStringContainsString('"@typo3/core/Module1.js":"' . $assetPath . 'JavaScript/Module1.js?bust=', $output);
         ExtensionManagementUtility::setPackageManager(self::createStub(PackageManager::class));
     }
 
@@ -117,8 +119,9 @@ final class ImportMapTest extends FunctionalTestCase
         $importMap->includeImportsFor('@typo3/core/Module1.js');
         $output = $importMap->render('/', new ConsumableNonce());
 
-        self::assertStringContainsString('"@typo3/core/":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/', $output);
-        self::assertStringContainsString('"@typo3/core/Module1.js":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Module1.js?bust=', $output);
+        $assetPath = $this->assetPath('test_importmap_core');
+        self::assertStringContainsString('"@typo3/core/":"' . $assetPath . 'JavaScript/', $output);
+        self::assertStringContainsString('"@typo3/core/Module1.js":"' . $assetPath . 'JavaScript/Module1.js?bust=', $output);
     }
 
     #[Test]
@@ -130,8 +133,9 @@ final class ImportMapTest extends FunctionalTestCase
         $importMap->includeImportsFor('@typo3/core/Module1.js');
         $output = $importMap->render('/', new ConsumableNonce());
 
-        self::assertStringContainsString('"@typo3/core/":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/', $output);
-        self::assertStringContainsString('"@typo3/core/Module1.js":"/typo3conf/ext/test_importmap_core/Resources/Public/JavaScript/Module1.js?bust=', $output);
+        $assetPath = $this->assetPath('test_importmap_core');
+        self::assertStringContainsString('"@typo3/core/":"' . $assetPath . 'JavaScript/', $output);
+        self::assertStringContainsString('"@typo3/core/Module1.js":"' . $assetPath . 'JavaScript/Module1.js?bust=', $output);
         ExtensionManagementUtility::setPackageManager(self::createStub(PackageManager::class));
     }
 
@@ -144,7 +148,7 @@ final class ImportMapTest extends FunctionalTestCase
         $importMap->includeImportsFor('@typo3/package2/File.js');
         $output = $importMap->render('/', new ConsumableNonce());
 
-        self::assertStringContainsString('"@typo3/package2/File.js":"/typo3conf/ext/test_importmap_package3/Resources/Public/JavaScript/Overrides/Package2/File.js?bust=', $output);
+        self::assertStringContainsString('"@typo3/package2/File.js":"' . $this->assetPath('test_importmap_package3') . 'JavaScript/Overrides/Package2/File.js?bust=', $output);
         self::assertThat(
             $output,
             self::logicalNot(
@@ -203,5 +207,14 @@ final class ImportMapTest extends FunctionalTestCase
         }
 
         return $packageInstances;
+    }
+
+    /**
+     * Web path prefix of an extension's public resources: the extension directory in
+     * classic mode, the published assets directory in composer mode.
+     */
+    private function assetPath(string $extensionKey): string
+    {
+        return (string)PathUtility::getSystemResourceUri('EXT:' . $extensionKey . '/Resources/Public/');
     }
 }

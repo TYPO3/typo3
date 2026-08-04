@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -44,7 +45,7 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
 
     protected function tearDown(): void
     {
-        GeneralUtility::rmdir($this->instancePath . '/fileadmin/_processed_', true);
+        GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/_processed_', true);
         parent::tearDown();
     }
 

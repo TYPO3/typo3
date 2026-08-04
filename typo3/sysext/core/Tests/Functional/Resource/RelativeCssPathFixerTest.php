@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RelativeCssPathFixerTest extends FunctionalTestCase
@@ -45,7 +46,7 @@ final class RelativeCssPathFixerTest extends FunctionalTestCase
             '@import from package with no relative' => [
                 '@import url(test.css); body { background: #ffffff; }',
                 'EXT:backend/Resources/Public/Css/',
-                '@import url(\'/typo3/sysext/backend/Resources/Public/Css/test.css\'); body { background: #ffffff; }',
+                '@import url(\'{{BACKEND_PUBLIC}}Css/test.css\'); body { background: #ffffff; }',
             ],
             'url() from package with relative' => [
                 '@font-face {
@@ -56,8 +57,8 @@ final class RelativeCssPathFixerTest extends FunctionalTestCase
                 'EXT:backend/Resources/Public/Css/',
                 '@font-face {
                     font-family: "Testfont"
-                    src: url(\'/typo3/sysext/backend/Resources/Public/fonts/testfont.woff2\') format("woff2"),
-                         url(\'/typo3/sysext/backend/Resources/Public/fonts/testfont.woff\') format("woff");
+                    src: url(\'{{BACKEND_PUBLIC}}fonts/testfont.woff2\') format("woff2"),
+                         url(\'{{BACKEND_PUBLIC}}fonts/testfont.woff\') format("woff");
                     }',
             ],
             'url() from URI with no relative' => [
@@ -92,6 +93,7 @@ final class RelativeCssPathFixerTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('normalizedParams', $normalizedParams);
         $fixedCssPath = $subject->fixRelativeUrlPaths($css, $newDir, $request);
+        $expected = str_replace('{{BACKEND_PUBLIC}}', (string)PathUtility::getSystemResourceUri('EXT:backend/Resources/Public/'), $expected);
         self::assertSame($expected, $fixedCssPath);
     }
 }

@@ -130,7 +130,9 @@ final class PageRendererTest extends FunctionalTestCase
         $subject->addHeaderData($headerData);
 
         $subject->loadJavaScriptModule('@typo3/core/ajax/ajax-request.js');
-        $expectedJavaScriptModuleScriptRegExp = '#<script type="module" async="async" src="[^"]*typo3/sysext/core/Resources/Public/JavaScript/ajax/ajax-request\.js\?bust=[^"]*"></script>#';
+        // Where EXT:core serves its public resources from differs by installation mode.
+        $coreAssetPath = preg_quote((string)PathUtility::getSystemResourceUri('EXT:core/Resources/Public/'), '#');
+        $expectedJavaScriptModuleScriptRegExp = '#<script type="module" async="async" src="[^"]*' . $coreAssetPath . 'JavaScript/ajax/ajax-request\.js\?bust=[^"]*"></script>#';
 
         $subject->addJsLibrary(
             'test',

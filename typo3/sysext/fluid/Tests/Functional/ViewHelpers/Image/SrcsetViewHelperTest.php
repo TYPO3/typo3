@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Image;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -289,7 +290,7 @@ final class SrcsetViewHelperTest extends FunctionalTestCase
      */
     protected function assertImageSize(int $expectedWidth, int $expectedHeight, string $imageFile)
     {
-        [$detectedWidth, $detectedHeight] = getimagesize($this->getInstancePath() . '/' . $imageFile);
+        [$detectedWidth, $detectedHeight] = getimagesize(Environment::getPublicPath() . '/' . $imageFile);
         self::assertEquals($expectedWidth, $detectedWidth, "Image width $detectedWidth does not match expected width $expectedWidth: $imageFile");
         self::assertEquals($expectedHeight, $detectedHeight, "Image height $detectedHeight does not match expected height $expectedHeight: $imageFile");
     }

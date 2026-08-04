@@ -13,6 +13,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+// Where an extension serves its public resources from differs by installation mode.
+$coreAssetPath = (string)\TYPO3\CMS\Core\Utility\PathUtility::getSystemResourceUri('EXT:core/Resources/Public/');
+$impexpAssetPath = (string)\TYPO3\CMS\Core\Utility\PathUtility::getSystemResourceUri('EXT:impexp/Resources/Public/');
 $fileMtimeSoft = filemtime(__DIR__ . '/../../../../Resources/Public/Icons/status-reference-soft.png');
 $fileMtimeApps = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/apps.svg');
 $fileMtimeMime = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg');
@@ -27,7 +30,7 @@ return [
             'msg' => '',
             'preCode' => '<span title="pages:1" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg?' . $fileMtimeApps . '#apps-pagetree-page-default" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/apps.svg?' . $fileMtimeApps . '#apps-pagetree-page-default" /></svg>
 	</span>
 	
 </span>',
@@ -42,7 +45,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:212" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text" /></svg>
 	</span>
 	
 </span>',
@@ -57,7 +60,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
-<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
+<img src="' . $impexpAssetPath . 'Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
 	</span>
 	
 </span>',
@@ -83,7 +86,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
-<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
+<img src="' . $impexpAssetPath . 'Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
 	</span>
 	
 </span>',
@@ -109,7 +112,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
-<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
+<img src="' . $impexpAssetPath . 'Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
 	</span>
 	
 </span>',
@@ -135,7 +138,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="SOFTREF" class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft" aria-hidden="true">
 	<span class="icon-markup">
-<img src="/typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
+<img src="' . $impexpAssetPath . 'Icons/status-reference-soft.png?' . $fileMtimeSoft . '" width="16" height="16" alt="" />
 	</span>
 	
 </span>',

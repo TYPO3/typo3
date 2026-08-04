@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedPatternMapper;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -148,7 +149,7 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
     private function writeSiteConfiguration(Site $site): void
     {
         // ensure no previous site configuration influences the test
-        $path = $this->instancePath . '/typo3conf/sites';
+        $path = Environment::getConfigPath() . '/sites';
         $cache = $this->get('cache.core');
         $eventDispatcher = $this->get(EventDispatcherInterface::class);
         GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);

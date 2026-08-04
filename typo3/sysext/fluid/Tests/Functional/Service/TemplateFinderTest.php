@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Fluid\Service\TemplateFinder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -32,18 +33,18 @@ final class TemplateFinderTest extends FunctionalTestCase
     {
         $subject = $this->get(TemplateFinder::class);
         $foundTemplates = $subject->findTemplatesInAllPackages();
-        self::assertContains($this->instancePath . '/typo3/sysext/core/Resources/Private/Layouts/SystemEmail.fluid.html', $foundTemplates);
-        self::assertContains($this->instancePath . '/typo3/sysext/core/Resources/Private/Layouts/SystemEmail.fluid.txt', $foundTemplates);
-        self::assertContains($this->instancePath . '/typo3/sysext/backend/Resources/Private/Layouts/Module.fluid.html', $foundTemplates);
-        self::assertContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
-        self::assertContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.txt', $foundTemplates);
-        self::assertNotContains($this->instancePath . '/typo3/sysext/core/Resources/Private/Templates/PageRenderer.html', $foundTemplates);
-        self::assertNotContains($this->instancePath . '/typo3/sysext/core/Documentation/guides.xml', $foundTemplates);
-        self::assertNotContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.html', $foundTemplates);
-        self::assertNotContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.txt', $foundTemplates);
+        self::assertContains(ExtensionManagementUtility::extPath('core') . 'Resources/Private/Layouts/SystemEmail.fluid.html', $foundTemplates);
+        self::assertContains(ExtensionManagementUtility::extPath('core') . 'Resources/Private/Layouts/SystemEmail.fluid.txt', $foundTemplates);
+        self::assertContains(ExtensionManagementUtility::extPath('backend') . 'Resources/Private/Layouts/Module.fluid.html', $foundTemplates);
+        self::assertContains(ExtensionManagementUtility::extPath('fluid_test') . 'Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
+        self::assertContains(ExtensionManagementUtility::extPath('fluid_test') . 'Resources/Private/FileExtension/Both/Test.fluid.txt', $foundTemplates);
+        self::assertNotContains(ExtensionManagementUtility::extPath('core') . 'Resources/Private/Templates/PageRenderer.html', $foundTemplates);
+        self::assertNotContains(ExtensionManagementUtility::extPath('core') . 'Documentation/guides.xml', $foundTemplates);
+        self::assertNotContains(ExtensionManagementUtility::extPath('fluid_test') . 'Resources/Private/FileExtension/Both/Test.html', $foundTemplates);
+        self::assertNotContains(ExtensionManagementUtility::extPath('fluid_test') . 'Resources/Private/FileExtension/Both/Test.txt', $foundTemplates);
         // Tests/ folders are excluded,
         // also paths are added based on the symlinked position (= the way TYPO3 would resolve the file)
-        self::assertNotContains($this->instancePath . '/typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
+        self::assertNotContains(ExtensionManagementUtility::extPath('fluid') . 'Tests/Functional/Fixtures/Extensions/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
     }
 
     #[Test]
@@ -51,7 +52,7 @@ final class TemplateFinderTest extends FunctionalTestCase
     {
         $subject = $this->get(TemplateFinder::class);
         $foundTemplates = $subject->findTemplatesInAllPackages(false);
-        self::assertContains($this->instancePath . '/typo3conf/ext/fluid_test/Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
-        self::assertNotContains($this->instancePath . '/typo3/sysext/core/Resources/Private/Layouts/SystemEmail.fluid.html', $foundTemplates);
+        self::assertContains(ExtensionManagementUtility::extPath('fluid_test') . 'Resources/Private/FileExtension/Both/Test.fluid.html', $foundTemplates);
+        self::assertNotContains(ExtensionManagementUtility::extPath('core') . 'Resources/Private/Layouts/SystemEmail.fluid.html', $foundTemplates);
     }
 }

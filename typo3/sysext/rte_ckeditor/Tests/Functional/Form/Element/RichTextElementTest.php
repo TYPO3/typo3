@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
@@ -56,22 +57,22 @@ final class RichTextElementTest extends FunctionalTestCase
         $mtime = filemtime(__DIR__ . '/../../../../Resources/Public/Css/contents.css');
         yield 'resolve a extension path' => [
             'EXT:rte_ckeditor/Resources/Public/Css/contents.css',
-            '/_assets/d06330b2f94417f8e5e5f457c6608eca/Css/contents.css?' . $mtime,
+            '{{RTE_PUBLIC}}Css/contents.css?' . $mtime,
         ];
 
         yield 'resolve a package path' => [
             'PKG:rte_ckeditor:Resources/Public/Css/contents.css',
-            '/_assets/d06330b2f94417f8e5e5f457c6608eca/Css/contents.css?' . $mtime,
+            '{{RTE_PUBLIC}}Css/contents.css?' . $mtime,
         ];
 
         yield 'resolve a extension path with a query string' => [
             'EXT:rte_ckeditor/Resources/Public/Css/contents.css?4',
-            '/_assets/d06330b2f94417f8e5e5f457c6608eca/Css/contents.css?4&' . $mtime,
+            '{{RTE_PUBLIC}}Css/contents.css?4&' . $mtime,
         ];
 
         yield 'resolve a package path with a query string' => [
             'PKG:rte_ckeditor:Resources/Public/Css/contents.css?4',
-            '/_assets/d06330b2f94417f8e5e5f457c6608eca/Css/contents.css?4&' . $mtime,
+            '{{RTE_PUBLIC}}Css/contents.css?4&' . $mtime,
         ];
 
         // @todo: this should be revised by refactoring the RichTextElement
@@ -102,6 +103,16 @@ final class RichTextElementTest extends FunctionalTestCase
     #[DataProvider('resolveUrlPathDataProvider')]
     public function resolveUrlPathCanDealWithVariousInputs(string $input, string $expected): void
     {
+        // The published asset directory is named after the package path relative to the
+        // project root, which differs between installation modes - the data provider
+        // cannot know it. Mirrors DefaultPublicPrefix, leading slash included.
+        $packagePath = $this->get(PackageManager::class)->getPackage('rte_ckeditor')->getPackagePath();
+        $expected = str_replace(
+            '{{RTE_PUBLIC}}',
+            '/_assets/' . md5(substr($packagePath, strlen(Environment::getProjectPath()))) . '/',
+            $expected
+        );
+
         $this->file->ensureFilesExistInStorage('/templates/rte.css');
         // Simulate backend request in composer mode, using `subdir` as document root.
         $fakePublicDir = Environment::getProjectPath() . '/subdir';

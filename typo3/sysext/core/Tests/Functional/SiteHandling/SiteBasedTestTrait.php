@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\SiteHandling;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\Frontend\PhpError;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
@@ -69,11 +70,11 @@ trait SiteBasedTestTrait
         $siteWriter = $this->get(SiteWriter::class);
         try {
             // ensure no previous site configuration influences the test
-            GeneralUtility::rmdir($this->instancePath . '/typo3conf/sites/' . $identifier, true);
+            GeneralUtility::rmdir(Environment::getConfigPath() . '/sites/' . $identifier, true);
             $siteWriter->write($identifier, $configuration);
             if ($csp !== null) {
                 GeneralUtility::writeFile(
-                    $this->instancePath . '/typo3conf/sites/' . $identifier . '/csp.yaml',
+                    Environment::getConfigPath() . '/sites/' . $identifier . '/csp.yaml',
                     Yaml::dump($csp, 99, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE | Yaml::DUMP_OBJECT_AS_MAP),
                     true
                 );
@@ -171,7 +172,7 @@ trait SiteBasedTestTrait
             }
         } elseif ($handler === 'Fluid') {
             $baseConfiguration = [
-                'errorFluidTemplate' => 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/FluidError.fluid.html',
+                'errorFluidTemplate' => 'EXT:core/Tests/Functional/Fixtures/Frontend/FluidError.fluid.html',
                 'errorFluidTemplatesRootPath' => '',
                 'errorFluidLayoutsRootPath' => '',
                 'errorFluidPartialsRootPath' => '',

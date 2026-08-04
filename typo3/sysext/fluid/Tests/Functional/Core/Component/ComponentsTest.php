@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\Core\Component;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverDelegateRegistry;
 use TYPO3\CMS\Fluid\View\FluidViewAdapter;
@@ -206,19 +207,19 @@ final class ComponentsTest extends FunctionalTestCase
         $this->expectExceptionMessage('The component template "MissingComponent/MissingComponent" in format ".html" could not be found in the configured template paths.');
         $this->expectExceptionMessage('"' . implode('", "', [
             // With default controller name "Default"
-            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/Default/MissingComponent/MissingComponent.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/Default/MissingComponent/MissingComponent.html',
-            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/Default/MissingComponent/MissingComponent',
-            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/Default/MissingComponent/MissingComponent.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/Default/MissingComponent/MissingComponent.html',
-            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/Default/MissingComponent/MissingComponent',
+            ExtensionManagementUtility::extPath('components_override_test') . 'Resources/Private/Components/Default/MissingComponent/MissingComponent.fluid.html',
+            ExtensionManagementUtility::extPath('components_override_test') . 'Resources/Private/Components/Default/MissingComponent/MissingComponent.html',
+            ExtensionManagementUtility::extPath('components_override_test') . 'Resources/Private/Components/Default/MissingComponent/MissingComponent',
+            ExtensionManagementUtility::extPath('components_test') . 'Resources/Private/Components/Default/MissingComponent/MissingComponent.fluid.html',
+            ExtensionManagementUtility::extPath('components_test') . 'Resources/Private/Components/Default/MissingComponent/MissingComponent.html',
+            ExtensionManagementUtility::extPath('components_test') . 'Resources/Private/Components/Default/MissingComponent/MissingComponent',
             // Without default controller name
-            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/MissingComponent/MissingComponent.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/MissingComponent/MissingComponent.html',
-            $this->getInstancePath() . '/typo3conf/ext/components_override_test/Resources/Private/Components/MissingComponent/MissingComponent',
-            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/MissingComponent/MissingComponent.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/MissingComponent/MissingComponent.html',
-            $this->getInstancePath() . '/typo3conf/ext/components_test/Resources/Private/Components/MissingComponent/MissingComponent',
+            ExtensionManagementUtility::extPath('components_override_test') . 'Resources/Private/Components/MissingComponent/MissingComponent.fluid.html',
+            ExtensionManagementUtility::extPath('components_override_test') . 'Resources/Private/Components/MissingComponent/MissingComponent.html',
+            ExtensionManagementUtility::extPath('components_override_test') . 'Resources/Private/Components/MissingComponent/MissingComponent',
+            ExtensionManagementUtility::extPath('components_test') . 'Resources/Private/Components/MissingComponent/MissingComponent.fluid.html',
+            ExtensionManagementUtility::extPath('components_test') . 'Resources/Private/Components/MissingComponent/MissingComponent.html',
+            ExtensionManagementUtility::extPath('components_test') . 'Resources/Private/Components/MissingComponent/MissingComponent',
         ]) . '"');
         /** @var FluidViewAdapter */
         $view = $this->get(FluidViewFactory::class)->create(new ViewFactoryData());

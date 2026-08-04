@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -110,7 +111,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
 
         $maximum = count($dimensionMap);
 
-        $storageDirOriginal = 'typo3conf/ext/svg_image_test/Resources/Public/Images';
+        $storageDirOriginal = '{{EXT:svg_image_test/Resources/Public/Images}}';
         $storageDirTemp     = 'typo3temp/assets/_processed_/[0-9a-f]/[0-9a-f]';
         $storageDirFal      = 'fileadmin/user_upload';
         $storageDirFalTemp  = 'fileadmin/_processed_/[0-9a-f]/[0-9a-f]';
@@ -497,7 +498,7 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $actual = (new TemplateView($context))->render();
-        self::assertMatchesRegularExpression($expected, $actual);
+        self::assertMatchesRegularExpression($this->resolveResourcePlaceholders($expected), $actual);
 
         $dumpTable = 'sys_file_processedfile';
         $expectedRecords = 1;
@@ -518,6 +519,26 @@ final class SvgImageViewHelperTest extends FunctionalTestCase
                 $this->verifySvg($rows[0], $cropResult);
             }
         }
+    }
+
+    /**
+     * Replaces {{EXT:…}} placeholders in an expectation pattern with the web path the
+     * resource actually gets, quoted for use inside the pattern.
+     *
+     * A public extension resource is served from the extension directory in classic mode
+     * and from the published _assets directory in composer mode. The data provider cannot
+     * resolve that itself - it runs before the instance is bootstrapped.
+     */
+    private function resolveResourcePlaceholders(string $pattern): string
+    {
+        return preg_replace_callback(
+            '/{{(EXT:[^}]+)}}/',
+            static fn(array $matches): string => preg_quote(
+                ltrim((string)PathUtility::getSystemResourceUri($matches[1]), '/'),
+                '@'
+            ),
+            $pattern
+        );
     }
 
     private function verifySvg(array $file, ?string $cropResult)

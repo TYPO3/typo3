@@ -45,7 +45,10 @@ final class GeneralUtilityTest extends FunctionalTestCase
     #[DataProvider('isAllowedAbsPathDataProvider')]
     public function allowedAbsolutePathIsEvaluated(string $path, bool $expectation): void
     {
-        $path = str_replace('{{project-path}}', Environment::getPublicPath(), $path);
+        // isAllowedAbsPath() gates on the project path, which is the document root only in
+        // classic mode - resolving the placeholder with the public path made the sibling
+        // directory cases fall inside the allowed root in composer mode.
+        $path = str_replace('{{project-path}}', Environment::getProjectPath(), $path);
         self::assertSame($expectation, GeneralUtility::isAllowedAbsPath($path));
     }
 }

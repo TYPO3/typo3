@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Property\TypeConverter;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -41,13 +42,13 @@ final class MultipleFileUploadTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $uploadPath = $this->instancePath . '/fileadmin/user_upload/';
+        $uploadPath = Environment::getPublicPath() . '/fileadmin/user_upload/';
         GeneralUtility::mkdir_deep($uploadPath);
     }
 
     protected function tearDown(): void
     {
-        $uploadPath = $this->instancePath . '/fileadmin/user_upload/';
+        $uploadPath = Environment::getPublicPath() . '/fileadmin/user_upload/';
         if (is_dir($uploadPath)) {
             GeneralUtility::rmdir($uploadPath, true);
         }
@@ -1272,7 +1273,7 @@ final class MultipleFileUploadTest extends FunctionalTestCase
      */
     private function collectUploadedFiles(): array
     {
-        $uploadPath = $this->instancePath . '/fileadmin/user_upload/';
+        $uploadPath = Environment::getPublicPath() . '/fileadmin/user_upload/';
         if (!is_dir($uploadPath)) {
             return [];
         }

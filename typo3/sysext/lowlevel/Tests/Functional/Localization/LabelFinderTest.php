@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Lowlevel\Tests\Functional\Localization;
 
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lowlevel\Localization\LabelFinder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -30,14 +32,17 @@ final class LabelFinderTest extends FunctionalTestCase
         'core',
     ];
 
-    /**
-     * Note that Environment::getLabelsPath() sadly cannot be used here,
-     * and there is no individual method to only retrieve 'typo3conf/l10n/' via API,
-     * so the reference is added here hard-coded, since monorepo tests run in classic mode.
-     */
-    protected array $pathsToProvideInTestInstance = [
-        'typo3/sysext/lowlevel/Tests/Functional/Localization/Fixtures/de.wizard.xlf' => 'typo3conf/l10n/de/core/Resources/Private/Language/de.wizard.xlf',
-    ];
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Provided here rather than through pathsToProvideInTestInstance, whose destinations
+        // are relative to the document root: the labels directory is typo3conf/l10n below it
+        // in classic mode but var/labels beside it in composer mode, so only
+        // Environment::getLabelsPath() names it correctly in both.
+        $target = Environment::getLabelsPath() . '/de/core/Resources/Private/Language/de.wizard.xlf';
+        GeneralUtility::mkdir_deep(dirname($target));
+        copy(__DIR__ . '/Fixtures/de.wizard.xlf', $target);
+    }
 
     #[Test]
     #[IgnoreDeprecations]

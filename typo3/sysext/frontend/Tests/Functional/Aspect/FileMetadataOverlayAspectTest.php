@@ -86,9 +86,9 @@ final class FileMetadataOverlayAspectTest extends AbstractTestCase
             $this->setUpFrontendRootPage(
                 1000,
                 [
-                    'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-                    'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
-                    'typo3/sysext/frontend/Tests/Functional/Aspect/Fixtures/JsonRenderer.typoscript',
+                    'EXT:core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                    'EXT:frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+                    'EXT:frontend/Tests/Functional/Aspect/Fixtures/JsonRenderer.typoscript',
                 ],
                 ['title' => 'ACME Root']
             );

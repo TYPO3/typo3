@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Uri;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -272,7 +273,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
 
         $matches = [];
         preg_match($expected, $result, $matches);
-        [$width, $height] = getimagesize($this->instancePath . '/' . $matches[1]);
+        [$width, $height] = getimagesize(Environment::getPublicPath() . '/' . $matches[1]);
         self::assertEquals($expectedWidth, $width, 'width of generated image does not match expected width');
         self::assertEquals($expectedHeight, $height, 'height of generated image does not match expected height');
     }
@@ -336,7 +337,7 @@ final class ImageViewHelperTest extends FunctionalTestCase
 
         $matches = [];
         preg_match($expected, $result, $matches);
-        [$width, $height] = getimagesize($this->instancePath . '/' . $matches[1]);
+        [$width, $height] = getimagesize(Environment::getPublicPath() . '/' . $matches[1]);
         self::assertEquals($expectedWidth, $width, 'width of generated image does not match expected width');
         self::assertEquals($expectedHeight, $height, 'height of generated image does not match expected height');
     }

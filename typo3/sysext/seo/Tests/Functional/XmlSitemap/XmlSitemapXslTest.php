@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
@@ -79,6 +80,14 @@ final class XmlSitemapXslTest extends AbstractTestCase
             (new InternalRequest('http://localhost/'))->withQueryParameters($config)
         );
 
+        // Where EXT:seo serves its public resources from differs by installation mode, and
+        // the data provider cannot resolve it - it runs before the instance is bootstrapped.
+        $xslFilePath = str_replace(
+            '{{SEO}}',
+            preg_quote((string)PathUtility::getSystemResourceUri('EXT:seo/Resources/Public/'), '/'),
+            $xslFilePath
+        );
+
         self::assertMatchesRegularExpression('/<\?xml-stylesheet type="text\/xsl" href="' . $xslFilePath . '"\?>/', (string)$response->getBody());
     }
 
@@ -90,7 +99,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
                 ],
                 '',
-                preg_quote('/typo3/sysext/seo/Resources/Public/CSS/Sitemap.xsl', '/') . '\?[0-9]+',
+                '{{SEO}}' . preg_quote('CSS/Sitemap.xsl', '/') . '\?[0-9]+',
             ],
             [
                 [
@@ -98,7 +107,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl1.typoscript',
                 ],
                 '',
-                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile1.xsl', '/'),
+                '{{SEO}}' . preg_quote('Tests/Functional/Fixtures/XslFile1.xsl', '/'),
             ],
             [
                 [
@@ -106,7 +115,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl2.typoscript',
                 ],
                 '',
-                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile2.xsl', '/'),
+                '{{SEO}}' . preg_quote('Tests/Functional/Fixtures/XslFile2.xsl', '/'),
             ],
             [
                 [
@@ -115,7 +124,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript',
                 ],
                 '',
-                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile1.xsl', '/'),
+                '{{SEO}}' . preg_quote('Tests/Functional/Fixtures/XslFile1.xsl', '/'),
             ],
             [
                 [
@@ -124,7 +133,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript',
                 ],
                 'records',
-                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile3.xsl', '/'),
+                '{{SEO}}' . preg_quote('Tests/Functional/Fixtures/XslFile3.xsl', '/'),
             ],
             [
                 [
@@ -133,7 +142,7 @@ final class XmlSitemapXslTest extends AbstractTestCase
                     'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript',
                 ],
                 'pages',
-                preg_quote('/typo3/sysext/seo/Resources/Public/Tests/Functional/Fixtures/XslFile1.xsl', '/'),
+                '{{SEO}}' . preg_quote('Tests/Functional/Fixtures/XslFile1.xsl', '/'),
             ],
         ];
     }

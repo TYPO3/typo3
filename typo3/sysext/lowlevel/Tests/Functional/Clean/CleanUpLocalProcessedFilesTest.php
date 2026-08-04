@@ -22,6 +22,7 @@ use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lowlevel\Command\CleanUpLocalProcessedFilesCommand;
@@ -70,7 +71,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         );
         $subject->createLocalStorage(
             'another-storage',
-            $this->instancePath . '/local-storage/',
+            Environment::getPublicPath() . '/local-storage/',
             'absolute'
         );
 
@@ -86,7 +87,7 @@ final class CleanUpLocalProcessedFilesTest extends FunctionalTestCase
         // ensure that they are re-provided. We are doing this on a test case basis, to avoid unneeded disk io if not
         // really needed.
         $testbase = new Testbase();
-        $testbase->providePathsInTestInstance($this->instancePath, $this->pathsToProvideInTestInstance);
+        $testbase->providePathsInTestInstance(Environment::getPublicPath(), $this->pathsToProvideInTestInstance);
 
         parent::tearDown();
     }

@@ -16,6 +16,10 @@
 $fileMtimeApps = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/apps.svg');
 $fileMtimeMime = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg');
 $fileMtimeActions = filemtime(__DIR__ . '/../../../../../core/Resources/Public/Icons/T3Icons/sprites/actions.svg');
+// Where an extension serves its public resources from differs by installation mode.
+$coreAssetPath = (string)\TYPO3\CMS\Core\Utility\PathUtility::getSystemResourceUri('EXT:core/Resources/Public/');
+$impexpAssetPath = (string)\TYPO3\CMS\Core\Utility\PathUtility::getSystemResourceUri('EXT:impexp/Resources/Public/');
+
 return [
     'update' => false,
     'showDiff' => true,
@@ -28,7 +32,7 @@ return [
             'msg' => '',
             'preCode' => '<span title="pages:0" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg?' . $fileMtimeApps . '#apps-pagetree-page-default" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/apps.svg?' . $fileMtimeApps . '#apps-pagetree-page-default" /></svg>
 	</span>
 	
 </span>',
@@ -45,7 +49,7 @@ return [
             'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-media-image" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-media-image" /></svg>
 	</span>
 	
 </span>',
@@ -63,7 +67,7 @@ return [
             'title' => '<span title="/">fileadmin</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -77,7 +81,7 @@ return [
             'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-media-image" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-media-image" /></svg>
 	</span>
 	
 </span>',
@@ -101,7 +105,7 @@ return [
             'title' => '<span title="/">fileadmin</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -115,7 +119,7 @@ return [
             'msg' => 'TABLE "sys_file_storage" will be inserted on ROOT LEVEL! ',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-sys_file_storage" data-identifier="mimetypes-x-sys_file_storage" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-sys_file_storage" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-sys_file_storage" /></svg>
 	</span>
 	
 </span>',
@@ -132,7 +136,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text-picture" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text-picture" /></svg>
 	</span>
 	
 </span>',
@@ -155,7 +159,7 @@ return [
             'title' => '<span title="/Root/">used-1.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_reference:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -170,7 +174,7 @@ return [
             'title' => '<span title="/">used-1.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -185,7 +189,7 @@ return [
             'title' => '<span title="/">fileadmin</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -199,7 +203,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text-picture" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text-picture" /></svg>
 	</span>
 	
 </span>',
@@ -222,7 +226,7 @@ return [
             'title' => '<span title="/Root/">used-2.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_reference:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -237,7 +241,7 @@ return [
             'title' => '<span title="/">used-2.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -252,7 +256,7 @@ return [
             'title' => '<span title="/">fileadmin</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -266,7 +270,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="tt_content:3" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text-picture" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-x-content-text-picture" /></svg>
 	</span>
 	
 </span>',
@@ -284,7 +288,7 @@ return [
             'title' => '<span title="/Root/">used-2.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file_reference:3" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -299,7 +303,7 @@ return [
             'title' => '<span title="/">used-2.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -314,7 +318,7 @@ return [
             'title' => '<span title="/">fileadmin</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 4"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -328,7 +332,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_reference:1" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-other-other" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-other-other" /></svg>
 	</span>
 	
 </span>',
@@ -346,7 +350,7 @@ return [
             'title' => '<span title="/">used-1.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -361,7 +365,7 @@ return [
             'title' => '<span title="/">fileadmin</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -375,7 +379,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_reference:2" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-other-other" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-other-other" /></svg>
 	</span>
 	
 </span>',
@@ -393,7 +397,7 @@ return [
             'title' => '<span title="/">used-2.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -408,7 +412,7 @@ return [
             'title' => '<span title="/">fileadmin</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -422,7 +426,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="sys_file_reference:3" class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-other-other" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/mimetypes.svg?' . $fileMtimeMime . '#mimetypes-other-other" /></svg>
 	</span>
 	
 </span>',
@@ -440,7 +444,7 @@ return [
             'title' => '<span title="/">used-2.jpg</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 2"></span><span title="sys_file:2" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -455,7 +459,7 @@ return [
             'title' => '<span title="/">fileadmin</span>',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 3"></span><span title="sys_file_storage:1" class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/actions.svg?' . $fileMtimeActions . '#actions-check" /></svg>
 	</span>
 	
 </span>',
@@ -469,7 +473,7 @@ return [
             'msg' => '',
             'preCode' => '<span class="indent indent-inline-block" style="--indent-level: 1"></span><span title="pages:1" class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default" aria-hidden="true">
 	<span class="icon-markup">
-<svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg?' . $fileMtimeApps . '#apps-pagetree-page-default" /></svg>
+<svg class="icon-color"><use xlink:href="' . $coreAssetPath . 'Icons/T3Icons/sprites/apps.svg?' . $fileMtimeApps . '#apps-pagetree-page-default" /></svg>
 	</span>
 	
 </span>',

@@ -116,7 +116,7 @@ final class StorageRepositoryTest extends FunctionalTestCase
         //        should be handled in testCaseSensitivity(). For now, we create the directories in question and
         //        suppress errors so only the first test creates them and subsequent tests don't emit a warning here.
         @mkdir($this->instancePath . '/documents');
-        @mkdir($this->instancePath . '/fileadmin/nested');
+        @mkdir(Environment::getPublicPath() . '/fileadmin/nested');
         $absoluteNames = array_map($prefixDelegate, [4 => 'files/', 5 => 'docs/', 6 => 'files/nested']);
         @mkdir($this->instancePath . '/files');
         @mkdir($this->instancePath . '/docs');

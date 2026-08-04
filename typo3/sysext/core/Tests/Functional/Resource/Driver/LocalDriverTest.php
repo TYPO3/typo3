@@ -67,7 +67,8 @@ final class LocalDriverTest extends FunctionalTestCase
         // This would cause problems if you fill "/fileadmin/" into the base path field of a sys_file_storage record and select "relative" as path type
         $relativeDriverConfiguration = [
             'pathType' => 'relative',
-            'basePath' => '/typo3temp/var/tests/',
+            // A directory that exists below the document root in both installation modes.
+            'basePath' => '/typo3temp/assets/',
         ];
         $subject = $this->getAccessibleMock(LocalDriver::class, null);
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);

@@ -22,6 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -70,8 +71,8 @@ final class ResourceFactoryTest extends FunctionalTestCase
         $subject
             ->expects($this->once())
             ->method('getFolderObjectFromCombinedIdentifier')
-            ->with('typo3');
-        $subject->retrieveFileOrFolderObject('typo3');
+            ->with('typo3temp');
+        $subject->retrieveFileOrFolderObject('typo3temp');
     }
 
     #[Test]
@@ -87,8 +88,8 @@ final class ResourceFactoryTest extends FunctionalTestCase
         $subject
             ->expects($this->once())
             ->method('getFolderObjectFromCombinedIdentifier')
-            ->with('typo3');
-        $subject->retrieveFileOrFolderObject(Environment::getPublicPath() . '/typo3');
+            ->with('typo3temp');
+        $subject->retrieveFileOrFolderObject(Environment::getPublicPath() . '/typo3temp');
     }
 
     #[Test]
@@ -150,7 +151,10 @@ final class ResourceFactoryTest extends FunctionalTestCase
         );
 
         // Emulate publishing
-        $publicFile = '/_assets/d25de869aebcd01495d2fe67ad5b0e25/Icons/Extension.svg';
+        // The published asset directory is named after the package path relative to the
+        // project root, which differs between installation modes. Mirrors DefaultPublicPrefix.
+        $corePackagePath = $this->get(PackageManager::class)->getPackage('core')->getPackagePath();
+        $publicFile = '/_assets/' . md5(substr($corePackagePath, strlen(Environment::getProjectPath()))) . '/Icons/Extension.svg';
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . dirname($publicFile));
         copy(GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Icons/Extension.svg'), Environment::getPublicPath() . $publicFile);
 

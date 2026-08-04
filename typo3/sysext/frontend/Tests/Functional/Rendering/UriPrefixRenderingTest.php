@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -67,6 +68,13 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // Where an extension serves its public resources from differs by installation mode.
+        foreach ($this->definedResources as $key => $definedResource) {
+            if (isset($this->resolvedResources[$key]) && str_starts_with($definedResource, 'EXT:')) {
+                $uri = (string)PathUtility::getSystemResourceUri($definedResource);
+                $this->resolvedResources[$key] = ltrim(explode('?', $uri)[0], '/');
+            }
+        }
         $this->importCsvDataSet(__DIR__ . '/../Fixtures/pages_frontend.csv');
         $this->writeSiteConfiguration(
             'test',

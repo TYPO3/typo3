@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
@@ -412,19 +413,19 @@ final class FluidTemplateContentObjectTest extends FunctionalTestCase
         $this->expectExceptionMessage('FLUIDTEMPLATE TypoScript object: Failed to resolve a template file for templateName "Missing".');
         $this->expectExceptionMessage('"' . implode('", "', [
             // With default controller name "Default"
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/Templates/Default/Missing.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/Templates/Default/Missing.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/Templates/Default/Missing',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/FoobarTemplates/Default/Missing.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/FoobarTemplates/Default/Missing.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/FoobarTemplates/Default/Missing',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/Templates/Default/Missing.fluid.html',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/Templates/Default/Missing.html',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/Templates/Default/Missing',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/FoobarTemplates/Default/Missing.fluid.html',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/FoobarTemplates/Default/Missing.html',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/FoobarTemplates/Default/Missing',
             // Without default controller name
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/Templates/Missing.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/Templates/Missing.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/Templates/Missing',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/FoobarTemplates/Missing.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/FoobarTemplates/Missing.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluid_template/Resources/Private/FoobarTemplates/Missing',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/Templates/Missing.fluid.html',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/Templates/Missing.html',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/Templates/Missing',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/FoobarTemplates/Missing.fluid.html',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/FoobarTemplates/Missing.html',
+            ExtensionManagementUtility::extPath('test_fluid_template') . 'Resources/Private/FoobarTemplates/Missing',
         ]) . '"');
         $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
     }

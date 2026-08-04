@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Mail;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -28,6 +27,7 @@ use TYPO3\CMS\Core\Settings\Settings;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TemplatedEmailFactoryTest extends FunctionalTestCase
@@ -49,13 +49,13 @@ final class TemplatedEmailFactoryTest extends FunctionalTestCase
                 2 => 'EXT:test_fluid_email/Resources/Private/Templates/EmailOverride2/',
             ],
             'expected' => [
-                0 => 'typo3/sysext/core/Resources/Private/Templates/Email/',
-                10 => 'typo3/sysext/backend/Resources/Private/Templates/Email/',
-                101 => 'typo3conf/ext/test_fluid_email/Resources/Private/Templates/',
-                102 => 'typo3conf/ext/test_fluid_email/Resources/Private/Templates/EmailOverride0/',
-                103 => 'typo3conf/ext/test_fluid_email/Resources/Private/Templates/EmailOverride1/',
-                104 => 'typo3conf/ext/test_fluid_email/Resources/Private/Templates/EmailOverride2/',
-                300 => 'typo3/sysext/core/Resources/Private/Templates/Email/',
+                0 => 'EXT:core/Resources/Private/Templates/Email/',
+                10 => 'EXT:backend/Resources/Private/Templates/Email/',
+                101 => 'EXT:test_fluid_email/Resources/Private/Templates/',
+                102 => 'EXT:test_fluid_email/Resources/Private/Templates/EmailOverride0/',
+                103 => 'EXT:test_fluid_email/Resources/Private/Templates/EmailOverride1/',
+                104 => 'EXT:test_fluid_email/Resources/Private/Templates/EmailOverride2/',
+                300 => 'EXT:core/Resources/Private/Templates/Email/',
             ],
         ];
 
@@ -67,11 +67,11 @@ final class TemplatedEmailFactoryTest extends FunctionalTestCase
                 20 => 'EXT:test_fluid_email/Resources/Private/Templates/EmailOverride1/',
             ],
             'expected' => [
-                0 => 'typo3/sysext/core/Resources/Private/Templates/Email/',
-                10 => 'typo3conf/ext/test_fluid_email/Resources/Private/Templates/EmailOverride0/',
-                20 => 'typo3conf/ext/test_fluid_email/Resources/Private/Templates/EmailOverride1/',
-                101 => 'typo3conf/ext/test_fluid_email/Resources/Private/Templates/',
-                300 => 'typo3/sysext/core/Resources/Private/Templates/Email/',
+                0 => 'EXT:core/Resources/Private/Templates/Email/',
+                10 => 'EXT:test_fluid_email/Resources/Private/Templates/EmailOverride0/',
+                20 => 'EXT:test_fluid_email/Resources/Private/Templates/EmailOverride1/',
+                101 => 'EXT:test_fluid_email/Resources/Private/Templates/',
+                300 => 'EXT:core/Resources/Private/Templates/Email/',
             ],
         ];
 
@@ -82,11 +82,11 @@ final class TemplatedEmailFactoryTest extends FunctionalTestCase
                 300 => 'EXT:test_fluid_email/Resources/Private/Templates/EmailOverride1/',
             ],
             'expected' => [
-                0 => 'typo3/sysext/core/Resources/Private/Templates/Email/',
-                10 => 'typo3conf/ext/test_fluid_email/Resources/Private/Templates/EmailOverride0/',
-                101 => 'typo3conf/ext/test_fluid_email/Resources/Private/Templates/',
+                0 => 'EXT:core/Resources/Private/Templates/Email/',
+                10 => 'EXT:test_fluid_email/Resources/Private/Templates/EmailOverride0/',
+                101 => 'EXT:test_fluid_email/Resources/Private/Templates/',
                 // The "300" from the override argument wins over site settings!
-                300 => 'typo3/sysext/core/Resources/Private/Templates/Email/',
+                300 => 'EXT:core/Resources/Private/Templates/Email/',
             ],
         ];
     }
@@ -125,11 +125,12 @@ final class TemplatedEmailFactoryTest extends FunctionalTestCase
         );
         $actual = $fluidEmail->getView()->getRenderingContext()->getTemplatePaths()->getTemplateRootPaths();
 
-        // The actual paths contain our instance's root directory, so we need to add it to our expectation too
-        // Must be done here because the DataProvider is called statically and does not have this yet.
+        // Expectations are EXT: identifiers because where an extension lives on disk
+        // differs by installation mode, and the data provider is static - it runs before
+        // the instance is bootstrapped and cannot resolve them itself.
         $parsedExpectation = [];
         foreach ($expected as $key => $value) {
-            $parsedExpectation[$key] = Environment::getProjectPath() . '/' . $value;
+            $parsedExpectation[$key] = GeneralUtility::getFileAbsFileName($value);
         }
         self::assertSame($actual, $parsedExpectation);
     }

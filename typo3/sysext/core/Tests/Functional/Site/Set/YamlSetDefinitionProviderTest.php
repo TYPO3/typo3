@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Site\Set;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Set\YamlSetDefinitionProvider;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class YamlSetDefinitionProviderTest extends FunctionalTestCase
@@ -39,7 +40,7 @@ final class YamlSetDefinitionProviderTest extends FunctionalTestCase
     #[Test]
     public function getLoadsSettingsYamlFileWithProcessedImports(): void
     {
-        $setPath = $this->instancePath . '/typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_sets/Configuration/Sets/Set6/config.yaml';
+        $setPath = GeneralUtility::getFileAbsFileName('EXT:test_sets/Configuration/Sets/Set6/config.yaml');
 
         $expected = [
             'foo.baz' => 'bar',
@@ -53,7 +54,7 @@ final class YamlSetDefinitionProviderTest extends FunctionalTestCase
     #[Test]
     public function getDerivesEnumSettingLabelsAndDescriptionFromLabelsXlf(): void
     {
-        $setPath = $this->instancePath . '/typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_sets/Configuration/Sets/SetEnumLabels/config.yaml';
+        $setPath = GeneralUtility::getFileAbsFileName('EXT:test_sets/Configuration/Sets/SetEnumLabels/config.yaml');
 
         $setDefinition = $this->subject->get(new \SplFileInfo($setPath), 'EXT:test_sets/Configuration/Sets/SetEnumLabels/');
         $settingsDefinitions = [];

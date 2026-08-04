@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\DummyFileCreationService;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class AssetRendererTest extends FunctionalTestCase
@@ -66,9 +67,9 @@ final class AssetRendererTest extends FunctionalTestCase
                     ['file1', 'EXT:core/Resources/Public/foo.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="/typo3/sysext/core/Resources/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="{{EXT:core/Resources/Public/foo.ext}}" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="/typo3/sysext/core/Resources/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="{{EXT:core/Resources/Public/foo.ext}}"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -111,9 +112,9 @@ final class AssetRendererTest extends FunctionalTestCase
                     ['file2', 'EXT:core/Resources/Public/foo.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709" rel="stylesheet" >' . PHP_EOL . '<link href="/typo3/sysext/core/Resources/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709" rel="stylesheet" >' . PHP_EOL . '<link href="{{EXT:core/Resources/Public/foo.ext}}" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>' . PHP_EOL . '<script src="/typo3/sysext/core/Resources/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="/fileadmin/foo.ext?da39a3ee5e6b4b0d3255bfef95601890afd80709"></script>' . PHP_EOL . '<script src="{{EXT:core/Resources/Public/foo.ext}}"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -124,9 +125,9 @@ final class AssetRendererTest extends FunctionalTestCase
                     ['file1', 'EXT:core/Resources/Public/bar.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="/typo3/sysext/core/Resources/Public/bar.ext" rel="stylesheet" >' . PHP_EOL . '<link href="/typo3/sysext/core/Resources/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="{{EXT:core/Resources/Public/bar.ext}}" rel="stylesheet" >' . PHP_EOL . '<link href="{{EXT:core/Resources/Public/foo.ext}}" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="/typo3/sysext/core/Resources/Public/bar.ext"></script>' . PHP_EOL . '<script src="/typo3/sysext/core/Resources/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="{{EXT:core/Resources/Public/bar.ext}}"></script>' . PHP_EOL . '<script src="{{EXT:core/Resources/Public/foo.ext}}"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -212,8 +213,8 @@ final class AssetRendererTest extends FunctionalTestCase
             [$identifier, $source, $attributes, $options] = $file;
             $assetCollector->addStyleSheet($identifier, $source, $attributes, $options);
         }
-        self::assertSame($expectedMarkup['css_no_prio'], $assetRenderer->renderStyleSheets());
-        self::assertSame($expectedMarkup['css_prio'], $assetRenderer->renderStyleSheets(true));
+        self::assertSame($this->resolveResourceUris($expectedMarkup['css_no_prio']), $assetRenderer->renderStyleSheets());
+        self::assertSame($this->resolveResourceUris($expectedMarkup['css_prio']), $assetRenderer->renderStyleSheets(true));
     }
 
     #[DataProvider('filesDataProvider')]
@@ -227,8 +228,25 @@ final class AssetRendererTest extends FunctionalTestCase
             [$identifier, $source, $attributes, $options] = $file;
             $assetCollector->addJavaScript($identifier, $source, $attributes, $options);
         }
-        self::assertSame($expectedMarkup['js_no_prio'], $assetRenderer->renderJavaScript());
-        self::assertSame($expectedMarkup['js_prio'], $assetRenderer->renderJavaScript(true));
+        self::assertSame($this->resolveResourceUris($expectedMarkup['js_no_prio']), $assetRenderer->renderJavaScript());
+        self::assertSame($this->resolveResourceUris($expectedMarkup['js_prio']), $assetRenderer->renderJavaScript(true));
+    }
+
+    /**
+     * Replaces {{EXT:…}} placeholders with the URI the resource actually gets.
+     *
+     * Public extension resources are served from where the extension lies in classic
+     * mode and from the published _assets directory in composer mode, so the expected
+     * markup cannot spell either out. Data providers cannot resolve this themselves -
+     * they run before the instance is bootstrapped.
+     */
+    private function resolveResourceUris(string $markup): string
+    {
+        return preg_replace_callback(
+            '/{{(EXT:[^}]+)}}/',
+            static fn(array $matches): string => (string)PathUtility::getSystemResourceUri($matches[1]),
+            $markup
+        );
     }
 
     public static function inlineDataProvider(): array

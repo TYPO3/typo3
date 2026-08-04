@@ -112,7 +112,9 @@ final class PackageInitializationEventTest extends FunctionalTestCase
 
         self::assertTrue($event->hasStorageEntry(ImportStaticSqlDataOnPackageInitialization::class));
         self::assertStringEndsWith(
-            '/typo3conf/ext/test_package_initialization/ext_tables_static+adt.sql',
+            // Where the extension lives on disk differs by installation mode; only the
+            // file below its package path is the subject here.
+            '/ext_tables_static+adt.sql',
             $event->getStorageEntry(ImportStaticSqlDataOnPackageInitialization::class)->getResult()
         );
 

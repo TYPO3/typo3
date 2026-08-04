@@ -62,12 +62,14 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\SystemResource\Publishing\UriGenerationOptions;
 use TYPO3\CMS\Core\TypoScript\AST\AstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
@@ -6307,7 +6309,7 @@ content="benni">',
                     ->withAttribute('frontend.typoscript', $frontendTypoScript)
         );
         $filenameIn = 'EXT:frontend/Resources/Public/Icons/Extension.svg';
-        $expectedUrl = '/typo3/sysext/frontend/Resources/Public/Icons/Extension.svg';
+        $expectedUrl = (string)PathUtility::getSystemResourceUri($filenameIn, null, new UriGenerationOptions(cacheBusting: false));
         self::assertEquals($expectedUrl, $subject->getData('path:' . $filenameIn, []));
     }
 

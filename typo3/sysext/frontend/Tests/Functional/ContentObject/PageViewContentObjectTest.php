@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
@@ -114,13 +115,13 @@ final class PageViewContentObjectTest extends FunctionalTestCase
         $this->expectExceptionMessage('PAGEVIEW TypoScript object: Failed to resolve a template file for page layout "Standard".');
         $this->expectExceptionMessage('"' . implode('", "', [
             // With default controller name "Default"
-            $this->getInstancePath() . '/typo3conf/ext/test_fluidpagerendering/Resources/Private/Templates/Pages/Pages/Default/Standard.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluidpagerendering/Resources/Private/Templates/Pages/Pages/Default/Standard.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluidpagerendering/Resources/Private/Templates/Pages/Pages/Default/Standard',
+            ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Default/Standard.fluid.html',
+            ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Default/Standard.html',
+            ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Default/Standard',
             // Without default controller name
-            $this->getInstancePath() . '/typo3conf/ext/test_fluidpagerendering/Resources/Private/Templates/Pages/Pages/Standard.fluid.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluidpagerendering/Resources/Private/Templates/Pages/Pages/Standard.html',
-            $this->getInstancePath() . '/typo3conf/ext/test_fluidpagerendering/Resources/Private/Templates/Pages/Pages/Standard',
+            ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Standard.fluid.html',
+            ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Standard.html',
+            ExtensionManagementUtility::extPath('test_fluidpagerendering') . 'Resources/Private/Templates/Pages/Pages/Standard',
         ]));
         $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
     }

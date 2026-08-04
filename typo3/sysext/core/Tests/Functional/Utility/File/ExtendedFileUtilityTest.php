@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Utility\File;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\File;
@@ -44,7 +45,7 @@ final class ExtendedFileUtilityTest extends FunctionalTestCase
 
         // ensure, temporary uploaded files are purged again
         // @todo move this to the testing framework (which only reinitialized files for the first run)
-        $fileCommandsPath = $this->instancePath . '/fileadmin/file-commands';
+        $fileCommandsPath = Environment::getPublicPath() . '/fileadmin/file-commands';
         if (is_dir($fileCommandsPath)) {
             GeneralUtility::rmdir($fileCommandsPath, true);
         }

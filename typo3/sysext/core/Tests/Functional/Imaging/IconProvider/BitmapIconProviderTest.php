@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Tests\Functional\Fixtures\DummyFileCreationService;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -64,6 +65,6 @@ final class BitmapIconProviderTest extends FunctionalTestCase
     public function prepareIconMarkupEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'EXT:core/Resources/Public/Images/foo.png']);
-        self::assertEquals('<img src="/typo3/sysext/core/Resources/Public/Images/foo.png" width="16" height="16" alt="" />', $this->icon->getMarkup());
+        self::assertEquals('<img src="' . PathUtility::getSystemResourceUri('EXT:core/Resources/Public/') . 'Images/foo.png" width="16" height="16" alt="" />', $this->icon->getMarkup());
     }
 }
