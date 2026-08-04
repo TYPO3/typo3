@@ -36,7 +36,7 @@ final class ToolbarItemProvider
     /**
      * Scheduler last run registry information
      */
-    private array $lastRunInformation = [];
+    private array $lastRunInformation;
 
     /**
      * Gather initial information

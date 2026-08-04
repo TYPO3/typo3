@@ -168,12 +168,8 @@ final class JsonViewTest extends UnitTestCase
     public static function recursiveDataProvider(): array
     {
         $object = new class ('foo') {
-            private $value1 = '';
             private $child;
-            public function __construct($value1)
-            {
-                $this->value1 = $value1;
-            }
+            public function __construct(private $value1) {}
             public function getValue1(): string
             {
                 return $this->value1;
@@ -219,13 +215,9 @@ final class JsonViewTest extends UnitTestCase
         $output[] = [$object, $configuration, $expected, 'testData', 'Recursive rendering of defined property should be possible.'];
 
         $object = new class ('foo') {
-            private $value1 = '';
             private $children = [];
             private $secret = 'secret';
-            public function __construct($value1)
-            {
-                $this->value1 = $value1;
-            }
+            public function __construct(private $value1) {}
             public function getValue1(): string
             {
                 return $this->value1;

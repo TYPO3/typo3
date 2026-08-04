@@ -26,17 +26,12 @@ use TYPO3\CMS\Core\Pagination\AbstractPaginator;
  */
 final class SlicePaginator extends AbstractPaginator
 {
-    private array $items = [];
-    private int $totalAmount = 0;
-
     public function __construct(
-        array $items,
+        private array $items,
         int $currentPageNumber = 1,
-        int $totalAmount = 0,
+        private int $totalAmount = 0,
         int $itemsPerPage = 10,
     ) {
-        $this->items = $items;
-        $this->totalAmount = $totalAmount;
         $this->setCurrentPageNumber($currentPageNumber);
         $this->setItemsPerPage($itemsPerPage);
 

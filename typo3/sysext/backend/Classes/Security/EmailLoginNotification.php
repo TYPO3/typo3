@@ -43,8 +43,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class EmailLoginNotification
 {
-    private int $warningMode = 0;
-    private string $warningEmailRecipient = '';
+    private int $warningMode;
+    private string $warningEmailRecipient;
 
     /**
      * @var ServerRequestInterface

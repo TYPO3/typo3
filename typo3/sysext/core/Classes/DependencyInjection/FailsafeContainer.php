@@ -27,11 +27,6 @@ class FailsafeContainer implements ContainerInterface
     /**
      * @var array
      */
-    private $entries = [];
-
-    /**
-     * @var array
-     */
     private $factories = [];
 
     /**
@@ -42,10 +37,8 @@ class FailsafeContainer implements ContainerInterface
      * @param iterable $providers The service providers to register.
      * @param array $entries The default parameters or objects.
      */
-    public function __construct(iterable $providers = [], array $entries = [])
+    public function __construct(iterable $providers = [], private array $entries = [])
     {
-        $this->entries = $entries;
-
         $factories = [];
         foreach ($providers as $provider) {
             /** @var ServiceProviderInterface $provider */
