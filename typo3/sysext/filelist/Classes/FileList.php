@@ -973,20 +973,27 @@ class FileList
         }
         foreach ($event->getActionGroup(ActionGroup::secondary)->getItems() as $action) {
             if ($action instanceof GenericButton) {
+                $attributes = $action->getAttributes();
+                if ($action->getClasses() !== '') {
+                    $attributes['class'] = $action->getClasses();
+                }
                 $action = $this->componentFactory
                     ->createDropDownItem()
                     ->setTag($action->getTag())
                     ->setLabel($action->getLabel() ?: $action->getTitle())
                     ->setIcon($action->getIcon())
                     ->setHref($action->getHref())
-                    ->setAttributes($action->getAttributes());
+                    ->setAttributes($attributes);
                 $cellOutput .= '<li>' . $action->render() . '</li>';
                 continue;
             }
             if ($action instanceof LinkButton) {
-                $attributes = [];
+                $attributes = $action->getAttributes();
                 foreach ($action->getDataAttributes() as $key => $value) {
                     $attributes['data-' . $key] = $value;
+                }
+                if ($action->getClasses() !== '') {
+                    $attributes['class'] = $action->getClasses();
                 }
                 $action = $this->componentFactory
                     ->createDropDownItem()
@@ -994,7 +1001,6 @@ class FileList
                     ->setIcon($action->getIcon())
                     ->setHref($action->getHref())
                     ->setAttributes([
-                        ...$action->getAttributes(),
                         ...$attributes,
                         'role' => $action->getRole(),
                     ]);
