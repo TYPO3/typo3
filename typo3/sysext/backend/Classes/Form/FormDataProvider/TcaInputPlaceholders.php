@@ -156,7 +156,7 @@ readonly class TcaInputPlaceholders implements FormDataProviderInterface
             $value = $this->getPlaceholderValue($fieldNameArray, $relatedFormData, $recursionLevel + 1);
         }
 
-        if ($recursionLevel === 0 && is_array($value)) {
+        if (is_array($value)) {
             $value = implode(', ', $value);
         }
         return (string)$value;
