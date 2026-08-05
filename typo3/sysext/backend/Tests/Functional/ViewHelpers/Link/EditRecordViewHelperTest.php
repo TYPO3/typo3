@@ -130,4 +130,48 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="-42" table="c_table">edit record c_table:-42</be:link.editRecord>');
         (new TemplateView($context))->render();
     }
+
+    #[Test]
+    public function renderRendersContextualEditTriggerWhenContextualIsEnabled(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="42" table="a_table" contextual="true">edit record a_table:42</be:link.editRecord>');
+        $result = urldecode((new TemplateView($context))->render());
+
+        self::assertStringContainsString('<typo3-backend-contextual-record-edit-trigger', $result);
+        self::assertStringContainsString('/typo3/record/edit/contextual', $result);
+        self::assertStringContainsString('edit[a_table][42]=edit', $result);
+        self::assertStringContainsString('/typo3/record/edit?', $result);
+        self::assertStringContainsString('edit-url=', $result);
+        self::assertStringNotContainsString('href=', $result);
+    }
+
+    #[Test]
+    public function renderAddsConfiguredReturnUrlAndFieldsForContextualEdit(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="43" table="c_table" fields="canonical_url,title" returnUrl="foo/bar" contextual="true">edit record c_table:43</be:link.editRecord>');
+        $result = urldecode((new TemplateView($context))->render());
+
+        self::assertStringContainsString('/typo3/record/edit/contextual', $result);
+        self::assertStringContainsString('/typo3/record/edit?', $result);
+        self::assertStringContainsString('edit[c_table][43]=edit', $result);
+        self::assertStringContainsString('returnUrl=foo/bar', $result);
+        self::assertStringContainsString('columnsOnly[c_table][0]=canonical_url', $result);
+        self::assertStringContainsString('columnsOnly[c_table][1]=title', $result);
+    }
+
+    #[Test]
+    public function renderForwardsAdditionalTagAttributesForContextualEdit(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:link.editRecord uid="43" table="c_table" contextual="true" class="btn btn-default" data="{action: \'edit\'}">edit record c_table:43</be:link.editRecord>');
+        $result = urldecode((new TemplateView($context))->render());
+
+        self::assertStringContainsString('class="btn btn-default"', $result);
+        self::assertStringContainsString('data-action="edit"', $result);
+    }
 }
