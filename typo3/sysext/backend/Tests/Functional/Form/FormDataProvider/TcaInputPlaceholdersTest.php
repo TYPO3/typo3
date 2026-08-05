@@ -420,7 +420,7 @@ final class TcaInputPlaceholdersTest extends FunctionalTestCase
             ],
             'sys_file_metadata' => [
                 'columns' => [
-                    'sha1' => [
+                    'title' => [
                         'config' => [
                             'type' => 'input',
                         ],
@@ -509,6 +509,170 @@ final class TcaInputPlaceholdersTest extends FunctionalTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataMockResult['databaseRow']['title'];
+
+        self::assertSame($expected, $this->get(TcaInputPlaceholders::class)->addData($input));
+    }
+
+    #[Test]
+    public function addDataReturnsImplodedValueFromRelationAtDeeperRecursionLevel(): void
+    {
+        $request = new ServerRequest();
+        $fullTca = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                            'placeholder' => '__row|aRelationField|aForeignField',
+                        ],
+                    ],
+                    'aRelationField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'foreign_table' => 'aForeignTable',
+                        ],
+                    ],
+                ],
+            ],
+            'aForeignTable' => [
+                'columns' => [
+                    'aForeignField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'foreign_table' => 'aTable',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $tcaSchemata = $this->get(TcaSchemaBuilder::class)->buildFromStructure($fullTca);
+
+        $input = [
+            'request' => $request,
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => '',
+                'aRelationField' => ['42'],
+            ],
+            'processedTca' => [
+                'columns' => $fullTca['aTable']['columns'],
+            ],
+            'tcaSchemata' => $tcaSchemata,
+            'fullTca' => $fullTca,
+        ];
+
+        $aForeignTableInput = [
+            'request' => $request,
+            'tableName' => 'aForeignTable',
+            'databaseRow' => [
+                // FormDataProviders resolve a select field to an array of uids
+                'aForeignField' => ['7', '8'],
+            ],
+            'processedTca' => [
+                'columns' => $fullTca['aForeignTable']['columns'],
+            ],
+            'tcaSchemata' => $tcaSchemata,
+            'fullTca' => $fullTca,
+        ];
+
+        $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
+        GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
+        $formDataCompilerMock->expects($this->atLeastOnce())->method('compile')->with([
+            'request' => $request,
+            'command' => 'edit',
+            'vanillaUid' => 42,
+            'tableName' => 'aForeignTable',
+            'inlineCompileExistingChildren' => false,
+            'columnsToProcess' => ['aForeignField'],
+            'tcaSchemata' => $tcaSchemata,
+            'fullTca' => $fullTca,
+        ])
+            ->willReturn($aForeignTableInput);
+
+        $expected = $input;
+        $expected['processedTca']['columns']['aField']['config']['placeholder'] = '7, 8';
+
+        self::assertSame($expected, $this->get(TcaInputPlaceholders::class)->addData($input));
+    }
+
+    #[Test]
+    public function addDataRemovesPlaceholderForEmptyRelationAtDeeperRecursionLevel(): void
+    {
+        $request = new ServerRequest();
+        $fullTca = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                            'placeholder' => '__row|aRelationField|aForeignField',
+                        ],
+                    ],
+                    'aRelationField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'foreign_table' => 'aForeignTable',
+                        ],
+                    ],
+                ],
+            ],
+            'aForeignTable' => [
+                'columns' => [
+                    'aForeignField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'foreign_table' => 'aTable',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $tcaSchemata = $this->get(TcaSchemaBuilder::class)->buildFromStructure($fullTca);
+
+        $input = [
+            'request' => $request,
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'aField' => '',
+                'aRelationField' => ['42'],
+            ],
+            'processedTca' => [
+                'columns' => $fullTca['aTable']['columns'],
+            ],
+            'tcaSchemata' => $tcaSchemata,
+            'fullTca' => $fullTca,
+        ];
+
+        $aForeignTableInput = [
+            'request' => $request,
+            'tableName' => 'aForeignTable',
+            'databaseRow' => [
+                // Nothing has been selected in the related record
+                'aForeignField' => [],
+            ],
+            'processedTca' => [
+                'columns' => $fullTca['aForeignTable']['columns'],
+            ],
+            'tcaSchemata' => $tcaSchemata,
+            'fullTca' => $fullTca,
+        ];
+
+        $formDataCompilerMock = $this->createMock(FormDataCompiler::class);
+        GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerMock);
+        $formDataCompilerMock->expects($this->atLeastOnce())->method('compile')->with([
+            'request' => $request,
+            'command' => 'edit',
+            'vanillaUid' => 42,
+            'tableName' => 'aForeignTable',
+            'inlineCompileExistingChildren' => false,
+            'columnsToProcess' => ['aForeignField'],
+            'tcaSchemata' => $tcaSchemata,
+            'fullTca' => $fullTca,
+        ])
+            ->willReturn($aForeignTableInput);
+
+        $expected = $input;
+        unset($expected['processedTca']['columns']['aField']['config']['placeholder']);
 
         self::assertSame($expected, $this->get(TcaInputPlaceholders::class)->addData($input));
     }
