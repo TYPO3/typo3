@@ -491,6 +491,22 @@ final class RteHtmlParserTest extends UnitTestCase
                 '<h1>block1</h1>' . CRLF . 'paragraph' . CRLF . '<h1>block2</h1>',
                 '<h1>block1</h1>' . CRLF . '<p>paragraph</p>' . CRLF . '<h1>block2</h1>',
             ],
+            'Linebreak before the closing tag of a paragraph' => [
+                '<p>paragraph' . CRLF . '</p>',
+                '<p>paragraph' . CRLF . '</p>',
+            ],
+            'Linebreak before the closing tag of a paragraph followed by block' => [
+                '<p>paragraph' . CRLF . '</p><ul><li>list item</li></ul>',
+                '<p>paragraph' . CRLF . '</p>' . CRLF . '<ul><li>list item</li></ul>',
+            ],
+            'Linebreak after the opening tag of a paragraph' => [
+                '<p>' . CRLF . 'paragraph</p>',
+                '<p>' . CRLF . 'paragraph</p>',
+            ],
+            'Linebreak within the text of a paragraph' => [
+                '<p>first' . CRLF . 'second</p>',
+                '<p>first' . CRLF . 'second</p>',
+            ],
         ];
     }
 
@@ -536,6 +552,14 @@ final class RteHtmlParserTest extends UnitTestCase
             'Plain text followed by paragraph' => [
                 'plain text<p>paragraph</p>',
                 '<p>plain text</p>' . CRLF . '<p>paragraph</p>',
+            ],
+            'Paragraph with a linebreak before its closing tag' => [
+                '<p>paragraph' . CRLF . '</p>',
+                '<p>paragraph </p>',
+            ],
+            'Paragraph with a linebreak before its closing tag followed by block' => [
+                '<p>paragraph' . CRLF . '</p><ul><li>list item</li></ul>',
+                '<p>paragraph </p>' . CRLF . '<ul><li>list item</li></ul>',
             ],
             'Spacing paragraph' => [
                 '<p>&nbsp;</p>',

@@ -654,7 +654,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         // First, setting configuration for the HTMLcleaner function. This will process each line between the <div>/<p> section on their way to the RTE
         $keepTags = $this->getKeepTags('rte');
         // Divide the content into lines
-        $parts = explode(LF, $value);
+        $parts = $this->divideIntoLinesOutsideOfParagraphs($value);
         foreach ($parts as $k => $v) {
             // Processing of line content:
             // If the line is blank, set it to &nbsp;
@@ -681,6 +681,33 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         }
         // Implode result:
         return implode(LF, $parts);
+    }
+
+    /**
+     * Splits content into lines, but only at line breaks that are actually located between
+     * two elements. A line break inside a <p> or <div> element is insignificant whitespace
+     * and does not start a new line - splitting there would cut the element in half and leave
+     * both halves to be wrapped into paragraphs of their own by setDivTags().
+     *
+     * @param string $value Value to split
+     * @return string[] The lines
+     * @see setDivTags()
+     */
+    protected function divideIntoLinesOutsideOfParagraphs(string $value): array
+    {
+        $lines = [''];
+        foreach ($this->splitIntoBlock('p,div', $value) as $key => $part) {
+            if ($key % 2) {
+                // Inside a <p> or <div> element, so it belongs to the line that is currently open
+                $lines[array_key_last($lines)] .= $part;
+            } else {
+                $partLines = explode(LF, $part);
+                // The first one continues the line that is currently open, the rest are new lines
+                $lines[array_key_last($lines)] .= array_shift($partLines);
+                array_push($lines, ...$partLines);
+            }
+        }
+        return $lines;
     }
 
     /**
