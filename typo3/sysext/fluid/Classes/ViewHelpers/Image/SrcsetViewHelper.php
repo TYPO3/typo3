@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Domain\Model\File as ExtbaseFile;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference as ExtbaseFileReference;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\InvalidArgumentValueException;
@@ -81,7 +83,7 @@ final class SrcsetViewHelper extends AbstractViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('image', FileInterface::class, 'A FAL object (\\TYPO3\\CMS\\Core\\Resource\\File or \\TYPO3\\CMS\\Core\\Resource\\FileReference); if not specified, ViewHelper children will be used as a fallback.');
+        $this->registerArgument('image', FileInterface::class . '|' . ExtbaseFile::class . '|' . ExtbaseFileReference::class, 'A FAL object (\\TYPO3\\CMS\\Core\\Resource\\File or \\TYPO3\\CMS\\Core\\Resource\\FileReference); if not specified, ViewHelper children will be used as a fallback.');
         $this->registerArgument('srcset', 'string', 'Comma-separated list of width descriptors (e. g. 200w) or pixel density descriptors (e. g. 2x).', true);
 
         $this->registerArgument('referenceWidth', 'int', 'Image width that will be used as base (1x) when calculating srcset with pixel density descriptors (e. g. 2x). This is irrelevant for width descriptors.');
@@ -96,6 +98,9 @@ final class SrcsetViewHelper extends AbstractViewHelper
     public function render(): SrcsetAttribute
     {
         $image = $this->arguments['image'] ?? $this->renderChildren();
+        if ($image instanceof ExtbaseFile || $image instanceof ExtbaseFileReference) {
+            $image = $image->getOriginalResource();
+        }
         if (!$image instanceof FileInterface) {
             throw new InvalidArgumentValueException('A valid file object must be specified.', 1697797783);
         }

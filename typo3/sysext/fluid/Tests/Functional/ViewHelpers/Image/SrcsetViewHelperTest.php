@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Extbase\Domain\Model\File as ExtbaseFile;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference as ExtbaseFileReference;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -168,6 +170,72 @@ final class SrcsetViewHelperTest extends FunctionalTestCase
 
         preg_match($expected, $result, $matches);
         $this->assertImageSize(300, 300, $matches[1]);
+    }
+
+    #[Test]
+    public function acceptFileAsImageArgument(): void
+    {
+        $image = $this->get(ResourceFactory::class)->getFileObject(1);
+
+        $template = "{f:image.srcset(image: image, srcset: '400w, 999w', crop: {default:{cropArea:{x:0,y:0,width:0.75,height:1}}})}";
+        $expected = '@^(fileadmin/_processed_/4/0/csm_SrcsetViewHelperTest_.*\.jpg) 300w$@';
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $view = new TemplateView($context);
+        $view->assign('image', $image);
+        $result = $view->render();
+        self::assertMatchesRegularExpression($expected, $result);
+    }
+
+    #[Test]
+    public function acceptFileReferenceAsImageArgument(): void
+    {
+        $image = $this->get(ResourceFactory::class)->getFileReferenceObject(1);
+
+        $template = "{f:image.srcset(image: image, srcset: '400w, 999w', crop: {default:{cropArea:{x:0,y:0,width:0.75,height:1}}})}";
+        $expected = '@^(fileadmin/_processed_/4/0/csm_SrcsetViewHelperTest_.*\.jpg) 300w$@';
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $view = new TemplateView($context);
+        $view->assign('image', $image);
+        $result = $view->render();
+        self::assertMatchesRegularExpression($expected, $result);
+    }
+
+    #[Test]
+    public function acceptExtbaseFileAsImageArgument(): void
+    {
+        $image = new ExtbaseFile();
+        $image->setOriginalResource($this->get(ResourceFactory::class)->getFileObject(1));
+
+        $template = "{f:image.srcset(image: image, srcset: '400w, 999w', crop: {default:{cropArea:{x:0,y:0,width:0.75,height:1}}})}";
+        $expected = '@^(fileadmin/_processed_/4/0/csm_SrcsetViewHelperTest_.*\.jpg) 300w$@';
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $view = new TemplateView($context);
+        $view->assign('image', $image);
+        $result = $view->render();
+        self::assertMatchesRegularExpression($expected, $result);
+    }
+
+    #[Test]
+    public function acceptExtbaseFileReferenceAsImageArgument(): void
+    {
+        $image = new ExtbaseFileReference();
+        $image->setOriginalResource($this->get(ResourceFactory::class)->getFileReferenceObject(1));
+
+        $template = "{f:image.srcset(image: image, srcset: '400w, 999w', crop: {default:{cropArea:{x:0,y:0,width:0.75,height:1}}})}";
+        $expected = '@^(fileadmin/_processed_/4/0/csm_SrcsetViewHelperTest_.*\.jpg) 300w$@';
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $view = new TemplateView($context);
+        $view->assign('image', $image);
+        $result = $view->render();
+        self::assertMatchesRegularExpression($expected, $result);
     }
 
     #[Test]
