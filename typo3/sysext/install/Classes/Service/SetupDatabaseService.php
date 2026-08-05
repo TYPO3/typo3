@@ -278,6 +278,14 @@ class SetupDatabaseService
     {
         $connectionParams = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME];
         unset($connectionParams['dbname']);
+        if (in_array($connectionParams['driver'] ?? '', ['mysqli', 'pdo_mysql'], true)) {
+            // Doctrine's MySQL introspection provider requires a database to be selected on the
+            // connection - it runs `SELECT DATABASE()` and rejects NULL - even though listing all
+            // database names is a server-level operation that does not need one. `information_schema`
+            // always exists and is readable by any user, so it is used as a neutral placeholder to
+            // satisfy that requirement without depending on a database the user may not have chosen yet.
+            $connectionParams['dbname'] = 'information_schema';
+        }
 
         // Establishing the connection using the Doctrine DriverManager directly
         // as we need a connection without selecting a database right away. Otherwise
