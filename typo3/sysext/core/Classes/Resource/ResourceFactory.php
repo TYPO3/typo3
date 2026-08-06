@@ -172,9 +172,9 @@ readonly class ResourceFactory implements SingletonInterface
      *
      * @throws \UnexpectedValueException if the source cannot be resolved to a File or FileReference
      */
-    public function resolveFileObject(string|int|object|null $source, bool $treatIdAsReference = false): File|FileReference
+    public function resolveFileObject(string|int|object|null $source, bool $treatIdAsReference = false): FileInterface&ProcessableFileInterface
     {
-        if ($source instanceof File || $source instanceof FileReference) {
+        if ($source instanceof FileInterface && $source instanceof ProcessableFileInterface) {
             return $source;
         }
         if (is_object($source)) {
@@ -190,7 +190,7 @@ readonly class ResourceFactory implements SingletonInterface
 
         $source = (string)$source;
         $resolvedFile = $this->resolveFileObjectFromString($source, $treatIdAsReference);
-        if ($resolvedFile instanceof File || $resolvedFile instanceof FileReference) {
+        if ($resolvedFile instanceof ProcessableFileInterface) {
             return $resolvedFile;
         }
         if ($resolvedFile === null) {

@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * in this decorator class to prioritize possible overrides for the metadata for this specific usage
  * of the file.
  */
-class FileReference implements FileInterface
+class FileReference implements FileInterface, ProcessableFileInterface
 {
     /**
      * Various properties of the FileReference. Note that these information can be different

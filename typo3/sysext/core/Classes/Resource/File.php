@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * File representation in the file abstraction layer.
  */
-class File extends AbstractFile implements PublicResourceInterface, SystemResourceInterface
+class File extends AbstractFile implements PublicResourceInterface, SystemResourceInterface, ProcessableFileInterface
 {
     /**
      * Contains the names of all properties that have been update since the

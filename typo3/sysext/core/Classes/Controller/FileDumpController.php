@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Resource\Event\ModifyFileDumpEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -108,7 +109,7 @@ readonly class FileDumpController
             );
         }
 
-        if (!empty($processingInstructions) && !($file instanceof ProcessedFile)) {
+        if (!empty($processingInstructions) && $file instanceof ProcessableFileInterface) {
             $file = $file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
         }
 

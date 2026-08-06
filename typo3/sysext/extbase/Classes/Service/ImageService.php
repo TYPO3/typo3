@@ -18,9 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,7 +37,7 @@ readonly class ImageService
     /**
      * Create a processed file
      */
-    public function applyProcessingInstructions(File|FileReference $image, array $processingInstructions): ProcessedFile
+    public function applyProcessingInstructions(ProcessableFileInterface $image, array $processingInstructions): ProcessedFile
     {
         return $image->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingInstructions);
     }
@@ -68,7 +67,7 @@ readonly class ImageService
      * @throws \UnexpectedValueException
      * @internal
      */
-    public function getImage(string $src, $image, bool $treatIdAsReference): File|FileReference
+    public function getImage(string $src, $image, bool $treatIdAsReference): FileInterface&ProcessableFileInterface
     {
         return $this->resourceFactory->resolveFileObject($image ?? $src, $treatIdAsReference);
     }

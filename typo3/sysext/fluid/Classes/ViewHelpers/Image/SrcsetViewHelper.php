@@ -22,9 +22,8 @@ use TYPO3\CMS\Core\Html\Srcset\SrcsetAttribute;
 use TYPO3\CMS\Core\Html\Srcset\WidthSrcsetCandidate;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\File as ExtbaseFile;
@@ -102,7 +101,7 @@ final class SrcsetViewHelper extends AbstractViewHelper
         if ($image instanceof ExtbaseFile || $image instanceof ExtbaseFileReference) {
             $image = $image->getOriginalResource();
         }
-        if (!$image instanceof File && !$image instanceof FileReference) {
+        if (!$image instanceof FileInterface || !$image instanceof ProcessableFileInterface) {
             throw new InvalidArgumentValueException('A valid file object must be specified.', 1697797783);
         }
 

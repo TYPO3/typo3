@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileCarrierInterface;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\ProcessableFileInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -101,7 +101,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
 
         // Fallback to image when no renderer is found
         if ($fileRenderer === null) {
-            if (!$file instanceof File && !$file instanceof FileReference) {
+            if (!$file instanceof ProcessableFileInterface) {
                 throw new InvalidArgumentValueException('Supplied file object type ' . get_class($file) . ' can not be processed as an image.', 1454252194);
             }
             return $this->renderImage($file, $width, $height, $this->arguments['fileExtension'] ?? null);
@@ -124,7 +124,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
      * @param string $height
      * @return string Rendered img tag
      */
-    private function renderImage(File|FileReference $image, $width, $height, ?string $fileExtension): string
+    private function renderImage(FileInterface&ProcessableFileInterface $image, $width, $height, ?string $fileExtension): string
     {
         $cropVariant = (string)(($this->arguments['cropVariant'] ?? '') ?: 'default');
         $cropString = $image instanceof FileReference ? $image->getProperty('crop') : '';

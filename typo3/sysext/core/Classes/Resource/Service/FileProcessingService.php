@@ -54,6 +54,10 @@ readonly class FileProcessingService
         protected TaskTypeRegistry $taskTypeRegistry,
     ) {}
 
+    /**
+     * @todo Currently, the underlying code is not flexible enough to introduce ProcessableFileInterface here. Ideally
+     *       this should be adjusted in the future.
+     */
     public function processFile(File|FileReference $fileObject, string $taskType, DriverInterface $driver, array $configuration): ProcessedFile
     {
         // Processing always works on the original file
