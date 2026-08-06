@@ -38,6 +38,44 @@ e2e install mysql 8.4 playwright php 8.5 max:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s e2e-install -d mysql -i 8.4 -p 8.5
 
+e2e install mariadb 11.8 existing database playwright php 8.5 max:
+  stage: acceptance
+  tags:
+    - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-install-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s e2e-install-existingdb -d mariadb -i 11.8 -p 8.5
+
+e2e install mysql 8.4 existing database playwright php 8.5 max:
+  stage: acceptance
+  tags:
+    - metal2
+  # Installer mutates state irreversibly, playwright in-test retry can never
+  # succeed against a tainted instance. Retry the whole job to rebuild instead.
+  retry: 2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/playwright-install-composer/var/log
+      - typo3temp/var/tests/playwright-reports
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
+    - Build/Scripts/runTests.sh -s e2e-install-existingdb -d mysql -i 8.4 -p 8.5
+
 e2e install postgres 18 playwright php 8.5 max:
   stage: acceptance
   tags:
