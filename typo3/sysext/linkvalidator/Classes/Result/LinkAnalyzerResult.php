@@ -103,7 +103,11 @@ class LinkAnalyzerResult
             $languageIds
         );
 
-        $pageIds = array_merge($pageIds, $pageTranslations);
+        if ($languageIds === [] || in_array(0, $languageIds, true)) {
+            $pageIds = array_merge($pageIds, $pageTranslations);
+        } else {
+            $pageIds = $pageTranslations;
+        }
 
         $this->linkAnalyzer->init($searchFields, $pageIds, $modTSconfig);
         $this->oldBrokenLinkCounts = $this->linkAnalyzer->getLinkCounts();
