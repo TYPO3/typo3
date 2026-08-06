@@ -317,7 +317,7 @@ readonly class SuggestWizardController
         }
 
         // strip ORDER BY clause
-        return trim(preg_replace('/ORDER[[:space:]]+BY.*/i', '', $fieldConfig['foreign_table_where']));
+        return trim(preg_replace('/ORDER[[:space:]]+BY.*/si', '', $fieldConfig['foreign_table_where']));
     }
 
     protected function getBackendUser(): BackendUserAuthentication
