@@ -67,7 +67,7 @@ return [
                 'required' => true,
                 'eval' => 'trim',
                 'size' => 20,
-                'placeholder' => 'en-US',
+                'placeholder' => 'en_US.UTF-8',
                 'valuePicker' => [
                     'items' => \TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales(),
                 ],
