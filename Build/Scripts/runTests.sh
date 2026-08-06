@@ -16,9 +16,15 @@ printSummary() {
     echo "Container runtime: ${CONTAINER_BIN}" >&2
     echo "Container suffix: ${SUFFIX}"
     echo "PHP: ${PHP_VERSION}" >&2
-    if [[ ${TEST_SUITE} =~ ^(functional|e2e-install|e2e-install-prepare|e2e-install-browser)$ ]]; then
+    if [[ ${TEST_SUITE} =~ ^(functional|e2e-install|e2e-install-existingdb|e2e-install-prepare|e2e-install-browser)$ ]]; then
         case "${DBMS}" in
-            mariadb|mysql|postgres)
+            mariadb|mysql)
+                echo "DBMS: ${DBMS}  version ${DBMS_VERSION}  driver ${DATABASE_DRIVER}" >&2
+                if [[ ${TEST_SUITE} =~ ^(e2e-install|e2e-install-existingdb|e2e-install-prepare|e2e-install-browser)$ ]]; then
+                    echo "Install scenario: ${PLAYWRIGHT_INSTALL_SCENARIO}" >&2
+                fi
+                ;;
+            postgres)
                 echo "DBMS: ${DBMS}  version ${DBMS_VERSION}  driver ${DATABASE_DRIVER}" >&2
                 ;;
             sqlite)
@@ -365,18 +371,34 @@ runPlaywrightInstall() {
     PLAYWRIGHT_INSTALL_SPEC=""
     case ${DBMS} in
         mariadb)
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
+            MARIADB_INSTALL_ENV="-e MYSQL_ROOT_PASSWORD=funcp"
+            PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-mariadb.spec.ts"
+            if [ "${PLAYWRIGHT_INSTALL_SCENARIO}" = "existing-database" ]; then
+                # MYSQL_DATABASE pre-creates an empty "func_test" database, same as ddev/most real
+                # installs where a database already exists before `typo3 setup` runs. The installer
+                # must be able to list and select it - see #110381.
+                MARIADB_INSTALL_ENV="${MARIADB_INSTALL_ENV} -e MYSQL_DATABASE=func_test"
+                PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-mariadb-existing-database.spec.ts"
+            fi
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mariadb-install-${SUFFIX} --network ${NETWORK} -d ${MARIADB_INSTALL_ENV} --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MARIADB} >/dev/null
             SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             waitFor mariadb-install-${SUFFIX} 3306
             INSTALL_ENV="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mariadb-install-${SUFFIX}"
-            PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-mariadb.spec.ts"
             ;;
         mysql)
-            ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-install-${SUFFIX} --network ${NETWORK} -d -e MYSQL_ROOT_PASSWORD=funcp --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
+            MYSQL_INSTALL_ENV="-e MYSQL_ROOT_PASSWORD=funcp"
+            PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-mysql.spec.ts"
+            if [ "${PLAYWRIGHT_INSTALL_SCENARIO}" = "existing-database" ]; then
+                # MYSQL_DATABASE pre-creates an empty "func_test" database, same as ddev/most real
+                # installs where a database already exists before `typo3 setup` runs. The installer
+                # must be able to list and select it - see #110381.
+                MYSQL_INSTALL_ENV="${MYSQL_INSTALL_ENV} -e MYSQL_DATABASE=func_test"
+                PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-mysql-existing-database.spec.ts"
+            fi
+            ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name mysql-install-${SUFFIX} --network ${NETWORK} -d ${MYSQL_INSTALL_ENV} --tmpfs /var/lib/mysql/:rw,noexec,nosuid ${IMAGE_MYSQL} >/dev/null
             SUITE_EXIT_CODE=$? && [[ "${SUITE_EXIT_CODE}" -ne 0 ]] && printSummary
             waitFor mysql-install-${SUFFIX} 3306
             INSTALL_ENV="-e typo3InstallMysqlDatabaseName=func_test -e typo3InstallMysqlDatabaseUsername=root -e typo3InstallMysqlDatabasePassword=funcp -e typo3InstallMysqlDatabaseHost=mysql-install-${SUFFIX}"
-            PLAYWRIGHT_INSTALL_SPEC="e2e-install/install-mysql.spec.ts"
             ;;
         postgres)
             ${CONTAINER_BIN} run --rm ${CI_PARAMS} --name postgres-install-${SUFFIX} --network ${NETWORK} -d -e POSTGRES_PASSWORD=funcp -e POSTGRES_USER=funcu -e POSTGRES_DB=func_test --tmpfs ${POSTGRES_TMPFS_MOUNT}:rw,noexec,nosuid ${IMAGE_POSTGRES} >/dev/null
@@ -736,6 +758,10 @@ Options:
             - e2e-prepare: Start a test instance of TYPO3
             - e2e-browser: end to end tests with the GUI running on http://127.0.0.1:43837
             - e2e-install: installation end to end tests, only with -d mariadb|mysql|postgres|sqlite
+            - e2e-install-existingdb: like e2e-install, but selects a pre-existing, empty database
+              from the installer's list instead of creating a new one, only with -d mariadb|mysql
+              (regression coverage for #110381 - listing databases via Doctrine DBAL introspection
+              on a connection with no database selected)
             - e2e-install-prepare: Start an empty installer instance for manual execution
             - e2e-install-browser: installation end to end tests with the GUI running on http://127.0.0.1:43837
             - phpstan: phpstan tests
@@ -760,12 +786,14 @@ Options:
                 - pdo_mysql
 
     -d <sqlite|mariadb|mysql|postgres>
-        Only with -s functional|e2e-install|e2e-install-prepare|e2e-install-browser
+        Only with -s functional|e2e-install|e2e-install-existingdb|e2e-install-prepare|e2e-install-browser
         Specifies on which DBMS tests are performed
             - sqlite: (default): use sqlite
             - mariadb: use mariadb
             - mysql: use MySQL
             - postgres: use postgres
+        e2e-install-existingdb only supports mariadb and mysql: postgres and sqlite have no
+        equivalent "select an existing database" step in the installer.
 
     -i version
         Specify a specific database version
@@ -921,6 +949,7 @@ PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 CGLCHECK_DRY_RUN=""
 DATABASE_DRIVER=""
+PLAYWRIGHT_INSTALL_SCENARIO="new-database"
 CHUNKS=0
 THISCHUNK=0
 CONTAINER_BIN=""
@@ -1140,6 +1169,12 @@ case ${TEST_SUITE} in
     e2e-install)
         PLAYWRIGHT_PROJECT="--project e2e-install"
         PLAYWRIGHT_PREPARE_ONLY=0
+        runPlaywrightInstall
+        ;;
+    e2e-install-existingdb)
+        PLAYWRIGHT_PROJECT="--project e2e-install"
+        PLAYWRIGHT_PREPARE_ONLY=0
+        PLAYWRIGHT_INSTALL_SCENARIO="existing-database"
         runPlaywrightInstall
         ;;
     e2e-install-browser)
