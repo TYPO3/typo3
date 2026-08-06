@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileCarrierInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
@@ -198,7 +199,7 @@ final class ResourceFactoryTest extends FunctionalTestCase
     public function resolveFileObjectUnwrapsADomainObjectViaGetOriginalResource(): void
     {
         $file = $this->createMock(File::class);
-        $domainObject = new class ($file) {
+        $domainObject = new class ($file) implements FileCarrierInterface {
             public function __construct(private readonly File $file) {}
             public function getOriginalResource(): File
             {
@@ -207,21 +208,6 @@ final class ResourceFactoryTest extends FunctionalTestCase
         };
         $subject = $this->getAccessibleMock(ResourceFactory::class, null, [], '', false);
         self::assertSame($file, $subject->resolveFileObject($domainObject));
-    }
-
-    #[Test]
-    public function resolveFileObjectThrowsForADomainObjectWithoutAValidResource(): void
-    {
-        $domainObject = new class {
-            public function getOriginalResource(): \stdClass
-            {
-                return new \stdClass();
-            }
-        };
-        $subject = $this->getAccessibleMock(ResourceFactory::class, null, [], '', false);
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1625838481);
-        $subject->resolveFileObject($domainObject);
     }
 
     #[Test]

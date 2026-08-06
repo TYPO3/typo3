@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileCarrierInterface;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -79,7 +80,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         $height = ($this->arguments['height'] ?? 0);
 
         // get Resource Object (non ExtBase version)
-        if (is_callable([$file, 'getOriginalResource'])) {
+        if ($file instanceof FileCarrierInterface) {
             // We have a domain model, so we need to fetch the FAL resource object from there
             $file = $file->getOriginalResource();
         }

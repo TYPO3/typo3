@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Domain\Model;
 
+use TYPO3\CMS\Core\Resource\FileCarrierInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -24,7 +25,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * A file object (File Abstraction Layer)
  */
-class File extends AbstractEntity
+class File extends AbstractEntity implements FileCarrierInterface
 {
     private ?\TYPO3\CMS\Core\Resource\File $originalResource = null;
 

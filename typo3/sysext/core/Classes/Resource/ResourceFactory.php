@@ -178,21 +178,14 @@ readonly class ResourceFactory implements SingletonInterface
             return $source;
         }
         if (is_object($source)) {
-            if (!is_callable([$source, 'getOriginalResource'])) {
+            if (!($source instanceof FileCarrierInterface)) {
                 throw new \UnexpectedValueException(
                     'Supplied file must be File or FileReference, ' . get_debug_type($source) . ' given.',
                     1625585157
                 );
             }
-            // A domain object, so the FAL resource object needs to be fetched from it
-            $originalResource = $source->getOriginalResource();
-            if (!($originalResource instanceof File || $originalResource instanceof FileReference)) {
-                throw new \UnexpectedValueException(
-                    'No original resource could be resolved for supplied file ' . get_class($source),
-                    1625838481
-                );
-            }
-            return $originalResource;
+            // We have a domain model, so we need to fetch the FAL resource object from there
+            return $source->getOriginalResource();
         }
 
         $source = (string)$source;
