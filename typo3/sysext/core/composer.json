@@ -54,7 +54,7 @@
 		"egulias/email-validator": "^4.0",
 		"enshrined/svg-sanitize": "~0.22",
 		"firebase/php-jwt": "^6.10.2 || ^7.0.5",
-		"guzzlehttp/guzzle": "^7.12.1",
+		"guzzlehttp/guzzle": "^7.15.2",
 		"guzzlehttp/psr7": "^2.10.2",
 		"lolli42/finediff": "^1.1.2",
 		"masterminds/html5": "^2.10.0",
