@@ -46,7 +46,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @todo: The entire logic smells fishy and needs a major overhaul.
  */
-#[AsCommand('cleanup:missingrelations', 'Find all record references pointing to a non-existing record')]
+#[AsCommand('cleanup:missingrelations', 'Finds all record references pointing to a non-existing record')]
 class MissingRelationsCommand extends Command
 {
     public function __construct(

@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 /**
  * CLI command for showing configuration values
  */
-#[AsCommand('configuration:show', 'Show configuration value')]
+#[AsCommand('configuration:show', 'Shows configuration value')]
 #[AsNonSchedulableCommand]
 class ConfigurationShowCommand extends Command
 {

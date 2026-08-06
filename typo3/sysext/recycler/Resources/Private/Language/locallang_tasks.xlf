@@ -7,7 +7,7 @@
         <source>Remove deleted records</source>
       </trans-unit>
       <trans-unit id="cleanerTaskDescription">
-        <source>Deletes rows from the database which are flagged "deleted"</source>
+        <source>Deletes rows from the database which are flagged as "deleted"</source>
       </trans-unit>
       <trans-unit id="cleanerTaskPeriod">
         <source>Delete entries older than (in days)</source>

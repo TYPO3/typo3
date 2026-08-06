@@ -26,7 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-#[AsCommand('cache:flushtags', 'Cache clearing caches with tags.')]
+#[AsCommand('cache:flushtags', 'Flushes caches identified by one or more cache tags.')]
 class CacheFlushTagsCommand extends Command
 {
     public function __construct(

@@ -43,7 +43,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Create a new backend user
  */
-#[AsCommand('backend:user:create', 'Create a backend user.')]
+#[AsCommand('backend:user:create', 'Creates a backend user.')]
 #[AsNonSchedulableCommand]
 class CreateBackendUserCommand extends Command
 {

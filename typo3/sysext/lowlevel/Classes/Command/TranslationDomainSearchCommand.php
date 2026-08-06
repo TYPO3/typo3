@@ -38,7 +38,7 @@ use TYPO3\CMS\Lowlevel\Localization\LabelFinder;
  * the file location in EXT: syntax.
  * @internal only for development purposes
  */
-#[AsCommand('language:domain:search', 'Search for translation domain labels and their references (only for development purpose)')]
+#[AsCommand('language:domain:search', 'Searches for translation domain labels and their references (only for development purpose)')]
 #[AsNonSchedulableCommand]
 class TranslationDomainSearchCommand extends Command
 {

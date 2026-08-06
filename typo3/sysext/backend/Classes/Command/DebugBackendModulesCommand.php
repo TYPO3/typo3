@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Command for showing all backend modules and their associated labels
  * @internal only for development purposes
  */
-#[AsCommand('debug:backend:modules', 'Debugging: Show a list of the backend module tree (only for development purpose)')]
+#[AsCommand('debug:backend:modules', 'Debugging: Shows a list of the backend module tree (only for development purpose)')]
 #[AsNonSchedulableCommand]
 class DebugBackendModulesCommand extends Command
 {

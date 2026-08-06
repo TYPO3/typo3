@@ -35,7 +35,7 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  *
  * @internal
  */
-#[AsCommand('workspace:autopublish', 'Publish a workspace with a publication date.')]
+#[AsCommand('workspace:autopublish', 'Publishes a workspace with a publication date.')]
 class AutoPublishCommand extends Command
 {
     public function __construct(

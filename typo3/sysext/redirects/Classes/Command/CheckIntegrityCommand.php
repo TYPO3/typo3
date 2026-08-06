@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Redirects\Service\IntegrityService;
 use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
-#[AsCommand('redirects:checkintegrity', 'Check integrity of redirects')]
+#[AsCommand('redirects:checkintegrity', 'Checks integrity of redirects')]
 class CheckIntegrityCommand extends Command
 {
     private const string REGISTRY_NAMESPACE = 'tx_redirects';

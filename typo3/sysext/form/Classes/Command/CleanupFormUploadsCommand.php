@@ -46,7 +46,7 @@ use TYPO3\CMS\Form\Service\CleanupFormUploadsService;
  *   # Force deletion without confirmation (e.g. for scheduler)
  *   bin/typo3 form:cleanup:uploads 1:/user_upload/ --force
  */
-#[AsCommand('form:cleanup:uploads', 'Remove old form file upload folders based on retention period.')]
+#[AsCommand('form:cleanup:uploads', 'Removes old form file upload folders based on retention period.')]
 class CleanupFormUploadsCommand extends Command
 {
     private const int DEFAULT_RETENTION_PERIOD_HOURS = 336;

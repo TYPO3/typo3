@@ -50,7 +50,7 @@ class UpdateLanguagePackCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDescription('Update the language files of all activated extensions')
+        $this->setDescription('Updates the language files of all activated extensions')
             ->addArgument(
                 'locales',
                 InputArgument::IS_ARRAY | InputArgument::OPTIONAL,

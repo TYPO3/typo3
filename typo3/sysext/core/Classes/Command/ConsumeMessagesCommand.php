@@ -50,7 +50,7 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 /**
  * Almost full version of the symfony command with the same name.
  */
-#[AsCommand(name: 'messenger:consume', description: 'Consume messages')]
+#[AsCommand(name: 'messenger:consume', description: 'Consumes messages')]
 class ConsumeMessagesCommand extends Command
 {
     private const int DEFAULT_KEEPALIVE_INTERVAL = 5;

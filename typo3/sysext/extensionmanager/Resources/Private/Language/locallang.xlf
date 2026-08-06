@@ -448,7 +448,7 @@
         <source>Update extension list</source>
       </trans-unit>
       <trans-unit id="task.updateExtensionListTask.description">
-        <source>Update TER extension list on a regular basis. Once a day is a good interval.</source>
+        <source>Makes regular updates to TER extension list. Recommended interval is once a day.</source>
       </trans-unit>
       <trans-unit id="report.status.mainRepository.title">
         <source>Update status of typo3.org main repository extension list</source>

@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal
  */
-#[AsCommand('cleanup:versions', 'Find all versioned records and possibly cleans up invalid records in the database.')]
+#[AsCommand('cleanup:versions', 'Finds all versioned records and possibly cleans up invalid records in the database.')]
 class WorkspaceVersionRecordsCommand extends Command
 {
     /**

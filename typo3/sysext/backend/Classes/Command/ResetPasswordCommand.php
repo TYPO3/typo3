@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Triggers the workflow to request a new password for a user.
  */
-#[AsCommand('backend:resetpassword', 'Trigger a password reset for a backend user.')]
+#[AsCommand('backend:resetpassword', 'Triggers a password reset for a backend user.')]
 #[AsNonSchedulableCommand]
 class ResetPasswordCommand extends Command
 {

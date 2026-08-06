@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 /**
  * CLI command for removing configuration values from system/settings.php
  */
-#[AsCommand('configuration:remove', 'Remove configuration value(s) from system/settings.php')]
+#[AsCommand('configuration:remove', 'Removes configuration value(s) from system/settings.php')]
 #[AsNonSchedulableCommand]
 class ConfigurationRemoveCommand extends Command
 {

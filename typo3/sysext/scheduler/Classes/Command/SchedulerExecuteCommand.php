@@ -39,7 +39,7 @@ use TYPO3\CMS\Scheduler\Service\TaskService;
 /**
  * CLI command for EXT:scheduler to execute tasks
  */
-#[AsCommand('scheduler:execute', 'Execute given TYPO3 Scheduler tasks.')]
+#[AsCommand('scheduler:execute', 'Executes given TYPO3 Scheduler tasks.')]
 #[AsNonSchedulableCommand]
 class SchedulerExecuteCommand extends Command
 {
