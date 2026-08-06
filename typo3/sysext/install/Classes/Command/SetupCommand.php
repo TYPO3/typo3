@@ -38,6 +38,7 @@ use TYPO3\CMS\Install\Service\Exception\ConfigurationFileAlreadyExistsException;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SetupDatabaseService;
 use TYPO3\CMS\Install\Service\SetupService;
+use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
 use TYPO3\CMS\Install\WebserverType;
 
 /**
@@ -74,6 +75,10 @@ class SetupCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Select which database driver to use',
+                null,
+                function (): array {
+                    return $this->getAvailableConnectionTypes();
+                }
             )
             ->addOption(
                 'host',
@@ -150,14 +155,25 @@ class SetupCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 $this->packageManager->isPackageActive('impexp')
                     ? 'Import a distribution during site creation (package key, e.g. "theme_camino")'
-                    : '[disabled] Requires typo3/cms-impexp to be installed'
+                    : '[disabled] Requires typo3/cms-impexp to be installed',
+                null,
+                function (): array {
+                    if (!$this->packageManager->isPackageActive('impexp')) {
+                        return [];
+                    }
+                    // Only inactive distributions can be activated during setup
+                    return array_keys($this->setupService->getAvailableDistributions()['inactive']);
+                }
             )
             ->addOption(
                 'server-type',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Define the web server the TYPO3 installation will be running on',
-                'other'
+                'other',
+                function (): array {
+                    return array_keys(WebserverType::getDescriptions());
+                }
             )
             ->addOption(
                 'force',
@@ -403,12 +419,33 @@ EOT
         return Command::SUCCESS;
     }
 
+    /**
+     * Connection types of $connectionLabels which are usable with the
+     * database extensions available in this PHP installation.
+     *
+     * @return string[]
+     */
+    private function getAvailableConnectionTypes(): array
+    {
+        return array_keys(array_filter(
+            $this->connectionLabels,
+            static fn(string $connectionType): bool => match ($connectionType) {
+                'mysqli', 'mysqliSocket' => DatabaseCheck::isMysqli(),
+                'pdoMysql', 'pdoMysqlSocket' => DatabaseCheck::isPdoMysql(),
+                'postgres' => DatabaseCheck::isPdoPgsql(),
+                'sqlite' => DatabaseCheck::isPdoSqlite(),
+                default => false,
+            },
+            ARRAY_FILTER_USE_KEY
+        ));
+    }
+
     protected function getConnectionDetails(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): array
     {
         $input->hasParameterOption('--driver');
         $driverTypeCli = $this->getFallbackValueEnvOrOption($input, 'driver', 'TYPO3_DB_DRIVER');
         $driverOptions = $this->setupDatabaseService->getDriverOptions();
-        $availableConnectionTypes = implode(', ', array_keys($this->connectionLabels));
+        $availableConnectionTypes = implode(', ', $this->getAvailableConnectionTypes());
 
         $connectionValidator = static function ($connectionType) use ($driverOptions, $availableConnectionTypes) {
             if (!isset($driverOptions[$connectionType . 'ManualConfigurationOptions'])) {
@@ -422,7 +459,10 @@ EOT
         };
 
         if ($driverTypeCli === false && $input->isInteractive()) {
-            $driver = new ChoiceQuestion('Database driver?', $this->connectionLabels);
+            $driver = new ChoiceQuestion(
+                'Database driver?',
+                array_intersect_key($this->connectionLabels, array_flip($this->getAvailableConnectionTypes()))
+            );
             $driver->setValidator($connectionValidator);
             $driverType = $questionHelper->ask($input, $output, $driver);
         } else {
