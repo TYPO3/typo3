@@ -64,8 +64,8 @@ final readonly class PageWizardController
             : (BackendUtility::getRecord('pages', $pageUid, 'pid')['pid'] ?? null);
 
         $backendUser = $this->getBackendUser();
-        $parentPage = BackendUtility::readPageAccess((int)$parentPageUid, $backendUser->getPagePermsClause(Permission::PAGE_NEW));
-        if (!$parentPage) {
+        $parentPage = BackendUtility::readPageAccess((int)$parentPageUid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
+        if (!$parentPage || !$backendUser->doesUserHaveAccess($parentPage, Permission::PAGE_NEW)) {
             return new JsonResponse(null, 403);
         }
 
