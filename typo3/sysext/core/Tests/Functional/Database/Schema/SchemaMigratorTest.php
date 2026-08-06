@@ -397,9 +397,49 @@ final class SchemaMigratorTest extends AbstractSchemaBasedTestCase
         $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['add'];
         $result = $subject->migrate($statements, $selectedStatements);
         $this->verifyMigrationResult($result);
-        self::assertCount(7, $this->getTableDetails()->getColumns());
+        self::assertCount(9, $this->getTableDetails()->getColumns());
         self::assertTrue($this->getTableDetails()->hasColumn('title'));
         self::assertTrue($this->getTableDetails()->hasColumn('description'));
+        // `json` and `uuid` need a distinguishable declaration on platforms without a native type.
+        // Adding them to an existing table used to fail on sqlite, see the platform class docblock.
+        self::assertTrue($this->getTableDetails()->hasColumn('configuration'));
+        self::assertInstanceOf(JsonType::class, $this->getTableDetails()->getColumn('configuration')->getType());
+        self::assertTrue($this->getTableDetails()->hasColumn('lookupid'));
+        self::assertInstanceOf(GuidType::class, $this->getTableDetails()->getColumn('lookupid')->getType());
+    }
+
+    /**
+     * Columns created before sqlite got dedicated `JSON`/`UUID` declarations are stored as
+     * `CLOB`/`CHAR(36)` carrying a `(DC2Type:<name>)` comment. Such an existing installation must not
+     * be detected as changed, otherwise every database compare would offer a pointless table rebuild.
+     */
+    #[Group('not-mariadb')]
+    #[Group('not-mysql')]
+    #[Group('not-postgres')]
+    #[Test]
+    public function legacyTypeCommentColumnsAreNotDetectedAsChangedOnSqlite(): void
+    {
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        // sqlite renders column comments as `--<comment>` line comments, which is exactly why the
+        // simplified `ALTER TABLE ADD COLUMN` form used to break: everything behind `--` was
+        // commented out and the statement ended up incomplete.
+        $connection->executeStatement(
+            "CREATE TABLE a_test_table (\n"
+            . "title VARCHAR(50) DEFAULT '' NOT NULL,\n"
+            . "description CLOB DEFAULT NULL,\n"
+            . "configuration CLOB DEFAULT NULL --(DC2Type:json)\n"
+            . ",lookupid CHAR(36) DEFAULT NULL --(DC2Type:guid)\n"
+            . ')'
+        );
+
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(
+            file_get_contents(__DIR__ . '/../Fixtures/addColumnsToTable.sql')
+        );
+
+        foreach ($subject->getUpdateSuggestions($statements)[ConnectionPool::DEFAULT_CONNECTION_NAME] as $operation => $targets) {
+            self::assertSame([], $targets, 'unexpected ' . $operation . ': ' . var_export($targets, true));
+        }
     }
 
     #[TestWith(['emptyDefaultTableOptions' => false])]

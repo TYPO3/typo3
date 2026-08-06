@@ -19,9 +19,7 @@ namespace TYPO3\CMS\Core\Database\Platform\Traits;
 
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\GuidType;
-use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\Type;
 
 /**
@@ -107,10 +105,10 @@ trait GetColumnDeclarationSQLCommentTypeAwareTrait
     private function typeRequiresCommentHint(Type $type): bool
     {
         $map = [
-            SQLitePlatform::class => [
-                JsonType::class,
-                GuidType::class,
-            ],
+            // Note: SQLite is absent by intention. The TYPO3 SQLite platform declares dedicated
+            //       `JSON` and `UUID` column types and maps them back on introspection, so no type
+            //       comment is needed - and must not be written, because SQLite cannot parse an
+            //       inline comment in `ALTER TABLE <table> ADD COLUMN <definition>`.
             MariaDBPlatform::class => [
                 GuidType::class,
             ],
