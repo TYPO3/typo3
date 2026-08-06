@@ -146,8 +146,8 @@ INFO;
                             <div class="exception-illustration hidden-xs-down">$typo3Logo</div>
                             <h1 class="exception-message break-long-words">
                                 Whoops, looks like something went wrong.
-                                <span id="stacktrace-action-buttons"></span>
                             </h1>
+                            <span id="stacktrace-action-buttons"></span>
                         </div>
                     </div>
                 </div>
@@ -203,6 +203,9 @@ HTML;
     protected function getStylesheet(): string
     {
         return <<<STYLESHEET
+            :root {
+              color-scheme: light dark;
+            }
             html {
                 -webkit-text-size-adjust: 100%;
                 -ms-text-size-adjust: 100%;
@@ -215,8 +218,8 @@ HTML;
             }
 
             .exception-page {
-                background-color: #eaeaea;
-                color: #212121;
+                background-color: light-dark(#fcfcfd, #141316);
+                color: light-dark(#18181b, #e4e4e7);
                 font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
                 font-weight: 400;
                 height: 100dvh;
@@ -255,7 +258,8 @@ HTML;
             }
 
             .exception-page pre {
-                background-color: #ffffff;
+                background-color: light-dark(#e5e5e6, #3b3942);
+
                 overflow-x: auto;
                 border: 1px solid rgba(0,0,0,0.125);
             }
@@ -271,14 +275,14 @@ HTML;
                 border-right: 1px solid #b9b9b9;
                 margin-right: 0.5em;
                 padding-right: 0.5em;
-                background-color: #f4f4f4;
+                background-color: light-dark(#f4f4f4, #262527);
                 width: 4em;
                 text-align: right;
-                color: #515151;
+                color: light-dark(#515151, #aca6a6);
             }
 
             .exception-page pre span.highlight {
-                background-color: #cce5ff;
+                background-color: light-dark(#acd5ec, #0e2e3e);
             }
 
             .exception-page .break-long-words {
@@ -293,9 +297,11 @@ HTML;
             .exception-page .callout {
                 padding: 1.5rem;
                 background-color: #fff;
+                background-color: light-dark(#f4f4f6, #1d1c21);
+                border: 1px solid light-dark(#cececf, #403f44);
+                border-radius: 0.75em;
+                overflow: hidden;
                 margin-bottom: 2em;
-                box-shadow: 0 2px 1px rgba(0,0,0,.15);
-                border-left: 3px solid #8c8c8c;
             }
 
             .exception-page .callout-title {
@@ -332,7 +338,7 @@ HTML;
             }
 
             .exception-page .exception-summary {
-                background: #000000;
+                background: #2b2640;
                 color: #fff;
                 padding: 1.5rem 0;
                 margin-bottom: 2rem;
@@ -343,13 +349,15 @@ HTML;
             }
 
             .exception-page .text-variant {
-                opacity: 0.5;
+                opacity: 0.75;
             }
 
             .exception-page .trace {
-                background-color: #fff;
+                background-color: light-dark(#f4f4f6, #1d1c21);
+                border: 1px solid light-dark(#cececf, #403f44);
+                border-radius: 0.75em;
+                overflow: hidden;
                 margin-bottom: 2rem;
-                box-shadow: 0 2px 1px rgba(0,0,0,.15);
             }
 
             .exception-page .trace-arguments {
@@ -378,8 +386,8 @@ HTML;
             }
 
             .exception-page .trace-head {
-                color: #721c24;
-                background-color: #f8d7da;
+                color: light-dark(#721c24, #fafafa);
+                background-color: light-dark(#f5d6d8, #7a1f24);
                 padding: 1.5rem;
             }
 
@@ -406,7 +414,7 @@ HTML;
 
             .exception-page .trace-step:nth-child(even)
             {
-                background-color: #fafafa;
+                background-color: light-dark(#fafafa, #2c2a33);
             }
 
             .exception-page .trace-step:last-child {
