@@ -47,7 +47,11 @@ class SiteShowCommand extends Command
         $this->addArgument(
             'identifier',
             InputArgument::REQUIRED,
-            'The identifier of the site'
+            'The identifier of the site',
+            null,
+            function (): array {
+                return array_keys($this->siteFinder->getAllSites());
+            }
         );
     }
 
