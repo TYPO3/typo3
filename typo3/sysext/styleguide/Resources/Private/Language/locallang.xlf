@@ -81,6 +81,12 @@
       <trans-unit id="action.datetime.description">
         <source>Web component for displaying timestamps in relative format with localization support.</source>
       </trans-unit>
+      <trans-unit id="action.exception">
+        <source>Exception</source>
+      </trans-unit>
+      <trans-unit id="action.exception.description">
+        <source>Shows how an exception is displayed. Throws an actual exception to also execute JavaScript (stacktrace copy).</source>
+      </trans-unit>
       <trans-unit id="action.colorTokens">
         <source>Color Tokens</source>
       </trans-unit>

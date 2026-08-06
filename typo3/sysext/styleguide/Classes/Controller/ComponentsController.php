@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Enum\ModuleLayout;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Styleguide\DummyDumpContentProvider;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 
@@ -59,6 +61,7 @@ final class ComponentsController
         'datetime',
         'developerTools',
         'dropdown',
+        'exception',
         'flashMessages',
         'form',
         'infobox',
@@ -107,6 +110,7 @@ final class ComponentsController
             'datetime' => $this->renderDatetimeView($request),
             'developerTools' => $this->renderDeveloperToolsView($request),
             'dropdown' => $this->renderDropdownView($request),
+            'exception' => $this->renderExceptionView($request),
             'flashMessages' => $this->renderFlashMessagesView($request),
             'form' => $this->renderFormView($request),
             'infobox' => $this->renderInfoboxView($request),
@@ -289,6 +293,13 @@ final class ComponentsController
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/Dropdown');
+    }
+
+    private function renderExceptionView(ServerRequestInterface $request): ResponseInterface
+    {
+        // We're throwing an exception because it also needs to execute JavaScript, which in turn requires CSP disabled,
+        // which wouldn't work if we just execute `debugExceptionHandler->echoExceptionWeb($throwable)`.
+        throw new StatusException(HttpUtility::HTTP_STATUS_200, 'Dummy exception', 'An exception', 1786056622);
     }
 
     private function renderFlashMessagesView(ServerRequestInterface $request): ResponseInterface
