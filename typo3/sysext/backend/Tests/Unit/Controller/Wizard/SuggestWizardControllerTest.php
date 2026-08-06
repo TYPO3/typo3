@@ -219,6 +219,34 @@ final class SuggestWizardControllerTest extends UnitTestCase
                     'foreign_table_where' => ' aTable.pid = 123 ORDER BY aTable.uid',
                 ],
             ],
+            'where clause with line break between ORDER and BY' => [
+                'aTable.pid = 123',
+                [
+                    'foreign_table' => 'aTable',
+                    'foreign_table_where' => ' aTable.pid = 123 ORDER' . LF . 'BY aTable.uid',
+                ],
+            ],
+            'where clause with line break after ORDER BY' => [
+                'aTable.pid = 123',
+                [
+                    'foreign_table' => 'aTable',
+                    'foreign_table_where' => ' aTable.pid = 123 ORDER BY' . LF . 'aTable.uid ASC',
+                ],
+            ],
+            'where clause with line break after ORDER BY and multiple sort fields on separate lines' => [
+                'aTable.pid = 123 AND aTable.hidden = 0',
+                [
+                    'foreign_table' => 'aTable',
+                    'foreign_table_where' => ' aTable.pid = 123 AND aTable.hidden = 0 ORDER BY' . LF . 'aTable.sorting ASC,' . LF . 'aTable.uid DESC',
+                ],
+            ],
+            'multiline where clause with ORDER BY on its own line' => [
+                'aTable.pid = 123' . LF . 'AND aTable.hidden = 0',
+                [
+                    'foreign_table' => 'aTable',
+                    'foreign_table_where' => ' aTable.pid = 123' . LF . 'AND aTable.hidden = 0' . LF . 'ORDER BY' . LF . 'aTable.uid',
+                ],
+            ],
         ];
     }
 }
