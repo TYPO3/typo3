@@ -75,7 +75,7 @@ SYS:
             description: 'Name of the base-site.'
         cookieDomain:
             type: text
-            description: 'Restricts the domain name for FE and BE session cookies. When setting the value to ".domain.com" (replace domain.com with your domain!), login sessions will be shared across subdomains. Alternatively, if you have more than one domain with sub-domains, you can set the value to a regular expression to match against the domain of the HTTP request. The result of the match is used as the domain for the cookie. eg. <code>/\.(example1|example2)\.com$/</code> or <code>/\.(example1\.com)|(example2\.net)$/</code>. Separate domains for FE and BE can be set using <a href="#FE-cookieDomain">$TYPO3_CONF_VARS[''FE''][''cookieDomain'']</a> and <a href="#BE-cookieDomain">$TYPO3_CONF_VARS[''BE''][''cookieDomain'']</a> respectively.'
+            description: 'Restricts the domain name for FE and BE session cookies. When setting the value to ".domain.com" (replace domain.com with your domain!), login sessions will be shared across subdomains. Alternatively, if you have more than one domain with sub-domains, you can set the value to a regular expression to match against the domain of the HTTP request. The result of the match is used as the domain for the cookie. eg. <code>/\.(example1|example2)\.com$/</code> or <code>/\.(example1\.com)|(example2\.net)$/</code>. Separate domains for FE and BE can be set using <code>$TYPO3_CONF_VARS[''FE''][''cookieDomain'']</code> and <code>$TYPO3_CONF_VARS[''BE''][''cookieDomain'']</code> respectively.'
         trustedHostsPattern:
             type: text
             description: 'Regular expression pattern that matches all allowed hostnames (including their ports) of this TYPO3 installation, or the string "SERVER_NAME" (default). The default value <code>SERVER_NAME</code> checks if the HTTP Host header equals the SERVER_NAME and SERVER_PORT. This is secure in correctly configured hosting environments and does not need further configuration. If you cannot change your hosting environment, you can enter a regular expression here. Examples: <code>.*\.domain\.com</code> matches all hosts that end with <code>.domain.com</code> with all corresponding subdomains. <code>(.*\.domain|.*\.otherdomain)\.com</code> matches all hostnames with subdomains from <code>.domain.com</code> and <code>.otherdomain.com</code>. Be aware that HTTP Host header may also contain a port. If your installation runs on a specific port, you need to explicitly allow this in your pattern, e.g. <code>www\.domain\.com:88</code> allows only <code>www.domain.com:88</code>, <strong>not</strong> <code>www.domain.com</code>. To disable this check completely (not recommended because it is <strong>insecure</strong>) you can use ".*" as pattern.'
@@ -132,7 +132,7 @@ SYS:
             description: 'Locale used for certain system related functions, e.g. escaping shell commands. If problems with filenames containing special characters occur, the value of this option is probably wrong. See <a href="https://php.net/manual/en/function.setlocale.php" target="_blank" rel="noreferrer">setlocale()</a>. Available locales: '
         reverseProxyIP:
             type: list
-            description: 'List of IP addresses. If TYPO3 is behind one or more (intransparent) reverse proxies the IP addresses must be added here and <a href="#SYS-reverseProxyHeaderMultiValue">[SYS][reverseProxyHeaderMultiValue]</a> must be set to ''first'' or ''last''.'
+            description: 'List of IP addresses. If TYPO3 is behind one or more (intransparent) reverse proxies the IP addresses must be added here and <code>[SYS][reverseProxyHeaderMultiValue]</code> must be set to ''first'' or ''last''.'
         reverseProxyHeaderMultiValue:
             type: text
             allowedValues:
@@ -145,10 +145,10 @@ SYS:
             description: 'Optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI). Example: When proxying ext-domain.com to int-server.com/prefix this has to be set to <em>prefix</em>'
         reverseProxySSL:
             type: text
-            description: '''*'' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If ''*'' all proxies defined in <a href="#SYS-reverseProxyIP">[SYS][reverseProxyIP]</a> use SSL.'
+            description: '''*'' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If ''*'' all proxies defined in <code>[SYS][reverseProxyIP]</code> use SSL.'
         reverseProxyPrefixSSL:
             type: text
-            description: 'Prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides <a href="#SYS-reverseProxyPrefix">[SYS][reverseProxyPrefix]</a>.'
+            description: 'Prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides <code>[SYS][reverseProxyPrefix]</code>.'
         displayErrors:
             type: int
             allowedValues:
@@ -346,7 +346,7 @@ BE:
               '2': 'Use the first two parts of the editors'' IPv4 address (e.g. "192.168") as part of the session locking of Backend Users'
               '3': 'Use the first three parts of the editors'' IPv4 address (e.g. "192.168.13") as part of the session locking of Backend Users'
               '4': 'Use the editors'' full IPv4 address (e.g. "192.168.13.84") as part of the session locking of Backend Users (highest security)'
-            description: 'Session IP locking for backend users. See <a href="#FE-lockIP">[FE][lockIP]</a> for details.'
+            description: 'Session IP locking for backend users. See <code>[FE][lockIP]</code> for details.'
         lockIPv6:
             type: int
             allowedValues:
@@ -359,7 +359,7 @@ BE:
               '6': 'Use the first six blocks (96 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e") as part of the session locking of Backend Users'
               '7': 'Use the first seven blocks (112 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370") as part of the session locking of Backend Users'
               '8': 'Use the editors'' full IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370:7344") as part of the session locking of Backend Users (highest security)'
-            description: 'Session IPv6 locking for backend users. See <a href="#FE-lockIPv6">[FE][lockIPv6]</a> for details.'
+            description: 'Session IPv6 locking for backend users. See <code>[FE][lockIPv6]</code> for details.'
         sessionTimeout:
             type: int
             description: 'Session time out for backend users in seconds. The value must be at least 180 to avoid side effects. Default is 28.800 seconds = 8 hours.'
@@ -374,7 +374,7 @@ BE:
             description: 'Use a non-standard HTTPS port for lockSSL. Set this value if you use lockSSL and the HTTPS port of your webserver is not 443.'
         cookieDomain:
             type: text
-            description: 'Same as <a href="#SYS-cookieDomain">$TYPO3_CONF_VARS[''SYS''][''cookieDomain'']</a> but only for BE cookies. If empty, $TYPO3_CONF_VARS[''SYS''][''cookieDomain''] value will be used.'
+            description: 'Same as <code>$TYPO3_CONF_VARS[''SYS''][''cookieDomain'']</code> but only for BE cookies. If empty, $TYPO3_CONF_VARS[''SYS''][''cookieDomain''] value will be used.'
         cookieName:
             type: text
             description: 'Set the name for the cookie used for the back-end user session'
@@ -398,7 +398,7 @@ BE:
             description: 'Restricts access to the TYPO3 Backend - especially useful when doing maintenance or updates'
         disable_exec_function:
             type: bool
-            description: 'Don''t use exec() function (except for ImageMagick which is disabled by <a href="#GFX-im">[GFX][im]</a>=0). If set, all file operations are done by the default PHP-functions. This is necessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.'
+            description: 'Don''t use exec() function (except for ImageMagick which is disabled by <code>[GFX][im]=0</code>). If set, all file operations are done by the default PHP-functions. This is necessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.'
         contentSecurityPolicyReportingUrl:
             type: text
             description: 'Content-Security-Policy reporting HTTP endpoint. If blank (""), the system default will be used. If set to zero ("0"), the reporting endpoint is disabled.'
@@ -442,7 +442,7 @@ FE:
             description: 'If TRUE, a page not found call is made when cHash evaluation error occurs, otherwise caching is disabled and page output is displayed.'
         pageUnavailable_force:
             type: bool
-            description: 'If TRUE, every frontend page is shown as "unavailable". If the client matches <a href="#SYS-devIPmask">[SYS][devIPmask]</a>, the page is shown as normal. This is useful during temporary site maintenance.'
+            description: 'If TRUE, every frontend page is shown as "unavailable". If the client matches <code>[SYS][devIPmask]</code>, the page is shown as normal. This is useful during temporary site maintenance.'
         checkFeUserPid:
             type: bool
             description: 'If set, the pid of fe_user logins must be sent in the form as the field ''pid'' and then the user must be located in the pid. If you unset this, you should change the fe_users.username eval-flag ''uniqueInPid'' to ''unique'' in $TCA. This will do: <code>$TCA[''fe_users''][''columns''][''username''][''config''][''eval'']= ''nospace,lower,required,unique'';</code>'
@@ -496,10 +496,10 @@ FE:
             description: 'If >0, the session data of an anonymous session will timeout and be removed after the number of seconds given (86400 seconds represents 24 hours).'
         permalogin:
             type: text
-            description: '<dl><dt>-1</dt><dd>Permanent login for FE users is disabled.</dd><dt>0</dt><dd>By default permalogin is disabled for FE users but can be enabled by a form control in the login form.</dd><dt>1</dt><dd>Permanent login is by default enabled but can be disabled by a form control in the login form.</dd><dt>2</dt><dd>Permanent login is forced to be enabled.</dd></dl> In any case, permanent login is only possible if <a href="#FE-lifetime">[FE][lifetime]</a> lifetime is > 0.'
+            description: '<dl><dt>-1</dt><dd>Permanent login for FE users is disabled.</dd><dt>0</dt><dd>By default permalogin is disabled for FE users but can be enabled by a form control in the login form.</dd><dt>1</dt><dd>Permanent login is by default enabled but can be disabled by a form control in the login form.</dd><dt>2</dt><dd>Permanent login is forced to be enabled.</dd></dl> In any case, permanent login is only possible if <code>[FE][lifetime]</code> lifetime is > 0.'
         cookieDomain:
             type: text
-            description: 'Same as <a href="#SYS-cookieDomain">$TYPO3_CONF_VARS[''SYS''][''cookieDomain'']</a> but only for FE cookies. If empty, $TYPO3_CONF_VARS[''SYS''][''cookieDomain''] value will be used.'
+            description: 'Same as <code>$TYPO3_CONF_VARS[''SYS''][''cookieDomain'']</code> but only for FE cookies. If empty, $TYPO3_CONF_VARS[''SYS''][''cookieDomain''] value will be used.'
         cookieName:
             type: text
             description: 'Set the name for the cookie used for the front-end user session'
