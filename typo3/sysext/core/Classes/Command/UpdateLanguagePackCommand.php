@@ -52,7 +52,11 @@ class UpdateLanguagePackCommand extends Command
                 'locales',
                 InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
                 'Provide iso codes separated by space to update only selected language packs. Example `bin/typo3 language:update de ja`.',
-                []
+                [],
+                function (): array {
+                    // The container has already been booted by CommandApplication
+                    return $this->bootService->getContainer()->get(LanguagePackService::class)->getActiveLanguages();
+                }
             )
             ->addOption(
                 'no-progress',
