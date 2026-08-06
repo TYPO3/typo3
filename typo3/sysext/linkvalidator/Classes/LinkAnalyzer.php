@@ -204,7 +204,8 @@ class LinkAnalyzer
                 $schema = $this->tcaSchemaFactory->get($table);
 
                 $record = [];
-                $record['headline'] = BackendUtility::getRecordTitle($table, $entryValue['row']);
+                // Limit headline to 255 chars. GeneralUtility::fixed_lgd_cs appends "..." to the string.
+                $record['headline'] = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $entryValue['row']), 252);
                 $record['record_pid'] = $entryValue['row']['pid'];
                 $record['record_uid'] = $entryValue['uid'];
                 $record['table_name'] = $table;
