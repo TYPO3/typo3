@@ -14,4 +14,10 @@ typo3-backend-content-navigation {
         right: 0;
         z-index: 10;
     }
+
+    .upload-queue-item {
+        typo3-backend-progress-bar {
+            position: relative;
+        }
+    }
 }
