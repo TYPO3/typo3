@@ -26,7 +26,7 @@ use TYPO3\CMS\Backend\Authentication\BackendLocker;
 /**
  * Core function for locking the TYPO3 Backend
  */
-#[AsCommand('backend:lock', 'Lock the TYPO3 Backend')]
+#[AsCommand('backend:lock', 'Locks the TYPO3 Backend')]
 class LockBackendCommand extends Command
 {
     public function __construct(protected readonly BackendLocker $lockService, ?string $name = null)
@@ -43,7 +43,7 @@ class LockBackendCommand extends Command
             ->addArgument(
                 'redirect',
                 InputArgument::OPTIONAL,
-                'If set, a locked TYPO3 Backend will redirect to URI specified with this argument. The URI is saved as a string in the lockfile that is specified in the system configuration.',
+                'A locked TYPO3 Backend will redirect to URI specified with this argument. The URI is saved as a string in the lockfile that is specified in the system configuration.',
                 ''
             );
     }

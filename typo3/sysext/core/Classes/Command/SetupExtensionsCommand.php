@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Package\PackageSetup;
 /**
  * Command for setting up all extensions via CLI.
  */
-#[AsCommand('extension:setup', 'Set up extensions and perform database migrations.')]
+#[AsCommand('extension:setup', 'Sets up extensions and perform database migrations.')]
 #[AsNonSchedulableCommand]
 class SetupExtensionsCommand extends Command
 {

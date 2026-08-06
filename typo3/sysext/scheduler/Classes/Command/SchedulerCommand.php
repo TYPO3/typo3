@@ -36,7 +36,7 @@ use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
  *
  * @internal Specific command implementation, not part of TYPO3 API.
  */
-#[AsCommand('scheduler:run', 'Start the TYPO3 Scheduler from the command line.')]
+#[AsCommand('scheduler:run', 'Starts the TYPO3 Scheduler from the command line.')]
 #[AsNonSchedulableCommand]
 class SchedulerCommand extends Command
 {

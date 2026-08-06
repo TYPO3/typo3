@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 /**
  * CLI command for setting a configuration value in system/settings.php
  */
-#[AsCommand('configuration:set', 'Set a configuration value in system/settings.php')]
+#[AsCommand('configuration:set', 'Sets a configuration value in system/settings.php')]
 #[AsNonSchedulableCommand]
 class ConfigurationSetCommand extends Command
 {

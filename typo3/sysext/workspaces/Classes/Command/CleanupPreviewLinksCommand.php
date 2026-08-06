@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  *
  * @internal
  */
-#[AsCommand('cleanup:previewlinks', 'Clean up expired preview links from shared workspace previews.')]
+#[AsCommand('cleanup:previewlinks', 'Cleans up expired preview links from shared workspace previews.')]
 class CleanupPreviewLinksCommand extends Command
 {
     public function __construct(private readonly ConnectionPool $connectionPool)

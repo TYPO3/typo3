@@ -464,17 +464,17 @@ class ServiceProvider extends AbstractServiceProvider
         $commandRegistry->addLazyCommand(
             'setup',
             Command\SetupCommand::class,
-            'Setup TYPO3 via CLI.'
+            'Sets up TYPO3 via CLI.'
         );
         $commandRegistry->addLazyCommand(
             'setup:begroups:default',
             Command\SetupDefaultBackendUserGroupsCommand::class,
-            'Setup default backend user groups "Editor" and "Advanced Editor".'
+            'Sets up default backend user groups "Editor" and "Advanced Editor".'
         );
         $commandRegistry->addLazyCommand(
             'install:password:set',
             Command\PasswordSetCommand::class,
-            'Set or generate a new install tool password'
+            'Sets or generate a new install tool password'
         );
         return $commandRegistry;
     }

@@ -445,7 +445,7 @@
         <source>Caching framework garbage collection</source>
       </trans-unit>
       <trans-unit id="cachingFrameworkGarbageCollection.description">
-        <source>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</source>
+        <source>Calls garbage collection of caching framework caches which use one of the selected backends. This will free up space in cache backends which do not have internal garbage collection. For the default database backend, this task should be run once a day when the database is most likely to be idle.</source>
       </trans-unit>
       <trans-unit id="fileIndexing.name">
         <source>[OBSOLETE] File Abstraction Layer: Indexing job</source>
@@ -469,13 +469,13 @@
         <source>Table garbage collection</source>
       </trans-unit>
       <trans-unit id="tableGarbageCollection.description">
-        <source>Task to delete old entries from specific tables like sys_log.</source>
+        <source>Deletes old entries from specific tables like sys_log.</source>
       </trans-unit>
       <trans-unit id="recyclerGarbageCollection.name">
         <source>Fileadmin garbage collection</source>
       </trans-unit>
       <trans-unit id="recyclerGarbageCollection.description">
-        <source>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</source>
+        <source>Empties all "_recycler_" folders under fileadmin. This helps free up space in the file system.</source>
       </trans-unit>
       <trans-unit id="executeSchedulableCommandTask.name">
         <source>Execute console commands</source>
@@ -487,13 +487,13 @@
         <source>Optimize MySQL database tables</source>
       </trans-unit>
       <trans-unit id="optimizeDatabaseTable.description">
-        <source>This task executes "OPTIMIZE TABLE" statements on the selected database tables. This helps to reduce storage space and improve I/O efficiency. Warning: tables will be locked during the optimization process.</source>
+        <source>Executes "OPTIMIZE TABLE" statements on the selected database tables. This helps to reduce storage space and improve I/O efficiency. Please be aware that tables will be locked during the optimization process.</source>
       </trans-unit>
       <trans-unit id="ipAnonymization.name">
         <source>Anonymize IP addresses in database tables</source>
       </trans-unit>
       <trans-unit id="ipAnonymization.description">
-        <source>This task anonymizes the IP addresses from specific tables like sys_log to enforce the privacy of the persisted data.</source>
+        <source>Anonymizes the IP addresses from specific tables like sys_log to enforce the privacy of the persisted data.</source>
       </trans-unit>
       <trans-unit id="label.ipAnonymization.table">
         <source>Table to anonymize</source>

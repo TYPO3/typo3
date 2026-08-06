@@ -41,7 +41,7 @@ use TYPO3\CMS\Scheduler\Task\TaskStatus;
 /**
  * CLI command for EXT:scheduler to list tasks
  */
-#[AsCommand('scheduler:list', 'List all TYPO3 Scheduler tasks.')]
+#[AsCommand('scheduler:list', 'Lists all TYPO3 Scheduler tasks.')]
 #[AsNonSchedulableCommand]
 class SchedulerListCommand extends Command
 {

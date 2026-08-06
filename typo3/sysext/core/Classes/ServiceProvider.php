@@ -929,29 +929,29 @@ class ServiceProvider extends AbstractServiceProvider
         $commandRegistry->addLazyCommand('extensionmanager:extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');
         $commandRegistry->addLazyCommand('extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');
 
-        $commandRegistry->addLazyCommand('lint:yaml', SymfonyLintCommand::class, 'Lint yaml files.');
-        $commandRegistry->addLazyCommand('completion', SymfonyDumpCompletionCommand::class, 'Dump the shell completion script');
+        $commandRegistry->addLazyCommand('lint:yaml', SymfonyLintCommand::class, 'Lints yaml files.');
+        $commandRegistry->addLazyCommand('completion', SymfonyDumpCompletionCommand::class, 'Dumps the shell completion script');
 
         $commandRegistry->addLazyCommand(
             'upgrade:run',
             Command\UpgradeWizardRunCommand::class,
-            'Run upgrade wizard. Without arguments all available wizards will be run.'
+            'Runs upgrade wizard. Without arguments all available wizards will be run.'
         );
         $commandRegistry->addLazyCommand(
             'upgrade:list',
             Command\UpgradeWizardListCommand::class,
-            'List available upgrade wizards.'
+            'Lists available upgrade wizards.'
         );
         $commandRegistry->addLazyCommand(
             'upgrade:mark:undone',
             Command\UpgradeWizardMarkUndoneCommand::class,
-            'Mark upgrade wizard as undone.'
+            'Marks upgrade wizard as undone.'
         );
 
         $commandRegistry->addLazyCommand(
             'language:update',
             Command\UpdateLanguagePackCommand::class,
-            'Update the language files of all activated extensions',
+            'Updates the language files of all activated extensions',
             false,
             true,
         );

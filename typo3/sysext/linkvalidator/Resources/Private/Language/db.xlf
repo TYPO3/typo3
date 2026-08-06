@@ -10,7 +10,7 @@
         <source>LinkValidator</source>
       </trans-unit>
       <trans-unit id="tasks.validate.description">
-        <source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
+        <source>Searches for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
       </trans-unit>
       <trans-unit id="tasks.validate.page">
         <source>Start page (uid)</source>

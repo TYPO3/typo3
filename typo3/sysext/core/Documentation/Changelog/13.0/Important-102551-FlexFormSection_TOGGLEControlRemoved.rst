@@ -26,7 +26,7 @@ following command:
 
 If this is not possible, a scheduler task of type
 :guilabel:`Execute console commands` with the command
-:guilabel:`cleanup:flexforms: Clean up database FlexForm fields that do not match the chosen data structure.`
+:guilabel:`cleanup:flexforms: Cleans up database FlexForm fields that do not match the chosen data structure.`
 may be set up and used.
 
 .. index:: FlexForm, ext:backend

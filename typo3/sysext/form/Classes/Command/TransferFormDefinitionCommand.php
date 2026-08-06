@@ -48,7 +48,7 @@ use TYPO3\CMS\Form\Service\FormTransferService;
  *   # Transfer to a specific target location (PID for database)
  *   bin/typo3 form:definition:transfer --source=extension --target=database --target-location=42
  */
-#[AsCommand('form:definition:transfer', 'Transfer form definitions between storage backends')]
+#[AsCommand('form:definition:transfer', 'Transfers form definitions between storage backends')]
 class TransferFormDefinitionCommand extends Command
 {
     public function __construct(

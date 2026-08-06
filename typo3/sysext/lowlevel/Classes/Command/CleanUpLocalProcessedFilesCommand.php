@@ -28,7 +28,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Lowlevel\Service\CleanUpLocalProcessedFilesService;
 
-#[AsCommand('cleanup:localprocessedfiles', 'Delete processed files and their database records.')]
+#[AsCommand('cleanup:localprocessedfiles', 'Deletes processed files and their database records.')]
 class CleanUpLocalProcessedFilesCommand extends Command
 {
     public function __construct(

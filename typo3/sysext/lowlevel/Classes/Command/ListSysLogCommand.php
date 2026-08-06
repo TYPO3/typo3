@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Lists all sys_log entries from the last 24 hours by default
  * This is the most basic and can be useful for nightly check test reports.
  */
-#[AsCommand('syslog:list', 'Show entries from the sys_log database table of the last 24 hours.')]
+#[AsCommand('syslog:list', 'Shows entries from the sys_log database table of the last 24 hours.')]
 #[AsNonSchedulableCommand]
 class ListSysLogCommand extends Command
 {

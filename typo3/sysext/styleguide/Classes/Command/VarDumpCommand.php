@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Styleguide\DummyDumpContentProvider;
 
-#[AsCommand('styleguide:example:var-dump', 'Show example DebuggerUtility::var_dump output')]
+#[AsCommand('styleguide:example:var-dump', 'Shows an example of DebuggerUtility::var_dump output')]
 final class VarDumpCommand extends Command
 {
     protected function execute(InputInterface $input, OutputInterface $output): int

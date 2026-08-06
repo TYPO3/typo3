@@ -25,7 +25,7 @@ use TYPO3\CMS\Backend\Authentication\BackendLocker;
 /**
  * Core function for unlocking the TYPO3 Backend
  */
-#[AsCommand('backend:unlock', 'Unlock the TYPO3 Backend')]
+#[AsCommand('backend:unlock', 'Unlocks the TYPO3 Backend')]
 class UnlockBackendCommand extends Command
 {
     public function __construct(protected readonly BackendLocker $lockService, ?string $name = null)

@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 
-#[AsCommand('redirects:cleanup', 'Cleanup old redirects periodically for given constraints like days, hit count or domains.')]
+#[AsCommand('redirects:cleanup', 'Periodically cleans up old redirects for constraints such as days, hit count or domains.')]
 class CleanupRedirectsCommand extends Command
 {
     protected LanguageService $languageService;

@@ -33,7 +33,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  *
  * @internal
  */
-#[AsCommand('styleguide:generate', 'Generate page tree for Styleguide TCA backend and/or Styleguide frontend')]
+#[AsCommand('styleguide:generate', 'Generates a page tree for Styleguide TCA backend and/or Styleguide frontend')]
 final class GeneratorCommand extends Command
 {
     public function __construct(
