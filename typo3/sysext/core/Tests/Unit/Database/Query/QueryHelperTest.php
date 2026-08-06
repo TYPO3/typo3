@@ -125,6 +125,19 @@ final class QueryHelperTest extends UnitTestCase
                     ['be_groups.title', null],
                 ],
             ],
+            'with FIND_IN_SET' => [
+                'ORDER BY FIND_IN_SET(aField, "1,2,3")',
+                [
+                    ['FIND_IN_SET(aField, "1,2,3")', null],
+                ],
+            ],
+            'with FIND_IN_SET and column' => [
+                'ORDER BY FIND_IN_SET(aField, "1,2,3"), bField ASC',
+                [
+                    ['FIND_IN_SET(aField, "1,2,3")', null],
+                    ['bField', 'ASC'],
+                ],
+            ],
         ];
     }
 
