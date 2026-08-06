@@ -62,8 +62,23 @@ See: https://docs.typo3.org/permalink/changelog:important-107649-1760090777
 EOF
         );
         $this->setDefinition([
-            new InputOption('group', 'g', InputOption::VALUE_OPTIONAL, 'The cache group to warmup (system, pages, di or all)', 'all'),
+            new InputOption('group', 'g', InputOption::VALUE_OPTIONAL, 'The cache group to warmup (system, pages, di or all)', 'all', function (): array {
+                return $this->getAvailableCacheGroups();
+            }),
         ]);
+    }
+
+    /**
+     * All cache groups registered by the core and extensions, plus the
+     * pseudo groups "di" and "all" which are handled by this command only.
+     *
+     * @return string[]
+     */
+    private function getAvailableCacheGroups(): array
+    {
+        $groups = $this->bootService->getContainer()->get(CacheManager::class)->getCacheGroups();
+
+        return array_values(array_unique([...$groups, 'di', 'all']));
     }
 
     /**

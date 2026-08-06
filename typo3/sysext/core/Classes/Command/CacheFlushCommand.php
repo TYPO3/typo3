@@ -51,8 +51,23 @@ class CacheFlushCommand extends Command
             . 'You can flush a specific cache group (system, pages, di) or all caches.'
         );
         $this->setDefinition([
-            new InputOption('group', 'g', InputOption::VALUE_OPTIONAL, 'Cache group to flush (system, pages, di, or all).', 'all'),
+            new InputOption('group', 'g', InputOption::VALUE_OPTIONAL, 'Cache group to flush (system, pages, di, or all).', 'all', function (): array {
+                return $this->getAvailableCacheGroups();
+            }),
         ]);
+    }
+
+    /**
+     * All cache groups registered by the core and extensions, plus the
+     * pseudo groups "di" and "all" which are handled by this command only.
+     *
+     * @return string[]
+     */
+    private function getAvailableCacheGroups(): array
+    {
+        $groups = $this->bootService->getContainer()->get(CacheManager::class)->getCacheGroups();
+
+        return array_values(array_unique([...$groups, 'di', 'all']));
     }
 
     /**
