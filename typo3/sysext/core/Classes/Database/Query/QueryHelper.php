@@ -47,18 +47,65 @@ readonly class QueryHelper
             return [];
         }
         $input = preg_replace('/^(?:ORDER[[:space:]]*BY[[:space:]]*)+/i', '', trim($input)) ?: '';
-        $orderExpressions = GeneralUtility::trimExplode(',', $input, true);
+        $orderExpressions = array_filter(array_map('trim', self::splitOutsideParentheses($input, ',')), static fn(string $value): bool => $value !== '');
 
         return array_map(
             static function (string $expression): array {
-                $fieldNameOrderArray = GeneralUtility::trimExplode(' ', $expression, true);
+                $fieldNameOrderArray = array_filter(self::splitOutsideParentheses($expression, ' '), static fn(string $value): bool => $value !== '');
                 $fieldName = $fieldNameOrderArray[0] ?? null;
                 $order = $fieldNameOrderArray[1] ?? null;
 
                 return [$fieldName, $order];
             },
-            $orderExpressions
+            array_values($orderExpressions)
         );
+    }
+
+    /**
+     * Splits a string on the given single-character delimiter, ignoring
+     * occurrences of the delimiter inside round brackets or quotes, e.g.
+     * to keep "FIND_IN_SET(aField, "1,2,3")" intact when splitting on ",".
+     *
+     * @return string[]
+     */
+    private static function splitOutsideParentheses(string $subject, string $delimiter): array
+    {
+        if (!str_contains($subject, '(') && !str_contains($subject, '"') && !str_contains($subject, "'")) {
+            return GeneralUtility::trimExplode($delimiter, $subject);
+        }
+
+        $parts = [];
+        $current = '';
+        $depth = 0;
+        $quote = null;
+        foreach (str_split($subject) as $char) {
+            if ($quote !== null) {
+                $current .= $char;
+                if ($char === $quote) {
+                    $quote = null;
+                }
+                continue;
+            }
+            if ($char === '"' || $char === "'") {
+                $quote = $char;
+                $current .= $char;
+                continue;
+            }
+            if ($char === '(') {
+                $depth++;
+            } elseif ($char === ')') {
+                $depth--;
+            }
+            if ($char === $delimiter && $depth === 0) {
+                $parts[] = $current;
+                $current = '';
+                continue;
+            }
+            $current .= $char;
+        }
+        $parts[] = $current;
+
+        return $parts;
     }
 
     /**
