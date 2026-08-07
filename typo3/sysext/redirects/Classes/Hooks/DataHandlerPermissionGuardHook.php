@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Hooks;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -44,7 +45,23 @@ final readonly class DataHandlerPermissionGuardHook
         string|int $id,
         DataHandler $dataHandler,
     ): void {
-        if ($table === 'sys_redirect' && !$this->redirectPermissionGuard->isAllowedRedirect($incomingFieldArray ?? [])) {
+        if ($table !== 'sys_redirect') {
+            return;
+        }
+
+        $redirect = $incomingFieldArray ?? [];
+
+        // Partial updates (e.g. toggling "disabled" from the list view) only carry the
+        // changed fields. Fall back to the persisted values so the permission check is
+        // performed against the record's actual source host and target.
+        if (MathUtility::canBeInterpretedAsInteger($id)
+            && (!isset($redirect['source_host']) || !isset($redirect['target']))
+        ) {
+            $existingRecord = BackendUtility::getRecord('sys_redirect', (int)$id, 'source_host,target') ?? [];
+            $redirect += $existingRecord;
+        }
+
+        if (!$this->redirectPermissionGuard->isAllowedRedirect($redirect)) {
             // Reset incoming field array to avoid further processing in DataHandler
             // in case the given source host is not allowed for the current user
             $incomingFieldArray = null;
