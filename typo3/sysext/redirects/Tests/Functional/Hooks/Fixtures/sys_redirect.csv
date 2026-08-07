@@ -1,0 +1,5 @@
+sys_redirect,,,,,,,,,,,,
+,uid,pid,createdon,deleted,disabled,source_host,source_path,target,target_statuscode,hitcount,protected,redirect_type
+,1,0,2147483647,0,0,*,/foo,https://example.com/bar,301,0,1,default
+,2,0,2147483647,0,0,other-host.example,/foo,https://example.com/bar,301,0,1,default
+,3,0,2147483647,0,0,*,/abc123,https://example.com/original,301,0,1,short_url

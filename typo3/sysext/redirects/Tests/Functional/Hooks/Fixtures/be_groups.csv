@@ -1,0 +1,3 @@
+be_groups,,,,,,,
+,uid,pid,title,deleted,tables_select,tables_modify,non_exclude_fields
+,1,0,redirect-editors,0,sys_redirect,sys_redirect,"sys_redirect:disabled,sys_redirect:source_host,sys_redirect:source_path,sys_redirect:target"
