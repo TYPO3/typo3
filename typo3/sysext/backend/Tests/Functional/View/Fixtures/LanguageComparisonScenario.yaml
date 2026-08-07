@@ -1,0 +1,46 @@
+__variables:
+  - &pageStandard 0
+  - &contentText 'text'
+  - &idAcmeRootPage 1000
+  - &idAcmeFirstPage 1100
+
+entitySettings:
+  '*':
+    nodeColumnName: 'pid'
+    columnNames: {id: 'uid', language: 'sys_language_uid'}
+    defaultValues: {pid: 0}
+  page:
+    isNode: true
+    tableName: 'pages'
+    parentColumnName: 'pid'
+    languageColumnNames: ['l10n_parent', 'l10n_source']
+    columnNames: {type: 'doktype', root: 'is_siteroot'}
+    defaultValues: {hidden: 0, doktype: *pageStandard}
+  content:
+    tableName: 'tt_content'
+    languageColumnNames: ['l18n_parent', 'l10n_source']
+    columnNames: {title: 'header', type: 'CType', colPos: 'colPos'}
+    defaultValues: {colPos: 0}
+
+entities:
+  page:
+    - self: {id: *idAcmeRootPage, title: 'ACME Inc', root: true}
+      children:
+        - self: {id: *idAcmeFirstPage, title: 'EN: Welcome'}
+          languageVariants:
+            - self: {id: 1101, title: 'FR: Welcome', language: 1}
+            - self: {id: 1102, title: 'DE: Welcome', language: 2}
+          entities:
+            content:
+              - self: {title: 'EN content default #1', type: *contentText, colPos: 0}
+                languageVariants:
+                  - self: {title: 'FR connected translation #1', type: *contentText, language: 1}
+              - self: {title: 'EN content default #2', type: *contentText, colPos: 0}
+                languageVariants:
+                  - self: {title: 'FR connected translation #2', type: *contentText, language: 1}
+              - self: {title: 'EN content default #3', type: *contentText, colPos: 0}
+              - self: {title: 'DE free content #1', type: *contentText, language: 2, l18n_parent: 0, colPos: 0}
+              - self: {title: 'DE free content #2', type: *contentText, language: 2, l18n_parent: 0, colPos: 0}
+              - self: {title: 'DE free content #3', type: *contentText, language: 2, l18n_parent: 0, colPos: 0}
+              - self: {title: 'DE free content #4', type: *contentText, language: 2, l18n_parent: 0, colPos: 1}
+              - self: {title: 'DE free content #5', type: *contentText, language: 2, l18n_parent: 0, colPos: 0}
