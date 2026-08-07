@@ -18,7 +18,7 @@
 }
 
 .module-body typo3-backend-settings-editor {
-    --settings-parent-offset: var(--module-docheader-bar-height);
+    --settings-parent-offset: var(--module-docheader-sticky-height);
 }
 
 .modal-body typo3-backend-settings-editor {

@@ -1,39 +1,42 @@
 <div class="module-loading-indicator"></div>
-<div class="module-docheader module-docheader-navigation t3js-module-docheader-navigation">
-    <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/viewport/content-navigation-toggle.js'}" />
-    <div class="module-docheader-column">
-        <typo3-backend-content-navigation-toggle
-            class="btn btn-sm btn-icon btn-default btn-borderless"
-            action="expand"
-            hidden
-        >
-        </typo3-backend-content-navigation-toggle>
-    </div>
-    <div class="module-docheader-column module-docheader-column-breadcrumb">
-        <f:if condition="{docHeader.breadcrumb}">
-            <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/element/breadcrumb.js'}" />
-            <typo3-breadcrumb
-                label='{f:translate(key: "LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:breadcrumb")}'
-                nodes='{docHeader.breadcrumb -> f:format.json()}'
-            ></typo3-breadcrumb>
-        </f:if>
-    </div>
-    <div class="module-docheader-column">
-        <f:if condition="{docHeader.languageSelector}">
-            <f:format.raw>{docHeader.languageSelector}</f:format.raw>
-        </f:if>
-    </div>
-</div>
-<f:if condition="{docHeader.buttons.left -> f:count()} > 0 || {docHeader.buttons.right -> f:count()} > 0">
-    <div class="module-docheader module-docheader-buttons t3js-module-docheader-buttons">
-        <div class="module-docheader-column module-docheader-column-grow">
-            <f:render section="buttonbar" arguments="{buttons:docHeader.buttons.left}" />
+<div class="module-docheader-wrapper">
+    <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/module-docheader.js'}" />
+    <div class="module-docheader module-docheader-navigation t3js-module-docheader-navigation">
+        <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/viewport/content-navigation-toggle.js'}" />
+        <div class="module-docheader-column">
+            <typo3-backend-content-navigation-toggle
+                class="btn btn-sm btn-icon btn-default btn-borderless"
+                action="expand"
+                hidden
+            >
+            </typo3-backend-content-navigation-toggle>
+        </div>
+        <div class="module-docheader-column module-docheader-column-breadcrumb">
+            <f:if condition="{docHeader.breadcrumb}">
+                <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/element/breadcrumb.js'}" />
+                <typo3-breadcrumb
+                    label='{f:translate(key: "LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:breadcrumb")}'
+                    nodes='{docHeader.breadcrumb -> f:format.json()}'
+                ></typo3-breadcrumb>
+            </f:if>
         </div>
         <div class="module-docheader-column">
-            <f:render section="buttonbar" arguments="{buttons:docHeader.buttons.right}" />
+            <f:if condition="{docHeader.languageSelector}">
+                <f:format.raw>{docHeader.languageSelector}</f:format.raw>
+            </f:if>
         </div>
     </div>
-</f:if>
+    <f:if condition="{docHeader.buttons.left -> f:count()} > 0 || {docHeader.buttons.right -> f:count()} > 0">
+        <div class="module-docheader module-docheader-buttons t3js-module-docheader-buttons">
+            <div class="module-docheader-column module-docheader-column-grow">
+                <f:render section="buttonbar" arguments="{buttons:docHeader.buttons.left}" />
+            </div>
+            <div class="module-docheader-column">
+                <f:render section="buttonbar" arguments="{buttons:docHeader.buttons.right}" />
+            </div>
+        </div>
+    </f:if>
+</div>
 
 <f:section name="buttonbar">
     <f:if condition="{buttons -> f:count()} > 0">

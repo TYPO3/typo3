@@ -652,7 +652,7 @@ typo3-form-form-element-stage-item[invalid] {
     .formeditor-inspector {
         position: sticky;
         inset: auto;
-        top: calc(1rem + var(--module-docheader-bar-height));
+        top: calc(1rem + var(--module-docheader-sticky-height));
         width: var(--formeditor-module-inspector);
         height: auto;
         flex-shrink: 0;

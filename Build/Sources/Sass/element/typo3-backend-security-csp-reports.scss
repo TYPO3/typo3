@@ -49,7 +49,7 @@ typo3-backend-security-csp-reports {
         .infolist-info-norecord,
         .infolist-info-record {
             position: sticky;
-            top: calc(var(--module-docheader-height) + var(--typo3-spacing));
+            top: calc(var(--module-docheader-sticky-height) + var(--typo3-spacing));
         }
     }
 }
