@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\Event\ModifyLanguagePackRemoteBaseUrlEvent;
 use TYPO3\CMS\Core\Localization\Event\ModifyLanguagePacksEvent;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
@@ -47,20 +46,15 @@ class LanguagePackService
      */
     protected $locales;
 
-    /**
-     * @var Registry
-     */
-    protected $registry;
-
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly RequestFactory $requestFactory,
         protected readonly LoggerInterface $logger,
         protected readonly SystemResourceFactory $resourceFactory,
         protected readonly SystemResourcePublisherInterface $resourcePublisher,
+        protected readonly LanguagePackStatesStore $languagePackStatesStore,
     ) {
         $this->locales = GeneralUtility::makeInstance(Locales::class);
-        $this->registry = GeneralUtility::makeInstance(Registry::class);
     }
 
     /**
@@ -95,7 +89,7 @@ class LanguagePackService
             if ($iso === 'en') {
                 continue;
             }
-            $lastUpdate = $this->registry->get('languagePacks', $iso);
+            $lastUpdate = $this->languagePackStatesStore->get($iso . '/lastUpdate');
             $languages[] = [
                 'iso' => $iso,
                 'name' => $name,
@@ -154,7 +148,7 @@ class LanguagePackService
             $extension['packs'] = [];
             foreach ($activeLanguages as $iso) {
                 $isLanguagePackDownloaded = is_dir(Environment::getLabelsPath() . '/' . $iso . '/' . $key . '/');
-                $lastUpdate = $this->registry->get('languagePacks', $iso . '-' . $key);
+                $lastUpdate = $this->languagePackStatesStore->get($iso . '/' . $key . '/lastUpdate');
                 $extension['packs'][$iso] = [
                     'iso' => $iso,
                     'exists' => $isLanguagePackDownloaded,
@@ -242,7 +236,8 @@ class LanguagePackService
         }
         if (!$operationResult) {
             $packResult = 'failed';
-            $this->registry->set('languagePacks', $iso . '-' . $key, time());
+        } else {
+            $this->languagePackStatesStore->set($iso . '/' . $key . '/lastUpdate', time());
         }
         return $packResult;
     }
@@ -256,12 +251,29 @@ class LanguagePackService
     public function setLastUpdatedIsoCode(array $isos): void
     {
         $activeLanguages = $GLOBALS['TYPO3_CONF_VARS']['LANG']['availableLocales'] ?? [];
-        foreach ($isos as $iso) {
-            if (!in_array($iso, $activeLanguages, true)) {
-                throw new \RuntimeException('Language iso code ' . (string)$iso . ' not available or active', 1520176318);
+        $this->languagePackStatesStore->withBatch(function () use ($isos, $activeLanguages): void {
+            foreach ($isos as $iso) {
+                if (!in_array($iso, $activeLanguages, true)) {
+                    throw new \RuntimeException('Language iso code ' . (string)$iso . ' not available or active', 1520176318);
+                }
+                $this->languagePackStatesStore->set($iso . '/lastUpdate', time());
             }
-            $this->registry->set('languagePacks', $iso, time());
-        }
+        });
+    }
+
+    /**
+     * Runs $work() while batching writes to the language pack states store
+     * into a single locked read-modify-write cycle, instead of one per
+     * languagePackDownload()/setLastUpdatedIsoCode() call made from within
+     * it. Use this when updating many language packs in one request.
+     *
+     * @template T
+     * @param callable(): T $work
+     * @return T
+     */
+    public function withBatchedStateUpdates(callable $work): mixed
+    {
+        return $this->languagePackStatesStore->withBatch($work);
     }
 
     /**

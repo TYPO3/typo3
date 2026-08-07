@@ -133,38 +133,42 @@ class UpdateLanguagePackCommand extends Command
             }
         }
         $progressBar = new ProgressBar($progressBarOutput, $packageCount);
-        foreach ($downloads as $extension => $extensionLanguages) {
-            foreach ($extensionLanguages as $iso) {
-                if ($noProgress) {
-                    $output->writeln(sprintf('<info>Fetching pack for language "%s" for extension "%s"</info>', $iso, $extension), $output::VERBOSITY_VERY_VERBOSE);
-                }
-                $result = $languagePackService->languagePackDownload($extension, $iso);
-                if ($noProgress) {
-                    switch ($result) {
-                        case 'failed':
-                            $output->writeln(sprintf('<comment>Fetching pack for language "%s" for extension "%s" failed</comment>', $iso, $extension));
-                            break;
-                        case 'update':
-                            $output->writeln(sprintf('<info>Updated pack for language "%s" for extension "%s"</info>', $iso, $extension));
-                            break;
-                        case 'new':
-                            $output->writeln(sprintf('<info>Fetching new pack for language "%s" for extension "%s"</info>', $iso, $extension));
-                            break;
-                        case 'skipped':
-                            $output->writeln(sprintf('<info>Skipped pack for language "%s" for extension "%s"</info>', $iso, $extension));
-                            break;
+        // Batch the per-download and the trailing setLastUpdatedIsoCode() writes into a
+        // single locked read-modify-write cycle instead of one per downloaded pack.
+        $languagePackService->withBatchedStateUpdates(function () use ($languagePackService, $downloads, $isos, $output, $noProgress, $failOnWarnings, $progressBar, &$status): void {
+            foreach ($downloads as $extension => $extensionLanguages) {
+                foreach ($extensionLanguages as $iso) {
+                    if ($noProgress) {
+                        $output->writeln(sprintf('<info>Fetching pack for language "%s" for extension "%s"</info>', $iso, $extension), $output::VERBOSITY_VERY_VERBOSE);
                     }
-                }
+                    $result = $languagePackService->languagePackDownload($extension, $iso);
+                    if ($noProgress) {
+                        switch ($result) {
+                            case 'failed':
+                                $output->writeln(sprintf('<comment>Fetching pack for language "%s" for extension "%s" failed</comment>', $iso, $extension));
+                                break;
+                            case 'update':
+                                $output->writeln(sprintf('<info>Updated pack for language "%s" for extension "%s"</info>', $iso, $extension));
+                                break;
+                            case 'new':
+                                $output->writeln(sprintf('<info>Fetching new pack for language "%s" for extension "%s"</info>', $iso, $extension));
+                                break;
+                            case 'skipped':
+                                $output->writeln(sprintf('<info>Skipped pack for language "%s" for extension "%s"</info>', $iso, $extension));
+                                break;
+                        }
+                    }
 
-                // Fail only if --fail-on-warnings is set and a language pack was not found.
-                if ($failOnWarnings && $result === 'failed') {
-                    $status = Command::FAILURE;
-                }
+                    // Fail only if --fail-on-warnings is set and a language pack was not found.
+                    if ($failOnWarnings && $result === 'failed') {
+                        $status = Command::FAILURE;
+                    }
 
-                $progressBar->advance();
+                    $progressBar->advance();
+                }
             }
-        }
-        $languagePackService->setLastUpdatedIsoCode($isos);
+            $languagePackService->setLastUpdatedIsoCode($isos);
+        });
         $progressBar->finish();
         $output->writeln('');
         // Flush language cache

@@ -717,6 +717,9 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(LogManager::class)->getLogger(Localization\LanguagePackService::class),
             $container->get(SystemResourceFactory::class),
             $container->get(SystemResourcePublisherInterface::class),
+            self::new($container, Localization\LanguagePackStatesStore::class, [
+                self::new($container, Locking\LockFactory::class),
+            ]),
         );
     }
 
