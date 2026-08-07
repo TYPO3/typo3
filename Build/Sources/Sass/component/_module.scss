@@ -25,16 +25,19 @@
     --module-docheader-border-width: 1px;
     --module-docheader-column-height: 1.78125rem; // 28.5px / 16 - to match input small height
     --module-docheader-bar-height: calc((var(--module-docheader-padding-y) * 2) + var(--module-docheader-column-height));
-    --module-docheader-scroll-offset: calc(-1 * (var(--module-docheader-bar-height) + var(--module-docheader-padding-y)));
+    --module-docheader-navigation-height: calc(var(--module-docheader-bar-height) + var(--module-docheader-border-width));
     --module-docheader-height: calc(var(--module-docheader-bar-height) * 2 + var(--module-docheader-border-width));
+    --module-docheader-sticky-height: calc(var(--module-docheader-height) - var(--module-docheader-navigation-height)); // height of the pinned part
+    --module-docheader-scroll-offset: calc(var(--module-docheader-sticky-height) - var(--module-docheader-height));
     --module-docheader-box-shadow: var(--typo3-shadow-2);
+    --module-docheader-box-shadow-range: var(--module-docheader-navigation-height);
     --module-body-padding-y: 1.5rem;
     --module-body-padding-x: 1.5rem;
     --module-body-padding: var(--module-body-padding-y) var(--module-body-padding-x);
 }
 
 body:has(.module) *:target {
-    scroll-margin-top: var(--module-docheader-height);
+    scroll-margin-top: var(--module-docheader-sticky-height);
 }
 
 //
@@ -43,11 +46,10 @@ body:has(.module) *:target {
 .module {
     display: grid;
     grid-template-areas:
-        "moduleDocHeaderNavigation"
-        "moduleDocHeaderButtons"
+        "moduleDocHeader"
         "moduleBody";
     grid-template-columns: 100%;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto 1fr;
     position: relative;
     min-height: 100%;
     max-width: 100%;
@@ -81,9 +83,19 @@ body:has(.module) *:target {
 //
 // Docheader
 //
+.module-docheader-wrapper {
+    grid-area: moduleDocHeader;
+    position: sticky;
+    // negative offset, so only the buttons bar stays pinned on very small viewports
+    top: var(--module-docheader-scroll-offset);
+    z-index: var(--typo3-zindex-header);
+    animation: module-docheader-shadow linear forwards;
+    animation-timeline: scroll(root);
+    animation-range: 0 var(--module-docheader-box-shadow-range);
+}
+
 .module-docheader {
     position: relative;
-    z-index: var(--typo3-zindex-header);
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -140,7 +152,8 @@ body:has(.module) *:target {
 // DocHeader Navigation
 //
 .module-docheader-navigation {
-    grid-area: moduleDocHeaderNavigation;
+    // deliberately not --module-docheader-navigation-height: that one carries the
+    // measured height, and feeding it back in here would drive the resize observer
     min-height: calc(var(--module-docheader-bar-height) + var(--module-docheader-border-width));
     border-bottom: var(--module-docheader-border-width) solid var(--module-docheader-border-color);
 }
@@ -152,18 +165,15 @@ body:has(.module) *:target {
     padding: 0;
 }
 
-// Sticky and Animation
-.module-docheader-buttons {
-    z-index: calc(var(--typo3-zindex-header) - 1);
-    grid-area: moduleDocHeaderButtons;
-    position: sticky;
-    top: 0;
-    animation: module-docheader-buttons-shadow linear forwards;
-    animation-timeline: scroll(root);
-    animation-range: 0 calc(var(--module-docheader-bar-height) + 1px);
+// From small viewports on, the navigation bar is pinned as well
+@include media-breakpoint-up('sm') {
+    :root {
+        --module-docheader-sticky-height: var(--module-docheader-height);
+        --module-docheader-box-shadow-range: var(--module-body-padding-y);
+    }
 }
 
-@keyframes module-docheader-buttons-shadow {
+@keyframes module-docheader-shadow {
     from {
         box-shadow: 0 0 0 transparent;
     }
