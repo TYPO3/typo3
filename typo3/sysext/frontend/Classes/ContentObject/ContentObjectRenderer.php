@@ -1291,7 +1291,7 @@ class ContentObjectRenderer
      */
     public function stdWrap_override($content = '', $conf = [])
     {
-        if (trim($conf['override'] ?? false)) {
+        if (trim((string)($conf['override'] ?? '')) !== '') {
             $content = $conf['override'];
         }
         return $content;
