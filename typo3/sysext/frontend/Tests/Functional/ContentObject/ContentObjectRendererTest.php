@@ -2826,8 +2826,13 @@ content="benni">',
                 'content',
                 ['override' => ' ' . "\t"],
             ],
-            'zero does not override' => [
+            'string zero does override' => [
+                '0',
                 'content',
+                ['override' => '0'],
+            ],
+            'integer zero does override' => [
+                0,
                 'content',
                 ['override' => 0],
             ],
