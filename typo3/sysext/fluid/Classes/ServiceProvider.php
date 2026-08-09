@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\SystemResource\Identifier\SystemResourceIdentifierFactory;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
@@ -58,6 +59,7 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             ViewFactoryInterface::class => self::provideFallbackViewFactory(...),
             ViewHelpers\ResourceViewHelper::class => self::provideFallbackResourceViewHelper(...),
+            ViewHelpers\Security\NonceViewHelper::class => self::provideFallbackNonceViewHelper(...),
             ViewHelpers\Uri\ResourceViewHelper::class => self::provideFallbackResourceUriViewHelper(...),
             ArgumentProcessorInterface::class => self::provideFallbackArgumentProcessor(...),
         ] + parent::getExtensions();
@@ -119,6 +121,17 @@ class ServiceProvider extends AbstractServiceProvider
         // Provide the ResourceViewHelper for the install tool when $resourceViewHelper is null (that means when we run without symfony DI)
         return $resourceViewHelper ?? new ViewHelpers\ResourceViewHelper(
             $container->get(SystemResourceFactory::class),
+        );
+    }
+
+    public static function provideFallbackNonceViewHelper(
+        ContainerInterface $container,
+        ?ViewHelpers\Security\NonceViewHelper $nonceViewHelper = null
+    ): ViewHelpers\Security\NonceViewHelper {
+        // Provide the nonce view helper for the install tool when $nonceViewHelper is null (that means when we run without symfony DI).
+        // EXT:core ships it in the error page template, which the exception handlers render.
+        return $nonceViewHelper ?? new ViewHelpers\Security\NonceViewHelper(
+            $container->get(RequestId::class),
         );
     }
 
