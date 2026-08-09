@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
@@ -50,6 +51,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return [
             ViewFactoryInterface::class => self::provideFallbackViewFactory(...),
+            ViewHelpers\Security\NonceViewHelper::class => self::provideFallbackNonceViewHelper(...),
         ] + parent::getExtensions();
     }
 
@@ -81,6 +83,17 @@ class ServiceProvider extends AbstractServiceProvider
         // Provide the default FluidViewFactory for the install tool when $viewFactory is null (that means when we run without symfony DI)
         return $viewFactory ?? new View\FluidViewFactory(
             $container->get(Core\Rendering\RenderingContextFactory::class),
+        );
+    }
+
+    public static function provideFallbackNonceViewHelper(
+        ContainerInterface $container,
+        ?ViewHelpers\Security\NonceViewHelper $nonceViewHelper = null
+    ): ViewHelpers\Security\NonceViewHelper {
+        // Provide the nonce view helper for the install tool when $nonceViewHelper is null (that means when we run without symfony DI).
+        // EXT:core ships it in the error page template, which the exception handlers render.
+        return $nonceViewHelper ?? new ViewHelpers\Security\NonceViewHelper(
+            $container->get(RequestId::class),
         );
     }
 }
