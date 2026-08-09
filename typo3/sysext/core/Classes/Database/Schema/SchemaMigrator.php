@@ -27,6 +27,7 @@ use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Schema\Exception\InvalidIndexDefinitionException;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 
@@ -220,7 +221,45 @@ class SchemaMigrator
         $tables = $this->mergeTableDefinitions($tables);
         $tables = $this->enrichTablesFromDefaultTCASchema($tables);
         $tables = $this->ensureDefaultTCAFieldsAreOrdered($tables);
+        $this->assertIndexesCoverDeclaredColumnsOnly($tables);
         return $tables;
+    }
+
+    /**
+     * An index over a column the table does not have is invalid, and has to be caught here: only
+     * after merging is it known which columns a table really has, since extensions add indexes to
+     * tables of other extensions in a statement that does not repeat the columns.
+     *
+     * MySQL and PostgreSQL reject such an index themselves. SQLite does not - it reads a quoted
+     * identifier that matches no column as a string literal and indexes that constant instead. The
+     * resulting index has no column at all, which makes introspecting the database impossible from
+     * then on, so this must never be handed down to the platform.
+     *
+     * @param array<non-empty-string, Table> $tables
+     * @throws InvalidIndexDefinitionException
+     */
+    private function assertIndexesCoverDeclaredColumnsOnly(array $tables): void
+    {
+        foreach ($tables as $table) {
+            $columnNames = [];
+            foreach ($table->getColumns() as $column) {
+                $columnNames[strtolower($this->trimIdentifierQuotes($column->getName()))] = true;
+            }
+            foreach ($table->getIndexes() as $index) {
+                foreach ($index->getColumns() as $indexColumnName) {
+                    $columnName = $this->trimIdentifierQuotes($indexColumnName);
+                    // Index columns may carry a prefix length, as in "title(10)".
+                    $columnName = preg_replace('/\(\d+\)$/', '', $columnName) ?? $columnName;
+                    if (!isset($columnNames[strtolower($columnName)])) {
+                        throw InvalidIndexDefinitionException::forUnknownColumn(
+                            $this->trimIdentifierQuotes($table->getName()),
+                            $this->trimIdentifierQuotes($index->getName()),
+                            $columnName
+                        );
+                    }
+                }
+            }
+        }
     }
 
     /**
