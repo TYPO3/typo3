@@ -193,6 +193,9 @@ getPhpImageVersion() {
         8.5)
             echo -n "1.8"
             ;;
+        8.6)
+            echo -n "1.0"
+            ;;
     esac
 }
 
@@ -721,9 +724,10 @@ Options:
         For -s e2e this maps to Playwright's native --shard=#chunk/#numberOfChunks.
         Example -c 3/13
 
-    -p <8.5>
+    -p <8.5|8.6>
         Specifies the PHP minor version to be used
             - 8.5 (default): use PHP 8.5
+            - 8.6: use PHP 8.6
 
     -x
         Only with -s functional|unit|unitRandom|e2e-install
@@ -873,7 +877,7 @@ while getopts ":a:b:s:c:d:i:p:xy:nhu" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(8.5)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(8.5|8.6)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
