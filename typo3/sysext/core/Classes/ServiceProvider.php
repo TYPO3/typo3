@@ -140,6 +140,7 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             Console\CommandRegistry::class => self::configureCommands(...),
             Imaging\IconRegistry::class => self::configureIconRegistry(...),
+            Controller\ErrorPageController::class => self::provideFallbackErrorPageController(...),
             EventDispatcherInterface::class => self::provideFallbackEventDispatcher(...),
             EventDispatcher\ListenerProvider::class => self::extendEventListenerProvider(...),
             Database\ConnectionPool::class => self::ensureConnectionPoolBootState(...),
@@ -711,6 +712,21 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getPasswordService(): PasswordPolicy\PasswordService
     {
         return new PasswordPolicy\PasswordService();
+    }
+
+    public static function provideFallbackErrorPageController(
+        ContainerInterface $container,
+        ?Controller\ErrorPageController $errorPageController = null
+    ): Controller\ErrorPageController {
+        // Provide the error page controller for the install tool when $errorPageController is null (that means when we run without symfony DI).
+        // The exception handlers render through it, so an application that cannot build it answers an
+        // uncaught exception with a bare status code and an empty body.
+        return $errorPageController ?? new Controller\ErrorPageController(
+            $container->get(View\ViewFactoryInterface::class),
+            $container->get(Core\RequestId::class),
+            new Information\Typo3Information(),
+            new Security\ContentSecurityPolicy\PolicyRegistry(),
+        );
     }
 
     public static function provideFallbackEventDispatcher(
