@@ -35,7 +35,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
  */
 final class FileDumpTokenTest extends FunctionalTestCase
 {
-    private const string TEMPLATE_PATH = 'EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Template.fluid.html';
+    private const TEMPLATE_PATH = 'EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Template.fluid.html';
 
     protected array $additionalFoldersToCreate = [
         '/fileadmin/user_upload',

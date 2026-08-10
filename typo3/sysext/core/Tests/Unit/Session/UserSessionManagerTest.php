@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Clock\ClockInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\IpLocker;
@@ -64,26 +65,60 @@ final class UserSessionManagerTest extends UnitTestCase
             $sessionBackendMock,
             $sessionLifetime,
             new IpLocker(0, 0),
-            'FE'
+            'FE',
+            self::createFrozenClock(1700000000)
         );
         $session = $subject->createAnonymousSession();
         self::assertEquals($expectedResult, $subject->willExpire($session, $gracePeriod));
     }
 
+    #[Test]
     public function hasExpiredIsCalculatedCorrectly(): void
     {
-        $GLOBALS['EXEC_TIME'] = time();
         $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
         $subject = new UserSessionManager(
             $sessionBackendMock,
             60,
             new IpLocker(0, 0),
-            'FE'
+            'FE',
+            self::createFrozenClock(1700000000)
         );
-        $expiredSession = UserSession::createFromRecord('random-string', ['ses_tstamp' => time() - 500]);
+        $expiredSession = UserSession::createFromRecord('random-string', ['ses_tstamp' => 1700000000 - 500]);
         self::assertTrue($subject->hasExpired($expiredSession));
-        $newSession = UserSession::createFromRecord('random-string', ['ses_tstamp' => time()]);
+        $newSession = UserSession::createFromRecord('random-string', ['ses_tstamp' => 1700000000]);
         self::assertFalse($subject->hasExpired($newSession));
+    }
+
+    #[Test]
+    public function elevateToFixatedUserSessionUsesClockForSessionTimestamp(): void
+    {
+        $sessionBackendMock = $this->createMock(SessionBackendInterface::class);
+        $sessionBackendMock->expects($this->once())->method('set')
+            ->with('random-string', self::callback(static fn(array $sessionRecord): bool => $sessionRecord['ses_tstamp'] === 1700000000))
+            ->willReturnArgument(1);
+        $subject = new UserSessionManager(
+            $sessionBackendMock,
+            60,
+            new IpLocker(0, 0),
+            'FE',
+            self::createFrozenClock(1700000000)
+        );
+        $subject->setLogger(new NullLogger());
+        $session = UserSession::createNonFixated('random-string', 1700000000 - 500);
+        $elevatedSession = $subject->elevateToFixatedUserSession($session, 13);
+        self::assertSame(1700000000, $elevatedSession->getLastUpdated());
+    }
+
+    private static function createFrozenClock(int $timestamp): ClockInterface
+    {
+        return new class ($timestamp) implements ClockInterface {
+            public function __construct(private readonly int $timestamp) {}
+
+            public function now(): \DateTimeImmutable
+            {
+                return new \DateTimeImmutable('@' . $this->timestamp);
+            }
+        };
     }
 
     #[Test]

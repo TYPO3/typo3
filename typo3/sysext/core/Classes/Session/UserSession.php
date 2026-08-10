@@ -241,9 +241,9 @@ class UserSession
      * Creates a non fixated user session. This means the
      * session does not belong to a logged-in user
      */
-    public static function createNonFixated(string $identifier): self
+    public static function createNonFixated(string $identifier, ?int $timestamp = null): self
     {
-        $userSession = new self($identifier, 0, $GLOBALS['EXEC_TIME'], []);
+        $userSession = new self($identifier, 0, $timestamp ?? $GLOBALS['EXEC_TIME'], []);
         $userSession->isPermanent = false;
         $userSession->isNew = true;
         return $userSession;

@@ -157,6 +157,9 @@ services:
         identifier: 'doctrine'
 
   # Interface implementations
+  Psr\Clock\ClockInterface:
+    alias: TYPO3\CMS\Core\Clock\SystemClock
+    public: true
   Psr\Container\ContainerInterface:
     alias: service_container
     public: true
