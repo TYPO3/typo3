@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Clock\RequestClock;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Extension\ExtLocalconfFactory;
 use TYPO3\CMS\Core\Configuration\Tca\TcaFactory;
@@ -121,6 +122,7 @@ readonly class Bootstrap
             ConfigurationManager::class => $configurationManager,
             LogManager::class => $logManager,
             RequestId::class => $requestId,
+            RequestClock::class => RequestClock::create(),
             'cache.di' => $dependencyInjectionContainerCache,
             'cache.core' => $coreCache,
             PackageManager::class => $packageManager,
