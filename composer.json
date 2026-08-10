@@ -127,7 +127,7 @@
 		"friendsofphp/php-cs-fixer": "^3.95",
 		"phpstan/phpstan": "^2.2.7",
 		"phpstan/phpstan-phpunit": "^2.0.16",
-		"phpunit/phpunit": "^11.5.55",
+		"phpunit/phpunit": "^11.5.56",
 		"sebastian/recursion-context": "^6.0.3",
 		"sokil/php-isocodes-db-i18n": "^4.0.28",
 		"typo3/testing-framework": "^9.5.0",
