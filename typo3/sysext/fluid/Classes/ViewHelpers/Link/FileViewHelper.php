@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -126,7 +127,7 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
             $parameters['fn'] = $filename;
         }
 
-        $parameters['token'] = $this->hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile');
+        $parameters['token'] = $this->hashService->hmac(implode('|', $parameters), 'resourceStorageDumpFile', HashAlgo::SHA3_256);
 
         return GeneralUtility::locationHeaderUrl(
             PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'),

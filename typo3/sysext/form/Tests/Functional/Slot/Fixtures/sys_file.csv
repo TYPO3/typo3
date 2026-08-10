@@ -1,0 +1,6 @@
+"sys_file_storage"
+,"uid","pid","name","driver","configuration","is_browsable","is_public","is_writable","is_online"
+,1,0,"fileadmin","Local","<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?><T3FlexForms><data><sheet index=""sDEF""><language index=""lDEF""><field index=""basePath""><value index=""vDEF"">fileadmin/</value></field><field index=""pathType""><value index=""vDEF"">relative</value></field><field index=""caseSensitive""><value index=""vDEF"">1</value></field></language></sheet></data></T3FlexForms>",1,1,1,1
+"sys_file"
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","creation_date","modification_date"
+,1,0,1,4,"/user_upload/regular-file.txt","2d2b3b1e0b1a4d9c8f5e6a7b8c9d0e1f2a3b4c5d","19669f1e02c2f16705ec7587044c66443be70725","txt","text/plain","regular-file.txt","da5de02721c004987c4d7dcc520ba1eeb24c63ea",13,1389878273,1389878273
