@@ -39,7 +39,7 @@ readonly class RecordAccessVoter
     /**
      * Checks page record for enableFields
      * Returns TRUE if enableFields does not disable the page record.
-     * Takes notice of the includeHiddenPages visibility aspect flag and uses SIM_ACCESS_TIME for start/endtime evaluation
+     * Takes notice of the includeHiddenPages visibility aspect flag and uses the date aspect for start/endtime evaluation
      *
      * @param string $table the TCA table to check for
      * @param array $record The record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
@@ -57,6 +57,7 @@ readonly class RecordAccessVoter
 
         $schema = $this->tcaSchemaFactory->get($table);
         $visibilityAspect = $context->getAspect('visibility');
+        $accessTime = $context->getAspect('date')->getTimestampWithMinutePrecision();
         $includeHidden = $table === 'pages'
             ? $visibilityAspect->includeHiddenPages()
             : $visibilityAspect->includeHiddenContent();
@@ -72,7 +73,7 @@ readonly class RecordAccessVoter
         if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
             $fieldName = $schema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName();
             if (isset($record[$fieldName])
-                && (int)$record[$fieldName] > $GLOBALS['SIM_ACCESS_TIME']
+                && (int)$record[$fieldName] > $accessTime
                 && !$visibilityAspect->includeScheduledRecords()
             ) {
                 return false;
@@ -83,7 +84,7 @@ readonly class RecordAccessVoter
             $fieldName = $schema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName();
             if (isset($record[$fieldName])
                 && ((int)$record[$fieldName] !== 0)
-                && ((int)$record[$fieldName] < $GLOBALS['SIM_ACCESS_TIME'])
+                && ((int)$record[$fieldName] < $accessTime)
                 && !$visibilityAspect->includeScheduledRecords()
             ) {
                 return false;

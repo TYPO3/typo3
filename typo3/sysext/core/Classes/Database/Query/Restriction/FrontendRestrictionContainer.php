@@ -98,6 +98,9 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
         if ($restrictionClass === FrontendGroupRestriction::class) {
             return GeneralUtility::makeInstance($restrictionClass, $this->context->getPropertyFromAspect('frontend.user', 'groupIds', []));
         }
+        if ($restrictionClass === StartTimeRestriction::class || $restrictionClass === EndTimeRestriction::class) {
+            return GeneralUtility::makeInstance($restrictionClass, $this->context->getAspect('date')->getTimestampWithMinutePrecision());
+        }
 
         return parent::createRestriction($restrictionClass);
     }

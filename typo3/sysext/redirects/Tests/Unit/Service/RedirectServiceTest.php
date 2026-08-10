@@ -120,9 +120,8 @@ final class RedirectServiceTest extends UnitTestCase
             self::createStub(LoggerInterface::class),
             new TypoLinkCodecService(new NoopEventDispatcher()),
             new Locales(),
+            new Context(),
         );
-
-        $GLOBALS['SIM_ACCESS_TIME'] = 42;
     }
 
     #[Test]
@@ -687,6 +686,7 @@ final class RedirectServiceTest extends UnitTestCase
                 self::createStub(LoggerInterface::class),
                 new TypoLinkCodecService(new NoopEventDispatcher()),
                 new Locales(),
+                new Context(),
             ])
             ->getMock();
 

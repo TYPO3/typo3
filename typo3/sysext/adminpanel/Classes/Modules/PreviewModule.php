@@ -189,7 +189,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         if ($simulateDate) {
             $simTime = max($simulateDate, 60);
             $GLOBALS['SIM_EXEC_TIME'] = $simTime;
-            $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
             $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($simTime)));
         }
         // simulate usergroup
@@ -220,7 +219,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
     protected function clearPreviewSettings(Context $context): void
     {
         $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
-        $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
         $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($GLOBALS['SIM_EXEC_TIME'])));
         $context->setAspect('visibility', new VisibilityAspect());
     }

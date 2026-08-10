@@ -25,7 +25,10 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -251,14 +254,14 @@ final class BackendUtilityTest extends FunctionalTestCase
                     'starttime' => 'starttime',
                 ],
                 false,
-                ' AND `${tableName}`.`starttime` <= 1234567890',
+                ' AND `${tableName}`.`starttime` <= 1234567860',
             ],
             'endtime' => [
                 [
                     'endtime' => 'endtime',
                 ],
                 false,
-                ' AND ((`${tableName}`.`endtime` = 0) OR (`${tableName}`.`endtime` > 1234567890))',
+                ' AND ((`${tableName}`.`endtime` = 0) OR (`${tableName}`.`endtime` > 1234567860))',
             ],
             'disabled, starttime, endtime' => [
                 [
@@ -267,7 +270,7 @@ final class BackendUtilityTest extends FunctionalTestCase
                     'endtime' => 'endtime',
                 ],
                 false,
-                ' AND ((`${tableName}`.`disabled` = 0) AND (`${tableName}`.`starttime` <= 1234567890) AND (((`${tableName}`.`endtime` = 0) OR (`${tableName}`.`endtime` > 1234567890))))',
+                ' AND ((`${tableName}`.`disabled` = 0) AND (`${tableName}`.`starttime` <= 1234567860) AND (((`${tableName}`.`endtime` = 0) OR (`${tableName}`.`endtime` > 1234567860))))',
             ],
             'disabled inverted' => [
                 [
@@ -281,14 +284,14 @@ final class BackendUtilityTest extends FunctionalTestCase
                     'starttime' => 'starttime',
                 ],
                 true,
-                ' AND ((`${tableName}`.`starttime` <> 0) AND (`${tableName}`.`starttime` > 1234567890))',
+                ' AND ((`${tableName}`.`starttime` <> 0) AND (`${tableName}`.`starttime` > 1234567860))',
             ],
             'endtime inverted' => [
                 [
                     'endtime' => 'endtime',
                 ],
                 true,
-                ' AND ((`${tableName}`.`endtime` <> 0) AND (`${tableName}`.`endtime` <= 1234567890))',
+                ' AND ((`${tableName}`.`endtime` <> 0) AND (`${tableName}`.`endtime` <= 1234567860))',
             ],
             'disabled, starttime, endtime inverted' => [
                 [
@@ -297,7 +300,7 @@ final class BackendUtilityTest extends FunctionalTestCase
                     'endtime' => 'endtime',
                 ],
                 true,
-                ' AND ((`${tableName}`.`disabled` <> 0) OR (((`${tableName}`.`starttime` <> 0) AND (`${tableName}`.`starttime` > 1234567890))) OR (((`${tableName}`.`endtime` <> 0) AND (`${tableName}`.`endtime` <= 1234567890))))',
+                ' AND ((`${tableName}`.`disabled` <> 0) OR (((`${tableName}`.`starttime` <> 0) AND (`${tableName}`.`starttime` > 1234567860))) OR (((`${tableName}`.`endtime` <> 0) AND (`${tableName}`.`endtime` <= 1234567860))))',
             ],
         ];
     }
@@ -313,7 +316,8 @@ final class BackendUtilityTest extends FunctionalTestCase
             $GLOBALS['TCA'][$tableName]['columns'][$column]['config']['type'] = 'check';
         }
         $this->get(TcaSchemaFactory::class)->load($GLOBALS['TCA'], true);
-        $GLOBALS['SIM_ACCESS_TIME'] = 1234567890;
+        // 1234567890 is floored to the full minute 1234567860 when evaluating starttime / endtime
+        $this->get(Context::class)->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp(1234567890)));
         $statement = BackendUtility::BEenableFields($tableName, $inverted);
         $replaces = [
             '${tableName}' => $tableName,

@@ -51,6 +51,7 @@ class CacheLifetimeCalculator
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ConnectionPool $connectionPool,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly Context $context,
     ) {}
 
     /**
@@ -65,6 +66,7 @@ class CacheLifetimeCalculator
         }
 
         $cacheTimeout = $defaultCacheTimeoutInSeconds ?: self::defaultCacheTimeout;
+        $currentTimestamp = $this->context->getAspect('date')->getTimestampWithMinutePrecision();
 
         if ($this->tcaSchemaFactory->has($tableName)) {
             $schema = $this->tcaSchemaFactory->get($tableName);
@@ -74,17 +76,12 @@ class CacheLifetimeCalculator
                     continue;
                 }
                 $timeField = $schema->getCapability($capability)->getFieldName();
-                if (array_key_exists($timeField, $record) && $record[$timeField] > 0 && ((int)$record[$timeField] - $GLOBALS['ACCESS_TIME']) > 0) {
-                    $cacheTimeout = min($cacheTimeout, (int)$record[$timeField] - $GLOBALS['ACCESS_TIME']);
+                if (array_key_exists($timeField, $record) && $record[$timeField] > 0 && ((int)$record[$timeField] - $currentTimestamp) > 0) {
+                    $cacheTimeout = min($cacheTimeout, (int)$record[$timeField] - $currentTimestamp);
                 }
             }
         }
 
-        // Get the time, rounded to the minute (do not pollute MySQL cache!)
-        // It is ok that we do not take seconds into account here because this
-        // value will be subtracted later. So we never get the time "before"
-        // the cache change.
-        $currentTimestamp = (int)$GLOBALS['ACCESS_TIME'];
         $cacheTimeout = min($currentTimestamp, $cacheTimeout);
 
         $event = new ModifyCacheLifetimeForRowEvent(
@@ -122,11 +119,7 @@ class CacheLifetimeCalculator
         // Get the configuration
         $tablesToConsider = $this->getCurrentPageCacheConfiguration($pageId, $renderingInstructions);
 
-        // Get the time, rounded to the minute (do not pollute MySQL cache!)
-        // It is ok that we do not take seconds into account here because this
-        // value will be subtracted later. So we never get the time "before"
-        // the cache change.
-        $currentTimestamp = (int)$GLOBALS['ACCESS_TIME'];
+        $currentTimestamp = $this->context->getAspect('date')->getTimestampWithMinutePrecision();
         $cacheTimeout = min($this->calculatePageCacheLifetime($tablesToConsider, $currentTimestamp), $cacheTimeout);
 
         $event = new ModifyCacheLifetimeForPageEvent(

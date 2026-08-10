@@ -21,9 +21,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -39,6 +41,17 @@ final class RecordAccessVoterTest extends FunctionalTestCase
             $this->get(EventDispatcherInterface::class),
             $this->get(TcaSchemaFactory::class),
         );
+    }
+
+    /**
+     * The date aspect timestamp 90 is floored to the full minute 60 when starttime / endtime are evaluated,
+     * so records use 50 for "in the past" and 70 for "in the future".
+     */
+    private function createContextWithAccessTime(): Context
+    {
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp(90)));
+        return $context;
     }
 
     public static function accessGrantedTestDataProvider(): \Generator
@@ -62,7 +75,7 @@ final class RecordAccessVoterTest extends FunctionalTestCase
             'pages',
             [
                 'uid' => 1,
-                'starttime' => 43,
+                'starttime' => 70,
             ],
             false,
         ];
@@ -70,7 +83,7 @@ final class RecordAccessVoterTest extends FunctionalTestCase
             'pages',
             [
                 'uid' => 1,
-                'endtime' => 41,
+                'endtime' => 50,
             ],
             false,
         ];
@@ -95,8 +108,8 @@ final class RecordAccessVoterTest extends FunctionalTestCase
             [
                 'uid' => 1,
                 'hidden' => 0,
-                'starttime' => 41,
-                'endtime' => 43,
+                'starttime' => 50,
+                'endtime' => 70,
                 'fe_group' => '3,4',
             ],
             true,
@@ -107,8 +120,7 @@ final class RecordAccessVoterTest extends FunctionalTestCase
     #[Test]
     public function accessGrantedTest(string $table, array $record, bool $access): void
     {
-        $GLOBALS['SIM_ACCESS_TIME'] = 42;
-        $context = new Context();
+        $context = $this->createContextWithAccessTime();
         $context->setAspect('frontend.user', new UserAspect(null, [3, 4]));
         self::assertEquals($access, $this->subject->accessGranted($table, $record, $context));
     }
@@ -117,7 +129,7 @@ final class RecordAccessVoterTest extends FunctionalTestCase
     public function accessGrantedRespectsVisibilityAspect(): void
     {
         // Page is available even if the "disabled" flag is set
-        $context = new Context();
+        $context = $this->createContextWithAccessTime();
         $context->setAspect('visibility', new VisibilityAspect(includeHiddenPages: true));
         self::assertTrue($this->subject->accessGranted(
             'pages',
@@ -126,7 +138,7 @@ final class RecordAccessVoterTest extends FunctionalTestCase
         ));
 
         // Content is available even if the "disabled" flag is set
-        $context = new Context();
+        $context = $this->createContextWithAccessTime();
         $context->setAspect('visibility', new VisibilityAspect(includeHiddenContent: true));
         self::assertTrue($this->subject->accessGranted(
             'tt_content',
@@ -138,22 +150,20 @@ final class RecordAccessVoterTest extends FunctionalTestCase
     #[Test]
     public function accessGrantedRespectsIncludeScheduledRecordsForStarttime(): void
     {
-        $GLOBALS['SIM_ACCESS_TIME'] = 42;
-
         // Record with starttime in the future should be denied by default
-        $context = new Context();
+        $context = $this->createContextWithAccessTime();
         self::assertFalse($this->subject->accessGranted(
             'pages',
-            ['uid' => 1, 'starttime' => 50],
+            ['uid' => 1, 'starttime' => 70],
             $context
         ));
 
         // Record with starttime in the future should be allowed when includeScheduledRecords is true
-        $context = new Context();
+        $context = $this->createContextWithAccessTime();
         $context->setAspect('visibility', new VisibilityAspect(includeScheduledRecords: true));
         self::assertTrue($this->subject->accessGranted(
             'pages',
-            ['uid' => 1, 'starttime' => 50],
+            ['uid' => 1, 'starttime' => 70],
             $context
         ));
     }
@@ -161,22 +171,20 @@ final class RecordAccessVoterTest extends FunctionalTestCase
     #[Test]
     public function accessGrantedRespectsIncludeScheduledRecordsForEndtime(): void
     {
-        $GLOBALS['SIM_ACCESS_TIME'] = 42;
-
         // Record with endtime in the past should be denied by default
-        $context = new Context();
+        $context = $this->createContextWithAccessTime();
         self::assertFalse($this->subject->accessGranted(
             'pages',
-            ['uid' => 1, 'endtime' => 30],
+            ['uid' => 1, 'endtime' => 50],
             $context
         ));
 
         // Record with endtime in the past should be allowed when includeScheduledRecords is true
-        $context = new Context();
+        $context = $this->createContextWithAccessTime();
         $context->setAspect('visibility', new VisibilityAspect(includeScheduledRecords: true));
         self::assertTrue($this->subject->accessGranted(
             'pages',
-            ['uid' => 1, 'endtime' => 30],
+            ['uid' => 1, 'endtime' => 50],
             $context
         ));
     }
@@ -220,7 +228,7 @@ final class RecordAccessVoterTest extends FunctionalTestCase
     #[Test]
     public function groupAccessGrantedTest(string $table, array $record, bool $access): void
     {
-        $context = new Context();
+        $context = $this->createContextWithAccessTime();
         $context->setAspect('frontend.user', new UserAspect(null, [3, 4]));
         self::assertEquals($access, $this->subject->groupAccessGranted($table, $record, $context));
     }

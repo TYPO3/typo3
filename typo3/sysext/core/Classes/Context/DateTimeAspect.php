@@ -55,7 +55,7 @@ final readonly class DateTimeAspect implements AspectInterface
             case 'full':
                 return $this->dateTimeObject;
             case 'accessTime':
-                return $this->dateTimeObject->getTimestamp() - ($this->dateTimeObject->getTimestamp() % 60);
+                return $this->getTimestampWithMinutePrecision();
         }
         throw new AspectPropertyNotFoundException('Property "' . $name . '" not found in Aspect "' . __CLASS__ . '".', 1527778767);
     }
@@ -66,5 +66,20 @@ final readonly class DateTimeAspect implements AspectInterface
     public function getDateTime(): \DateTimeImmutable
     {
         return $this->dateTimeObject;
+    }
+
+    public function getTimestamp(): int
+    {
+        return $this->dateTimeObject->getTimestamp();
+    }
+
+    /**
+     * The current time floored to the full minute. Used whenever records are evaluated against their
+     * starttime / endtime, and when a cache lifetime is derived from those fields, so that both use
+     * the very same granularity.
+     */
+    public function getTimestampWithMinutePrecision(): int
+    {
+        return $this->dateTimeObject->getTimestamp() - ($this->dateTimeObject->getTimestamp() % 60);
     }
 }

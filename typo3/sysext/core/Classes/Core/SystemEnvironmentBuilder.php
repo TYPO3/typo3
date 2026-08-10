@@ -184,13 +184,9 @@ class SystemEnvironmentBuilder
     {
         // EXEC_TIME is set so that the rest of the script has a common value for the script execution time
         $GLOBALS['EXEC_TIME'] = time();
-        // $ACCESS_TIME is a common time in minutes for access control
-        $GLOBALS['ACCESS_TIME'] = $GLOBALS['EXEC_TIME'] - $GLOBALS['EXEC_TIME'] % 60;
         // $SIM_EXEC_TIME is set to $EXEC_TIME but can be altered later in the script if we want to
         // simulate another execution-time when selecting from eg. a database
         $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
-        // If $SIM_EXEC_TIME is changed this value must be set accordingly
-        $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
     }
 
     protected static function getDefinedPathRoot(): string

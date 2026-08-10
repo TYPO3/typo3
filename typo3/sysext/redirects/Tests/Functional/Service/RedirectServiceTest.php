@@ -135,6 +135,7 @@ final class RedirectServiceTest extends FunctionalTestCase
             $this->get(LogManager::class)->getLogger('Testing'),
             $this->get(TypoLinkCodecService::class),
             $this->get(Locales::class),
+            $this->get(Context::class),
         );
 
         // Assert correct redirect is matched
@@ -907,6 +908,7 @@ final class RedirectServiceTest extends FunctionalTestCase
             $this->get(LogManager::class)->getLogger('Testing'),
             $this->get(TypoLinkCodecService::class),
             $this->get(Locales::class),
+            $this->get(Context::class),
         );
 
         $redirectMatch = $redirectService->matchRedirect($uri->getHost(), $uri->getPath(), $uri->getQuery());

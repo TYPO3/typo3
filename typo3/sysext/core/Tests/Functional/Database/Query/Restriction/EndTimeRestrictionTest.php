@@ -18,13 +18,16 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 final class EndTimeRestrictionTest extends AbstractRestrictionTestCase
 {
     #[Test]
-    public function buildRestrictionsThrowsExceptionInStartTimeIfGlobalsAccessTimeIsMissing(): void
+    public function buildRestrictionsFallsBackToDateAspectWithMinutePrecision(): void
     {
         $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
             'aTable' => [
@@ -43,13 +46,11 @@ final class EndTimeRestrictionTest extends AbstractRestrictionTestCase
             ],
         ]));
 
-        unset($GLOBALS['SIM_ACCESS_TIME']);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1462821084);
+        $this->get(Context::class)->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp(1698750123)));
 
         $subject = new EndTimeRestriction();
-        $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
+        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
+        self::assertSame('(("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 1698750120))', (string)$expression);
     }
 
     #[Test]

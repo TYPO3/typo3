@@ -619,7 +619,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     public function respectEnableFieldsSettingGeneratesCorrectStatementWithOnlyEndTimeInBackendContext(): void
     {
         // simulate time for backend enable fields
-        $GLOBALS['SIM_ACCESS_TIME'] = 1451779200;
+        $this->get(Context::class)->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('3.1.2016')));
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['enablecolumns']['endtime'] = 'endtime_column';
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['columns']['endtime_column']['config']['type'] = 'datetime';
         $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);

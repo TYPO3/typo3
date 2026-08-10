@@ -67,6 +67,7 @@ readonly class RedirectService
         private LoggerInterface $logger,
         private TypoLinkCodecService $typoLinkCodecService,
         private Locales $locales,
+        private Context $context,
     ) {}
 
     /**
@@ -192,8 +193,9 @@ readonly class RedirectService
      */
     protected function isRedirectActive(array $redirectRecord): bool
     {
-        return !$redirectRecord['disabled'] && $redirectRecord['starttime'] <= $GLOBALS['SIM_ACCESS_TIME']
-               && (!$redirectRecord['endtime'] || $redirectRecord['endtime'] >= $GLOBALS['SIM_ACCESS_TIME']);
+        $accessTime = $this->context->getAspect('date')->getTimestampWithMinutePrecision();
+        return !$redirectRecord['disabled'] && $redirectRecord['starttime'] <= $accessTime
+               && (!$redirectRecord['endtime'] || $redirectRecord['endtime'] >= $accessTime);
     }
 
     /**

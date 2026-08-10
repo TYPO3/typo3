@@ -19,6 +19,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -432,7 +433,7 @@ class SessionService
      */
     protected function getBackendUserRecord(ContainerInterface $container, int $uid): ?array
     {
-        $accessTimeStamp = (int)$GLOBALS['SIM_ACCESS_TIME'];
+        $accessTimeStamp = $container->get(Context::class)->getAspect('date')->getTimestampWithMinutePrecision();
         $queryBuilder = $container->get(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $queryBuilder->select('uid', 'admin')
             ->from('be_users')

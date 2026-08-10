@@ -43,6 +43,7 @@ use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageViewMode;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -90,6 +91,7 @@ class PageLayoutController
         protected readonly LanguageSelectorBuilder $languageSelectorBuilder,
         protected readonly PageLinkMessageProvider $pageLinkMessageProvider,
         private readonly SchemaLabelResolver $schemaLabelResolver,
+        private readonly Context $context,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -643,6 +645,8 @@ class PageLayoutController
             )
         );
 
+        $accessTime = $this->context->getAspect('date')->getTimestampWithMinutePrecision();
+
         if ($this->schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
             $andWhere[] = $queryBuilder->expr()->neq(
                 $this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName(),
@@ -658,7 +662,7 @@ class PageLayoutController
                 ),
                 $queryBuilder->expr()->gt(
                     $starttimeField,
-                    $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($accessTime, Connection::PARAM_INT)
                 )
             );
         }
@@ -671,7 +675,7 @@ class PageLayoutController
                 ),
                 $queryBuilder->expr()->lte(
                     $endtimeField,
-                    $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'], Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($accessTime, Connection::PARAM_INT)
                 )
             );
         }

@@ -263,7 +263,7 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
             'scheduled-visibility-slug, scheduled context (timestamp 20000)' => [
                 $scheduledContext,
                 ['slug' => 'scheduled-visibility-slug', 'uid' => '4053'],
-                false, // @todo actually `true`, Start-/EndTimeRestriction do not support Context, yet
+                true,
             ],
         ];
     }

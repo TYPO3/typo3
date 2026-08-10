@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 final class DefaultRestrictionContainerTest extends AbstractRestrictionTestCase
@@ -56,11 +59,12 @@ final class DefaultRestrictionContainerTest extends AbstractRestrictionTestCase
             ],
         ]));
 
-        $GLOBALS['SIM_ACCESS_TIME'] = 123;
+        // 123 is floored to the full minute 120 when evaluating starttime / endtime
+        $this->get(Context::class)->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp(123)));
         $subject = new DefaultRestrictionContainer();
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         $expression = $this->expressionBuilder->and($expression);
 
-        self::assertSame('(("aTable"."deleted" = 0) AND ("aTable"."myHiddenField" = 0) AND ("aTable"."myStartTimeField" <= 123) AND ((("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 123))))', (string)$expression);
+        self::assertSame('(("aTable"."deleted" = 0) AND ("aTable"."myHiddenField" = 0) AND ("aTable"."myStartTimeField" <= 120) AND ((("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 120))))', (string)$expression);
     }
 }

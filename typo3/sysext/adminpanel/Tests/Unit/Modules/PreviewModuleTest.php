@@ -78,8 +78,9 @@ final class PreviewModuleTest extends UnitTestCase
         $previewModule->injectConfigurationService($configurationService);
         $previewModule->enrich(new ServerRequest());
 
+        $dateAspect = GeneralUtility::makeInstance(Context::class)->getAspect('date');
         self::assertSame($GLOBALS['SIM_EXEC_TIME'], $expectedExecTime, 'EXEC_TIME');
-        self::assertSame($GLOBALS['SIM_ACCESS_TIME'], $expectedAccessTime, 'ACCESS_TIME');
+        self::assertSame($dateAspect->getTimestampWithMinutePrecision(), $expectedAccessTime, 'ACCESS_TIME');
     }
 
     #[Test]

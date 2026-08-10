@@ -92,9 +92,7 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         return [
             'EXEC_TIME' => ['EXEC_TIME'],
-            'ACCESS_TIME' => ['ACCESS_TIME'],
             'SIM_EXEC_TIME' => ['SIM_EXEC_TIME'],
-            'SIM_ACCESS_TIME' => ['SIM_ACCESS_TIME'],
         ];
     }
 
@@ -108,19 +106,5 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
         unset($GLOBALS[$variable]);
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
         self::assertTrue(isset($GLOBALS[$variable]));
-    }
-
-    #[Test]
-    public function initializeGlobalTimeTrackingVariablesRoundsAccessTimeToSixtySeconds(): void
-    {
-        $this->subject->_call('initializeGlobalTimeTrackingVariables');
-        self::assertEquals(0, $GLOBALS['ACCESS_TIME'] % 60);
-    }
-
-    #[Test]
-    public function initializeGlobalTimeTrackingVariablesRoundsSimAccessTimeToSixtySeconds(): void
-    {
-        $this->subject->_call('initializeGlobalTimeTrackingVariables');
-        self::assertEquals(0, $GLOBALS['SIM_ACCESS_TIME'] % 60);
     }
 }

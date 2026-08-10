@@ -750,7 +750,8 @@ abstract class AbstractMenuContentObject
             $extraWhere .= sprintf(' AND %s=%s', $connection->quoteIdentifier('pages.no_search'), $connection->quote('0'));
         }
         if ($maxAge > 0) {
-            $extraWhere .= sprintf(' AND %s>%s', $connection->quoteIdentifier($sortField), $connection->quote((string)($GLOBALS['SIM_ACCESS_TIME'] - $maxAge)));
+            $accessTime = GeneralUtility::makeInstance(Context::class)->getAspect('date')->getTimestampWithMinutePrecision();
+            $extraWhere .= sprintf(' AND %s>%s', $connection->quoteIdentifier($sortField), $connection->quote((string)($accessTime - $maxAge)));
         }
         $extraWhere = sprintf('%s>=%s', $connection->quoteIdentifier($sortField), $connection->quote('0')) . $extraWhere;
 

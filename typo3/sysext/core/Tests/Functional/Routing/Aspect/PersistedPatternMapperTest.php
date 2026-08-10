@@ -269,7 +269,7 @@ final class PersistedPatternMapperTest extends FunctionalTestCase
             'scheduled-visibility-slug, scheduled context (timestamp 20000)' => [
                 $scheduledContext,
                 ['slug' => 'scheduled-visibility-slug-0', 'uid' => '4053'],
-                false, // @todo actually `true`, Start-/EndTimeRestriction do not support Context, yet
+                true,
             ],
         ];
     }

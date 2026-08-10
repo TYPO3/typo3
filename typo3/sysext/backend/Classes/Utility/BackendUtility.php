@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Database\Connection;
@@ -216,7 +217,7 @@ class BackendUtility
      * Backend implementation of enableFields()
      * Notice that "fe_groups" is not selected for - only disabled, starttime and endtime.
      * Notice that deleted-fields are NOT filtered - you must ALSO call deleteClause in addition.
-     * $GLOBALS["SIM_ACCESS_TIME"] is used for date.
+     * The date aspect of the Context API is used for date.
      *
      * @param string $table The table from which to return enableFields WHERE clause. Table name must have a valid configuration.
      * @param bool $inv Means that the query will select all records NOT VISIBLE records (inverted selection)
@@ -233,6 +234,7 @@ class BackendUtility
             ->getExpressionBuilder();
         $query = $expressionBuilder->and();
         $invQuery = $expressionBuilder->or();
+        $accessTime = GeneralUtility::makeInstance(Context::class)->getAspect('date')->getTimestampWithMinutePrecision();
 
         if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
             $field = $table . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
@@ -241,11 +243,11 @@ class BackendUtility
         }
         if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
             $field = $table . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName();
-            $query = $query->with($expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']));
+            $query = $query->with($expressionBuilder->lte($field, $accessTime));
             $invQuery = $invQuery->with(
                 $expressionBuilder->and(
                     $expressionBuilder->neq($field, 0),
-                    $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                    $expressionBuilder->gt($field, $accessTime)
                 )
             );
         }
@@ -254,13 +256,13 @@ class BackendUtility
             $query = $query->with(
                 $expressionBuilder->or(
                     $expressionBuilder->eq($field, 0),
-                    $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                    $expressionBuilder->gt($field, $accessTime)
                 )
             );
             $invQuery = $invQuery->with(
                 $expressionBuilder->and(
                     $expressionBuilder->neq($field, 0),
-                    $expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
+                    $expressionBuilder->lte($field, $accessTime)
                 )
             );
         }

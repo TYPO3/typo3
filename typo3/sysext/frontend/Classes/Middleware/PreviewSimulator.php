@@ -147,7 +147,7 @@ readonly class PreviewSimulator implements MiddlewareInterface
     /**
      * Simulate dates for preview functionality
      * When previewing a time restricted page from the backend, the parameter ADMCMD_simTime it added containing
-     * a timestamp with the time to preview. The globals 'SIM_EXEC_TIME' and 'SIM_ACCESS_TIME' and the 'DateTimeAspect'
+     * a timestamp with the time to preview. The global 'SIM_EXEC_TIME' and the 'DateTimeAspect'
      * are used to simulate rendering at that point in time.
      * Ideally the global access is removed in future versions.
      * This functionality needs to be loaded after BackendAuthenticator as it is only relevant for
@@ -161,7 +161,6 @@ readonly class PreviewSimulator implements MiddlewareInterface
         }
 
         $GLOBALS['SIM_EXEC_TIME'] = $queryTime;
-        $GLOBALS['SIM_ACCESS_TIME'] = $queryTime - $queryTime % 60;
         $this->context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($queryTime)));
         return true;
     }
