@@ -177,6 +177,20 @@ class ConnectionMigrator
     }
 
     /**
+     * Names of the views of this connection.
+     *
+     * @return list<string>
+     */
+    protected function getViewNames(AbstractSchemaManager $schemaManager): array
+    {
+        $viewNames = [];
+        foreach ($schemaManager->introspectViews() as $view) {
+            $viewNames[] = $view->getObjectName()->getUnqualifiedName()->getValue();
+        }
+        return $viewNames;
+    }
+
+    /**
      * If the schema is not for the Default connection remove all tables from the schema
      * that have no mapping in the TYPO3 configuration. This avoids update suggestions
      * for tables that are in the database but have no direct relation to the TYPO3 instance.
@@ -238,6 +252,19 @@ class ConnectionMigrator
         // Build the schema definitions
         $fromSchema = $this->buildExistingSchemaDefinitions($schemaManager);
         $toSchema = $this->buildExpectedSchemaDefinitions($this->connectionName);
+
+        // A name that exists as a view is not TYPO3's to manage: the view may map onto anything, so
+        // altering or dropping it would act on something the declaration does not describe, and
+        // creating it fails outright because the view already occupies the name. Taking it out of
+        // both schemas leaves it untouched, whichever side it appears on.
+        foreach ($this->getViewNames($schemaManager) as $viewName) {
+            if ($fromSchema->hasTable($viewName)) {
+                $fromSchema->dropTable($viewName);
+            }
+            if ($toSchema->hasTable($viewName)) {
+                $toSchema->dropTable($viewName);
+            }
+        }
 
         // Add current table options to the fromSchema
         $tableOptions = $this->getTableOptions($this->getSchemaTableNames($fromSchema));
