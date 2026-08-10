@@ -1,0 +1,23 @@
+"sys_file_storage"
+,"uid","pid","name","processingfolder","driver","is_browsable","is_public","is_writable","is_online","configuration"
+,1,0,"fileadmin/ (auto-created)","_processed_/","Local",1,0,1,1,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+	<data>
+		<sheet index=""sDEF"">
+			<language index=""lDEF"">
+				<field index=""basePath"">
+					<value index=""vDEF"">fileadmin/</value>
+				</field>
+				<field index=""pathType"">
+					<value index=""vDEF"">relative</value>
+				</field>
+				<field index=""caseSensitive"">
+					<value index=""vDEF"">1</value>
+				</field>
+			</language>
+		</sheet>
+	</data>
+</T3FlexForms>"
+"sys_file"
+,"uid","pid","tstamp","last_indexed","storage","type","metadata","identifier","identifier_hash","folder_hash","extension","mime_type","name","sha1","size","creation_date","modification_date","missing"
+,1,0,1697814707,1697814707,1,4,0,"/user_upload/nonpublic.txt","3f4a1b1d0e2b2c8a3f6d0c1b9e8a7d6c5b4a3928","19669f1e02c2f16705ec7587044c66443be70725","txt","text/plain","nonpublic.txt","da5de02721c004987c4d7dcc520ba1eeb24c63ea",53,1697814707,1697814707,0
