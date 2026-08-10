@@ -5,6 +5,7 @@
     data-namespace-typo3-fluid="true"
 >
 
+<f:asset.module identifier="@typo3/backend/layout-module/sticky-language-header.js"/>
 <div class="t3-grid-container{f:if(condition: context.backendLayout.identifierCleaned, then: ' t3-grid-container-{context.backendLayout.identifierCleaned}')}" data-multi-languages="{f:if(condition: context.multiLanguages, then: '1', else: '0')}">
     <div class="t3-grid-container-inner">
         <table class="t3-page-columns t3-grid-table t3js-page-columns">
@@ -24,13 +25,8 @@
                         >
                             {languageColumn.context.localizedPageTitle}
                         </typo3-backend-editable-page-title>
-                        <div>
-                            <core:iconForRecord table="pages" row="{languageColumn.pageRecord}" />
-                            <core:icon identifier="{languageColumn.context.siteLanguage.flagIdentifier}" />
-                            {languageColumn.context.siteLanguage.title}
-                            <f:if condition="{languageColumn.context.languageMode}">
-                                <span class="badge badge-{languageColumn.context.languageModeLabelClass}">{languageColumn.context.languageMode}</span>
-                            </f:if>
+                        <typo3-backend-page-layout-sticky-language-header>
+                            <f:render section="languageInfo" arguments="{languageColumn: languageColumn}" />
                             <f:if condition="{languageColumn.translationData.hasElementsWithWorkspaceDeletePlaceholders}">
                                 <span class="badge badge-warning"
                                     data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageContainsWorkspaceDeletePlaceholderRecords')}"
@@ -41,7 +37,12 @@
                                     !
                                 </span>
                             </f:if>
-                        </div>
+                            <f:if condition="{context.multiLanguages}">
+                                <span slot="sticky" hidden>
+                                    <f:render section="languageInfo" arguments="{languageColumn: languageColumn}" />
+                                </span>
+                            </f:if>
+                        </typo3-backend-page-layout-sticky-language-header>
                         <div class="mt-2">
                             <f:if condition="{languageColumn.allowViewPage}">
                                 <button class="btn btn-default btn-sm" {f:if(condition: languageColumn.previewUrlAttributes, then: '{languageColumn.previewUrlAttributes -> f:format.raw()}', else: 'disabled="true"')} title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')}">
@@ -146,4 +147,13 @@
         </table>
     </div>
 </div>
+
+<f:section name="languageInfo">
+    <core:iconForRecord table="pages" row="{languageColumn.pageRecord}" />
+    <core:icon identifier="{languageColumn.context.siteLanguage.flagIdentifier}" />
+    {languageColumn.context.siteLanguage.title}
+    <f:if condition="{languageColumn.context.languageMode}">
+        <span class="badge badge-{languageColumn.context.languageModeLabelClass}">{languageColumn.context.languageMode}</span>
+    </f:if>
+</f:section>
 </html>
