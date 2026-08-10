@@ -811,7 +811,16 @@
         <source>Position</source>
       </trans-unit>
       <trans-unit id="component.modal.section.position.description">
-        <source>Position the modal at different locations on the screen. Top-positioned modals slide down from the top, end-positioned modals slide in from the right.</source>
+        <source>Position the modal at different locations on the screen. Top-positioned modals slide down from the top, end-positioned modals slide in from the right. Sheet-positioned modals can also be resized, see the example below.</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.headline">
+        <source>Resizable sheet</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.description">
+        <source>Sheet-positioned modals show a drag handle on their free edge. The width is stored per "resizeIdentifier" in the user's configuration, so it is remembered the next time a modal with the same identifier is opened.</source>
+      </trans-unit>
+      <trans-unit id="component.modal.section.resizableSheet.openModal">
+        <source>Open resizable sheet</source>
       </trans-unit>
       <trans-unit id="component.modal.section.playground.headline">
         <source>Playground</source>

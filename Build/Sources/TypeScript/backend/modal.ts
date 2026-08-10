@@ -16,6 +16,7 @@ import { customElement, property, state, query } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { classMap, type ClassInfo } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { styleMap, type StyleInfo } from 'lit/directives/style-map.js';
 import { classesArrayToClassInfo } from '@typo3/core/lit-helper';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
@@ -23,6 +24,7 @@ import type { AbstractAction } from './action-button/abstract-action';
 import type { ModalResponseEvent } from '@typo3/backend/modal-interface';
 import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import Persistent from '@typo3/backend/storage/persistent';
 import Severity from './severity';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/element/spinner-element';
@@ -121,6 +123,7 @@ export interface Configuration {
   staticBackdrop: boolean;
   hideCloseButton: boolean;
   hideHeader: boolean;
+  resizeIdentifier: string;
 }
 
 type PartialConfiguration = Partial<Omit<Configuration, 'buttons'> & { buttons: Array<Partial<Button>> }>;
@@ -129,6 +132,8 @@ let uniqueIdCounter = 0;
 
 @customElement('typo3-backend-modal')
 export class ModalElement extends LitElement {
+  private static readonly RESIZE_MIN_WIDTH = 400;
+
   @property({ type: String, reflect: true }) modalTitle: string = '';
   @property({ type: String, reflect: true }) content: string = '';
   @property({ type: String, reflect: true }) type: Types = Types.default;
@@ -140,10 +145,13 @@ export class ModalElement extends LitElement {
   @property({ type: Boolean }) hideHeader: boolean = false;
   @property({ type: Array }) additionalCssClasses: Array<string> = [];
   @property({ type: Array, attribute: false }) buttons: Array<Button> = [];
+  @property({ type: String, attribute: 'resize-identifier' }) resizeIdentifier: string = '';
 
   @state() templateResultContent: TemplateResult | JQuery | Element | DocumentFragment = null;
   @state() activeButton: Button = null;
   @query('dialog', true) dialog: HTMLDialogElement;
+  @state() private modalWidth?: number;
+  @state() private resizing: boolean = false;
 
   public callback: ModalCallbackFunction = null;
   public ajaxCallback: ModalCallbackFunction = null;
@@ -151,6 +159,7 @@ export class ModalElement extends LitElement {
   public userData: { [key: string]: any } = {};
 
   private readonly uniqueId: number;
+  private resizeReferencePosition: number = 0;
   #size: Sizes | SizeConfig = Sizes.default;
 
   constructor() {
@@ -193,6 +202,13 @@ export class ModalElement extends LitElement {
       if (this.getAttribute('size') !== expected) {
         this.setAttribute('size', expected);
       }
+    }
+  }
+
+  public override connectedCallback(): void {
+    super.connectedCallback();
+    if (this.isResizable()) {
+      this.loadPersistedWidth();
     }
   }
 
@@ -256,6 +272,7 @@ export class ModalElement extends LitElement {
   }
 
   protected override render(): TemplateResult {
+    const resizable = this.isResizable();
     const classes: ClassInfo = classesArrayToClassInfo([
       'modal',
       't3js-modal',
@@ -264,11 +281,18 @@ export class ModalElement extends LitElement {
       `modal-severity-${Severity.getCssClass(this.severity)}`,
       ...this.getSizeClasses(),
       `modal-position-${this.position}`,
+      ...(resizable ? ['modal-resizable'] : []),
+      ...(this.resizing ? ['modal-resizing'] : []),
       ...this.additionalCssClasses,
     ]);
+    const dialogStyles: StyleInfo = {};
+    if (resizable && this.modalWidth) {
+      dialogStyles['--typo3-modal-width'] = `${this.modalWidth}px`;
+    }
     return html`
       <dialog
           class=${classMap(classes)}
+          style=${styleMap(dialogStyles)}
           aria-labelledby=${ifDefined(this.hideHeader ? undefined : `t3-modal-header-${this.uniqueId}`)}
           aria-label=${ifDefined(this.hideHeader ? this.modalTitle : undefined)}
           closedby=${this.hideCloseButton ? 'none' : 'closerequest'}
@@ -276,6 +300,7 @@ export class ModalElement extends LitElement {
           @cancel=${this.handleDialogCancel}
           @click=${this.handleDialogClick}
       >
+        ${resizable ? html`<div class="modal-resize-handle" @pointerdown=${this.startResize}></div>` : nothing}
         ${this.hideHeader ? nothing : html`
           <div class="modal-header t3js-modal-header">
             <div class="modal-header-title t3js-modal-title" id="t3-modal-header-${this.uniqueId}">${this.modalTitle}</div>
@@ -480,6 +505,99 @@ export class ModalElement extends LitElement {
       { transform: 'translateX(0px)' },
     ], 150);
   }
+
+  /**
+   * Currently only "sheet" positioned modals (drawers docked to the viewport edge)
+   * support resizing, as it is the only position with a single free-floating edge.
+   */
+  private isResizable(): boolean {
+    return this.position === Positions.sheet;
+  }
+
+  private getResizePersistenceKey(): string | null {
+    if (!this.resizeIdentifier) {
+      return null;
+    }
+    return `resize.${this.resizeIdentifier}.modal`;
+  }
+
+  private loadPersistedWidth(): void {
+    const key = this.getResizePersistenceKey();
+    if (!key) {
+      return;
+    }
+    const stored = Persistent.get(key);
+    if (stored) {
+      const width = parseInt(stored, 10);
+      if (!isNaN(width) && width > 0) {
+        this.modalWidth = width;
+      }
+    }
+  }
+
+  private persistWidth(): void {
+    const key = this.getResizePersistenceKey();
+    if (key && this.modalWidth) {
+      Persistent.set(key, String(this.modalWidth));
+    }
+  }
+
+  private getMaxWidth(): number {
+    const computedMaxWidth = parseFloat(getComputedStyle(this.dialog).maxWidth);
+    return Number.isNaN(computedMaxWidth) ? window.innerWidth : computedMaxWidth;
+  }
+
+  private isRtl(): boolean {
+    return getComputedStyle(this).direction === 'rtl';
+  }
+
+  /**
+   * A "sheet" is docked to the inline-end edge (via margin-inline-end: 0), so its
+   * free edge to grab and drag is always the inline-start edge, in both directions.
+   */
+  private readonly startResize = (event: PointerEvent) => {
+    if (event.button !== 0) {
+      return;
+    }
+    event.stopPropagation();
+    event.preventDefault();
+
+    const rect = this.dialog.getBoundingClientRect();
+    this.resizeReferencePosition = this.isRtl() ? rect.left : rect.right;
+
+    this.resizing = true;
+    const target = event.target as HTMLElement;
+    target.setPointerCapture(event.pointerId);
+    target.addEventListener('pointermove', this.handlePointerMove);
+    target.addEventListener('pointerup', this.handlePointerUp);
+    target.addEventListener('pointercancel', this.handlePointerUp);
+    target.addEventListener('lostpointercapture', this.handlePointerUp);
+  };
+
+  private readonly handlePointerMove = (event: PointerEvent) => {
+    if (!this.resizing) {
+      return;
+    }
+
+    const maxWidth = this.getMaxWidth();
+    let width = this.isRtl()
+      ? Math.round(event.clientX - this.resizeReferencePosition)
+      : Math.round(this.resizeReferencePosition - event.clientX);
+
+    width = Math.max(ModalElement.RESIZE_MIN_WIDTH, Math.min(width, maxWidth));
+    this.modalWidth = width;
+    this.dialog.style.setProperty('--typo3-modal-width', `${width}px`);
+  };
+
+  private readonly handlePointerUp = (event: PointerEvent) => {
+    const target = event.currentTarget as HTMLElement;
+    target.removeEventListener('pointermove', this.handlePointerMove);
+    target.removeEventListener('pointerup', this.handlePointerUp);
+    target.removeEventListener('pointercancel', this.handlePointerUp);
+    target.removeEventListener('lostpointercapture', this.handlePointerUp);
+    this.resizing = false;
+    this.persistWidth();
+  };
 }
 
 declare global {
@@ -517,7 +635,8 @@ class Modal {
     ajaxCallback: null,
     staticBackdrop: false,
     hideCloseButton: false,
-    hideHeader: false
+    hideHeader: false,
+    resizeIdentifier: '',
   };
 
   constructor() {
@@ -691,6 +810,9 @@ class Modal {
     configuration.hideCloseButton = configuration.hideCloseButton || this.defaultConfiguration.hideCloseButton;
     configuration.staticBackdrop = configuration.staticBackdrop || this.defaultConfiguration.staticBackdrop;
     configuration.hideHeader = configuration.hideHeader || this.defaultConfiguration.hideHeader;
+    configuration.resizeIdentifier = typeof configuration.resizeIdentifier === 'string'
+      ? configuration.resizeIdentifier
+      : this.defaultConfiguration.resizeIdentifier;
 
     return this.generate(configuration);
   }
@@ -813,6 +935,7 @@ class Modal {
     currentModal.hideCloseButton = configuration.hideCloseButton;
     currentModal.staticBackdrop = configuration.staticBackdrop;
     currentModal.hideHeader = configuration.hideHeader;
+    currentModal.resizeIdentifier = configuration.resizeIdentifier;
     if (configuration.callback) {
       currentModal.callback = configuration.callback;
     }

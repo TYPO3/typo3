@@ -233,6 +233,29 @@
             </div>
         </sg:example>
 
+        <h2><f:translate key="component.modal.section.resizableSheet.headline" domain="styleguide.messages" /></h2>
+        <p><f:translate key="component.modal.section.resizableSheet.description" domain="styleguide.messages" /></p>
+        <div class="example-container">
+            <div class="example-item">
+                <button type="button" class="btn btn-default" id="modal-demo-resizable-sheet">
+                    <f:translate key="component.modal.section.resizableSheet.openModal" domain="styleguide.messages" />
+                </button>
+            </div>
+        </div>
+        <f:asset.script identifier="modalResizableSheetDemo" csp="true">
+            import('@typo3/backend/modal.js').then(({ default: Modal, Positions, Sizes }) => {
+                document.getElementById('modal-demo-resizable-sheet').addEventListener('click', () => {
+                    Modal.advanced({
+                        title: 'Resizable sheet',
+                        content: 'Drag the handle on the left edge to resize this sheet. Close and reopen it to see the width persist.',
+                        position: Positions.sheet,
+                        size: Sizes.expand,
+                        resizeIdentifier: 'styleguide.demoSheet',
+                    });
+                });
+            });
+        </f:asset.script>
+
         <h2><f:translate key="component.modal.section.hideHeader.headline" domain="styleguide.messages" /></h2>
         <p><f:translate key="component.modal.section.hideHeader.description" domain="styleguide.messages" /></p>
         <f:variable name="codeSnippetHideHeader">

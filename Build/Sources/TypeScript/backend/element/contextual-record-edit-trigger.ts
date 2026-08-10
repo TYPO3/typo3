@@ -27,11 +27,17 @@ import labels from '~labels/backend.alt_doc';
  *
  * `url` attribute points to the contextual edit route
  * `edit-url` points to the full FormEngine route.
+ * `context` identifies what's being edited, used to persist the sheet's
+ * width independently per context. This might be just the database table
+ * (e.g. "pages" and "sys_category" are resized independently), but callers
+ * may pass a more specific value later, e.g. "tt_content.textmedia" vs.
+ * "tt_content.header", once per-CType widths are needed.
  *
  * @example
  * <typo3-backend-contextual-record-edit-trigger
  *   url="/typo3/record/edit/contextual?..."
- *   edit-url="/typo3/record/edit?...">
+ *   edit-url="/typo3/record/edit?..."
+ *   context="pages">
  *   Edit record
  * </typo3-backend-contextual-record-edit-trigger>
  */
@@ -39,6 +45,7 @@ import labels from '~labels/backend.alt_doc';
 export class ContextualRecordEditTriggerElement extends PseudoButtonLitElement {
   @property({ type: String }) url: string;
   @property({ type: String, attribute: 'edit-url' }) editUrl: string;
+  @property({ type: String }) context: string = '';
 
   protected override async buttonActivated(): Promise<void> {
     if (Persistent.isset('contextualRecordEdit') && Persistent.get('contextualRecordEdit') == 0) {
@@ -54,6 +61,7 @@ export class ContextualRecordEditTriggerElement extends PseudoButtonLitElement {
       size: Sizes.expand,
       position: Positions.sheet,
       hideHeader: true,
+      resizeIdentifier: `contextualEdit${this.context ? `.${this.context}` : ''}`,
     });
     this.setupMessageHandling(modal);
   }
