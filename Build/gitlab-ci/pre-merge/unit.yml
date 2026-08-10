@@ -50,3 +50,41 @@ unit php 8.5 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.5
     - Build/Scripts/runTests.sh -s unit -p 8.5 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
+
+unit php 8.6 random pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - main
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.6
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.6 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
+
+unit php 8.6 pre-merge:
+  stage: main
+  tags:
+    - metal2
+  except:
+    refs:
+      - schedules
+      - main
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.6
+    - Build/Scripts/runTests.sh -s unit -p 8.6 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml

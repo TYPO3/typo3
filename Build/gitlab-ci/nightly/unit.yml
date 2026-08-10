@@ -48,6 +48,42 @@ unit php 8.5 max random:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.5
     - Build/Scripts/runTests.sh -s unitRandom -p 8.5 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
 
+# 8.6 "locked" is part of pre-merge
+unit php 8.6 max:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.6
+    - Build/Scripts/runTests.sh -s unit -p 8.6 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
+unit php 8.6 max random:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.6
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.6 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
+
 # 8.5 "locked" is part of pre-merge
 unit php 8.5 min:
   stage: unit
@@ -83,3 +119,39 @@ unit php 8.5 min random:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.5
     - Build/Scripts/runTests.sh -s unitRandom -p 8.5 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
+
+# 8.6 "locked" is part of pre-merge
+unit php 8.6 min:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.6
+    - Build/Scripts/runTests.sh -s unit -p 8.6 -- --log-junit typo3temp/var/tests/junit-reports/unit.xml
+unit php 8.6 min random:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - typo3temp/var/tests/junit-reports
+    reports:
+      junit: typo3temp/var/tests/junit-reports/unit-random.xml
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.6
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.6 -- --log-junit typo3temp/var/tests/junit-reports/unit-random.xml
