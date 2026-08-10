@@ -230,6 +230,7 @@ final readonly class RecordFieldPreviewProcessor
             return '<typo3-backend-contextual-record-edit-trigger'
                 . ' url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('record_edit_contextual', $editParams)) . '"'
                 . ' edit-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('record_edit', $editParams)) . '"'
+                . ' context="' . htmlspecialchars($table) . '"'
                 . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:edit')) . '"'
                 . '>' . $linkText . '</typo3-backend-contextual-record-edit-trigger>';
         }

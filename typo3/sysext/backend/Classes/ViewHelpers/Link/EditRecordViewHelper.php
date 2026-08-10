@@ -136,6 +136,7 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
             $this->tag->setTagName('typo3-backend-contextual-record-edit-trigger');
             $this->tag->addAttribute('url', (string)$this->uriBuilder->buildUriFromRoute('record_edit_contextual', $params));
             $this->tag->addAttribute('edit-url', (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params));
+            $this->tag->addAttribute('context', $this->arguments['table']);
         } else {
             $uri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
             $this->tag->addAttribute('href', $uri);

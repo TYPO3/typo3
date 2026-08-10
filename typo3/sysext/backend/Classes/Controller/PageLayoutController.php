@@ -566,6 +566,7 @@ class PageLayoutController
             ->setAttributes([
                 'url' => (string)$this->uriBuilder->buildUriFromRoute('record_edit_contextual', $editParams),
                 'edit-url' => (string)$this->uriBuilder->buildUriFromRoute('record_edit', $editParams),
+                'context' => 'pages',
             ])
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'))
             ->setShowLabelText(true)

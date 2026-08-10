@@ -12,6 +12,9 @@
     --typo3-modal-offset-multiplier-y: 2;
     --typo3-modal-offset-multiplier-x: 2;
     --typo3-modal-slide: -50px;
+    --typo3-modal-resize-handle-width: .5rem;
+    --typo3-modal-resize-handle-color: color-mix(in srgb, var(--typo3-surface-container-lowest), var(--typo3-text-color-base) 10%);
+    --typo3-modal-resize-handle-color-active: var(--typo3-state-primary-border-color);
     --typo3-modal-color: var(--typo3-component-color);
     --typo3-modal-bg: var(--typo3-component-bg);
     --typo3-modal-border-width: var(--typo3-component-border-width);
@@ -420,6 +423,45 @@ $modal-heights: (
             inset-inline-end: 0;
             inset-block-end: var(--typo3-modal-slide);
         }
+    }
+}
+
+/**
+ * Resize
+ *
+ * Only "sheet" positioned modals are resizable: it's the only position with a
+ * single free-floating edge, docked to the opposite side of the viewport.
+ */
+.modal-resize-handle {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: calc(var(--typo3-modal-resize-handle-width) * -.5);
+    width: var(--typo3-modal-resize-handle-width);
+    z-index: 1;
+    cursor: col-resize;
+    touch-action: none;
+    background-color: var(--typo3-modal-resize-handle-color);
+    transition: background-color .2s ease-in-out;
+}
+
+.modal-resize-handle:hover,
+.modal-resizing .modal-resize-handle {
+    background-color: var(--typo3-modal-resize-handle-color-active);
+}
+
+.modal-resizing {
+    cursor: col-resize;
+    user-select: none;
+
+    .modal-iframe {
+        pointer-events: none;
+    }
+}
+
+// Sheets become a bottom drawer on narrow viewports, resizing width no longer applies
+@media (max-width: 767px) {
+    .modal-resize-handle {
+        display: none;
     }
 }
 
