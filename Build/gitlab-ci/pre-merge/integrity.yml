@@ -49,6 +49,7 @@ lint php pre-merge:
       - main
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.5
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.6
 
 grunt scss ts html pre-merge:
   stage: main
